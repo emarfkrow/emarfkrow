@@ -72,7 +72,7 @@ $(function() {
 		let $sendInputs;
 		if (isRefer) {
 			// 参照ダイアログなら接頭辞に合致する項目を取得（接頭辞がなければ全てを取得する）
-			$sendInputs = $form.find('input[name*=".' + prefix + '"]');
+			$sendInputs = $form.find('input[type="text"][name*=".' + prefix + '"]');
 		} else {
 			// 単票ダイアログなら主キー項目だけを取得
 			$sendInputs = $form.find('input.primaryKey');
@@ -111,7 +111,7 @@ $(function() {
 				let dialogFieldName = dialogInputNames[1];                                // sansho1Id
 				if (dialogFormEntityName == dialogEntityName && sendFieldName.match(new RegExp('^' + prefix + dialogFieldName + '$', 'i'))) {
 					$dialogItem = $(this);
-					$dialogItem.val(sendValue);
+					$dialogItem.val([sendValue]);
 					$dialogDiv.find('span[id="' + dialogInputName + '"]').html(sendValue);
 				}
 			});
