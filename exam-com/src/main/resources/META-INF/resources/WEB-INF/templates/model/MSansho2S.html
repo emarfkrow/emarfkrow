@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{MSansho2S.title}">参照２マスタ</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+</script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{MSansho2S.h2}"></h2>
+    <form name="MSansho2SearchForm" action="MSansho2Search.ajax" class="search">
+      <fieldset>
+        <legend th:text="#{MSansho2S.legend}">legend</legend>
+        <div id="sansho2Id">
+          <label for="MSansho2.sansho2Id" th:text="#{MSansho2.sansho2Id}">参照２ID</label><input type="text" id="MSansho2.sansho2Id" name="MSansho2.sansho2Id" maxlength="10" />
+        </div>
+        <div id="sansho2Mei">
+          <label for="MSansho2.sansho2Mei" th:text="#{MSansho2.sansho2Mei}">参照２名</label><input type="text" id="MSansho2.sansho2Mei" name="MSansho2.sansho2Mei" maxlength="30" />
+        </div>
+        <div id="deleteF">
+          <fieldset id="MSansho2.deleteFList" data-options="MCodeValueSearch.json" data-optionParams="code_nm:delete_f" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MSansho2.deleteF}">削除フラグ</legend>
+          </fieldset>
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="reset" th:text="#{common.reset}">reset</button>
+        <a href="./MSansho2.html" id="MSansho2" target="dialog" th:text="#{MSansho2.add}" tabindex="-1">参照２マスタ</a>
+      </div>
+      <div class="submits">
+        <button id="SearchMSansho2" class="search" data-gridId="MSansho2Grid" th:text="#{common.search}">submit</button>
+      </div>
+    </form>
+    <form name="MSansho2SRegistForm" action="MSansho2SRegist.ajax" class="regist">
+      <h3 th:text="#{MSansho2.h3}">h3</h3>
+      <div id="MSansho2Grid" data-selectionMode="checkbox" data-addRow="true" data-frozenColumn="0"></div>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="$('[id=&quot;SearchMSansho2&quot;]').click();">reset</button>
+        <a th:href="@{MSansho2Search.xlsx(baseMei=#{MSansho2S.h2})}" id="MSansho2Search.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+      </div>
+      <div class="submits">
+        <button id="RegistMSansho2S" class="regist" th:text="#{common.regist}">submit</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

@@ -1,0 +1,83 @@
+・基となるスキーマが存在する
+
+・スキーマから関係・多重度を評価し、Entityを生成。
+（ここで、VO：getter、DTO：VO+setter、DAO：DBIO処理、Entity：DTO+DAO）
+
+・Entityにはカスタマイズは不要。アーカイブにしてしまっても構わない。
+
+・[proj]-com        ：job/webの共通処理。Entityが入る。DataSource・Transaction・Repository・Exception・FormValidation・ServiceIF・各種Util。
+・[proj]-job-base   ：バッチ処理の共通処理。バッチのBaseClass。
+・[proj]-job[-BatID]：各種バッチモジュール。必要に応じて「job-base」をオーバライド。
+・[proj]-web-base   ：オンラインの共通処理。認証・認可。
+・[proj]-web        ：オンラインモジュール。必要に応じて「web-base」をオーバライド。
+
+・com系３つのモジュールをIDEのプラグインで出力する。
+・バッチ処理・オンラインの共通処理はフレームワークに依存しない実装にする
+・カスタマイズが必要なら各モジュールでオーバライドする
+
+・まず、出来上がりの姿を見極めるため、com系３つのプロジェクトを手組みする。
+・exam-com
+・exam-job-base
+・exam-web-base
+
+15:11:28.299 [main] DEBUG com.example.job.TEntityJob - com.example.entity.TEntity@527740a2
+
+emaef-com
+emarf-job
+exam-com
+exam-job
+
+
+
+■eclipseの設定変更
+[一般]
+	[エディター]
+		[AnyEdit ツール]
+			自動変換タブ
+				■[末尾の空白の除去]にチェック
+[Java]
+	[コード・スタイル]
+		[フォーマッター]
+			（アクティブなプロファイルを「編集」）
+				[インデント]
+					■タブポリシーに「スペースのみ」を選択
+[Web]
+	[HTMLファイル]
+		[エディター]
+			■行の幅に「999」
+			■「スペースをを使用したインデント」を選択
+			■インデントサイズに「2」
+
+
+
+
+アプリケーションエラー		AppError
+システムエラー				SysError
+i18n						MessageResolver
+リソースのUTF8対応			UTF8Control
+アプリケーションプロパティ	App
+コネクションプール管理		Connections、ThreadLocalConection
+データソース管理			DataSources
+データソースの方言拡張		DataSourcesAssist
+SQL実行						Queries
+時間管理					LocalDateTime
+ロケール管理				Locales、ThreadLocalLocale
+MapのListの略称				MapList
+メッセージ管理				Messages
+文字列操作					StringUtil
+バリデーション				FormValidator、IForm
+
+バッチ親クラス				BaseJob
+
+オンライン親クラス			BaseAction
+参照代表クラス				ReferAction
+
+Ajax通信					AjaxServlet
+Form送信					FormServlet
+thymeleaf制御				HtmlServlet
+Json取得					JsonServlet
+ログイン認証				LoginFilter
+
+【exam-com】Entity
+【exam-job】バッチクラス
+【exam-web】アクションクラス・フォームクラス

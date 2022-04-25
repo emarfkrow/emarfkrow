@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{MNinka.title}"></title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+</script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{MNinka.h2}"></h2>
+    <form name="MNinkaRegistForm" action="MNinkaRegist.ajax" class="regist">
+      <fieldset>
+        <legend th:text="#{MNinka.legend}">legend</legend>
+        <div id="bushoId">
+          <label for="MNinka.bushoId" th:text="#{MNinka.bushoId}">部署ID</label><span id="MNinka.bushoId"></span><input type="hidden" id="MNinka.bushoId" name="MNinka.bushoId" class="primaryKey" /><a id="MNinka.bushoId" href="./MBushoS.html" target="dialog" class="primaryKey refer" th:text="#{common.refer}" tabindex="-1">...</a>
+        </div>
+        <div id="shokuiId">
+          <label for="MNinka.shokuiId" th:text="#{MNinka.shokuiId}">職位ID</label><span id="MNinka.shokuiId"></span><input type="hidden" id="MNinka.shokuiId" name="MNinka.shokuiId" class="primaryKey" /><a id="MNinka.shokuiId" href="./MShokuiS.html" target="dialog" class="primaryKey refer" th:text="#{common.refer}" tabindex="-1">...</a>
+        </div>
+        <div id="gamenNm">
+          <label for="MNinka.gamenNm" th:text="#{MNinka.gamenNm}">画面ID</label><input type="text" id="MNinka.gamenNm" name="MNinka.gamenNm" maxlength="20" class="primaryKey" />
+        </div>
+        <div id="kengenKb">
+          <fieldset id="MNinka.kengenKbList" data-options="MCodeValueSearch.json" data-optionParams="code_nm:kengen_kb" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MNinka.kengenKb}">権限区分</legend>
+          </fieldset>
+        </div>
+        <div id="kaishiYmd">
+          <label for="MNinka.kaishiYmd" th:text="#{MNinka.kaishiYmd}">開始日</label><input type="date" id="MNinka.kaishiYmd" name="MNinka.kaishiYmd" maxlength="10" />
+        </div>
+        <div id="shuryoYmd">
+          <label for="MNinka.shuryoYmd" th:text="#{MNinka.shuryoYmd}">終了日</label><input type="date" id="MNinka.shuryoYmd" name="MNinka.shuryoYmd" maxlength="10" />
+        </div>
+        <div id="insertDt">
+          <label for="MNinka.insertDt" th:text="#{MNinka.insertDt}">登録日時</label><span id="MNinka.insertDt"></span><input type="hidden" id="MNinka.insertDt" name="MNinka.insertDt" />
+        </div>
+        <div id="insertBy">
+          <label for="MNinka.insertBy" th:text="#{MNinka.insertBy}">登録者</label><span id="MNinka.insertBy"></span><input type="hidden" id="MNinka.insertBy" name="MNinka.insertBy" />
+        </div>
+        <div id="updateDt">
+          <label for="MNinka.updateDt" th:text="#{MNinka.updateDt}">更新日時</label><span id="MNinka.updateDt"></span><input type="hidden" id="MNinka.updateDt" name="MNinka.updateDt" />
+        </div>
+        <div id="updateBy">
+          <label for="MNinka.updateBy" th:text="#{MNinka.updateBy}">更新者</label><span id="MNinka.updateBy"></span><input type="hidden" id="MNinka.updateBy" name="MNinka.updateBy" />
+        </div>
+        <div id="deleteF">
+          <fieldset id="MNinka.deleteFList" data-options="MCodeValueSearch.json" data-optionParams="code_nm:delete_f" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MNinka.deleteF}">削除フラグ</legend>
+          </fieldset>
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="Dialogate.refresh(event);">reset</button>
+        <a th:href="@{MNinkaGet.xlsx(baseMei=#{MNinka.h2})}" id="MNinkaGet.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeleteMNinka" class="delete" data-action="MNinkaDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistMNinka" class="regist" th:text="#{common.regist}">登録</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

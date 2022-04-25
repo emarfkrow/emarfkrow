@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Cache-Control" content="no-store">
+<title>Insert title here</title>
+<link rel="icon" th:href="@{/favicon.ico}" />
+<!-- jquery css -->
+<link rel="stylesheet" th:href="@{/webjars/jquery-ui/1.13.0/jquery-ui.min.css}" />
+<link rel="stylesheet" th:href="@{/js/plugins/SlickGrid-2.4.44/slick.grid.css}" />
+<link rel="stylesheet" th:href="@{/js/plugins/SlickGrid-2.4.44/slick-default-theme.css}" />
+<!-- original css -->
+<link rel="stylesheet" th:href="@{/css/base.css}" />
+<link rel="stylesheet" th:href="@{/css/breads.css}" />
+<link rel="stylesheet" th:href="@{/css/jquery-ui.override.css}" />
+<link rel="stylesheet" th:href="@{/css/slick.grid.override.css}" />
+<!-- jquery js -->
+<script th:src="@{/webjars/jquery/1.12.0/jquery.min.js}"></script>
+<script th:src="@{/webjars/jquery-ui/1.13.0/jquery-ui.min.js}"></script>
+<script th:src="@{/js/plugins/SlickGrid-2.4.44/lib/jquery.event.drag-2.3.0.js}"></script>
+<script th:src="@{/js/plugins/SlickGrid-2.4.44/plugins/slick.cellrangedecorator.js}"></script>
+<script th:src="@{/js/plugins/SlickGrid-2.4.44/plugins/slick.cellrangeselector.js}"></script>
+<script th:src="@{/js/plugins/SlickGrid-2.4.44/plugins/slick.cellselectionmodel.js}"></script>
+<script th:src="@{/js/plugins/SlickGrid-2.4.44/plugins/slick.checkboxselectcolumn.js}"></script>
+<script th:src="@{/js/plugins/SlickGrid-2.4.44/plugins/slick.rowselectionmodel.js}"></script>
+<script th:src="@{/js/plugins/SlickGrid-2.4.44/slick.core.js}"></script>
+<script th:src="@{/js/plugins/SlickGrid-2.4.44/slick.dataview.js}"></script>
+<script th:src="@{/js/plugins/SlickGrid-2.4.44/slick.grid.js}"></script>
+<script th:src="@{/js/plugins/SlickGrid-2.4.44/slick.editors.js}"></script>
+<script th:src="@{/js/plugins/SlickGrid-2.4.44/slick.formatters.js}"></script>
+<!-- original js -->
+<script th:src="@{/js/ajaxize.js}"></script>
+<script th:src="@{/js/base.js}"></script>
+<script th:src="@{/js/breads.js}"></script>
+<script th:src="@{/js/casing.js}"></script>
+<script th:src="@{/js/column.js}"></script>
+<script th:src="@{/js/dialogate.js}"></script>
+<script th:src="@{/js/formatter.js}"></script>
+<script th:src="@{/js/gridate.js}"></script>
+<script th:src="@{/js/jsonate.js}"></script>
+<script th:src="@{/js/nextize.js}"></script>
+<script th:src="@{/js/options.js}"></script>
+<script th:src="@{/js/slick.editors.extends.js}"></script>
+<script th:src="@{/js/slick.formatters.extends.js}"></script>
+<script th:src="@{/messages.json}"></script>
+</head>
+<body>
+  <div layout:replace="~{common/header::header}"></div>
+  <div layout:replace="~{common/nav::nav}"></div>
+  <div layout:replace="~{common/breads::breads}"></div>
+  <div layout:fragment="article" class="article"></div>
+  <div layout:replace="~{common/footer::footer}"></div>
+  <script th:src="@{/js/loading.js}"></script>
+</body>
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{MCode.title}"></title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+</script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{MCode.h2}"></h2>
+    <form name="MCodeRegistForm" action="MCodeRegist.ajax" class="regist">
+      <fieldset>
+        <legend th:text="#{MCode.legend}">legend</legend>
+        <div id="codeNm">
+          <label for="MCode.codeNm" th:text="#{MCode.codeNm}">コード名称</label><input type="text" id="MCode.codeNm" name="MCode.codeNm" maxlength="20" class="primaryKey" />
+        </div>
+        <div id="codeMei">
+          <label for="MCode.codeMei" th:text="#{MCode.codeMei}">コード名</label><input type="text" id="MCode.codeMei" name="MCode.codeMei" maxlength="30" />
+        </div>
+        <div id="insertDt">
+          <label for="MCode.insertDt" th:text="#{MCode.insertDt}">登録日時</label><span id="MCode.insertDt"></span><input type="hidden" id="MCode.insertDt" name="MCode.insertDt" />
+        </div>
+        <div id="insertBy">
+          <label for="MCode.insertBy" th:text="#{MCode.insertBy}">登録者</label><span id="MCode.insertBy"></span><input type="hidden" id="MCode.insertBy" name="MCode.insertBy" />
+        </div>
+        <div id="updateDt">
+          <label for="MCode.updateDt" th:text="#{MCode.updateDt}">更新日時</label><span id="MCode.updateDt"></span><input type="hidden" id="MCode.updateDt" name="MCode.updateDt" />
+        </div>
+        <div id="updateBy">
+          <label for="MCode.updateBy" th:text="#{MCode.updateBy}">更新者</label><span id="MCode.updateBy"></span><input type="hidden" id="MCode.updateBy" name="MCode.updateBy" />
+        </div>
+        <div id="deleteF">
+          <fieldset id="MCode.deleteFList" data-options="MCodeValueSearch.json" data-optionParams="code_nm:delete_f" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MCode.deleteF}">削除フラグ</legend>
+          </fieldset>
+        </div>
+      </fieldset>
+      <h3 th:text="#{MCodeValue.h3}">h3</h3>
+      <a href="./MCodeValue.html" id="MCodeValue" target="dialog" th:text="#{MCodeValue.add}" class="addChild" tabindex="-1">コード値マスタ</a>
+      <div id="MCodeValueGrid" data-selectionMode="link" data-addRow="true" data-frozenColumn="1"></div>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="Dialogate.refresh(event);">reset</button>
+        <a th:href="@{MCodeGet.xlsx(baseMei=#{MCode.h2})}" id="MCodeGet.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeleteMCode" class="delete" data-action="MCodeDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistMCode" class="regist" th:text="#{common.regist}">登録</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

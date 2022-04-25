@@ -1,0 +1,225 @@
+@charset "UTF-8";
+
+* {
+	font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN",
+		"Hiragino Sans", Meiryo, sans-serif;
+	font-size: small;
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	background-color: honeydew;
+}
+
+a:visited {
+	color: mediumblue;
+}
+
+input, select, textarea {
+	padding: revert;
+}
+
+.header {
+	background-color: white;
+	display: flow-root;
+	left: 0;
+	padding: 0.5rem;
+}
+
+.header h1 {
+	float: left;
+}
+
+.certification {
+	float: right;
+	text-align: right;
+}
+
+.certification>* {
+	display: inline-block;
+	margin-left: 1rem;
+}
+
+.nav {
+	float: left;
+	padding: 0.5rem;
+	overflow: auto;
+}
+
+.nav dl {
+	margin-bottom: 1rem;
+}
+
+.breads {
+	background-color: seagreen;
+	color: white;
+	display: grid;
+}
+
+.breads a {
+	color: white;
+}
+
+.article {
+	display: grid;
+	padding: 0.5rem;
+}
+
+.footer {
+	background-color: seagreen;
+	clear: both;
+	color: white;
+	text-align: center;
+}
+
+h3 {
+	float: left;
+	margin-right: 1rem;
+	margin-top: 1rem;
+}
+
+form>div {
+	margin-top: 0.5rem;
+}
+
+form>fieldset {
+	border-color: lightblue;
+	border-radius: 10px;
+	border-style: solid;
+	border-width: 3px;
+	margin-top: 0.5rem;
+	padding: 0.5rem;
+}
+
+form.search>fieldset {
+	border-style: none;
+}
+
+form>fieldset>div {
+	display: inline-block;
+	margin-right: 0.5rem;
+	min-height: 2rem;
+	min-width: 24rem;
+	vertical-align: top;
+}
+
+form.search>fieldset>div {
+	border-bottom: solid 2px lightgreen;
+	padding-top: 0.3rem;
+}
+
+form>fieldset>div>label {
+	background-color: lightblue;
+	display: inline-block;
+	margin-right: 0.5rem;
+	text-align: right;
+	width: 11rem;
+}
+
+form.search>fieldset>div>label {
+	background-color: inherit;
+}
+
+form>fieldset>div>label::after {
+	content: '：';
+}
+
+form>fieldset>div>textarea {
+	vertical-align: top;
+}
+
+form>fieldset>div>fieldset {
+	border-style: none;
+	display: inline-block;
+}
+
+form>fieldset>div>fieldset>legend {
+	background-color: lightblue;
+	float: left;
+	margin-right: 0.5rem;
+	text-align: right;
+	width: 11rem;
+}
+
+form.search>fieldset>div>fieldset>legend {
+	background-color: inherit;
+}
+
+form>fieldset>div>fieldset>legend::after {
+	content: '：';
+}
+
+form>fieldset>div>fieldset>div {
+	display: inline-block;
+	margin-right: 0.5rem;
+	vertical-align: -webkit-baseline-middle;
+}
+
+div.buttons {
+	float: left;
+}
+
+div.submits {
+	float: right;
+}
+
+input[type="date"] {
+	width: 9rem;
+}
+
+input[type="month"] {
+	width: 8rem;
+}
+
+input[type="datetime-local"] {
+	width: 12rem;
+}
+
+[id$="Grid"] {
+	background-color: #ccc;
+	clear: both;
+	height: 500px;
+}
+
+[role="dialog"] form>fieldset {
+	width: 1000px;
+}
+
+[role="dialog"] [id$="Grid"] {
+	height: 150px;
+	width: 1000px;
+}
+
+button.search {
+	background-color: lightgreen;
+	font-size: medium;
+}
+
+button.delete {
+	background-color: pink;
+	font-size: medium;
+	margin-left: 2rem;
+	margin-right: 2rem;
+}
+
+button.regist {
+	background-color: lightblue;
+	font-size: medium;
+}
+
+input.primaryKey, div.primaryKey {
+	background-color: pink;
+}
+
+.metaInfo {
+	background-color: gainsboro;
+}
+
+.error {
+	background-color: #f22 !important;
+}
+
+.right {
+	text-align: right;
+}

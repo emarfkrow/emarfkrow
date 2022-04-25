@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<script type="text/javascript">
+	$(window).on('load', function() {
+
+		// パンくずクリア
+		sessionStorage['breads'] = JSON.stringify({});
+
+		// home画面に遷移
+		window.document.location.href = $('[name="home"]').val();
+	});
+</script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <input type="hidden" name="home" th:value="#{index.home}" />
+  </div>
+</body>
+</html>

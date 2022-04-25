@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{TShison.title}"></title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+</script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{TShison.h2}"></h2>
+    <form name="TShisonRegistForm" action="TShisonRegist.ajax" class="regist">
+      <fieldset>
+        <legend th:text="#{TShison.legend}">legend</legend>
+        <div id="sosenId">
+          <label for="TShison.sosenId" th:text="#{TShison.sosenId}">祖先ID</label><span id="TShison.sosenId"></span><input type="hidden" id="TShison.sosenId" name="TShison.sosenId" class="primaryKey" /><a id="TShison.sosenId" href="./TSosenS.html" target="dialog" class="primaryKey refer" th:text="#{common.refer}" tabindex="-1">...</a>
+        </div>
+        <div id="oyaSn">
+          <label for="TShison.oyaSn" th:text="#{TShison.oyaSn}">親連番</label><span id="TShison.oyaSn"></span><input type="hidden" id="TShison.oyaSn" name="TShison.oyaSn" class="primaryKey" />
+        </div>
+        <div id="entitySn">
+          <label for="TShison.entitySn" th:text="#{TShison.entitySn}">エンティティ連番</label><span id="TShison.entitySn"></span><input type="hidden" id="TShison.entitySn" name="TShison.entitySn" class="primaryKey" />
+        </div>
+        <div id="koSn">
+          <label for="TShison.koSn" th:text="#{TShison.koSn}">子連番</label><span id="TShison.koSn"></span><input type="hidden" id="TShison.koSn" name="TShison.koSn" class="primaryKey" />
+        </div>
+        <div id="shisonSn">
+          <label for="TShison.shisonSn" th:text="#{TShison.shisonSn}">子孫連番</label><span id="TShison.shisonSn"></span><input type="hidden" id="TShison.shisonSn" name="TShison.shisonSn" class="primaryKey" />
+        </div>
+        <div id="shisonMei">
+          <label for="TShison.shisonMei" th:text="#{TShison.shisonMei}">子孫名</label><input type="text" id="TShison.shisonMei" name="TShison.shisonMei" maxlength="30" />
+        </div>
+        <div id="insertDt">
+          <label for="TShison.insertDt" th:text="#{TShison.insertDt}">登録日時</label><span id="TShison.insertDt"></span><input type="hidden" id="TShison.insertDt" name="TShison.insertDt" />
+        </div>
+        <div id="insertBy">
+          <label for="TShison.insertBy" th:text="#{TShison.insertBy}">登録者</label><span id="TShison.insertBy"></span><input type="hidden" id="TShison.insertBy" name="TShison.insertBy" />
+        </div>
+        <div id="updateDt">
+          <label for="TShison.updateDt" th:text="#{TShison.updateDt}">更新日時</label><span id="TShison.updateDt"></span><input type="hidden" id="TShison.updateDt" name="TShison.updateDt" />
+        </div>
+        <div id="updateBy">
+          <label for="TShison.updateBy" th:text="#{TShison.updateBy}">更新者</label><span id="TShison.updateBy"></span><input type="hidden" id="TShison.updateBy" name="TShison.updateBy" />
+        </div>
+        <div id="deleteF">
+          <fieldset id="TShison.deleteFList" data-options="MCodeValueSearch.json" data-optionParams="code_nm:delete_f" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{TShison.deleteF}">削除フラグ</legend>
+          </fieldset>
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="Dialogate.refresh(event);">reset</button>
+        <a th:href="@{TShisonGet.xlsx(baseMei=#{TShison.h2})}" id="TShisonGet.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeleteTShison" class="delete" data-action="TShisonDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistTShison" class="regist" th:text="#{common.regist}">登録</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

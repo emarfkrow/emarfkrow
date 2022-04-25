@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title>D0002</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{D0002.h2}"></h2>
+    <form method="post" action="D0002.form?hoge=hoge">
+      <fieldset>
+        <legend>legend</legend>
+        <div>
+          <label for="text_1">text_1</label><input type="text" id="text_1" name="text_1" />
+        </div>
+        <div>
+          <label for="text_2">text_2</label><input type="text" id="text_2" name="text_2" />
+        </div>
+        <div>
+          <label for="password">password</label><input type="password" id="password" name="password" autocomplete="new-password" />
+        </div>
+        <div>
+          <fieldset>
+            <legend>checkbox</legend>
+            <div>
+              <input type="checkbox" id="checkbox_1" name="checkbox" value="1" /><label for="checkbox_1">checkbox_1</label>
+            </div>
+            <div>
+              <input type="checkbox" id="checkbox_2" name="checkbox" value="2" /><label for="checkbox_2">checkbox_2</label>
+            </div>
+            <div>
+              <input type="checkbox" id="checkbox_3" name="checkbox" value="3" /><label for="checkbox_3">checkbox_3</label>
+            </div>
+          </fieldset>
+        </div>
+        <div>
+          <fieldset>
+            <legend>radio</legend>
+            <div>
+              <input type="radio" id="radio_1" name="radio" value="1" /><label for="radio_1">radio_1</label>
+            </div>
+            <div>
+              <input type="radio" id="radio_2" name="radio" value="2" /><label for="radio_2">radio_2</label>
+            </div>
+            <div>
+              <input type="radio" id="radio_3" name="radio" value="3" /><label for="radio_3">radio_3</label>
+            </div>
+          </fieldset>
+        </div>
+        <div>
+          <label for="select">select</label><select id="select" name="select">
+            <option value=""></option>
+          </select>
+        </div>
+        <div>
+          <label for="textarea">textarea</label>
+          <textarea id="textarea" name="textarea" rows="5" cols=""></textarea>
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="reset">reset</button>
+        <button type="button">button</button>
+      </div>
+      <div class="submits">
+        <button type="button">button</button>
+        <button>submit</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

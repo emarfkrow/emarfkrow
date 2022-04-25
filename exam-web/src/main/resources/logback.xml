@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<configuration>
+
+  <logger name="org.jboss" level="INFO" />
+  <logger name="org.hibernate.validator" level="INFO" />
+  <logger name="org.thymeleaf" level="INFO" />
+  <logger name="jp.co.golorp.emarf.messageresolver" level="INFO" />
+  <logger name="jp.co.golorp.emarf.util" level="DEBUG" />
+
+  <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+    <!-- encoders are assigned by default the type ch.qos.logback.classic.encoder.PatternLayoutEncoder -->
+    <encoder>
+      <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n
+      </pattern>
+    </encoder>
+  </appender>
+
+  <root level="all">
+    <appender-ref ref="STDOUT" />
+  </root>
+
+</configuration>

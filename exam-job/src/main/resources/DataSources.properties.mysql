@@ -1,0 +1,11 @@
+JNDIName        java:/comp/env/jdbc/mysql
+
+driverClassName	com.mysql.cj.jdbc.Driver
+url				jdbc:mysql://localhost/emarf?characterEncoding=utf8&serverTimezone=JST
+username		emarf
+password		emarf
+initialSize		30
+maxActive		100
+maxIdle			30
+maxWait			5000
+validationQuery	SELECT COUNT(*) FROM DUAL

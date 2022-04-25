@@ -1,0 +1,736 @@
+﻿# A5:ER FORMAT:15
+# A5:ER ENCODING:UTF8
+# A5:ER Mk-1 Copyright © 2007 m.matsubara
+# A5:SQL Mk-2 Version 2.16.2 Copyright © 1997 - 2021 m.matsubara
+#  https://a5m2.mmatsubara.com
+
+[Manager]
+ProjectName=emarf
+Author=
+MaxEntityRowShow=1000
+ReadOnlyRecommend=0
+Page=Main
+PageInfo="Main",7,"A3Landscape",$FFFFFF
+Domain=ID=@INT
+DomainInfo="ID","@INT","ユニーク識別子"
+Domain=SN=@INT
+DomainInfo="SN","@INT","連番"
+Domain=NM=@VARCHAR(20)
+DomainInfo="NM","@VARCHAR(20)","半角20文字以内"
+Domain=MEI=@VARCHAR(30)
+DomainInfo="MEI","@VARCHAR(30)","全角30文字以内"
+Domain=F=@CHAR(1)
+DomainInfo="F","@CHAR(1)","半角1文字"
+Domain=KB=@CHAR(2)
+DomainInfo="KB","@CHAR(2)","半角2文字"
+Domain=TX=@VARCHAR(200)
+DomainInfo="TX","@VARCHAR(200)","全角200文字以内"
+Domain=YMD=@CHAR(10)
+DomainInfo="YMD","@CHAR(10)","日付"
+Domain=YM=@CHAR(7)
+DomainInfo="YM","@CHAR(7)","年月"
+Domain=Y=@CHAR(4)
+DomainInfo="Y","@CHAR(4)","年"
+Domain=M=@CHAR(2)
+DomainInfo="M","@CHAR(2)","月"
+Domain=DT=@DATETIME(3)
+DomainInfo="DT","@DATETIME(3)","日時"
+Domain=HM=@VARCHAR(6)
+DomainInfo="HM","@VARCHAR(6)","時刻（00:00:00～23:59:00）"
+Domain=TM=@VARCHAR(6)
+DomainInfo="TM","@VARCHAR(6)","時間（00:00:00～999:59:59）"
+Domain=QT=@DECIMAL(9,2)
+DomainInfo="QT","@DECIMAL(9,2)","整数７桁・小数２桁"
+Domain=AM=@DECIMAL(11,3)
+DomainInfo="AM","@DECIMAL(11,3)","金額"
+LogicalView=1
+DecodeDomain=0
+ViewModePageIndividually=1
+ViewMode=7
+ViewFormat=0
+UseNondependenceDashLine=0
+FontName=Tahoma
+FontSize=8
+PaperSize=A4Landscape
+HeaderLeft=
+HeaderCenter=
+HeaderRight=
+FooterLeft=
+FooterCenter=
+FooterRight=
+ShowPageoutRelation=1
+RDBMSType=5
+RDBMSTypeName=MySQL
+GenerateDropTableStatement=1
+DropTableIfExists=1
+BackupRestoreTempTable=0
+CommonField="登録日時","INSERT_DT","*DT","NOT NULL",,"","",$FFFFFFFF
+CommonField="登録者","INSERT_BY","@VARCHAR(10)","NOT NULL",,"","",$FFFFFFFF
+CommonField="更新日時","UPDATE_DT","*DT","NOT NULL",,"","",$FFFFFFFF
+CommonField="更新者","UPDATE_BY","@VARCHAR(10)","NOT NULL",,"","",$FFFFFFFF
+CommonField="削除フラグ","DELETE_F","*F",,,"","",$FFFFFFFF
+DefaultPkName=%0:s_PKC
+DefaultPkIndexName=%0:s_PKI
+DefaultIndexName=%0:s_IX%1:d
+DefaultFkName=%0:s_FK%1:d
+SqlSeparator=0
+UpperCaseKeyword=0
+ShowTag=1
+ShowCommonAttributes=0
+
+[Entity]
+PName=M_NINKA
+LName=認可マスタ
+Comment=
+TableOption=
+Page=MAIN
+Left=3100
+Top=500
+Field="部署ID","BUSHO_ID","*ID","NOT NULL",0,"","",$FFFFFFFF,""
+Field="職位ID","SHOKUI_ID","*ID","NOT NULL",1,"","",$FFFFFFFF,""
+Field="画面名","GAMEN_NM","*NM","NOT NULL",2,"","",$FFFFFFFF,""
+Field="権限区分","KENGEN_KB","*KB","NOT NULL",,"","",$FFFFFFFF,""
+Field="開始日","KAISHI_YMD","*YMD",,,"","",$FFFFFFFF,""
+Field="終了日","SHURYO_YMD","*YMD",,,"","",$FFFFFFFF,""
+EffectMode=None
+Color=$000000
+BkColor=$FFFFFF
+ModifiedDateTime=20220420150755
+Position="MAIN",3100,500
+ZOrder=-10
+
+[Entity]
+PName=M_USER
+LName=ユーザマスタ
+Comment=
+TableOption=
+Page=MAIN
+Left=2000
+Top=100
+Field="ユーザID","USER_ID","*ID","NOT NULL",0,"","",$FFFFFFFF,""
+Field="ユーザ姓","USER_SEI","*MEI","NOT NULL",,"","",$FFFFFFFF,""
+Field="ユーザ名","USER_MEI","*MEI","NOT NULL",,"","",$FFFFFFFF,""
+Field="メールアドレス","EMAIL","*TX","NOT NULL",,"","",$FFFFFFFF,""
+Field="パスワード","PASSWORD","*TX","NOT NULL",,"","",$FFFFFFFF,""
+EffectMode=Gradation
+Color=$000000
+BkColor=$C0DCC0
+ModifiedDateTime=20220319111146
+Position="MAIN",2000,100
+ZOrder=-12
+
+[Relation]
+Entity1=M_SANSHO1
+Entity2=T_ENTITY
+RelationType1=1
+RelationType2=3
+Fields1=SANSHO1_ID
+Fields2=SANSHO1_ID
+Cardinarity1=
+Cardinarity2=
+Position="MAIN",3,1630,4549,5010,R,R,""
+Dependence=0
+Caption=
+PName=
+ModifiedDateTime=20220318213840
+LineMode=3
+Bar1=163
+Bar2=455
+Bar3=501
+TermPos1=R
+TermPos2=R
+ZOrder=-14
+
+[Entity]
+PName=T_ENTITY2
+LName=エンティティ２
+Comment=
+TableOption=
+Page=MAIN
+Left=1350
+Top=1050
+Field="祖先ID","SOSEN_ID","*ID","NOT NULL",0,"","",$FFFFFFFF,""
+Field="親連番","OYA_SN","*SN","NOT NULL",1,"","",$FFFFFFFF,""
+Field="エンティティ連番","ENTITY_SN","*SN","NOT NULL",2,"","",$FFFFFFFF,""
+Field="任意エンティティ２名","NULL_ENTITY2_MEI","*NM",,,"","",$FFFFFFFF,""
+Field="エンティティ２名","ENTITY2_MEI","*MEI","NOT NULL",,"","",$FFFFFFFF,""
+Field="チェックフラグ","CHECK_F","*F","NOT NULL",,"","",$FFFFFFFF,""
+Field="ラジオ区分","RADIO_KB","*KB","NOT NULL",,"","",$FFFFFFFF,""
+Field="プルダウン区分","PULLDOWN_KB","*KB","NOT NULL",,"","",$FFFFFFFF,""
+Field="メモ","MEMO_TX","*TX","NOT NULL",,"","",$FFFFFFFF,""
+Field="日付","HIDUKE_YMD","*YMD","NOT NULL",,"","",$FFFFFFFF,""
+Field="年月","NENGETSU_YM","*YM","NOT NULL",,"","",$FFFFFFFF,""
+Field="年","SAMPLE_Y","*Y","NOT NULL",,"","",$FFFFFFFF,""
+Field="月","SAMPLE_M","*M","NOT NULL",,"","",$FFFFFFFF,""
+Field="日時","NICHIJI_DT","*DT","NOT NULL",,"","",$FFFFFFFF,""
+Field="時刻","JIKOKU_HM","*HM","NOT NULL",,"","",$FFFFFFFF,""
+Field="時間","JIKAN_TM","*TM","NOT NULL",,"","",$FFFFFFFF,""
+Field="数量","SURYO_QT","*QT","NOT NULL",,"","",$FFFFFFFF,""
+Field="単価","TANKA_AM","*AM","NOT NULL",,"","",$FFFFFFFF,""
+Field="金額","KINGAKU_AM","*AM","NOT NULL",,"","",$FFFFFFFF,""
+EffectMode=None
+Color=$000000
+BkColor=$FFFFFF
+ModifiedDateTime=20220414132945
+Position="MAIN",1350,1050
+ZOrder=-16
+
+[Relation]
+Entity1=M_CODE
+Entity2=M_CODE_VALUE
+RelationType1=2
+RelationType2=4
+Fields1=CODE_NM
+Fields2=CODE_NM
+Cardinarity1=
+Cardinarity2=
+Position="MAIN",0,5773,4983,3888,R,R,""
+Dependence=1
+Caption=
+PName=
+ModifiedDateTime=20220318214526
+LineMode=0
+Bar1=577
+Bar2=498
+Bar3=389
+TermPos1=R
+TermPos2=R
+ZOrder=-18
+
+[Entity]
+PName=M_CODE_VALUE
+LName=コード値マスタ
+Comment=
+TableOption=
+Page=MAIN
+Left=1350
+Top=250
+Field="コード名称","CODE_NM","*NM","NOT NULL",0,"","",$FFFFFFFF,""
+Field="コード値","CODE_VALUE","*KB","NOT NULL",1,"","",$FFFFFFFF,""
+Field="コード値名","CODE_VALUE_MEI","*MEI","NOT NULL",,"","",$FFFFFFFF,""
+Field="表示順","HYOJI_JUN","*SN","NOT NULL",,"","",$FFFFFFFF,""
+Field="取得条件","CRITERIA","*TX",,,"","",$FFFFFFFF,""
+EffectMode=None
+Color=$000000
+BkColor=$FFFFFF
+ModifiedDateTime=20220321193106
+Position="MAIN",1350,250
+ZOrder=-19
+
+[Entity]
+PName=M_CODE
+LName=コードマスタ
+Comment=
+TableOption=
+Page=MAIN
+Left=1350
+Top=100
+Field="コード名称","CODE_NM","*NM","NOT NULL",0,"","",$FFFFFFFF,""
+Field="コード名","CODE_MEI","*MEI","NOT NULL",,"","",$FFFFFFFF,""
+EffectMode=Gradation
+Color=$000000
+BkColor=$C0DCC0
+ModifiedDateTime=20220319111204
+Position="MAIN",1350,100
+ZOrder=-20
+
+[Relation]
+Entity1=T_ENTITY
+Entity2=T_ENTITY_HIS
+RelationType1=2
+RelationType2=4
+Fields1=SOSEN_ID,OYA_SN,ENTITY_SN
+Fields2=SOSEN_ID,OYA_SN,ENTITY_SN
+Cardinarity1=
+Cardinarity2=
+Position="MAIN",0,1027,4396,2289,R,R,""
+Dependence=1
+Caption=
+PName=
+ModifiedDateTime=20180723163837
+LineMode=0
+Bar1=103
+Bar2=440
+Bar3=229
+TermPos1=R
+TermPos2=R
+ZOrder=-29
+
+[Entity]
+PName=T_ENTITY_HIS
+LName=エンティティ履歴
+Comment=
+TableOption=
+Page=MAIN
+Left=1350
+Top=600
+Field="祖先ID","SOSEN_ID","*ID","NOT NULL",0,"","",$FFFFFFFF,""
+Field="親連番","OYA_SN","*SN","NOT NULL",1,"","",$FFFFFFFF,""
+Field="エンティティ連番","ENTITY_SN","*SN","NOT NULL",2,"","",$FFFFFFFF,""
+Field="履歴連番","HISTORY_SN","*SN","NOT NULL",3,"","",$FFFFFFFF,""
+Field="エンティティ名","ENTITY_MEI","*MEI","NOT NULL",,"","",$FFFFFFFF,""
+Field="参照１ID","SANSHO1_ID","*ID",,,"","",$FFFFFFFF,""
+Field="参照１名","SANSHO1_MEI","*MEI",,,"","",$FFFFFFFF,""
+Field="参照２ID","SANSHO2_ID","*ID",,,"","",$FFFFFFFF,""
+Field="参照２名","SANSHO2_MEI","*MEI",,,"","",$FFFFFFFF,""
+Field="別参照１ID","BETSU_SANSHO1_ID","*ID",,,"","",$FFFFFFFF,""
+Field="別参照１名","BETSU_SANSHO1_MEI","*MEI",,,"","",$FFFFFFFF,""
+EffectMode=None
+Color=$000000
+BkColor=$FFFFFF
+ModifiedDateTime=20220411091302
+Position="MAIN",1350,600
+ZOrder=-31
+
+[Entity]
+PName=M_SANSHO1
+LName=参照１マスタ
+Comment=
+TableOption=
+Page=MAIN
+Left=100
+Top=100
+Field="参照１ID","SANSHO1_ID","*ID","NOT NULL",0,"","",$FFFFFFFF,""
+Field="参照１名","SANSHO1_MEI","*MEI","NOT NULL",,"","",$FFFFFFFF,""
+EffectMode=Gradation
+Color=$000000
+BkColor=$C0DCC0
+ModifiedDateTime=20220319111209
+Position="MAIN",100,100
+ZOrder=-32
+
+[Relation]
+Entity1=T_KO
+Entity2=T_SHISON
+RelationType1=2
+RelationType2=3
+Fields1=SOSEN_ID,OYA_SN,ENTITY_SN,KO_SN
+Fields2=SOSEN_ID,OYA_SN,ENTITY_SN,KO_SN
+Cardinarity1=
+Cardinarity2=
+Position="MAIN",0,5394,5801,5056,R,R,""
+Dependence=1
+Caption=
+PName=
+ModifiedDateTime=20180723163759
+LineMode=0
+Bar1=539
+Bar2=580
+Bar3=506
+TermPos1=R
+TermPos2=R
+ZOrder=-35
+
+[Entity]
+PName=T_SHISON
+LName=子孫
+Comment=
+TableOption=
+Page=MAIN
+Left=600
+Top=1350
+Field="祖先ID","SOSEN_ID","*ID","NOT NULL",0,"","",$FFFFFFFF,""
+Field="親連番","OYA_SN","*SN","NOT NULL",1,"","",$FFFFFFFF,""
+Field="エンティティ連番","ENTITY_SN","*SN","NOT NULL",2,"","",$FFFFFFFF,""
+Field="子連番","KO_SN","*SN","NOT NULL",3,"","",$FFFFFFFF,""
+Field="子孫連番","SHISON_SN","*SN","NOT NULL",4,"","",$FFFFFFFF,""
+Field="子孫名","SHISON_MEI","*MEI","NOT NULL",,"","",$FFFFFFFF,""
+EffectMode=None
+Color=$000000
+BkColor=$FFFFFF
+ModifiedDateTime=20220318224258
+Position="MAIN",600,1350
+ZOrder=-36
+
+[Relation]
+Entity1=T_ENTITY
+Entity2=T_KO
+RelationType1=2
+RelationType2=3
+Fields1=SOSEN_ID,OYA_SN,ENTITY_SN
+Fields2=SOSEN_ID,OYA_SN,ENTITY_SN
+Cardinarity1=
+Cardinarity2=
+Position="MAIN",0,5394,5838,5497,R,R,""
+Dependence=1
+Caption=
+PName=
+ModifiedDateTime=20180723163752
+LineMode=0
+Bar1=539
+Bar2=584
+Bar3=550
+TermPos1=R
+TermPos2=R
+ZOrder=-37
+
+[Entity]
+PName=T_KO
+LName=子
+Comment=
+TableOption=
+Page=MAIN
+Left=600
+Top=1050
+Field="祖先ID","SOSEN_ID","*ID","NOT NULL",0,"","",$FFFFFFFF,""
+Field="親連番","OYA_SN","*SN","NOT NULL",1,"","",$FFFFFFFF,""
+Field="エンティティ連番","ENTITY_SN","*SN","NOT NULL",2,"","",$FFFFFFFF,""
+Field="子連番","KO_SN","*SN","NOT NULL",3,"","",$FFFFFFFF,""
+Field="子名","KO_MEI","*MEI","NOT NULL",,"","",$FFFFFFFF,""
+EffectMode=None
+Color=$000000
+BkColor=$FFFFFF
+ModifiedDateTime=20220318224254
+Position="MAIN",600,1050
+ZOrder=-38
+
+[Relation]
+Entity1=T_OYA
+Entity2=T_ENTITY
+RelationType1=2
+RelationType2=3
+Fields1=SOSEN_ID,OYA_SN
+Fields2=SOSEN_ID,OYA_SN
+Cardinarity1=
+Cardinarity2=
+Position="MAIN",0,6724,4960,5394,R,R,""
+Dependence=1
+Caption=
+PName=
+ModifiedDateTime=20180723163743
+LineMode=0
+Bar1=672
+Bar2=496
+Bar3=539
+TermPos1=R
+TermPos2=R
+ZOrder=-39
+
+[Entity]
+PName=T_ENTITY
+LName=エンティティ
+Comment=
+TableOption=
+Page=MAIN
+Left=600
+Top=600
+Field="祖先ID","SOSEN_ID","*ID","NOT NULL",0,"","",$FFFFFFFF,""
+Field="親連番","OYA_SN","*SN","NOT NULL",1,"","",$FFFFFFFF,""
+Field="エンティティ連番","ENTITY_SN","*SN","NOT NULL",2,"","",$FFFFFFFF,""
+Field="エンティティ名","ENTITY_MEI","*MEI","NOT NULL",,"","",$FFFFFFFF,""
+Field="参照１ID","SANSHO1_ID","*ID",,,"","",$FFFFFFFF,""
+Field="参照１名","SANSHO1_MEI","*MEI",,,"","",$FFFFFFFF,""
+Field="参照２ID","SANSHO2_ID","*ID",,,"","",$FFFFFFFF,""
+Field="参照２名","SANSHO2_MEI","*MEI",,,"","",$FFFFFFFF,""
+Field="別参照１ID","BETSU_SANSHO1_ID","*ID",,,"","",$FFFFFFFF,""
+Field="別参照１名","BETSU_SANSHO1_MEI","*MEI",,,"","",$FFFFFFFF,""
+EffectMode=None
+Color=$000000
+BkColor=$FFFFFF
+ModifiedDateTime=20220407172039
+Position="MAIN",600,600
+ZOrder=-40
+
+[Relation]
+Entity1=T_SOSEN
+Entity2=T_OYA
+RelationType1=2
+RelationType2=3
+Fields1=SOSEN_ID
+Fields2=SOSEN_ID
+Cardinarity1=
+Cardinarity2=
+Position="MAIN",0,6687,5856,6687,R,R,""
+Dependence=1
+Caption=
+PName=
+ModifiedDateTime=20180723163705
+LineMode=0
+Bar1=669
+Bar2=586
+Bar3=669
+TermPos1=R
+TermPos2=R
+ZOrder=-41
+
+[Entity]
+PName=T_OYA
+LName=親
+Comment=
+TableOption=
+Page=MAIN
+Left=600
+Top=400
+Field="祖先ID","SOSEN_ID","*ID","NOT NULL",0,"","",$FFFFFFFF,""
+Field="親連番","OYA_SN","*SN","NOT NULL",1,"","",$FFFFFFFF,""
+Field="親名","OYA_MEI","*MEI","NOT NULL",,"","",$FFFFFFFF,""
+EffectMode=None
+Color=$000000
+BkColor=$FFFFFF
+ModifiedDateTime=20220318224244
+Position="MAIN",600,400
+ZOrder=-42
+
+[Entity]
+PName=T_SOSEN
+LName=祖先
+Comment=
+TableOption=
+Page=MAIN
+Left=600
+Top=100
+Field="祖先ID","SOSEN_ID","*ID","NOT NULL",0,"","",$FFFFFFFF,""
+Field="祖先名","SOSEN_MEI","*MEI","NOT NULL",,"","",$FFFFFFFF,""
+EffectMode=Gradation
+Color=$000000
+BkColor=$C0DCC0
+ModifiedDateTime=20220319111159
+Position="MAIN",600,100
+ZOrder=-43
+
+[Entity]
+PName=M_SANSHO2
+LName=参照２マスタ
+Comment=
+TableOption=
+Page=MAIN
+Left=200
+Top=250
+Field="参照２ID","SANSHO2_ID","*ID","NOT NULL",0,"","",$FFFFFFFF,""
+Field="参照２名","SANSHO2_MEI","*MEI","NOT NULL",,"","",$FFFFFFFF,""
+EffectMode=Gradation
+Color=$000000
+BkColor=$C0DCC0
+ModifiedDateTime=20220319111213
+Position="MAIN",200,250
+ZOrder=0
+
+[Relation]
+Entity1=M_SANSHO2
+Entity2=T_ENTITY
+RelationType1=1
+RelationType2=3
+Fields1=SANSHO2_ID
+Fields2=SANSHO2_ID
+Cardinarity1=
+Cardinarity2=
+Position="MAIN",3,2153,6502,6729,R,R,""
+Dependence=0
+Caption=
+PName=
+LineMode=3
+Bar1=215
+Bar2=650
+Bar3=673
+TermPos1=R
+TermPos2=R
+ZOrder=1
+
+[Relation]
+Entity1=M_SANSHO1
+Entity2=T_ENTITY
+RelationType1=1
+RelationType2=3
+Fields1=SANSHO1_ID
+Fields2=BETSU_SANSHO1_ID
+Cardinarity1=
+Cardinarity2=
+Position="MAIN",3,759,8377,8682,R,R,""
+Dependence=0
+Caption=
+PName=
+LineMode=3
+Bar1=76
+Bar2=838
+Bar3=868
+TermPos1=R
+TermPos2=R
+ZOrder=3
+
+[Relation]
+Entity1=T_ENTITY
+Entity2=T_ENTITY2
+RelationType1=2
+RelationType2=3
+Fields1=SOSEN_ID,OYA_SN,ENTITY_SN
+Fields2=SOSEN_ID,OYA_SN,ENTITY_SN
+Cardinarity1=
+Cardinarity2=
+Position="MAIN",0,8221,5091,4364,R,R,""
+Dependence=1
+Caption=
+PName=
+LineMode=0
+Bar1=822
+Bar2=509
+Bar3=436
+TermPos1=R
+TermPos2=R
+ZOrder=4
+
+[Entity]
+PName=M_BUSHO
+LName=部署マスタ
+Comment=
+TableOption=
+Page=Main
+Left=2500
+Top=100
+Field="部署ID","BUSHO_ID","*ID","NOT NULL",0,"","",$FFFFFFFF,""
+Field="部署名","BUSHO_MEI","*MEI","NOT NULL",,"","",$FFFFFFFF,""
+Field="開始日","KAISHI_YMD","*YMD",,,"","",$FFFFFFFF,""
+Field="終了日","SHURYO_YMD","*YMD",,,"","",$FFFFFFFF,""
+Field="親部署ID","OYA_BUSHO_ID","*ID",,,"","",$FFFFFFFF,""
+EffectMode=Gradation
+Color=$000000
+BkColor=$C0DCC0
+ModifiedDateTime=20220420135106
+Position="Main",2500,100
+ZOrder=5
+
+[Entity]
+PName=M_SHOKUI
+LName=職位マスタ
+Comment=
+TableOption=
+Page=Main
+Left=3050
+Top=100
+Field="職位ID","SHOKUI_ID","*ID","NOT NULL",0,"","",$FFFFFFFF,""
+Field="職位名","SHOKUI_MEI","*MEI","NOT NULL",,"","",$FFFFFFFF,""
+Field="職位順","ORDER_ID","*ID","NOT NULL",,"","",$FFFFFFFF,""
+Field="開始日","KAISHI_YMD","*YMD",,,"","",$FFFFFFFF,""
+Field="終了日","SHURYO_YMD","*YMD",,,"","",$FFFFFFFF,""
+EffectMode=Gradation
+Color=$000000
+BkColor=$C0DCC0
+ModifiedDateTime=20220420135140
+Position="Main",3050,100
+ZOrder=6
+
+[Entity]
+PName=M_SHOZOKU
+LName=所属マスタ
+Comment=
+TableOption=
+Page=Main
+Left=2400
+Top=500
+Field="部署ID","BUSHO_ID","*ID","NOT NULL",0,"","",$FFFFFFFF,""
+Field="職位ID","SHOKUI_ID","*ID","NOT NULL",1,"","",$FFFFFFFF,""
+Field="ユーザID","USER_ID","*ID","NOT NULL",2,"","",$FFFFFFFF,""
+Field="開始日","KAISHI_YMD","*YMD",,,"","",$FFFFFFFF,""
+Field="終了日","SHURYO_YMD","*YMD",,,"","",$FFFFFFFF,""
+EffectMode=None
+Color=$000000
+BkColor=$FFFFFF
+ModifiedDateTime=20220420135123
+Position="Main",2400,500
+ZOrder=7
+
+[Relation]
+Entity1=M_BUSHO
+Entity2=M_SHOZOKU
+RelationType1=1
+RelationType2=3
+Fields1=BUSHO_ID
+Fields2=BUSHO_ID
+Cardinarity1=
+Cardinarity2=
+Position="MAIN",1,2483,4746,4853,R,R,""
+Dependence=1
+Caption=
+PName=
+LineMode=1
+Bar1=248
+Bar2=475
+Bar3=485
+TermPos1=R
+TermPos2=R
+ZOrder=8
+
+[Relation]
+Entity1=M_SHOKUI
+Entity2=M_SHOZOKU
+RelationType1=1
+RelationType2=3
+Fields1=SHOKUI_ID
+Fields2=SHOKUI_ID
+Cardinarity1=
+Cardinarity2=
+Position="MAIN",1,1621,6505,8140,R,R,""
+Dependence=1
+Caption=
+PName=
+LineMode=1
+Bar1=162
+Bar2=650
+Bar3=814
+TermPos1=R
+TermPos2=R
+ZOrder=9
+
+[Relation]
+Entity1=M_USER
+Entity2=M_SHOZOKU
+RelationType1=1
+RelationType2=3
+Fields1=USER_ID
+Fields2=USER_ID
+Cardinarity1=
+Cardinarity2=
+Position="MAIN",1,2901,4927,1546,R,R,""
+Dependence=1
+Caption=
+PName=
+LineMode=1
+Bar1=290
+Bar2=493
+Bar3=155
+TermPos1=R
+TermPos2=R
+ZOrder=10
+
+[Relation]
+Entity1=M_BUSHO
+Entity2=M_NINKA
+RelationType1=1
+RelationType2=3
+Fields1=BUSHO_ID
+Fields2=BUSHO_ID
+Cardinarity1=
+Cardinarity2=
+Position="MAIN",1,6705,3295,1875,R,R,""
+Dependence=1
+Caption=
+PName=
+ModifiedDateTime=20220420132603
+LineMode=1
+Bar1=670
+Bar2=330
+Bar3=188
+TermPos1=R
+TermPos2=R
+ZOrder=11
+
+[Relation]
+Entity1=M_SHOKUI
+Entity2=M_NINKA
+RelationType1=1
+RelationType2=3
+Fields1=SHOKUI_ID
+Fields2=SHOKUI_ID
+Cardinarity1=
+Cardinarity2=
+Position="MAIN",0,4769,3529,4293,R,R,""
+Dependence=1
+Caption=
+PName=
+ModifiedDateTime=20220420132559
+LineMode=0
+Bar1=477
+Bar2=353
+Bar3=429
+TermPos1=R
+TermPos2=R
+ZOrder=12

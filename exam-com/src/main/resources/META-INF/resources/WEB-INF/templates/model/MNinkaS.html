@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{MNinkaS.title}">認可マスタ</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+</script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{MNinkaS.h2}"></h2>
+    <form name="MNinkaSearchForm" action="MNinkaSearch.ajax" class="search">
+      <fieldset>
+        <legend th:text="#{MNinkaS.legend}">legend</legend>
+        <div id="bushoId">
+          <label for="MNinka.bushoId" th:text="#{MNinka.bushoId}">部署ID</label><input type="text" id="MNinka.bushoId" name="MNinka.bushoId" maxlength="10" /><a id="MNinka.bushoId" href="./MBushoS.html" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a>
+        </div>
+        <div id="shokuiId">
+          <label for="MNinka.shokuiId" th:text="#{MNinka.shokuiId}">職位ID</label><input type="text" id="MNinka.shokuiId" name="MNinka.shokuiId" maxlength="10" /><a id="MNinka.shokuiId" href="./MShokuiS.html" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a>
+        </div>
+        <div id="gamenNm">
+          <label for="MNinka.gamenNm" th:text="#{MNinka.gamenNm}">画面ID</label><input type="text" id="MNinka.gamenNm" name="MNinka.gamenNm" maxlength="20" />
+        </div>
+        <div id="kengenKb">
+          <fieldset id="MNinka.kengenKbList" data-options="MCodeValueSearch.json" data-optionParams="code_nm:kengen_kb" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MNinka.kengenKb}">権限区分</legend>
+          </fieldset>
+        </div>
+        <div id="kaishiYmd">
+          <label for="MNinka.kaishiYmd_1" th:text="#{MNinka.kaishiYmd}">開始日</label><input type="date" id="MNinka.kaishiYmd_1" name="MNinka.kaishiYmd_1" maxlength="10" />～<input type="date" id="MNinka.kaishiYmd_2" name="MNinka.kaishiYmd_2" maxlength="10" />
+        </div>
+        <div id="shuryoYmd">
+          <label for="MNinka.shuryoYmd_1" th:text="#{MNinka.shuryoYmd}">終了日</label><input type="date" id="MNinka.shuryoYmd_1" name="MNinka.shuryoYmd_1" maxlength="10" />～<input type="date" id="MNinka.shuryoYmd_2" name="MNinka.shuryoYmd_2" maxlength="10" />
+        </div>
+        <div id="deleteF">
+          <fieldset id="MNinka.deleteFList" data-options="MCodeValueSearch.json" data-optionParams="code_nm:delete_f" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MNinka.deleteF}">削除フラグ</legend>
+          </fieldset>
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="reset" th:text="#{common.reset}">reset</button>
+        <a href="./MNinka.html" id="MNinka" target="dialog" th:text="#{MNinka.add}" tabindex="-1">認可マスタ</a>
+      </div>
+      <div class="submits">
+        <button id="SearchMNinka" class="search" data-gridId="MNinkaGrid" th:text="#{common.search}">submit</button>
+      </div>
+    </form>
+    <form name="MNinkaSRegistForm" action="MNinkaSRegist.ajax" class="regist">
+      <h3 th:text="#{MNinka.h3}">h3</h3>
+      <div id="MNinkaGrid" data-selectionMode="checkbox" data-frozenColumn="2"></div>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="$('[id=&quot;SearchMNinka&quot;]').click();">reset</button>
+        <a th:href="@{MNinkaSearch.xlsx(baseMei=#{MNinkaS.h2})}" id="MNinkaSearch.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+      </div>
+      <div class="submits">
+        <button id="RegistMNinkaS" class="regist" th:text="#{common.regist}">submit</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

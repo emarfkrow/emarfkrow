@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
+<body>
+  <div class="header" layout:fragment="header">
+    <h1>
+      <a th:href="@{/}" th:text="#{header.h1}"></a>
+    </h1>
+    <div class="certification" th:if="${#session != null && #session.getAttribute('LOGIN_KEY') != null}">
+      <div>
+        <span id="timestamp">&nbsp;</span>
+      </div>
+      <div>
+        <span id="userId" th:text="${#session.getAttribute('LOGIN_INFO')['USER_ID']}"></span>：<span id="userSei" th:text="${#session.getAttribute('LOGIN_INFO')['USER_SEI']}"></span>&nbsp;<span id="userSei" th:text="${#session.getAttribute('LOGIN_INFO')['USER_MEI']}"></span>
+      </div>
+      <form id="logout" method="post" th:action="@{/logout}">
+        <button th:text="#{header.logout}"></button>
+      </form>
+    </div>
+  </div>
+</body>
+</html>

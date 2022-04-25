@@ -1,0 +1,11 @@
+@charset "UTF-8";
+
+.breads li {
+    float: left;
+    list-style: none;
+    margin-right: 0.2rem;
+}
+
+.breads li:after {
+    content: ' >';
+}

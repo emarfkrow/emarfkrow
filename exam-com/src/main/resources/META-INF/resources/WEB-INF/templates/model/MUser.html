@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{MUser.title}"></title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+</script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{MUser.h2}"></h2>
+    <form name="MUserRegistForm" action="MUserRegist.ajax" class="regist">
+      <fieldset>
+        <legend th:text="#{MUser.legend}">legend</legend>
+        <div id="userId">
+          <label for="MUser.userId" th:text="#{MUser.userId}">ユーザID</label><span id="MUser.userId"></span><input type="hidden" id="MUser.userId" name="MUser.userId" class="primaryKey" />
+        </div>
+        <div id="userSei">
+          <label for="MUser.userSei" th:text="#{MUser.userSei}">ユーザ姓</label><input type="text" id="MUser.userSei" name="MUser.userSei" maxlength="30" />
+        </div>
+        <div id="userMei">
+          <label for="MUser.userMei" th:text="#{MUser.userMei}">ユーザ名</label><input type="text" id="MUser.userMei" name="MUser.userMei" maxlength="30" />
+        </div>
+        <div id="email">
+          <label for="MUser.email" th:text="#{MUser.email}">メールアドレス</label><input type="text" id="MUser.email" name="MUser.email" maxlength="200" />
+        </div>
+        <div id="password">
+          <label for="MUser.password" th:text="#{MUser.password}">パスワード</label><input type="text" id="MUser.password" name="MUser.password" maxlength="200" />
+        </div>
+        <div id="insertDt">
+          <label for="MUser.insertDt" th:text="#{MUser.insertDt}">登録日時</label><span id="MUser.insertDt"></span><input type="hidden" id="MUser.insertDt" name="MUser.insertDt" />
+        </div>
+        <div id="insertBy">
+          <label for="MUser.insertBy" th:text="#{MUser.insertBy}">登録者</label><span id="MUser.insertBy"></span><input type="hidden" id="MUser.insertBy" name="MUser.insertBy" />
+        </div>
+        <div id="updateDt">
+          <label for="MUser.updateDt" th:text="#{MUser.updateDt}">更新日時</label><span id="MUser.updateDt"></span><input type="hidden" id="MUser.updateDt" name="MUser.updateDt" />
+        </div>
+        <div id="updateBy">
+          <label for="MUser.updateBy" th:text="#{MUser.updateBy}">更新者</label><span id="MUser.updateBy"></span><input type="hidden" id="MUser.updateBy" name="MUser.updateBy" />
+        </div>
+        <div id="deleteF">
+          <fieldset id="MUser.deleteFList" data-options="MCodeValueSearch.json" data-optionParams="code_nm:delete_f" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MUser.deleteF}">削除フラグ</legend>
+          </fieldset>
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="Dialogate.refresh(event);">reset</button>
+        <a th:href="@{MUserGet.xlsx(baseMei=#{MUser.h2})}" id="MUserGet.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeleteMUser" class="delete" data-action="MUserDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistMUser" class="regist" th:text="#{common.regist}">登録</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

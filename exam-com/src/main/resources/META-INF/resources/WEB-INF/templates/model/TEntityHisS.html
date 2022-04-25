@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{TEntityHisS.title}">エンティティ履歴</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+</script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{TEntityHisS.h2}"></h2>
+    <form name="TEntityHisSearchForm" action="TEntityHisSearch.ajax" class="search">
+      <fieldset>
+        <legend th:text="#{TEntityHisS.legend}">legend</legend>
+        <div id="sosenId">
+          <label for="TEntityHis.sosenId" th:text="#{TEntityHis.sosenId}">祖先ID</label><input type="text" id="TEntityHis.sosenId" name="TEntityHis.sosenId" maxlength="10" /><a id="TEntityHis.sosenId" href="./TSosenS.html" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a>
+        </div>
+        <div id="oyaSn">
+          <label for="TEntityHis.oyaSn" th:text="#{TEntityHis.oyaSn}">親連番</label><input type="text" id="TEntityHis.oyaSn" name="TEntityHis.oyaSn" maxlength="10" />
+        </div>
+        <div id="entitySn">
+          <label for="TEntityHis.entitySn" th:text="#{TEntityHis.entitySn}">エンティティ連番</label><input type="text" id="TEntityHis.entitySn" name="TEntityHis.entitySn" maxlength="10" />
+        </div>
+        <div id="historySn">
+          <label for="TEntityHis.historySn" th:text="#{TEntityHis.historySn}">履歴連番</label><input type="text" id="TEntityHis.historySn" name="TEntityHis.historySn" maxlength="10" />
+        </div>
+        <div id="entityMei">
+          <label for="TEntityHis.entityMei" th:text="#{TEntityHis.entityMei}">エンティティ名</label><input type="text" id="TEntityHis.entityMei" name="TEntityHis.entityMei" maxlength="30" />
+        </div>
+        <div id="sansho1Id">
+          <label for="TEntityHis.sansho1Id" th:text="#{TEntityHis.sansho1Id}">参照１ID</label><input type="text" id="TEntityHis.sansho1Id" name="TEntityHis.sansho1Id" maxlength="10" /><a id="TEntityHis.sansho1Id" href="./MSansho1S.html" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a>
+        </div>
+        <div id="sansho1Mei">
+          <label for="TEntityHis.sansho1Mei" th:text="#{TEntityHis.sansho1Mei}">参照１名</label><input type="text" id="TEntityHis.sansho1Mei" name="TEntityHis.sansho1Mei" maxlength="30" />
+        </div>
+        <div id="sansho2Id">
+          <label for="TEntityHis.sansho2Id" th:text="#{TEntityHis.sansho2Id}">参照２ID</label><input type="text" id="TEntityHis.sansho2Id" name="TEntityHis.sansho2Id" maxlength="10" /><a id="TEntityHis.sansho2Id" href="./MSansho2S.html" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a>
+        </div>
+        <div id="sansho2Mei">
+          <label for="TEntityHis.sansho2Mei" th:text="#{TEntityHis.sansho2Mei}">参照２名</label><input type="text" id="TEntityHis.sansho2Mei" name="TEntityHis.sansho2Mei" maxlength="30" />
+        </div>
+        <div id="betsuSansho1Id">
+          <label for="TEntityHis.betsuSansho1Id" th:text="#{TEntityHis.betsuSansho1Id}">別参照１ID</label><input type="text" id="TEntityHis.betsuSansho1Id" name="TEntityHis.betsuSansho1Id" maxlength="10" /><a id="TEntityHis.betsuSansho1Id" href="./MSansho1S.html" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a>
+        </div>
+        <div id="betsuSansho1Mei">
+          <label for="TEntityHis.betsuSansho1Mei" th:text="#{TEntityHis.betsuSansho1Mei}">別参照１名</label><input type="text" id="TEntityHis.betsuSansho1Mei" name="TEntityHis.betsuSansho1Mei" maxlength="30" />
+        </div>
+        <div id="deleteF">
+          <fieldset id="TEntityHis.deleteFList" data-options="MCodeValueSearch.json" data-optionParams="code_nm:delete_f" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{TEntityHis.deleteF}">削除フラグ</legend>
+          </fieldset>
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="reset" th:text="#{common.reset}">reset</button>
+        <a href="./TEntityHis.html" id="TEntityHis" target="dialog" th:text="#{TEntityHis.add}" tabindex="-1" style="display: none;">エンティティ履歴</a>
+      </div>
+      <div class="submits">
+        <button id="SearchTEntityHis" class="search" data-gridId="TEntityHisGrid" th:text="#{common.search}">submit</button>
+      </div>
+    </form>
+    <form name="TEntityHisSRegistForm" action="TEntityHisSRegist.ajax" class="regist">
+      <h3 th:text="#{TEntityHis.h3}">h3</h3>
+      <div id="TEntityHisGrid" data-selectionMode="checkbox" data-frozenColumn="3"></div>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="$('[id=&quot;SearchTEntityHis&quot;]').click();">reset</button>
+        <a th:href="@{TEntityHisSearch.xlsx(baseMei=#{TEntityHisS.h2})}" id="TEntityHisSearch.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+      </div>
+      <div class="submits">
+        <button id="RegistTEntityHisS" class="regist" th:text="#{common.regist}">submit</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

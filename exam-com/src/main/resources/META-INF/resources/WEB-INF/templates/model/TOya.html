@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{TOya.title}"></title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+</script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{TOya.h2}"></h2>
+    <form name="TOyaRegistForm" action="TOyaRegist.ajax" class="regist">
+      <fieldset>
+        <legend th:text="#{TOya.legend}">legend</legend>
+        <div id="sosenId">
+          <label for="TOya.sosenId" th:text="#{TOya.sosenId}">祖先ID</label><span id="TOya.sosenId"></span><input type="hidden" id="TOya.sosenId" name="TOya.sosenId" class="primaryKey" /><a id="TOya.sosenId" href="./TSosenS.html" target="dialog" class="primaryKey refer" th:text="#{common.refer}" tabindex="-1">...</a>
+        </div>
+        <div id="oyaSn">
+          <label for="TOya.oyaSn" th:text="#{TOya.oyaSn}">親連番</label><span id="TOya.oyaSn"></span><input type="hidden" id="TOya.oyaSn" name="TOya.oyaSn" class="primaryKey" />
+        </div>
+        <div id="oyaMei">
+          <label for="TOya.oyaMei" th:text="#{TOya.oyaMei}">親名</label><input type="text" id="TOya.oyaMei" name="TOya.oyaMei" maxlength="30" />
+        </div>
+        <div id="insertDt">
+          <label for="TOya.insertDt" th:text="#{TOya.insertDt}">登録日時</label><span id="TOya.insertDt"></span><input type="hidden" id="TOya.insertDt" name="TOya.insertDt" />
+        </div>
+        <div id="insertBy">
+          <label for="TOya.insertBy" th:text="#{TOya.insertBy}">登録者</label><span id="TOya.insertBy"></span><input type="hidden" id="TOya.insertBy" name="TOya.insertBy" />
+        </div>
+        <div id="updateDt">
+          <label for="TOya.updateDt" th:text="#{TOya.updateDt}">更新日時</label><span id="TOya.updateDt"></span><input type="hidden" id="TOya.updateDt" name="TOya.updateDt" />
+        </div>
+        <div id="updateBy">
+          <label for="TOya.updateBy" th:text="#{TOya.updateBy}">更新者</label><span id="TOya.updateBy"></span><input type="hidden" id="TOya.updateBy" name="TOya.updateBy" />
+        </div>
+        <div id="deleteF">
+          <fieldset id="TOya.deleteFList" data-options="MCodeValueSearch.json" data-optionParams="code_nm:delete_f" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{TOya.deleteF}">削除フラグ</legend>
+          </fieldset>
+        </div>
+      </fieldset>
+      <h3 th:text="#{TEntity.h3}">h3</h3>
+      <a href="./TEntity.html" id="TEntity" target="dialog" th:text="#{TEntity.add}" class="addChild" tabindex="-1">エンティティ</a>
+      <div id="TEntityGrid" data-selectionMode="link" data-addRow="true" data-frozenColumn="2"></div>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="Dialogate.refresh(event);">reset</button>
+        <a th:href="@{TOyaGet.xlsx(baseMei=#{TOya.h2})}" id="TOyaGet.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeleteTOya" class="delete" data-action="TOyaDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistTOya" class="regist" th:text="#{common.regist}">登録</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

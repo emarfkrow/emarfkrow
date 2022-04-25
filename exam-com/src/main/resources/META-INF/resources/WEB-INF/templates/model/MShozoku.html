@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{MShozoku.title}"></title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+</script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{MShozoku.h2}"></h2>
+    <form name="MShozokuRegistForm" action="MShozokuRegist.ajax" class="regist">
+      <fieldset>
+        <legend th:text="#{MShozoku.legend}">legend</legend>
+        <div id="bushoId">
+          <label for="MShozoku.bushoId" th:text="#{MShozoku.bushoId}">部署ID</label><span id="MShozoku.bushoId"></span><input type="hidden" id="MShozoku.bushoId" name="MShozoku.bushoId" class="primaryKey" /><a id="MShozoku.bushoId" href="./MBushoS.html" target="dialog" class="primaryKey refer" th:text="#{common.refer}" tabindex="-1">...</a>
+        </div>
+        <div id="shokuiId">
+          <label for="MShozoku.shokuiId" th:text="#{MShozoku.shokuiId}">職位ID</label><span id="MShozoku.shokuiId"></span><input type="hidden" id="MShozoku.shokuiId" name="MShozoku.shokuiId" class="primaryKey" /><a id="MShozoku.shokuiId" href="./MShokuiS.html" target="dialog" class="primaryKey refer" th:text="#{common.refer}" tabindex="-1">...</a>
+        </div>
+        <div id="userId">
+          <label for="MShozoku.userId" th:text="#{MShozoku.userId}">ユーザID</label><span id="MShozoku.userId"></span><input type="hidden" id="MShozoku.userId" name="MShozoku.userId" class="primaryKey" /><a id="MShozoku.userId" href="./MUserS.html" target="dialog" class="primaryKey refer" th:text="#{common.refer}" tabindex="-1">...</a>
+        </div>
+        <div id="kaishiYmd">
+          <label for="MShozoku.kaishiYmd" th:text="#{MShozoku.kaishiYmd}">開始日</label><input type="date" id="MShozoku.kaishiYmd" name="MShozoku.kaishiYmd" maxlength="10" />
+        </div>
+        <div id="shuryoYmd">
+          <label for="MShozoku.shuryoYmd" th:text="#{MShozoku.shuryoYmd}">終了日</label><input type="date" id="MShozoku.shuryoYmd" name="MShozoku.shuryoYmd" maxlength="10" />
+        </div>
+        <div id="insertDt">
+          <label for="MShozoku.insertDt" th:text="#{MShozoku.insertDt}">登録日時</label><span id="MShozoku.insertDt"></span><input type="hidden" id="MShozoku.insertDt" name="MShozoku.insertDt" />
+        </div>
+        <div id="insertBy">
+          <label for="MShozoku.insertBy" th:text="#{MShozoku.insertBy}">登録者</label><span id="MShozoku.insertBy"></span><input type="hidden" id="MShozoku.insertBy" name="MShozoku.insertBy" />
+        </div>
+        <div id="updateDt">
+          <label for="MShozoku.updateDt" th:text="#{MShozoku.updateDt}">更新日時</label><span id="MShozoku.updateDt"></span><input type="hidden" id="MShozoku.updateDt" name="MShozoku.updateDt" />
+        </div>
+        <div id="updateBy">
+          <label for="MShozoku.updateBy" th:text="#{MShozoku.updateBy}">更新者</label><span id="MShozoku.updateBy"></span><input type="hidden" id="MShozoku.updateBy" name="MShozoku.updateBy" />
+        </div>
+        <div id="deleteF">
+          <fieldset id="MShozoku.deleteFList" data-options="MCodeValueSearch.json" data-optionParams="code_nm:delete_f" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MShozoku.deleteF}">削除フラグ</legend>
+          </fieldset>
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="Dialogate.refresh(event);">reset</button>
+        <a th:href="@{MShozokuGet.xlsx(baseMei=#{MShozoku.h2})}" id="MShozokuGet.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeleteMShozoku" class="delete" data-action="MShozokuDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistMShozoku" class="regist" th:text="#{common.regist}">登録</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

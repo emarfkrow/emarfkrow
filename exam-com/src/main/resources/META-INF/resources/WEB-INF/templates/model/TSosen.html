@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{TSosen.title}"></title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+</script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{TSosen.h2}"></h2>
+    <form name="TSosenRegistForm" action="TSosenRegist.ajax" class="regist">
+      <fieldset>
+        <legend th:text="#{TSosen.legend}">legend</legend>
+        <div id="sosenId">
+          <label for="TSosen.sosenId" th:text="#{TSosen.sosenId}">祖先ID</label><span id="TSosen.sosenId"></span><input type="hidden" id="TSosen.sosenId" name="TSosen.sosenId" class="primaryKey" />
+        </div>
+        <div id="sosenMei">
+          <label for="TSosen.sosenMei" th:text="#{TSosen.sosenMei}">祖先名</label><input type="text" id="TSosen.sosenMei" name="TSosen.sosenMei" maxlength="30" />
+        </div>
+        <div id="insertDt">
+          <label for="TSosen.insertDt" th:text="#{TSosen.insertDt}">登録日時</label><span id="TSosen.insertDt"></span><input type="hidden" id="TSosen.insertDt" name="TSosen.insertDt" />
+        </div>
+        <div id="insertBy">
+          <label for="TSosen.insertBy" th:text="#{TSosen.insertBy}">登録者</label><span id="TSosen.insertBy"></span><input type="hidden" id="TSosen.insertBy" name="TSosen.insertBy" />
+        </div>
+        <div id="updateDt">
+          <label for="TSosen.updateDt" th:text="#{TSosen.updateDt}">更新日時</label><span id="TSosen.updateDt"></span><input type="hidden" id="TSosen.updateDt" name="TSosen.updateDt" />
+        </div>
+        <div id="updateBy">
+          <label for="TSosen.updateBy" th:text="#{TSosen.updateBy}">更新者</label><span id="TSosen.updateBy"></span><input type="hidden" id="TSosen.updateBy" name="TSosen.updateBy" />
+        </div>
+        <div id="deleteF">
+          <fieldset id="TSosen.deleteFList" data-options="MCodeValueSearch.json" data-optionParams="code_nm:delete_f" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{TSosen.deleteF}">削除フラグ</legend>
+          </fieldset>
+        </div>
+      </fieldset>
+      <h3 th:text="#{TOya.h3}">h3</h3>
+      <a href="./TOya.html" id="TOya" target="dialog" th:text="#{TOya.add}" class="addChild" tabindex="-1">親</a>
+      <div id="TOyaGrid" data-selectionMode="link" data-addRow="true" data-frozenColumn="1"></div>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="Dialogate.refresh(event);">reset</button>
+        <a th:href="@{TSosenGet.xlsx(baseMei=#{TSosen.h2})}" id="TSosenGet.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeleteTSosen" class="delete" data-action="TSosenDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistTSosen" class="regist" th:text="#{common.regist}">登録</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>
