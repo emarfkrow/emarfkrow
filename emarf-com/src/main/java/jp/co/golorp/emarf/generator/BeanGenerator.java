@@ -70,6 +70,11 @@ public final class BeanGenerator {
     /** フラグサフィックス */
     private static String[] inputFlagSuffixs;
 
+    /**  */
+    private static String referId;
+    /**  */
+    private static String referMei;
+
     /** プライベートコンストラクタ */
     private BeanGenerator() {
     }
@@ -80,7 +85,7 @@ public final class BeanGenerator {
      */
     public static void main(final String[] args) {
         String projectDir = "C:\\Users\\toshiyuki\\Tools\\pleiades-2021-12-java-win-64bit-jre_20220106\\pleiades\\runtime-Eclipseアプリケーション\\plugindebug";
-        projectDir = "C:\\Users\\toshiyuki\\git\\emarf\\exam-com";
+        projectDir = "C:\\Users\\toshiyuki\\git\\emarfkrow\\exam-com";
         ResourceBundles.getSrcPaths().add(projectDir + File.separator + "src\\main\\resources");
         BeanGenerator.generate(projectDir);
     }
@@ -121,12 +126,13 @@ public final class BeanGenerator {
         inputLikeSuffixs = bundle.getString("BeanGenerator.input.like.suffixs").split(",");
         inputFlagSuffixs = bundle.getString("BeanGenerator.input.flag.suffixs").split(",");
 
-        /* テーブル情報を取得 */
+        referId = bundle.getString("BeanGenerator.refer.id");
+        referMei = bundle.getString("BeanGenerator.refer.mei");
 
+        // テーブル情報を取得
         List<TableInfo> tableInfos = DataSources.getTableInfos();
 
-        /* ファイル出力開始 */
-
+        // ファイル出力開始
         String javaPath = bundle.getString("BeanGenerator.javaPath");
         String entityPackage = bundle.getString("BeanGenerator.package.entity");
         String actionPackage = bundle.getString("BeanGenerator.package.action");
@@ -388,7 +394,6 @@ public final class BeanGenerator {
         s.add("     * @return 追加件数");
         s.add("     */");
         s.add("    public int insert(final LocalDateTime now, final String id) {");
-
         List<String> primaryKeys = tableInfo.getPrimaryKeys();
         String lastKey = primaryKeys.get(primaryKeys.size() - 1);
         ColumnInfo lastKeyInfo = tableInfo.getColumnInfos().get(lastKey);
@@ -397,7 +402,6 @@ public final class BeanGenerator {
             s.add("        // 採番処理");
             s.add("        numbering();");
         }
-
         // 子モデル
         for (TableInfo childInfo : tableInfo.getChildInfos()) {
             String childName = childInfo.getTableName();
@@ -415,7 +419,6 @@ public final class BeanGenerator {
             s.add("            }");
             s.add("        }");
         }
-
         // 兄弟モデル
         for (TableInfo brosInfo : tableInfo.getBrosInfos()) {
             String brosName = brosInfo.getTableName();
@@ -429,7 +432,6 @@ public final class BeanGenerator {
             s.add("            " + camel + ".insert(now, id);");
             s.add("        }");
         }
-
         // 履歴モデル
         TableInfo historyInfo = tableInfo.getHistoryInfo();
         if (historyInfo != null) {
@@ -469,7 +471,6 @@ public final class BeanGenerator {
         s.add("");
         s.add("        return Queries.regist(sql, params);");
         s.add("    }");
-
         if (lastKeyInfo.isNumbering()) {
             s.add("");
             s.add("    /**");
@@ -522,7 +523,6 @@ public final class BeanGenerator {
         s.add("     * @return 更新件数");
         s.add("     */");
         s.add("    public int update(final LocalDateTime now, final String id) {");
-
         // 子モデル
         for (TableInfo childInfo : tableInfo.getChildInfos()) {
             String childName = childInfo.getTableName();
@@ -554,7 +554,6 @@ public final class BeanGenerator {
             s.add("            }");
             s.add("        }");
         }
-
         // 兄弟モデル
         for (TableInfo brosInfo : tableInfo.getBrosInfos()) {
             String brosName = brosInfo.getTableName();
@@ -572,7 +571,6 @@ public final class BeanGenerator {
             s.add("            }");
             s.add("        }");
         }
-
         // 履歴モデル
         TableInfo historyInfo = tableInfo.getHistoryInfo();
         if (historyInfo != null) {
@@ -615,10 +613,7 @@ public final class BeanGenerator {
      */
     private static void javaEntityUtil(final TableInfo tableInfo, final List<String> s) {
 
-        /*
-         * getWhere
-         */
-
+        // getWhere
         s.add("");
         s.add("    private String getWhere() {");
         s.add("        List<String> whereList = new ArrayList<String>();");
@@ -634,10 +629,7 @@ public final class BeanGenerator {
         s.add("        return String.join(\" AND \", whereList);");
         s.add("    }");
 
-        /*
-         * toMap
-         */
-
+        // toMap
         s.add("");
         s.add("    private Map<String, Object> toMap(final LocalDateTime now, final String id) {");
         s.add("        Map<String, Object> params = new HashMap<String, Object>();");
@@ -727,10 +719,6 @@ public final class BeanGenerator {
         String tableName = tableInfo.getTableName();
         String entityName = StringUtil.toPascalCase(tableName);
 
-        /*
-         * childList
-         */
-
         String params = "";
         for (String pk : tableInfo.getPrimaryKeys()) {
             if (pk.length() > 0) {
@@ -746,6 +734,7 @@ public final class BeanGenerator {
             String camel = StringUtil.toCamelCase(childName);
             String pascal = StringUtil.toPascalCase(childName);
 
+            // childList
             s.add("");
             s.add("    /**");
             s.add("     * " + childInfo.getRemarks() + "のリスト");
@@ -777,10 +766,7 @@ public final class BeanGenerator {
             s.add("        return this." + camel + "s;");
             s.add("    }");
 
-            /*
-             * search
-             */
-
+            // search
             s.add("");
             s.add("    /**");
             int i = 0;
@@ -913,7 +899,6 @@ public final class BeanGenerator {
             s.add("");
             s.add("        map.put(\"INFO\", Messages.get(\"info.regist\"));");
             s.add("        return map;");
-
             s.add("    }");
             s.add("");
             s.add("}");
@@ -1631,7 +1616,8 @@ public final class BeanGenerator {
             } else if (StringUtil.endsWith(inputTimeSuffixs, lower)) {
                 c = "Column.time('" + field + "', " + name + ", " + width + ", '" + css + "', " + formatter + "),";
             } else if (StringUtil.endsWith(optionsSuffixs, lower)) {
-                String options = "{ json: 'MCodeValueSearch.json', paramkey: 'code_nm', value: 'CODE_VALUE', label: 'CODE_VALUE_MEI' }";
+                String options = "{ json: '" + json + "', paramkey: '" + optionParamKey + "', value: '" + optionValue
+                        + "', label: '" + optionLabel + "' }";
                 c = "Column.select('" + field + "', " + name + ", " + width + ", '" + css + "', " + options + "),";
             } else if (StringUtil.endsWith(textareaSuffixs, lower)) {
                 c = "Column.longText('" + field + "', " + name + ", " + width + ", '" + css + "', " + formatter + "),";
@@ -1743,25 +1729,21 @@ public final class BeanGenerator {
             String lower = columnName.toLowerCase();
             String camel = StringUtil.toCamelCase(columnName);
             String id = entityName + "." + camel;
+            String remarks = columnInfo.getRemarks();
 
             // 兄弟モデルの主キーは出力しない
-            if (columnInfo.isPk()) {
-                if (isBrother) {
-                    continue;
-                }
+            if (isBrother && columnInfo.isPk()) {
+                continue;
             }
 
             // メタ情報の場合
             if (lower.equals(insertDt) || lower.equals(insertBy) || lower.equals(updateDt) || lower.equals(updateBy)) {
-                // 詳細画面の場合
-                if (isDetail) {
-                    // 兄弟モデルの場合は、更新日時のみhiddenで出力
-                    if (isBrother) {
-                        if (lower.equals(updateDt)) {
-                            s.add("        <input type=\"hidden\" name=\"" + id + "\" />");
-                        }
-                        continue;
+                if (isDetail && isBrother) {
+                    // 詳細画面の兄弟モデルの場合は、更新日時のみhiddenで出力
+                    if (lower.equals(updateDt)) {
+                        s.add("        <input type=\"hidden\" name=\"" + id + "\" />");
                     }
+                    continue;
                 } else {
                     // 検索画面の場合はスキップ（検索条件にはしない）
                     continue;
@@ -1776,23 +1758,16 @@ public final class BeanGenerator {
             boolean isInputTime = StringUtil.endsWith(inputTimeSuffixs, lower);
             boolean isInputRange = StringUtil.endsWith(inputRangeSuffixs, lower);
 
-            //            String pascal = StringUtil.toPascalCase(columnName);
-            String remarks = columnInfo.getRemarks();
-
             s.add("        <div id=\"" + camel + "\">");
-
             if (lower.equals(insertDt) || lower.equals(insertBy) || lower.equals(updateDt) || lower.equals(updateBy)) {
-                // メタ情報の場合（編集画面の自モデルのみここに到達する）
-
+                // メタ情報の場合は表示項目（編集画面の自モデルのみここに到達する）
                 String tag = "          ";
                 tag += "<label for=\"" + id + "\" th:text=\"#{" + id + "}\">" + remarks + "</label>";
                 tag += "<span id=\"" + id + "\"></span>";
                 tag += "<input type=\"hidden\" id=\"" + id + "\" name=\"" + id + "\" />";
                 s.add(tag);
-
             } else if (isDetail && columnInfo.isNumbering()) {
-                // 編集画面の採番キーの場合
-
+                // 編集画面の採番キーは表示項目（参照モデルの場合は参照リンクを出力しておき、照会画面ではjsで非表示にする）
                 String tag = "          ";
                 tag += "<label for=\"" + id + "\" th:text=\"#{" + id + "}\">" + remarks + "</label>";
                 tag += "<span id=\"" + id + "\"></span>";
@@ -1802,35 +1777,38 @@ public final class BeanGenerator {
                     String referName = StringUtil.toPascalCase(referInfo.getTableName());
                     tag += "<a id=\"" + id + "\" href=\"./" + referName
                             + "S.html\" target=\"dialog\" class=\"primaryKey refer\" th:text=\"#{common.refer}\" tabindex=\"-1\">...</a>";
+                    if (id.endsWith(referId)) {
+                        String meiCamel = camel.replaceAll(referId + "$", referMei);
+                        String meiColumnName = StringUtil.toUpperCase(meiCamel);
+                        if (!tableInfo.getColumnInfos().containsKey(meiColumnName)) {
+                            String meiId = id.replaceAll(referId + "$", referMei);
+                            tag += "<span id=\"" + meiId + "\" class=\"referMei\"></span>";
+                        }
+                    }
                 }
                 s.add(tag);
-
             } else if (isOptions) {
                 // 選択項目の場合
-
                 s.add("          <fieldset id=\"" + id + "List\" data-options=\"" + json
                         + "\" data-optionParams=\"" + optionParamKey + ":" + lower + "\" data-optionValue=\""
                         + optionValue + "\" data-optionLabel=\"" + optionLabel + "\">");
                 s.add("            <legend th:text=\"#{" + id + "}\">" + remarks + "</legend>");
                 s.add("          </fieldset>");
-
             } else if (isTextarea) {
                 // テキストエリア項目の場合
-
                 s.add("          <label for=\"" + id + "\" th:text=\"#{" + id + "}\">" + remarks + "</label>");
                 s.add("          <textarea id=\"" + id + "\" name=\"" + id + "\"></textarea>");
-
             } else {
                 // 上記以外の場合
 
                 String type = "text";
-                if (isInputDate) {
+                if (isInputDate) { // 日付項目
                     type = "date";
-                } else if (isInputDateTime) {
+                } else if (isInputDateTime) { // 日時項目
                     type = "datetime-local";
-                } else if (isInputMonth) {
+                } else if (isInputMonth) { // 年月項目
                     type = "month";
-                } else if (isInputTime) {
+                } else if (isInputTime) { // 時刻項目
                     type = "time";
                 }
 
@@ -1841,36 +1819,36 @@ public final class BeanGenerator {
                     css = " class=\"primaryKey\"";
                 }
 
+                String tag = "          ";
                 if (!isDetail && isInputRange) {
-
                     // 検索画面の範囲指定項目の場合
-                    String tag = "          ";
                     tag += "<label for=\"" + id + "_1\" th:text=\"#{" + id + "}\">" + remarks + "</label>";
                     tag += "<input type=\"" + type + "\" id=\"" + id + "_1\" name=\"" + id + "_1\" maxlength=\""
                             + maxlength + "\" />";
                     tag += "～";
                     tag += "<input type=\"" + type + "\" id=\"" + id + "_2\" name=\"" + id + "_2\" maxlength=\""
                             + maxlength + "\" />";
-                    s.add(tag);
-
                 } else {
-
-                    String tag = "          ";
                     tag += "<label for=\"" + id + "\" th:text=\"#{" + id + "}\">" + remarks + "</label>";
                     tag += "<input type=\"" + type + "\" id=\"" + id + "\" name=\"" + id + "\" maxlength=\"" + maxlength
                             + "\"" + css + " />";
-
                     if (columnInfo.getReferInfo() != null) {
                         TableInfo referInfo = columnInfo.getReferInfo();
                         String referName = StringUtil.toPascalCase(referInfo.getTableName());
                         tag += "<a id=\"" + id + "\" href=\"./" + referName
                                 + "S.html\" target=\"dialog\" class=\"refer\" th:text=\"#{common.refer}\" tabindex=\"-1\">...</a>";
+                        if (id.endsWith(referId)) {
+                            String meiCamel = camel.replaceAll(referId + "$", referMei);
+                            String meiColumnName = StringUtil.toUpperCase(meiCamel);
+                            if (!tableInfo.getColumnInfos().containsKey(meiColumnName)) {
+                                String meiId = id.replaceAll(referId + "$", referMei);
+                                tag += "<span id=\"" + meiId + "\" class=\"referMei\"></span>";
+                            }
+                        }
                     }
-
-                    s.add(tag);
                 }
+                s.add(tag);
             }
-
             s.add("        </div>");
         }
     }

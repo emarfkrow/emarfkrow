@@ -223,3 +223,7 @@ input.primaryKey, div.primaryKey {
 .right {
 	text-align: right;
 }
+
+.referMei::before {
+	content: '：';
+}
