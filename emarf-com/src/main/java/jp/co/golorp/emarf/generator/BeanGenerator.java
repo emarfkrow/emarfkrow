@@ -70,10 +70,10 @@ public final class BeanGenerator {
     /** フラグサフィックス */
     private static String[] inputFlagSuffixs;
 
-    /**  */
-    private static String referId;
-    /**  */
-    private static String referMei;
+    /** 参照IDサフィックス */
+    private static String[] referIdSuffixs;
+    /** 参照名サフィックス */
+    private static String referMeiSuffix;
 
     /** プライベートコンストラクタ */
     private BeanGenerator() {
@@ -126,8 +126,8 @@ public final class BeanGenerator {
         inputLikeSuffixs = bundle.getString("BeanGenerator.input.like.suffixs").split(",");
         inputFlagSuffixs = bundle.getString("BeanGenerator.input.flag.suffixs").split(",");
 
-        referId = bundle.getString("BeanGenerator.refer.id");
-        referMei = bundle.getString("BeanGenerator.refer.mei");
+        referIdSuffixs = bundle.getString("BeanGenerator.refer.id.suffixs").split(",");
+        referMeiSuffix = bundle.getString("BeanGenerator.refer.mei.suffix");
 
         // テーブル情報を取得
         List<TableInfo> tableInfos = DataSources.getTableInfos();
@@ -1311,9 +1311,7 @@ public final class BeanGenerator {
 
                 s.add("");
                 s.add("    /** " + columnInfo.getRemarks() + " */");
-
-                List<String> primaryKeys = tableInfo.getPrimaryKeys();
-                javaFormDetailRegistChecks(primaryKeys, columnInfo, s);
+                javaFormDetailRegistChecks(tableInfo.getPrimaryKeys(), columnInfo, s);
                 s.add("    private String " + camel + ";");
                 s.add("");
                 s.add("    /**");
@@ -1458,19 +1456,14 @@ public final class BeanGenerator {
             }
         }
 
-        // コンパイラの取得
-        JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
-
         // コンパイル
+        JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
         int result = compiler.run(null, null, null, "-classpath", classPath + pathes, javaFilePath);
-
-        // コンパイル結果の出力
         if (result == 0) {
             LOG.info("compile success. [" + javaFilePath + "]");
         } else {
             LOG.error("compile failure. [" + javaFilePath + "]");
         }
-
     }
 
     /**
@@ -1598,8 +1591,30 @@ public final class BeanGenerator {
                 formatter = "Slick.Formatters.Extends.DateTime";
             }
 
+            boolean isRefer = false;
+            String referIdSuffix = null;
+            TableInfo referInfo = columnInfo.getReferInfo();
+            if (referInfo != null) {
+                if (StringUtil.endsWith(referIdSuffixs, columnName)) {
+                    String meiColumnName = columnName;
+                    for (String suffix : referIdSuffixs) {
+                        if (meiColumnName.matches("(?i).+" + suffix + "$")) {
+                            referIdSuffix = suffix;
+                            meiColumnName = meiColumnName.replaceAll("(?i)" + suffix + "$", referMeiSuffix);
+                        }
+                    }
+                    meiColumnName = StringUtil.toUpperCase(meiColumnName);
+                    if (!tableInfo.getColumnInfos().containsKey(meiColumnName)) {
+                        isRefer = true;
+                    }
+                }
+            }
+
             String c = "";
-            if (columnInfo.isPk()) {
+            if (isRefer) {
+                c = "Column.refer('" + field + "', " + name + ", " + width + ", '" + css + "', '" + referIdSuffix
+                        + "', '" + referMeiSuffix + "'),";
+            } else if (columnInfo.isPk()) {
                 c = "Column.cell('" + field + "', " + name + ", " + width + ", '" + css + "', " + formatter + "),";
             } else if (lower.equals(insertDt) || lower.equals(updateDt)) {
                 c = "Column.cell('" + field + "', " + name + ", " + width + ", '" + css + "', " + formatter + "),";
@@ -1779,11 +1794,14 @@ public final class BeanGenerator {
                     String referName = StringUtil.toPascalCase(referInfo.getTableName());
                     tag += "<a id=\"" + id + "\" href=\"./" + referName
                             + "S.html\" target=\"dialog\" class=\"primaryKey refer\" th:text=\"#{common.refer}\" tabindex=\"-1\">...</a>";
-                    if (id.endsWith(referId)) {
-                        String meiCamel = camel.replaceAll(referId + "$", referMei);
-                        String meiColumnName = StringUtil.toUpperCase(meiCamel);
+                    if (StringUtil.endsWith(referIdSuffixs, columnName)) {
+                        String meiColumnName = columnName;
+                        for (String referIdSuffix : referIdSuffixs) {
+                            meiColumnName = meiColumnName.replaceAll("(?i)" + referIdSuffix + "$", referMeiSuffix);
+                        }
+                        meiColumnName = StringUtil.toUpperCase(meiColumnName);
                         if (!tableInfo.getColumnInfos().containsKey(meiColumnName)) {
-                            String meiId = id.replaceAll(referId + "$", referMei);
+                            String meiId = entityName + "." + StringUtil.toCamelCase(meiColumnName);
                             tag += "<span id=\"" + meiId + "\" class=\"referMei\"></span>";
                         }
                     }
@@ -1839,11 +1857,14 @@ public final class BeanGenerator {
                         String referName = StringUtil.toPascalCase(referInfo.getTableName());
                         tag += "<a id=\"" + id + "\" href=\"./" + referName
                                 + "S.html\" target=\"dialog\" class=\"refer\" th:text=\"#{common.refer}\" tabindex=\"-1\">...</a>";
-                        if (id.endsWith(referId)) {
-                            String meiCamel = camel.replaceAll(referId + "$", referMei);
-                            String meiColumnName = StringUtil.toUpperCase(meiCamel);
+                        if (StringUtil.endsWith(referIdSuffixs, columnName)) {
+                            String meiColumnName = columnName;
+                            for (String referIdSuffix : referIdSuffixs) {
+                                meiColumnName = meiColumnName.replaceAll("(?i)" + referIdSuffix + "$", referMeiSuffix);
+                            }
+                            meiColumnName = StringUtil.toUpperCase(meiColumnName);
                             if (!tableInfo.getColumnInfos().containsKey(meiColumnName)) {
-                                String meiId = id.replaceAll(referId + "$", referMei);
+                                String meiId = entityName + "." + StringUtil.toCamelCase(meiColumnName);
                                 tag += "<span id=\"" + meiId + "\" class=\"referMei\"></span>";
                             }
                         }
@@ -1867,7 +1888,6 @@ public final class BeanGenerator {
         String remarks = tableInfo.getRemarks();
 
         List<String> s = new ArrayList<String>();
-
         s.add(entityName + "S.title   " + remarks + "検索");
         s.add(entityName + "S.h2      " + remarks + "検索");
         s.add(entityName + "S.legend  " + remarks + "検索");
@@ -1933,12 +1953,19 @@ public final class BeanGenerator {
                 ++i;
                 String referName = referInfo.getTableName();
                 String srcColumnName = columnInfo.getColumnName();
-                String srcColumnMei = srcColumnName.replaceAll("(?i)" + referId + "$",
-                        StringUtil.toUpperCase(referMei));
+                String srcColumnMei = srcColumnName;
+                String referIdSuffix = null;
+                for (String suffix : referIdSuffixs) {
+                    if (srcColumnMei.matches("(?i).+" + suffix + "$")) {
+                        referIdSuffix = suffix;
+                        srcColumnMei = srcColumnMei.replaceAll("(?i)" + suffix + "$", referMeiSuffix);
+                    }
+                }
+                srcColumnMei = StringUtil.toUpperCase(srcColumnMei);
                 if (!tableInfo.getColumnInfos().containsKey(srcColumnMei)) {
                     String destColumnName = referInfo.getPrimaryKeys().get(0);
-                    String destColumnMei = destColumnName.replaceAll("(?i)" + referId + "$",
-                            StringUtil.toUpperCase(referMei));
+                    String destColumnMei = destColumnName.replaceAll("(?i)" + referIdSuffix + "$", referMeiSuffix);
+                    destColumnMei = StringUtil.toUpperCase(destColumnMei);
                     s.add("    , (SELECT r" + i + "." + destColumnMei + " FROM " + referName + " r" + i + " WHERE r" + i
                             + "." + destColumnName + " = a." + srcColumnName + ") AS " + srcColumnMei);
                 }
@@ -1948,10 +1975,8 @@ public final class BeanGenerator {
         s.add("    " + tableName + " a ");
         s.add("WHERE");
         s.add("    1 = 1 ");
-
         for (String columnName : tableInfo.getColumnInfos().keySet()) {
             String snake = StringUtil.toSnakeCase(columnName);
-
             boolean isInputLike = StringUtil.endsWith(inputLikeSuffixs, snake);
             boolean isInputFlag = StringUtil.endsWith(inputFlagSuffixs, snake);
             if (isInputLike) {
@@ -1961,17 +1986,14 @@ public final class BeanGenerator {
             } else {
                 s.add("    AND a." + snake + " = :" + snake + " ");
             }
-
             boolean isInputRange = StringUtil.endsWith(inputRangeSuffixs, snake);
             if (isInputRange) {
                 s.add("    AND a." + snake + " >= :" + snake + "_1 ");
                 s.add("    AND a." + snake + " <= :" + snake + "_2 ");
             }
         }
-
         s.add("ORDER BY");
         s.add("    a." + StringUtil.join(", a.", tableInfo.getPrimaryKeys()));
-
         FileUtil.writeFile(sqlDir + File.separator + entityName + "Search.sql", s);
     }
 

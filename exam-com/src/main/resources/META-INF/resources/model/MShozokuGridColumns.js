@@ -1,7 +1,7 @@
 var MShozokuGridColumns = [
-    Column.cell('BUSHO_ID', Messages['MShozokuGrid.bushoId'], 100, 'primaryKey', null),
-    Column.cell('SHOKUI_ID', Messages['MShozokuGrid.shokuiId'], 100, 'primaryKey', null),
-    Column.cell('USER_ID', Messages['MShozokuGrid.userId'], 100, 'primaryKey', null),
+    Column.refer('BUSHO_ID', Messages['MShozokuGrid.bushoId'], 100, 'primaryKey', '_id', '_mei'),
+    Column.refer('SHOKUI_ID', Messages['MShozokuGrid.shokuiId'], 100, 'primaryKey', '_id', '_mei'),
+    Column.refer('USER_ID', Messages['MShozokuGrid.userId'], 100, 'primaryKey', '_id', '_mei'),
     Column.date('KAISHI_YMD', Messages['MShozokuGrid.kaishiYmd'], 100, '', null),
     Column.date('SHURYO_YMD', Messages['MShozokuGrid.shuryoYmd'], 100, '', null),
     Column.cell('INSERT_DT', Messages['MShozokuGrid.insertDt'], 230, 'metaInfo', Slick.Formatters.Extends.DateTime),
