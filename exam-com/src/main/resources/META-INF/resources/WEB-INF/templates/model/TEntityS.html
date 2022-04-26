@@ -15,7 +15,7 @@
       <fieldset>
         <legend th:text="#{TEntityS.legend}">legend</legend>
         <div id="sosenId">
-          <label for="TEntity.sosenId" th:text="#{TEntity.sosenId}">祖先ID</label><input type="text" id="TEntity.sosenId" name="TEntity.sosenId" maxlength="10" /><a id="TEntity.sosenId" href="./TSosenS.html" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="TEntity.sosenMei" class="refer" data-srcId="TEntity.sosenId" data-json="TSosenSearch.json"></span>
+          <label for="TEntity.sosenId" th:text="#{TEntity.sosenId}">祖先ID</label><input type="text" id="TEntity.sosenId" name="TEntity.sosenId" maxlength="10" data-destDef="TEntity.sosenMei:SOSEN_MEI" data-json="TSosenSearch.json" /><a id="TEntity.sosenId" href="./TSosenS.html" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="TEntity.sosenMei" class="refer" data-srcId="TEntity.sosenId" data-json="TSosenSearch.json"></span>
         </div>
         <div id="oyaSn">
           <label for="TEntity.oyaSn" th:text="#{TEntity.oyaSn}">親連番</label><input type="text" id="TEntity.oyaSn" name="TEntity.oyaSn" maxlength="10" />
@@ -27,19 +27,19 @@
           <label for="TEntity.entityMei" th:text="#{TEntity.entityMei}">エンティティ名</label><input type="text" id="TEntity.entityMei" name="TEntity.entityMei" maxlength="30" />
         </div>
         <div id="sansho1Id">
-          <label for="TEntity.sansho1Id" th:text="#{TEntity.sansho1Id}">参照１ID</label><input type="text" id="TEntity.sansho1Id" name="TEntity.sansho1Id" maxlength="10" /><a id="TEntity.sansho1Id" href="./MSansho1S.html" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a>
+          <label for="TEntity.sansho1Id" th:text="#{TEntity.sansho1Id}">参照１ID</label><input type="text" id="TEntity.sansho1Id" name="TEntity.sansho1Id" maxlength="10" data-destDef="TEntity.sansho1Mei:SANSHO1_MEI" data-json="MSansho1Search.json" /><a id="TEntity.sansho1Id" href="./MSansho1S.html" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a>
         </div>
         <div id="sansho1Mei">
           <label for="TEntity.sansho1Mei" th:text="#{TEntity.sansho1Mei}">参照１名</label><input type="text" id="TEntity.sansho1Mei" name="TEntity.sansho1Mei" maxlength="30" />
         </div>
         <div id="sansho2Id">
-          <label for="TEntity.sansho2Id" th:text="#{TEntity.sansho2Id}">参照２ID</label><input type="text" id="TEntity.sansho2Id" name="TEntity.sansho2Id" maxlength="10" /><a id="TEntity.sansho2Id" href="./MSansho2S.html" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a>
+          <label for="TEntity.sansho2Id" th:text="#{TEntity.sansho2Id}">参照２ID</label><input type="text" id="TEntity.sansho2Id" name="TEntity.sansho2Id" maxlength="10" data-destDef="TEntity.sansho2Mei:SANSHO2_MEI" data-json="MSansho2Search.json" /><a id="TEntity.sansho2Id" href="./MSansho2S.html" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a>
         </div>
         <div id="sansho2Mei">
           <label for="TEntity.sansho2Mei" th:text="#{TEntity.sansho2Mei}">参照２名</label><input type="text" id="TEntity.sansho2Mei" name="TEntity.sansho2Mei" maxlength="30" />
         </div>
         <div id="betsuSansho1Id">
-          <label for="TEntity.betsuSansho1Id" th:text="#{TEntity.betsuSansho1Id}">別参照１ID</label><input type="text" id="TEntity.betsuSansho1Id" name="TEntity.betsuSansho1Id" maxlength="10" /><a id="TEntity.betsuSansho1Id" href="./MSansho1S.html" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a>
+          <label for="TEntity.betsuSansho1Id" th:text="#{TEntity.betsuSansho1Id}">別参照１ID</label><input type="text" id="TEntity.betsuSansho1Id" name="TEntity.betsuSansho1Id" maxlength="10" data-destDef="TEntity.betsuSansho1Mei:SANSHO1_MEI" data-json="MSansho1Search.json" /><a id="TEntity.betsuSansho1Id" href="./MSansho1S.html" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a>
         </div>
         <div id="betsuSansho1Mei">
           <label for="TEntity.betsuSansho1Mei" th:text="#{TEntity.betsuSansho1Mei}">別参照１名</label><input type="text" id="TEntity.betsuSansho1Mei" name="TEntity.betsuSansho1Mei" maxlength="30" />

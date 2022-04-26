@@ -15,7 +15,7 @@
       <fieldset>
         <legend th:text="#{TEntity2S.legend}">legend</legend>
         <div id="sosenId">
-          <label for="TEntity2.sosenId" th:text="#{TEntity2.sosenId}">祖先ID</label><input type="text" id="TEntity2.sosenId" name="TEntity2.sosenId" maxlength="10" /><a id="TEntity2.sosenId" href="./TSosenS.html" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="TEntity2.sosenMei" class="refer" data-srcId="TEntity2.sosenId" data-json="TSosenSearch.json"></span>
+          <label for="TEntity2.sosenId" th:text="#{TEntity2.sosenId}">祖先ID</label><input type="text" id="TEntity2.sosenId" name="TEntity2.sosenId" maxlength="10" data-destDef="TEntity2.sosenMei:SOSEN_MEI" data-json="TSosenSearch.json" /><a id="TEntity2.sosenId" href="./TSosenS.html" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="TEntity2.sosenMei" class="refer" data-srcId="TEntity2.sosenId" data-json="TSosenSearch.json"></span>
         </div>
         <div id="oyaSn">
           <label for="TEntity2.oyaSn" th:text="#{TEntity2.oyaSn}">親連番</label><input type="text" id="TEntity2.oyaSn" name="TEntity2.oyaSn" maxlength="10" />

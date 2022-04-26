@@ -15,13 +15,13 @@
       <fieldset>
         <legend th:text="#{MShozokuS.legend}">legend</legend>
         <div id="bushoId">
-          <label for="MShozoku.bushoId" th:text="#{MShozoku.bushoId}">部署ID</label><input type="text" id="MShozoku.bushoId" name="MShozoku.bushoId" maxlength="10" /><a id="MShozoku.bushoId" href="./MBushoS.html" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MShozoku.bushoMei" class="refer" data-srcId="MShozoku.bushoId" data-json="MBushoSearch.json"></span>
+          <label for="MShozoku.bushoId" th:text="#{MShozoku.bushoId}">部署ID</label><input type="text" id="MShozoku.bushoId" name="MShozoku.bushoId" maxlength="10" data-destDef="MShozoku.bushoMei:BUSHO_MEI" data-json="MBushoSearch.json" /><a id="MShozoku.bushoId" href="./MBushoS.html" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MShozoku.bushoMei" class="refer" data-srcId="MShozoku.bushoId" data-json="MBushoSearch.json"></span>
         </div>
         <div id="shokuiId">
-          <label for="MShozoku.shokuiId" th:text="#{MShozoku.shokuiId}">職位ID</label><input type="text" id="MShozoku.shokuiId" name="MShozoku.shokuiId" maxlength="10" /><a id="MShozoku.shokuiId" href="./MShokuiS.html" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MShozoku.shokuiMei" class="refer" data-srcId="MShozoku.shokuiId" data-json="MShokuiSearch.json"></span>
+          <label for="MShozoku.shokuiId" th:text="#{MShozoku.shokuiId}">職位ID</label><input type="text" id="MShozoku.shokuiId" name="MShozoku.shokuiId" maxlength="10" data-destDef="MShozoku.shokuiMei:SHOKUI_MEI" data-json="MShokuiSearch.json" /><a id="MShozoku.shokuiId" href="./MShokuiS.html" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MShozoku.shokuiMei" class="refer" data-srcId="MShozoku.shokuiId" data-json="MShokuiSearch.json"></span>
         </div>
         <div id="userId">
-          <label for="MShozoku.userId" th:text="#{MShozoku.userId}">ユーザID</label><input type="text" id="MShozoku.userId" name="MShozoku.userId" maxlength="10" /><a id="MShozoku.userId" href="./MUserS.html" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MShozoku.userMei" class="refer" data-srcId="MShozoku.userId" data-json="MUserSearch.json"></span>
+          <label for="MShozoku.userId" th:text="#{MShozoku.userId}">ユーザID</label><input type="text" id="MShozoku.userId" name="MShozoku.userId" maxlength="10" data-destDef="MShozoku.userMei:USER_MEI" data-json="MUserSearch.json" /><a id="MShozoku.userId" href="./MUserS.html" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MShozoku.userMei" class="refer" data-srcId="MShozoku.userId" data-json="MUserSearch.json"></span>
         </div>
         <div id="kaishiYmd">
           <label for="MShozoku.kaishiYmd_1" th:text="#{MShozoku.kaishiYmd}">開始日</label><input type="date" id="MShozoku.kaishiYmd_1" name="MShozoku.kaishiYmd_1" maxlength="10" />～<input type="date" id="MShozoku.kaishiYmd_2" name="MShozoku.kaishiYmd_2" maxlength="10" />

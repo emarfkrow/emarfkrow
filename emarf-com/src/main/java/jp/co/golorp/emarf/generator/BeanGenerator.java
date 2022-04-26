@@ -1487,6 +1487,7 @@ public final class BeanGenerator {
         s.add("<style type=\"text/css\">");
         s.add("</style>");
         s.add("<script type=\"text/javascript\">");
+        s.add("");
         s.add("</script>");
         s.add("</head>");
         s.add("<body>");
@@ -1665,6 +1666,7 @@ public final class BeanGenerator {
         s.add("<style type=\"text/css\">");
         s.add("</style>");
         s.add("<script type=\"text/javascript\">");
+        s.add("");
         s.add("</script>");
         s.add("</head>");
         s.add("<body>");
@@ -1744,23 +1746,20 @@ public final class BeanGenerator {
             String id = entityName + "." + camel;
             String remarks = columnInfo.getRemarks();
 
-            // 兄弟モデルの主キーは出力しない
             if (isBrother && columnInfo.isPk()) {
+                // 兄弟モデルの主キーは出力しない
                 continue;
-            }
-
-            // メタ情報の場合
-            if (lower.equals(insertDt) || lower.equals(insertBy) || lower.equals(updateDt) || lower.equals(updateBy)) {
-                if (isDetail) {
-                    if (isBrother) {
-                        // 詳細画面の兄弟モデルの場合は、更新日時のみhiddenで出力
-                        if (lower.equals(updateDt)) {
-                            s.add("        <input type=\"hidden\" name=\"" + id + "\" />");
-                        }
-                        continue;
-                    }
-                } else {
+            } else if (lower.equals(insertDt) || lower.equals(insertBy) || lower.equals(updateDt)
+                    || lower.equals(updateBy)) {
+                // メタ情報の場合
+                if (!isDetail) {
                     // 検索画面の場合はスキップ（検索条件にはしない）
+                    continue;
+                } else if (isBrother) {
+                    if (lower.equals(updateDt)) {
+                        // 詳細画面の兄弟モデルの場合は、更新日時のみhiddenで出力
+                        s.add("        <input type=\"hidden\" name=\"" + id + "\" />");
+                    }
                     continue;
                 }
             }
@@ -1800,17 +1799,17 @@ public final class BeanGenerator {
                         meiColumnName = StringUtil.toUpperCase(meiColumnName);
                         if (!tableInfo.getColumnInfos().containsKey(meiColumnName)) {
                             String meiId = entityName + "." + StringUtil.toCamelCase(meiColumnName);
-                            tag += "<span id=\"" + meiId + "\" class=\"refer\" data-srcId=\"" + id
-                                    + "\" data-json=\"" + referName + "Search.json\"></span>";
+                            tag += "<span id=\"" + meiId + "\" class=\"refer\" data-srcId=\"" + id + "\" data-json=\""
+                                    + referName + "Search.json\"></span>";
                         }
                     }
                 }
                 s.add(tag);
             } else if (isOptions) {
                 // 選択項目の場合
-                s.add("          <fieldset id=\"" + id + "List\" data-options=\"" + json
-                        + "\" data-optionParams=\"" + optionParamKey + ":" + lower + "\" data-optionValue=\""
-                        + optionValue + "\" data-optionLabel=\"" + optionLabel + "\">");
+                s.add("          <fieldset id=\"" + id + "List\" data-options=\"" + json + "\" data-optionParams=\""
+                        + optionParamKey + ":" + lower + "\" data-optionValue=\"" + optionValue
+                        + "\" data-optionLabel=\"" + optionLabel + "\">");
                 s.add("            <legend th:text=\"#{" + id + "}\">" + remarks + "</legend>");
                 s.add("          </fieldset>");
             } else if (isTextarea) {
@@ -1831,7 +1830,7 @@ public final class BeanGenerator {
                     type = "time";
                 }
 
-                int maxlength = columnInfo.getColumnSize();
+                int max = columnInfo.getColumnSize();
 
                 String css = "";
                 if (isDetail && columnInfo.isPk()) {
@@ -1842,33 +1841,60 @@ public final class BeanGenerator {
                 if (!isDetail && isInputRange) {
                     // 検索画面の範囲指定項目の場合
                     tag += "<label for=\"" + id + "_1\" th:text=\"#{" + id + "}\">" + remarks + "</label>";
-                    tag += "<input type=\"" + type + "\" id=\"" + id + "_1\" name=\"" + id + "_1\" maxlength=\""
-                            + maxlength + "\" />";
+                    tag += "<input type=\"" + type + "\" id=\"" + id + "_1\" name=\"" + id + "_1\" maxlength=\"" + max
+                            + "\" />";
                     tag += "～";
-                    tag += "<input type=\"" + type + "\" id=\"" + id + "_2\" name=\"" + id + "_2\" maxlength=\""
-                            + maxlength + "\" />";
-                } else {
-                    tag += "<label for=\"" + id + "\" th:text=\"#{" + id + "}\">" + remarks + "</label>";
-                    tag += "<input type=\"" + type + "\" id=\"" + id + "\" name=\"" + id + "\" maxlength=\"" + maxlength
-                            + "\"" + css + " />";
-                    if (columnInfo.getReferInfo() != null) {
-                        TableInfo referInfo = columnInfo.getReferInfo();
-                        String referName = StringUtil.toPascalCase(referInfo.getTableName());
-                        tag += "<a id=\"" + id + "\" href=\"./" + referName
-                                + "S.html\" target=\"dialog\" class=\"refer\" th:text=\"#{common.refer}\" tabindex=\"-1\">...</a>";
-                        if (StringUtil.endsWith(referIdSuffixs, columnName)) {
-                            String meiColumnName = columnName;
-                            for (String referIdSuffix : referIdSuffixs) {
-                                meiColumnName = meiColumnName.replaceAll("(?i)" + referIdSuffix + "$", referMeiSuffix);
-                            }
-                            meiColumnName = StringUtil.toUpperCase(meiColumnName);
-                            if (!tableInfo.getColumnInfos().containsKey(meiColumnName)) {
-                                String meiId = entityName + "." + StringUtil.toCamelCase(meiColumnName);
-                                tag += "<span id=\"" + meiId + "\" class=\"refer\" data-srcId=\"" + id
-                                        + "\" data-json=\"" + referName + "Search.json\"></span>";
+                    tag += "<input type=\"" + type + "\" id=\"" + id + "_2\" name=\"" + id + "_2\" maxlength=\"" + max
+                            + "\" />";
+                } else if (columnInfo.getReferInfo() != null) {
+                    // 参照モデルの場合
+
+                    // 参照モデル
+                    TableInfo referInfo = columnInfo.getReferInfo();
+
+                    // 参照テーブル名
+                    String referName = StringUtil.toPascalCase(referInfo.getTableName());
+
+                    String meiId = null;
+                    String meiColumnName = null;
+                    String destDef = "";
+
+                    // 元カラムが参照IDのサフィックスに合致する場合
+                    if (StringUtil.endsWith(referIdSuffixs, columnName)) {
+
+                        // 元カラムの_IDを_MEIに変換
+                        meiColumnName = columnName;
+                        for (String referIdSuffix : referIdSuffixs) {
+                            meiColumnName = meiColumnName.replaceAll("(?i)" + referIdSuffix + "$", referMeiSuffix);
+                        }
+                        meiColumnName = StringUtil.toUpperCase(meiColumnName);
+
+                        // 反映先のIDを取得
+                        meiId = entityName + "." + StringUtil.toCamelCase(meiColumnName);
+
+                        String referColumnName = null;
+                        for (String referColumn : referInfo.getColumnInfos().keySet()) {
+                            if (meiColumnName.endsWith(referColumn)) {
+                                referColumnName = referColumn;
                             }
                         }
+
+                        destDef = " data-destDef=\"" + meiId + ":" + referColumnName + "\" data-json=\"" + referName
+                                + "Search.json\"";
                     }
+                    tag += "<label for=\"" + id + "\" th:text=\"#{" + id + "}\">" + remarks + "</label>";
+                    tag += "<input type=\"" + type + "\" id=\"" + id + "\" name=\"" + id + "\" maxlength=\"" + max
+                            + "\"" + css + destDef + "" + " />";
+                    tag += "<a id=\"" + id + "\" href=\"./" + referName
+                            + "S.html\" target=\"dialog\" class=\"refer\" th:text=\"#{common.refer}\" tabindex=\"-1\">...</a>";
+                    if (!tableInfo.getColumnInfos().containsKey(meiColumnName)) {
+                        tag += "<span id=\"" + meiId + "\" class=\"refer\" data-srcId=\"" + id + "\" data-json=\""
+                                + referName + "Search.json\"></span>";
+                    }
+                } else {
+                    tag += "<label for=\"" + id + "\" th:text=\"#{" + id + "}\">" + remarks + "</label>";
+                    tag += "<input type=\"" + type + "\" id=\"" + id + "\" name=\"" + id + "\" maxlength=\"" + max
+                            + "\"" + css + " />";
                 }
                 s.add(tag);
             }

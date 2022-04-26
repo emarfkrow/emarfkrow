@@ -36,54 +36,51 @@ $(function() {
 		event.stopPropagation();
 		event.stopImmediatePropagation();
 
-		let action = $(entered).attr('data-onenter');
-		if (action) {
+		let destDef = $(entered).attr('data-destDef');
+		if (destDef) {
 
-			let isParamed = false;
-			$('[id="sansho1Mei"]').html('');
+			var $form = $(entered).closest('form');
 
-			let postJson = {};
-			let paramNamesDef = $(entered).attr('data-onenterParamNames');
-			if (paramNamesDef) {
-				var $form = $(entered).closest('form');
-				var paramNamesDefs = paramNamesDef.split(',');
-				for (let i in paramNamesDefs) {
-					var paramDef = paramNamesDefs[i];
-					var paramDefs = paramDef.split(':');
-					var paramName = paramDefs[0];
-					var valueName = paramDefs[1];
-					var paramValue = $form.find('[name="' + valueName + '"]').val();
-					if (paramValue) {
-						isParamed = true;
-						postJson[paramName] = paramValue;
-					} else {
-						isParamed = false;
-						break;
-					}
-				}
+			var destDefs = destDef.split(',');
+			for (let i in destDefs) {
+				var dest = destDefs[i];
+				var dests = dest.split(':');
+				var destName = dests[0];
+				$form.find('[name$="' + destName + '"]').val(['']);
+				$form.find('[id$="' + destName + '"]').html('');
 			}
 
-			if (isParamed) {
-				Ajaxize.ajaxPost(action, postJson, function(data) {
-					let dataJson = data[action.replaceAll(/\.json/g, '')];
-					let rowJson = dataJson[0];
-					let targetNamesDef = $(entered).attr('data-onenterTargetNames');
-					if (targetNamesDef) {
-						var $form = $(entered).closest('form');
-						var targetNamesDefs = targetNamesDef.split(',');
-						for (let i in targetNamesDefs) {
-							var targetDef = targetNamesDefs[i];
-							var targetDefs = targetDef.split(':');
-							var targetName = targetDefs[0];
-							var sourceName = targetDefs[1];
-							var sourceValue = rowJson[sourceName];
-							if (sourceValue) {
-								$form.find('[name="' + targetName + '"]').val(sourceValue);
-								$form.find('[id="' + targetName + '"]').html(sourceValue);
+			let action = $(entered).attr('data-json');
+			if (action) {
+
+				let v = $(entered).val();
+				if (v != '') {
+
+					let postJson = {};
+					postJson[$(entered).prop('name')] = v;
+
+
+					Ajaxize.ajaxPost(action, postJson, function(data) {
+						for (let formName in data) {
+							let dataJson = data[formName];
+							for (let i in dataJson) {
+								let rowJson = dataJson[i];
+								let destDefs = destDef.split(',');
+								for (let i in destDefs) {
+									let dest = destDefs[i];
+									let dests = dest.split(':');
+									let destName = dests[0];
+									let srcName = dests[1];
+									let srcValue = rowJson[srcName];
+									if (srcValue) {
+										$form.find('[name$="' + destName + '"]').val(srcValue);
+										$form.find('[id$="' + destName + '"]').html(srcValue);
+									}
+								}
 							}
 						}
-					}
-				});
+					});
+				}
 			}
 		}
 
