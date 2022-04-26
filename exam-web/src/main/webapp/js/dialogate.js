@@ -13,7 +13,7 @@ $(function() {
 			let $form = $me.closest('form');
 			let id = $form.prop('name') + '.' + this.id;
 			$me.prop('id', id);
-			if ($me.prev()[0].tagName == 'LABEL') {
+			if ($me.prev().length > 0 && $me.prev()[0].tagName == 'LABEL') {
 				$me.prev().prop('for', id);
 			}
 		}

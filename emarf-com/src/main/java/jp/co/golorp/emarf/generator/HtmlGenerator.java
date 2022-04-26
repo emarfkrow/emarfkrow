@@ -65,7 +65,7 @@ public final class HtmlGenerator {
      * @param projectDir
      * @param tableInfos
      */
-    public static void generate(final String projectDir, final List<TableInfo> tableInfos) {
+    static void generate(final String projectDir, final List<TableInfo> tableInfos) {
 
         bundle = ResourceBundles.getBundle(BeanGenerator.class);
 
@@ -120,7 +120,7 @@ public final class HtmlGenerator {
      * @param htmlDir
      * @param tableInfo
      */
-    static void htmlIndex(final String htmlDir, final TableInfo tableInfo) {
+    private static void htmlIndex(final String htmlDir, final TableInfo tableInfo) {
 
         String tableName = tableInfo.getTableName();
         String remarks = tableInfo.getRemarks();
@@ -208,7 +208,7 @@ public final class HtmlGenerator {
      * @param gridDir
      * @param tableInfo
      */
-    static void htmlIndexGridColumns(final String gridDir, final TableInfo tableInfo) {
+    private static void htmlIndexGridColumns(final String gridDir, final TableInfo tableInfo) {
 
         String tableName = tableInfo.getTableName();
         String entityName = StringUtil.toPascalCase(tableName);
@@ -300,7 +300,7 @@ public final class HtmlGenerator {
      * @param htmlDir
      * @param tableInfo
      */
-    static void htmlDetail(final String htmlDir, final TableInfo tableInfo) {
+    private static void htmlDetail(final String htmlDir, final TableInfo tableInfo) {
 
         String tableName = tableInfo.getTableName();
         String entityName = StringUtil.toPascalCase(tableName);
@@ -465,7 +465,7 @@ public final class HtmlGenerator {
                         + "\" data-optionLabel=\"" + optionLabel + "\">");
                 s.add("            <legend th:text=\"#{" + id + "}\">" + remarks + "</legend>");
                 s.add("          </fieldset>");
-            } else if (isTextarea) {
+            } else if (isDetail && isTextarea) {
                 // テキストエリア項目の場合
                 s.add("          <label for=\"" + id + "\" th:text=\"#{" + id + "}\">" + remarks + "</label>");
                 s.add("          <textarea id=\"" + id + "\" name=\"" + id + "\"></textarea>");
@@ -567,7 +567,7 @@ public final class HtmlGenerator {
      * @param htmlDir
      * @param tableInfo
      */
-    static void htmlProperties(final String htmlDir, final TableInfo tableInfo) {
+    private static void htmlProperties(final String htmlDir, final TableInfo tableInfo) {
 
         String tableName = tableInfo.getTableName();
         String entityName = StringUtil.toPascalCase(tableName);

@@ -2,71 +2,38 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
 <head>
 <meta charset="UTF-8">
-<title>D0001</title>
+<title>検索画面</title>
 <style type="text/css">
 </style>
-<script src="./D0001GridColumns.js"></script>
 <script type="text/javascript">
-    function ReferD0001CallBack(data) {
-        Gridate.refresh('D0001Grid', data['D0001Refer']);
-    }
-    function RegistD0001CallBack(data) {
-    }
+
 </script>
 </head>
 <body>
   <div layout:fragment="article">
-    <h2 th:text="#{D0001.h2}"></h2>
-    <form name="D0001ReferForm" action="D0001Refer.ajax?hoge=hoge">
+    <h2>検索画面</h2>
+    <form name="D0001SearchForm" action="D0001Search.ajax" class="search">
       <fieldset>
-        <legend>legend</legend>
+        <legend>検索条件</legend>
+        <div id="sosenId">
+          <label for="sosenId">祖先ID</label><input type="text" id="sosenId" name="sosenId" maxlength="10" data-json="TSosenSearch.json" data-srcDef="SOSEN_ID:sosenId" data-destDef="sosenMei:SOSEN_MEI" /><a id="sosenId" href="../model/TSosenS.html" target="dialog" class="refer" tabindex="-1">...</a><span id="sosenMei" class="refer" data-json="TSosenSearch.json" data-srcDef="SOSEN_ID:sosenId" data-destDef="sosenMei:SOSEN_MEI"></span>
+        </div>
         <div>
           <label for="entityMei">エンティティ名</label><input type="text" id="entityMei" name="entityMei" />
         </div>
         <div>
-          <label for="password">password</label><input type="password" id="password" name="password" />
-        </div>
-        <div>
-          <fieldset id="checkFList" data-options="MCodeValueRefer.json" data-optionParams="code_nm:check_f" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+          <fieldset id="checkFList" data-options="MCodeValueSearch.json" data-optionParams="code_nm:check_f" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
             <legend>checkbox</legend>
           </fieldset>
         </div>
         <div>
-          <fieldset id="checkF2List">
-            <legend>checkbox</legend>
-            <div>
-              <input type="checkbox" id="checkbox_1" name="checkbox" value="1" checked="checked" /><label for="checkbox_1">checkbox_1</label>
-            </div>
-            <div>
-              <input type="checkbox" id="checkbox_2" name="checkbox" value="2" checked="checked" /><label for="checkbox_2">checkbox_2</label>
-            </div>
-            <div>
-              <input type="checkbox" id="checkbox_3" name="checkbox" value="3" checked="checked" /><label for="checkbox_3">checkbox_3</label>
-            </div>
-          </fieldset>
-        </div>
-        <div>
-          <fieldset id="radioList" data-options="MCodeValueRefer.json" data-optionParams="code_nm:radio_kb" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+          <fieldset id="radioList" data-options="MCodeValueSearch.json" data-optionParams="code_nm:radio_kb" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
             <legend>radio</legend>
-            <div>
-              <input type="radio" id="radio_1" name="radio" value="1" /><label for="radio_1">radio_1</label>
-            </div>
-            <div>
-              <input type="radio" id="radio_2" name="radio" value="2" /><label for="radio_2">radio_2</label>
-            </div>
-            <div>
-              <input type="radio" id="radio_3" name="radio" value="3" /><label for="radio_3">radio_3</label>
-            </div>
           </fieldset>
         </div>
         <div>
-          <label for="select">select</label><select id="select" name="select" data-options="MCodeValueRefer.json" data-optionParams="code_nm:pulldown_kb" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
-            <option value=""></option>
+          <label for="select">select</label><select id="select" name="select" data-options="MCodeValueSearch.json" data-optionParams="code_nm:pulldown_kb" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
           </select>
-        </div>
-        <div>
-          <label for="textarea">textarea</label>
-          <textarea id="textarea" name="textarea" rows="5" cols=""></textarea>
         </div>
       </fieldset>
       <div class="buttons">

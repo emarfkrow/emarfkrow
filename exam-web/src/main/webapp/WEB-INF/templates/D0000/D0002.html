@@ -7,9 +7,7 @@
 </style>
 <script src="./D0004GridColumns.js"></script>
 <script type="text/javascript">
-    function D0004SubmitCallBack(data) {
-        Gridate.refresh('D0004Grid', data['D0004Refer']);
-    }
+
 </script>
 </head>
 <body>
@@ -40,17 +38,17 @@
           <label for="password">password</label><input type="password" id="password" name="password" />
         </div>
         <div>
-          <fieldset id="checkFList" data-options="MCodeValueRefer.json" data-optionParams="code_nm:check_f" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+          <fieldset id="checkFList" data-options="MCodeValueSearch.json" data-optionParams="code_nm:check_f" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
             <legend>checkbox</legend>
           </fieldset>
         </div>
         <div>
-          <fieldset id="radioList" data-options="MCodeValueRefer.json" data-optionParams="code_nm:radio_kb" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+          <fieldset id="radioList" data-options="MCodeValueSearch.json" data-optionParams="code_nm:radio_kb" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
             <legend>radio</legend>
           </fieldset>
         </div>
         <div>
-          <label for="select">select</label><select id="select" name="select" data-options="MCodeValueRefer.json" data-optionParams="code_nm:pulldown_kb" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+          <label for="select">select</label><select id="select" name="select" data-options="MCodeValueSearch.json" data-optionParams="code_nm:pulldown_kb" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
           </select>
         </div>
         <div>
