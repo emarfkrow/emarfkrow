@@ -16,6 +16,7 @@
 					"Dec1": Dec1Formatter,
 					"Dec2": Dec2Formatter,
 					"Dec3": Dec3Formatter,
+					"Refer": ReferFormatter,
 				}
 			}
 		}
@@ -58,6 +59,12 @@
 
 	function Dec3Formatter(row, cell, value, columnDef, dataContext) {
 		return Formatter.dec3(value);
+	}
+
+	function ReferFormatter(row, cell, value, columnDef, dataContext) {
+		let idSuffix = columnDef.idSuffix;
+		let meiSuffix = columnDef.meiSuffix;
+		return value + '：' + dataContext[columnDef.field.replace(new RegExp(idSuffix + '$'), meiSuffix)];
 	}
 
 })(jQuery);

@@ -1,5 +1,5 @@
 SELECT
-      * 
+      a.*
 FROM
     t_sosen a 
 WHERE

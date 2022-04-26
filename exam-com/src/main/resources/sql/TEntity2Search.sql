@@ -1,5 +1,6 @@
 SELECT
-      * 
+      a.*
+    , (SELECT r1.SOSEN_MEI FROM t_sosen r1 WHERE r1.SOSEN_ID = a.SOSEN_ID) AS SOSEN_MEI
 FROM
     t_entity2 a 
 WHERE

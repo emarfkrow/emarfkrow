@@ -16,6 +16,14 @@ let Column = {
 		return column;
 	},
 
+	refer: function(field, fieldMei, width, cssClass, idSuffix, meiSuffix) {
+		let column = Column.cell(field, fieldMei, width, cssClass);
+		column.idSuffix = idSuffix;
+		column.meiSuffix = meiSuffix;
+		column.formatter = Slick.Formatters.Extends.Refer;
+		return column;
+	},
+
 	text: function(field, fieldMei, width, cssClass, formatter, validator) {
 		let column = Column.cell(field, fieldMei, width, cssClass, formatter);
 		if (validator) { column.validator = validator; }

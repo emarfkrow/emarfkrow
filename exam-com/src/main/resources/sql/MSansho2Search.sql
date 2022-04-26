@@ -1,5 +1,5 @@
 SELECT
-      * 
+      a.*
 FROM
     m_sansho2 a 
 WHERE

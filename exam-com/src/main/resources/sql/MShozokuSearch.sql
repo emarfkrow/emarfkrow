@@ -1,5 +1,8 @@
 SELECT
-      * 
+      a.*
+    , (SELECT r1.BUSHO_MEI FROM m_busho r1 WHERE r1.BUSHO_ID = a.BUSHO_ID) AS BUSHO_MEI
+    , (SELECT r2.SHOKUI_MEI FROM m_shokui r2 WHERE r2.SHOKUI_ID = a.SHOKUI_ID) AS SHOKUI_MEI
+    , (SELECT r3.USER_MEI FROM m_user r3 WHERE r3.USER_ID = a.USER_ID) AS USER_MEI
 FROM
     m_shozoku a 
 WHERE

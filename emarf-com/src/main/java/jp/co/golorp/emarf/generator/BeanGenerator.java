@@ -1738,12 +1738,14 @@ public final class BeanGenerator {
 
             // メタ情報の場合
             if (lower.equals(insertDt) || lower.equals(insertBy) || lower.equals(updateDt) || lower.equals(updateBy)) {
-                if (isDetail && isBrother) {
-                    // 詳細画面の兄弟モデルの場合は、更新日時のみhiddenで出力
-                    if (lower.equals(updateDt)) {
-                        s.add("        <input type=\"hidden\" name=\"" + id + "\" />");
+                if (isDetail) {
+                    if (isBrother) {
+                        // 詳細画面の兄弟モデルの場合は、更新日時のみhiddenで出力
+                        if (lower.equals(updateDt)) {
+                            s.add("        <input type=\"hidden\" name=\"" + id + "\" />");
+                        }
+                        continue;
                     }
-                    continue;
                 } else {
                     // 検索画面の場合はスキップ（検索条件にはしない）
                     continue;
@@ -1923,7 +1925,25 @@ public final class BeanGenerator {
 
         List<String> s = new ArrayList<String>();
         s.add("SELECT");
-        s.add("      * ");
+        s.add("      a.*");
+        int i = 0;
+        for (ColumnInfo columnInfo : tableInfo.getColumnInfos().values()) {
+            TableInfo referInfo = columnInfo.getReferInfo();
+            if (referInfo != null) {
+                ++i;
+                String referName = referInfo.getTableName();
+                String srcColumnName = columnInfo.getColumnName();
+                String srcColumnMei = srcColumnName.replaceAll("(?i)" + referId + "$",
+                        StringUtil.toUpperCase(referMei));
+                if (!tableInfo.getColumnInfos().containsKey(srcColumnMei)) {
+                    String destColumnName = referInfo.getPrimaryKeys().get(0);
+                    String destColumnMei = destColumnName.replaceAll("(?i)" + referId + "$",
+                            StringUtil.toUpperCase(referMei));
+                    s.add("    , (SELECT r" + i + "." + destColumnMei + " FROM " + referName + " r" + i + " WHERE r" + i
+                            + "." + destColumnName + " = a." + srcColumnName + ") AS " + srcColumnMei);
+                }
+            }
+        }
         s.add("FROM");
         s.add("    " + tableName + " a ");
         s.add("WHERE");
@@ -1932,22 +1952,8 @@ public final class BeanGenerator {
         for (String columnName : tableInfo.getColumnInfos().keySet()) {
             String snake = StringUtil.toSnakeCase(columnName);
 
-            boolean isInputLike = false;
-            for (String inputLikeSuffix : inputLikeSuffixs) {
-                if (snake.endsWith(inputLikeSuffix)) {
-                    isInputLike = true;
-                    break;
-                }
-            }
-
-            boolean isInputFlag = false;
-            for (String inputFlagSuffix : inputFlagSuffixs) {
-                if (snake.endsWith(inputFlagSuffix)) {
-                    isInputFlag = true;
-                    break;
-                }
-            }
-
+            boolean isInputLike = StringUtil.endsWith(inputLikeSuffixs, snake);
+            boolean isInputFlag = StringUtil.endsWith(inputFlagSuffixs, snake);
             if (isInputLike) {
                 s.add("    AND a." + snake + " LIKE CONCAT ('%', :" + snake + ", '%') ");
             } else if (isInputFlag) {
@@ -1956,13 +1962,7 @@ public final class BeanGenerator {
                 s.add("    AND a." + snake + " = :" + snake + " ");
             }
 
-            boolean isInputRange = false;
-            for (String inputRangeSuffix : inputRangeSuffixs) {
-                if (snake.endsWith(inputRangeSuffix)) {
-                    isInputRange = true;
-                    break;
-                }
-            }
+            boolean isInputRange = StringUtil.endsWith(inputRangeSuffixs, snake);
             if (isInputRange) {
                 s.add("    AND a." + snake + " >= :" + snake + "_1 ");
                 s.add("    AND a." + snake + " <= :" + snake + "_2 ");

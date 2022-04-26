@@ -1,5 +1,5 @@
 SELECT
-      * 
+      a.*
 FROM
     m_code_value a 
 WHERE
