@@ -158,34 +158,46 @@ let Base = {
 		$referSpans.each(function() {
 
 			let $referSpan = $(this);
-			let id = this.id;
-			let srcId = $referSpan.attr('data-srcId');
-			let srcValue = $referSpan.closest('form').find('[name="' + srcId + '"]').val();
+			let action = $referSpan.attr('data-json');
+			let srcDef = $referSpan.attr('data-srcDef');
+			let destDef = $referSpan.attr('data-destDef');
+			if (action && srcDef && destDef) {
 
-			if (srcValue != '') {
-
-				let dataJson = $referSpan.attr('data-json');
+				var $form = $referSpan.closest('form');
 
 				let postJson = {};
-				postJson[srcId] = srcValue;
+				var srcDefs = srcDef.split(',');
+				for (let i in srcDefs) {
+					var src = srcDefs[i];
+					var srcs = src.split(':');
+					let v = $form.find('[name$="' + srcs[1] + '"]').val();
+					if (v != '') {
+						postJson[srcs[0]] = v;
+					}
+				}
 
-				Ajaxize.ajaxPost(dataJson, postJson, function(data) {
-
-					for (let formName in data) {
-						let dataJson = data[formName];
-						for (let i in dataJson) {
-							let rowJson = dataJson[i];
-							for (let columnName in rowJson) {
-								let camel = Casing.toCamel(columnName);
-								if (id.match(new RegExp(camel + '$', 'i'))) {
-									let v = rowJson[columnName];
-									$referSpan.html(v);
+				if (Object.keys(postJson).length > 0) {
+					Ajaxize.ajaxPost(action, postJson, function(data) {
+						for (let formName in data) {
+							let dataJson = data[formName];
+							for (let i in dataJson) {
+								let rowJson = dataJson[i];
+								let destDefs = destDef.split(',');
+								for (let i in destDefs) {
+									let dest = destDefs[i];
+									let dests = dest.split(':');
+									let destName = dests[0];
+									let srcName = dests[1];
+									let srcValue = rowJson[srcName];
+									if (srcValue) {
+										$form.find('[name$="' + destName + '"]').val(srcValue);
+										$form.find('[id$="' + destName + '"]').html(srcValue);
+									}
 								}
 							}
 						}
-					}
-
-				}, false);
+					}, false);
+				}
 			}
 		});
 	},

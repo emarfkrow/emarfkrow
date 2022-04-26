@@ -6,6 +6,7 @@
 <style type="text/css">
 </style>
 <script type="text/javascript">
+
 </script>
 </head>
 <body>
@@ -15,7 +16,7 @@
       <fieldset>
         <legend th:text="#{TKo.legend}">legend</legend>
         <div id="sosenId">
-          <label for="TKo.sosenId" th:text="#{TKo.sosenId}">祖先ID</label><span id="TKo.sosenId"></span><input type="hidden" id="TKo.sosenId" name="TKo.sosenId" class="primaryKey" /><a id="TKo.sosenId" href="./TSosenS.html" target="dialog" class="primaryKey refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="TKo.sosenMei" class="refer" data-srcId="TKo.sosenId" data-json="TSosenSearch.json"></span>
+          <label for="TKo.sosenId" th:text="#{TKo.sosenId}">祖先ID</label><span id="TKo.sosenId"></span><input type="hidden" id="TKo.sosenId" name="TKo.sosenId" class="primaryKey" /><a id="TKo.sosenId" href="./TSosenS.html" target="dialog" class="primaryKey refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="TKo.sosenMei" class="refer" data-json="TSosenSearch.json" data-srcDef="SOSEN_ID:TKo.sosenId" data-destDef="TKo.sosenMei:SOSEN_MEI"></span>
         </div>
         <div id="oyaSn">
           <label for="TKo.oyaSn" th:text="#{TKo.oyaSn}">親連番</label><span id="TKo.oyaSn"></span><input type="hidden" id="TKo.oyaSn" name="TKo.oyaSn" class="primaryKey" />

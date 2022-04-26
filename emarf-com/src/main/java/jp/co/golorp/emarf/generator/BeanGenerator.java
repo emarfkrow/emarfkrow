@@ -1781,27 +1781,27 @@ public final class BeanGenerator {
                 tag += "<input type=\"hidden\" id=\"" + id + "\" name=\"" + id + "\" />";
                 s.add(tag);
             } else if (isDetail && columnInfo.isNumbering()) {
-                // 編集画面の採番キーは表示項目（参照モデルの場合は参照リンクを出力しておき、照会画面ではjsで非表示にする）
+
+                // 編集画面の採番キーは表示項目
                 String tag = "          ";
                 tag += "<label for=\"" + id + "\" th:text=\"#{" + id + "}\">" + remarks + "</label>";
                 tag += "<span id=\"" + id + "\"></span>";
                 tag += "<input type=\"hidden\" id=\"" + id + "\" name=\"" + id + "\" class=\"primaryKey\" />";
-                TableInfo referInfo = columnInfo.getReferInfo();
-                if (referInfo != null) {
+
+                if (columnInfo.getReferInfo() != null) {
+
+                    TableInfo referInfo = columnInfo.getReferInfo();
                     String referName = StringUtil.toPascalCase(referInfo.getTableName());
+
+                    // 参照モデルの場合は参照リンクを出力しておき、照会画面ではjsで非表示にする
                     tag += "<a id=\"" + id + "\" href=\"./" + referName
                             + "S.html\" target=\"dialog\" class=\"primaryKey refer\" th:text=\"#{common.refer}\" tabindex=\"-1\">...</a>";
-                    if (StringUtil.endsWith(referIdSuffixs, columnName)) {
-                        String meiColumnName = columnName;
-                        for (String referIdSuffix : referIdSuffixs) {
-                            meiColumnName = meiColumnName.replaceAll("(?i)" + referIdSuffix + "$", referMeiSuffix);
-                        }
-                        meiColumnName = StringUtil.toUpperCase(meiColumnName);
-                        if (!tableInfo.getColumnInfos().containsKey(meiColumnName)) {
-                            String meiId = entityName + "." + StringUtil.toCamelCase(meiColumnName);
-                            tag += "<span id=\"" + meiId + "\" class=\"refer\" data-srcId=\"" + id + "\" data-json=\""
-                                    + referName + "Search.json\"></span>";
-                        }
+
+                    String meiColumnName = getMeiColumnName(columnName);
+                    if (!tableInfo.getColumnInfos().containsKey(meiColumnName)) {
+                        String meiId = entityName + "." + StringUtil.toCamelCase(meiColumnName);
+                        String referDef = getReferDef(entityName, columnName, referInfo);
+                        tag += "<span id=\"" + meiId + "\" class=\"refer\"" + referDef + "></span>";
                     }
                 }
                 s.add(tag);
@@ -1839,6 +1839,7 @@ public final class BeanGenerator {
 
                 String tag = "          ";
                 if (!isDetail && isInputRange) {
+
                     // 検索画面の範囲指定項目の場合
                     tag += "<label for=\"" + id + "_1\" th:text=\"#{" + id + "}\">" + remarks + "</label>";
                     tag += "<input type=\"" + type + "\" id=\"" + id + "_1\" name=\"" + id + "_1\" maxlength=\"" + max
@@ -1846,50 +1847,23 @@ public final class BeanGenerator {
                     tag += "～";
                     tag += "<input type=\"" + type + "\" id=\"" + id + "_2\" name=\"" + id + "_2\" maxlength=\"" + max
                             + "\" />";
+
                 } else if (columnInfo.getReferInfo() != null) {
                     // 参照モデルの場合
 
-                    // 参照モデル
                     TableInfo referInfo = columnInfo.getReferInfo();
-
-                    // 参照テーブル名
                     String referName = StringUtil.toPascalCase(referInfo.getTableName());
-
-                    String meiId = null;
-                    String meiColumnName = null;
-                    String destDef = "";
-
-                    // 元カラムが参照IDのサフィックスに合致する場合
-                    if (StringUtil.endsWith(referIdSuffixs, columnName)) {
-
-                        // 元カラムの_IDを_MEIに変換
-                        meiColumnName = columnName;
-                        for (String referIdSuffix : referIdSuffixs) {
-                            meiColumnName = meiColumnName.replaceAll("(?i)" + referIdSuffix + "$", referMeiSuffix);
-                        }
-                        meiColumnName = StringUtil.toUpperCase(meiColumnName);
-
-                        // 反映先のIDを取得
-                        meiId = entityName + "." + StringUtil.toCamelCase(meiColumnName);
-
-                        String referColumnName = null;
-                        for (String referColumn : referInfo.getColumnInfos().keySet()) {
-                            if (meiColumnName.endsWith(referColumn)) {
-                                referColumnName = referColumn;
-                            }
-                        }
-
-                        destDef = " data-destDef=\"" + meiId + ":" + referColumnName + "\" data-json=\"" + referName
-                                + "Search.json\"";
-                    }
+                    String referDef = getReferDef(entityName, columnName, referInfo);
                     tag += "<label for=\"" + id + "\" th:text=\"#{" + id + "}\">" + remarks + "</label>";
                     tag += "<input type=\"" + type + "\" id=\"" + id + "\" name=\"" + id + "\" maxlength=\"" + max
-                            + "\"" + css + destDef + "" + " />";
+                            + "\"" + css + referDef + "" + " />";
                     tag += "<a id=\"" + id + "\" href=\"./" + referName
                             + "S.html\" target=\"dialog\" class=\"refer\" th:text=\"#{common.refer}\" tabindex=\"-1\">...</a>";
+
+                    String meiColumnName = getMeiColumnName(columnName);
                     if (!tableInfo.getColumnInfos().containsKey(meiColumnName)) {
-                        tag += "<span id=\"" + meiId + "\" class=\"refer\" data-srcId=\"" + id + "\" data-json=\""
-                                + referName + "Search.json\"></span>";
+                        String meiId = entityName + "." + StringUtil.toCamelCase(meiColumnName);
+                        tag += "<span id=\"" + meiId + "\" class=\"refer\"" + referDef + "></span>";
                     }
                 } else {
                     tag += "<label for=\"" + id + "\" th:text=\"#{" + id + "}\">" + remarks + "</label>";
@@ -1900,6 +1874,39 @@ public final class BeanGenerator {
             }
             s.add("        </div>");
         }
+    }
+
+    private static String getReferDef(final String entityName, final String columnName, final TableInfo referInfo) {
+
+        if (StringUtil.endsWith(referIdSuffixs, columnName)) {
+            String meiColumnName = getMeiColumnName(columnName);
+            String srcColumn = null;
+            String destColumn = null;
+            for (String referColumnName : referInfo.getColumnInfos().keySet()) {
+                if (columnName.matches("^.*" + referColumnName + "$")) {
+                    srcColumn = referColumnName;
+                } else if (meiColumnName.matches("^.*" + referColumnName + "$")) {
+                    destColumn = referColumnName;
+                }
+            }
+
+            String referName = StringUtil.toPascalCase(referInfo.getTableName());
+            String id = entityName + "." + StringUtil.toCamelCase(columnName);
+            String meiId = entityName + "." + StringUtil.toCamelCase(meiColumnName);
+            return " data-json=\"" + referName + "Search.json\" data-srcDef=\"" + srcColumn + ":"
+                    + id + "\" data-destDef=\"" + meiId + ":" + destColumn + "\"";
+        }
+
+        return "";
+    }
+
+    private static String getMeiColumnName(final String columnName) {
+        String meiColumnName = columnName;
+        for (String referIdSuffix : referIdSuffixs) {
+            meiColumnName = meiColumnName.replaceAll("(?i)" + referIdSuffix + "$", referMeiSuffix);
+        }
+        meiColumnName = StringUtil.toUpperCase(meiColumnName);
+        return meiColumnName;
     }
 
     /**

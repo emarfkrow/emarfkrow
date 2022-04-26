@@ -6,6 +6,7 @@
 <style type="text/css">
 </style>
 <script type="text/javascript">
+
 </script>
 </head>
 <body>
@@ -15,10 +16,10 @@
       <fieldset>
         <legend th:text="#{MNinkaS.legend}">legend</legend>
         <div id="bushoId">
-          <label for="MNinka.bushoId" th:text="#{MNinka.bushoId}">部署ID</label><input type="text" id="MNinka.bushoId" name="MNinka.bushoId" maxlength="10" data-destDef="MNinka.bushoMei:BUSHO_MEI" data-json="MBushoSearch.json" /><a id="MNinka.bushoId" href="./MBushoS.html" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MNinka.bushoMei" class="refer" data-json="MBushoSearch.json" data-srcDef="BUSHO_ID:MNinka.bushoId" data-destDef="MNinka.bushoMei:BUSHO_MEI"></span>
+          <label for="MNinka.bushoId" th:text="#{MNinka.bushoId}">部署ID</label><input type="text" id="MNinka.bushoId" name="MNinka.bushoId" maxlength="10" data-json="MBushoSearch.json" data-srcDef="BUSHO_ID:MNinka.bushoId" data-destDef="MNinka.bushoMei:BUSHO_MEI" /><a id="MNinka.bushoId" href="./MBushoS.html" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MNinka.bushoMei" class="refer" data-json="MBushoSearch.json" data-srcDef="BUSHO_ID:MNinka.bushoId" data-destDef="MNinka.bushoMei:BUSHO_MEI"></span>
         </div>
         <div id="shokuiId">
-          <label for="MNinka.shokuiId" th:text="#{MNinka.shokuiId}">職位ID</label><input type="text" id="MNinka.shokuiId" name="MNinka.shokuiId" maxlength="10" data-destDef="MNinka.shokuiMei:SHOKUI_MEI" data-json="MShokuiSearch.json" /><a id="MNinka.shokuiId" href="./MShokuiS.html" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MNinka.shokuiMei" class="refer" data-srcId="MNinka.shokuiId" data-json="MShokuiSearch.json"></span>
+          <label for="MNinka.shokuiId" th:text="#{MNinka.shokuiId}">職位ID</label><input type="text" id="MNinka.shokuiId" name="MNinka.shokuiId" maxlength="10" data-json="MShokuiSearch.json" data-srcDef="SHOKUI_ID:MNinka.shokuiId" data-destDef="MNinka.shokuiMei:SHOKUI_MEI" /><a id="MNinka.shokuiId" href="./MShokuiS.html" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MNinka.shokuiMei" class="refer" data-json="MShokuiSearch.json" data-srcDef="SHOKUI_ID:MNinka.shokuiId" data-destDef="MNinka.shokuiMei:SHOKUI_MEI"></span>
         </div>
         <div id="gamenNm">
           <label for="MNinka.gamenNm" th:text="#{MNinka.gamenNm}">画面ID</label><input type="text" id="MNinka.gamenNm" name="MNinka.gamenNm" maxlength="20" />

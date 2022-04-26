@@ -36,8 +36,10 @@ $(function() {
 		event.stopPropagation();
 		event.stopImmediatePropagation();
 
+		let action = $(entered).attr('data-json');
+		let srcDef = $(entered).attr('data-srcDef');
 		let destDef = $(entered).attr('data-destDef');
-		if (destDef) {
+		if (action && srcDef && destDef) {
 
 			var $form = $(entered).closest('form');
 
@@ -45,42 +47,42 @@ $(function() {
 			for (let i in destDefs) {
 				var dest = destDefs[i];
 				var dests = dest.split(':');
-				var destName = dests[0];
-				$form.find('[name$="' + destName + '"]').val(['']);
-				$form.find('[id$="' + destName + '"]').html('');
+				$form.find('[name$="' + dests[0] + '"]').val(['']);
+				$form.find('[id$="' + dests[0] + '"]').html('');
 			}
 
-			let action = $(entered).attr('data-json');
-			if (action) {
-
-				let v = $(entered).val();
+			let postJson = {};
+			var srcDefs = srcDef.split(',');
+			for (let i in srcDefs) {
+				var src = srcDefs[i];
+				var srcs = src.split(':');
+				let v = $form.find('[name$="' + srcs[1] + '"]').val();
 				if (v != '') {
+					postJson[srcs[0]] = v;
+				}
+			}
 
-					let postJson = {};
-					postJson[$(entered).prop('name')] = v;
-
-
-					Ajaxize.ajaxPost(action, postJson, function(data) {
-						for (let formName in data) {
-							let dataJson = data[formName];
-							for (let i in dataJson) {
-								let rowJson = dataJson[i];
-								let destDefs = destDef.split(',');
-								for (let i in destDefs) {
-									let dest = destDefs[i];
-									let dests = dest.split(':');
-									let destName = dests[0];
-									let srcName = dests[1];
-									let srcValue = rowJson[srcName];
-									if (srcValue) {
-										$form.find('[name$="' + destName + '"]').val(srcValue);
-										$form.find('[id$="' + destName + '"]').html(srcValue);
-									}
+			if (Object.keys(postJson).length > 0) {
+				Ajaxize.ajaxPost(action, postJson, function(data) {
+					for (let formName in data) {
+						let dataJson = data[formName];
+						for (let i in dataJson) {
+							let rowJson = dataJson[i];
+							let destDefs = destDef.split(',');
+							for (let i in destDefs) {
+								let dest = destDefs[i];
+								let dests = dest.split(':');
+								let destName = dests[0];
+								let srcName = dests[1];
+								let srcValue = rowJson[srcName];
+								if (srcValue) {
+									$form.find('[name$="' + destName + '"]').val(srcValue);
+									$form.find('[id$="' + destName + '"]').html(srcValue);
 								}
 							}
 						}
-					});
-				}
+					}
+				});
 			}
 		}
 
