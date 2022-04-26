@@ -224,6 +224,6 @@ input.primaryKey, div.primaryKey {
 	text-align: right;
 }
 
-.referMei::before {
+span.refer::before {
 	content: '：';
 }

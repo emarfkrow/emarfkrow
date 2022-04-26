@@ -246,6 +246,8 @@ let Dialogate = {
 						}
 					}
 
+					Base.referMei($dialogDiv.find('span.refer'));
+
 					try {
 						eval(dialogId + 'Open()');
 					} catch (e) {

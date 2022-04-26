@@ -15,7 +15,7 @@
       <fieldset>
         <legend th:text="#{TShisonS.legend}">legend</legend>
         <div id="sosenId">
-          <label for="TShison.sosenId" th:text="#{TShison.sosenId}">祖先ID</label><input type="text" id="TShison.sosenId" name="TShison.sosenId" maxlength="10" /><a id="TShison.sosenId" href="./TSosenS.html" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="TShison.sosenMei" class="referMei"></span>
+          <label for="TShison.sosenId" th:text="#{TShison.sosenId}">祖先ID</label><input type="text" id="TShison.sosenId" name="TShison.sosenId" maxlength="10" /><a id="TShison.sosenId" href="./TSosenS.html" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="TShison.sosenMei" class="refer" data-srcId="TShison.sosenId" data-json="TSosenSearch.json"></span>
         </div>
         <div id="oyaSn">
           <label for="TShison.oyaSn" th:text="#{TShison.oyaSn}">親連番</label><input type="text" id="TShison.oyaSn" name="TShison.oyaSn" maxlength="10" />

@@ -112,7 +112,7 @@ let Base = {
 			$(this).css('width', maxlength + 'rem');
 		});
 
-		// 親画面の場合、登録フォーム内に子エンティティ追加リンクがあれば、自エンティティの主キーが揃っていなければ非活性
+		// 親画面の場合、登録フォーム内に子エンティティ追加リンクがあっても、自エンティティの主キーが揃っていなければ非活性
 		let $registForm = $('body>div>form[name$="RegistForm"]');
 		$registForm.find('.addChild').button('option', 'disabled', false);
 		let isPrimaryKey = true;
@@ -124,7 +124,11 @@ let Base = {
 			$registForm.find('.addChild').button('option', 'disabled', true);
 		}
 
+
 		Base.resizeNav();
+
+		Base.referMei($('span.refer'));
+
 	},
 
 	resizeNav: function() {
@@ -146,6 +150,43 @@ let Base = {
 		}
 		$(window).resize(function() {
 			Base.resizeNav();
+		});
+	},
+
+	referMei: function($referSpans) {
+
+		$referSpans.each(function() {
+
+			let $referSpan = $(this);
+			let id = this.id;
+			let srcId = $referSpan.attr('data-srcId');
+			let srcValue = $referSpan.closest('form').find('[name="' + srcId + '"]').val();
+
+			if (srcValue != '') {
+
+				let dataJson = $referSpan.attr('data-json');
+
+				let postJson = {};
+				postJson[srcId] = srcValue;
+
+				Ajaxize.ajaxPost(dataJson, postJson, function(data) {
+
+					for (let formName in data) {
+						let dataJson = data[formName];
+						for (let i in dataJson) {
+							let rowJson = dataJson[i];
+							for (let columnName in rowJson) {
+								let camel = Casing.toCamel(columnName);
+								if (id.match(new RegExp(camel + '$', 'i'))) {
+									let v = rowJson[columnName];
+									$referSpan.html(v);
+								}
+							}
+						}
+					}
+
+				}, false);
+			}
 		});
 	},
 

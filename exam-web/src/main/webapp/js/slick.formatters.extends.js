@@ -62,7 +62,10 @@
 	}
 
 	function ReferFormatter(row, cell, value, columnDef, dataContext) {
-		return value + '：' + dataContext[columnDef.referField];
+		if (dataContext[columnDef.referField]) {
+			return value + '：' + dataContext[columnDef.referField];
+		}
+		return value;
 	}
 
 })(jQuery);

@@ -1800,7 +1800,8 @@ public final class BeanGenerator {
                         meiColumnName = StringUtil.toUpperCase(meiColumnName);
                         if (!tableInfo.getColumnInfos().containsKey(meiColumnName)) {
                             String meiId = entityName + "." + StringUtil.toCamelCase(meiColumnName);
-                            tag += "<span id=\"" + meiId + "\" class=\"referMei\"></span>";
+                            tag += "<span id=\"" + meiId + "\" class=\"refer\" data-srcId=\"" + id
+                                    + "\" data-json=\"" + referName + "Search.json\"></span>";
                         }
                     }
                 }
@@ -1863,7 +1864,8 @@ public final class BeanGenerator {
                             meiColumnName = StringUtil.toUpperCase(meiColumnName);
                             if (!tableInfo.getColumnInfos().containsKey(meiColumnName)) {
                                 String meiId = entityName + "." + StringUtil.toCamelCase(meiColumnName);
-                                tag += "<span id=\"" + meiId + "\" class=\"referMei\"></span>";
+                                tag += "<span id=\"" + meiId + "\" class=\"refer\" data-srcId=\"" + id
+                                        + "\" data-json=\"" + referName + "Search.json\"></span>";
                             }
                         }
                     }
