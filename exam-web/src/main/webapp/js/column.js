@@ -16,10 +16,9 @@ let Column = {
 		return column;
 	},
 
-	refer: function(field, fieldMei, width, cssClass, idSuffix, meiSuffix) {
+	refer: function(field, fieldMei, width, cssClass, referField) {
 		let column = Column.cell(field, fieldMei, width, cssClass);
-		column.idSuffix = idSuffix;
-		column.meiSuffix = meiSuffix;
+		column.referField = referField;
 		column.formatter = Slick.Formatters.Extends.Refer;
 		return column;
 	},

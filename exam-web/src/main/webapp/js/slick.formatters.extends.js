@@ -62,16 +62,7 @@
 	}
 
 	function ReferFormatter(row, cell, value, columnDef, dataContext) {
-		let idSuffix = columnDef.idSuffix;
-		let meiSuffix = columnDef.meiSuffix;
-		let meiValue = '';
-		let meiColumnName = columnDef.field.replace(new RegExp(idSuffix + '$', 'i'), meiSuffix);
-		for (let columnName in dataContext) {
-			if (columnName.match(new RegExp(meiColumnName, 'i'))) {
-				meiValue = dataContext[columnName];
-			}
-		}
-		return value + '：' + meiValue;
+		return value + '：' + dataContext[columnDef.referField];
 	}
 
 })(jQuery);

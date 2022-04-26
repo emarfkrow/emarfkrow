@@ -1592,19 +1592,18 @@ public final class BeanGenerator {
             }
 
             boolean isRefer = false;
-            String referIdSuffix = null;
+            String referMei = null;
             TableInfo referInfo = columnInfo.getReferInfo();
             if (referInfo != null) {
                 if (StringUtil.endsWith(referIdSuffixs, columnName)) {
-                    String meiColumnName = columnName;
+                    referMei = columnName;
                     for (String suffix : referIdSuffixs) {
-                        if (meiColumnName.matches("(?i).+" + suffix + "$")) {
-                            referIdSuffix = suffix;
-                            meiColumnName = meiColumnName.replaceAll("(?i)" + suffix + "$", referMeiSuffix);
+                        if (referMei.matches("(?i).+" + suffix + "$")) {
+                            referMei = referMei.replaceAll("(?i)" + suffix + "$", referMeiSuffix);
                         }
                     }
-                    meiColumnName = StringUtil.toUpperCase(meiColumnName);
-                    if (!tableInfo.getColumnInfos().containsKey(meiColumnName)) {
+                    referMei = StringUtil.toUpperCase(referMei);
+                    if (!tableInfo.getColumnInfos().containsKey(referMei)) {
                         isRefer = true;
                     }
                 }
@@ -1612,8 +1611,7 @@ public final class BeanGenerator {
 
             String c = "";
             if (isRefer) {
-                c = "Column.refer('" + field + "', " + name + ", " + width + ", '" + css + "', '" + referIdSuffix
-                        + "', '" + referMeiSuffix + "'),";
+                c = "Column.refer('" + field + "', " + name + ", " + width + ", '" + css + "', '" + referMei + "'),";
             } else if (columnInfo.isPk()) {
                 c = "Column.cell('" + field + "', " + name + ", " + width + ", '" + css + "', " + formatter + "),";
             } else if (lower.equals(insertDt) || lower.equals(updateDt)) {
