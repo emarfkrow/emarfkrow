@@ -1,4 +1,8 @@
-var MShokuiGridColumns = [
+/**
+ * 職位マスタグリッド定義
+ */
+
+let MShokuiGridColumns = [
     Column.cell('SHOKUI_ID', Messages['MShokuiGrid.shokuiId'], 100, 'primaryKey', null),
     Column.text('SHOKUI_MEI', Messages['MShokuiGrid.shokuiMei'], 300, '', null),
     Column.text('ORDER_ID', Messages['MShokuiGrid.orderId'], 100, '', null),

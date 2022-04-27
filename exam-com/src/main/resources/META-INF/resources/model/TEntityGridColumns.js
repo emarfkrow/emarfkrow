@@ -1,4 +1,8 @@
-var TEntityGridColumns = [
+/**
+ * エンティティグリッド定義
+ */
+
+let TEntityGridColumns = [
     Column.refer('SOSEN_ID', Messages['TEntityGrid.sosenId'], 100, 'primaryKey', 'SOSEN_MEI'),
     Column.cell('OYA_SN', Messages['TEntityGrid.oyaSn'], 100, 'primaryKey', null),
     Column.cell('ENTITY_SN', Messages['TEntityGrid.entitySn'], 100, 'primaryKey', null),

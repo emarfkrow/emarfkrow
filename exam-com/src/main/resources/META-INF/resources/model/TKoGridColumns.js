@@ -1,4 +1,8 @@
-var TKoGridColumns = [
+/**
+ * 子グリッド定義
+ */
+
+let TKoGridColumns = [
     Column.refer('SOSEN_ID', Messages['TKoGrid.sosenId'], 100, 'primaryKey', 'SOSEN_MEI'),
     Column.cell('OYA_SN', Messages['TKoGrid.oyaSn'], 100, 'primaryKey', null),
     Column.cell('ENTITY_SN', Messages['TKoGrid.entitySn'], 100, 'primaryKey', null),

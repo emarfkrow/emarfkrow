@@ -28,7 +28,7 @@ $(function() {
 	/*
 	 * [target=dialog]のリンクから、ダイアログのhtmlを画面に追加
 	 */
-	$('a[target="dialog"]').each(function() {
+	$('a[target="dialog"], div[data-href]').each(function() {
 		Dialogate.enable(this);
 	});
 
@@ -47,7 +47,7 @@ $(function() {
 
 		// 表示するダイアログを取得
 		let href = $link.attr('href');
-		let dialogId = href.replace(/(^\.\/|\.html$)/g, '') + 'Dialog';
+		let dialogId = href.replace(/(^.+\/|\.html$)/g, '') + 'Dialog';
 		let $dialogDiv = $('div[id="' + dialogId + '"]');
 
 		// 参照ダイアログの場合、リンクのIDとダイアログ内の項目のIDを比較し、呼び出し元での接頭辞を評価
@@ -139,11 +139,14 @@ let Dialogate = {
 		// hrefを取得。なければスキップ。
 		let href = $link.attr('href');
 		if (href == undefined) {
+			href = $link.attr('data-href');
+		}
+		if (href == undefined) {
 			return;
 		}
 
 		// hrefからdialogIdを取得。作成済みならスキップ。
-		let dialogId = href.replace(/(^\.\/|\.html$)/g, '') + 'Dialog';
+		let dialogId = href.replace(/(^.+\/|\.html$)/g, '') + 'Dialog';
 		if ($('div[id="' + dialogId + '"]').length > 0) {
 			return;
 		}

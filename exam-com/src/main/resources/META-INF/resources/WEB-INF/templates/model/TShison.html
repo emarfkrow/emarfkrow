@@ -16,7 +16,7 @@
       <fieldset>
         <legend th:text="#{TShison.legend}">legend</legend>
         <div id="sosenId">
-          <label for="TShison.sosenId" th:text="#{TShison.sosenId}">祖先ID</label><span id="TShison.sosenId"></span><input type="hidden" id="TShison.sosenId" name="TShison.sosenId" class="primaryKey" /><a id="TShison.sosenId" href="./TSosenS.html" target="dialog" class="primaryKey refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="TShison.sosenMei" class="refer" data-json="TSosenSearch.json" data-srcDef="SOSEN_ID:TShison.sosenId" data-destDef="TShison.sosenMei:SOSEN_MEI"></span>
+          <label for="TShison.sosenId" th:text="#{TShison.sosenId}">祖先ID</label><span id="TShison.sosenId"></span><input type="hidden" id="TShison.sosenId" name="TShison.sosenId" class="primaryKey" /><a id="TShison.sosenId" th:href="@{/model/TSosenS.html}" target="dialog" class="primaryKey refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="TShison.sosenMei" class="refer" data-json="TSosenSearch.json" data-srcDef="SOSEN_ID:TShison.sosenId" data-destDef="TShison.sosenMei:SOSEN_MEI"></span>
         </div>
         <div id="oyaSn">
           <label for="TShison.oyaSn" th:text="#{TShison.oyaSn}">親連番</label><span id="TShison.oyaSn"></span><input type="hidden" id="TShison.oyaSn" name="TShison.oyaSn" class="primaryKey" />

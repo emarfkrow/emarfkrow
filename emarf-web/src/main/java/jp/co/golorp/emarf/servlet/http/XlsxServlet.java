@@ -49,16 +49,16 @@ public final class XlsxServlet extends HttpServlet {
             throws ServletException, IOException {
 
         // sqlファイルの探索開始パスを取得
-        List<String> sqlPathes = ServletUtil.getSqlPathes(request);
+        List<String> pathes = ServletUtil.getPathes(request);
 
         // sqlファイル名の規定値を取得
-        String baseName = ServletUtil.getSqlBaseName(request);
+        String baseName = ServletUtil.getBaseName(request);
 
         Map<String, Object> map = null;
         try {
 
             BaseAction action = ServletUtil.getAction(request);
-            action.setSqlPathes(sqlPathes);
+            action.setPathes(pathes);
             action.setBaseName(baseName);
             action.setId(request.getSession().getAttribute("LOGIN_KEY").toString());
 
@@ -89,11 +89,12 @@ public final class XlsxServlet extends HttpServlet {
                 Class<?> c = Class.forName(className);
                 xlsxAction = (BaseAction) c.newInstance();
             } catch (Exception e1) {
+                LOG.error(e.getMessage(), e);
                 throw new SysError(e);
             }
         }
 
-        xlsxAction.setSqlPathes(sqlPathes);
+        xlsxAction.setPathes(pathes);
         xlsxAction.setBaseName(baseName);
         xlsxAction.setId(request.getSession().getAttribute("LOGIN_KEY").toString());
         Map<String, Object> xlsxMap = xlsxAction.run(map);
@@ -107,7 +108,7 @@ public final class XlsxServlet extends HttpServlet {
         String baseMei = request.getParameter("baseMei");
 
         // 一時エクセルを作成して出力・削除
-        String tempFilePath = XlsxUtil.getGeneratedPath(layoutFileName, layoutSheetMap, baseMei);
+        String tempFilePath = XlsxUtil.getGeneratedPath(pathes, layoutFileName, layoutSheetMap, baseMei);
         ServletUtil.respondDelete(response, tempFilePath);
     }
 

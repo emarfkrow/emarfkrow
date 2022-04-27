@@ -105,7 +105,7 @@ public final class HtmlGenerator {
             HtmlGenerator.htmlIndex(htmlDir, tableInfo);
 
             // 検索画面のGridColumnを出力
-            HtmlGenerator.htmlIndexGridColumns(gridDir, tableInfo);
+            HtmlGenerator.htmlGridColumns(gridDir, tableInfo);
 
             // 単画面を出力
             HtmlGenerator.htmlDetail(htmlDir, tableInfo);
@@ -158,12 +158,10 @@ public final class HtmlGenerator {
                 ++numberingCount;
             }
         }
-        String addStyle = "";
-        if (numberingCount >= 2) {
-            addStyle = " style=\"display: none;\""; // dialogのロード用にリンク自体は必要
+        if (numberingCount < 2) {
+            s.add("        <a th:href=\"@{/model/" + pascal + ".html}\" id=\"" + pascal
+                    + "\" target=\"dialog\" th:text=\"#{" + pascal + ".add}\" tabindex=\"-1\">" + remarks + "</a>");
         }
-        s.add("        <a href=\"./" + pascal + ".html\" id=\"" + pascal + "\" target=\"dialog\" th:text=\"#{"
-                + pascal + ".add}\" tabindex=\"-1\"" + addStyle + ">" + remarks + "</a>");
         s.add("      </div>");
         s.add("      <div class=\"submits\">");
         s.add("        <button id=\"Search" + pascal + "\" class=\"search\" data-gridId=\"" + pascal
@@ -184,7 +182,7 @@ public final class HtmlGenerator {
         }
         int frozenColumn = tableInfo.getPrimaryKeys().size() - 1;
         s.add("      <div id=\"" + gridId + "\" data-selectionMode=\"checkbox\"" + addRow + " data-frozenColumn=\""
-                + frozenColumn + "\"></div>");
+                + frozenColumn + "\" th:data-href=\"@{/model/" + pascal + ".html}\"></div>");
         s.add("      <div class=\"buttons\">");
         s.add("        <button type=\"button\" th:text=\"#{common.reset}\" onClick=\"$('[id=&quot;Search" + pascal
                 + "&quot;]').click();\">reset</button>");
@@ -208,13 +206,17 @@ public final class HtmlGenerator {
      * @param gridDir
      * @param tableInfo
      */
-    private static void htmlIndexGridColumns(final String gridDir, final TableInfo tableInfo) {
+    private static void htmlGridColumns(final String gridDir, final TableInfo tableInfo) {
 
         String tableName = tableInfo.getTableName();
         String entityName = StringUtil.toPascalCase(tableName);
 
         List<String> s = new ArrayList<String>();
-        s.add("var " + entityName + "GridColumns = [");
+        s.add("/**");
+        s.add(" * " + tableInfo.getRemarks() + "グリッド定義");
+        s.add(" */");
+        s.add("");
+        s.add("let " + entityName + "GridColumns = [");
 
         for (ColumnInfo columnInfo : tableInfo.getColumnInfos().values()) {
             String columnName = columnInfo.getColumnName();
@@ -279,8 +281,7 @@ public final class HtmlGenerator {
             } else if (StringUtil.endsWith(inputTimeSuffixs, lower)) {
                 c = "Column.time('" + field + "', " + name + ", " + width + ", '" + css + "', " + formatter + "),";
             } else if (StringUtil.endsWith(optionsSuffixs, lower)) {
-                String options = "{ json: '" + json + "', paramkey: '" + optionParamKey
-                        + "', value: '" + optionValue
+                String options = "{ json: '" + json + "', paramkey: '" + optionParamKey + "', value: '" + optionValue
                         + "', label: '" + optionLabel + "' }";
                 c = "Column.select('" + field + "', " + name + ", " + width + ", '" + css + "', " + options + "),";
             } else if (StringUtil.endsWith(textareaSuffixs, lower)) {
@@ -341,14 +342,14 @@ public final class HtmlGenerator {
         for (TableInfo childInfo : tableInfo.getChildInfos()) {
             String childName = childInfo.getTableName();
             String pascal = StringUtil.toPascalCase(childName);
-            String href = "./" + pascal + ".html";
             String frozen = String.valueOf(tableInfo.getPrimaryKeys().size());
             s.add("      <h3 th:text=\"#{" + pascal + ".h3}\">h3</h3>");
-            s.add("      <a href=\"" + href + "\" id=\"" + pascal + "\" target=\"dialog\" th:text=\"#{" + pascal
-                    + ".add}\" class=\"addChild\" tabindex=\"-1\">" + childInfo.getRemarks() + "</a>");
+            s.add("      <a th:href=\"@{/model/" + pascal + ".html}\" id=\"" + pascal
+                    + "\" target=\"dialog\" th:text=\"#{" + pascal + ".add}\" class=\"addChild\" tabindex=\"-1\">"
+                    + childInfo.getRemarks() + "</a>");
             s.add("      <div id=\"" + pascal
                     + "Grid\" data-selectionMode=\"link\" data-addRow=\"true\" data-frozenColumn=\"" + frozen
-                    + "\"></div>");
+                    + "\" th:data-href=\"@{/model/" + pascal + ".html}\"></div>");
         }
         s.add("      <div class=\"buttons\">");
         s.add("        <button type=\"button\" th:text=\"#{common.reset}\" onClick=\"Dialogate.refresh(event);\">reset</button>");
@@ -445,8 +446,8 @@ public final class HtmlGenerator {
                     String referName = StringUtil.toPascalCase(referInfo.getTableName());
 
                     // 参照モデルの場合は参照リンクを出力しておき、照会画面ではjsで非表示にする
-                    tag += "<a id=\"" + id + "\" href=\"./" + referName
-                            + "S.html\" target=\"dialog\" class=\"primaryKey refer\" th:text=\"#{common.refer}\" tabindex=\"-1\">...</a>";
+                    tag += "<a id=\"" + id + "\" th:href=\"@{/model/" + referName
+                            + "S.html}\" target=\"dialog\" class=\"primaryKey refer\" th:text=\"#{common.refer}\" tabindex=\"-1\">...</a>";
 
                     String meiColumnName = getMeiColumnName(columnName);
                     if (!tableInfo.getColumnInfos().containsKey(meiColumnName)) {
@@ -510,8 +511,8 @@ public final class HtmlGenerator {
                     tag += "<label for=\"" + id + "\" th:text=\"#{" + id + "}\">" + remarks + "</label>";
                     tag += "<input type=\"" + type + "\" id=\"" + id + "\" name=\"" + id + "\" maxlength=\"" + max
                             + "\"" + css + referDef + "" + " />";
-                    tag += "<a id=\"" + id + "\" href=\"./" + referName
-                            + "S.html\" target=\"dialog\" class=\"refer\" th:text=\"#{common.refer}\" tabindex=\"-1\">...</a>";
+                    tag += "<a id=\"" + id + "\" th:href=\"@{/model/" + referName
+                            + "S.html}\" target=\"dialog\" class=\"refer\" th:text=\"#{common.refer}\" tabindex=\"-1\">...</a>";
 
                     String meiColumnName = getMeiColumnName(columnName);
                     if (!tableInfo.getColumnInfos().containsKey(meiColumnName)) {

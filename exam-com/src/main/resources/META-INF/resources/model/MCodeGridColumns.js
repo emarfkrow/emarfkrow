@@ -1,4 +1,8 @@
-var MCodeGridColumns = [
+/**
+ * コードマスタグリッド定義
+ */
+
+let MCodeGridColumns = [
     Column.cell('CODE_NM', Messages['MCodeGrid.codeNm'], 200, 'primaryKey', null),
     Column.text('CODE_MEI', Messages['MCodeGrid.codeMei'], 300, '', null),
     Column.cell('INSERT_DT', Messages['MCodeGrid.insertDt'], 230, 'metaInfo', Slick.Formatters.Extends.DateTime),

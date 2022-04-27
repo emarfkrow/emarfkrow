@@ -1,4 +1,8 @@
-var TShisonGridColumns = [
+/**
+ * 子孫グリッド定義
+ */
+
+let TShisonGridColumns = [
     Column.refer('SOSEN_ID', Messages['TShisonGrid.sosenId'], 100, 'primaryKey', 'SOSEN_MEI'),
     Column.cell('OYA_SN', Messages['TShisonGrid.oyaSn'], 100, 'primaryKey', null),
     Column.cell('ENTITY_SN', Messages['TShisonGrid.entitySn'], 100, 'primaryKey', null),

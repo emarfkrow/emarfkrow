@@ -29,7 +29,7 @@
       </fieldset>
       <div class="buttons">
         <button type="reset" th:text="#{common.reset}">reset</button>
-        <a href="./TSosen.html" id="TSosen" target="dialog" th:text="#{TSosen.add}" tabindex="-1">祖先</a>
+        <a th:href="@{/model/TSosen.html}" id="TSosen" target="dialog" th:text="#{TSosen.add}" tabindex="-1">祖先</a>
       </div>
       <div class="submits">
         <button id="SearchTSosen" class="search" data-gridId="TSosenGrid" th:text="#{common.search}">submit</button>
@@ -37,7 +37,7 @@
     </form>
     <form name="TSosenSRegistForm" action="TSosenSRegist.ajax" class="regist">
       <h3 th:text="#{TSosen.h3}">h3</h3>
-      <div id="TSosenGrid" data-selectionMode="checkbox" data-addRow="true" data-frozenColumn="0"></div>
+      <div id="TSosenGrid" data-selectionMode="checkbox" data-addRow="true" data-frozenColumn="0" th:data-href="@{/model/TSosen.html}"></div>
       <div class="buttons">
         <button type="button" th:text="#{common.reset}" onClick="$('[id=&quot;SearchTSosen&quot;]').click();">reset</button>
         <a th:href="@{TSosenSearch.xlsx(baseMei=#{TSosenS.h2})}" id="TSosenSearch.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>

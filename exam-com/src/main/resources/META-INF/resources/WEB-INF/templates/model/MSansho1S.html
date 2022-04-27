@@ -29,7 +29,7 @@
       </fieldset>
       <div class="buttons">
         <button type="reset" th:text="#{common.reset}">reset</button>
-        <a href="./MSansho1.html" id="MSansho1" target="dialog" th:text="#{MSansho1.add}" tabindex="-1">参照１マスタ</a>
+        <a th:href="@{/model/MSansho1.html}" id="MSansho1" target="dialog" th:text="#{MSansho1.add}" tabindex="-1">参照１マスタ</a>
       </div>
       <div class="submits">
         <button id="SearchMSansho1" class="search" data-gridId="MSansho1Grid" th:text="#{common.search}">submit</button>
@@ -37,7 +37,7 @@
     </form>
     <form name="MSansho1SRegistForm" action="MSansho1SRegist.ajax" class="regist">
       <h3 th:text="#{MSansho1.h3}">h3</h3>
-      <div id="MSansho1Grid" data-selectionMode="checkbox" data-addRow="true" data-frozenColumn="0"></div>
+      <div id="MSansho1Grid" data-selectionMode="checkbox" data-addRow="true" data-frozenColumn="0" th:data-href="@{/model/MSansho1.html}"></div>
       <div class="buttons">
         <button type="button" th:text="#{common.reset}" onClick="$('[id=&quot;SearchMSansho1&quot;]').click();">reset</button>
         <a th:href="@{MSansho1Search.xlsx(baseMei=#{MSansho1S.h2})}" id="MSansho1Search.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>

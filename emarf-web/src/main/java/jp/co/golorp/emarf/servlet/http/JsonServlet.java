@@ -9,6 +9,10 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -23,6 +27,9 @@ import jp.co.golorp.emarf.messageresolver.MessageResolver;
 public final class JsonServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
+
+    /** logger */
+    private static final Logger LOG = LoggerFactory.getLogger(JsonServlet.class);
 
     /**
      * @see HttpServlet#HttpServlet()
@@ -49,23 +56,29 @@ public final class JsonServlet extends HttpServlet {
         }
 
         // sqlファイルの探索開始パスを取得
-        List<String> sqlPathes = ServletUtil.getSqlPathes(request);
+        List<String> sqlPathes = ServletUtil.getPathes(request);
 
         // sqlファイル名の規定値を取得
-        String baseName = ServletUtil.getSqlBaseName(request);
+        String baseName = ServletUtil.getBaseName(request);
+
+        HttpSession session = request.getSession();
+        Object loginKey = session.getAttribute("LOGIN_KEY");
 
         Map<String, Object> map = null;
         try {
 
             BaseAction action = ServletUtil.getAction(request);
-            action.setSqlPathes(sqlPathes);
+            action.setPathes(sqlPathes);
             action.setBaseName(baseName);
-            action.setId(request.getSession().getAttribute("LOGIN_KEY").toString());
+            if (loginKey != null) {
+                action.setId(session.getAttribute("LOGIN_KEY").toString());
+            }
 
             Map<String, Object> postJson = ServletUtil.getPostJson(request);
             map = action.run(postJson);
 
         } catch (Exception e) {
+            LOG.error(e.getMessage(), e);
             throw new SysError(e);
         }
 

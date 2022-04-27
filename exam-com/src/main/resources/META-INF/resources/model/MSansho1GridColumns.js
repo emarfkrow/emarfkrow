@@ -1,4 +1,8 @@
-var MSansho1GridColumns = [
+/**
+ * 参照１マスタグリッド定義
+ */
+
+let MSansho1GridColumns = [
     Column.cell('SANSHO1_ID', Messages['MSansho1Grid.sansho1Id'], 100, 'primaryKey', null),
     Column.text('SANSHO1_MEI', Messages['MSansho1Grid.sansho1Mei'], 300, '', null),
     Column.cell('INSERT_DT', Messages['MSansho1Grid.insertDt'], 230, 'metaInfo', Slick.Formatters.Extends.DateTime),

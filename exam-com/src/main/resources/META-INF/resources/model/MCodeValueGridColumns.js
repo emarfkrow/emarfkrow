@@ -1,4 +1,8 @@
-var MCodeValueGridColumns = [
+/**
+ * コード値マスタグリッド定義
+ */
+
+let MCodeValueGridColumns = [
     Column.cell('CODE_NM', Messages['MCodeValueGrid.codeNm'], 200, 'primaryKey', null),
     Column.cell('CODE_VALUE', Messages['MCodeValueGrid.codeValue'], 20, 'primaryKey', null),
     Column.text('CODE_VALUE_MEI', Messages['MCodeValueGrid.codeValueMei'], 300, '', null),

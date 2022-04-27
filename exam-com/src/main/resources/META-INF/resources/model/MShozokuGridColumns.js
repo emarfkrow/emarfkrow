@@ -1,4 +1,8 @@
-var MShozokuGridColumns = [
+/**
+ * 所属マスタグリッド定義
+ */
+
+let MShozokuGridColumns = [
     Column.refer('BUSHO_ID', Messages['MShozokuGrid.bushoId'], 100, 'primaryKey', 'BUSHO_MEI'),
     Column.refer('SHOKUI_ID', Messages['MShozokuGrid.shokuiId'], 100, 'primaryKey', 'SHOKUI_MEI'),
     Column.refer('USER_ID', Messages['MShozokuGrid.userId'], 100, 'primaryKey', 'USER_MEI'),

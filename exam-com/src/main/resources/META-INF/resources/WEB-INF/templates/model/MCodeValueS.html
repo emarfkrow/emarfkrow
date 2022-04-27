@@ -16,7 +16,7 @@
       <fieldset>
         <legend th:text="#{MCodeValueS.legend}">legend</legend>
         <div id="codeNm">
-          <label for="MCodeValue.codeNm" th:text="#{MCodeValue.codeNm}">コード名称</label><input type="text" id="MCodeValue.codeNm" name="MCodeValue.codeNm" maxlength="20" /><a id="MCodeValue.codeNm" href="./MCodeS.html" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a>
+          <label for="MCodeValue.codeNm" th:text="#{MCodeValue.codeNm}">コード名称</label><input type="text" id="MCodeValue.codeNm" name="MCodeValue.codeNm" maxlength="20" /><a id="MCodeValue.codeNm" th:href="@{/model/MCodeS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a>
         </div>
         <div id="codeValue">
           <label for="MCodeValue.codeValue" th:text="#{MCodeValue.codeValue}">コード値</label><input type="text" id="MCodeValue.codeValue" name="MCodeValue.codeValue" maxlength="2" />
@@ -38,7 +38,7 @@
       </fieldset>
       <div class="buttons">
         <button type="reset" th:text="#{common.reset}">reset</button>
-        <a href="./MCodeValue.html" id="MCodeValue" target="dialog" th:text="#{MCodeValue.add}" tabindex="-1">コード値マスタ</a>
+        <a th:href="@{/model/MCodeValue.html}" id="MCodeValue" target="dialog" th:text="#{MCodeValue.add}" tabindex="-1">コード値マスタ</a>
       </div>
       <div class="submits">
         <button id="SearchMCodeValue" class="search" data-gridId="MCodeValueGrid" th:text="#{common.search}">submit</button>
@@ -46,7 +46,7 @@
     </form>
     <form name="MCodeValueSRegistForm" action="MCodeValueSRegist.ajax" class="regist">
       <h3 th:text="#{MCodeValue.h3}">h3</h3>
-      <div id="MCodeValueGrid" data-selectionMode="checkbox" data-frozenColumn="1"></div>
+      <div id="MCodeValueGrid" data-selectionMode="checkbox" data-frozenColumn="1" th:data-href="@{/model/MCodeValue.html}"></div>
       <div class="buttons">
         <button type="button" th:text="#{common.reset}" onClick="$('[id=&quot;SearchMCodeValue&quot;]').click();">reset</button>
         <a th:href="@{MCodeValueSearch.xlsx(baseMei=#{MCodeValueS.h2})}" id="MCodeValueSearch.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>

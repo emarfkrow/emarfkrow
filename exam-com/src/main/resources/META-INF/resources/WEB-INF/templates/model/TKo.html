@@ -16,7 +16,7 @@
       <fieldset>
         <legend th:text="#{TKo.legend}">legend</legend>
         <div id="sosenId">
-          <label for="TKo.sosenId" th:text="#{TKo.sosenId}">祖先ID</label><span id="TKo.sosenId"></span><input type="hidden" id="TKo.sosenId" name="TKo.sosenId" class="primaryKey" /><a id="TKo.sosenId" href="./TSosenS.html" target="dialog" class="primaryKey refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="TKo.sosenMei" class="refer" data-json="TSosenSearch.json" data-srcDef="SOSEN_ID:TKo.sosenId" data-destDef="TKo.sosenMei:SOSEN_MEI"></span>
+          <label for="TKo.sosenId" th:text="#{TKo.sosenId}">祖先ID</label><span id="TKo.sosenId"></span><input type="hidden" id="TKo.sosenId" name="TKo.sosenId" class="primaryKey" /><a id="TKo.sosenId" th:href="@{/model/TSosenS.html}" target="dialog" class="primaryKey refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="TKo.sosenMei" class="refer" data-json="TSosenSearch.json" data-srcDef="SOSEN_ID:TKo.sosenId" data-destDef="TKo.sosenMei:SOSEN_MEI"></span>
         </div>
         <div id="oyaSn">
           <label for="TKo.oyaSn" th:text="#{TKo.oyaSn}">親連番</label><span id="TKo.oyaSn"></span><input type="hidden" id="TKo.oyaSn" name="TKo.oyaSn" class="primaryKey" />
@@ -49,8 +49,8 @@
         </div>
       </fieldset>
       <h3 th:text="#{TShison.h3}">h3</h3>
-      <a href="./TShison.html" id="TShison" target="dialog" th:text="#{TShison.add}" class="addChild" tabindex="-1">子孫</a>
-      <div id="TShisonGrid" data-selectionMode="link" data-addRow="true" data-frozenColumn="4"></div>
+      <a th:href="@{/model/TShison.html}" id="TShison" target="dialog" th:text="#{TShison.add}" class="addChild" tabindex="-1">子孫</a>
+      <div id="TShisonGrid" data-selectionMode="link" data-addRow="true" data-frozenColumn="4" th:data-href="@{/model/TShison.html}"></div>
       <div class="buttons">
         <button type="button" th:text="#{common.reset}" onClick="Dialogate.refresh(event);">reset</button>
         <a th:href="@{TKoGet.xlsx(baseMei=#{TKo.h2})}" id="TKoGet.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>

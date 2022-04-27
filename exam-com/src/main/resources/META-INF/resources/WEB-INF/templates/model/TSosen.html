@@ -40,8 +40,8 @@
         </div>
       </fieldset>
       <h3 th:text="#{TOya.h3}">h3</h3>
-      <a href="./TOya.html" id="TOya" target="dialog" th:text="#{TOya.add}" class="addChild" tabindex="-1">親</a>
-      <div id="TOyaGrid" data-selectionMode="link" data-addRow="true" data-frozenColumn="1"></div>
+      <a th:href="@{/model/TOya.html}" id="TOya" target="dialog" th:text="#{TOya.add}" class="addChild" tabindex="-1">親</a>
+      <div id="TOyaGrid" data-selectionMode="link" data-addRow="true" data-frozenColumn="1" th:data-href="@{/model/TOya.html}"></div>
       <div class="buttons">
         <button type="button" th:text="#{common.reset}" onClick="Dialogate.refresh(event);">reset</button>
         <a th:href="@{TSosenGet.xlsx(baseMei=#{TSosen.h2})}" id="TSosenGet.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>

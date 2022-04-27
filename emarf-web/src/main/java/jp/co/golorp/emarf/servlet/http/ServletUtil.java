@@ -65,7 +65,7 @@ public final class ServletUtil {
      * @param request
      * @return List<String>
      */
-    public static List<String> getSqlPathes(final HttpServletRequest request) {
+    public static List<String> getPathes(final HttpServletRequest request) {
         List<String> sqlPathes = new ArrayList<String>();
         String servletPath = request.getServletPath();
         String[] servletPathes = servletPath.split("/");
@@ -83,7 +83,7 @@ public final class ServletUtil {
      * @param request
      * @return String
      */
-    public static String getSqlBaseName(final HttpServletRequest request) {
+    public static String getBaseName(final HttpServletRequest request) {
         String servletPath = request.getServletPath();
         String[] servletPathes = servletPath.split("/");
         String lastPath = servletPathes[servletPathes.length - 1];

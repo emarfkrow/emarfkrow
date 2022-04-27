@@ -1,4 +1,8 @@
-var MUserGridColumns = [
+/**
+ * ユーザマスタグリッド定義
+ */
+
+let MUserGridColumns = [
     Column.cell('USER_ID', Messages['MUserGrid.userId'], 100, 'primaryKey', null),
     Column.text('USER_SEI', Messages['MUserGrid.userSei'], 300, '', null),
     Column.text('USER_MEI', Messages['MUserGrid.userMei'], 300, '', null),

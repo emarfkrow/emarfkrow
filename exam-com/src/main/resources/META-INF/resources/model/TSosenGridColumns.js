@@ -1,4 +1,8 @@
-var TSosenGridColumns = [
+/**
+ * 祖先グリッド定義
+ */
+
+let TSosenGridColumns = [
     Column.cell('SOSEN_ID', Messages['TSosenGrid.sosenId'], 100, 'primaryKey', null),
     Column.text('SOSEN_MEI', Messages['TSosenGrid.sosenMei'], 300, '', null),
     Column.cell('INSERT_DT', Messages['TSosenGrid.insertDt'], 230, 'metaInfo', Slick.Formatters.Extends.DateTime),

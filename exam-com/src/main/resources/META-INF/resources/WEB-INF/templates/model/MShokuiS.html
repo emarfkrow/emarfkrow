@@ -38,7 +38,7 @@
       </fieldset>
       <div class="buttons">
         <button type="reset" th:text="#{common.reset}">reset</button>
-        <a href="./MShokui.html" id="MShokui" target="dialog" th:text="#{MShokui.add}" tabindex="-1">職位マスタ</a>
+        <a th:href="@{/model/MShokui.html}" id="MShokui" target="dialog" th:text="#{MShokui.add}" tabindex="-1">職位マスタ</a>
       </div>
       <div class="submits">
         <button id="SearchMShokui" class="search" data-gridId="MShokuiGrid" th:text="#{common.search}">submit</button>
@@ -46,7 +46,7 @@
     </form>
     <form name="MShokuiSRegistForm" action="MShokuiSRegist.ajax" class="regist">
       <h3 th:text="#{MShokui.h3}">h3</h3>
-      <div id="MShokuiGrid" data-selectionMode="checkbox" data-addRow="true" data-frozenColumn="0"></div>
+      <div id="MShokuiGrid" data-selectionMode="checkbox" data-addRow="true" data-frozenColumn="0" th:data-href="@{/model/MShokui.html}"></div>
       <div class="buttons">
         <button type="button" th:text="#{common.reset}" onClick="$('[id=&quot;SearchMShokui&quot;]').click();">reset</button>
         <a th:href="@{MShokuiSearch.xlsx(baseMei=#{MShokuiS.h2})}" id="MShokuiSearch.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>

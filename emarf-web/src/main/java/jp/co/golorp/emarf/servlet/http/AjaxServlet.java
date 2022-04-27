@@ -47,16 +47,16 @@ public final class AjaxServlet extends HttpServlet {
             throws ServletException, IOException {
 
         // sqlファイルの探索開始パスを取得
-        List<String> sqlPathes = ServletUtil.getSqlPathes(request);
+        List<String> sqlPathes = ServletUtil.getPathes(request);
 
         // sqlファイル名の規定値を取得
-        String baseName = ServletUtil.getSqlBaseName(request);
+        String baseName = ServletUtil.getBaseName(request);
 
         Map<String, Object> map = null;
         try {
 
             BaseAction action = ServletUtil.getAction(request);
-            action.setSqlPathes(sqlPathes);
+            action.setPathes(sqlPathes);
             action.setBaseName(baseName);
             action.setId(request.getSession().getAttribute("LOGIN_KEY").toString());
 

@@ -1,4 +1,8 @@
-var MNinkaGridColumns = [
+/**
+ * 認可マスタグリッド定義
+ */
+
+let MNinkaGridColumns = [
     Column.refer('BUSHO_ID', Messages['MNinkaGrid.bushoId'], 100, 'primaryKey', 'BUSHO_MEI'),
     Column.refer('SHOKUI_ID', Messages['MNinkaGrid.shokuiId'], 100, 'primaryKey', 'SHOKUI_MEI'),
     Column.cell('GAMEN_NM', Messages['MNinkaGrid.gamenNm'], 200, 'primaryKey', null),

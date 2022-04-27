@@ -5,6 +5,8 @@
 <title>検索画面</title>
 <style type="text/css">
 </style>
+<script src="./D0001GridColumns.js"></script>
+<script src="./D0004GridColumns.js"></script>
 <script type="text/javascript">
 
 </script>
@@ -14,47 +16,57 @@
     <h2>検索画面</h2>
     <form name="D0001SearchForm" action="D0001Search.ajax" class="search">
       <fieldset>
-        <legend>検索条件</legend>
-        <div id="sosenId">
-          <label for="sosenId">祖先ID</label><input type="text" id="sosenId" name="sosenId" maxlength="10" data-json="TSosenSearch.json" data-srcDef="SOSEN_ID:sosenId" data-destDef="sosenMei:SOSEN_MEI" /><a id="sosenId" href="../model/TSosenS.html" target="dialog" class="refer" tabindex="-1">...</a><span id="sosenMei" class="refer" data-json="TSosenSearch.json" data-srcDef="SOSEN_ID:sosenId" data-destDef="sosenMei:SOSEN_MEI"></span>
+        <legend>エンティティ検索条件</legend>
+        <div>
+          <label for="sosenId">祖先ID</label><input type="text" id="sosenId" name="sosenId" maxlength="10" data-json="TSosenSearch.json" data-srcDef="SOSEN_ID:sosenId" data-destDef="sosenMei:SOSEN_MEI" /><a id="sosenId" th:href="@{/model/TSosenS.html}" target="dialog" class="refer" tabindex="-1">...</a><span id="sosenMei" class="refer" data-json="TSosenSearch.json" data-srcDef="SOSEN_ID:sosenId" data-destDef="sosenMei:SOSEN_MEI"></span>
         </div>
         <div>
-          <label for="entityMei">エンティティ名</label><input type="text" id="entityMei" name="entityMei" />
+          <label for="oyaSn">親連番</label><input type="text" id="oyaSn" name="oyaSn" maxlength="10" />
         </div>
         <div>
-          <fieldset id="checkFList" data-options="MCodeValueSearch.json" data-optionParams="code_nm:check_f" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
-            <legend>checkbox</legend>
+          <label for="entitySn">エンティティ連番</label><input type="text" id="entitySn" name="entitySn" maxlength="10" />
+        </div>
+        <div>
+          <label for="entityMei">エンティティ名</label><input type="text" id="entityMei" name="entityMei" maxlength="30" />
+        </div>
+        <div>
+          <label for="sansho1Id">参照１ID</label><input type="text" id="sansho1Id" name="sansho1Id" maxlength="10" data-json="MSansho1Search.json" data-srcDef="SANSHO1_ID:sansho1Id" data-destDef="sansho1Mei:SANSHO1_MEI" /><a id="sansho1Id" th:href="@{/model/MSansho1S.html}" target="dialog" class="refer" tabindex="-1">...</a>
+        </div>
+        <div>
+          <label for="sansho1Mei">参照１名</label><input type="text" id="sansho1Mei" name="sansho1Mei" maxlength="30" />
+        </div>
+        <div>
+          <label for="sansho2Id">参照２ID</label><input type="text" id="sansho2Id" name="sansho2Id" maxlength="10" data-json="MSansho2Search.json" data-srcDef="SANSHO2_ID:sansho2Id" data-destDef="sansho2Mei:SANSHO2_MEI" /><a id="sansho2Id" th:href="@{/model/MSansho2S.html}" target="dialog" class="refer" tabindex="-1">...</a>
+        </div>
+        <div>
+          <label for="sansho2Mei">参照２名</label><input type="text" id="sansho2Mei" name="sansho2Mei" maxlength="30" />
+        </div>
+        <div>
+          <label for="betsuSansho1Id">別参照１ID</label><input type="text" id="betsuSansho1Id" name="betsuSansho1Id" maxlength="10" data-json="MSansho1Search.json" data-srcDef="SANSHO1_ID:betsuSansho1Id" data-destDef="betsuSansho1Mei:SANSHO1_MEI" /><a id="betsuSansho1Id" th:href="@{/model/MSansho1S.html}" target="dialog" class="refer" tabindex="-1">...</a>
+        </div>
+        <div>
+          <label for="betsuSansho1Mei">別参照１名</label><input type="text" id="betsuSansho1Mei" name="betsuSansho1Mei" maxlength="30" />
+        </div>
+        <div>
+          <fieldset id="deleteFList" data-options="MCodeValueSearch.json" data-optionParams="code_nm:delete_f" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend>削除フラグ</legend>
           </fieldset>
-        </div>
-        <div>
-          <fieldset id="radioList" data-options="MCodeValueSearch.json" data-optionParams="code_nm:radio_kb" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
-            <legend>radio</legend>
-          </fieldset>
-        </div>
-        <div>
-          <label for="select">select</label><select id="select" name="select" data-options="MCodeValueSearch.json" data-optionParams="code_nm:pulldown_kb" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
-          </select>
         </div>
       </fieldset>
       <div class="buttons">
-        <button type="reset">reset</button>
-        <button type="button">button</button>
+        <button type="reset">リセット</button>
       </div>
       <div class="submits">
-        <button type="button">button</button>
-        <button id="ReferD0001" data-gridId="D0001Grid">submit</button>
+        <button id="SearchD0001" class="search" data-gridId="D0001Grid">検索</button>
       </div>
     </form>
-    <form name="D0001RegistForm" action="D0001Regist.ajax?hoge=hoge">
-      <div id="D0001Grid" style="height: 500px;" data-frozenColumn="3" data-selectionMode="checkbox"></div>
+    <form name="D0001RegistForm" action="D0001Regist.ajax" class="regist">
+      <h3>検索結果</h3>
+      <div id="D0001Grid" data-selectionMode="link" data-frozenColumn="2" data-editable="false" th:data-href="@{./D0002.html}"></div>
       <div class="buttons">
-        <button type="reset">reset</button>
-        <button type="button">button</button>
+        <a th:href="@{D0001Search.xlsx(baseMei=検索画面)}" id="D0001Search.xlsx" tabindex="-1">エクセル出力</a>
       </div>
-      <div class="submits">
-        <button type="button">button</button>
-        <button id="RegistD0001">submit</button>
-      </div>
+      <div class="submits"></div>
     </form>
   </div>
 </body>

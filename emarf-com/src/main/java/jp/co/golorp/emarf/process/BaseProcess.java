@@ -12,23 +12,21 @@ import jp.co.golorp.emarf.util.Messages;
 
 public class BaseProcess {
 
-    /**
-     * SQLファイルのディレクトリ
-     */
-    private List<String> sqlPathes = new ArrayList<String>();
+    /** リクエストのパス構成 */
+    private List<String> pathes = new ArrayList<String>();
 
     /**
      * @return List
      */
-    public List<String> getSqlPathes() {
-        return sqlPathes;
+    public List<String> getPathes() {
+        return pathes;
     }
 
     /**
      * @param strings
      */
-    public void setSqlPathes(final List<String> strings) {
-        this.sqlPathes = strings;
+    public void setPathes(final List<String> strings) {
+        this.pathes = strings;
     }
 
     /**
@@ -36,7 +34,7 @@ public class BaseProcess {
      * @return sql
      */
     public String loadSqlFile(final String sqlName) {
-        return Queries.loadSqlFile(this.getSqlPathes(), this.getClass(), sqlName);
+        return Queries.loadSqlFile(this.getPathes(), this.getClass(), sqlName);
     }
 
     /**

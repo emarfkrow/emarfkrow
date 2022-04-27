@@ -16,7 +16,7 @@
       <fieldset>
         <legend th:text="#{TKoS.legend}">legend</legend>
         <div id="sosenId">
-          <label for="TKo.sosenId" th:text="#{TKo.sosenId}">祖先ID</label><input type="text" id="TKo.sosenId" name="TKo.sosenId" maxlength="10" data-json="TSosenSearch.json" data-srcDef="SOSEN_ID:TKo.sosenId" data-destDef="TKo.sosenMei:SOSEN_MEI" /><a id="TKo.sosenId" href="./TSosenS.html" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="TKo.sosenMei" class="refer" data-json="TSosenSearch.json" data-srcDef="SOSEN_ID:TKo.sosenId" data-destDef="TKo.sosenMei:SOSEN_MEI"></span>
+          <label for="TKo.sosenId" th:text="#{TKo.sosenId}">祖先ID</label><input type="text" id="TKo.sosenId" name="TKo.sosenId" maxlength="10" data-json="TSosenSearch.json" data-srcDef="SOSEN_ID:TKo.sosenId" data-destDef="TKo.sosenMei:SOSEN_MEI" /><a id="TKo.sosenId" th:href="@{/model/TSosenS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="TKo.sosenMei" class="refer" data-json="TSosenSearch.json" data-srcDef="SOSEN_ID:TKo.sosenId" data-destDef="TKo.sosenMei:SOSEN_MEI"></span>
         </div>
         <div id="oyaSn">
           <label for="TKo.oyaSn" th:text="#{TKo.oyaSn}">親連番</label><input type="text" id="TKo.oyaSn" name="TKo.oyaSn" maxlength="10" />
@@ -38,7 +38,6 @@
       </fieldset>
       <div class="buttons">
         <button type="reset" th:text="#{common.reset}">reset</button>
-        <a href="./TKo.html" id="TKo" target="dialog" th:text="#{TKo.add}" tabindex="-1" style="display: none;">子</a>
       </div>
       <div class="submits">
         <button id="SearchTKo" class="search" data-gridId="TKoGrid" th:text="#{common.search}">submit</button>
@@ -46,7 +45,7 @@
     </form>
     <form name="TKoSRegistForm" action="TKoSRegist.ajax" class="regist">
       <h3 th:text="#{TKo.h3}">h3</h3>
-      <div id="TKoGrid" data-selectionMode="checkbox" data-frozenColumn="3"></div>
+      <div id="TKoGrid" data-selectionMode="checkbox" data-frozenColumn="3" th:data-href="@{/model/TKo.html}"></div>
       <div class="buttons">
         <button type="button" th:text="#{common.reset}" onClick="$('[id=&quot;SearchTKo&quot;]').click();">reset</button>
         <a th:href="@{TKoSearch.xlsx(baseMei=#{TKoS.h2})}" id="TKoSearch.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>

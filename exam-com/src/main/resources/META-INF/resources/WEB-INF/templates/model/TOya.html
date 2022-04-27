@@ -16,7 +16,7 @@
       <fieldset>
         <legend th:text="#{TOya.legend}">legend</legend>
         <div id="sosenId">
-          <label for="TOya.sosenId" th:text="#{TOya.sosenId}">祖先ID</label><span id="TOya.sosenId"></span><input type="hidden" id="TOya.sosenId" name="TOya.sosenId" class="primaryKey" /><a id="TOya.sosenId" href="./TSosenS.html" target="dialog" class="primaryKey refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="TOya.sosenMei" class="refer" data-json="TSosenSearch.json" data-srcDef="SOSEN_ID:TOya.sosenId" data-destDef="TOya.sosenMei:SOSEN_MEI"></span>
+          <label for="TOya.sosenId" th:text="#{TOya.sosenId}">祖先ID</label><span id="TOya.sosenId"></span><input type="hidden" id="TOya.sosenId" name="TOya.sosenId" class="primaryKey" /><a id="TOya.sosenId" th:href="@{/model/TSosenS.html}" target="dialog" class="primaryKey refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="TOya.sosenMei" class="refer" data-json="TSosenSearch.json" data-srcDef="SOSEN_ID:TOya.sosenId" data-destDef="TOya.sosenMei:SOSEN_MEI"></span>
         </div>
         <div id="oyaSn">
           <label for="TOya.oyaSn" th:text="#{TOya.oyaSn}">親連番</label><span id="TOya.oyaSn"></span><input type="hidden" id="TOya.oyaSn" name="TOya.oyaSn" class="primaryKey" />
@@ -43,8 +43,8 @@
         </div>
       </fieldset>
       <h3 th:text="#{TEntity.h3}">h3</h3>
-      <a href="./TEntity.html" id="TEntity" target="dialog" th:text="#{TEntity.add}" class="addChild" tabindex="-1">エンティティ</a>
-      <div id="TEntityGrid" data-selectionMode="link" data-addRow="true" data-frozenColumn="2"></div>
+      <a th:href="@{/model/TEntity.html}" id="TEntity" target="dialog" th:text="#{TEntity.add}" class="addChild" tabindex="-1">エンティティ</a>
+      <div id="TEntityGrid" data-selectionMode="link" data-addRow="true" data-frozenColumn="2" th:data-href="@{/model/TEntity.html}"></div>
       <div class="buttons">
         <button type="button" th:text="#{common.reset}" onClick="Dialogate.refresh(event);">reset</button>
         <a th:href="@{TOyaGet.xlsx(baseMei=#{TOya.h2})}" id="TOyaGet.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>

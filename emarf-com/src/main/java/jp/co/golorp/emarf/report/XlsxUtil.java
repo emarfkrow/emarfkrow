@@ -33,18 +33,24 @@ public final class XlsxUtil {
 
     /**
      * 帳票エクセルを一時ディレクトリに作成し、パスを返す.
-     *
+     * @param pathes
      * @param layoutFileName レイアウトファイル名
      * @param layoutSheetMap   Map<レイアウトシート名, Map<追加するシート名, Map<データの名称, Object>>>
      * @param baseMei        保存ファイル接頭辞
      * @return 保存ファイルパス
      */
-    public static String getGeneratedPath(final String layoutFileName,
+    public static String getGeneratedPath(final List<String> pathes, final String layoutFileName,
             final Map<String, Map<String, Map<String, Object>>> layoutSheetMap, final String baseMei) {
 
         // テンプレートファイルのロック防止のため、テンプレートファイルを作業用ファイルにコピー
-        String layoutFilePath = App.get("context.path.layouts") + File.separator + layoutFileName;
+        String layoutFilePath = App.get("context.path.layouts") + File.separator + String.join(File.separator, pathes)
+                + File.separator + layoutFileName;
         File layoutFile = FileUtil.get(layoutFilePath);
+
+        if (!layoutFile.exists()) {
+            return getGeneratedPath(pathes, layoutFileName, layoutSheetMap, baseMei);
+        }
+
         Workbook layoutBook = XlsxUtil.getWorkbook(layoutFile);
         String extension = layoutFile.getName().replaceAll("^.+\\.", "");
         File workFile = XlsxUtil.write(layoutBook, baseMei, extension);

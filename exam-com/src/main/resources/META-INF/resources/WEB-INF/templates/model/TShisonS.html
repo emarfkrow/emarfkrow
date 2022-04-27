@@ -16,7 +16,7 @@
       <fieldset>
         <legend th:text="#{TShisonS.legend}">legend</legend>
         <div id="sosenId">
-          <label for="TShison.sosenId" th:text="#{TShison.sosenId}">祖先ID</label><input type="text" id="TShison.sosenId" name="TShison.sosenId" maxlength="10" data-json="TSosenSearch.json" data-srcDef="SOSEN_ID:TShison.sosenId" data-destDef="TShison.sosenMei:SOSEN_MEI" /><a id="TShison.sosenId" href="./TSosenS.html" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="TShison.sosenMei" class="refer" data-json="TSosenSearch.json" data-srcDef="SOSEN_ID:TShison.sosenId" data-destDef="TShison.sosenMei:SOSEN_MEI"></span>
+          <label for="TShison.sosenId" th:text="#{TShison.sosenId}">祖先ID</label><input type="text" id="TShison.sosenId" name="TShison.sosenId" maxlength="10" data-json="TSosenSearch.json" data-srcDef="SOSEN_ID:TShison.sosenId" data-destDef="TShison.sosenMei:SOSEN_MEI" /><a id="TShison.sosenId" th:href="@{/model/TSosenS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="TShison.sosenMei" class="refer" data-json="TSosenSearch.json" data-srcDef="SOSEN_ID:TShison.sosenId" data-destDef="TShison.sosenMei:SOSEN_MEI"></span>
         </div>
         <div id="oyaSn">
           <label for="TShison.oyaSn" th:text="#{TShison.oyaSn}">親連番</label><input type="text" id="TShison.oyaSn" name="TShison.oyaSn" maxlength="10" />
@@ -41,7 +41,6 @@
       </fieldset>
       <div class="buttons">
         <button type="reset" th:text="#{common.reset}">reset</button>
-        <a href="./TShison.html" id="TShison" target="dialog" th:text="#{TShison.add}" tabindex="-1" style="display: none;">子孫</a>
       </div>
       <div class="submits">
         <button id="SearchTShison" class="search" data-gridId="TShisonGrid" th:text="#{common.search}">submit</button>
@@ -49,7 +48,7 @@
     </form>
     <form name="TShisonSRegistForm" action="TShisonSRegist.ajax" class="regist">
       <h3 th:text="#{TShison.h3}">h3</h3>
-      <div id="TShisonGrid" data-selectionMode="checkbox" data-frozenColumn="4"></div>
+      <div id="TShisonGrid" data-selectionMode="checkbox" data-frozenColumn="4" th:data-href="@{/model/TShison.html}"></div>
       <div class="buttons">
         <button type="button" th:text="#{common.reset}" onClick="$('[id=&quot;SearchTShison&quot;]').click();">reset</button>
         <a th:href="@{TShisonSearch.xlsx(baseMei=#{TShisonS.h2})}" id="TShisonSearch.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>

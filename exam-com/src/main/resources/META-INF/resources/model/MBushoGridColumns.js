@@ -1,4 +1,8 @@
-var MBushoGridColumns = [
+/**
+ * 部署マスタグリッド定義
+ */
+
+let MBushoGridColumns = [
     Column.cell('BUSHO_ID', Messages['MBushoGrid.bushoId'], 100, 'primaryKey', null),
     Column.text('BUSHO_MEI', Messages['MBushoGrid.bushoMei'], 300, '', null),
     Column.date('KAISHI_YMD', Messages['MBushoGrid.kaishiYmd'], 100, '', null),
