@@ -52,7 +52,9 @@ let Jsonate = {
 
 			let tempData = [];
 			for (let r in gridData) {
-				if (JSON.stringify(gridData[r]) != JSON.stringify(grid.orgData[r])) {
+				if (!grid.orgData || !grid.orgData[r]) {
+					tempData.push(gridData[r]);
+				} else if (JSON.stringify(gridData[r]) != JSON.stringify(grid.orgData[r])) {
 					tempData.push(gridData[r]);
 				}
 			}

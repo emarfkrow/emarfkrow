@@ -617,11 +617,21 @@ public class TEntity implements IEntity {
      * @return 削除件数
      */
     public int delete() {
-        for (TKo tKo : this.tKos) {
-            tKo.delete();
+
+        if (this.tKos != null) {
+            for (TKo tKo : this.tKos) {
+                tKo.delete();
+            }
         }
+
+        if (this.tEntity2 != null) {
+            this.tEntity2.delete();
+        }
+
         String sql = "DELETE FROM t_entity WHERE " + getWhere();
+
         Map<String, Object> params = toMap(null, null);
+
         return Queries.regist(sql, params);
     }
 
