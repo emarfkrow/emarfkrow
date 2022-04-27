@@ -433,10 +433,10 @@ public class TEntity implements IEntity {
         }
 
         if (this.tEntity2 != null) {
-            tEntity2.setSosenId(this.getSosenId());
-            tEntity2.setOyaSn(this.getOyaSn());
-            tEntity2.setEntitySn(this.getEntitySn());
-            tEntity2.insert(now, id);
+            this.tEntity2.setSosenId(this.getSosenId());
+            this.tEntity2.setOyaSn(this.getOyaSn());
+            this.tEntity2.setEntitySn(this.getEntitySn());
+            this.tEntity2.insert(now, id);
         }
 
         // エンティティ履歴テーブルの登録

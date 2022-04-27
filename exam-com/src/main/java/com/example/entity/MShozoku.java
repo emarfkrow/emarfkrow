@@ -398,8 +398,11 @@ public class MShozoku implements IEntity {
      * @return 削除件数
      */
     public int delete() {
-        String sql = "DELETE FROM m_shozoku WHERE " + getWhere();
+
+        String sql = "DELETE FROM t_entity WHERE " + getWhere();
+
         Map<String, Object> params = toMap(null, null);
+
         return Queries.regist(sql, params);
     }
 

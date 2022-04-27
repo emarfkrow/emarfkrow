@@ -335,11 +335,17 @@ public class TSosen implements IEntity {
      * @return 削除件数
      */
     public int delete() {
-        for (TOya tOya : this.tOyas) {
-            tOya.delete();
+
+        if (this.tOyas != null) {
+            for (TOya tOya : this.tOyas) {
+                tOya.delete();
+            }
         }
-        String sql = "DELETE FROM t_sosen WHERE " + getWhere();
+
+        String sql = "DELETE FROM t_entity WHERE " + getWhere();
+
         Map<String, Object> params = toMap(null, null);
+
         return Queries.regist(sql, params);
     }
 

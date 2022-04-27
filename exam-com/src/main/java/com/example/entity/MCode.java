@@ -313,11 +313,17 @@ public class MCode implements IEntity {
      * @return 削除件数
      */
     public int delete() {
-        for (MCodeValue mCodeValue : this.mCodeValues) {
-            mCodeValue.delete();
+
+        if (this.mCodeValues != null) {
+            for (MCodeValue mCodeValue : this.mCodeValues) {
+                mCodeValue.delete();
+            }
         }
-        String sql = "DELETE FROM m_code WHERE " + getWhere();
+
+        String sql = "DELETE FROM t_entity WHERE " + getWhere();
+
         Map<String, Object> params = toMap(null, null);
+
         return Queries.regist(sql, params);
     }
 

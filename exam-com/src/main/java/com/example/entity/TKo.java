@@ -438,11 +438,17 @@ public class TKo implements IEntity {
      * @return 削除件数
      */
     public int delete() {
-        for (TShison tShison : this.tShisons) {
-            tShison.delete();
+
+        if (this.tShisons != null) {
+            for (TShison tShison : this.tShisons) {
+                tShison.delete();
+            }
         }
-        String sql = "DELETE FROM t_ko WHERE " + getWhere();
+
+        String sql = "DELETE FROM t_entity WHERE " + getWhere();
+
         Map<String, Object> params = toMap(null, null);
+
         return Queries.regist(sql, params);
     }
 
