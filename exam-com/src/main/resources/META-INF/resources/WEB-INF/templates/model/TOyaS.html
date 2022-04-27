@@ -11,7 +11,7 @@
 </head>
 <body>
   <div layout:fragment="article">
-    <h2 th:text="#{TOyaS.h2}"></h2>
+    <h2 th:text="#{TOyaS.h2}">h2</h2>
     <form name="TOyaSearchForm" action="TOyaSearch.ajax" class="search">
       <fieldset>
         <legend th:text="#{TOyaS.legend}">legend</legend>
@@ -44,6 +44,7 @@
       <div class="buttons">
         <button type="button" th:text="#{common.reset}" onClick="$('[id=&quot;SearchTOya&quot;]').click();">reset</button>
         <a th:href="@{TOyaSearch.xlsx(baseMei=#{TOyaS.h2})}" id="TOyaSearch.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeleteTOyaS" class="delete selectRows" data-action="TOyaSDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
       </div>
       <div class="submits">
         <button id="RegistTOyaS" class="regist" th:text="#{common.regist}">submit</button>

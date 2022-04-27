@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
 <head>
 <meta charset="UTF-8">
-<title th:text="#{TSosen.title}"></title>
+<title th:text="#{TSosen.title}">祖先</title>
 <style type="text/css">
 </style>
 <script type="text/javascript">
@@ -11,7 +11,7 @@
 </head>
 <body>
   <div layout:fragment="article">
-    <h2 th:text="#{TSosen.h2}"></h2>
+    <h2 th:text="#{TSosen.h2}">h2</h2>
     <form name="TSosenRegistForm" action="TSosenRegist.ajax" class="regist">
       <fieldset>
         <legend th:text="#{TSosen.legend}">legend</legend>

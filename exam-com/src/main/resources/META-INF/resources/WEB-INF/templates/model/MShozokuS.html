@@ -11,7 +11,7 @@
 </head>
 <body>
   <div layout:fragment="article">
-    <h2 th:text="#{MShozokuS.h2}"></h2>
+    <h2 th:text="#{MShozokuS.h2}">h2</h2>
     <form name="MShozokuSearchForm" action="MShozokuSearch.ajax" class="search">
       <fieldset>
         <legend th:text="#{MShozokuS.legend}">legend</legend>
@@ -50,6 +50,7 @@
       <div class="buttons">
         <button type="button" th:text="#{common.reset}" onClick="$('[id=&quot;SearchMShozoku&quot;]').click();">reset</button>
         <a th:href="@{MShozokuSearch.xlsx(baseMei=#{MShozokuS.h2})}" id="MShozokuSearch.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeleteMShozokuS" class="delete selectRows" data-action="MShozokuSDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
       </div>
       <div class="submits">
         <button id="RegistMShozokuS" class="regist" th:text="#{common.regist}">submit</button>

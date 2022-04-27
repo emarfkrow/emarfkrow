@@ -141,7 +141,7 @@ public final class HtmlGenerator {
         s.add("</head>");
         s.add("<body>");
         s.add("  <div layout:fragment=\"article\">");
-        s.add("    <h2 th:text=\"#{" + pageName + ".h2}\"></h2>");
+        s.add("    <h2 th:text=\"#{" + pageName + ".h2}\">h2</h2>");
         /* 検索フォーム */
         s.add("    <form name=\"" + pascal + "SearchForm\" action=\"" + pascal + "Search.ajax\" class=\"search\">");
         s.add("      <fieldset>");
@@ -188,6 +188,8 @@ public final class HtmlGenerator {
                 + "&quot;]').click();\">reset</button>");
         s.add("        <a th:href=\"@{" + pascal + "Search.xlsx(baseMei=#{" + pascal + "S.h2})}\" id=\"" + pascal
                 + "Search.xlsx\" th:text=\"#{common.xlsx}\" tabindex=\"-1\">xlsx</a>");
+        s.add("        <button id=\"Delete" + pascal + "S\" class=\"delete selectRows\" data-action=\"" + pascal
+                + "SDelete.ajax\" th:text=\"#{common.delete}\" tabindex=\"-1\">削除</button>");
         s.add("      </div>");
         s.add("      <div class=\"submits\">");
         s.add("        <button id=\"Regist" + pascal
@@ -307,13 +309,14 @@ public final class HtmlGenerator {
         String entityName = StringUtil.toPascalCase(tableName);
         String formName = entityName + "RegistForm";
         String action = entityName + "Regist.ajax";
+        String remarks = tableInfo.getRemarks();
 
         List<String> s = new ArrayList<String>();
         s.add("<!DOCTYPE html>");
         s.add("<html xmlns:th=\"http://www.thymeleaf.org\" xmlns:layout=\"http://www.ultraq.net.nz/web/thymeleaf/layout\" layout:decorate=\"~{common/base}\">");
         s.add("<head>");
         s.add("<meta charset=\"UTF-8\">");
-        s.add("<title th:text=\"#{" + entityName + ".title}\"></title>");
+        s.add("<title th:text=\"#{" + entityName + ".title}\">" + remarks + "</title>");
         s.add("<style type=\"text/css\">");
         s.add("</style>");
         s.add("<script type=\"text/javascript\">");
@@ -322,7 +325,7 @@ public final class HtmlGenerator {
         s.add("</head>");
         s.add("<body>");
         s.add("  <div layout:fragment=\"article\">");
-        s.add("    <h2 th:text=\"#{" + entityName + ".h2}\"></h2>");
+        s.add("    <h2 th:text=\"#{" + entityName + ".h2}\">h2</h2>");
         s.add("    <form name=\"" + formName + "\" action=\"" + action + "\" class=\"regist\">");
         s.add("      <fieldset>");
         s.add("        <legend th:text=\"#{" + entityName + ".legend}\">legend</legend>");

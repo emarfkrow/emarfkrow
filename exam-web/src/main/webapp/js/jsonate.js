@@ -13,7 +13,7 @@ let Jsonate = {
 		+ 'select:enabled, '
 		+ 'textarea:enabled',
 
-	toJson: function($form) {
+	toJson: function($form, isSelectRow) {
 
 		let formJson = {};
 
@@ -37,6 +37,27 @@ let Jsonate = {
 			let gridId = this.id;
 			let grid = Gridate.grids[gridId];
 			let gridData = grid.getData();
+
+			// 行選択指定の場合は、選択している行のみ
+			if (isSelectRow) {
+				let tempData = [];
+				if (grid.getSelectedRows().length > 0) {
+					for (let i in grid.getSelectedRows()) {
+						let r = grid.getSelectedRows()[i];
+						tempData.push(gridData[r]);
+					}
+				}
+				gridData = tempData;
+			}
+
+			let tempData = [];
+			for (let r in gridData) {
+				if (JSON.stringify(gridData[r]) != JSON.stringify(grid.orgData[r])) {
+					tempData.push(gridData[r]);
+				}
+			}
+			gridData = tempData;
+
 			let gridIds = gridId.split('.');
 			let gridName = gridIds[gridIds.length - 1];
 			formJson[gridName] = gridData;

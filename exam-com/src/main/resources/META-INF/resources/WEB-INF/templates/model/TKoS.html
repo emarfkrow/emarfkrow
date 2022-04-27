@@ -11,7 +11,7 @@
 </head>
 <body>
   <div layout:fragment="article">
-    <h2 th:text="#{TKoS.h2}"></h2>
+    <h2 th:text="#{TKoS.h2}">h2</h2>
     <form name="TKoSearchForm" action="TKoSearch.ajax" class="search">
       <fieldset>
         <legend th:text="#{TKoS.legend}">legend</legend>
@@ -49,6 +49,7 @@
       <div class="buttons">
         <button type="button" th:text="#{common.reset}" onClick="$('[id=&quot;SearchTKo&quot;]').click();">reset</button>
         <a th:href="@{TKoSearch.xlsx(baseMei=#{TKoS.h2})}" id="TKoSearch.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeleteTKoS" class="delete selectRows" data-action="TKoSDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
       </div>
       <div class="submits">
         <button id="RegistTKoS" class="regist" th:text="#{common.regist}">submit</button>

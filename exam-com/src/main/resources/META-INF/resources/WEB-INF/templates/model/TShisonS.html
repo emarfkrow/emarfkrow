@@ -11,7 +11,7 @@
 </head>
 <body>
   <div layout:fragment="article">
-    <h2 th:text="#{TShisonS.h2}"></h2>
+    <h2 th:text="#{TShisonS.h2}">h2</h2>
     <form name="TShisonSearchForm" action="TShisonSearch.ajax" class="search">
       <fieldset>
         <legend th:text="#{TShisonS.legend}">legend</legend>
@@ -52,6 +52,7 @@
       <div class="buttons">
         <button type="button" th:text="#{common.reset}" onClick="$('[id=&quot;SearchTShison&quot;]').click();">reset</button>
         <a th:href="@{TShisonSearch.xlsx(baseMei=#{TShisonS.h2})}" id="TShisonSearch.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeleteTShisonS" class="delete selectRows" data-action="TShisonSDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
       </div>
       <div class="submits">
         <button id="RegistTShisonS" class="regist" th:text="#{common.regist}">submit</button>

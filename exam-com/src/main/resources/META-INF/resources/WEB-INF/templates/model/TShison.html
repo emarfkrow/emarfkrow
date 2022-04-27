@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
 <head>
 <meta charset="UTF-8">
-<title th:text="#{TShison.title}"></title>
+<title th:text="#{TShison.title}">子孫</title>
 <style type="text/css">
 </style>
 <script type="text/javascript">
@@ -11,7 +11,7 @@
 </head>
 <body>
   <div layout:fragment="article">
-    <h2 th:text="#{TShison.h2}"></h2>
+    <h2 th:text="#{TShison.h2}">h2</h2>
     <form name="TShisonRegistForm" action="TShisonRegist.ajax" class="regist">
       <fieldset>
         <legend th:text="#{TShison.legend}">legend</legend>

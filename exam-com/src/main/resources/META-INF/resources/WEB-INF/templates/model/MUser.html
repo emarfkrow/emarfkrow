@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
 <head>
 <meta charset="UTF-8">
-<title th:text="#{MUser.title}"></title>
+<title th:text="#{MUser.title}">ユーザマスタ</title>
 <style type="text/css">
 </style>
 <script type="text/javascript">
@@ -11,7 +11,7 @@
 </head>
 <body>
   <div layout:fragment="article">
-    <h2 th:text="#{MUser.h2}"></h2>
+    <h2 th:text="#{MUser.h2}">h2</h2>
     <form name="MUserRegistForm" action="MUserRegist.ajax" class="regist">
       <fieldset>
         <legend th:text="#{MUser.legend}">legend</legend>

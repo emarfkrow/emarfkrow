@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
 <head>
 <meta charset="UTF-8">
-<title th:text="#{MSansho1.title}"></title>
+<title th:text="#{MSansho1.title}">参照１マスタ</title>
 <style type="text/css">
 </style>
 <script type="text/javascript">
@@ -11,7 +11,7 @@
 </head>
 <body>
   <div layout:fragment="article">
-    <h2 th:text="#{MSansho1.h2}"></h2>
+    <h2 th:text="#{MSansho1.h2}">h2</h2>
     <form name="MSansho1RegistForm" action="MSansho1Regist.ajax" class="regist">
       <fieldset>
         <legend th:text="#{MSansho1.legend}">legend</legend>

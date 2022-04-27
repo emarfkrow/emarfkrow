@@ -60,7 +60,7 @@ $(function() {
 		$label.removeClass('error').prop('title', '');
 
 		// フォーム内容をjsonに取得
-		let formJson = Jsonate.toJson($form);
+		let formJson = Jsonate.toJson($form, $button.hasClass('selectRows'));
 
 		let callback;
 

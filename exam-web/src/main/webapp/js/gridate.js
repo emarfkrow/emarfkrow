@@ -341,6 +341,7 @@ var Gridate = {
 		if (!data) {
 			data = [];
 		}
+		grid['orgData'] = JSON.parse(JSON.stringify(data));
 		if (data.length > 0 && data[0]['id']) {
 			var dataView = grid.getData();
 			dataView.beginUpdate();
