@@ -107,6 +107,11 @@ let Jsonate = {
 					v = json[k.replace(entityName + '.', '')];
 				}
 
+				// upperでも取得してみる
+				if (!v) {
+					v = json[Casing.toUpper(k.replace(entityName + '.', ''))];
+				}
+
 				// 値があれば反映
 				if (v) {
 					$input.val([v]);
@@ -124,6 +129,11 @@ let Jsonate = {
 				// entityNameなしでも取得してみる
 				if (!v) {
 					v = json[k.replace(entityName + '.', '')];
+				}
+
+				// upperでも取得してみる
+				if (!v) {
+					v = json[Casing.toUpper(k.replace(entityName + '.', ''))];
 				}
 
 				// 値があれば反映

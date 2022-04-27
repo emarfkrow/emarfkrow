@@ -62,11 +62,14 @@
     </form>
     <form name="D0001RegistForm" action="D0001Regist.ajax" class="regist">
       <h3>検索結果</h3>
-      <div id="D0001Grid" data-selectionMode="link" data-frozenColumn="2" data-editable="false" th:data-href="@{./D0002.html}"></div>
+      <div id="D0001Grid" data-selectionMode="checkbox" data-frozenColumn="2" th:data-href="@{./D0002.html}"></div>
       <div class="buttons">
+        <button type="button" onClick="$('[id=&quot;SearchD0001&quot;]').click();">リセット</button>
         <a th:href="@{D0001Search.xlsx(baseMei=検索画面)}" id="D0001Search.xlsx" tabindex="-1">エクセル出力</a>
       </div>
-      <div class="submits"></div>
+      <div class="submits">
+        <button id="RegistD0001" class="regist">登録</button>
+      </div>
     </form>
   </div>
 </body>

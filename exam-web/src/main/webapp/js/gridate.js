@@ -320,8 +320,20 @@ var Gridate = {
 		/** 複数列ソート可否 */
 		multiColumnSort: true,
 
-		//        createPreHeaderPanel: true,
-		//        showPreHeaderPanel: true,
+		// ヘッダーの上
+		//createPreHeaderPanel: true,
+		//showPreHeaderPanel: true,
+		//preHeaderPanelHeight: 23,
+		//explicitInitialization: true,
+
+		// グリッド内の１行目
+		//showHeaderRow: true,
+
+		// headerRowと明細の間
+		//showTopPanel: true,
+
+		//createFooterRow: true,
+		//showFooterRow: true,
 	},
 
 	refresh: function(gridId, data) {

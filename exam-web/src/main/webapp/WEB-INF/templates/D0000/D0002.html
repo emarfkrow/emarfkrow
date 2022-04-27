@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
 <head>
 <meta charset="UTF-8">
-<title>D0002</title>
+<title>ajax送信</title>
 <style type="text/css">
 </style>
 <script src="./D0004GridColumns.js"></script>
@@ -12,57 +12,36 @@
 </head>
 <body>
   <div layout:fragment="article">
-    <h2 th:text="#{D0002.h2}"></h2>
-    <form method="post" name="D0002RegistForm" action="D0002Regist.ajax?hoge=hoge">
+    <h2>ajax送信</h2>
+    <form name="D0002RegistForm" action="D0002Regist.ajax">
       <fieldset>
-        <legend th:text="#{D0002RegistForm.legend}"></legend>
+        <legend>エンティティ</legend>
         <div>
-          <label for="sosenId" th:text="#{D0002RegistForm.sosenId}"></label><input type="text" id="sosenId" name="sosenId" />
+          <label for="sosenId">祖先ID</label><span id="sosenId"></span><input type="hidden" name="sosenId" />
         </div>
         <div>
-          <label for="oyaSn" th:text="#{D0002RegistForm.oyaSn}"></label><input type="text" id="oyaSn" name="oyaSn" />
+          <label for="oyaSn">親連番</label><span id="oyaSn"></span><input type="hidden" name="oyaSn" />
         </div>
         <div>
-          <label for="entitySn" th:text="#{D0002RegistForm.entitySn}"></label><input type="text" id="entitySn" name="entitySn" />
+          <label for="entitySn">エンティティ連番</label><span id="entitySn"></span><input type="hidden" name="entitySn" />
         </div>
         <div>
-          <label for="entityMei" th:text="#{D0002RegistForm.entityMei}"></label><input type="text" id="entityMei" name="entityMei" />
+          <label for="entityMei">エンティティ名</label><input type="text" id="entityMei" name="entityMei" />
         </div>
         <div>
-          <label for="sansho1Id" th:text="#{D0002RegistForm.sansho1Id}"></label><input type="text" id="sansho1Id" name="sansho1Id" maxlength="4" data-onenter="MSansho1Refer.json" data-onenterParamNames="sansho1_id:sansho1Id" data-onenterTargetNames="sansho1Mei:SANSHO1_MEI" /><a id="sansho1" href="D0004.html" th:title="#{D0004.h2}" target="dialog">…</a><span id="sansho1Mei"></span>
+          <label for="sansho1Id">参照１ID</label><input type="text" id="sansho1Id" name="sansho1Id" data-json="MSansho1Search.json" data-srcDef="SANSHO1_ID:sansho1Id" data-destDef="sansho1Mei:SANSHO1_MEI" /><a id="sansho1Id" th:href="@{/model/MSansho1S.html}" target="dialog" class="refer" tabindex="-1" th:title="#{D0004.h2}">...</a>
         </div>
         <div>
-          <label for="sansho1Mei" th:text="#{D0002RegistForm.sansho1Mei}"></label><input type="text" id="sansho1Mei" name="sansho1Mei" />
-        </div>
-        <div>
-          <label for="password">password</label><input type="password" id="password" name="password" />
-        </div>
-        <div>
-          <fieldset id="checkFList" data-options="MCodeValueSearch.json" data-optionParams="code_nm:check_f" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
-            <legend>checkbox</legend>
-          </fieldset>
-        </div>
-        <div>
-          <fieldset id="radioList" data-options="MCodeValueSearch.json" data-optionParams="code_nm:radio_kb" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
-            <legend>radio</legend>
-          </fieldset>
-        </div>
-        <div>
-          <label for="select">select</label><select id="select" name="select" data-options="MCodeValueSearch.json" data-optionParams="code_nm:pulldown_kb" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
-          </select>
-        </div>
-        <div>
-          <label for="textarea">textarea</label>
-          <textarea id="textarea" name="textarea" rows="5" cols=""></textarea>
+          <label for="sansho1Mei">参照１名</label><input type="text" id="sansho1Mei" name="sansho1Mei" />
         </div>
       </fieldset>
       <div class="buttons">
-        <button type="reset">reset</button>
-        <button type="button">button</button>
+        <button type="button" onClick="Dialogate.refresh(event);">リセット</button>
+        <a th:href="@{D0002Get.xlsx(baseMei=詳細画面)}" id="D0002Get.xlsx" tabindex="-1">エクセル出力</a>
+        <button id="DeleteD0002" class="delete" data-action="D0002Delete.ajax" tabindex="-1">削除</button>
       </div>
       <div class="submits">
-        <button type="button">button</button>
-        <button id="RegistD0002">submit</button>
+        <button id="RegistD0002" class="regist">登録</button>
       </div>
     </form>
   </div>

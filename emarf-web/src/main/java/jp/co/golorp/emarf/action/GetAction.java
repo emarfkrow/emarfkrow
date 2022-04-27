@@ -12,7 +12,7 @@ import jp.co.golorp.emarf.util.Messages;
  * 検索の汎用アクション
  * @author toshiyuki
  */
-public class SearchAction extends BaseAction {
+public class GetAction extends BaseAction {
 
     /**
      *
@@ -29,7 +29,7 @@ public class SearchAction extends BaseAction {
         if (list == null) {
             map.put("INFO", Messages.get("info.nodata"));
         } else {
-            map.put(this.getBaseName(), list);
+            map.put(this.getBaseName(), list.get(0));
         }
 
         return map;

@@ -55,6 +55,14 @@ public final class ServletUtil {
                 } catch (Exception e1) {
                     throw new SysError(e);
                 }
+            } else if (actionName.endsWith("GetAction")) {
+                className = "jp.co.golorp.emarf.action.GetAction";
+                try {
+                    Class<?> c = Class.forName(className);
+                    return (BaseAction) c.newInstance();
+                } catch (Exception e1) {
+                    throw new SysError(e);
+                }
             } else {
                 throw new SysError(e);
             }
