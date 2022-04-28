@@ -19,16 +19,13 @@ import jp.co.golorp.emarf.lang.StringUtil;
 import jp.co.golorp.emarf.sql.Queries;
 
 /**
- * t_sosen
+ * 祖先
  *
- * @author generator
- *
+ * @author emarfkrow
  */
 public class TSosen implements IEntity {
 
-    /**
-     * 祖先ID
-     */
+    /** 祖先ID */
     private Integer sosenId;
 
     /**
@@ -49,9 +46,7 @@ public class TSosen implements IEntity {
         }
     }
 
-    /**
-     * 祖先名
-     */
+    /** 祖先名 */
     private String sosenMei;
 
     /**
@@ -72,9 +67,7 @@ public class TSosen implements IEntity {
         }
     }
 
-    /**
-     * 登録日時
-     */
+    /** 登録日時 */
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
@@ -104,9 +97,7 @@ public class TSosen implements IEntity {
         }
     }
 
-    /**
-     * 登録者
-     */
+    /** 登録者 */
     private String insertBy;
 
     /**
@@ -127,9 +118,7 @@ public class TSosen implements IEntity {
         }
     }
 
-    /**
-     * 更新日時
-     */
+    /** 更新日時 */
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
@@ -159,9 +148,7 @@ public class TSosen implements IEntity {
         }
     }
 
-    /**
-     * 更新者
-     */
+    /** 更新者 */
     private String updateBy;
 
     /**
@@ -182,9 +169,7 @@ public class TSosen implements IEntity {
         }
     }
 
-    /**
-     * 削除フラグ
-     */
+    /** 削除フラグ */
     private String deleteF;
 
     /**
@@ -206,8 +191,10 @@ public class TSosen implements IEntity {
     }
 
     /**
-     * @param param1 sosenId
-     * @return TSosen
+     * 祖先照会
+     *
+     * @param param1 祖先ID
+     * @return 祖先
      */
     public static TSosen get(final Object param1) {
 
@@ -223,16 +210,18 @@ public class TSosen implements IEntity {
     }
 
     /**
-     * @param now
-     * @param id
+     * 祖先追加
+     *
+     * @param now システム日時
+     * @param id 登録者
      * @return 追加件数
      */
     public int insert(final LocalDateTime now, final String id) {
 
-        // 採番処理
+        // 祖先IDの採番処理
         numbering();
 
-        // 親テーブルの登録
+        // 親の登録
         if (this.tOyas != null) {
             for (TOya tOya : this.tOyas) {
                 tOya.setSosenId(this.getSosenId());
@@ -240,7 +229,7 @@ public class TSosen implements IEntity {
             }
         }
 
-        // 祖先テーブルの登録
+        // 祖先の登録
         List<String> nameList = new ArrayList<String>();
         nameList.add("sosen_id -- :sosen_id");
         nameList.add("sosen_mei -- :sosen_mei");
@@ -268,10 +257,8 @@ public class TSosen implements IEntity {
         return Queries.regist(sql, params);
     }
 
-    /**
-     *
-     */
-    protected void numbering() {
+    /** 祖先IDの採番処理 */
+    private void numbering() {
 
         if (this.sosenId != null) {
             return;
@@ -288,13 +275,15 @@ public class TSosen implements IEntity {
     }
 
     /**
-     * @param now
-     * @param id
+     * 祖先更新
+     *
+     * @param now システム日時
+     * @param id 更新者
      * @return 更新件数
      */
     public int update(final LocalDateTime now, final String id) {
 
-        // 親テーブルの登録
+        // 親の登録
         if (this.tOyas != null) {
             for (TOya tOya : this.tOyas) {
                 tOya.setSosenId(this.sosenId);
@@ -315,7 +304,7 @@ public class TSosen implements IEntity {
             }
         }
 
-        // 祖先テーブルの登録
+        // 祖先の登録
         List<String> setList = new ArrayList<String>();
         setList.add("sosen_id = :sosen_id");
         setList.add("sosen_mei = :sosen_mei");
@@ -332,16 +321,20 @@ public class TSosen implements IEntity {
     }
 
     /**
+     * 祖先削除
+     *
      * @return 削除件数
      */
     public int delete() {
 
+        // 親の削除
         if (this.tOyas != null) {
             for (TOya tOya : this.tOyas) {
                 tOya.delete();
             }
         }
 
+        // 祖先の削除
         String sql = "DELETE FROM t_sosen WHERE " + getWhere();
 
         Map<String, Object> params = toMap(null, null);

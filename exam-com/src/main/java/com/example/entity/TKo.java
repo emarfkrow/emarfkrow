@@ -19,16 +19,13 @@ import jp.co.golorp.emarf.lang.StringUtil;
 import jp.co.golorp.emarf.sql.Queries;
 
 /**
- * t_ko
+ * 子
  *
- * @author generator
- *
+ * @author emarfkrow
  */
 public class TKo implements IEntity {
 
-    /**
-     * 祖先ID
-     */
+    /** 祖先ID */
     private Integer sosenId;
 
     /**
@@ -49,9 +46,7 @@ public class TKo implements IEntity {
         }
     }
 
-    /**
-     * 親連番
-     */
+    /** 親連番 */
     private Integer oyaSn;
 
     /**
@@ -72,9 +67,7 @@ public class TKo implements IEntity {
         }
     }
 
-    /**
-     * エンティティ連番
-     */
+    /** エンティティ連番 */
     private Integer entitySn;
 
     /**
@@ -95,9 +88,7 @@ public class TKo implements IEntity {
         }
     }
 
-    /**
-     * 子連番
-     */
+    /** 子連番 */
     private Integer koSn;
 
     /**
@@ -118,9 +109,7 @@ public class TKo implements IEntity {
         }
     }
 
-    /**
-     * 子名
-     */
+    /** 子名 */
     private String koMei;
 
     /**
@@ -141,9 +130,7 @@ public class TKo implements IEntity {
         }
     }
 
-    /**
-     * 登録日時
-     */
+    /** 登録日時 */
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
@@ -173,9 +160,7 @@ public class TKo implements IEntity {
         }
     }
 
-    /**
-     * 登録者
-     */
+    /** 登録者 */
     private String insertBy;
 
     /**
@@ -196,9 +181,7 @@ public class TKo implements IEntity {
         }
     }
 
-    /**
-     * 更新日時
-     */
+    /** 更新日時 */
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
@@ -228,9 +211,7 @@ public class TKo implements IEntity {
         }
     }
 
-    /**
-     * 更新者
-     */
+    /** 更新者 */
     private String updateBy;
 
     /**
@@ -251,9 +232,7 @@ public class TKo implements IEntity {
         }
     }
 
-    /**
-     * 削除フラグ
-     */
+    /** 削除フラグ */
     private String deleteF;
 
     /**
@@ -275,11 +254,13 @@ public class TKo implements IEntity {
     }
 
     /**
-     * @param param1 sosenId
-     * @param param2 oyaSn
-     * @param param3 entitySn
-     * @param param4 koSn
-     * @return TKo
+     * 子照会
+     *
+     * @param param1 祖先ID
+     * @param param2 親連番
+     * @param param3 エンティティ連番
+     * @param param4 子連番
+     * @return 子
      */
     public static TKo get(final Object param1, final Object param2, final Object param3, final Object param4) {
 
@@ -301,16 +282,18 @@ public class TKo implements IEntity {
     }
 
     /**
-     * @param now
-     * @param id
+     * 子追加
+     *
+     * @param now システム日時
+     * @param id 登録者
      * @return 追加件数
      */
     public int insert(final LocalDateTime now, final String id) {
 
-        // 採番処理
+        // 子連番の採番処理
         numbering();
 
-        // 子孫テーブルの登録
+        // 子孫の登録
         if (this.tShisons != null) {
             for (TShison tShison : this.tShisons) {
                 tShison.setSosenId(this.getSosenId());
@@ -321,7 +304,7 @@ public class TKo implements IEntity {
             }
         }
 
-        // 子テーブルの登録
+        // 子の登録
         List<String> nameList = new ArrayList<String>();
         nameList.add("sosen_id -- :sosen_id");
         nameList.add("oya_sn -- :oya_sn");
@@ -355,10 +338,8 @@ public class TKo implements IEntity {
         return Queries.regist(sql, params);
     }
 
-    /**
-     *
-     */
-    protected void numbering() {
+    /** 子連番の採番処理 */
+    private void numbering() {
 
         if (this.koSn != null) {
             return;
@@ -385,13 +366,15 @@ public class TKo implements IEntity {
     }
 
     /**
-     * @param now
-     * @param id
+     * 子更新
+     *
+     * @param now システム日時
+     * @param id 更新者
      * @return 更新件数
      */
     public int update(final LocalDateTime now, final String id) {
 
-        // 子孫テーブルの登録
+        // 子孫の登録
         if (this.tShisons != null) {
             for (TShison tShison : this.tShisons) {
                 tShison.setSosenId(this.sosenId);
@@ -415,7 +398,7 @@ public class TKo implements IEntity {
             }
         }
 
-        // 子テーブルの登録
+        // 子の登録
         List<String> setList = new ArrayList<String>();
         setList.add("sosen_id = :sosen_id");
         setList.add("oya_sn = :oya_sn");
@@ -435,16 +418,20 @@ public class TKo implements IEntity {
     }
 
     /**
+     * 子削除
+     *
      * @return 削除件数
      */
     public int delete() {
 
+        // 子孫の削除
         if (this.tShisons != null) {
             for (TShison tShison : this.tShisons) {
                 tShison.delete();
             }
         }
 
+        // 子の削除
         String sql = "DELETE FROM t_ko WHERE " + getWhere();
 
         Map<String, Object> params = toMap(null, null);

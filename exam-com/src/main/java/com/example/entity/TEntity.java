@@ -19,16 +19,13 @@ import jp.co.golorp.emarf.lang.StringUtil;
 import jp.co.golorp.emarf.sql.Queries;
 
 /**
- * t_entity
+ * エンティティ
  *
- * @author generator
- *
+ * @author emarfkrow
  */
 public class TEntity implements IEntity {
 
-    /**
-     * 祖先ID
-     */
+    /** 祖先ID */
     private Integer sosenId;
 
     /**
@@ -49,9 +46,7 @@ public class TEntity implements IEntity {
         }
     }
 
-    /**
-     * 親連番
-     */
+    /** 親連番 */
     private Integer oyaSn;
 
     /**
@@ -72,9 +67,7 @@ public class TEntity implements IEntity {
         }
     }
 
-    /**
-     * エンティティ連番
-     */
+    /** エンティティ連番 */
     private Integer entitySn;
 
     /**
@@ -95,9 +88,7 @@ public class TEntity implements IEntity {
         }
     }
 
-    /**
-     * エンティティ名
-     */
+    /** エンティティ名 */
     private String entityMei;
 
     /**
@@ -118,9 +109,7 @@ public class TEntity implements IEntity {
         }
     }
 
-    /**
-     * 参照１ID
-     */
+    /** 参照１ID */
     private Integer sansho1Id;
 
     /**
@@ -141,9 +130,7 @@ public class TEntity implements IEntity {
         }
     }
 
-    /**
-     * 参照１名
-     */
+    /** 参照１名 */
     private String sansho1Mei;
 
     /**
@@ -164,9 +151,7 @@ public class TEntity implements IEntity {
         }
     }
 
-    /**
-     * 参照２ID
-     */
+    /** 参照２ID */
     private Integer sansho2Id;
 
     /**
@@ -187,9 +172,7 @@ public class TEntity implements IEntity {
         }
     }
 
-    /**
-     * 参照２名
-     */
+    /** 参照２名 */
     private String sansho2Mei;
 
     /**
@@ -210,9 +193,7 @@ public class TEntity implements IEntity {
         }
     }
 
-    /**
-     * 別参照１ID
-     */
+    /** 別参照１ID */
     private Integer betsuSansho1Id;
 
     /**
@@ -233,9 +214,7 @@ public class TEntity implements IEntity {
         }
     }
 
-    /**
-     * 別参照１名
-     */
+    /** 別参照１名 */
     private String betsuSansho1Mei;
 
     /**
@@ -256,9 +235,7 @@ public class TEntity implements IEntity {
         }
     }
 
-    /**
-     * 登録日時
-     */
+    /** 登録日時 */
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
@@ -288,9 +265,7 @@ public class TEntity implements IEntity {
         }
     }
 
-    /**
-     * 登録者
-     */
+    /** 登録者 */
     private String insertBy;
 
     /**
@@ -311,9 +286,7 @@ public class TEntity implements IEntity {
         }
     }
 
-    /**
-     * 更新日時
-     */
+    /** 更新日時 */
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
@@ -343,9 +316,7 @@ public class TEntity implements IEntity {
         }
     }
 
-    /**
-     * 更新者
-     */
+    /** 更新者 */
     private String updateBy;
 
     /**
@@ -366,9 +337,7 @@ public class TEntity implements IEntity {
         }
     }
 
-    /**
-     * 削除フラグ
-     */
+    /** 削除フラグ */
     private String deleteF;
 
     /**
@@ -390,10 +359,12 @@ public class TEntity implements IEntity {
     }
 
     /**
-     * @param param1 sosenId
-     * @param param2 oyaSn
-     * @param param3 entitySn
-     * @return TEntity
+     * エンティティ照会
+     *
+     * @param param1 祖先ID
+     * @param param2 親連番
+     * @param param3 エンティティ連番
+     * @return エンティティ
      */
     public static TEntity get(final Object param1, final Object param2, final Object param3) {
 
@@ -413,16 +384,18 @@ public class TEntity implements IEntity {
     }
 
     /**
-     * @param now
-     * @param id
+     * エンティティ追加
+     *
+     * @param now システム日時
+     * @param id 登録者
      * @return 追加件数
      */
     public int insert(final LocalDateTime now, final String id) {
 
-        // 採番処理
+        // エンティティ連番の採番処理
         numbering();
 
-        // 子テーブルの登録
+        // 子の登録
         if (this.tKos != null) {
             for (TKo tKo : this.tKos) {
                 tKo.setSosenId(this.getSosenId());
@@ -432,6 +405,7 @@ public class TEntity implements IEntity {
             }
         }
 
+        // エンティティ２の登録
         if (this.tEntity2 != null) {
             this.tEntity2.setSosenId(this.getSosenId());
             this.tEntity2.setOyaSn(this.getOyaSn());
@@ -439,7 +413,7 @@ public class TEntity implements IEntity {
             this.tEntity2.insert(now, id);
         }
 
-        // エンティティ履歴テーブルの登録
+        // エンティティ履歴の登録
         TEntityHis tEntityHis = new TEntityHis();
         tEntityHis.setSosenId(this.sosenId);
         tEntityHis.setOyaSn(this.oyaSn);
@@ -458,7 +432,7 @@ public class TEntity implements IEntity {
         tEntityHis.setDeleteF(this.deleteF);
         tEntityHis.insert(now, id);
 
-        // エンティティテーブルの登録
+        // エンティティの登録
         List<String> nameList = new ArrayList<String>();
         nameList.add("sosen_id -- :sosen_id");
         nameList.add("oya_sn -- :oya_sn");
@@ -502,10 +476,8 @@ public class TEntity implements IEntity {
         return Queries.regist(sql, params);
     }
 
-    /**
-     *
-     */
-    protected void numbering() {
+    /** エンティティ連番の採番処理 */
+    private void numbering() {
 
         if (this.entitySn != null) {
             return;
@@ -530,13 +502,15 @@ public class TEntity implements IEntity {
     }
 
     /**
-     * @param now
-     * @param id
+     * エンティティ更新
+     *
+     * @param now システム日時
+     * @param id 更新者
      * @return 更新件数
      */
     public int update(final LocalDateTime now, final String id) {
 
-        // 子テーブルの登録
+        // 子の登録
         if (this.tKos != null) {
             for (TKo tKo : this.tKos) {
                 tKo.setSosenId(this.sosenId);
@@ -559,6 +533,7 @@ public class TEntity implements IEntity {
             }
         }
 
+        // エンティティ２の登録
         if (this.tEntity2 != null) {
             tEntity2.setSosenId(this.getSosenId());
             tEntity2.setOyaSn(this.getOyaSn());
@@ -570,7 +545,7 @@ public class TEntity implements IEntity {
             }
         }
 
-        // エンティティ履歴テーブルの登録
+        // エンティティ履歴の登録
         TEntityHis tEntityHis = new TEntityHis();
         tEntityHis.setSosenId(this.sosenId);
         tEntityHis.setOyaSn(this.oyaSn);
@@ -589,7 +564,7 @@ public class TEntity implements IEntity {
         tEntityHis.setDeleteF(this.deleteF);
         tEntityHis.insert(now, id);
 
-        // エンティティテーブルの登録
+        // エンティティの登録
         List<String> setList = new ArrayList<String>();
         setList.add("sosen_id = :sosen_id");
         setList.add("oya_sn = :oya_sn");
@@ -614,20 +589,25 @@ public class TEntity implements IEntity {
     }
 
     /**
+     * エンティティ削除
+     *
      * @return 削除件数
      */
     public int delete() {
 
+        // 子の削除
         if (this.tKos != null) {
             for (TKo tKo : this.tKos) {
                 tKo.delete();
             }
         }
 
+        // エンティティ２の削除
         if (this.tEntity2 != null) {
             this.tEntity2.delete();
         }
 
+        // エンティティの削除
         String sql = "DELETE FROM t_entity WHERE " + getWhere();
 
         Map<String, Object> params = toMap(null, null);

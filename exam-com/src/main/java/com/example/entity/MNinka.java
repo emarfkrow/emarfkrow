@@ -19,16 +19,13 @@ import jp.co.golorp.emarf.lang.StringUtil;
 import jp.co.golorp.emarf.sql.Queries;
 
 /**
- * m_ninka
+ * 認可マスタ
  *
- * @author generator
- *
+ * @author emarfkrow
  */
 public class MNinka implements IEntity {
 
-    /**
-     * 部署ID
-     */
+    /** 部署ID */
     private Integer bushoId;
 
     /**
@@ -49,9 +46,7 @@ public class MNinka implements IEntity {
         }
     }
 
-    /**
-     * 職位ID
-     */
+    /** 職位ID */
     private Integer shokuiId;
 
     /**
@@ -72,9 +67,7 @@ public class MNinka implements IEntity {
         }
     }
 
-    /**
-     * 画面名
-     */
+    /** 画面名 */
     private String gamenNm;
 
     /**
@@ -95,9 +88,7 @@ public class MNinka implements IEntity {
         }
     }
 
-    /**
-     * 権限区分
-     */
+    /** 権限区分 */
     private String kengenKb;
 
     /**
@@ -118,9 +109,7 @@ public class MNinka implements IEntity {
         }
     }
 
-    /**
-     * 開始日
-     */
+    /** 開始日 */
     private String kaishiYmd;
 
     /**
@@ -141,9 +130,7 @@ public class MNinka implements IEntity {
         }
     }
 
-    /**
-     * 終了日
-     */
+    /** 終了日 */
     private String shuryoYmd;
 
     /**
@@ -164,9 +151,7 @@ public class MNinka implements IEntity {
         }
     }
 
-    /**
-     * 登録日時
-     */
+    /** 登録日時 */
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
@@ -196,9 +181,7 @@ public class MNinka implements IEntity {
         }
     }
 
-    /**
-     * 登録者
-     */
+    /** 登録者 */
     private String insertBy;
 
     /**
@@ -219,9 +202,7 @@ public class MNinka implements IEntity {
         }
     }
 
-    /**
-     * 更新日時
-     */
+    /** 更新日時 */
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
@@ -251,9 +232,7 @@ public class MNinka implements IEntity {
         }
     }
 
-    /**
-     * 更新者
-     */
+    /** 更新者 */
     private String updateBy;
 
     /**
@@ -274,9 +253,7 @@ public class MNinka implements IEntity {
         }
     }
 
-    /**
-     * 削除フラグ
-     */
+    /** 削除フラグ */
     private String deleteF;
 
     /**
@@ -298,10 +275,12 @@ public class MNinka implements IEntity {
     }
 
     /**
-     * @param param1 bushoId
-     * @param param2 shokuiId
-     * @param param3 gamenNm
-     * @return MNinka
+     * 認可マスタ照会
+     *
+     * @param param1 部署ID
+     * @param param2 職位ID
+     * @param param3 画面名
+     * @return 認可マスタ
      */
     public static MNinka get(final Object param1, final Object param2, final Object param3) {
 
@@ -321,13 +300,15 @@ public class MNinka implements IEntity {
     }
 
     /**
-     * @param now
-     * @param id
+     * 認可マスタ追加
+     *
+     * @param now システム日時
+     * @param id 登録者
      * @return 追加件数
      */
     public int insert(final LocalDateTime now, final String id) {
 
-        // 認可マスタテーブルの登録
+        // 認可マスタの登録
         List<String> nameList = new ArrayList<String>();
         nameList.add("busho_id -- :busho_id");
         nameList.add("shokui_id -- :shokui_id");
@@ -364,13 +345,15 @@ public class MNinka implements IEntity {
     }
 
     /**
-     * @param now
-     * @param id
+     * 認可マスタ更新
+     *
+     * @param now システム日時
+     * @param id 更新者
      * @return 更新件数
      */
     public int update(final LocalDateTime now, final String id) {
 
-        // 認可マスタテーブルの登録
+        // 認可マスタの登録
         List<String> setList = new ArrayList<String>();
         setList.add("busho_id = :busho_id");
         setList.add("shokui_id = :shokui_id");
@@ -391,10 +374,13 @@ public class MNinka implements IEntity {
     }
 
     /**
+     * 認可マスタ削除
+     *
      * @return 削除件数
      */
     public int delete() {
 
+        // 認可マスタの削除
         String sql = "DELETE FROM m_ninka WHERE " + getWhere();
 
         Map<String, Object> params = toMap(null, null);

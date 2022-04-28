@@ -19,16 +19,13 @@ import jp.co.golorp.emarf.lang.StringUtil;
 import jp.co.golorp.emarf.sql.Queries;
 
 /**
- * m_shokui
+ * 職位マスタ
  *
- * @author generator
- *
+ * @author emarfkrow
  */
 public class MShokui implements IEntity {
 
-    /**
-     * 職位ID
-     */
+    /** 職位ID */
     private Integer shokuiId;
 
     /**
@@ -49,9 +46,7 @@ public class MShokui implements IEntity {
         }
     }
 
-    /**
-     * 職位名
-     */
+    /** 職位名 */
     private String shokuiMei;
 
     /**
@@ -72,9 +67,7 @@ public class MShokui implements IEntity {
         }
     }
 
-    /**
-     * 職位順
-     */
+    /** 職位順 */
     private Integer orderId;
 
     /**
@@ -95,9 +88,7 @@ public class MShokui implements IEntity {
         }
     }
 
-    /**
-     * 開始日
-     */
+    /** 開始日 */
     private String kaishiYmd;
 
     /**
@@ -118,9 +109,7 @@ public class MShokui implements IEntity {
         }
     }
 
-    /**
-     * 終了日
-     */
+    /** 終了日 */
     private String shuryoYmd;
 
     /**
@@ -141,9 +130,7 @@ public class MShokui implements IEntity {
         }
     }
 
-    /**
-     * 登録日時
-     */
+    /** 登録日時 */
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
@@ -173,9 +160,7 @@ public class MShokui implements IEntity {
         }
     }
 
-    /**
-     * 登録者
-     */
+    /** 登録者 */
     private String insertBy;
 
     /**
@@ -196,9 +181,7 @@ public class MShokui implements IEntity {
         }
     }
 
-    /**
-     * 更新日時
-     */
+    /** 更新日時 */
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
@@ -228,9 +211,7 @@ public class MShokui implements IEntity {
         }
     }
 
-    /**
-     * 更新者
-     */
+    /** 更新者 */
     private String updateBy;
 
     /**
@@ -251,9 +232,7 @@ public class MShokui implements IEntity {
         }
     }
 
-    /**
-     * 削除フラグ
-     */
+    /** 削除フラグ */
     private String deleteF;
 
     /**
@@ -275,8 +254,10 @@ public class MShokui implements IEntity {
     }
 
     /**
-     * @param param1 shokuiId
-     * @return MShokui
+     * 職位マスタ照会
+     *
+     * @param param1 職位ID
+     * @return 職位マスタ
      */
     public static MShokui get(final Object param1) {
 
@@ -292,16 +273,18 @@ public class MShokui implements IEntity {
     }
 
     /**
-     * @param now
-     * @param id
+     * 職位マスタ追加
+     *
+     * @param now システム日時
+     * @param id 登録者
      * @return 追加件数
      */
     public int insert(final LocalDateTime now, final String id) {
 
-        // 採番処理
+        // 職位IDの採番処理
         numbering();
 
-        // 職位マスタテーブルの登録
+        // 職位マスタの登録
         List<String> nameList = new ArrayList<String>();
         nameList.add("shokui_id -- :shokui_id");
         nameList.add("shokui_mei -- :shokui_mei");
@@ -335,10 +318,8 @@ public class MShokui implements IEntity {
         return Queries.regist(sql, params);
     }
 
-    /**
-     *
-     */
-    protected void numbering() {
+    /** 職位IDの採番処理 */
+    private void numbering() {
 
         if (this.shokuiId != null) {
             return;
@@ -355,13 +336,15 @@ public class MShokui implements IEntity {
     }
 
     /**
-     * @param now
-     * @param id
+     * 職位マスタ更新
+     *
+     * @param now システム日時
+     * @param id 更新者
      * @return 更新件数
      */
     public int update(final LocalDateTime now, final String id) {
 
-        // 職位マスタテーブルの登録
+        // 職位マスタの登録
         List<String> setList = new ArrayList<String>();
         setList.add("shokui_id = :shokui_id");
         setList.add("shokui_mei = :shokui_mei");
@@ -381,10 +364,13 @@ public class MShokui implements IEntity {
     }
 
     /**
+     * 職位マスタ削除
+     *
      * @return 削除件数
      */
     public int delete() {
 
+        // 職位マスタの削除
         String sql = "DELETE FROM m_shokui WHERE " + getWhere();
 
         Map<String, Object> params = toMap(null, null);

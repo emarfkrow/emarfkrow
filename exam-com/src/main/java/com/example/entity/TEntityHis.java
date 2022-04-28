@@ -19,16 +19,13 @@ import jp.co.golorp.emarf.lang.StringUtil;
 import jp.co.golorp.emarf.sql.Queries;
 
 /**
- * t_entity_his
+ * エンティティ履歴
  *
- * @author generator
- *
+ * @author emarfkrow
  */
 public class TEntityHis implements IEntity {
 
-    /**
-     * 祖先ID
-     */
+    /** 祖先ID */
     private Integer sosenId;
 
     /**
@@ -49,9 +46,7 @@ public class TEntityHis implements IEntity {
         }
     }
 
-    /**
-     * 親連番
-     */
+    /** 親連番 */
     private Integer oyaSn;
 
     /**
@@ -72,9 +67,7 @@ public class TEntityHis implements IEntity {
         }
     }
 
-    /**
-     * エンティティ連番
-     */
+    /** エンティティ連番 */
     private Integer entitySn;
 
     /**
@@ -95,9 +88,7 @@ public class TEntityHis implements IEntity {
         }
     }
 
-    /**
-     * 履歴連番
-     */
+    /** 履歴連番 */
     private Integer historySn;
 
     /**
@@ -118,9 +109,7 @@ public class TEntityHis implements IEntity {
         }
     }
 
-    /**
-     * エンティティ名
-     */
+    /** エンティティ名 */
     private String entityMei;
 
     /**
@@ -141,9 +130,7 @@ public class TEntityHis implements IEntity {
         }
     }
 
-    /**
-     * 参照１ID
-     */
+    /** 参照１ID */
     private Integer sansho1Id;
 
     /**
@@ -164,9 +151,7 @@ public class TEntityHis implements IEntity {
         }
     }
 
-    /**
-     * 参照１名
-     */
+    /** 参照１名 */
     private String sansho1Mei;
 
     /**
@@ -187,9 +172,7 @@ public class TEntityHis implements IEntity {
         }
     }
 
-    /**
-     * 参照２ID
-     */
+    /** 参照２ID */
     private Integer sansho2Id;
 
     /**
@@ -210,9 +193,7 @@ public class TEntityHis implements IEntity {
         }
     }
 
-    /**
-     * 参照２名
-     */
+    /** 参照２名 */
     private String sansho2Mei;
 
     /**
@@ -233,9 +214,7 @@ public class TEntityHis implements IEntity {
         }
     }
 
-    /**
-     * 別参照１ID
-     */
+    /** 別参照１ID */
     private Integer betsuSansho1Id;
 
     /**
@@ -256,9 +235,7 @@ public class TEntityHis implements IEntity {
         }
     }
 
-    /**
-     * 別参照１名
-     */
+    /** 別参照１名 */
     private String betsuSansho1Mei;
 
     /**
@@ -279,9 +256,7 @@ public class TEntityHis implements IEntity {
         }
     }
 
-    /**
-     * 登録日時
-     */
+    /** 登録日時 */
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
@@ -311,9 +286,7 @@ public class TEntityHis implements IEntity {
         }
     }
 
-    /**
-     * 登録者
-     */
+    /** 登録者 */
     private String insertBy;
 
     /**
@@ -334,9 +307,7 @@ public class TEntityHis implements IEntity {
         }
     }
 
-    /**
-     * 更新日時
-     */
+    /** 更新日時 */
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
@@ -366,9 +337,7 @@ public class TEntityHis implements IEntity {
         }
     }
 
-    /**
-     * 更新者
-     */
+    /** 更新者 */
     private String updateBy;
 
     /**
@@ -389,9 +358,7 @@ public class TEntityHis implements IEntity {
         }
     }
 
-    /**
-     * 削除フラグ
-     */
+    /** 削除フラグ */
     private String deleteF;
 
     /**
@@ -413,11 +380,13 @@ public class TEntityHis implements IEntity {
     }
 
     /**
-     * @param param1 sosenId
-     * @param param2 oyaSn
-     * @param param3 entitySn
-     * @param param4 historySn
-     * @return TEntityHis
+     * エンティティ履歴照会
+     *
+     * @param param1 祖先ID
+     * @param param2 親連番
+     * @param param3 エンティティ連番
+     * @param param4 履歴連番
+     * @return エンティティ履歴
      */
     public static TEntityHis get(final Object param1, final Object param2, final Object param3, final Object param4) {
 
@@ -439,16 +408,18 @@ public class TEntityHis implements IEntity {
     }
 
     /**
-     * @param now
-     * @param id
+     * エンティティ履歴追加
+     *
+     * @param now システム日時
+     * @param id 登録者
      * @return 追加件数
      */
     public int insert(final LocalDateTime now, final String id) {
 
-        // 採番処理
+        // 履歴連番の採番処理
         numbering();
 
-        // エンティティ履歴テーブルの登録
+        // エンティティ履歴の登録
         List<String> nameList = new ArrayList<String>();
         nameList.add("sosen_id -- :sosen_id");
         nameList.add("oya_sn -- :oya_sn");
@@ -494,10 +465,8 @@ public class TEntityHis implements IEntity {
         return Queries.regist(sql, params);
     }
 
-    /**
-     *
-     */
-    protected void numbering() {
+    /** 履歴連番の採番処理 */
+    private void numbering() {
 
         if (this.historySn != null) {
             return;
@@ -524,13 +493,15 @@ public class TEntityHis implements IEntity {
     }
 
     /**
-     * @param now
-     * @param id
+     * エンティティ履歴更新
+     *
+     * @param now システム日時
+     * @param id 更新者
      * @return 更新件数
      */
     public int update(final LocalDateTime now, final String id) {
 
-        // エンティティ履歴テーブルの登録
+        // エンティティ履歴の登録
         List<String> setList = new ArrayList<String>();
         setList.add("sosen_id = :sosen_id");
         setList.add("oya_sn = :oya_sn");
@@ -556,10 +527,13 @@ public class TEntityHis implements IEntity {
     }
 
     /**
+     * エンティティ履歴削除
+     *
      * @return 削除件数
      */
     public int delete() {
 
+        // エンティティ履歴の削除
         String sql = "DELETE FROM t_entity_his WHERE " + getWhere();
 
         Map<String, Object> params = toMap(null, null);

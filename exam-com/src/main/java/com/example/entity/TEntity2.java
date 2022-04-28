@@ -19,16 +19,13 @@ import jp.co.golorp.emarf.lang.StringUtil;
 import jp.co.golorp.emarf.sql.Queries;
 
 /**
- * t_entity2
+ * エンティティ２
  *
- * @author generator
- *
+ * @author emarfkrow
  */
 public class TEntity2 implements IEntity {
 
-    /**
-     * 祖先ID
-     */
+    /** 祖先ID */
     private Integer sosenId;
 
     /**
@@ -49,9 +46,7 @@ public class TEntity2 implements IEntity {
         }
     }
 
-    /**
-     * 親連番
-     */
+    /** 親連番 */
     private Integer oyaSn;
 
     /**
@@ -72,9 +67,7 @@ public class TEntity2 implements IEntity {
         }
     }
 
-    /**
-     * エンティティ連番
-     */
+    /** エンティティ連番 */
     private Integer entitySn;
 
     /**
@@ -95,9 +88,7 @@ public class TEntity2 implements IEntity {
         }
     }
 
-    /**
-     * 任意エンティティ２名
-     */
+    /** 任意エンティティ２名 */
     private String nullEntity2Mei;
 
     /**
@@ -118,9 +109,7 @@ public class TEntity2 implements IEntity {
         }
     }
 
-    /**
-     * エンティティ２名
-     */
+    /** エンティティ２名 */
     private String entity2Mei;
 
     /**
@@ -141,9 +130,7 @@ public class TEntity2 implements IEntity {
         }
     }
 
-    /**
-     * チェックフラグ
-     */
+    /** チェックフラグ */
     private String checkF;
 
     /**
@@ -164,9 +151,7 @@ public class TEntity2 implements IEntity {
         }
     }
 
-    /**
-     * ラジオ区分
-     */
+    /** ラジオ区分 */
     private String radioKb;
 
     /**
@@ -187,9 +172,7 @@ public class TEntity2 implements IEntity {
         }
     }
 
-    /**
-     * プルダウン区分
-     */
+    /** プルダウン区分 */
     private String pulldownKb;
 
     /**
@@ -210,9 +193,7 @@ public class TEntity2 implements IEntity {
         }
     }
 
-    /**
-     * メモ
-     */
+    /** メモ */
     private String memoTx;
 
     /**
@@ -233,9 +214,7 @@ public class TEntity2 implements IEntity {
         }
     }
 
-    /**
-     * 日付
-     */
+    /** 日付 */
     private String hidukeYmd;
 
     /**
@@ -256,9 +235,7 @@ public class TEntity2 implements IEntity {
         }
     }
 
-    /**
-     * 年月
-     */
+    /** 年月 */
     private String nengetsuYm;
 
     /**
@@ -279,9 +256,7 @@ public class TEntity2 implements IEntity {
         }
     }
 
-    /**
-     * 年
-     */
+    /** 年 */
     private String sampleY;
 
     /**
@@ -302,9 +277,7 @@ public class TEntity2 implements IEntity {
         }
     }
 
-    /**
-     * 月
-     */
+    /** 月 */
     private String sampleM;
 
     /**
@@ -325,9 +298,7 @@ public class TEntity2 implements IEntity {
         }
     }
 
-    /**
-     * 日時
-     */
+    /** 日時 */
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
@@ -357,9 +328,7 @@ public class TEntity2 implements IEntity {
         }
     }
 
-    /**
-     * 時刻
-     */
+    /** 時刻 */
     private String jikokuHm;
 
     /**
@@ -380,9 +349,7 @@ public class TEntity2 implements IEntity {
         }
     }
 
-    /**
-     * 時間
-     */
+    /** 時間 */
     private String jikanTm;
 
     /**
@@ -403,9 +370,7 @@ public class TEntity2 implements IEntity {
         }
     }
 
-    /**
-     * 数量
-     */
+    /** 数量 */
     private java.math.BigDecimal suryoQt;
 
     /**
@@ -426,9 +391,7 @@ public class TEntity2 implements IEntity {
         }
     }
 
-    /**
-     * 単価
-     */
+    /** 単価 */
     private java.math.BigDecimal tankaAm;
 
     /**
@@ -449,9 +412,7 @@ public class TEntity2 implements IEntity {
         }
     }
 
-    /**
-     * 金額
-     */
+    /** 金額 */
     private java.math.BigDecimal kingakuAm;
 
     /**
@@ -472,9 +433,7 @@ public class TEntity2 implements IEntity {
         }
     }
 
-    /**
-     * 登録日時
-     */
+    /** 登録日時 */
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
@@ -504,9 +463,7 @@ public class TEntity2 implements IEntity {
         }
     }
 
-    /**
-     * 登録者
-     */
+    /** 登録者 */
     private String insertBy;
 
     /**
@@ -527,9 +484,7 @@ public class TEntity2 implements IEntity {
         }
     }
 
-    /**
-     * 更新日時
-     */
+    /** 更新日時 */
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
@@ -559,9 +514,7 @@ public class TEntity2 implements IEntity {
         }
     }
 
-    /**
-     * 更新者
-     */
+    /** 更新者 */
     private String updateBy;
 
     /**
@@ -582,9 +535,7 @@ public class TEntity2 implements IEntity {
         }
     }
 
-    /**
-     * 削除フラグ
-     */
+    /** 削除フラグ */
     private String deleteF;
 
     /**
@@ -606,10 +557,12 @@ public class TEntity2 implements IEntity {
     }
 
     /**
-     * @param param1 sosenId
-     * @param param2 oyaSn
-     * @param param3 entitySn
-     * @return TEntity2
+     * エンティティ２照会
+     *
+     * @param param1 祖先ID
+     * @param param2 親連番
+     * @param param3 エンティティ連番
+     * @return エンティティ２
      */
     public static TEntity2 get(final Object param1, final Object param2, final Object param3) {
 
@@ -629,16 +582,18 @@ public class TEntity2 implements IEntity {
     }
 
     /**
-     * @param now
-     * @param id
+     * エンティティ２追加
+     *
+     * @param now システム日時
+     * @param id 登録者
      * @return 追加件数
      */
     public int insert(final LocalDateTime now, final String id) {
 
-        // 採番処理
+        // エンティティ連番の採番処理
         numbering();
 
-        // エンティティ２テーブルの登録
+        // エンティティ２の登録
         List<String> nameList = new ArrayList<String>();
         nameList.add("sosen_id -- :sosen_id");
         nameList.add("oya_sn -- :oya_sn");
@@ -700,10 +655,8 @@ public class TEntity2 implements IEntity {
         return Queries.regist(sql, params);
     }
 
-    /**
-     *
-     */
-    protected void numbering() {
+    /** エンティティ連番の採番処理 */
+    private void numbering() {
 
         if (this.entitySn != null) {
             return;
@@ -728,13 +681,15 @@ public class TEntity2 implements IEntity {
     }
 
     /**
-     * @param now
-     * @param id
+     * エンティティ２更新
+     *
+     * @param now システム日時
+     * @param id 更新者
      * @return 更新件数
      */
     public int update(final LocalDateTime now, final String id) {
 
-        // エンティティ２テーブルの登録
+        // エンティティ２の登録
         List<String> setList = new ArrayList<String>();
         setList.add("sosen_id = :sosen_id");
         setList.add("oya_sn = :oya_sn");
@@ -768,10 +723,13 @@ public class TEntity2 implements IEntity {
     }
 
     /**
+     * エンティティ２削除
+     *
      * @return 削除件数
      */
     public int delete() {
 
+        // エンティティ２の削除
         String sql = "DELETE FROM t_entity2 WHERE " + getWhere();
 
         Map<String, Object> params = toMap(null, null);

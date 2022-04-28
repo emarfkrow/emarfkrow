@@ -19,16 +19,13 @@ import jp.co.golorp.emarf.lang.StringUtil;
 import jp.co.golorp.emarf.sql.Queries;
 
 /**
- * m_sansho1
+ * 参照１マスタ
  *
- * @author generator
- *
+ * @author emarfkrow
  */
 public class MSansho1 implements IEntity {
 
-    /**
-     * 参照１ID
-     */
+    /** 参照１ID */
     private Integer sansho1Id;
 
     /**
@@ -49,9 +46,7 @@ public class MSansho1 implements IEntity {
         }
     }
 
-    /**
-     * 参照１名
-     */
+    /** 参照１名 */
     private String sansho1Mei;
 
     /**
@@ -72,9 +67,7 @@ public class MSansho1 implements IEntity {
         }
     }
 
-    /**
-     * 登録日時
-     */
+    /** 登録日時 */
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
@@ -104,9 +97,7 @@ public class MSansho1 implements IEntity {
         }
     }
 
-    /**
-     * 登録者
-     */
+    /** 登録者 */
     private String insertBy;
 
     /**
@@ -127,9 +118,7 @@ public class MSansho1 implements IEntity {
         }
     }
 
-    /**
-     * 更新日時
-     */
+    /** 更新日時 */
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
@@ -159,9 +148,7 @@ public class MSansho1 implements IEntity {
         }
     }
 
-    /**
-     * 更新者
-     */
+    /** 更新者 */
     private String updateBy;
 
     /**
@@ -182,9 +169,7 @@ public class MSansho1 implements IEntity {
         }
     }
 
-    /**
-     * 削除フラグ
-     */
+    /** 削除フラグ */
     private String deleteF;
 
     /**
@@ -206,8 +191,10 @@ public class MSansho1 implements IEntity {
     }
 
     /**
-     * @param param1 sansho1Id
-     * @return MSansho1
+     * 参照１マスタ照会
+     *
+     * @param param1 参照１ID
+     * @return 参照１マスタ
      */
     public static MSansho1 get(final Object param1) {
 
@@ -223,16 +210,18 @@ public class MSansho1 implements IEntity {
     }
 
     /**
-     * @param now
-     * @param id
+     * 参照１マスタ追加
+     *
+     * @param now システム日時
+     * @param id 登録者
      * @return 追加件数
      */
     public int insert(final LocalDateTime now, final String id) {
 
-        // 採番処理
+        // 参照１IDの採番処理
         numbering();
 
-        // 参照１マスタテーブルの登録
+        // 参照１マスタの登録
         List<String> nameList = new ArrayList<String>();
         nameList.add("sansho1_id -- :sansho1_id");
         nameList.add("sansho1_mei -- :sansho1_mei");
@@ -260,10 +249,8 @@ public class MSansho1 implements IEntity {
         return Queries.regist(sql, params);
     }
 
-    /**
-     *
-     */
-    protected void numbering() {
+    /** 参照１IDの採番処理 */
+    private void numbering() {
 
         if (this.sansho1Id != null) {
             return;
@@ -280,13 +267,15 @@ public class MSansho1 implements IEntity {
     }
 
     /**
-     * @param now
-     * @param id
+     * 参照１マスタ更新
+     *
+     * @param now システム日時
+     * @param id 更新者
      * @return 更新件数
      */
     public int update(final LocalDateTime now, final String id) {
 
-        // 参照１マスタテーブルの登録
+        // 参照１マスタの登録
         List<String> setList = new ArrayList<String>();
         setList.add("sansho1_id = :sansho1_id");
         setList.add("sansho1_mei = :sansho1_mei");
@@ -303,10 +292,13 @@ public class MSansho1 implements IEntity {
     }
 
     /**
+     * 参照１マスタ削除
+     *
      * @return 削除件数
      */
     public int delete() {
 
+        // 参照１マスタの削除
         String sql = "DELETE FROM m_sansho1 WHERE " + getWhere();
 
         Map<String, Object> params = toMap(null, null);

@@ -19,16 +19,13 @@ import jp.co.golorp.emarf.lang.StringUtil;
 import jp.co.golorp.emarf.sql.Queries;
 
 /**
- * t_oya
+ * 親
  *
- * @author generator
- *
+ * @author emarfkrow
  */
 public class TOya implements IEntity {
 
-    /**
-     * 祖先ID
-     */
+    /** 祖先ID */
     private Integer sosenId;
 
     /**
@@ -49,9 +46,7 @@ public class TOya implements IEntity {
         }
     }
 
-    /**
-     * 親連番
-     */
+    /** 親連番 */
     private Integer oyaSn;
 
     /**
@@ -72,9 +67,7 @@ public class TOya implements IEntity {
         }
     }
 
-    /**
-     * 親名
-     */
+    /** 親名 */
     private String oyaMei;
 
     /**
@@ -95,9 +88,7 @@ public class TOya implements IEntity {
         }
     }
 
-    /**
-     * 登録日時
-     */
+    /** 登録日時 */
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
@@ -127,9 +118,7 @@ public class TOya implements IEntity {
         }
     }
 
-    /**
-     * 登録者
-     */
+    /** 登録者 */
     private String insertBy;
 
     /**
@@ -150,9 +139,7 @@ public class TOya implements IEntity {
         }
     }
 
-    /**
-     * 更新日時
-     */
+    /** 更新日時 */
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
@@ -182,9 +169,7 @@ public class TOya implements IEntity {
         }
     }
 
-    /**
-     * 更新者
-     */
+    /** 更新者 */
     private String updateBy;
 
     /**
@@ -205,9 +190,7 @@ public class TOya implements IEntity {
         }
     }
 
-    /**
-     * 削除フラグ
-     */
+    /** 削除フラグ */
     private String deleteF;
 
     /**
@@ -229,9 +212,11 @@ public class TOya implements IEntity {
     }
 
     /**
-     * @param param1 sosenId
-     * @param param2 oyaSn
-     * @return TOya
+     * 親照会
+     *
+     * @param param1 祖先ID
+     * @param param2 親連番
+     * @return 親
      */
     public static TOya get(final Object param1, final Object param2) {
 
@@ -249,16 +234,18 @@ public class TOya implements IEntity {
     }
 
     /**
-     * @param now
-     * @param id
+     * 親追加
+     *
+     * @param now システム日時
+     * @param id 登録者
      * @return 追加件数
      */
     public int insert(final LocalDateTime now, final String id) {
 
-        // 採番処理
+        // 親連番の採番処理
         numbering();
 
-        // エンティティテーブルの登録
+        // エンティティの登録
         if (this.tEntitys != null) {
             for (TEntity tEntity : this.tEntitys) {
                 tEntity.setSosenId(this.getSosenId());
@@ -267,7 +254,7 @@ public class TOya implements IEntity {
             }
         }
 
-        // 親テーブルの登録
+        // 親の登録
         List<String> nameList = new ArrayList<String>();
         nameList.add("sosen_id -- :sosen_id");
         nameList.add("oya_sn -- :oya_sn");
@@ -297,10 +284,8 @@ public class TOya implements IEntity {
         return Queries.regist(sql, params);
     }
 
-    /**
-     *
-     */
-    protected void numbering() {
+    /** 親連番の採番処理 */
+    private void numbering() {
 
         if (this.oyaSn != null) {
             return;
@@ -323,13 +308,15 @@ public class TOya implements IEntity {
     }
 
     /**
-     * @param now
-     * @param id
+     * 親更新
+     *
+     * @param now システム日時
+     * @param id 更新者
      * @return 更新件数
      */
     public int update(final LocalDateTime now, final String id) {
 
-        // エンティティテーブルの登録
+        // エンティティの登録
         if (this.tEntitys != null) {
             for (TEntity tEntity : this.tEntitys) {
                 tEntity.setSosenId(this.sosenId);
@@ -351,7 +338,7 @@ public class TOya implements IEntity {
             }
         }
 
-        // 親テーブルの登録
+        // 親の登録
         List<String> setList = new ArrayList<String>();
         setList.add("sosen_id = :sosen_id");
         setList.add("oya_sn = :oya_sn");
@@ -369,16 +356,20 @@ public class TOya implements IEntity {
     }
 
     /**
+     * 親削除
+     *
      * @return 削除件数
      */
     public int delete() {
 
+        // エンティティの削除
         if (this.tEntitys != null) {
             for (TEntity tEntity : this.tEntitys) {
                 tEntity.delete();
             }
         }
 
+        // 親の削除
         String sql = "DELETE FROM t_oya WHERE " + getWhere();
 
         Map<String, Object> params = toMap(null, null);

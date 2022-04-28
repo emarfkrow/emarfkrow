@@ -19,16 +19,13 @@ import jp.co.golorp.emarf.lang.StringUtil;
 import jp.co.golorp.emarf.sql.Queries;
 
 /**
- * m_user
+ * ユーザマスタ
  *
- * @author generator
- *
+ * @author emarfkrow
  */
 public class MUser implements IEntity {
 
-    /**
-     * ユーザID
-     */
+    /** ユーザID */
     private Integer userId;
 
     /**
@@ -49,9 +46,7 @@ public class MUser implements IEntity {
         }
     }
 
-    /**
-     * ユーザ姓
-     */
+    /** ユーザ姓 */
     private String userSei;
 
     /**
@@ -72,9 +67,7 @@ public class MUser implements IEntity {
         }
     }
 
-    /**
-     * ユーザ名
-     */
+    /** ユーザ名 */
     private String userMei;
 
     /**
@@ -95,9 +88,7 @@ public class MUser implements IEntity {
         }
     }
 
-    /**
-     * メールアドレス
-     */
+    /** メールアドレス */
     private String email;
 
     /**
@@ -118,9 +109,7 @@ public class MUser implements IEntity {
         }
     }
 
-    /**
-     * パスワード
-     */
+    /** パスワード */
     private String password;
 
     /**
@@ -141,9 +130,7 @@ public class MUser implements IEntity {
         }
     }
 
-    /**
-     * 登録日時
-     */
+    /** 登録日時 */
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
@@ -173,9 +160,7 @@ public class MUser implements IEntity {
         }
     }
 
-    /**
-     * 登録者
-     */
+    /** 登録者 */
     private String insertBy;
 
     /**
@@ -196,9 +181,7 @@ public class MUser implements IEntity {
         }
     }
 
-    /**
-     * 更新日時
-     */
+    /** 更新日時 */
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
@@ -228,9 +211,7 @@ public class MUser implements IEntity {
         }
     }
 
-    /**
-     * 更新者
-     */
+    /** 更新者 */
     private String updateBy;
 
     /**
@@ -251,9 +232,7 @@ public class MUser implements IEntity {
         }
     }
 
-    /**
-     * 削除フラグ
-     */
+    /** 削除フラグ */
     private String deleteF;
 
     /**
@@ -275,8 +254,10 @@ public class MUser implements IEntity {
     }
 
     /**
-     * @param param1 userId
-     * @return MUser
+     * ユーザマスタ照会
+     *
+     * @param param1 ユーザID
+     * @return ユーザマスタ
      */
     public static MUser get(final Object param1) {
 
@@ -292,16 +273,18 @@ public class MUser implements IEntity {
     }
 
     /**
-     * @param now
-     * @param id
+     * ユーザマスタ追加
+     *
+     * @param now システム日時
+     * @param id 登録者
      * @return 追加件数
      */
     public int insert(final LocalDateTime now, final String id) {
 
-        // 採番処理
+        // ユーザIDの採番処理
         numbering();
 
-        // ユーザマスタテーブルの登録
+        // ユーザマスタの登録
         List<String> nameList = new ArrayList<String>();
         nameList.add("user_id -- :user_id");
         nameList.add("user_sei -- :user_sei");
@@ -335,10 +318,8 @@ public class MUser implements IEntity {
         return Queries.regist(sql, params);
     }
 
-    /**
-     *
-     */
-    protected void numbering() {
+    /** ユーザIDの採番処理 */
+    private void numbering() {
 
         if (this.userId != null) {
             return;
@@ -355,13 +336,15 @@ public class MUser implements IEntity {
     }
 
     /**
-     * @param now
-     * @param id
+     * ユーザマスタ更新
+     *
+     * @param now システム日時
+     * @param id 更新者
      * @return 更新件数
      */
     public int update(final LocalDateTime now, final String id) {
 
-        // ユーザマスタテーブルの登録
+        // ユーザマスタの登録
         List<String> setList = new ArrayList<String>();
         setList.add("user_id = :user_id");
         setList.add("user_sei = :user_sei");
@@ -381,10 +364,13 @@ public class MUser implements IEntity {
     }
 
     /**
+     * ユーザマスタ削除
+     *
      * @return 削除件数
      */
     public int delete() {
 
+        // ユーザマスタの削除
         String sql = "DELETE FROM m_user WHERE " + getWhere();
 
         Map<String, Object> params = toMap(null, null);

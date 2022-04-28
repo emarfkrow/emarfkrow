@@ -19,16 +19,13 @@ import jp.co.golorp.emarf.lang.StringUtil;
 import jp.co.golorp.emarf.sql.Queries;
 
 /**
- * m_code
+ * コードマスタ
  *
- * @author generator
- *
+ * @author emarfkrow
  */
 public class MCode implements IEntity {
 
-    /**
-     * コード名称
-     */
+    /** コード名称 */
     private String codeNm;
 
     /**
@@ -49,9 +46,7 @@ public class MCode implements IEntity {
         }
     }
 
-    /**
-     * コード名
-     */
+    /** コード名 */
     private String codeMei;
 
     /**
@@ -72,9 +67,7 @@ public class MCode implements IEntity {
         }
     }
 
-    /**
-     * 登録日時
-     */
+    /** 登録日時 */
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
@@ -104,9 +97,7 @@ public class MCode implements IEntity {
         }
     }
 
-    /**
-     * 登録者
-     */
+    /** 登録者 */
     private String insertBy;
 
     /**
@@ -127,9 +118,7 @@ public class MCode implements IEntity {
         }
     }
 
-    /**
-     * 更新日時
-     */
+    /** 更新日時 */
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
@@ -159,9 +148,7 @@ public class MCode implements IEntity {
         }
     }
 
-    /**
-     * 更新者
-     */
+    /** 更新者 */
     private String updateBy;
 
     /**
@@ -182,9 +169,7 @@ public class MCode implements IEntity {
         }
     }
 
-    /**
-     * 削除フラグ
-     */
+    /** 削除フラグ */
     private String deleteF;
 
     /**
@@ -206,8 +191,10 @@ public class MCode implements IEntity {
     }
 
     /**
-     * @param param1 codeNm
-     * @return MCode
+     * コードマスタ照会
+     *
+     * @param param1 コード名称
+     * @return コードマスタ
      */
     public static MCode get(final Object param1) {
 
@@ -223,13 +210,15 @@ public class MCode implements IEntity {
     }
 
     /**
-     * @param now
-     * @param id
+     * コードマスタ追加
+     *
+     * @param now システム日時
+     * @param id 登録者
      * @return 追加件数
      */
     public int insert(final LocalDateTime now, final String id) {
 
-        // コード値マスタテーブルの登録
+        // コード値マスタの登録
         if (this.mCodeValues != null) {
             for (MCodeValue mCodeValue : this.mCodeValues) {
                 mCodeValue.setCodeNm(this.getCodeNm());
@@ -237,7 +226,7 @@ public class MCode implements IEntity {
             }
         }
 
-        // コードマスタテーブルの登録
+        // コードマスタの登録
         List<String> nameList = new ArrayList<String>();
         nameList.add("code_nm -- :code_nm");
         nameList.add("code_mei -- :code_mei");
@@ -266,13 +255,15 @@ public class MCode implements IEntity {
     }
 
     /**
-     * @param now
-     * @param id
+     * コードマスタ更新
+     *
+     * @param now システム日時
+     * @param id 更新者
      * @return 更新件数
      */
     public int update(final LocalDateTime now, final String id) {
 
-        // コード値マスタテーブルの登録
+        // コード値マスタの登録
         if (this.mCodeValues != null) {
             for (MCodeValue mCodeValue : this.mCodeValues) {
                 mCodeValue.setCodeNm(this.codeNm);
@@ -293,7 +284,7 @@ public class MCode implements IEntity {
             }
         }
 
-        // コードマスタテーブルの登録
+        // コードマスタの登録
         List<String> setList = new ArrayList<String>();
         setList.add("code_nm = :code_nm");
         setList.add("code_mei = :code_mei");
@@ -310,16 +301,20 @@ public class MCode implements IEntity {
     }
 
     /**
+     * コードマスタ削除
+     *
      * @return 削除件数
      */
     public int delete() {
 
+        // コード値マスタの削除
         if (this.mCodeValues != null) {
             for (MCodeValue mCodeValue : this.mCodeValues) {
                 mCodeValue.delete();
             }
         }
 
+        // コードマスタの削除
         String sql = "DELETE FROM m_code WHERE " + getWhere();
 
         Map<String, Object> params = toMap(null, null);

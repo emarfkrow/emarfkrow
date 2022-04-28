@@ -19,16 +19,13 @@ import jp.co.golorp.emarf.lang.StringUtil;
 import jp.co.golorp.emarf.sql.Queries;
 
 /**
- * t_shison
+ * 子孫
  *
- * @author generator
- *
+ * @author emarfkrow
  */
 public class TShison implements IEntity {
 
-    /**
-     * 祖先ID
-     */
+    /** 祖先ID */
     private Integer sosenId;
 
     /**
@@ -49,9 +46,7 @@ public class TShison implements IEntity {
         }
     }
 
-    /**
-     * 親連番
-     */
+    /** 親連番 */
     private Integer oyaSn;
 
     /**
@@ -72,9 +67,7 @@ public class TShison implements IEntity {
         }
     }
 
-    /**
-     * エンティティ連番
-     */
+    /** エンティティ連番 */
     private Integer entitySn;
 
     /**
@@ -95,9 +88,7 @@ public class TShison implements IEntity {
         }
     }
 
-    /**
-     * 子連番
-     */
+    /** 子連番 */
     private Integer koSn;
 
     /**
@@ -118,9 +109,7 @@ public class TShison implements IEntity {
         }
     }
 
-    /**
-     * 子孫連番
-     */
+    /** 子孫連番 */
     private Integer shisonSn;
 
     /**
@@ -141,9 +130,7 @@ public class TShison implements IEntity {
         }
     }
 
-    /**
-     * 子孫名
-     */
+    /** 子孫名 */
     private String shisonMei;
 
     /**
@@ -164,9 +151,7 @@ public class TShison implements IEntity {
         }
     }
 
-    /**
-     * 登録日時
-     */
+    /** 登録日時 */
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
@@ -196,9 +181,7 @@ public class TShison implements IEntity {
         }
     }
 
-    /**
-     * 登録者
-     */
+    /** 登録者 */
     private String insertBy;
 
     /**
@@ -219,9 +202,7 @@ public class TShison implements IEntity {
         }
     }
 
-    /**
-     * 更新日時
-     */
+    /** 更新日時 */
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
@@ -251,9 +232,7 @@ public class TShison implements IEntity {
         }
     }
 
-    /**
-     * 更新者
-     */
+    /** 更新者 */
     private String updateBy;
 
     /**
@@ -274,9 +253,7 @@ public class TShison implements IEntity {
         }
     }
 
-    /**
-     * 削除フラグ
-     */
+    /** 削除フラグ */
     private String deleteF;
 
     /**
@@ -298,12 +275,14 @@ public class TShison implements IEntity {
     }
 
     /**
-     * @param param1 sosenId
-     * @param param2 oyaSn
-     * @param param3 entitySn
-     * @param param4 koSn
-     * @param param5 shisonSn
-     * @return TShison
+     * 子孫照会
+     *
+     * @param param1 祖先ID
+     * @param param2 親連番
+     * @param param3 エンティティ連番
+     * @param param4 子連番
+     * @param param5 子孫連番
+     * @return 子孫
      */
     public static TShison get(final Object param1, final Object param2, final Object param3, final Object param4, final Object param5) {
 
@@ -327,16 +306,18 @@ public class TShison implements IEntity {
     }
 
     /**
-     * @param now
-     * @param id
+     * 子孫追加
+     *
+     * @param now システム日時
+     * @param id 登録者
      * @return 追加件数
      */
     public int insert(final LocalDateTime now, final String id) {
 
-        // 採番処理
+        // 子孫連番の採番処理
         numbering();
 
-        // 子孫テーブルの登録
+        // 子孫の登録
         List<String> nameList = new ArrayList<String>();
         nameList.add("sosen_id -- :sosen_id");
         nameList.add("oya_sn -- :oya_sn");
@@ -372,10 +353,8 @@ public class TShison implements IEntity {
         return Queries.regist(sql, params);
     }
 
-    /**
-     *
-     */
-    protected void numbering() {
+    /** 子孫連番の採番処理 */
+    private void numbering() {
 
         if (this.shisonSn != null) {
             return;
@@ -404,13 +383,15 @@ public class TShison implements IEntity {
     }
 
     /**
-     * @param now
-     * @param id
+     * 子孫更新
+     *
+     * @param now システム日時
+     * @param id 更新者
      * @return 更新件数
      */
     public int update(final LocalDateTime now, final String id) {
 
-        // 子孫テーブルの登録
+        // 子孫の登録
         List<String> setList = new ArrayList<String>();
         setList.add("sosen_id = :sosen_id");
         setList.add("oya_sn = :oya_sn");
@@ -431,10 +412,13 @@ public class TShison implements IEntity {
     }
 
     /**
+     * 子孫削除
+     *
      * @return 削除件数
      */
     public int delete() {
 
+        // 子孫の削除
         String sql = "DELETE FROM t_shison WHERE " + getWhere();
 
         Map<String, Object> params = toMap(null, null);

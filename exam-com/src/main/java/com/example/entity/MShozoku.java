@@ -19,16 +19,13 @@ import jp.co.golorp.emarf.lang.StringUtil;
 import jp.co.golorp.emarf.sql.Queries;
 
 /**
- * m_shozoku
+ * 所属マスタ
  *
- * @author generator
- *
+ * @author emarfkrow
  */
 public class MShozoku implements IEntity {
 
-    /**
-     * 部署ID
-     */
+    /** 部署ID */
     private Integer bushoId;
 
     /**
@@ -49,9 +46,7 @@ public class MShozoku implements IEntity {
         }
     }
 
-    /**
-     * 職位ID
-     */
+    /** 職位ID */
     private Integer shokuiId;
 
     /**
@@ -72,9 +67,7 @@ public class MShozoku implements IEntity {
         }
     }
 
-    /**
-     * ユーザID
-     */
+    /** ユーザID */
     private Integer userId;
 
     /**
@@ -95,9 +88,7 @@ public class MShozoku implements IEntity {
         }
     }
 
-    /**
-     * 開始日
-     */
+    /** 開始日 */
     private String kaishiYmd;
 
     /**
@@ -118,9 +109,7 @@ public class MShozoku implements IEntity {
         }
     }
 
-    /**
-     * 終了日
-     */
+    /** 終了日 */
     private String shuryoYmd;
 
     /**
@@ -141,9 +130,7 @@ public class MShozoku implements IEntity {
         }
     }
 
-    /**
-     * 登録日時
-     */
+    /** 登録日時 */
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
@@ -173,9 +160,7 @@ public class MShozoku implements IEntity {
         }
     }
 
-    /**
-     * 登録者
-     */
+    /** 登録者 */
     private String insertBy;
 
     /**
@@ -196,9 +181,7 @@ public class MShozoku implements IEntity {
         }
     }
 
-    /**
-     * 更新日時
-     */
+    /** 更新日時 */
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
@@ -228,9 +211,7 @@ public class MShozoku implements IEntity {
         }
     }
 
-    /**
-     * 更新者
-     */
+    /** 更新者 */
     private String updateBy;
 
     /**
@@ -251,9 +232,7 @@ public class MShozoku implements IEntity {
         }
     }
 
-    /**
-     * 削除フラグ
-     */
+    /** 削除フラグ */
     private String deleteF;
 
     /**
@@ -275,10 +254,12 @@ public class MShozoku implements IEntity {
     }
 
     /**
-     * @param param1 bushoId
-     * @param param2 shokuiId
-     * @param param3 userId
-     * @return MShozoku
+     * 所属マスタ照会
+     *
+     * @param param1 部署ID
+     * @param param2 職位ID
+     * @param param3 ユーザID
+     * @return 所属マスタ
      */
     public static MShozoku get(final Object param1, final Object param2, final Object param3) {
 
@@ -298,16 +279,18 @@ public class MShozoku implements IEntity {
     }
 
     /**
-     * @param now
-     * @param id
+     * 所属マスタ追加
+     *
+     * @param now システム日時
+     * @param id 登録者
      * @return 追加件数
      */
     public int insert(final LocalDateTime now, final String id) {
 
-        // 採番処理
+        // ユーザIDの採番処理
         numbering();
 
-        // 所属マスタテーブルの登録
+        // 所属マスタの登録
         List<String> nameList = new ArrayList<String>();
         nameList.add("busho_id -- :busho_id");
         nameList.add("shokui_id -- :shokui_id");
@@ -341,10 +324,8 @@ public class MShozoku implements IEntity {
         return Queries.regist(sql, params);
     }
 
-    /**
-     *
-     */
-    protected void numbering() {
+    /** ユーザIDの採番処理 */
+    private void numbering() {
 
         if (this.userId != null) {
             return;
@@ -369,13 +350,15 @@ public class MShozoku implements IEntity {
     }
 
     /**
-     * @param now
-     * @param id
+     * 所属マスタ更新
+     *
+     * @param now システム日時
+     * @param id 更新者
      * @return 更新件数
      */
     public int update(final LocalDateTime now, final String id) {
 
-        // 所属マスタテーブルの登録
+        // 所属マスタの登録
         List<String> setList = new ArrayList<String>();
         setList.add("busho_id = :busho_id");
         setList.add("shokui_id = :shokui_id");
@@ -395,10 +378,13 @@ public class MShozoku implements IEntity {
     }
 
     /**
+     * 所属マスタ削除
+     *
      * @return 削除件数
      */
     public int delete() {
 
+        // 所属マスタの削除
         String sql = "DELETE FROM m_shozoku WHERE " + getWhere();
 
         Map<String, Object> params = toMap(null, null);

@@ -67,9 +67,7 @@ public class MBusho implements IEntity {
         }
     }
 
-    /**
-     * 開始日
-     */
+    /** 開始日 */
     private String kaishiYmd;
 
     /**
@@ -90,9 +88,7 @@ public class MBusho implements IEntity {
         }
     }
 
-    /**
-     * 終了日
-     */
+    /** 終了日 */
     private String shuryoYmd;
 
     /**
@@ -113,9 +109,7 @@ public class MBusho implements IEntity {
         }
     }
 
-    /**
-     * 親部署ID
-     */
+    /** 親部署ID */
     private Integer oyaBushoId;
 
     /**
@@ -136,9 +130,7 @@ public class MBusho implements IEntity {
         }
     }
 
-    /**
-     * 登録日時
-     */
+    /** 登録日時 */
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
@@ -168,9 +160,7 @@ public class MBusho implements IEntity {
         }
     }
 
-    /**
-     * 登録者
-     */
+    /** 登録者 */
     private String insertBy;
 
     /**
@@ -191,9 +181,7 @@ public class MBusho implements IEntity {
         }
     }
 
-    /**
-     * 更新日時
-     */
+    /** 更新日時 */
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
@@ -223,9 +211,7 @@ public class MBusho implements IEntity {
         }
     }
 
-    /**
-     * 更新者
-     */
+    /** 更新者 */
     private String updateBy;
 
     /**
@@ -246,9 +232,7 @@ public class MBusho implements IEntity {
         }
     }
 
-    /**
-     * 削除フラグ
-     */
+    /** 削除フラグ */
     private String deleteF;
 
     /**
@@ -297,8 +281,10 @@ public class MBusho implements IEntity {
      */
     public int insert(final LocalDateTime now, final String id) {
 
+        // 部署IDの採番処理
         numbering();
 
+        // 部署マスタの登録
         List<String> nameList = new ArrayList<String>();
         nameList.add("busho_id -- :busho_id");
         nameList.add("busho_mei -- :busho_mei");
@@ -332,9 +318,7 @@ public class MBusho implements IEntity {
         return Queries.regist(sql, params);
     }
 
-    /**
-     * 末端キーの採番処理
-     */
+    /** 部署IDの採番処理 */
     private void numbering() {
 
         if (this.bushoId != null) {
@@ -360,6 +344,7 @@ public class MBusho implements IEntity {
      */
     public int update(final LocalDateTime now, final String id) {
 
+        // 部署マスタの登録
         List<String> setList = new ArrayList<String>();
         setList.add("busho_id = :busho_id");
         setList.add("busho_mei = :busho_mei");
@@ -385,6 +370,7 @@ public class MBusho implements IEntity {
      */
     public int delete() {
 
+        // 部署マスタの削除
         String sql = "DELETE FROM m_busho WHERE " + getWhere();
 
         Map<String, Object> params = toMap(null, null);
@@ -392,9 +378,6 @@ public class MBusho implements IEntity {
         return Queries.regist(sql, params);
     }
 
-    /**
-     * @return 部署マスタの主キーのwhere句
-     */
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
         whereList.add("busho_id = :busho_id");
@@ -402,11 +385,6 @@ public class MBusho implements IEntity {
         return String.join(" AND ", whereList);
     }
 
-    /**
-     * @param now システム日時
-     * @param id 登録者
-     * @return Map化した部署マスタ
-     */
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("busho_id", this.bushoId);
@@ -421,5 +399,4 @@ public class MBusho implements IEntity {
         params.put("update_by", id);
         return params;
     }
-
 }
