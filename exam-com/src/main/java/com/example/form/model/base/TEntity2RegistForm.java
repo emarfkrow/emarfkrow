@@ -9,6 +9,11 @@ import jakarta.validation.constraints.Size;
 import jp.co.golorp.emarf.process.BaseProcess;
 import jp.co.golorp.emarf.validation.IForm;
 
+/**
+ * エンティティ２登録フォーム
+ *
+ * @author emarfkrow
+ */
 public class TEntity2RegistForm implements IForm {
 
     /** logger */
@@ -26,7 +31,7 @@ public class TEntity2RegistForm implements IForm {
     }
 
     /**
-     * @param p
+     * @param p 祖先ID
      */
     public void setSosenId(final String p) {
         this.sosenId = p;
@@ -44,7 +49,7 @@ public class TEntity2RegistForm implements IForm {
     }
 
     /**
-     * @param p
+     * @param p 親連番
      */
     public void setOyaSn(final String p) {
         this.oyaSn = p;
@@ -62,7 +67,7 @@ public class TEntity2RegistForm implements IForm {
     }
 
     /**
-     * @param p
+     * @param p エンティティ連番
      */
     public void setEntitySn(final String p) {
         this.entitySn = p;
@@ -80,7 +85,7 @@ public class TEntity2RegistForm implements IForm {
     }
 
     /**
-     * @param p
+     * @param p 任意エンティティ２名
      */
     public void setNullEntity2Mei(final String p) {
         this.nullEntity2Mei = p;
@@ -99,7 +104,7 @@ public class TEntity2RegistForm implements IForm {
     }
 
     /**
-     * @param p
+     * @param p エンティティ２名
      */
     public void setEntity2Mei(final String p) {
         this.entity2Mei = p;
@@ -118,7 +123,7 @@ public class TEntity2RegistForm implements IForm {
     }
 
     /**
-     * @param p
+     * @param p チェックフラグ
      */
     public void setCheckF(final String p) {
         this.checkF = p;
@@ -137,7 +142,7 @@ public class TEntity2RegistForm implements IForm {
     }
 
     /**
-     * @param p
+     * @param p ラジオ区分
      */
     public void setRadioKb(final String p) {
         this.radioKb = p;
@@ -156,7 +161,7 @@ public class TEntity2RegistForm implements IForm {
     }
 
     /**
-     * @param p
+     * @param p プルダウン区分
      */
     public void setPulldownKb(final String p) {
         this.pulldownKb = p;
@@ -175,7 +180,7 @@ public class TEntity2RegistForm implements IForm {
     }
 
     /**
-     * @param p
+     * @param p メモ
      */
     public void setMemoTx(final String p) {
         this.memoTx = p;
@@ -194,7 +199,7 @@ public class TEntity2RegistForm implements IForm {
     }
 
     /**
-     * @param p
+     * @param p 日付
      */
     public void setHidukeYmd(final String p) {
         this.hidukeYmd = p;
@@ -213,7 +218,7 @@ public class TEntity2RegistForm implements IForm {
     }
 
     /**
-     * @param p
+     * @param p 年月
      */
     public void setNengetsuYm(final String p) {
         this.nengetsuYm = p;
@@ -232,7 +237,7 @@ public class TEntity2RegistForm implements IForm {
     }
 
     /**
-     * @param p
+     * @param p 年
      */
     public void setSampleY(final String p) {
         this.sampleY = p;
@@ -251,7 +256,7 @@ public class TEntity2RegistForm implements IForm {
     }
 
     /**
-     * @param p
+     * @param p 月
      */
     public void setSampleM(final String p) {
         this.sampleM = p;
@@ -270,7 +275,7 @@ public class TEntity2RegistForm implements IForm {
     }
 
     /**
-     * @param p
+     * @param p 日時
      */
     public void setNichijiDt(final String p) {
         this.nichijiDt = p;
@@ -289,7 +294,7 @@ public class TEntity2RegistForm implements IForm {
     }
 
     /**
-     * @param p
+     * @param p 時刻
      */
     public void setJikokuHm(final String p) {
         this.jikokuHm = p;
@@ -308,7 +313,7 @@ public class TEntity2RegistForm implements IForm {
     }
 
     /**
-     * @param p
+     * @param p 時間
      */
     public void setJikanTm(final String p) {
         this.jikanTm = p;
@@ -327,7 +332,7 @@ public class TEntity2RegistForm implements IForm {
     }
 
     /**
-     * @param p
+     * @param p 数量
      */
     public void setSuryoQt(final String p) {
         this.suryoQt = p;
@@ -346,7 +351,7 @@ public class TEntity2RegistForm implements IForm {
     }
 
     /**
-     * @param p
+     * @param p 単価
      */
     public void setTankaAm(final String p) {
         this.tankaAm = p;
@@ -365,7 +370,7 @@ public class TEntity2RegistForm implements IForm {
     }
 
     /**
-     * @param p
+     * @param p 金額
      */
     public void setKingakuAm(final String p) {
         this.kingakuAm = p;
@@ -383,14 +388,14 @@ public class TEntity2RegistForm implements IForm {
     }
 
     /**
-     * @param p
+     * @param p 削除フラグ
      */
     public void setDeleteF(final String p) {
         this.deleteF = p;
     }
 
     /**
-     * correlation check
+     * 関連チェック
      */
     @Override
     public void validate(final Map<String, String> errors, final BaseProcess baseProcess) {

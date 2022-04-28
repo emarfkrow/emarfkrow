@@ -9,6 +9,11 @@ import jakarta.validation.constraints.Size;
 import jp.co.golorp.emarf.process.BaseProcess;
 import jp.co.golorp.emarf.validation.IForm;
 
+/**
+ * 認可マスタ登録フォーム
+ *
+ * @author emarfkrow
+ */
 public class MNinkaRegistForm implements IForm {
 
     /** logger */
@@ -26,7 +31,7 @@ public class MNinkaRegistForm implements IForm {
     }
 
     /**
-     * @param p
+     * @param p 部署ID
      */
     public void setBushoId(final String p) {
         this.bushoId = p;
@@ -44,7 +49,7 @@ public class MNinkaRegistForm implements IForm {
     }
 
     /**
-     * @param p
+     * @param p 職位ID
      */
     public void setShokuiId(final String p) {
         this.shokuiId = p;
@@ -63,7 +68,7 @@ public class MNinkaRegistForm implements IForm {
     }
 
     /**
-     * @param p
+     * @param p 画面名
      */
     public void setGamenNm(final String p) {
         this.gamenNm = p;
@@ -82,7 +87,7 @@ public class MNinkaRegistForm implements IForm {
     }
 
     /**
-     * @param p
+     * @param p 権限区分
      */
     public void setKengenKb(final String p) {
         this.kengenKb = p;
@@ -100,7 +105,7 @@ public class MNinkaRegistForm implements IForm {
     }
 
     /**
-     * @param p
+     * @param p 開始日
      */
     public void setKaishiYmd(final String p) {
         this.kaishiYmd = p;
@@ -118,7 +123,7 @@ public class MNinkaRegistForm implements IForm {
     }
 
     /**
-     * @param p
+     * @param p 終了日
      */
     public void setShuryoYmd(final String p) {
         this.shuryoYmd = p;
@@ -136,14 +141,14 @@ public class MNinkaRegistForm implements IForm {
     }
 
     /**
-     * @param p
+     * @param p 削除フラグ
      */
     public void setDeleteF(final String p) {
         this.deleteF = p;
     }
 
     /**
-     * correlation check
+     * 関連チェック
      */
     @Override
     public void validate(final Map<String, String> errors, final BaseProcess baseProcess) {

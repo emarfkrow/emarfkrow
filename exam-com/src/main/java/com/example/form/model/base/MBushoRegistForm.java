@@ -50,7 +50,7 @@ public class MBushoRegistForm implements IForm {
     }
 
     /**
-     * @param p
+     * @param p 部署名
      */
     public void setBushoMei(final String p) {
         this.bushoMei = p;
@@ -68,7 +68,7 @@ public class MBushoRegistForm implements IForm {
     }
 
     /**
-     * @param p
+     * @param p 開始日
      */
     public void setKaishiYmd(final String p) {
         this.kaishiYmd = p;
@@ -86,7 +86,7 @@ public class MBushoRegistForm implements IForm {
     }
 
     /**
-     * @param p
+     * @param p 終了日
      */
     public void setShuryoYmd(final String p) {
         this.shuryoYmd = p;
@@ -104,7 +104,7 @@ public class MBushoRegistForm implements IForm {
     }
 
     /**
-     * @param p
+     * @param p 親部署ID
      */
     public void setOyaBushoId(final String p) {
         this.oyaBushoId = p;
@@ -122,13 +122,15 @@ public class MBushoRegistForm implements IForm {
     }
 
     /**
-     * @param p
+     * @param p 削除フラグ
      */
     public void setDeleteF(final String p) {
         this.deleteF = p;
     }
 
-    /** 関連チェック */
+    /**
+     * 関連チェック
+     */
     @Override
     public void validate(final Map<String, String> errors, final BaseProcess baseProcess) {
         LOG.debug("not overridden in subclasses.");

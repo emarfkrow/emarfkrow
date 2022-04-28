@@ -10,6 +10,11 @@ import jakarta.validation.constraints.Size;
 import jp.co.golorp.emarf.process.BaseProcess;
 import jp.co.golorp.emarf.validation.IForm;
 
+/**
+ * 祖先登録フォーム
+ *
+ * @author emarfkrow
+ */
 public class TSosenRegistForm implements IForm {
 
     /** logger */
@@ -27,7 +32,7 @@ public class TSosenRegistForm implements IForm {
     }
 
     /**
-     * @param p
+     * @param p 祖先ID
      */
     public void setSosenId(final String p) {
         this.sosenId = p;
@@ -46,7 +51,7 @@ public class TSosenRegistForm implements IForm {
     }
 
     /**
-     * @param p
+     * @param p 祖先名
      */
     public void setSosenMei(final String p) {
         this.sosenMei = p;
@@ -64,7 +69,7 @@ public class TSosenRegistForm implements IForm {
     }
 
     /**
-     * @param p
+     * @param p 削除フラグ
      */
     public void setDeleteF(final String p) {
         this.deleteF = p;
@@ -89,7 +94,7 @@ public class TSosenRegistForm implements IForm {
     }
 
     /**
-     * correlation check
+     * 関連チェック
      */
     @Override
     public void validate(final Map<String, String> errors, final BaseProcess baseProcess) {

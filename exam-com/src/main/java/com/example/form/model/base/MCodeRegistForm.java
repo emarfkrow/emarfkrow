@@ -10,6 +10,11 @@ import jakarta.validation.constraints.Size;
 import jp.co.golorp.emarf.process.BaseProcess;
 import jp.co.golorp.emarf.validation.IForm;
 
+/**
+ * コードマスタ登録フォーム
+ *
+ * @author emarfkrow
+ */
 public class MCodeRegistForm implements IForm {
 
     /** logger */
@@ -28,7 +33,7 @@ public class MCodeRegistForm implements IForm {
     }
 
     /**
-     * @param p
+     * @param p コード名称
      */
     public void setCodeNm(final String p) {
         this.codeNm = p;
@@ -47,7 +52,7 @@ public class MCodeRegistForm implements IForm {
     }
 
     /**
-     * @param p
+     * @param p コード名
      */
     public void setCodeMei(final String p) {
         this.codeMei = p;
@@ -65,7 +70,7 @@ public class MCodeRegistForm implements IForm {
     }
 
     /**
-     * @param p
+     * @param p 削除フラグ
      */
     public void setDeleteF(final String p) {
         this.deleteF = p;
@@ -90,7 +95,7 @@ public class MCodeRegistForm implements IForm {
     }
 
     /**
-     * correlation check
+     * 関連チェック
      */
     @Override
     public void validate(final Map<String, String> errors, final BaseProcess baseProcess) {

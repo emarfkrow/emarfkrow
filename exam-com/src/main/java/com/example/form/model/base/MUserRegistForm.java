@@ -9,6 +9,11 @@ import jakarta.validation.constraints.Size;
 import jp.co.golorp.emarf.process.BaseProcess;
 import jp.co.golorp.emarf.validation.IForm;
 
+/**
+ * ユーザマスタ登録フォーム
+ *
+ * @author emarfkrow
+ */
 public class MUserRegistForm implements IForm {
 
     /** logger */
@@ -26,7 +31,7 @@ public class MUserRegistForm implements IForm {
     }
 
     /**
-     * @param p
+     * @param p ユーザID
      */
     public void setUserId(final String p) {
         this.userId = p;
@@ -45,7 +50,7 @@ public class MUserRegistForm implements IForm {
     }
 
     /**
-     * @param p
+     * @param p ユーザ姓
      */
     public void setUserSei(final String p) {
         this.userSei = p;
@@ -64,7 +69,7 @@ public class MUserRegistForm implements IForm {
     }
 
     /**
-     * @param p
+     * @param p ユーザ名
      */
     public void setUserMei(final String p) {
         this.userMei = p;
@@ -83,7 +88,7 @@ public class MUserRegistForm implements IForm {
     }
 
     /**
-     * @param p
+     * @param p メールアドレス
      */
     public void setEmail(final String p) {
         this.email = p;
@@ -102,7 +107,7 @@ public class MUserRegistForm implements IForm {
     }
 
     /**
-     * @param p
+     * @param p パスワード
      */
     public void setPassword(final String p) {
         this.password = p;
@@ -120,14 +125,14 @@ public class MUserRegistForm implements IForm {
     }
 
     /**
-     * @param p
+     * @param p 削除フラグ
      */
     public void setDeleteF(final String p) {
         this.deleteF = p;
     }
 
     /**
-     * correlation check
+     * 関連チェック
      */
     @Override
     public void validate(final Map<String, String> errors, final BaseProcess baseProcess) {

@@ -9,6 +9,11 @@ import jakarta.validation.constraints.Size;
 import jp.co.golorp.emarf.process.BaseProcess;
 import jp.co.golorp.emarf.validation.IForm;
 
+/**
+ * 職位マスタ登録フォーム
+ *
+ * @author emarfkrow
+ */
 public class MShokuiRegistForm implements IForm {
 
     /** logger */
@@ -26,7 +31,7 @@ public class MShokuiRegistForm implements IForm {
     }
 
     /**
-     * @param p
+     * @param p 職位ID
      */
     public void setShokuiId(final String p) {
         this.shokuiId = p;
@@ -45,7 +50,7 @@ public class MShokuiRegistForm implements IForm {
     }
 
     /**
-     * @param p
+     * @param p 職位名
      */
     public void setShokuiMei(final String p) {
         this.shokuiMei = p;
@@ -64,7 +69,7 @@ public class MShokuiRegistForm implements IForm {
     }
 
     /**
-     * @param p
+     * @param p 職位順
      */
     public void setOrderId(final String p) {
         this.orderId = p;
@@ -82,7 +87,7 @@ public class MShokuiRegistForm implements IForm {
     }
 
     /**
-     * @param p
+     * @param p 開始日
      */
     public void setKaishiYmd(final String p) {
         this.kaishiYmd = p;
@@ -100,7 +105,7 @@ public class MShokuiRegistForm implements IForm {
     }
 
     /**
-     * @param p
+     * @param p 終了日
      */
     public void setShuryoYmd(final String p) {
         this.shuryoYmd = p;
@@ -118,14 +123,14 @@ public class MShokuiRegistForm implements IForm {
     }
 
     /**
-     * @param p
+     * @param p 削除フラグ
      */
     public void setDeleteF(final String p) {
         this.deleteF = p;
     }
 
     /**
-     * correlation check
+     * 関連チェック
      */
     @Override
     public void validate(final Map<String, String> errors, final BaseProcess baseProcess) {
