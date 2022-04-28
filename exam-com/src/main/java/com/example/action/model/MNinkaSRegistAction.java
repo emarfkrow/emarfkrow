@@ -11,12 +11,16 @@ import jp.co.golorp.emarf.action.BaseAction;
 import jp.co.golorp.emarf.exception.OptLockError;
 import jp.co.golorp.emarf.lang.StringUtil;
 import jp.co.golorp.emarf.util.Messages;
+import jp.co.golorp.emarf.validation.FormValidator;
 
+/**
+ * 認可マスタ一覧登録
+ *
+ * @author emarfkrow
+ */
 public class MNinkaSRegistAction extends BaseAction {
 
-    /**
-     *
-     */
+    /** 認可マスタ一覧登録処理 */
     @Override
     public Map<String, Object> running(final LocalDateTime now, final String id, final Map<String, Object> postJson) {
 
@@ -32,36 +36,28 @@ public class MNinkaSRegistAction extends BaseAction {
 
         for (Map<String, Object> gridRow : gridData) {
 
-            MNinka e = new MNinka();
-            e.setBushoId(gridRow.get("BUSHO_ID"));
-            e.setShokuiId(gridRow.get("SHOKUI_ID"));
-            e.setGamenNm(gridRow.get("GAMEN_NM"));
-            e.setKengenKb(gridRow.get("KENGEN_KB"));
-            e.setKaishiYmd(gridRow.get("KAISHI_YMD"));
-            e.setShuryoYmd(gridRow.get("SHURYO_YMD"));
-            e.setInsertDt(gridRow.get("INSERT_DT"));
-            e.setInsertBy(gridRow.get("INSERT_BY"));
-            e.setUpdateDt(gridRow.get("UPDATE_DT"));
-            e.setUpdateBy(gridRow.get("UPDATE_BY"));
-            e.setDeleteF(gridRow.get("DELETE_F"));
+            MNinka e = FormValidator.toBean(MNinka.class.getName(), gridRow);
 
-            // 主キー情報が足りていなければINSERT
+            // 主キーが不足していたらINSERT
             boolean isNew = false;
-            if (StringUtil.isNullOrBlank(gridRow.get("BUSHO_ID"))) {
+            if (StringUtil.isNullOrBlank(e.getBushoId())) {
                 isNew = true;
             }
-            if (StringUtil.isNullOrBlank(gridRow.get("SHOKUI_ID"))) {
+            if (StringUtil.isNullOrBlank(e.getShokuiId())) {
                 isNew = true;
             }
-            if (StringUtil.isNullOrBlank(gridRow.get("GAMEN_NM"))) {
+            if (StringUtil.isNullOrBlank(e.getGamenNm())) {
                 isNew = true;
             }
 
             if (isNew) {
+
                 if (e.insert(now, id) != 1) {
                     throw new OptLockError("error.cant.insert");
                 }
+
             } else {
+
                 if (e.update(now, id) != 1) {
                     throw new OptLockError("error.cant.update");
                 }

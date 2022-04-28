@@ -794,11 +794,11 @@ public final class BeanGenerator {
     }
 
     /**
-     * 検索画面 登録処理出力
+     * 詳細画面 登録処理出力
      * @param tableInfos
      * @param projectDir
      */
-    private static void javaActionIndexRegist(final List<TableInfo> tableInfos, final String projectDir) {
+    private static void javaActionDetailDelete(final List<TableInfo> tableInfos, final String projectDir) {
 
         // プロパティファイルからjavaファイル出力パスと出力するパッケージを取得
         String javaPath = bundle.getString("BeanGenerator.javaPath");
@@ -813,174 +813,65 @@ public final class BeanGenerator {
 
         for (TableInfo tableInfo : tableInfos) {
             String tableName = tableInfo.getTableName();
-            String pascal = StringUtil.toPascalCase(tableName);
+            String remarks = tableInfo.getRemarks();
+
+            String entityName = StringUtil.toPascalCase(tableName);
 
             List<String> s = new ArrayList<String>();
             s.add("package " + actionPackage + ";");
             s.add("");
             s.add("import java.time.LocalDateTime;");
             s.add("import java.util.HashMap;");
-            s.add("import java.util.List;");
             s.add("import java.util.Map;");
             s.add("");
-            s.add("import " + entityPackage + "." + pascal + ";");
+            s.add("import " + entityPackage + "." + entityName + ";");
             s.add("");
             s.add("import jp.co.golorp.emarf.action.BaseAction;");
             s.add("import jp.co.golorp.emarf.exception.OptLockError;");
-            s.add("import jp.co.golorp.emarf.lang.StringUtil;");
-            s.add("import jp.co.golorp.emarf.util.Messages;");
-            s.add("");
-            s.add("public class " + pascal + "SRegistAction extends BaseAction {");
-            s.add("");
-            s.add("    /**");
-            s.add("     *");
-            s.add("     */");
-            s.add("    @Override");
-            s.add("    public Map<String, Object> running(final LocalDateTime now, final String id, final Map<String, Object> postJson) {");
-            s.add("");
-            s.add("        Map<String, Object> map = new HashMap<String, Object>();");
-            s.add("");
-            s.add("        @SuppressWarnings(\"unchecked\")");
-            s.add("        List<Map<String, Object>> gridData = (List<Map<String, Object>>) postJson.get(\"" + pascal
-                    + "Grid\");");
-            s.add("");
-            s.add("        if (gridData.size() == 0) {");
-            s.add("            map.put(\"ERROR\", Messages.get(\"error.nopost\"));");
-            s.add("            return map;");
-            s.add("        }");
-            s.add("");
-            s.add("        for (Map<String, Object> gridRow : gridData) {");
-            s.add("");
-            s.add("            " + pascal + " e = new " + pascal + "();");
-            for (String columnName : tableInfo.getColumnInfos().keySet()) {
-                String pascalColumn = StringUtil.toPascalCase(columnName);
-                s.add("            e.set" + pascalColumn + "(gridRow.get(\"" + columnName + "\"));");
-            }
-            s.add("");
-            s.add("            // 主キー情報が足りていなければINSERT");
-            s.add("            boolean isNew = false;");
-            for (String primaryKey : tableInfo.getPrimaryKeys()) {
-                s.add("            if (StringUtil.isNullOrBlank(gridRow.get(\"" + primaryKey + "\"))) {");
-                s.add("                isNew = true;");
-                s.add("            }");
-            }
-            s.add("");
-            s.add("            if (isNew) {");
-            s.add("                if (e.insert(now, id) != 1) {");
-            s.add("                    throw new OptLockError(\"error.cant.insert\");");
-            s.add("                }");
-            s.add("            } else {");
-            s.add("                if (e.update(now, id) != 1) {");
-            s.add("                    throw new OptLockError(\"error.cant.update\");");
-            s.add("                }");
-            s.add("            }");
-            s.add("        }");
-            s.add("");
-            s.add("        map.put(\"INFO\", Messages.get(\"info.regist\"));");
-            s.add("        return map;");
-            s.add("    }");
-            s.add("");
-            s.add("}");
-
-            String javaFilePath = packageDir + File.separator + pascal + "SRegistAction.java";
-            javaFilePaths.add(javaFilePath);
-
-            FileUtil.writeFile(javaFilePath, s);
-        }
-
-        String isCompile = bundle.getString("BeanGenerator.compile");
-        if (isCompile.toLowerCase().equals("true")) {
-            for (String javaFilePath : javaFilePaths) {
-                BeanGenerator.javaCompile(javaFilePath);
-            }
-        }
-    }
-
-    /**
-     * 検索画面 登録処理出力
-     * @param tableInfos
-     * @param projectDir
-     */
-    private static void javaActionIndexDelete(final List<TableInfo> tableInfos, final String projectDir) {
-
-        // プロパティファイルからjavaファイル出力パスと出力するパッケージを取得
-        String javaPath = bundle.getString("BeanGenerator.javaPath");
-        String actionPackage = bundle.getString("BeanGenerator.package.action");
-        String entityPackage = bundle.getString("BeanGenerator.package.entity");
-
-        // 出力フォルダを再作成
-        String packagePath = actionPackage.replace(".", File.separator);
-        String packageDir = projectDir + File.separator + javaPath + File.separator + packagePath;
-
-        List<String> javaFilePaths = new ArrayList<String>();
-
-        for (TableInfo tableInfo : tableInfos) {
-            String tableName = tableInfo.getTableName();
-            String pascal = StringUtil.toPascalCase(tableName);
-
-            List<String> s = new ArrayList<String>();
-            s.add("package " + actionPackage + ";");
-            s.add("");
-            s.add("import java.time.LocalDateTime;");
-            s.add("import java.util.HashMap;");
-            s.add("import java.util.List;");
-            s.add("import java.util.Map;");
-            s.add("");
-            s.add("import " + entityPackage + "." + pascal + ";");
-            s.add("");
-            s.add("import jp.co.golorp.emarf.action.BaseAction;");
-            s.add("import jp.co.golorp.emarf.exception.OptLockError;");
-            s.add("import jp.co.golorp.emarf.lang.StringUtil;");
             s.add("import jp.co.golorp.emarf.util.Messages;");
             s.add("import jp.co.golorp.emarf.validation.FormValidator;");
             s.add("");
-            s.add("public class " + pascal + "SDeleteAction extends BaseAction {");
+            s.add("/**");
+            s.add(" * " + remarks + "削除");
+            s.add(" *");
+            s.add(" * @author emarfkrow");
+            s.add(" */");
+            s.add("public class " + entityName + "DeleteAction extends BaseAction {");
             s.add("");
-            s.add("    /**");
-            s.add("     *");
-            s.add("     */");
+            s.add("    /** " + remarks + "削除処理 */");
             s.add("    @Override");
             s.add("    public Map<String, Object> running(final LocalDateTime now, final String id, final Map<String, Object> postJson) {");
             s.add("");
-            s.add("        Map<String, Object> map = new HashMap<String, Object>();");
-            s.add("");
-            s.add("        @SuppressWarnings(\"unchecked\")");
-            s.add("        List<Map<String, Object>> gridData = (List<Map<String, Object>>) postJson.get(\"" + pascal
-                    + "Grid\");");
-            s.add("");
-            s.add("        if (gridData.size() == 0) {");
-            s.add("            map.put(\"ERROR\", Messages.get(\"error.nopost\"));");
-            s.add("            return map;");
-            s.add("        }");
-            s.add("");
-            s.add("        for (Map<String, Object> gridRow : gridData) {");
-            s.add("");
-            s.add("            " + pascal + " e = FormValidator.toBean(" + pascal + ".class.getName(), gridRow);");
-            s.add("");
-            s.add("            // 主キー情報が足りているか確認");
-            s.add("            boolean isNew = false;");
+            s.add("        // 主キーが不足していたらエラー");
+            String params = "";
             for (String primaryKey : tableInfo.getPrimaryKeys()) {
-                s.add("            if (StringUtil.isNullOrBlank(gridRow.get(\"" + primaryKey + "\"))) {");
-                s.add("                isNew = true;");
-                s.add("            }");
+                String camel = StringUtil.toCamelCase(primaryKey);
+                s.add("        Object " + camel + " = postJson.get(\"" + camel + "\");");
+                s.add("        if (" + camel + " == null) {");
+                s.add("            " + camel + " = postJson.get(\"" + entityName + "." + camel + "\");");
+                s.add("        }");
+                s.add("        if (" + camel + " == null) {");
+                s.add("            throw new OptLockError(\"error.cant.delete\");");
+                s.add("        }");
+                if (params.length() > 0) {
+                    params += ", ";
+                }
+                params += camel;
             }
             s.add("");
-            s.add("            if (isNew) {");
-            s.add("                throw new OptLockError(\"error.cant.delete\");");
-            s.add("            } else {");
-            s.add("                if (e.delete() != 1) {");
-            s.add("                    throw new OptLockError(\"error.cant.delete\");");
-            s.add("                }");
-            s.add("            }");
+            s.add("        " + entityName + " e = FormValidator.toBean(" + entityName + ".class.getName(), postJson);");
+            s.add("        if (e.delete() != 1) {");
+            s.add("            throw new OptLockError(\"error.cant.delete\");");
             s.add("        }");
             s.add("");
+            s.add("        Map<String, Object> map = new HashMap<String, Object>();");
             s.add("        map.put(\"INFO\", Messages.get(\"info.delete\"));");
             s.add("        return map;");
             s.add("    }");
             s.add("");
             s.add("}");
 
-            String javaFilePath = packageDir + File.separator + pascal + "SDeleteAction.java";
+            String javaFilePath = packageDir + File.separator + entityName + "DeleteAction.java";
             javaFilePaths.add(javaFilePath);
 
             FileUtil.writeFile(javaFilePath, s);
@@ -1014,6 +905,8 @@ public final class BeanGenerator {
 
         for (TableInfo tableInfo : tableInfos) {
             String tableName = tableInfo.getTableName();
+            String remarks = tableInfo.getRemarks();
+
             String camelTable = StringUtil.toCamelCase(tableName);
             String pascalTable = StringUtil.toPascalCase(tableName);
 
@@ -1028,17 +921,20 @@ public final class BeanGenerator {
             s.add("");
             s.add("import jp.co.golorp.emarf.action.BaseAction;");
             s.add("");
+            s.add("/**");
+            s.add(" * " + remarks + "照会");
+            s.add(" *");
+            s.add(" * @author emarfkrow");
+            s.add(" */");
             s.add("public class " + pascalTable + "GetAction extends BaseAction {");
             s.add("");
-            s.add("    /**");
-            s.add("     *");
-            s.add("     */");
+            s.add("    /** " + remarks + "照会処理 */");
             s.add("    @Override");
             s.add("    public Map<String, Object> running(final LocalDateTime now, final String id, final Map<String, Object> postJson) {");
             s.add("");
             s.add("        Map<String, Object> map = new HashMap<String, Object>();");
             s.add("");
-            s.add("        // パラメータが不足していたら終了");
+            s.add("        // 主キーが不足していたら終了");
             String params = "";
             for (String primaryKey : tableInfo.getPrimaryKeys()) {
                 String camel = StringUtil.toCamelCase(primaryKey);
@@ -1056,7 +952,6 @@ public final class BeanGenerator {
             }
 
             s.add("");
-            s.add("        // " + tableInfo.getRemarks() + "を設定");
             s.add("        " + pascalTable + " " + camelTable + " = " + pascalTable + ".get(" + params + ");");
             for (TableInfo brosInfo : tableInfo.getBrosInfos()) {
                 String brosName = brosInfo.getTableName();
@@ -1068,85 +963,12 @@ public final class BeanGenerator {
                 s.add("        " + camelTable + ".refer" + pascal + "s();");
             }
             s.add("        map.put(\"" + pascalTable + "\", " + camelTable + ");");
-            s.add("");
             s.add("        return map;");
             s.add("    }");
             s.add("");
             s.add("}");
 
             String javaFilePath = packageDir + File.separator + pascalTable + "GetAction.java";
-            javaFilePaths.add(javaFilePath);
-
-            FileUtil.writeFile(javaFilePath, s);
-        }
-
-        String isCompile = bundle.getString("BeanGenerator.compile");
-        if (isCompile.toLowerCase().equals("true")) {
-            for (String javaFilePath : javaFilePaths) {
-                BeanGenerator.javaCompile(javaFilePath);
-            }
-        }
-    }
-
-    /**
-     * 詳細画面 登録処理出力
-     * @param tableInfos
-     * @param projectDir
-     */
-    private static void javaActionDetailDelete(final List<TableInfo> tableInfos, final String projectDir) {
-
-        // プロパティファイルからjavaファイル出力パスと出力するパッケージを取得
-        String javaPath = bundle.getString("BeanGenerator.javaPath");
-        String actionPackage = bundle.getString("BeanGenerator.package.action");
-        String entityPackage = bundle.getString("BeanGenerator.package.entity");
-
-        // 出力フォルダを再作成
-        String packagePath = actionPackage.replace(".", File.separator);
-        String packageDir = projectDir + File.separator + javaPath + File.separator + packagePath;
-
-        List<String> javaFilePaths = new ArrayList<String>();
-
-        for (TableInfo tableInfo : tableInfos) {
-            String tableName = tableInfo.getTableName();
-            String entityName = StringUtil.toPascalCase(tableName);
-
-            List<String> s = new ArrayList<String>();
-            s.add("package " + actionPackage + ";");
-            s.add("");
-            s.add("import java.time.LocalDateTime;");
-            s.add("import java.util.HashMap;");
-            s.add("import java.util.Map;");
-            s.add("");
-            s.add("import " + entityPackage + "." + entityName + ";");
-            s.add("");
-            s.add("import jp.co.golorp.emarf.action.BaseAction;");
-            s.add("import jp.co.golorp.emarf.exception.OptLockError;");
-            s.add("import jp.co.golorp.emarf.util.Messages;");
-            s.add("import jp.co.golorp.emarf.validation.FormValidator;");
-            s.add("");
-            s.add("public class " + entityName + "DeleteAction extends BaseAction {");
-            s.add("");
-            s.add("    /**");
-            s.add("     *");
-            s.add("     */");
-            s.add("    @Override");
-            s.add("    public Map<String, Object> running(final LocalDateTime now, final String id, final Map<String, Object> postJson) {");
-            s.add("");
-            s.add("        Map<String, Object> map = new HashMap<String, Object>();");
-            s.add("");
-            s.add("        " + entityName + " e = FormValidator.toBean(" + entityName + ".class.getName(), postJson);");
-            s.add("");
-            s.add("        if (e.delete() != 1) {");
-            s.add("            throw new OptLockError(\"error.cant.delete\");");
-            s.add("        }");
-            s.add("        map.put(\"INFO\", Messages.get(\"info.delete\"));");
-            s.add("");
-            s.add("        return map;");
-            s.add("    }");
-            s.add("");
-            s.add("}");
-
-            String javaFilePath = packageDir + File.separator + entityName + "DeleteAction.java";
             javaFilePaths.add(javaFilePath);
 
             FileUtil.writeFile(javaFilePath, s);
@@ -1180,6 +1002,8 @@ public final class BeanGenerator {
 
         for (TableInfo tableInfo : tableInfos) {
             String tableName = tableInfo.getTableName();
+            String remarks = tableInfo.getRemarks();
+
             String entityName = StringUtil.toPascalCase(tableName);
 
             List<String> s = new ArrayList<String>();
@@ -1197,11 +1021,14 @@ public final class BeanGenerator {
             s.add("import jp.co.golorp.emarf.util.Messages;");
             s.add("import jp.co.golorp.emarf.validation.FormValidator;");
             s.add("");
+            s.add("/**");
+            s.add(" * " + remarks + "登録");
+            s.add(" *");
+            s.add(" * @author emarfkrow");
+            s.add(" */");
             s.add("public class " + entityName + "RegistAction extends BaseAction {");
             s.add("");
-            s.add("    /**");
-            s.add("     *");
-            s.add("     */");
+            s.add("    /** " + remarks + "登録処理 */");
             s.add("    @Override");
             s.add("    public Map<String, Object> running(final LocalDateTime now, final String id, final Map<String, Object> postJson) {");
             s.add("");
@@ -1209,7 +1036,7 @@ public final class BeanGenerator {
             s.add("");
             s.add("        " + entityName + " e = FormValidator.toBean(" + entityName + ".class.getName(), postJson);");
             s.add("");
-            s.add("        // 主キー情報が足りていなければINSERT");
+            s.add("        // 主キーが不足していたらINSERT");
             s.add("        boolean isNew = false;");
             for (String primaryKey : tableInfo.getPrimaryKeys()) {
                 String pascal = StringUtil.toPascalCase(primaryKey);
@@ -1219,11 +1046,15 @@ public final class BeanGenerator {
             }
             s.add("");
             s.add("        if (isNew) {");
+            s.add("");
             s.add("            if (e.insert(now, id) != 1) {");
             s.add("                throw new OptLockError(\"error.cant.insert\");");
             s.add("            }");
+            s.add("");
             s.add("            map.put(\"INFO\", Messages.get(\"info.insert\"));");
+            s.add("");
             s.add("        } else {");
+            s.add("");
             s.add("            if (e.update(now, id) == 1) {");
             s.add("                map.put(\"INFO\", Messages.get(\"info.update\"));");
             s.add("            } else if (e.insert(now, id) == 1) {");
@@ -1239,6 +1070,214 @@ public final class BeanGenerator {
             s.add("}");
 
             String javaFilePath = packageDir + File.separator + entityName + "RegistAction.java";
+            javaFilePaths.add(javaFilePath);
+
+            FileUtil.writeFile(javaFilePath, s);
+        }
+
+        String isCompile = bundle.getString("BeanGenerator.compile");
+        if (isCompile.toLowerCase().equals("true")) {
+            for (String javaFilePath : javaFilePaths) {
+                BeanGenerator.javaCompile(javaFilePath);
+            }
+        }
+    }
+
+    /**
+     * 検索画面 登録処理出力
+     * @param tableInfos
+     * @param projectDir
+     */
+    private static void javaActionIndexDelete(final List<TableInfo> tableInfos, final String projectDir) {
+
+        // プロパティファイルからjavaファイル出力パスと出力するパッケージを取得
+        String javaPath = bundle.getString("BeanGenerator.javaPath");
+        String actionPackage = bundle.getString("BeanGenerator.package.action");
+        String entityPackage = bundle.getString("BeanGenerator.package.entity");
+
+        // 出力フォルダを再作成
+        String packagePath = actionPackage.replace(".", File.separator);
+        String packageDir = projectDir + File.separator + javaPath + File.separator + packagePath;
+
+        List<String> javaFilePaths = new ArrayList<String>();
+
+        for (TableInfo tableInfo : tableInfos) {
+            String tableName = tableInfo.getTableName();
+            String remarks = tableInfo.getRemarks();
+
+            String pascal = StringUtil.toPascalCase(tableName);
+
+            List<String> s = new ArrayList<String>();
+            s.add("package " + actionPackage + ";");
+            s.add("");
+            s.add("import java.time.LocalDateTime;");
+            s.add("import java.util.HashMap;");
+            s.add("import java.util.List;");
+            s.add("import java.util.Map;");
+            s.add("");
+            s.add("import " + entityPackage + "." + pascal + ";");
+            s.add("");
+            s.add("import jp.co.golorp.emarf.action.BaseAction;");
+            s.add("import jp.co.golorp.emarf.exception.OptLockError;");
+            s.add("import jp.co.golorp.emarf.lang.StringUtil;");
+            s.add("import jp.co.golorp.emarf.util.Messages;");
+            s.add("import jp.co.golorp.emarf.validation.FormValidator;");
+            s.add("");
+            s.add("/**");
+            s.add(" * " + remarks + "一覧削除");
+            s.add(" *");
+            s.add(" * @author emarfkrow");
+            s.add(" */");
+            s.add("public class " + pascal + "SDeleteAction extends BaseAction {");
+            s.add("");
+            s.add("    /** " + remarks + "一覧削除処理 */");
+            s.add("    @Override");
+            s.add("    public Map<String, Object> running(final LocalDateTime now, final String id, final Map<String, Object> postJson) {");
+            s.add("");
+            s.add("        Map<String, Object> map = new HashMap<String, Object>();");
+            s.add("");
+            s.add("        @SuppressWarnings(\"unchecked\")");
+            s.add("        List<Map<String, Object>> gridData = (List<Map<String, Object>>) postJson.get(\"" + pascal
+                    + "Grid\");");
+            s.add("");
+            s.add("        if (gridData.size() == 0) {");
+            s.add("            map.put(\"ERROR\", Messages.get(\"error.nopost\"));");
+            s.add("            return map;");
+            s.add("        }");
+            s.add("");
+            s.add("        for (Map<String, Object> gridRow : gridData) {");
+            s.add("");
+            s.add("            // 主キーが不足していたらエラー");
+            for (String primaryKey : tableInfo.getPrimaryKeys()) {
+                s.add("            if (StringUtil.isNullOrBlank(gridRow.get(\"" + primaryKey + "\"))) {");
+                s.add("                throw new OptLockError(\"error.cant.delete\");");
+                s.add("            }");
+            }
+            s.add("");
+            s.add("            " + pascal + " e = FormValidator.toBean(" + pascal + ".class.getName(), gridRow);");
+            s.add("            if (e.delete() != 1) {");
+            s.add("                throw new OptLockError(\"error.cant.delete\");");
+            s.add("            }");
+            s.add("        }");
+            s.add("");
+            s.add("        map.put(\"INFO\", Messages.get(\"info.delete\"));");
+            s.add("        return map;");
+            s.add("    }");
+            s.add("");
+            s.add("}");
+
+            String javaFilePath = packageDir + File.separator + pascal + "SDeleteAction.java";
+            javaFilePaths.add(javaFilePath);
+
+            FileUtil.writeFile(javaFilePath, s);
+        }
+
+        String isCompile = bundle.getString("BeanGenerator.compile");
+        if (isCompile.toLowerCase().equals("true")) {
+            for (String javaFilePath : javaFilePaths) {
+                BeanGenerator.javaCompile(javaFilePath);
+            }
+        }
+    }
+
+    /**
+     * 検索画面 登録処理出力
+     * @param tableInfos
+     * @param projectDir
+     */
+    private static void javaActionIndexRegist(final List<TableInfo> tableInfos, final String projectDir) {
+
+        // プロパティファイルからjavaファイル出力パスと出力するパッケージを取得
+        String javaPath = bundle.getString("BeanGenerator.javaPath");
+        String actionPackage = bundle.getString("BeanGenerator.package.action");
+        String entityPackage = bundle.getString("BeanGenerator.package.entity");
+
+        // 出力フォルダを再作成
+        String packagePath = actionPackage.replace(".", File.separator);
+        String packageDir = projectDir + File.separator + javaPath + File.separator + packagePath;
+
+        List<String> javaFilePaths = new ArrayList<String>();
+
+        for (TableInfo tableInfo : tableInfos) {
+            String tableName = tableInfo.getTableName();
+            String remarks = tableInfo.getRemarks();
+
+            String entityName = StringUtil.toPascalCase(tableName);
+
+            List<String> s = new ArrayList<String>();
+            s.add("package " + actionPackage + ";");
+            s.add("");
+            s.add("import java.time.LocalDateTime;");
+            s.add("import java.util.HashMap;");
+            s.add("import java.util.List;");
+            s.add("import java.util.Map;");
+            s.add("");
+            s.add("import " + entityPackage + "." + entityName + ";");
+            s.add("");
+            s.add("import jp.co.golorp.emarf.action.BaseAction;");
+            s.add("import jp.co.golorp.emarf.exception.OptLockError;");
+            s.add("import jp.co.golorp.emarf.lang.StringUtil;");
+            s.add("import jp.co.golorp.emarf.util.Messages;");
+            s.add("import jp.co.golorp.emarf.validation.FormValidator;");
+            s.add("");
+            s.add("/**");
+            s.add(" * " + remarks + "一覧登録");
+            s.add(" *");
+            s.add(" * @author emarfkrow");
+            s.add(" */");
+            s.add("public class " + entityName + "SRegistAction extends BaseAction {");
+            s.add("");
+            s.add("    /** " + remarks + "一覧登録処理 */");
+            s.add("    @Override");
+            s.add("    public Map<String, Object> running(final LocalDateTime now, final String id, final Map<String, Object> postJson) {");
+            s.add("");
+            s.add("        Map<String, Object> map = new HashMap<String, Object>();");
+            s.add("");
+            s.add("        @SuppressWarnings(\"unchecked\")");
+            s.add("        List<Map<String, Object>> gridData = (List<Map<String, Object>>) postJson.get(\""
+                    + entityName
+                    + "Grid\");");
+            s.add("");
+            s.add("        if (gridData.size() == 0) {");
+            s.add("            map.put(\"ERROR\", Messages.get(\"error.nopost\"));");
+            s.add("            return map;");
+            s.add("        }");
+            s.add("");
+            s.add("        for (Map<String, Object> gridRow : gridData) {");
+            s.add("");
+            s.add("            " + entityName + " e = FormValidator.toBean(" + entityName
+                    + ".class.getName(), gridRow);");
+            s.add("");
+            s.add("            // 主キーが不足していたらINSERT");
+            s.add("            boolean isNew = false;");
+            for (String primaryKey : tableInfo.getPrimaryKeys()) {
+                String pascal = StringUtil.toPascalCase(primaryKey);
+                s.add("            if (StringUtil.isNullOrBlank(e.get" + pascal + "())) {");
+                s.add("                isNew = true;");
+                s.add("            }");
+            }
+            s.add("");
+            s.add("            if (isNew) {");
+            s.add("");
+            s.add("                if (e.insert(now, id) != 1) {");
+            s.add("                    throw new OptLockError(\"error.cant.insert\");");
+            s.add("                }");
+            s.add("");
+            s.add("            } else {");
+            s.add("");
+            s.add("                if (e.update(now, id) != 1) {");
+            s.add("                    throw new OptLockError(\"error.cant.update\");");
+            s.add("                }");
+            s.add("            }");
+            s.add("        }");
+            s.add("");
+            s.add("        map.put(\"INFO\", Messages.get(\"info.regist\"));");
+            s.add("        return map;");
+            s.add("    }");
+            s.add("");
+            s.add("}");
+
+            String javaFilePath = packageDir + File.separator + entityName + "SRegistAction.java";
             javaFilePaths.add(javaFilePath);
 
             FileUtil.writeFile(javaFilePath, s);

@@ -8,17 +8,20 @@ import com.example.entity.MNinka;
 
 import jp.co.golorp.emarf.action.BaseAction;
 
+/**
+ * 認可マスタ照会
+ *
+ * @author emarfkrow
+ */
 public class MNinkaGetAction extends BaseAction {
 
-    /**
-     *
-     */
+    /** 認可マスタ照会処理 */
     @Override
     public Map<String, Object> running(final LocalDateTime now, final String id, final Map<String, Object> postJson) {
 
         Map<String, Object> map = new HashMap<String, Object>();
 
-        // パラメータが不足していたら終了
+        // 主キーが不足していたら終了
         Object bushoId = postJson.get("bushoId");
         if (bushoId == null) {
             bushoId = postJson.get("MNinka.bushoId");
@@ -41,10 +44,8 @@ public class MNinkaGetAction extends BaseAction {
             return map;
         }
 
-        // 認可マスタを設定
         MNinka mNinka = MNinka.get(bushoId, shokuiId, gamenNm);
         map.put("MNinka", mNinka);
-
         return map;
     }
 

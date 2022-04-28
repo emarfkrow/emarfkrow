@@ -12,11 +12,14 @@ import jp.co.golorp.emarf.lang.StringUtil;
 import jp.co.golorp.emarf.util.Messages;
 import jp.co.golorp.emarf.validation.FormValidator;
 
+/**
+ * 所属マスタ登録
+ *
+ * @author emarfkrow
+ */
 public class MShozokuRegistAction extends BaseAction {
 
-    /**
-     *
-     */
+    /** 所属マスタ登録処理 */
     @Override
     public Map<String, Object> running(final LocalDateTime now, final String id, final Map<String, Object> postJson) {
 
@@ -24,7 +27,7 @@ public class MShozokuRegistAction extends BaseAction {
 
         MShozoku e = FormValidator.toBean(MShozoku.class.getName(), postJson);
 
-        // 主キー情報が足りていなければINSERT
+        // 主キーが不足していたらINSERT
         boolean isNew = false;
         if (StringUtil.isNullOrBlank(e.getBushoId())) {
             isNew = true;
@@ -37,11 +40,15 @@ public class MShozokuRegistAction extends BaseAction {
         }
 
         if (isNew) {
+
             if (e.insert(now, id) != 1) {
                 throw new OptLockError("error.cant.insert");
             }
+
             map.put("INFO", Messages.get("info.insert"));
+
         } else {
+
             if (e.update(now, id) == 1) {
                 map.put("INFO", Messages.get("info.update"));
             } else if (e.insert(now, id) == 1) {

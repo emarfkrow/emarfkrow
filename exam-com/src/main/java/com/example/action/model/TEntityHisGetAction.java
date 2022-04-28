@@ -8,17 +8,20 @@ import com.example.entity.TEntityHis;
 
 import jp.co.golorp.emarf.action.BaseAction;
 
+/**
+ * エンティティ履歴照会
+ *
+ * @author emarfkrow
+ */
 public class TEntityHisGetAction extends BaseAction {
 
-    /**
-     *
-     */
+    /** エンティティ履歴照会処理 */
     @Override
     public Map<String, Object> running(final LocalDateTime now, final String id, final Map<String, Object> postJson) {
 
         Map<String, Object> map = new HashMap<String, Object>();
 
-        // パラメータが不足していたら終了
+        // 主キーが不足していたら終了
         Object sosenId = postJson.get("sosenId");
         if (sosenId == null) {
             sosenId = postJson.get("TEntityHis.sosenId");
@@ -48,10 +51,8 @@ public class TEntityHisGetAction extends BaseAction {
             return map;
         }
 
-        // エンティティ履歴を設定
         TEntityHis tEntityHis = TEntityHis.get(sosenId, oyaSn, entitySn, historySn);
         map.put("TEntityHis", tEntityHis);
-
         return map;
     }
 

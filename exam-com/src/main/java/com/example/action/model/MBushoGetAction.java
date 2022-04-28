@@ -31,9 +31,7 @@ public class MBushoGetAction extends BaseAction {
         }
 
         MBusho mBusho = MBusho.get(bushoId);
-
         map.put("MBusho", mBusho);
-
         return map;
     }
 

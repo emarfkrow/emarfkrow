@@ -11,12 +11,16 @@ import jp.co.golorp.emarf.action.BaseAction;
 import jp.co.golorp.emarf.exception.OptLockError;
 import jp.co.golorp.emarf.lang.StringUtil;
 import jp.co.golorp.emarf.util.Messages;
+import jp.co.golorp.emarf.validation.FormValidator;
 
+/**
+ * エンティティ２一覧登録
+ *
+ * @author emarfkrow
+ */
 public class TEntity2SRegistAction extends BaseAction {
 
-    /**
-     *
-     */
+    /** エンティティ２一覧登録処理 */
     @Override
     public Map<String, Object> running(final LocalDateTime now, final String id, final Map<String, Object> postJson) {
 
@@ -32,49 +36,28 @@ public class TEntity2SRegistAction extends BaseAction {
 
         for (Map<String, Object> gridRow : gridData) {
 
-            TEntity2 e = new TEntity2();
-            e.setSosenId(gridRow.get("SOSEN_ID"));
-            e.setOyaSn(gridRow.get("OYA_SN"));
-            e.setEntitySn(gridRow.get("ENTITY_SN"));
-            e.setNullEntity2Mei(gridRow.get("NULL_ENTITY2_MEI"));
-            e.setEntity2Mei(gridRow.get("ENTITY2_MEI"));
-            e.setCheckF(gridRow.get("CHECK_F"));
-            e.setRadioKb(gridRow.get("RADIO_KB"));
-            e.setPulldownKb(gridRow.get("PULLDOWN_KB"));
-            e.setMemoTx(gridRow.get("MEMO_TX"));
-            e.setHidukeYmd(gridRow.get("HIDUKE_YMD"));
-            e.setNengetsuYm(gridRow.get("NENGETSU_YM"));
-            e.setSampleY(gridRow.get("SAMPLE_Y"));
-            e.setSampleM(gridRow.get("SAMPLE_M"));
-            e.setNichijiDt(gridRow.get("NICHIJI_DT"));
-            e.setJikokuHm(gridRow.get("JIKOKU_HM"));
-            e.setJikanTm(gridRow.get("JIKAN_TM"));
-            e.setSuryoQt(gridRow.get("SURYO_QT"));
-            e.setTankaAm(gridRow.get("TANKA_AM"));
-            e.setKingakuAm(gridRow.get("KINGAKU_AM"));
-            e.setInsertDt(gridRow.get("INSERT_DT"));
-            e.setInsertBy(gridRow.get("INSERT_BY"));
-            e.setUpdateDt(gridRow.get("UPDATE_DT"));
-            e.setUpdateBy(gridRow.get("UPDATE_BY"));
-            e.setDeleteF(gridRow.get("DELETE_F"));
+            TEntity2 e = FormValidator.toBean(TEntity2.class.getName(), gridRow);
 
-            // 主キー情報が足りていなければINSERT
+            // 主キーが不足していたらINSERT
             boolean isNew = false;
-            if (StringUtil.isNullOrBlank(gridRow.get("SOSEN_ID"))) {
+            if (StringUtil.isNullOrBlank(e.getSosenId())) {
                 isNew = true;
             }
-            if (StringUtil.isNullOrBlank(gridRow.get("OYA_SN"))) {
+            if (StringUtil.isNullOrBlank(e.getOyaSn())) {
                 isNew = true;
             }
-            if (StringUtil.isNullOrBlank(gridRow.get("ENTITY_SN"))) {
+            if (StringUtil.isNullOrBlank(e.getEntitySn())) {
                 isNew = true;
             }
 
             if (isNew) {
+
                 if (e.insert(now, id) != 1) {
                     throw new OptLockError("error.cant.insert");
                 }
+
             } else {
+
                 if (e.update(now, id) != 1) {
                     throw new OptLockError("error.cant.update");
                 }

@@ -11,12 +11,16 @@ import jp.co.golorp.emarf.action.BaseAction;
 import jp.co.golorp.emarf.exception.OptLockError;
 import jp.co.golorp.emarf.lang.StringUtil;
 import jp.co.golorp.emarf.util.Messages;
+import jp.co.golorp.emarf.validation.FormValidator;
 
+/**
+ * 参照２マスタ一覧登録
+ *
+ * @author emarfkrow
+ */
 public class MSansho2SRegistAction extends BaseAction {
 
-    /**
-     *
-     */
+    /** 参照２マスタ一覧登録処理 */
     @Override
     public Map<String, Object> running(final LocalDateTime now, final String id, final Map<String, Object> postJson) {
 
@@ -32,26 +36,22 @@ public class MSansho2SRegistAction extends BaseAction {
 
         for (Map<String, Object> gridRow : gridData) {
 
-            MSansho2 e = new MSansho2();
-            e.setSansho2Id(gridRow.get("SANSHO2_ID"));
-            e.setSansho2Mei(gridRow.get("SANSHO2_MEI"));
-            e.setInsertDt(gridRow.get("INSERT_DT"));
-            e.setInsertBy(gridRow.get("INSERT_BY"));
-            e.setUpdateDt(gridRow.get("UPDATE_DT"));
-            e.setUpdateBy(gridRow.get("UPDATE_BY"));
-            e.setDeleteF(gridRow.get("DELETE_F"));
+            MSansho2 e = FormValidator.toBean(MSansho2.class.getName(), gridRow);
 
-            // 主キー情報が足りていなければINSERT
+            // 主キーが不足していたらINSERT
             boolean isNew = false;
-            if (StringUtil.isNullOrBlank(gridRow.get("SANSHO2_ID"))) {
+            if (StringUtil.isNullOrBlank(e.getSansho2Id())) {
                 isNew = true;
             }
 
             if (isNew) {
+
                 if (e.insert(now, id) != 1) {
                     throw new OptLockError("error.cant.insert");
                 }
+
             } else {
+
                 if (e.update(now, id) != 1) {
                     throw new OptLockError("error.cant.update");
                 }

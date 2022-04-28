@@ -8,17 +8,20 @@ import com.example.entity.TOya;
 
 import jp.co.golorp.emarf.action.BaseAction;
 
+/**
+ * 親照会
+ *
+ * @author emarfkrow
+ */
 public class TOyaGetAction extends BaseAction {
 
-    /**
-     *
-     */
+    /** 親照会処理 */
     @Override
     public Map<String, Object> running(final LocalDateTime now, final String id, final Map<String, Object> postJson) {
 
         Map<String, Object> map = new HashMap<String, Object>();
 
-        // パラメータが不足していたら終了
+        // 主キーが不足していたら終了
         Object sosenId = postJson.get("sosenId");
         if (sosenId == null) {
             sosenId = postJson.get("TOya.sosenId");
@@ -34,11 +37,9 @@ public class TOyaGetAction extends BaseAction {
             return map;
         }
 
-        // 親を設定
         TOya tOya = TOya.get(sosenId, oyaSn);
         tOya.referTEntitys();
         map.put("TOya", tOya);
-
         return map;
     }
 

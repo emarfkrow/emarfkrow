@@ -11,12 +11,16 @@ import jp.co.golorp.emarf.action.BaseAction;
 import jp.co.golorp.emarf.exception.OptLockError;
 import jp.co.golorp.emarf.lang.StringUtil;
 import jp.co.golorp.emarf.util.Messages;
+import jp.co.golorp.emarf.validation.FormValidator;
 
+/**
+ * コード値マスタ一覧登録
+ *
+ * @author emarfkrow
+ */
 public class MCodeValueSRegistAction extends BaseAction {
 
-    /**
-     *
-     */
+    /** コード値マスタ一覧登録処理 */
     @Override
     public Map<String, Object> running(final LocalDateTime now, final String id, final Map<String, Object> postJson) {
 
@@ -32,32 +36,25 @@ public class MCodeValueSRegistAction extends BaseAction {
 
         for (Map<String, Object> gridRow : gridData) {
 
-            MCodeValue e = new MCodeValue();
-            e.setCodeNm(gridRow.get("CODE_NM"));
-            e.setCodeValue(gridRow.get("CODE_VALUE"));
-            e.setCodeValueMei(gridRow.get("CODE_VALUE_MEI"));
-            e.setHyojiJun(gridRow.get("HYOJI_JUN"));
-            e.setCriteria(gridRow.get("CRITERIA"));
-            e.setInsertDt(gridRow.get("INSERT_DT"));
-            e.setInsertBy(gridRow.get("INSERT_BY"));
-            e.setUpdateDt(gridRow.get("UPDATE_DT"));
-            e.setUpdateBy(gridRow.get("UPDATE_BY"));
-            e.setDeleteF(gridRow.get("DELETE_F"));
+            MCodeValue e = FormValidator.toBean(MCodeValue.class.getName(), gridRow);
 
-            // 主キー情報が足りていなければINSERT
+            // 主キーが不足していたらINSERT
             boolean isNew = false;
-            if (StringUtil.isNullOrBlank(gridRow.get("CODE_NM"))) {
+            if (StringUtil.isNullOrBlank(e.getCodeNm())) {
                 isNew = true;
             }
-            if (StringUtil.isNullOrBlank(gridRow.get("CODE_VALUE"))) {
+            if (StringUtil.isNullOrBlank(e.getCodeValue())) {
                 isNew = true;
             }
 
             if (isNew) {
+
                 if (e.insert(now, id) != 1) {
                     throw new OptLockError("error.cant.insert");
                 }
+
             } else {
+
                 if (e.update(now, id) != 1) {
                     throw new OptLockError("error.cant.update");
                 }

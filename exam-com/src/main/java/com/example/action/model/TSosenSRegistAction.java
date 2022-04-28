@@ -11,12 +11,16 @@ import jp.co.golorp.emarf.action.BaseAction;
 import jp.co.golorp.emarf.exception.OptLockError;
 import jp.co.golorp.emarf.lang.StringUtil;
 import jp.co.golorp.emarf.util.Messages;
+import jp.co.golorp.emarf.validation.FormValidator;
 
+/**
+ * 祖先一覧登録
+ *
+ * @author emarfkrow
+ */
 public class TSosenSRegistAction extends BaseAction {
 
-    /**
-     *
-     */
+    /** 祖先一覧登録処理 */
     @Override
     public Map<String, Object> running(final LocalDateTime now, final String id, final Map<String, Object> postJson) {
 
@@ -32,26 +36,22 @@ public class TSosenSRegistAction extends BaseAction {
 
         for (Map<String, Object> gridRow : gridData) {
 
-            TSosen e = new TSosen();
-            e.setSosenId(gridRow.get("SOSEN_ID"));
-            e.setSosenMei(gridRow.get("SOSEN_MEI"));
-            e.setInsertDt(gridRow.get("INSERT_DT"));
-            e.setInsertBy(gridRow.get("INSERT_BY"));
-            e.setUpdateDt(gridRow.get("UPDATE_DT"));
-            e.setUpdateBy(gridRow.get("UPDATE_BY"));
-            e.setDeleteF(gridRow.get("DELETE_F"));
+            TSosen e = FormValidator.toBean(TSosen.class.getName(), gridRow);
 
-            // 主キー情報が足りていなければINSERT
+            // 主キーが不足していたらINSERT
             boolean isNew = false;
-            if (StringUtil.isNullOrBlank(gridRow.get("SOSEN_ID"))) {
+            if (StringUtil.isNullOrBlank(e.getSosenId())) {
                 isNew = true;
             }
 
             if (isNew) {
+
                 if (e.insert(now, id) != 1) {
                     throw new OptLockError("error.cant.insert");
                 }
+
             } else {
+
                 if (e.update(now, id) != 1) {
                     throw new OptLockError("error.cant.update");
                 }

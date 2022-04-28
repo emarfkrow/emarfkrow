@@ -8,17 +8,20 @@ import com.example.entity.MShozoku;
 
 import jp.co.golorp.emarf.action.BaseAction;
 
+/**
+ * 所属マスタ照会
+ *
+ * @author emarfkrow
+ */
 public class MShozokuGetAction extends BaseAction {
 
-    /**
-     *
-     */
+    /** 所属マスタ照会処理 */
     @Override
     public Map<String, Object> running(final LocalDateTime now, final String id, final Map<String, Object> postJson) {
 
         Map<String, Object> map = new HashMap<String, Object>();
 
-        // パラメータが不足していたら終了
+        // 主キーが不足していたら終了
         Object bushoId = postJson.get("bushoId");
         if (bushoId == null) {
             bushoId = postJson.get("MShozoku.bushoId");
@@ -41,10 +44,8 @@ public class MShozokuGetAction extends BaseAction {
             return map;
         }
 
-        // 所属マスタを設定
         MShozoku mShozoku = MShozoku.get(bushoId, shokuiId, userId);
         map.put("MShozoku", mShozoku);
-
         return map;
     }
 

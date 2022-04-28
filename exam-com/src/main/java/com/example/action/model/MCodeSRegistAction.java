@@ -11,12 +11,16 @@ import jp.co.golorp.emarf.action.BaseAction;
 import jp.co.golorp.emarf.exception.OptLockError;
 import jp.co.golorp.emarf.lang.StringUtil;
 import jp.co.golorp.emarf.util.Messages;
+import jp.co.golorp.emarf.validation.FormValidator;
 
+/**
+ * コードマスタ一覧登録
+ *
+ * @author emarfkrow
+ */
 public class MCodeSRegistAction extends BaseAction {
 
-    /**
-     *
-     */
+    /** コードマスタ一覧登録処理 */
     @Override
     public Map<String, Object> running(final LocalDateTime now, final String id, final Map<String, Object> postJson) {
 
@@ -32,26 +36,22 @@ public class MCodeSRegistAction extends BaseAction {
 
         for (Map<String, Object> gridRow : gridData) {
 
-            MCode e = new MCode();
-            e.setCodeNm(gridRow.get("CODE_NM"));
-            e.setCodeMei(gridRow.get("CODE_MEI"));
-            e.setInsertDt(gridRow.get("INSERT_DT"));
-            e.setInsertBy(gridRow.get("INSERT_BY"));
-            e.setUpdateDt(gridRow.get("UPDATE_DT"));
-            e.setUpdateBy(gridRow.get("UPDATE_BY"));
-            e.setDeleteF(gridRow.get("DELETE_F"));
+            MCode e = FormValidator.toBean(MCode.class.getName(), gridRow);
 
-            // 主キー情報が足りていなければINSERT
+            // 主キーが不足していたらINSERT
             boolean isNew = false;
-            if (StringUtil.isNullOrBlank(gridRow.get("CODE_NM"))) {
+            if (StringUtil.isNullOrBlank(e.getCodeNm())) {
                 isNew = true;
             }
 
             if (isNew) {
+
                 if (e.insert(now, id) != 1) {
                     throw new OptLockError("error.cant.insert");
                 }
+
             } else {
+
                 if (e.update(now, id) != 1) {
                     throw new OptLockError("error.cant.update");
                 }

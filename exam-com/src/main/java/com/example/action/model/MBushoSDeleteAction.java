@@ -42,14 +42,12 @@ public class MBushoSDeleteAction extends BaseAction {
             }
 
             MBusho e = FormValidator.toBean(MBusho.class.getName(), gridRow);
-
             if (e.delete() != 1) {
                 throw new OptLockError("error.cant.delete");
             }
         }
 
         map.put("INFO", Messages.get("info.delete"));
-
         return map;
     }
 

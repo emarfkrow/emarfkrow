@@ -59,7 +59,6 @@ public class MBushoSRegistAction extends BaseAction {
         }
 
         map.put("INFO", Messages.get("info.regist"));
-
         return map;
     }
 

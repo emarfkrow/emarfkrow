@@ -8,17 +8,20 @@ import com.example.entity.TShison;
 
 import jp.co.golorp.emarf.action.BaseAction;
 
+/**
+ * 子孫照会
+ *
+ * @author emarfkrow
+ */
 public class TShisonGetAction extends BaseAction {
 
-    /**
-     *
-     */
+    /** 子孫照会処理 */
     @Override
     public Map<String, Object> running(final LocalDateTime now, final String id, final Map<String, Object> postJson) {
 
         Map<String, Object> map = new HashMap<String, Object>();
 
-        // パラメータが不足していたら終了
+        // 主キーが不足していたら終了
         Object sosenId = postJson.get("sosenId");
         if (sosenId == null) {
             sosenId = postJson.get("TShison.sosenId");
@@ -55,10 +58,8 @@ public class TShisonGetAction extends BaseAction {
             return map;
         }
 
-        // 子孫を設定
         TShison tShison = TShison.get(sosenId, oyaSn, entitySn, koSn, shisonSn);
         map.put("TShison", tShison);
-
         return map;
     }
 

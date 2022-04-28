@@ -13,11 +13,14 @@ import jp.co.golorp.emarf.lang.StringUtil;
 import jp.co.golorp.emarf.util.Messages;
 import jp.co.golorp.emarf.validation.FormValidator;
 
+/**
+ * コード値マスタ一覧削除
+ *
+ * @author emarfkrow
+ */
 public class MCodeValueSDeleteAction extends BaseAction {
 
-    /**
-     *
-     */
+    /** コード値マスタ一覧削除処理 */
     @Override
     public Map<String, Object> running(final LocalDateTime now, final String id, final Map<String, Object> postJson) {
 
@@ -33,23 +36,17 @@ public class MCodeValueSDeleteAction extends BaseAction {
 
         for (Map<String, Object> gridRow : gridData) {
 
-            MCodeValue e = FormValidator.toBean(MCodeValue.class.getName(), gridRow);
-
-            // 主キー情報が足りているか確認
-            boolean isNew = false;
+            // 主キーが不足していたらエラー
             if (StringUtil.isNullOrBlank(gridRow.get("CODE_NM"))) {
-                isNew = true;
+                throw new OptLockError("error.cant.delete");
             }
             if (StringUtil.isNullOrBlank(gridRow.get("CODE_VALUE"))) {
-                isNew = true;
+                throw new OptLockError("error.cant.delete");
             }
 
-            if (isNew) {
+            MCodeValue e = FormValidator.toBean(MCodeValue.class.getName(), gridRow);
+            if (e.delete() != 1) {
                 throw new OptLockError("error.cant.delete");
-            } else {
-                if (e.delete() != 1) {
-                    throw new OptLockError("error.cant.delete");
-                }
             }
         }
 

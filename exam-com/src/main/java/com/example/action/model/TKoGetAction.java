@@ -8,17 +8,20 @@ import com.example.entity.TKo;
 
 import jp.co.golorp.emarf.action.BaseAction;
 
+/**
+ * 子照会
+ *
+ * @author emarfkrow
+ */
 public class TKoGetAction extends BaseAction {
 
-    /**
-     *
-     */
+    /** 子照会処理 */
     @Override
     public Map<String, Object> running(final LocalDateTime now, final String id, final Map<String, Object> postJson) {
 
         Map<String, Object> map = new HashMap<String, Object>();
 
-        // パラメータが不足していたら終了
+        // 主キーが不足していたら終了
         Object sosenId = postJson.get("sosenId");
         if (sosenId == null) {
             sosenId = postJson.get("TKo.sosenId");
@@ -48,11 +51,9 @@ public class TKoGetAction extends BaseAction {
             return map;
         }
 
-        // 子を設定
         TKo tKo = TKo.get(sosenId, oyaSn, entitySn, koSn);
         tKo.referTShisons();
         map.put("TKo", tKo);
-
         return map;
     }
 

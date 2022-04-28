@@ -11,12 +11,16 @@ import jp.co.golorp.emarf.action.BaseAction;
 import jp.co.golorp.emarf.exception.OptLockError;
 import jp.co.golorp.emarf.lang.StringUtil;
 import jp.co.golorp.emarf.util.Messages;
+import jp.co.golorp.emarf.validation.FormValidator;
 
+/**
+ * 子孫一覧登録
+ *
+ * @author emarfkrow
+ */
 public class TShisonSRegistAction extends BaseAction {
 
-    /**
-     *
-     */
+    /** 子孫一覧登録処理 */
     @Override
     public Map<String, Object> running(final LocalDateTime now, final String id, final Map<String, Object> postJson) {
 
@@ -32,42 +36,34 @@ public class TShisonSRegistAction extends BaseAction {
 
         for (Map<String, Object> gridRow : gridData) {
 
-            TShison e = new TShison();
-            e.setSosenId(gridRow.get("SOSEN_ID"));
-            e.setOyaSn(gridRow.get("OYA_SN"));
-            e.setEntitySn(gridRow.get("ENTITY_SN"));
-            e.setKoSn(gridRow.get("KO_SN"));
-            e.setShisonSn(gridRow.get("SHISON_SN"));
-            e.setShisonMei(gridRow.get("SHISON_MEI"));
-            e.setInsertDt(gridRow.get("INSERT_DT"));
-            e.setInsertBy(gridRow.get("INSERT_BY"));
-            e.setUpdateDt(gridRow.get("UPDATE_DT"));
-            e.setUpdateBy(gridRow.get("UPDATE_BY"));
-            e.setDeleteF(gridRow.get("DELETE_F"));
+            TShison e = FormValidator.toBean(TShison.class.getName(), gridRow);
 
-            // 主キー情報が足りていなければINSERT
+            // 主キーが不足していたらINSERT
             boolean isNew = false;
-            if (StringUtil.isNullOrBlank(gridRow.get("SOSEN_ID"))) {
+            if (StringUtil.isNullOrBlank(e.getSosenId())) {
                 isNew = true;
             }
-            if (StringUtil.isNullOrBlank(gridRow.get("OYA_SN"))) {
+            if (StringUtil.isNullOrBlank(e.getOyaSn())) {
                 isNew = true;
             }
-            if (StringUtil.isNullOrBlank(gridRow.get("ENTITY_SN"))) {
+            if (StringUtil.isNullOrBlank(e.getEntitySn())) {
                 isNew = true;
             }
-            if (StringUtil.isNullOrBlank(gridRow.get("KO_SN"))) {
+            if (StringUtil.isNullOrBlank(e.getKoSn())) {
                 isNew = true;
             }
-            if (StringUtil.isNullOrBlank(gridRow.get("SHISON_SN"))) {
+            if (StringUtil.isNullOrBlank(e.getShisonSn())) {
                 isNew = true;
             }
 
             if (isNew) {
+
                 if (e.insert(now, id) != 1) {
                     throw new OptLockError("error.cant.insert");
                 }
+
             } else {
+
                 if (e.update(now, id) != 1) {
                     throw new OptLockError("error.cant.update");
                 }

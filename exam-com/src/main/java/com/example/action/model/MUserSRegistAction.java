@@ -11,12 +11,16 @@ import jp.co.golorp.emarf.action.BaseAction;
 import jp.co.golorp.emarf.exception.OptLockError;
 import jp.co.golorp.emarf.lang.StringUtil;
 import jp.co.golorp.emarf.util.Messages;
+import jp.co.golorp.emarf.validation.FormValidator;
 
+/**
+ * ユーザマスタ一覧登録
+ *
+ * @author emarfkrow
+ */
 public class MUserSRegistAction extends BaseAction {
 
-    /**
-     *
-     */
+    /** ユーザマスタ一覧登録処理 */
     @Override
     public Map<String, Object> running(final LocalDateTime now, final String id, final Map<String, Object> postJson) {
 
@@ -32,29 +36,22 @@ public class MUserSRegistAction extends BaseAction {
 
         for (Map<String, Object> gridRow : gridData) {
 
-            MUser e = new MUser();
-            e.setUserId(gridRow.get("USER_ID"));
-            e.setUserSei(gridRow.get("USER_SEI"));
-            e.setUserMei(gridRow.get("USER_MEI"));
-            e.setEmail(gridRow.get("EMAIL"));
-            e.setPassword(gridRow.get("PASSWORD"));
-            e.setInsertDt(gridRow.get("INSERT_DT"));
-            e.setInsertBy(gridRow.get("INSERT_BY"));
-            e.setUpdateDt(gridRow.get("UPDATE_DT"));
-            e.setUpdateBy(gridRow.get("UPDATE_BY"));
-            e.setDeleteF(gridRow.get("DELETE_F"));
+            MUser e = FormValidator.toBean(MUser.class.getName(), gridRow);
 
-            // 主キー情報が足りていなければINSERT
+            // 主キーが不足していたらINSERT
             boolean isNew = false;
-            if (StringUtil.isNullOrBlank(gridRow.get("USER_ID"))) {
+            if (StringUtil.isNullOrBlank(e.getUserId())) {
                 isNew = true;
             }
 
             if (isNew) {
+
                 if (e.insert(now, id) != 1) {
                     throw new OptLockError("error.cant.insert");
                 }
+
             } else {
+
                 if (e.update(now, id) != 1) {
                     throw new OptLockError("error.cant.update");
                 }
