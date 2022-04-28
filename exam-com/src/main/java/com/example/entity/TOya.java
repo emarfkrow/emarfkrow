@@ -379,7 +379,7 @@ public class TOya implements IEntity {
             }
         }
 
-        String sql = "DELETE FROM t_entity WHERE " + getWhere();
+        String sql = "DELETE FROM t_oya WHERE " + getWhere();
 
         Map<String, Object> params = toMap(null, null);
 

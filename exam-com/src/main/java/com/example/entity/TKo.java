@@ -445,7 +445,7 @@ public class TKo implements IEntity {
             }
         }
 
-        String sql = "DELETE FROM t_entity WHERE " + getWhere();
+        String sql = "DELETE FROM t_ko WHERE " + getWhere();
 
         Map<String, Object> params = toMap(null, null);
 

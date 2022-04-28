@@ -385,7 +385,7 @@ public class MUser implements IEntity {
      */
     public int delete() {
 
-        String sql = "DELETE FROM t_entity WHERE " + getWhere();
+        String sql = "DELETE FROM m_user WHERE " + getWhere();
 
         Map<String, Object> params = toMap(null, null);
 

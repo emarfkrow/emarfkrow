@@ -73,19 +73,19 @@ public class MNinka implements IEntity {
     }
 
     /**
-     * 画面ID
+     * 画面名
      */
     private String gamenNm;
 
     /**
-     * @return 画面ID
+     * @return 画面名
      */
     public String getGamenNm() {
         return this.gamenNm;
     }
 
     /**
-     * @param o 画面ID
+     * @param o 画面名
      */
     public void setGamenNm(final Object o) {
         if (!StringUtil.isNullOrBlank(o)) {
@@ -395,7 +395,7 @@ public class MNinka implements IEntity {
      */
     public int delete() {
 
-        String sql = "DELETE FROM t_entity WHERE " + getWhere();
+        String sql = "DELETE FROM m_ninka WHERE " + getWhere();
 
         Map<String, Object> params = toMap(null, null);
 

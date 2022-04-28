@@ -342,7 +342,7 @@ public class TSosen implements IEntity {
             }
         }
 
-        String sql = "DELETE FROM t_entity WHERE " + getWhere();
+        String sql = "DELETE FROM t_sosen WHERE " + getWhere();
 
         Map<String, Object> params = toMap(null, null);
 

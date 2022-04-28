@@ -560,7 +560,7 @@ public class TEntityHis implements IEntity {
      */
     public int delete() {
 
-        String sql = "DELETE FROM t_entity WHERE " + getWhere();
+        String sql = "DELETE FROM t_entity_his WHERE " + getWhere();
 
         Map<String, Object> params = toMap(null, null);
 

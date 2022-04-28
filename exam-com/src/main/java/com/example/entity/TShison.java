@@ -435,7 +435,7 @@ public class TShison implements IEntity {
      */
     public int delete() {
 
-        String sql = "DELETE FROM t_entity WHERE " + getWhere();
+        String sql = "DELETE FROM t_shison WHERE " + getWhere();
 
         Map<String, Object> params = toMap(null, null);
 

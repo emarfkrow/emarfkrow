@@ -29,12 +29,12 @@ public class MSansho2 implements IEntity {
     /**
      * 参照２ID
      */
-    private Integer sansho2Id;
+    private String sansho2Id;
 
     /**
      * @return 参照２ID
      */
-    public Integer getSansho2Id() {
+    public String getSansho2Id() {
         return this.sansho2Id;
     }
 
@@ -43,7 +43,7 @@ public class MSansho2 implements IEntity {
      */
     public void setSansho2Id(final Object o) {
         if (!StringUtil.isNullOrBlank(o)) {
-            this.sansho2Id = Integer.valueOf(o.toString());
+            this.sansho2Id = String.valueOf(o.toString());
         } else {
             this.sansho2Id = null;
         }
@@ -269,7 +269,7 @@ public class MSansho2 implements IEntity {
             return;
         }
 
-        String sql = "SELECT CASE WHEN MAX(e.SANSHO2_ID) IS NULL THEN 0 ELSE MAX(e.SANSHO2_ID) END + 1 AS SANSHO2_ID FROM m_sansho2 e";
+        String sql = "SELECT LPAD (CASE WHEN MAX(e.SANSHO2_ID) IS NULL THEN 0 ELSE MAX(e.SANSHO2_ID) END + 1, 6, '0') AS SANSHO2_ID FROM m_sansho2 e";
 
         Map<String, Object> params = new HashMap<String, Object>();
 
@@ -307,7 +307,7 @@ public class MSansho2 implements IEntity {
      */
     public int delete() {
 
-        String sql = "DELETE FROM t_entity WHERE " + getWhere();
+        String sql = "DELETE FROM m_sansho2 WHERE " + getWhere();
 
         Map<String, Object> params = toMap(null, null);
 

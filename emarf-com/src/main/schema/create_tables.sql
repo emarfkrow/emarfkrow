@@ -1,5 +1,5 @@
 -- Project Name : emarf
--- Date/Time    : 2022/04/20 14:40:27
+-- Date/Time    : 2022/04/28 10:29:30
 -- Author       : toshiyuki
 -- RDBMS Type   : MySQL
 -- Application  : A5:SQL Mk-2
@@ -59,7 +59,7 @@ create table M_BUSHO (
 drop table if exists M_SANSHO2 cascade;
 
 create table M_SANSHO2 (
-  SANSHO2_ID INT not null comment '参照２ID'
+  SANSHO2_ID CHAR(6) not null comment '参照２ID'
   , SANSHO2_MEI VARCHAR(30) not null comment '参照２名'
   , INSERT_DT DATETIME(3) not null comment '登録日時'
   , INSERT_BY VARCHAR(10) not null comment '登録者'
@@ -75,8 +75,8 @@ drop table if exists M_NINKA cascade;
 create table M_NINKA (
   BUSHO_ID INT not null comment '部署ID'
   , SHOKUI_ID INT not null comment '職位ID'
-  , GAMEN_NM VARCHAR(20) not null comment '画面ID'
-  , KENGEN_KB CHAR(2) not null comment '権限区分'
+  , GAMEN_NM VARCHAR(20) not null comment '画面名'
+  , KENGEN_KB VARCHAR(2) not null comment '権限区分'
   , KAISHI_YMD CHAR(10) comment '開始日'
   , SHURYO_YMD CHAR(10) comment '終了日'
   , INSERT_DT DATETIME(3) not null comment '登録日時'
@@ -114,8 +114,8 @@ create table T_ENTITY2 (
   , NULL_ENTITY2_MEI VARCHAR(20) comment '任意エンティティ２名'
   , ENTITY2_MEI VARCHAR(30) not null comment 'エンティティ２名'
   , CHECK_F CHAR(1) not null comment 'チェックフラグ'
-  , RADIO_KB CHAR(2) not null comment 'ラジオ区分'
-  , PULLDOWN_KB CHAR(2) not null comment 'プルダウン区分'
+  , RADIO_KB VARCHAR(2) not null comment 'ラジオ区分'
+  , PULLDOWN_KB VARCHAR(2) not null comment 'プルダウン区分'
   , MEMO_TX VARCHAR(200) not null comment 'メモ'
   , HIDUKE_YMD CHAR(10) not null comment '日付'
   , NENGETSU_YM CHAR(7) not null comment '年月'
@@ -140,7 +140,7 @@ drop table if exists M_CODE_VALUE cascade;
 
 create table M_CODE_VALUE (
   CODE_NM VARCHAR(20) not null comment 'コード名称'
-  , CODE_VALUE CHAR(2) not null comment 'コード値'
+  , CODE_VALUE VARCHAR(2) not null comment 'コード値'
   , CODE_VALUE_MEI VARCHAR(30) not null comment 'コード値名'
   , HYOJI_JUN INT not null comment '表示順'
   , CRITERIA VARCHAR(200) comment '取得条件'

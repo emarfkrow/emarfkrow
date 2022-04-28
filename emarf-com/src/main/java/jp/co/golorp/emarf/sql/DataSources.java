@@ -283,6 +283,9 @@ public final class DataSources {
                         dataType = "String";
                     } else if (typeName.equals("CHAR")) {
                         dataType = "String";
+                        if (columnInfo.isPk()) {
+                            columnInfo.setNumbering(true);
+                        }
                     } else if (typeName.equals("DECIMAL")) {
                         dataType = "java.math.BigDecimal";
                     } else if (typeName.equals("DOUBLE")) {

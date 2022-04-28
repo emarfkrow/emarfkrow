@@ -155,6 +155,9 @@ public final class Queries {
             if (!snakes.containsKey(parameterName)) {
                 rawSql = rawSql.replaceFirst(".*:" + parameterName + ".*[\r\n]+", "");
                 logSql = logSql.replaceFirst(".*:" + parameterName + ".*[\r\n]+", "");
+            } else if (snakes.get(parameterName) == null) {
+                rawSql = rawSql.replaceFirst(".*:" + parameterName + ".*[\r\n]+", "");
+                logSql = logSql.replaceFirst(".*:" + parameterName + ".*[\r\n]+", "");
             }
         }
 

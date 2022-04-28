@@ -50,13 +50,13 @@ public class MNinkaRegistForm implements IForm {
         this.shokuiId = p;
     }
 
-    /** 画面ID */
+    /** 画面名 */
     @jakarta.validation.constraints.NotBlank
     @Size(max = 20)
     private String gamenNm;
 
     /**
-     * @return 画面ID
+     * @return 画面名
      */
     public String getGamenNm() {
         return gamenNm;

@@ -340,7 +340,7 @@ public final class BeanGenerator {
             s.add("        }");
         }
         s.add("");
-        s.add("        String sql = \"DELETE FROM t_entity WHERE \" + getWhere();");
+        s.add("        String sql = \"DELETE FROM " + tableName + " WHERE \" + getWhere();");
         s.add("");
         s.add("        Map<String, Object> params = toMap(null, null);");
         s.add("");
