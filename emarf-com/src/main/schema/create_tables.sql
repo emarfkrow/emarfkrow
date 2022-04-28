@@ -1,8 +1,25 @@
 -- Project Name : emarf
--- Date/Time    : 2022/04/28 10:29:30
+-- Date/Time    : 2022/04/29 7:33:55
 -- Author       : toshiyuki
 -- RDBMS Type   : MySQL
 -- Application  : A5:SQL Mk-2
+
+-- 添付ファイル
+drop table if exists T_TENPU_FILE cascade;
+
+create table T_TENPU_FILE (
+  SOSEN_ID INT not null comment '祖先ID'
+  , OYA_SN INT not null comment '親連番'
+  , ENTITY_SN INT not null comment 'エンティティ連番'
+  , TENPU_FILE_SN INT not null comment '添付ファイル連番'
+  , TENPU_FILE_PATH VARCHAR(200) not null comment 'ファイルパス'
+  , INSERT_DT DATETIME(3) not null comment '登録日時'
+  , INSERT_BY VARCHAR(10) not null comment '登録者'
+  , UPDATE_DT DATETIME(3) not null comment '更新日時'
+  , UPDATE_BY VARCHAR(10) not null comment '更新者'
+  , DELETE_F CHAR(1) comment '削除フラグ'
+  , constraint T_TENPU_FILE_PKC primary key (SOSEN_ID,OYA_SN,ENTITY_SN,TENPU_FILE_SN)
+) comment '添付ファイル' ;
 
 -- 所属マスタ
 drop table if exists M_SHOZOKU cascade;
