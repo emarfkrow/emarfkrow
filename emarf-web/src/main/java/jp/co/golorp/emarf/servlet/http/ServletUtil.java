@@ -1,12 +1,15 @@
 package jp.co.golorp.emarf.servlet.http;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,6 +18,7 @@ import java.util.Map.Entry;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.servlet.http.Part;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -105,34 +109,77 @@ public final class ServletUtil {
      * @return Map
      */
     public static Map<String, Object> getPostJson(final HttpServletRequest request) {
-        Map<String, String[]> parameterMap = request.getParameterMap();
-        int parameterSize = parameterMap.size();
+
+        Collection<Part> parts = null;
         try {
-            if (parameterSize > 0) {
-                Map<String, Object> map = new HashMap<String, Object>();
-                for (Entry<String, String[]> entry : parameterMap.entrySet()) {
-                    String parameterName = entry.getKey();
-                    String[] parameterValue = entry.getValue();
-                    if (parameterValue.length > 1) {
-                        map.put(parameterName, parameterValue);
-                    } else if (parameterValue.length == 1) {
-                        map.put(parameterName, parameterValue[0]);
-                    } else {
-                        map.put(parameterName, "");
+            parts = request.getParts();
+        } catch (Exception e) {
+            LOG.trace(e.getMessage());
+        }
+
+        if (parts != null) {
+            // 「enctype="multipart/form-data"」の場合
+
+            Map<String, Object> map = new HashMap<String, Object>();
+
+            for (Part part : parts) {
+                if (part.getSubmittedFileName() == null) {
+                    String v = "";
+                    try (BufferedReader br = new BufferedReader(new InputStreamReader(part.getInputStream()))) {
+                        String s;
+                        while ((s = br.readLine()) != null) {
+                            v += s;
+                        }
+                    } catch (IOException e) {
+                        throw new SysError(e);
                     }
+                    map.put(part.getName(), v);
+                } else {
+                    String fileName = part.getSubmittedFileName();
+                    String tempDir = request.getServletContext().getRealPath(App.get("context.path.temp"));
+                    String tempPath = tempDir + File.separator + fileName;
+                    try {
+                        part.write(tempPath);
+                    } catch (IOException e) {
+                        throw new SysError(e);
+                    }
+                    map.put(part.getName(), tempPath);
                 }
-                String s = new ObjectMapper().writeValueAsString(map);
-                LOG.debug("RequestJson: " + s);
-                return map;
-            } else {
-                String s = null;
-                s = request.getReader().readLine();
+            }
+
+            return map;
+
+        } else if (request.getParameterMap().size() > 0) {
+            // form送信の場合
+
+            Map<String, Object> map = new HashMap<String, Object>();
+
+            Map<String, String[]> parameterMap = request.getParameterMap();
+            for (Entry<String, String[]> entry : parameterMap.entrySet()) {
+                String parameterName = entry.getKey();
+                String[] parameterValue = entry.getValue();
+                if (parameterValue.length > 1) {
+                    map.put(parameterName, parameterValue);
+                } else if (parameterValue.length == 1) {
+                    map.put(parameterName, parameterValue[0]);
+                } else {
+                    map.put(parameterName, "");
+                }
+            }
+
+            return map;
+
+        } else {
+            // ajax送信の場合
+
+            try {
+                String s = request.getReader().readLine();
                 LOG.debug("RequestJson: " + s);
                 return new ObjectMapper().readValue(s, new TypeReference<Map<String, Object>>() {
                 });
+            } catch (Exception e) {
+                throw new SysError(e);
             }
-        } catch (Exception e) {
-            throw new SysError(e);
         }
     }
 
