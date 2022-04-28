@@ -13,6 +13,8 @@ Page=Main
 PageInfo="Main",7,"A3Landscape",$FFFFFF
 Domain=ID=@INT
 DomainInfo="ID","@INT","ユニーク識別子"
+Domain=CD=@CHAR(6)
+DomainInfo="CD","@CHAR(6)","ZERO埋めコード"
 Domain=SN=@INT
 DomainInfo="SN","@INT","連番"
 Domain=NM=@VARCHAR(20)
@@ -21,8 +23,8 @@ Domain=MEI=@VARCHAR(30)
 DomainInfo="MEI","@VARCHAR(30)","全角30文字以内"
 Domain=F=@CHAR(1)
 DomainInfo="F","@CHAR(1)","半角1文字"
-Domain=KB=@CHAR(2)
-DomainInfo="KB","@CHAR(2)","半角2文字"
+Domain=KB=@VARCHAR(2)
+DomainInfo="KB","@VARCHAR(2)","半角2文字"
 Domain=TX=@VARCHAR(200)
 DomainInfo="TX","@VARCHAR(200)","全角200文字以内"
 Domain=YMD=@CHAR(10)
@@ -496,12 +498,12 @@ TableOption=
 Page=MAIN
 Left=200
 Top=250
-Field="参照２ID","SANSHO2_ID","*ID","NOT NULL",0,"","",$FFFFFFFF,""
+Field="参照２ID","SANSHO2_ID","*CD","NOT NULL",0,"","",$FFFFFFFF,""
 Field="参照２名","SANSHO2_MEI","*MEI","NOT NULL",,"","",$FFFFFFFF,""
 EffectMode=Gradation
 Color=$000000
 BkColor=$C0DCC0
-ModifiedDateTime=20220319111213
+ModifiedDateTime=20220428102834
 Position="MAIN",200,250
 ZOrder=0
 
@@ -573,7 +575,7 @@ PName=M_BUSHO
 LName=部署マスタ
 Comment=
 TableOption=
-Page=Main
+Page=MAIN
 Left=2500
 Top=100
 Field="部署ID","BUSHO_ID","*ID","NOT NULL",0,"","",$FFFFFFFF,""
@@ -585,7 +587,7 @@ EffectMode=Gradation
 Color=$000000
 BkColor=$C0DCC0
 ModifiedDateTime=20220420135106
-Position="Main",2500,100
+Position="MAIN",2500,100
 ZOrder=5
 
 [Entity]
@@ -593,7 +595,7 @@ PName=M_SHOKUI
 LName=職位マスタ
 Comment=
 TableOption=
-Page=Main
+Page=MAIN
 Left=3050
 Top=100
 Field="職位ID","SHOKUI_ID","*ID","NOT NULL",0,"","",$FFFFFFFF,""
@@ -605,7 +607,7 @@ EffectMode=Gradation
 Color=$000000
 BkColor=$C0DCC0
 ModifiedDateTime=20220420135140
-Position="Main",3050,100
+Position="MAIN",3050,100
 ZOrder=6
 
 [Entity]
@@ -613,7 +615,7 @@ PName=M_SHOZOKU
 LName=所属マスタ
 Comment=
 TableOption=
-Page=Main
+Page=MAIN
 Left=2400
 Top=500
 Field="部署ID","BUSHO_ID","*ID","NOT NULL",0,"","",$FFFFFFFF,""
@@ -625,7 +627,7 @@ EffectMode=None
 Color=$000000
 BkColor=$FFFFFF
 ModifiedDateTime=20220420135123
-Position="Main",2400,500
+Position="MAIN",2400,500
 ZOrder=7
 
 [Relation]
