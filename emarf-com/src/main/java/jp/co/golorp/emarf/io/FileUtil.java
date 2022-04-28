@@ -42,8 +42,7 @@ public final class FileUtil {
         try {
             Files.createDirectories(Paths.get(pathname.replaceFirst("[^\\\\]+$", "")));
         } catch (IOException e) {
-            // TODO 自動生成された catch ブロック
-            e.printStackTrace();
+            throw new SysError(e);
         }
         return new File(pathname);
     }
