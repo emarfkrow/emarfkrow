@@ -123,7 +123,17 @@ public final class ServletUtil {
             Map<String, Object> map = new HashMap<String, Object>();
 
             for (Part part : parts) {
-                if (part.getSubmittedFileName() == null) {
+                if (part.getSubmittedFileName() != null) {
+                    String fileName = part.getSubmittedFileName();
+                    String tempDir = request.getServletContext().getRealPath(App.get("context.path.temp"));
+                    String tempPath = tempDir + File.separator + fileName;
+                    try {
+                        part.write(tempPath);
+                    } catch (IOException e) {
+                        throw new SysError(e);
+                    }
+                    map.put(part.getName(), tempPath);
+                } else {
                     String v = "";
                     try (BufferedReader br = new BufferedReader(new InputStreamReader(part.getInputStream()))) {
                         String s;
@@ -134,16 +144,6 @@ public final class ServletUtil {
                         throw new SysError(e);
                     }
                     map.put(part.getName(), v);
-                } else {
-                    String fileName = part.getSubmittedFileName();
-                    String tempDir = request.getServletContext().getRealPath(App.get("context.path.temp"));
-                    String tempPath = tempDir + File.separator + fileName;
-                    try {
-                        part.write(tempPath);
-                    } catch (IOException e) {
-                        throw new SysError(e);
-                    }
-                    map.put(part.getName(), tempPath);
                 }
             }
 
@@ -174,7 +174,7 @@ public final class ServletUtil {
 
             try {
                 String s = request.getReader().readLine();
-                LOG.debug("RequestJson: " + s);
+                LOG.info("RequestJson: " + s);
                 return new ObjectMapper().readValue(s, new TypeReference<Map<String, Object>>() {
                 });
             } catch (Exception e) {
@@ -204,7 +204,7 @@ public final class ServletUtil {
     public static void sendJson(final HttpServletResponse response, final Map<String, Object> map) {
         try {
             String s = new ObjectMapper().writeValueAsString(map);
-            LOG.debug("ResponseJson: " + s);
+            LOG.info("ResponseJson: " + s);
             response.getWriter().append(s);
         } catch (Exception e) {
             throw new SysError(e);

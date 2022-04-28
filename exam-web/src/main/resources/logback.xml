@@ -4,8 +4,6 @@
   <logger name="org.jboss" level="INFO" />
   <logger name="org.hibernate.validator" level="INFO" />
   <logger name="org.thymeleaf" level="INFO" />
-  <logger name="jp.co.golorp.emarf.messageresolver" level="INFO" />
-  <logger name="jp.co.golorp.emarf.util" level="DEBUG" />
 
   <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
     <!-- encoders are assigned by default the type ch.qos.logback.classic.encoder.PatternLayoutEncoder -->
@@ -15,7 +13,7 @@
     </encoder>
   </appender>
 
-  <root level="all">
+  <root level="debug">
     <appender-ref ref="STDOUT" />
   </root>
 

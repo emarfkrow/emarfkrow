@@ -148,14 +148,24 @@ public final class Queries {
         String rawSql = namedSql;
         String logSql = namedSql;
 
-        // SQL内の名前付きパラメータ「:***」が、パラメータのキーに含まれない場合は、SQLから行削除
+        // SQL内の名前付きパラメータ「:***」が、パラメータのキーに含まれない場合は、SQLから削除
         Matcher m = Pattern.compile("(?<=:)[A-Za-z][0-9A-Z\\_a-z]+").matcher(rawSql);
         while (m.find()) {
             String parameterName = m.group();
+            String blockRE = ".*\\/\\* *:" + parameterName + " *\\*\\/(\\r|\\n|.)+\\/\\* *:" + parameterName
+                    + " *\\*\\/[\\r\\n]+";
             if (!snakes.containsKey(parameterName)) {
+                // ブロック削除
+                rawSql = rawSql.replaceFirst(blockRE, "");
+                logSql = logSql.replaceFirst(blockRE, "");
+                // １行削除
                 rawSql = rawSql.replaceFirst(".*:" + parameterName + ".*[\r\n]+", "");
                 logSql = logSql.replaceFirst(".*:" + parameterName + ".*[\r\n]+", "");
             } else if (snakes.get(parameterName) == null) {
+                // ブロック削除
+                rawSql = rawSql.replaceFirst(blockRE, "");
+                logSql = logSql.replaceFirst(blockRE, "");
+                // １行削除
                 rawSql = rawSql.replaceFirst(".*:" + parameterName + ".*[\r\n]+", "");
                 logSql = logSql.replaceFirst(".*:" + parameterName + ".*[\r\n]+", "");
             }

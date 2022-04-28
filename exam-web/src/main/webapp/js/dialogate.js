@@ -244,7 +244,7 @@ let Dialogate = {
 						let $registForm = $dialogDiv.find('[name$="RegistForm"]');
 						let formJson = Jsonate.toValueJson($registForm);
 						if (JSON.stringify(formJson) != '{}') {
-							let getAction = $registForm.prop('action').replace('Regist', 'Get');
+							let getAction = $registForm.prop('action').replace('Regist', 'Get').replace(/\.form$/, '.ajax');
 							Ajaxize.ajaxPost(getAction, formJson, function(data) {
 								Jsonate.toForm(data, $registForm);
 							});

@@ -28,7 +28,7 @@ public final class ThreadLocalConnection extends ThreadLocal<Connection> {
             DataSource ds = DataSources.get();
             Connection cn = ds.getConnection();
             cn.setAutoCommit(false);
-            LOG.debug("ThreadLocalConnection initialized.");
+            LOG.trace("ThreadLocalConnection initialized.");
             return cn;
         } catch (SQLException e) {
             throw new SysError(e);
@@ -38,7 +38,7 @@ public final class ThreadLocalConnection extends ThreadLocal<Connection> {
     @Override
     public void remove() {
         super.remove();
-        LOG.debug("ThreadLocalConnection removed.");
+        LOG.trace("ThreadLocalConnection removed.");
     }
 
 }

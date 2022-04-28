@@ -26,15 +26,15 @@ SELECT
     , d.jikan_tm
     , d.suryo_qt
     , d.tanka_am
-    , d.kingaku_am
+    , d.kingaku_am 
 FROM
     t_sosen a 
-    LEFT OUTER JOIN t_oya b 
+    INNER JOIN t_oya b 
         ON b.sosen_id = a.sosen_id 
-    LEFT OUTER JOIN t_entity c 
+    INNER JOIN t_entity c 
         ON c.sosen_id = b.sosen_id 
         AND c.oya_sn = b.oya_sn 
-    LEFT OUTER JOIN t_entity2 d 
+    INNER JOIN t_entity2 d 
         ON d.sosen_id = c.sosen_id 
         AND d.oya_sn = c.oya_sn 
         AND d.entity_sn = c.entity_sn 
@@ -69,10 +69,22 @@ WHERE
     AND c.update_dt >= :update_dt_1 
     AND c.update_dt <= :update_dt_2 
     AND c.update_by = :update_by 
-    AND CASE WHEN c.delete_f IS NULL THEN '0' ELSE c.delete_f END IN (:delete_f) 
+    /*:delete_f*/
+    AND CASE 
+        WHEN c.delete_f IS NULL 
+            THEN '0' 
+        ELSE c.delete_f 
+        END IN (:delete_f) 
+    /*:delete_f*/
     AND d.null_entity2_mei LIKE CONCAT ('%', :null_entity2_mei, '%') 
     AND d.entity2_mei LIKE CONCAT ('%', :entity2_mei, '%') 
-    AND CASE WHEN d.check_f IS NULL THEN '0' ELSE d.check_f END IN (:check_f) 
+    /*:check_f*/
+    AND CASE 
+        WHEN d.check_f IS NULL 
+            THEN '0' 
+        ELSE d.check_f 
+        END IN (:check_f) 
+    /*:check_f*/
     AND d.radio_kb IN (:radio_kb) 
     AND d.pulldown_kb IN (:pulldown_kb) 
     AND d.memo_tx = :memo_tx 
@@ -112,5 +124,4 @@ ORDER BY
     , c.entity_sn
     , e.ko_sn
     , f.shison_sn
-
 
