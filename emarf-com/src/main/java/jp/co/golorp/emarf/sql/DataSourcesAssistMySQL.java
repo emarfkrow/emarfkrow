@@ -5,7 +5,7 @@ import jp.co.golorp.emarf.util.MapList;
 /**
  * MySQL用データソース実装
  *
- * @author fukuo
+ * @author toshiyuki
  *
  */
 public class DataSourcesAssistMySQL extends DataSourcesAssist {

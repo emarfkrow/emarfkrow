@@ -1,5 +1,7 @@
 /**
+ * SlickGridのcolumn定義
  *
+ * @author toshiyuki
  */
 
 let Column = {

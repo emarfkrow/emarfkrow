@@ -3,7 +3,7 @@ package jp.co.golorp.emarf.sql;
 /**
  * データソース毎実装のインタフェース
  *
- * @author fukuo
+ * @author toshiyuki
  *
  */
 public abstract class DataSourcesAssist {

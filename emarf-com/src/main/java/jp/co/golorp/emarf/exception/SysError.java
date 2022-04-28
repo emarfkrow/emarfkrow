@@ -5,7 +5,7 @@ import jp.co.golorp.emarf.util.Messages;
 /**
  * システムエラー
  *
- * @author fukuo
+ * @author toshiyuki
  *
  */
 public class SysError extends RuntimeException {

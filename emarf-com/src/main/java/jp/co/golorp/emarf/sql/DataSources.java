@@ -30,7 +30,7 @@ import jp.co.golorp.emarf.util.ResourceBundles;
 /**
  * データソース管理クラス
  *
- * @author fukuo
+ * @author toshiyuki
  *
  */
 public final class DataSources {
@@ -53,7 +53,7 @@ public final class DataSources {
     /**
      * データベース名列挙子
      *
-     * @author fukuo
+     * @author toshiyuki
      *
      */
     private enum DatabaseNames {

@@ -1,6 +1,9 @@
 /**
+ * SlickGridのformatter拡張
  *
+ * @author toshiyuki
  */
+
 (function($) {
 
 	$.extend(true, window, {

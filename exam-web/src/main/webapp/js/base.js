@@ -1,5 +1,7 @@
 /**
+ * 基本実装
  *
+ * @author toshiyuki
  */
 console.debug = function() { }
 

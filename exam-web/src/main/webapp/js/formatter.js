@@ -1,5 +1,7 @@
 /**
+ * 文字列のフォーマット処理
  *
+ * @author toshiyuki
  */
 
 let Formatter = {

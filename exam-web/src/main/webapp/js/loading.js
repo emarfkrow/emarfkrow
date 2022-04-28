@@ -1,57 +1,58 @@
-/*
+/**
  * ローディングレイヤユーティリティ
- * fukuo@souken.co.jp
+ *
+ * @author toshiyuki
  */
 
 $(function() {
 
-    //    console.debug('Loading init.');
+	//    console.debug('Loading init.');
 
-    //    $('body').append('<div id="loading"></div>');
+	//    $('body').append('<div id="loading"></div>');
 
-    //    $('#loading')
-    //        .css('background-color', '#fff')
-    //        .css('background-image', 'url("../img/gif-load.gif")')
-    //        .css('background-position', 'center center')
-    //        .css('background-repeat', 'no-repeat')
-    //        .css('position', 'absolute')
-    //        .css('bottom', '0px')
-    //        .css('left', '0px')
-    //        .css('right', '0px')
-    //        .css('top', '0px')
-    //        .css('z-index', '999')
-    //        .css('opacity', '1');
+	//    $('#loading')
+	//        .css('background-color', '#fff')
+	//        .css('background-image', 'url("../img/gif-load.gif")')
+	//        .css('background-position', 'center center')
+	//        .css('background-repeat', 'no-repeat')
+	//        .css('position', 'absolute')
+	//        .css('bottom', '0px')
+	//        .css('left', '0px')
+	//        .css('right', '0px')
+	//        .css('top', '0px')
+	//        .css('z-index', '999')
+	//        .css('opacity', '1');
 
-    //    Loading.fadeIn();
+	//    Loading.fadeIn();
 });
 
 $(window).on('load', function() {
-    //    setTimeout(function() {
-    Loading.fadeOut();
-    //    }, 400);
+	//    setTimeout(function() {
+	Loading.fadeOut();
+	//    }, 400);
 });
 
 var Loading = {
 
-    stack: 0,
+	stack: 0,
 
-    fadeIn: function() {
-        if (Loading.stack == 0) {
-            $('#loading').fadeIn();
-            console.debug('Loading fadeIn');
-        }
-        ++Loading.stack;
-        console.debug('++Loading.stack = ' + Loading.stack);
-    },
+	fadeIn: function() {
+		if (Loading.stack == 0) {
+			$('#loading').fadeIn();
+			console.debug('Loading fadeIn');
+		}
+		++Loading.stack;
+		console.debug('++Loading.stack = ' + Loading.stack);
+	},
 
-    fadeOut: function() {
-        --Loading.stack;
-        console.debug('--Loading.stack = ' + Loading.stack);
-        if (Loading.stack <= 0) {
-            $("#loading").fadeOut();
-            console.debug('Loading fadeOut');
-        }
-    },
+	fadeOut: function() {
+		--Loading.stack;
+		console.debug('--Loading.stack = ' + Loading.stack);
+		if (Loading.stack <= 0) {
+			$("#loading").fadeOut();
+			console.debug('Loading fadeOut');
+		}
+	},
 
 };
 

@@ -1,5 +1,7 @@
 /**
+ * json/form制御
  *
+ * @author toshiyuki
  */
 
 let Jsonate = {

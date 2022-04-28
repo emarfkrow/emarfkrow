@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory;
 /**
  * スレッド内のロケール管理クラス
  *
- * @author fukuo
+ * @author toshiyuki
  *
  */
 public final class ThreadLocalLocale extends ThreadLocal<Locale> {

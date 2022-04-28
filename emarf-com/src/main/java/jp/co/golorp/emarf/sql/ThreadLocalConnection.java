@@ -12,7 +12,7 @@ import jp.co.golorp.emarf.exception.SysError;
 
 /**
  * スレッド内のコネクション管理クラス
- * @author fukuo
+ * @author toshiyuki
  *
  */
 public final class ThreadLocalConnection extends ThreadLocal<Connection> {

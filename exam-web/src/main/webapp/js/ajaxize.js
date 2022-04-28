@@ -1,5 +1,7 @@
 /**
+ * ajax通信
  *
+ * @author toshiyuki
  */
 
 $(function() {

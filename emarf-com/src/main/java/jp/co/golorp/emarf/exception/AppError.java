@@ -8,7 +8,7 @@ import jp.co.golorp.emarf.util.Messages;
 /**
  * アプリケーションエラー
  *
- * @author fukuo
+ * @author toshiyuki
  *
  */
 public class AppError extends RuntimeException {

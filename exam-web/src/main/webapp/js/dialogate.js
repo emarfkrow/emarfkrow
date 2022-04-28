@@ -1,5 +1,7 @@
 /**
+ * dialog制御
  *
+ * @author toshiyuki
  */
 
 $(function() {

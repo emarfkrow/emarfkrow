@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory;
 /**
  * ロケール管理クラス
  *
- * @author fukuo
+ * @author toshiyuki
  *
  */
 public final class Locales {
