@@ -41,6 +41,11 @@ $(document).on('ready', function() {
 		Base.init();
 	}
 
+	// URLにFATALがついていればポップアップ
+	if (Base.querystrings['FATAL']) {
+		alert(decodeURI(Base.querystrings['FATAL']));
+	}
+
 	// URLにERRORがついていればポップアップ
 	if (Base.querystrings['ERROR']) {
 		alert(decodeURI(Base.querystrings['ERROR']));

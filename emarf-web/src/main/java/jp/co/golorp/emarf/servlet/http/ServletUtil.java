@@ -7,8 +7,10 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -103,11 +105,32 @@ public final class ServletUtil {
      * @return Map
      */
     public static Map<String, Object> getPostJson(final HttpServletRequest request) {
+        Map<String, String[]> parameterMap = request.getParameterMap();
+        int parameterSize = parameterMap.size();
         try {
-            String s = request.getReader().readLine();
-            LOG.debug("RequestJson: " + s);
-            return new ObjectMapper().readValue(s, new TypeReference<Map<String, Object>>() {
-            });
+            if (parameterSize > 0) {
+                Map<String, Object> map = new HashMap<String, Object>();
+                for (Entry<String, String[]> entry : parameterMap.entrySet()) {
+                    String parameterName = entry.getKey();
+                    String[] parameterValue = entry.getValue();
+                    if (parameterValue.length > 1) {
+                        map.put(parameterName, parameterValue);
+                    } else if (parameterValue.length == 1) {
+                        map.put(parameterName, parameterValue[0]);
+                    } else {
+                        map.put(parameterName, "");
+                    }
+                }
+                String s = new ObjectMapper().writeValueAsString(map);
+                LOG.debug("RequestJson: " + s);
+                return map;
+            } else {
+                String s = null;
+                s = request.getReader().readLine();
+                LOG.debug("RequestJson: " + s);
+                return new ObjectMapper().readValue(s, new TypeReference<Map<String, Object>>() {
+                });
+            }
         } catch (Exception e) {
             throw new SysError(e);
         }

@@ -68,7 +68,7 @@ public final class XlsxServlet extends HttpServlet {
         } catch (Exception e) {
             LOG.error(e.getMessage(), e);
             String referer = request.getHeader("referer").replaceAll("\\?.+$", "");
-            String msg = "?ERROR=" + URLEncoder.encode(Messages.get("fatal"), StandardCharsets.UTF_8.name());
+            String msg = "?FATAL=" + URLEncoder.encode(Messages.get("fatal"), StandardCharsets.UTF_8.name());
             response.sendRedirect(referer + msg);
             return;
         }
