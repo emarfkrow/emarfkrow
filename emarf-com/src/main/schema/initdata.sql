@@ -1,4 +1,4 @@
-insert into m_user (user_id, user_sei, user_mei, email, password, insert_dt, insert_by, update_dt, update_by, delete_f) values (1,1,1,1,1, SYSDATE(), 'initdata', SYSDATE(), 'initdata',null);
+insert into m_user (user_id, user_sei, user_mei, email, password, insert_dt, insert_by, update_dt, update_by, delete_f) values (1,'姓','名',1,1, SYSDATE(), 'initdata', SYSDATE(), 'initdata',null);
 
 
 

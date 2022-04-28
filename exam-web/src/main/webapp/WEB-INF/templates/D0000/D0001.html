@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
 <head>
 <meta charset="UTF-8">
-<title>検索画面</title>
+<title>複合検索画面</title>
 <style type="text/css">
 </style>
 <script src="./D0001GridColumns.js"></script>
@@ -13,16 +13,28 @@
 </head>
 <body>
   <div layout:fragment="article">
-    <h2>検索画面</h2>
+    <h2>複合検索画面</h2>
     <form name="D0001SearchForm" action="D0001Search.ajax" class="search">
       <fieldset>
-        <legend>エンティティ検索条件</legend>
+        <legend>祖先</legend>
         <div>
           <label for="sosenId">祖先ID</label><input type="text" id="sosenId" name="sosenId" data-json="TSosenSearch.json" data-srcDef="SOSEN_ID:sosenId" data-destDef="sosenMei:SOSEN_MEI" /><a id="sosenId" th:href="@{/model/TSosenS.html}" target="dialog" class="refer" tabindex="-1">...</a><span id="sosenMei" class="refer" data-json="TSosenSearch.json" data-srcDef="SOSEN_ID:sosenId" data-destDef="sosenMei:SOSEN_MEI"></span>
         </div>
         <div>
+          <label for="sosenMei">祖先名</label><input type="text" id="sosenMei" name="sosenMei" />
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>親</legend>
+        <div>
           <label for="oyaSn">親連番</label><input type="text" id="oyaSn" name="oyaSn" />
         </div>
+        <div>
+          <label for="oyaMei">親名</label><input type="text" id="oyaMei" name="oyaMei" />
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>エンティティ</legend>
         <div>
           <label for="entitySn">エンティティ連番</label><input type="text" id="entitySn" name="entitySn" />
         </div>
@@ -54,7 +66,7 @@
         </div>
       </fieldset>
       <fieldset>
-        <legend>エンティティ２検索条件</legend>
+        <legend>エンティティ２</legend>
         <div>
           <label for="nullEntity2Mei">任意エンティティ２名</label><input type="text" id="nullEntity2Mei" name="nullEntity2Mei" />
         </div>

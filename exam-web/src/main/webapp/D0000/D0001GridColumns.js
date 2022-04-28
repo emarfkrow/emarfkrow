@@ -4,7 +4,9 @@
 
 let D0001GridColumns = [
 	Column.refer('SOSEN_ID', '祖先ID', 100, 'primaryKey', 'SOSEN_MEI'),
+	Column.cell('SOSEN_MEI', '祖先名', 100),
 	Column.cell('OYA_SN', '親連番', 100, 'primaryKey'),
+	Column.cell('OYA_MEI', '親名', 100),
 	Column.cell('ENTITY_SN', 'エンティティ連番', 100, 'primaryKey'),
 	Column.text('ENTITY_MEI', 'エンティティ名', 300),
 	Column.text('SANSHO1_ID', '参照１ID', 100),

@@ -124,6 +124,11 @@ let Base = {
 			$registForm.find('.addChild').button('option', 'disabled', true);
 		}
 
+		$(document).on('click', 'button[type="reset"]', function() {
+			let $reset = $(this);
+			let $form = $reset.closest('form');
+			$form.find('span[id].refer').html('');
+		});
 
 		Base.resizeNav();
 

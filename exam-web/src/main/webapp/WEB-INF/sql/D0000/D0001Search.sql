@@ -49,8 +49,10 @@ FROM
         AND f.ko_sn = e.ko_sn 
 WHERE
     1 = 1 
-    AND c.sosen_id = :sosen_id 
-    AND c.oya_sn = :oya_sn 
+    AND a.sosen_id = :sosen_id 
+    AND a.sosen_mei LIKE CONCAT ('%', :sosen_mei, '%') 
+    AND b.oya_sn = :oya_sn 
+    AND b.oya_mei LIKE CONCAT ('%', :oya_mei, '%') 
     AND c.entity_sn = :entity_sn 
     AND c.entity_mei LIKE CONCAT ('%', :entity_mei, '%') 
     AND c.sansho1_id = :sansho1_id 
@@ -67,12 +69,12 @@ WHERE
     AND c.update_dt >= :update_dt_1 
     AND c.update_dt <= :update_dt_2 
     AND c.update_by = :update_by 
-    AND CASE WHEN c.delete_f IS NULL THEN '0' ELSE c.delete_f END = :delete_f 
+    AND CASE WHEN c.delete_f IS NULL THEN '0' ELSE c.delete_f END IN (:delete_f) 
     AND d.null_entity2_mei LIKE CONCAT ('%', :null_entity2_mei, '%') 
     AND d.entity2_mei LIKE CONCAT ('%', :entity2_mei, '%') 
-    AND CASE WHEN d.check_f IS NULL THEN '0' ELSE d.check_f END = :check_f 
-    AND d.radio_kb = :radio_kb 
-    AND d.pulldown_kb = :pulldown_kb 
+    AND CASE WHEN d.check_f IS NULL THEN '0' ELSE d.check_f END IN (:check_f) 
+    AND d.radio_kb IN (:radio_kb) 
+    AND d.pulldown_kb IN (:pulldown_kb) 
     AND d.memo_tx = :memo_tx 
     AND d.hiduke_ymd = :hiduke_ymd 
     AND d.hiduke_ymd >= :hiduke_ymd_1 
