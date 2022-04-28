@@ -19,16 +19,13 @@ import jp.co.golorp.emarf.lang.StringUtil;
 import jp.co.golorp.emarf.sql.Queries;
 
 /**
- * m_busho
+ * 部署マスタ
  *
- * @author generator
- *
+ * @author emarfkrow
  */
 public class MBusho implements IEntity {
 
-    /**
-     * 部署ID
-     */
+    /** 部署ID */
     private Integer bushoId;
 
     /**
@@ -49,9 +46,7 @@ public class MBusho implements IEntity {
         }
     }
 
-    /**
-     * 部署名
-     */
+    /** 部署名 */
     private String bushoMei;
 
     /**
@@ -275,8 +270,10 @@ public class MBusho implements IEntity {
     }
 
     /**
-     * @param param1 bushoId
-     * @return MBusho
+     * 部署マスタ照会
+     *
+     * @param param1 部署ID
+     * @return 部署マスタ
      */
     public static MBusho get(final Object param1) {
 
@@ -292,16 +289,16 @@ public class MBusho implements IEntity {
     }
 
     /**
-     * @param now
-     * @param id
+     * 部署マスタ追加
+     *
+     * @param now システム日時
+     * @param id 登録者
      * @return 追加件数
      */
     public int insert(final LocalDateTime now, final String id) {
 
-        // 採番処理
         numbering();
 
-        // 部署マスタテーブルの登録
         List<String> nameList = new ArrayList<String>();
         nameList.add("busho_id -- :busho_id");
         nameList.add("busho_mei -- :busho_mei");
@@ -336,9 +333,9 @@ public class MBusho implements IEntity {
     }
 
     /**
-     *
+     * 末端キーの採番処理
      */
-    protected void numbering() {
+    private void numbering() {
 
         if (this.bushoId != null) {
             return;
@@ -355,13 +352,14 @@ public class MBusho implements IEntity {
     }
 
     /**
-     * @param now
-     * @param id
+     * 部署マスタ更新
+     *
+     * @param now システム日時
+     * @param id 更新者
      * @return 更新件数
      */
     public int update(final LocalDateTime now, final String id) {
 
-        // 部署マスタテーブルの登録
         List<String> setList = new ArrayList<String>();
         setList.add("busho_id = :busho_id");
         setList.add("busho_mei = :busho_mei");
@@ -381,6 +379,8 @@ public class MBusho implements IEntity {
     }
 
     /**
+     * 部署マスタ削除
+     *
      * @return 削除件数
      */
     public int delete() {
@@ -392,6 +392,9 @@ public class MBusho implements IEntity {
         return Queries.regist(sql, params);
     }
 
+    /**
+     * @return 部署マスタの主キーのwhere句
+     */
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
         whereList.add("busho_id = :busho_id");
@@ -399,6 +402,11 @@ public class MBusho implements IEntity {
         return String.join(" AND ", whereList);
     }
 
+    /**
+     * @param now システム日時
+     * @param id 登録者
+     * @return Map化した部署マスタ
+     */
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("busho_id", this.bushoId);
@@ -413,4 +421,5 @@ public class MBusho implements IEntity {
         params.put("update_by", id);
         return params;
     }
+
 }
