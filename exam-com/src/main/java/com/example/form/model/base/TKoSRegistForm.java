@@ -10,32 +10,35 @@ import jakarta.validation.Valid;
 import jp.co.golorp.emarf.process.BaseProcess;
 import jp.co.golorp.emarf.validation.IForm;
 
+/**
+ * 子一覧登録フォーム
+ *
+ * @author emarfkrow
+ */
 public class TKoSRegistForm implements IForm {
 
     /** logger */
     private static final Logger LOG = LoggerFactory.getLogger(TKoRegistForm.class);
 
-    /** 子 */
+    /** 子登録フォームのリスト */
     @Valid
     private List<TKoRegistForm> tKoGrid;
 
     /**
-     * @return 子
+     * @return 子登録フォームのリスト
      */
     public List<TKoRegistForm> getTKoGrid() {
         return tKoGrid;
     }
 
     /**
-     * @param p
+     * @param p 子登録フォームのリスト
      */
     public void setTKoGrid(final List<TKoRegistForm> p) {
         this.tKoGrid = p;
     }
 
-    /**
-     * correlation check
-     */
+    /** 関連チェック */
     @Override
     public void validate(final Map<String, String> errors, final BaseProcess baseProcess) {
         LOG.debug("not overridden in subclasses.");

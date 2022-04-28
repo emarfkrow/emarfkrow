@@ -131,9 +131,7 @@ public class MCodeValueRegistForm implements IForm {
         this.deleteF = p;
     }
 
-    /**
-     * 関連チェック
-     */
+    /** 関連チェック */
     @Override
     public void validate(final Map<String, String> errors, final BaseProcess baseProcess) {
         LOG.debug("not overridden in subclasses.");

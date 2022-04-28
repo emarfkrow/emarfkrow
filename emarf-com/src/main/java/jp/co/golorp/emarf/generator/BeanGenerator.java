@@ -1433,9 +1433,7 @@ public final class BeanGenerator {
                 s.add("    }");
             }
             s.add("");
-            s.add("    /**");
-            s.add("     * 関連チェック");
-            s.add("     */");
+            s.add("    /** 関連チェック */");
             s.add("    @Override");
             s.add("    public void validate(final Map<String, String> errors, final BaseProcess baseProcess) {");
             s.add("        LOG.debug(\"not overridden in subclasses.\");");
@@ -1513,6 +1511,8 @@ public final class BeanGenerator {
 
         for (TableInfo tableInfo : tableInfos) {
             String tableName = tableInfo.getTableName();
+            String remarks = tableInfo.getRemarks();
+
             String camel = StringUtil.toCamelCase(tableName);
             String pascal = StringUtil.toPascalCase(tableName);
 
@@ -1529,32 +1529,35 @@ public final class BeanGenerator {
             s.add("import jp.co.golorp.emarf.process.BaseProcess;");
             s.add("import jp.co.golorp.emarf.validation.IForm;");
             s.add("");
+            s.add("/**");
+            s.add(" * " + remarks + "一覧登録フォーム");
+            s.add(" *");
+            s.add(" * @author emarfkrow");
+            s.add(" */");
             s.add("public class " + pascal + "SRegistForm implements IForm {");
             s.add("");
             s.add("    /** logger */");
             s.add("    private static final Logger LOG = LoggerFactory.getLogger(" + pascal + "RegistForm.class);");
             s.add("");
-            s.add("    /** " + tableInfo.getRemarks() + " */");
+            s.add("    /** " + tableInfo.getRemarks() + "登録フォームのリスト */");
             s.add("    @Valid");
             s.add("    private List<" + pascal + "RegistForm> " + camel + "Grid;");
             s.add("");
             s.add("    /**");
-            s.add("     * @return " + tableInfo.getRemarks());
+            s.add("     * @return " + tableInfo.getRemarks() + "登録フォームのリスト");
             s.add("     */");
             s.add("    public List<" + pascal + "RegistForm> get" + pascal + "Grid() {");
             s.add("        return " + camel + "Grid;");
             s.add("    }");
             s.add("");
             s.add("    /**");
-            s.add("     * @param p");
+            s.add("     * @param p " + tableInfo.getRemarks() + "登録フォームのリスト");
             s.add("     */");
             s.add("    public void set" + pascal + "Grid(final List<" + pascal + "RegistForm> p) {");
             s.add("        this." + camel + "Grid = p;");
             s.add("    }");
             s.add("");
-            s.add("    /**");
-            s.add("     * correlation check");
-            s.add("     */");
+            s.add("    /** 関連チェック */");
             s.add("    @Override");
             s.add("    public void validate(final Map<String, String> errors, final BaseProcess baseProcess) {");
             s.add("        LOG.debug(\"not overridden in subclasses.\");");

@@ -10,32 +10,35 @@ import jakarta.validation.Valid;
 import jp.co.golorp.emarf.process.BaseProcess;
 import jp.co.golorp.emarf.validation.IForm;
 
+/**
+ * 参照２マスタ一覧登録フォーム
+ *
+ * @author emarfkrow
+ */
 public class MSansho2SRegistForm implements IForm {
 
     /** logger */
     private static final Logger LOG = LoggerFactory.getLogger(MSansho2RegistForm.class);
 
-    /** 参照２マスタ */
+    /** 参照２マスタ登録フォームのリスト */
     @Valid
     private List<MSansho2RegistForm> mSansho2Grid;
 
     /**
-     * @return 参照２マスタ
+     * @return 参照２マスタ登録フォームのリスト
      */
     public List<MSansho2RegistForm> getMSansho2Grid() {
         return mSansho2Grid;
     }
 
     /**
-     * @param p
+     * @param p 参照２マスタ登録フォームのリスト
      */
     public void setMSansho2Grid(final List<MSansho2RegistForm> p) {
         this.mSansho2Grid = p;
     }
 
-    /**
-     * correlation check
-     */
+    /** 関連チェック */
     @Override
     public void validate(final Map<String, String> errors, final BaseProcess baseProcess) {
         LOG.debug("not overridden in subclasses.");
