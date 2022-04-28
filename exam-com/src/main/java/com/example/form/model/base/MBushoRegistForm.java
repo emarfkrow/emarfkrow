@@ -9,6 +9,11 @@ import jakarta.validation.constraints.Size;
 import jp.co.golorp.emarf.process.BaseProcess;
 import jp.co.golorp.emarf.validation.IForm;
 
+/**
+ * 部署マスタ登録フォーム
+ *
+ * @author emarfkrow
+ */
 public class MBushoRegistForm implements IForm {
 
     /** logger */
@@ -26,7 +31,7 @@ public class MBushoRegistForm implements IForm {
     }
 
     /**
-     * @param p
+     * @param p 部署ID
      */
     public void setBushoId(final String p) {
         this.bushoId = p;
@@ -123,9 +128,7 @@ public class MBushoRegistForm implements IForm {
         this.deleteF = p;
     }
 
-    /**
-     * correlation check
-     */
+    /** 関連チェック */
     @Override
     public void validate(final Map<String, String> errors, final BaseProcess baseProcess) {
         LOG.debug("not overridden in subclasses.");
