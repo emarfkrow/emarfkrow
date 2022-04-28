@@ -718,6 +718,16 @@ public class TEntity implements IEntity {
     }
 
     /**
+     * @param tKo
+     */
+    public void addTKos(final TKo tKo) {
+        if (this.tKos == null) {
+            this.tKos = new ArrayList<TKo>();
+        }
+        this.tKos.add(tKo);
+    }
+
+    /**
      * @return 子のリスト
      */
     public List<TKo> referTKos() {

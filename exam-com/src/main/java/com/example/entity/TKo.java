@@ -498,6 +498,16 @@ public class TKo implements IEntity {
     }
 
     /**
+     * @param tShison
+     */
+    public void addTShisons(final TShison tShison) {
+        if (this.tShisons == null) {
+            this.tShisons = new ArrayList<TShison>();
+        }
+        this.tShisons.add(tShison);
+    }
+
+    /**
      * @return 子孫のリスト
      */
     public List<TShison> referTShisons() {

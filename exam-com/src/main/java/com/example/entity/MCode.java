@@ -367,6 +367,16 @@ public class MCode implements IEntity {
     }
 
     /**
+     * @param mCodeValue
+     */
+    public void addMCodeValues(final MCodeValue mCodeValue) {
+        if (this.mCodeValues == null) {
+            this.mCodeValues = new ArrayList<MCodeValue>();
+        }
+        this.mCodeValues.add(mCodeValue);
+    }
+
+    /**
      * @return コード値マスタのリスト
      */
     public List<MCodeValue> referMCodeValues() {
