@@ -449,8 +449,11 @@ public final class BeanGenerator {
             s.add("            return;");
             s.add("        }");
             s.add("");
-            s.add("        String sql = \"SELECT CASE WHEN MAX(e." + lastPk + ") IS NULL THEN 0 ELSE MAX(e." + lastPk
-                    + ") END + 1 AS " + lastPk + " FROM " + tableName + " e\";");
+            String numbering = "CASE WHEN MAX(e." + lastPk + ") IS NULL THEN 0 ELSE MAX(e." + lastPk + ") END + 1";
+            if (lastKeyInfo.getTypeName().equals("CHAR")) {
+                numbering = "LPAD (" + numbering + ", " + lastKeyInfo.getColumnSize() + ", '0')";
+            }
+            s.add("        String sql = \"SELECT " + numbering + " AS " + lastPk + " FROM " + tableName + " e\";");
             s.add("");
             s.add("        Map<String, Object> params = new HashMap<String, Object>();");
             if (tableInfo.getPrimaryKeys().size() > 1) {
