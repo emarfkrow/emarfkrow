@@ -11,6 +11,22 @@ SELECT
     , c.sansho2_mei
     , c.betsu_sansho1_id
     , c.betsu_sansho1_mei
+    , d.null_entity2_mei
+    , d.entity2_mei
+    , d.check_f
+    , d.radio_kb
+    , d.pulldown_kb
+    , d.memo_tx
+    , d.hiduke_ymd
+    , d.nengetsu_ym
+    , d.sample_y
+    , d.sample_m
+    , d.nichiji_dt
+    , d.jikoku_hm
+    , d.jikan_tm
+    , d.suryo_qt
+    , d.tanka_am
+    , d.kingaku_am
 FROM
     t_sosen a 
     LEFT OUTER JOIN t_oya b 
@@ -52,6 +68,42 @@ WHERE
     AND c.update_dt <= :update_dt_2 
     AND c.update_by = :update_by 
     AND CASE WHEN c.delete_f IS NULL THEN '0' ELSE c.delete_f END = :delete_f 
+    AND d.null_entity2_mei LIKE CONCAT ('%', :null_entity2_mei, '%') 
+    AND d.entity2_mei LIKE CONCAT ('%', :entity2_mei, '%') 
+    AND CASE WHEN d.check_f IS NULL THEN '0' ELSE d.check_f END = :check_f 
+    AND d.radio_kb = :radio_kb 
+    AND d.pulldown_kb = :pulldown_kb 
+    AND d.memo_tx = :memo_tx 
+    AND d.hiduke_ymd = :hiduke_ymd 
+    AND d.hiduke_ymd >= :hiduke_ymd_1 
+    AND d.hiduke_ymd <= :hiduke_ymd_2 
+    AND d.nengetsu_ym = :nengetsu_ym 
+    AND d.nengetsu_ym >= :nengetsu_ym_1 
+    AND d.nengetsu_ym <= :nengetsu_ym_2 
+    AND d.sample_y = :sample_y 
+    AND d.sample_y >= :sample_y_1 
+    AND d.sample_y <= :sample_y_2 
+    AND d.sample_m = :sample_m 
+    AND d.sample_m >= :sample_m_1 
+    AND d.sample_m <= :sample_m_2 
+    AND d.nichiji_dt = :nichiji_dt 
+    AND d.nichiji_dt >= :nichiji_dt_1 
+    AND d.nichiji_dt <= :nichiji_dt_2 
+    AND d.jikoku_hm = :jikoku_hm 
+    AND d.jikoku_hm >= :jikoku_hm_1 
+    AND d.jikoku_hm <= :jikoku_hm_2 
+    AND d.jikan_tm = :jikan_tm 
+    AND d.jikan_tm >= :jikan_tm_1 
+    AND d.jikan_tm <= :jikan_tm_2 
+    AND d.suryo_qt = :suryo_qt 
+    AND d.suryo_qt >= :suryo_qt_1 
+    AND d.suryo_qt <= :suryo_qt_2 
+    AND d.tanka_am = :tanka_am 
+    AND d.tanka_am >= :tanka_am_1 
+    AND d.tanka_am <= :tanka_am_2 
+    AND d.kingaku_am = :kingaku_am 
+    AND d.kingaku_am >= :kingaku_am_1 
+    AND d.kingaku_am <= :kingaku_am_2 
 ORDER BY
     a.sosen_id
     , b.oya_sn

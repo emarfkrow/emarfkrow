@@ -38,6 +38,9 @@ public final class BeanGenerator {
     /** 更新者カラム名 */
     private static String updateBy;
 
+    /** options項目サフィックス */
+    private static String[] optionsSuffixs;
+
     /** 範囲指定サフィックス */
     private static String[] inputRangeSuffixs;
     /** 部分一致サフィックス */
@@ -83,6 +86,8 @@ public final class BeanGenerator {
         insertBy = bundle.getString("BeanGenerator.insert_by");
         updateDt = bundle.getString("BeanGenerator.update_dt");
         updateBy = bundle.getString("BeanGenerator.update_by");
+
+        optionsSuffixs = bundle.getString("BeanGenerator.options.suffixs").split(",");
 
         inputRangeSuffixs = bundle.getString("BeanGenerator.input.range.suffixs").split(",");
         inputLikeSuffixs = bundle.getString("BeanGenerator.input.like.suffixs").split(",");
@@ -1570,10 +1575,14 @@ public final class BeanGenerator {
             String snake = StringUtil.toSnakeCase(columnName);
             boolean isInputLike = StringUtil.endsWith(inputLikeSuffixs, snake);
             boolean isInputFlag = StringUtil.endsWith(inputFlagSuffixs, snake);
+            boolean isOption = StringUtil.endsWith(optionsSuffixs, snake);
             if (isInputLike) {
                 s.add("    AND a." + snake + " LIKE CONCAT ('%', :" + snake + ", '%') ");
             } else if (isInputFlag) {
-                s.add("    AND CASE WHEN a." + snake + " IS NULL THEN '0' ELSE a." + snake + " END = :" + snake + " ");
+                s.add("    AND CASE WHEN a." + snake + " IS NULL THEN '0' ELSE a." + snake + " END IN (:" + snake
+                        + ") ");
+            } else if (isOption) {
+                s.add("    AND a." + snake + " IN (:" + snake + ") ");
             } else {
                 s.add("    AND a." + snake + " = :" + snake + " ");
             }

@@ -10,9 +10,9 @@ WHERE
     AND a.entity_sn = :entity_sn 
     AND a.null_entity2_mei LIKE CONCAT ('%', :null_entity2_mei, '%') 
     AND a.entity2_mei LIKE CONCAT ('%', :entity2_mei, '%') 
-    AND CASE WHEN a.check_f IS NULL THEN '0' ELSE a.check_f END = :check_f 
-    AND a.radio_kb = :radio_kb 
-    AND a.pulldown_kb = :pulldown_kb 
+    AND CASE WHEN a.check_f IS NULL THEN '0' ELSE a.check_f END IN (:check_f) 
+    AND a.radio_kb IN (:radio_kb) 
+    AND a.pulldown_kb IN (:pulldown_kb) 
     AND a.memo_tx = :memo_tx 
     AND a.hiduke_ymd = :hiduke_ymd 
     AND a.hiduke_ymd >= :hiduke_ymd_1 
@@ -52,6 +52,6 @@ WHERE
     AND a.update_dt >= :update_dt_1 
     AND a.update_dt <= :update_dt_2 
     AND a.update_by = :update_by 
-    AND CASE WHEN a.delete_f IS NULL THEN '0' ELSE a.delete_f END = :delete_f 
+    AND CASE WHEN a.delete_f IS NULL THEN '0' ELSE a.delete_f END IN (:delete_f) 
 ORDER BY
     a.SOSEN_ID, a.OYA_SN, a.ENTITY_SN

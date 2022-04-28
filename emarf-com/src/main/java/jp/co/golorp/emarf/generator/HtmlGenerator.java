@@ -265,34 +265,71 @@ public final class HtmlGenerator {
 
             String c = "";
             if (isRefer) {
+
                 c = "Column.refer('" + field + "', " + name + ", " + width + ", '" + css + "', '" + referMei + "'),";
+
             } else if (columnInfo.isPk()) {
+
                 c = "Column.cell('" + field + "', " + name + ", " + width + ", '" + css + "', " + formatter + "),";
+
             } else if (lower.equals(insertDt) || lower.equals(updateDt)) {
+
                 c = "Column.cell('" + field + "', " + name + ", " + width + ", '" + css + "', " + formatter + "),";
+
             } else if (lower.equals(insertBy) || lower.equals(updateBy)) {
+
                 c = "Column.cell('" + field + "', " + name + ", " + width + ", '" + css + "', " + formatter + "),";
+
             } else if (StringUtil.endsWith(inputFlagSuffixs, lower)) {
+
                 c = "Column.check('" + field + "', " + name + ", " + width + ", '" + css + "'),";
+
             } else if (StringUtil.endsWith(inputDateSuffixs, lower)) {
+
                 c = "Column.date('" + field + "', " + name + ", " + width + ", '" + css + "', " + formatter + "),";
+
             } else if (StringUtil.endsWith(inputDateTimeSuffixs, lower)) {
+
                 c = "Column.dateTime('" + field + "', " + name + ", " + width + ", '" + css + "'),";
+
             } else if (StringUtil.endsWith(inputMonthSuffixs, lower)) {
+
                 c = "Column.month('" + field + "', " + name + ", " + width + ", '" + css + "', " + formatter + "),";
+
             } else if (StringUtil.endsWith(inputTimeSuffixs, lower)) {
+
                 c = "Column.time('" + field + "', " + name + ", " + width + ", '" + css + "', " + formatter + "),";
+
             } else if (StringUtil.endsWith(optionsSuffixs, lower)) {
+
                 String options = "{ json: '" + json + "', paramkey: '" + optionParamKey + "', value: '" + optionValue
                         + "', label: '" + optionLabel + "' }";
                 c = "Column.select('" + field + "', " + name + ", " + width + ", '" + css + "', " + options + "),";
+
             } else if (StringUtil.endsWith(textareaSuffixs, lower)) {
+
                 c = "Column.longText('" + field + "', " + name + ", " + width + ", '" + css + "', " + formatter + "),";
+
+            } else if (columnInfo.getTypeName().equals("DECIMAL")) {
+
+                if (columnInfo.getDecimalDigits() == 3) {
+                    c = "Column.dec3('" + field + "', " + name + ", " + width + ", '" + css + "', " + formatter + "),";
+                } else if (columnInfo.getDecimalDigits() == 2) {
+                    c = "Column.dec2('" + field + "', " + name + ", " + width + ", '" + css + "', " + formatter + "),";
+                } else if (columnInfo.getDecimalDigits() == 1) {
+                    c = "Column.dec1('" + field + "', " + name + ", " + width + ", '" + css + "', " + formatter + "),";
+                } else {
+                    c = "Column.comma('" + field + "', " + name + ", " + width + ", '" + css + "', " + formatter + "),";
+                }
+
             } else {
+
                 c = "Column.text('" + field + "', " + name + ", " + width + ", '" + css + "', " + formatter + "),";
             }
+
             s.add("    " + c);
         }
+
         s.add("];");
 
         FileUtil.writeFile(gridDir + File.separator + entityName + "GridColumns.js", s);

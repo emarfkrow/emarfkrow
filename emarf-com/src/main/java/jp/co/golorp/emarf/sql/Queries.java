@@ -148,49 +148,55 @@ public final class Queries {
         String rawSql = namedSql;
         String logSql = namedSql;
 
-        // パラメータ値がNULLの場合は、SQLの行を削除
-        Pattern pattern = Pattern.compile("(?<=:)[A-Za-z][0-9A-Z\\_a-z]+");
-        Matcher matcher = pattern.matcher(rawSql);
-        while (matcher.find()) {
-            String paramName = matcher.group();
-            if (!snakes.containsKey(paramName)) {
-                rawSql = rawSql.replaceFirst(".*:" + paramName + ".*[\r\n]+", "");
-                logSql = logSql.replaceFirst(".*:" + paramName + ".*[\r\n]+", "");
+        // SQL内の名前付きパラメータ「:***」が、パラメータのキーに含まれない場合は、SQLから行削除
+        Matcher m = Pattern.compile("(?<=:)[A-Za-z][0-9A-Z\\_a-z]+").matcher(rawSql);
+        while (m.find()) {
+            String parameterName = m.group();
+            if (!snakes.containsKey(parameterName)) {
+                rawSql = rawSql.replaceFirst(".*:" + parameterName + ".*[\r\n]+", "");
+                logSql = logSql.replaceFirst(".*:" + parameterName + ".*[\r\n]+", "");
             }
         }
 
-        // コメント内の名前付きパラメータをパラメータ値で置換
-        pattern = Pattern.compile("(?<=--) *:[A-Za-z][0-9A-Z\\_a-z]+");
-        matcher = pattern.matcher(rawSql);
-        while (matcher.find()) {
-            String matchName = matcher.group();
-            String paramName = matchName.replaceAll("^ *:", "");
-            Object o = snakes.get(paramName);
-            String paramValue = "";
+        // SQLコメント内の名前付きパラメータ「-- :***」を、パラメータ値で置換
+        m = Pattern.compile("(?<=--) *:[A-Za-z][0-9A-Z\\_a-z]+").matcher(rawSql);
+        while (m.find()) {
+            String namedParameter = m.group();
+            String parameterName = namedParameter.replaceAll("^ *:", "");
+            Object o = snakes.get(parameterName);
+
+            String parameterValue = "";
             if (o != null) {
-                paramValue = snakes.get(paramName).toString();
+                parameterValue = o.toString();
             }
-            rawSql = rawSql.replaceFirst(":" + paramName, paramValue);
-            logSql = logSql.replaceFirst(":" + paramName, paramValue);
+
+            rawSql = rawSql.replaceFirst(":" + parameterName, parameterValue);
+            logSql = logSql.replaceFirst(":" + parameterName, parameterValue);
         }
 
-        pattern = Pattern.compile("(?<=:)[A-Za-z][0-9A-Z\\_a-z]+");
-        matcher = pattern.matcher(rawSql);
-        while (matcher.find()) {
-            String paramName = matcher.group();
-            Object o = snakes.get(paramName);
+        // SQL内の名前付きパラメータ「:***」をプレースホルダ「?」に置換して、出現箇所に応じてパラメータを追加
+        m = Pattern.compile("(?<=:)[A-Za-z][0-9A-Z\\_a-z]+").matcher(rawSql);
+        while (m.find()) {
+            String parameterName = m.group();
+            Object o = snakes.get(parameterName);
 
-            String paramValue = null;
-            if (o != null) {
-                paramValue = o.toString();
+            if (o instanceof List) {
+
+                @SuppressWarnings("unchecked")
+                List<String> list = (List<String>) o;
+                String s = String.join(", ", list);
+                rawSql = rawSql.replaceFirst(":" + parameterName, s);
+                logSql = logSql.replaceFirst(":" + parameterName, s);
+
+            } else {
+
+                // 実行用SQLとログ用SQLの名前付きパラメータ「:***」をプレースホルダ「?」に置換
+                rawSql = rawSql.replaceFirst(":" + parameterName, "?");
+                logSql = logSql.replaceFirst(":" + parameterName, "'" + o.toString() + "'");
+
+                // 出現箇所に応じてパラメータを追加
+                args.add(o);
             }
-
-            // 実行用SQLとログ用SQLの名前付きパラメータをプレースホルダに置換
-            rawSql = rawSql.replaceFirst(":" + paramName, "?");
-            logSql = logSql.replaceFirst(":" + paramName, "'" + paramValue + "'");
-
-            // 出現箇所に応じてパラメータを追加
-            args.add(paramValue);
         }
 
         // ログ用SQLを出力

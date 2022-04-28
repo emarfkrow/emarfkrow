@@ -19,6 +19,6 @@ WHERE
     AND a.update_dt >= :update_dt_1 
     AND a.update_dt <= :update_dt_2 
     AND a.update_by = :update_by 
-    AND CASE WHEN a.delete_f IS NULL THEN '0' ELSE a.delete_f END = :delete_f 
+    AND CASE WHEN a.delete_f IS NULL THEN '0' ELSE a.delete_f END IN (:delete_f) 
 ORDER BY
     a.SOSEN_ID, a.OYA_SN, a.ENTITY_SN, a.KO_SN, a.SHISON_SN

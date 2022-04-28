@@ -27,7 +27,7 @@ let D0001GridColumns = [
 	Column.dateTime('NICHIJI_DT', '日時', 230),
 	Column.time('JIKOKU_HM', '時刻', 60),
 	Column.text('JIKAN_TM', '時間', 60),
-	Column.text('SURYO_QT', '数量', 90),
-	Column.text('TANKA_AM', '単価', 110),
-	Column.text('KINGAKU_AM', '金額', 110),
+	Column.dec2('SURYO_QT', '数量', 90),
+	Column.dec3('TANKA_AM', '単価', 110),
+	Column.dec3('KINGAKU_AM', '金額', 110),
 ];
