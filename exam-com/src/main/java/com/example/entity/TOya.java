@@ -428,6 +428,16 @@ public class TOya implements IEntity {
     }
 
     /**
+     * @param tEntity
+     */
+    public void addTEntitys(final TEntity tEntity) {
+        if (this.tEntitys == null) {
+            this.tEntitys = new ArrayList<TEntity>();
+        }
+        this.tEntitys.add(tEntity);
+    }
+
+    /**
      * @return エンティティのリスト
      */
     public List<TEntity> referTEntitys() {

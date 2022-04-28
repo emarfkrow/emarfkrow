@@ -726,6 +726,16 @@ public final class BeanGenerator {
             s.add("    }");
             s.add("");
             s.add("    /**");
+            s.add("     * @param " + camel);
+            s.add("     */");
+            s.add("    public void add" + pascal + "s(final " + pascal + " " + camel + ") {");
+            s.add("        if (this." + camel + "s == null) {");
+            s.add("            this." + camel + "s = new ArrayList<" + pascal + ">();");
+            s.add("        }");
+            s.add("        this." + camel + "s.add(" + camel + ");");
+            s.add("    }");
+            s.add("");
+            s.add("    /**");
             s.add("     * @return " + childInfo.getRemarks() + "のリスト");
             s.add("     */");
             s.add("    public List<" + pascal + "> refer" + pascal + "s() {");

@@ -389,6 +389,16 @@ public class TSosen implements IEntity {
     }
 
     /**
+     * @param tOya
+     */
+    public void addTOyas(final TOya tOya) {
+        if (this.tOyas == null) {
+            this.tOyas = new ArrayList<TOya>();
+        }
+        this.tOyas.add(tOya);
+    }
+
+    /**
      * @return 親のリスト
      */
     public List<TOya> referTOyas() {
