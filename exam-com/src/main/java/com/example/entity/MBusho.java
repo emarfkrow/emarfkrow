@@ -313,7 +313,7 @@ public class MBusho implements IEntity {
         nameList.add("update_dt -- :update_dt");
         nameList.add("update_by -- :update_by");
         nameList.add("delete_f -- :delete_f");
-        String name = String.join("\r\n, ", nameList);
+        String name = String.join("\r\n    , ", nameList);
 
         List<String> valueList = new ArrayList<String>();
         valueList.add(":busho_id");
@@ -326,9 +326,9 @@ public class MBusho implements IEntity {
         valueList.add(":update_dt");
         valueList.add(":update_by");
         valueList.add(":delete_f");
-        String value = String.join("\r\n, ", valueList);
+        String value = String.join("\r\n    , ", valueList);
 
-        String sql = "INSERT INTO m_busho(\r\n" + name + "\r\n) VALUES (\r\n" + value + "\r\n); ";
+        String sql = "INSERT INTO m_busho(\r\n      " + name + "\r\n) VALUES (\r\n      " + value + "\r\n); ";
 
         Map<String, Object> params = toMap(now, id);
 
@@ -371,9 +371,9 @@ public class MBusho implements IEntity {
         setList.add("update_dt = :update_dt");
         setList.add("update_by = :update_by");
         setList.add("delete_f = :delete_f");
-        String set = String.join(", ", setList);
+        String set = String.join("\r\n    , ", setList);
 
-        String sql = "UPDATE m_busho SET " + set + " WHERE " + getWhere();
+        String sql = "UPDATE m_busho\r\nSET\r\n      " + set + "\r\nWHERE\r\n    " + getWhere();
 
         Map<String, Object> params = toMap(now, id);
 

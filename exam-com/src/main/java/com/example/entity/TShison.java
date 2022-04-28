@@ -349,7 +349,7 @@ public class TShison implements IEntity {
         nameList.add("update_dt -- :update_dt");
         nameList.add("update_by -- :update_by");
         nameList.add("delete_f -- :delete_f");
-        String name = String.join("\r\n, ", nameList);
+        String name = String.join("\r\n    , ", nameList);
 
         List<String> valueList = new ArrayList<String>();
         valueList.add(":sosen_id");
@@ -363,9 +363,9 @@ public class TShison implements IEntity {
         valueList.add(":update_dt");
         valueList.add(":update_by");
         valueList.add(":delete_f");
-        String value = String.join("\r\n, ", valueList);
+        String value = String.join("\r\n    , ", valueList);
 
-        String sql = "INSERT INTO t_shison(\r\n" + name + "\r\n) VALUES (\r\n" + value + "\r\n); ";
+        String sql = "INSERT INTO t_shison(\r\n      " + name + "\r\n) VALUES (\r\n      " + value + "\r\n); ";
 
         Map<String, Object> params = toMap(now, id);
 
@@ -421,9 +421,9 @@ public class TShison implements IEntity {
         setList.add("update_dt = :update_dt");
         setList.add("update_by = :update_by");
         setList.add("delete_f = :delete_f");
-        String set = String.join(", ", setList);
+        String set = String.join("\r\n    , ", setList);
 
-        String sql = "UPDATE t_shison SET " + set + " WHERE " + getWhere();
+        String sql = "UPDATE t_shison\r\nSET\r\n      " + set + "\r\nWHERE\r\n    " + getWhere();
 
         Map<String, Object> params = toMap(now, id);
 

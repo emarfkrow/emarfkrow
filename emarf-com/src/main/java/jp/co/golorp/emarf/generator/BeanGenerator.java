@@ -420,17 +420,17 @@ public final class BeanGenerator {
             columnName = columnName.toLowerCase();
             s.add("        nameList.add(\"" + columnName + " -- :" + columnName + "\");");
         }
-        s.add("        String name = String.join(\"\\r\\n, \", nameList);");
+        s.add("        String name = String.join(\"\\r\\n    , \", nameList);");
         s.add("");
         s.add("        List<String> valueList = new ArrayList<String>();");
         for (String columnName : tableInfo.getColumnInfos().keySet()) {
             columnName = columnName.toLowerCase();
             s.add("        valueList.add(\":" + columnName + "\");");
         }
-        s.add("        String value = String.join(\"\\r\\n, \", valueList);");
+        s.add("        String value = String.join(\"\\r\\n    , \", valueList);");
         s.add("");
         s.add("        String sql = \"INSERT INTO " + tableName
-                + "(\\r\\n\" + name + \"\\r\\n) VALUES (\\r\\n\" + value + \"\\r\\n); \";");
+                + "(\\r\\n      \" + name + \"\\r\\n) VALUES (\\r\\n      \" + value + \"\\r\\n); \";");
         s.add("");
         s.add("        Map<String, Object> params = toMap(now, id);");
         s.add("");
@@ -564,9 +564,10 @@ public final class BeanGenerator {
                 s.add("        setList.add(\"" + columnName + " = :" + columnName + "\");");
             }
         }
-        s.add("        String set = String.join(\", \", setList);");
+        s.add("        String set = String.join(\"\\r\\n    , \", setList);");
         s.add("");
-        s.add("        String sql = \"UPDATE " + tableName + " SET \" + set + \" WHERE \" + getWhere();");
+        s.add("        String sql = \"UPDATE " + tableName
+                + "\\r\\nSET\\r\\n      \" + set + \"\\r\\nWHERE\\r\\n    \" + getWhere();");
         s.add("");
         s.add("        Map<String, Object> params = toMap(now, id);");
         s.add("");
