@@ -13,11 +13,14 @@ import jp.co.golorp.emarf.lang.StringUtil;
 import jp.co.golorp.emarf.util.Messages;
 import jp.co.golorp.emarf.validation.FormValidator;
 
+/**
+ * 部署マスタ一覧削除
+ *
+ * @author emarfkrow
+ */
 public class MBushoSDeleteAction extends BaseAction {
 
-    /**
-     *
-     */
+    /** 部署マスタ一覧削除処理 */
     @Override
     public Map<String, Object> running(final LocalDateTime now, final String id, final Map<String, Object> postJson) {
 
@@ -33,24 +36,20 @@ public class MBushoSDeleteAction extends BaseAction {
 
         for (Map<String, Object> gridRow : gridData) {
 
-            MBusho e = FormValidator.toBean(MBusho.class.getName(), gridRow);
-
-            // 主キー情報が足りているか確認
-            boolean isNew = false;
+            // 主キーが不足していたらエラー
             if (StringUtil.isNullOrBlank(gridRow.get("BUSHO_ID"))) {
-                isNew = true;
+                throw new OptLockError("error.cant.delete");
             }
 
-            if (isNew) {
+            MBusho e = FormValidator.toBean(MBusho.class.getName(), gridRow);
+
+            if (e.delete() != 1) {
                 throw new OptLockError("error.cant.delete");
-            } else {
-                if (e.delete() != 1) {
-                    throw new OptLockError("error.cant.delete");
-                }
             }
         }
 
         map.put("INFO", Messages.get("info.delete"));
+
         return map;
     }
 

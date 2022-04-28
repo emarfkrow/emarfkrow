@@ -11,12 +11,16 @@ import jp.co.golorp.emarf.action.BaseAction;
 import jp.co.golorp.emarf.exception.OptLockError;
 import jp.co.golorp.emarf.lang.StringUtil;
 import jp.co.golorp.emarf.util.Messages;
+import jp.co.golorp.emarf.validation.FormValidator;
 
+/**
+ * 部署マスタ一覧登録
+ *
+ * @author emarfkrow
+ */
 public class MBushoSRegistAction extends BaseAction {
 
-    /**
-     *
-     */
+    /** 部署マスタ一覧登録処理 */
     @Override
     public Map<String, Object> running(final LocalDateTime now, final String id, final Map<String, Object> postJson) {
 
@@ -32,29 +36,22 @@ public class MBushoSRegistAction extends BaseAction {
 
         for (Map<String, Object> gridRow : gridData) {
 
-            MBusho e = new MBusho();
-            e.setBushoId(gridRow.get("BUSHO_ID"));
-            e.setBushoMei(gridRow.get("BUSHO_MEI"));
-            e.setKaishiYmd(gridRow.get("KAISHI_YMD"));
-            e.setShuryoYmd(gridRow.get("SHURYO_YMD"));
-            e.setOyaBushoId(gridRow.get("OYA_BUSHO_ID"));
-            e.setInsertDt(gridRow.get("INSERT_DT"));
-            e.setInsertBy(gridRow.get("INSERT_BY"));
-            e.setUpdateDt(gridRow.get("UPDATE_DT"));
-            e.setUpdateBy(gridRow.get("UPDATE_BY"));
-            e.setDeleteF(gridRow.get("DELETE_F"));
+            MBusho e = FormValidator.toBean(MBusho.class.getName(), gridRow);
 
-            // 主キー情報が足りていなければINSERT
+            // 主キーが不足していたらINSERT
             boolean isNew = false;
-            if (StringUtil.isNullOrBlank(gridRow.get("BUSHO_ID"))) {
+            if (StringUtil.isNullOrBlank(e.getBushoId())) {
                 isNew = true;
             }
 
             if (isNew) {
+
                 if (e.insert(now, id) != 1) {
                     throw new OptLockError("error.cant.insert");
                 }
+
             } else {
+
                 if (e.update(now, id) != 1) {
                     throw new OptLockError("error.cant.update");
                 }
@@ -62,6 +59,7 @@ public class MBushoSRegistAction extends BaseAction {
         }
 
         map.put("INFO", Messages.get("info.regist"));
+
         return map;
     }
 
