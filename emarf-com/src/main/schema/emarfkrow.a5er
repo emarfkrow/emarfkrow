@@ -265,7 +265,7 @@ Comment=
 TableOption=
 Page=MAIN
 Left=1400
-Top=1550
+Top=1600
 Field="祖先ID","SOSEN_ID","*ID","NOT NULL",0,"","",$FFFFFFFF,""
 Field="親連番","OYA_SN","*SN","NOT NULL",1,"","",$FFFFFFFF,""
 Field="エンティティ連番","ENTITY_SN","*SN","NOT NULL",2,"","",$FFFFFFFF,""
@@ -281,7 +281,7 @@ EffectMode=None
 Color=$000000
 BkColor=$FFFFFF
 ModifiedDateTime=20220411091302
-Position="MAIN",1400,1550
+Position="MAIN",1400,1600
 ZOrder=-31
 
 [Entity]
@@ -750,11 +750,12 @@ Field="祖先ID","SOSEN_ID","*ID","NOT NULL",0,"","",$FFFFFFFF,""
 Field="親連番","OYA_SN","*SN","NOT NULL",1,"","",$FFFFFFFF,""
 Field="エンティティ連番","ENTITY_SN","*SN","NOT NULL",2,"","",$FFFFFFFF,""
 Field="添付ファイル連番","TENPU_FILE_SN","*SN","NOT NULL",3,"","",$FFFFFFFF,""
-Field="ファイルパス","TENPU_FILE_PATH","*TX","NOT NULL",,"","",$FFFFFFFF,""
+Field="添付ファイル名","TENPU_FILE_MEI","*MEI","NOT NULL",,"","",$FFFFFFFF,""
+Field="添付ファイル","TENPU_FILE","*TX","NOT NULL",,"","",$FFFFFFFF,""
 EffectMode=None
 Color=$000000
 BkColor=$FFFFFF
-ModifiedDateTime=20220429073123
+ModifiedDateTime=20220429132114
 Position="Main",1400,1300
 ZOrder=13
 

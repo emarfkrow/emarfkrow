@@ -30,6 +30,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jp.co.golorp.emarf.action.BaseAction;
 import jp.co.golorp.emarf.exception.SysError;
 import jp.co.golorp.emarf.properties.App;
+import jp.co.golorp.emarf.time.LocalDateTime;
 
 public final class ServletUtil {
 
@@ -49,29 +50,40 @@ public final class ServletUtil {
         String lastPath = servletPathes[servletPathes.length - 1];
         String actionName = lastPath.replaceFirst(".[a-z]+$", "") + "Action";
         servletPathes[servletPathes.length - 1] = actionName;
-        String className = App.get("package.action") + String.join(".", servletPathes);
+
+        String actionPackage = App.get("package.action");
+        String className = actionPackage + String.join(".", servletPathes);
         try {
             Class<?> c = Class.forName(className);
             return (BaseAction) c.newInstance();
         } catch (Exception e) {
-            if (actionName.endsWith("SearchAction")) {
-                className = "jp.co.golorp.emarf.action.SearchAction";
-                try {
-                    Class<?> c = Class.forName(className);
-                    return (BaseAction) c.newInstance();
-                } catch (Exception e1) {
+
+            // モデルパッケージからもとってみる
+            className = actionPackage + ".model." + actionName;
+            try {
+                Class<?> c = Class.forName(className);
+                return (BaseAction) c.newInstance();
+            } catch (Exception e1) {
+
+                if (actionName.endsWith("SearchAction")) {
+                    className = "jp.co.golorp.emarf.action.SearchAction";
+                    try {
+                        Class<?> c = Class.forName(className);
+                        return (BaseAction) c.newInstance();
+                    } catch (Exception e2) {
+                        throw new SysError(e);
+                    }
+                } else if (actionName.endsWith("GetAction")) {
+                    className = "jp.co.golorp.emarf.action.GetAction";
+                    try {
+                        Class<?> c = Class.forName(className);
+                        return (BaseAction) c.newInstance();
+                    } catch (Exception e2) {
+                        throw new SysError(e);
+                    }
+                } else {
                     throw new SysError(e);
                 }
-            } else if (actionName.endsWith("GetAction")) {
-                className = "jp.co.golorp.emarf.action.GetAction";
-                try {
-                    Class<?> c = Class.forName(className);
-                    return (BaseAction) c.newInstance();
-                } catch (Exception e1) {
-                    throw new SysError(e);
-                }
-            } else {
-                throw new SysError(e);
             }
         }
     }
@@ -127,15 +139,17 @@ public final class ServletUtil {
             for (Part part : parts) {
                 if (part.getSubmittedFileName() != null) {
                     String fileName = part.getSubmittedFileName();
+                    String saveName = LocalDateTime.format("yyyyMMddHHmmssSSS");
                     if (!fileName.equals("")) {
-                        String tempDir = request.getServletContext().getRealPath(App.get("context.path.temp"));
-                        String tempPath = tempDir + File.separator + fileName;
+                        String uploadPath = App.get("context.path.upload");
+                        String uploadDir = request.getServletContext().getRealPath(App.get("context.path.upload"));
                         try {
-                            part.write(tempPath);
+                            part.write(uploadDir + File.separator + saveName);
                         } catch (IOException e) {
                             throw new SysError(e);
                         }
-                        map.put(part.getName(), tempPath);
+                        map.put(part.getName() + "Mei", fileName);
+                        map.put(part.getName(), uploadPath + "/" + saveName);
                     }
                 } else {
                     String v = "";

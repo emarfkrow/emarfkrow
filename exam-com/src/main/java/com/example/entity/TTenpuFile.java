@@ -109,6 +109,27 @@ public class TTenpuFile implements IEntity {
         }
     }
 
+    /** 添付ファイル名 */
+    private String tenpuFileMei;
+
+    /**
+     * @return 添付ファイル名
+     */
+    public String getTenpuFileMei() {
+        return this.tenpuFileMei;
+    }
+
+    /**
+     * @param o 添付ファイル名
+     */
+    public void setTenpuFileMei(final Object o) {
+        if (!StringUtil.isNullOrBlank(o)) {
+            this.tenpuFileMei = String.valueOf(o.toString());
+        } else {
+            this.tenpuFileMei = null;
+        }
+    }
+
     /** 添付ファイル */
     private String tenpuFile;
 
@@ -299,6 +320,7 @@ public class TTenpuFile implements IEntity {
         nameList.add("oya_sn -- :oya_sn");
         nameList.add("entity_sn -- :entity_sn");
         nameList.add("tenpu_file_sn -- :tenpu_file_sn");
+        nameList.add("tenpu_file_mei -- :tenpu_file_mei");
         nameList.add("tenpu_file -- :tenpu_file");
         nameList.add("insert_dt -- :insert_dt");
         nameList.add("insert_by -- :insert_by");
@@ -312,6 +334,7 @@ public class TTenpuFile implements IEntity {
         valueList.add(":oya_sn");
         valueList.add(":entity_sn");
         valueList.add(":tenpu_file_sn");
+        valueList.add(":tenpu_file_mei");
         valueList.add(":tenpu_file");
         valueList.add(":insert_dt");
         valueList.add(":insert_by");
@@ -369,6 +392,7 @@ public class TTenpuFile implements IEntity {
         setList.add("oya_sn = :oya_sn");
         setList.add("entity_sn = :entity_sn");
         setList.add("tenpu_file_sn = :tenpu_file_sn");
+        setList.add("tenpu_file_mei = :tenpu_file_mei");
         setList.add("tenpu_file = :tenpu_file");
         setList.add("update_dt = :update_dt");
         setList.add("update_by = :update_by");
@@ -413,6 +437,7 @@ public class TTenpuFile implements IEntity {
         params.put("oya_sn", this.oyaSn);
         params.put("entity_sn", this.entitySn);
         params.put("tenpu_file_sn", this.tenpuFileSn);
+        params.put("tenpu_file_mei", this.tenpuFileMei);
         params.put("tenpu_file", this.tenpuFile);
         params.put("delete_f", this.deleteF);
         params.put("insert_dt", now);

@@ -99,6 +99,12 @@ let Column = {
 		return column;
 	},
 
+	link: function(field, fieldMei, width, cssClass, formatter) {
+		let column = Column.cell(field, fieldMei, width, cssClass, formatter);
+		column.formatter = Slick.Formatters.Extends.Link;
+		return column;
+	},
+
 	check: function(field, fieldMei, width, cssClass) {
 		let column = Column.cell(field, fieldMei, width, cssClass);
 		column.editor = Slick.Editors.Extends.Checkbox;

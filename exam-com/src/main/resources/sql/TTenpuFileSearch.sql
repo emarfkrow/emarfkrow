@@ -9,6 +9,7 @@ WHERE
     AND a.oya_sn = :oya_sn 
     AND a.entity_sn = :entity_sn 
     AND a.tenpu_file_sn = :tenpu_file_sn 
+    AND a.tenpu_file_mei LIKE CONCAT ('%', :tenpu_file_mei, '%') 
     AND a.tenpu_file = :tenpu_file 
     AND a.insert_dt = :insert_dt 
     AND a.insert_dt >= :insert_dt_1 

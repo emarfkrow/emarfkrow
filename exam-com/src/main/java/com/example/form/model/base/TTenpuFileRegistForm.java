@@ -91,6 +91,25 @@ public class TTenpuFileRegistForm implements IForm {
         this.tenpuFileSn = p;
     }
 
+    /** 添付ファイル名 */
+    @jakarta.validation.constraints.NotBlank
+    @Size(max = 30)
+    private String tenpuFileMei;
+
+    /**
+     * @return 添付ファイル名
+     */
+    public String getTenpuFileMei() {
+        return tenpuFileMei;
+    }
+
+    /**
+     * @param p 添付ファイル名
+     */
+    public void setTenpuFileMei(final String p) {
+        this.tenpuFileMei = p;
+    }
+
     /** 添付ファイル */
     @jakarta.validation.constraints.NotBlank
     @Size(max = 200)

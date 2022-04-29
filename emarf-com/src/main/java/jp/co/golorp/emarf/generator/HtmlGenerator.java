@@ -311,6 +311,10 @@ public final class HtmlGenerator {
 
                 c = "Column.time('" + field + "', " + name + ", " + width + ", '" + css + "', " + formatter + "),";
 
+            } else if (StringUtil.endsWith(inputFileSuffixs, lower)) {
+
+                c = "Column.link('" + field + "', " + name + ", " + width + ", '" + css + "'),";
+
             } else if (StringUtil.endsWith(optionsSuffixs, lower)) {
 
                 String options = "{ json: '" + json + "', paramkey: '" + optionParamKey + "', value: '" + optionValue
@@ -440,73 +444,73 @@ public final class HtmlGenerator {
     private static void htmlFields(final TableInfo tableInfo, final List<String> s, final boolean isDetail,
             final boolean isBrother) {
 
-        // テーブル物理名
+        //エンティティ名を取得
         String tableName = tableInfo.getTableName();
-
-        //エンティティ名
         String entityName = StringUtil.toPascalCase(tableName);
 
         // カラム情報でループ
         for (ColumnInfo columnInfo : tableInfo.getColumnInfos().values()) {
-
-            //カラム物理名
             String columnName = columnInfo.getColumnName();
+            String remarks = columnInfo.getRemarks();
+
             String lower = columnName.toLowerCase();
             String camel = StringUtil.toCamelCase(columnName);
             String id = entityName + "." + camel;
-            String remarks = columnInfo.getRemarks();
 
+            boolean isInputFile = StringUtil.endsWith(inputFileSuffixs, lower);
+
+            // 兄弟モデルの主キーは出力しない
             if (isBrother && columnInfo.isPk()) {
-                // 兄弟モデルの主キーは出力しない
                 continue;
-            } else if (lower.equals(insertDt) || lower.equals(insertBy)
+            }
+
+            // 検索条件にはファイル項目を出力しない
+            if (!isDetail && isInputFile) {
+                continue;
+            }
+
+            if (lower.equals(insertDt) || lower.equals(insertBy)
                     || lower.equals(updateDt) || lower.equals(updateBy)) {
                 // メタ情報の場合
+
+                // 検索画面の場合はスキップ（検索条件にはしない）
                 if (!isDetail) {
-                    // 検索画面の場合はスキップ（検索条件にはしない）
                     continue;
-                } else if (isBrother) {
+                }
+
+                // 詳細画面の兄弟モデルは更新日時のみhiddenで出力
+                if (isBrother) {
                     if (lower.equals(updateDt)) {
-                        // 詳細画面の兄弟モデルの場合は、更新日時のみhiddenで出力
                         s.add("        <input type=\"hidden\" name=\"" + id + "\" />");
                     }
                     continue;
                 }
             }
 
-            boolean isOptions = StringUtil.endsWith(optionsSuffixs, lower);
-            boolean isTextarea = StringUtil.endsWith(textareaSuffixs, lower);
-            boolean isInputDate = StringUtil.endsWith(inputDateSuffixs, lower);
-            boolean isInputDateTime = StringUtil.endsWith(inputDateTimeSuffixs, lower);
-            boolean isInputMonth = StringUtil.endsWith(inputMonthSuffixs, lower);
-            boolean isInputTime = StringUtil.endsWith(inputTimeSuffixs, lower);
-            boolean isInputRange = StringUtil.endsWith(inputRangeSuffixs, lower);
-            boolean isInputFile = StringUtil.endsWith(inputFileSuffixs, lower);
-
             s.add("        <div id=\"" + camel + "\">");
             if (lower.equals(insertDt) || lower.equals(insertBy)
                     || lower.equals(updateDt) || lower.equals(updateBy)) {
                 // メタ情報の場合は表示項目（編集画面の自モデルのみここに到達する）
-                String tag = "          ";
-                tag += "<label for=\"" + id + "\" th:text=\"#{" + id + "}\">" + remarks + "</label>";
-                tag += "<span id=\"" + id + "\"></span>";
-                tag += "<input type=\"hidden\" id=\"" + id + "\" name=\"" + id + "\" />";
-                s.add(tag);
-            } else if (isDetail && columnInfo.isNumbering()) {
 
+                htmlFieldsMeta(s, id, remarks);
+
+            } else if (isDetail && columnInfo.isNumbering()) {
                 // 編集画面の採番キーは表示項目
+
                 String tag = "          ";
                 tag += "<label for=\"" + id + "\" th:text=\"#{" + id + "}\">" + remarks + "</label>";
                 tag += "<span id=\"" + id + "\"></span>";
                 tag += "<input type=\"hidden\" id=\"" + id + "\" name=\"" + id + "\" class=\"primaryKey\" />";
+
+                // 参照モデルの場合は参照リンクを出力（参照リンクは照会画面ではjsで非表示にする）
                 if (columnInfo.getReferInfo() != null) {
+
                     TableInfo referInfo = columnInfo.getReferInfo();
                     String referName = StringUtil.toPascalCase(referInfo.getTableName());
-
-                    // 参照モデルの場合は参照リンクを出力しておき、照会画面ではjsで非表示にする
                     tag += "<a id=\"" + id + "\" th:href=\"@{/model/" + referName
                             + "S.html}\" target=\"dialog\" class=\"primaryKey refer\" th:text=\"#{common.refer}\" tabindex=\"-1\">...</a>";
 
+                    // 名称項目がなければspanも出力
                     String meiColumnName = getMeiColumnName(columnName);
                     if (!tableInfo.getColumnInfos().containsKey(meiColumnName)) {
                         String meiId = entityName + "." + StringUtil.toCamelCase(meiColumnName);
@@ -514,29 +518,30 @@ public final class HtmlGenerator {
                         tag += "<span id=\"" + meiId + "\" class=\"refer\"" + referDef + "></span>";
                     }
                 }
+
                 s.add(tag);
-            } else if (isOptions) {
+
+            } else if (StringUtil.endsWith(optionsSuffixs, lower)) {
                 // 選択項目の場合
-                s.add("          <fieldset id=\"" + id + "List\" data-options=\"" + json + "\" data-optionParams=\""
-                        + optionParamKey + ":" + lower + "\" data-optionValue=\"" + optionValue
-                        + "\" data-optionLabel=\"" + optionLabel + "\">");
-                s.add("            <legend th:text=\"#{" + id + "}\">" + remarks + "</legend>");
-                s.add("          </fieldset>");
-            } else if (isDetail && isTextarea) {
+
+                htmlFieldsOptions(s, id, lower, remarks);
+
+            } else if (isDetail && StringUtil.endsWith(textareaSuffixs, lower)) {
                 // テキストエリア項目の場合
-                s.add("          <label for=\"" + id + "\" th:text=\"#{" + id + "}\">" + remarks + "</label>");
-                s.add("          <textarea id=\"" + id + "\" name=\"" + id + "\"></textarea>");
+
+                htmlFieldsTextarea(s, id, remarks);
+
             } else {
                 // 上記以外の場合
 
                 String type = "text";
-                if (isInputDate) { // 日付項目
+                if (StringUtil.endsWith(inputDateSuffixs, lower)) { // 日付項目
                     type = "date";
-                } else if (isInputDateTime) { // 日時項目
+                } else if (StringUtil.endsWith(inputDateTimeSuffixs, lower)) { // 日時項目
                     type = "datetime-local";
-                } else if (isInputMonth) { // 年月項目
+                } else if (StringUtil.endsWith(inputMonthSuffixs, lower)) { // 年月項目
                     type = "month";
-                } else if (isInputTime) { // 時刻項目
+                } else if (StringUtil.endsWith(inputTimeSuffixs, lower)) { // 時刻項目
                     type = "time";
                 } else if (isInputFile) { // ファイル
                     type = "file";
@@ -549,20 +554,15 @@ public final class HtmlGenerator {
                     css = " class=\"primaryKey\"";
                 }
 
-                String tag = "          ";
-                if (!isDetail && isInputRange) {
-
+                if (!isDetail && StringUtil.endsWith(inputRangeSuffixs, lower)) {
                     // 検索画面の範囲指定項目の場合
-                    tag += "<label for=\"" + id + "_1\" th:text=\"#{" + id + "}\">" + remarks + "</label>";
-                    tag += "<input type=\"" + type + "\" id=\"" + id + "_1\" name=\"" + id + "_1\" maxlength=\"" + max
-                            + "\" />";
-                    tag += "～";
-                    tag += "<input type=\"" + type + "\" id=\"" + id + "_2\" name=\"" + id + "_2\" maxlength=\"" + max
-                            + "\" />";
+
+                    htmlFieldsInputRange(s, id, remarks, type, max);
 
                 } else if (columnInfo.getReferInfo() != null) {
                     // 参照モデルの場合
 
+                    String tag = "          ";
                     TableInfo referInfo = columnInfo.getReferInfo();
                     String referName = StringUtil.toPascalCase(referInfo.getTableName());
                     String referDef = getReferDef(entityName, columnName, referInfo);
@@ -577,15 +577,60 @@ public final class HtmlGenerator {
                         String meiId = entityName + "." + StringUtil.toCamelCase(meiColumnName);
                         tag += "<span id=\"" + meiId + "\" class=\"refer\"" + referDef + "></span>";
                     }
+                    s.add(tag);
+
                 } else {
-                    tag += "<label for=\"" + id + "\" th:text=\"#{" + id + "}\">" + remarks + "</label>";
-                    tag += "<input type=\"" + type + "\" id=\"" + id + "\" name=\"" + id + "\" maxlength=\"" + max
-                            + "\"" + css + " />";
+
+                    htmlFieldsInput(s, id, remarks, type, max, css);
                 }
-                s.add(tag);
             }
+
             s.add("        </div>");
         }
+    }
+
+    private static void htmlFieldsInput(final List<String> s, final String id, final String remarks, final String type,
+            final int max, final String css) {
+        String tag = "          ";
+        tag += "<label for=\"" + id + "\" th:text=\"#{" + id + "}\">" + remarks + "</label>";
+        tag += "<input type=\"" + type + "\" id=\"" + id + "\" name=\"" + id + "\" maxlength=\"" + max
+                + "\"" + css + " />";
+        s.add(tag);
+    }
+
+    private static void htmlFieldsInputRange(final List<String> s, final String id, final String remarks,
+            final String type, final int max) {
+
+        String tag = "          ";
+        tag += "<label for=\"" + id + "_1\" th:text=\"#{" + id + "}\">" + remarks + "</label>";
+        tag += "<input type=\"" + type + "\" id=\"" + id + "_1\" name=\"" + id + "_1\" maxlength=\"" + max
+                + "\" />";
+        tag += "～";
+        tag += "<input type=\"" + type + "\" id=\"" + id + "_2\" name=\"" + id + "_2\" maxlength=\"" + max
+                + "\" />";
+        s.add(tag);
+    }
+
+    private static void htmlFieldsTextarea(final List<String> s, final String id, final String remarks) {
+        s.add("          <label for=\"" + id + "\" th:text=\"#{" + id + "}\">" + remarks + "</label>");
+        s.add("          <textarea id=\"" + id + "\" name=\"" + id + "\"></textarea>");
+    }
+
+    private static void htmlFieldsOptions(final List<String> s, final String id, final String lower,
+            final String remarks) {
+        s.add("          <fieldset id=\"" + id + "List\" data-options=\"" + json + "\" data-optionParams=\""
+                + optionParamKey + ":" + lower + "\" data-optionValue=\"" + optionValue
+                + "\" data-optionLabel=\"" + optionLabel + "\">");
+        s.add("            <legend th:text=\"#{" + id + "}\">" + remarks + "</legend>");
+        s.add("          </fieldset>");
+    }
+
+    private static void htmlFieldsMeta(final List<String> s, final String id, final String remarks) {
+        String tag = "          ";
+        tag += "<label for=\"" + id + "\" th:text=\"#{" + id + "}\">" + remarks + "</label>";
+        tag += "<span id=\"" + id + "\"></span>";
+        tag += "<input type=\"hidden\" id=\"" + id + "\" name=\"" + id + "\" />";
+        s.add(tag);
     }
 
     private static String getReferDef(final String entityName, final String columnName, final TableInfo referInfo) {
