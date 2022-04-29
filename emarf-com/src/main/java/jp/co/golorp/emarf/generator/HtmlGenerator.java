@@ -176,11 +176,19 @@ public final class HtmlGenerator {
         s.add("      <h3 th:text=\"#{" + pascal + ".h3}\">h3</h3>");
         String gridId = pascal + "Grid";
         String addRow = "";
+        // 単一採番キーの場合は新規行あり
         if (tableInfo.getPrimaryKeys().size() == 1) {
             String uniqueKey = tableInfo.getPrimaryKeys().get(0);
             ColumnInfo uniqueKeyInfo = tableInfo.getColumnInfos().get(uniqueKey);
             if (uniqueKeyInfo.isNumbering()) {
                 addRow = " data-addRow=\"true\"";
+            }
+        }
+        // ファイル列がある場合は新規行を取消
+        for (ColumnInfo columnInfo : tableInfo.getColumnInfos().values()) {
+            if (StringUtil.endsWith(inputFileSuffixs, columnInfo.getColumnName())) {
+                addRow = "";
+                break;
             }
         }
         int frozenColumn = tableInfo.getPrimaryKeys().size() - 1;
@@ -390,8 +398,16 @@ public final class HtmlGenerator {
             s.add("      <a th:href=\"@{/model/" + pascal + ".html}\" id=\"" + pascal
                     + "\" target=\"dialog\" th:text=\"#{" + pascal + ".add}\" class=\"addChild\" tabindex=\"-1\">"
                     + childInfo.getRemarks() + "</a>");
+            // ファイル列がある場合は新規行を取消
+            String addRow = " data-addRow=\"true\"";
+            for (ColumnInfo columnInfo : childInfo.getColumnInfos().values()) {
+                if (StringUtil.endsWith(inputFileSuffixs, columnInfo.getColumnName())) {
+                    addRow = "";
+                    break;
+                }
+            }
             s.add("      <div id=\"" + pascal
-                    + "Grid\" data-selectionMode=\"link\" data-addRow=\"true\" data-frozenColumn=\"" + frozen
+                    + "Grid\" data-selectionMode=\"link\"" + addRow + " data-frozenColumn=\"" + frozen
                     + "\" th:data-href=\"@{/model/" + pascal + ".html}\"></div>");
         }
         s.add("      <div class=\"buttons\">");

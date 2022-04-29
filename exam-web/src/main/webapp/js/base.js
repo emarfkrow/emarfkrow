@@ -160,6 +160,21 @@ let Base = {
 			$form.prop('enctype', 'multipart/form-data');
 		});
 
+		let $h2 = $('form.search').parent().find('h2');
+		$h2.html('<span id="h2Toggle" class="ui-accordion-header-icon ui-icon ui-icon-triangle-1-s"></span>' + $h2.html());
+		$h2.css('width', 'fit-content');
+		$(document).on('click', 'h2', function() {
+			$('form.search').toggle();
+			Base.resizeNav();
+			if ($('[id="h2Toggle"]').hasClass('ui-icon-triangle-1-s')) {
+				$('[id="h2Toggle"]').addClass('ui-icon-triangle-1-e');
+				$('[id="h2Toggle"]').removeClass('ui-icon-triangle-1-s');
+			} else {
+				$('[id="h2Toggle"]').addClass('ui-icon-triangle-1-s');
+				$('[id="h2Toggle"]').removeClass('ui-icon-triangle-1-e');
+			}
+		});
+
 		Base.resizeNav();
 
 		Base.referMei($('span.refer'));

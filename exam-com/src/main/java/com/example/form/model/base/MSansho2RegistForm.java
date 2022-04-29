@@ -77,7 +77,7 @@ public class MSansho2RegistForm implements IForm {
     /** 関連チェック */
     @Override
     public void validate(final Map<String, String> errors, final BaseProcess baseProcess) {
-        LOG.debug("not overridden in subclasses.");
+        LOG.trace("not overridden in subclasses.");
     }
 
 }
