@@ -120,7 +120,9 @@
         </div>
         <input type="hidden" name="TEntity2.updateDt" />
       </fieldset>
-      <input type="file" name="uploadFile" />
+      <h3>添付ファイル</h3>
+      <a th:href="@{/model/TTenpuFile.html}" id="TTenpuFile" target="dialog" class="addChild" tabindex="-1">添付ファイル追加</a>
+      <div id="TTenpuFileGrid" data-selectionMode="link" data-frozenColumn="3" th:data-href="@{/model/TTenpuFile.html}"></div>
       <div class="buttons">
         <button type="button" onClick="Dialogate.refresh(event);">リセット</button>
         <a th:href="@{D0003Get.xlsx(baseMei=詳細画面)}" id="D0003Get.xlsx" tabindex="-1">エクセル出力</a>

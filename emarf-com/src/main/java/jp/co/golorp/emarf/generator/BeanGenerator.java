@@ -74,8 +74,6 @@ public final class BeanGenerator {
      */
     public static void generate(final String projectDir) {
 
-        LOG.info("start.");
-
         /* 設定ファイル読み込み */
         bundle = ResourceBundles.getBundle(BeanGenerator.class);
 
@@ -83,6 +81,8 @@ public final class BeanGenerator {
         if (!isGenerate.toLowerCase().equals("true")) {
             return;
         }
+
+        LOG.info("start.");
 
         insertDt = bundle.getString("BeanGenerator.insert_dt");
         insertBy = bundle.getString("BeanGenerator.insert_by");

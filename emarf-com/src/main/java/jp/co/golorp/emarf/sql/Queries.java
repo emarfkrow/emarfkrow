@@ -181,6 +181,8 @@ public final class Queries {
             String parameterValue = "";
             if (o != null) {
                 parameterValue = o.toString();
+                // コメント内に「:」が残らないように「_」で置換
+                parameterValue = parameterValue.replaceAll(":", "_");
             }
 
             rawSql = rawSql.replaceFirst(":" + parameterName, parameterValue);
