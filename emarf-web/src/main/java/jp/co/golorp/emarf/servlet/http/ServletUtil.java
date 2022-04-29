@@ -23,6 +23,7 @@ import javax.servlet.http.Part;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -117,22 +118,25 @@ public final class ServletUtil {
             LOG.trace(e.getMessage());
         }
 
+        Map<String, Object> map = new HashMap<String, Object>();
+        ObjectMapper mapper = new ObjectMapper();
+
         if (parts != null) {
             // 「enctype="multipart/form-data"」の場合
-
-            Map<String, Object> map = new HashMap<String, Object>();
 
             for (Part part : parts) {
                 if (part.getSubmittedFileName() != null) {
                     String fileName = part.getSubmittedFileName();
-                    String tempDir = request.getServletContext().getRealPath(App.get("context.path.temp"));
-                    String tempPath = tempDir + File.separator + fileName;
-                    try {
-                        part.write(tempPath);
-                    } catch (IOException e) {
-                        throw new SysError(e);
+                    if (!fileName.equals("")) {
+                        String tempDir = request.getServletContext().getRealPath(App.get("context.path.temp"));
+                        String tempPath = tempDir + File.separator + fileName;
+                        try {
+                            part.write(tempPath);
+                        } catch (IOException e) {
+                            throw new SysError(e);
+                        }
+                        map.put(part.getName(), tempPath);
                     }
-                    map.put(part.getName(), tempPath);
                 } else {
                     String v = "";
                     try (BufferedReader br = new BufferedReader(new InputStreamReader(part.getInputStream()))) {
@@ -147,12 +151,8 @@ public final class ServletUtil {
                 }
             }
 
-            return map;
-
         } else if (request.getParameterMap().size() > 0) {
             // form送信の場合
-
-            Map<String, Object> map = new HashMap<String, Object>();
 
             Map<String, String[]> parameterMap = request.getParameterMap();
             for (Entry<String, String[]> entry : parameterMap.entrySet()) {
@@ -167,20 +167,25 @@ public final class ServletUtil {
                 }
             }
 
-            return map;
-
         } else {
             // ajax送信の場合
 
             try {
                 String s = request.getReader().readLine();
-                LOG.info("RequestJson: " + s);
-                return new ObjectMapper().readValue(s, new TypeReference<Map<String, Object>>() {
+                map = mapper.readValue(s, new TypeReference<Map<String, Object>>() {
                 });
             } catch (Exception e) {
                 throw new SysError(e);
             }
         }
+
+        try {
+            LOG.info("RequestJson: " + mapper.writerWithDefaultPrettyPrinter().writeValueAsString(map));
+        } catch (JsonProcessingException e) {
+            throw new SysError(e);
+        }
+
+        return map;
     }
 
     /**
@@ -203,8 +208,9 @@ public final class ServletUtil {
      */
     public static void sendJson(final HttpServletResponse response, final Map<String, Object> map) {
         try {
-            String s = new ObjectMapper().writeValueAsString(map);
-            LOG.info("ResponseJson: " + s);
+            ObjectMapper mapper = new ObjectMapper();
+            String s = mapper.writeValueAsString(map);
+            LOG.info("ResponseJson: " + mapper.writerWithDefaultPrettyPrinter().writeValueAsString(map));
             response.getWriter().append(s);
         } catch (Exception e) {
             throw new SysError(e);

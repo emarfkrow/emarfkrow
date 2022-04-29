@@ -405,6 +405,16 @@ public class TEntity implements IEntity {
             }
         }
 
+        // 添付ファイルの登録
+        if (this.tTenpuFiles != null) {
+            for (TTenpuFile tTenpuFile : this.tTenpuFiles) {
+                tTenpuFile.setSosenId(this.getSosenId());
+                tTenpuFile.setOyaSn(this.getOyaSn());
+                tTenpuFile.setEntitySn(this.getEntitySn());
+                tTenpuFile.insert(now, id);
+            }
+        }
+
         // エンティティ２の登録
         if (this.tEntity2 != null) {
             this.tEntity2.setSosenId(this.getSosenId());
@@ -533,6 +543,29 @@ public class TEntity implements IEntity {
             }
         }
 
+        // 添付ファイルの登録
+        if (this.tTenpuFiles != null) {
+            for (TTenpuFile tTenpuFile : this.tTenpuFiles) {
+                tTenpuFile.setSosenId(this.sosenId);
+                tTenpuFile.setOyaSn(this.oyaSn);
+                tTenpuFile.setEntitySn(this.entitySn);
+                try {
+                    tTenpuFile.insert(now, id);
+                } catch (Exception e) {
+                    tTenpuFile.update(now, id);
+                }
+            }
+            this.tTenpuFiles = null;
+            this.getTTenpuFiles();
+            if (this.tTenpuFiles != null) {
+                for (TTenpuFile tTenpuFile : this.tTenpuFiles) {
+                    if (!tTenpuFile.getUpdateDt().equals(now)) {
+                        tTenpuFile.delete();
+                    }
+                }
+            }
+        }
+
         // エンティティ２の登録
         if (this.tEntity2 != null) {
             tEntity2.setSosenId(this.getSosenId());
@@ -599,6 +632,13 @@ public class TEntity implements IEntity {
         if (this.tKos != null) {
             for (TKo tKo : this.tKos) {
                 tKo.delete();
+            }
+        }
+
+        // 添付ファイルの削除
+        if (this.tTenpuFiles != null) {
+            for (TTenpuFile tTenpuFile : this.tTenpuFiles) {
+                tTenpuFile.delete();
             }
         }
 
@@ -738,5 +778,68 @@ public class TEntity implements IEntity {
         params.put("entity_sn", param3);
 
         return Queries.select(sql, params, TKo.class);
+    }
+
+    /**
+     * 添付ファイルのリスト
+     */
+    private List<TTenpuFile> tTenpuFiles;
+
+    /**
+     * @return 添付ファイルのリスト
+     */
+    @com.fasterxml.jackson.annotation.JsonProperty("TTenpuFiles")
+    public List<TTenpuFile> getTTenpuFiles() {
+        return this.tTenpuFiles;
+    }
+
+    /**
+     * @param list 添付ファイルのリスト
+     */
+    public void setTTenpuFiles(final List<TTenpuFile> list) {
+        this.tTenpuFiles = list;
+    }
+
+    /**
+     * @param tTenpuFile
+     */
+    public void addTTenpuFiles(final TTenpuFile tTenpuFile) {
+        if (this.tTenpuFiles == null) {
+            this.tTenpuFiles = new ArrayList<TTenpuFile>();
+        }
+        this.tTenpuFiles.add(tTenpuFile);
+    }
+
+    /**
+     * @return 添付ファイルのリスト
+     */
+    public List<TTenpuFile> referTTenpuFiles() {
+        if (this.tTenpuFiles == null) {
+            this.tTenpuFiles = TEntity.referTTenpuFiles(this.sosenId, this.oyaSn, this.entitySn);
+        }
+        return this.tTenpuFiles;
+    }
+
+    /**
+     * @param param1 sosenId
+     * @param param2 oyaSn
+     * @param param3 entitySn
+     * @return List<TTenpuFile>
+     */
+    public static List<TTenpuFile> referTTenpuFiles(final Integer param1, final Integer param2, final Integer param3) {
+
+        List<String> whereList = new ArrayList<String>();
+        whereList.add("sosen_id = :sosen_id");
+        whereList.add("oya_sn = :oya_sn");
+        whereList.add("entity_sn = :entity_sn");
+
+        String sql = "SELECT * FROM t_tenpu_file WHERE " + String.join(" AND ", whereList);
+
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("sosen_id", param1);
+        params.put("oya_sn", param2);
+        params.put("entity_sn", param3);
+
+        return Queries.select(sql, params, TTenpuFile.class);
     }
 }

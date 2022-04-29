@@ -255,6 +255,24 @@ public class TEntityRegistForm implements IForm {
         this.tKoGrid = p;
     }
 
+    /** 添付ファイル */
+    @jakarta.validation.Valid
+    private List<TTenpuFileRegistForm> tTenpuFileGrid;
+
+    /**
+     * @return 添付ファイル
+     */
+    public List<TTenpuFileRegistForm> getTTenpuFileGrid() {
+        return tTenpuFileGrid;
+    }
+
+    /**
+     * @param p
+     */
+    public void setTTenpuFileGrid(final List<TTenpuFileRegistForm> p) {
+        this.tTenpuFileGrid = p;
+    }
+
     /** 関連チェック */
     @Override
     public void validate(final Map<String, String> errors, final BaseProcess baseProcess) {

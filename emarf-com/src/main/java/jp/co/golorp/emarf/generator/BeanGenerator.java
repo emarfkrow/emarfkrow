@@ -74,6 +74,8 @@ public final class BeanGenerator {
      */
     public static void generate(final String projectDir) {
 
+        LOG.info("start.");
+
         /* 設定ファイル読み込み */
         bundle = ResourceBundles.getBundle(BeanGenerator.class);
 
@@ -141,7 +143,7 @@ public final class BeanGenerator {
             sqlSearch(sqlDir, tableInfo);
         }
 
-        System.out.println(tableInfos);
+        LOG.info("success.");
     }
 
     /**
@@ -1436,7 +1438,7 @@ public final class BeanGenerator {
             s.add("    /** 関連チェック */");
             s.add("    @Override");
             s.add("    public void validate(final Map<String, String> errors, final BaseProcess baseProcess) {");
-            s.add("        LOG.debug(\"not overridden in subclasses.\");");
+            s.add("        LOG.trace(\"not overridden in subclasses.\");");
             s.add("    }");
             s.add("");
             s.add("}");

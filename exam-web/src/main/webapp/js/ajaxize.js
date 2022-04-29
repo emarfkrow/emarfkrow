@@ -209,100 +209,7 @@ let Ajaxize = {
 
 				alert(data.ERROR);
 
-				var gridStyles = {};
-
-				for (let k in data.errors) {
-
-					if (!k.match(/\[[0-9]+\]\./)) {
-						// form項目の場合（添え字なしの場合）
-
-						let keys = k.split('.');
-						let formName = keys[0];
-						let entityName = keys[keys.length - 2].replace('RegistForm', '');
-						let fieldName = keys[keys.length - 1];
-						let $input = $('[name="' + formName + '"]').find('[name="' + fieldName + '"]');
-						if ($input.length == 0) {
-							$input = $('[name="' + formName + '"]').find('[name="' + entityName + '.' + fieldName + '"]');
-						}
-						$input.addClass('error').attr('title', data.errors[k]);
-
-						if ($input.parent('label').length > 0) {
-							$input.parent('label').addClass('error').attr('title', data.errors[k]);
-						}
-
-					} else {
-						// grid項目の場合
-
-						var names = k.split('\.');               // D0001RegistForm, D0001Grid[0], entityMei
-						var formName = names[0];                 // D0001RegistForm
-						var rowName = names[1];                  // D0001Grid[0]
-						var fieldName = names[2];                // entityMei
-
-						var rowNames = rowName.split(/[\[\]]/g); // D0001Grid, 0
-						var gridId = rowNames[0];                // D0001Grid
-						var rowIndex = rowNames[1];              // 0
-
-						let cell;
-
-						// グリッド取得
-						var grid = Gridate.grids[gridId];
-						if (!grid) {
-							for (var id in Gridate.grids) {
-								if (id.endsWith(gridId)) {
-									grid = Gridate.grids[id];
-									break;
-								}
-							}
-						}
-
-						// グリッドのエラースタイルを作成
-						var gridColumns = grid.getColumns();
-						for (var colIndex in gridColumns) {
-							var column = gridColumns[colIndex];
-							if (column['id'] == fieldName) {
-
-								let rowStyles = gridStyles[gridId];
-								if (!rowStyles) {
-									rowStyles = {};
-								}
-
-								var cellStyles = rowStyles[rowIndex];
-								if (!cellStyles) {
-									cellStyles = {};
-								}
-
-								cellStyles[fieldName] = 'error';
-								rowStyles[rowIndex] = cellStyles;
-								gridStyles[gridId] = rowStyles;
-
-								cell = colIndex;
-
-								break;
-							}
-						}
-
-						try {
-							grid.getCellNode(rowIndex, cell).title = data.errors[k];
-						} catch (e) {
-							// グリッドが横に長すぎるとcellnodeが取れない時がある
-							console.log(e);
-						}
-					}
-				}
-
-				// グリッドにエラースタイルを設定
-				for (let gridId in gridStyles) {
-					var grid = Gridate.grids[gridId];
-					if (!grid) {
-						for (var id in Gridate.grids) {
-							if (id.endsWith(gridId)) {
-								grid = Gridate.grids[id];
-								break;
-							}
-						}
-					}
-					grid.setCellCssStyles('error', gridStyles[gridId]);
-				}
+				hoge(data.errors);
 
 				return;
 			}
@@ -328,5 +235,104 @@ let Ajaxize = {
 				Loading.fadeOut();
 			}
 		});
-	}
+	},
+
+	hoge: function(errors) {
+
+		var gridStyles = {};
+
+		for (let k in errors) {
+
+			if (!k.match(/\[[0-9]+\]\./)) {
+				// form項目の場合（添え字なしの場合）
+
+				let keys = k.split('.');
+				let formName = keys[0];
+				let entityName = keys[keys.length - 2].replace('RegistForm', '');
+				let fieldName = keys[keys.length - 1];
+				let $input = $('[name="' + formName + '"]').find('[name="' + fieldName + '"]');
+				if ($input.length == 0) {
+					$input = $('[name="' + formName + '"]').find('[name="' + entityName + '.' + fieldName + '"]');
+				}
+				$input.addClass('error').attr('title', errors[k]);
+
+				if ($input.parent('label').length > 0) {
+					$input.parent('label').addClass('error').attr('title', errors[k]);
+				}
+
+			} else {
+				// grid項目の場合
+
+				var names = k.split('\.');               // D0001RegistForm, D0001Grid[0], entityMei
+				var formName = names[0];                 // D0001RegistForm
+				var rowName = names[1];                  // D0001Grid[0]
+				var fieldName = names[2];                // entityMei
+
+				var rowNames = rowName.split(/[\[\]]/g); // D0001Grid, 0
+				var gridId = rowNames[0];                // D0001Grid
+				var rowIndex = rowNames[1];              // 0
+
+				let cell;
+
+				// グリッド取得
+				var grid = Gridate.grids[gridId];
+				if (!grid) {
+					for (var id in Gridate.grids) {
+						if (id.endsWith(gridId)) {
+							grid = Gridate.grids[id];
+							break;
+						}
+					}
+				}
+
+				// グリッドのエラースタイルを作成
+				var gridColumns = grid.getColumns();
+				for (var colIndex in gridColumns) {
+					var column = gridColumns[colIndex];
+					if (column['id'] == fieldName) {
+
+						let rowStyles = gridStyles[gridId];
+						if (!rowStyles) {
+							rowStyles = {};
+						}
+
+						var cellStyles = rowStyles[rowIndex];
+						if (!cellStyles) {
+							cellStyles = {};
+						}
+
+						cellStyles[fieldName] = 'error';
+						rowStyles[rowIndex] = cellStyles;
+						gridStyles[gridId] = rowStyles;
+
+						cell = colIndex;
+
+						break;
+					}
+				}
+
+				try {
+					grid.getCellNode(rowIndex, cell).title = errors[k];
+				} catch (e) {
+					// グリッドが横に長すぎるとcellnodeが取れない時がある
+					console.log(e);
+				}
+			}
+		}
+
+		// グリッドにエラースタイルを設定
+		for (let gridId in gridStyles) {
+			var grid = Gridate.grids[gridId];
+			if (!grid) {
+				for (var id in Gridate.grids) {
+					if (id.endsWith(gridId)) {
+						grid = Gridate.grids[id];
+						break;
+					}
+				}
+			}
+			grid.setCellCssStyles('error', gridStyles[gridId]);
+		}
+	},
+
 };

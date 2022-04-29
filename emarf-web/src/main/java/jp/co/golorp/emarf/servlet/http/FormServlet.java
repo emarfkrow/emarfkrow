@@ -17,6 +17,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import jp.co.golorp.emarf.action.BaseAction;
 import jp.co.golorp.emarf.exception.AppError;
 import jp.co.golorp.emarf.exception.OptLockError;
@@ -68,16 +70,24 @@ public final class FormServlet extends HttpServlet {
             map = action.run(postJson);
 
         } catch (OptLockError e) {
+            LOG.error(e.getMessage(), e);
             map = new HashMap<String, Object>();
             map.put("ERROR", e.getMessage());
         } catch (AppError e) {
-            map = new HashMap<String, Object>();
+            LOG.error(e.getMessage(), e);
+            String referer = request.getHeader("referer").replaceAll("\\?.+$", "");
+            String msg = null;
+            String errors = "";
             if (e.getErrors() != null && !e.getErrors().isEmpty()) {
-                map.put("ERROR", Messages.get("error"));
-                map.put("errors", e.getErrors());
+                msg = Messages.get("error");
+                String s = new ObjectMapper().writeValueAsString(e.getErrors());
+                errors = "&errors=" + URLEncoder.encode(s, StandardCharsets.UTF_8.name());
             } else {
-                map.put("ERROR", e.getMessage());
+                msg = e.getMessage();
             }
+            msg = "?ERROR=" + URLEncoder.encode(msg, StandardCharsets.UTF_8.name());
+            response.sendRedirect(referer + msg + errors);
+            return;
         } catch (Exception e) {
             LOG.error(e.getMessage(), e);
             String referer = request.getHeader("referer").replaceAll("\\?.+$", "");

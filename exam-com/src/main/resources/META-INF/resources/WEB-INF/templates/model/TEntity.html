@@ -130,6 +130,9 @@
       <h3 th:text="#{TKo.h3}">h3</h3>
       <a th:href="@{/model/TKo.html}" id="TKo" target="dialog" th:text="#{TKo.add}" class="addChild" tabindex="-1">子</a>
       <div id="TKoGrid" data-selectionMode="link" data-addRow="true" data-frozenColumn="3" th:data-href="@{/model/TKo.html}"></div>
+      <h3 th:text="#{TTenpuFile.h3}">h3</h3>
+      <a th:href="@{/model/TTenpuFile.html}" id="TTenpuFile" target="dialog" th:text="#{TTenpuFile.add}" class="addChild" tabindex="-1">添付ファイル</a>
+      <div id="TTenpuFileGrid" data-selectionMode="link" data-addRow="true" data-frozenColumn="3" th:data-href="@{/model/TTenpuFile.html}"></div>
       <div class="buttons">
         <button type="button" th:text="#{common.reset}" onClick="Dialogate.refresh(event);">reset</button>
         <a th:href="@{TEntityGet.xlsx(baseMei=#{TEntity.h2})}" id="TEntityGet.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>

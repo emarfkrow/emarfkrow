@@ -1,5 +1,5 @@
 -- Project Name : emarf
--- Date/Time    : 2022/04/29 7:33:55
+-- Date/Time    : 2022/04/29 7:52:22
 -- Author       : toshiyuki
 -- RDBMS Type   : MySQL
 -- Application  : A5:SQL Mk-2
@@ -12,7 +12,7 @@ create table T_TENPU_FILE (
   , OYA_SN INT not null comment '親連番'
   , ENTITY_SN INT not null comment 'エンティティ連番'
   , TENPU_FILE_SN INT not null comment '添付ファイル連番'
-  , TENPU_FILE_PATH VARCHAR(200) not null comment 'ファイルパス'
+  , TENPU_FILE VARCHAR(200) not null comment '添付ファイル'
   , INSERT_DT DATETIME(3) not null comment '登録日時'
   , INSERT_BY VARCHAR(10) not null comment '登録者'
   , UPDATE_DT DATETIME(3) not null comment '更新日時'

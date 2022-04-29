@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{TTenpuFile.title}">添付ファイル</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{TTenpuFile.h2}">h2</h2>
+    <form name="TTenpuFileRegistForm" action="TTenpuFileRegist.ajax" class="regist">
+      <fieldset>
+        <legend th:text="#{TTenpuFile.legend}">legend</legend>
+        <div id="sosenId">
+          <label for="TTenpuFile.sosenId" th:text="#{TTenpuFile.sosenId}">祖先ID</label><span id="TTenpuFile.sosenId"></span><input type="hidden" id="TTenpuFile.sosenId" name="TTenpuFile.sosenId" class="primaryKey" /><a id="TTenpuFile.sosenId" th:href="@{/model/TSosenS.html}" target="dialog" class="primaryKey refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="TTenpuFile.sosenMei" class="refer" data-json="TSosenSearch.json" data-srcDef="SOSEN_ID:TTenpuFile.sosenId" data-destDef="TTenpuFile.sosenMei:SOSEN_MEI"></span>
+        </div>
+        <div id="oyaSn">
+          <label for="TTenpuFile.oyaSn" th:text="#{TTenpuFile.oyaSn}">親連番</label><span id="TTenpuFile.oyaSn"></span><input type="hidden" id="TTenpuFile.oyaSn" name="TTenpuFile.oyaSn" class="primaryKey" />
+        </div>
+        <div id="entitySn">
+          <label for="TTenpuFile.entitySn" th:text="#{TTenpuFile.entitySn}">エンティティ連番</label><span id="TTenpuFile.entitySn"></span><input type="hidden" id="TTenpuFile.entitySn" name="TTenpuFile.entitySn" class="primaryKey" />
+        </div>
+        <div id="tenpuFileSn">
+          <label for="TTenpuFile.tenpuFileSn" th:text="#{TTenpuFile.tenpuFileSn}">添付ファイル連番</label><span id="TTenpuFile.tenpuFileSn"></span><input type="hidden" id="TTenpuFile.tenpuFileSn" name="TTenpuFile.tenpuFileSn" class="primaryKey" />
+        </div>
+        <div id="tenpuFile">
+          <label for="TTenpuFile.tenpuFile" th:text="#{TTenpuFile.tenpuFile}">添付ファイル</label><input type="file" id="TTenpuFile.tenpuFile" name="TTenpuFile.tenpuFile" maxlength="200" />
+        </div>
+        <div id="insertDt">
+          <label for="TTenpuFile.insertDt" th:text="#{TTenpuFile.insertDt}">登録日時</label><span id="TTenpuFile.insertDt"></span><input type="hidden" id="TTenpuFile.insertDt" name="TTenpuFile.insertDt" />
+        </div>
+        <div id="insertBy">
+          <label for="TTenpuFile.insertBy" th:text="#{TTenpuFile.insertBy}">登録者</label><span id="TTenpuFile.insertBy"></span><input type="hidden" id="TTenpuFile.insertBy" name="TTenpuFile.insertBy" />
+        </div>
+        <div id="updateDt">
+          <label for="TTenpuFile.updateDt" th:text="#{TTenpuFile.updateDt}">更新日時</label><span id="TTenpuFile.updateDt"></span><input type="hidden" id="TTenpuFile.updateDt" name="TTenpuFile.updateDt" />
+        </div>
+        <div id="updateBy">
+          <label for="TTenpuFile.updateBy" th:text="#{TTenpuFile.updateBy}">更新者</label><span id="TTenpuFile.updateBy"></span><input type="hidden" id="TTenpuFile.updateBy" name="TTenpuFile.updateBy" />
+        </div>
+        <div id="deleteF">
+          <fieldset id="TTenpuFile.deleteFList" data-options="MCodeValueSearch.json" data-optionParams="code_nm:delete_f" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{TTenpuFile.deleteF}">削除フラグ</legend>
+          </fieldset>
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="Dialogate.refresh(event);">reset</button>
+        <a th:href="@{TTenpuFileGet.xlsx(baseMei=#{TTenpuFile.h2})}" id="TTenpuFileGet.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeleteTTenpuFile" class="delete" data-action="TTenpuFileDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistTTenpuFile" class="regist" th:text="#{common.regist}">登録</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

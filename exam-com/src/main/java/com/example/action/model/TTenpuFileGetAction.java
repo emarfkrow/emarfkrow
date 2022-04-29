@@ -4,18 +4,18 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.example.entity.TEntity;
+import com.example.entity.TTenpuFile;
 
 import jp.co.golorp.emarf.action.BaseAction;
 
 /**
- * エンティティ照会
+ * 添付ファイル照会
  *
  * @author emarfkrow
  */
-public class TEntityGetAction extends BaseAction {
+public class TTenpuFileGetAction extends BaseAction {
 
-    /** エンティティ照会処理 */
+    /** 添付ファイル照会処理 */
     @Override
     public Map<String, Object> running(final LocalDateTime now, final String id, final Map<String, Object> postJson) {
 
@@ -24,31 +24,35 @@ public class TEntityGetAction extends BaseAction {
         // 主キーが不足していたら終了
         Object sosenId = postJson.get("sosenId");
         if (sosenId == null) {
-            sosenId = postJson.get("TEntity.sosenId");
+            sosenId = postJson.get("TTenpuFile.sosenId");
         }
         if (sosenId == null) {
             return map;
         }
         Object oyaSn = postJson.get("oyaSn");
         if (oyaSn == null) {
-            oyaSn = postJson.get("TEntity.oyaSn");
+            oyaSn = postJson.get("TTenpuFile.oyaSn");
         }
         if (oyaSn == null) {
             return map;
         }
         Object entitySn = postJson.get("entitySn");
         if (entitySn == null) {
-            entitySn = postJson.get("TEntity.entitySn");
+            entitySn = postJson.get("TTenpuFile.entitySn");
         }
         if (entitySn == null) {
             return map;
         }
+        Object tenpuFileSn = postJson.get("tenpuFileSn");
+        if (tenpuFileSn == null) {
+            tenpuFileSn = postJson.get("TTenpuFile.tenpuFileSn");
+        }
+        if (tenpuFileSn == null) {
+            return map;
+        }
 
-        TEntity tEntity = TEntity.get(sosenId, oyaSn, entitySn);
-        tEntity.referTEntity2();
-        tEntity.referTKos();
-        tEntity.referTTenpuFiles();
-        map.put("TEntity", tEntity);
+        TTenpuFile tTenpuFile = TTenpuFile.get(sosenId, oyaSn, entitySn, tenpuFileSn);
+        map.put("TTenpuFile", tTenpuFile);
         return map;
     }
 

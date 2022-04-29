@@ -52,6 +52,8 @@ public final class HtmlGenerator {
     private static String[] inputRangeSuffixs;
     /** フラグサフィックス */
     private static String[] inputFlagSuffixs;
+    /** ファイルサフィックス */
+    private static String[] inputFileSuffixs;
 
     /** 参照IDサフィックス */
     private static String[] referIdSuffixs;
@@ -88,6 +90,7 @@ public final class HtmlGenerator {
         inputTimeSuffixs = bundle.getString("BeanGenerator.input.time.suffixs").split(",");
         inputRangeSuffixs = bundle.getString("BeanGenerator.input.range.suffixs").split(",");
         inputFlagSuffixs = bundle.getString("BeanGenerator.input.flag.suffixs").split(",");
+        inputFileSuffixs = bundle.getString("BeanGenerator.input.file.suffixs").split(",");
 
         referIdSuffixs = bundle.getString("BeanGenerator.refer.id.suffixs").split(",");
         referMeiSuffix = bundle.getString("BeanGenerator.refer.mei.suffix");
@@ -462,6 +465,7 @@ public final class HtmlGenerator {
             boolean isInputMonth = StringUtil.endsWith(inputMonthSuffixs, lower);
             boolean isInputTime = StringUtil.endsWith(inputTimeSuffixs, lower);
             boolean isInputRange = StringUtil.endsWith(inputRangeSuffixs, lower);
+            boolean isInputFile = StringUtil.endsWith(inputFileSuffixs, lower);
 
             s.add("        <div id=\"" + camel + "\">");
             if (lower.equals(insertDt) || lower.equals(insertBy)
@@ -479,9 +483,7 @@ public final class HtmlGenerator {
                 tag += "<label for=\"" + id + "\" th:text=\"#{" + id + "}\">" + remarks + "</label>";
                 tag += "<span id=\"" + id + "\"></span>";
                 tag += "<input type=\"hidden\" id=\"" + id + "\" name=\"" + id + "\" class=\"primaryKey\" />";
-
                 if (columnInfo.getReferInfo() != null) {
-
                     TableInfo referInfo = columnInfo.getReferInfo();
                     String referName = StringUtil.toPascalCase(referInfo.getTableName());
 
@@ -499,10 +501,8 @@ public final class HtmlGenerator {
                 s.add(tag);
             } else if (isOptions) {
                 // 選択項目の場合
-                s.add("          <fieldset id=\"" + id + "List\" data-options=\"" + json
-                        + "\" data-optionParams=\""
-                        + optionParamKey + ":" + lower + "\" data-optionValue=\""
-                        + optionValue
+                s.add("          <fieldset id=\"" + id + "List\" data-options=\"" + json + "\" data-optionParams=\""
+                        + optionParamKey + ":" + lower + "\" data-optionValue=\"" + optionValue
                         + "\" data-optionLabel=\"" + optionLabel + "\">");
                 s.add("            <legend th:text=\"#{" + id + "}\">" + remarks + "</legend>");
                 s.add("          </fieldset>");
@@ -522,6 +522,8 @@ public final class HtmlGenerator {
                     type = "month";
                 } else if (isInputTime) { // 時刻項目
                     type = "time";
+                } else if (isInputFile) { // ファイル
+                    type = "file";
                 }
 
                 int max = columnInfo.getColumnSize();

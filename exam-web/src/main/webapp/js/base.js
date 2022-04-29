@@ -44,18 +44,31 @@ $(document).on('ready', function() {
 	// URLにFATALがついていればポップアップ
 	if (Base.querystrings['FATAL']) {
 		alert(decodeURI(Base.querystrings['FATAL']));
+		let href = document.location.href;
+		document.location.href = href.replace(/\?.+$/, '');
+		return;
 	}
 
 	// URLにERRORがついていればポップアップ
 	if (Base.querystrings['ERROR']) {
 		alert(decodeURI(Base.querystrings['ERROR']));
+		sessionStorage.setItem('errors', decodeURIComponent(Base.querystrings['errors']));
+		let href = document.location.href;
+		document.location.href = href.replace(/\?.+$/, '');
+		return;
 	}
+
+	let sessionErrors = sessionStorage.getItem('errors');
+	let errors = JSON.parse(sessionErrors);
+	Ajaxize.hoge(errors);
+	sessionStorage.removeItem('errors');
 
 	// URLにINFOがついていればポップアップ
 	if (Base.querystrings['INFO']) {
 		alert(decodeURI(Base.querystrings['INFO']));
+		let href = document.location.href;
+		document.location.href = href.replace(/\?.+$/, '');
 	}
-
 });
 
 // ４．画像ファイル読み込み後
@@ -131,10 +144,20 @@ let Base = {
 			$registForm.find('.addChild').button('option', 'disabled', true);
 		}
 
+		// リセットボタン押下時に、id付きのスパンでrederクラスの内容もクリア
 		$(document).on('click', 'button[type="reset"]', function() {
 			let $reset = $(this);
 			let $form = $reset.closest('form');
 			$form.find('span[id].refer').html('');
+		});
+
+		// ファイルタグがあれば、フォームの属性を変更
+		$('input[type="file"]').closest('form').each(function() {
+			let $form = $(this);
+			let action = $form.prop('action');
+			$form.prop('action', action.replace(/\.ajax$/, '.form'));
+			$form.prop('method', 'post');
+			$form.prop('enctype', 'multipart/form-data');
 		});
 
 		Base.resizeNav();
