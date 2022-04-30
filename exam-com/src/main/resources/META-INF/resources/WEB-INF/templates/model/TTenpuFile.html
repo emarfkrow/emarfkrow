@@ -31,7 +31,7 @@
           <label for="TTenpuFile.tenpuFileMei" th:text="#{TTenpuFile.tenpuFileMei}">添付ファイル名</label><input type="text" id="TTenpuFile.tenpuFileMei" name="TTenpuFile.tenpuFileMei" maxlength="30" />
         </div>
         <div id="tenpuFile">
-          <label for="TTenpuFile.tenpuFile" th:text="#{TTenpuFile.tenpuFile}">添付ファイル</label><input type="file" id="TTenpuFile.tenpuFile" name="TTenpuFile.tenpuFile" maxlength="200" />
+          <label for="TTenpuFile.tenpuFile" th:text="#{TTenpuFile.tenpuFile}">添付ファイル</label><input type="file" id="TTenpuFile.tenpuFile" name="TTenpuFile.tenpuFile" maxlength="200" /><a id="TTenpuFile.tenpuFile" style="display: none;" th:text="#{common.download}">ダウンロード</a><input type="hidden" id="TTenpuFile.tenpuFile" name="TTenpuFile.tenpuFile" disabled />
         </div>
         <div id="insertDt">
           <label for="TTenpuFile.insertDt" th:text="#{TTenpuFile.insertDt}">登録日時</label><span id="TTenpuFile.insertDt"></span><input type="hidden" id="TTenpuFile.insertDt" name="TTenpuFile.insertDt" />

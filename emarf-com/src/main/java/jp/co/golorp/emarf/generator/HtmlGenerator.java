@@ -591,10 +591,17 @@ public final class HtmlGenerator {
 
     private static void htmlFieldsInput(final List<String> s, final String id, final String remarks, final String type,
             final int max, final String css) {
+
         String tag = "          ";
         tag += "<label for=\"" + id + "\" th:text=\"#{" + id + "}\">" + remarks + "</label>";
-        tag += "<input type=\"" + type + "\" id=\"" + id + "\" name=\"" + id + "\" maxlength=\"" + max
-                + "\"" + css + " />";
+        tag += "<input type=\"" + type + "\" id=\"" + id + "\" name=\"" + id + "\" maxlength=\"" + max + "\"" + css
+                + " />";
+
+        if (type.equals("file")) {
+            tag += "<a id=\"" + id + "\" style=\"display: none;\" th:text=\"#{common.download}\">ダウンロード</a>";
+            tag += "<input type=\"hidden\" id=\"" + id + "\" name=\"" + id + "\" disabled />";
+        }
+
         s.add(tag);
     }
 
@@ -603,11 +610,9 @@ public final class HtmlGenerator {
 
         String tag = "          ";
         tag += "<label for=\"" + id + "_1\" th:text=\"#{" + id + "}\">" + remarks + "</label>";
-        tag += "<input type=\"" + type + "\" id=\"" + id + "_1\" name=\"" + id + "_1\" maxlength=\"" + max
-                + "\" />";
+        tag += "<input type=\"" + type + "\" id=\"" + id + "_1\" name=\"" + id + "_1\" maxlength=\"" + max + "\" />";
         tag += "～";
-        tag += "<input type=\"" + type + "\" id=\"" + id + "_2\" name=\"" + id + "_2\" maxlength=\"" + max
-                + "\" />";
+        tag += "<input type=\"" + type + "\" id=\"" + id + "_2\" name=\"" + id + "_2\" maxlength=\"" + max + "\" />";
         s.add(tag);
     }
 
@@ -619,13 +624,14 @@ public final class HtmlGenerator {
     private static void htmlFieldsOptions(final List<String> s, final String id, final String lower,
             final String remarks) {
         s.add("          <fieldset id=\"" + id + "List\" data-options=\"" + json + "\" data-optionParams=\""
-                + optionParamKey + ":" + lower + "\" data-optionValue=\"" + optionValue
-                + "\" data-optionLabel=\"" + optionLabel + "\">");
+                + optionParamKey + ":" + lower + "\" data-optionValue=\"" + optionValue + "\" data-optionLabel=\""
+                + optionLabel + "\">");
         s.add("            <legend th:text=\"#{" + id + "}\">" + remarks + "</legend>");
         s.add("          </fieldset>");
     }
 
     private static void htmlFieldsMeta(final List<String> s, final String id, final String remarks) {
+
         String tag = "          ";
         tag += "<label for=\"" + id + "\" th:text=\"#{" + id + "}\">" + remarks + "</label>";
         tag += "<span id=\"" + id + "\"></span>";

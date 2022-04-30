@@ -111,6 +111,7 @@ let Jsonate = {
 		for (let entityName in data) {
 			let json = data[entityName];
 
+			// 配列要素があれば再帰（gridを想定）
 			for (let v in json) {
 				if (json[v] != null && typeof (json[v]) == 'object' && !Array.isArray(json[v])) {
 					let nestData = {};
@@ -139,7 +140,29 @@ let Jsonate = {
 
 				// 値があれば反映
 				if (v) {
-					$input.val([v]);
+					// もしファイルタグならリンクに変換
+					if ($input.attr('type') == 'file') {
+
+						$input.prop('disabled', true).hide();
+
+						let $link = $('a[id="' + this.id + '"]');
+						$link.show();
+						let $form = $input.closest('form');
+						let $primaryKeys = $form.find('input.primaryKey');
+						let params = '?name=' + $input.prop('name');
+						for (let i = 0; i < $primaryKeys.length; i++) {
+							let $primaryKey = $($primaryKeys[i]);
+							let name = $primaryKey.prop('name');
+							let val = $primaryKey.val();
+							params += '&' + name + '=' + val;
+						}
+						$link.prop('href', 'download' + params);
+
+						$('input[type="hidden"][id="' + this.id + '"]').prop("disabled", false).val([v]);
+
+					} else {
+						$input.val([v]);
+					}
 				}
 			});
 
@@ -192,10 +215,22 @@ let Jsonate = {
 
 	clearForm: function($form) {
 
+		// 入力項目のエラースタイル解除
 		let $inputs = $form.find(':input');
 		$inputs.removeClass('error').prop('title', '').removeAttr('readonly').removeAttr('tabindex');
+
+		// 選択項目のエラースタイル解除
 		let $label = $inputs.parent('label');
 		$label.removeClass('error').prop('title', '');
+
+		// ファイルタグ再表示・リンク非表示
+		let $files = $form.find('[type="file"]');
+		$files.each(function() {
+			let $file = $(this);
+			$file.prop('disabled', false).show();
+			$('a[id="' + this.id + '"]').hide();
+			$('input[type="hidden"][id="' + this.id + '"]').prop('disabled', true);
+		});
 
 		// フォーム内容
 		$form.find(Jsonate.inputSelector).each(function() {

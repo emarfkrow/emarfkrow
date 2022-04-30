@@ -139,17 +139,18 @@ public final class ServletUtil {
             for (Part part : parts) {
                 if (part.getSubmittedFileName() != null) {
                     String fileName = part.getSubmittedFileName();
-                    String saveName = LocalDateTime.format("yyyyMMddHHmmssSSS");
+                    String ext = fileName.replaceFirst("^.+\\.", "");
+                    String saveName = part.getName() + "." + LocalDateTime.format("yyyyMMddHHmmssSSS") + "." + ext;
                     if (!fileName.equals("")) {
-                        String uploadPath = App.get("context.path.upload");
-                        String uploadDir = request.getServletContext().getRealPath(App.get("context.path.upload"));
+                        String uploadDir = App.get("context.upload.dir");
+                        String uploadPath = uploadDir + File.separator + saveName;
                         try {
-                            part.write(uploadDir + File.separator + saveName);
+                            part.write(uploadPath);
                         } catch (IOException e) {
                             throw new SysError(e);
                         }
-                        map.put(part.getName() + "Mei", fileName);
-                        map.put(part.getName(), uploadPath + "/" + saveName);
+                        map.put(part.getName() + App.get("context.upload.mei.suffix"), fileName);
+                        map.put(part.getName(), uploadPath);
                     }
                 } else {
                     String v = "";

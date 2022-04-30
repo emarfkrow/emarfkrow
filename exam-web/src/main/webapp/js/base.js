@@ -44,8 +44,8 @@ $(document).on('ready', function() {
 	// URLにFATALがついていればポップアップ
 	if (Base.querystrings['FATAL']) {
 		alert(decodeURI(Base.querystrings['FATAL']));
-		let href = document.location.href;
-		document.location.href = href.replace(/\?.+$/, '');
+		//		let href = document.location.href;
+		//		document.location.href = href.replace(/\?.+$/, '');
 		return;
 	}
 
@@ -53,8 +53,8 @@ $(document).on('ready', function() {
 	if (Base.querystrings['ERROR']) {
 		alert(decodeURI(Base.querystrings['ERROR']));
 		sessionStorage.setItem('errors', decodeURIComponent(Base.querystrings['errors']));
-		let href = document.location.href;
-		document.location.href = href.replace(/\?.+$/, '');
+		//		let href = document.location.href;
+		//		document.location.href = href.replace(/\?.+$/, '');
 		return;
 	}
 
@@ -66,8 +66,8 @@ $(document).on('ready', function() {
 	// URLにINFOがついていればポップアップ
 	if (Base.querystrings['INFO']) {
 		alert(decodeURI(Base.querystrings['INFO']));
-		let href = document.location.href;
-		document.location.href = href.replace(/\?.+$/, '');
+		//		let href = document.location.href;
+		//		document.location.href = href.replace(/\?.+$/, '');
 	}
 });
 
@@ -160,12 +160,11 @@ let Base = {
 			$form.prop('enctype', 'multipart/form-data');
 		});
 
+		// 検索条件のトグル
 		let $h2 = $('form.search').parent().find('h2');
 		$h2.html('<span id="h2Toggle" class="ui-accordion-header-icon ui-icon ui-icon-triangle-1-s"></span>' + $h2.html());
 		$h2.css('width', 'fit-content');
 		$(document).on('click', 'h2', function() {
-			$('form.search').toggle();
-			Base.resizeNav();
 			if ($('[id="h2Toggle"]').hasClass('ui-icon-triangle-1-s')) {
 				$('[id="h2Toggle"]').addClass('ui-icon-triangle-1-e');
 				$('[id="h2Toggle"]').removeClass('ui-icon-triangle-1-s');
@@ -173,6 +172,9 @@ let Base = {
 				$('[id="h2Toggle"]').addClass('ui-icon-triangle-1-s');
 				$('[id="h2Toggle"]').removeClass('ui-icon-triangle-1-e');
 			}
+			$('form.search').toggle(500, function() {
+				Base.resizeNav();
+			});
 		});
 
 		Base.resizeNav();
@@ -203,6 +205,9 @@ let Base = {
 		});
 	},
 
+	/**
+	 * 参照モデルの名称解決
+	 */
 	referMei: function($referSpans) {
 
 		$referSpans.each(function() {

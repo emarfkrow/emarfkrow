@@ -59,7 +59,7 @@ var Loading = {
 console.debug('Loading init.');
 let dialogDiv2 = document.createElement('div');
 dialogDiv2.id = 'loading';
-dialogDiv2.style.backgroundColor = '#fff';
+dialogDiv2.style.backgroundColor = '#eee';
 dialogDiv2.style.backgroundImage = 'url("../img/gif-load.gif")';
 dialogDiv2.style.backgroundPosition = 'center center';
 dialogDiv2.style.backgroundRepeat = 'no-repeat';
