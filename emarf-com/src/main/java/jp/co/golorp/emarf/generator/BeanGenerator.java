@@ -47,6 +47,8 @@ public final class BeanGenerator {
     private static String[] inputLikeSuffixs;
     /** フラグサフィックス */
     private static String[] inputFlagSuffixs;
+    /** ファイルサフィックス */
+    private static String[] inputFileSuffixs;
 
     /** 参照IDサフィックス */
     private static String[] referIdSuffixs;
@@ -94,6 +96,7 @@ public final class BeanGenerator {
         inputRangeSuffixs = bundle.getString("BeanGenerator.input.range.suffixs").split(",");
         inputLikeSuffixs = bundle.getString("BeanGenerator.input.like.suffixs").split(",");
         inputFlagSuffixs = bundle.getString("BeanGenerator.input.flag.suffixs").split(",");
+        inputFileSuffixs = bundle.getString("BeanGenerator.input.file.suffixs").split(",");
 
         referIdSuffixs = bundle.getString("BeanGenerator.refer.id.suffixs").split(",");
         referMeiSuffix = bundle.getString("BeanGenerator.refer.mei.suffix");
@@ -276,6 +279,7 @@ public final class BeanGenerator {
         String remarks = tableInfo.getRemarks();
 
         String entityName = StringUtil.toPascalCase(tableName);
+        String camelName = StringUtil.toCamelCase(tableName);
 
         s.add("");
         s.add("    /**");
@@ -347,6 +351,29 @@ public final class BeanGenerator {
             s.add("        if (this." + camel + " != null) {");
             s.add("            this." + camel + ".delete();");
             s.add("        }");
+        }
+        // ファイル列がある場合
+        for (String columnName : tableInfo.getColumnInfos().keySet()) {
+            if (StringUtil.endsWith(inputFileSuffixs, columnName)) {
+                String params = "";
+                for (String primaryKey : tableInfo.getPrimaryKeys()) {
+                    String camel = StringUtil.toCamelCase(primaryKey);
+                    if (params.length() > 0) {
+                        params += ", ";
+                    }
+                    params += "this." + camel;
+                }
+                s.add("");
+                s.add("        " + entityName + " " + camelName
+                        + " = " + entityName + ".get(" + params + ");");
+                s.add("        try {");
+                s.add("            java.nio.file.Files.delete(java.nio.file.Paths.get(" + camelName + "."
+                        + StringUtil.toCamelCase(columnName)
+                        + "));");
+                s.add("        } catch (Exception e) {");
+                s.add("            throw new jp.co.golorp.emarf.exception.SysError(e);");
+                s.add("        }");
+            }
         }
         s.add("");
         s.add("        // " + remarks + "の削除");
