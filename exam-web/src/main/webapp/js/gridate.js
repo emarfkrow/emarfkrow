@@ -255,12 +255,36 @@ $(function() {
 				} else if (e.target.className == 'gridLink') {
 					// グリッド行選択リンク押下時
 
-					e.preventDefault();
-					e.stopPropagation();
-					e.stopImmediatePropagation();
 					//let entityName = gridId.replace(/[^\.]+\./, '').replace(/Grid$/, '');
 					let entityName = $gridDiv.attr('data-href').replace(/(^.+\/|\.html$)/g, '');
-					Gridate.openDetail($gridDiv.prop('id'), entityName, g.getColumns(), g.getData()[r]);
+
+					if (e.target.id) {
+						let href = entityName + 'Download.link?name=' + e.target.id;
+
+						let item = g.getData()[r];
+
+						// グリッド列定義でループ
+						for (let i in g.getColumns()) {
+							let column = g.getColumns()[i];
+
+							// 主キー列でなければスキップ
+							if (column.cssClass != 'primaryKey') {
+								continue;
+							}
+
+							// 反映値を取得
+							let v = item[column.field];
+							href += '&' + column.id + '=' + v;
+						}
+
+						e.target.href = href;
+
+					} else {
+						e.preventDefault();
+						e.stopPropagation();
+						e.stopImmediatePropagation();
+						Gridate.openDetail($gridDiv.prop('id'), entityName, g.getColumns(), g.getData()[r]);
+					}
 				}
 			});
 			//				grid.onColumnsDrag.subscribe(function(a, b, c, d, e, f, g) { });

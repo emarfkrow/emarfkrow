@@ -140,24 +140,36 @@ let Jsonate = {
 
 				// 値があれば反映
 				if (v) {
+
 					// もしファイルタグならリンクに変換
 					if ($input.attr('type') == 'file') {
 
+						// ファイルタグを非表示
 						$input.prop('disabled', true).hide();
 
+						// ダウンロードリンクを表示
 						let $link = $('a[id="' + this.id + '"]');
 						$link.show();
+
+						// ダウンロードリンクのhrefを設定
 						let $form = $input.closest('form');
+						let entityName = $form.prop('name').replace(/(Search|Regist)Form/, '');
+
+						let inputName = $input.prop('name');
+						let inputNames = inputName.split('.');
+						let params = '?name=' + inputNames[inputNames.length - 1];
+
 						let $primaryKeys = $form.find('input.primaryKey');
-						let params = '?name=' + $input.prop('name');
 						for (let i = 0; i < $primaryKeys.length; i++) {
 							let $primaryKey = $($primaryKeys[i]);
 							let name = $primaryKey.prop('name');
+							let names = name.split('.');
 							let val = $primaryKey.val();
-							params += '&' + name + '=' + val;
+							params += '&' + names[names.length - 1] + '=' + val;
 						}
-						$link.prop('href', 'download' + params);
+						$link.prop('href', entityName + 'Download.link' + params);
 
+						// ファイルパスのhiddenタグを活性
 						$('input[type="hidden"][id="' + this.id + '"]').prop("disabled", false).val([v]);
 
 					} else {

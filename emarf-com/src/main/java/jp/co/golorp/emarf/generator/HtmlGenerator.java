@@ -598,7 +598,8 @@ public final class HtmlGenerator {
                 + " />";
 
         if (type.equals("file")) {
-            tag += "<a id=\"" + id + "\" style=\"display: none;\" th:text=\"#{common.download}\">ダウンロード</a>";
+            tag += "<a id=\"" + id
+                    + "\" target=\"blank\" style=\"display: none;\" th:text=\"#{common.download}\">ダウンロード</a>";
             tag += "<input type=\"hidden\" id=\"" + id + "\" name=\"" + id + "\" disabled />";
         }
 

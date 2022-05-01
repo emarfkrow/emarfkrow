@@ -38,7 +38,7 @@
 
 	function LinkFormatter(row, cell, value, columnDef, dataContext) {
 		if (value) {
-			return '<a href="..' + value + '" target="blank">' + Messages['common.download'] + '</a>';
+			return '<a id=\"' + columnDef.id + '\" href="" class="gridLink" target="blank">' + Messages['common.download'] + '</a>';
 		}
 		return '<a href="" class="gridLink">' + columnDef.name + '</a>';
 	}
