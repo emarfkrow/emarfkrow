@@ -60,7 +60,7 @@ $(document).on('ready', function() {
 
 	let sessionErrors = sessionStorage.getItem('errors');
 	let errors = JSON.parse(sessionErrors);
-	Ajaxize.hoge(errors);
+	Ajaxize.errorStyle(errors);
 	sessionStorage.removeItem('errors');
 
 	// URLにINFOがついていればポップアップ
@@ -149,15 +149,6 @@ let Base = {
 			let $reset = $(this);
 			let $form = $reset.closest('form');
 			$form.find('span[id].refer').html('');
-		});
-
-		// ファイルタグがあれば、フォームの属性を変更
-		$('input[type="file"]').closest('form').each(function() {
-			let $form = $(this);
-			let action = $form.prop('action');
-			$form.prop('action', action.replace(/\.ajax$/, '.form'));
-			$form.prop('method', 'post');
-			$form.prop('enctype', 'multipart/form-data');
 		});
 
 		// 検索条件のトグル

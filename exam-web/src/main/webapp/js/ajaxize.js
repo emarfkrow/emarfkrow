@@ -61,8 +61,19 @@ $(function() {
 		let $label = $inputs.parent('label');
 		$label.removeClass('error').prop('title', '');
 
-		// フォーム内容をjsonに取得
+		// formdataを取得
+		let formData = new FormData(this);
+
+		// フォーム内容をjsonに取得して、グリッドデータもformdataに追加
 		let formJson = Jsonate.toJson($form, $button.hasClass('selectRows'));
+		for (let k in formJson) {
+			let itemJson = formJson[k];
+			if (Array.isArray(itemJson)) {
+				if (k.match(/Grid$/)) {
+					formData.append(k, JSON.stringify(itemJson));
+				}
+			}
+		}
 
 		let callback;
 
@@ -147,7 +158,7 @@ $(function() {
 			}
 		}
 
-		Ajaxize.ajaxPost(action, formJson, callback);
+		Ajaxize.ajaxPost(action, formData, callback);
 	});
 });
 
@@ -170,18 +181,33 @@ let Ajaxize = {
 			Loading.fadeIn();
 		}
 
-		$.ajax({
-			async: isAsync,
-			cache: false,
-			contentType: 'application/json; charset=UTF-8',
-			data: JSON.stringify(formJson),
-			dataType: 'json',
+		// ajaxオプション
+		let options = {
+			async: isAsync,   // 非同期通信フラグ
+			cache: false,     // キャッシュフラグ
+			dataType: 'json', // 通信結果取得のデータ型
 			headers: {
 				"X-CSRF-TOKEN": formJson['_csrf']
 			},
 			type: 'post',
-			url: action
-		}).fail(function(data) {
+			url: action,
+		};
+
+		if (formJson instanceof FormData) {
+			// 送信値がformdataの場合
+
+			options.contentType = false; // contentTypeをfalseに指定
+			options.data = formJson;
+			options.processData = false; // Ajaxがdataを整形しない指定
+
+		} else {
+			// 送信値がjsonの場合
+
+			options.contentType = 'application/json; charset=UTF-8';
+			options.data = JSON.stringify(formJson);
+		}
+
+		$.ajax(options).fail(function(data) {
 			console.debug(data);
 			if (data.status == 200) {
 				alert(Messages['error.session']);
@@ -209,7 +235,7 @@ let Ajaxize = {
 
 				alert(data.ERROR);
 
-				hoge(data.errors);
+				Ajaxize.errorStyle(data.errors);
 
 				return;
 			}
@@ -237,7 +263,7 @@ let Ajaxize = {
 		});
 	},
 
-	hoge: function(errors) {
+	errorStyle: function(errors) {
 
 		var gridStyles = {};
 

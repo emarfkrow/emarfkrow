@@ -37,6 +37,9 @@ public final class ServletUtil {
     /** logger */
     private static final Logger LOG = LoggerFactory.getLogger(ServletUtil.class);
 
+    /** アップロードファイル名称のサフィックス */
+    private static String uploadMeiSuffix = App.get("context.upload.mei.suffix");
+
     private ServletUtil() {
     }
 
@@ -136,23 +139,37 @@ public final class ServletUtil {
         if (parts != null) {
             // 「enctype="multipart/form-data"」の場合
 
+            // multipartでループ
             for (Part part : parts) {
+
+                String partName = part.getName();
+
                 if (part.getSubmittedFileName() != null) {
+                    // アップロードファイルの場合
+
                     String fileName = part.getSubmittedFileName();
-                    String ext = fileName.replaceFirst("^.+\\.", "");
-                    String saveName = part.getName() + "." + LocalDateTime.format("yyyyMMddHHmmssSSS") + "." + ext;
                     if (!fileName.equals("")) {
+                        // アップロードファイル名がある場合
+
+                        // アップロードフォルダに保管
                         String uploadDir = App.get("context.upload.dir");
+                        String ext = fileName.replaceFirst("^.+\\.", "");
+                        String saveName = partName + "." + LocalDateTime.format("yyyyMMddHHmmssSSS") + "." + ext;
                         String uploadPath = uploadDir + File.separator + saveName;
                         try {
                             part.write(uploadPath);
                         } catch (IOException e) {
                             throw new SysError(e);
                         }
-                        map.put(part.getName() + App.get("context.upload.mei.suffix"), fileName);
-                        map.put(part.getName(), uploadPath);
+
+                        // ファイル名と保管パスを返す
+                        map.put(partName + uploadMeiSuffix, fileName);
+                        map.put(partName, uploadPath);
                     }
+
                 } else {
+
+                    // 送信値を読み取り
                     String v = "";
                     try (BufferedReader br = new BufferedReader(new InputStreamReader(part.getInputStream()))) {
                         String s;
@@ -162,7 +179,35 @@ public final class ServletUtil {
                     } catch (IOException e) {
                         throw new SysError(e);
                     }
-                    map.put(part.getName(), v);
+
+                    if (partName.matches("^.+Grid$")) {
+                        try {
+                            Map<String, Object> gridValue = mapper.readValue("{\"" + partName + "\":" + v + "}",
+                                    new TypeReference<Map<String, Object>>() {
+                                    });
+                            map.putAll(gridValue);
+                        } catch (Exception e) {
+                            throw new SysError(e);
+                        }
+                    } else if (map.containsKey(partName)) {
+                        // 二つ目以降の場合
+                        Object orgValue = map.get(partName);
+                        if (orgValue instanceof List) {
+                            // 三つ目以降の場合
+                            @SuppressWarnings("unchecked")
+                            List<Object> newList = (List<Object>) orgValue;
+                            newList.add(v);
+                        } else {
+                            // 二つ目の場合
+                            List<Object> newList = new ArrayList<Object>();
+                            newList.add(orgValue);
+                            newList.add(v);
+                            map.put(partName, newList);
+                        }
+                    } else {
+                        // 一つ目の場合
+                        map.put(partName, v);
+                    }
                 }
             }
 
