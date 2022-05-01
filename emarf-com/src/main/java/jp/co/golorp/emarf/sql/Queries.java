@@ -159,15 +159,15 @@ public final class Queries {
                 rawSql = rawSql.replaceFirst(blockRE, "");
                 logSql = logSql.replaceFirst(blockRE, "");
                 // １行削除
-                rawSql = rawSql.replaceFirst(".*:" + parameterName + ".*[\r\n]+", "");
-                logSql = logSql.replaceFirst(".*:" + parameterName + ".*[\r\n]+", "");
+                rawSql = rawSql.replaceFirst(".*:" + parameterName + "[^_\r\n]*[\r\n]+", "");
+                logSql = logSql.replaceFirst(".*:" + parameterName + "[^_\r\n]*[\r\n]+", "");
             } else if (snakes.get(parameterName) == null) {
                 // ブロック削除
                 rawSql = rawSql.replaceFirst(blockRE, "");
                 logSql = logSql.replaceFirst(blockRE, "");
                 // １行削除
-                rawSql = rawSql.replaceFirst(".*:" + parameterName + ".*[\r\n]+", "");
-                logSql = logSql.replaceFirst(".*:" + parameterName + ".*[\r\n]+", "");
+                rawSql = rawSql.replaceFirst(".*:" + parameterName + "[^_\r\n]*[\r\n]+", "");
+                logSql = logSql.replaceFirst(".*:" + parameterName + "[^_\r\n]*[\r\n]+", "");
             }
         }
 

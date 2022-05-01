@@ -84,6 +84,14 @@ public final class ServletUtil {
                     } catch (Exception e2) {
                         throw new SysError(e);
                     }
+                } else if (actionName.endsWith("DownloadAction")) {
+                    className = "jp.co.golorp.emarf.action.DownloadAction";
+                    try {
+                        Class<?> c = Class.forName(className);
+                        return (BaseAction) c.newInstance();
+                    } catch (Exception e2) {
+                        throw new SysError(e);
+                    }
                 } else {
                     throw new SysError(e);
                 }
@@ -293,15 +301,19 @@ public final class ServletUtil {
 
     /**
      * @param response
-     * @param tempFilePath
+     * @param filePath
+     * @param fileMei
      */
-    public static void respond(final HttpServletResponse response, final String tempFilePath) {
+    public static void respond(final HttpServletResponse response, final String filePath, final String fileMei) {
 
-        if (tempFilePath.endsWith(".pdf")) {
+        if (filePath.endsWith(".pdf")) {
             response.setContentType("application/pdf");
             response.setHeader("Content-Disposition", "inline;");
         } else {
-            String downloadFileMei = new File(tempFilePath).getName();
+            String downloadFileMei = fileMei;
+            if (downloadFileMei == null) {
+                downloadFileMei = new File(filePath).getName();
+            }
             try {
                 downloadFileMei = URLEncoder.encode(downloadFileMei, StandardCharsets.UTF_8.name());
             } catch (UnsupportedEncodingException e) {
@@ -312,7 +324,7 @@ public final class ServletUtil {
         }
 
         try {
-            Files.copy(new File(tempFilePath).toPath(), response.getOutputStream());
+            Files.copy(new File(filePath).toPath(), response.getOutputStream());
             response.getOutputStream().close();
         } catch (IOException e) {
             throw new SysError(e);
@@ -321,15 +333,24 @@ public final class ServletUtil {
 
     /**
      * @param response
-     * @param tempFilePath
+     * @param filePath
      */
-    public static void respondDelete(final HttpServletResponse response, final String tempFilePath) {
+    public static void respondDelete(final HttpServletResponse response, final String filePath) {
+        respondDelete(response, filePath, null);
+    }
 
-        ServletUtil.respond(response, tempFilePath);
+    /**
+     * @param response
+     * @param filePath
+     * @param fileMei
+     */
+    public static void respondDelete(final HttpServletResponse response, final String filePath, final String fileMei) {
+
+        ServletUtil.respond(response, filePath, fileMei);
 
         // ファイル削除
         if (App.get("xlsxutil.delete.responded").equals("1")) {
-            new File(tempFilePath).delete();
+            new File(filePath).delete();
         }
     }
 
