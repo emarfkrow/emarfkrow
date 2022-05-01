@@ -60,7 +60,7 @@ public final class AjaxServlet extends HttpServlet {
             BaseAction action = ServletUtil.getAction(request);
             action.setPathes(pathes);
             action.setBaseName(baseName);
-            action.setId(request.getSession().getAttribute("LOGIN_KEY").toString());
+            action.setId(request.getSession().getAttribute("AUTHN_KEY").toString());
 
             request.getSession().removeAttribute(request.getRequestURI());
             Map<String, Object> postJson = ServletUtil.getPostJson(request);

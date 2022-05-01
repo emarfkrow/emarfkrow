@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
 <body>
-  <div class="breads" layout:fragment="breads" th:if="${#session != null && #session.getAttribute('LOGIN_KEY') != null}">
+  <div class="breads" layout:fragment="breads" th:if="${#session != null && #session.getAttribute('AUTHN_KEY') != null}">
     <ul id="breads"></ul>
   </div>
 </body>

@@ -65,6 +65,10 @@
 <script th:src="@{/model/TShisonGridColumns.js}"></script>
 <script th:src="@{/model/TSosenGridColumns.js}"></script>
 <script th:src="@{/model/TTenpuFileGridColumns.js}"></script>
+<script th:inline="javascript" th:if="${#session != null && #session.getAttribute('AUTHZ_INFO') != null}">
+	sessionStorage['authzInfo'] = JSON
+			.stringify(/*[[${#session.getAttribute('AUTHZ_INFO')}]]*/);
+</script>
 </head>
 <body>
   <div layout:replace="~{common/header::header}"></div>

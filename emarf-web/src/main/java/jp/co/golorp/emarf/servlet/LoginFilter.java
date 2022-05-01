@@ -107,8 +107,9 @@ public class LoginFilter implements Filter {
                     throw new SysError(e);
                 }
 
-                ses.setAttribute("LOGIN_KEY", map.get("LOGIN_KEY"));
-                ses.setAttribute("LOGIN_INFO", map.get("LOGIN_INFO"));
+                ses.setAttribute("AUTHN_KEY", map.get("AUTHN_KEY"));
+                ses.setAttribute("AUTHN_INFO", map.get("AUTHN_INFO"));
+                ses.setAttribute("AUTHZ_INFO", map.get("AUTHZ_INFO"));
 
                 String orgRequestURI = request.getParameter("requestURI");
                 if (!StringUtil.isNullOrBlank(orgRequestURI)) {
@@ -129,7 +130,7 @@ public class LoginFilter implements Filter {
 
                 return;
 
-            } else if (ses.getAttribute("LOGIN_KEY") == null) {
+            } else if (ses.getAttribute("AUTHN_KEY") == null) {
                 // 認証用オブジェクトがセッションにない場合は、セッション破棄してログイン画面へリダイレクト
 
                 ses.invalidate();

@@ -62,7 +62,7 @@ public final class JsonServlet extends HttpServlet {
         String baseName = ServletUtil.getBaseName(request);
 
         HttpSession session = request.getSession();
-        Object loginKey = session.getAttribute("LOGIN_KEY");
+        Object loginKey = session.getAttribute("AUTHN_KEY");
 
         Map<String, Object> map = null;
         try {
@@ -71,7 +71,7 @@ public final class JsonServlet extends HttpServlet {
             action.setPathes(sqlPathes);
             action.setBaseName(baseName);
             if (loginKey != null) {
-                action.setId(session.getAttribute("LOGIN_KEY").toString());
+                action.setId(session.getAttribute("AUTHN_KEY").toString());
             }
 
             Map<String, Object> postJson = ServletUtil.getPostJson(request);

@@ -11,6 +11,13 @@ $(function() {
 
 	console.debug('Base init.');
 
+	let href = window.document.location.href;
+	let gamenId = href = href.replace(/.+\//, '').replace(/\.html/, '');
+	let authzInfo = JSON.parse(sessionStorage['authzInfo']);
+	if (gamenId != '' && (!authzInfo[gamenId] || authzInfo[gamenId] < 1)) {
+		window.document.location.href = '../';
+	}
+
 	// クエリストリングの取得
 	window.location.search.slice(1).split('&').forEach(function(s) {
 		var a = s.split('=');

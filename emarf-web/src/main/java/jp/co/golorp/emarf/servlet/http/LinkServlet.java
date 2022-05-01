@@ -54,7 +54,7 @@ public final class LinkServlet extends HttpServlet {
             BaseAction action = ServletUtil.getAction(request);
             action.setPathes(pathes);
             action.setBaseName(baseName);
-            action.setId(request.getSession().getAttribute("LOGIN_KEY").toString());
+            action.setId(request.getSession().getAttribute("AUTHN_KEY").toString());
 
             Map<String, Object> postJson = ServletUtil.getPostJson(request);
             map = action.run(postJson);

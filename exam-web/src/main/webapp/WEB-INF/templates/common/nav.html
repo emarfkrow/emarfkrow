@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
 <body>
-  <div class="nav" layout:fragment="nav" th:if="${#session != null && #session.getAttribute('LOGIN_KEY') != null}">
+  <div class="nav" layout:fragment="nav" th:if="${#session != null && #session.getAttribute('AUTHN_KEY') != null}">
     <dl>
       <dt>画面ID</dt>
       <dd>

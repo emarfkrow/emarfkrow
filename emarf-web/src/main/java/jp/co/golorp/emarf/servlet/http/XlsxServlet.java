@@ -60,7 +60,7 @@ public final class XlsxServlet extends HttpServlet {
             BaseAction action = ServletUtil.getAction(request);
             action.setPathes(pathes);
             action.setBaseName(baseName);
-            action.setId(request.getSession().getAttribute("LOGIN_KEY").toString());
+            action.setId(request.getSession().getAttribute("AUTHN_KEY").toString());
 
             Map<String, Object> postJson = ServletUtil.getPostedJson(request);
             map = action.run(postJson);
@@ -96,7 +96,7 @@ public final class XlsxServlet extends HttpServlet {
 
         xlsxAction.setPathes(pathes);
         xlsxAction.setBaseName(baseName);
-        xlsxAction.setId(request.getSession().getAttribute("LOGIN_KEY").toString());
+        xlsxAction.setId(request.getSession().getAttribute("AUTHN_KEY").toString());
         Map<String, Object> xlsxMap = xlsxAction.run(map);
 
         String layoutFileName = (String) xlsxMap.get("layoutFileName");
