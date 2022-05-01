@@ -1,5 +1,8 @@
 package com.example.entity;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -15,6 +18,7 @@ import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 
 import jp.co.golorp.emarf.entity.IEntity;
+import jp.co.golorp.emarf.exception.SysError;
 import jp.co.golorp.emarf.lang.StringUtil;
 import jp.co.golorp.emarf.sql.Queries;
 
@@ -412,6 +416,13 @@ public class TTenpuFile implements IEntity {
      * @return 削除件数
      */
     public int delete() {
+
+        TTenpuFile tTenpuFile = TTenpuFile.get(sosenId, oyaSn, entitySn, tenpuFileSn);
+        try {
+            Files.delete(Paths.get(tTenpuFile.tenpuFile));
+        } catch (IOException e) {
+            throw new SysError(e);
+        }
 
         // 添付ファイルの削除
         String sql = "DELETE FROM t_tenpu_file WHERE " + getWhere();
