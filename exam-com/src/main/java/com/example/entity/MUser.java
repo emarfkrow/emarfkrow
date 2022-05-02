@@ -337,6 +337,7 @@ public class MUser implements IEntity {
      */
     public int update(final LocalDateTime now, final String id) {
 
+        // ユーザマスタの登録
         String sql = "UPDATE m_user\r\nSET\r\n      " + getSet() + "\r\nWHERE\r\n    " + getWhere();
         Map<String, Object> params = toMap(now, id);
         return Queries.regist(sql, params);

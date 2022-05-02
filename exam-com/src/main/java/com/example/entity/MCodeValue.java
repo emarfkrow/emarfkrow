@@ -320,6 +320,7 @@ public class MCodeValue implements IEntity {
      */
     public int update(final LocalDateTime now, final String id) {
 
+        // コード値マスタの登録
         String sql = "UPDATE m_code_value\r\nSET\r\n      " + getSet() + "\r\nWHERE\r\n    " + getWhere();
         Map<String, Object> params = toMap(now, id);
         return Queries.regist(sql, params);

@@ -590,6 +590,7 @@ public class TEntity implements IEntity {
         tEntityHis.setDeleteF(this.deleteF);
         tEntityHis.insert(now, id);
 
+        // エンティティの登録
         String sql = "UPDATE t_entity\r\nSET\r\n      " + getSet() + "\r\nWHERE\r\n    " + getWhere();
         Map<String, Object> params = toMap(now, id);
         return Queries.regist(sql, params);

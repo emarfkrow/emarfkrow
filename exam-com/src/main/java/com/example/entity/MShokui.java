@@ -337,6 +337,7 @@ public class MShokui implements IEntity {
      */
     public int update(final LocalDateTime now, final String id) {
 
+        // 職位マスタの登録
         String sql = "UPDATE m_shokui\r\nSET\r\n      " + getSet() + "\r\nWHERE\r\n    " + getWhere();
         Map<String, Object> params = toMap(now, id);
         return Queries.regist(sql, params);

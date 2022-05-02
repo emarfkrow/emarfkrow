@@ -277,6 +277,7 @@ public class MCode implements IEntity {
             }
         }
 
+        // コードマスタの登録
         String sql = "UPDATE m_code\r\nSET\r\n      " + getSet() + "\r\nWHERE\r\n    " + getWhere();
         Map<String, Object> params = toMap(now, id);
         return Queries.regist(sql, params);
