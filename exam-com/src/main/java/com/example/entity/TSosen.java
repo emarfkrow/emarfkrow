@@ -297,7 +297,12 @@ public class TSosen implements IEntity {
             }
         }
 
-        // 祖先の登録
+        String sql = "UPDATE t_sosen\r\nSET\r\n      " + getSet() + "\r\nWHERE\r\n    " + getWhere();
+        Map<String, Object> params = toMap(now, id);
+        return Queries.regist(sql, params);
+    }
+
+    private String getSet() {
         List<String> setList = new ArrayList<String>();
         setList.add("sosen_id = :sosen_id");
         setList.add("sosen_mei = :sosen_mei");
@@ -305,12 +310,7 @@ public class TSosen implements IEntity {
         setList.add("update_by = :update_by");
         setList.add("delete_f = :delete_f");
         String set = String.join("\r\n    , ", setList);
-
-        String sql = "UPDATE t_sosen\r\nSET\r\n      " + set + "\r\nWHERE\r\n    " + getWhere();
-
-        Map<String, Object> params = toMap(now, id);
-
-        return Queries.regist(sql, params);
+        return set;
     }
 
     /**

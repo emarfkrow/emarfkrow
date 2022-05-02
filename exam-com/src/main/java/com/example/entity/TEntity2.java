@@ -682,7 +682,12 @@ public class TEntity2 implements IEntity {
      */
     public int update(final LocalDateTime now, final String id) {
 
-        // エンティティ２の登録
+        String sql = "UPDATE t_entity2\r\nSET\r\n      " + getSet() + "\r\nWHERE\r\n    " + getWhere();
+        Map<String, Object> params = toMap(now, id);
+        return Queries.regist(sql, params);
+    }
+
+    private String getSet() {
         List<String> setList = new ArrayList<String>();
         setList.add("sosen_id = :sosen_id");
         setList.add("oya_sn = :oya_sn");
@@ -707,12 +712,7 @@ public class TEntity2 implements IEntity {
         setList.add("update_by = :update_by");
         setList.add("delete_f = :delete_f");
         String set = String.join("\r\n    , ", setList);
-
-        String sql = "UPDATE t_entity2\r\nSET\r\n      " + set + "\r\nWHERE\r\n    " + getWhere();
-
-        Map<String, Object> params = toMap(now, id);
-
-        return Queries.regist(sql, params);
+        return set;
     }
 
     /**

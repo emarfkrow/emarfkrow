@@ -268,7 +268,12 @@ public class MSansho1 implements IEntity {
      */
     public int update(final LocalDateTime now, final String id) {
 
-        // 参照１マスタの登録
+        String sql = "UPDATE m_sansho1\r\nSET\r\n      " + getSet() + "\r\nWHERE\r\n    " + getWhere();
+        Map<String, Object> params = toMap(now, id);
+        return Queries.regist(sql, params);
+    }
+
+    private String getSet() {
         List<String> setList = new ArrayList<String>();
         setList.add("sansho1_id = :sansho1_id");
         setList.add("sansho1_mei = :sansho1_mei");
@@ -276,12 +281,7 @@ public class MSansho1 implements IEntity {
         setList.add("update_by = :update_by");
         setList.add("delete_f = :delete_f");
         String set = String.join("\r\n    , ", setList);
-
-        String sql = "UPDATE m_sansho1\r\nSET\r\n      " + set + "\r\nWHERE\r\n    " + getWhere();
-
-        Map<String, Object> params = toMap(now, id);
-
-        return Queries.regist(sql, params);
+        return set;
     }
 
     /**

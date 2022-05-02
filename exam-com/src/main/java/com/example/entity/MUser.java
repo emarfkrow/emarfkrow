@@ -337,7 +337,12 @@ public class MUser implements IEntity {
      */
     public int update(final LocalDateTime now, final String id) {
 
-        // ユーザマスタの登録
+        String sql = "UPDATE m_user\r\nSET\r\n      " + getSet() + "\r\nWHERE\r\n    " + getWhere();
+        Map<String, Object> params = toMap(now, id);
+        return Queries.regist(sql, params);
+    }
+
+    private String getSet() {
         List<String> setList = new ArrayList<String>();
         setList.add("user_id = :user_id");
         setList.add("user_sei = :user_sei");
@@ -348,12 +353,7 @@ public class MUser implements IEntity {
         setList.add("update_by = :update_by");
         setList.add("delete_f = :delete_f");
         String set = String.join("\r\n    , ", setList);
-
-        String sql = "UPDATE m_user\r\nSET\r\n      " + set + "\r\nWHERE\r\n    " + getWhere();
-
-        Map<String, Object> params = toMap(now, id);
-
-        return Queries.regist(sql, params);
+        return set;
     }
 
     /**

@@ -338,6 +338,12 @@ public class MBusho implements IEntity {
     public int update(final LocalDateTime now, final String id) {
 
         // 部署マスタの登録
+        String sql = "UPDATE m_busho\r\nSET\r\n      " + getSet() + "\r\nWHERE\r\n    " + getWhere();
+        Map<String, Object> params = toMap(now, id);
+        return Queries.regist(sql, params);
+    }
+
+    private String getSet() {
         List<String> setList = new ArrayList<String>();
         setList.add("busho_id = :busho_id");
         setList.add("busho_mei = :busho_mei");
@@ -348,12 +354,7 @@ public class MBusho implements IEntity {
         setList.add("update_by = :update_by");
         setList.add("delete_f = :delete_f");
         String set = String.join("\r\n    , ", setList);
-
-        String sql = "UPDATE m_busho\r\nSET\r\n      " + set + "\r\nWHERE\r\n    " + getWhere();
-
-        Map<String, Object> params = toMap(now, id);
-
-        return Queries.regist(sql, params);
+        return set;
     }
 
     /**

@@ -611,6 +611,14 @@ public final class BeanGenerator {
         }
         s.add("");
         s.add("        // " + tableInfo.getRemarks() + "の登録");
+        s.add("        String sql = \"UPDATE " + tableName
+                + "\\r\\nSET\\r\\n      \" + getSet() + \"\\r\\nWHERE\\r\\n    \" + getWhere();");
+        s.add("        Map<String, Object> params = toMap(now, id);");
+        s.add("        return Queries.regist(sql, params);");
+        s.add("    }");
+
+        s.add("");
+        s.add("    private String getSet() {");
         s.add("        List<String> setList = new ArrayList<String>();");
         for (String columnName : tableInfo.getColumnInfos().keySet()) {
             columnName = columnName.toLowerCase();
@@ -619,13 +627,7 @@ public final class BeanGenerator {
             }
         }
         s.add("        String set = String.join(\"\\r\\n    , \", setList);");
-        s.add("");
-        s.add("        String sql = \"UPDATE " + tableName
-                + "\\r\\nSET\\r\\n      \" + set + \"\\r\\nWHERE\\r\\n    \" + getWhere();");
-        s.add("");
-        s.add("        Map<String, Object> params = toMap(now, id);");
-        s.add("");
-        s.add("        return Queries.regist(sql, params);");
+        s.add("        return set;");
         s.add("    }");
     }
 

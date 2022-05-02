@@ -337,7 +337,12 @@ public class MShokui implements IEntity {
      */
     public int update(final LocalDateTime now, final String id) {
 
-        // 職位マスタの登録
+        String sql = "UPDATE m_shokui\r\nSET\r\n      " + getSet() + "\r\nWHERE\r\n    " + getWhere();
+        Map<String, Object> params = toMap(now, id);
+        return Queries.regist(sql, params);
+    }
+
+    private String getSet() {
         List<String> setList = new ArrayList<String>();
         setList.add("shokui_id = :shokui_id");
         setList.add("shokui_mei = :shokui_mei");
@@ -348,12 +353,7 @@ public class MShokui implements IEntity {
         setList.add("update_by = :update_by");
         setList.add("delete_f = :delete_f");
         String set = String.join("\r\n    , ", setList);
-
-        String sql = "UPDATE m_shokui\r\nSET\r\n      " + set + "\r\nWHERE\r\n    " + getWhere();
-
-        Map<String, Object> params = toMap(now, id);
-
-        return Queries.regist(sql, params);
+        return set;
     }
 
     /**
