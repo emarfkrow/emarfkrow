@@ -5,7 +5,6 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import jakarta.validation.constraints.Size;
 import jp.co.golorp.emarf.process.BaseProcess;
 import jp.co.golorp.emarf.validation.IForm;
 
@@ -20,7 +19,7 @@ public class TEntity2RegistForm implements IForm {
     private static final Logger LOG = LoggerFactory.getLogger(TEntity2RegistForm.class);
 
     /** 祖先ID */
-    @Size(max = 10)
+    @jakarta.validation.constraints.Size(max = 10)
     private String sosenId;
 
     /**
@@ -38,7 +37,7 @@ public class TEntity2RegistForm implements IForm {
     }
 
     /** 親連番 */
-    @Size(max = 10)
+    @jakarta.validation.constraints.Size(max = 10)
     private String oyaSn;
 
     /**
@@ -56,7 +55,7 @@ public class TEntity2RegistForm implements IForm {
     }
 
     /** エンティティ連番 */
-    @Size(max = 10)
+    @jakarta.validation.constraints.Size(max = 10)
     private String entitySn;
 
     /**
@@ -74,7 +73,7 @@ public class TEntity2RegistForm implements IForm {
     }
 
     /** 任意エンティティ２名 */
-    @Size(max = 20)
+    @jakarta.validation.constraints.Size(max = 20)
     private String nullEntity2Mei;
 
     /**
@@ -93,7 +92,7 @@ public class TEntity2RegistForm implements IForm {
 
     /** エンティティ２名 */
     @jakarta.validation.constraints.NotBlank
-    @Size(max = 30)
+    @jakarta.validation.constraints.Size(max = 30)
     private String entity2Mei;
 
     /**
@@ -112,7 +111,7 @@ public class TEntity2RegistForm implements IForm {
 
     /** チェックフラグ */
     @jakarta.validation.constraints.NotBlank
-    @Size(max = 1)
+    @jakarta.validation.constraints.Size(max = 1)
     private String checkF;
 
     /**
@@ -131,7 +130,7 @@ public class TEntity2RegistForm implements IForm {
 
     /** ラジオ区分 */
     @jakarta.validation.constraints.NotBlank
-    @Size(max = 2)
+    @jakarta.validation.constraints.Size(max = 2)
     private String radioKb;
 
     /**
@@ -150,7 +149,7 @@ public class TEntity2RegistForm implements IForm {
 
     /** プルダウン区分 */
     @jakarta.validation.constraints.NotBlank
-    @Size(max = 2)
+    @jakarta.validation.constraints.Size(max = 2)
     private String pulldownKb;
 
     /**
@@ -169,7 +168,7 @@ public class TEntity2RegistForm implements IForm {
 
     /** メモ */
     @jakarta.validation.constraints.NotBlank
-    @Size(max = 200)
+    @jakarta.validation.constraints.Size(max = 200)
     private String memoTx;
 
     /**
@@ -377,7 +376,7 @@ public class TEntity2RegistForm implements IForm {
     }
 
     /** 削除フラグ */
-    @Size(max = 1)
+    @jakarta.validation.constraints.Size(max = 1)
     private String deleteF;
 
     /**

@@ -5,7 +5,6 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import jakarta.validation.constraints.Size;
 import jp.co.golorp.emarf.process.BaseProcess;
 import jp.co.golorp.emarf.validation.IForm;
 
@@ -20,7 +19,7 @@ public class MUserRegistForm implements IForm {
     private static final Logger LOG = LoggerFactory.getLogger(MUserRegistForm.class);
 
     /** ユーザID */
-    @Size(max = 10)
+    @jakarta.validation.constraints.Size(max = 10)
     private String userId;
 
     /**
@@ -39,7 +38,7 @@ public class MUserRegistForm implements IForm {
 
     /** ユーザ姓 */
     @jakarta.validation.constraints.NotBlank
-    @Size(max = 30)
+    @jakarta.validation.constraints.Size(max = 30)
     private String userSei;
 
     /**
@@ -58,7 +57,7 @@ public class MUserRegistForm implements IForm {
 
     /** ユーザ名 */
     @jakarta.validation.constraints.NotBlank
-    @Size(max = 30)
+    @jakarta.validation.constraints.Size(max = 30)
     private String userMei;
 
     /**
@@ -77,7 +76,7 @@ public class MUserRegistForm implements IForm {
 
     /** メールアドレス */
     @jakarta.validation.constraints.NotBlank
-    @Size(max = 200)
+    @jakarta.validation.constraints.Size(max = 200)
     private String email;
 
     /**
@@ -96,7 +95,7 @@ public class MUserRegistForm implements IForm {
 
     /** パスワード */
     @jakarta.validation.constraints.NotBlank
-    @Size(max = 200)
+    @jakarta.validation.constraints.Size(max = 200)
     private String password;
 
     /**
@@ -114,7 +113,7 @@ public class MUserRegistForm implements IForm {
     }
 
     /** 削除フラグ */
-    @Size(max = 1)
+    @jakarta.validation.constraints.Size(max = 1)
     private String deleteF;
 
     /**

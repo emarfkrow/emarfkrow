@@ -1387,7 +1387,6 @@ public final class BeanGenerator {
             s.add("import org.slf4j.Logger;");
             s.add("import org.slf4j.LoggerFactory;");
             s.add("");
-            s.add("import jakarta.validation.constraints.Size;");
             s.add("import jp.co.golorp.emarf.process.BaseProcess;");
             s.add("import jp.co.golorp.emarf.validation.IForm;");
             s.add("");
@@ -1534,7 +1533,7 @@ public final class BeanGenerator {
                 s.add("    @jakarta.validation.constraints.Pattern(regexp = \"" + re + "\")");
             } catch (Exception e) {
                 // 上記以外の場合
-                s.add("    @Size(max = " + columnSize + ")");
+                s.add("    @jakarta.validation.constraints.Size(max = " + columnSize + ")");
             }
         }
     }

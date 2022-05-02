@@ -5,7 +5,6 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import jakarta.validation.constraints.Size;
 import jp.co.golorp.emarf.process.BaseProcess;
 import jp.co.golorp.emarf.validation.IForm;
 
@@ -20,7 +19,7 @@ public class TTenpuFileRegistForm implements IForm {
     private static final Logger LOG = LoggerFactory.getLogger(TTenpuFileRegistForm.class);
 
     /** 祖先ID */
-    @Size(max = 10)
+    @jakarta.validation.constraints.Size(max = 10)
     private String sosenId;
 
     /**
@@ -38,7 +37,7 @@ public class TTenpuFileRegistForm implements IForm {
     }
 
     /** 親連番 */
-    @Size(max = 10)
+    @jakarta.validation.constraints.Size(max = 10)
     private String oyaSn;
 
     /**
@@ -56,7 +55,7 @@ public class TTenpuFileRegistForm implements IForm {
     }
 
     /** エンティティ連番 */
-    @Size(max = 10)
+    @jakarta.validation.constraints.Size(max = 10)
     private String entitySn;
 
     /**
@@ -74,7 +73,7 @@ public class TTenpuFileRegistForm implements IForm {
     }
 
     /** 添付ファイル連番 */
-    @Size(max = 10)
+    @jakarta.validation.constraints.Size(max = 10)
     private String tenpuFileSn;
 
     /**
@@ -93,7 +92,7 @@ public class TTenpuFileRegistForm implements IForm {
 
     /** 添付ファイル名 */
     @jakarta.validation.constraints.NotBlank
-    @Size(max = 30)
+    @jakarta.validation.constraints.Size(max = 30)
     private String tenpuFileMei;
 
     /**
@@ -112,7 +111,7 @@ public class TTenpuFileRegistForm implements IForm {
 
     /** 添付ファイル */
     @jakarta.validation.constraints.NotBlank
-    @Size(max = 200)
+    @jakarta.validation.constraints.Size(max = 200)
     private String tenpuFile;
 
     /**
@@ -130,7 +129,7 @@ public class TTenpuFileRegistForm implements IForm {
     }
 
     /** 削除フラグ */
-    @Size(max = 1)
+    @jakarta.validation.constraints.Size(max = 1)
     private String deleteF;
 
     /**

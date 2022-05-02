@@ -5,7 +5,6 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import jakarta.validation.constraints.Size;
 import jp.co.golorp.emarf.process.BaseProcess;
 import jp.co.golorp.emarf.validation.IForm;
 
@@ -21,7 +20,7 @@ public class MCodeValueRegistForm implements IForm {
 
     /** コード名称 */
     @jakarta.validation.constraints.NotBlank
-    @Size(max = 20)
+    @jakarta.validation.constraints.Size(max = 20)
     private String codeNm;
 
     /**
@@ -40,7 +39,7 @@ public class MCodeValueRegistForm implements IForm {
 
     /** コード値 */
     @jakarta.validation.constraints.NotBlank
-    @Size(max = 2)
+    @jakarta.validation.constraints.Size(max = 2)
     private String codeValue;
 
     /**
@@ -59,7 +58,7 @@ public class MCodeValueRegistForm implements IForm {
 
     /** コード値名 */
     @jakarta.validation.constraints.NotBlank
-    @Size(max = 30)
+    @jakarta.validation.constraints.Size(max = 30)
     private String codeValueMei;
 
     /**
@@ -78,7 +77,7 @@ public class MCodeValueRegistForm implements IForm {
 
     /** 表示順 */
     @jakarta.validation.constraints.NotBlank
-    @Size(max = 10)
+    @jakarta.validation.constraints.Size(max = 10)
     private String hyojiJun;
 
     /**
@@ -96,7 +95,7 @@ public class MCodeValueRegistForm implements IForm {
     }
 
     /** 取得条件 */
-    @Size(max = 200)
+    @jakarta.validation.constraints.Size(max = 200)
     private String criteria;
 
     /**
@@ -114,7 +113,7 @@ public class MCodeValueRegistForm implements IForm {
     }
 
     /** 削除フラグ */
-    @Size(max = 1)
+    @jakarta.validation.constraints.Size(max = 1)
     private String deleteF;
 
     /**

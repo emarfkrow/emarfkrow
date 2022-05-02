@@ -6,7 +6,6 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import jakarta.validation.constraints.Size;
 import jp.co.golorp.emarf.process.BaseProcess;
 import jp.co.golorp.emarf.validation.IForm;
 
@@ -21,7 +20,7 @@ public class TKoRegistForm implements IForm {
     private static final Logger LOG = LoggerFactory.getLogger(TKoRegistForm.class);
 
     /** 祖先ID */
-    @Size(max = 10)
+    @jakarta.validation.constraints.Size(max = 10)
     private String sosenId;
 
     /**
@@ -39,7 +38,7 @@ public class TKoRegistForm implements IForm {
     }
 
     /** 親連番 */
-    @Size(max = 10)
+    @jakarta.validation.constraints.Size(max = 10)
     private String oyaSn;
 
     /**
@@ -57,7 +56,7 @@ public class TKoRegistForm implements IForm {
     }
 
     /** エンティティ連番 */
-    @Size(max = 10)
+    @jakarta.validation.constraints.Size(max = 10)
     private String entitySn;
 
     /**
@@ -75,7 +74,7 @@ public class TKoRegistForm implements IForm {
     }
 
     /** 子連番 */
-    @Size(max = 10)
+    @jakarta.validation.constraints.Size(max = 10)
     private String koSn;
 
     /**
@@ -94,7 +93,7 @@ public class TKoRegistForm implements IForm {
 
     /** 子名 */
     @jakarta.validation.constraints.NotBlank
-    @Size(max = 30)
+    @jakarta.validation.constraints.Size(max = 30)
     private String koMei;
 
     /**
@@ -112,7 +111,7 @@ public class TKoRegistForm implements IForm {
     }
 
     /** 削除フラグ */
-    @Size(max = 1)
+    @jakarta.validation.constraints.Size(max = 1)
     private String deleteF;
 
     /**

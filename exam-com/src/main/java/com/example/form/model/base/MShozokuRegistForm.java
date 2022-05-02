@@ -5,7 +5,6 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import jakarta.validation.constraints.Size;
 import jp.co.golorp.emarf.process.BaseProcess;
 import jp.co.golorp.emarf.validation.IForm;
 
@@ -20,7 +19,7 @@ public class MShozokuRegistForm implements IForm {
     private static final Logger LOG = LoggerFactory.getLogger(MShozokuRegistForm.class);
 
     /** 部署ID */
-    @Size(max = 10)
+    @jakarta.validation.constraints.Size(max = 10)
     private String bushoId;
 
     /**
@@ -38,7 +37,7 @@ public class MShozokuRegistForm implements IForm {
     }
 
     /** 職位ID */
-    @Size(max = 10)
+    @jakarta.validation.constraints.Size(max = 10)
     private String shokuiId;
 
     /**
@@ -56,7 +55,7 @@ public class MShozokuRegistForm implements IForm {
     }
 
     /** ユーザID */
-    @Size(max = 10)
+    @jakarta.validation.constraints.Size(max = 10)
     private String userId;
 
     /**
@@ -110,7 +109,7 @@ public class MShozokuRegistForm implements IForm {
     }
 
     /** 削除フラグ */
-    @Size(max = 1)
+    @jakarta.validation.constraints.Size(max = 1)
     private String deleteF;
 
     /**

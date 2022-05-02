@@ -6,7 +6,6 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import jakarta.validation.constraints.Size;
 import jp.co.golorp.emarf.process.BaseProcess;
 import jp.co.golorp.emarf.validation.IForm;
 
@@ -21,7 +20,7 @@ public class TOyaRegistForm implements IForm {
     private static final Logger LOG = LoggerFactory.getLogger(TOyaRegistForm.class);
 
     /** 祖先ID */
-    @Size(max = 10)
+    @jakarta.validation.constraints.Size(max = 10)
     private String sosenId;
 
     /**
@@ -39,7 +38,7 @@ public class TOyaRegistForm implements IForm {
     }
 
     /** 親連番 */
-    @Size(max = 10)
+    @jakarta.validation.constraints.Size(max = 10)
     private String oyaSn;
 
     /**
@@ -58,7 +57,7 @@ public class TOyaRegistForm implements IForm {
 
     /** 親名 */
     @jakarta.validation.constraints.NotBlank
-    @Size(max = 30)
+    @jakarta.validation.constraints.Size(max = 30)
     private String oyaMei;
 
     /**
@@ -76,7 +75,7 @@ public class TOyaRegistForm implements IForm {
     }
 
     /** 削除フラグ */
-    @Size(max = 1)
+    @jakarta.validation.constraints.Size(max = 1)
     private String deleteF;
 
     /**

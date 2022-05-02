@@ -223,6 +223,11 @@ public final class DataSources {
                 ResultSet primaryKeys = metaData.getPrimaryKeys(null, null, tableInfo.getTableName());
                 while (primaryKeys.next()) {
                     String columnName = primaryKeys.getString("COLUMN_NAME");
+
+                    if (columnName.equals("ABSTRACT") || !columnName.matches("^[0-9A-Za-z\\_\\-]+$")) {
+                        continue;
+                    }
+
                     short keySeq = primaryKeys.getShort("KEY_SEQ");
                     while (pkList.size() <= keySeq) {
                         pkList.add("");
@@ -445,7 +450,7 @@ public final class DataSources {
                 }
                 ColumnInfo lastPKInfo = destInfo.getColumnInfos()
                         .get(destInfo.getPrimaryKeys().get(destInfo.getPrimaryKeys().size() - 1));
-                if (!lastPKInfo.isNumbering()) {
+                if (!lastPKInfo.isNumbering() || lastPKInfo.getTypeName().equals("CHAR")) {
                     continue;
                 }
 
