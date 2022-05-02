@@ -203,7 +203,7 @@ let Base = {
 		});
 
 		// 検索条件のトグル
-		let $h2 = $('form.search').parent().find('h2');
+		let $h2 = $('body>div>form.search').parent().find('h2');
 		$h2.html('<span id="h2Toggle" class="ui-accordion-header-icon ui-icon ui-icon-triangle-1-s"></span>' + $h2.html());
 		$h2.css('width', 'fit-content');
 		$(document).on('click', 'h2', function() {
@@ -214,7 +214,7 @@ let Base = {
 				$('[id="h2Toggle"]').addClass('ui-icon-triangle-1-s');
 				$('[id="h2Toggle"]').removeClass('ui-icon-triangle-1-e');
 			}
-			$('form.search').toggle(500, function() {
+			$(this).find('~form.search').toggle(500, function() {
 				Base.resizeNav();
 			});
 		});
