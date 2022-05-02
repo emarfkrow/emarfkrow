@@ -280,8 +280,13 @@ public final class BeanGenerator {
         String getParams = "";
         for (String pk : tableInfo.getPrimaryKeys()) {
             if (pk.length() > 0) {
-                String columnRemarks = tableInfo.getColumnInfos().get(pk).getRemarks();
-                s.add("     * @param param" + ++i + " " + columnRemarks);
+                String columnRemarks = "";
+                if (tableInfo.getColumnInfos() != null && tableInfo.getColumnInfos().size() > 0) {
+                    if (tableInfo.getColumnInfos().containsKey(pk)) {
+                        columnRemarks = " " + tableInfo.getColumnInfos().get(pk).getRemarks();
+                    }
+                }
+                s.add("     * @param param" + ++i + columnRemarks);
                 if (getParams.length() > 0) {
                     getParams += ", ";
                 }
@@ -395,7 +400,7 @@ public final class BeanGenerator {
             List<String> primaryKeys = tableInfo.getPrimaryKeys();
             String lastKey = primaryKeys.get(primaryKeys.size() - 1);
             lastKeyInfo = tableInfo.getColumnInfos().get(lastKey);
-            if (lastKeyInfo.isNumbering()) {
+            if (lastKeyInfo != null && lastKeyInfo.isNumbering()) {
                 s.add("");
                 s.add("        // " + lastKeyInfo.getRemarks() + "の採番処理");
                 s.add("        numbering();");

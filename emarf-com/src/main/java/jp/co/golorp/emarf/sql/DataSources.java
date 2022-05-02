@@ -253,7 +253,7 @@ public final class DataSources {
                     ColumnInfo columnInfo = new ColumnInfo();
                     String columnName = columns.getString("COLUMN_NAME");
 
-                    if (columnName.equals("ABSTRACT")) {
+                    if (columnName.equals("ABSTRACT") || !columnName.matches("^[0-9A-Za-z\\_\\-]+$")) {
                         continue;
                     }
 
@@ -428,13 +428,24 @@ public final class DataSources {
                 String srcNonPrimaryKeys = srcInfo.getNonPrimaryKeys().toString().replaceAll("[\\[\\]]", "");
                 String destNonPrimaryKeys = destInfo.getNonPrimaryKeys().toString().replaceAll("[\\[\\]]", "");
 
+                // キー以外が合致しなければスキップ
                 if (!srcNonPrimaryKeys.equals(destNonPrimaryKeys)) {
                     continue;
                 }
+                // 比較先が比較元の主キーと同じ組み合わせならスキップ
+                if (destPrimaryKeys.equals(srcPrimaryKeys)) {
+                    continue;
+                }
+                // 比較先が比較元の主キーと同じ組み合わせでスタートしなければスキップ
                 if (!destPrimaryKeys.startsWith(srcPrimaryKeys)) {
                     continue;
                 }
                 if (destPrimaryKeys.replaceAll(srcPrimaryKeys + ", ", "").split(",").length != 1) {
+                    continue;
+                }
+                ColumnInfo lastPKInfo = destInfo.getColumnInfos()
+                        .get(destInfo.getPrimaryKeys().get(destInfo.getPrimaryKeys().size() - 1));
+                if (!lastPKInfo.isNumbering()) {
                     continue;
                 }
 

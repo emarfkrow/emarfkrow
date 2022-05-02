@@ -157,7 +157,7 @@ public final class HtmlGenerator {
         int numberingCount = 0;
         for (String primaryKey : tableInfo.getPrimaryKeys()) {
             ColumnInfo primaryKeyInfo = tableInfo.getColumnInfos().get(primaryKey);
-            if (primaryKeyInfo.isNumbering() && primaryKeyInfo.getReferInfo() == null) {
+            if (primaryKeyInfo != null && primaryKeyInfo.isNumbering() && primaryKeyInfo.getReferInfo() == null) {
                 ++numberingCount;
             }
         }
