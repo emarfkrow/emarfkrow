@@ -68,32 +68,40 @@ public final class ServletUtil {
                 return (BaseAction) c.newInstance();
             } catch (Exception e1) {
 
-                if (actionName.endsWith("SearchAction")) {
-                    className = "jp.co.golorp.emarf.action.SearchAction";
-                    try {
-                        Class<?> c = Class.forName(className);
-                        return (BaseAction) c.newInstance();
-                    } catch (Exception e2) {
+                // モデルのベースパッケージからもとってみる
+                className = actionPackage + ".model.base." + actionName;
+                try {
+                    Class<?> c = Class.forName(className);
+                    return (BaseAction) c.newInstance();
+                } catch (Exception e2) {
+
+                    if (actionName.endsWith("SearchAction")) {
+                        className = "jp.co.golorp.emarf.action.SearchAction";
+                        try {
+                            Class<?> c = Class.forName(className);
+                            return (BaseAction) c.newInstance();
+                        } catch (Exception e3) {
+                            throw new SysError(e);
+                        }
+                    } else if (actionName.endsWith("GetAction")) {
+                        className = "jp.co.golorp.emarf.action.GetAction";
+                        try {
+                            Class<?> c = Class.forName(className);
+                            return (BaseAction) c.newInstance();
+                        } catch (Exception e3) {
+                            throw new SysError(e);
+                        }
+                    } else if (actionName.endsWith("DownloadAction")) {
+                        className = "jp.co.golorp.emarf.action.DownloadAction";
+                        try {
+                            Class<?> c = Class.forName(className);
+                            return (BaseAction) c.newInstance();
+                        } catch (Exception e3) {
+                            throw new SysError(e);
+                        }
+                    } else {
                         throw new SysError(e);
                     }
-                } else if (actionName.endsWith("GetAction")) {
-                    className = "jp.co.golorp.emarf.action.GetAction";
-                    try {
-                        Class<?> c = Class.forName(className);
-                        return (BaseAction) c.newInstance();
-                    } catch (Exception e2) {
-                        throw new SysError(e);
-                    }
-                } else if (actionName.endsWith("DownloadAction")) {
-                    className = "jp.co.golorp.emarf.action.DownloadAction";
-                    try {
-                        Class<?> c = Class.forName(className);
-                        return (BaseAction) c.newInstance();
-                    } catch (Exception e2) {
-                        throw new SysError(e);
-                    }
-                } else {
-                    throw new SysError(e);
                 }
             }
         }
