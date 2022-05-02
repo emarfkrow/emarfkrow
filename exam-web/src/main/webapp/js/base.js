@@ -11,10 +11,10 @@ $(function() {
 
 	console.debug('Base init.');
 
+	// 画面の参照権限のチェック
 	let href = window.document.location.href;
-	let gamenId = href = href.replace(/.+\//, '').replace(/\.html/, '');
-	let authzInfo = JSON.parse(sessionStorage['authzInfo']);
-	if (gamenId != '' && (!authzInfo[gamenId] || authzInfo[gamenId] < 1)) {
+	if (Base.getAuthz(href) < 1) {
+		alert(Messages['error.authz.view']);
 		window.document.location.href = '../';
 	}
 
@@ -118,11 +118,55 @@ let Base = {
 		}
 	},
 
+	getAuthz: function(href) {
+
+		let authz = '';
+
+		let gamenId = href.replace(/.+\//, '').replace(/\?.+/, '').replace(/\.html/, '');
+		gamenId = gamenId.replace(/(Search|Get)/, '').replace(/\.xlsx/, '');
+		gamenId = gamenId.replace(/(Search|Regist)/, '').replace(/Form/, '');
+
+		if (gamenId == '') {
+			return '1';
+		}
+		if (gamenId == 'login') {
+			return '1';
+		}
+		if (sessionStorage['authzInfo']) {
+			let authzInfo = JSON.parse(sessionStorage['authzInfo']);
+			let matchLength = 0;
+			for (let gamenNm in authzInfo) {
+				if (gamenId.match('^' + gamenNm + '.*')) {
+					if (matchLength <= gamenNm.length) {
+						matchLength = gamenNm.length;
+						authz = authzInfo[gamenNm];
+					}
+				}
+			}
+		}
+
+		return authz;
+	},
+
 	init: function() {
 
 		// buttonスタイル適用
 		$('button, .nav a, .article a').button();
 		$('.article fieldset a').css('padding', 0);
+
+		// 画面の更新権限のチェック
+		$('form[name]').each(function() {
+			if (Base.getAuthz(this.name) < 2) {
+				$(this).find('button.delete, button.regist').hide();
+			}
+		});
+
+		// リンクの認可処理
+		$('.nav a, .article a').each(function() {
+			if (Base.getAuthz(this.href) < 1) {
+				$(this).button('option', 'disabled', true);
+			}
+		});
 
 		// maxlengthに応じて幅調整
 		$('[maxlength]').each(function() {

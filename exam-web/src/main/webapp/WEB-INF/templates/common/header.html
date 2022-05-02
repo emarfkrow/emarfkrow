@@ -10,7 +10,7 @@
         <span id="timestamp">&nbsp;</span>
       </div>
       <div>
-        <span id="userId" th:text="${#session.getAttribute('AUTHN_INFO')['USER_ID']}"></span>：<span id="userSei" th:text="${#session.getAttribute('AUTHN_INFO')['USER_SEI']}"></span>&nbsp;<span id="userSei" th:text="${#session.getAttribute('AUTHN_INFO')['USER_MEI']}"></span>
+        <span id="userId" th:text="${#session.getAttribute('AUTHN_INFO')['userId']}"></span>：<span id="userSei" th:text="${#session.getAttribute('AUTHN_INFO')['userSei']}"></span>&nbsp;<span id="userMei" th:text="${#session.getAttribute('AUTHN_INFO')['userMei']}"></span>
       </div>
       <form id="logout" method="post" th:action="@{/logout}">
         <button th:text="#{header.logout}"></button>

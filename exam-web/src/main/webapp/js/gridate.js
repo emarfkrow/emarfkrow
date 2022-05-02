@@ -258,6 +258,14 @@ $(function() {
 					//let entityName = gridId.replace(/[^\.]+\./, '').replace(/Grid$/, '');
 					let entityName = $gridDiv.attr('data-href').replace(/(^.+\/|\.html$)/g, '');
 
+					if (Base.getAuthz(entityName) < 1) {
+						e.preventDefault();
+						e.stopPropagation();
+						e.stopImmediatePropagation();
+						alert(Messages['error.authz.view']);
+						return;
+					}
+
 					if (e.target.id) {
 						let href = entityName + 'Download.link?name=' + e.target.id;
 

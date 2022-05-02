@@ -92,11 +92,13 @@ $(function() {
 		let $items = $(Nextize.selector);
 		let j = $items.index(entered) + 1;
 		let next = $items[j];
-		next.focus();
+		if (next) {
+			next.focus();
 
-		// 次要素がテキストボックスなら入力文字を全選択
-		if (next.tagName === 'INPUT' && (!$(next).prop('type') || $(next).prop('type') === 'text')) {
-			next.select();
+			// 次要素がテキストボックスなら入力文字を全選択
+			if (next.tagName === 'INPUT' && (!$(next).prop('type') || $(next).prop('type') === 'text')) {
+				next.select();
+			}
 		}
 	});
 });
