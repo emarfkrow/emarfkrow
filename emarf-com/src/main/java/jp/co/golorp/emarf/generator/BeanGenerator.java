@@ -457,19 +457,21 @@ public final class BeanGenerator {
         }
         s.add("        String name = String.join(\"\\r\\n    , \", nameList);");
         s.add("");
+        s.add("        String sql = \"INSERT INTO " + tableName
+                + "(\\r\\n      \" + name + \"\\r\\n) VALUES (\\r\\n      \" + getValues() + \"\\r\\n); \";");
+        s.add("");
+        s.add("        Map<String, Object> params = toMap(now, id);");
+        s.add("");
+        s.add("        return Queries.regist(sql, params);");
+        s.add("    }");
+        s.add("");
+        s.add("    private String getValues() {");
         s.add("        List<String> valueList = new ArrayList<String>();");
         for (String columnName : tableInfo.getColumnInfos().keySet()) {
             columnName = columnName.toLowerCase();
             s.add("        valueList.add(\":" + columnName + "\");");
         }
-        s.add("        String value = String.join(\"\\r\\n    , \", valueList);");
-        s.add("");
-        s.add("        String sql = \"INSERT INTO " + tableName
-                + "(\\r\\n      \" + name + \"\\r\\n) VALUES (\\r\\n      \" + value + \"\\r\\n); \";");
-        s.add("");
-        s.add("        Map<String, Object> params = toMap(now, id);");
-        s.add("");
-        s.add("        return Queries.regist(sql, params);");
+        s.add("        return String.join(\"\\r\\n    , \", valueList);");
         s.add("    }");
         if (lastKeyInfo != null && lastKeyInfo.isNumbering()) {
             String lastPk = tableInfo.getPrimaryKeys().get(tableInfo.getPrimaryKeys().size() - 1);

@@ -252,6 +252,11 @@ public final class DataSources {
                     // カラム情報を追加
                     ColumnInfo columnInfo = new ColumnInfo();
                     String columnName = columns.getString("COLUMN_NAME");
+
+                    if (columnName.equals("ABSTRACT")) {
+                        continue;
+                    }
+
                     columnInfos.put(columnName, columnInfo);
 
                     // カラム物理名

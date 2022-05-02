@@ -295,6 +295,14 @@ public class MShozoku implements IEntity {
         nameList.add("delete_f -- :delete_f");
         String name = String.join("\r\n    , ", nameList);
 
+        String sql = "INSERT INTO m_shozoku(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n); ";
+
+        Map<String, Object> params = toMap(now, id);
+
+        return Queries.regist(sql, params);
+    }
+
+    private String getValues() {
         List<String> valueList = new ArrayList<String>();
         valueList.add(":busho_id");
         valueList.add(":shokui_id");
@@ -306,13 +314,7 @@ public class MShozoku implements IEntity {
         valueList.add(":update_dt");
         valueList.add(":update_by");
         valueList.add(":delete_f");
-        String value = String.join("\r\n    , ", valueList);
-
-        String sql = "INSERT INTO m_shozoku(\r\n      " + name + "\r\n) VALUES (\r\n      " + value + "\r\n); ";
-
-        Map<String, Object> params = toMap(now, id);
-
-        return Queries.regist(sql, params);
+        return String.join("\r\n    , ", valueList);
     }
 
     /** ユーザIDの採番処理 */

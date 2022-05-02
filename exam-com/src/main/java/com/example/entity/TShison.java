@@ -323,6 +323,14 @@ public class TShison implements IEntity {
         nameList.add("delete_f -- :delete_f");
         String name = String.join("\r\n    , ", nameList);
 
+        String sql = "INSERT INTO t_shison(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n); ";
+
+        Map<String, Object> params = toMap(now, id);
+
+        return Queries.regist(sql, params);
+    }
+
+    private String getValues() {
         List<String> valueList = new ArrayList<String>();
         valueList.add(":sosen_id");
         valueList.add(":oya_sn");
@@ -335,13 +343,7 @@ public class TShison implements IEntity {
         valueList.add(":update_dt");
         valueList.add(":update_by");
         valueList.add(":delete_f");
-        String value = String.join("\r\n    , ", valueList);
-
-        String sql = "INSERT INTO t_shison(\r\n      " + name + "\r\n) VALUES (\r\n      " + value + "\r\n); ";
-
-        Map<String, Object> params = toMap(now, id);
-
-        return Queries.regist(sql, params);
+        return String.join("\r\n    , ", valueList);
     }
 
     /** 子孫連番の採番処理 */
