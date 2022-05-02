@@ -42,7 +42,7 @@ public final class StringUtil {
 
         // 大文字の次に小文字がある場合は大文字の前に「_」を挿入
         // password→password、EMAIL→EMAIL、sampleY_1→sample_Y_1、MUser→M_User）
-        snake = snake.replaceAll("([A-Z][a-z])", "_$1").replaceAll("^_", "").replaceAll("__", "_");
+        snake = snake.replaceAll("([A-Z][a-z])", "_$1").replaceAll("^_", "").replaceAll("__", "_").replaceAll("-", "_");
 
         return snake.toLowerCase();
     }

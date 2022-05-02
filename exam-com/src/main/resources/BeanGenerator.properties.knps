@@ -1,0 +1,71 @@
+# プログラムの自動生成を行うか
+BeanGenerator.generate               true
+# javaファイル出力のルートパス
+BeanGenerator.javaPath               src\\main\\java
+# entityクラスのパッケージ
+BeanGenerator.package.entity         com.example.entity
+# actionクラスのパッケージ
+BeanGenerator.package.action         com.example.action.model.base
+# formクラスのパッケージ
+BeanGenerator.package.form           com.example.form.model.base
+# 登録日時カラム名
+BeanGenerator.insert_dt              time_stamp_create
+# 登録者カラム名
+BeanGenerator.insert_by              user_id_create
+# 更新日時カラム名
+BeanGenerator.update_dt              time_stamp_change
+# 更新者カラム名
+BeanGenerator.update_by              user_id_change
+# コンパイルまで行うか
+BeanGenerator.compile                false
+
+# htmlファイル出力のルートパス
+BeanGenerator.htmlPath               src\\main\\resources\\META-INF\\resources\\WEB-INF\\templates\\model
+# 選択項目のサフィックス
+BeanGenerator.options.suffixs        _f,_kb
+# 選択項目取得URL
+BeanGenerator.options.json           MCodeValueSearch.json
+# 選択項目取得時のパラメータ名
+BeanGenerator.options.paramkey       code_nm
+# 選択項目取得時の値用カラム名
+BeanGenerator.options.value          CODE_VALUE
+# 選択項目取得時のラベル用カラム名
+BeanGenerator.options.label          CODE_VALUE_MEI
+# テキストエリア項目のサフィックス
+BeanGenerator.textarea.suffixs       _tx
+# 日付入力のサフィックス
+BeanGenerator.input.date.suffixs     _ymd
+# 日時入力のサフィックス
+BeanGenerator.input.datetime.suffixs _dt
+# 年月入力のサフィックス
+BeanGenerator.input.month.suffixs    _ym
+# 時刻入力のサフィックス
+BeanGenerator.input.time.suffixs     _hm
+# 検索画面で範囲指定となる項目のサフィックス
+BeanGenerator.input.range.suffixs    _ymd,_ym,_y,_m,_dt,_hm,_tm,_qt,_am
+# 検索画面で部分一致となる項目のサフィックス
+BeanGenerator.input.like.suffixs     _mei
+# 検索画面でnullを「0」として検索する項目のサフィックス
+BeanGenerator.input.flag.suffixs     _f
+# ファイル選択のサフィックス
+BeanGenerator.input.file.suffixs     _file
+
+# 参照モデルの名称列探索のために置換するID列のサフィックス
+BeanGenerator.refer.id.suffixs       _id
+# 参照モデルの名称列探索のために置換する名称列のサフィックス
+BeanGenerator.refer.mei.suffix       _mei
+
+# グリッド列ファイル出力のルートパス
+BeanGenerator.gridPath               src\\main\\resources\\META-INF\\resources\\model
+
+# SQLファイル出力のルートパス
+BeanGenerator.sqlPath                src\\main\\resources\\sql
+
+# formクラス内バリデータの正規表現
+BeanGenerator.valid.YMD              ([0-9]{4}(\\\\/|\\\\-)[0-9]{1,2}(\\\\/|\\\\-)[0-9]{1,2})?
+BeanGenerator.valid.YM               ([0-9]{4}(\\\\/|\\\\-)[0-9]{1,2})?
+BeanGenerator.valid.Y                ([0-9]{4})?
+BeanGenerator.valid.M                ([0-9]{2})?
+BeanGenerator.valid.DT               ([0-9]{13}|[0-9]{4}(\\\\/|\\\\-)[0-9]{1,2}(\\\\/|\\\\-)[0-9]{1,2}(T| )[0-9]{1,2}:[0-9]{1,2}(:[0-9]{1,2}(\\\\.[0-9]{3})?)?)?
+BeanGenerator.valid.HM               ([0-9]{1,2}:[0-9]{1,2})?
+BeanGenerator.valid.TM               ([0-9]{1,}:[0-9]{1,2})?

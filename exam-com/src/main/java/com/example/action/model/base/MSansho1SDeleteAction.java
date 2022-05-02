@@ -9,7 +9,6 @@ import com.example.entity.MSansho1;
 
 import jp.co.golorp.emarf.action.BaseAction;
 import jp.co.golorp.emarf.exception.OptLockError;
-import jp.co.golorp.emarf.lang.StringUtil;
 import jp.co.golorp.emarf.util.Messages;
 import jp.co.golorp.emarf.validation.FormValidator;
 
@@ -37,7 +36,7 @@ public class MSansho1SDeleteAction extends BaseAction {
         for (Map<String, Object> gridRow : gridData) {
 
             // 主キーが不足していたらエラー
-            if (StringUtil.isNullOrBlank(gridRow.get("SANSHO1_ID"))) {
+            if (jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(gridRow.get("SANSHO1_ID"))) {
                 throw new OptLockError("error.cant.delete");
             }
 

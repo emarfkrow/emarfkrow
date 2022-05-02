@@ -1,21 +1,12 @@
 package com.example.entity;
 
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
-
 import jp.co.golorp.emarf.entity.IEntity;
-import jp.co.golorp.emarf.lang.StringUtil;
 import jp.co.golorp.emarf.sql.Queries;
 
 /**
@@ -39,7 +30,7 @@ public class TOya implements IEntity {
      * @param o 祖先ID
      */
     public void setSosenId(final Object o) {
-        if (!StringUtil.isNullOrBlank(o)) {
+        if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {
             this.sosenId = Integer.valueOf(o.toString());
         } else {
             this.sosenId = null;
@@ -60,7 +51,7 @@ public class TOya implements IEntity {
      * @param o 親連番
      */
     public void setOyaSn(final Object o) {
-        if (!StringUtil.isNullOrBlank(o)) {
+        if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {
             this.oyaSn = Integer.valueOf(o.toString());
         } else {
             this.oyaSn = null;
@@ -81,7 +72,7 @@ public class TOya implements IEntity {
      * @param o 親名
      */
     public void setOyaMei(final Object o) {
-        if (!StringUtil.isNullOrBlank(o)) {
+        if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {
             this.oyaMei = String.valueOf(o.toString());
         } else {
             this.oyaMei = null;
@@ -89,9 +80,9 @@ public class TOya implements IEntity {
     }
 
     /** 登録日時 */
-    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
-    @JsonSerialize(using = LocalDateTimeSerializer.class)
-    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
+    @com.fasterxml.jackson.annotation.JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
+    @com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer.class)
+    @com.fasterxml.jackson.databind.annotation.JsonSerialize(using = com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer.class)
     private java.time.LocalDateTime insertDt;
 
     /**
@@ -106,12 +97,12 @@ public class TOya implements IEntity {
      */
     public void setInsertDt(final Object o) {
         if (o != null && o instanceof Long) {
-            Date d = new Date((Long) o);
-            this.insertDt = java.time.LocalDateTime.ofInstant(d.toInstant(), ZoneId.systemDefault());
+            java.util.Date d = new java.util.Date((Long) o);
+            this.insertDt = java.time.LocalDateTime.ofInstant(d.toInstant(), java.time.ZoneId.systemDefault());
         } else if (o != null && o.toString().matches("^[0-9]+")) {
-            Date d = new Date(Long.valueOf(o.toString()));
-            this.insertDt = java.time.LocalDateTime.ofInstant(d.toInstant(), ZoneId.systemDefault());
-        } else if (!StringUtil.isNullOrBlank(o)) {
+            java.util.Date d = new java.util.Date(Long.valueOf(o.toString()));
+            this.insertDt = java.time.LocalDateTime.ofInstant(d.toInstant(), java.time.ZoneId.systemDefault());
+        } else if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {
             this.insertDt = java.time.LocalDateTime.parse(o.toString());
         } else {
             this.insertDt = null;
@@ -132,7 +123,7 @@ public class TOya implements IEntity {
      * @param o 登録者
      */
     public void setInsertBy(final Object o) {
-        if (!StringUtil.isNullOrBlank(o)) {
+        if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {
             this.insertBy = String.valueOf(o.toString());
         } else {
             this.insertBy = null;
@@ -140,9 +131,9 @@ public class TOya implements IEntity {
     }
 
     /** 更新日時 */
-    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
-    @JsonSerialize(using = LocalDateTimeSerializer.class)
-    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
+    @com.fasterxml.jackson.annotation.JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
+    @com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer.class)
+    @com.fasterxml.jackson.databind.annotation.JsonSerialize(using = com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer.class)
     private java.time.LocalDateTime updateDt;
 
     /**
@@ -157,12 +148,12 @@ public class TOya implements IEntity {
      */
     public void setUpdateDt(final Object o) {
         if (o != null && o instanceof Long) {
-            Date d = new Date((Long) o);
-            this.updateDt = java.time.LocalDateTime.ofInstant(d.toInstant(), ZoneId.systemDefault());
+            java.util.Date d = new java.util.Date((Long) o);
+            this.updateDt = java.time.LocalDateTime.ofInstant(d.toInstant(), java.time.ZoneId.systemDefault());
         } else if (o != null && o.toString().matches("^[0-9]+")) {
-            Date d = new Date(Long.valueOf(o.toString()));
-            this.updateDt = java.time.LocalDateTime.ofInstant(d.toInstant(), ZoneId.systemDefault());
-        } else if (!StringUtil.isNullOrBlank(o)) {
+            java.util.Date d = new java.util.Date(Long.valueOf(o.toString()));
+            this.updateDt = java.time.LocalDateTime.ofInstant(d.toInstant(), java.time.ZoneId.systemDefault());
+        } else if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {
             this.updateDt = java.time.LocalDateTime.parse(o.toString());
         } else {
             this.updateDt = null;
@@ -183,7 +174,7 @@ public class TOya implements IEntity {
      * @param o 更新者
      */
     public void setUpdateBy(final Object o) {
-        if (!StringUtil.isNullOrBlank(o)) {
+        if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {
             this.updateBy = String.valueOf(o.toString());
         } else {
             this.updateBy = null;
@@ -204,7 +195,7 @@ public class TOya implements IEntity {
      * @param o 削除フラグ
      */
     public void setDeleteF(final Object o) {
-        if (!StringUtil.isNullOrBlank(o)) {
+        if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {
             this.deleteF = String.valueOf(o.toString());
         } else {
             this.deleteF = null;
@@ -328,7 +319,7 @@ public class TOya implements IEntity {
                 }
             }
             this.tEntitys = null;
-            this.getTEntitys();
+            this.referTEntitys();
             if (this.tEntitys != null) {
                 for (TEntity tEntity : this.tEntitys) {
                     if (!tEntity.getUpdateDt().equals(now)) {
@@ -387,10 +378,10 @@ public class TOya implements IEntity {
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("sosen_id", this.sosenId);
-        params.put("oya_sn", this.oyaSn);
-        params.put("oya_mei", this.oyaMei);
-        params.put("delete_f", this.deleteF);
+        params.put("SOSEN_ID", this.sosenId);
+        params.put("OYA_SN", this.oyaSn);
+        params.put("OYA_MEI", this.oyaMei);
+        params.put("DELETE_F", this.deleteF);
         params.put("insert_dt", now);
         params.put("insert_by", id);
         params.put("update_dt", now);

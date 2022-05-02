@@ -1,21 +1,12 @@
 package com.example.entity;
 
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
-
 import jp.co.golorp.emarf.entity.IEntity;
-import jp.co.golorp.emarf.lang.StringUtil;
 import jp.co.golorp.emarf.sql.Queries;
 
 /**
@@ -39,7 +30,7 @@ public class MCode implements IEntity {
      * @param o コード名称
      */
     public void setCodeNm(final Object o) {
-        if (!StringUtil.isNullOrBlank(o)) {
+        if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {
             this.codeNm = String.valueOf(o.toString());
         } else {
             this.codeNm = null;
@@ -60,7 +51,7 @@ public class MCode implements IEntity {
      * @param o コード名
      */
     public void setCodeMei(final Object o) {
-        if (!StringUtil.isNullOrBlank(o)) {
+        if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {
             this.codeMei = String.valueOf(o.toString());
         } else {
             this.codeMei = null;
@@ -68,9 +59,9 @@ public class MCode implements IEntity {
     }
 
     /** 登録日時 */
-    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
-    @JsonSerialize(using = LocalDateTimeSerializer.class)
-    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
+    @com.fasterxml.jackson.annotation.JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
+    @com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer.class)
+    @com.fasterxml.jackson.databind.annotation.JsonSerialize(using = com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer.class)
     private java.time.LocalDateTime insertDt;
 
     /**
@@ -85,12 +76,12 @@ public class MCode implements IEntity {
      */
     public void setInsertDt(final Object o) {
         if (o != null && o instanceof Long) {
-            Date d = new Date((Long) o);
-            this.insertDt = java.time.LocalDateTime.ofInstant(d.toInstant(), ZoneId.systemDefault());
+            java.util.Date d = new java.util.Date((Long) o);
+            this.insertDt = java.time.LocalDateTime.ofInstant(d.toInstant(), java.time.ZoneId.systemDefault());
         } else if (o != null && o.toString().matches("^[0-9]+")) {
-            Date d = new Date(Long.valueOf(o.toString()));
-            this.insertDt = java.time.LocalDateTime.ofInstant(d.toInstant(), ZoneId.systemDefault());
-        } else if (!StringUtil.isNullOrBlank(o)) {
+            java.util.Date d = new java.util.Date(Long.valueOf(o.toString()));
+            this.insertDt = java.time.LocalDateTime.ofInstant(d.toInstant(), java.time.ZoneId.systemDefault());
+        } else if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {
             this.insertDt = java.time.LocalDateTime.parse(o.toString());
         } else {
             this.insertDt = null;
@@ -111,7 +102,7 @@ public class MCode implements IEntity {
      * @param o 登録者
      */
     public void setInsertBy(final Object o) {
-        if (!StringUtil.isNullOrBlank(o)) {
+        if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {
             this.insertBy = String.valueOf(o.toString());
         } else {
             this.insertBy = null;
@@ -119,9 +110,9 @@ public class MCode implements IEntity {
     }
 
     /** 更新日時 */
-    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
-    @JsonSerialize(using = LocalDateTimeSerializer.class)
-    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
+    @com.fasterxml.jackson.annotation.JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
+    @com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer.class)
+    @com.fasterxml.jackson.databind.annotation.JsonSerialize(using = com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer.class)
     private java.time.LocalDateTime updateDt;
 
     /**
@@ -136,12 +127,12 @@ public class MCode implements IEntity {
      */
     public void setUpdateDt(final Object o) {
         if (o != null && o instanceof Long) {
-            Date d = new Date((Long) o);
-            this.updateDt = java.time.LocalDateTime.ofInstant(d.toInstant(), ZoneId.systemDefault());
+            java.util.Date d = new java.util.Date((Long) o);
+            this.updateDt = java.time.LocalDateTime.ofInstant(d.toInstant(), java.time.ZoneId.systemDefault());
         } else if (o != null && o.toString().matches("^[0-9]+")) {
-            Date d = new Date(Long.valueOf(o.toString()));
-            this.updateDt = java.time.LocalDateTime.ofInstant(d.toInstant(), ZoneId.systemDefault());
-        } else if (!StringUtil.isNullOrBlank(o)) {
+            java.util.Date d = new java.util.Date(Long.valueOf(o.toString()));
+            this.updateDt = java.time.LocalDateTime.ofInstant(d.toInstant(), java.time.ZoneId.systemDefault());
+        } else if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {
             this.updateDt = java.time.LocalDateTime.parse(o.toString());
         } else {
             this.updateDt = null;
@@ -162,7 +153,7 @@ public class MCode implements IEntity {
      * @param o 更新者
      */
     public void setUpdateBy(final Object o) {
-        if (!StringUtil.isNullOrBlank(o)) {
+        if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {
             this.updateBy = String.valueOf(o.toString());
         } else {
             this.updateBy = null;
@@ -183,7 +174,7 @@ public class MCode implements IEntity {
      * @param o 削除フラグ
      */
     public void setDeleteF(final Object o) {
-        if (!StringUtil.isNullOrBlank(o)) {
+        if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {
             this.deleteF = String.valueOf(o.toString());
         } else {
             this.deleteF = null;
@@ -274,7 +265,7 @@ public class MCode implements IEntity {
                 }
             }
             this.mCodeValues = null;
-            this.getMCodeValues();
+            this.referMCodeValues();
             if (this.mCodeValues != null) {
                 for (MCodeValue mCodeValue : this.mCodeValues) {
                     if (!mCodeValue.getUpdateDt().equals(now)) {
@@ -331,9 +322,9 @@ public class MCode implements IEntity {
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("code_nm", this.codeNm);
-        params.put("code_mei", this.codeMei);
-        params.put("delete_f", this.deleteF);
+        params.put("CODE_NM", this.codeNm);
+        params.put("CODE_MEI", this.codeMei);
+        params.put("DELETE_F", this.deleteF);
         params.put("insert_dt", now);
         params.put("insert_by", id);
         params.put("update_dt", now);

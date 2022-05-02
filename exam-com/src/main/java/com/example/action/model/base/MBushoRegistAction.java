@@ -8,7 +8,6 @@ import com.example.entity.MBusho;
 
 import jp.co.golorp.emarf.action.BaseAction;
 import jp.co.golorp.emarf.exception.OptLockError;
-import jp.co.golorp.emarf.lang.StringUtil;
 import jp.co.golorp.emarf.util.Messages;
 import jp.co.golorp.emarf.validation.FormValidator;
 
@@ -29,7 +28,7 @@ public class MBushoRegistAction extends BaseAction {
 
         // 主キーが不足していたらINSERT
         boolean isNew = false;
-        if (StringUtil.isNullOrBlank(e.getBushoId())) {
+        if (jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(e.getBushoId())) {
             isNew = true;
         }
 

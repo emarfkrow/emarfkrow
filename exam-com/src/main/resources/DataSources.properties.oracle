@@ -1,0 +1,11 @@
+JNDIName        java:/comp/env/jdbc/oracle
+
+driverClassName oracle.jdbc.OracleDriver
+url             jdbc:oracle:thin:@DESKTOP-1FJOFP5:1521:XE
+username        ktc
+password        ktc
+initialSize     30
+maxActive       100
+maxIdle         30
+maxWait         5000
+validationQuery SELECT COUNT(*) FROM DUAL

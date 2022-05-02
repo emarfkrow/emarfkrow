@@ -176,21 +176,12 @@ public final class BeanGenerator {
             s.add("package " + entityPackage + ";");
             s.add("");
             s.add("import java.time.LocalDateTime;");
-            s.add("import java.time.ZoneId;");
             s.add("import java.util.ArrayList;");
-            s.add("import java.util.Date;");
             s.add("import java.util.HashMap;");
             s.add("import java.util.List;");
             s.add("import java.util.Map;");
             s.add("");
-            s.add("import com.fasterxml.jackson.annotation.JsonFormat;");
-            s.add("import com.fasterxml.jackson.databind.annotation.JsonDeserialize;");
-            s.add("import com.fasterxml.jackson.databind.annotation.JsonSerialize;");
-            s.add("import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;");
-            s.add("import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;");
-            s.add("");
             s.add("import jp.co.golorp.emarf.entity.IEntity;");
-            s.add("import jp.co.golorp.emarf.lang.StringUtil;");
             s.add("import jp.co.golorp.emarf.sql.Queries;");
             s.add("");
             s.add("/**");
@@ -209,9 +200,9 @@ public final class BeanGenerator {
                 s.add("");
                 s.add("    /** " + mei + " */");
                 if (dataType.equals("java.time.LocalDateTime")) {
-                    s.add("    @JsonDeserialize(using = LocalDateTimeDeserializer.class)");
-                    s.add("    @JsonSerialize(using = LocalDateTimeSerializer.class)");
-                    s.add("    @JsonFormat(pattern = \"yyyy-MM-dd'T'HH:mm:ss.SSS\")");
+                    s.add("    @com.fasterxml.jackson.annotation.JsonFormat(pattern = \"yyyy-MM-dd'T'HH:mm:ss.SSS\")");
+                    s.add("    @com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer.class)");
+                    s.add("    @com.fasterxml.jackson.databind.annotation.JsonSerialize(using = com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer.class)");
                 }
                 s.add("    private " + dataType + " " + camel + ";");
                 s.add("");
@@ -228,20 +219,20 @@ public final class BeanGenerator {
                 s.add("    public void set" + pascal + "(final Object o) {");
                 if (dataType.equals("java.time.LocalDateTime")) {
                     s.add("        if (o != null && o instanceof Long) {");
-                    s.add("            Date d = new Date((Long) o);");
+                    s.add("            java.util.Date d = new java.util.Date((Long) o);");
                     s.add("            this." + camel
-                            + " = java.time.LocalDateTime.ofInstant(d.toInstant(), ZoneId.systemDefault());");
+                            + " = java.time.LocalDateTime.ofInstant(d.toInstant(), java.time.ZoneId.systemDefault());");
                     s.add("        } else if (o != null && o.toString().matches(\"^[0-9]+\")) {");
-                    s.add("            Date d = new Date(Long.valueOf(o.toString()));");
+                    s.add("            java.util.Date d = new java.util.Date(Long.valueOf(o.toString()));");
                     s.add("            this." + camel
-                            + " = java.time.LocalDateTime.ofInstant(d.toInstant(), ZoneId.systemDefault());");
-                    s.add("        } else if (!StringUtil.isNullOrBlank(o)) {");
+                            + " = java.time.LocalDateTime.ofInstant(d.toInstant(), java.time.ZoneId.systemDefault());");
+                    s.add("        } else if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {");
                     s.add("            this." + camel + " = " + dataType + ".parse(o.toString());");
                 } else if (dataType.equals("java.math.BigDecimal")) {
-                    s.add("        if (!StringUtil.isNullOrBlank(o)) {");
+                    s.add("        if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {");
                     s.add("            this." + camel + " = new java.math.BigDecimal(o.toString());");
                 } else {
-                    s.add("        if (!StringUtil.isNullOrBlank(o)) {");
+                    s.add("        if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {");
                     s.add("            this." + camel + " = " + dataType + ".valueOf(o.toString());");
                 }
                 s.add("        } else {");
@@ -399,13 +390,16 @@ public final class BeanGenerator {
         s.add("     * @return 追加件数");
         s.add("     */");
         s.add("    public int insert(final LocalDateTime now, final String id) {");
-        List<String> primaryKeys = tableInfo.getPrimaryKeys();
-        String lastKey = primaryKeys.get(primaryKeys.size() - 1);
-        ColumnInfo lastKeyInfo = tableInfo.getColumnInfos().get(lastKey);
-        if (lastKeyInfo.isNumbering()) {
-            s.add("");
-            s.add("        // " + lastKeyInfo.getRemarks() + "の採番処理");
-            s.add("        numbering();");
+        ColumnInfo lastKeyInfo = null;
+        if (tableInfo.getPrimaryKeys() != null && tableInfo.getPrimaryKeys().size() > 0) {
+            List<String> primaryKeys = tableInfo.getPrimaryKeys();
+            String lastKey = primaryKeys.get(primaryKeys.size() - 1);
+            lastKeyInfo = tableInfo.getColumnInfos().get(lastKey);
+            if (lastKeyInfo.isNumbering()) {
+                s.add("");
+                s.add("        // " + lastKeyInfo.getRemarks() + "の採番処理");
+                s.add("        numbering();");
+            }
         }
         // 子モデル
         for (TableInfo childInfo : tableInfo.getChildInfos()) {
@@ -477,9 +471,9 @@ public final class BeanGenerator {
         s.add("");
         s.add("        return Queries.regist(sql, params);");
         s.add("    }");
-        if (lastKeyInfo.isNumbering()) {
+        if (lastKeyInfo != null && lastKeyInfo.isNumbering()) {
             String lastPk = tableInfo.getPrimaryKeys().get(tableInfo.getPrimaryKeys().size() - 1);
-            String columnRemarks = tableInfo.getColumnInfos().get(lastKey).getRemarks();
+            String columnRemarks = tableInfo.getColumnInfos().get(lastKeyInfo.getColumnName()).getRemarks();
             s.add("");
             s.add("    /** " + columnRemarks + "の採番処理 */");
             s.add("    private void numbering() {");
@@ -542,6 +536,16 @@ public final class BeanGenerator {
             s.add("");
             s.add("        // " + childInfo.getRemarks() + "の登録");
             s.add("        if (this." + camel + "s != null) {");
+            if (!childInfo.getColumnInfos().containsKey(updateDt.toLowerCase())
+                    && !childInfo.getColumnInfos().containsKey(updateDt.toUpperCase())) {
+                List<String> childWhere = new ArrayList<String>();
+                for (String primaryKey : childInfo.getPrimaryKeys()) {
+                    childWhere.add(primaryKey + " = :" + primaryKey);
+                }
+                String where = String.join(" AND ", childWhere);
+                s.add("            Queries.regist(\"DELETE FROM " + childName + " WHERE " + where
+                        + "\", toMap(now, id));");
+            }
             s.add("            for (" + pascal + " " + camel + " : this." + camel + "s) {");
             for (String primaryKey : tableInfo.getPrimaryKeys()) {
                 String camelKey = StringUtil.toCamelCase(primaryKey);
@@ -554,15 +558,19 @@ public final class BeanGenerator {
             s.add("                    " + camel + ".update(now, id);");
             s.add("                }");
             s.add("            }");
-            s.add("            this." + camel + "s = null;");
-            s.add("            this.get" + pascal + "s();");
-            s.add("            if (this." + camel + "s != null) {");
-            s.add("                for (" + pascal + " " + camel + " : this." + camel + "s) {");
-            s.add("                    if (!" + camel + ".getUpdateDt().equals(now)) {");
-            s.add("                        " + camel + ".delete();");
-            s.add("                    }");
-            s.add("                }");
-            s.add("            }");
+            if (childInfo.getColumnInfos().containsKey(updateDt.toLowerCase())
+                    || childInfo.getColumnInfos().containsKey(updateDt.toUpperCase())) {
+                s.add("            this." + camel + "s = null;");
+                s.add("            this.refer" + pascal + "s();");
+                s.add("            if (this." + camel + "s != null) {");
+                s.add("                for (" + pascal + " " + camel + " : this." + camel + "s) {");
+                s.add("                    if (!" + camel + ".get" + StringUtil.toPascalCase(updateDt)
+                        + "().equals(now)) {");
+                s.add("                        " + camel + ".delete();");
+                s.add("                    }");
+                s.add("                }");
+                s.add("            }");
+            }
             s.add("        }");
         }
         // 兄弟モデル
@@ -637,8 +645,11 @@ public final class BeanGenerator {
             pk = pk.toLowerCase();
             s.add("        whereList.add(\"" + pk + " = :" + pk + "\");");
         }
-        s.add("        whereList.add(\"" + updateDt + " = '\" + this." + StringUtil.toCamelCase(updateDt)
-                + " + \"'\");");
+        if (tableInfo.getColumnInfos().containsKey(updateDt.toLowerCase())
+                || tableInfo.getColumnInfos().containsKey(updateDt.toUpperCase())) {
+            s.add("        whereList.add(\"" + updateDt + " = '\" + this." + StringUtil.toCamelCase(updateDt)
+                    + " + \"'\");");
+        }
         s.add("        return String.join(\" AND \", whereList);");
         s.add("    }");
 
@@ -647,9 +658,9 @@ public final class BeanGenerator {
         s.add("    private Map<String, Object> toMap(final LocalDateTime now, final String id) {");
         s.add("        Map<String, Object> params = new HashMap<String, Object>();");
         for (String columnName : tableInfo.getColumnInfos().keySet()) {
-            columnName = columnName.toLowerCase();
-            if (insertDt.toLowerCase().equals(columnName) || insertBy.toLowerCase().equals(columnName)
-                    || updateDt.toLowerCase().equals(columnName) || updateBy.toLowerCase().equals(columnName)) {
+            String lower = columnName.toLowerCase();
+            if (insertDt.toLowerCase().equals(lower) || insertBy.toLowerCase().equals(lower)
+                    || updateDt.toLowerCase().equals(lower) || updateBy.toLowerCase().equals(lower)) {
                 continue;
             }
             String camelCase = StringUtil.toCamelCase(columnName);
@@ -1061,7 +1072,6 @@ public final class BeanGenerator {
             s.add("");
             s.add("import jp.co.golorp.emarf.action.BaseAction;");
             s.add("import jp.co.golorp.emarf.exception.OptLockError;");
-            s.add("import jp.co.golorp.emarf.lang.StringUtil;");
             s.add("import jp.co.golorp.emarf.util.Messages;");
             s.add("import jp.co.golorp.emarf.validation.FormValidator;");
             s.add("");
@@ -1084,7 +1094,7 @@ public final class BeanGenerator {
             s.add("        boolean isNew = false;");
             for (String primaryKey : tableInfo.getPrimaryKeys()) {
                 String pascal = StringUtil.toPascalCase(primaryKey);
-                s.add("        if (StringUtil.isNullOrBlank(e.get" + pascal + "())) {");
+                s.add("        if (jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(e.get" + pascal + "())) {");
                 s.add("            isNew = true;");
                 s.add("        }");
             }
@@ -1163,7 +1173,6 @@ public final class BeanGenerator {
             s.add("");
             s.add("import jp.co.golorp.emarf.action.BaseAction;");
             s.add("import jp.co.golorp.emarf.exception.OptLockError;");
-            s.add("import jp.co.golorp.emarf.lang.StringUtil;");
             s.add("import jp.co.golorp.emarf.util.Messages;");
             s.add("import jp.co.golorp.emarf.validation.FormValidator;");
             s.add("");
@@ -1193,7 +1202,8 @@ public final class BeanGenerator {
             s.add("");
             s.add("            // 主キーが不足していたらエラー");
             for (String primaryKey : tableInfo.getPrimaryKeys()) {
-                s.add("            if (StringUtil.isNullOrBlank(gridRow.get(\"" + primaryKey + "\"))) {");
+                s.add("            if (jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(gridRow.get(\"" + primaryKey
+                        + "\"))) {");
                 s.add("                throw new OptLockError(\"error.cant.delete\");");
                 s.add("            }");
             }
@@ -1260,7 +1270,6 @@ public final class BeanGenerator {
             s.add("");
             s.add("import jp.co.golorp.emarf.action.BaseAction;");
             s.add("import jp.co.golorp.emarf.exception.OptLockError;");
-            s.add("import jp.co.golorp.emarf.lang.StringUtil;");
             s.add("import jp.co.golorp.emarf.util.Messages;");
             s.add("import jp.co.golorp.emarf.validation.FormValidator;");
             s.add("");
@@ -1296,7 +1305,7 @@ public final class BeanGenerator {
             s.add("            boolean isNew = false;");
             for (String primaryKey : tableInfo.getPrimaryKeys()) {
                 String pascal = StringUtil.toPascalCase(primaryKey);
-                s.add("            if (StringUtil.isNullOrBlank(e.get" + pascal + "())) {");
+                s.add("            if (jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(e.get" + pascal + "())) {");
                 s.add("                isNew = true;");
                 s.add("            }");
             }

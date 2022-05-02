@@ -9,7 +9,6 @@ import com.example.entity.MCode;
 
 import jp.co.golorp.emarf.action.BaseAction;
 import jp.co.golorp.emarf.exception.OptLockError;
-import jp.co.golorp.emarf.lang.StringUtil;
 import jp.co.golorp.emarf.util.Messages;
 import jp.co.golorp.emarf.validation.FormValidator;
 
@@ -37,7 +36,7 @@ public class MCodeSDeleteAction extends BaseAction {
         for (Map<String, Object> gridRow : gridData) {
 
             // 主キーが不足していたらエラー
-            if (StringUtil.isNullOrBlank(gridRow.get("CODE_NM"))) {
+            if (jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(gridRow.get("CODE_NM"))) {
                 throw new OptLockError("error.cant.delete");
             }
 

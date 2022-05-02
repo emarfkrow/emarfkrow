@@ -3,7 +3,6 @@ package jp.co.golorp.emarf.sql;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Iterator;
@@ -181,25 +180,28 @@ public final class DataSources {
      */
     public static List<TableInfo> getTableInfos() {
 
-        /*
-         * テーブル情報の取得
-         */
-
+        // テーブル情報の取得
         List<TableInfo> tableInfos = new ArrayList<TableInfo>();
 
         // データベースからテーブル情報を取得してループ
-        Connection cn = Connections.get();
         try {
+            Connection cn = Connections.get();
             DatabaseMetaData metaData = cn.getMetaData();
-            ResultSet tables = metaData.getTables(null, null, null, new String[] { "TABLE" });
+            ResultSet tables = metaData.getTables(null, BUNDLE.getString("username").toUpperCase(), null,
+                    new String[] { "TABLE" });
             while (tables.next()) {
+
+                String tableName = tables.getString("TABLE_NAME");
+                if (tableName.equals("PLAN_TABLE") || tableName.startsWith("SYS_IMPORT_TABLE_")
+                        || tableName.contains("$")) {
+                    continue;
+                }
 
                 // テーブル情報を追加
                 TableInfo tableInfo = new TableInfo();
                 tableInfos.add(tableInfo);
 
                 // テーブル物理名
-                String tableName = tables.getString("TABLE_NAME");
                 tableInfo.setTableName(tableName);
 
                 // テーブル論理名
@@ -207,11 +209,18 @@ public final class DataSources {
                 if (remarks == null || remarks.length() == 0) {
                     remarks = DataSources.getTableComment(tableName);
                 }
+                if (remarks == null || remarks.length() == 0) {
+                    remarks = tableName;
+                }
                 tableInfo.setRemarks(remarks);
+            }
+            tables.close();
+
+            for (TableInfo tableInfo : tableInfos) {
 
                 // テーブルの主キーカラム名を取得
                 List<String> pkList = new ArrayList<String>();
-                ResultSet primaryKeys = metaData.getPrimaryKeys(null, null, tableName);
+                ResultSet primaryKeys = metaData.getPrimaryKeys(null, null, tableInfo.getTableName());
                 while (primaryKeys.next()) {
                     String columnName = primaryKeys.getString("COLUMN_NAME");
                     short keySeq = primaryKeys.getShort("KEY_SEQ");
@@ -220,6 +229,7 @@ public final class DataSources {
                     }
                     pkList.set(keySeq, columnName);
                 }
+                primaryKeys.close();
 
                 // 一部DBではKEY_SEQが「1origin」なので「0origin」に詰め替え
                 List<String> pks = tableInfo.getPrimaryKeys();
@@ -228,11 +238,15 @@ public final class DataSources {
                         pks.add(pk);
                     }
                 }
+            }
+
+            for (TableInfo tableInfo : tableInfos) {
 
                 Map<String, ColumnInfo> columnInfos = tableInfo.getColumnInfos();
 
                 // テーブルのカラム情報を取得してループ
-                ResultSet columns = metaData.getColumns(null, null, tableName, null);
+                LOG.debug(tableInfo.getTableName());
+                ResultSet columns = metaData.getColumns(null, null, tableInfo.getTableName(), null);
                 while (columns.next()) {
 
                     // カラム情報を追加
@@ -256,14 +270,18 @@ public final class DataSources {
                     columnInfo.setNullable(columns.getInt("NULLABLE"));
 
                     // カラム論理名
-                    columnInfo.setRemarks(columns.getString("REMARKS"));
+                    String remarks = columns.getString("REMARKS");
+                    if (remarks == null) {
+                        remarks = columnName;
+                    }
+                    columnInfo.setRemarks(remarks);
 
                     /*
                      * 拡張情報
                      */
 
                     // 主キー
-                    if (pks.contains(columnName)) {
+                    if (tableInfo.getPrimaryKeys().contains(columnName)) {
                         columnInfo.setPk(true);
                     } else {
                         tableInfo.getNonPrimaryKeys().add(columnName);
@@ -271,30 +289,13 @@ public final class DataSources {
 
                     // typeNameをjavaデータ型に変換
                     String typeName = columns.getString("TYPE_NAME").toUpperCase();
-                    String dataType = typeName;
-                    if (typeName.equals("INT")) {
-                        dataType = "Integer";
-                        if (columnInfo.isPk()) {
-                            columnInfo.setNumbering(true);
-                        }
-                    } else if (typeName.equals("DATETIME")) {
-                        dataType = "java.time.LocalDateTime";
-                    } else if (typeName.equals("VARCHAR")) {
-                        dataType = "String";
-                    } else if (typeName.equals("CHAR")) {
-                        dataType = "String";
-                        if (columnInfo.isPk()) {
-                            columnInfo.setNumbering(true);
-                        }
-                    } else if (typeName.equals("DECIMAL")) {
-                        dataType = "java.math.BigDecimal";
-                    } else if (typeName.equals("DOUBLE")) {
-                        dataType = "java.math.BigDecimal";
-                    }
+                    String dataType = getDataType(typeName, columnInfo);
                     columnInfo.setDataType(dataType);
                 }
+                columns.close();
             }
-        } catch (SQLException e) {
+        } catch (Exception e) {
+            LOG.error(e.getMessage(), e);
             throw new SysError(e);
         } finally {
             Connections.close();
@@ -313,6 +314,58 @@ public final class DataSources {
         addReferTable(tableInfos);
 
         return tableInfos;
+    }
+
+    private static String getDataType(final String typeName, final ColumnInfo columnInfo) {
+
+        String dataType = typeName;
+
+        if (typeName.equals("INT")) {
+
+            dataType = "Integer";
+
+            if (columnInfo.isPk()) {
+                columnInfo.setNumbering(true);
+            }
+
+        } else if (typeName.equals("DATETIME")) {
+
+            dataType = "java.time.LocalDateTime";
+
+        } else if (dataSourcesAssist instanceof DataSourcesAssistOracle && typeName.equals("DATE")) {
+
+            dataType = "java.time.LocalDateTime";
+
+        } else if (typeName.equals("VARCHAR")) {
+
+            dataType = "String";
+
+        } else if (typeName.equals("VARCHAR2")) {
+
+            dataType = "String";
+
+        } else if (typeName.equals("CHAR")) {
+
+            dataType = "String";
+
+            if (columnInfo.isPk()) {
+                columnInfo.setNumbering(true);
+            }
+
+        } else if (typeName.equals("DECIMAL")) {
+
+            dataType = "java.math.BigDecimal";
+
+        } else if (typeName.equals("DOUBLE")) {
+
+            dataType = "java.math.BigDecimal";
+
+        } else if (typeName.equals("NUMBER")) {
+
+            dataType = "java.math.BigDecimal";
+        }
+
+        return dataType;
     }
 
     private static void addBrotherTable(final List<TableInfo> tableInfos) {

@@ -9,7 +9,6 @@ import com.example.entity.TSosen;
 
 import jp.co.golorp.emarf.action.BaseAction;
 import jp.co.golorp.emarf.exception.OptLockError;
-import jp.co.golorp.emarf.lang.StringUtil;
 import jp.co.golorp.emarf.util.Messages;
 import jp.co.golorp.emarf.validation.FormValidator;
 
@@ -37,7 +36,7 @@ public class TSosenSDeleteAction extends BaseAction {
         for (Map<String, Object> gridRow : gridData) {
 
             // 主キーが不足していたらエラー
-            if (StringUtil.isNullOrBlank(gridRow.get("SOSEN_ID"))) {
+            if (jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(gridRow.get("SOSEN_ID"))) {
                 throw new OptLockError("error.cant.delete");
             }
 

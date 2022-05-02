@@ -9,7 +9,6 @@ import com.example.entity.TEntity;
 
 import jp.co.golorp.emarf.action.BaseAction;
 import jp.co.golorp.emarf.exception.OptLockError;
-import jp.co.golorp.emarf.lang.StringUtil;
 import jp.co.golorp.emarf.util.Messages;
 import jp.co.golorp.emarf.validation.FormValidator;
 
@@ -37,13 +36,13 @@ public class TEntitySDeleteAction extends BaseAction {
         for (Map<String, Object> gridRow : gridData) {
 
             // 主キーが不足していたらエラー
-            if (StringUtil.isNullOrBlank(gridRow.get("SOSEN_ID"))) {
+            if (jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(gridRow.get("SOSEN_ID"))) {
                 throw new OptLockError("error.cant.delete");
             }
-            if (StringUtil.isNullOrBlank(gridRow.get("OYA_SN"))) {
+            if (jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(gridRow.get("OYA_SN"))) {
                 throw new OptLockError("error.cant.delete");
             }
-            if (StringUtil.isNullOrBlank(gridRow.get("ENTITY_SN"))) {
+            if (jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(gridRow.get("ENTITY_SN"))) {
                 throw new OptLockError("error.cant.delete");
             }
 

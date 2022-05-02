@@ -9,7 +9,6 @@ import com.example.entity.MCodeValue;
 
 import jp.co.golorp.emarf.action.BaseAction;
 import jp.co.golorp.emarf.exception.OptLockError;
-import jp.co.golorp.emarf.lang.StringUtil;
 import jp.co.golorp.emarf.util.Messages;
 import jp.co.golorp.emarf.validation.FormValidator;
 
@@ -40,10 +39,10 @@ public class MCodeValueSRegistAction extends BaseAction {
 
             // 主キーが不足していたらINSERT
             boolean isNew = false;
-            if (StringUtil.isNullOrBlank(e.getCodeNm())) {
+            if (jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(e.getCodeNm())) {
                 isNew = true;
             }
-            if (StringUtil.isNullOrBlank(e.getCodeValue())) {
+            if (jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(e.getCodeValue())) {
                 isNew = true;
             }
 

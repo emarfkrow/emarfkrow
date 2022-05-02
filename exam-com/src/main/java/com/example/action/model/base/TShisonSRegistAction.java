@@ -9,7 +9,6 @@ import com.example.entity.TShison;
 
 import jp.co.golorp.emarf.action.BaseAction;
 import jp.co.golorp.emarf.exception.OptLockError;
-import jp.co.golorp.emarf.lang.StringUtil;
 import jp.co.golorp.emarf.util.Messages;
 import jp.co.golorp.emarf.validation.FormValidator;
 
@@ -40,19 +39,19 @@ public class TShisonSRegistAction extends BaseAction {
 
             // 主キーが不足していたらINSERT
             boolean isNew = false;
-            if (StringUtil.isNullOrBlank(e.getSosenId())) {
+            if (jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(e.getSosenId())) {
                 isNew = true;
             }
-            if (StringUtil.isNullOrBlank(e.getOyaSn())) {
+            if (jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(e.getOyaSn())) {
                 isNew = true;
             }
-            if (StringUtil.isNullOrBlank(e.getEntitySn())) {
+            if (jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(e.getEntitySn())) {
                 isNew = true;
             }
-            if (StringUtil.isNullOrBlank(e.getKoSn())) {
+            if (jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(e.getKoSn())) {
                 isNew = true;
             }
-            if (StringUtil.isNullOrBlank(e.getShisonSn())) {
+            if (jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(e.getShisonSn())) {
                 isNew = true;
             }
 

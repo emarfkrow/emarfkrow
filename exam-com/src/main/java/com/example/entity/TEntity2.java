@@ -1,21 +1,12 @@
 package com.example.entity;
 
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
-
 import jp.co.golorp.emarf.entity.IEntity;
-import jp.co.golorp.emarf.lang.StringUtil;
 import jp.co.golorp.emarf.sql.Queries;
 
 /**
@@ -39,7 +30,7 @@ public class TEntity2 implements IEntity {
      * @param o 祖先ID
      */
     public void setSosenId(final Object o) {
-        if (!StringUtil.isNullOrBlank(o)) {
+        if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {
             this.sosenId = Integer.valueOf(o.toString());
         } else {
             this.sosenId = null;
@@ -60,7 +51,7 @@ public class TEntity2 implements IEntity {
      * @param o 親連番
      */
     public void setOyaSn(final Object o) {
-        if (!StringUtil.isNullOrBlank(o)) {
+        if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {
             this.oyaSn = Integer.valueOf(o.toString());
         } else {
             this.oyaSn = null;
@@ -81,7 +72,7 @@ public class TEntity2 implements IEntity {
      * @param o エンティティ連番
      */
     public void setEntitySn(final Object o) {
-        if (!StringUtil.isNullOrBlank(o)) {
+        if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {
             this.entitySn = Integer.valueOf(o.toString());
         } else {
             this.entitySn = null;
@@ -102,7 +93,7 @@ public class TEntity2 implements IEntity {
      * @param o 任意エンティティ２名
      */
     public void setNullEntity2Mei(final Object o) {
-        if (!StringUtil.isNullOrBlank(o)) {
+        if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {
             this.nullEntity2Mei = String.valueOf(o.toString());
         } else {
             this.nullEntity2Mei = null;
@@ -123,7 +114,7 @@ public class TEntity2 implements IEntity {
      * @param o エンティティ２名
      */
     public void setEntity2Mei(final Object o) {
-        if (!StringUtil.isNullOrBlank(o)) {
+        if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {
             this.entity2Mei = String.valueOf(o.toString());
         } else {
             this.entity2Mei = null;
@@ -144,7 +135,7 @@ public class TEntity2 implements IEntity {
      * @param o チェックフラグ
      */
     public void setCheckF(final Object o) {
-        if (!StringUtil.isNullOrBlank(o)) {
+        if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {
             this.checkF = String.valueOf(o.toString());
         } else {
             this.checkF = null;
@@ -165,7 +156,7 @@ public class TEntity2 implements IEntity {
      * @param o ラジオ区分
      */
     public void setRadioKb(final Object o) {
-        if (!StringUtil.isNullOrBlank(o)) {
+        if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {
             this.radioKb = String.valueOf(o.toString());
         } else {
             this.radioKb = null;
@@ -186,7 +177,7 @@ public class TEntity2 implements IEntity {
      * @param o プルダウン区分
      */
     public void setPulldownKb(final Object o) {
-        if (!StringUtil.isNullOrBlank(o)) {
+        if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {
             this.pulldownKb = String.valueOf(o.toString());
         } else {
             this.pulldownKb = null;
@@ -207,7 +198,7 @@ public class TEntity2 implements IEntity {
      * @param o メモ
      */
     public void setMemoTx(final Object o) {
-        if (!StringUtil.isNullOrBlank(o)) {
+        if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {
             this.memoTx = String.valueOf(o.toString());
         } else {
             this.memoTx = null;
@@ -228,7 +219,7 @@ public class TEntity2 implements IEntity {
      * @param o 日付
      */
     public void setHidukeYmd(final Object o) {
-        if (!StringUtil.isNullOrBlank(o)) {
+        if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {
             this.hidukeYmd = String.valueOf(o.toString());
         } else {
             this.hidukeYmd = null;
@@ -249,7 +240,7 @@ public class TEntity2 implements IEntity {
      * @param o 年月
      */
     public void setNengetsuYm(final Object o) {
-        if (!StringUtil.isNullOrBlank(o)) {
+        if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {
             this.nengetsuYm = String.valueOf(o.toString());
         } else {
             this.nengetsuYm = null;
@@ -270,7 +261,7 @@ public class TEntity2 implements IEntity {
      * @param o 年
      */
     public void setSampleY(final Object o) {
-        if (!StringUtil.isNullOrBlank(o)) {
+        if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {
             this.sampleY = String.valueOf(o.toString());
         } else {
             this.sampleY = null;
@@ -291,7 +282,7 @@ public class TEntity2 implements IEntity {
      * @param o 月
      */
     public void setSampleM(final Object o) {
-        if (!StringUtil.isNullOrBlank(o)) {
+        if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {
             this.sampleM = String.valueOf(o.toString());
         } else {
             this.sampleM = null;
@@ -299,9 +290,9 @@ public class TEntity2 implements IEntity {
     }
 
     /** 日時 */
-    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
-    @JsonSerialize(using = LocalDateTimeSerializer.class)
-    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
+    @com.fasterxml.jackson.annotation.JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
+    @com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer.class)
+    @com.fasterxml.jackson.databind.annotation.JsonSerialize(using = com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer.class)
     private java.time.LocalDateTime nichijiDt;
 
     /**
@@ -316,12 +307,12 @@ public class TEntity2 implements IEntity {
      */
     public void setNichijiDt(final Object o) {
         if (o != null && o instanceof Long) {
-            Date d = new Date((Long) o);
-            this.nichijiDt = java.time.LocalDateTime.ofInstant(d.toInstant(), ZoneId.systemDefault());
+            java.util.Date d = new java.util.Date((Long) o);
+            this.nichijiDt = java.time.LocalDateTime.ofInstant(d.toInstant(), java.time.ZoneId.systemDefault());
         } else if (o != null && o.toString().matches("^[0-9]+")) {
-            Date d = new Date(Long.valueOf(o.toString()));
-            this.nichijiDt = java.time.LocalDateTime.ofInstant(d.toInstant(), ZoneId.systemDefault());
-        } else if (!StringUtil.isNullOrBlank(o)) {
+            java.util.Date d = new java.util.Date(Long.valueOf(o.toString()));
+            this.nichijiDt = java.time.LocalDateTime.ofInstant(d.toInstant(), java.time.ZoneId.systemDefault());
+        } else if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {
             this.nichijiDt = java.time.LocalDateTime.parse(o.toString());
         } else {
             this.nichijiDt = null;
@@ -342,7 +333,7 @@ public class TEntity2 implements IEntity {
      * @param o 時刻
      */
     public void setJikokuHm(final Object o) {
-        if (!StringUtil.isNullOrBlank(o)) {
+        if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {
             this.jikokuHm = String.valueOf(o.toString());
         } else {
             this.jikokuHm = null;
@@ -363,7 +354,7 @@ public class TEntity2 implements IEntity {
      * @param o 時間
      */
     public void setJikanTm(final Object o) {
-        if (!StringUtil.isNullOrBlank(o)) {
+        if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {
             this.jikanTm = String.valueOf(o.toString());
         } else {
             this.jikanTm = null;
@@ -384,7 +375,7 @@ public class TEntity2 implements IEntity {
      * @param o 数量
      */
     public void setSuryoQt(final Object o) {
-        if (!StringUtil.isNullOrBlank(o)) {
+        if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {
             this.suryoQt = new java.math.BigDecimal(o.toString());
         } else {
             this.suryoQt = null;
@@ -405,7 +396,7 @@ public class TEntity2 implements IEntity {
      * @param o 単価
      */
     public void setTankaAm(final Object o) {
-        if (!StringUtil.isNullOrBlank(o)) {
+        if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {
             this.tankaAm = new java.math.BigDecimal(o.toString());
         } else {
             this.tankaAm = null;
@@ -426,7 +417,7 @@ public class TEntity2 implements IEntity {
      * @param o 金額
      */
     public void setKingakuAm(final Object o) {
-        if (!StringUtil.isNullOrBlank(o)) {
+        if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {
             this.kingakuAm = new java.math.BigDecimal(o.toString());
         } else {
             this.kingakuAm = null;
@@ -434,9 +425,9 @@ public class TEntity2 implements IEntity {
     }
 
     /** 登録日時 */
-    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
-    @JsonSerialize(using = LocalDateTimeSerializer.class)
-    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
+    @com.fasterxml.jackson.annotation.JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
+    @com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer.class)
+    @com.fasterxml.jackson.databind.annotation.JsonSerialize(using = com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer.class)
     private java.time.LocalDateTime insertDt;
 
     /**
@@ -451,12 +442,12 @@ public class TEntity2 implements IEntity {
      */
     public void setInsertDt(final Object o) {
         if (o != null && o instanceof Long) {
-            Date d = new Date((Long) o);
-            this.insertDt = java.time.LocalDateTime.ofInstant(d.toInstant(), ZoneId.systemDefault());
+            java.util.Date d = new java.util.Date((Long) o);
+            this.insertDt = java.time.LocalDateTime.ofInstant(d.toInstant(), java.time.ZoneId.systemDefault());
         } else if (o != null && o.toString().matches("^[0-9]+")) {
-            Date d = new Date(Long.valueOf(o.toString()));
-            this.insertDt = java.time.LocalDateTime.ofInstant(d.toInstant(), ZoneId.systemDefault());
-        } else if (!StringUtil.isNullOrBlank(o)) {
+            java.util.Date d = new java.util.Date(Long.valueOf(o.toString()));
+            this.insertDt = java.time.LocalDateTime.ofInstant(d.toInstant(), java.time.ZoneId.systemDefault());
+        } else if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {
             this.insertDt = java.time.LocalDateTime.parse(o.toString());
         } else {
             this.insertDt = null;
@@ -477,7 +468,7 @@ public class TEntity2 implements IEntity {
      * @param o 登録者
      */
     public void setInsertBy(final Object o) {
-        if (!StringUtil.isNullOrBlank(o)) {
+        if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {
             this.insertBy = String.valueOf(o.toString());
         } else {
             this.insertBy = null;
@@ -485,9 +476,9 @@ public class TEntity2 implements IEntity {
     }
 
     /** 更新日時 */
-    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
-    @JsonSerialize(using = LocalDateTimeSerializer.class)
-    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
+    @com.fasterxml.jackson.annotation.JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
+    @com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer.class)
+    @com.fasterxml.jackson.databind.annotation.JsonSerialize(using = com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer.class)
     private java.time.LocalDateTime updateDt;
 
     /**
@@ -502,12 +493,12 @@ public class TEntity2 implements IEntity {
      */
     public void setUpdateDt(final Object o) {
         if (o != null && o instanceof Long) {
-            Date d = new Date((Long) o);
-            this.updateDt = java.time.LocalDateTime.ofInstant(d.toInstant(), ZoneId.systemDefault());
+            java.util.Date d = new java.util.Date((Long) o);
+            this.updateDt = java.time.LocalDateTime.ofInstant(d.toInstant(), java.time.ZoneId.systemDefault());
         } else if (o != null && o.toString().matches("^[0-9]+")) {
-            Date d = new Date(Long.valueOf(o.toString()));
-            this.updateDt = java.time.LocalDateTime.ofInstant(d.toInstant(), ZoneId.systemDefault());
-        } else if (!StringUtil.isNullOrBlank(o)) {
+            java.util.Date d = new java.util.Date(Long.valueOf(o.toString()));
+            this.updateDt = java.time.LocalDateTime.ofInstant(d.toInstant(), java.time.ZoneId.systemDefault());
+        } else if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {
             this.updateDt = java.time.LocalDateTime.parse(o.toString());
         } else {
             this.updateDt = null;
@@ -528,7 +519,7 @@ public class TEntity2 implements IEntity {
      * @param o 更新者
      */
     public void setUpdateBy(final Object o) {
-        if (!StringUtil.isNullOrBlank(o)) {
+        if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {
             this.updateBy = String.valueOf(o.toString());
         } else {
             this.updateBy = null;
@@ -549,7 +540,7 @@ public class TEntity2 implements IEntity {
      * @param o 削除フラグ
      */
     public void setDeleteF(final Object o) {
-        if (!StringUtil.isNullOrBlank(o)) {
+        if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {
             this.deleteF = String.valueOf(o.toString());
         } else {
             this.deleteF = null;
@@ -748,26 +739,26 @@ public class TEntity2 implements IEntity {
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("sosen_id", this.sosenId);
-        params.put("oya_sn", this.oyaSn);
-        params.put("entity_sn", this.entitySn);
-        params.put("null_entity2_mei", this.nullEntity2Mei);
-        params.put("entity2_mei", this.entity2Mei);
-        params.put("check_f", this.checkF);
-        params.put("radio_kb", this.radioKb);
-        params.put("pulldown_kb", this.pulldownKb);
-        params.put("memo_tx", this.memoTx);
-        params.put("hiduke_ymd", this.hidukeYmd);
-        params.put("nengetsu_ym", this.nengetsuYm);
-        params.put("sample_y", this.sampleY);
-        params.put("sample_m", this.sampleM);
-        params.put("nichiji_dt", this.nichijiDt);
-        params.put("jikoku_hm", this.jikokuHm);
-        params.put("jikan_tm", this.jikanTm);
-        params.put("suryo_qt", this.suryoQt);
-        params.put("tanka_am", this.tankaAm);
-        params.put("kingaku_am", this.kingakuAm);
-        params.put("delete_f", this.deleteF);
+        params.put("SOSEN_ID", this.sosenId);
+        params.put("OYA_SN", this.oyaSn);
+        params.put("ENTITY_SN", this.entitySn);
+        params.put("NULL_ENTITY2_MEI", this.nullEntity2Mei);
+        params.put("ENTITY2_MEI", this.entity2Mei);
+        params.put("CHECK_F", this.checkF);
+        params.put("RADIO_KB", this.radioKb);
+        params.put("PULLDOWN_KB", this.pulldownKb);
+        params.put("MEMO_TX", this.memoTx);
+        params.put("HIDUKE_YMD", this.hidukeYmd);
+        params.put("NENGETSU_YM", this.nengetsuYm);
+        params.put("SAMPLE_Y", this.sampleY);
+        params.put("SAMPLE_M", this.sampleM);
+        params.put("NICHIJI_DT", this.nichijiDt);
+        params.put("JIKOKU_HM", this.jikokuHm);
+        params.put("JIKAN_TM", this.jikanTm);
+        params.put("SURYO_QT", this.suryoQt);
+        params.put("TANKA_AM", this.tankaAm);
+        params.put("KINGAKU_AM", this.kingakuAm);
+        params.put("DELETE_F", this.deleteF);
         params.put("insert_dt", now);
         params.put("insert_by", id);
         params.put("update_dt", now);
