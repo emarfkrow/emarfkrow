@@ -13,7 +13,7 @@ import javax.servlet.annotation.WebFilter;
 import jp.co.golorp.emarf.properties.App;
 
 /**
- * Servlet Filter implementation class EmarfFilter
+ * 文字コード設定フィルタ
  */
 @WebFilter("/*")
 public class EncodingFilter implements Filter {

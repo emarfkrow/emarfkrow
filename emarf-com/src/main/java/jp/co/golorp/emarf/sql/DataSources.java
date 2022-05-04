@@ -385,6 +385,10 @@ public final class DataSources {
         while (srcIterator.hasNext()) {
             TableInfo srcInfo = srcIterator.next();
 
+            if (srcInfo.getPrimaryKeys().size() == 0) {
+                continue;
+            }
+
             // テーブル情報でループ（比較先）
             Iterator<TableInfo> destIterator = tableInfos.iterator();
             while (destIterator.hasNext()) {
@@ -417,6 +421,10 @@ public final class DataSources {
         Iterator<TableInfo> srcIterator = tableInfos.iterator();
         while (srcIterator.hasNext()) {
             TableInfo srcInfo = srcIterator.next();
+
+            if (srcInfo.getPrimaryKeys().size() == 0) {
+                continue;
+            }
 
             // テーブル情報でループ（比較先）
             Iterator<TableInfo> destIterator = tableInfos.iterator();
@@ -466,6 +474,10 @@ public final class DataSources {
         Iterator<TableInfo> srcIterator = tableInfos.iterator();
         while (srcIterator.hasNext()) {
             TableInfo srcInfo = srcIterator.next();
+
+            if (srcInfo.getPrimaryKeys().size() == 0) {
+                continue;
+            }
 
             if (srcInfo.isBrother()) {
                 continue;

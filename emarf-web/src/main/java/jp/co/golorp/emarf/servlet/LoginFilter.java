@@ -26,7 +26,7 @@ import jp.co.golorp.emarf.properties.App;
 import jp.co.golorp.emarf.util.Messages;
 
 /**
- * Servlet Filter implementation class LoginFilter
+ * 認証フィルタ
  */
 @WebFilter("/*")
 public class LoginFilter implements Filter {

@@ -23,7 +23,7 @@ import jp.co.golorp.emarf.properties.App;
 import nz.net.ultraq.thymeleaf.layoutdialect.LayoutDialect;
 
 /**
- * Servlet implementation class HtmlServlet
+ * htmlアクセスサーブレット
  */
 @WebServlet("*.html")
 public final class HtmlServlet extends HttpServlet {

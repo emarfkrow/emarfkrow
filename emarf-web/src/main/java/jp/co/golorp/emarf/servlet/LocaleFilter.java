@@ -10,15 +10,13 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
 
-import jp.co.golorp.emarf.generator.BeanGenerator;
-import jp.co.golorp.emarf.io.FileUtil;
 import jp.co.golorp.emarf.util.Locales;
 
 /**
- * Servlet Filter implementation class EmarfFilter
+ * Locale判定フィルタ
  */
 @WebFilter("/*")
-public class EmarfFilter implements Filter {
+public class LocaleFilter implements Filter {
 
     /**
      * @param fConfig
@@ -26,11 +24,6 @@ public class EmarfFilter implements Filter {
      */
     public void init(final FilterConfig fConfig) throws ServletException {
 
-        String projectDir = fConfig.getServletContext().getRealPath("");
-
-        BeanGenerator.generate(projectDir);
-
-        FileUtil.setContextDir(projectDir);
     }
 
     /**

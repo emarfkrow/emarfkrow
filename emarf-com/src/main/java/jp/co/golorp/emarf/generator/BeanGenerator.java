@@ -2,7 +2,10 @@ package jp.co.golorp.emarf.generator;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.ResourceBundle;
 
 import javax.tools.JavaCompiler;
@@ -11,6 +14,7 @@ import javax.tools.ToolProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import jp.co.golorp.emarf.exception.SysError;
 import jp.co.golorp.emarf.io.FileUtil;
 import jp.co.golorp.emarf.lang.StringUtil;
 import jp.co.golorp.emarf.sql.DataSources;
@@ -55,6 +59,17 @@ public final class BeanGenerator {
     /** 参照名サフィックス */
     private static String referMeiSuffix;
 
+    /** プロジェクトディレクトリ */
+    private static String projectDir;
+    /** javaファイル出力ルートパス */
+    private static String javaPath;
+    /** entityパッケージ */
+    private static String entityPackage;
+    /** actionパッケージ */
+    private static String actionPackage;
+    /** formパッケージ */
+    private static String formPackage;
+
     /** プライベートコンストラクタ */
     private BeanGenerator() {
     }
@@ -64,17 +79,19 @@ public final class BeanGenerator {
      * @param args
      */
     public static void main(final String[] args) {
-        String projectDir = "C:\\Users\\toshiyuki\\Tools\\pleiades-2021-12-java-win-64bit-jre_20220106\\pleiades\\runtime-Eclipseアプリケーション\\plugindebug";
-        projectDir = "C:\\Users\\toshiyuki\\git\\emarfkrow\\exam-com";
-        ResourceBundles.getSrcPaths().add(projectDir + File.separator + "src\\main\\resources");
-        BeanGenerator.generate(projectDir);
+        String s = "C:\\Users\\toshiyuki\\Tools\\pleiades-2021-12-java-win-64bit-jre_20220106\\pleiades\\runtime-Eclipseアプリケーション\\plugindebug";
+        s = "C:\\Users\\toshiyuki\\git\\emarfkrow\\exam-com";
+        ResourceBundles.getSrcPaths().add(s + File.separator + "src\\main\\resources");
+        BeanGenerator.generate(s);
     }
 
     /**
      * 各ファイル出力 主処理
-     * @param projectDir
+     * @param s
      */
-    public static void generate(final String projectDir) {
+    public static void generate(final String s) {
+
+        projectDir = s;
 
         /* 設定ファイル読み込み */
         bundle = ResourceBundles.getBundle(BeanGenerator.class);
@@ -101,14 +118,50 @@ public final class BeanGenerator {
         referIdSuffixs = bundle.getString("BeanGenerator.refer.id.suffixs").split(",");
         referMeiSuffix = bundle.getString("BeanGenerator.refer.mei.suffix");
 
+        javaPath = bundle.getString("BeanGenerator.javaPath");
+        entityPackage = bundle.getString("BeanGenerator.package.entity");
+        actionPackage = bundle.getString("BeanGenerator.package.action");
+        formPackage = bundle.getString("BeanGenerator.package.form");
+
         // テーブル情報を取得
         List<TableInfo> tableInfos = DataSources.getTableInfos();
 
-        // ファイル出力開始
-        String javaPath = bundle.getString("BeanGenerator.javaPath");
-        String entityPackage = bundle.getString("BeanGenerator.package.entity");
-        String actionPackage = bundle.getString("BeanGenerator.package.action");
-        String formPackage = bundle.getString("BeanGenerator.package.form");
+        //        int maxDependLevel = 0;
+        //        for (TableInfo tableInfo : rawTableInfos) {
+        //            if (tableInfo.getBrosInfos().size() > 0 || tableInfo.getHistoryInfo() != null
+        //                    || tableInfo.getChildInfos().size() > 0) {
+        //
+        //                int dependLevel = 0;
+        //
+        //                for (TableInfo nestInfo : tableInfo.getBrosInfos()) {
+        //                    dependLevel = Math.max(tableInfo.getDependLevel(), nestInfo.getDependLevel()) + 1;
+        //                    maxDependLevel = Math.max(maxDependLevel, dependLevel);
+        //                    nestInfo.setDependLevel(dependLevel);
+        //                }
+        //
+        //                if (tableInfo.getHistoryInfo() != null) {
+        //                    TableInfo nestInfo = tableInfo.getHistoryInfo();
+        //                    dependLevel = Math.max(tableInfo.getDependLevel(), nestInfo.getDependLevel()) + 1;
+        //                    maxDependLevel = Math.max(maxDependLevel, dependLevel);
+        //                    nestInfo.setDependLevel(dependLevel);
+        //                }
+        //
+        //                for (TableInfo nestInfo : tableInfo.getChildInfos()) {
+        //                    dependLevel = Math.max(tableInfo.getDependLevel(), nestInfo.getDependLevel()) + 1;
+        //                    maxDependLevel = Math.max(maxDependLevel, dependLevel);
+        //                    nestInfo.setDependLevel(dependLevel);
+        //                }
+        //            }
+        //        }
+        //
+        //        List<TableInfo> tableInfos = new ArrayList<TableInfo>();
+        //        for (int i = maxDependLevel; i >= 0; i--) {
+        //            for (TableInfo tableInfo : rawTableInfos) {
+        //                if (tableInfo.getDependLevel() == i) {
+        //                    tableInfos.add(tableInfo);
+        //                }
+        //            }
+        //        }
 
         // 出力フォルダを再作成
         String entityPackagePath = entityPackage.replace(".", File.separator);
@@ -126,14 +179,14 @@ public final class BeanGenerator {
         FileUtil.reMkDir(formPackageDir);
 
         // javaファイルを出力
-        BeanGenerator.javaEntity(tableInfos, projectDir);
-        BeanGenerator.javaActionIndexRegist(tableInfos, projectDir);
-        BeanGenerator.javaActionIndexDelete(tableInfos, projectDir);
-        BeanGenerator.javaActionDetailGet(tableInfos, projectDir);
-        BeanGenerator.javaActionDetailDelete(tableInfos, projectDir);
-        BeanGenerator.javaActionDetailRegist(tableInfos, projectDir);
-        BeanGenerator.javaFormIndexRegist(tableInfos, projectDir);
-        BeanGenerator.javaFormDetailRegist(tableInfos, projectDir);
+        BeanGenerator.javaEntity(tableInfos);
+        BeanGenerator.javaActionDetailGet(tableInfos);
+        BeanGenerator.javaActionDetailDelete(tableInfos);
+        BeanGenerator.javaActionDetailRegist(tableInfos);
+        BeanGenerator.javaActionIndexRegist(tableInfos);
+        BeanGenerator.javaActionIndexDelete(tableInfos);
+        BeanGenerator.javaFormDetailRegist(tableInfos);
+        BeanGenerator.javaFormIndexRegist(tableInfos);
 
         HtmlGenerator.generate(projectDir, tableInfos);
 
@@ -152,19 +205,14 @@ public final class BeanGenerator {
     /**
      * エンティティ出力
      * @param tableInfos
-     * @param projectDir
      */
-    private static void javaEntity(final List<TableInfo> tableInfos, final String projectDir) {
-
-        // プロパティファイルからjavaファイル出力パスと出力するパッケージを取得
-        String javaPath = bundle.getString("BeanGenerator.javaPath");
-        String entityPackage = bundle.getString("BeanGenerator.package.entity");
+    private static void javaEntity(final List<TableInfo> tableInfos) {
 
         // 出力フォルダを再作成
         String packagePath = entityPackage.replace(".", File.separator);
         String packageDir = projectDir + File.separator + javaPath + File.separator + packagePath;
 
-        List<String> javaFilePaths = new ArrayList<String>();
+        Map<String, String> javaFilePaths = new LinkedHashMap<String, String>();
 
         for (TableInfo tableInfo : tableInfos) {
             String tableName = tableInfo.getTableName();
@@ -248,13 +296,13 @@ public final class BeanGenerator {
 
             String javaFilePath = packageDir + File.separator + entityName + ".java";
             FileUtil.writeFile(javaFilePath, s);
-            javaFilePaths.add(javaFilePath);
+            javaFilePaths.put(javaFilePath, entityPackage + "." + entityName);
         }
 
         String isCompile = bundle.getString("BeanGenerator.compile");
         if (isCompile.toLowerCase().equals("true")) {
-            for (String javaFilePath : javaFilePaths) {
-                BeanGenerator.javaCompile(javaFilePath);
+            for (Entry<String, String> e : javaFilePaths.entrySet()) {
+                BeanGenerator.javaCompile(e.getKey(), e.getValue());
             }
         }
     }
@@ -860,20 +908,14 @@ public final class BeanGenerator {
     /**
      * 詳細画面 登録処理出力
      * @param tableInfos
-     * @param projectDir
      */
-    private static void javaActionDetailDelete(final List<TableInfo> tableInfos, final String projectDir) {
-
-        // プロパティファイルからjavaファイル出力パスと出力するパッケージを取得
-        String javaPath = bundle.getString("BeanGenerator.javaPath");
-        String actionPackage = bundle.getString("BeanGenerator.package.action");
-        String entityPackage = bundle.getString("BeanGenerator.package.entity");
+    private static void javaActionDetailDelete(final List<TableInfo> tableInfos) {
 
         // 出力フォルダを再作成
         String packagePath = actionPackage.replace(".", File.separator);
         String packageDir = projectDir + File.separator + javaPath + File.separator + packagePath;
 
-        List<String> javaFilePaths = new ArrayList<String>();
+        Map<String, String> javaFilePaths = new LinkedHashMap<String, String>();
 
         for (TableInfo tableInfo : tableInfos) {
             String tableName = tableInfo.getTableName();
@@ -936,15 +978,15 @@ public final class BeanGenerator {
             s.add("}");
 
             String javaFilePath = packageDir + File.separator + entityName + "DeleteAction.java";
-            javaFilePaths.add(javaFilePath);
+            javaFilePaths.put(javaFilePath, actionPackage + "." + entityName + "DeleteAction");
 
             FileUtil.writeFile(javaFilePath, s);
         }
 
         String isCompile = bundle.getString("BeanGenerator.compile");
         if (isCompile.toLowerCase().equals("true")) {
-            for (String javaFilePath : javaFilePaths) {
-                BeanGenerator.javaCompile(javaFilePath);
+            for (Entry<String, String> e : javaFilePaths.entrySet()) {
+                BeanGenerator.javaCompile(e.getKey(), e.getValue());
             }
         }
     }
@@ -952,20 +994,14 @@ public final class BeanGenerator {
     /**
      * 詳細画面 登録処理出力
      * @param tableInfos
-     * @param projectDir
      */
-    private static void javaActionDetailGet(final List<TableInfo> tableInfos, final String projectDir) {
-
-        // プロパティファイルからjavaファイル出力パスと出力するパッケージを取得
-        String javaPath = bundle.getString("BeanGenerator.javaPath");
-        String actionPackage = bundle.getString("BeanGenerator.package.action");
-        String entityPackage = bundle.getString("BeanGenerator.package.entity");
+    private static void javaActionDetailGet(final List<TableInfo> tableInfos) {
 
         // 出力フォルダを再作成
         String packagePath = actionPackage.replace(".", File.separator);
         String packageDir = projectDir + File.separator + javaPath + File.separator + packagePath;
 
-        List<String> javaFilePaths = new ArrayList<String>();
+        Map<String, String> javaFilePaths = new LinkedHashMap<String, String>();
 
         for (TableInfo tableInfo : tableInfos) {
             String tableName = tableInfo.getTableName();
@@ -1033,15 +1069,15 @@ public final class BeanGenerator {
             s.add("}");
 
             String javaFilePath = packageDir + File.separator + pascalTable + "GetAction.java";
-            javaFilePaths.add(javaFilePath);
+            javaFilePaths.put(javaFilePath, actionPackage + "." + pascalTable + "GetAction");
 
             FileUtil.writeFile(javaFilePath, s);
         }
 
         String isCompile = bundle.getString("BeanGenerator.compile");
         if (isCompile.toLowerCase().equals("true")) {
-            for (String javaFilePath : javaFilePaths) {
-                BeanGenerator.javaCompile(javaFilePath);
+            for (Entry<String, String> e : javaFilePaths.entrySet()) {
+                BeanGenerator.javaCompile(e.getKey(), e.getValue());
             }
         }
     }
@@ -1049,20 +1085,14 @@ public final class BeanGenerator {
     /**
      * 詳細画面 登録処理出力
      * @param tableInfos
-     * @param projectDir
      */
-    private static void javaActionDetailRegist(final List<TableInfo> tableInfos, final String projectDir) {
-
-        // プロパティファイルからjavaファイル出力パスと出力するパッケージを取得
-        String javaPath = bundle.getString("BeanGenerator.javaPath");
-        String actionPackage = bundle.getString("BeanGenerator.package.action");
-        String entityPackage = bundle.getString("BeanGenerator.package.entity");
+    private static void javaActionDetailRegist(final List<TableInfo> tableInfos) {
 
         // 出力フォルダを再作成
         String packagePath = actionPackage.replace(".", File.separator);
         String packageDir = projectDir + File.separator + javaPath + File.separator + packagePath;
 
-        List<String> javaFilePaths = new ArrayList<String>();
+        Map<String, String> javaFilePaths = new LinkedHashMap<String, String>();
 
         for (TableInfo tableInfo : tableInfos) {
             String tableName = tableInfo.getTableName();
@@ -1133,15 +1163,15 @@ public final class BeanGenerator {
             s.add("}");
 
             String javaFilePath = packageDir + File.separator + entityName + "RegistAction.java";
-            javaFilePaths.add(javaFilePath);
+            javaFilePaths.put(javaFilePath, actionPackage + "." + entityName + "RegistAction");
 
             FileUtil.writeFile(javaFilePath, s);
         }
 
         String isCompile = bundle.getString("BeanGenerator.compile");
         if (isCompile.toLowerCase().equals("true")) {
-            for (String javaFilePath : javaFilePaths) {
-                BeanGenerator.javaCompile(javaFilePath);
+            for (Entry<String, String> e : javaFilePaths.entrySet()) {
+                BeanGenerator.javaCompile(e.getKey(), e.getValue());
             }
         }
     }
@@ -1149,20 +1179,14 @@ public final class BeanGenerator {
     /**
      * 検索画面 登録処理出力
      * @param tableInfos
-     * @param projectDir
      */
-    private static void javaActionIndexDelete(final List<TableInfo> tableInfos, final String projectDir) {
-
-        // プロパティファイルからjavaファイル出力パスと出力するパッケージを取得
-        String javaPath = bundle.getString("BeanGenerator.javaPath");
-        String actionPackage = bundle.getString("BeanGenerator.package.action");
-        String entityPackage = bundle.getString("BeanGenerator.package.entity");
+    private static void javaActionIndexDelete(final List<TableInfo> tableInfos) {
 
         // 出力フォルダを再作成
         String packagePath = actionPackage.replace(".", File.separator);
         String packageDir = projectDir + File.separator + javaPath + File.separator + packagePath;
 
-        List<String> javaFilePaths = new ArrayList<String>();
+        Map<String, String> javaFilePaths = new LinkedHashMap<String, String>();
 
         for (TableInfo tableInfo : tableInfos) {
             String tableName = tableInfo.getTableName();
@@ -1230,15 +1254,15 @@ public final class BeanGenerator {
             s.add("}");
 
             String javaFilePath = packageDir + File.separator + pascal + "SDeleteAction.java";
-            javaFilePaths.add(javaFilePath);
+            javaFilePaths.put(javaFilePath, actionPackage + "." + pascal + "SDeleteAction");
 
             FileUtil.writeFile(javaFilePath, s);
         }
 
         String isCompile = bundle.getString("BeanGenerator.compile");
         if (isCompile.toLowerCase().equals("true")) {
-            for (String javaFilePath : javaFilePaths) {
-                BeanGenerator.javaCompile(javaFilePath);
+            for (Entry<String, String> e : javaFilePaths.entrySet()) {
+                BeanGenerator.javaCompile(e.getKey(), e.getValue());
             }
         }
     }
@@ -1246,20 +1270,14 @@ public final class BeanGenerator {
     /**
      * 検索画面 登録処理出力
      * @param tableInfos
-     * @param projectDir
      */
-    private static void javaActionIndexRegist(final List<TableInfo> tableInfos, final String projectDir) {
-
-        // プロパティファイルからjavaファイル出力パスと出力するパッケージを取得
-        String javaPath = bundle.getString("BeanGenerator.javaPath");
-        String actionPackage = bundle.getString("BeanGenerator.package.action");
-        String entityPackage = bundle.getString("BeanGenerator.package.entity");
+    private static void javaActionIndexRegist(final List<TableInfo> tableInfos) {
 
         // 出力フォルダを再作成
         String packagePath = actionPackage.replace(".", File.separator);
         String packageDir = projectDir + File.separator + javaPath + File.separator + packagePath;
 
-        List<String> javaFilePaths = new ArrayList<String>();
+        Map<String, String> javaFilePaths = new LinkedHashMap<String, String>();
 
         for (TableInfo tableInfo : tableInfos) {
             String tableName = tableInfo.getTableName();
@@ -1340,15 +1358,15 @@ public final class BeanGenerator {
             s.add("}");
 
             String javaFilePath = packageDir + File.separator + entityName + "SRegistAction.java";
-            javaFilePaths.add(javaFilePath);
+            javaFilePaths.put(javaFilePath, actionPackage + "." + entityName + "SRegistAction");
 
             FileUtil.writeFile(javaFilePath, s);
         }
 
         String isCompile = bundle.getString("BeanGenerator.compile");
         if (isCompile.toLowerCase().equals("true")) {
-            for (String javaFilePath : javaFilePaths) {
-                BeanGenerator.javaCompile(javaFilePath);
+            for (Entry<String, String> e : javaFilePaths.entrySet()) {
+                BeanGenerator.javaCompile(e.getKey(), e.getValue());
             }
         }
     }
@@ -1356,19 +1374,14 @@ public final class BeanGenerator {
     /**
      * 詳細画面 フォーム出力
      * @param tableInfos
-     * @param projectDir
      */
-    private static void javaFormDetailRegist(final List<TableInfo> tableInfos, final String projectDir) {
-
-        // プロパティファイルからjavaファイル出力パスと出力するパッケージを取得
-        String javaPath = bundle.getString("BeanGenerator.javaPath");
-        String formPackage = bundle.getString("BeanGenerator.package.form");
+    private static void javaFormDetailRegist(final List<TableInfo> tableInfos) {
 
         // 出力フォルダを再作成
         String packagePath = formPackage.replace(".", File.separator);
         String packageDir = projectDir + File.separator + javaPath + File.separator + packagePath;
 
-        List<String> javaFilePaths = new ArrayList<String>();
+        Map<String, String> javaFilePaths = new LinkedHashMap<String, String>();
 
         for (TableInfo tableInfo : tableInfos) {
             String tableName = tableInfo.getTableName();
@@ -1488,15 +1501,15 @@ public final class BeanGenerator {
             s.add("}");
 
             String javaFilePath = packageDir + File.separator + entityName + "RegistForm.java";
-            javaFilePaths.add(javaFilePath);
+            javaFilePaths.put(javaFilePath, formPackage + "." + entityName + "RegistForm");
 
             FileUtil.writeFile(javaFilePath, s);
         }
 
         String isCompile = bundle.getString("BeanGenerator.compile");
         if (isCompile.toLowerCase().equals("true")) {
-            for (String javaFilePath : javaFilePaths) {
-                BeanGenerator.javaCompile(javaFilePath);
+            for (Entry<String, String> e : javaFilePaths.entrySet()) {
+                BeanGenerator.javaCompile(e.getKey(), e.getValue());
             }
         }
     }
@@ -1541,19 +1554,14 @@ public final class BeanGenerator {
     /**
      * 検索画面 フォーム出力
      * @param tableInfos
-     * @param projectDir
      */
-    private static void javaFormIndexRegist(final List<TableInfo> tableInfos, final String projectDir) {
-
-        // プロパティファイルからjavaファイル出力パスと出力するパッケージを取得
-        String javaPath = bundle.getString("BeanGenerator.javaPath");
-        String formPackage = bundle.getString("BeanGenerator.package.form");
+    private static void javaFormIndexRegist(final List<TableInfo> tableInfos) {
 
         // 出力フォルダを再作成
         String packagePath = formPackage.replace(".", File.separator);
         String packageDir = projectDir + File.separator + javaPath + File.separator + packagePath;
 
-        List<String> javaFilePaths = new ArrayList<String>();
+        Map<String, String> javaFilePaths = new LinkedHashMap<String, String>();
 
         for (TableInfo tableInfo : tableInfos) {
             String tableName = tableInfo.getTableName();
@@ -1612,15 +1620,15 @@ public final class BeanGenerator {
             s.add("}");
 
             String javaFilePath = packageDir + File.separator + pascal + "SRegistForm.java";
-            javaFilePaths.add(javaFilePath);
+            javaFilePaths.put(javaFilePath, formPackage + "." + pascal + "SRegistForm");
 
             FileUtil.writeFile(javaFilePath, s);
         }
 
         String isCompile = bundle.getString("BeanGenerator.compile");
         if (isCompile.toLowerCase().equals("true")) {
-            for (String javaFilePath : javaFilePaths) {
-                BeanGenerator.javaCompile(javaFilePath);
+            for (Entry<String, String> e : javaFilePaths.entrySet()) {
+                BeanGenerator.javaCompile(e.getKey(), e.getValue());
             }
         }
     }
@@ -1628,11 +1636,17 @@ public final class BeanGenerator {
     /**
      * javaファイルをコンパイル
      * @param javaFilePath
+     * @param className
      */
-    private static void javaCompile(final String javaFilePath) {
+    private static void javaCompile(final String javaFilePath, final String className) {
 
+        // 出力ディレクトリ
+        String dstDir = projectDir + File.separator + javaPath;
+
+        // クラスパス
         String classPath = System.getProperty("java.class.path", null);
 
+        // 参照ライブラリ
         String pathes = "";
         File classes = new File(BeanGenerator.class.getResource("/").getPath());
         File lib = new File(classes.getParentFile().getAbsolutePath() + File.separator + "lib");
@@ -1645,11 +1659,24 @@ public final class BeanGenerator {
 
         // コンパイル
         JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
-        int result = compiler.run(null, null, null, "-classpath", classPath + pathes, javaFilePath);
+        String[] args = {
+                "-d", dstDir,
+                "-sourcepath", dstDir,
+                "-classpath", classPath + pathes,
+                //new File(src, clsName + ".java").getAbsolutePath()
+                javaFilePath
+        };
+        int result = compiler.run(null, null, null, args);
         if (result == 0) {
             LOG.info("compile success. [" + javaFilePath + "]");
         } else {
             LOG.error("compile failure. [" + javaFilePath + "]");
+        }
+
+        try {
+            Class.forName(className);
+        } catch (ClassNotFoundException e) {
+            throw new SysError(e);
         }
     }
 

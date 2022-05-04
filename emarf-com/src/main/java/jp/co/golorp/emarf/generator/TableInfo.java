@@ -37,6 +37,9 @@ public class TableInfo {
     /** 自身が兄弟テーブルか */
     private boolean isBrother;
 
+    //    /** 依存レベル */
+    //    private int dependLevel;
+
     /**
      * @return tableName
      */
@@ -176,5 +179,19 @@ public class TableInfo {
     public void setBrother(final boolean p) {
         this.isBrother = p;
     }
+
+    //    /**
+    //     * @return relianceLevel
+    //     */
+    //    public int getDependLevel() {
+    //        return dependLevel;
+    //    }
+    //
+    //    /**
+    //     * @param p
+    //     */
+    //    public void setDependLevel(final int p) {
+    //        this.dependLevel = p;
+    //    }
 
 }

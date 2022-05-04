@@ -21,7 +21,7 @@ import jp.co.golorp.emarf.exception.OptLockError;
 import jp.co.golorp.emarf.util.Messages;
 
 /**
- * Servlet implementation class AjaxServlet
+ * ajaxアクセスサーブレット
  */
 @WebServlet("*.ajax")
 @MultipartConfig
