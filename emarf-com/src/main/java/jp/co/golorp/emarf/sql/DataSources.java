@@ -22,8 +22,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import jp.co.golorp.emarf.exception.SysError;
+import jp.co.golorp.emarf.generator.BeanGenerator;
 import jp.co.golorp.emarf.generator.ColumnInfo;
 import jp.co.golorp.emarf.generator.TableInfo;
+import jp.co.golorp.emarf.lang.StringUtil;
 import jp.co.golorp.emarf.util.ResourceBundles;
 
 /**
@@ -43,6 +45,11 @@ public final class DataSources {
      * DataSources.properties
      */
     private static final ResourceBundle BUNDLE = ResourceBundles.getBundle(DataSources.class);
+
+    /** 参照IDサフィックス */
+    private static String[] referIdSuffixs;
+    /** 参照名サフィックス */
+    private static String referMeiSuffix;
 
     /**
      * DataSourceのJNDI名
@@ -180,6 +187,11 @@ public final class DataSources {
      */
     public static List<TableInfo> getTableInfos() {
 
+        /* 設定ファイル読み込み */
+        ResourceBundle bundle = ResourceBundles.getBundle(BeanGenerator.class);
+        referIdSuffixs = bundle.getString("BeanGenerator.refer.id.suffixs").split(",");
+        referMeiSuffix = bundle.getString("BeanGenerator.refer.mei.suffix");
+
         // テーブル情報の取得
         List<TableInfo> tableInfos = new ArrayList<TableInfo>();
 
@@ -266,19 +278,14 @@ public final class DataSources {
 
                     // カラム物理名
                     columnInfo.setColumnName(columnName);
-
                     // DBデータ型
                     columnInfo.setTypeName(columns.getString("TYPE_NAME"));
-
                     // カラムサイズ
                     columnInfo.setColumnSize(columns.getInt("COLUMN_SIZE"));
-
                     // 小数桁数
                     columnInfo.setDecimalDigits(columns.getInt("DECIMAL_DIGITS"));
-
                     // NULL可否
                     columnInfo.setNullable(columns.getInt("NULLABLE"));
-
                     // カラム論理名
                     String remarks = columns.getString("REMARKS");
                     if (remarks == null) {
@@ -528,6 +535,22 @@ public final class DataSources {
 
             // ユニークキーを取得
             String srcPk = srcInfo.getPrimaryKeys().get(0);
+
+            // ユニークキーが参照IDでなければスキップ
+            if (!StringUtil.endsWith(referIdSuffixs, srcPk)) {
+                continue;
+            }
+
+            // 参照IDに合致する名称がなければスキップ
+            String referMei = null;
+            for (String referIdSuffix : referIdSuffixs) {
+                if (srcPk.endsWith(referIdSuffix)) {
+                    referMei = srcPk.replace(referIdSuffix, referMeiSuffix);
+                }
+            }
+            if (referMei == null) {
+                continue;
+            }
 
             // テーブル情報でループ（比較先）
             Iterator<TableInfo> destIterator = tableInfos.iterator();

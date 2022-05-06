@@ -1,13 +1,13 @@
 # プログラムの自動生成を行うか
-BeanGenerator.generate               true
+BeanGenerator.autogenerate           true
 # javaファイル出力のルートパス
 BeanGenerator.javaPath               src\\main\\java
 # entityクラスのパッケージ
-BeanGenerator.package.entity         com.example.entity
+BeanGenerator.package.entity         jp.co.kyototool.knps.entity
 # actionクラスのパッケージ
-BeanGenerator.package.action         com.example.action.model.base
+BeanGenerator.package.action         jp.co.kyototool.knps.action.model.base
 # formクラスのパッケージ
-BeanGenerator.package.form           com.example.form.model.base
+BeanGenerator.package.form           jp.co.kyototool.knps.form.model.base
 # 登録日時カラム名
 BeanGenerator.insert_dt              time_stamp_create
 # 登録者カラム名

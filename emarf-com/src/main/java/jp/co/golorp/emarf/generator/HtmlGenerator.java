@@ -98,6 +98,7 @@ public final class HtmlGenerator {
         // 出力フォルダを再作成
         String htmlDir = projectDir + File.separator + bundle.getString("BeanGenerator.htmlPath");
         FileUtil.reMkDir(htmlDir);
+        FileUtil.reMkDir(htmlDir + File.separator + ".." + File.separator + "common");
 
         String gridDir = projectDir + File.separator + bundle.getString("BeanGenerator.gridPath");
         FileUtil.reMkDir(gridDir);
@@ -116,6 +117,32 @@ public final class HtmlGenerator {
             // thymeleafのプロパティファイルを出力
             HtmlGenerator.htmlProperties(htmlDir, tableInfo);
         }
+
+        List<String> s = new ArrayList<String>();
+        s.add("<!DOCTYPE html>");
+        s.add("<html xmlns:th=\"http://www.thymeleaf.org\" xmlns:layout=\"http://www.ultraq.net.nz/web/thymeleaf/layout\">");
+        s.add("<body>");
+        s.add("  <div class=\"nav\" layout:fragment=\"nav\" th:if=\"${#session != null && #session.getAttribute('AUTHN_KEY') != null}\">");
+        s.add("    <dl>");
+        s.add("      <dt>認証・認可</dt>");
+        s.add("      <dd>");
+        s.add("        <ul>");
+        for (TableInfo tableInfo : tableInfos) {
+            String tableName = tableInfo.getTableName();
+            String remarks = tableInfo.getRemarks();
+            String pascal = StringUtil.toPascalCase(tableName);
+            String pageName = pascal + "S";
+            s.add("          <li><a id=\"" + pascal + "\" th:href=\"@{/model/" + pageName + ".html}\" th:text=\"#{nav."
+                    + pageName + "}\">" + remarks + "</a></li>");
+        }
+        s.add("        </ul>");
+        s.add("      </dd>");
+        s.add("    </dl>");
+        s.add("  </div>");
+        s.add("</body>");
+        s.add("</html>");
+        FileUtil.writeFile(htmlDir + File.separator + ".." + File.separator + "common" + File.separator + "nav.html",
+                s);
     }
 
     /**

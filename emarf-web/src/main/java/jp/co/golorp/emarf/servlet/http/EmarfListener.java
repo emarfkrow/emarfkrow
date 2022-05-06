@@ -188,7 +188,7 @@ public class EmarfListener implements ServletContextListener, ServletContextAttr
 
             projectDir = sre.getServletContext().getRealPath("");
 
-            BeanGenerator.generate(projectDir);
+            BeanGenerator.generate(projectDir, false);
 
             FileUtil.setContextDir(projectDir);
         }

@@ -79,25 +79,26 @@ public final class BeanGenerator {
      * @param args
      */
     public static void main(final String[] args) {
-        String s = "C:\\Users\\toshiyuki\\Tools\\pleiades-2021-12-java-win-64bit-jre_20220106\\pleiades\\runtime-Eclipseアプリケーション\\plugindebug";
-        s = "C:\\Users\\toshiyuki\\git\\emarfkrow\\exam-com";
+        String s = "C:\\Users\\toshiyuki\\Tools\\pleiades-2021-12-java-win-64bit-jre_20220106\\pleiades\\runtime-Eclipseアプリケーション\\knps-com";
+        //        String s = "C:\\Users\\toshiyuki\\git\\emarfkrow\\exam-com";
         ResourceBundles.getSrcPaths().add(s + File.separator + "src\\main\\resources");
-        BeanGenerator.generate(s);
+        BeanGenerator.generate(s, true);
     }
 
     /**
      * 各ファイル出力 主処理
      * @param s
+     * @param isManual
      */
-    public static void generate(final String s) {
+    public static void generate(final String s, final boolean isManual) {
 
         projectDir = s;
 
         /* 設定ファイル読み込み */
         bundle = ResourceBundles.getBundle(BeanGenerator.class);
 
-        String isGenerate = bundle.getString("BeanGenerator.generate");
-        if (!isGenerate.toLowerCase().equals("true")) {
+        String isGenerate = bundle.getString("BeanGenerator.autogenerate");
+        if (!isManual && !isGenerate.toLowerCase().equals("true")) {
             return;
         }
 
@@ -346,12 +347,20 @@ public final class BeanGenerator {
         s.add("    public static " + entityName + " get(" + getParams + ") {");
         s.add("");
         s.add("        List<String> whereList = new ArrayList<String>();");
-        for (String pk : tableInfo.getPrimaryKeys()) {
-            if (pk.length() > 0) {
-                pk = pk.toLowerCase();
-                s.add("        whereList.add(\"" + pk + " = :" + pk + "\");");
+
+        // 主キー条件
+        for (String primaryKey : tableInfo.getPrimaryKeys()) {
+            if (primaryKey.length() > 0) {
+                String lower = primaryKey.toLowerCase();
+                ColumnInfo primaryKeyInfo = tableInfo.getColumnInfos().get(primaryKey);
+                if (primaryKeyInfo.getTypeName().equals("CHAR")) {
+                    s.add("        whereList.add(\"TRIM (" + lower + ") = TRIM (:" + lower + ")\");");
+                } else {
+                    s.add("        whereList.add(\"" + lower + " = :" + lower + "\");");
+                }
             }
         }
+
         s.add("");
         s.add("        String sql = \"SELECT * FROM " + tableName + " WHERE \" + String.join(\" AND \", whereList);");
         s.add("");
@@ -691,10 +700,11 @@ public final class BeanGenerator {
      */
     private static void javaEntityUtil(final TableInfo tableInfo, final List<String> s) {
 
-        // getWhere
         s.add("");
         s.add("    private String getWhere() {");
         s.add("        List<String> whereList = new ArrayList<String>();");
+
+        // 主キー条件
         for (String pk : tableInfo.getPrimaryKeys()) {
             if (pk.length() == 0) {
                 continue;
@@ -702,11 +712,14 @@ public final class BeanGenerator {
             pk = pk.toLowerCase();
             s.add("        whereList.add(\"" + pk + " = :" + pk + "\");");
         }
+
+        // 楽観ロック
         if (tableInfo.getColumnInfos().containsKey(updateDt.toLowerCase())
                 || tableInfo.getColumnInfos().containsKey(updateDt.toUpperCase())) {
             s.add("        whereList.add(\"" + updateDt + " = '\" + this." + StringUtil.toCamelCase(updateDt)
                     + " + \"'\");");
         }
+
         s.add("        return String.join(\" AND \", whereList);");
         s.add("    }");
 

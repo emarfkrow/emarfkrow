@@ -79,7 +79,7 @@ public class BeanGeneratorHandler extends AbstractHandler {
             }
             Node pathNode = namedNodeMap.getNamedItem("path");
             String srcPath = pathNode.getNodeValue();
-            ResourceBundles.srcPaths.add(projectDir + File.separator + srcPath);
+            ResourceBundles.getSrcPaths().add(projectDir + File.separator + srcPath);
         }
 
         BeanGenerator.generate(projectDir);

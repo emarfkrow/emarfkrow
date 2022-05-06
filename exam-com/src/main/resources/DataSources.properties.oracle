@@ -1,7 +1,7 @@
 JNDIName        java:/comp/env/jdbc/oracle
 
 driverClassName oracle.jdbc.OracleDriver
-url             jdbc:oracle:thin:@DESKTOP-1FJOFP5:1521:XE
+url             jdbc:oracle:thin:@pavilion:1521/XEPDB1
 username        ktc
 password        ktc
 initialSize     30

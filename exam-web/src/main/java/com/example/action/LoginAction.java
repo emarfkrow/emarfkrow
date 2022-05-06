@@ -16,10 +16,15 @@ import jp.co.golorp.emarf.action.BaseAction;
 import jp.co.golorp.emarf.exception.AppError;
 import jp.co.golorp.emarf.sql.Queries;
 
+/**
+ * ログイン
+ * @author toshiyuki
+ *
+ */
 public class LoginAction extends BaseAction {
 
     /**
-     *
+     * ログイン処理
      */
     @Override
     public Map<String, Object> running(final LocalDateTime now, final String id, final Map<String, Object> postJson) {
