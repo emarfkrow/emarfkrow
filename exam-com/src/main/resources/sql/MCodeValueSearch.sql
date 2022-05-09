@@ -1,5 +1,6 @@
 SELECT
       a.*
+    , (SELECT r1.CODE_MEI FROM m_code r1 WHERE r1.CODE_NM = a.CODE_NM) AS CODE_MEI
 FROM
     m_code_value a 
 WHERE

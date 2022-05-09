@@ -3,7 +3,7 @@
  */
 
 let MCodeValueGridColumns = [
-    Column.cell('CODE_NM', Messages['MCodeValueGrid.codeNm'], 200, 'primaryKey', null),
+    Column.refer('CODE_NM', Messages['MCodeValueGrid.codeNm'], 200, 'primaryKey', 'CODE_MEI'),
     Column.cell('CODE_VALUE', Messages['MCodeValueGrid.codeValue'], 20, 'primaryKey', null),
     Column.text('CODE_VALUE_MEI', Messages['MCodeValueGrid.codeValueMei'], 300, '', null),
     Column.text('HYOJI_JUN', Messages['MCodeValueGrid.hyojiJun'], 100, '', null),

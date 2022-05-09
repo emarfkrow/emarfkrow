@@ -5,8 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.collections4.map.HashedMap;
-
 import com.example.entity.MNinka;
 import com.example.entity.MShozoku;
 import com.example.entity.MUser;
@@ -29,36 +27,37 @@ public class LoginAction extends BaseAction {
     @Override
     public Map<String, Object> running(final LocalDateTime now, final String id, final Map<String, Object> postJson) {
 
-        //        MUser mUser = Queries.get(this.loadSqlFile("MUserSearch"), postJson, MUser.class);
-        //        if (mUser == null) {
-        //            throw new AppError("error.login");
-        //        }
-        MUser mUser = MUser.get(postJson.get("email"));
+        String userId = postJson.get("userId").toString();
+        String passwd = postJson.get("passwd").toString();
 
+        // 該当データなし
+        MUser mUser = MUser.get(userId);
         if (mUser == null) {
             throw new AppError("error.login");
         }
 
-        String password = postJson.get("password").toString();
-        if (!password.equals(mUser.getPassword())) {
+        // パスワード不一致
+        if (!passwd.equals(mUser.getPassword())) {
             throw new AppError("error.login");
         }
 
-        Map<String, String> authzInfo = new HashedMap<String, String>();
+        Map<String, String> authzInfo = new HashMap<String, String>();
 
-        List<MShozoku> mShozokus = Queries.select(this.loadSqlFile("MShozokuSearch"), new HashedMap<String, Object>() {
-            {
-                put("userId", mUser.getUserId());
-            }
-        }, MShozoku.class);
+        // ユーザの所属情報を取得
+        String mShozokuSearchSql = this.loadSqlFile("MShozokuSearch");
+        Map<String, Object> mShozokuSearchParam = new HashMap<String, Object>();
+        mShozokuSearchParam.put("userId", mUser.getUserId());
+        List<MShozoku> mShozokus = Queries.select(mShozokuSearchSql, mShozokuSearchParam, MShozoku.class);
+
+        // 所属情報に紐づく認可情報のうち最大の権限を取得
         for (MShozoku mShozoku : mShozokus) {
 
-            List<MNinka> mNinkas = Queries.select(this.loadSqlFile("MNinkaSearch"), new HashedMap<String, Object>() {
-                {
-                    put("bushoId", mShozoku.getBushoId());
-                    put("shokuiId", mShozoku.getShokuiId());
-                }
-            }, MNinka.class);
+            String mNinkaSearchSql = this.loadSqlFile("MNinkaSearch");
+            Map<String, Object> mNinkaSearchParam = new HashMap<String, Object>();
+            mNinkaSearchParam.put("bushoId", mShozoku.getBushoId());
+            mNinkaSearchParam.put("shokuiId", mShozoku.getShokuiId());
+            List<MNinka> mNinkas = Queries.select(mNinkaSearchSql, mNinkaSearchParam, MNinka.class);
+
             for (MNinka mNinka : mNinkas) {
                 if (!authzInfo.containsKey(mNinka.getGamenNm())) {
                     authzInfo.put(mNinka.getGamenNm(), mNinka.getKengenKb());
@@ -71,10 +70,10 @@ public class LoginAction extends BaseAction {
             }
         }
 
+        ObjectMapper mapper = new ObjectMapper();
+
         Map<String, Object> ret = new HashMap<String, Object>();
         ret.put("AUTHN_KEY", mUser.getUserId());
-
-        ObjectMapper mapper = new ObjectMapper();
         ret.put("AUTHN_INFO", mapper.convertValue(mUser, Map.class));
         ret.put("AUTHZ_INFO", mapper.convertValue(authzInfo, Map.class));
         return ret;

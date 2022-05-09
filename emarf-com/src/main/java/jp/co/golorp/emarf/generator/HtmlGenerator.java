@@ -118,13 +118,33 @@ public final class HtmlGenerator {
             HtmlGenerator.htmlProperties(htmlDir, tableInfo);
         }
 
+        htmlNav(htmlDir, tableInfos);
+
+        List<String> s = new ArrayList<String>();
+        s.add("<!DOCTYPE html>");
+        s.add("<html xmlns:th=\"http://www.thymeleaf.org\" xmlns:layout=\"http://www.ultraq.net.nz/web/thymeleaf/layout\">");
+        s.add("<head layout:fragment=\"gridColumns\">");
+        for (TableInfo tableInfo : tableInfos) {
+            String tableName = tableInfo.getTableName();
+            String pascal = StringUtil.toPascalCase(tableName);
+            s.add("<script th:src=\"@{/model/" + pascal + "GridColumns.js}\"></script>");
+        }
+        s.add("</head>");
+        s.add("</html>");
+        FileUtil.writeFile(
+                htmlDir + File.separator + ".." + File.separator + "common" + File.separator + "gridColumns.html",
+                s);
+    }
+
+    private static void htmlNav(final String htmlDir, final List<TableInfo> tableInfos) {
+
         List<String> s = new ArrayList<String>();
         s.add("<!DOCTYPE html>");
         s.add("<html xmlns:th=\"http://www.thymeleaf.org\" xmlns:layout=\"http://www.ultraq.net.nz/web/thymeleaf/layout\">");
         s.add("<body>");
         s.add("  <div class=\"nav\" layout:fragment=\"nav\" th:if=\"${#session != null && #session.getAttribute('AUTHN_KEY') != null}\">");
         s.add("    <dl>");
-        s.add("      <dt>認証・認可</dt>");
+        s.add("      <dt th:text=\"#{nav.dt}\">nav</dt>");
         s.add("      <dd>");
         s.add("        <ul>");
         for (TableInfo tableInfo : tableInfos) {

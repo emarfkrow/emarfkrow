@@ -16,7 +16,7 @@
       <fieldset>
         <legend th:text="#{MCodeValue.legend}">legend</legend>
         <div id="codeNm">
-          <label for="MCodeValue.codeNm" th:text="#{MCodeValue.codeNm}">コード名称</label><input type="text" id="MCodeValue.codeNm" name="MCodeValue.codeNm" maxlength="20" class="primaryKey" /><a id="MCodeValue.codeNm" th:href="@{/model/MCodeS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a>
+          <label for="MCodeValue.codeNm" th:text="#{MCodeValue.codeNm}">コード名称</label><input type="text" id="MCodeValue.codeNm" name="MCodeValue.codeNm" maxlength="20" class="primaryKey" data-json="MCodeSearch.json" data-srcDef="CODE_NM:MCodeValue.codeNm" data-destDef="MCodeValue.codeMei:CODE_MEI" /><a id="MCodeValue.codeNm" th:href="@{/model/MCodeS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MCodeValue.codeMei" class="refer" data-json="MCodeSearch.json" data-srcDef="CODE_NM:MCodeValue.codeNm" data-destDef="MCodeValue.codeMei:CODE_MEI"></span>
         </div>
         <div id="codeValue">
           <label for="MCodeValue.codeValue" th:text="#{MCodeValue.codeValue}">コード値</label><input type="text" id="MCodeValue.codeValue" name="MCodeValue.codeValue" maxlength="2" class="primaryKey" />

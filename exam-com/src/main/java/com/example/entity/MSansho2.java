@@ -190,7 +190,7 @@ public class MSansho2 implements IEntity {
     public static MSansho2 get(final Object param1) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("sansho2_id = :sansho2_id");
+        whereList.add("TRIM (sansho2_id) = TRIM (:sansho2_id)");
 
         String sql = "SELECT * FROM m_sansho2 WHERE " + String.join(" AND ", whereList);
 

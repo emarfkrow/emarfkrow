@@ -544,7 +544,7 @@ public final class DataSources {
             // 参照IDに合致する名称がなければスキップ
             String referMei = null;
             for (String referIdSuffix : referIdSuffixs) {
-                if (srcPk.endsWith(referIdSuffix)) {
+                if (srcPk.toLowerCase().endsWith(referIdSuffix)) {
                     referMei = srcPk.replace(referIdSuffix, referMeiSuffix);
                 }
             }
