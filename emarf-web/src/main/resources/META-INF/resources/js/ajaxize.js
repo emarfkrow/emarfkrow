@@ -164,18 +164,18 @@ $(function() {
 
 let Ajaxize = {
 
-	ajaxPost: function(action, formJson, callback, noLoading) {
-		Ajaxize.jaxPost(action, formJson, callback, noLoading, true);
+	ajaxPost: function(action, formJson, callback, noLoading, isQuiet) {
+		Ajaxize.jaxPost(action, formJson, callback, noLoading, isQuiet, true);
 	},
 
-	sjaxPost: function(action, formJson, callback, noLoading) {
-		Ajaxize.jaxPost(action, formJson, callback, noLoading, false);
+	sjaxPost: function(action, formJson, callback, noLoading, isQuiet) {
+		Ajaxize.jaxPost(action, formJson, callback, noLoading, isQuiet, false);
 	},
 
 	/**
 	 * ajax送信
 	 */
-	jaxPost: function(action, formJson, callback, noLoading, isAsync) {
+	jaxPost: function(action, formJson, callback, noLoading, isQuiet, isAsync) {
 
 		if (typeof Loading != 'undefined' && noLoading != false) {
 			Loading.fadeIn();
@@ -246,7 +246,7 @@ let Ajaxize = {
 			}
 
 			// 情報通知
-			if (data.INFO) {
+			if (data.INFO && !(isQuiet == true)) {
 				alert(data.INFO);
 			}
 

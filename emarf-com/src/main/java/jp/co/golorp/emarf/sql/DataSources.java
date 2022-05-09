@@ -545,7 +545,13 @@ public final class DataSources {
             String referMei = null;
             for (String referIdSuffix : referIdSuffixs) {
                 if (srcPk.toLowerCase().endsWith(referIdSuffix)) {
-                    referMei = srcPk.replace(referIdSuffix, referMeiSuffix);
+                    String mei = srcPk.replaceAll("(?i)" + referIdSuffix, referMeiSuffix);
+                    for (String columnName : srcInfo.getColumnInfos().keySet()) {
+                        if (mei.toLowerCase().equals(columnName.toLowerCase())) {
+                            referMei = mei;
+                            break;
+                        }
+                    }
                 }
             }
             if (referMei == null) {

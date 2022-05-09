@@ -124,10 +124,13 @@ let Column = {
 		let label = options['label'];
 		if (json && paramkey && value && label) {
 			let postJson = {};
-			postJson[paramkey] = field;
+			postJson[paramkey] = field.toLowerCase();
 			Ajaxize.sjaxPost(json, postJson, function(data) {
 				options = {};
 				for (let i in data) {
+					if (i == 'INFO') {
+						break;
+					}
 					let dataJson = data[i];
 					for (let j in dataJson) {
 						let row = dataJson[j];
@@ -139,7 +142,7 @@ let Column = {
 						}
 					}
 				}
-			}, false);
+			}, false, true);
 		}
 		column.options = options;
 
