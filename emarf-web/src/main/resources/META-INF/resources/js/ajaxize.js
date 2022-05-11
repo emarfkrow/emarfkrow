@@ -102,9 +102,9 @@ $(function() {
 				let $articleDiv = $('body>div.article');
 				let $searchButton = $articleDiv.find('button[id^="Search"]');
 				if ($searchButton.length > 0) {
-					callback = function(data) { $searchButton.click(); };
+					callback = function() { $searchButton.click(); };
 				} else {
-					callback = function(data) { window.document.location.reload(); };
+					callback = function() { window.document.location.reload(); };
 				}
 
 			} else {
@@ -113,7 +113,7 @@ $(function() {
 				let $searchButton = $dialogDiv.find('button[id^="Search"]');
 				if ($searchButton.length > 0) {
 					// ダイアログ内に検索ボタンがある場合は再検索
-					callback = function(data) { $searchButton.click(); };
+					callback = function() { $searchButton.click(); };
 				} else {
 					// ダイアログ内に検索ボタンがない場合
 
@@ -127,7 +127,7 @@ $(function() {
 						let $searchButton = $articleDiv.find('button[id^="Search"]');
 						if ($searchButton.length > 0) {
 							// 親画面に検索ボタンがあれば、ダイアログを閉じて再検索
-							callback = function(data) {
+							callback = function() {
 								$dialogDiv.dialog('close');
 								$searchButton.click();
 							};
@@ -142,13 +142,13 @@ $(function() {
 						let $searchButton = $parentDiv.find('button[id^="Search"]');
 						if ($searchButton.length > 0) {
 							// 親ダイアログに検索ボタンがあれば、ダイアログを閉じて再検索
-							callback = function(data) {
+							callback = function() {
 								$dialogDiv.dialog('close');
 								$searchButton.click();
 							};
 						} else {
 							// 親画面に検索ボタンがなければ、ダイアログを閉じて親ダイアログを再描画
-							callback = function(data) {
+							callback = function() {
 								$dialogDiv.dialog('close');
 								Dialogate.refreshById(parentDialogId);
 							};
@@ -196,15 +196,15 @@ let Ajaxize = {
 		if (formJson instanceof FormData) {
 			// 送信値がformdataの場合
 
-			options.contentType = false; // contentTypeをfalseに指定
-			options.data = formJson;
-			options.processData = false; // Ajaxがdataを整形しない指定
+			options['contentType'] = false; // contentTypeをfalseに指定
+			options['data'] = formJson;
+			options['processData'] = false; // Ajaxがdataを整形しない指定
 
 		} else {
 			// 送信値がjsonの場合
 
-			options.contentType = 'application/json; charset=UTF-8';
-			options.data = JSON.stringify(formJson);
+			options['contentType'] = 'application/json; charset=UTF-8';
+			options['data'] = JSON.stringify(formJson);
 		}
 
 		$.ajax(options).fail(function(data) {
@@ -256,7 +256,7 @@ let Ajaxize = {
 				console.error(e);
 				alert(e);
 			}
-		}).always(function(data) {
+		}).always(function() {
 			if (typeof Loading != 'undefined' && noLoading != false) {
 				Loading.fadeOut();
 			}
@@ -290,7 +290,7 @@ let Ajaxize = {
 				// grid項目の場合
 
 				var names = k.split('\.');               // D0001RegistForm, D0001Grid[0], entityMei
-				var formName = names[0];                 // D0001RegistForm
+				//var formName = names[0];                 // D0001RegistForm
 				var rowName = names[1];                  // D0001Grid[0]
 				var fieldName = names[2];                // entityMei
 
