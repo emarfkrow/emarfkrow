@@ -52,6 +52,13 @@
 <script th:inline="javascript" th:if="${#session != null && #session.getAttribute('AUTHZ_INFO') != null}">
 	sessionStorage['authzInfo'] = JSON
 			.stringify(/*[[${#session.getAttribute('AUTHZ_INFO')}]]*/);
+
+	for (let i = 0; i < sessionStorage.length; i++) {
+		let k = sessionStorage.key(i);
+		if (k != 'authzInfo' && k != 'breads') {
+			sessionStorage.removeItem(k);
+		}
+	}
 </script>
 </head>
 <body>

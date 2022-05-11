@@ -125,24 +125,38 @@ let Column = {
 		if (json && paramkey && value && label) {
 			let postJson = {};
 			postJson[paramkey] = field.toLowerCase();
-			Ajaxize.sjaxPost(json, postJson, function(data) {
-				options = {};
-				for (let i in data) {
-					if (i == 'INFO') {
-						break;
-					}
-					let dataJson = data[i];
-					for (let j in dataJson) {
-						let row = dataJson[j];
-						let v = row[value];
-						let l = row[label];
-						options[v] = l;
-						if (column.width < l.length * 30) {
-							column.width = l.length * 30;
+
+			let k = json + JSON.stringify(postJson);
+			if (!sessionStorage[k]) {
+				Ajaxize.sjaxPost(json, postJson, function(data) {
+					for (let i in data) {
+						if (i == 'INFO') {
+							break;
 						}
+						sessionStorage[k] = JSON.stringify(data[i]);
 					}
+				}, false, true);
+			}
+			let dataJson = JSON.parse(sessionStorage[k]);
+
+			//			Ajaxize.sjaxPost(json, postJson, function(data) {
+			options = {};
+			//			for (let i in data) {
+			//				if (i == 'INFO') {
+			//					break;
+			//				}
+			//				let dataJson = data[i];
+			for (let j in dataJson) {
+				let row = dataJson[j];
+				let v = row[value];
+				let l = row[label];
+				options[v] = l;
+				if (column.width < l.length * 30) {
+					column.width = l.length * 30;
 				}
-			}, false, true);
+			}
+			//			}
+			//			}, false, true);
 		}
 		column.options = options;
 
