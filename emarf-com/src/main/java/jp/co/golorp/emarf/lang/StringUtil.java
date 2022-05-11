@@ -2,6 +2,7 @@ package jp.co.golorp.emarf.lang;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 文字列操作クラス
@@ -158,6 +159,20 @@ public final class StringUtil {
      */
     public static boolean endsWith(final String[] suffixs, final String s) {
         for (String suffix : suffixs) {
+            if (s.toLowerCase().endsWith(suffix.toLowerCase())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * @param suffixs
+     * @param s
+     * @return boolean
+     */
+    public static boolean endsWith(final Map<String, String> suffixs, final String s) {
+        for (String suffix : suffixs.keySet()) {
             if (s.toLowerCase().endsWith(suffix.toLowerCase())) {
                 return true;
             }

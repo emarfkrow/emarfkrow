@@ -53,47 +53,50 @@ let Options = {
 		let k = action + JSON.stringify(postJson);
 		if (!sessionStorage[k]) {
 			Ajaxize.sjaxPost(action, postJson, function(data) {
-				sessionStorage[k] = JSON.stringify(data[action.replaceAll(/\.json/g, '')]);
-			}, false);
-		}
-		let dataJson = JSON.parse(sessionStorage[k]);
-
-		//		Ajaxize.ajaxPost(action, postJson, function(data) {
-
-		let itemName = listId.replaceAll(/List$/g, '');
-		//		let dataJson = data[action.replaceAll(/\.json/g, '')];
-		//
-		//		// 取得データ数によって表示替え
-		//		if (dataJson) {
-
-		let $elements = $('[id="' + listId + '"]');
-		$elements.each(function() {
-
-			let $element = $(this);
-
-			let isSearchForm = $element.closest('form').hasClass('search');
-
-			if (dataJson.length == 1) {
-				Options.check($element, itemName, dataJson, optionValue, optionLabel);
-			} else if (dataJson.length < 10) {
-				if (isSearchForm) {
-					Options.check($element, itemName, dataJson, optionValue, optionLabel);
-				} else {
-					if (dataJson.length == 2 && dataJson[0][optionValue] == 0 && dataJson[1][optionValue] == 1) {
-						let omitted = JSON.parse(JSON.stringify(dataJson));
-						delete omitted[0];
-						Options.check($element, itemName, omitted, optionValue, optionLabel);
-					} else {
-						Options.radio($element, itemName, dataJson, optionValue, optionLabel);
-					}
+				if (data[action.replaceAll(/\.json/g, '')]) {
+					sessionStorage[k] = JSON.stringify(data[action.replaceAll(/\.json/g, '')]);
 				}
-			} else {
-				Options.option($element, true, dataJson, optionValue, optionLabel);
-			};
-		});
-		//		}
+			}, false, true);
+		}
 
-		//		}, false);
+		if (sessionStorage[k]) {
+
+			let dataJson = JSON.parse(sessionStorage[k]);
+
+			//		Ajaxize.ajaxPost(action, postJson, function(data) {
+			let itemName = listId.replaceAll(/List$/g, '');
+			//		let dataJson = data[action.replaceAll(/\.json/g, '')];
+			//
+			//		// 取得データ数によって表示替え
+			//		if (dataJson) {
+			let $elements = $('[id="' + listId + '"]');
+			$elements.each(function() {
+
+				let $element = $(this);
+
+				let isSearchForm = $element.closest('form').hasClass('search');
+
+				if (dataJson.length == 1) {
+					Options.check($element, itemName, dataJson, optionValue, optionLabel);
+				} else if (dataJson.length < 10) {
+					if (isSearchForm) {
+						Options.check($element, itemName, dataJson, optionValue, optionLabel);
+					} else {
+						if (dataJson.length == 2 && dataJson[0][optionValue] == 0 && dataJson[1][optionValue] == 1) {
+							let omitted = JSON.parse(JSON.stringify(dataJson));
+							delete omitted[0];
+							Options.check($element, itemName, omitted, optionValue, optionLabel);
+						} else {
+							Options.radio($element, itemName, dataJson, optionValue, optionLabel);
+						}
+					}
+				} else {
+					Options.option($element, true, dataJson, optionValue, optionLabel);
+				};
+			});
+			//		}
+			//		}, false);
+		}
 	},
 
 	/**

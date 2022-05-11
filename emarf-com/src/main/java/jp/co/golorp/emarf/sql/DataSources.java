@@ -5,6 +5,7 @@ import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -36,9 +37,7 @@ import jp.co.golorp.emarf.util.ResourceBundles;
  */
 public final class DataSources {
 
-    /**
-     * logger
-     */
+    /** logger */
     private static final Logger LOG = LoggerFactory.getLogger(DataSources.class);
 
     /**
@@ -46,10 +45,12 @@ public final class DataSources {
      */
     private static final ResourceBundle BUNDLE = ResourceBundles.getBundle(DataSources.class);
 
-    /** 参照IDサフィックス */
-    private static String[] referIdSuffixs;
-    /** 参照名サフィックス */
-    private static String referMeiSuffix;
+    //    /** 参照IDサフィックス */
+    //    private static String[] referIdSuffixs;
+    //    /** 参照名サフィックス */
+    //    private static String referMeiSuffix;
+    /** 参照列名ペア */
+    private static Map<String, String> referPairs = new HashMap<String, String>();
 
     /**
      * DataSourceのJNDI名
@@ -189,8 +190,13 @@ public final class DataSources {
 
         /* 設定ファイル読み込み */
         ResourceBundle bundle = ResourceBundles.getBundle(BeanGenerator.class);
-        referIdSuffixs = bundle.getString("BeanGenerator.refer.id.suffixs").split(",");
-        referMeiSuffix = bundle.getString("BeanGenerator.refer.mei.suffix");
+        //        referIdSuffixs = bundle.getString("BeanGenerator.refer.id.suffixs").split(",");
+        //        referMeiSuffix = bundle.getString("BeanGenerator.refer.mei.suffix");
+        String[] pairs = bundle.getString("BeanGenerator.refer.pairs").split(",");
+        for (String pair : pairs) {
+            String[] kv = pair.split(":");
+            referPairs.put(kv[0], kv[1]);
+        }
 
         // テーブル情報の取得
         List<TableInfo> tableInfos = new ArrayList<TableInfo>();
@@ -320,13 +326,10 @@ public final class DataSources {
 
         //兄弟モデルの評価
         addBrotherTable(tableInfos);
-
         //履歴モデルの評価
         addHistoryTable(tableInfos);
-
         //子モデルの評価
         addChildTables(tableInfos);
-
         //参照モデルの評価
         addReferTable(tableInfos);
 
@@ -541,13 +544,15 @@ public final class DataSources {
             String srcPk = srcInfo.getPrimaryKeys().get(0);
 
             // ユニークキーが参照IDでなければスキップ
-            if (!StringUtil.endsWith(referIdSuffixs, srcPk)) {
+            if (!StringUtil.endsWith(referPairs, srcPk)) {
                 continue;
             }
 
             // 参照IDに合致する名称がなければスキップ
             String referMei = null;
-            for (String referIdSuffix : referIdSuffixs) {
+            for (Entry<String, String> entry : referPairs.entrySet()) {
+                String referIdSuffix = entry.getKey();
+                String referMeiSuffix = entry.getValue();
                 if (srcPk.toLowerCase().endsWith(referIdSuffix)) {
                     String mei = srcPk.replaceAll("(?i)" + referIdSuffix, referMeiSuffix);
                     for (String columnName : srcInfo.getColumnInfos().keySet()) {

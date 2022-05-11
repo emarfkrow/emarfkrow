@@ -2,6 +2,7 @@ package jp.co.golorp.emarf.generator;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -54,10 +55,12 @@ public final class BeanGenerator {
     /** ファイルサフィックス */
     private static String[] inputFileSuffixs;
 
-    /** 参照IDサフィックス */
-    private static String[] referIdSuffixs;
-    /** 参照名サフィックス */
-    private static String referMeiSuffix;
+    //    /** 参照IDサフィックス */
+    //    private static String[] referIdSuffixs;
+    //    /** 参照名サフィックス */
+    //    private static String referMeiSuffix;
+    /** 参照列名ペア */
+    private static Map<String, String> referPairs = new HashMap<String, String>();
 
     /** プロジェクトディレクトリ */
     private static String projectDir;
@@ -116,8 +119,13 @@ public final class BeanGenerator {
         inputFlagSuffixs = bundle.getString("BeanGenerator.input.flag.suffixs").split(",");
         inputFileSuffixs = bundle.getString("BeanGenerator.input.file.suffixs").split(",");
 
-        referIdSuffixs = bundle.getString("BeanGenerator.refer.id.suffixs").split(",");
-        referMeiSuffix = bundle.getString("BeanGenerator.refer.mei.suffix");
+        //        referIdSuffixs = bundle.getString("BeanGenerator.refer.id.suffixs").split(",");
+        //        referMeiSuffix = bundle.getString("BeanGenerator.refer.mei.suffix");
+        String[] pairs = bundle.getString("BeanGenerator.refer.pairs").split(",");
+        for (String pair : pairs) {
+            String[] kv = pair.split(":");
+            referPairs.put(kv[0], kv[1]);
+        }
 
         javaPath = bundle.getString("BeanGenerator.javaPath");
         entityPackage = bundle.getString("BeanGenerator.package.entity");
@@ -1715,16 +1723,17 @@ public final class BeanGenerator {
                 String srcColumnName = columnInfo.getColumnName();
                 String srcColumnMei = srcColumnName;
                 String referIdSuffix = null;
-                for (String suffix : referIdSuffixs) {
+                for (String suffix : referPairs.keySet()) {
                     if (srcColumnMei.matches("(?i).+" + suffix + "$")) {
                         referIdSuffix = suffix;
-                        srcColumnMei = srcColumnMei.replaceAll("(?i)" + suffix + "$", referMeiSuffix);
+                        srcColumnMei = srcColumnMei.replaceAll("(?i)" + suffix + "$", referPairs.get(referIdSuffix));
                     }
                 }
                 srcColumnMei = StringUtil.toUpperCase(srcColumnMei);
                 if (!tableInfo.getColumnInfos().containsKey(srcColumnMei)) {
                     String destColumnName = referInfo.getPrimaryKeys().get(0);
-                    String destColumnMei = destColumnName.replaceAll("(?i)" + referIdSuffix + "$", referMeiSuffix);
+                    String destColumnMei = destColumnName.replaceAll("(?i)" + referIdSuffix + "$",
+                            referPairs.get(referIdSuffix));
                     destColumnMei = StringUtil.toUpperCase(destColumnMei);
                     s.add("    , (SELECT r" + i + "." + destColumnMei + " FROM " + referName + " r" + i + " WHERE r" + i
                             + "." + destColumnName + " = a." + srcColumnName + ") AS " + srcColumnMei);

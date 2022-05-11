@@ -50,15 +50,11 @@
 <script th:src="@{/messages.json}"></script>
 <!-- <script layout:replace="~{common/gridColumns::gridColumns}"></script> -->
 <script th:inline="javascript" th:if="${#session != null && #session.getAttribute('AUTHZ_INFO') != null}">
+	let breads = sessionStorage['breads'];
+	sessionStorage.clear();
 	sessionStorage['authzInfo'] = JSON
 			.stringify(/*[[${#session.getAttribute('AUTHZ_INFO')}]]*/);
-
-	for (let i = 0; i < sessionStorage.length; i++) {
-		let k = sessionStorage.key(i);
-		if (k != 'authzInfo' && k != 'breads') {
-			sessionStorage.removeItem(k);
-		}
-	}
+	sessionStorage['breads'] = breads;
 </script>
 </head>
 <body>

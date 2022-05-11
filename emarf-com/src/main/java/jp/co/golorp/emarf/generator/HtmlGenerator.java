@@ -2,11 +2,14 @@ package jp.co.golorp.emarf.generator;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.ResourceBundle;
+import java.util.Set;
 
 import jp.co.golorp.emarf.io.FileUtil;
 import jp.co.golorp.emarf.lang.StringUtil;
@@ -58,10 +61,12 @@ public final class HtmlGenerator {
     /** ファイルサフィックス */
     private static String[] inputFileSuffixs;
 
-    /** 参照IDサフィックス */
-    private static String[] referIdSuffixs;
-    /** 参照名サフィックス */
-    private static String referMeiSuffix;
+    //    /** 参照IDサフィックス */
+    //    private static String[] referIdSuffixs;
+    //    /** 参照名サフィックス */
+    //    private static String referMeiSuffix;
+    /** 参照列名ペア */
+    private static Map<String, String> referPairs = new HashMap<String, String>();
 
     private HtmlGenerator() {
     }
@@ -95,8 +100,13 @@ public final class HtmlGenerator {
         inputFlagSuffixs = bundle.getString("BeanGenerator.input.flag.suffixs").split(",");
         inputFileSuffixs = bundle.getString("BeanGenerator.input.file.suffixs").split(",");
 
-        referIdSuffixs = bundle.getString("BeanGenerator.refer.id.suffixs").split(",");
-        referMeiSuffix = bundle.getString("BeanGenerator.refer.mei.suffix");
+        //        referIdSuffixs = bundle.getString("BeanGenerator.refer.id.suffixs").split(",");
+        //        referMeiSuffix = bundle.getString("BeanGenerator.refer.mei.suffix");
+        String[] pairs = bundle.getString("BeanGenerator.refer.pairs").split(",");
+        for (String pair : pairs) {
+            String[] kv = pair.split(":");
+            referPairs.put(kv[0], kv[1]);
+        }
 
         // 出力フォルダを再作成
         String htmlDir = projectDir + File.separator + bundle.getString("BeanGenerator.htmlPath");
@@ -214,7 +224,7 @@ public final class HtmlGenerator {
         s.add("");
         s.add("</script>");
         s.add("<script th:src=\"@{/model/" + pascal + "GridColumns.js}\"></script>");
-        htmlNestGrid(s, tableInfo.getChildInfos());
+        htmlNestGrid(tableInfo, s, new HashSet<TableInfo>());
         s.add("</head>");
         s.add("<body>");
         s.add("  <div layout:fragment=\"article\">");
@@ -288,12 +298,39 @@ public final class HtmlGenerator {
         FileUtil.writeFile(htmlDir + File.separator + pageName + ".html", s);
     }
 
-    private static void htmlNestGrid(final List<String> s, final List<TableInfo> childInfos) {
-        for (TableInfo childInfo : childInfos) {
+    private static void htmlNestGrid(final TableInfo tableInfo, final List<String> s, final Set<TableInfo> added) {
+
+        for (TableInfo childInfo : tableInfo.getChildInfos()) {
+
+            if (added.contains(childInfo)) {
+                continue;
+            }
+
             String childName = childInfo.getTableName();
             String pascalChild = StringUtil.toPascalCase(childName);
             s.add("<script th:src=\"@{/model/" + pascalChild + "GridColumns.js}\"></script>");
-            htmlNestGrid(s, childInfo.getChildInfos());
+            added.add(childInfo);
+
+            htmlNestGrid(childInfo, s, added);
+        }
+
+        for (ColumnInfo columnInfo : tableInfo.getColumnInfos().values()) {
+
+            TableInfo referInfo = columnInfo.getReferInfo();
+
+            if (referInfo != null) {
+
+                if (added.contains(referInfo)) {
+                    continue;
+                }
+
+                String referName = referInfo.getTableName();
+                String pascalRefer = StringUtil.toPascalCase(referName);
+                s.add("<script th:src=\"@{/model/" + pascalRefer + "GridColumns.js}\"></script>");
+                added.add(referInfo);
+
+                htmlNestGrid(referInfo, s, added);
+            }
         }
     }
 
@@ -343,11 +380,11 @@ public final class HtmlGenerator {
             String referMei = null;
             TableInfo referInfo = columnInfo.getReferInfo();
             if (referInfo != null) {
-                if (StringUtil.endsWith(referIdSuffixs, columnName)) {
+                if (StringUtil.endsWith(referPairs, columnName)) {
                     referMei = columnName;
-                    for (String suffix : referIdSuffixs) {
+                    for (String suffix : referPairs.keySet()) {
                         if (referMei.matches("(?i).+" + suffix + "$")) {
-                            referMei = referMei.replaceAll("(?i)" + suffix + "$", referMeiSuffix);
+                            referMei = referMei.replaceAll("(?i)" + suffix + "$", referPairs.get(suffix));
                         }
                     }
                     referMei = StringUtil.toUpperCase(referMei);
@@ -458,7 +495,7 @@ public final class HtmlGenerator {
         s.add("");
         s.add("</script>");
         s.add("<script th:src=\"@{/model/" + entityName + "GridColumns.js}\"></script>");
-        htmlNestGrid(s, tableInfo.getChildInfos());
+        htmlNestGrid(tableInfo, s, new HashSet<TableInfo>());
         s.add("</head>");
         s.add("<body>");
         s.add("  <div layout:fragment=\"article\">");
@@ -727,7 +764,7 @@ public final class HtmlGenerator {
 
     private static String getReferDef(final String entityName, final String columnName, final TableInfo referInfo) {
 
-        if (StringUtil.endsWith(referIdSuffixs, columnName)) {
+        if (StringUtil.endsWith(referPairs, columnName)) {
             String meiColumnName = getMeiColumnName(columnName);
             String srcColumn = null;
             String destColumn = null;
@@ -751,8 +788,8 @@ public final class HtmlGenerator {
 
     private static String getMeiColumnName(final String columnName) {
         String meiColumnName = columnName;
-        for (String referIdSuffix : referIdSuffixs) {
-            meiColumnName = meiColumnName.replaceAll("(?i)" + referIdSuffix + "$", referMeiSuffix);
+        for (String referIdSuffix : referPairs.keySet()) {
+            meiColumnName = meiColumnName.replaceAll("(?i)" + referIdSuffix + "$", referPairs.get(referIdSuffix));
         }
         meiColumnName = StringUtil.toUpperCase(meiColumnName);
         return meiColumnName;
