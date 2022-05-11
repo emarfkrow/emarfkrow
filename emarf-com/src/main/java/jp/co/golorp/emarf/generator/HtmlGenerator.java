@@ -2,7 +2,10 @@ package jp.co.golorp.emarf.generator;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.ResourceBundle;
 
 import jp.co.golorp.emarf.io.FileUtil;
@@ -138,25 +141,47 @@ public final class HtmlGenerator {
 
     private static void htmlNav(final String htmlDir, final List<TableInfo> tableInfos) {
 
+        Map<String, List<TableInfo>> navs = new LinkedHashMap<String, List<TableInfo>>();
+
+        for (TableInfo tableInfo : tableInfos) {
+            String tableName = tableInfo.getTableName();
+
+            String t = tableName.replaceAll("_.+$", "");
+
+            List<TableInfo> nav = null;
+            if (navs.containsKey(t)) {
+                nav = navs.get(t);
+            } else {
+                nav = new ArrayList<TableInfo>();
+                navs.put(t, nav);
+            }
+            nav.add(tableInfo);
+        }
+
         List<String> s = new ArrayList<String>();
         s.add("<!DOCTYPE html>");
         s.add("<html xmlns:th=\"http://www.thymeleaf.org\" xmlns:layout=\"http://www.ultraq.net.nz/web/thymeleaf/layout\">");
         s.add("<body>");
         s.add("  <div class=\"nav\" layout:fragment=\"nav\" th:if=\"${#session != null && #session.getAttribute('AUTHN_KEY') != null}\">");
         s.add("    <dl>");
-        s.add("      <dt th:text=\"#{nav.dt}\">nav</dt>");
-        s.add("      <dd>");
-        s.add("        <ul>");
-        for (TableInfo tableInfo : tableInfos) {
-            String tableName = tableInfo.getTableName();
-            String remarks = tableInfo.getRemarks();
-            String pascal = StringUtil.toPascalCase(tableName);
-            String pageName = pascal + "S";
-            s.add("          <li><a id=\"" + pascal + "\" th:href=\"@{/model/" + pageName + ".html}\" th:text=\"#{nav."
-                    + pageName + "}\">" + remarks + "</a></li>");
+        for (Entry<String, List<TableInfo>> nav : navs.entrySet()) {
+            String t = nav.getKey();
+            s.add("      <dt th:text=\"#{nav.dt." + t + "}\">" + t + "</dt>");
+            s.add("      <dd>");
+            s.add("        <ul>");
+            List<TableInfo> navInfos = nav.getValue();
+            for (TableInfo tableInfo : navInfos) {
+                String tableName = tableInfo.getTableName();
+                String remarks = tableInfo.getRemarks();
+                String pascal = StringUtil.toPascalCase(tableName);
+                String pageName = pascal + "S";
+                s.add("          <li><a id=\"" + pascal + "\" th:href=\"@{/model/" + pageName
+                        + ".html}\" th:text=\"#{nav."
+                        + pageName + "}\">" + remarks + "</a></li>");
+            }
+            s.add("        </ul>");
+            s.add("      </dd>");
         }
-        s.add("        </ul>");
-        s.add("      </dd>");
         s.add("    </dl>");
         s.add("  </div>");
         s.add("</body>");
@@ -188,6 +213,8 @@ public final class HtmlGenerator {
         s.add("<script type=\"text/javascript\">");
         s.add("");
         s.add("</script>");
+        s.add("<script th:src=\"@{/model/" + pascal + "GridColumns.js}\"></script>");
+        htmlNestGrid(s, tableInfo.getChildInfos());
         s.add("</head>");
         s.add("<body>");
         s.add("  <div layout:fragment=\"article\">");
@@ -259,6 +286,15 @@ public final class HtmlGenerator {
         s.add("</html>");
 
         FileUtil.writeFile(htmlDir + File.separator + pageName + ".html", s);
+    }
+
+    private static void htmlNestGrid(final List<String> s, final List<TableInfo> childInfos) {
+        for (TableInfo childInfo : childInfos) {
+            String childName = childInfo.getTableName();
+            String pascalChild = StringUtil.toPascalCase(childName);
+            s.add("<script th:src=\"@{/model/" + pascalChild + "GridColumns.js}\"></script>");
+            htmlNestGrid(s, childInfo.getChildInfos());
+        }
     }
 
     /**
@@ -421,6 +457,8 @@ public final class HtmlGenerator {
         s.add("<script type=\"text/javascript\">");
         s.add("");
         s.add("</script>");
+        s.add("<script th:src=\"@{/model/" + entityName + "GridColumns.js}\"></script>");
+        htmlNestGrid(s, tableInfo.getChildInfos());
         s.add("</head>");
         s.add("<body>");
         s.add("  <div layout:fragment=\"article\">");

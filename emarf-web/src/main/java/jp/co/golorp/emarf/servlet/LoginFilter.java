@@ -108,6 +108,7 @@ public class LoginFilter implements Filter {
                 }
 
                 ses.setAttribute("AUTHN_KEY", map.get("AUTHN_KEY"));
+                ses.setAttribute("AUTHN_NAME", map.get("AUTHN_NAME"));
                 ses.setAttribute("AUTHN_INFO", map.get("AUTHN_INFO"));
                 ses.setAttribute("AUTHZ_INFO", map.get("AUTHZ_INFO"));
 

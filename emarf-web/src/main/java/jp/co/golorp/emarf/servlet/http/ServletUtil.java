@@ -256,7 +256,7 @@ public final class ServletUtil {
         }
 
         try {
-            LOG.info("RequestJson: " + mapper.writerWithDefaultPrettyPrinter().writeValueAsString(map));
+            LOG.trace("RequestJson: " + mapper.writerWithDefaultPrettyPrinter().writeValueAsString(map));
         } catch (JsonProcessingException e) {
             throw new SysError(e);
         }
@@ -286,7 +286,7 @@ public final class ServletUtil {
         try {
             ObjectMapper mapper = new ObjectMapper();
             String s = mapper.writeValueAsString(map);
-            LOG.info("ResponseJson: " + mapper.writerWithDefaultPrettyPrinter().writeValueAsString(map));
+            LOG.trace("ResponseJson: " + mapper.writerWithDefaultPrettyPrinter().writeValueAsString(map));
             response.getWriter().append(s);
         } catch (Exception e) {
             throw new SysError(e);

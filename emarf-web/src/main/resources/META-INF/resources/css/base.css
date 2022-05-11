@@ -47,7 +47,7 @@ input, select, textarea {
 	overflow: auto;
 }
 
-.nav dl {
+.nav dd {
 	margin-bottom: 1rem;
 }
 
@@ -189,6 +189,10 @@ input[type="datetime-local"] {
 [role="dialog"] [id$="Grid"] {
 	height: 150px;
 	width: 1000px;
+}
+
+button#logout {
+	font-size: xx-small;
 }
 
 button.search {
