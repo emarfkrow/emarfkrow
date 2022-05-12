@@ -79,8 +79,8 @@ public class LoginFilter implements Filter {
 
                 Map<String, Object> postJson = new HashMap<String, Object>();
                 for (Entry<String, String[]> e : request.getParameterMap().entrySet()) {
-                    String k = e.getKey();
-                    String[] vs = e.getValue();
+                    String k = StringUtil.sanitize(e.getKey());
+                    String[] vs = StringUtil.sanitize(e.getValue());
                     postJson.put(k, String.join(",", vs));
                 }
 
@@ -112,7 +112,7 @@ public class LoginFilter implements Filter {
                 ses.setAttribute("AUTHN_INFO", map.get("AUTHN_INFO"));
                 ses.setAttribute("AUTHZ_INFO", map.get("AUTHZ_INFO"));
 
-                String orgRequestURI = request.getParameter("requestURI");
+                String orgRequestURI = StringUtil.sanitize(request.getParameter("requestURI"));
                 if (!StringUtil.isNullOrBlank(orgRequestURI)) {
                     res.sendRedirect(orgRequestURI);
                 } else {

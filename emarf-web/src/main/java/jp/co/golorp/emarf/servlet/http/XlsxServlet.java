@@ -17,6 +17,7 @@ import org.slf4j.LoggerFactory;
 
 import jp.co.golorp.emarf.action.BaseAction;
 import jp.co.golorp.emarf.exception.SysError;
+import jp.co.golorp.emarf.lang.StringUtil;
 import jp.co.golorp.emarf.properties.App;
 import jp.co.golorp.emarf.report.XlsxUtil;
 import jp.co.golorp.emarf.util.Messages;
@@ -105,7 +106,7 @@ public final class XlsxServlet extends HttpServlet {
         Map<String, Map<String, Map<String, Object>>> layoutSheetMap = (Map<String, Map<String, Map<String, Object>>>) xlsxMap
                 .get("layoutSheetMap");
 
-        String baseMei = request.getParameter("baseMei");
+        String baseMei = StringUtil.sanitize(request.getParameter("baseMei"));
 
         // 一時エクセルを作成して出力・削除
         String tempFilePath = XlsxUtil.getGeneratedPath(pathes, layoutFileName, layoutSheetMap, baseMei);

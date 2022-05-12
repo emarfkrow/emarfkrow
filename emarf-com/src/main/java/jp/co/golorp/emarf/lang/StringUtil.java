@@ -180,4 +180,27 @@ public final class StringUtil {
         return false;
     }
 
+    /**
+     * @param s
+     * @return String
+     */
+    public static String sanitize(final String s) {
+        String sanitized = s.replaceAll("<", "＜").replaceAll(">", "＞");
+        return sanitized;
+    }
+
+    /**
+     * @param s
+     * @return String
+     */
+    public static String[] sanitize(final String[] s) {
+        List<String> sanitizeds = new ArrayList<String>();
+        if (s != null && s.length > 0) {
+            for (String e : s) {
+                sanitizeds.add(sanitize(e));
+            }
+        }
+        return sanitizeds.toArray(new String[sanitizeds.size()]);
+    }
+
 }

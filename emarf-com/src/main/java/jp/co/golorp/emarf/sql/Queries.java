@@ -199,7 +199,7 @@ public final class Queries {
 
                 @SuppressWarnings("unchecked")
                 List<String> list = (List<String>) o;
-                String s = String.join(", ", list);
+                String s = String.join(", ", list).replaceAll("'", "’");
                 rawSql = rawSql.replaceFirst(":" + parameterName, s);
                 logSql = logSql.replaceFirst(":" + parameterName, s);
 

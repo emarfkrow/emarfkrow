@@ -29,6 +29,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jp.co.golorp.emarf.action.BaseAction;
 import jp.co.golorp.emarf.exception.SysError;
+import jp.co.golorp.emarf.lang.StringUtil;
 import jp.co.golorp.emarf.properties.App;
 import jp.co.golorp.emarf.time.LocalDateTime;
 
@@ -48,8 +49,10 @@ public final class ServletUtil {
      * @return BaseAction
      */
     public static BaseAction getAction(final HttpServletRequest request) {
+
         String servletPath = request.getServletPath();
         String[] servletPathes = servletPath.split("/");
+
         String lastPath = servletPathes[servletPathes.length - 1];
         String actionName = lastPath.replaceFirst(".[a-z]+$", "") + "Action";
         servletPathes[servletPathes.length - 1] = actionName;
@@ -112,9 +115,11 @@ public final class ServletUtil {
      * @return List<String>
      */
     public static List<String> getPathes(final HttpServletRequest request) {
-        List<String> sqlPathes = new ArrayList<String>();
+
         String servletPath = request.getServletPath();
         String[] servletPathes = servletPath.split("/");
+
+        List<String> sqlPathes = new ArrayList<String>();
         for (int i = 0; i < servletPathes.length - 1; i++) {
             String s = servletPathes[i];
             if (s.trim().length() == 0) {
@@ -122,6 +127,7 @@ public final class ServletUtil {
             }
             sqlPathes.add(s);
         }
+
         return sqlPathes;
     }
 
@@ -130,8 +136,10 @@ public final class ServletUtil {
      * @return String
      */
     public static String getBaseName(final HttpServletRequest request) {
+
         String servletPath = request.getServletPath();
         String[] servletPathes = servletPath.split("/");
+
         String lastPath = servletPathes[servletPathes.length - 1];
         return lastPath.replaceFirst(".[a-z]+$", "");
     }
@@ -158,12 +166,12 @@ public final class ServletUtil {
             // multipartでループ
             for (Part part : parts) {
 
-                String partName = part.getName();
+                String partName = StringUtil.sanitize(part.getName());
 
                 if (part.getSubmittedFileName() != null) {
                     // アップロードファイルの場合
 
-                    String fileName = part.getSubmittedFileName();
+                    String fileName = StringUtil.sanitize(part.getSubmittedFileName());
                     if (!fileName.equals("")) {
                         // アップロードファイル名がある場合
 
@@ -190,13 +198,14 @@ public final class ServletUtil {
                     try (BufferedReader br = new BufferedReader(new InputStreamReader(part.getInputStream()))) {
                         String s;
                         while ((s = br.readLine()) != null) {
-                            v += s;
+                            v += StringUtil.sanitize(s);
                         }
                     } catch (IOException e) {
                         throw new SysError(e);
                     }
 
                     if (partName.matches("^.+Grid$")) {
+
                         try {
                             Map<String, Object> gridValue = mapper.readValue("{\"" + partName + "\":" + v + "}",
                                     new TypeReference<Map<String, Object>>() {
@@ -205,21 +214,27 @@ public final class ServletUtil {
                         } catch (Exception e) {
                             throw new SysError(e);
                         }
+
                     } else if (map.containsKey(partName)) {
                         // 二つ目以降の場合
+
                         Object orgValue = map.get(partName);
                         if (orgValue instanceof List) {
                             // 三つ目以降の場合
+
                             @SuppressWarnings("unchecked")
                             List<Object> newList = (List<Object>) orgValue;
                             newList.add(v);
+
                         } else {
                             // 二つ目の場合
+
                             List<Object> newList = new ArrayList<Object>();
                             newList.add(orgValue);
                             newList.add(v);
                             map.put(partName, newList);
                         }
+
                     } else {
                         // 一つ目の場合
                         map.put(partName, v);
@@ -230,16 +245,16 @@ public final class ServletUtil {
         } else if (request.getParameterMap().size() > 0) {
             // form送信の場合
 
-            Map<String, String[]> parameterMap = request.getParameterMap();
-            for (Entry<String, String[]> entry : parameterMap.entrySet()) {
-                String parameterName = entry.getKey();
-                String[] parameterValue = entry.getValue();
-                if (parameterValue.length > 1) {
-                    map.put(parameterName, parameterValue);
-                } else if (parameterValue.length == 1) {
-                    map.put(parameterName, parameterValue[0]);
+            for (Entry<String, String[]> e : request.getParameterMap().entrySet()) {
+                String k = StringUtil.sanitize(e.getKey());
+                String[] v = StringUtil.sanitize(e.getValue());
+
+                if (v.length > 1) {
+                    map.put(k, v);
+                } else if (v.length == 1) {
+                    map.put(k, v[0]);
                 } else {
-                    map.put(parameterName, "");
+                    map.put(k, "");
                 }
             }
 
@@ -247,7 +262,7 @@ public final class ServletUtil {
             // ajax送信の場合
 
             try {
-                String s = request.getReader().readLine();
+                String s = StringUtil.sanitize(request.getReader().readLine());
                 map = mapper.readValue(s, new TypeReference<Map<String, Object>>() {
                 });
             } catch (Exception e) {

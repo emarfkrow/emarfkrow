@@ -62,15 +62,22 @@ public final class AjaxServlet extends HttpServlet {
             action.setBaseName(baseName);
             action.setId(request.getSession().getAttribute("AUTHN_KEY").toString());
 
+            // エクセルダウンロードの検索条件退避用
             request.getSession().removeAttribute(request.getRequestURI());
+
             Map<String, Object> postJson = ServletUtil.getPostJson(request);
             map = action.run(postJson);
+
+            // エクセルダウンロードの検索条件退避用
             request.getSession().setAttribute(request.getRequestURI(), postJson);
 
         } catch (OptLockError e) {
+
             map = new HashMap<String, Object>();
             map.put("ERROR", e.getMessage());
+
         } catch (AppError e) {
+
             map = new HashMap<String, Object>();
             if (e.getErrors() != null && !e.getErrors().isEmpty()) {
                 map.put("ERROR", Messages.get("error"));
@@ -78,7 +85,9 @@ public final class AjaxServlet extends HttpServlet {
             } else {
                 map.put("ERROR", e.getMessage());
             }
+
         } catch (Exception e) {
+
             LOG.error(e.getMessage(), e);
             map = new HashMap<String, Object>();
             map.put("FATAL", Messages.get("fatal"));
