@@ -493,9 +493,6 @@ public final class DataSources {
                 continue;
             }
 
-            // 比較元の主キーをCSVで取得し、行末をカンマにする
-            String srcPk = srcInfo.getPrimaryKeys().toString().replaceAll("(^\\[|\\]$)", "") + ", ";
-
             // 比較元の子テーブルリストを取得
             List<TableInfo> childInfos = srcInfo.getChildInfos();
 
@@ -509,16 +506,30 @@ public final class DataSources {
                     continue;
                 }
 
-                // 比較先の主キーをCSVで取得し、行末の「]」を削除
-                String destPk = destInfo.getPrimaryKeys().toString().replaceAll("(^\\[|\\]$)", "");
+                if (destInfo.getPrimaryKeys().size() == 0) {
+                    continue;
+                }
 
-                if (!destPk.startsWith(srcPk)) {
+                boolean isPkMatch = true;
+                for (int i = 0; i < srcInfo.getPrimaryKeys().size(); i++) {
+                    if (destInfo.getPrimaryKeys().size() <= i) {
+                        isPkMatch = false;
+                        break;
+                    }
+                    String src = srcInfo.getPrimaryKeys().get(i);
+                    String dest = destInfo.getPrimaryKeys().get(i);
+                    //                    if (!dest.endsWith(src)) {
+                    if (!dest.equals(src)) {
+                        isPkMatch = false;
+                        break;
+                    }
+                }
+                if (!isPkMatch) {
                     continue;
                 }
 
                 // 比較先の主キーが比較元の主キー＋一つの場合は子テーブルリストに追加
-                String extKey = destPk.replaceFirst("^" + srcPk, "");
-                if (extKey.split(",").length == 1) {
+                if (srcInfo.getPrimaryKeys().size() + 1 == destInfo.getPrimaryKeys().size()) {
                     // 履歴テーブルでも兄弟テーブルでもなければ追加
                     if (!destInfo.isHistory() && !destInfo.isBrother()) {
                         childInfos.add(destInfo);

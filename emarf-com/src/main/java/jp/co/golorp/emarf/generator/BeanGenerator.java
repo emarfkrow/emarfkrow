@@ -1766,7 +1766,17 @@ public final class BeanGenerator {
             }
         }
         s.add("ORDER BY");
-        s.add("    a." + StringUtil.join(", a.", tableInfo.getPrimaryKeys()));
+        if (tableInfo.getPrimaryKeys().size() > 0) {
+            s.add("    a." + StringUtil.join(", a.", tableInfo.getPrimaryKeys()));
+        } else {
+            for (i = 1; i <= tableInfo.getColumnInfos().size(); i++) {
+                if (i == 1) {
+                    s.add("    " + i);
+                } else {
+                    s.add("    , " + i);
+                }
+            }
+        }
         FileUtil.writeFile(sqlDir + File.separator + entityName + "Search.sql", s);
     }
 

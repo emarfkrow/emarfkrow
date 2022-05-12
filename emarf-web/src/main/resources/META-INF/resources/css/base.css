@@ -114,7 +114,7 @@ form>fieldset>div>label {
 	display: inline-block;
 	margin-right: 0.5rem;
 	text-align: right;
-	width: 11rem;
+	min-width: 11rem;
 }
 
 form.search>fieldset>div>label {
@@ -139,7 +139,7 @@ form>fieldset>div>fieldset>legend {
 	float: left;
 	margin-right: 0.5rem;
 	text-align: right;
-	width: 11rem;
+	min-width: 11rem;
 }
 
 form.search>fieldset>div>fieldset>legend {

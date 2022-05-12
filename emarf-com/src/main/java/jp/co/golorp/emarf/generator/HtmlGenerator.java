@@ -151,19 +151,20 @@ public final class HtmlGenerator {
 
     private static void htmlNav(final String htmlDir, final List<TableInfo> tableInfos) {
 
+        // プレフィクス毎にグループ化
         Map<String, List<TableInfo>> navs = new LinkedHashMap<String, List<TableInfo>>();
-
         for (TableInfo tableInfo : tableInfos) {
+            if (tableInfo.getPrimaryKeys().size() > 1) {
+                continue;
+            }
             String tableName = tableInfo.getTableName();
-
-            String t = tableName.replaceAll("_.+$", "");
-
+            String prefix = tableName.replaceAll("_.+$", "");
             List<TableInfo> nav = null;
-            if (navs.containsKey(t)) {
-                nav = navs.get(t);
+            if (navs.containsKey(prefix)) {
+                nav = navs.get(prefix);
             } else {
                 nav = new ArrayList<TableInfo>();
-                navs.put(t, nav);
+                navs.put(prefix, nav);
             }
             nav.add(tableInfo);
         }
@@ -186,8 +187,7 @@ public final class HtmlGenerator {
                 String pascal = StringUtil.toPascalCase(tableName);
                 String pageName = pascal + "S";
                 s.add("          <li><a id=\"" + pascal + "\" th:href=\"@{/model/" + pageName
-                        + ".html}\" th:text=\"#{nav."
-                        + pageName + "}\">" + remarks + "</a></li>");
+                        + ".html}\" th:text=\"#{nav." + pageName + "}\">" + remarks + "</a></li>");
             }
             s.add("        </ul>");
             s.add("      </dd>");
