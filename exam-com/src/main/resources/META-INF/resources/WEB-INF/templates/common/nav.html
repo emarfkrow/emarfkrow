@@ -3,7 +3,7 @@
 <body>
   <div class="nav" layout:fragment="nav" th:if="${#session != null && #session.getAttribute('AUTHN_KEY') != null}">
     <dl>
-      <dt th:text="#{nav.dt}">nav</dt>
+      <dt th:text="#{nav.dt.m}">m</dt>
       <dd>
         <ul>
           <li><a id="MBusho" th:href="@{/model/MBushoS.html}" th:text="#{nav.MBushoS}">部署マスタ</a></li>
@@ -15,6 +15,11 @@
           <li><a id="MShokui" th:href="@{/model/MShokuiS.html}" th:text="#{nav.MShokuiS}">職位マスタ</a></li>
           <li><a id="MShozoku" th:href="@{/model/MShozokuS.html}" th:text="#{nav.MShozokuS}">所属マスタ</a></li>
           <li><a id="MUser" th:href="@{/model/MUserS.html}" th:text="#{nav.MUserS}">ユーザマスタ</a></li>
+        </ul>
+      </dd>
+      <dt th:text="#{nav.dt.t}">t</dt>
+      <dd>
+        <ul>
           <li><a id="TEntity" th:href="@{/model/TEntityS.html}" th:text="#{nav.TEntityS}">エンティティ</a></li>
           <li><a id="TEntity2" th:href="@{/model/TEntity2S.html}" th:text="#{nav.TEntity2S}">エンティティ２</a></li>
           <li><a id="TEntityHis" th:href="@{/model/TEntityHisS.html}" th:text="#{nav.TEntityHisS}">エンティティ履歴</a></li>
