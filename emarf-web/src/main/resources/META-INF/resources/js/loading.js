@@ -42,12 +42,12 @@ var Loading = {
 			console.debug('Loading fadeIn');
 		}
 		++Loading.stack;
-		console.debug('++Loading.stack = ' + Loading.stack);
+		console.debug('    ++Loading.stack = ' + Loading.stack);
 	},
 
 	fadeOut: function() {
 		--Loading.stack;
-		console.debug('--Loading.stack = ' + Loading.stack);
+		console.debug('    --Loading.stack = ' + Loading.stack);
 		if (Loading.stack <= 0) {
 			$("#loading").fadeOut();
 			console.debug('Loading fadeOut');
@@ -73,4 +73,4 @@ dialogDiv2.style.zIndex = '999';
 window.document.body.appendChild(dialogDiv2);
 ++Loading.stack;
 console.debug('Loading fadeIn');
-console.debug('++Loading.stack = ' + Loading.stack);
+console.debug('    ++Loading.stack = ' + Loading.stack);

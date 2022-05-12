@@ -147,6 +147,8 @@ let Dialogate = {
 			return;
 		}
 
+		console.debug('Dialogate load [' + href + '].');
+
 		// hrefからdialogIdを取得。作成済みならスキップ。
 		let dialogId = href.replace(/(^.+\/|\.html$)/g, '') + 'Dialog';
 		if ($('div[id="' + dialogId + '"]').length > 0) {
@@ -154,7 +156,7 @@ let Dialogate = {
 		}
 
 		//ローディング開始
-		Loading.fadeIn();
+		//Loading.fadeIn();
 
 		// ダイアログ用のDIVを追加して取得
 		$('body').append($('<div id="' + dialogId + '"></div>'));
@@ -163,11 +165,11 @@ let Dialogate = {
 		// 外部htmlファイルをロード
 		$.ajax({
 			async: false,
-			cache: false,
+			cache: true,
 			datatype: 'html',
 			url: href,
 		}).fail(function(data) {
-			console.log(data);
+			console.error(data);
 			alert(Messages['error.network']);
 		}).done(function(html) {
 
@@ -256,7 +258,7 @@ let Dialogate = {
 					try {
 						eval(dialogId + 'Open()');
 					} catch (e) {
-						console.log(e.message);
+						console.debug(e.message);
 					}
 				},
 
@@ -278,7 +280,7 @@ let Dialogate = {
 		}).always(function(data) {
 
 			//ローディング終了
-			Loading.fadeOut();
+			//Loading.fadeOut();
 		});
 	},
 

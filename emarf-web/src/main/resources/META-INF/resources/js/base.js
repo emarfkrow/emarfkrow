@@ -3,10 +3,12 @@
  *
  * @author toshiyuki
  */
-console.debug = function() { }
+//console.trace = function() { }
+//console.debug = function() { }
 
 // １．DOM構築後
 $(function() {
+
 	//console.debug('$(function() {});');
 
 	console.debug('Base init.');

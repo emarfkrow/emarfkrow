@@ -208,7 +208,7 @@ let Ajaxize = {
 		}
 
 		$.ajax(options).fail(function(data) {
-			console.debug(data);
+			console.error(data);
 			if (data.status == 200) {
 				alert(Messages['error.session']);
 				window.document.location.href = '../';
@@ -219,10 +219,10 @@ let Ajaxize = {
 			}
 		}).done(function(data) {
 
-			console.log('action: ' + action);
-			console.log(formJson);
-			console.log(data);
-			console.log('--------------------------------------------------');
+			console.info('action: ' + action);
+			console.info(formJson);
+			console.info(data);
+			console.info('--------------------------------------------------');
 
 			// システムエラー
 			if (data.FATAL) {
@@ -341,7 +341,7 @@ let Ajaxize = {
 					grid.getCellNode(rowIndex, cell).title = errors[k];
 				} catch (e) {
 					// グリッドが横に長すぎるとcellnodeが取れない時がある
-					console.log(e);
+					console.error(e);
 				}
 			}
 		}

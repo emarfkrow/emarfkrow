@@ -205,8 +205,7 @@ $(function() {
 			//				});
 			//				grid.onCellCssStylesChanged.subscribe(function(a, b, c, d, e, f, g) { });
 			grid.onClick.subscribe(function(e, args) {
-				//                    console.log(e);
-				//                    console.log(args);
+
 				let r = args.row;
 				let c = args.cell;
 				let g = args.grid;

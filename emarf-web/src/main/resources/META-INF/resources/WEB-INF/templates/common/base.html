@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
 <head>
 <meta charset="UTF-8">
-<meta http-equiv="Pragma" content="no-cache">
-<meta http-equiv="Cache-Control" content="no-store">
+<!-- <meta http-equiv="Pragma" content="no-cache"> -->
+<!-- <meta http-equiv="Cache-Control" content="no-store"> -->
 <title th:text="#{header.h1}">base.title</title>
 <link rel="icon" th:href="@{/favicon.ico}" />
 <!-- jquery css -->
@@ -58,11 +58,11 @@
 </script>
 </head>
 <body>
+  <script th:src="@{/js/loading.js}"></script>
   <div layout:replace="~{common/header::header}"></div>
   <div layout:replace="~{common/nav::nav}"></div>
   <div layout:replace="~{common/breads::breads}"></div>
   <div layout:fragment="article" class="article"></div>
   <div layout:replace="~{common/footer::footer}"></div>
-  <script th:src="@{/js/loading.js}"></script>
 </body>
 </html>
