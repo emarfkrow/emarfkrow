@@ -12,6 +12,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jp.co.golorp.emarf.action.BaseAction;
 import jp.co.golorp.emarf.exception.AppError;
+import jp.co.golorp.emarf.lang.StringUtil;
+import jp.co.golorp.emarf.properties.App;
 import jp.co.golorp.emarf.sql.Queries;
 
 /**
@@ -20,6 +22,9 @@ import jp.co.golorp.emarf.sql.Queries;
  *
  */
 public class LoginAction extends BaseAction {
+
+    /** パスワードを暗号化するか */
+    private static final String ENCRYPT = App.get("loginfilter.encrypt");
 
     /**
      * ログイン処理
@@ -37,9 +42,27 @@ public class LoginAction extends BaseAction {
         }
 
         // パスワード不一致
+        if (ENCRYPT.matches("(?i)true")) {
+            passwd = StringUtil.encrypt(passwd);
+        }
         if (!passwd.equals(mUser.getPassword())) {
             throw new AppError("error.login");
         }
+
+        // 権限情報取得
+        Map<String, String> authzInfo = getAuthzInfos(mUser);
+
+        ObjectMapper mapper = new ObjectMapper();
+
+        Map<String, Object> ret = new HashMap<String, Object>();
+        ret.put("AUTHN_KEY", mUser.getUserId());
+        ret.put("AUTHN_NAME", mUser.getUserSei() + " " + mUser.getUserMei());
+        ret.put("AUTHN_INFO", mapper.convertValue(mUser, Map.class));
+        ret.put("AUTHZ_INFO", mapper.convertValue(authzInfo, Map.class));
+        return ret;
+    }
+
+    private Map<String, String> getAuthzInfos(final MUser mUser) {
 
         Map<String, String> authzInfo = new HashMap<String, String>();
 
@@ -70,13 +93,7 @@ public class LoginAction extends BaseAction {
             }
         }
 
-        ObjectMapper mapper = new ObjectMapper();
-
-        Map<String, Object> ret = new HashMap<String, Object>();
-        ret.put("AUTHN_KEY", mUser.getUserId());
-        ret.put("AUTHN_INFO", mapper.convertValue(mUser, Map.class));
-        ret.put("AUTHZ_INFO", mapper.convertValue(authzInfo, Map.class));
-        return ret;
+        return authzInfo;
     }
 
 }

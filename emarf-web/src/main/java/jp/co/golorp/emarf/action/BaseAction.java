@@ -89,11 +89,12 @@ public abstract class BaseAction extends BaseProcess {
             form.validate(errors, this);
         }
 
-        if (errors.size() > 0) {
-            throw new AppError(errors);
-        }
-
         try {
+
+            // finallyを効かすためにtry内でthrow
+            if (errors.size() > 0) {
+                throw new AppError(errors);
+            }
 
             // アクションの主処理を実行
             Map<String, Object> map = this.running(jp.co.golorp.emarf.time.LocalDateTime.now(), this.userId, postJson);

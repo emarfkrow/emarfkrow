@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{Passmail.title}">パスワードリセットメール送信</title>
+<link rel="stylesheet" th:href="@{/css/login.css}" />
+<script type="text/javascript">
+
+</script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{Passmail.h2}">パスワードリセットメール送信画面</h2>
+    <form method="post" name="PassmailForm" action="passmail.ajax">
+      <fieldset>
+        <legend th:text="#{Passmail.legend}">パスワードリセットメール送信フォーム</legend>
+        <span th:text="#{Passmail.message}">入力したメールアドレスに、パスワードリセット画面のURLを送信します。</span>
+        <div>
+          <label for="email" th:text="#{Passmail.email}">メールアドレス</label><input type="email" id="email" name="email" />
+        </div>
+      </fieldset>
+      <div class="submits">
+        <button th:text="#{Passmail.button}">送信</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

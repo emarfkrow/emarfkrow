@@ -1,8 +1,6 @@
 package jp.co.golorp.emarf.servlet.http;
 
 import java.io.IOException;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
 
@@ -20,7 +18,6 @@ import jp.co.golorp.emarf.exception.SysError;
 import jp.co.golorp.emarf.lang.StringUtil;
 import jp.co.golorp.emarf.properties.App;
 import jp.co.golorp.emarf.report.XlsxUtil;
-import jp.co.golorp.emarf.util.Messages;
 
 /**
  * Servlet implementation class XlsxServlet
@@ -69,8 +66,7 @@ public final class XlsxServlet extends HttpServlet {
         } catch (Exception e) {
             LOG.error(e.getMessage(), e);
             String referer = request.getHeader("referer").replaceAll("\\?.+$", "");
-            String msg = "?FATAL=" + URLEncoder.encode(Messages.get("fatal"), StandardCharsets.UTF_8.name());
-            response.sendRedirect(referer + msg);
+            response.sendRedirect(referer + "?FATAL=fatal");
             return;
         }
 

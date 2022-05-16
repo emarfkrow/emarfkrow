@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
 <head>
 <meta charset="UTF-8">
-<title th:text="#{login.title}">ログインウィンドウ</title>
+<title th:text="#{Login.title}">ログイン</title>
 <link rel="stylesheet" th:href="@{/css/login.css}" />
 <script type="text/javascript">
 	$(function() {
@@ -17,22 +17,25 @@
 </head>
 <body>
   <div layout:fragment="article">
-    <h2 th:text="#{login.h2}">ログイン画面</h2>
-    <form name="LoginForm" action="login">
+    <h2 th:text="#{Login.h2}">ログイン画面</h2>
+    <form method="post" name="LoginForm" action="login">
       <!-- ブラウザ独自のパスワード補助無効化 -->
       <input type="password" name="dummy" style="visibility: hidden;" />
       <fieldset>
-        <legend th:text="#{login.legend}">ログインフォーム</legend>
+        <legend th:text="#{Login.legend}">ログインフォーム</legend>
         <div>
-          <label for="userId" th:text="#{login.userId}">ログインID</label><input type="tel" id="userId" name="userId" />
+          <label for="userId" th:text="#{Login.userId}">ログインID</label><input type="tel" id="userId" name="userId" />
         </div>
         <div>
-          <label for="passwd" th:text="#{login.passwd}">パスワード</label><input type="password" id="passwd" name="passwd" />
+          <label for="passwd" th:text="#{Login.passwd}">パスワード</label><input type="password" id="passwd" name="passwd" />
         </div>
       </fieldset>
       <input type="hidden" name="requestURI" />
+      <div class="buttons">
+        <a th:href="@{./passmail.html}" th:text="#{Login.email}" tabindex="-1">パスワードリセット</a>
+      </div>
       <div class="submits">
-        <button th:text="#{login.button}">ログイン</button>
+        <button th:text="#{Login.button}">ログイン</button>
       </div>
     </form>
   </div>

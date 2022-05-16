@@ -11,6 +11,7 @@ import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -245,18 +246,7 @@ public final class ServletUtil {
         } else if (request.getParameterMap().size() > 0) {
             // form送信の場合
 
-            for (Entry<String, String[]> e : request.getParameterMap().entrySet()) {
-                String k = StringUtil.sanitize(e.getKey());
-                String[] v = StringUtil.sanitize(e.getValue());
-
-                if (v.length > 1) {
-                    map.put(k, v);
-                } else if (v.length == 1) {
-                    map.put(k, v[0]);
-                } else {
-                    map.put(k, "");
-                }
-            }
+            map = suckParameterMap(request);
 
         } else {
             // ajax送信の場合
@@ -274,6 +264,34 @@ public final class ServletUtil {
             LOG.trace("RequestJson: " + mapper.writerWithDefaultPrettyPrinter().writeValueAsString(map));
         } catch (JsonProcessingException e) {
             throw new SysError(e);
+        }
+
+        return map;
+    }
+
+    /**
+     * @param request
+     * @return サニタイズ済みのMap
+     */
+    public static Map<String, Object> suckParameterMap(final HttpServletRequest request) {
+
+        Map<String, Object> map = null;
+
+        for (Entry<String, String[]> e : request.getParameterMap().entrySet()) {
+            String k = StringUtil.sanitize(e.getKey());
+            String[] v = StringUtil.sanitize(e.getValue());
+
+            if (map == null) {
+                map = new LinkedHashMap<String, Object>();
+            }
+
+            if (v.length > 1) {
+                map.put(k, v);
+            } else if (v.length == 1) {
+                map.put(k, v[0]);
+            } else {
+                map.put(k, "");
+            }
         }
 
         return map;

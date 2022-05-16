@@ -56,11 +56,18 @@ var Loading = {
 
 };
 
+let reqPath = location.pathname.replace(/\/[^\/]+\.html$/, '');
+pathlevel = reqPath.replace(/[^\/]/g, '').length;
+let dir = '';
+for (let i = 1; i < pathlevel; i++) {
+	dir += '../';
+}
+
 console.debug('Loading init.');
 let dialogDiv2 = document.createElement('div');
 dialogDiv2.id = 'loading';
 dialogDiv2.style.backgroundColor = '#eee';
-dialogDiv2.style.backgroundImage = 'url("../img/gif-load.gif")';
+dialogDiv2.style.backgroundImage = 'url("' + dir + 'img/gif-load.gif")';
 dialogDiv2.style.backgroundPosition = 'center center';
 dialogDiv2.style.backgroundRepeat = 'no-repeat';
 dialogDiv2.style.position = 'absolute';

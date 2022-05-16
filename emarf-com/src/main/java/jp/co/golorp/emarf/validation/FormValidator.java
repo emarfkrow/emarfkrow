@@ -100,6 +100,13 @@ public final class FormValidator {
                     itemMei = Messages.get(itemName.replaceFirst(".+(Refer|Regist)Form\\.", ""));
                 }
 
+                // 画面名.プロパティ名で項目名を取得してみる
+                // Passmail.email
+                if (itemMei == null) {
+                    String[] s = itemName.replaceAll("Form", "").split("\\.");
+                    itemMei = Messages.get(s[s.length - 2] + "." + s[s.length - 1]);
+                }
+
                 // {0}をエラー項目論理名で置換
                 if (itemMei != null) {
                     message = message.replaceAll("\\{0\\}", itemMei);
@@ -192,7 +199,7 @@ public final class FormValidator {
 
         String entityName = clazz.getSimpleName().replaceAll("RegistForm$", "");
 
-        boolean isValued = false;
+        //        boolean isValued = false;
 
         // Formインスタンスのプロパティでループ
         Method[] methods = clazz.getMethods();
@@ -241,7 +248,7 @@ public final class FormValidator {
             if (value != null) {
                 // 送信値がある場合
 
-                isValued = true;
+                //                isValued = true;
 
                 if (value instanceof List) {
                     // 送信値がListの場合
@@ -288,10 +295,10 @@ public final class FormValidator {
             }
         }
 
-        // 一つも値がなかった場合はnullを返す
-        if (!isValued) {
-            return null;
-        }
+        //        // 一つも値がなかった場合はnullを返す
+        //        if (!isValued) {
+        //            return null;
+        //        }
 
         @SuppressWarnings("unchecked")
         T t = (T) o;

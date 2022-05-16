@@ -1,11 +1,8 @@
 package jp.co.golorp.emarf.servlet;
 
 import java.io.IOException;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -18,11 +15,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import jp.co.golorp.emarf.action.BaseAction;
 import jp.co.golorp.emarf.exception.AppError;
 import jp.co.golorp.emarf.exception.SysError;
 import jp.co.golorp.emarf.lang.StringUtil;
 import jp.co.golorp.emarf.properties.App;
+import jp.co.golorp.emarf.servlet.http.ServletUtil;
 import jp.co.golorp.emarf.util.Messages;
 
 /**
@@ -31,17 +32,29 @@ import jp.co.golorp.emarf.util.Messages;
 @WebFilter("/*")
 public class LoginFilter implements Filter {
 
-    /** ログインページ */
+    /** ロガー */
+    private static final Logger LOG = LoggerFactory.getLogger(LoginFilter.class);
+
+    /** ログイン画面 */
     private static final String LOGIN_PAGE = App.get("loginfilter.login.page");
 
-    /** ログインURI */
+    /** ログイン処理URI */
     private static final String LOGIN_URI = App.get("loginfilter.login.uri");
 
-    /** ログアウトURI */
+    /** ログアウト処理URI */
     private static final String LOGOUT_URI = App.get("loginfilter.logout.uri");
 
     /** 認証除外URIの正規表現 */
     private static final String EXCLUDE_REGEXP = App.get("loginfilter.exclude.regexp");
+
+    /** パスワードリセットメール送信画面 */
+    private static final String PASSMAIL_PAGE = App.get("loginfilter.passmail.page");
+
+    /** パスワードリセットメール送信処理URI */
+    private static final String PASSMAIL_URI = App.get("loginfilter.passmail.uri");
+
+    /** アクションクラスパッケージ */
+    private static final String ACTION_PACKAGE = App.get("package.action");
 
     @Override
     public void init(final FilterConfig filterConfig) throws ServletException {
@@ -63,7 +76,10 @@ public class LoginFilter implements Filter {
 
         String contextPath = req.getContextPath() + "/";
 
-        if (!requestURI.matches(LoginFilter.EXCLUDE_REGEXP)) {
+        if (!requestURI.matches(LoginFilter.EXCLUDE_REGEXP)
+                && !requestURI.equals(contextPath + LoginFilter.PASSMAIL_PAGE)) {
+            // ログインチェック除外URLでなく、
+            // パスワードリセットメール送信画面でもない場合
 
             HttpSession ses = req.getSession();
 
@@ -72,24 +88,14 @@ public class LoginFilter implements Filter {
 
                 ses.invalidate();
 
-            } else if (requestURI.equals(contextPath + LoginFilter.LOGIN_URI)) {
-                // ログイン処理の場合は、ログイン処理後にリダイレクト
+            } else if (requestURI.equals(contextPath + LoginFilter.PASSMAIL_URI)) {
+                // パスワードリセットメール送信処理の場合は、送信処理後にリダイレクト
 
-                // ログイン処理
+                Map<String, Object> postJson = ServletUtil.suckParameterMap(req);
 
-                Map<String, Object> postJson = new HashMap<String, Object>();
-                for (Entry<String, String[]> e : request.getParameterMap().entrySet()) {
-                    String k = StringUtil.sanitize(e.getKey());
-                    String[] vs = StringUtil.sanitize(e.getValue());
-                    postJson.put(k, String.join(",", vs));
-                }
-
-                // Actionクラスのインスタンスを実行
-                String actionPackage = App.get("package.action");
-                String className = actionPackage + ".LoginAction";
                 Class<?> c = null;
                 try {
-                    c = Class.forName(className);
+                    c = Class.forName(ACTION_PACKAGE + ".PassmailAction");
                 } catch (ClassNotFoundException e) {
                     throw new SysError(e);
                 }
@@ -98,12 +104,55 @@ public class LoginFilter implements Filter {
                 try {
                     BaseAction action = (BaseAction) c.newInstance();
                     map = action.run(postJson);
+
                 } catch (AppError e) {
-                    String msg = "?ERROR="
-                            + URLEncoder.encode(Messages.get("error.login"), StandardCharsets.UTF_8.name());
-                    res.sendRedirect(contextPath + LoginFilter.LOGIN_PAGE + msg);
-                    return;
+
+                    map = new HashMap<String, Object>();
+                    if (e.getErrors() != null && !e.getErrors().isEmpty()) {
+                        map.put("ERROR", Messages.get("error"));
+                        map.put("errors", e.getErrors());
+                    } else {
+                        map.put("ERROR", e.getMessage());
+                    }
+
                 } catch (Exception e) {
+
+                    LOG.error(e.getMessage(), e);
+                    map = new HashMap<String, Object>();
+                    map.put("FATAL", Messages.get("fatal"));
+                }
+
+                // Actionクラスの実行結果をJSONで返却
+                ServletUtil.sendJson(res, map);
+
+                return;
+
+            } else if (requestURI.equals(contextPath + LoginFilter.LOGIN_URI)) {
+                // ログイン処理の場合は、ログイン処理後にリダイレクト
+
+                Map<String, Object> postJson = ServletUtil.suckParameterMap(req);
+
+                Class<?> c = null;
+                try {
+                    c = Class.forName(ACTION_PACKAGE + ".LoginAction");
+                } catch (ClassNotFoundException e) {
+                    throw new SysError(e);
+                }
+
+                Map<String, Object> map = null;
+                try {
+
+                    BaseAction action = (BaseAction) c.newInstance();
+                    map = action.run(postJson);
+
+                } catch (AppError e) {
+
+                    res.sendRedirect(contextPath + LoginFilter.LOGIN_PAGE + "?ERROR=error.login");
+                    return;
+
+                } catch (Exception e) {
+
+                    LOG.error(e.getMessage(), e);
                     throw new SysError(e);
                 }
 
@@ -125,24 +174,20 @@ public class LoginFilter implements Filter {
                 // ログアウト処理の場合は、セッション破棄後に、ログイン画面へリダイレクト
 
                 ses.invalidate();
-
-                String msg = "?INFO=" + URLEncoder.encode(Messages.get("info.logout"), StandardCharsets.UTF_8.name());
-                res.sendRedirect(contextPath + LoginFilter.LOGIN_PAGE + msg);
-
+                res.sendRedirect(contextPath + LoginFilter.LOGIN_PAGE + "?INFO=info.logout");
                 return;
 
             } else if (ses.getAttribute("AUTHN_KEY") == null) {
                 // 認証用オブジェクトがセッションにない場合は、セッション破棄してログイン画面へリダイレクト
 
                 ses.invalidate();
-
                 res.sendRedirect(contextPath + LoginFilter.LOGIN_PAGE + "?requestURI=" + requestURI);
-
                 return;
             }
         }
 
         chain.doFilter(request, response);
+
     }
 
     @Override

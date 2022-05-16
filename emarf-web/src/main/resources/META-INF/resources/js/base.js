@@ -53,7 +53,7 @@ $(document).on('ready', function() {
 
 	// URLにFATALがついていればポップアップ
 	if (Base.querystrings['FATAL']) {
-		alert(decodeURI(Base.querystrings['FATAL']));
+		alert(Messages[Base.querystrings['FATAL']]);
 		//		let href = document.location.href;
 		//		document.location.href = href.replace(/\?.+$/, '');
 		return;
@@ -61,21 +61,25 @@ $(document).on('ready', function() {
 
 	// URLにERRORがついていればポップアップ
 	if (Base.querystrings['ERROR']) {
-		alert(decodeURI(Base.querystrings['ERROR']));
-		sessionStorage.setItem('errors', decodeURIComponent(Base.querystrings['errors']));
+		alert(Messages[Base.querystrings['ERROR']]);
+		if (Base.querystrings['errors']) {
+			sessionStorage.setItem('errors', decodeURIComponent(Base.querystrings['errors']));
+		}
 		//		let href = document.location.href;
 		//		document.location.href = href.replace(/\?.+$/, '');
 		return;
 	}
 
 	let sessionErrors = sessionStorage.getItem('errors');
-	let errors = JSON.parse(sessionErrors);
-	Ajaxize.errorStyle(errors);
-	sessionStorage.removeItem('errors');
+	if (sessionErrors) {
+		let errors = JSON.parse(sessionErrors);
+		Ajaxize.errorStyle(errors);
+		sessionStorage.removeItem('errors');
+	}
 
 	// URLにINFOがついていればポップアップ
 	if (Base.querystrings['INFO']) {
-		alert(decodeURI(Base.querystrings['INFO']));
+		alert(Messages[Base.querystrings['INFO']]);
 		//		let href = document.location.href;
 		//		document.location.href = href.replace(/\?.+$/, '');
 	}
@@ -133,6 +137,9 @@ let Base = {
 			return '1';
 		}
 		if (gamenId == 'login') {
+			return '1';
+		}
+		if (gamenId == 'passmail') {
 			return '1';
 		}
 		if (sessionStorage['authzInfo']) {
