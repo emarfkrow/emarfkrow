@@ -8,7 +8,11 @@ import java.util.Map;
 import com.example.entity.MUser;
 
 import jp.co.golorp.emarf.action.BaseAction;
+import jp.co.golorp.emarf.exception.AppError;
+import jp.co.golorp.emarf.mail.MailInfo;
+import jp.co.golorp.emarf.mail.Mailer;
 import jp.co.golorp.emarf.sql.Queries;
+import jp.co.golorp.emarf.util.Messages;
 
 /**
  * パスワードリセットメール送信
@@ -31,12 +35,21 @@ public class PassmailAction extends BaseAction {
         List<MUser> mUsers = Queries.select(mUserSearchSql, mUserSearchParam, MUser.class);
 
         if (mUsers == null || mUsers.size() != 1) {
-            return null;
+            throw new AppError("error.passmail");
         }
 
-        email = mUsers.get(0).getEmail();
+        MUser mUser = mUsers.get(0);
 
-        return null;
+        MailInfo mi = new MailInfo();
+        mi.addTo(mUser.getEmail(), mUser.getUserSei() + mUser.getUserMei());
+        mi.setSubject(Messages.get("Passmail.subject"));
+        mi.addText(Messages.get("Passmail.text"));
+
+        Mailer.send(mi);
+
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("INFO", Messages.get("info.passmail"));
+        return map;
     }
 
 }

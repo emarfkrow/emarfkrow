@@ -12,39 +12,39 @@ public class LoginForm implements IForm {
     /***/
     @NotBlank
     @Pattern(regexp = "[ -~]+")
-    private String email;
+    private String userId;
 
     /**
      * @return email
      */
-    public String getEmail() {
-        return email;
+    public String getUserId() {
+        return userId;
     }
 
     /**
      * @param p
      */
-    public void setEmail(final String p) {
-        this.email = p;
+    public void setUserId(final String p) {
+        this.userId = p;
     }
 
     /***/
     @NotBlank
     @Pattern(regexp = "[ -~]+")
-    private String password;
+    private String passwd;
 
     /**
      * @return password
      */
-    public String getPassword() {
-        return password;
+    public String getPasswd() {
+        return passwd;
     }
 
     /**
      * @param p
      */
-    public void setPassword(final String p) {
-        this.password = p;
+    public void setPasswd(final String p) {
+        this.passwd = p;
     }
 
     @Override

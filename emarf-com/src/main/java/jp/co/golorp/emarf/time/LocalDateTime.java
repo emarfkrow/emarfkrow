@@ -1,6 +1,10 @@
 package jp.co.golorp.emarf.time;
 
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 
 /**
  * LocalDateTimeのラッパ（テスト用の日時を使用するため）
@@ -26,6 +30,16 @@ public final class LocalDateTime {
      */
     public static String format(final String format) {
         return LocalDateTime.now().format(DateTimeFormatter.ofPattern(format));
+    }
+
+    /**
+     * @return java.util.Date
+     */
+    public static Date date() {
+        ZoneId zone = ZoneId.systemDefault();
+        ZonedDateTime zonedDateTime = ZonedDateTime.of(now(), zone);
+        Instant instant = zonedDateTime.toInstant();
+        return Date.from(instant);
     }
 
 }
