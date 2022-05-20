@@ -25,10 +25,13 @@ public final class LocalDateTime {
     }
 
     /**
-     * @param format
-     * @return String
+     * @return yyyyMMddHHmmssSSS
      */
-    public static String format(final String format) {
+    public static String ymdhmsS() {
+        return LocalDateTime.format("yyyyMMddHHmmssSSS");
+    }
+
+    private static String format(final String format) {
         return LocalDateTime.now().format(DateTimeFormatter.ofPattern(format));
     }
 

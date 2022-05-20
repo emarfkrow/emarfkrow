@@ -23,8 +23,8 @@ import jp.co.golorp.emarf.sql.Queries;
  */
 public class LoginAction extends BaseAction {
 
-    /** パスワードを暗号化するか */
-    private static final String ENCRYPT = App.get("loginfilter.encrypt");
+    /** パスワードのハッシュアルゴリズム */
+    private static final String HASH = App.get("loginfilter.hash");
 
     /**
      * ログイン処理
@@ -42,8 +42,8 @@ public class LoginAction extends BaseAction {
         }
 
         // パスワード不一致
-        if (ENCRYPT.matches("(?i)true")) {
-            passwd = StringUtil.encrypt(passwd);
+        if (!StringUtil.isNullOrBlank(HASH)) {
+            passwd = StringUtil.hash(passwd);
         }
         if (!passwd.equals(mUser.getPassword())) {
             throw new AppError("error.login");
@@ -73,21 +73,26 @@ public class LoginAction extends BaseAction {
         List<MShozoku> mShozokus = Queries.select(mShozokuSearchSql, mShozokuSearchParam, MShozoku.class);
 
         // 所属情報に紐づく認可情報のうち最大の権限を取得
-        for (MShozoku mShozoku : mShozokus) {
+        if (mShozokus != null) {
+            for (MShozoku mShozoku : mShozokus) {
 
-            String mNinkaSearchSql = this.loadSqlFile("MNinkaSearch");
-            Map<String, Object> mNinkaSearchParam = new HashMap<String, Object>();
-            mNinkaSearchParam.put("bushoId", mShozoku.getBushoId());
-            mNinkaSearchParam.put("shokuiId", mShozoku.getShokuiId());
-            List<MNinka> mNinkas = Queries.select(mNinkaSearchSql, mNinkaSearchParam, MNinka.class);
+                String mNinkaSearchSql = this.loadSqlFile("MNinkaSearch");
+                Map<String, Object> mNinkaSearchParam = new HashMap<String, Object>();
+                mNinkaSearchParam.put("bushoId", mShozoku.getBushoId());
+                mNinkaSearchParam.put("shokuiId", mShozoku.getShokuiId());
+                List<MNinka> mNinkas = Queries.select(mNinkaSearchSql, mNinkaSearchParam, MNinka.class);
 
-            for (MNinka mNinka : mNinkas) {
-                if (!authzInfo.containsKey(mNinka.getGamenNm())) {
-                    authzInfo.put(mNinka.getGamenNm(), mNinka.getKengenKb());
-                } else {
-                    String orgKengenKb = authzInfo.get(mNinka.getGamenNm());
-                    if (Integer.valueOf(orgKengenKb) < Integer.valueOf(mNinka.getKengenKb())) {
-                        authzInfo.put(mNinka.getGamenNm(), mNinka.getKengenKb());
+                if (mNinkas != null) {
+                    for (MNinka mNinka : mNinkas) {
+
+                        if (!authzInfo.containsKey(mNinka.getGamenNm())) {
+                            authzInfo.put(mNinka.getGamenNm(), mNinka.getKengenKb());
+                        } else {
+                            String orgKengenKb = authzInfo.get(mNinka.getGamenNm());
+                            if (Integer.valueOf(orgKengenKb) < Integer.valueOf(mNinka.getKengenKb())) {
+                                authzInfo.put(mNinka.getGamenNm(), mNinka.getKengenKb());
+                            }
+                        }
                     }
                 }
             }

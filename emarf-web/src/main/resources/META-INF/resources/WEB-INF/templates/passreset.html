@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{Passreset.title}"></title>
+<link rel="stylesheet" th:href="@{/css/login.css}" />
+<script type="text/javascript">
+	$(function() {
+		let hash = Base.querystrings['hash'];
+		$('[name=hash]').val(hash);
+	});
+</script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{Passreset.h2}"></h2>
+    <form method="post" name="PassresetForm" action="passreset.ajax" class="login">
+      <input type="hidden" name="hash" />
+      <fieldset>
+        <legend th:text="#{Passreset.legend}"></legend>
+        <span th:text="#{Passreset.message}"></span>
+        <div>
+          <label for="passwd" th:text="#{Passreset.passwd}"></label><input type="password" id="passwd" name="passwd" />
+        </div>
+        <div>
+          <label for="passwd2" th:text="#{Passreset.passwd2}"></label><input type="password" id="passwd2" name="passwd2" />
+        </div>
+        <!--         <div> -->
+        <!--           <label for="email" th:text="#{Passreset.email}"></label><input type="email" id="email" name="email" /> -->
+        <!--         </div> -->
+      </fieldset>
+      <div class="submits">
+        <button th:text="#{Passreset.button}"></button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

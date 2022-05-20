@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
 <head>
 <meta charset="UTF-8">
-<title th:text="#{Passmail.title}">パスワードリセットメール送信</title>
+<title th:text="#{Passmail.title}"></title>
 <link rel="stylesheet" th:href="@{/css/login.css}" />
 <script type="text/javascript">
 
@@ -10,17 +10,20 @@
 </head>
 <body>
   <div layout:fragment="article">
-    <h2 th:text="#{Passmail.h2}">パスワードリセットメール送信画面</h2>
-    <form method="post" name="PassmailForm" action="passmail.ajax">
+    <h2 th:text="#{Passmail.h2}"></h2>
+    <form method="post" name="PassmailForm" action="passmail.ajax" class="login">
       <fieldset>
-        <legend th:text="#{Passmail.legend}">パスワードリセットメール送信フォーム</legend>
-        <span th:text="#{Passmail.message}">入力したメールアドレスに、パスワードリセット画面のURLを送信します。</span>
+        <legend th:text="#{Passmail.legend}"></legend>
+        <span th:text="#{Passmail.message}"></span>
         <div>
-          <label for="email" th:text="#{Passmail.email}">メールアドレス</label><input type="email" id="email" name="email" />
+          <label for="userId" th:text="#{Passmail.userId}"></label><input type="tel" id="userId" name="userId" />
         </div>
+        <!--         <div> -->
+        <!--           <label for="email" th:text="#{Passmail.email}"></label><input type="email" id="email" name="email" /> -->
+        <!--         </div> -->
       </fieldset>
       <div class="submits">
-        <button th:text="#{Passmail.button}">送信</button>
+        <button th:text="#{Passmail.button}"></button>
       </div>
     </form>
   </div>

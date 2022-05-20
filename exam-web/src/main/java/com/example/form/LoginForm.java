@@ -11,7 +11,7 @@ public class LoginForm implements IForm {
 
     /***/
     @NotBlank
-    @Pattern(regexp = "[ -~]+")
+    @Pattern(regexp = "[ -~]*")
     private String userId;
 
     /**
@@ -30,7 +30,7 @@ public class LoginForm implements IForm {
 
     /***/
     @NotBlank
-    @Pattern(regexp = "[ -~]+")
+    @Pattern(regexp = "[ -~]*")
     private String passwd;
 
     /**

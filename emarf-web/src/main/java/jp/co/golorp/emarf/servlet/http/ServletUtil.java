@@ -42,6 +42,23 @@ public final class ServletUtil {
     /** アップロードファイル名称のサフィックス */
     private static String uploadMeiSuffix = App.get("context.upload.mei.suffix");
 
+    /** servletUrl */
+    private static String servletUrl;
+
+    /**
+     * @return servletUrl
+     */
+    public static String getServletUrl() {
+        return servletUrl;
+    }
+
+    /**
+     * @param s
+     */
+    public static void setServletUrl(final String s) {
+        servletUrl = s;
+    }
+
     private ServletUtil() {
     }
 
@@ -51,64 +68,88 @@ public final class ServletUtil {
      */
     public static BaseAction getAction(final HttpServletRequest request) {
 
+        // サーブレットパスを文字列配列に取得
         String servletPath = request.getServletPath();
         String[] servletPathes = servletPath.split("/");
 
+        // 最後のパスの拡張子部分を「Action」に置換
         String lastPath = servletPathes[servletPathes.length - 1];
         String actionName = lastPath.replaceFirst(".[a-z]+$", "") + "Action";
         servletPathes[servletPathes.length - 1] = actionName;
 
-        String actionPackage = App.get("package.action");
-        String className = actionPackage + String.join(".", servletPathes);
+        String pkg = App.get("package.action");
+        BaseAction a = null;
+
         try {
-            Class<?> c = Class.forName(className);
-            return (BaseAction) c.newInstance();
+
+            // リクエストに則って取ってみる
+            a = (BaseAction) (Class.forName(pkg + String.join(".", servletPathes))).newInstance();
+
         } catch (Exception e) {
 
-            // モデルパッケージからもとってみる
-            className = actionPackage + ".model." + actionName;
             try {
-                Class<?> c = Class.forName(className);
-                return (BaseAction) c.newInstance();
+
+                // モデルパッケージからも取ってみる
+                a = (BaseAction) (Class.forName(pkg + ".model." + actionName)).newInstance();
+
             } catch (Exception e1) {
 
-                // モデルのベースパッケージからもとってみる
-                className = actionPackage + ".model.base." + actionName;
+                // モデルのベースパッケージからも取ってみる
+
                 try {
-                    Class<?> c = Class.forName(className);
-                    return (BaseAction) c.newInstance();
+
+                    a = (BaseAction) (Class.forName(pkg + ".model.base." + actionName)).newInstance();
+
                 } catch (Exception e2) {
 
                     if (actionName.endsWith("SearchAction")) {
-                        className = "jp.co.golorp.emarf.action.SearchAction";
+
                         try {
-                            Class<?> c = Class.forName(className);
-                            return (BaseAction) c.newInstance();
+                            a = (BaseAction) (Class.forName("jp.co.golorp.emarf.action.SearchAction")).newInstance();
                         } catch (Exception e3) {
                             throw new SysError(e);
                         }
+
                     } else if (actionName.endsWith("GetAction")) {
-                        className = "jp.co.golorp.emarf.action.GetAction";
+
                         try {
-                            Class<?> c = Class.forName(className);
-                            return (BaseAction) c.newInstance();
+                            a = (BaseAction) (Class.forName("jp.co.golorp.emarf.action.GetAction")).newInstance();
                         } catch (Exception e3) {
                             throw new SysError(e);
                         }
+
                     } else if (actionName.endsWith("DownloadAction")) {
-                        className = "jp.co.golorp.emarf.action.DownloadAction";
+
                         try {
-                            Class<?> c = Class.forName(className);
-                            return (BaseAction) c.newInstance();
+                            a = (BaseAction) (Class.forName("jp.co.golorp.emarf.action.DownloadAction")).newInstance();
                         } catch (Exception e3) {
                             throw new SysError(e);
                         }
+
                     } else {
+
                         throw new SysError(e);
                     }
                 }
             }
         }
+
+        // sqlファイルの探索開始パスを取得
+        List<String> pathes = ServletUtil.getPathes(request);
+        a.setPathes(pathes);
+
+        // sqlファイル名の規定値を取得
+        String baseName = ServletUtil.getBaseName(request);
+        a.setBaseName(baseName);
+
+        HttpSession ses = request.getSession();
+        a.setSession(ses);
+
+        if (ses.getAttribute("AUTHN_KEY") != null) {
+            a.setId(ses.getAttribute("AUTHN_KEY").toString());
+        }
+
+        return a;
     }
 
     /**
@@ -179,7 +220,7 @@ public final class ServletUtil {
                         // アップロードフォルダに保管
                         String uploadDir = App.get("context.upload.dir");
                         String ext = fileName.replaceFirst("^.+\\.", "");
-                        String saveName = partName + "." + LocalDateTime.format("yyyyMMddHHmmssSSS") + "." + ext;
+                        String saveName = partName + "." + LocalDateTime.ymdhmsS() + "." + ext;
                         String uploadPath = uploadDir + File.separator + saveName;
                         try {
                             part.write(uploadPath);

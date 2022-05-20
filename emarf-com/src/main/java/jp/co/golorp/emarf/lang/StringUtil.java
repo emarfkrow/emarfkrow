@@ -1,20 +1,12 @@
 package jp.co.golorp.emarf.lang;
 
-import java.security.InvalidKeyException;
+import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import javax.crypto.BadPaddingException;
-import javax.crypto.Cipher;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
-import javax.crypto.spec.SecretKeySpec;
-
-import org.apache.commons.codec.binary.Base64;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.commons.codec.binary.Hex;
 
 import jp.co.golorp.emarf.exception.SysError;
 import jp.co.golorp.emarf.properties.App;
@@ -26,9 +18,6 @@ import jp.co.golorp.emarf.properties.App;
  *
  */
 public final class StringUtil {
-
-    /** ロガー */
-    private static final Logger LOG = LoggerFactory.getLogger(StringUtil.class);
 
     private StringUtil() {
     }
@@ -221,103 +210,126 @@ public final class StringUtil {
         return sanitizeds.toArray(new String[sanitizeds.size()]);
     }
 
-    /** 秘密鍵（16文字） */
-    private static byte[] secretKey;
+    //    /** 秘密鍵（16文字） */
+    //    private static byte[] secretKey;
+    //
+    //    /** 暗号化方式 */
+    //    private static String algorithm;
+    //
+    //    /**
+    //     * 文字列を16文字の秘密鍵でAES暗号化してBase64した文字列で返す
+    //     *
+    //     * @param string
+    //     *            対象文字列
+    //     * @return 暗号化文字列
+    //     */
+    //    public static String encrypt(final String string) {
+    //
+    //        if (string == null) {
+    //            return null;
+    //        }
+    //
+    //        byte[] input = string.getBytes();
+    //
+    //        byte[] encryped = cipher(Cipher.ENCRYPT_MODE, input);
+    //
+    //        byte[] encoded = Base64.encodeBase64(encryped, false);
+    //
+    //        String ret = new String(encoded);
+    //
+    //        LOG.debug("Encrypt [" + string + "] to [" + ret + "].");
+    //
+    //        return ret;
+    //    }
+    //
+    //    /**
+    //     * Base64されたAES暗号化文字列を元の文字列に復元する
+    //     *
+    //     * @param encryped
+    //     *            暗号化文字列
+    //     * @return 複合化文字列
+    //     */
+    //    public static String decrypt(final String encryped) {
+    //
+    //        if (encryped == null) {
+    //            return null;
+    //        }
+    //
+    //        byte[] input = Base64.decodeBase64(encryped);
+    //
+    //        byte[] decrypted = cipher(Cipher.DECRYPT_MODE, input);
+    //
+    //        String ret = new String(decrypted);
+    //
+    //        LOG.debug("Decrypt [" + encryped + "] to [" + ret + "].");
+    //
+    //        return ret;
+    //    }
+    //
+    //    /**
+    //     * 暗号化・複合化の共通部分
+    //     *
+    //     * @param opmode
+    //     *            opmode
+    //     * @param input
+    //     *            input
+    //     * @return byte[]
+    //     */
+    //    private static byte[] cipher(final int opmode, final byte[] input) {
+    //
+    //        if (secretKey == null) {
+    //            secretKey = App.get("loginfilter.encrypt.secret_key").getBytes();
+    //        }
+    //
+    //        if (algorithm == null) {
+    //            algorithm = App.get("loginfilter.encrypt.algorithm");
+    //        }
+    //
+    //        Cipher cipher = null;
+    //        try {
+    //            cipher = Cipher.getInstance(algorithm);
+    //        } catch (NoSuchAlgorithmException | NoSuchPaddingException e) {
+    //            throw new SysError(e);
+    //        }
+    //
+    //        try {
+    //            cipher.init(opmode, new SecretKeySpec(secretKey, algorithm));
+    //        } catch (InvalidKeyException e) {
+    //            throw new SysError(e);
+    //        }
+    //
+    //        byte[] bytes = null;
+    //        try {
+    //            LOG.trace(String.valueOf(input));
+    //            bytes = cipher.doFinal(input);
+    //        } catch (IllegalBlockSizeException | BadPaddingException e) {
+    //            throw new SysError(e);
+    //        }
+    //
+    //        return bytes;
+    //    }
 
-    /** 暗号化方式 */
-    private static String algorithm;
+    /** ハッシュアルゴリズム */
+    private static MessageDigest md;
 
     /**
-     * 文字列を16文字の秘密鍵でAES暗号化してBase64した文字列で返す
-     *
-     * @param string
-     *            対象文字列
-     * @return 暗号化文字列
+     * @param s
+     * @return SHA3-512ハッシュ文字列
      */
-    public static String encrypt(final String string) {
+    public static String hash(final String s) {
 
-        if (string == null) {
-            return null;
+        if (md == null) {
+            String algorithm = App.get("loginfilter.hash");
+            try {
+                md = MessageDigest.getInstance(algorithm);
+            } catch (NoSuchAlgorithmException e) {
+                throw new SysError(e);
+            }
         }
 
-        byte[] input = string.getBytes();
+        byte[] bytes = md.digest(s.getBytes());
 
-        byte[] encryped = cipher(Cipher.ENCRYPT_MODE, input);
-
-        byte[] encoded = Base64.encodeBase64(encryped, false);
-
-        String ret = new String(encoded);
-
-        LOG.debug("Encrypt [" + string + "] to [" + ret + "].");
-
-        return ret;
-    }
-
-    /**
-     * Base64されたAES暗号化文字列を元の文字列に復元する
-     *
-     * @param encryped
-     *            暗号化文字列
-     * @return 複合化文字列
-     */
-    public static String decrypt(final String encryped) {
-
-        if (encryped == null) {
-            return null;
-        }
-
-        byte[] input = Base64.decodeBase64(encryped);
-
-        byte[] decrypted = cipher(Cipher.DECRYPT_MODE, input);
-
-        String ret = new String(decrypted);
-
-        LOG.debug("Decrypt [" + encryped + "] to [" + ret + "].");
-
-        return ret;
-    }
-
-    /**
-     * 暗号化・複合化の共通部分
-     *
-     * @param opmode
-     *            opmode
-     * @param input
-     *            input
-     * @return byte[]
-     */
-    private static byte[] cipher(final int opmode, final byte[] input) {
-
-        if (secretKey == null) {
-            secretKey = App.get("loginfilter.encrypt.secret_key").getBytes();
-        }
-
-        if (algorithm == null) {
-            algorithm = App.get("loginfilter.encrypt.algorithm");
-        }
-
-        Cipher cipher = null;
-        try {
-            cipher = Cipher.getInstance(algorithm);
-        } catch (NoSuchAlgorithmException | NoSuchPaddingException e) {
-            throw new SysError(e);
-        }
-
-        try {
-            cipher.init(opmode, new SecretKeySpec(secretKey, algorithm));
-        } catch (InvalidKeyException e) {
-            throw new SysError(e);
-        }
-
-        byte[] bytes = null;
-        try {
-            LOG.trace(String.valueOf(input));
-            bytes = cipher.doFinal(input);
-        } catch (IllegalBlockSizeException | BadPaddingException e) {
-            throw new SysError(e);
-        }
-
-        return bytes;
+        return Hex.encodeHexString(bytes);
     }
 
 }

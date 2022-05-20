@@ -34,7 +34,7 @@ public final class FormValidator {
     private static Pattern gridNamePattern = Pattern.compile("\\.[a-z]");
 
     /** ~に囲まれたパターン（正規表現部の名称変換用） */
-    private static Pattern regexpPattern = Pattern.compile("\\~(.+?)\\~");
+    private static Pattern regexpPattern = Pattern.compile("\\~\\~(.+?)\\~\\~");
 
     private FormValidator() {
     }

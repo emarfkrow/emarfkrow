@@ -1,7 +1,6 @@
 package jp.co.golorp.emarf.servlet.http;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletException;
@@ -9,7 +8,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -55,29 +53,16 @@ public final class JsonServlet extends HttpServlet {
             return;
         }
 
-        // sqlファイルの探索開始パスを取得
-        List<String> sqlPathes = ServletUtil.getPathes(request);
-
-        // sqlファイル名の規定値を取得
-        String baseName = ServletUtil.getBaseName(request);
-
-        HttpSession session = request.getSession();
-        Object authnKey = session.getAttribute("AUTHN_KEY");
-
         Map<String, Object> map = null;
+
         try {
 
-            BaseAction action = ServletUtil.getAction(request);
-            action.setPathes(sqlPathes);
-            action.setBaseName(baseName);
-            if (authnKey != null) {
-                action.setId(authnKey.toString());
-            }
-
             Map<String, Object> postJson = ServletUtil.getPostJson(request);
+            BaseAction action = ServletUtil.getAction(request);
             map = action.run(postJson);
 
         } catch (Exception e) {
+
             LOG.error(e.getMessage(), e);
             throw new SysError(e);
         }

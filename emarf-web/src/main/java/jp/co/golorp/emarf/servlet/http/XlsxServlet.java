@@ -46,24 +46,16 @@ public final class XlsxServlet extends HttpServlet {
     protected void doGet(final HttpServletRequest request, final HttpServletResponse response)
             throws ServletException, IOException {
 
-        // sqlファイルの探索開始パスを取得
-        List<String> pathes = ServletUtil.getPathes(request);
-
-        // sqlファイル名の規定値を取得
-        String baseName = ServletUtil.getBaseName(request);
-
         Map<String, Object> map = null;
+
         try {
 
-            BaseAction action = ServletUtil.getAction(request);
-            action.setPathes(pathes);
-            action.setBaseName(baseName);
-            action.setId(request.getSession().getAttribute("AUTHN_KEY").toString());
-
             Map<String, Object> postJson = ServletUtil.getPostedJson(request);
+            BaseAction action = ServletUtil.getAction(request);
             map = action.run(postJson);
 
         } catch (Exception e) {
+
             LOG.error(e.getMessage(), e);
             String referer = request.getHeader("referer").replaceAll("\\?.+$", "");
             response.sendRedirect(referer + "?FATAL=fatal");
@@ -90,6 +82,12 @@ public final class XlsxServlet extends HttpServlet {
                 throw new SysError(e);
             }
         }
+
+        // sqlファイルの探索開始パスを取得
+        List<String> pathes = ServletUtil.getPathes(request);
+
+        // sqlファイル名の規定値を取得
+        String baseName = ServletUtil.getBaseName(request);
 
         xlsxAction.setPathes(pathes);
         xlsxAction.setBaseName(baseName);

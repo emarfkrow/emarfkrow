@@ -2,7 +2,6 @@ package jp.co.golorp.emarf.servlet.http;
 
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletException;
@@ -48,24 +47,14 @@ public final class AjaxServlet extends HttpServlet {
     protected void doGet(final HttpServletRequest request, final HttpServletResponse response)
             throws ServletException, IOException {
 
-        // sqlファイルの探索開始パスを取得
-        List<String> pathes = ServletUtil.getPathes(request);
-
-        // sqlファイル名の規定値を取得
-        String baseName = ServletUtil.getBaseName(request);
-
         Map<String, Object> map = null;
         try {
-
-            BaseAction action = ServletUtil.getAction(request);
-            action.setPathes(pathes);
-            action.setBaseName(baseName);
-            action.setId(request.getSession().getAttribute("AUTHN_KEY").toString());
 
             // エクセルダウンロードの検索条件退避用
             request.getSession().removeAttribute(request.getRequestURI());
 
             Map<String, Object> postJson = ServletUtil.getPostJson(request);
+            BaseAction action = ServletUtil.getAction(request);
             map = action.run(postJson);
 
             // エクセルダウンロードの検索条件退避用

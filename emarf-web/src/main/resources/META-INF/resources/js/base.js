@@ -142,6 +142,9 @@ let Base = {
 		if (gamenId == 'passmail') {
 			return '1';
 		}
+		if (gamenId == 'passreset') {
+			return '1';
+		}
 		if (sessionStorage['authzInfo']) {
 			let authzInfo = JSON.parse(sessionStorage['authzInfo']);
 			let matchLength = 0;

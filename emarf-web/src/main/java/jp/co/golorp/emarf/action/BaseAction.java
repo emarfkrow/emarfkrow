@@ -5,6 +5,8 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -61,6 +63,23 @@ public abstract class BaseAction extends BaseProcess {
      */
     public void setId(final String s) {
         this.userId = s;
+    }
+
+    /** HttpSession */
+    private HttpSession session;
+
+    /**
+     * @return HttpSession
+     */
+    public HttpSession getSession() {
+        return session;
+    }
+
+    /**
+     * @param ses
+     */
+    public void setSession(final HttpSession ses) {
+        this.session = ses;
     }
 
     /**

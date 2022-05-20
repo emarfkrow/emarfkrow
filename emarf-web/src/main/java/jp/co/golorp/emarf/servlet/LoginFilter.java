@@ -53,6 +53,12 @@ public class LoginFilter implements Filter {
     /** パスワードリセットメール送信処理URI */
     private static final String PASSMAIL_URI = App.get("loginfilter.passmail.uri");
 
+    /** パスワードリセット画面 */
+    private static final String PASSRESET_PAGE = App.get("loginfilter.passreset.page");
+
+    /** パスワードリセット処理URI */
+    private static final String PASSRESET_URI = App.get("loginfilter.passreset.uri");
+
     /** アクションクラスパッケージ */
     private static final String ACTION_PACKAGE = App.get("package.action");
 
@@ -77,9 +83,11 @@ public class LoginFilter implements Filter {
         String contextPath = req.getContextPath() + "/";
 
         if (!requestURI.matches(LoginFilter.EXCLUDE_REGEXP)
-                && !requestURI.equals(contextPath + LoginFilter.PASSMAIL_PAGE)) {
+                && !requestURI.equals(contextPath + LoginFilter.PASSMAIL_PAGE)
+                && !requestURI.equals(contextPath + LoginFilter.PASSRESET_PAGE)) {
             // ログインチェック除外URLでなく、
-            // パスワードリセットメール送信画面でもない場合
+            // パスワードリセットメール送信画面でもなく
+            // パスワードリセット画面でもない場合
 
             HttpSession ses = req.getSession();
 
@@ -89,41 +97,16 @@ public class LoginFilter implements Filter {
                 ses.invalidate();
 
             } else if (requestURI.equals(contextPath + LoginFilter.PASSMAIL_URI)) {
-                // パスワードリセットメール送信処理の場合は、送信処理後にリダイレクト
+                // パスワードリセットメール送信処理の場合
 
-                Map<String, Object> postJson = ServletUtil.suckParameterMap(req);
+                execPassmail(req, res);
 
-                Class<?> c = null;
-                try {
-                    c = Class.forName(ACTION_PACKAGE + ".PassmailAction");
-                } catch (ClassNotFoundException e) {
-                    throw new SysError(e);
-                }
+                return;
 
-                Map<String, Object> map = null;
-                try {
-                    BaseAction action = (BaseAction) c.newInstance();
-                    map = action.run(postJson);
+            } else if (requestURI.equals(contextPath + LoginFilter.PASSRESET_URI)) {
+                // パスワードリセット処理の場合
 
-                } catch (AppError e) {
-
-                    map = new HashMap<String, Object>();
-                    if (e.getErrors() != null && !e.getErrors().isEmpty()) {
-                        map.put("ERROR", Messages.get("error"));
-                        map.put("errors", e.getErrors());
-                    } else {
-                        map.put("ERROR", e.getMessage());
-                    }
-
-                } catch (Exception e) {
-
-                    LOG.error(e.getMessage(), e);
-                    map = new HashMap<String, Object>();
-                    map.put("FATAL", Messages.get("fatal"));
-                }
-
-                // Actionクラスの実行結果をJSONで返却
-                ServletUtil.sendJson(res, map);
+                execPassreset(req, res);
 
                 return;
 
@@ -140,6 +123,7 @@ public class LoginFilter implements Filter {
                 }
 
                 Map<String, Object> map = null;
+
                 try {
 
                     BaseAction action = (BaseAction) c.newInstance();
@@ -187,7 +171,54 @@ public class LoginFilter implements Filter {
         }
 
         chain.doFilter(request, response);
+    }
 
+    private void execPassmail(final HttpServletRequest req, final HttpServletResponse res) {
+        execAjaxAction(req, res, "PassmailAction");
+    }
+
+    private void execPassreset(final HttpServletRequest req, final HttpServletResponse res) {
+        execAjaxAction(req, res, "PassresetAction");
+    }
+
+    private void execAjaxAction(final HttpServletRequest req, final HttpServletResponse res, final String actionName) {
+
+        Map<String, Object> postJson = ServletUtil.suckParameterMap(req);
+
+        Class<?> c = null;
+        try {
+            c = Class.forName(ACTION_PACKAGE + "." + actionName);
+        } catch (ClassNotFoundException e) {
+            throw new SysError(e);
+        }
+
+        Map<String, Object> map = null;
+
+        try {
+
+            BaseAction action = (BaseAction) c.newInstance();
+            action.setSession(req.getSession());
+            map = action.run(postJson);
+
+        } catch (AppError e) {
+
+            map = new HashMap<String, Object>();
+            if (e.getErrors() != null && !e.getErrors().isEmpty()) {
+                map.put("ERROR", Messages.get("error"));
+                map.put("errors", e.getErrors());
+            } else {
+                map.put("ERROR", e.getMessage());
+            }
+
+        } catch (Exception e) {
+
+            LOG.error(e.getMessage(), e);
+            map = new HashMap<String, Object>();
+            map.put("FATAL", Messages.get("fatal"));
+        }
+
+        // Actionクラスの実行結果をJSONで返却
+        ServletUtil.sendJson(res, map);
     }
 
     @Override

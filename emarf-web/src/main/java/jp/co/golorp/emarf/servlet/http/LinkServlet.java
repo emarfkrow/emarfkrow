@@ -1,7 +1,6 @@
 package jp.co.golorp.emarf.servlet.http;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletException;
@@ -42,24 +41,17 @@ public final class LinkServlet extends HttpServlet {
     protected void doGet(final HttpServletRequest request, final HttpServletResponse response)
             throws ServletException, IOException {
 
-        // sqlファイルの探索開始パスを取得
-        List<String> pathes = ServletUtil.getPathes(request);
-
-        // sqlファイル名の規定値を取得
-        String baseName = ServletUtil.getBaseName(request).replace("Download", "Search");
-
         Map<String, Object> map = null;
+
         try {
 
-            BaseAction action = ServletUtil.getAction(request);
-            action.setPathes(pathes);
-            action.setBaseName(baseName);
-            action.setId(request.getSession().getAttribute("AUTHN_KEY").toString());
-
             Map<String, Object> postJson = ServletUtil.getPostJson(request);
+            BaseAction action = ServletUtil.getAction(request);
+            action.setBaseName(action.getBaseName().replace("Download", "Search"));
             map = action.run(postJson);
 
         } catch (Exception e) {
+
             LOG.error(e.getMessage(), e);
             throw e;
         }

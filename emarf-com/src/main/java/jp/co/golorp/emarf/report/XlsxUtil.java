@@ -319,7 +319,7 @@ public final class XlsxUtil {
 
         // 保存ファイルパス
         String saveDir = App.get("context.path.temp");
-        String timestamp = LocalDateTime.format("yyyyMMddHHmmssSSS");
+        String timestamp = LocalDateTime.ymdhmsS();
         String writeFileName = fileBaseMei + "." + timestamp + "." + extension;
         String writeFilePath = saveDir + File.separator + writeFileName;
         File file = FileUtil.get(writeFilePath);

@@ -6,6 +6,7 @@ import javax.servlet.ServletContextAttributeEvent;
 import javax.servlet.ServletContextAttributeListener;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
+import javax.servlet.ServletRequest;
 import javax.servlet.ServletRequestAttributeEvent;
 import javax.servlet.ServletRequestAttributeListener;
 import javax.servlet.ServletRequestEvent;
@@ -185,6 +186,13 @@ public class EmarfListener implements ServletContextListener, ServletContextAttr
     public void requestInitialized(final ServletRequestEvent sre) {
 
         if (projectDir == null) {
+
+            ServletRequest sr = sre.getServletRequest();
+            String schema = sr.getScheme();
+            String serverName = sr.getServerName();
+            int serverPort = sr.getServerPort();
+            String contextPath = sre.getServletContext().getContextPath();
+            ServletUtil.setServletUrl(schema + "://" + serverName + ":" + serverPort + contextPath);
 
             projectDir = sre.getServletContext().getRealPath("");
 
