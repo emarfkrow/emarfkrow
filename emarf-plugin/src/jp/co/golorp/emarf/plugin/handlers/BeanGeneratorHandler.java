@@ -82,7 +82,7 @@ public class BeanGeneratorHandler extends AbstractHandler {
             ResourceBundles.getSrcPaths().add(projectDir + File.separator + srcPath);
         }
 
-        BeanGenerator.generate(projectDir);
+        BeanGenerator.generate(projectDir, true);
 
         // メッセージ表示
         MessageDialog.openInformation(window.getShell(), "Plugin", "generated.");
