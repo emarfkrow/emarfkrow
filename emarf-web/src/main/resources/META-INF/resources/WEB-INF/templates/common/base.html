@@ -51,10 +51,16 @@
 <!-- <script layout:replace="~{common/gridColumns::gridColumns}"></script> -->
 <script th:inline="javascript" th:if="${#session != null && #session.getAttribute('AUTHZ_INFO') != null}">
 	let breads = sessionStorage['breads'];
+	let navs = sessionStorage['navs'];
 	sessionStorage.clear();
 	sessionStorage['authzInfo'] = JSON
 			.stringify(/*[[${#session.getAttribute('AUTHZ_INFO')}]]*/);
-	sessionStorage['breads'] = breads;
+	if (breads) {
+		sessionStorage['breads'] = breads;
+	}
+	if (navs) {
+		sessionStorage['navs'] = navs;
+	}
 </script>
 </head>
 <body>

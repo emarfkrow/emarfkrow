@@ -177,7 +177,7 @@ public final class HtmlGenerator {
         s.add("    <dl>");
         for (Entry<String, List<TableInfo>> nav : navs.entrySet()) {
             String t = nav.getKey();
-            s.add("      <dt th:text=\"#{nav.dt." + t + "}\">" + t + "</dt>");
+            s.add("      <dt id=\"" + t + "\" th:text=\"#{nav.dt." + t + "}\">" + t + "</dt>");
             s.add("      <dd>");
             s.add("        <ul>");
             List<TableInfo> navInfos = nav.getValue();
@@ -196,8 +196,26 @@ public final class HtmlGenerator {
         s.add("  </div>");
         s.add("</body>");
         s.add("</html>");
-        FileUtil.writeFile(htmlDir + File.separator + ".." + File.separator + "common" + File.separator + "nav.html",
-                s);
+
+        String sep = File.separator;
+        FileUtil.writeFile(htmlDir + sep + ".." + sep + "common" + sep + "nav.html", s);
+
+        s = new ArrayList<String>();
+        for (Entry<String, List<TableInfo>> nav : navs.entrySet()) {
+            String t = nav.getKey();
+            s.add("nav.dt." + t + " " + t);
+
+            List<TableInfo> navInfos = nav.getValue();
+            for (TableInfo tableInfo : navInfos) {
+                String tableName = tableInfo.getTableName();
+                String remarks = tableInfo.getRemarks();
+                String pascal = StringUtil.toPascalCase(tableName);
+                String pageName = pascal + "S";
+                s.add("nav." + pageName + " " + remarks);
+            }
+        }
+
+        FileUtil.writeFile(htmlDir + sep + ".." + sep + "common" + sep + "nav.properties", s);
     }
 
     /**

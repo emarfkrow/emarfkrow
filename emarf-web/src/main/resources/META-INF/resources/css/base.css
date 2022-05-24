@@ -47,8 +47,8 @@ input, select, textarea {
 	overflow: auto;
 }
 
-.nav dd {
-	margin-bottom: 1rem;
+.nav dt {
+	margin-top: 1rem;
 }
 
 .breads {

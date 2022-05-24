@@ -54,8 +54,8 @@ $(document).on('ready', function() {
 	// URLにFATALがついていればポップアップ
 	if (Base.querystrings['FATAL']) {
 		alert(Messages[Base.querystrings['FATAL']]);
-		//		let href = document.location.href;
-		//		document.location.href = href.replace(/\?.+$/, '');
+		//let href = document.location.href;
+		//document.location.href = href.replace(/\?.+$/, '');
 		return;
 	}
 
@@ -65,9 +65,9 @@ $(document).on('ready', function() {
 		if (Base.querystrings['errors']) {
 			sessionStorage.setItem('errors', decodeURIComponent(Base.querystrings['errors']));
 		}
-		//		let href = document.location.href;
-		//		document.location.href = href.replace(/\?.+$/, '');
-		return;
+		//let href = document.location.href;
+		//document.location.href = href.replace(/\?.+$/, '');
+		//return;
 	}
 
 	let sessionErrors = sessionStorage.getItem('errors');
@@ -80,8 +80,8 @@ $(document).on('ready', function() {
 	// URLにINFOがついていればポップアップ
 	if (Base.querystrings['INFO']) {
 		alert(Messages[Base.querystrings['INFO']]);
-		//		let href = document.location.href;
-		//		document.location.href = href.replace(/\?.+$/, '');
+		//let href = document.location.href;
+		//document.location.href = href.replace(/\?.+$/, '');
 	}
 });
 
@@ -213,6 +213,44 @@ let Base = {
 			let $reset = $(this);
 			let $form = $reset.closest('form');
 			$form.find('span[id].refer').html('');
+		});
+
+		// メニューのトグル
+		let $dts = $('.nav>dl>dt');
+		$dts.each(function() {
+			let $dt = $(this);
+			$dt.html('<span id="navToggle" class="ui-accordion-header-icon ui-icon"></span>' + $dt.html());
+			let isNavs = 0;
+			if (sessionStorage['navs']) {
+				navs = JSON.parse(sessionStorage['navs']);
+				isNavs = navs[this.id];
+			}
+			if (isNavs) {
+				$dt.find('span[id="navToggle"]').addClass('ui-icon-triangle-1-s');
+			} else {
+				$dt.find('span[id="navToggle"]').addClass('ui-icon-triangle-1-e');
+				$dt.next('dd').hide();
+			}
+		});
+		$(document).on('click', '.nav>dl>dt', function() {
+			let navs = {};
+			if (sessionStorage['navs']) {
+				navs = JSON.parse(sessionStorage['navs']);
+			}
+			let $toggle = $(this).find('span[id="navToggle"]');
+			if ($toggle.hasClass('ui-icon-triangle-1-s')) {
+				// 閉じる
+				$toggle.addClass('ui-icon-triangle-1-e');
+				$toggle.removeClass('ui-icon-triangle-1-s');
+				navs[this.id] = 0;
+			} else {
+				// 開く
+				$toggle.addClass('ui-icon-triangle-1-s');
+				$toggle.removeClass('ui-icon-triangle-1-e');
+				navs[this.id] = 1;
+			}
+			sessionStorage['navs'] = JSON.stringify(navs);
+			$(this).next('dd').toggle(500);
 		});
 
 		// 検索条件のトグル
