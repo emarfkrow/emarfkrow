@@ -78,17 +78,6 @@ public final class BeanGenerator {
     }
 
     /**
-     * エントリポイント（デバッグ用）
-     * @param args
-     */
-    public static void main(final String[] args) {
-        //String s = "C:\\Users\\toshiyuki\\git\\emarfkrow\\exam-com";
-        String s = "C:\\Users\\toshiyuki\\Tools\\pleiades-2021-12-java-win-64bit-jre_20220106\\pleiades\\runtime-Eclipseアプリケーション\\knps-com";
-        ResourceBundles.getSrcPaths().add(s + File.separator + "src\\main\\resources");
-        BeanGenerator.generate(s, true);
-    }
-
-    /**
      * 各ファイル出力 主処理
      * @param s
      * @param isManual
