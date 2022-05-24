@@ -17,7 +17,7 @@ import jp.co.golorp.emarf.util.ResourceBundles;
  * @author toshiyuki
  *
  */
-class BeanGeneratorTest {
+class BeanGeneratorTestExam {
 
     /**
      * @throws java.lang.Exception
@@ -52,8 +52,7 @@ class BeanGeneratorTest {
      */
     @Test
     final void testGenerate() {
-        //String s = "C:\\Users\\toshiyuki\\git\\emarfkrow\\exam-com";
-        String s = "C:\\Users\\toshiyuki\\Tools\\pleiades-2021-12-java-win-64bit-jre_20220106\\pleiades\\runtime-Eclipseアプリケーション\\knps-com";
+        String s = "C:\\Users\\toshiyuki\\git\\emarfkrow\\exam-com";
         ResourceBundles.getSrcPaths().add(s + File.separator + "src\\main\\resources");
         BeanGenerator.generate(s, true);
     }
