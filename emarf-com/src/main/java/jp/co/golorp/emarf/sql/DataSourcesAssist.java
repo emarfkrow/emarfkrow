@@ -14,6 +14,14 @@ public abstract class DataSourcesAssist {
      */
     protected String getTableComment(final String tableName) {
         return null;
-    };
+    }
+
+    /**
+     * @param array
+     * @return String
+     */
+    public String join(final String[] array) {
+        return null;
+    }
 
 }

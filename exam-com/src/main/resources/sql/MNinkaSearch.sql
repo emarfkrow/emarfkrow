@@ -10,10 +10,10 @@ WHERE
     AND a.shokui_id = :shokui_id 
     AND a.gamen_nm = :gamen_nm 
     AND a.kengen_kb IN (:kengen_kb) 
-    AND a.kaishi_ymd = :kaishi_ymd 
+    AND TRIM (a.kaishi_ymd) = TRIM (:kaishi_ymd) 
     AND a.kaishi_ymd >= :kaishi_ymd_1 
     AND a.kaishi_ymd <= :kaishi_ymd_2 
-    AND a.shuryo_ymd = :shuryo_ymd 
+    AND TRIM (a.shuryo_ymd) = TRIM (:shuryo_ymd) 
     AND a.shuryo_ymd >= :shuryo_ymd_1 
     AND a.shuryo_ymd <= :shuryo_ymd_2 
     AND a.insert_dt = :insert_dt 

@@ -79,7 +79,7 @@ public final class DataSources {
     }
 
     /** データベース毎の処理を受け持つクラス. */
-    private static DataSourcesAssist dataSourcesAssist = null;
+    private static DataSourcesAssist assist = null;
 
     /**
      * シングルトンインスタンス
@@ -108,7 +108,7 @@ public final class DataSources {
 
         String jndiName = BUNDLE.getString(JNDI_NAME);
         try {
-            setDatabaseAssist(jndiName);
+            setAssist(jndiName);
             Context context = new InitialContext();
             ds = (DataSource) context.lookup(jndiName);
             return ds;
@@ -126,7 +126,7 @@ public final class DataSources {
             String key = keys.nextElement();
             String value = BUNDLE.getString(key);
             properties.put(key, value);
-            setDatabaseAssist(value);
+            setAssist(value);
         }
 
         try {
@@ -140,9 +140,9 @@ public final class DataSources {
     /**
      * @param s データソース名を探す対象の文字列
      */
-    private static void setDatabaseAssist(final String s) {
+    private static void setAssist(final String s) {
 
-        if (dataSourcesAssist == null) {
+        if (assist == null) {
 
             for (DatabaseNames databaseName : DatabaseNames.values()) {
 
@@ -150,19 +150,19 @@ public final class DataSources {
 
                     if (databaseName == DatabaseNames.mysql) {
 
-                        dataSourcesAssist = new DataSourcesAssistMySQL();
+                        assist = new DataSourcesAssistMySQL();
 
                     } else if (databaseName == DatabaseNames.oracle) {
 
-                        dataSourcesAssist = new DataSourcesAssistOracle();
+                        assist = new DataSourcesAssistOracle();
 
                     } else if (databaseName == DatabaseNames.postgresql) {
 
-                        dataSourcesAssist = new DataSourcesAssistPostgreSQL();
+                        assist = new DataSourcesAssistPostgreSQL();
 
                     } else if (databaseName == DatabaseNames.sqlite) {
 
-                        dataSourcesAssist = new DataSourcesAssistSQLite();
+                        assist = new DataSourcesAssistSQLite();
 
                     }
 
@@ -173,13 +173,10 @@ public final class DataSources {
     }
 
     /**
-     * テーブルコメント取得
-     *
-     * @param tableName テーブル名
-     * @return テーブルコメント
+     * @return DataSourcesAssist
      */
-    public static String getTableComment(final String tableName) {
-        return dataSourcesAssist.getTableComment(tableName);
+    public static DataSourcesAssist getAssist() {
+        return assist;
     }
 
     /**
@@ -225,7 +222,7 @@ public final class DataSources {
                 // テーブル論理名
                 String remarks = tables.getString("REMARKS");
                 if (remarks == null || remarks.length() == 0) {
-                    remarks = DataSources.getTableComment(tableName);
+                    remarks = assist.getTableComment(tableName);
                 }
                 if (remarks == null || remarks.length() == 0) {
                     remarks = tableName;
@@ -352,7 +349,7 @@ public final class DataSources {
 
             dataType = "java.time.LocalDateTime";
 
-        } else if (dataSourcesAssist instanceof DataSourcesAssistOracle && typeName.equals("DATE")) {
+        } else if (assist instanceof DataSourcesAssistOracle && typeName.equals("DATE")) {
 
             dataType = "java.time.LocalDateTime";
 

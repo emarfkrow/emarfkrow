@@ -7,4 +7,12 @@ package jp.co.golorp.emarf.sql;
  */
 public class DataSourcesAssistOracle extends DataSourcesAssist {
 
+    /**
+     * @param array
+     * @return String
+     */
+    public String join(final String[] array) {
+        return String.join(" || ", array);
+    }
+
 }

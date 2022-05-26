@@ -1701,6 +1701,7 @@ public final class BeanGenerator {
         String entityName = StringUtil.toPascalCase(tableName);
 
         List<String> s = new ArrayList<String>();
+
         s.add("SELECT");
         s.add("      a.*");
         int i = 0;
@@ -1729,31 +1730,53 @@ public final class BeanGenerator {
                 }
             }
         }
+
         s.add("FROM");
         s.add("    " + tableName + " a ");
+
         s.add("WHERE");
         s.add("    1 = 1 ");
-        for (String columnName : tableInfo.getColumnInfos().keySet()) {
+        for (Entry<String, ColumnInfo> e : tableInfo.getColumnInfos().entrySet()) {
+
+            String columnName = e.getKey();
+            ColumnInfo columnInfo = e.getValue();
+
             String snake = StringUtil.toSnakeCase(columnName);
             boolean isInputLike = StringUtil.endsWith(inputLikeSuffixs, snake);
             boolean isInputFlag = StringUtil.endsWith(inputFlagSuffixs, snake);
             boolean isOption = StringUtil.endsWith(optionsSuffixs, snake);
+
             if (isInputLike) {
-                s.add("    AND a." + snake + " LIKE CONCAT ('%', :" + snake + ", '%') ");
+
+                String[] array = new String[] { "'%'", ":" + snake, "'%'" };
+                String joined = DataSources.getAssist().join(array);
+                s.add("    AND a." + snake + " LIKE " + joined + " ");
+
             } else if (isInputFlag) {
-                s.add("    AND CASE WHEN a." + snake + " IS NULL THEN '0' ELSE a." + snake + " END IN (:" + snake
-                        + ") ");
+
+                s.add("    AND CASE WHEN a." + snake + " IS NULL THEN '0' ELSE TO_CHAR (a." + snake + ") END IN (:"
+                        + snake + ") ");
+
             } else if (isOption) {
+
                 s.add("    AND a." + snake + " IN (:" + snake + ") ");
+
+            } else if (columnInfo.getTypeName().equals("CHAR")) {
+
+                s.add("    AND TRIM (a." + snake + ") = TRIM (:" + snake + ") ");
+
             } else {
+
                 s.add("    AND a." + snake + " = :" + snake + " ");
             }
+
             boolean isInputRange = StringUtil.endsWith(inputRangeSuffixs, snake);
             if (isInputRange) {
                 s.add("    AND a." + snake + " >= :" + snake + "_1 ");
                 s.add("    AND a." + snake + " <= :" + snake + "_2 ");
             }
         }
+
         s.add("ORDER BY");
         if (tableInfo.getPrimaryKeys().size() > 0) {
             s.add("    a." + StringUtil.join(", a.", tableInfo.getPrimaryKeys()));
@@ -1766,6 +1789,7 @@ public final class BeanGenerator {
                 }
             }
         }
+
         FileUtil.writeFile(sqlDir + File.separator + entityName + "Search.sql", s);
     }
 

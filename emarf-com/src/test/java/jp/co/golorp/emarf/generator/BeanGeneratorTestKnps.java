@@ -17,7 +17,7 @@ import jp.co.golorp.emarf.util.ResourceBundles;
  * @author toshiyuki
  *
  */
-public class BeanGeneratorTestKnpsCom {
+public class BeanGeneratorTestKnps {
 
     /**
      * @throws java.lang.Exception

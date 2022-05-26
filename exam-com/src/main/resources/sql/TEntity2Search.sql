@@ -14,16 +14,16 @@ WHERE
     AND a.radio_kb IN (:radio_kb) 
     AND a.pulldown_kb IN (:pulldown_kb) 
     AND a.memo_tx = :memo_tx 
-    AND a.hiduke_ymd = :hiduke_ymd 
+    AND TRIM (a.hiduke_ymd) = TRIM (:hiduke_ymd) 
     AND a.hiduke_ymd >= :hiduke_ymd_1 
     AND a.hiduke_ymd <= :hiduke_ymd_2 
-    AND a.nengetsu_ym = :nengetsu_ym 
+    AND TRIM (a.nengetsu_ym) = TRIM (:nengetsu_ym) 
     AND a.nengetsu_ym >= :nengetsu_ym_1 
     AND a.nengetsu_ym <= :nengetsu_ym_2 
-    AND a.sample_y = :sample_y 
+    AND TRIM (a.sample_y) = TRIM (:sample_y) 
     AND a.sample_y >= :sample_y_1 
     AND a.sample_y <= :sample_y_2 
-    AND a.sample_m = :sample_m 
+    AND TRIM (a.sample_m) = TRIM (:sample_m) 
     AND a.sample_m >= :sample_m_1 
     AND a.sample_m <= :sample_m_2 
     AND a.nichiji_dt = :nichiji_dt 

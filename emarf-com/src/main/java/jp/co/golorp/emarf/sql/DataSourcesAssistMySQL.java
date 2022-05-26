@@ -22,4 +22,12 @@ public class DataSourcesAssistMySQL extends DataSourcesAssist {
         return mapList.get(0).get("TABLE_COMMENT").toString();
     }
 
+    /**
+     * @param array
+     * @return String
+     */
+    public String join(final String[] array) {
+        return "CONCAT (" + String.join(", ", array) + ")";
+    }
+
 }

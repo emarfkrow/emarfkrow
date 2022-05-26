@@ -7,10 +7,10 @@ WHERE
     AND a.shokui_id = :shokui_id 
     AND a.shokui_mei LIKE CONCAT ('%', :shokui_mei, '%') 
     AND a.order_id = :order_id 
-    AND a.kaishi_ymd = :kaishi_ymd 
+    AND TRIM (a.kaishi_ymd) = TRIM (:kaishi_ymd) 
     AND a.kaishi_ymd >= :kaishi_ymd_1 
     AND a.kaishi_ymd <= :kaishi_ymd_2 
-    AND a.shuryo_ymd = :shuryo_ymd 
+    AND TRIM (a.shuryo_ymd) = TRIM (:shuryo_ymd) 
     AND a.shuryo_ymd >= :shuryo_ymd_1 
     AND a.shuryo_ymd <= :shuryo_ymd_2 
     AND a.insert_dt = :insert_dt 

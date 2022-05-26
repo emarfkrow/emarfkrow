@@ -6,10 +6,10 @@ WHERE
     1 = 1 
     AND a.busho_id = :busho_id 
     AND a.busho_mei LIKE CONCAT ('%', :busho_mei, '%') 
-    AND a.kaishi_ymd = :kaishi_ymd 
+    AND TRIM (a.kaishi_ymd) = TRIM (:kaishi_ymd) 
     AND a.kaishi_ymd >= :kaishi_ymd_1 
     AND a.kaishi_ymd <= :kaishi_ymd_2 
-    AND a.shuryo_ymd = :shuryo_ymd 
+    AND TRIM (a.shuryo_ymd) = TRIM (:shuryo_ymd) 
     AND a.shuryo_ymd >= :shuryo_ymd_1 
     AND a.shuryo_ymd <= :shuryo_ymd_2 
     AND a.oya_busho_id = :oya_busho_id 

@@ -4,7 +4,7 @@ FROM
     m_sansho2 a 
 WHERE
     1 = 1 
-    AND a.sansho2_id = :sansho2_id 
+    AND TRIM (a.sansho2_id) = TRIM (:sansho2_id) 
     AND a.sansho2_mei LIKE CONCAT ('%', :sansho2_mei, '%') 
     AND a.insert_dt = :insert_dt 
     AND a.insert_dt >= :insert_dt_1 
