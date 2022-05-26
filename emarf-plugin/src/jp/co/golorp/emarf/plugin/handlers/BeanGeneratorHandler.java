@@ -60,6 +60,8 @@ public class BeanGeneratorHandler extends AbstractHandler {
             throw new SysError(e);
         }
 
+        String beanGeneratorPropPath = null;
+
         // <classpathentry kind="src" path="***"/>のpathをResourceBundleに設定
         Element rootNode = document.getDocumentElement();
         NodeList childNodes = rootNode.getChildNodes();
@@ -79,7 +81,19 @@ public class BeanGeneratorHandler extends AbstractHandler {
             }
             Node pathNode = namedNodeMap.getNamedItem("path");
             String srcPath = pathNode.getNodeValue();
-            ResourceBundles.getSrcPaths().add(projectDir + File.separator + srcPath);
+
+            String srcDir = projectDir + File.separator + srcPath;
+            if (new File(srcDir + File.separator + "BeanGenerator.properties").exists()) {
+                beanGeneratorPropPath = srcDir + File.separator + "BeanGenerator.properties";
+            }
+
+            ResourceBundles.getSrcPaths().add(srcDir);
+        }
+
+        if (beanGeneratorPropPath == null) {
+            MessageDialog.openInformation(window.getShell(), "Plugin",
+                    "in project, not exist [BeanGenerator.properties].");
+            return null;
         }
 
         BeanGenerator.generate(projectDir, true);

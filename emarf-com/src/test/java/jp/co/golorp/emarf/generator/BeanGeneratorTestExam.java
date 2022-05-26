@@ -5,11 +5,11 @@ package jp.co.golorp.emarf.generator;
 
 import java.io.File;
 
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 import jp.co.golorp.emarf.util.ResourceBundles;
 
@@ -17,41 +17,41 @@ import jp.co.golorp.emarf.util.ResourceBundles;
  * @author toshiyuki
  *
  */
-class BeanGeneratorTestExam {
+public class BeanGeneratorTestExam {
 
     /**
      * @throws java.lang.Exception
      */
-    @BeforeAll
-    static void setUpBeforeClass() throws Exception {
+    @BeforeClass
+    public static void setUpBeforeClass() throws Exception {
     }
 
     /**
      * @throws java.lang.Exception
      */
-    @AfterAll
-    static void tearDownAfterClass() throws Exception {
+    @AfterClass
+    public static void tearDownAfterClass() throws Exception {
     }
 
     /**
      * @throws java.lang.Exception
      */
-    @BeforeEach
-    void setUp() throws Exception {
+    @Before
+    public void setUp() throws Exception {
     }
 
     /**
      * @throws java.lang.Exception
      */
-    @AfterEach
-    void tearDown() throws Exception {
+    @After
+    public void tearDown() throws Exception {
     }
 
     /**
      * {@link jp.co.golorp.emarf.generator.BeanGenerator#generate(java.lang.String, boolean)} のためのテスト・メソッド。
      */
     @Test
-    final void testGenerate() {
+    public final void testGenerate() {
         String s = "C:\\Users\\toshiyuki\\git\\emarfkrow\\exam-com";
         ResourceBundles.getSrcPaths().add(s + File.separator + "src\\main\\resources");
         BeanGenerator.generate(s, true);
