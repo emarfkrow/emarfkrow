@@ -668,8 +668,8 @@ public final class HtmlGenerator {
 
                 s.add(tag);
 
-            } else if (StringUtil.endsWith(optionsSuffixs, lower)) {
-                // 選択項目の場合
+            } else if (StringUtil.endsWith(optionsSuffixs, lower) && columnInfo.getReferInfo() == null) {
+                // 選択項目の場合（サフィックスが合致しても参照モデルなら除外）
 
                 htmlFieldsOptions(s, id, lower, remarks);
 

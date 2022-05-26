@@ -249,11 +249,11 @@ let Dialogate = {
 							let getAction = $registForm.prop('action').replace('Regist', 'Get').replace(/\.form$/, '.ajax');
 							Ajaxize.ajaxPost(getAction, formJson, function(data) {
 								Jsonate.toForm(data, $registForm);
+								Base.referMei($dialogDiv.find('span.refer'));
 							});
 						}
 					}
 
-					Base.referMei($dialogDiv.find('span.refer'));
 
 					try {
 						eval(dialogId + 'Open()');

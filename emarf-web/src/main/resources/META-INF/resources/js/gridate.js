@@ -204,11 +204,18 @@ $(function() {
 			//				});
 			//              grid.onActiveCellPositionChanged.subscribe(function(a,b,c,d,e,f,g) {});
 			grid.onAddNewRow.subscribe(function(e, args) {
-				let data = args.grid.getData();
+				//				let data = args.grid.getData();
+				//				data.push(args.item);
+				//				args.grid.invalidateRow(data.length - 1);
+				//				args.grid.updateRowCount();
+				//				args.grid.render();
+				var dataView = grid.getData();
+				let data = dataView.getItems();
+				args.item['id'] = data.length;
 				data.push(args.item);
-				args.grid.invalidateRow(data.length - 1);
-				args.grid.updateRowCount();
-				args.grid.render();
+				dataView.beginUpdate();
+				dataView.setItems(data);
+				dataView.endUpdate();
 			});
 			//				grid.onAutosizeColumns.subscribe(function(a, b, c, d, e, f, g) { });
 			//				grid.onBeforeAppendCell.subscribe(function(a, b, c, d, e, f, g) { });
@@ -247,9 +254,13 @@ $(function() {
 
 					// 項目名の接頭辞を取得
 					let prefix = '';
-					let data = g.getData();
+					let data = g.getData().getItems();
 					let item = data[r]; // DELETE_F: null, INSERT_BY: "1", INSERT_DT: 1649467076000, SANSHO1_ID: 2, SANSHO1_MEI: "テスト２", UPDATE_BY: "1", UPDATE_DT: 1649467081000
 					for (let columnName in item) {
+						// DataView用の「id」列ならスキップ
+						if (columnName == 'id') {
+							continue;
+						}
 						let pascal = Casing.toPascal(columnName);
 						if (itemName.match(pascal + '$')) {
 							prefix = itemName.replace(new RegExp(pascal + '$'), ''); // betsu
@@ -291,7 +302,7 @@ $(function() {
 					if (e.target.id) {
 						let href = entityName + 'Download.link?name=' + e.target.id;
 
-						let item = g.getData()[r];
+						let item = g.getDataItem(r);
 
 						// グリッド列定義でループ
 						for (let i in g.getColumns()) {
@@ -313,7 +324,7 @@ $(function() {
 						e.preventDefault();
 						e.stopPropagation();
 						e.stopImmediatePropagation();
-						Gridate.openDetail($gridDiv.prop('id'), entityName, g.getColumns(), g.getData()[r]);
+						Gridate.openDetail($gridDiv.prop('id'), entityName, g.getColumns(), g.getDataItem(r));
 					}
 				}
 			});

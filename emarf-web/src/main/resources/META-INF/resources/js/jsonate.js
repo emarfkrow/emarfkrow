@@ -38,7 +38,7 @@ let Jsonate = {
 		$form.find('[id$=Grid]').each(function() {
 			let gridId = this.id;
 			let grid = Gridate.grids[gridId];
-			let gridData = grid.getData();
+			let gridData = grid.getData().getItems();
 
 			// 行選択指定の場合は、選択している行のみ
 			if (isSelectRow) {
@@ -95,7 +95,7 @@ let Jsonate = {
 		$form.find('[id$=Grid]').each(function() {
 			let gridId = this.id;
 			let grid = Gridate.grids[gridId];
-			let gridData = grid.getData();
+			let gridData = grid.getData().getItems();
 			if (gridData.length > 0) {
 				let gridIds = gridId.split('.');
 				let gridName = gridIds[gridIds.length - 1];
