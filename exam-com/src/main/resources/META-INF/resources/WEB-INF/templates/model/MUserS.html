@@ -48,6 +48,7 @@
     <form name="MUserSRegistForm" action="MUserSRegist.ajax" class="regist">
       <h3 th:text="#{MUser.h3}">h3</h3>
       <div id="MUserGrid" data-selectionMode="checkbox" data-addRow="true" data-frozenColumn="0" th:data-href="@{/model/MUser.html}"></div>
+      <div id="MUserPager"></div>
       <div class="buttons">
         <button type="button" th:text="#{common.reset}" onClick="$('[id=&quot;SearchMUser&quot;]').click();">reset</button>
         <a th:href="@{MUserSearch.xlsx(baseMei=#{MUserS.h2})}" id="MUserSearch.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>

@@ -10,7 +10,6 @@
 </script>
 <script th:src="@{/model/MCodeValueGridColumns.js}"></script>
 <script th:src="@{/model/MCodeGridColumns.js}"></script>
-<script th:src="@{/model/MCodeValueGridColumns.js}"></script>
 </head>
 <body>
   <div layout:fragment="article">
@@ -50,6 +49,7 @@
     <form name="MCodeValueSRegistForm" action="MCodeValueSRegist.ajax" class="regist">
       <h3 th:text="#{MCodeValue.h3}">h3</h3>
       <div id="MCodeValueGrid" data-selectionMode="checkbox" data-frozenColumn="1" th:data-href="@{/model/MCodeValue.html}"></div>
+      <div id="MCodeValuePager"></div>
       <div class="buttons">
         <button type="button" th:text="#{common.reset}" onClick="$('[id=&quot;SearchMCodeValue&quot;]').click();">reset</button>
         <a th:href="@{MCodeValueSearch.xlsx(baseMei=#{MCodeValueS.h2})}" id="MCodeValueSearch.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>

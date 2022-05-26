@@ -13,7 +13,6 @@
 <script th:src="@{/model/TSosenGridColumns.js}"></script>
 <script th:src="@{/model/TOyaGridColumns.js}"></script>
 <script th:src="@{/model/TEntityGridColumns.js}"></script>
-<script th:src="@{/model/TKoGridColumns.js}"></script>
 <script th:src="@{/model/TTenpuFileGridColumns.js}"></script>
 <script th:src="@{/model/MSansho1GridColumns.js}"></script>
 <script th:src="@{/model/MSansho2GridColumns.js}"></script>
@@ -55,6 +54,7 @@
     <form name="TKoSRegistForm" action="TKoSRegist.ajax" class="regist">
       <h3 th:text="#{TKo.h3}">h3</h3>
       <div id="TKoGrid" data-selectionMode="checkbox" data-frozenColumn="3" th:data-href="@{/model/TKo.html}"></div>
+      <div id="TKoPager"></div>
       <div class="buttons">
         <button type="button" th:text="#{common.reset}" onClick="$('[id=&quot;SearchTKo&quot;]').click();">reset</button>
         <a th:href="@{TKoSearch.xlsx(baseMei=#{TKoS.h2})}" id="TKoSearch.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>

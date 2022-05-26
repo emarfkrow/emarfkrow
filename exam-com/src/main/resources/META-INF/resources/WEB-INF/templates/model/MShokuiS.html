@@ -48,6 +48,7 @@
     <form name="MShokuiSRegistForm" action="MShokuiSRegist.ajax" class="regist">
       <h3 th:text="#{MShokui.h3}">h3</h3>
       <div id="MShokuiGrid" data-selectionMode="checkbox" data-addRow="true" data-frozenColumn="0" th:data-href="@{/model/MShokui.html}"></div>
+      <div id="MShokuiPager"></div>
       <div class="buttons">
         <button type="button" th:text="#{common.reset}" onClick="$('[id=&quot;SearchMShokui&quot;]').click();">reset</button>
         <a th:href="@{MShokuiSearch.xlsx(baseMei=#{MShokuiS.h2})}" id="MShokuiSearch.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>

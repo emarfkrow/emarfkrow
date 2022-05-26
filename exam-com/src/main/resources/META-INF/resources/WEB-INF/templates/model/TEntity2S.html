@@ -103,6 +103,7 @@
     <form name="TEntity2SRegistForm" action="TEntity2SRegist.ajax" class="regist">
       <h3 th:text="#{TEntity2.h3}">h3</h3>
       <div id="TEntity2Grid" data-selectionMode="checkbox" data-frozenColumn="2" th:data-href="@{/model/TEntity2.html}"></div>
+      <div id="TEntity2Pager"></div>
       <div class="buttons">
         <button type="button" th:text="#{common.reset}" onClick="$('[id=&quot;SearchTEntity2&quot;]').click();">reset</button>
         <a th:href="@{TEntity2Search.xlsx(baseMei=#{TEntity2S.h2})}" id="TEntity2Search.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>

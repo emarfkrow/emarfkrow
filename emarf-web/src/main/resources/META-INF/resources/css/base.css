@@ -83,6 +83,10 @@ form>div {
 	margin-top: 0.5rem;
 }
 
+form>div[id$=Pager] {
+	margin-top: 0px;
+}
+
 form>fieldset {
 	border-color: lightblue;
 	border-radius: 10px;

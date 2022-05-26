@@ -55,6 +55,7 @@
     <form name="MNinkaSRegistForm" action="MNinkaSRegist.ajax" class="regist">
       <h3 th:text="#{MNinka.h3}">h3</h3>
       <div id="MNinkaGrid" data-selectionMode="checkbox" data-frozenColumn="2" th:data-href="@{/model/MNinka.html}"></div>
+      <div id="MNinkaPager"></div>
       <div class="buttons">
         <button type="button" th:text="#{common.reset}" onClick="$('[id=&quot;SearchMNinka&quot;]').click();">reset</button>
         <a th:href="@{MNinkaSearch.xlsx(baseMei=#{MNinkaS.h2})}" id="MNinkaSearch.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>

@@ -51,6 +51,7 @@
     <form name="MShozokuSRegistForm" action="MShozokuSRegist.ajax" class="regist">
       <h3 th:text="#{MShozoku.h3}">h3</h3>
       <div id="MShozokuGrid" data-selectionMode="checkbox" data-frozenColumn="2" th:data-href="@{/model/MShozoku.html}"></div>
+      <div id="MShozokuPager"></div>
       <div class="buttons">
         <button type="button" th:text="#{common.reset}" onClick="$('[id=&quot;SearchMShozoku&quot;]').click();">reset</button>
         <a th:href="@{MShozokuSearch.xlsx(baseMei=#{MShozokuS.h2})}" id="MShozokuSearch.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>

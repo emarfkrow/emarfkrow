@@ -13,7 +13,6 @@
 <script th:src="@{/model/TKoGridColumns.js}"></script>
 <script th:src="@{/model/TShisonGridColumns.js}"></script>
 <script th:src="@{/model/TSosenGridColumns.js}"></script>
-<script th:src="@{/model/TOyaGridColumns.js}"></script>
 <script th:src="@{/model/TTenpuFileGridColumns.js}"></script>
 <script th:src="@{/model/MSansho1GridColumns.js}"></script>
 <script th:src="@{/model/MSansho2GridColumns.js}"></script>
@@ -50,6 +49,7 @@
     <form name="TOyaSRegistForm" action="TOyaSRegist.ajax" class="regist">
       <h3 th:text="#{TOya.h3}">h3</h3>
       <div id="TOyaGrid" data-selectionMode="checkbox" data-frozenColumn="1" th:data-href="@{/model/TOya.html}"></div>
+      <div id="TOyaPager"></div>
       <div class="buttons">
         <button type="button" th:text="#{common.reset}" onClick="$('[id=&quot;SearchTOya&quot;]').click();">reset</button>
         <a th:href="@{TOyaSearch.xlsx(baseMei=#{TOyaS.h2})}" id="TOyaSearch.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>

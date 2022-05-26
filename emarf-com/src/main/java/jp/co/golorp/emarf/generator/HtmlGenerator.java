@@ -242,11 +242,14 @@ public final class HtmlGenerator {
         s.add("");
         s.add("</script>");
         s.add("<script th:src=\"@{/model/" + pascal + "GridColumns.js}\"></script>");
-        htmlNestGrid(tableInfo, s, new HashSet<TableInfo>());
+        Set<TableInfo> added = new HashSet<TableInfo>();
+        added.add(tableInfo);
+        htmlNestGrid(tableInfo, s, added);
         s.add("</head>");
         s.add("<body>");
         s.add("  <div layout:fragment=\"article\">");
         s.add("    <h2 th:text=\"#{" + pageName + ".h2}\">h2</h2>");
+
         /* 検索フォーム */
         s.add("    <form name=\"" + pascal + "SearchForm\" action=\"" + pascal + "Search.ajax\" class=\"search\">");
         s.add("      <fieldset>");
@@ -273,6 +276,7 @@ public final class HtmlGenerator {
                 + "Grid\" th:text=\"#{common.search}\">submit</button>");
         s.add("      </div>");
         s.add("    </form>");
+
         /* 一覧フォーム */
         s.add("    <form name=\"" + pascal + "SRegistForm\" action=\"" + pascal + "SRegist.ajax\" class=\"regist\">");
         s.add("      <h3 th:text=\"#{" + pascal + ".h3}\">h3</h3>");
@@ -296,6 +300,7 @@ public final class HtmlGenerator {
         int frozenColumn = tableInfo.getPrimaryKeys().size() - 1;
         s.add("      <div id=\"" + gridId + "\" data-selectionMode=\"checkbox\"" + addRow + " data-frozenColumn=\""
                 + frozenColumn + "\" th:data-href=\"@{/model/" + pascal + ".html}\"></div>");
+        s.add("      <div id=\"" + pascal + "Pager\"></div>");
         s.add("      <div class=\"buttons\">");
         s.add("        <button type=\"button\" th:text=\"#{common.reset}\" onClick=\"$('[id=&quot;Search" + pascal
                 + "&quot;]').click();\">reset</button>");
@@ -513,7 +518,9 @@ public final class HtmlGenerator {
         s.add("");
         s.add("</script>");
         s.add("<script th:src=\"@{/model/" + entityName + "GridColumns.js}\"></script>");
-        htmlNestGrid(tableInfo, s, new HashSet<TableInfo>());
+        Set<TableInfo> added = new HashSet<TableInfo>();
+        added.add(tableInfo);
+        htmlNestGrid(tableInfo, s, added);
         s.add("</head>");
         s.add("<body>");
         s.add("  <div layout:fragment=\"article\">");

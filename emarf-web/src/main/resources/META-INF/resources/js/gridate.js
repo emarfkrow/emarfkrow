@@ -37,6 +37,8 @@ $(function() {
 			// グリッドIDを取得
 			let gridId = divId;
 
+			let $pager = $gridDiv.find('~[id$=Pager]');
+
 			let $dialog = $gridDiv.parents('[role="dialog"]');
 			if ($dialog.length > 0) {
 				let $gridForm = $gridDiv.parent('form');
@@ -53,6 +55,9 @@ $(function() {
 
 				// 検索ボタンの対象グリッドIDも変更
 				$searchButton.attr('data-gridId', gridId);
+
+				// ページャのIDも変更
+				$pager.attr('id', gridId.replace(/Grid$/, 'Pager'));
 			}
 
 			// divの属性からselectionModeを取得
@@ -153,8 +158,25 @@ $(function() {
 				}
 			}
 
-			let grid = new Slick.Grid($gridDiv, [], columns, options);
+			let dataView = new Slick.Data.DataView();
+			let grid = new Slick.Grid($gridDiv, dataView, columns, options);
 			Gridate.grids[gridId] = grid;
+
+			new Slick.Controls.Pager(dataView, grid, $pager, {
+				showAllText: Messages['common.grid.showAllText'],
+				showPageText: Messages['common.grid.showPageText'],
+				showCountText: Messages['common.grid.showCountText']
+			});
+
+			dataView.onRowCountChanged.subscribe(function(e, args) {
+				grid.updateRowCount();
+				grid.render();
+			});
+
+			dataView.onRowsChanged.subscribe(function(e, args) {
+				grid.invalidateRows(args.rows);
+				grid.render();
+			});
 
 			/*
 			 * selectionMode
@@ -389,17 +411,21 @@ var Gridate = {
 		let grid = Gridate.grids[gridId];
 		if (!data) {
 			data = [];
+		} else {
+			for (let i in data) {
+				data[i]['id'] = i;
+			}
 		}
 		grid['orgData'] = JSON.parse(JSON.stringify(data));
-		if (data.length > 0 && data[0]['id']) {
-			var dataView = grid.getData();
-			dataView.beginUpdate();
-			dataView.setItems(data);
-			dataView.endUpdate();
-		} else {
-			grid.setData(data);
-			grid.invalidate();
-		}
+		//		if (data.length > 0 && data[0]['id']) {
+		var dataView = grid.getData();
+		dataView.beginUpdate();
+		dataView.setItems(data);
+		dataView.endUpdate();
+		//		} else {
+		//			grid.setData(data);
+		//			grid.invalidate();
+		//		}
 	},
 
 	openDetail: function(gridId, entityName, columns, item) {

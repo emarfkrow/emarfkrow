@@ -39,6 +39,7 @@
     <form name="MSansho1SRegistForm" action="MSansho1SRegist.ajax" class="regist">
       <h3 th:text="#{MSansho1.h3}">h3</h3>
       <div id="MSansho1Grid" data-selectionMode="checkbox" data-addRow="true" data-frozenColumn="0" th:data-href="@{/model/MSansho1.html}"></div>
+      <div id="MSansho1Pager"></div>
       <div class="buttons">
         <button type="button" th:text="#{common.reset}" onClick="$('[id=&quot;SearchMSansho1&quot;]').click();">reset</button>
         <a th:href="@{MSansho1Search.xlsx(baseMei=#{MSansho1S.h2})}" id="MSansho1Search.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
