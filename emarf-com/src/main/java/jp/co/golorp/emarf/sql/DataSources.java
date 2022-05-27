@@ -345,41 +345,23 @@ public final class DataSources {
                 columnInfo.setNumbering(true);
             }
 
-        } else if (typeName.equals("DATETIME")) {
+        } else if (typeName.equals("DECIMAL") || typeName.equals("DOUBLE") || typeName.equals("NUMBER")
+                || typeName.equals("NUMERIC")) {
+
+            dataType = "java.math.BigDecimal";
+
+        } else if (typeName.equals("DATE") || typeName.equals("TIME") || typeName.equals("DATETIME")
+                || typeName.equals("TIMESTAMP")) {
 
             dataType = "java.time.LocalDateTime";
 
-        } else if (assist instanceof DataSourcesAssistOracle && typeName.equals("DATE")) {
-
-            dataType = "java.time.LocalDateTime";
-
-        } else if (typeName.equals("VARCHAR")) {
+        } else {
 
             dataType = "String";
 
-        } else if (typeName.equals("VARCHAR2")) {
-
-            dataType = "String";
-
-        } else if (typeName.equals("CHAR")) {
-
-            dataType = "String";
-
-            if (columnInfo.isPk()) {
+            if (typeName.equals("CHAR") && columnInfo.isPk()) {
                 columnInfo.setNumbering(true);
             }
-
-        } else if (typeName.equals("DECIMAL")) {
-
-            dataType = "java.math.BigDecimal";
-
-        } else if (typeName.equals("DOUBLE")) {
-
-            dataType = "java.math.BigDecimal";
-
-        } else if (typeName.equals("NUMBER")) {
-
-            dataType = "java.math.BigDecimal";
         }
 
         return dataType;

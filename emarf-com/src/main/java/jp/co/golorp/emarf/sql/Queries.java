@@ -152,6 +152,11 @@ public final class Queries {
         Matcher m = Pattern.compile("(?<=:)[A-Za-z][0-9A-Z\\_a-z]+").matcher(rawSql);
         while (m.find()) {
             String parameterName = m.group();
+
+            if (parameterName.equals("MI") || parameterName.equals("SS")) {
+                continue;
+            }
+
             String blockRE = ".*\\/\\* *:" + parameterName + " *\\*\\/(\\r|\\n|.)+\\/\\* *:" + parameterName
                     + " *\\*\\/[\\r\\n]+";
             if (!snakes.containsKey(parameterName)) {
@@ -176,9 +181,15 @@ public final class Queries {
         while (m.find()) {
             String namedParameter = m.group();
             String parameterName = namedParameter.replaceAll("^ *:", "");
-            Object o = snakes.get(parameterName);
+
+            if (parameterName.equals("MI") || parameterName.equals("SS")) {
+                continue;
+            }
 
             String parameterValue = "";
+
+            Object o = snakes.get(parameterName);
+
             if (o != null) {
                 parameterValue = o.toString();
                 // コメント内に「:」が残らないように「_」で置換
@@ -193,6 +204,11 @@ public final class Queries {
         m = Pattern.compile("(?<=:)[A-Za-z][0-9A-Z\\_a-z]+").matcher(rawSql);
         while (m.find()) {
             String parameterName = m.group();
+
+            if (parameterName.equals("MI") || parameterName.equals("SS")) {
+                continue;
+            }
+
             Object o = snakes.get(parameterName);
 
             if (o instanceof List) {
@@ -209,6 +225,11 @@ public final class Queries {
                 rawSql = rawSql.replaceFirst(":" + parameterName, "?");
                 logSql = logSql.replaceFirst(":" + parameterName, "'" + o.toString() + "'");
 
+                // LocalDateTimeのまま渡すと日付リテラルエラーを起こす
+                if (o instanceof LocalDateTime) {
+                    o = o.toString();
+                }
+
                 // 出現箇所に応じてパラメータを追加
                 args.add(o);
             }
@@ -216,6 +237,7 @@ public final class Queries {
 
         // ログ用SQLを出力
         LOG.debug("\r\n\r\n" + logSql + "\r\n");
+
         return rawSql;
     }
 

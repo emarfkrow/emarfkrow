@@ -19,6 +19,7 @@ import jp.co.golorp.emarf.exception.SysError;
 import jp.co.golorp.emarf.io.FileUtil;
 import jp.co.golorp.emarf.lang.StringUtil;
 import jp.co.golorp.emarf.sql.DataSources;
+import jp.co.golorp.emarf.sql.DataSourcesAssist;
 import jp.co.golorp.emarf.util.ResourceBundles;
 
 /**
@@ -372,8 +373,11 @@ public final class BeanGenerator {
         s.add("");
         s.add("        return Queries.get(sql, params, " + entityName + ".class);");
         s.add("    }");
+
         javaEntityCRUDInsert(tableInfo, s);
+
         javaEntityCRUDUpdate(tableInfo, s);
+
         s.add("");
         s.add("    /**");
         s.add("     * " + remarks + "削除");
@@ -679,10 +683,23 @@ public final class BeanGenerator {
         s.add("");
         s.add("    private String getSet() {");
         s.add("        List<String> setList = new ArrayList<String>();");
-        for (String columnName : tableInfo.getColumnInfos().keySet()) {
-            columnName = columnName.toLowerCase();
-            if (!insertDt.toLowerCase().equals(columnName) && !insertBy.toLowerCase().equals(columnName)) {
-                s.add("        setList.add(\"" + columnName + " = :" + columnName + "\");");
+
+        DataSourcesAssist assist = DataSources.getAssist();
+
+        for (Entry<String, ColumnInfo> e : tableInfo.getColumnInfos().entrySet()) {
+            String columnName = e.getKey();
+            ColumnInfo columnInfo = e.getValue();
+            String lowerColumn = columnName.toLowerCase();
+
+            // 追加時のメタ情報でない場合
+            if (!insertDt.toLowerCase().equals(lowerColumn) && !insertBy.toLowerCase().equals(lowerColumn)) {
+
+                String rightHand = ":" + lowerColumn;
+                if (columnInfo.getDataType().equals("java.time.LocalDateTime")) {
+                    rightHand = assist.toTimestamp(rightHand);
+                }
+
+                s.add("        setList.add(\"" + lowerColumn + " = " + rightHand + "\");");
             }
         }
         s.add("        String set = String.join(\"\\r\\n    , \", setList);");
@@ -706,15 +723,32 @@ public final class BeanGenerator {
             if (pk.length() == 0) {
                 continue;
             }
-            pk = pk.toLowerCase();
-            s.add("        whereList.add(\"" + pk + " = :" + pk + "\");");
+            ColumnInfo pkInfo = tableInfo.getColumnInfos().get(pk);
+            String lowerPk = pk.toLowerCase();
+            if (pkInfo.getTypeName().equals("CHAR")) {
+                s.add("        whereList.add(\"TRIM (" + lowerPk + ") = TRIM (:" + lowerPk + ")\");");
+            } else {
+                s.add("        whereList.add(\"" + lowerPk + " = :" + lowerPk + "\");");
+            }
         }
 
+        DataSourcesAssist assist = DataSources.getAssist();
+
         // 楽観ロック
-        if (tableInfo.getColumnInfos().containsKey(updateDt.toLowerCase())
-                || tableInfo.getColumnInfos().containsKey(updateDt.toUpperCase())) {
-            s.add("        whereList.add(\"" + updateDt + " = '\" + this." + StringUtil.toCamelCase(updateDt)
-                    + " + \"'\");");
+        ColumnInfo columnInfo = tableInfo.getColumnInfos().get(updateDt.toLowerCase());
+        if (columnInfo == null) {
+            columnInfo = tableInfo.getColumnInfos().get(updateDt.toUpperCase());
+        }
+
+        if (columnInfo != null) {
+
+            String rightHand = "'\" + this." + StringUtil.toCamelCase(updateDt) + " + \"'";
+
+            if (columnInfo.getDataType().equals("java.time.LocalDateTime")) {
+                rightHand = assist.toTimestamp(rightHand);
+            }
+
+            s.add("        whereList.add(\"" + updateDt + " = " + rightHand + "\");");
         }
 
         s.add("        return String.join(\" AND \", whereList);");

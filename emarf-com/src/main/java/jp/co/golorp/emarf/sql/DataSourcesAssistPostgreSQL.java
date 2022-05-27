@@ -5,6 +5,24 @@ package jp.co.golorp.emarf.sql;
  * @author toshiyuki
  *
  */
-public class DataSourcesAssistPostgreSQL extends DataSourcesAssist {
+public final class DataSourcesAssistPostgreSQL extends DataSourcesAssist {
+
+    @Override
+    protected String getTableComment(final String tableName) {
+        // TODO 自動生成されたメソッド・スタブ
+        return null;
+    }
+
+    @Override
+    public String join(final String[] array) {
+        // TODO 自動生成されたメソッド・スタブ
+        return null;
+    }
+
+    @Override
+    public String toTimestamp(final String lowerColumn) {
+        // TODO 自動生成されたメソッド・スタブ
+        return null;
+    }
 
 }

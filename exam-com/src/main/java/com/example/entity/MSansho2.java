@@ -302,7 +302,7 @@ public class MSansho2 implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("sansho2_id = :sansho2_id");
+        whereList.add("TRIM (sansho2_id) = TRIM (:sansho2_id)");
         whereList.add("update_dt = '" + this.updateDt + "'");
         return String.join(" AND ", whereList);
     }

@@ -5,14 +5,21 @@ package jp.co.golorp.emarf.sql;
  * @author toshiyuki
  *
  */
-public class DataSourcesAssistOracle extends DataSourcesAssist {
+public final class DataSourcesAssistOracle extends DataSourcesAssist {
 
-    /**
-     * @param array
-     * @return String
-     */
+    @Override
+    protected String getTableComment(final String tableName) {
+        return null;
+    }
+
+    @Override
     public String join(final String[] array) {
         return String.join(" || ", array);
+    }
+
+    @Override
+    public String toTimestamp(final String s) {
+        return "TO_TIMESTAMP (" + s + ", 'YYYY-MM-DD\\\"T\\\"HH24:MI:SS.FF3')";
     }
 
 }

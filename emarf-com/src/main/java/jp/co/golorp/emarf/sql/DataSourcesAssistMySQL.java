@@ -8,26 +8,23 @@ import jp.co.golorp.emarf.util.MapList;
  * @author toshiyuki
  *
  */
-public class DataSourcesAssistMySQL extends DataSourcesAssist {
+public final class DataSourcesAssistMySQL extends DataSourcesAssist {
 
-    /**
-     * テーブルコメント取得
-     *
-     * @param tableName テーブル名
-     * @return テーブルコメント
-     */
+    @Override
     protected String getTableComment(final String tableName) {
         String sql = "show table status where name = '" + tableName + "'";
         MapList mapList = Queries.select(sql);
         return mapList.get(0).get("TABLE_COMMENT").toString();
     }
 
-    /**
-     * @param array
-     * @return String
-     */
+    @Override
     public String join(final String[] array) {
         return "CONCAT (" + String.join(", ", array) + ")";
+    }
+
+    @Override
+    public String toTimestamp(final String s) {
+        return s;
     }
 
 }

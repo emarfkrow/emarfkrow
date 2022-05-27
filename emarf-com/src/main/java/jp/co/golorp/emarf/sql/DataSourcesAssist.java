@@ -12,16 +12,18 @@ public abstract class DataSourcesAssist {
      * @param tableName テーブル名
      * @return テーブルコメント
      */
-    protected String getTableComment(final String tableName) {
-        return null;
-    }
+    protected abstract String getTableComment(String tableName);
 
     /**
      * @param array
      * @return String
      */
-    public String join(final String[] array) {
-        return null;
-    }
+    public abstract String join(String[] array);
+
+    /**
+     * @param s
+     * @return yyyy/mm/dd hh:mm:ss.SSS
+     */
+    public abstract String toTimestamp(String s);
 
 }
