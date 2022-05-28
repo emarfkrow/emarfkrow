@@ -9,7 +9,7 @@ WHERE
     AND a.inv_phase_month = :inv_phase_month 
     AND a.stock_management_section = :stock_management_section 
     AND TRIM (a.hinban) = TRIM (:hinban) 
-    AND a.sub_inv_code IN (:sub_inv_code) 
+    AND TRIM (a.sub_inv_code) IN (:sub_inv_code) 
     AND a.inv_stock = :inv_stock 
     AND a.stock = :stock 
     AND a.unit_cost = :unit_cost 

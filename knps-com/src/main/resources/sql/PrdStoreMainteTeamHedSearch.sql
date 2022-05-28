@@ -4,7 +4,7 @@ FROM
     PRD_STORE_MAINTE_TEAM_HED a 
 WHERE
     1 = 1 
-    AND a.mfg_team_code IN (:mfg_team_code) 
+    AND TRIM (a.mfg_team_code) IN (:mfg_team_code) 
     AND a.mfg_team_name LIKE '%' || :mfg_team_name || '%' 
     AND a.time_stamp_create = :time_stamp_create 
     AND a.time_stamp_change = :time_stamp_change 

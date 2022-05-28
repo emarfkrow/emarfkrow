@@ -8,7 +8,7 @@ WHERE
     AND TRIM (a.act_no) = TRIM (:act_no) 
     AND TRIM (a.kanban_id) = TRIM (:kanban_id) 
     AND a.serial_no = :serial_no 
-    AND a.wc_code IN (:wc_code) 
+    AND TRIM (a.wc_code) IN (:wc_code) 
     AND a.act_date = :act_date 
     AND a.act_date >= :act_date_1 
     AND a.act_date <= :act_date_2 

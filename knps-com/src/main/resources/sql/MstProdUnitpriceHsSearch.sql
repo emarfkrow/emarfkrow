@@ -8,7 +8,7 @@ WHERE
     AND TRIM (a.man_hinban) = TRIM (:man_hinban) 
     AND a.routing_group = :routing_group 
     AND a.routing = :routing 
-    AND a.wc_code IN (:wc_code) 
+    AND TRIM (a.wc_code) IN (:wc_code) 
     AND a.min_order = :min_order 
     AND a.stan_counts = :stan_counts 
     AND a.stan_counts >= :stan_counts_1 
@@ -22,7 +22,7 @@ WHERE
     AND TRIM (a.user_id_create) = TRIM (:user_id_create) 
     AND TRIM (a.user_id_change) = TRIM (:user_id_change) 
     AND CASE WHEN a.delete_flag IS NULL THEN '0' ELSE TO_CHAR (a.delete_flag) END IN (:delete_flag) 
-    AND a.gaika_kb IN (:gaika_kb) 
+    AND TRIM (a.gaika_kb) IN (:gaika_kb) 
     AND a.gaika_tk = :gaika_tk 
     AND CASE WHEN a.isshiki_unit_f IS NULL THEN '0' ELSE TO_CHAR (a.isshiki_unit_f) END IN (:isshiki_unit_f) 
     AND a.min_order_amount = :min_order_amount 

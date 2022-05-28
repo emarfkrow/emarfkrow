@@ -11,7 +11,7 @@ WHERE
     AND a.routing = :routing 
     AND a.neck_routing = :neck_routing 
     AND TRIM (a.ope_detail) = TRIM (:ope_detail) 
-    AND a.wc_code IN (:wc_code) 
+    AND TRIM (a.wc_code) IN (:wc_code) 
     AND a.hum_pre_time = :hum_pre_time 
     AND a.hum_act_time = :hum_act_time 
     AND a.mac_pre_time = :mac_pre_time 
@@ -27,7 +27,7 @@ WHERE
     AND TRIM (a.store_no) = TRIM (:store_no) 
     AND a.inspect_lane_kbn IN (:inspect_lane_kbn) 
     AND a.inspect_kbn IN (:inspect_kbn) 
-    AND a.subinv_code IN (:subinv_code) 
+    AND TRIM (a.subinv_code) IN (:subinv_code) 
     AND a.hum_pre_time_kbn IN (:hum_pre_time_kbn) 
     AND a.hum_act_time_kbn IN (:hum_act_time_kbn) 
     AND a.mac_pre_time_kbn IN (:mac_pre_time_kbn) 

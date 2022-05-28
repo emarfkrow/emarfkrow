@@ -7,8 +7,8 @@ WHERE
     1 = 1 
     AND TRIM (a.kanban_id) = TRIM (:kanban_id) 
     AND TRIM (a.hinban) = TRIM (:hinban) 
-    AND a.for_pro_code IN (:for_pro_code) 
-    AND a.for_pro_location_code IN (:for_pro_location_code) 
+    AND TRIM (a.for_pro_code) IN (:for_pro_code) 
+    AND TRIM (a.for_pro_location_code) IN (:for_pro_location_code) 
     AND a.kanban_acc_counts = :kanban_acc_counts 
     AND a.kanban_acc_counts >= :kanban_acc_counts_1 
     AND a.kanban_acc_counts <= :kanban_acc_counts_2 

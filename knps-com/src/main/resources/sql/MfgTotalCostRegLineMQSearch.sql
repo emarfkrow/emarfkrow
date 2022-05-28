@@ -10,8 +10,8 @@ WHERE
     AND a.pro_group_no = :pro_group_no 
     AND TRIM (a.hinban) = TRIM (:hinban) 
     AND a.routing = :routing 
-    AND a.wc_code IN (:wc_code) 
-    AND a.sup_code IN (:sup_code) 
+    AND TRIM (a.wc_code) IN (:wc_code) 
+    AND TRIM (a.sup_code) IN (:sup_code) 
     AND TRIM (a.ope_detail) = TRIM (:ope_detail) 
     AND TRIM (a.mm) = TRIM (:mm) 
     AND a.last_routing_kbn IN (:last_routing_kbn) 

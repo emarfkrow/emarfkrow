@@ -9,11 +9,11 @@ WHERE
     1 = 1 
     AND TRIM (a.kanban_id) = TRIM (:kanban_id) 
     AND TRIM (a.hinban) = TRIM (:hinban) 
-    AND a.neck_routing_code IN (:neck_routing_code) 
-    AND a.for_pro_code IN (:for_pro_code) 
-    AND a.for_pro_location_code IN (:for_pro_location_code) 
-    AND a.pro_code IN (:pro_code) 
-    AND a.pro_location_code IN (:pro_location_code) 
+    AND TRIM (a.neck_routing_code) IN (:neck_routing_code) 
+    AND TRIM (a.for_pro_code) IN (:for_pro_code) 
+    AND TRIM (a.for_pro_location_code) IN (:for_pro_location_code) 
+    AND TRIM (a.pro_code) IN (:pro_code) 
+    AND TRIM (a.pro_location_code) IN (:pro_location_code) 
     AND TRIM (a.comment1) = TRIM (:comment1) 
     AND TRIM (a.comment2) = TRIM (:comment2) 
     AND a.routing1 = :routing1 

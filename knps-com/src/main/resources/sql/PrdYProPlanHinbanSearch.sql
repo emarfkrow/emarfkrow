@@ -9,7 +9,7 @@ WHERE
     AND TRIM (a.pro_hinban) = TRIM (:pro_hinban) 
     AND TRIM (a.hinban) = TRIM (:hinban) 
     AND a.item_kbn IN (:item_kbn) 
-    AND a.shikake_kbn IN (:shikake_kbn) 
+    AND TRIM (a.shikake_kbn) IN (:shikake_kbn) 
     AND a.nes_counts = :nes_counts 
     AND a.nes_counts >= :nes_counts_1 
     AND a.nes_counts <= :nes_counts_2 

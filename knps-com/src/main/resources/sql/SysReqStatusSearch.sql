@@ -7,7 +7,7 @@ WHERE
     1 = 1 
     AND TRIM (a.req_id) = TRIM (:req_id) 
     AND a.req_prg_name LIKE '%' || :req_prg_name || '%' 
-    AND a.req_emp_code IN (:req_emp_code) 
+    AND TRIM (a.req_emp_code) IN (:req_emp_code) 
     AND a.req_date = :req_date 
     AND a.req_date >= :req_date_1 
     AND a.req_date <= :req_date_2 

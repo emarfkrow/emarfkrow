@@ -8,7 +8,7 @@ WHERE
     AND a.layout_date = :layout_date 
     AND a.layout_date >= :layout_date_1 
     AND a.layout_date <= :layout_date_2 
-    AND a.wc_code IN (:wc_code) 
+    AND TRIM (a.wc_code) IN (:wc_code) 
     AND a.layout_in_time = :layout_in_time 
     AND a.change_stat = :change_stat 
     AND a.time_stamp_create = :time_stamp_create 

@@ -9,13 +9,13 @@ WHERE
     AND CASE WHEN a.delete_flag IS NULL THEN '0' ELSE TO_CHAR (a.delete_flag) END IN (:delete_flag) 
     AND a.hinban_code IN (:hinban_code) 
     AND TRIM (a.item) = TRIM (:item) 
-    AND a.set_kbn IN (:set_kbn) 
-    AND a.strategy_pro_kbn IN (:strategy_pro_kbn) 
-    AND a.order_ban_kbn IN (:order_ban_kbn) 
-    AND a.resale_ban_kbn IN (:resale_ban_kbn) 
-    AND a.warehousing_ban_kbn IN (:warehousing_ban_kbn) 
-    AND a.product_kbn IN (:product_kbn) 
-    AND a.ship_instructions_kbn IN (:ship_instructions_kbn) 
+    AND TRIM (a.set_kbn) IN (:set_kbn) 
+    AND TRIM (a.strategy_pro_kbn) IN (:strategy_pro_kbn) 
+    AND TRIM (a.order_ban_kbn) IN (:order_ban_kbn) 
+    AND TRIM (a.resale_ban_kbn) IN (:resale_ban_kbn) 
+    AND TRIM (a.warehousing_ban_kbn) IN (:warehousing_ban_kbn) 
+    AND TRIM (a.product_kbn) IN (:product_kbn) 
+    AND TRIM (a.ship_instructions_kbn) IN (:ship_instructions_kbn) 
     AND a.product_class = :product_class 
     AND a.standard_stock = :standard_stock 
     AND a.product_weight = :product_weight 
@@ -24,10 +24,10 @@ WHERE
     AND a.package_unit = :package_unit 
     AND a.package_unit >= :package_unit_1 
     AND a.package_unit <= :package_unit_2 
-    AND a.package_shortage_kbn IN (:package_shortage_kbn) 
-    AND a.packing_kbn IN (:packing_kbn) 
-    AND a.knban_lot_kbn IN (:knban_lot_kbn) 
-    AND a.jis_kbn IN (:jis_kbn) 
+    AND TRIM (a.package_shortage_kbn) IN (:package_shortage_kbn) 
+    AND TRIM (a.packing_kbn) IN (:packing_kbn) 
+    AND TRIM (a.knban_lot_kbn) IN (:knban_lot_kbn) 
+    AND TRIM (a.jis_kbn) IN (:jis_kbn) 
     AND a.set_standard_time = :set_standard_time 
     AND a.end_period_cost = :end_period_cost 
     AND a.standard_cost = :standard_cost 
@@ -39,19 +39,19 @@ WHERE
     AND a.product_sale_date = :product_sale_date 
     AND a.product_sale_date >= :product_sale_date_1 
     AND a.product_sale_date <= :product_sale_date_2 
-    AND a.ship_target_kbn IN (:ship_target_kbn) 
+    AND TRIM (a.ship_target_kbn) IN (:ship_target_kbn) 
     AND a.new_product_class = :new_product_class 
-    AND a.diy_classic_kbn IN (:diy_classic_kbn) 
-    AND a.stock_order_kbn IN (:stock_order_kbn) 
+    AND TRIM (a.diy_classic_kbn) IN (:diy_classic_kbn) 
+    AND TRIM (a.stock_order_kbn) IN (:stock_order_kbn) 
     AND a.product_ope_code IN (:product_ope_code) 
-    AND a.direct_delivery_cancel_ng_kbn IN (:direct_delivery_cancel_ng_kbn) 
-    AND a.production_stop_kbn IN (:production_stop_kbn) 
+    AND TRIM (a.direct_delivery_cancel_ng_kbn) IN (:direct_delivery_cancel_ng_kbn) 
+    AND TRIM (a.production_stop_kbn) IN (:production_stop_kbn) 
     AND a.variety_class4 = :variety_class4 
     AND TRIM (a.yobi2) = TRIM (:yobi2) 
     AND a.barcode = :barcode 
-    AND a.data_send_kbn IN (:data_send_kbn) 
+    AND TRIM (a.data_send_kbn) IN (:data_send_kbn) 
     AND TRIM (a.yobi3) = TRIM (:yobi3) 
-    AND a.upc_code IN (:upc_code) 
+    AND TRIM (a.upc_code) IN (:upc_code) 
     AND a.normal_1_stock = :normal_1_stock 
     AND a.normal_2_stock = :normal_2_stock 
     AND a.normal_3_stock = :normal_3_stock 
@@ -101,8 +101,8 @@ WHERE
     AND a.product_end_date <= :product_end_date_2 
     AND TRIM (a.alternative_hinban1) = TRIM (:alternative_hinban1) 
     AND TRIM (a.alternative_hinban2) = TRIM (:alternative_hinban2) 
-    AND a.nouki_answer_ng_kbn IN (:nouki_answer_ng_kbn) 
-    AND a.direct_delivery_target_kbn IN (:direct_delivery_target_kbn) 
+    AND TRIM (a.nouki_answer_ng_kbn) IN (:nouki_answer_ng_kbn) 
+    AND TRIM (a.direct_delivery_target_kbn) IN (:direct_delivery_target_kbn) 
     AND TRIM (a.yobi) = TRIM (:yobi) 
 ORDER BY
     a.SALES_HINBAN

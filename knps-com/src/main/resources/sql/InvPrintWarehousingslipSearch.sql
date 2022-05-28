@@ -5,7 +5,7 @@ FROM
     INV_PRINT_WAREHOUSINGSLIP a 
 WHERE
     1 = 1 
-    AND a.emp_code IN (:emp_code) 
+    AND TRIM (a.emp_code) IN (:emp_code) 
     AND TRIM (a.hinban) = TRIM (:hinban) 
     AND a.kanban_acc_counts = :kanban_acc_counts 
     AND a.kanban_acc_counts >= :kanban_acc_counts_1 

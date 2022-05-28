@@ -9,7 +9,7 @@ WHERE
     AND TRIM (a.pro_no) = TRIM (:pro_no) 
     AND TRIM (a.child_plan_no) = TRIM (:child_plan_no) 
     AND a.routing = :routing 
-    AND a.wc_code IN (:wc_code) 
+    AND TRIM (a.wc_code) IN (:wc_code) 
     AND TRIM (a.ope_detail) = TRIM (:ope_detail) 
     AND a.mac_load_kbn IN (:mac_load_kbn) 
     AND a.hum_pre_time = :hum_pre_time 
@@ -39,7 +39,7 @@ WHERE
     AND a.comp_date = :comp_date 
     AND a.comp_date >= :comp_date_1 
     AND a.comp_date <= :comp_date_2 
-    AND a.ope_wc_code IN (:ope_wc_code) 
+    AND TRIM (a.ope_wc_code) IN (:ope_wc_code) 
     AND a.pro_status = :pro_status 
     AND a.del_can_date = :del_can_date 
     AND a.del_can_date >= :del_can_date_1 

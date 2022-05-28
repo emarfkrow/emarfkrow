@@ -4,7 +4,7 @@ FROM
     MST_PROC a 
 WHERE
     1 = 1 
-    AND a.routing_code IN (:routing_code) 
+    AND TRIM (a.routing_code) IN (:routing_code) 
     AND a.routing_name LIKE '%' || :routing_name || '%' 
     AND a.routing_name_sht = :routing_name_sht 
     AND a.time_stamp_create = :time_stamp_create 

@@ -5,11 +5,11 @@ FROM
     MST_SUPPLIER a 
 WHERE
     1 = 1 
-    AND a.sup_code IN (:sup_code) 
+    AND TRIM (a.sup_code) IN (:sup_code) 
     AND a.sup_kbn IN (:sup_kbn) 
     AND a.sup_name LIKE '%' || :sup_name || '%' 
     AND a.sup_ryaku = :sup_ryaku 
-    AND a.zip_code IN (:zip_code) 
+    AND TRIM (a.zip_code) IN (:zip_code) 
     AND a.address1 = :address1 
     AND a.address2 = :address2 
     AND a.tel_no = :tel_no 
@@ -19,19 +19,19 @@ WHERE
     AND a.sup_ope_mail_add = :sup_ope_mail_add 
     AND TRIM (a.sup_period_day) = TRIM (:sup_period_day) 
     AND TRIM (a.pay_day) = TRIM (:pay_day) 
-    AND a.tax_code IN (:tax_code) 
+    AND TRIM (a.tax_code) IN (:tax_code) 
     AND a.tax_cal_code IN (:tax_cal_code) 
     AND a.tax_disp_code IN (:tax_disp_code) 
     AND a.fraction_kbn IN (:fraction_kbn) 
     AND a.yoshingendo = :yoshingendo 
-    AND a.company_ope_code IN (:company_ope_code) 
+    AND TRIM (a.company_ope_code) IN (:company_ope_code) 
     AND a.order_accept_kbn IN (:order_accept_kbn) 
     AND a.list_output_kbn IN (:list_output_kbn) 
-    AND a.pch_cost_rate_code IN (:pch_cost_rate_code) 
+    AND TRIM (a.pch_cost_rate_code) IN (:pch_cost_rate_code) 
     AND a.send_sup_kbn IN (:send_sup_kbn) 
     AND a.send_sup_name LIKE '%' || :send_sup_name || '%' 
     AND a.send_sup_ryaku = :send_sup_ryaku 
-    AND a.send_zip_code IN (:send_zip_code) 
+    AND TRIM (a.send_zip_code) IN (:send_zip_code) 
     AND a.send_address1 = :send_address1 
     AND a.send_address2 = :send_address2 
     AND a.send_tel_no = :send_tel_no 
@@ -50,7 +50,7 @@ WHERE
     AND TRIM (a.nohin_yobi_thu) = TRIM (:nohin_yobi_thu) 
     AND TRIM (a.nohin_yobi_fri) = TRIM (:nohin_yobi_fri) 
     AND TRIM (a.nohin_yobi_sat) = TRIM (:nohin_yobi_sat) 
-    AND a.nohin_send_yohi_kbn IN (:nohin_send_yohi_kbn) 
+    AND TRIM (a.nohin_send_yohi_kbn) IN (:nohin_send_yohi_kbn) 
     AND CASE WHEN a.bunkatsu_mail_f IS NULL THEN '0' ELSE TO_CHAR (a.bunkatsu_mail_f) END IN (:bunkatsu_mail_f) 
     AND CASE WHEN a.chumon_mail_f IS NULL THEN '0' ELSE TO_CHAR (a.chumon_mail_f) END IN (:chumon_mail_f) 
     AND TRIM (a.chumon_mail_hm) = TRIM (:chumon_mail_hm) 

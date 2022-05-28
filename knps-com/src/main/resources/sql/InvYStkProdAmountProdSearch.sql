@@ -11,7 +11,7 @@ WHERE
     AND a.nes_counts >= :nes_counts_1 
     AND a.nes_counts <= :nes_counts_2 
     AND a.stan_costs = :stan_costs 
-    AND a.shikake_kbn IN (:shikake_kbn) 
+    AND TRIM (a.shikake_kbn) IN (:shikake_kbn) 
     AND a.pro_lt = :pro_lt 
     AND a.time_stamp_create = :time_stamp_create 
     AND a.time_stamp_change = :time_stamp_change 

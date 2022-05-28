@@ -5,7 +5,7 @@ FROM
 WHERE
     1 = 1 
     AND TRIM (a.yy) = TRIM (:yy) 
-    AND a.rate_code IN (:rate_code) 
+    AND TRIM (a.rate_code) IN (:rate_code) 
     AND a.in_out_kbn IN (:in_out_kbn) 
     AND a.rate_kbn IN (:rate_kbn) 
     AND a.hum_labor_cost_first = :hum_labor_cost_first 

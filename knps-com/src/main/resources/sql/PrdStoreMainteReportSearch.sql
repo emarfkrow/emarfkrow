@@ -5,7 +5,7 @@ FROM
     PRD_STORE_MAINTE_REPORT a 
 WHERE
     1 = 1 
-    AND a.rep_group_code IN (:rep_group_code) 
+    AND TRIM (a.rep_group_code) IN (:rep_group_code) 
     AND a.group_name LIKE '%' || :group_name || '%' 
     AND TRIM (a.retsu_no) = TRIM (:retsu_no) 
     AND TRIM (a.gyo_no) = TRIM (:gyo_no) 

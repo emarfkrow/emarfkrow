@@ -6,12 +6,12 @@ FROM
     MST_LOCATION a 
 WHERE
     1 = 1 
-    AND a.location_code IN (:location_code) 
+    AND TRIM (a.location_code) IN (:location_code) 
     AND a.location_name LIKE '%' || :location_name || '%' 
     AND a.loc_kbn IN (:loc_kbn) 
     AND a.loc_status = :loc_status 
     AND a.loc_enable = :loc_enable 
-    AND a.sub_inv_code IN (:sub_inv_code) 
+    AND TRIM (a.sub_inv_code) IN (:sub_inv_code) 
     AND a.time_stamp_create = :time_stamp_create 
     AND a.time_stamp_change = :time_stamp_change 
     AND TRIM (a.user_id_create) = TRIM (:user_id_create) 

@@ -5,7 +5,7 @@ FROM
 WHERE
     1 = 1 
     AND TRIM (a.plan_no) = TRIM (:plan_no) 
-    AND a.arrange_kbn IN (:arrange_kbn) 
+    AND TRIM (a.arrange_kbn) IN (:arrange_kbn) 
     AND TRIM (a.hinban) = TRIM (:hinban) 
     AND a.detail_plan_counts = :detail_plan_counts 
     AND a.detail_plan_counts >= :detail_plan_counts_1 

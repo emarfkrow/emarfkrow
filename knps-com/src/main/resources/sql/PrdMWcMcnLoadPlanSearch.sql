@@ -8,7 +8,7 @@ WHERE
     AND TRIM (a.yyyy) = TRIM (:yyyy) 
     AND TRIM (a.mm) = TRIM (:mm) 
     AND TRIM (a.man_hinban) = TRIM (:man_hinban) 
-    AND a.wc_code IN (:wc_code) 
+    AND TRIM (a.wc_code) IN (:wc_code) 
     AND a.pro_nes_counts = :pro_nes_counts 
     AND a.pro_nes_counts >= :pro_nes_counts_1 
     AND a.pro_nes_counts <= :pro_nes_counts_2 

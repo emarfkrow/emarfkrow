@@ -13,10 +13,10 @@ WHERE
     AND a.routing_group = :routing_group 
     AND a.routing = :routing 
     AND TRIM (a.ope_detail) = TRIM (:ope_detail) 
-    AND a.wc_code IN (:wc_code) 
+    AND TRIM (a.wc_code) IN (:wc_code) 
     AND TRIM (a.wscode) = TRIM (:wscode) 
     AND a.in_out_kbn IN (:in_out_kbn) 
-    AND a.sup_code IN (:sup_code) 
+    AND TRIM (a.sup_code) IN (:sup_code) 
     AND a.nes_counts = :nes_counts 
     AND a.nes_counts >= :nes_counts_1 
     AND a.nes_counts <= :nes_counts_2 

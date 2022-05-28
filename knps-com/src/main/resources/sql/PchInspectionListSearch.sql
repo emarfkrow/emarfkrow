@@ -7,7 +7,7 @@ WHERE
     AND TRIM (a.target_date) = TRIM (:target_date) 
     AND a.target_date >= :target_date_1 
     AND a.target_date <= :target_date_2 
-    AND a.sup_code IN (:sup_code) 
+    AND TRIM (a.sup_code) IN (:sup_code) 
     AND a.sup_name LIKE '%' || :sup_name || '%' 
     AND TRIM (a.order_no) = TRIM (:order_no) 
     AND TRIM (a.hinban) = TRIM (:hinban) 

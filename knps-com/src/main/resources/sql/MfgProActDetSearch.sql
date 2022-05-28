@@ -11,7 +11,7 @@ WHERE
     AND a.act_date = :act_date 
     AND a.act_date >= :act_date_1 
     AND a.act_date <= :act_date_2 
-    AND a.cause_code IN (:cause_code) 
+    AND TRIM (a.cause_code) IN (:cause_code) 
     AND TRIM (a.operator) = TRIM (:operator) 
     AND a.last_routing = :last_routing 
     AND a.time_stamp_create = :time_stamp_create 

@@ -1804,7 +1804,11 @@ public final class BeanGenerator {
 
             } else if (isOption) {
 
-                s.add("    AND a." + snake + " IN (:" + snake + ") ");
+                if (columnInfo.getTypeName().equals("CHAR")) {
+                    s.add("    AND TRIM (a." + snake + ") IN (:" + snake + ") ");
+                } else {
+                    s.add("    AND a." + snake + " IN (:" + snake + ") ");
+                }
 
             } else if (columnInfo.getTypeName().equals("CHAR")) {
 

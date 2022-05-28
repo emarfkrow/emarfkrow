@@ -8,13 +8,13 @@ WHERE
     1 = 1 
     AND a.stock_management_section = :stock_management_section 
     AND TRIM (a.hinban) = TRIM (:hinban) 
-    AND a.sub_inv_code IN (:sub_inv_code) 
+    AND TRIM (a.sub_inv_code) IN (:sub_inv_code) 
     AND a.in_out_date = :in_out_date 
     AND a.in_out_date >= :in_out_date_1 
     AND a.in_out_date <= :in_out_date_2 
     AND a.stock_branch_number = :stock_branch_number 
     AND a.in_out_status = :in_out_status 
-    AND a.receipt_sup_code IN (:receipt_sup_code) 
+    AND TRIM (a.receipt_sup_code) IN (:receipt_sup_code) 
     AND a.stock = :stock 
     AND a.inv_comment = :inv_comment 
     AND a.time_stamp_create = :time_stamp_create 

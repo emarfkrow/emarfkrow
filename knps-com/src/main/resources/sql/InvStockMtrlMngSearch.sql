@@ -7,9 +7,9 @@ WHERE
     1 = 1 
     AND a.stock_management_section = :stock_management_section 
     AND TRIM (a.hinban) = TRIM (:hinban) 
-    AND a.sub_inv_code IN (:sub_inv_code) 
+    AND TRIM (a.sub_inv_code) IN (:sub_inv_code) 
     AND a.stock = :stock 
-    AND a.main_stock_code IN (:main_stock_code) 
+    AND TRIM (a.main_stock_code) IN (:main_stock_code) 
     AND a.last_in_out_date = :last_in_out_date 
     AND a.last_in_out_date >= :last_in_out_date_1 
     AND a.last_in_out_date <= :last_in_out_date_2 

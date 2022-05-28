@@ -18,7 +18,7 @@ WHERE
     AND a.act_supply_counts = :act_supply_counts 
     AND a.act_supply_counts >= :act_supply_counts_1 
     AND a.act_supply_counts <= :act_supply_counts_2 
-    AND a.sup_code IN (:sup_code) 
+    AND TRIM (a.sup_code) IN (:sup_code) 
     AND a.supply_date = :supply_date 
     AND a.supply_date >= :supply_date_1 
     AND a.supply_date <= :supply_date_2 

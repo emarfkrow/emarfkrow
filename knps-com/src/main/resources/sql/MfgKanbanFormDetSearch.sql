@@ -8,7 +8,7 @@ WHERE
     AND a.excel_cell_name LIKE '%' || :excel_cell_name || '%' 
     AND CASE WHEN a.basic_or_tunnnel_flg IS NULL THEN '0' ELSE TO_CHAR (a.basic_or_tunnnel_flg) END IN (:basic_or_tunnnel_flg) 
     AND a.disp_order = :disp_order 
-    AND a.item_code IN (:item_code) 
+    AND TRIM (a.item_code) IN (:item_code) 
     AND CASE WHEN a.valid_flg IS NULL THEN '0' ELSE TO_CHAR (a.valid_flg) END IN (:valid_flg) 
     AND a.time_stamp_create = :time_stamp_create 
     AND a.time_stamp_change = :time_stamp_change 

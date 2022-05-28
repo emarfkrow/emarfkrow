@@ -11,7 +11,7 @@ WHERE
     AND a.pro_group_no = :pro_group_no 
     AND TRIM (a.hinban) = TRIM (:hinban) 
     AND a.routing = :routing 
-    AND a.wc_code IN (:wc_code) 
+    AND TRIM (a.wc_code) IN (:wc_code) 
     AND TRIM (a.ope_detail) = TRIM (:ope_detail) 
     AND a.proprietary_total_counts = :proprietary_total_counts 
     AND a.proprietary_total_counts >= :proprietary_total_counts_1 

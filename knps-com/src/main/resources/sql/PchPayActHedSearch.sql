@@ -13,10 +13,10 @@ WHERE
     AND a.supply_kbn IN (:supply_kbn) 
     AND TRIM (a.from_pay) = TRIM (:from_pay) 
     AND TRIM (a.to_pay) = TRIM (:to_pay) 
-    AND a.unit_code IN (:unit_code) 
-    AND a.tax_code IN (:tax_code) 
+    AND TRIM (a.unit_code) IN (:unit_code) 
+    AND TRIM (a.tax_code) IN (:tax_code) 
     AND a.tax_cal_code IN (:tax_cal_code) 
-    AND a.account_code IN (:account_code) 
+    AND TRIM (a.account_code) IN (:account_code) 
     AND TRIM (a.supply_no) = TRIM (:supply_no) 
     AND TRIM (a.ship_order_no) = TRIM (:ship_order_no) 
     AND a.pay_date = :pay_date 

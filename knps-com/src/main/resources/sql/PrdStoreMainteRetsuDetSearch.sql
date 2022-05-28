@@ -7,7 +7,7 @@ WHERE
     1 = 1 
     AND TRIM (a.retsu_no) = TRIM (:retsu_no) 
     AND a.retsu_pos = :retsu_pos 
-    AND a.wc_code IN (:wc_code) 
+    AND TRIM (a.wc_code) IN (:wc_code) 
     AND TRIM (a.ope_detail) = TRIM (:ope_detail) 
     AND a.time_stamp_create = :time_stamp_create 
     AND a.time_stamp_change = :time_stamp_change 

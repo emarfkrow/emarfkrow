@@ -7,7 +7,7 @@ WHERE
     1 = 1 
     AND TRIM (a.yyyy) = TRIM (:yyyy) 
     AND TRIM (a.mm) = TRIM (:mm) 
-    AND a.wc_code IN (:wc_code) 
+    AND TRIM (a.wc_code) IN (:wc_code) 
     AND a.observance_rate = :observance_rate 
     AND a.late_m5_over = :late_m5_over 
     AND a.late_m5 = :late_m5 

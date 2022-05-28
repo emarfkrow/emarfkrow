@@ -7,7 +7,7 @@ WHERE
     1 = 1 
     AND TRIM (a.yyyy) = TRIM (:yyyy) 
     AND TRIM (a.mm) = TRIM (:mm) 
-    AND a.wc_code IN (:wc_code) 
+    AND TRIM (a.wc_code) IN (:wc_code) 
     AND a.layout_in_time = :layout_in_time 
     AND a.change_stat = :change_stat 
     AND a.time_stamp_create = :time_stamp_create 

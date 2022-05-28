@@ -10,7 +10,7 @@ WHERE
     AND a.item_kbn IN (:item_kbn) 
     AND a.hinban_ope_code IN (:hinban_ope_code) 
     AND a.routing_group = :routing_group 
-    AND a.wc_code IN (:wc_code) 
+    AND TRIM (a.wc_code) IN (:wc_code) 
     AND a.wc_name LIKE '%' || :wc_name || '%' 
     AND a.ope_detail = :ope_detail 
     AND a.last_in_out_date = :last_in_out_date 

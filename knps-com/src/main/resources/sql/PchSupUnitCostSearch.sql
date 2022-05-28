@@ -9,7 +9,7 @@ WHERE
     AND a.close_date >= :close_date_1 
     AND a.close_date <= :close_date_2 
     AND TRIM (a.hinban) = TRIM (:hinban) 
-    AND a.sup_code IN (:sup_code) 
+    AND TRIM (a.sup_code) IN (:sup_code) 
     AND a.proprietary_total_counts = :proprietary_total_counts 
     AND a.proprietary_total_counts >= :proprietary_total_counts_1 
     AND a.proprietary_total_counts <= :proprietary_total_counts_2 

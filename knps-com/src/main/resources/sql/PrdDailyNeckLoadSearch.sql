@@ -16,6 +16,6 @@ WHERE
     AND a.time_stamp_change = :time_stamp_change 
     AND TRIM (a.user_id_create) = TRIM (:user_id_create) 
     AND TRIM (a.user_id_change) = TRIM (:user_id_change) 
-    AND a.wc_code IN (:wc_code) 
+    AND TRIM (a.wc_code) IN (:wc_code) 
 ORDER BY
     a.PRO_NO, a.BRANCH_NO

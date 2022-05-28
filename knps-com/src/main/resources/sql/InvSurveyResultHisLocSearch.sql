@@ -5,7 +5,7 @@ FROM
     INV_SURVEY_RESULT_HIS_LOC a 
 WHERE
     1 = 1 
-    AND a.location_code IN (:location_code) 
+    AND TRIM (a.location_code) IN (:location_code) 
     AND TRIM (a.yyyy) = TRIM (:yyyy) 
     AND TRIM (a.mm) = TRIM (:mm) 
     AND TRIM (a.hinban) = TRIM (:hinban) 

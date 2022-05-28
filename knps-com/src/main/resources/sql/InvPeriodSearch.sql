@@ -8,7 +8,7 @@ WHERE
     AND a.stock_management_section = :stock_management_section 
     AND a.inv_phase = :inv_phase 
     AND a.inv_phase_month = :inv_phase_month 
-    AND a.sub_inv_code IN (:sub_inv_code) 
+    AND TRIM (a.sub_inv_code) IN (:sub_inv_code) 
     AND a.inv_date_from = :inv_date_from 
     AND a.inv_date_to = :inv_date_to 
     AND a.inv_status = :inv_status 

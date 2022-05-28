@@ -9,7 +9,7 @@ WHERE
     AND TRIM (a.mm) = TRIM (:mm) 
     AND TRIM (a.hinban) = TRIM (:hinban) 
     AND a.routing = :routing 
-    AND a.wc_code IN (:wc_code) 
+    AND TRIM (a.wc_code) IN (:wc_code) 
     AND TRIM (a.ope_detail) = TRIM (:ope_detail) 
     AND a.nes_counts = :nes_counts 
     AND a.nes_counts >= :nes_counts_1 

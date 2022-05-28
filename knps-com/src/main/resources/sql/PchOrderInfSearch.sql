@@ -10,11 +10,11 @@ WHERE
     AND TRIM (a.order_no) = TRIM (:order_no) 
     AND a.order_kbn IN (:order_kbn) 
     AND TRIM (a.order_id) = TRIM (:order_id) 
-    AND a.arrange_kbn IN (:arrange_kbn) 
+    AND TRIM (a.arrange_kbn) IN (:arrange_kbn) 
     AND TRIM (a.kanban_id) = TRIM (:kanban_id) 
     AND a.serial_no = :serial_no 
     AND a.routing = :routing 
-    AND a.wc_code IN (:wc_code) 
+    AND TRIM (a.wc_code) IN (:wc_code) 
     AND TRIM (a.ope_detail) = TRIM (:ope_detail) 
     AND a.comment1 = :comment1 
     AND a.comment2 = :comment2 
@@ -22,14 +22,14 @@ WHERE
     AND a.order_counts = :order_counts 
     AND a.order_counts >= :order_counts_1 
     AND a.order_counts <= :order_counts_2 
-    AND a.unit_code IN (:unit_code) 
+    AND TRIM (a.unit_code) IN (:unit_code) 
     AND a.memo = :memo 
     AND a.period = :period 
     AND a.period_chg = :period_chg 
     AND a.order_lt = :order_lt 
-    AND a.sup_code IN (:sup_code) 
-    AND a.subinv_code IN (:subinv_code) 
-    AND a.ship_code IN (:ship_code) 
+    AND TRIM (a.sup_code) IN (:sup_code) 
+    AND TRIM (a.subinv_code) IN (:subinv_code) 
+    AND TRIM (a.ship_code) IN (:ship_code) 
     AND a.order_unit = :order_unit 
     AND a.order_unit >= :order_unit_1 
     AND a.order_unit <= :order_unit_2 
@@ -84,7 +84,7 @@ WHERE
     AND a.org_order_unit <= :org_order_unit_2 
     AND CASE WHEN a.musho_hacchu_f IS NULL THEN '0' ELSE TO_CHAR (a.musho_hacchu_f) END IN (:musho_hacchu_f) 
     AND a.sup_memo = :sup_memo 
-    AND a.shiharai_hoho_kbn IN (:shiharai_hoho_kbn) 
+    AND TRIM (a.shiharai_hoho_kbn) IN (:shiharai_hoho_kbn) 
     AND CASE WHEN a.order_isshiki_unit_f IS NULL THEN '0' ELSE TO_CHAR (a.order_isshiki_unit_f) END IN (:order_isshiki_unit_f) 
     AND a.order_isshiki_counts = :order_isshiki_counts 
     AND a.order_isshiki_counts >= :order_isshiki_counts_1 

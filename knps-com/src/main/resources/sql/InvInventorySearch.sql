@@ -6,7 +6,7 @@ FROM
     INV_INVENTORY a 
 WHERE
     1 = 1 
-    AND a.location_code IN (:location_code) 
+    AND TRIM (a.location_code) IN (:location_code) 
     AND TRIM (a.hinban) = TRIM (:hinban) 
     AND a.good_stock = :good_stock 
     AND a.bad_stock = :bad_stock 
@@ -17,7 +17,7 @@ WHERE
     AND a.latest_out_date >= :latest_out_date_1 
     AND a.latest_out_date <= :latest_out_date_2 
     AND a.remains_kbn IN (:remains_kbn) 
-    AND a.reason_code IN (:reason_code) 
+    AND TRIM (a.reason_code) IN (:reason_code) 
     AND a.note = :note 
     AND a.time_stamp_create = :time_stamp_create 
     AND a.time_stamp_change = :time_stamp_change 

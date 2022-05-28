@@ -4,7 +4,7 @@ FROM
     MST_REASON a 
 WHERE
     1 = 1 
-    AND a.reason_code IN (:reason_code) 
+    AND TRIM (a.reason_code) IN (:reason_code) 
     AND a.reason_name LIKE '%' || :reason_name || '%' 
     AND a.reason_kbn IN (:reason_kbn) 
     AND a.time_stamp_create = :time_stamp_create 

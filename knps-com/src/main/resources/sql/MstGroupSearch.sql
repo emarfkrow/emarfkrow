@@ -5,10 +5,10 @@ FROM
     MST_GROUP a 
 WHERE
     1 = 1 
-    AND a.group_code IN (:group_code) 
+    AND TRIM (a.group_code) IN (:group_code) 
     AND a.group_name LIKE '%' || :group_name || '%' 
-    AND a.admin_code IN (:admin_code) 
-    AND a.division_code IN (:division_code) 
+    AND TRIM (a.admin_code) IN (:admin_code) 
+    AND TRIM (a.division_code) IN (:division_code) 
     AND a.individual_counts = :individual_counts 
     AND a.individual_counts >= :individual_counts_1 
     AND a.individual_counts <= :individual_counts_2 

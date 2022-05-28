@@ -6,8 +6,8 @@ FROM
     PRD_STORE_MAINTE_TEAM_DET a 
 WHERE
     1 = 1 
-    AND a.mfg_team_code IN (:mfg_team_code) 
-    AND a.ws_code IN (:ws_code) 
+    AND TRIM (a.mfg_team_code) IN (:mfg_team_code) 
+    AND TRIM (a.ws_code) IN (:ws_code) 
     AND a.time_stamp_create = :time_stamp_create 
     AND a.time_stamp_change = :time_stamp_change 
     AND TRIM (a.user_id_create) = TRIM (:user_id_create) 

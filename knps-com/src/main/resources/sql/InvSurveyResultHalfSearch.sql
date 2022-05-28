@@ -13,7 +13,7 @@ WHERE
     AND a.decision_kbn IN (:decision_kbn) 
     AND a.pro_group_no = :pro_group_no 
     AND a.routing = :routing 
-    AND a.wc_code IN (:wc_code) 
+    AND TRIM (a.wc_code) IN (:wc_code) 
     AND a.entry_date = :entry_date 
     AND a.entry_date >= :entry_date_1 
     AND a.entry_date <= :entry_date_2 

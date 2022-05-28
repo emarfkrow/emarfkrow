@@ -8,7 +8,7 @@ WHERE
     AND TRIM (a.sales_hinban) = TRIM (:sales_hinban) 
     AND TRIM (a.hinban) = TRIM (:hinban) 
     AND a.inventory = :inventory 
-    AND a.location_code IN (:location_code) 
+    AND TRIM (a.location_code) IN (:location_code) 
     AND a.last_download_date = :last_download_date 
     AND a.last_download_date >= :last_download_date_1 
     AND a.last_download_date <= :last_download_date_2 

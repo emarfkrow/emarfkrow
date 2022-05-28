@@ -7,8 +7,8 @@ WHERE
     1 = 1 
     AND TRIM (a.yy) = TRIM (:yy) 
     AND TRIM (a.hinban) = TRIM (:hinban) 
-    AND a.sup_code IN (:sup_code) 
-    AND a.subinv_code IN (:subinv_code) 
+    AND TRIM (a.sup_code) IN (:sup_code) 
+    AND TRIM (a.subinv_code) IN (:subinv_code) 
     AND a.procure_lt = :procure_lt 
     AND a.time_stamp_create = :time_stamp_create 
     AND a.time_stamp_change = :time_stamp_change 

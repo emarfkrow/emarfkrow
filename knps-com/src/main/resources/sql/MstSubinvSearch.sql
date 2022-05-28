@@ -5,11 +5,11 @@ FROM
     MST_SUBINV a 
 WHERE
     1 = 1 
-    AND a.sub_inv_code IN (:sub_inv_code) 
+    AND TRIM (a.sub_inv_code) IN (:sub_inv_code) 
     AND a.sub_inv_name LIKE '%' || :sub_inv_name || '%' 
     AND a.manage_kbn IN (:manage_kbn) 
     AND a.in_out_kbn IN (:in_out_kbn) 
-    AND a.sup_code IN (:sup_code) 
+    AND TRIM (a.sup_code) IN (:sup_code) 
     AND a.time_stamp_create = :time_stamp_create 
     AND a.time_stamp_change = :time_stamp_change 
     AND TRIM (a.user_id_create) = TRIM (:user_id_create) 

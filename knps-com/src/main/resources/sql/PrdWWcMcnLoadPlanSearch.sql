@@ -6,9 +6,9 @@ WHERE
     1 = 1 
     AND a.w_plan_id = :w_plan_id 
     AND TRIM (a.man_hinban) = TRIM (:man_hinban) 
-    AND a.wc_code IN (:wc_code) 
+    AND TRIM (a.wc_code) IN (:wc_code) 
     AND a.wc_name LIKE '%' || :wc_name || '%' 
-    AND a.ws_code IN (:ws_code) 
+    AND TRIM (a.ws_code) IN (:ws_code) 
     AND a.ws_name LIKE '%' || :ws_name || '%' 
     AND TRIM (a.ope_detail) = TRIM (:ope_detail) 
     AND a.hum_pre_time = :hum_pre_time 

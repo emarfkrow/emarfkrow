@@ -8,7 +8,7 @@ WHERE
     AND TRIM (a.yyyy) = TRIM (:yyyy) 
     AND TRIM (a.mm) = TRIM (:mm) 
     AND TRIM (a.hinban) = TRIM (:hinban) 
-    AND a.sup_code IN (:sup_code) 
+    AND TRIM (a.sup_code) IN (:sup_code) 
     AND a.order_counts = :order_counts 
     AND a.order_counts >= :order_counts_1 
     AND a.order_counts <= :order_counts_2 

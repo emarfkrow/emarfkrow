@@ -9,6 +9,6 @@ WHERE
     AND CASE WHEN a.delete_flag IS NULL THEN '0' ELSE TO_CHAR (a.delete_flag) END IN (:delete_flag) 
     AND CASE WHEN a.bottom_flag IS NULL THEN '0' ELSE TO_CHAR (a.bottom_flag) END IN (:bottom_flag) 
     AND a.set_count = :set_count 
-    AND a.gratis_supply_kbn IN (:gratis_supply_kbn) 
+    AND TRIM (a.gratis_supply_kbn) IN (:gratis_supply_kbn) 
 ORDER BY
     a.SET_HINBAN, a.SET_CHILD_HINBAN

@@ -4,7 +4,7 @@ FROM
     MST_ACCOUNT_CODE a 
 WHERE
     1 = 1 
-    AND a.account_code IN (:account_code) 
+    AND TRIM (a.account_code) IN (:account_code) 
     AND a.account_name LIKE '%' || :account_name || '%' 
     AND a.expense_kbn1 = :expense_kbn1 
     AND a.expense_kbn2 = :expense_kbn2 

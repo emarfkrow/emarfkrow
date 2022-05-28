@@ -12,7 +12,7 @@ WHERE
     AND a.pro_group_no = :pro_group_no 
     AND TRIM (a.hinban) = TRIM (:hinban) 
     AND TRIM (a.routing) = TRIM (:routing) 
-    AND a.wc_code IN (:wc_code) 
+    AND TRIM (a.wc_code) IN (:wc_code) 
     AND TRIM (a.ope_detail) = TRIM (:ope_detail) 
     AND a.hum_pre_time = :hum_pre_time 
     AND a.hum_act_time = :hum_act_time 
@@ -24,7 +24,7 @@ WHERE
     AND a.reject_counts = :reject_counts 
     AND a.reject_counts >= :reject_counts_1 
     AND a.reject_counts <= :reject_counts_2 
-    AND a.unit_code IN (:unit_code) 
+    AND TRIM (a.unit_code) IN (:unit_code) 
     AND a.act_lt = :act_lt 
     AND a.act_wait_time = :act_wait_time 
     AND a.exp_wait_time = :exp_wait_time 

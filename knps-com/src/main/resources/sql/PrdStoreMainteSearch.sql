@@ -10,8 +10,8 @@ WHERE
     AND TRIM (a.mm) = TRIM (:mm) 
     AND TRIM (a.hinban) = TRIM (:hinban) 
     AND a.routing = :routing 
-    AND a.wc_code IN (:wc_code) 
-    AND a.location_code IN (:location_code) 
+    AND TRIM (a.wc_code) IN (:wc_code) 
+    AND TRIM (a.location_code) IN (:location_code) 
     AND a.lot_size = :lot_size 
     AND a.kanban_acc_counts = :kanban_acc_counts 
     AND a.kanban_acc_counts >= :kanban_acc_counts_1 

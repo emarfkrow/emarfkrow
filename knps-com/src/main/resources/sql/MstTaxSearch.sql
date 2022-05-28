@@ -4,7 +4,7 @@ FROM
     MST_TAX a 
 WHERE
     1 = 1 
-    AND a.tax_code IN (:tax_code) 
+    AND TRIM (a.tax_code) IN (:tax_code) 
     AND a.tax_name LIKE '%' || :tax_name || '%' 
     AND a.tax_rate = :tax_rate 
     AND a.time_stamp_create = :time_stamp_create 

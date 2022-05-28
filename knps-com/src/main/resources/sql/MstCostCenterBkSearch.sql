@@ -6,12 +6,12 @@ FROM
 WHERE
     1 = 1 
     AND TRIM (a.yy) = TRIM (:yy) 
-    AND a.cost_center_code IN (:cost_center_code) 
+    AND TRIM (a.cost_center_code) IN (:cost_center_code) 
     AND a.cost_center_name LIKE '%' || :cost_center_name || '%' 
     AND a.in_out_kbn IN (:in_out_kbn) 
-    AND a.sup_code IN (:sup_code) 
+    AND TRIM (a.sup_code) IN (:sup_code) 
     AND a.cost_rate_kbn IN (:cost_rate_kbn) 
-    AND a.cost_rate_code IN (:cost_rate_code) 
+    AND TRIM (a.cost_rate_code) IN (:cost_rate_code) 
     AND a.cost_collect = :cost_collect 
     AND a.time_stamp_create = :time_stamp_create 
     AND a.time_stamp_change = :time_stamp_change 

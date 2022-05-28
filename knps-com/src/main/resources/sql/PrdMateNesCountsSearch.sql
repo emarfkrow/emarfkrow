@@ -11,7 +11,7 @@ WHERE
     AND a.order_counts = :order_counts 
     AND a.order_counts >= :order_counts_1 
     AND a.order_counts <= :order_counts_2 
-    AND a.sup_code IN (:sup_code) 
+    AND TRIM (a.sup_code) IN (:sup_code) 
     AND a.order_unit = :order_unit 
     AND a.order_unit >= :order_unit_1 
     AND a.order_unit <= :order_unit_2 

@@ -11,7 +11,7 @@ WHERE
     AND a.nes_counts = :nes_counts 
     AND a.nes_counts >= :nes_counts_1 
     AND a.nes_counts <= :nes_counts_2 
-    AND a.sup_code IN (:sup_code) 
+    AND TRIM (a.sup_code) IN (:sup_code) 
     AND a.order_counts = :order_counts 
     AND a.order_counts >= :order_counts_1 
     AND a.order_counts <= :order_counts_2 

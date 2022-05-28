@@ -6,7 +6,7 @@ FROM
 WHERE
     1 = 1 
     AND TRIM (a.mod_act_no) = TRIM (:mod_act_no) 
-    AND a.wc_code IN (:wc_code) 
+    AND TRIM (a.wc_code) IN (:wc_code) 
     AND a.mod_kind = :mod_kind 
     AND a.amount_time = :amount_time 
     AND a.act_mod_time = :act_mod_time 

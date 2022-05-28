@@ -4,10 +4,10 @@ FROM
     MST_UNIT a 
 WHERE
     1 = 1 
-    AND a.unit_code IN (:unit_code) 
+    AND TRIM (a.unit_code) IN (:unit_code) 
     AND a.unit_name LIKE '%' || :unit_name || '%' 
     AND a.stan_unit_kbn IN (:stan_unit_kbn) 
-    AND a.stan_unit_code IN (:stan_unit_code) 
+    AND TRIM (a.stan_unit_code) IN (:stan_unit_code) 
     AND a.exchange_rate = :exchange_rate 
     AND a.time_stamp_create = :time_stamp_create 
     AND a.time_stamp_change = :time_stamp_change 

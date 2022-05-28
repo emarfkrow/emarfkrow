@@ -5,10 +5,10 @@ FROM
     MST_TEAM a 
 WHERE
     1 = 1 
-    AND a.team_code IN (:team_code) 
+    AND TRIM (a.team_code) IN (:team_code) 
     AND a.team_name LIKE '%' || :team_name || '%' 
-    AND a.admin_code IN (:admin_code) 
-    AND a.group_code IN (:group_code) 
+    AND TRIM (a.admin_code) IN (:admin_code) 
+    AND TRIM (a.group_code) IN (:group_code) 
     AND a.individual_counts = :individual_counts 
     AND a.individual_counts >= :individual_counts_1 
     AND a.individual_counts <= :individual_counts_2 

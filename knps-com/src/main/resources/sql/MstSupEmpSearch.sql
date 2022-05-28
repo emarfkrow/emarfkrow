@@ -5,9 +5,9 @@ FROM
     MST_SUP_EMP a 
 WHERE
     1 = 1 
-    AND a.supplier_ope_code IN (:supplier_ope_code) 
+    AND TRIM (a.supplier_ope_code) IN (:supplier_ope_code) 
     AND a.supplier_ope_name LIKE '%' || :supplier_ope_name || '%' 
-    AND a.emp_code IN (:emp_code) 
+    AND TRIM (a.emp_code) IN (:emp_code) 
     AND a.time_stamp_create = :time_stamp_create 
     AND a.time_stamp_change = :time_stamp_change 
     AND TRIM (a.user_id_create) = TRIM (:user_id_create) 

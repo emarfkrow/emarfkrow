@@ -19,6 +19,6 @@ WHERE
     AND a.time_stamp_change = :time_stamp_change 
     AND TRIM (a.user_id_create) = TRIM (:user_id_create) 
     AND TRIM (a.user_id_change) = TRIM (:user_id_change) 
-    AND a.emp_code IN (:emp_code) 
+    AND TRIM (a.emp_code) IN (:emp_code) 
 ORDER BY
     a.PRD_W_PRO_NES_COUNTS_KEY

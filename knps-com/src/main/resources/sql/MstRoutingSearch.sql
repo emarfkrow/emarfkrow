@@ -10,7 +10,7 @@ WHERE
     AND a.routing = :routing 
     AND a.neck_routing = :neck_routing 
     AND TRIM (a.ope_detail) = TRIM (:ope_detail) 
-    AND a.wc_code IN (:wc_code) 
+    AND TRIM (a.wc_code) IN (:wc_code) 
     AND a.hum_pre_time = :hum_pre_time 
     AND a.hum_act_time = :hum_act_time 
     AND a.mac_pre_time = :mac_pre_time 
@@ -26,7 +26,7 @@ WHERE
     AND TRIM (a.store_no) = TRIM (:store_no) 
     AND a.inspect_lane_kbn IN (:inspect_lane_kbn) 
     AND a.inspect_kbn IN (:inspect_kbn) 
-    AND a.subinv_code IN (:subinv_code) 
+    AND TRIM (a.subinv_code) IN (:subinv_code) 
     AND a.hum_pre_time_kbn IN (:hum_pre_time_kbn) 
     AND a.hum_act_time_kbn IN (:hum_act_time_kbn) 
     AND a.mac_pre_time_kbn IN (:mac_pre_time_kbn) 
@@ -37,6 +37,6 @@ WHERE
     AND TRIM (a.user_id_create) = TRIM (:user_id_create) 
     AND TRIM (a.user_id_change) = TRIM (:user_id_change) 
     AND CASE WHEN a.musho_hacchu_f IS NULL THEN '0' ELSE TO_CHAR (a.musho_hacchu_f) END IN (:musho_hacchu_f) 
-    AND a.target_kbn IN (:target_kbn) 
+    AND TRIM (a.target_kbn) IN (:target_kbn) 
 ORDER BY
     a.MAN_HINBAN, a.ROUTING_GROUP, a.ROUTING

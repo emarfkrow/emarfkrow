@@ -9,7 +9,7 @@ FROM
 WHERE
     1 = 1 
     AND TRIM (a.yy) = TRIM (:yy) 
-    AND a.wc_code IN (:wc_code) 
+    AND TRIM (a.wc_code) IN (:wc_code) 
     AND a.wc_name LIKE '%' || :wc_name || '%' 
     AND a.norm_lt = :norm_lt 
     AND a.mac_norm_ability = :mac_norm_ability 
@@ -21,12 +21,12 @@ WHERE
     AND TRIM (a.ope_form_pat_no) = TRIM (:ope_form_pat_no) 
     AND a.delay_alert_days = :delay_alert_days 
     AND TRIM (a.ato_control) = TRIM (:ato_control) 
-    AND a.routing_code IN (:routing_code) 
+    AND TRIM (a.routing_code) IN (:routing_code) 
     AND a.in_out_kbn IN (:in_out_kbn) 
-    AND a.ws_code IN (:ws_code) 
-    AND a.cost_center_code IN (:cost_center_code) 
+    AND TRIM (a.ws_code) IN (:ws_code) 
+    AND TRIM (a.cost_center_code) IN (:cost_center_code) 
     AND a.neck_kbn IN (:neck_kbn) 
-    AND a.sub_inv_code IN (:sub_inv_code) 
+    AND TRIM (a.sub_inv_code) IN (:sub_inv_code) 
     AND a.stock_control = :stock_control 
     AND a.time_stamp_create = :time_stamp_create 
     AND a.time_stamp_change = :time_stamp_change 

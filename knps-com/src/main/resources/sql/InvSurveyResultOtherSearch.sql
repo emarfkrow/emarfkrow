@@ -5,7 +5,7 @@ FROM
     INV_SURVEY_RESULT_OTHER a 
 WHERE
     1 = 1 
-    AND a.location_code IN (:location_code) 
+    AND TRIM (a.location_code) IN (:location_code) 
     AND a.result_branch_no = :result_branch_no 
     AND TRIM (a.yyyy) = TRIM (:yyyy) 
     AND TRIM (a.mm) = TRIM (:mm) 

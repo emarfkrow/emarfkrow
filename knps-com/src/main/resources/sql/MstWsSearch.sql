@@ -6,15 +6,15 @@ FROM
     MST_WS a 
 WHERE
     1 = 1 
-    AND a.ws_code IN (:ws_code) 
+    AND TRIM (a.ws_code) IN (:ws_code) 
     AND a.ws_name LIKE '%' || :ws_name || '%' 
     AND a.in_out_kbn IN (:in_out_kbn) 
     AND a.hum_norm_ability = :hum_norm_ability 
     AND a.hum_max_ability = :hum_max_ability 
     AND a.norm_member = :norm_member 
-    AND a.admin_code IN (:admin_code) 
-    AND a.team_code IN (:team_code) 
-    AND a.sup_code IN (:sup_code) 
+    AND TRIM (a.admin_code) IN (:admin_code) 
+    AND TRIM (a.team_code) IN (:team_code) 
+    AND TRIM (a.sup_code) IN (:sup_code) 
     AND a.time_stamp_create = :time_stamp_create 
     AND a.time_stamp_change = :time_stamp_change 
     AND TRIM (a.user_id_create) = TRIM (:user_id_create) 

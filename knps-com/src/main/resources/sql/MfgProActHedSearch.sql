@@ -8,9 +8,9 @@ WHERE
     1 = 1 
     AND TRIM (a.pro_no) = TRIM (:pro_no) 
     AND a.pro_routing_branch = :pro_routing_branch 
-    AND a.wc_code IN (:wc_code) 
+    AND TRIM (a.wc_code) IN (:wc_code) 
     AND a.charge_no = :charge_no 
-    AND a.mac_code IN (:mac_code) 
+    AND TRIM (a.mac_code) IN (:mac_code) 
     AND a.hum_pre_time = :hum_pre_time 
     AND a.hum_act_time = :hum_act_time 
     AND a.mac_pre_time = :mac_pre_time 
@@ -21,7 +21,7 @@ WHERE
     AND a.reject_counts = :reject_counts 
     AND a.reject_counts >= :reject_counts_1 
     AND a.reject_counts <= :reject_counts_2 
-    AND a.unit_code IN (:unit_code) 
+    AND TRIM (a.unit_code) IN (:unit_code) 
     AND a.act_lt = :act_lt 
     AND a.act_wait_time = :act_wait_time 
     AND a.exp_wait_time = :exp_wait_time 

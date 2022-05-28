@@ -9,14 +9,14 @@ WHERE
     1 = 1 
     AND TRIM (a.yy) = TRIM (:yy) 
     AND TRIM (a.hinban) = TRIM (:hinban) 
-    AND a.hinban_code IN (:hinban_code) 
+    AND TRIM (a.hinban_code) IN (:hinban_code) 
     AND a.item = :item 
     AND a.item_kbn IN (:item_kbn) 
-    AND a.shikake_kbn IN (:shikake_kbn) 
+    AND TRIM (a.shikake_kbn) IN (:shikake_kbn) 
     AND a.lot_size = :lot_size 
     AND a.counts = :counts 
-    AND a.unit_code IN (:unit_code) 
-    AND a.account_code IN (:account_code) 
+    AND TRIM (a.unit_code) IN (:unit_code) 
+    AND TRIM (a.account_code) IN (:account_code) 
     AND a.supply_change = :supply_change 
     AND a.supply_permission = :supply_permission 
     AND TRIM (a.off_post_no) = TRIM (:off_post_no) 
@@ -30,7 +30,7 @@ WHERE
     AND a.cost_amount_kbn IN (:cost_amount_kbn) 
     AND a.f_cost_amount_kbn IN (:f_cost_amount_kbn) 
     AND a.s_cost_amount_kbn IN (:s_cost_amount_kbn) 
-    AND a.hinban_ope_code IN (:hinban_ope_code) 
+    AND TRIM (a.hinban_ope_code) IN (:hinban_ope_code) 
     AND CASE WHEN a.permission_flag IS NULL THEN '0' ELSE TO_CHAR (a.permission_flag) END IN (:permission_flag) 
     AND TRIM (a.version) = TRIM (:version) 
     AND a.plan_code IN (:plan_code) 
@@ -69,7 +69,7 @@ WHERE
     AND TRIM (a.user_id_create) = TRIM (:user_id_create) 
     AND TRIM (a.user_id_change) = TRIM (:user_id_change) 
     AND a.total_lt = :total_lt 
-    AND a.company_div_code IN (:company_div_code) 
+    AND TRIM (a.company_div_code) IN (:company_div_code) 
     AND a.kbn4 = :kbn4 
     AND a.kbn5 = :kbn5 
     AND a.kbn6 = :kbn6 
@@ -78,7 +78,7 @@ WHERE
     AND a.tsukesu = :tsukesu 
     AND a.ex_tax_rate = :ex_tax_rate 
     AND a.memo = :memo 
-    AND a.haiban_kbn IN (:haiban_kbn) 
+    AND TRIM (a.haiban_kbn) IN (:haiban_kbn) 
     AND TRIM (a.haiban_ym) = TRIM (:haiban_ym) 
     AND a.haiban_ym >= :haiban_ym_1 
     AND a.haiban_ym <= :haiban_ym_2 

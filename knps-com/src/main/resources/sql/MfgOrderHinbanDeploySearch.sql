@@ -10,7 +10,7 @@ WHERE
     AND TRIM (a.delivery_date) = TRIM (:delivery_date) 
     AND a.delivery_date >= :delivery_date_1 
     AND a.delivery_date <= :delivery_date_2 
-    AND a.unit_code IN (:unit_code) 
+    AND TRIM (a.unit_code) IN (:unit_code) 
     AND a.counts = :counts 
     AND a.time_stamp_create = :time_stamp_create 
     AND a.time_stamp_change = :time_stamp_change 
