@@ -454,14 +454,14 @@ public final class BeanGenerator {
         s.add("     */");
         s.add("    public int insert(final LocalDateTime now, final String id) {");
 
-        ColumnInfo lastKeyInfo = null;
+        ColumnInfo keyInfo = null;
         if (tableInfo.getPrimaryKeys() != null && tableInfo.getPrimaryKeys().size() > 0) {
             List<String> primaryKeys = tableInfo.getPrimaryKeys();
             String lastKey = primaryKeys.get(primaryKeys.size() - 1);
-            lastKeyInfo = tableInfo.getColumnInfos().get(lastKey);
-            if (lastKeyInfo != null && lastKeyInfo.isNumbering()) {
+            keyInfo = tableInfo.getColumnInfos().get(lastKey);
+            if (keyInfo != null && keyInfo.isNumbering()) {
                 s.add("");
-                s.add("        // " + lastKeyInfo.getRemarks() + "の採番処理");
+                s.add("        // " + keyInfo.getRemarks() + "の採番処理");
                 s.add("        numbering();");
             }
         }
@@ -534,7 +534,6 @@ public final class BeanGenerator {
 
         s.add("    private String getValues() {");
         s.add("        List<String> valueList = new ArrayList<String>();");
-
         DataSourcesAssist assist = DataSources.getAssist();
         for (Entry<String, ColumnInfo> e : tableInfo.getColumnInfos().entrySet()) {
             String rightHand = ":" + e.getKey().toLowerCase();
@@ -543,27 +542,28 @@ public final class BeanGenerator {
             }
             s.add("        valueList.add(\"" + rightHand + "\");");
         }
-
         s.add("        return String.join(\"\\r\\n    , \", valueList);");
         s.add("    }");
 
-        if (lastKeyInfo != null && lastKeyInfo.isNumbering()) {
-            String lastPk = tableInfo.getPrimaryKeys().get(tableInfo.getPrimaryKeys().size() - 1);
-            String columnRemarks = tableInfo.getColumnInfos().get(lastKeyInfo.getColumnName()).getRemarks();
+        if (keyInfo != null && keyInfo.isNumbering()) {
+            String pk = tableInfo.getPrimaryKeys().get(tableInfo.getPrimaryKeys().size() - 1);
+            String columnRemarks = tableInfo.getColumnInfos().get(keyInfo.getColumnName()).getRemarks();
             s.add("");
             s.add("    /** " + columnRemarks + "の採番処理 */");
             s.add("    private void numbering() {");
             s.add("");
-            String camelPk = StringUtil.toCamelCase(lastPk);
+            String camelPk = StringUtil.toCamelCase(pk);
             s.add("        if (this." + camelPk + " != null) {");
             s.add("            return;");
             s.add("        }");
             s.add("");
-            String numbering = "CASE WHEN MAX(e." + lastPk + ") IS NULL THEN 0 ELSE MAX(e." + lastPk + ") END + 1";
-            if (lastKeyInfo.getTypeName().equals("CHAR")) {
-                numbering = "LPAD (" + numbering + ", " + lastKeyInfo.getColumnSize() + ", '0')";
+            String numbering = "CASE WHEN MAX(e." + pk + ") IS NULL THEN 0 ELSE MAX(e." + pk + ") * 1 END + 1";
+            String w = "";
+            if (keyInfo.getTypeName().equals("CHAR")) {
+                numbering = "LPAD (" + numbering + ", " + keyInfo.getColumnSize() + ", '0')";
+                w = " WHERE e." + pk + " < '" + new String(new char[keyInfo.getColumnSize()]).replace("\0", "9") + "'";
             }
-            s.add("        String sql = \"SELECT " + numbering + " AS " + lastPk + " FROM " + tableName + " e\";");
+            s.add("        String sql = \"SELECT " + numbering + " AS " + pk + " FROM " + tableName + " e" + w + "\";");
             s.add("");
             s.add("        Map<String, Object> params = new HashMap<String, Object>();");
             if (tableInfo.getPrimaryKeys().size() > 1) {
@@ -583,9 +583,9 @@ public final class BeanGenerator {
             }
             s.add("");
             s.add("        jp.co.golorp.emarf.util.MapList mapList = Queries.select(sql, params);");
-            s.add("        Object o = mapList.get(0).get(\"" + lastPk + "\");");
+            s.add("        Object o = mapList.get(0).get(\"" + pk + "\");");
             s.add("");
-            s.add("        this.set" + StringUtil.toPascalCase(lastPk) + "(o);");
+            s.add("        this.set" + StringUtil.toPascalCase(pk) + "(o);");
             s.add("    }");
         }
     }
@@ -1577,9 +1577,9 @@ public final class BeanGenerator {
     private static void javaFormDetailRegistChecks(final List<String> primaryKeys, final ColumnInfo columnInfo,
             final List<String> s) {
 
-        // NotBlank（主キーは親モデルから植え付けるか採番するので除外）
+        // NotBlank（主キーは親モデルから植え付けるか採番するので除外。フラグも除外）
         if (columnInfo.getNullable() == 0) {
-            if (!columnInfo.isNumbering()) {
+            if (!columnInfo.isNumbering() && !StringUtil.endsWith(inputFlagSuffixs, columnInfo.getColumnName())) {
                 s.add("    @jakarta.validation.constraints.NotBlank");
             }
         }
