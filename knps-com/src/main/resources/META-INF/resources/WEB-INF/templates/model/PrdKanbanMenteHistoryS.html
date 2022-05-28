@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{PrdKanbanMenteHistoryS.title}">PRD_KANBAN_MENTE_HISTORY</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/PrdKanbanMenteHistoryGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{PrdKanbanMenteHistoryS.h2}">h2</h2>
+    <form name="PrdKanbanMenteHistorySearchForm" action="PrdKanbanMenteHistorySearch.ajax" class="search">
+      <fieldset>
+        <legend th:text="#{PrdKanbanMenteHistoryS.legend}">legend</legend>
+        <div id="kanbanId">
+          <label for="PrdKanbanMenteHistory.kanbanId" th:text="#{PrdKanbanMenteHistory.kanbanId}">KANBAN_ID</label><input type="text" id="PrdKanbanMenteHistory.kanbanId" name="PrdKanbanMenteHistory.kanbanId" maxlength="9" />
+        </div>
+        <div id="serialNo">
+          <label for="PrdKanbanMenteHistory.serialNo" th:text="#{PrdKanbanMenteHistory.serialNo}">SERIAL_NO</label><input type="text" id="PrdKanbanMenteHistory.serialNo" name="PrdKanbanMenteHistory.serialNo" maxlength="4" />
+        </div>
+        <div id="printOutDate">
+          <label for="PrdKanbanMenteHistory.printOutDate_1" th:text="#{PrdKanbanMenteHistory.printOutDate}">PRINT_OUT_DATE</label><input type="date" id="PrdKanbanMenteHistory.printOutDate_1" name="PrdKanbanMenteHistory.printOutDate_1" maxlength="7" />～<input type="date" id="PrdKanbanMenteHistory.printOutDate_2" name="PrdKanbanMenteHistory.printOutDate_2" maxlength="7" />
+        </div>
+        <div id="printOutOperator">
+          <label for="PrdKanbanMenteHistory.printOutOperator" th:text="#{PrdKanbanMenteHistory.printOutOperator}">PRINT_OUT_OPERATOR</label><input type="text" id="PrdKanbanMenteHistory.printOutOperator" name="PrdKanbanMenteHistory.printOutOperator" maxlength="10" />
+        </div>
+        <div id="scrapDate">
+          <label for="PrdKanbanMenteHistory.scrapDate_1" th:text="#{PrdKanbanMenteHistory.scrapDate}">SCRAP_DATE</label><input type="date" id="PrdKanbanMenteHistory.scrapDate_1" name="PrdKanbanMenteHistory.scrapDate_1" maxlength="7" />～<input type="date" id="PrdKanbanMenteHistory.scrapDate_2" name="PrdKanbanMenteHistory.scrapDate_2" maxlength="7" />
+        </div>
+        <div id="scrapOperator">
+          <label for="PrdKanbanMenteHistory.scrapOperator" th:text="#{PrdKanbanMenteHistory.scrapOperator}">SCRAP_OPERATOR</label><input type="text" id="PrdKanbanMenteHistory.scrapOperator" name="PrdKanbanMenteHistory.scrapOperator" maxlength="10" />
+        </div>
+        <div id="lostDate">
+          <label for="PrdKanbanMenteHistory.lostDate_1" th:text="#{PrdKanbanMenteHistory.lostDate}">LOST_DATE</label><input type="date" id="PrdKanbanMenteHistory.lostDate_1" name="PrdKanbanMenteHistory.lostDate_1" maxlength="7" />～<input type="date" id="PrdKanbanMenteHistory.lostDate_2" name="PrdKanbanMenteHistory.lostDate_2" maxlength="7" />
+        </div>
+        <div id="lostOperator">
+          <label for="PrdKanbanMenteHistory.lostOperator" th:text="#{PrdKanbanMenteHistory.lostOperator}">LOST_OPERATOR</label><input type="text" id="PrdKanbanMenteHistory.lostOperator" name="PrdKanbanMenteHistory.lostOperator" maxlength="10" />
+        </div>
+        <div id="lostReq">
+          <label for="PrdKanbanMenteHistory.lostReq" th:text="#{PrdKanbanMenteHistory.lostReq}">LOST_REQ</label><input type="text" id="PrdKanbanMenteHistory.lostReq" name="PrdKanbanMenteHistory.lostReq" maxlength="10" />
+        </div>
+        <div id="lostReason">
+          <label for="PrdKanbanMenteHistory.lostReason" th:text="#{PrdKanbanMenteHistory.lostReason}">LOST_REASON</label><input type="text" id="PrdKanbanMenteHistory.lostReason" name="PrdKanbanMenteHistory.lostReason" maxlength="10" />
+        </div>
+        <div id="lossScrapDate">
+          <label for="PrdKanbanMenteHistory.lossScrapDate_1" th:text="#{PrdKanbanMenteHistory.lossScrapDate}">LOSS_SCRAP_DATE</label><input type="date" id="PrdKanbanMenteHistory.lossScrapDate_1" name="PrdKanbanMenteHistory.lossScrapDate_1" maxlength="7" />～<input type="date" id="PrdKanbanMenteHistory.lossScrapDate_2" name="PrdKanbanMenteHistory.lossScrapDate_2" maxlength="7" />
+        </div>
+        <div id="lossScrapOperator">
+          <label for="PrdKanbanMenteHistory.lossScrapOperator" th:text="#{PrdKanbanMenteHistory.lossScrapOperator}">LOSS_SCRAP_OPERATOR</label><input type="text" id="PrdKanbanMenteHistory.lossScrapOperator" name="PrdKanbanMenteHistory.lossScrapOperator" maxlength="10" />
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="reset" th:text="#{common.reset}">reset</button>
+        <a th:href="@{/model/PrdKanbanMenteHistory.html}" id="PrdKanbanMenteHistory" target="dialog" th:text="#{PrdKanbanMenteHistory.add}" tabindex="-1">PRD_KANBAN_MENTE_HISTORY</a>
+      </div>
+      <div class="submits">
+        <button id="SearchPrdKanbanMenteHistory" class="search" data-gridId="PrdKanbanMenteHistoryGrid" th:text="#{common.search}">submit</button>
+      </div>
+    </form>
+    <form name="PrdKanbanMenteHistorySRegistForm" action="PrdKanbanMenteHistorySRegist.ajax" class="regist">
+      <h3 th:text="#{PrdKanbanMenteHistory.h3}">h3</h3>
+      <div id="PrdKanbanMenteHistoryGrid" data-selectionMode="checkbox" data-frozenColumn="1" th:data-href="@{/model/PrdKanbanMenteHistory.html}"></div>
+      <div id="PrdKanbanMenteHistoryPager"></div>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="$('[id=&quot;SearchPrdKanbanMenteHistory&quot;]').click();">reset</button>
+        <a th:href="@{PrdKanbanMenteHistorySearch.xlsx(baseMei=#{PrdKanbanMenteHistoryS.h2})}" id="PrdKanbanMenteHistorySearch.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeletePrdKanbanMenteHistoryS" class="delete selectRows" data-action="PrdKanbanMenteHistorySDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistPrdKanbanMenteHistoryS" class="regist" th:text="#{common.regist}">submit</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

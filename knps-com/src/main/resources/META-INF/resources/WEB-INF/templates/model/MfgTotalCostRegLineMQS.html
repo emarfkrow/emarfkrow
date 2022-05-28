@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{MfgTotalCostRegLineMQS.title}">MFG_TOTAL_COST_REG_LINE_M_Q</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/MfgTotalCostRegLineMQGridColumns.js}"></script>
+<script th:src="@{/model/MstWcGridColumns.js}"></script>
+<script th:src="@{/model/MstWcBkGridColumns.js}"></script>
+<script th:src="@{/model/MstProcGridColumns.js}"></script>
+<script th:src="@{/model/MstWsGridColumns.js}"></script>
+<script th:src="@{/model/MstTeamGridColumns.js}"></script>
+<script th:src="@{/model/MstGroupGridColumns.js}"></script>
+<script th:src="@{/model/MstDivisionGridColumns.js}"></script>
+<script th:src="@{/model/MstCompanyGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierGridColumns.js}"></script>
+<script th:src="@{/model/InvStockProcessSupplyGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierBkGridColumns.js}"></script>
+<script th:src="@{/model/MstTaxGridColumns.js}"></script>
+<script th:src="@{/model/MstCostCenterGridColumns.js}"></script>
+<script th:src="@{/model/MstCostCenterBkGridColumns.js}"></script>
+<script th:src="@{/model/MstSubinvGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{MfgTotalCostRegLineMQS.h2}">h2</h2>
+    <form name="MfgTotalCostRegLineMQSearchForm" action="MfgTotalCostRegLineMQSearch.ajax" class="search">
+      <fieldset>
+        <legend th:text="#{MfgTotalCostRegLineMQS.legend}">legend</legend>
+        <div id="yy">
+          <label for="MfgTotalCostRegLineMQ.yy" th:text="#{MfgTotalCostRegLineMQ.yy}">YY</label><input type="text" id="MfgTotalCostRegLineMQ.yy" name="MfgTotalCostRegLineMQ.yy" maxlength="4" />
+        </div>
+        <div id="proGroupNo">
+          <label for="MfgTotalCostRegLineMQ.proGroupNo" th:text="#{MfgTotalCostRegLineMQ.proGroupNo}">PRO_GROUP_NO</label><input type="text" id="MfgTotalCostRegLineMQ.proGroupNo" name="MfgTotalCostRegLineMQ.proGroupNo" maxlength="2" />
+        </div>
+        <div id="hinban">
+          <label for="MfgTotalCostRegLineMQ.hinban" th:text="#{MfgTotalCostRegLineMQ.hinban}">HINBAN</label><input type="text" id="MfgTotalCostRegLineMQ.hinban" name="MfgTotalCostRegLineMQ.hinban" maxlength="25" />
+        </div>
+        <div id="routing">
+          <label for="MfgTotalCostRegLineMQ.routing" th:text="#{MfgTotalCostRegLineMQ.routing}">ROUTING</label><input type="text" id="MfgTotalCostRegLineMQ.routing" name="MfgTotalCostRegLineMQ.routing" maxlength="2" />
+        </div>
+        <div id="wcCode">
+          <label for="MfgTotalCostRegLineMQ.wcCode" th:text="#{MfgTotalCostRegLineMQ.wcCode}">WC_CODE</label><input type="text" id="MfgTotalCostRegLineMQ.wcCode" name="MfgTotalCostRegLineMQ.wcCode" maxlength="3" data-json="MstWcSearch.json" data-srcDef="WC_CODE:MfgTotalCostRegLineMQ.wcCode" data-destDef="MfgTotalCostRegLineMQ.wcName:WC_NAME" /><a id="MfgTotalCostRegLineMQ.wcCode" th:href="@{/model/MstWcS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MfgTotalCostRegLineMQ.wcName" class="refer" data-json="MstWcSearch.json" data-srcDef="WC_CODE:MfgTotalCostRegLineMQ.wcCode" data-destDef="MfgTotalCostRegLineMQ.wcName:WC_NAME"></span>
+        </div>
+        <div id="supCode">
+          <label for="MfgTotalCostRegLineMQ.supCode" th:text="#{MfgTotalCostRegLineMQ.supCode}">SUP_CODE</label><input type="text" id="MfgTotalCostRegLineMQ.supCode" name="MfgTotalCostRegLineMQ.supCode" maxlength="6" data-json="MstSupplierSearch.json" data-srcDef="SUP_CODE:MfgTotalCostRegLineMQ.supCode" data-destDef="MfgTotalCostRegLineMQ.supName:SUP_NAME" /><a id="MfgTotalCostRegLineMQ.supCode" th:href="@{/model/MstSupplierS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MfgTotalCostRegLineMQ.supName" class="refer" data-json="MstSupplierSearch.json" data-srcDef="SUP_CODE:MfgTotalCostRegLineMQ.supCode" data-destDef="MfgTotalCostRegLineMQ.supName:SUP_NAME"></span>
+        </div>
+        <div id="opeDetail">
+          <label for="MfgTotalCostRegLineMQ.opeDetail" th:text="#{MfgTotalCostRegLineMQ.opeDetail}">OPE_DETAIL</label><input type="text" id="MfgTotalCostRegLineMQ.opeDetail" name="MfgTotalCostRegLineMQ.opeDetail" maxlength="10" />
+        </div>
+        <div id="mm">
+          <label for="MfgTotalCostRegLineMQ.mm" th:text="#{MfgTotalCostRegLineMQ.mm}">MM</label><input type="text" id="MfgTotalCostRegLineMQ.mm" name="MfgTotalCostRegLineMQ.mm" maxlength="2" />
+        </div>
+        <div id="lastRoutingKbn">
+          <fieldset id="MfgTotalCostRegLineMQ.lastRoutingKbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:last_routing_kbn" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MfgTotalCostRegLineMQ.lastRoutingKbn}">LAST_ROUTING_KBN</legend>
+          </fieldset>
+        </div>
+        <div id="totalCostTargetFlag">
+          <fieldset id="MfgTotalCostRegLineMQ.totalCostTargetFlagList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:total_cost_target_flag" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MfgTotalCostRegLineMQ.totalCostTargetFlag}">TOTAL_COST_TARGET_FLAG</legend>
+          </fieldset>
+        </div>
+        <div id="costRateKbn">
+          <fieldset id="MfgTotalCostRegLineMQ.costRateKbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:cost_rate_kbn" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MfgTotalCostRegLineMQ.costRateKbn}">COST_RATE_KBN</legend>
+          </fieldset>
+        </div>
+        <div id="unitCostFirst">
+          <label for="MfgTotalCostRegLineMQ.unitCostFirst" th:text="#{MfgTotalCostRegLineMQ.unitCostFirst}">UNIT_COST_FIRST</label><input type="text" id="MfgTotalCostRegLineMQ.unitCostFirst" name="MfgTotalCostRegLineMQ.unitCostFirst" maxlength="9" />
+        </div>
+        <div id="unitCostSecond">
+          <label for="MfgTotalCostRegLineMQ.unitCostSecond" th:text="#{MfgTotalCostRegLineMQ.unitCostSecond}">UNIT_COST_SECOND</label><input type="text" id="MfgTotalCostRegLineMQ.unitCostSecond" name="MfgTotalCostRegLineMQ.unitCostSecond" maxlength="9" />
+        </div>
+        <div id="totalUnitCost">
+          <label for="MfgTotalCostRegLineMQ.totalUnitCost" th:text="#{MfgTotalCostRegLineMQ.totalUnitCost}">TOTAL_UNIT_COST</label><input type="text" id="MfgTotalCostRegLineMQ.totalUnitCost" name="MfgTotalCostRegLineMQ.totalUnitCost" maxlength="9" />
+        </div>
+        <div id="sumCostFirst">
+          <label for="MfgTotalCostRegLineMQ.sumCostFirst" th:text="#{MfgTotalCostRegLineMQ.sumCostFirst}">SUM_COST_FIRST</label><input type="text" id="MfgTotalCostRegLineMQ.sumCostFirst" name="MfgTotalCostRegLineMQ.sumCostFirst" maxlength="9" />
+        </div>
+        <div id="sumCostSecond">
+          <label for="MfgTotalCostRegLineMQ.sumCostSecond" th:text="#{MfgTotalCostRegLineMQ.sumCostSecond}">SUM_COST_SECOND</label><input type="text" id="MfgTotalCostRegLineMQ.sumCostSecond" name="MfgTotalCostRegLineMQ.sumCostSecond" maxlength="9" />
+        </div>
+        <div id="totalSumCost">
+          <label for="MfgTotalCostRegLineMQ.totalSumCost" th:text="#{MfgTotalCostRegLineMQ.totalSumCost}">TOTAL_SUM_COST</label><input type="text" id="MfgTotalCostRegLineMQ.totalSumCost" name="MfgTotalCostRegLineMQ.totalSumCost" maxlength="9" />
+        </div>
+        <div id="opeCounts">
+          <label for="MfgTotalCostRegLineMQ.opeCounts_1" th:text="#{MfgTotalCostRegLineMQ.opeCounts}">OPE_COUNTS</label><input type="text" id="MfgTotalCostRegLineMQ.opeCounts_1" name="MfgTotalCostRegLineMQ.opeCounts_1" maxlength="5" />～<input type="text" id="MfgTotalCostRegLineMQ.opeCounts_2" name="MfgTotalCostRegLineMQ.opeCounts_2" maxlength="5" />
+        </div>
+        <div id="opeAmounts">
+          <label for="MfgTotalCostRegLineMQ.opeAmounts" th:text="#{MfgTotalCostRegLineMQ.opeAmounts}">OPE_AMOUNTS</label><input type="text" id="MfgTotalCostRegLineMQ.opeAmounts" name="MfgTotalCostRegLineMQ.opeAmounts" maxlength="12" />
+        </div>
+        <div id="unitWeight">
+          <label for="MfgTotalCostRegLineMQ.unitWeight" th:text="#{MfgTotalCostRegLineMQ.unitWeight}">UNIT_WEIGHT</label><input type="text" id="MfgTotalCostRegLineMQ.unitWeight" name="MfgTotalCostRegLineMQ.unitWeight" maxlength="11" />
+        </div>
+        <div id="opeTime">
+          <label for="MfgTotalCostRegLineMQ.opeTime" th:text="#{MfgTotalCostRegLineMQ.opeTime}">OPE_TIME</label><input type="text" id="MfgTotalCostRegLineMQ.opeTime" name="MfgTotalCostRegLineMQ.opeTime" maxlength="9" />
+        </div>
+        <div id="humPreTime">
+          <label for="MfgTotalCostRegLineMQ.humPreTime" th:text="#{MfgTotalCostRegLineMQ.humPreTime}">HUM_PRE_TIME</label><input type="text" id="MfgTotalCostRegLineMQ.humPreTime" name="MfgTotalCostRegLineMQ.humPreTime" maxlength="9" />
+        </div>
+        <div id="humActTime">
+          <label for="MfgTotalCostRegLineMQ.humActTime" th:text="#{MfgTotalCostRegLineMQ.humActTime}">HUM_ACT_TIME</label><input type="text" id="MfgTotalCostRegLineMQ.humActTime" name="MfgTotalCostRegLineMQ.humActTime" maxlength="9" />
+        </div>
+        <div id="macPreTime">
+          <label for="MfgTotalCostRegLineMQ.macPreTime" th:text="#{MfgTotalCostRegLineMQ.macPreTime}">MAC_PRE_TIME</label><input type="text" id="MfgTotalCostRegLineMQ.macPreTime" name="MfgTotalCostRegLineMQ.macPreTime" maxlength="9" />
+        </div>
+        <div id="macActTime">
+          <label for="MfgTotalCostRegLineMQ.macActTime" th:text="#{MfgTotalCostRegLineMQ.macActTime}">MAC_ACT_TIME</label><input type="text" id="MfgTotalCostRegLineMQ.macActTime" name="MfgTotalCostRegLineMQ.macActTime" maxlength="9" />
+        </div>
+        <div id="sumUnitSupply">
+          <label for="MfgTotalCostRegLineMQ.sumUnitSupply" th:text="#{MfgTotalCostRegLineMQ.sumUnitSupply}">SUM_UNIT_SUPPLY</label><input type="text" id="MfgTotalCostRegLineMQ.sumUnitSupply" name="MfgTotalCostRegLineMQ.sumUnitSupply" maxlength="10" />
+        </div>
+        <div id="materialsCost">
+          <label for="MfgTotalCostRegLineMQ.materialsCost" th:text="#{MfgTotalCostRegLineMQ.materialsCost}">MATERIALS_COST</label><input type="text" id="MfgTotalCostRegLineMQ.materialsCost" name="MfgTotalCostRegLineMQ.materialsCost" maxlength="9" />
+        </div>
+        <div id="humLaborCostFirst">
+          <label for="MfgTotalCostRegLineMQ.humLaborCostFirst" th:text="#{MfgTotalCostRegLineMQ.humLaborCostFirst}">HUM_LABOR_COST_FIRST</label><input type="text" id="MfgTotalCostRegLineMQ.humLaborCostFirst" name="MfgTotalCostRegLineMQ.humLaborCostFirst" maxlength="9" />
+        </div>
+        <div id="humExpensesFirst">
+          <label for="MfgTotalCostRegLineMQ.humExpensesFirst" th:text="#{MfgTotalCostRegLineMQ.humExpensesFirst}">HUM_EXPENSES_FIRST</label><input type="text" id="MfgTotalCostRegLineMQ.humExpensesFirst" name="MfgTotalCostRegLineMQ.humExpensesFirst" maxlength="9" />
+        </div>
+        <div id="humLaborCostSecond">
+          <label for="MfgTotalCostRegLineMQ.humLaborCostSecond" th:text="#{MfgTotalCostRegLineMQ.humLaborCostSecond}">HUM_LABOR_COST_SECOND</label><input type="text" id="MfgTotalCostRegLineMQ.humLaborCostSecond" name="MfgTotalCostRegLineMQ.humLaborCostSecond" maxlength="9" />
+        </div>
+        <div id="humExpensesSecond">
+          <label for="MfgTotalCostRegLineMQ.humExpensesSecond" th:text="#{MfgTotalCostRegLineMQ.humExpensesSecond}">HUM_EXPENSES_SECOND</label><input type="text" id="MfgTotalCostRegLineMQ.humExpensesSecond" name="MfgTotalCostRegLineMQ.humExpensesSecond" maxlength="9" />
+        </div>
+        <div id="macLaborCostFirst">
+          <label for="MfgTotalCostRegLineMQ.macLaborCostFirst" th:text="#{MfgTotalCostRegLineMQ.macLaborCostFirst}">MAC_LABOR_COST_FIRST</label><input type="text" id="MfgTotalCostRegLineMQ.macLaborCostFirst" name="MfgTotalCostRegLineMQ.macLaborCostFirst" maxlength="9" />
+        </div>
+        <div id="macExpensesFirst">
+          <label for="MfgTotalCostRegLineMQ.macExpensesFirst" th:text="#{MfgTotalCostRegLineMQ.macExpensesFirst}">MAC_EXPENSES_FIRST</label><input type="text" id="MfgTotalCostRegLineMQ.macExpensesFirst" name="MfgTotalCostRegLineMQ.macExpensesFirst" maxlength="9" />
+        </div>
+        <div id="macLaborCostSecond">
+          <label for="MfgTotalCostRegLineMQ.macLaborCostSecond" th:text="#{MfgTotalCostRegLineMQ.macLaborCostSecond}">MAC_LABOR_COST_SECOND</label><input type="text" id="MfgTotalCostRegLineMQ.macLaborCostSecond" name="MfgTotalCostRegLineMQ.macLaborCostSecond" maxlength="9" />
+        </div>
+        <div id="macExpensesSecond">
+          <label for="MfgTotalCostRegLineMQ.macExpensesSecond" th:text="#{MfgTotalCostRegLineMQ.macExpensesSecond}">MAC_EXPENSES_SECOND</label><input type="text" id="MfgTotalCostRegLineMQ.macExpensesSecond" name="MfgTotalCostRegLineMQ.macExpensesSecond" maxlength="9" />
+        </div>
+        <div id="dataSourceKbn">
+          <fieldset id="MfgTotalCostRegLineMQ.dataSourceKbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:data_source_kbn" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MfgTotalCostRegLineMQ.dataSourceKbn}">DATA_SOURCE_KBN</legend>
+          </fieldset>
+        </div>
+        <div id="tUnitCostFirst">
+          <label for="MfgTotalCostRegLineMQ.tUnitCostFirst" th:text="#{MfgTotalCostRegLineMQ.tUnitCostFirst}">T_UNIT_COST_FIRST</label><input type="text" id="MfgTotalCostRegLineMQ.tUnitCostFirst" name="MfgTotalCostRegLineMQ.tUnitCostFirst" maxlength="9" />
+        </div>
+        <div id="tUnitCostSecond">
+          <label for="MfgTotalCostRegLineMQ.tUnitCostSecond" th:text="#{MfgTotalCostRegLineMQ.tUnitCostSecond}">T_UNIT_COST_SECOND</label><input type="text" id="MfgTotalCostRegLineMQ.tUnitCostSecond" name="MfgTotalCostRegLineMQ.tUnitCostSecond" maxlength="9" />
+        </div>
+        <div id="tTotalUnitCost">
+          <label for="MfgTotalCostRegLineMQ.tTotalUnitCost" th:text="#{MfgTotalCostRegLineMQ.tTotalUnitCost}">T_TOTAL_UNIT_COST</label><input type="text" id="MfgTotalCostRegLineMQ.tTotalUnitCost" name="MfgTotalCostRegLineMQ.tTotalUnitCost" maxlength="9" />
+        </div>
+        <div id="tSumCostFirst">
+          <label for="MfgTotalCostRegLineMQ.tSumCostFirst" th:text="#{MfgTotalCostRegLineMQ.tSumCostFirst}">T_SUM_COST_FIRST</label><input type="text" id="MfgTotalCostRegLineMQ.tSumCostFirst" name="MfgTotalCostRegLineMQ.tSumCostFirst" maxlength="9" />
+        </div>
+        <div id="tSumCostSecond">
+          <label for="MfgTotalCostRegLineMQ.tSumCostSecond" th:text="#{MfgTotalCostRegLineMQ.tSumCostSecond}">T_SUM_COST_SECOND</label><input type="text" id="MfgTotalCostRegLineMQ.tSumCostSecond" name="MfgTotalCostRegLineMQ.tSumCostSecond" maxlength="9" />
+        </div>
+        <div id="tTotalSumCost">
+          <label for="MfgTotalCostRegLineMQ.tTotalSumCost" th:text="#{MfgTotalCostRegLineMQ.tTotalSumCost}">T_TOTAL_SUM_COST</label><input type="text" id="MfgTotalCostRegLineMQ.tTotalSumCost" name="MfgTotalCostRegLineMQ.tTotalSumCost" maxlength="9" />
+        </div>
+        <div id="tOpeCounts">
+          <label for="MfgTotalCostRegLineMQ.tOpeCounts_1" th:text="#{MfgTotalCostRegLineMQ.tOpeCounts}">T_OPE_COUNTS</label><input type="text" id="MfgTotalCostRegLineMQ.tOpeCounts_1" name="MfgTotalCostRegLineMQ.tOpeCounts_1" maxlength="3" />～<input type="text" id="MfgTotalCostRegLineMQ.tOpeCounts_2" name="MfgTotalCostRegLineMQ.tOpeCounts_2" maxlength="3" />
+        </div>
+        <div id="tOpeAmounts">
+          <label for="MfgTotalCostRegLineMQ.tOpeAmounts" th:text="#{MfgTotalCostRegLineMQ.tOpeAmounts}">T_OPE_AMOUNTS</label><input type="text" id="MfgTotalCostRegLineMQ.tOpeAmounts" name="MfgTotalCostRegLineMQ.tOpeAmounts" maxlength="11" />
+        </div>
+        <div id="tUnitWeight">
+          <label for="MfgTotalCostRegLineMQ.tUnitWeight" th:text="#{MfgTotalCostRegLineMQ.tUnitWeight}">T_UNIT_WEIGHT</label><input type="text" id="MfgTotalCostRegLineMQ.tUnitWeight" name="MfgTotalCostRegLineMQ.tUnitWeight" maxlength="11" />
+        </div>
+        <div id="tOpeTime">
+          <label for="MfgTotalCostRegLineMQ.tOpeTime" th:text="#{MfgTotalCostRegLineMQ.tOpeTime}">T_OPE_TIME</label><input type="text" id="MfgTotalCostRegLineMQ.tOpeTime" name="MfgTotalCostRegLineMQ.tOpeTime" maxlength="7" />
+        </div>
+        <div id="tHumPreTime">
+          <label for="MfgTotalCostRegLineMQ.tHumPreTime" th:text="#{MfgTotalCostRegLineMQ.tHumPreTime}">T_HUM_PRE_TIME</label><input type="text" id="MfgTotalCostRegLineMQ.tHumPreTime" name="MfgTotalCostRegLineMQ.tHumPreTime" maxlength="7" />
+        </div>
+        <div id="tHumActTime">
+          <label for="MfgTotalCostRegLineMQ.tHumActTime" th:text="#{MfgTotalCostRegLineMQ.tHumActTime}">T_HUM_ACT_TIME</label><input type="text" id="MfgTotalCostRegLineMQ.tHumActTime" name="MfgTotalCostRegLineMQ.tHumActTime" maxlength="7" />
+        </div>
+        <div id="tMacPreTime">
+          <label for="MfgTotalCostRegLineMQ.tMacPreTime" th:text="#{MfgTotalCostRegLineMQ.tMacPreTime}">T_MAC_PRE_TIME</label><input type="text" id="MfgTotalCostRegLineMQ.tMacPreTime" name="MfgTotalCostRegLineMQ.tMacPreTime" maxlength="7" />
+        </div>
+        <div id="tMacActTime">
+          <label for="MfgTotalCostRegLineMQ.tMacActTime" th:text="#{MfgTotalCostRegLineMQ.tMacActTime}">T_MAC_ACT_TIME</label><input type="text" id="MfgTotalCostRegLineMQ.tMacActTime" name="MfgTotalCostRegLineMQ.tMacActTime" maxlength="7" />
+        </div>
+        <div id="tSumUnitSupply">
+          <label for="MfgTotalCostRegLineMQ.tSumUnitSupply" th:text="#{MfgTotalCostRegLineMQ.tSumUnitSupply}">T_SUM_UNIT_SUPPLY</label><input type="text" id="MfgTotalCostRegLineMQ.tSumUnitSupply" name="MfgTotalCostRegLineMQ.tSumUnitSupply" maxlength="10" />
+        </div>
+        <div id="tMaterialsCost">
+          <label for="MfgTotalCostRegLineMQ.tMaterialsCost" th:text="#{MfgTotalCostRegLineMQ.tMaterialsCost}">T_MATERIALS_COST</label><input type="text" id="MfgTotalCostRegLineMQ.tMaterialsCost" name="MfgTotalCostRegLineMQ.tMaterialsCost" maxlength="9" />
+        </div>
+        <div id="tHumLaborCostFirst">
+          <label for="MfgTotalCostRegLineMQ.tHumLaborCostFirst" th:text="#{MfgTotalCostRegLineMQ.tHumLaborCostFirst}">T_HUM_LABOR_COST_FIRST</label><input type="text" id="MfgTotalCostRegLineMQ.tHumLaborCostFirst" name="MfgTotalCostRegLineMQ.tHumLaborCostFirst" maxlength="9" />
+        </div>
+        <div id="tHumExpensesFirst">
+          <label for="MfgTotalCostRegLineMQ.tHumExpensesFirst" th:text="#{MfgTotalCostRegLineMQ.tHumExpensesFirst}">T_HUM_EXPENSES_FIRST</label><input type="text" id="MfgTotalCostRegLineMQ.tHumExpensesFirst" name="MfgTotalCostRegLineMQ.tHumExpensesFirst" maxlength="9" />
+        </div>
+        <div id="tHumLaborCostSecond">
+          <label for="MfgTotalCostRegLineMQ.tHumLaborCostSecond" th:text="#{MfgTotalCostRegLineMQ.tHumLaborCostSecond}">T_HUM_LABOR_COST_SECOND</label><input type="text" id="MfgTotalCostRegLineMQ.tHumLaborCostSecond" name="MfgTotalCostRegLineMQ.tHumLaborCostSecond" maxlength="9" />
+        </div>
+        <div id="tHumExpensesSecond">
+          <label for="MfgTotalCostRegLineMQ.tHumExpensesSecond" th:text="#{MfgTotalCostRegLineMQ.tHumExpensesSecond}">T_HUM_EXPENSES_SECOND</label><input type="text" id="MfgTotalCostRegLineMQ.tHumExpensesSecond" name="MfgTotalCostRegLineMQ.tHumExpensesSecond" maxlength="9" />
+        </div>
+        <div id="tMacLaborCostFirst">
+          <label for="MfgTotalCostRegLineMQ.tMacLaborCostFirst" th:text="#{MfgTotalCostRegLineMQ.tMacLaborCostFirst}">T_MAC_LABOR_COST_FIRST</label><input type="text" id="MfgTotalCostRegLineMQ.tMacLaborCostFirst" name="MfgTotalCostRegLineMQ.tMacLaborCostFirst" maxlength="9" />
+        </div>
+        <div id="tMacExpensesFirst">
+          <label for="MfgTotalCostRegLineMQ.tMacExpensesFirst" th:text="#{MfgTotalCostRegLineMQ.tMacExpensesFirst}">T_MAC_EXPENSES_FIRST</label><input type="text" id="MfgTotalCostRegLineMQ.tMacExpensesFirst" name="MfgTotalCostRegLineMQ.tMacExpensesFirst" maxlength="9" />
+        </div>
+        <div id="tMacLaborCostSecond">
+          <label for="MfgTotalCostRegLineMQ.tMacLaborCostSecond" th:text="#{MfgTotalCostRegLineMQ.tMacLaborCostSecond}">T_MAC_LABOR_COST_SECOND</label><input type="text" id="MfgTotalCostRegLineMQ.tMacLaborCostSecond" name="MfgTotalCostRegLineMQ.tMacLaborCostSecond" maxlength="9" />
+        </div>
+        <div id="tMacExpensesSecond">
+          <label for="MfgTotalCostRegLineMQ.tMacExpensesSecond" th:text="#{MfgTotalCostRegLineMQ.tMacExpensesSecond}">T_MAC_EXPENSES_SECOND</label><input type="text" id="MfgTotalCostRegLineMQ.tMacExpensesSecond" name="MfgTotalCostRegLineMQ.tMacExpensesSecond" maxlength="9" />
+        </div>
+        <div id="tDataSourceKbn">
+          <fieldset id="MfgTotalCostRegLineMQ.tDataSourceKbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:t_data_source_kbn" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MfgTotalCostRegLineMQ.tDataSourceKbn}">T_DATA_SOURCE_KBN</legend>
+          </fieldset>
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="reset" th:text="#{common.reset}">reset</button>
+      </div>
+      <div class="submits">
+        <button id="SearchMfgTotalCostRegLineMQ" class="search" data-gridId="MfgTotalCostRegLineMQGrid" th:text="#{common.search}">submit</button>
+      </div>
+    </form>
+    <form name="MfgTotalCostRegLineMQSRegistForm" action="MfgTotalCostRegLineMQSRegist.ajax" class="regist">
+      <h3 th:text="#{MfgTotalCostRegLineMQ.h3}">h3</h3>
+      <div id="MfgTotalCostRegLineMQGrid" data-selectionMode="checkbox" data-frozenColumn="4" th:data-href="@{/model/MfgTotalCostRegLineMQ.html}"></div>
+      <div id="MfgTotalCostRegLineMQPager"></div>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="$('[id=&quot;SearchMfgTotalCostRegLineMQ&quot;]').click();">reset</button>
+        <a th:href="@{MfgTotalCostRegLineMQSearch.xlsx(baseMei=#{MfgTotalCostRegLineMQS.h2})}" id="MfgTotalCostRegLineMQSearch.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeleteMfgTotalCostRegLineMQS" class="delete selectRows" data-action="MfgTotalCostRegLineMQSDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistMfgTotalCostRegLineMQS" class="regist" th:text="#{common.regist}">submit</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

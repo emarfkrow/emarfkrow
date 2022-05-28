@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{MstSubinvS.title}">MST_SUBINV</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/MstSubinvGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierGridColumns.js}"></script>
+<script th:src="@{/model/InvStockProcessSupplyGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierBkGridColumns.js}"></script>
+<script th:src="@{/model/MstTaxGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{MstSubinvS.h2}">h2</h2>
+    <form name="MstSubinvSearchForm" action="MstSubinvSearch.ajax" class="search">
+      <fieldset>
+        <legend th:text="#{MstSubinvS.legend}">legend</legend>
+        <div id="subInvCode">
+          <fieldset id="MstSubinv.subInvCodeList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:sub_inv_code" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstSubinv.subInvCode}">SUB_INV_CODE</legend>
+          </fieldset>
+        </div>
+        <div id="subInvName">
+          <label for="MstSubinv.subInvName" th:text="#{MstSubinv.subInvName}">SUB_INV_NAME</label><input type="text" id="MstSubinv.subInvName" name="MstSubinv.subInvName" maxlength="60" />
+        </div>
+        <div id="manageKbn">
+          <fieldset id="MstSubinv.manageKbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:manage_kbn" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstSubinv.manageKbn}">MANAGE_KBN</legend>
+          </fieldset>
+        </div>
+        <div id="inOutKbn">
+          <fieldset id="MstSubinv.inOutKbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:in_out_kbn" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstSubinv.inOutKbn}">IN_OUT_KBN</legend>
+          </fieldset>
+        </div>
+        <div id="supCode">
+          <label for="MstSubinv.supCode" th:text="#{MstSubinv.supCode}">SUP_CODE</label><input type="text" id="MstSubinv.supCode" name="MstSubinv.supCode" maxlength="6" data-json="MstSupplierSearch.json" data-srcDef="SUP_CODE:MstSubinv.supCode" data-destDef="MstSubinv.supName:SUP_NAME" /><a id="MstSubinv.supCode" th:href="@{/model/MstSupplierS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MstSubinv.supName" class="refer" data-json="MstSupplierSearch.json" data-srcDef="SUP_CODE:MstSubinv.supCode" data-destDef="MstSubinv.supName:SUP_NAME"></span>
+        </div>
+        <div id="deleteFlag">
+          <fieldset id="MstSubinv.deleteFlagList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:delete_flag" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstSubinv.deleteFlag}">DELETE_FLAG</legend>
+          </fieldset>
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="reset" th:text="#{common.reset}">reset</button>
+        <a th:href="@{/model/MstSubinv.html}" id="MstSubinv" target="dialog" th:text="#{MstSubinv.add}" tabindex="-1">MST_SUBINV</a>
+      </div>
+      <div class="submits">
+        <button id="SearchMstSubinv" class="search" data-gridId="MstSubinvGrid" th:text="#{common.search}">submit</button>
+      </div>
+    </form>
+    <form name="MstSubinvSRegistForm" action="MstSubinvSRegist.ajax" class="regist">
+      <h3 th:text="#{MstSubinv.h3}">h3</h3>
+      <div id="MstSubinvGrid" data-selectionMode="checkbox" data-addRow="true" data-frozenColumn="0" th:data-href="@{/model/MstSubinv.html}"></div>
+      <div id="MstSubinvPager"></div>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="$('[id=&quot;SearchMstSubinv&quot;]').click();">reset</button>
+        <a th:href="@{MstSubinvSearch.xlsx(baseMei=#{MstSubinvS.h2})}" id="MstSubinvSearch.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeleteMstSubinvS" class="delete selectRows" data-action="MstSubinvSDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistMstSubinvS" class="regist" th:text="#{common.regist}">submit</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

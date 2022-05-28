@@ -1,0 +1,37 @@
+/**
+ * MFG_TOTAL_RESULT_Mグリッド定義
+ */
+
+let MfgTotalResultMGridColumns = [
+    Column.cell('RESULT_DATE', Messages['MfgTotalResultMGrid.resultDate'], 60, 'primaryKey', null),
+    Column.cell('PRO_GROUP_NO', Messages['MfgTotalResultMGrid.proGroupNo'], 20, 'primaryKey', null),
+    Column.cell('HINBAN', Messages['MfgTotalResultMGrid.hinban'], 250, 'primaryKey', null),
+    Column.cell('ROUTING', Messages['MfgTotalResultMGrid.routing'], 20, 'primaryKey', null),
+    Column.refer('WC_CODE', Messages['MfgTotalResultMGrid.wcCode'], 30, 'primaryKey', 'WC_NAME'),
+    Column.cell('OPE_DETAIL', Messages['MfgTotalResultMGrid.opeDetail'], 100, 'primaryKey', null),
+    Column.text('HUM_PRE_TIME', Messages['MfgTotalResultMGrid.humPreTime'], 80, '', null),
+    Column.text('HUM_ACT_TIME', Messages['MfgTotalResultMGrid.humActTime'], 80, '', null),
+    Column.text('MAC_PRE_TIME', Messages['MfgTotalResultMGrid.macPreTime'], 80, '', null),
+    Column.text('MAC_ACT_TIME', Messages['MfgTotalResultMGrid.macActTime'], 80, '', null),
+    Column.text('GOOD_COUNTS', Messages['MfgTotalResultMGrid.goodCounts'], 60, '', null),
+    Column.text('REJECT_COUNTS', Messages['MfgTotalResultMGrid.rejectCounts'], 60, '', null),
+    Column.refer('UNIT_CODE', Messages['MfgTotalResultMGrid.unitCode'], 20, '', 'UNIT_NAME'),
+    Column.text('ACT_LT', Messages['MfgTotalResultMGrid.actLt'], 80, '', null),
+    Column.text('EXP_PRE_TIME', Messages['MfgTotalResultMGrid.expPreTime'], 80, '', null),
+    Column.text('EXP_PRO_TIME', Messages['MfgTotalResultMGrid.expProTime'], 80, '', null),
+    Column.text('EXP_REST_TIME', Messages['MfgTotalResultMGrid.expRestTime'], 80, '', null),
+    Column.text('EXP_CHOKO_TIME', Messages['MfgTotalResultMGrid.expChokoTime'], 80, '', null),
+    Column.text('EXP_TROUB_TIME', Messages['MfgTotalResultMGrid.expTroubTime'], 80, '', null),
+    Column.text('EXP_SELF_MOD_TIME', Messages['MfgTotalResultMGrid.expSelfModTime'], 80, '', null),
+    Column.text('EXP_OTHR_MOD_TIME', Messages['MfgTotalResultMGrid.expOthrModTime'], 80, '', null),
+    Column.text('EXP_ETC_TIME', Messages['MfgTotalResultMGrid.expEtcTime'], 80, '', null),
+    Column.text('VOLUME_WEIGHT', Messages['MfgTotalResultMGrid.volumeWeight'], 110, '', null),
+    Column.text('UNIT_WEIGHT', Messages['MfgTotalResultMGrid.unitWeight'], 110, '', null),
+    Column.text('END_MATERIAL_WEIGHT', Messages['MfgTotalResultMGrid.endMaterialWeight'], 110, '', null),
+    Column.text('PRO_COUNTS', Messages['MfgTotalResultMGrid.proCounts'], 30, '', null),
+    Column.text('LAST_ROUTING', Messages['MfgTotalResultMGrid.lastRouting'], 10, '', null),
+    Column.cell('TIME_STAMP_CREATE', Messages['MfgTotalResultMGrid.timeStampCreate'], 70, 'metaInfo', Slick.Formatters.Extends.DateTime),
+    Column.cell('TIME_STAMP_CHANGE', Messages['MfgTotalResultMGrid.timeStampChange'], 70, 'metaInfo', Slick.Formatters.Extends.DateTime),
+    Column.cell('USER_ID_CREATE', Messages['MfgTotalResultMGrid.userIdCreate'], 100, 'metaInfo', null),
+    Column.cell('USER_ID_CHANGE', Messages['MfgTotalResultMGrid.userIdChange'], 100, 'metaInfo', null),
+];

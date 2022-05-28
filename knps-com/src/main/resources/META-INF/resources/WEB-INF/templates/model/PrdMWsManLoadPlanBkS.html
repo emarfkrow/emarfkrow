@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{PrdMWsManLoadPlanBkS.title}">PRD_M_WS_MAN_LOAD_PLAN_BK</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/PrdMWsManLoadPlanBkGridColumns.js}"></script>
+<script th:src="@{/model/MstWsGridColumns.js}"></script>
+<script th:src="@{/model/MstTeamGridColumns.js}"></script>
+<script th:src="@{/model/MstGroupGridColumns.js}"></script>
+<script th:src="@{/model/MstDivisionGridColumns.js}"></script>
+<script th:src="@{/model/MstCompanyGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierGridColumns.js}"></script>
+<script th:src="@{/model/InvStockProcessSupplyGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierBkGridColumns.js}"></script>
+<script th:src="@{/model/MstTaxGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{PrdMWsManLoadPlanBkS.h2}">h2</h2>
+    <form name="PrdMWsManLoadPlanBkSearchForm" action="PrdMWsManLoadPlanBkSearch.ajax" class="search">
+      <fieldset>
+        <legend th:text="#{PrdMWsManLoadPlanBkS.legend}">legend</legend>
+        <div id="yyyy">
+          <label for="PrdMWsManLoadPlanBk.yyyy" th:text="#{PrdMWsManLoadPlanBk.yyyy}">YYYY</label><input type="text" id="PrdMWsManLoadPlanBk.yyyy" name="PrdMWsManLoadPlanBk.yyyy" maxlength="4" />
+        </div>
+        <div id="mm">
+          <label for="PrdMWsManLoadPlanBk.mm" th:text="#{PrdMWsManLoadPlanBk.mm}">MM</label><input type="text" id="PrdMWsManLoadPlanBk.mm" name="PrdMWsManLoadPlanBk.mm" maxlength="2" />
+        </div>
+        <div id="manHinban">
+          <label for="PrdMWsManLoadPlanBk.manHinban" th:text="#{PrdMWsManLoadPlanBk.manHinban}">MAN_HINBAN</label><input type="text" id="PrdMWsManLoadPlanBk.manHinban" name="PrdMWsManLoadPlanBk.manHinban" maxlength="25" />
+        </div>
+        <div id="wsCode">
+          <label for="PrdMWsManLoadPlanBk.wsCode" th:text="#{PrdMWsManLoadPlanBk.wsCode}">WS_CODE</label><input type="text" id="PrdMWsManLoadPlanBk.wsCode" name="PrdMWsManLoadPlanBk.wsCode" maxlength="4" data-json="MstWsSearch.json" data-srcDef="WS_CODE:PrdMWsManLoadPlanBk.wsCode" data-destDef="PrdMWsManLoadPlanBk.wsName:WS_NAME" /><a id="PrdMWsManLoadPlanBk.wsCode" th:href="@{/model/MstWsS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="PrdMWsManLoadPlanBk.wsName" class="refer" data-json="MstWsSearch.json" data-srcDef="WS_CODE:PrdMWsManLoadPlanBk.wsCode" data-destDef="PrdMWsManLoadPlanBk.wsName:WS_NAME"></span>
+        </div>
+        <div id="proNesCounts">
+          <label for="PrdMWsManLoadPlanBk.proNesCounts_1" th:text="#{PrdMWsManLoadPlanBk.proNesCounts}">PRO_NES_COUNTS</label><input type="text" id="PrdMWsManLoadPlanBk.proNesCounts_1" name="PrdMWsManLoadPlanBk.proNesCounts_1" maxlength="7" />～<input type="text" id="PrdMWsManLoadPlanBk.proNesCounts_2" name="PrdMWsManLoadPlanBk.proNesCounts_2" maxlength="7" />
+        </div>
+        <div id="humPreTime">
+          <label for="PrdMWsManLoadPlanBk.humPreTime" th:text="#{PrdMWsManLoadPlanBk.humPreTime}">HUM_PRE_TIME</label><input type="text" id="PrdMWsManLoadPlanBk.humPreTime" name="PrdMWsManLoadPlanBk.humPreTime" maxlength="7" />
+        </div>
+        <div id="humActTime">
+          <label for="PrdMWsManLoadPlanBk.humActTime" th:text="#{PrdMWsManLoadPlanBk.humActTime}">HUM_ACT_TIME</label><input type="text" id="PrdMWsManLoadPlanBk.humActTime" name="PrdMWsManLoadPlanBk.humActTime" maxlength="7" />
+        </div>
+        <div id="macPreTimeIn">
+          <label for="PrdMWsManLoadPlanBk.macPreTimeIn" th:text="#{PrdMWsManLoadPlanBk.macPreTimeIn}">MAC_PRE_TIME_IN</label><input type="text" id="PrdMWsManLoadPlanBk.macPreTimeIn" name="PrdMWsManLoadPlanBk.macPreTimeIn" maxlength="7" />
+        </div>
+        <div id="macActTimeIn">
+          <label for="PrdMWsManLoadPlanBk.macActTimeIn" th:text="#{PrdMWsManLoadPlanBk.macActTimeIn}">MAC_ACT_TIME_IN</label><input type="text" id="PrdMWsManLoadPlanBk.macActTimeIn" name="PrdMWsManLoadPlanBk.macActTimeIn" maxlength="7" />
+        </div>
+        <div id="macPreTimeOut">
+          <label for="PrdMWsManLoadPlanBk.macPreTimeOut" th:text="#{PrdMWsManLoadPlanBk.macPreTimeOut}">MAC_PRE_TIME_OUT</label><input type="text" id="PrdMWsManLoadPlanBk.macPreTimeOut" name="PrdMWsManLoadPlanBk.macPreTimeOut" maxlength="7" />
+        </div>
+        <div id="macActTimeOut">
+          <label for="PrdMWsManLoadPlanBk.macActTimeOut" th:text="#{PrdMWsManLoadPlanBk.macActTimeOut}">MAC_ACT_TIME_OUT</label><input type="text" id="PrdMWsManLoadPlanBk.macActTimeOut" name="PrdMWsManLoadPlanBk.macActTimeOut" maxlength="7" />
+        </div>
+        <div id="macPreTimeKanban">
+          <label for="PrdMWsManLoadPlanBk.macPreTimeKanban" th:text="#{PrdMWsManLoadPlanBk.macPreTimeKanban}">MAC_PRE_TIME_KANBAN</label><input type="text" id="PrdMWsManLoadPlanBk.macPreTimeKanban" name="PrdMWsManLoadPlanBk.macPreTimeKanban" maxlength="7" />
+        </div>
+        <div id="macActTimeKanban">
+          <label for="PrdMWsManLoadPlanBk.macActTimeKanban" th:text="#{PrdMWsManLoadPlanBk.macActTimeKanban}">MAC_ACT_TIME_KANBAN</label><input type="text" id="PrdMWsManLoadPlanBk.macActTimeKanban" name="PrdMWsManLoadPlanBk.macActTimeKanban" maxlength="7" />
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="reset" th:text="#{common.reset}">reset</button>
+        <a th:href="@{/model/PrdMWsManLoadPlanBk.html}" id="PrdMWsManLoadPlanBk" target="dialog" th:text="#{PrdMWsManLoadPlanBk.add}" tabindex="-1">PRD_M_WS_MAN_LOAD_PLAN_BK</a>
+      </div>
+      <div class="submits">
+        <button id="SearchPrdMWsManLoadPlanBk" class="search" data-gridId="PrdMWsManLoadPlanBkGrid" th:text="#{common.search}">submit</button>
+      </div>
+    </form>
+    <form name="PrdMWsManLoadPlanBkSRegistForm" action="PrdMWsManLoadPlanBkSRegist.ajax" class="regist">
+      <h3 th:text="#{PrdMWsManLoadPlanBk.h3}">h3</h3>
+      <div id="PrdMWsManLoadPlanBkGrid" data-selectionMode="checkbox" data-frozenColumn="-1" th:data-href="@{/model/PrdMWsManLoadPlanBk.html}"></div>
+      <div id="PrdMWsManLoadPlanBkPager"></div>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="$('[id=&quot;SearchPrdMWsManLoadPlanBk&quot;]').click();">reset</button>
+        <a th:href="@{PrdMWsManLoadPlanBkSearch.xlsx(baseMei=#{PrdMWsManLoadPlanBkS.h2})}" id="PrdMWsManLoadPlanBkSearch.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeletePrdMWsManLoadPlanBkS" class="delete selectRows" data-action="PrdMWsManLoadPlanBkSDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistPrdMWsManLoadPlanBkS" class="regist" th:text="#{common.regist}">submit</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

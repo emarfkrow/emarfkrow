@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{MSetkariS.title}">M_SETKARI</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/MSetkariGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{MSetkariS.h2}">h2</h2>
+    <form name="MSetkariSearchForm" action="MSetkariSearch.ajax" class="search">
+      <fieldset>
+        <legend th:text="#{MSetkariS.legend}">legend</legend>
+        <div id="setHinban">
+          <label for="MSetkari.setHinban" th:text="#{MSetkari.setHinban}">SET-HINBAN</label><input type="text" id="MSetkari.setHinban" name="MSetkari.setHinban" maxlength="20" />
+        </div>
+        <div id="setKhinban">
+          <label for="MSetkari.setKhinban" th:text="#{MSetkari.setKhinban}">SET-KHINBAN</label><input type="text" id="MSetkari.setKhinban" name="MSetkari.setKhinban" maxlength="20" />
+        </div>
+        <div id="setinzu">
+          <label for="MSetkari.setinzu" th:text="#{MSetkari.setinzu}">SETINZU</label><input type="text" id="MSetkari.setinzu" name="MSetkari.setinzu" maxlength="3" />
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="reset" th:text="#{common.reset}">reset</button>
+      </div>
+      <div class="submits">
+        <button id="SearchMSetkari" class="search" data-gridId="MSetkariGrid" th:text="#{common.search}">submit</button>
+      </div>
+    </form>
+    <form name="MSetkariSRegistForm" action="MSetkariSRegist.ajax" class="regist">
+      <h3 th:text="#{MSetkari.h3}">h3</h3>
+      <div id="MSetkariGrid" data-selectionMode="checkbox" data-frozenColumn="1" th:data-href="@{/model/MSetkari.html}"></div>
+      <div id="MSetkariPager"></div>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="$('[id=&quot;SearchMSetkari&quot;]').click();">reset</button>
+        <a th:href="@{MSetkariSearch.xlsx(baseMei=#{MSetkariS.h2})}" id="MSetkariSearch.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeleteMSetkariS" class="delete selectRows" data-action="MSetkariSDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistMSetkariS" class="regist" th:text="#{common.regist}">submit</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{InvStockSurveyStatS.title}">INV_STOCK_SURVEY_STAT</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/InvStockSurveyStatGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{InvStockSurveyStatS.h2}">h2</h2>
+    <form name="InvStockSurveyStatSearchForm" action="InvStockSurveyStatSearch.ajax" class="search">
+      <fieldset>
+        <legend th:text="#{InvStockSurveyStatS.legend}">legend</legend>
+        <div id="recNo">
+          <label for="InvStockSurveyStat.recNo" th:text="#{InvStockSurveyStat.recNo}">REC_NO</label><input type="text" id="InvStockSurveyStat.recNo" name="InvStockSurveyStat.recNo" maxlength="3" />
+        </div>
+        <div id="yyyy">
+          <label for="InvStockSurveyStat.yyyy" th:text="#{InvStockSurveyStat.yyyy}">YYYY</label><input type="text" id="InvStockSurveyStat.yyyy" name="InvStockSurveyStat.yyyy" maxlength="4" />
+        </div>
+        <div id="mm">
+          <label for="InvStockSurveyStat.mm" th:text="#{InvStockSurveyStat.mm}">MM</label><input type="text" id="InvStockSurveyStat.mm" name="InvStockSurveyStat.mm" maxlength="2" />
+        </div>
+        <div id="surveyStat">
+          <label for="InvStockSurveyStat.surveyStat" th:text="#{InvStockSurveyStat.surveyStat}">SURVEY_STAT</label><input type="text" id="InvStockSurveyStat.surveyStat" name="InvStockSurveyStat.surveyStat" maxlength="1" />
+        </div>
+        <div id="developProductsStat">
+          <label for="InvStockSurveyStat.developProductsStat" th:text="#{InvStockSurveyStat.developProductsStat}">DEVELOP_PRODUCTS_STAT</label><input type="text" id="InvStockSurveyStat.developProductsStat" name="InvStockSurveyStat.developProductsStat" maxlength="1" />
+        </div>
+        <div id="developPartsStat">
+          <label for="InvStockSurveyStat.developPartsStat" th:text="#{InvStockSurveyStat.developPartsStat}">DEVELOP_PARTS_STAT</label><input type="text" id="InvStockSurveyStat.developPartsStat" name="InvStockSurveyStat.developPartsStat" maxlength="1" />
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="reset" th:text="#{common.reset}">reset</button>
+        <a th:href="@{/model/InvStockSurveyStat.html}" id="InvStockSurveyStat" target="dialog" th:text="#{InvStockSurveyStat.add}" tabindex="-1">INV_STOCK_SURVEY_STAT</a>
+      </div>
+      <div class="submits">
+        <button id="SearchInvStockSurveyStat" class="search" data-gridId="InvStockSurveyStatGrid" th:text="#{common.search}">submit</button>
+      </div>
+    </form>
+    <form name="InvStockSurveyStatSRegistForm" action="InvStockSurveyStatSRegist.ajax" class="regist">
+      <h3 th:text="#{InvStockSurveyStat.h3}">h3</h3>
+      <div id="InvStockSurveyStatGrid" data-selectionMode="checkbox" data-addRow="true" data-frozenColumn="0" th:data-href="@{/model/InvStockSurveyStat.html}"></div>
+      <div id="InvStockSurveyStatPager"></div>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="$('[id=&quot;SearchInvStockSurveyStat&quot;]').click();">reset</button>
+        <a th:href="@{InvStockSurveyStatSearch.xlsx(baseMei=#{InvStockSurveyStatS.h2})}" id="InvStockSurveyStatSearch.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeleteInvStockSurveyStatS" class="delete selectRows" data-action="InvStockSurveyStatSDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistInvStockSurveyStatS" class="regist" th:text="#{common.regist}">submit</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

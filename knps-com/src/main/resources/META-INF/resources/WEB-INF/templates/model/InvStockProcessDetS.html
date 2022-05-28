@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{InvStockProcessDetS.title}">INV_STOCK_PROCESS_DET</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/InvStockProcessDetGridColumns.js}"></script>
+<script th:src="@{/model/MstLocationGridColumns.js}"></script>
+<script th:src="@{/model/MstSubinvGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierGridColumns.js}"></script>
+<script th:src="@{/model/InvStockProcessSupplyGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierBkGridColumns.js}"></script>
+<script th:src="@{/model/MstTaxGridColumns.js}"></script>
+<script th:src="@{/model/MstStoreManGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{InvStockProcessDetS.h2}">h2</h2>
+    <form name="InvStockProcessDetSearchForm" action="InvStockProcessDetSearch.ajax" class="search">
+      <fieldset>
+        <legend th:text="#{InvStockProcessDetS.legend}">legend</legend>
+        <div id="locationCode">
+          <label for="InvStockProcessDet.locationCode" th:text="#{InvStockProcessDet.locationCode}">LOCATION_CODE</label><input type="text" id="InvStockProcessDet.locationCode" name="InvStockProcessDet.locationCode" maxlength="10" data-json="MstLocationSearch.json" data-srcDef="LOCATION_CODE:InvStockProcessDet.locationCode" data-destDef="InvStockProcessDet.locationName:LOCATION_NAME" /><a id="InvStockProcessDet.locationCode" th:href="@{/model/MstLocationS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="InvStockProcessDet.locationName" class="refer" data-json="MstLocationSearch.json" data-srcDef="LOCATION_CODE:InvStockProcessDet.locationCode" data-destDef="InvStockProcessDet.locationName:LOCATION_NAME"></span>
+        </div>
+        <div id="hinban">
+          <label for="InvStockProcessDet.hinban" th:text="#{InvStockProcessDet.hinban}">HINBAN</label><input type="text" id="InvStockProcessDet.hinban" name="InvStockProcessDet.hinban" maxlength="25" />
+        </div>
+        <div id="inOutYmd">
+          <label for="InvStockProcessDet.inOutYmd_1" th:text="#{InvStockProcessDet.inOutYmd}">IN_OUT_YMD</label><input type="date" id="InvStockProcessDet.inOutYmd_1" name="InvStockProcessDet.inOutYmd_1" maxlength="10" />～<input type="date" id="InvStockProcessDet.inOutYmd_2" name="InvStockProcessDet.inOutYmd_2" maxlength="10" />
+        </div>
+        <div id="inOutSeq">
+          <label for="InvStockProcessDet.inOutSeq" th:text="#{InvStockProcessDet.inOutSeq}">IN_OUT_SEQ</label><input type="text" id="InvStockProcessDet.inOutSeq" name="InvStockProcessDet.inOutSeq" maxlength="10" />
+        </div>
+        <div id="routingGroup">
+          <label for="InvStockProcessDet.routingGroup" th:text="#{InvStockProcessDet.routingGroup}">ROUTING_GROUP</label><input type="text" id="InvStockProcessDet.routingGroup" name="InvStockProcessDet.routingGroup" maxlength="2" />
+        </div>
+        <div id="opeDetail">
+          <label for="InvStockProcessDet.opeDetail" th:text="#{InvStockProcessDet.opeDetail}">OPE_DETAIL</label><input type="text" id="InvStockProcessDet.opeDetail" name="InvStockProcessDet.opeDetail" maxlength="10" />
+        </div>
+        <div id="inOutKb">
+          <fieldset id="InvStockProcessDet.inOutKbList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:in_out_kb" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{InvStockProcessDet.inOutKb}">IN_OUT_KB</legend>
+          </fieldset>
+        </div>
+        <div id="inOutQt">
+          <label for="InvStockProcessDet.inOutQt_1" th:text="#{InvStockProcessDet.inOutQt}">IN_OUT_QT</label><input type="text" id="InvStockProcessDet.inOutQt_1" name="InvStockProcessDet.inOutQt_1" maxlength="11" />～<input type="text" id="InvStockProcessDet.inOutQt_2" name="InvStockProcessDet.inOutQt_2" maxlength="11" />
+        </div>
+        <div id="invCmt">
+          <label for="InvStockProcessDet.invCmt" th:text="#{InvStockProcessDet.invCmt}">INV_CMT</label><input type="text" id="InvStockProcessDet.invCmt" name="InvStockProcessDet.invCmt" maxlength="25" />
+        </div>
+        <div id="childPlanNo">
+          <label for="InvStockProcessDet.childPlanNo" th:text="#{InvStockProcessDet.childPlanNo}">CHILD_PLAN_NO</label><input type="text" id="InvStockProcessDet.childPlanNo" name="InvStockProcessDet.childPlanNo" maxlength="12" />
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="reset" th:text="#{common.reset}">reset</button>
+        <a th:href="@{/model/InvStockProcessDet.html}" id="InvStockProcessDet" target="dialog" th:text="#{InvStockProcessDet.add}" tabindex="-1">INV_STOCK_PROCESS_DET</a>
+      </div>
+      <div class="submits">
+        <button id="SearchInvStockProcessDet" class="search" data-gridId="InvStockProcessDetGrid" th:text="#{common.search}">submit</button>
+      </div>
+    </form>
+    <form name="InvStockProcessDetSRegistForm" action="InvStockProcessDetSRegist.ajax" class="regist">
+      <h3 th:text="#{InvStockProcessDet.h3}">h3</h3>
+      <div id="InvStockProcessDetGrid" data-selectionMode="checkbox" data-frozenColumn="3" th:data-href="@{/model/InvStockProcessDet.html}"></div>
+      <div id="InvStockProcessDetPager"></div>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="$('[id=&quot;SearchInvStockProcessDet&quot;]').click();">reset</button>
+        <a th:href="@{InvStockProcessDetSearch.xlsx(baseMei=#{InvStockProcessDetS.h2})}" id="InvStockProcessDetSearch.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeleteInvStockProcessDetS" class="delete selectRows" data-action="InvStockProcessDetSDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistInvStockProcessDetS" class="regist" th:text="#{common.regist}">submit</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

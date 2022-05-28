@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{MSetkoseS.title}">M_SETKOSE</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/MSetkoseGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{MSetkoseS.h2}">h2</h2>
+    <form name="MSetkoseSearchForm" action="MSetkoseSearch.ajax" class="search">
+      <fieldset>
+        <legend th:text="#{MSetkoseS.legend}">legend</legend>
+        <div id="setHinban">
+          <label for="MSetkose.setHinban" th:text="#{MSetkose.setHinban}">SET-HINBAN</label><input type="text" id="MSetkose.setHinban" name="MSetkose.setHinban" maxlength="20" />
+        </div>
+        <div id="setKhinban">
+          <label for="MSetkose.setKhinban" th:text="#{MSetkose.setKhinban}">SET-KHINBAN</label><input type="text" id="MSetkose.setKhinban" name="MSetkose.setKhinban" maxlength="20" />
+        </div>
+        <div id="dltflg">
+          <label for="MSetkose.dltflg" th:text="#{MSetkose.dltflg}">DLTFLG</label><input type="text" id="MSetkose.dltflg" name="MSetkose.dltflg" maxlength="1" />
+        </div>
+        <div id="setinzu">
+          <label for="MSetkose.setinzu" th:text="#{MSetkose.setinzu}">SETINZU</label><input type="text" id="MSetkose.setinzu" name="MSetkose.setinzu" maxlength="3" />
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="reset" th:text="#{common.reset}">reset</button>
+      </div>
+      <div class="submits">
+        <button id="SearchMSetkose" class="search" data-gridId="MSetkoseGrid" th:text="#{common.search}">submit</button>
+      </div>
+    </form>
+    <form name="MSetkoseSRegistForm" action="MSetkoseSRegist.ajax" class="regist">
+      <h3 th:text="#{MSetkose.h3}">h3</h3>
+      <div id="MSetkoseGrid" data-selectionMode="checkbox" data-frozenColumn="1" th:data-href="@{/model/MSetkose.html}"></div>
+      <div id="MSetkosePager"></div>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="$('[id=&quot;SearchMSetkose&quot;]').click();">reset</button>
+        <a th:href="@{MSetkoseSearch.xlsx(baseMei=#{MSetkoseS.h2})}" id="MSetkoseSearch.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeleteMSetkoseS" class="delete selectRows" data-action="MSetkoseSDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistMSetkoseS" class="regist" th:text="#{common.regist}">submit</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

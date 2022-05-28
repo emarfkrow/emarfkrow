@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{PrdTehaiIraiDetS.title}">PRD_TEHAI_IRAI_DET</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/PrdTehaiIraiDetGridColumns.js}"></script>
+<script th:src="@{/model/PrdTehaiIraiDetHisGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{PrdTehaiIraiDetS.h2}">h2</h2>
+    <form name="PrdTehaiIraiDetSearchForm" action="PrdTehaiIraiDetSearch.ajax" class="search">
+      <fieldset>
+        <legend th:text="#{PrdTehaiIraiDetS.legend}">legend</legend>
+        <div id="prdTehaiNo">
+          <label for="PrdTehaiIraiDet.prdTehaiNo" th:text="#{PrdTehaiIraiDet.prdTehaiNo}">PRD_TEHAI_NO</label><input type="text" id="PrdTehaiIraiDet.prdTehaiNo" name="PrdTehaiIraiDet.prdTehaiNo" maxlength="10" />
+        </div>
+        <div id="iraiDetSeq">
+          <label for="PrdTehaiIraiDet.iraiDetSeq" th:text="#{PrdTehaiIraiDet.iraiDetSeq}">IRAI_DET_SEQ</label><input type="text" id="PrdTehaiIraiDet.iraiDetSeq" name="PrdTehaiIraiDet.iraiDetSeq" maxlength="10" />
+        </div>
+        <div id="id">
+          <label for="PrdTehaiIraiDet.id" th:text="#{PrdTehaiIraiDet.id}">ID</label><input type="text" id="PrdTehaiIraiDet.id" name="PrdTehaiIraiDet.id" maxlength="14" />
+        </div>
+        <div id="parentId">
+          <label for="PrdTehaiIraiDet.parentId" th:text="#{PrdTehaiIraiDet.parentId}">PARENT_ID</label><input type="text" id="PrdTehaiIraiDet.parentId" name="PrdTehaiIraiDet.parentId" maxlength="14" />
+        </div>
+        <div id="iraiHinban">
+          <label for="PrdTehaiIraiDet.iraiHinban" th:text="#{PrdTehaiIraiDet.iraiHinban}">IRAI_HINBAN</label><input type="text" id="PrdTehaiIraiDet.iraiHinban" name="PrdTehaiIraiDet.iraiHinban" maxlength="25" />
+        </div>
+        <div id="iraiQt">
+          <label for="PrdTehaiIraiDet.iraiQt_1" th:text="#{PrdTehaiIraiDet.iraiQt}">IRAI_QT</label><input type="text" id="PrdTehaiIraiDet.iraiQt_1" name="PrdTehaiIraiDet.iraiQt_1" maxlength="11" />～<input type="text" id="PrdTehaiIraiDet.iraiQt_2" name="PrdTehaiIraiDet.iraiQt_2" maxlength="11" />
+        </div>
+        <div id="shinsetsuhinF">
+          <fieldset id="PrdTehaiIraiDet.shinsetsuhinFList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:shinsetsuhin_f" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{PrdTehaiIraiDet.shinsetsuhinF}">SHINSETSUHIN_F</legend>
+          </fieldset>
+        </div>
+        <div id="sethinF">
+          <fieldset id="PrdTehaiIraiDet.sethinFList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:sethin_f" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{PrdTehaiIraiDet.sethinF}">SETHIN_F</legend>
+          </fieldset>
+        </div>
+        <div id="hanmokugaiF">
+          <fieldset id="PrdTehaiIraiDet.hanmokugaiFList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:hanmokugai_f" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{PrdTehaiIraiDet.hanmokugaiF}">HANMOKUGAI_F</legend>
+          </fieldset>
+        </div>
+        <div id="chumonNyuryokuZumiF">
+          <fieldset id="PrdTehaiIraiDet.chumonNyuryokuZumiFList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:chumon_nyuryoku_zumi_f" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{PrdTehaiIraiDet.chumonNyuryokuZumiF}">CHUMON_NYURYOKU_ZUMI_F</legend>
+          </fieldset>
+        </div>
+        <div id="kiboNokiYmd">
+          <label for="PrdTehaiIraiDet.kiboNokiYmd_1" th:text="#{PrdTehaiIraiDet.kiboNokiYmd}">KIBO_NOKI_YMD</label><input type="date" id="PrdTehaiIraiDet.kiboNokiYmd_1" name="PrdTehaiIraiDet.kiboNokiYmd_1" maxlength="10" />～<input type="date" id="PrdTehaiIraiDet.kiboNokiYmd_2" name="PrdTehaiIraiDet.kiboNokiYmd_2" maxlength="10" />
+        </div>
+        <div id="shukkaZumiF">
+          <fieldset id="PrdTehaiIraiDet.shukkaZumiFList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:shukka_zumi_f" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{PrdTehaiIraiDet.shukkaZumiF}">SHUKKA_ZUMI_F</legend>
+          </fieldset>
+        </div>
+        <div id="iraiInzuQt">
+          <label for="PrdTehaiIraiDet.iraiInzuQt_1" th:text="#{PrdTehaiIraiDet.iraiInzuQt}">IRAI_INZU_QT</label><input type="text" id="PrdTehaiIraiDet.iraiInzuQt_1" name="PrdTehaiIraiDet.iraiInzuQt_1" maxlength="11" />～<input type="text" id="PrdTehaiIraiDet.iraiInzuQt_2" name="PrdTehaiIraiDet.iraiInzuQt_2" maxlength="11" />
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="reset" th:text="#{common.reset}">reset</button>
+        <a th:href="@{/model/PrdTehaiIraiDet.html}" id="PrdTehaiIraiDet" target="dialog" th:text="#{PrdTehaiIraiDet.add}" tabindex="-1">PRD_TEHAI_IRAI_DET</a>
+      </div>
+      <div class="submits">
+        <button id="SearchPrdTehaiIraiDet" class="search" data-gridId="PrdTehaiIraiDetGrid" th:text="#{common.search}">submit</button>
+      </div>
+    </form>
+    <form name="PrdTehaiIraiDetSRegistForm" action="PrdTehaiIraiDetSRegist.ajax" class="regist">
+      <h3 th:text="#{PrdTehaiIraiDet.h3}">h3</h3>
+      <div id="PrdTehaiIraiDetGrid" data-selectionMode="checkbox" data-frozenColumn="1" th:data-href="@{/model/PrdTehaiIraiDet.html}"></div>
+      <div id="PrdTehaiIraiDetPager"></div>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="$('[id=&quot;SearchPrdTehaiIraiDet&quot;]').click();">reset</button>
+        <a th:href="@{PrdTehaiIraiDetSearch.xlsx(baseMei=#{PrdTehaiIraiDetS.h2})}" id="PrdTehaiIraiDetSearch.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeletePrdTehaiIraiDetS" class="delete selectRows" data-action="PrdTehaiIraiDetSDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistPrdTehaiIraiDetS" class="regist" th:text="#{common.regist}">submit</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

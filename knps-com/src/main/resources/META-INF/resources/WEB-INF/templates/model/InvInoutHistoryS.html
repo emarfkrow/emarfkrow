@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{InvInoutHistoryS.title}">INV_INOUT_HISTORY</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/InvInoutHistoryGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{InvInoutHistoryS.h2}">h2</h2>
+    <form name="InvInoutHistorySearchForm" action="InvInoutHistorySearch.ajax" class="search">
+      <fieldset>
+        <legend th:text="#{InvInoutHistoryS.legend}">legend</legend>
+        <div id="actionDate">
+          <label for="InvInoutHistory.actionDate_1" th:text="#{InvInoutHistory.actionDate}">ACTION_DATE</label><input type="date" id="InvInoutHistory.actionDate_1" name="InvInoutHistory.actionDate_1" maxlength="7" />～<input type="date" id="InvInoutHistory.actionDate_2" name="InvInoutHistory.actionDate_2" maxlength="7" />
+        </div>
+        <div id="hinban">
+          <label for="InvInoutHistory.hinban" th:text="#{InvInoutHistory.hinban}">HINBAN</label><input type="text" id="InvInoutHistory.hinban" name="InvInoutHistory.hinban" maxlength="25" />
+        </div>
+        <div id="inOutCounts">
+          <label for="InvInoutHistory.inOutCounts_1" th:text="#{InvInoutHistory.inOutCounts}">IN_OUT_COUNTS</label><input type="text" id="InvInoutHistory.inOutCounts_1" name="InvInoutHistory.inOutCounts_1" maxlength="12" />～<input type="text" id="InvInoutHistory.inOutCounts_2" name="InvInoutHistory.inOutCounts_2" maxlength="12" />
+        </div>
+        <div id="inOutKbn">
+          <fieldset id="InvInoutHistory.inOutKbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:in_out_kbn" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{InvInoutHistory.inOutKbn}">IN_OUT_KBN</legend>
+          </fieldset>
+        </div>
+        <div id="fromPay">
+          <label for="InvInoutHistory.fromPay" th:text="#{InvInoutHistory.fromPay}">FROM_PAY</label><input type="text" id="InvInoutHistory.fromPay" name="InvInoutHistory.fromPay" maxlength="10" />
+        </div>
+        <div id="toPay">
+          <label for="InvInoutHistory.toPay" th:text="#{InvInoutHistory.toPay}">TO_PAY</label><input type="text" id="InvInoutHistory.toPay" name="InvInoutHistory.toPay" maxlength="10" />
+        </div>
+        <div id="reqName">
+          <label for="InvInoutHistory.reqName" th:text="#{InvInoutHistory.reqName}">REQ_NAME</label><input type="text" id="InvInoutHistory.reqName" name="InvInoutHistory.reqName" maxlength="16" />
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="reset" th:text="#{common.reset}">reset</button>
+        <a th:href="@{/model/InvInoutHistory.html}" id="InvInoutHistory" target="dialog" th:text="#{InvInoutHistory.add}" tabindex="-1">INV_INOUT_HISTORY</a>
+      </div>
+      <div class="submits">
+        <button id="SearchInvInoutHistory" class="search" data-gridId="InvInoutHistoryGrid" th:text="#{common.search}">submit</button>
+      </div>
+    </form>
+    <form name="InvInoutHistorySRegistForm" action="InvInoutHistorySRegist.ajax" class="regist">
+      <h3 th:text="#{InvInoutHistory.h3}">h3</h3>
+      <div id="InvInoutHistoryGrid" data-selectionMode="checkbox" data-frozenColumn="3" th:data-href="@{/model/InvInoutHistory.html}"></div>
+      <div id="InvInoutHistoryPager"></div>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="$('[id=&quot;SearchInvInoutHistory&quot;]').click();">reset</button>
+        <a th:href="@{InvInoutHistorySearch.xlsx(baseMei=#{InvInoutHistoryS.h2})}" id="InvInoutHistorySearch.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeleteInvInoutHistoryS" class="delete selectRows" data-action="InvInoutHistorySDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistInvInoutHistoryS" class="regist" th:text="#{common.regist}">submit</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{MstUnitS.title}">MST_UNIT</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/MstUnitGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{MstUnitS.h2}">h2</h2>
+    <form name="MstUnitSearchForm" action="MstUnitSearch.ajax" class="search">
+      <fieldset>
+        <legend th:text="#{MstUnitS.legend}">legend</legend>
+        <div id="unitCode">
+          <fieldset id="MstUnit.unitCodeList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:unit_code" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstUnit.unitCode}">UNIT_CODE</legend>
+          </fieldset>
+        </div>
+        <div id="unitName">
+          <label for="MstUnit.unitName" th:text="#{MstUnit.unitName}">UNIT_NAME</label><input type="text" id="MstUnit.unitName" name="MstUnit.unitName" maxlength="10" />
+        </div>
+        <div id="stanUnitKbn">
+          <fieldset id="MstUnit.stanUnitKbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:stan_unit_kbn" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstUnit.stanUnitKbn}">STAN_UNIT_KBN</legend>
+          </fieldset>
+        </div>
+        <div id="stanUnitCode">
+          <fieldset id="MstUnit.stanUnitCodeList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:stan_unit_code" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstUnit.stanUnitCode}">STAN_UNIT_CODE</legend>
+          </fieldset>
+        </div>
+        <div id="exchangeRate">
+          <label for="MstUnit.exchangeRate" th:text="#{MstUnit.exchangeRate}">EXCHANGE_RATE</label><input type="text" id="MstUnit.exchangeRate" name="MstUnit.exchangeRate" maxlength="16" />
+        </div>
+        <div id="deleteFlag">
+          <fieldset id="MstUnit.deleteFlagList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:delete_flag" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstUnit.deleteFlag}">DELETE_FLAG</legend>
+          </fieldset>
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="reset" th:text="#{common.reset}">reset</button>
+        <a th:href="@{/model/MstUnit.html}" id="MstUnit" target="dialog" th:text="#{MstUnit.add}" tabindex="-1">MST_UNIT</a>
+      </div>
+      <div class="submits">
+        <button id="SearchMstUnit" class="search" data-gridId="MstUnitGrid" th:text="#{common.search}">submit</button>
+      </div>
+    </form>
+    <form name="MstUnitSRegistForm" action="MstUnitSRegist.ajax" class="regist">
+      <h3 th:text="#{MstUnit.h3}">h3</h3>
+      <div id="MstUnitGrid" data-selectionMode="checkbox" data-addRow="true" data-frozenColumn="0" th:data-href="@{/model/MstUnit.html}"></div>
+      <div id="MstUnitPager"></div>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="$('[id=&quot;SearchMstUnit&quot;]').click();">reset</button>
+        <a th:href="@{MstUnitSearch.xlsx(baseMei=#{MstUnitS.h2})}" id="MstUnitSearch.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeleteMstUnitS" class="delete selectRows" data-action="MstUnitSDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistMstUnitS" class="regist" th:text="#{common.regist}">submit</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

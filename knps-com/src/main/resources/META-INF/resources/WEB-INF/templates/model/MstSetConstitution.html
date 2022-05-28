@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{MstSetConstitution.title}">MST_SET_CONSTITUTION</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/MstSetConstitutionGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{MstSetConstitution.h2}">h2</h2>
+    <form name="MstSetConstitutionRegistForm" action="MstSetConstitutionRegist.ajax" class="regist">
+      <fieldset>
+        <legend th:text="#{MstSetConstitution.legend}">legend</legend>
+        <div id="setHinban">
+          <label for="MstSetConstitution.setHinban" th:text="#{MstSetConstitution.setHinban}">SET_HINBAN</label><span id="MstSetConstitution.setHinban"></span><input type="hidden" id="MstSetConstitution.setHinban" name="MstSetConstitution.setHinban" class="primaryKey" />
+        </div>
+        <div id="setChildHinban">
+          <label for="MstSetConstitution.setChildHinban" th:text="#{MstSetConstitution.setChildHinban}">SET_CHILD_HINBAN</label><span id="MstSetConstitution.setChildHinban"></span><input type="hidden" id="MstSetConstitution.setChildHinban" name="MstSetConstitution.setChildHinban" class="primaryKey" />
+        </div>
+        <div id="deleteFlag">
+          <fieldset id="MstSetConstitution.deleteFlagList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:delete_flag" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstSetConstitution.deleteFlag}">DELETE_FLAG</legend>
+          </fieldset>
+        </div>
+        <div id="bottomFlag">
+          <fieldset id="MstSetConstitution.bottomFlagList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:bottom_flag" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstSetConstitution.bottomFlag}">BOTTOM_FLAG</legend>
+          </fieldset>
+        </div>
+        <div id="setCount">
+          <label for="MstSetConstitution.setCount" th:text="#{MstSetConstitution.setCount}">SET_COUNT</label><input type="text" id="MstSetConstitution.setCount" name="MstSetConstitution.setCount" maxlength="3" />
+        </div>
+        <div id="gratisSupplyKbn">
+          <fieldset id="MstSetConstitution.gratisSupplyKbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:gratis_supply_kbn" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstSetConstitution.gratisSupplyKbn}">GRATIS_SUPPLY_KBN</legend>
+          </fieldset>
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="Dialogate.refresh(event);">reset</button>
+        <a th:href="@{MstSetConstitutionGet.xlsx(baseMei=#{MstSetConstitution.h2})}" id="MstSetConstitutionGet.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeleteMstSetConstitution" class="delete" data-action="MstSetConstitutionDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistMstSetConstitution" class="regist" th:text="#{common.regist}">登録</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

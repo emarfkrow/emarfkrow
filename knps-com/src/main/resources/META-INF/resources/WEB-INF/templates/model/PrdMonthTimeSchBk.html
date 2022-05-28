@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{PrdMonthTimeSchBk.title}">PRD_MONTH_TIME_SCH_BK</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/PrdMonthTimeSchBkGridColumns.js}"></script>
+<script th:src="@{/model/MstWcGridColumns.js}"></script>
+<script th:src="@{/model/MstWcBkGridColumns.js}"></script>
+<script th:src="@{/model/MstProcGridColumns.js}"></script>
+<script th:src="@{/model/MstWsGridColumns.js}"></script>
+<script th:src="@{/model/MstTeamGridColumns.js}"></script>
+<script th:src="@{/model/MstGroupGridColumns.js}"></script>
+<script th:src="@{/model/MstDivisionGridColumns.js}"></script>
+<script th:src="@{/model/MstCompanyGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierGridColumns.js}"></script>
+<script th:src="@{/model/InvStockProcessSupplyGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierBkGridColumns.js}"></script>
+<script th:src="@{/model/MstTaxGridColumns.js}"></script>
+<script th:src="@{/model/MstCostCenterGridColumns.js}"></script>
+<script th:src="@{/model/MstCostCenterBkGridColumns.js}"></script>
+<script th:src="@{/model/MstSubinvGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{PrdMonthTimeSchBk.h2}">h2</h2>
+    <form name="PrdMonthTimeSchBkRegistForm" action="PrdMonthTimeSchBkRegist.ajax" class="regist">
+      <fieldset>
+        <legend th:text="#{PrdMonthTimeSchBk.legend}">legend</legend>
+        <div id="yyyy">
+          <label for="PrdMonthTimeSchBk.yyyy" th:text="#{PrdMonthTimeSchBk.yyyy}">YYYY</label><input type="text" id="PrdMonthTimeSchBk.yyyy" name="PrdMonthTimeSchBk.yyyy" maxlength="4" />
+        </div>
+        <div id="mm">
+          <label for="PrdMonthTimeSchBk.mm" th:text="#{PrdMonthTimeSchBk.mm}">MM</label><input type="text" id="PrdMonthTimeSchBk.mm" name="PrdMonthTimeSchBk.mm" maxlength="2" />
+        </div>
+        <div id="wcCode">
+          <label for="PrdMonthTimeSchBk.wcCode" th:text="#{PrdMonthTimeSchBk.wcCode}">WC_CODE</label><input type="text" id="PrdMonthTimeSchBk.wcCode" name="PrdMonthTimeSchBk.wcCode" maxlength="3" data-json="MstWcSearch.json" data-srcDef="WC_CODE:PrdMonthTimeSchBk.wcCode" data-destDef="PrdMonthTimeSchBk.wcName:WC_NAME" /><a id="PrdMonthTimeSchBk.wcCode" th:href="@{/model/MstWcS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="PrdMonthTimeSchBk.wcName" class="refer" data-json="MstWcSearch.json" data-srcDef="WC_CODE:PrdMonthTimeSchBk.wcCode" data-destDef="PrdMonthTimeSchBk.wcName:WC_NAME"></span>
+        </div>
+        <div id="layoutInTime">
+          <label for="PrdMonthTimeSchBk.layoutInTime" th:text="#{PrdMonthTimeSchBk.layoutInTime}">LAYOUT_IN_TIME</label><input type="text" id="PrdMonthTimeSchBk.layoutInTime" name="PrdMonthTimeSchBk.layoutInTime" maxlength="6" />
+        </div>
+        <div id="changeStat">
+          <label for="PrdMonthTimeSchBk.changeStat" th:text="#{PrdMonthTimeSchBk.changeStat}">CHANGE_STAT</label><input type="text" id="PrdMonthTimeSchBk.changeStat" name="PrdMonthTimeSchBk.changeStat" maxlength="1" />
+        </div>
+        <div id="timeStampCreate">
+          <label for="PrdMonthTimeSchBk.timeStampCreate" th:text="#{PrdMonthTimeSchBk.timeStampCreate}">TIME_STAMP_CREATE</label><span id="PrdMonthTimeSchBk.timeStampCreate"></span><input type="hidden" id="PrdMonthTimeSchBk.timeStampCreate" name="PrdMonthTimeSchBk.timeStampCreate" />
+        </div>
+        <div id="timeStampChange">
+          <label for="PrdMonthTimeSchBk.timeStampChange" th:text="#{PrdMonthTimeSchBk.timeStampChange}">TIME_STAMP_CHANGE</label><span id="PrdMonthTimeSchBk.timeStampChange"></span><input type="hidden" id="PrdMonthTimeSchBk.timeStampChange" name="PrdMonthTimeSchBk.timeStampChange" />
+        </div>
+        <div id="userIdCreate">
+          <label for="PrdMonthTimeSchBk.userIdCreate" th:text="#{PrdMonthTimeSchBk.userIdCreate}">USER_ID_CREATE</label><span id="PrdMonthTimeSchBk.userIdCreate"></span><input type="hidden" id="PrdMonthTimeSchBk.userIdCreate" name="PrdMonthTimeSchBk.userIdCreate" />
+        </div>
+        <div id="userIdChange">
+          <label for="PrdMonthTimeSchBk.userIdChange" th:text="#{PrdMonthTimeSchBk.userIdChange}">USER_ID_CHANGE</label><span id="PrdMonthTimeSchBk.userIdChange"></span><input type="hidden" id="PrdMonthTimeSchBk.userIdChange" name="PrdMonthTimeSchBk.userIdChange" />
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="Dialogate.refresh(event);">reset</button>
+        <a th:href="@{PrdMonthTimeSchBkGet.xlsx(baseMei=#{PrdMonthTimeSchBk.h2})}" id="PrdMonthTimeSchBkGet.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeletePrdMonthTimeSchBk" class="delete" data-action="PrdMonthTimeSchBkDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistPrdMonthTimeSchBk" class="regist" th:text="#{common.regist}">登録</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

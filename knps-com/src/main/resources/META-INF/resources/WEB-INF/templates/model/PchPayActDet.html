@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{PchPayActDet.title}">PCH_PAY_ACT_DET</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/PchPayActDetGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{PchPayActDet.h2}">h2</h2>
+    <form name="PchPayActDetRegistForm" action="PchPayActDetRegist.ajax" class="regist">
+      <fieldset>
+        <legend th:text="#{PchPayActDet.legend}">legend</legend>
+        <div id="payNo">
+          <label for="PchPayActDet.payNo" th:text="#{PchPayActDet.payNo}">PAY_NO</label><span id="PchPayActDet.payNo"></span><input type="hidden" id="PchPayActDet.payNo" name="PchPayActDet.payNo" class="primaryKey" />
+        </div>
+        <div id="payBranchNo">
+          <label for="PchPayActDet.payBranchNo" th:text="#{PchPayActDet.payBranchNo}">PAY_BRANCH_NO</label><input type="text" id="PchPayActDet.payBranchNo" name="PchPayActDet.payBranchNo" maxlength="2" class="primaryKey" />
+        </div>
+        <div id="payCounts">
+          <label for="PchPayActDet.payCounts" th:text="#{PchPayActDet.payCounts}">PAY_COUNTS</label><input type="text" id="PchPayActDet.payCounts" name="PchPayActDet.payCounts" maxlength="11" />
+        </div>
+        <div id="unitPrice">
+          <label for="PchPayActDet.unitPrice" th:text="#{PchPayActDet.unitPrice}">UNIT_PRICE</label><input type="text" id="PchPayActDet.unitPrice" name="PchPayActDet.unitPrice" maxlength="9" />
+        </div>
+        <div id="amount">
+          <label for="PchPayActDet.amount" th:text="#{PchPayActDet.amount}">AMOUNT</label><input type="text" id="PchPayActDet.amount" name="PchPayActDet.amount" maxlength="11" />
+        </div>
+        <div id="taxAmount">
+          <label for="PchPayActDet.taxAmount" th:text="#{PchPayActDet.taxAmount}">TAX_AMOUNT</label><input type="text" id="PchPayActDet.taxAmount" name="PchPayActDet.taxAmount" maxlength="11" />
+        </div>
+        <div id="memo">
+          <label for="PchPayActDet.memo" th:text="#{PchPayActDet.memo}">MEMO</label>
+          <textarea id="PchPayActDet.memo" name="PchPayActDet.memo"></textarea>
+        </div>
+        <div id="closeDate">
+          <label for="PchPayActDet.closeDate" th:text="#{PchPayActDet.closeDate}">CLOSE_DATE</label><input type="date" id="PchPayActDet.closeDate" name="PchPayActDet.closeDate" maxlength="7" />
+        </div>
+        <div id="timeStampCreate">
+          <label for="PchPayActDet.timeStampCreate" th:text="#{PchPayActDet.timeStampCreate}">TIME_STAMP_CREATE</label><span id="PchPayActDet.timeStampCreate"></span><input type="hidden" id="PchPayActDet.timeStampCreate" name="PchPayActDet.timeStampCreate" />
+        </div>
+        <div id="timeStampChange">
+          <label for="PchPayActDet.timeStampChange" th:text="#{PchPayActDet.timeStampChange}">TIME_STAMP_CHANGE</label><span id="PchPayActDet.timeStampChange"></span><input type="hidden" id="PchPayActDet.timeStampChange" name="PchPayActDet.timeStampChange" />
+        </div>
+        <div id="userIdCreate">
+          <label for="PchPayActDet.userIdCreate" th:text="#{PchPayActDet.userIdCreate}">USER_ID_CREATE</label><span id="PchPayActDet.userIdCreate"></span><input type="hidden" id="PchPayActDet.userIdCreate" name="PchPayActDet.userIdCreate" />
+        </div>
+        <div id="userIdChange">
+          <label for="PchPayActDet.userIdChange" th:text="#{PchPayActDet.userIdChange}">USER_ID_CHANGE</label><span id="PchPayActDet.userIdChange"></span><input type="hidden" id="PchPayActDet.userIdChange" name="PchPayActDet.userIdChange" />
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="Dialogate.refresh(event);">reset</button>
+        <a th:href="@{PchPayActDetGet.xlsx(baseMei=#{PchPayActDet.h2})}" id="PchPayActDetGet.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeletePchPayActDet" class="delete" data-action="PchPayActDetDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistPchPayActDet" class="regist" th:text="#{common.regist}">登録</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

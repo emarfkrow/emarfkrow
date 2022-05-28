@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{PrdDailyProPlanDetailS.title}">PRD_DAILY_PRO_PLAN_DETAIL</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/PrdDailyProPlanDetailGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{PrdDailyProPlanDetailS.h2}">h2</h2>
+    <form name="PrdDailyProPlanDetailSearchForm" action="PrdDailyProPlanDetailSearch.ajax" class="search">
+      <fieldset>
+        <legend th:text="#{PrdDailyProPlanDetailS.legend}">legend</legend>
+        <div id="childPlanNo">
+          <label for="PrdDailyProPlanDetail.childPlanNo" th:text="#{PrdDailyProPlanDetail.childPlanNo}">CHILD_PLAN_NO</label><input type="text" id="PrdDailyProPlanDetail.childPlanNo" name="PrdDailyProPlanDetail.childPlanNo" maxlength="12" />
+        </div>
+        <div id="parentPlanNo">
+          <label for="PrdDailyProPlanDetail.parentPlanNo" th:text="#{PrdDailyProPlanDetail.parentPlanNo}">PARENT_PLAN_NO</label><input type="text" id="PrdDailyProPlanDetail.parentPlanNo" name="PrdDailyProPlanDetail.parentPlanNo" maxlength="12" />
+        </div>
+        <div id="planNo">
+          <label for="PrdDailyProPlanDetail.planNo" th:text="#{PrdDailyProPlanDetail.planNo}">PLAN_NO</label><input type="text" id="PrdDailyProPlanDetail.planNo" name="PrdDailyProPlanDetail.planNo" maxlength="10" />
+        </div>
+        <div id="hinban">
+          <label for="PrdDailyProPlanDetail.hinban" th:text="#{PrdDailyProPlanDetail.hinban}">HINBAN</label><input type="text" id="PrdDailyProPlanDetail.hinban" name="PrdDailyProPlanDetail.hinban" maxlength="25" />
+        </div>
+        <div id="lotSize">
+          <label for="PrdDailyProPlanDetail.lotSize" th:text="#{PrdDailyProPlanDetail.lotSize}">LOT_SIZE</label><input type="text" id="PrdDailyProPlanDetail.lotSize" name="PrdDailyProPlanDetail.lotSize" maxlength="6" />
+        </div>
+        <div id="lotSizeChange">
+          <label for="PrdDailyProPlanDetail.lotSizeChange" th:text="#{PrdDailyProPlanDetail.lotSizeChange}">LOT_SIZE_CHANGE</label><input type="text" id="PrdDailyProPlanDetail.lotSizeChange" name="PrdDailyProPlanDetail.lotSizeChange" maxlength="6" />
+        </div>
+        <div id="kanbanId">
+          <label for="PrdDailyProPlanDetail.kanbanId" th:text="#{PrdDailyProPlanDetail.kanbanId}">KANBAN_ID</label><input type="text" id="PrdDailyProPlanDetail.kanbanId" name="PrdDailyProPlanDetail.kanbanId" maxlength="9" />
+        </div>
+        <div id="serialNo">
+          <label for="PrdDailyProPlanDetail.serialNo" th:text="#{PrdDailyProPlanDetail.serialNo}">SERIAL_NO</label><input type="text" id="PrdDailyProPlanDetail.serialNo" name="PrdDailyProPlanDetail.serialNo" maxlength="4" />
+        </div>
+        <div id="routingCounts">
+          <label for="PrdDailyProPlanDetail.routingCounts_1" th:text="#{PrdDailyProPlanDetail.routingCounts}">ROUTING_COUNTS</label><input type="text" id="PrdDailyProPlanDetail.routingCounts_1" name="PrdDailyProPlanDetail.routingCounts_1" maxlength="2" />～<input type="text" id="PrdDailyProPlanDetail.routingCounts_2" name="PrdDailyProPlanDetail.routingCounts_2" maxlength="2" />
+        </div>
+        <div id="planStatus">
+          <label for="PrdDailyProPlanDetail.planStatus" th:text="#{PrdDailyProPlanDetail.planStatus}">PLAN_STATUS</label><input type="text" id="PrdDailyProPlanDetail.planStatus" name="PrdDailyProPlanDetail.planStatus" maxlength="1" />
+        </div>
+        <div id="proGroupNo">
+          <label for="PrdDailyProPlanDetail.proGroupNo" th:text="#{PrdDailyProPlanDetail.proGroupNo}">PRO_GROUP_NO</label><input type="text" id="PrdDailyProPlanDetail.proGroupNo" name="PrdDailyProPlanDetail.proGroupNo" maxlength="2" />
+        </div>
+        <div id="outPlanTrans">
+          <label for="PrdDailyProPlanDetail.outPlanTrans" th:text="#{PrdDailyProPlanDetail.outPlanTrans}">OUT_PLAN_TRANS</label><input type="text" id="PrdDailyProPlanDetail.outPlanTrans" name="PrdDailyProPlanDetail.outPlanTrans" maxlength="1" />
+        </div>
+        <div id="begDate">
+          <label for="PrdDailyProPlanDetail.begDate_1" th:text="#{PrdDailyProPlanDetail.begDate}">BEG_DATE</label><input type="date" id="PrdDailyProPlanDetail.begDate_1" name="PrdDailyProPlanDetail.begDate_1" maxlength="7" />～<input type="date" id="PrdDailyProPlanDetail.begDate_2" name="PrdDailyProPlanDetail.begDate_2" maxlength="7" />
+        </div>
+        <div id="endDate">
+          <label for="PrdDailyProPlanDetail.endDate_1" th:text="#{PrdDailyProPlanDetail.endDate}">END_DATE</label><input type="date" id="PrdDailyProPlanDetail.endDate_1" name="PrdDailyProPlanDetail.endDate_1" maxlength="7" />～<input type="date" id="PrdDailyProPlanDetail.endDate_2" name="PrdDailyProPlanDetail.endDate_2" maxlength="7" />
+        </div>
+        <div id="startDate">
+          <label for="PrdDailyProPlanDetail.startDate_1" th:text="#{PrdDailyProPlanDetail.startDate}">START_DATE</label><input type="date" id="PrdDailyProPlanDetail.startDate_1" name="PrdDailyProPlanDetail.startDate_1" maxlength="7" />～<input type="date" id="PrdDailyProPlanDetail.startDate_2" name="PrdDailyProPlanDetail.startDate_2" maxlength="7" />
+        </div>
+        <div id="compDate">
+          <label for="PrdDailyProPlanDetail.compDate_1" th:text="#{PrdDailyProPlanDetail.compDate}">COMP_DATE</label><input type="date" id="PrdDailyProPlanDetail.compDate_1" name="PrdDailyProPlanDetail.compDate_1" maxlength="7" />～<input type="date" id="PrdDailyProPlanDetail.compDate_2" name="PrdDailyProPlanDetail.compDate_2" maxlength="7" />
+        </div>
+        <div id="pchFlag">
+          <fieldset id="PrdDailyProPlanDetail.pchFlagList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:pch_flag" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{PrdDailyProPlanDetail.pchFlag}">PCH_FLAG</legend>
+          </fieldset>
+        </div>
+        <div id="printOrder">
+          <label for="PrdDailyProPlanDetail.printOrder" th:text="#{PrdDailyProPlanDetail.printOrder}">PRINT_ORDER</label><input type="text" id="PrdDailyProPlanDetail.printOrder" name="PrdDailyProPlanDetail.printOrder" maxlength="3" />
+        </div>
+        <div id="shortNo">
+          <label for="PrdDailyProPlanDetail.shortNo" th:text="#{PrdDailyProPlanDetail.shortNo}">SHORT_NO</label><input type="text" id="PrdDailyProPlanDetail.shortNo" name="PrdDailyProPlanDetail.shortNo" maxlength="7" />
+        </div>
+        <div id="deleteFlag">
+          <fieldset id="PrdDailyProPlanDetail.deleteFlagList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:delete_flag" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{PrdDailyProPlanDetail.deleteFlag}">DELETE_FLAG</legend>
+          </fieldset>
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="reset" th:text="#{common.reset}">reset</button>
+        <a th:href="@{/model/PrdDailyProPlanDetail.html}" id="PrdDailyProPlanDetail" target="dialog" th:text="#{PrdDailyProPlanDetail.add}" tabindex="-1">PRD_DAILY_PRO_PLAN_DETAIL</a>
+      </div>
+      <div class="submits">
+        <button id="SearchPrdDailyProPlanDetail" class="search" data-gridId="PrdDailyProPlanDetailGrid" th:text="#{common.search}">submit</button>
+      </div>
+    </form>
+    <form name="PrdDailyProPlanDetailSRegistForm" action="PrdDailyProPlanDetailSRegist.ajax" class="regist">
+      <h3 th:text="#{PrdDailyProPlanDetail.h3}">h3</h3>
+      <div id="PrdDailyProPlanDetailGrid" data-selectionMode="checkbox" data-addRow="true" data-frozenColumn="0" th:data-href="@{/model/PrdDailyProPlanDetail.html}"></div>
+      <div id="PrdDailyProPlanDetailPager"></div>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="$('[id=&quot;SearchPrdDailyProPlanDetail&quot;]').click();">reset</button>
+        <a th:href="@{PrdDailyProPlanDetailSearch.xlsx(baseMei=#{PrdDailyProPlanDetailS.h2})}" id="PrdDailyProPlanDetailSearch.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeletePrdDailyProPlanDetailS" class="delete selectRows" data-action="PrdDailyProPlanDetailSDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistPrdDailyProPlanDetailS" class="regist" th:text="#{common.regist}">submit</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

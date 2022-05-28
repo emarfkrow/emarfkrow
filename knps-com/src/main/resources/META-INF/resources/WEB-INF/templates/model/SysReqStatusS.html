@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{SysReqStatusS.title}">SYS_REQ_STATUS</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/SysReqStatusGridColumns.js}"></script>
+<script th:src="@{/model/MstEmpGridColumns.js}"></script>
+<script th:src="@{/model/MstDivisionGridColumns.js}"></script>
+<script th:src="@{/model/MstCompanyGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{SysReqStatusS.h2}">h2</h2>
+    <form name="SysReqStatusSearchForm" action="SysReqStatusSearch.ajax" class="search">
+      <fieldset>
+        <legend th:text="#{SysReqStatusS.legend}">legend</legend>
+        <div id="reqId">
+          <label for="SysReqStatus.reqId" th:text="#{SysReqStatus.reqId}">REQ_ID</label><input type="text" id="SysReqStatus.reqId" name="SysReqStatus.reqId" maxlength="11" />
+        </div>
+        <div id="reqPrgName">
+          <label for="SysReqStatus.reqPrgName" th:text="#{SysReqStatus.reqPrgName}">REQ_PRG_NAME</label><input type="text" id="SysReqStatus.reqPrgName" name="SysReqStatus.reqPrgName" maxlength="40" />
+        </div>
+        <div id="reqEmpCode">
+          <label for="SysReqStatus.reqEmpCode" th:text="#{SysReqStatus.reqEmpCode}">REQ_EMP_CODE</label><input type="text" id="SysReqStatus.reqEmpCode" name="SysReqStatus.reqEmpCode" maxlength="10" data-json="MstEmpSearch.json" data-srcDef="EMP_CODE:SysReqStatus.reqEmpCode" data-destDef="SysReqStatus.reqEmpName:EMP_NAME" /><a id="SysReqStatus.reqEmpCode" th:href="@{/model/MstEmpS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="SysReqStatus.reqEmpName" class="refer" data-json="MstEmpSearch.json" data-srcDef="EMP_CODE:SysReqStatus.reqEmpCode" data-destDef="SysReqStatus.reqEmpName:EMP_NAME"></span>
+        </div>
+        <div id="reqDate">
+          <label for="SysReqStatus.reqDate_1" th:text="#{SysReqStatus.reqDate}">REQ_DATE</label><input type="date" id="SysReqStatus.reqDate_1" name="SysReqStatus.reqDate_1" maxlength="7" />～<input type="date" id="SysReqStatus.reqDate_2" name="SysReqStatus.reqDate_2" maxlength="7" />
+        </div>
+        <div id="reqExecDate">
+          <label for="SysReqStatus.reqExecDate_1" th:text="#{SysReqStatus.reqExecDate}">REQ_EXEC_DATE</label><input type="date" id="SysReqStatus.reqExecDate_1" name="SysReqStatus.reqExecDate_1" maxlength="7" />～<input type="date" id="SysReqStatus.reqExecDate_2" name="SysReqStatus.reqExecDate_2" maxlength="7" />
+        </div>
+        <div id="reqCompDate">
+          <label for="SysReqStatus.reqCompDate_1" th:text="#{SysReqStatus.reqCompDate}">REQ_COMP_DATE</label><input type="date" id="SysReqStatus.reqCompDate_1" name="SysReqStatus.reqCompDate_1" maxlength="7" />～<input type="date" id="SysReqStatus.reqCompDate_2" name="SysReqStatus.reqCompDate_2" maxlength="7" />
+        </div>
+        <div id="execPhase">
+          <label for="SysReqStatus.execPhase" th:text="#{SysReqStatus.execPhase}">EXEC_PHASE</label><input type="text" id="SysReqStatus.execPhase" name="SysReqStatus.execPhase" maxlength="1" />
+        </div>
+        <div id="execStatus">
+          <label for="SysReqStatus.execStatus" th:text="#{SysReqStatus.execStatus}">EXEC_STATUS</label><input type="text" id="SysReqStatus.execStatus" name="SysReqStatus.execStatus" maxlength="1" />
+        </div>
+        <div id="params">
+          <label for="SysReqStatus.params" th:text="#{SysReqStatus.params}">PARAMS</label><input type="text" id="SysReqStatus.params" name="SysReqStatus.params" maxlength="200" />
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="reset" th:text="#{common.reset}">reset</button>
+        <a th:href="@{/model/SysReqStatus.html}" id="SysReqStatus" target="dialog" th:text="#{SysReqStatus.add}" tabindex="-1">SYS_REQ_STATUS</a>
+      </div>
+      <div class="submits">
+        <button id="SearchSysReqStatus" class="search" data-gridId="SysReqStatusGrid" th:text="#{common.search}">submit</button>
+      </div>
+    </form>
+    <form name="SysReqStatusSRegistForm" action="SysReqStatusSRegist.ajax" class="regist">
+      <h3 th:text="#{SysReqStatus.h3}">h3</h3>
+      <div id="SysReqStatusGrid" data-selectionMode="checkbox" data-addRow="true" data-frozenColumn="0" th:data-href="@{/model/SysReqStatus.html}"></div>
+      <div id="SysReqStatusPager"></div>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="$('[id=&quot;SearchSysReqStatus&quot;]').click();">reset</button>
+        <a th:href="@{SysReqStatusSearch.xlsx(baseMei=#{SysReqStatusS.h2})}" id="SysReqStatusSearch.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeleteSysReqStatusS" class="delete selectRows" data-action="SysReqStatusSDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistSysReqStatusS" class="regist" th:text="#{common.regist}">submit</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

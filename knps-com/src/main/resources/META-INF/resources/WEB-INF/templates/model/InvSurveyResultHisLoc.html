@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{InvSurveyResultHisLoc.title}">INV_SURVEY_RESULT_HIS_LOC</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/InvSurveyResultHisLocGridColumns.js}"></script>
+<script th:src="@{/model/MstLocationGridColumns.js}"></script>
+<script th:src="@{/model/MstSubinvGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierGridColumns.js}"></script>
+<script th:src="@{/model/InvStockProcessSupplyGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierBkGridColumns.js}"></script>
+<script th:src="@{/model/MstTaxGridColumns.js}"></script>
+<script th:src="@{/model/MstStoreManGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{InvSurveyResultHisLoc.h2}">h2</h2>
+    <form name="InvSurveyResultHisLocRegistForm" action="InvSurveyResultHisLocRegist.ajax" class="regist">
+      <fieldset>
+        <legend th:text="#{InvSurveyResultHisLoc.legend}">legend</legend>
+        <div id="locationCode">
+          <label for="InvSurveyResultHisLoc.locationCode" th:text="#{InvSurveyResultHisLoc.locationCode}">LOCATION_CODE</label><span id="InvSurveyResultHisLoc.locationCode"></span><input type="hidden" id="InvSurveyResultHisLoc.locationCode" name="InvSurveyResultHisLoc.locationCode" class="primaryKey" /><a id="InvSurveyResultHisLoc.locationCode" th:href="@{/model/MstLocationS.html}" target="dialog" class="primaryKey refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="InvSurveyResultHisLoc.locationName" class="refer" data-json="MstLocationSearch.json" data-srcDef="LOCATION_CODE:InvSurveyResultHisLoc.locationCode" data-destDef="InvSurveyResultHisLoc.locationName:LOCATION_NAME"></span>
+        </div>
+        <div id="yyyy">
+          <label for="InvSurveyResultHisLoc.yyyy" th:text="#{InvSurveyResultHisLoc.yyyy}">YYYY</label><span id="InvSurveyResultHisLoc.yyyy"></span><input type="hidden" id="InvSurveyResultHisLoc.yyyy" name="InvSurveyResultHisLoc.yyyy" class="primaryKey" />
+        </div>
+        <div id="mm">
+          <label for="InvSurveyResultHisLoc.mm" th:text="#{InvSurveyResultHisLoc.mm}">MM</label><span id="InvSurveyResultHisLoc.mm"></span><input type="hidden" id="InvSurveyResultHisLoc.mm" name="InvSurveyResultHisLoc.mm" class="primaryKey" />
+        </div>
+        <div id="hinban">
+          <label for="InvSurveyResultHisLoc.hinban" th:text="#{InvSurveyResultHisLoc.hinban}">HINBAN</label><input type="text" id="InvSurveyResultHisLoc.hinban" name="InvSurveyResultHisLoc.hinban" maxlength="25" />
+        </div>
+        <div id="stock">
+          <label for="InvSurveyResultHisLoc.stock" th:text="#{InvSurveyResultHisLoc.stock}">STOCK</label><input type="text" id="InvSurveyResultHisLoc.stock" name="InvSurveyResultHisLoc.stock" maxlength="11" />
+        </div>
+        <div id="decisionKbn">
+          <fieldset id="InvSurveyResultHisLoc.decisionKbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:decision_kbn" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{InvSurveyResultHisLoc.decisionKbn}">DECISION_KBN</legend>
+          </fieldset>
+        </div>
+        <div id="entryDate">
+          <label for="InvSurveyResultHisLoc.entryDate" th:text="#{InvSurveyResultHisLoc.entryDate}">ENTRY_DATE</label><input type="date" id="InvSurveyResultHisLoc.entryDate" name="InvSurveyResultHisLoc.entryDate" maxlength="7" />
+        </div>
+        <div id="registrant">
+          <label for="InvSurveyResultHisLoc.registrant" th:text="#{InvSurveyResultHisLoc.registrant}">REGISTRANT</label><input type="text" id="InvSurveyResultHisLoc.registrant" name="InvSurveyResultHisLoc.registrant" maxlength="10" />
+        </div>
+        <div id="timeStampCreate">
+          <label for="InvSurveyResultHisLoc.timeStampCreate" th:text="#{InvSurveyResultHisLoc.timeStampCreate}">TIME_STAMP_CREATE</label><span id="InvSurveyResultHisLoc.timeStampCreate"></span><input type="hidden" id="InvSurveyResultHisLoc.timeStampCreate" name="InvSurveyResultHisLoc.timeStampCreate" />
+        </div>
+        <div id="timeStampChange">
+          <label for="InvSurveyResultHisLoc.timeStampChange" th:text="#{InvSurveyResultHisLoc.timeStampChange}">TIME_STAMP_CHANGE</label><span id="InvSurveyResultHisLoc.timeStampChange"></span><input type="hidden" id="InvSurveyResultHisLoc.timeStampChange" name="InvSurveyResultHisLoc.timeStampChange" />
+        </div>
+        <div id="userIdCreate">
+          <label for="InvSurveyResultHisLoc.userIdCreate" th:text="#{InvSurveyResultHisLoc.userIdCreate}">USER_ID_CREATE</label><span id="InvSurveyResultHisLoc.userIdCreate"></span><input type="hidden" id="InvSurveyResultHisLoc.userIdCreate" name="InvSurveyResultHisLoc.userIdCreate" />
+        </div>
+        <div id="userIdChange">
+          <label for="InvSurveyResultHisLoc.userIdChange" th:text="#{InvSurveyResultHisLoc.userIdChange}">USER_ID_CHANGE</label><span id="InvSurveyResultHisLoc.userIdChange"></span><input type="hidden" id="InvSurveyResultHisLoc.userIdChange" name="InvSurveyResultHisLoc.userIdChange" />
+        </div>
+        <div id="shukeiTaniMei">
+          <label for="InvSurveyResultHisLoc.shukeiTaniMei" th:text="#{InvSurveyResultHisLoc.shukeiTaniMei}">SHUKEI_TANI_MEI</label><input type="text" id="InvSurveyResultHisLoc.shukeiTaniMei" name="InvSurveyResultHisLoc.shukeiTaniMei" maxlength="20" />
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="Dialogate.refresh(event);">reset</button>
+        <a th:href="@{InvSurveyResultHisLocGet.xlsx(baseMei=#{InvSurveyResultHisLoc.h2})}" id="InvSurveyResultHisLocGet.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeleteInvSurveyResultHisLoc" class="delete" data-action="InvSurveyResultHisLocDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistInvSurveyResultHisLoc" class="regist" th:text="#{common.regist}">登録</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

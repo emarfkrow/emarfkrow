@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{PrdYWsManLoadPlan.title}">PRD_Y_WS_MAN_LOAD_PLAN</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/PrdYWsManLoadPlanGridColumns.js}"></script>
+<script th:src="@{/model/MstWsGridColumns.js}"></script>
+<script th:src="@{/model/MstTeamGridColumns.js}"></script>
+<script th:src="@{/model/MstGroupGridColumns.js}"></script>
+<script th:src="@{/model/MstDivisionGridColumns.js}"></script>
+<script th:src="@{/model/MstCompanyGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierGridColumns.js}"></script>
+<script th:src="@{/model/InvStockProcessSupplyGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierBkGridColumns.js}"></script>
+<script th:src="@{/model/MstTaxGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{PrdYWsManLoadPlan.h2}">h2</h2>
+    <form name="PrdYWsManLoadPlanRegistForm" action="PrdYWsManLoadPlanRegist.ajax" class="regist">
+      <fieldset>
+        <legend th:text="#{PrdYWsManLoadPlan.legend}">legend</legend>
+        <div id="yyyy">
+          <label for="PrdYWsManLoadPlan.yyyy" th:text="#{PrdYWsManLoadPlan.yyyy}">YYYY</label><span id="PrdYWsManLoadPlan.yyyy"></span><input type="hidden" id="PrdYWsManLoadPlan.yyyy" name="PrdYWsManLoadPlan.yyyy" class="primaryKey" />
+        </div>
+        <div id="mm">
+          <label for="PrdYWsManLoadPlan.mm" th:text="#{PrdYWsManLoadPlan.mm}">MM</label><span id="PrdYWsManLoadPlan.mm"></span><input type="hidden" id="PrdYWsManLoadPlan.mm" name="PrdYWsManLoadPlan.mm" class="primaryKey" />
+        </div>
+        <div id="manHinban">
+          <label for="PrdYWsManLoadPlan.manHinban" th:text="#{PrdYWsManLoadPlan.manHinban}">MAN_HINBAN</label><span id="PrdYWsManLoadPlan.manHinban"></span><input type="hidden" id="PrdYWsManLoadPlan.manHinban" name="PrdYWsManLoadPlan.manHinban" class="primaryKey" />
+        </div>
+        <div id="wsCode">
+          <label for="PrdYWsManLoadPlan.wsCode" th:text="#{PrdYWsManLoadPlan.wsCode}">WS_CODE</label><span id="PrdYWsManLoadPlan.wsCode"></span><input type="hidden" id="PrdYWsManLoadPlan.wsCode" name="PrdYWsManLoadPlan.wsCode" class="primaryKey" /><a id="PrdYWsManLoadPlan.wsCode" th:href="@{/model/MstWsS.html}" target="dialog" class="primaryKey refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="PrdYWsManLoadPlan.wsName" class="refer" data-json="MstWsSearch.json" data-srcDef="WS_CODE:PrdYWsManLoadPlan.wsCode" data-destDef="PrdYWsManLoadPlan.wsName:WS_NAME"></span>
+        </div>
+        <div id="proNesCounts">
+          <label for="PrdYWsManLoadPlan.proNesCounts" th:text="#{PrdYWsManLoadPlan.proNesCounts}">PRO_NES_COUNTS</label><input type="text" id="PrdYWsManLoadPlan.proNesCounts" name="PrdYWsManLoadPlan.proNesCounts" maxlength="7" />
+        </div>
+        <div id="humPreTime">
+          <label for="PrdYWsManLoadPlan.humPreTime" th:text="#{PrdYWsManLoadPlan.humPreTime}">HUM_PRE_TIME</label><input type="text" id="PrdYWsManLoadPlan.humPreTime" name="PrdYWsManLoadPlan.humPreTime" maxlength="7" />
+        </div>
+        <div id="humActTime">
+          <label for="PrdYWsManLoadPlan.humActTime" th:text="#{PrdYWsManLoadPlan.humActTime}">HUM_ACT_TIME</label><input type="text" id="PrdYWsManLoadPlan.humActTime" name="PrdYWsManLoadPlan.humActTime" maxlength="7" />
+        </div>
+        <div id="macPreTimeIn">
+          <label for="PrdYWsManLoadPlan.macPreTimeIn" th:text="#{PrdYWsManLoadPlan.macPreTimeIn}">MAC_PRE_TIME_IN</label><input type="text" id="PrdYWsManLoadPlan.macPreTimeIn" name="PrdYWsManLoadPlan.macPreTimeIn" maxlength="7" />
+        </div>
+        <div id="macActTimeIn">
+          <label for="PrdYWsManLoadPlan.macActTimeIn" th:text="#{PrdYWsManLoadPlan.macActTimeIn}">MAC_ACT_TIME_IN</label><input type="text" id="PrdYWsManLoadPlan.macActTimeIn" name="PrdYWsManLoadPlan.macActTimeIn" maxlength="7" />
+        </div>
+        <div id="macPreTimeOut">
+          <label for="PrdYWsManLoadPlan.macPreTimeOut" th:text="#{PrdYWsManLoadPlan.macPreTimeOut}">MAC_PRE_TIME_OUT</label><input type="text" id="PrdYWsManLoadPlan.macPreTimeOut" name="PrdYWsManLoadPlan.macPreTimeOut" maxlength="7" />
+        </div>
+        <div id="macActTimeOut">
+          <label for="PrdYWsManLoadPlan.macActTimeOut" th:text="#{PrdYWsManLoadPlan.macActTimeOut}">MAC_ACT_TIME_OUT</label><input type="text" id="PrdYWsManLoadPlan.macActTimeOut" name="PrdYWsManLoadPlan.macActTimeOut" maxlength="7" />
+        </div>
+        <div id="macPreTimeKanban">
+          <label for="PrdYWsManLoadPlan.macPreTimeKanban" th:text="#{PrdYWsManLoadPlan.macPreTimeKanban}">MAC_PRE_TIME_KANBAN</label><input type="text" id="PrdYWsManLoadPlan.macPreTimeKanban" name="PrdYWsManLoadPlan.macPreTimeKanban" maxlength="7" />
+        </div>
+        <div id="macActTimeKanban">
+          <label for="PrdYWsManLoadPlan.macActTimeKanban" th:text="#{PrdYWsManLoadPlan.macActTimeKanban}">MAC_ACT_TIME_KANBAN</label><input type="text" id="PrdYWsManLoadPlan.macActTimeKanban" name="PrdYWsManLoadPlan.macActTimeKanban" maxlength="7" />
+        </div>
+        <div id="timeStampCreate">
+          <label for="PrdYWsManLoadPlan.timeStampCreate" th:text="#{PrdYWsManLoadPlan.timeStampCreate}">TIME_STAMP_CREATE</label><span id="PrdYWsManLoadPlan.timeStampCreate"></span><input type="hidden" id="PrdYWsManLoadPlan.timeStampCreate" name="PrdYWsManLoadPlan.timeStampCreate" />
+        </div>
+        <div id="timeStampChange">
+          <label for="PrdYWsManLoadPlan.timeStampChange" th:text="#{PrdYWsManLoadPlan.timeStampChange}">TIME_STAMP_CHANGE</label><span id="PrdYWsManLoadPlan.timeStampChange"></span><input type="hidden" id="PrdYWsManLoadPlan.timeStampChange" name="PrdYWsManLoadPlan.timeStampChange" />
+        </div>
+        <div id="userIdCreate">
+          <label for="PrdYWsManLoadPlan.userIdCreate" th:text="#{PrdYWsManLoadPlan.userIdCreate}">USER_ID_CREATE</label><span id="PrdYWsManLoadPlan.userIdCreate"></span><input type="hidden" id="PrdYWsManLoadPlan.userIdCreate" name="PrdYWsManLoadPlan.userIdCreate" />
+        </div>
+        <div id="userIdChange">
+          <label for="PrdYWsManLoadPlan.userIdChange" th:text="#{PrdYWsManLoadPlan.userIdChange}">USER_ID_CHANGE</label><span id="PrdYWsManLoadPlan.userIdChange"></span><input type="hidden" id="PrdYWsManLoadPlan.userIdChange" name="PrdYWsManLoadPlan.userIdChange" />
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="Dialogate.refresh(event);">reset</button>
+        <a th:href="@{PrdYWsManLoadPlanGet.xlsx(baseMei=#{PrdYWsManLoadPlan.h2})}" id="PrdYWsManLoadPlanGet.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeletePrdYWsManLoadPlan" class="delete" data-action="PrdYWsManLoadPlanDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistPrdYWsManLoadPlan" class="regist" th:text="#{common.regist}">登録</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

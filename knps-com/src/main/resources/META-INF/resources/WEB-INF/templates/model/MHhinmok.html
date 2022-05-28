@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{MHhinmok.title}">M_HHINMOK</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/MHhinmokGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{MHhinmok.h2}">h2</h2>
+    <form name="MHhinmokRegistForm" action="MHhinmokRegist.ajax" class="regist">
+      <fieldset>
+        <legend th:text="#{MHhinmok.legend}">legend</legend>
+        <div id="hhinban">
+          <label for="MHhinmok.hhinban" th:text="#{MHhinmok.hhinban}">HHINBAN</label><span id="MHhinmok.hhinban"></span><input type="hidden" id="MHhinmok.hhinban" name="MHhinmok.hhinban" class="primaryKey" />
+        </div>
+        <div id="dltflg">
+          <label for="MHhinmok.dltflg" th:text="#{MHhinmok.dltflg}">DLTFLG</label><input type="text" id="MHhinmok.dltflg" name="MHhinmok.dltflg" maxlength="1" />
+        </div>
+        <div id="setkbn">
+          <label for="MHhinmok.setkbn" th:text="#{MHhinmok.setkbn}">SETKBN</label><input type="text" id="MHhinmok.setkbn" name="MHhinmok.setkbn" maxlength="1" />
+        </div>
+        <div id="hyojunGenka">
+          <label for="MHhinmok.hyojunGenka" th:text="#{MHhinmok.hyojunGenka}">HYOJUN-GENKA</label><input type="text" id="MHhinmok.hyojunGenka" name="MHhinmok.hyojunGenka" maxlength="9" />
+        </div>
+        <div id="hyojunBaika">
+          <label for="MHhinmok.hyojunBaika" th:text="#{MHhinmok.hyojunBaika}">HYOJUN-BAIKA</label><input type="text" id="MHhinmok.hyojunBaika" name="MHhinmok.hyojunBaika" maxlength="9" />
+        </div>
+        <div id="zaikosuH1">
+          <label for="MHhinmok.zaikosuH1" th:text="#{MHhinmok.zaikosuH1}">ZAIKOSU-H1</label><input type="text" id="MHhinmok.zaikosuH1" name="MHhinmok.zaikosuH1" maxlength="7" />
+        </div>
+        <div id="timeStampCreate">
+          <label for="MHhinmok.timeStampCreate" th:text="#{MHhinmok.timeStampCreate}">TIME_STAMP_CREATE</label><span id="MHhinmok.timeStampCreate"></span><input type="hidden" id="MHhinmok.timeStampCreate" name="MHhinmok.timeStampCreate" />
+        </div>
+        <div id="timeStampChange">
+          <label for="MHhinmok.timeStampChange" th:text="#{MHhinmok.timeStampChange}">TIME_STAMP_CHANGE</label><span id="MHhinmok.timeStampChange"></span><input type="hidden" id="MHhinmok.timeStampChange" name="MHhinmok.timeStampChange" />
+        </div>
+        <div id="userIdCreate">
+          <label for="MHhinmok.userIdCreate" th:text="#{MHhinmok.userIdCreate}">USER_ID_CREATE</label><span id="MHhinmok.userIdCreate"></span><input type="hidden" id="MHhinmok.userIdCreate" name="MHhinmok.userIdCreate" />
+        </div>
+        <div id="userIdChange">
+          <label for="MHhinmok.userIdChange" th:text="#{MHhinmok.userIdChange}">USER_ID_CHANGE</label><span id="MHhinmok.userIdChange"></span><input type="hidden" id="MHhinmok.userIdChange" name="MHhinmok.userIdChange" />
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="Dialogate.refresh(event);">reset</button>
+        <a th:href="@{MHhinmokGet.xlsx(baseMei=#{MHhinmok.h2})}" id="MHhinmokGet.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeleteMHhinmok" class="delete" data-action="MHhinmokDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistMHhinmok" class="regist" th:text="#{common.regist}">登録</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

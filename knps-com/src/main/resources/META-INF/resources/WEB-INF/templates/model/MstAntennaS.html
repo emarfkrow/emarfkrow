@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{MstAntennaS.title}">MST_ANTENNA</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/MstAntennaGridColumns.js}"></script>
+<script th:src="@{/model/MstStoreManGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{MstAntennaS.h2}">h2</h2>
+    <form name="MstAntennaSearchForm" action="MstAntennaSearch.ajax" class="search">
+      <fieldset>
+        <legend th:text="#{MstAntennaS.legend}">legend</legend>
+        <div id="readerNo">
+          <label for="MstAntenna.readerNo" th:text="#{MstAntenna.readerNo}">READER_NO</label><input type="text" id="MstAntenna.readerNo" name="MstAntenna.readerNo" maxlength="10" />
+        </div>
+        <div id="antennaNo">
+          <label for="MstAntenna.antennaNo" th:text="#{MstAntenna.antennaNo}">ANTENNA_NO</label><input type="text" id="MstAntenna.antennaNo" name="MstAntenna.antennaNo" maxlength="10" />
+        </div>
+        <div id="storeManId">
+          <label for="MstAntenna.storeManId" th:text="#{MstAntenna.storeManId}">STORE_MAN_ID</label><input type="text" id="MstAntenna.storeManId" name="MstAntenna.storeManId" maxlength="10" data-json="MstStoreManSearch.json" data-srcDef="STORE_MAN_ID:MstAntenna.storeManId" data-destDef="MstAntenna.storeManMei:STORE_MAN_MEI" /><a id="MstAntenna.storeManId" th:href="@{/model/MstStoreManS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MstAntenna.storeManMei" class="refer" data-json="MstStoreManSearch.json" data-srcDef="STORE_MAN_ID:MstAntenna.storeManId" data-destDef="MstAntenna.storeManMei:STORE_MAN_MEI"></span>
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="reset" th:text="#{common.reset}">reset</button>
+        <a th:href="@{/model/MstAntenna.html}" id="MstAntenna" target="dialog" th:text="#{MstAntenna.add}" tabindex="-1">MST_ANTENNA</a>
+      </div>
+      <div class="submits">
+        <button id="SearchMstAntenna" class="search" data-gridId="MstAntennaGrid" th:text="#{common.search}">submit</button>
+      </div>
+    </form>
+    <form name="MstAntennaSRegistForm" action="MstAntennaSRegist.ajax" class="regist">
+      <h3 th:text="#{MstAntenna.h3}">h3</h3>
+      <div id="MstAntennaGrid" data-selectionMode="checkbox" data-frozenColumn="1" th:data-href="@{/model/MstAntenna.html}"></div>
+      <div id="MstAntennaPager"></div>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="$('[id=&quot;SearchMstAntenna&quot;]').click();">reset</button>
+        <a th:href="@{MstAntennaSearch.xlsx(baseMei=#{MstAntennaS.h2})}" id="MstAntennaSearch.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeleteMstAntennaS" class="delete selectRows" data-action="MstAntennaSDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistMstAntennaS" class="regist" th:text="#{common.regist}">submit</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

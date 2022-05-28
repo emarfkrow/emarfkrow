@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{MfgProActDetS.title}">MFG_PRO_ACT_DET</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/MfgProActDetGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{MfgProActDetS.h2}">h2</h2>
+    <form name="MfgProActDetSearchForm" action="MfgProActDetSearch.ajax" class="search">
+      <fieldset>
+        <legend th:text="#{MfgProActDetS.legend}">legend</legend>
+        <div id="proNo">
+          <label for="MfgProActDet.proNo" th:text="#{MfgProActDet.proNo}">PRO_NO</label><input type="text" id="MfgProActDet.proNo" name="MfgProActDet.proNo" maxlength="14" />
+        </div>
+        <div id="proRoutingBranch">
+          <label for="MfgProActDet.proRoutingBranch" th:text="#{MfgProActDet.proRoutingBranch}">PRO_ROUTING_BRANCH</label><input type="text" id="MfgProActDet.proRoutingBranch" name="MfgProActDet.proRoutingBranch" maxlength="2" />
+        </div>
+        <div id="proActBranchNo">
+          <label for="MfgProActDet.proActBranchNo" th:text="#{MfgProActDet.proActBranchNo}">PRO_ACT_BRANCH_NO</label><input type="text" id="MfgProActDet.proActBranchNo" name="MfgProActDet.proActBranchNo" maxlength="2" />
+        </div>
+        <div id="actItem">
+          <label for="MfgProActDet.actItem" th:text="#{MfgProActDet.actItem}">ACT_ITEM</label><input type="text" id="MfgProActDet.actItem" name="MfgProActDet.actItem" maxlength="1" />
+        </div>
+        <div id="actDate">
+          <label for="MfgProActDet.actDate_1" th:text="#{MfgProActDet.actDate}">ACT_DATE</label><input type="date" id="MfgProActDet.actDate_1" name="MfgProActDet.actDate_1" maxlength="7" />～<input type="date" id="MfgProActDet.actDate_2" name="MfgProActDet.actDate_2" maxlength="7" />
+        </div>
+        <div id="causeCode">
+          <fieldset id="MfgProActDet.causeCodeList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:cause_code" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MfgProActDet.causeCode}">CAUSE_CODE</legend>
+          </fieldset>
+        </div>
+        <div id="operator">
+          <label for="MfgProActDet.operator" th:text="#{MfgProActDet.operator}">OPERATOR</label><input type="text" id="MfgProActDet.operator" name="MfgProActDet.operator" maxlength="10" />
+        </div>
+        <div id="lastRouting">
+          <label for="MfgProActDet.lastRouting" th:text="#{MfgProActDet.lastRouting}">LAST_ROUTING</label><input type="text" id="MfgProActDet.lastRouting" name="MfgProActDet.lastRouting" maxlength="1" />
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="reset" th:text="#{common.reset}">reset</button>
+        <a th:href="@{/model/MfgProActDet.html}" id="MfgProActDet" target="dialog" th:text="#{MfgProActDet.add}" tabindex="-1">MFG_PRO_ACT_DET</a>
+      </div>
+      <div class="submits">
+        <button id="SearchMfgProActDet" class="search" data-gridId="MfgProActDetGrid" th:text="#{common.search}">submit</button>
+      </div>
+    </form>
+    <form name="MfgProActDetSRegistForm" action="MfgProActDetSRegist.ajax" class="regist">
+      <h3 th:text="#{MfgProActDet.h3}">h3</h3>
+      <div id="MfgProActDetGrid" data-selectionMode="checkbox" data-frozenColumn="2" th:data-href="@{/model/MfgProActDet.html}"></div>
+      <div id="MfgProActDetPager"></div>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="$('[id=&quot;SearchMfgProActDet&quot;]').click();">reset</button>
+        <a th:href="@{MfgProActDetSearch.xlsx(baseMei=#{MfgProActDetS.h2})}" id="MfgProActDetSearch.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeleteMfgProActDetS" class="delete selectRows" data-action="MfgProActDetSDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistMfgProActDetS" class="regist" th:text="#{common.regist}">submit</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

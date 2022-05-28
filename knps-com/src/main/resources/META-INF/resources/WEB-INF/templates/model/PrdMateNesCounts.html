@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{PrdMateNesCounts.title}">PRD_MATE_NES_COUNTS</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/PrdMateNesCountsGridColumns.js}"></script>
+<script th:src="@{/model/InvYStkAmountProgGridColumns.js}"></script>
+<script th:src="@{/model/MstWcGridColumns.js}"></script>
+<script th:src="@{/model/MstWcBkGridColumns.js}"></script>
+<script th:src="@{/model/MstProcGridColumns.js}"></script>
+<script th:src="@{/model/MstWsGridColumns.js}"></script>
+<script th:src="@{/model/MstTeamGridColumns.js}"></script>
+<script th:src="@{/model/MstGroupGridColumns.js}"></script>
+<script th:src="@{/model/MstDivisionGridColumns.js}"></script>
+<script th:src="@{/model/MstCompanyGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierGridColumns.js}"></script>
+<script th:src="@{/model/InvStockProcessSupplyGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierBkGridColumns.js}"></script>
+<script th:src="@{/model/MstTaxGridColumns.js}"></script>
+<script th:src="@{/model/MstCostCenterGridColumns.js}"></script>
+<script th:src="@{/model/MstCostCenterBkGridColumns.js}"></script>
+<script th:src="@{/model/MstSubinvGridColumns.js}"></script>
+<script th:src="@{/model/PrdMSupBudgetPurGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{PrdMateNesCounts.h2}">h2</h2>
+    <form name="PrdMateNesCountsRegistForm" action="PrdMateNesCountsRegist.ajax" class="regist">
+      <fieldset>
+        <legend th:text="#{PrdMateNesCounts.legend}">legend</legend>
+        <div id="yyyy">
+          <label for="PrdMateNesCounts.yyyy" th:text="#{PrdMateNesCounts.yyyy}">YYYY</label><span id="PrdMateNesCounts.yyyy"></span><input type="hidden" id="PrdMateNesCounts.yyyy" name="PrdMateNesCounts.yyyy" class="primaryKey" />
+        </div>
+        <div id="mm">
+          <label for="PrdMateNesCounts.mm" th:text="#{PrdMateNesCounts.mm}">MM</label><span id="PrdMateNesCounts.mm"></span><input type="hidden" id="PrdMateNesCounts.mm" name="PrdMateNesCounts.mm" class="primaryKey" />
+        </div>
+        <div id="hinban">
+          <label for="PrdMateNesCounts.hinban" th:text="#{PrdMateNesCounts.hinban}">HINBAN</label><span id="PrdMateNesCounts.hinban"></span><input type="hidden" id="PrdMateNesCounts.hinban" name="PrdMateNesCounts.hinban" class="primaryKey" />
+        </div>
+        <div id="orderCounts">
+          <label for="PrdMateNesCounts.orderCounts" th:text="#{PrdMateNesCounts.orderCounts}">ORDER_COUNTS</label><input type="text" id="PrdMateNesCounts.orderCounts" name="PrdMateNesCounts.orderCounts" maxlength="11" />
+        </div>
+        <div id="supCode">
+          <label for="PrdMateNesCounts.supCode" th:text="#{PrdMateNesCounts.supCode}">SUP_CODE</label><input type="text" id="PrdMateNesCounts.supCode" name="PrdMateNesCounts.supCode" maxlength="6" data-json="MstSupplierSearch.json" data-srcDef="SUP_CODE:PrdMateNesCounts.supCode" data-destDef="PrdMateNesCounts.supName:SUP_NAME" /><a id="PrdMateNesCounts.supCode" th:href="@{/model/MstSupplierS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="PrdMateNesCounts.supName" class="refer" data-json="MstSupplierSearch.json" data-srcDef="SUP_CODE:PrdMateNesCounts.supCode" data-destDef="PrdMateNesCounts.supName:SUP_NAME"></span>
+        </div>
+        <div id="orderUnit">
+          <label for="PrdMateNesCounts.orderUnit" th:text="#{PrdMateNesCounts.orderUnit}">ORDER_UNIT</label><input type="text" id="PrdMateNesCounts.orderUnit" name="PrdMateNesCounts.orderUnit" maxlength="9" />
+        </div>
+        <div id="orderAmount">
+          <label for="PrdMateNesCounts.orderAmount" th:text="#{PrdMateNesCounts.orderAmount}">ORDER_AMOUNT</label><input type="text" id="PrdMateNesCounts.orderAmount" name="PrdMateNesCounts.orderAmount" maxlength="11" />
+        </div>
+        <div id="timeStampCreate">
+          <label for="PrdMateNesCounts.timeStampCreate" th:text="#{PrdMateNesCounts.timeStampCreate}">TIME_STAMP_CREATE</label><span id="PrdMateNesCounts.timeStampCreate"></span><input type="hidden" id="PrdMateNesCounts.timeStampCreate" name="PrdMateNesCounts.timeStampCreate" />
+        </div>
+        <div id="timeStampChange">
+          <label for="PrdMateNesCounts.timeStampChange" th:text="#{PrdMateNesCounts.timeStampChange}">TIME_STAMP_CHANGE</label><span id="PrdMateNesCounts.timeStampChange"></span><input type="hidden" id="PrdMateNesCounts.timeStampChange" name="PrdMateNesCounts.timeStampChange" />
+        </div>
+        <div id="userIdCreate">
+          <label for="PrdMateNesCounts.userIdCreate" th:text="#{PrdMateNesCounts.userIdCreate}">USER_ID_CREATE</label><span id="PrdMateNesCounts.userIdCreate"></span><input type="hidden" id="PrdMateNesCounts.userIdCreate" name="PrdMateNesCounts.userIdCreate" />
+        </div>
+        <div id="userIdChange">
+          <label for="PrdMateNesCounts.userIdChange" th:text="#{PrdMateNesCounts.userIdChange}">USER_ID_CHANGE</label><span id="PrdMateNesCounts.userIdChange"></span><input type="hidden" id="PrdMateNesCounts.userIdChange" name="PrdMateNesCounts.userIdChange" />
+        </div>
+      </fieldset>
+      <h3 th:text="#{InvYStkAmountProg.h3}">h3</h3>
+      <a th:href="@{/model/InvYStkAmountProg.html}" id="InvYStkAmountProg" target="dialog" th:text="#{InvYStkAmountProg.add}" class="addChild" tabindex="-1">INV_Y_STK_AMOUNT_PROG</a>
+      <div id="InvYStkAmountProgGrid" data-selectionMode="link" data-addRow="true" data-frozenColumn="3" th:data-href="@{/model/InvYStkAmountProg.html}"></div>
+      <h3 th:text="#{PrdMSupBudgetPur.h3}">h3</h3>
+      <a th:href="@{/model/PrdMSupBudgetPur.html}" id="PrdMSupBudgetPur" target="dialog" th:text="#{PrdMSupBudgetPur.add}" class="addChild" tabindex="-1">PRD_M_SUP_BUDGET_PUR</a>
+      <div id="PrdMSupBudgetPurGrid" data-selectionMode="link" data-addRow="true" data-frozenColumn="3" th:data-href="@{/model/PrdMSupBudgetPur.html}"></div>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="Dialogate.refresh(event);">reset</button>
+        <a th:href="@{PrdMateNesCountsGet.xlsx(baseMei=#{PrdMateNesCounts.h2})}" id="PrdMateNesCountsGet.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeletePrdMateNesCounts" class="delete" data-action="PrdMateNesCountsDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistPrdMateNesCounts" class="regist" th:text="#{common.regist}">登録</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

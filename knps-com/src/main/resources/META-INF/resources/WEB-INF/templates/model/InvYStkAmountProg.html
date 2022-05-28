@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{InvYStkAmountProg.title}">INV_Y_STK_AMOUNT_PROG</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/InvYStkAmountProgGridColumns.js}"></script>
+<script th:src="@{/model/MstWcGridColumns.js}"></script>
+<script th:src="@{/model/MstWcBkGridColumns.js}"></script>
+<script th:src="@{/model/MstProcGridColumns.js}"></script>
+<script th:src="@{/model/MstWsGridColumns.js}"></script>
+<script th:src="@{/model/MstTeamGridColumns.js}"></script>
+<script th:src="@{/model/MstGroupGridColumns.js}"></script>
+<script th:src="@{/model/MstDivisionGridColumns.js}"></script>
+<script th:src="@{/model/MstCompanyGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierGridColumns.js}"></script>
+<script th:src="@{/model/InvStockProcessSupplyGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierBkGridColumns.js}"></script>
+<script th:src="@{/model/MstTaxGridColumns.js}"></script>
+<script th:src="@{/model/MstCostCenterGridColumns.js}"></script>
+<script th:src="@{/model/MstCostCenterBkGridColumns.js}"></script>
+<script th:src="@{/model/MstSubinvGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{InvYStkAmountProg.h2}">h2</h2>
+    <form name="InvYStkAmountProgRegistForm" action="InvYStkAmountProgRegist.ajax" class="regist">
+      <fieldset>
+        <legend th:text="#{InvYStkAmountProg.legend}">legend</legend>
+        <div id="yyyy">
+          <label for="InvYStkAmountProg.yyyy" th:text="#{InvYStkAmountProg.yyyy}">YYYY</label><span id="InvYStkAmountProg.yyyy"></span><input type="hidden" id="InvYStkAmountProg.yyyy" name="InvYStkAmountProg.yyyy" class="primaryKey" />
+        </div>
+        <div id="mm">
+          <label for="InvYStkAmountProg.mm" th:text="#{InvYStkAmountProg.mm}">MM</label><span id="InvYStkAmountProg.mm"></span><input type="hidden" id="InvYStkAmountProg.mm" name="InvYStkAmountProg.mm" class="primaryKey" />
+        </div>
+        <div id="hinban">
+          <label for="InvYStkAmountProg.hinban" th:text="#{InvYStkAmountProg.hinban}">HINBAN</label><span id="InvYStkAmountProg.hinban"></span><input type="hidden" id="InvYStkAmountProg.hinban" name="InvYStkAmountProg.hinban" class="primaryKey" />
+        </div>
+        <div id="routing">
+          <label for="InvYStkAmountProg.routing" th:text="#{InvYStkAmountProg.routing}">ROUTING</label><input type="text" id="InvYStkAmountProg.routing" name="InvYStkAmountProg.routing" maxlength="2" class="primaryKey" />
+        </div>
+        <div id="wcCode">
+          <label for="InvYStkAmountProg.wcCode" th:text="#{InvYStkAmountProg.wcCode}">WC_CODE</label><input type="text" id="InvYStkAmountProg.wcCode" name="InvYStkAmountProg.wcCode" maxlength="3" data-json="MstWcSearch.json" data-srcDef="WC_CODE:InvYStkAmountProg.wcCode" data-destDef="InvYStkAmountProg.wcName:WC_NAME" /><a id="InvYStkAmountProg.wcCode" th:href="@{/model/MstWcS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="InvYStkAmountProg.wcName" class="refer" data-json="MstWcSearch.json" data-srcDef="WC_CODE:InvYStkAmountProg.wcCode" data-destDef="InvYStkAmountProg.wcName:WC_NAME"></span>
+        </div>
+        <div id="opeDetail">
+          <label for="InvYStkAmountProg.opeDetail" th:text="#{InvYStkAmountProg.opeDetail}">OPE_DETAIL</label><input type="text" id="InvYStkAmountProg.opeDetail" name="InvYStkAmountProg.opeDetail" maxlength="10" />
+        </div>
+        <div id="nesCounts">
+          <label for="InvYStkAmountProg.nesCounts" th:text="#{InvYStkAmountProg.nesCounts}">NES_COUNTS</label><input type="text" id="InvYStkAmountProg.nesCounts" name="InvYStkAmountProg.nesCounts" maxlength="7" />
+        </div>
+        <div id="rouAmount">
+          <label for="InvYStkAmountProg.rouAmount" th:text="#{InvYStkAmountProg.rouAmount}">ROU_AMOUNT</label><input type="text" id="InvYStkAmountProg.rouAmount" name="InvYStkAmountProg.rouAmount" maxlength="9" />
+        </div>
+        <div id="rouLt">
+          <label for="InvYStkAmountProg.rouLt" th:text="#{InvYStkAmountProg.rouLt}">ROU_LT</label><input type="text" id="InvYStkAmountProg.rouLt" name="InvYStkAmountProg.rouLt" maxlength="6" />
+        </div>
+        <div id="timeStampCreate">
+          <label for="InvYStkAmountProg.timeStampCreate" th:text="#{InvYStkAmountProg.timeStampCreate}">TIME_STAMP_CREATE</label><span id="InvYStkAmountProg.timeStampCreate"></span><input type="hidden" id="InvYStkAmountProg.timeStampCreate" name="InvYStkAmountProg.timeStampCreate" />
+        </div>
+        <div id="timeStampChange">
+          <label for="InvYStkAmountProg.timeStampChange" th:text="#{InvYStkAmountProg.timeStampChange}">TIME_STAMP_CHANGE</label><span id="InvYStkAmountProg.timeStampChange"></span><input type="hidden" id="InvYStkAmountProg.timeStampChange" name="InvYStkAmountProg.timeStampChange" />
+        </div>
+        <div id="userIdCreate">
+          <label for="InvYStkAmountProg.userIdCreate" th:text="#{InvYStkAmountProg.userIdCreate}">USER_ID_CREATE</label><span id="InvYStkAmountProg.userIdCreate"></span><input type="hidden" id="InvYStkAmountProg.userIdCreate" name="InvYStkAmountProg.userIdCreate" />
+        </div>
+        <div id="userIdChange">
+          <label for="InvYStkAmountProg.userIdChange" th:text="#{InvYStkAmountProg.userIdChange}">USER_ID_CHANGE</label><span id="InvYStkAmountProg.userIdChange"></span><input type="hidden" id="InvYStkAmountProg.userIdChange" name="InvYStkAmountProg.userIdChange" />
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend th:text="#{PrdMSupBudgetOut.legend}">legend</legend>
+        <div id="wcCode">
+          <label for="PrdMSupBudgetOut.wcCode" th:text="#{PrdMSupBudgetOut.wcCode}">WC_CODE</label><input type="text" id="PrdMSupBudgetOut.wcCode" name="PrdMSupBudgetOut.wcCode" maxlength="3" data-json="MstWcSearch.json" data-srcDef="WC_CODE:PrdMSupBudgetOut.wcCode" data-destDef="PrdMSupBudgetOut.wcName:WC_NAME" /><a id="PrdMSupBudgetOut.wcCode" th:href="@{/model/MstWcS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="PrdMSupBudgetOut.wcName" class="refer" data-json="MstWcSearch.json" data-srcDef="WC_CODE:PrdMSupBudgetOut.wcCode" data-destDef="PrdMSupBudgetOut.wcName:WC_NAME"></span>
+        </div>
+        <div id="opeDetail">
+          <label for="PrdMSupBudgetOut.opeDetail" th:text="#{PrdMSupBudgetOut.opeDetail}">OPE_DETAIL</label><input type="text" id="PrdMSupBudgetOut.opeDetail" name="PrdMSupBudgetOut.opeDetail" maxlength="10" />
+        </div>
+        <div id="supCode">
+          <label for="PrdMSupBudgetOut.supCode" th:text="#{PrdMSupBudgetOut.supCode}">SUP_CODE</label><input type="text" id="PrdMSupBudgetOut.supCode" name="PrdMSupBudgetOut.supCode" maxlength="6" data-json="MstSupplierSearch.json" data-srcDef="SUP_CODE:PrdMSupBudgetOut.supCode" data-destDef="PrdMSupBudgetOut.supName:SUP_NAME" /><a id="PrdMSupBudgetOut.supCode" th:href="@{/model/MstSupplierS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="PrdMSupBudgetOut.supName" class="refer" data-json="MstSupplierSearch.json" data-srcDef="SUP_CODE:PrdMSupBudgetOut.supCode" data-destDef="PrdMSupBudgetOut.supName:SUP_NAME"></span>
+        </div>
+        <div id="orderCounts">
+          <label for="PrdMSupBudgetOut.orderCounts" th:text="#{PrdMSupBudgetOut.orderCounts}">ORDER_COUNTS</label><input type="text" id="PrdMSupBudgetOut.orderCounts" name="PrdMSupBudgetOut.orderCounts" maxlength="7" />
+        </div>
+        <div id="orderUnit">
+          <label for="PrdMSupBudgetOut.orderUnit" th:text="#{PrdMSupBudgetOut.orderUnit}">ORDER_UNIT</label><input type="text" id="PrdMSupBudgetOut.orderUnit" name="PrdMSupBudgetOut.orderUnit" maxlength="9" />
+        </div>
+        <div id="orderAmount">
+          <label for="PrdMSupBudgetOut.orderAmount" th:text="#{PrdMSupBudgetOut.orderAmount}">ORDER_AMOUNT</label><input type="text" id="PrdMSupBudgetOut.orderAmount" name="PrdMSupBudgetOut.orderAmount" maxlength="11" />
+        </div>
+        <div id="itemKbn">
+          <fieldset id="PrdMSupBudgetOut.itemKbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:item_kbn" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{PrdMSupBudgetOut.itemKbn}">ITEM_KBN</legend>
+          </fieldset>
+        </div>
+        <input type="hidden" name="PrdMSupBudgetOut.timeStampChange" />
+      </fieldset>
+      <fieldset>
+        <legend th:text="#{PrdStoreMainte.legend}">legend</legend>
+        <div id="wcCode">
+          <label for="PrdStoreMainte.wcCode" th:text="#{PrdStoreMainte.wcCode}">WC_CODE</label><input type="text" id="PrdStoreMainte.wcCode" name="PrdStoreMainte.wcCode" maxlength="3" data-json="MstWcSearch.json" data-srcDef="WC_CODE:PrdStoreMainte.wcCode" data-destDef="PrdStoreMainte.wcName:WC_NAME" /><a id="PrdStoreMainte.wcCode" th:href="@{/model/MstWcS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="PrdStoreMainte.wcName" class="refer" data-json="MstWcSearch.json" data-srcDef="WC_CODE:PrdStoreMainte.wcCode" data-destDef="PrdStoreMainte.wcName:WC_NAME"></span>
+        </div>
+        <div id="locationCode">
+          <label for="PrdStoreMainte.locationCode" th:text="#{PrdStoreMainte.locationCode}">LOCATION_CODE</label><input type="text" id="PrdStoreMainte.locationCode" name="PrdStoreMainte.locationCode" maxlength="10" data-json="MstLocationSearch.json" data-srcDef="LOCATION_CODE:PrdStoreMainte.locationCode" data-destDef="PrdStoreMainte.locationName:LOCATION_NAME" /><a id="PrdStoreMainte.locationCode" th:href="@{/model/MstLocationS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="PrdStoreMainte.locationName" class="refer" data-json="MstLocationSearch.json" data-srcDef="LOCATION_CODE:PrdStoreMainte.locationCode" data-destDef="PrdStoreMainte.locationName:LOCATION_NAME"></span>
+        </div>
+        <div id="lotSize">
+          <label for="PrdStoreMainte.lotSize" th:text="#{PrdStoreMainte.lotSize}">LOT_SIZE</label><input type="text" id="PrdStoreMainte.lotSize" name="PrdStoreMainte.lotSize" maxlength="6" />
+        </div>
+        <div id="kanbanAccCounts">
+          <label for="PrdStoreMainte.kanbanAccCounts" th:text="#{PrdStoreMainte.kanbanAccCounts}">KANBAN_ACC_COUNTS</label><input type="text" id="PrdStoreMainte.kanbanAccCounts" name="PrdStoreMainte.kanbanAccCounts" maxlength="6" />
+        </div>
+        <div id="plCounts">
+          <label for="PrdStoreMainte.plCounts" th:text="#{PrdStoreMainte.plCounts}">PL_COUNTS</label><input type="text" id="PrdStoreMainte.plCounts" name="PrdStoreMainte.plCounts" maxlength="6" />
+        </div>
+        <div id="kanbanCounts">
+          <label for="PrdStoreMainte.kanbanCounts" th:text="#{PrdStoreMainte.kanbanCounts}">KANBAN_COUNTS</label><input type="text" id="PrdStoreMainte.kanbanCounts" name="PrdStoreMainte.kanbanCounts" maxlength="4" />
+        </div>
+        <div id="fitPos">
+          <label for="PrdStoreMainte.fitPos" th:text="#{PrdStoreMainte.fitPos}">FIT_POS</label><input type="text" id="PrdStoreMainte.fitPos" name="PrdStoreMainte.fitPos" maxlength="2" />
+        </div>
+        <div id="kanbanId">
+          <label for="PrdStoreMainte.kanbanId" th:text="#{PrdStoreMainte.kanbanId}">KANBAN_ID</label><input type="text" id="PrdStoreMainte.kanbanId" name="PrdStoreMainte.kanbanId" maxlength="9" />
+        </div>
+        <input type="hidden" name="PrdStoreMainte.timeStampChange" />
+      </fieldset>
+      <fieldset>
+        <legend th:text="#{PrdYSupBudgetOut.legend}">legend</legend>
+        <div id="wcCode">
+          <label for="PrdYSupBudgetOut.wcCode" th:text="#{PrdYSupBudgetOut.wcCode}">WC_CODE</label><input type="text" id="PrdYSupBudgetOut.wcCode" name="PrdYSupBudgetOut.wcCode" maxlength="3" data-json="MstWcSearch.json" data-srcDef="WC_CODE:PrdYSupBudgetOut.wcCode" data-destDef="PrdYSupBudgetOut.wcName:WC_NAME" /><a id="PrdYSupBudgetOut.wcCode" th:href="@{/model/MstWcS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="PrdYSupBudgetOut.wcName" class="refer" data-json="MstWcSearch.json" data-srcDef="WC_CODE:PrdYSupBudgetOut.wcCode" data-destDef="PrdYSupBudgetOut.wcName:WC_NAME"></span>
+        </div>
+        <div id="opeDetail">
+          <label for="PrdYSupBudgetOut.opeDetail" th:text="#{PrdYSupBudgetOut.opeDetail}">OPE_DETAIL</label><input type="text" id="PrdYSupBudgetOut.opeDetail" name="PrdYSupBudgetOut.opeDetail" maxlength="10" />
+        </div>
+        <div id="supCode">
+          <label for="PrdYSupBudgetOut.supCode" th:text="#{PrdYSupBudgetOut.supCode}">SUP_CODE</label><input type="text" id="PrdYSupBudgetOut.supCode" name="PrdYSupBudgetOut.supCode" maxlength="6" data-json="MstSupplierSearch.json" data-srcDef="SUP_CODE:PrdYSupBudgetOut.supCode" data-destDef="PrdYSupBudgetOut.supName:SUP_NAME" /><a id="PrdYSupBudgetOut.supCode" th:href="@{/model/MstSupplierS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="PrdYSupBudgetOut.supName" class="refer" data-json="MstSupplierSearch.json" data-srcDef="SUP_CODE:PrdYSupBudgetOut.supCode" data-destDef="PrdYSupBudgetOut.supName:SUP_NAME"></span>
+        </div>
+        <div id="orderCounts">
+          <label for="PrdYSupBudgetOut.orderCounts" th:text="#{PrdYSupBudgetOut.orderCounts}">ORDER_COUNTS</label><input type="text" id="PrdYSupBudgetOut.orderCounts" name="PrdYSupBudgetOut.orderCounts" maxlength="7" />
+        </div>
+        <div id="orderUnit">
+          <label for="PrdYSupBudgetOut.orderUnit" th:text="#{PrdYSupBudgetOut.orderUnit}">ORDER_UNIT</label><input type="text" id="PrdYSupBudgetOut.orderUnit" name="PrdYSupBudgetOut.orderUnit" maxlength="9" />
+        </div>
+        <div id="orderAmount">
+          <label for="PrdYSupBudgetOut.orderAmount" th:text="#{PrdYSupBudgetOut.orderAmount}">ORDER_AMOUNT</label><input type="text" id="PrdYSupBudgetOut.orderAmount" name="PrdYSupBudgetOut.orderAmount" maxlength="11" />
+        </div>
+        <div id="itemKbn">
+          <fieldset id="PrdYSupBudgetOut.itemKbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:item_kbn" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{PrdYSupBudgetOut.itemKbn}">ITEM_KBN</legend>
+          </fieldset>
+        </div>
+        <input type="hidden" name="PrdYSupBudgetOut.timeStampChange" />
+      </fieldset>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="Dialogate.refresh(event);">reset</button>
+        <a th:href="@{InvYStkAmountProgGet.xlsx(baseMei=#{InvYStkAmountProg.h2})}" id="InvYStkAmountProgGet.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeleteInvYStkAmountProg" class="delete" data-action="InvYStkAmountProgDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistInvYStkAmountProg" class="regist" th:text="#{common.regist}">登録</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

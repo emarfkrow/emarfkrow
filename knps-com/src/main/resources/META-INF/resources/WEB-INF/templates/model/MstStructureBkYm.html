@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{MstStructureBkYm.title}">MST_STRUCTURE_BK_YM</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/MstStructureBkYmGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{MstStructureBkYm.h2}">h2</h2>
+    <form name="MstStructureBkYmRegistForm" action="MstStructureBkYmRegist.ajax" class="regist">
+      <fieldset>
+        <legend th:text="#{MstStructureBkYm.legend}">legend</legend>
+        <div id="yy">
+          <label for="MstStructureBkYm.yy" th:text="#{MstStructureBkYm.yy}">YY</label><span id="MstStructureBkYm.yy"></span><input type="hidden" id="MstStructureBkYm.yy" name="MstStructureBkYm.yy" class="primaryKey" />
+        </div>
+        <div id="mm">
+          <label for="MstStructureBkYm.mm" th:text="#{MstStructureBkYm.mm}">MM</label><span id="MstStructureBkYm.mm"></span><input type="hidden" id="MstStructureBkYm.mm" name="MstStructureBkYm.mm" class="primaryKey" />
+        </div>
+        <div id="manHinban">
+          <label for="MstStructureBkYm.manHinban" th:text="#{MstStructureBkYm.manHinban}">MAN_HINBAN</label><span id="MstStructureBkYm.manHinban"></span><input type="hidden" id="MstStructureBkYm.manHinban" name="MstStructureBkYm.manHinban" class="primaryKey" />
+        </div>
+        <div id="hinban">
+          <label for="MstStructureBkYm.hinban" th:text="#{MstStructureBkYm.hinban}">HINBAN</label><span id="MstStructureBkYm.hinban"></span><input type="hidden" id="MstStructureBkYm.hinban" name="MstStructureBkYm.hinban" class="primaryKey" />
+        </div>
+        <div id="counts">
+          <label for="MstStructureBkYm.counts" th:text="#{MstStructureBkYm.counts}">COUNTS</label><input type="text" id="MstStructureBkYm.counts" name="MstStructureBkYm.counts" maxlength="11" />
+        </div>
+        <div id="timeStampCreate">
+          <label for="MstStructureBkYm.timeStampCreate" th:text="#{MstStructureBkYm.timeStampCreate}">TIME_STAMP_CREATE</label><span id="MstStructureBkYm.timeStampCreate"></span><input type="hidden" id="MstStructureBkYm.timeStampCreate" name="MstStructureBkYm.timeStampCreate" />
+        </div>
+        <div id="timeStampChange">
+          <label for="MstStructureBkYm.timeStampChange" th:text="#{MstStructureBkYm.timeStampChange}">TIME_STAMP_CHANGE</label><span id="MstStructureBkYm.timeStampChange"></span><input type="hidden" id="MstStructureBkYm.timeStampChange" name="MstStructureBkYm.timeStampChange" />
+        </div>
+        <div id="userIdCreate">
+          <label for="MstStructureBkYm.userIdCreate" th:text="#{MstStructureBkYm.userIdCreate}">USER_ID_CREATE</label><span id="MstStructureBkYm.userIdCreate"></span><input type="hidden" id="MstStructureBkYm.userIdCreate" name="MstStructureBkYm.userIdCreate" />
+        </div>
+        <div id="userIdChange">
+          <label for="MstStructureBkYm.userIdChange" th:text="#{MstStructureBkYm.userIdChange}">USER_ID_CHANGE</label><span id="MstStructureBkYm.userIdChange"></span><input type="hidden" id="MstStructureBkYm.userIdChange" name="MstStructureBkYm.userIdChange" />
+        </div>
+        <div id="deleteFlag">
+          <fieldset id="MstStructureBkYm.deleteFlagList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:delete_flag" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstStructureBkYm.deleteFlag}">DELETE_FLAG</legend>
+          </fieldset>
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="Dialogate.refresh(event);">reset</button>
+        <a th:href="@{MstStructureBkYmGet.xlsx(baseMei=#{MstStructureBkYm.h2})}" id="MstStructureBkYmGet.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeleteMstStructureBkYm" class="delete" data-action="MstStructureBkYmDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistMstStructureBkYm" class="regist" th:text="#{common.regist}">登録</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{InvStockStoreBkYm.title}">INV_STOCK_STORE_BK_YM</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/InvStockStoreBkYmGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{InvStockStoreBkYm.h2}">h2</h2>
+    <form name="InvStockStoreBkYmRegistForm" action="InvStockStoreBkYmRegist.ajax" class="regist">
+      <fieldset>
+        <legend th:text="#{InvStockStoreBkYm.legend}">legend</legend>
+        <div id="yy">
+          <label for="InvStockStoreBkYm.yy" th:text="#{InvStockStoreBkYm.yy}">YY</label><span id="InvStockStoreBkYm.yy"></span><input type="hidden" id="InvStockStoreBkYm.yy" name="InvStockStoreBkYm.yy" class="primaryKey" />
+        </div>
+        <div id="mm">
+          <label for="InvStockStoreBkYm.mm" th:text="#{InvStockStoreBkYm.mm}">MM</label><span id="InvStockStoreBkYm.mm"></span><input type="hidden" id="InvStockStoreBkYm.mm" name="InvStockStoreBkYm.mm" class="primaryKey" />
+        </div>
+        <div id="hinban">
+          <label for="InvStockStoreBkYm.hinban" th:text="#{InvStockStoreBkYm.hinban}">HINBAN</label><input type="text" id="InvStockStoreBkYm.hinban" name="InvStockStoreBkYm.hinban" maxlength="25" class="primaryKey" />
+        </div>
+        <div id="storeNo">
+          <label for="InvStockStoreBkYm.storeNo" th:text="#{InvStockStoreBkYm.storeNo}">STORE_NO</label><input type="text" id="InvStockStoreBkYm.storeNo" name="InvStockStoreBkYm.storeNo" maxlength="10" class="primaryKey" />
+        </div>
+        <div id="counts">
+          <label for="InvStockStoreBkYm.counts" th:text="#{InvStockStoreBkYm.counts}">COUNTS</label><input type="text" id="InvStockStoreBkYm.counts" name="InvStockStoreBkYm.counts" maxlength="6" />
+        </div>
+        <div id="hakoSu">
+          <label for="InvStockStoreBkYm.hakoSu" th:text="#{InvStockStoreBkYm.hakoSu}">HAKO_SU</label><input type="text" id="InvStockStoreBkYm.hakoSu" name="InvStockStoreBkYm.hakoSu" maxlength="3" />
+        </div>
+        <div id="stock">
+          <label for="InvStockStoreBkYm.stock" th:text="#{InvStockStoreBkYm.stock}">STOCK</label><input type="text" id="InvStockStoreBkYm.stock" name="InvStockStoreBkYm.stock" maxlength="9" />
+        </div>
+        <div id="totalSumCost">
+          <label for="InvStockStoreBkYm.totalSumCost" th:text="#{InvStockStoreBkYm.totalSumCost}">TOTAL_SUM_COST</label><input type="text" id="InvStockStoreBkYm.totalSumCost" name="InvStockStoreBkYm.totalSumCost" maxlength="9" />
+        </div>
+        <div id="amount">
+          <label for="InvStockStoreBkYm.amount" th:text="#{InvStockStoreBkYm.amount}">AMOUNT</label><input type="text" id="InvStockStoreBkYm.amount" name="InvStockStoreBkYm.amount" maxlength="11" />
+        </div>
+        <div id="timeStampCreate">
+          <label for="InvStockStoreBkYm.timeStampCreate" th:text="#{InvStockStoreBkYm.timeStampCreate}">TIME_STAMP_CREATE</label><span id="InvStockStoreBkYm.timeStampCreate"></span><input type="hidden" id="InvStockStoreBkYm.timeStampCreate" name="InvStockStoreBkYm.timeStampCreate" />
+        </div>
+        <div id="timeStampChange">
+          <label for="InvStockStoreBkYm.timeStampChange" th:text="#{InvStockStoreBkYm.timeStampChange}">TIME_STAMP_CHANGE</label><span id="InvStockStoreBkYm.timeStampChange"></span><input type="hidden" id="InvStockStoreBkYm.timeStampChange" name="InvStockStoreBkYm.timeStampChange" />
+        </div>
+        <div id="userIdCreate">
+          <label for="InvStockStoreBkYm.userIdCreate" th:text="#{InvStockStoreBkYm.userIdCreate}">USER_ID_CREATE</label><span id="InvStockStoreBkYm.userIdCreate"></span><input type="hidden" id="InvStockStoreBkYm.userIdCreate" name="InvStockStoreBkYm.userIdCreate" />
+        </div>
+        <div id="userIdChange">
+          <label for="InvStockStoreBkYm.userIdChange" th:text="#{InvStockStoreBkYm.userIdChange}">USER_ID_CHANGE</label><span id="InvStockStoreBkYm.userIdChange"></span><input type="hidden" id="InvStockStoreBkYm.userIdChange" name="InvStockStoreBkYm.userIdChange" />
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="Dialogate.refresh(event);">reset</button>
+        <a th:href="@{InvStockStoreBkYmGet.xlsx(baseMei=#{InvStockStoreBkYm.h2})}" id="InvStockStoreBkYmGet.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeleteInvStockStoreBkYm" class="delete" data-action="InvStockStoreBkYmDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistInvStockStoreBkYm" class="regist" th:text="#{common.regist}">登録</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

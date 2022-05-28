@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{PrdMProPlanConditionBkS.title}">PRD_M_PRO_PLAN_CONDITION_BK</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/PrdMProPlanConditionBkGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{PrdMProPlanConditionBkS.h2}">h2</h2>
+    <form name="PrdMProPlanConditionBkSearchForm" action="PrdMProPlanConditionBkSearch.ajax" class="search">
+      <fieldset>
+        <legend th:text="#{PrdMProPlanConditionBkS.legend}">legend</legend>
+        <div id="yyyy">
+          <label for="PrdMProPlanConditionBk.yyyy" th:text="#{PrdMProPlanConditionBk.yyyy}">YYYY</label><input type="text" id="PrdMProPlanConditionBk.yyyy" name="PrdMProPlanConditionBk.yyyy" maxlength="4" />
+        </div>
+        <div id="mm">
+          <label for="PrdMProPlanConditionBk.mm" th:text="#{PrdMProPlanConditionBk.mm}">MM</label><input type="text" id="PrdMProPlanConditionBk.mm" name="PrdMProPlanConditionBk.mm" maxlength="2" />
+        </div>
+        <div id="opeDays">
+          <label for="PrdMProPlanConditionBk.opeDays" th:text="#{PrdMProPlanConditionBk.opeDays}">OPE_DAYS</label><input type="text" id="PrdMProPlanConditionBk.opeDays" name="PrdMProPlanConditionBk.opeDays" maxlength="2" />
+        </div>
+        <div id="fixedStatus">
+          <label for="PrdMProPlanConditionBk.fixedStatus" th:text="#{PrdMProPlanConditionBk.fixedStatus}">FIXED_STATUS</label><input type="text" id="PrdMProPlanConditionBk.fixedStatus" name="PrdMProPlanConditionBk.fixedStatus" maxlength="1" />
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="reset" th:text="#{common.reset}">reset</button>
+        <a th:href="@{/model/PrdMProPlanConditionBk.html}" id="PrdMProPlanConditionBk" target="dialog" th:text="#{PrdMProPlanConditionBk.add}" tabindex="-1">PRD_M_PRO_PLAN_CONDITION_BK</a>
+      </div>
+      <div class="submits">
+        <button id="SearchPrdMProPlanConditionBk" class="search" data-gridId="PrdMProPlanConditionBkGrid" th:text="#{common.search}">submit</button>
+      </div>
+    </form>
+    <form name="PrdMProPlanConditionBkSRegistForm" action="PrdMProPlanConditionBkSRegist.ajax" class="regist">
+      <h3 th:text="#{PrdMProPlanConditionBk.h3}">h3</h3>
+      <div id="PrdMProPlanConditionBkGrid" data-selectionMode="checkbox" data-frozenColumn="-1" th:data-href="@{/model/PrdMProPlanConditionBk.html}"></div>
+      <div id="PrdMProPlanConditionBkPager"></div>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="$('[id=&quot;SearchPrdMProPlanConditionBk&quot;]').click();">reset</button>
+        <a th:href="@{PrdMProPlanConditionBkSearch.xlsx(baseMei=#{PrdMProPlanConditionBkS.h2})}" id="PrdMProPlanConditionBkSearch.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeletePrdMProPlanConditionBkS" class="delete selectRows" data-action="PrdMProPlanConditionBkSDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistPrdMProPlanConditionBkS" class="regist" th:text="#{common.regist}">submit</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{PrdStoreMainteRetsuDet.title}">PRD_STORE_MAINTE_RETSU_DET</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/PrdStoreMainteRetsuDetGridColumns.js}"></script>
+<script th:src="@{/model/MstWcGridColumns.js}"></script>
+<script th:src="@{/model/MstWcBkGridColumns.js}"></script>
+<script th:src="@{/model/MstProcGridColumns.js}"></script>
+<script th:src="@{/model/MstWsGridColumns.js}"></script>
+<script th:src="@{/model/MstTeamGridColumns.js}"></script>
+<script th:src="@{/model/MstGroupGridColumns.js}"></script>
+<script th:src="@{/model/MstDivisionGridColumns.js}"></script>
+<script th:src="@{/model/MstCompanyGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierGridColumns.js}"></script>
+<script th:src="@{/model/InvStockProcessSupplyGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierBkGridColumns.js}"></script>
+<script th:src="@{/model/MstTaxGridColumns.js}"></script>
+<script th:src="@{/model/MstCostCenterGridColumns.js}"></script>
+<script th:src="@{/model/MstCostCenterBkGridColumns.js}"></script>
+<script th:src="@{/model/MstSubinvGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{PrdStoreMainteRetsuDet.h2}">h2</h2>
+    <form name="PrdStoreMainteRetsuDetRegistForm" action="PrdStoreMainteRetsuDetRegist.ajax" class="regist">
+      <fieldset>
+        <legend th:text="#{PrdStoreMainteRetsuDet.legend}">legend</legend>
+        <div id="retsuNo">
+          <label for="PrdStoreMainteRetsuDet.retsuNo" th:text="#{PrdStoreMainteRetsuDet.retsuNo}">RETSU_NO</label><span id="PrdStoreMainteRetsuDet.retsuNo"></span><input type="hidden" id="PrdStoreMainteRetsuDet.retsuNo" name="PrdStoreMainteRetsuDet.retsuNo" class="primaryKey" />
+        </div>
+        <div id="retsuPos">
+          <label for="PrdStoreMainteRetsuDet.retsuPos" th:text="#{PrdStoreMainteRetsuDet.retsuPos}">RETSU_POS</label><input type="text" id="PrdStoreMainteRetsuDet.retsuPos" name="PrdStoreMainteRetsuDet.retsuPos" maxlength="4" class="primaryKey" />
+        </div>
+        <div id="wcCode">
+          <label for="PrdStoreMainteRetsuDet.wcCode" th:text="#{PrdStoreMainteRetsuDet.wcCode}">WC_CODE</label><input type="text" id="PrdStoreMainteRetsuDet.wcCode" name="PrdStoreMainteRetsuDet.wcCode" maxlength="3" data-json="MstWcSearch.json" data-srcDef="WC_CODE:PrdStoreMainteRetsuDet.wcCode" data-destDef="PrdStoreMainteRetsuDet.wcName:WC_NAME" /><a id="PrdStoreMainteRetsuDet.wcCode" th:href="@{/model/MstWcS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="PrdStoreMainteRetsuDet.wcName" class="refer" data-json="MstWcSearch.json" data-srcDef="WC_CODE:PrdStoreMainteRetsuDet.wcCode" data-destDef="PrdStoreMainteRetsuDet.wcName:WC_NAME"></span>
+        </div>
+        <div id="opeDetail">
+          <label for="PrdStoreMainteRetsuDet.opeDetail" th:text="#{PrdStoreMainteRetsuDet.opeDetail}">OPE_DETAIL</label><input type="text" id="PrdStoreMainteRetsuDet.opeDetail" name="PrdStoreMainteRetsuDet.opeDetail" maxlength="10" />
+        </div>
+        <div id="timeStampCreate">
+          <label for="PrdStoreMainteRetsuDet.timeStampCreate" th:text="#{PrdStoreMainteRetsuDet.timeStampCreate}">TIME_STAMP_CREATE</label><span id="PrdStoreMainteRetsuDet.timeStampCreate"></span><input type="hidden" id="PrdStoreMainteRetsuDet.timeStampCreate" name="PrdStoreMainteRetsuDet.timeStampCreate" />
+        </div>
+        <div id="timeStampChange">
+          <label for="PrdStoreMainteRetsuDet.timeStampChange" th:text="#{PrdStoreMainteRetsuDet.timeStampChange}">TIME_STAMP_CHANGE</label><span id="PrdStoreMainteRetsuDet.timeStampChange"></span><input type="hidden" id="PrdStoreMainteRetsuDet.timeStampChange" name="PrdStoreMainteRetsuDet.timeStampChange" />
+        </div>
+        <div id="userIdCreate">
+          <label for="PrdStoreMainteRetsuDet.userIdCreate" th:text="#{PrdStoreMainteRetsuDet.userIdCreate}">USER_ID_CREATE</label><span id="PrdStoreMainteRetsuDet.userIdCreate"></span><input type="hidden" id="PrdStoreMainteRetsuDet.userIdCreate" name="PrdStoreMainteRetsuDet.userIdCreate" />
+        </div>
+        <div id="userIdChange">
+          <label for="PrdStoreMainteRetsuDet.userIdChange" th:text="#{PrdStoreMainteRetsuDet.userIdChange}">USER_ID_CHANGE</label><span id="PrdStoreMainteRetsuDet.userIdChange"></span><input type="hidden" id="PrdStoreMainteRetsuDet.userIdChange" name="PrdStoreMainteRetsuDet.userIdChange" />
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="Dialogate.refresh(event);">reset</button>
+        <a th:href="@{PrdStoreMainteRetsuDetGet.xlsx(baseMei=#{PrdStoreMainteRetsuDet.h2})}" id="PrdStoreMainteRetsuDetGet.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeletePrdStoreMainteRetsuDet" class="delete" data-action="PrdStoreMainteRetsuDetDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistPrdStoreMainteRetsuDet" class="regist" th:text="#{common.regist}">登録</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{MstSalesHinbanS.title}">MST_SALES_HINBAN</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/MstSalesHinbanGridColumns.js}"></script>
+<script th:src="@{/model/InvSalesInventoryGridColumns.js}"></script>
+<script th:src="@{/model/MstLocationGridColumns.js}"></script>
+<script th:src="@{/model/MstSubinvGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierGridColumns.js}"></script>
+<script th:src="@{/model/InvStockProcessSupplyGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierBkGridColumns.js}"></script>
+<script th:src="@{/model/MstTaxGridColumns.js}"></script>
+<script th:src="@{/model/MstStoreManGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{MstSalesHinbanS.h2}">h2</h2>
+    <form name="MstSalesHinbanSearchForm" action="MstSalesHinbanSearch.ajax" class="search">
+      <fieldset>
+        <legend th:text="#{MstSalesHinbanS.legend}">legend</legend>
+        <div id="salesHinban">
+          <label for="MstSalesHinban.salesHinban" th:text="#{MstSalesHinban.salesHinban}">SALES_HINBAN</label><input type="text" id="MstSalesHinban.salesHinban" name="MstSalesHinban.salesHinban" maxlength="20" />
+        </div>
+        <div id="compKbn">
+          <fieldset id="MstSalesHinban.compKbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:comp_kbn" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstSalesHinban.compKbn}">COMP_KBN</legend>
+          </fieldset>
+        </div>
+        <div id="deleteFlag">
+          <fieldset id="MstSalesHinban.deleteFlagList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:delete_flag" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstSalesHinban.deleteFlag}">DELETE_FLAG</legend>
+          </fieldset>
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="reset" th:text="#{common.reset}">reset</button>
+        <a th:href="@{/model/MstSalesHinban.html}" id="MstSalesHinban" target="dialog" th:text="#{MstSalesHinban.add}" tabindex="-1">MST_SALES_HINBAN</a>
+      </div>
+      <div class="submits">
+        <button id="SearchMstSalesHinban" class="search" data-gridId="MstSalesHinbanGrid" th:text="#{common.search}">submit</button>
+      </div>
+    </form>
+    <form name="MstSalesHinbanSRegistForm" action="MstSalesHinbanSRegist.ajax" class="regist">
+      <h3 th:text="#{MstSalesHinban.h3}">h3</h3>
+      <div id="MstSalesHinbanGrid" data-selectionMode="checkbox" data-addRow="true" data-frozenColumn="0" th:data-href="@{/model/MstSalesHinban.html}"></div>
+      <div id="MstSalesHinbanPager"></div>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="$('[id=&quot;SearchMstSalesHinban&quot;]').click();">reset</button>
+        <a th:href="@{MstSalesHinbanSearch.xlsx(baseMei=#{MstSalesHinbanS.h2})}" id="MstSalesHinbanSearch.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeleteMstSalesHinbanS" class="delete selectRows" data-action="MstSalesHinbanSDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistMstSalesHinbanS" class="regist" th:text="#{common.regist}">submit</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

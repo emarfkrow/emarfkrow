@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{PrdYProNesCounts.title}">PRD_Y_PRO_NES_COUNTS</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/PrdYProNesCountsGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{PrdYProNesCounts.h2}">h2</h2>
+    <form name="PrdYProNesCountsRegistForm" action="PrdYProNesCountsRegist.ajax" class="regist">
+      <fieldset>
+        <legend th:text="#{PrdYProNesCounts.legend}">legend</legend>
+        <div id="proHinban">
+          <label for="PrdYProNesCounts.proHinban" th:text="#{PrdYProNesCounts.proHinban}">PRO_HINBAN</label><span id="PrdYProNesCounts.proHinban"></span><input type="hidden" id="PrdYProNesCounts.proHinban" name="PrdYProNesCounts.proHinban" class="primaryKey" />
+        </div>
+        <div id="yyyy">
+          <label for="PrdYProNesCounts.yyyy" th:text="#{PrdYProNesCounts.yyyy}">YYYY</label><span id="PrdYProNesCounts.yyyy"></span><input type="hidden" id="PrdYProNesCounts.yyyy" name="PrdYProNesCounts.yyyy" class="primaryKey" />
+        </div>
+        <div id="mm">
+          <label for="PrdYProNesCounts.mm" th:text="#{PrdYProNesCounts.mm}">MM</label><span id="PrdYProNesCounts.mm"></span><input type="hidden" id="PrdYProNesCounts.mm" name="PrdYProNesCounts.mm" class="primaryKey" />
+        </div>
+        <div id="proNesCounts">
+          <label for="PrdYProNesCounts.proNesCounts" th:text="#{PrdYProNesCounts.proNesCounts}">PRO_NES_COUNTS</label><input type="text" id="PrdYProNesCounts.proNesCounts" name="PrdYProNesCounts.proNesCounts" maxlength="7" />
+        </div>
+        <div id="proAdjCounts">
+          <label for="PrdYProNesCounts.proAdjCounts" th:text="#{PrdYProNesCounts.proAdjCounts}">PRO_ADJ_COUNTS</label><input type="text" id="PrdYProNesCounts.proAdjCounts" name="PrdYProNesCounts.proAdjCounts" maxlength="8" />
+        </div>
+        <div id="timeStampCreate">
+          <label for="PrdYProNesCounts.timeStampCreate" th:text="#{PrdYProNesCounts.timeStampCreate}">TIME_STAMP_CREATE</label><span id="PrdYProNesCounts.timeStampCreate"></span><input type="hidden" id="PrdYProNesCounts.timeStampCreate" name="PrdYProNesCounts.timeStampCreate" />
+        </div>
+        <div id="timeStampChange">
+          <label for="PrdYProNesCounts.timeStampChange" th:text="#{PrdYProNesCounts.timeStampChange}">TIME_STAMP_CHANGE</label><span id="PrdYProNesCounts.timeStampChange"></span><input type="hidden" id="PrdYProNesCounts.timeStampChange" name="PrdYProNesCounts.timeStampChange" />
+        </div>
+        <div id="userIdCreate">
+          <label for="PrdYProNesCounts.userIdCreate" th:text="#{PrdYProNesCounts.userIdCreate}">USER_ID_CREATE</label><span id="PrdYProNesCounts.userIdCreate"></span><input type="hidden" id="PrdYProNesCounts.userIdCreate" name="PrdYProNesCounts.userIdCreate" />
+        </div>
+        <div id="userIdChange">
+          <label for="PrdYProNesCounts.userIdChange" th:text="#{PrdYProNesCounts.userIdChange}">USER_ID_CHANGE</label><span id="PrdYProNesCounts.userIdChange"></span><input type="hidden" id="PrdYProNesCounts.userIdChange" name="PrdYProNesCounts.userIdChange" />
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="Dialogate.refresh(event);">reset</button>
+        <a th:href="@{PrdYProNesCountsGet.xlsx(baseMei=#{PrdYProNesCounts.h2})}" id="PrdYProNesCountsGet.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeletePrdYProNesCounts" class="delete" data-action="PrdYProNesCountsDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistPrdYProNesCounts" class="regist" th:text="#{common.regist}">登録</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

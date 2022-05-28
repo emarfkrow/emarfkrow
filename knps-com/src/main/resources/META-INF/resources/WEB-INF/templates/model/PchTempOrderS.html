@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{PchTempOrderS.title}">PCH_TEMP_ORDER</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/PchTempOrderGridColumns.js}"></script>
+<script th:src="@{/model/PchTempOrderDetGridColumns.js}"></script>
+<script th:src="@{/model/PchTempOrderEstFileGridColumns.js}"></script>
+<script th:src="@{/model/MstEmpGridColumns.js}"></script>
+<script th:src="@{/model/MstDivisionGridColumns.js}"></script>
+<script th:src="@{/model/MstCompanyGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierGridColumns.js}"></script>
+<script th:src="@{/model/InvStockProcessSupplyGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierBkGridColumns.js}"></script>
+<script th:src="@{/model/MstTaxGridColumns.js}"></script>
+<script th:src="@{/model/MstTempSupplierGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{PchTempOrderS.h2}">h2</h2>
+    <form name="PchTempOrderSearchForm" action="PchTempOrderSearch.ajax" class="search">
+      <fieldset>
+        <legend th:text="#{PchTempOrderS.legend}">legend</legend>
+        <div id="tempOrderNo">
+          <label for="PchTempOrder.tempOrderNo" th:text="#{PchTempOrder.tempOrderNo}">TEMP_ORDER_NO</label><input type="text" id="PchTempOrder.tempOrderNo" name="PchTempOrder.tempOrderNo" maxlength="10" />
+        </div>
+        <div id="iraiDt">
+          <label for="PchTempOrder.iraiDt_1" th:text="#{PchTempOrder.iraiDt}">IRAI_DT</label><input type="datetime-local" id="PchTempOrder.iraiDt_1" name="PchTempOrder.iraiDt_1" maxlength="7" />～<input type="datetime-local" id="PchTempOrder.iraiDt_2" name="PchTempOrder.iraiDt_2" maxlength="7" />
+        </div>
+        <div id="iraiEmpCode">
+          <label for="PchTempOrder.iraiEmpCode" th:text="#{PchTempOrder.iraiEmpCode}">IRAI_EMP_CODE</label><input type="text" id="PchTempOrder.iraiEmpCode" name="PchTempOrder.iraiEmpCode" maxlength="10" data-json="MstEmpSearch.json" data-srcDef="EMP_CODE:PchTempOrder.iraiEmpCode" data-destDef="PchTempOrder.iraiEmpName:EMP_NAME" /><a id="PchTempOrder.iraiEmpCode" th:href="@{/model/MstEmpS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="PchTempOrder.iraiEmpName" class="refer" data-json="MstEmpSearch.json" data-srcDef="EMP_CODE:PchTempOrder.iraiEmpCode" data-destDef="PchTempOrder.iraiEmpName:EMP_NAME"></span>
+        </div>
+        <div id="supCode">
+          <label for="PchTempOrder.supCode" th:text="#{PchTempOrder.supCode}">SUP_CODE</label><input type="text" id="PchTempOrder.supCode" name="PchTempOrder.supCode" maxlength="6" data-json="MstSupplierSearch.json" data-srcDef="SUP_CODE:PchTempOrder.supCode" data-destDef="PchTempOrder.supName:SUP_NAME" /><a id="PchTempOrder.supCode" th:href="@{/model/MstSupplierS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="PchTempOrder.supName" class="refer" data-json="MstSupplierSearch.json" data-srcDef="SUP_CODE:PchTempOrder.supCode" data-destDef="PchTempOrder.supName:SUP_NAME"></span>
+        </div>
+        <div id="tempSupCode">
+          <label for="PchTempOrder.tempSupCode" th:text="#{PchTempOrder.tempSupCode}">TEMP_SUP_CODE</label><input type="text" id="PchTempOrder.tempSupCode" name="PchTempOrder.tempSupCode" maxlength="6" data-json="MstTempSupplierSearch.json" data-srcDef="TEMP_SUP_CODE:PchTempOrder.tempSupCode" data-destDef="PchTempOrder.tempSupName:TEMP_SUP_NAME" /><a id="PchTempOrder.tempSupCode" th:href="@{/model/MstTempSupplierS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="PchTempOrder.tempSupName" class="refer" data-json="MstTempSupplierSearch.json" data-srcDef="TEMP_SUP_CODE:PchTempOrder.tempSupCode" data-destDef="PchTempOrder.tempSupName:TEMP_SUP_NAME"></span>
+        </div>
+        <div id="memo">
+          <label for="PchTempOrder.memo" th:text="#{PchTempOrder.memo}">MEMO</label><input type="text" id="PchTempOrder.memo" name="PchTempOrder.memo" maxlength="500" />
+        </div>
+        <div id="payIraiDt">
+          <label for="PchTempOrder.payIraiDt_1" th:text="#{PchTempOrder.payIraiDt}">PAY_IRAI_DT</label><input type="datetime-local" id="PchTempOrder.payIraiDt_1" name="PchTempOrder.payIraiDt_1" maxlength="7" />～<input type="datetime-local" id="PchTempOrder.payIraiDt_2" name="PchTempOrder.payIraiDt_2" maxlength="7" />
+        </div>
+        <div id="payIraiEmpCode">
+          <label for="PchTempOrder.payIraiEmpCode" th:text="#{PchTempOrder.payIraiEmpCode}">PAY_IRAI_EMP_CODE</label><input type="text" id="PchTempOrder.payIraiEmpCode" name="PchTempOrder.payIraiEmpCode" maxlength="10" data-json="MstEmpSearch.json" data-srcDef="EMP_CODE:PchTempOrder.payIraiEmpCode" data-destDef="PchTempOrder.payIraiEmpName:EMP_NAME" /><a id="PchTempOrder.payIraiEmpCode" th:href="@{/model/MstEmpS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="PchTempOrder.payIraiEmpName" class="refer" data-json="MstEmpSearch.json" data-srcDef="EMP_CODE:PchTempOrder.payIraiEmpCode" data-destDef="PchTempOrder.payIraiEmpName:EMP_NAME"></span>
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="reset" th:text="#{common.reset}">reset</button>
+        <a th:href="@{/model/PchTempOrder.html}" id="PchTempOrder" target="dialog" th:text="#{PchTempOrder.add}" tabindex="-1">PCH_TEMP_ORDER</a>
+      </div>
+      <div class="submits">
+        <button id="SearchPchTempOrder" class="search" data-gridId="PchTempOrderGrid" th:text="#{common.search}">submit</button>
+      </div>
+    </form>
+    <form name="PchTempOrderSRegistForm" action="PchTempOrderSRegist.ajax" class="regist">
+      <h3 th:text="#{PchTempOrder.h3}">h3</h3>
+      <div id="PchTempOrderGrid" data-selectionMode="checkbox" data-addRow="true" data-frozenColumn="0" th:data-href="@{/model/PchTempOrder.html}"></div>
+      <div id="PchTempOrderPager"></div>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="$('[id=&quot;SearchPchTempOrder&quot;]').click();">reset</button>
+        <a th:href="@{PchTempOrderSearch.xlsx(baseMei=#{PchTempOrderS.h2})}" id="PchTempOrderSearch.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeletePchTempOrderS" class="delete selectRows" data-action="PchTempOrderSDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistPchTempOrderS" class="regist" th:text="#{common.regist}">submit</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

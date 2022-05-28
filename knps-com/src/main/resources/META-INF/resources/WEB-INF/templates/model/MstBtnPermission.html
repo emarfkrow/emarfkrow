@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{MstBtnPermission.title}">MST_BTN_PERMISSION</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/MstBtnPermissionGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{MstBtnPermission.h2}">h2</h2>
+    <form name="MstBtnPermissionRegistForm" action="MstBtnPermissionRegist.ajax" class="regist">
+      <fieldset>
+        <legend th:text="#{MstBtnPermission.legend}">legend</legend>
+        <div id="compCode">
+          <fieldset id="MstBtnPermission.compCodeList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:comp_code" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstBtnPermission.compCode}">COMP_CODE</legend>
+          </fieldset>
+        </div>
+        <div id="gamenId">
+          <label for="MstBtnPermission.gamenId" th:text="#{MstBtnPermission.gamenId}">GAMEN_ID</label><input type="text" id="MstBtnPermission.gamenId" name="MstBtnPermission.gamenId" maxlength="80" class="primaryKey" />
+        </div>
+        <div id="buttonId">
+          <label for="MstBtnPermission.buttonId" th:text="#{MstBtnPermission.buttonId}">BUTTON_ID</label><input type="text" id="MstBtnPermission.buttonId" name="MstBtnPermission.buttonId" maxlength="80" class="primaryKey" />
+        </div>
+        <div id="permission">
+          <label for="MstBtnPermission.permission" th:text="#{MstBtnPermission.permission}">PERMISSION</label><input type="text" id="MstBtnPermission.permission" name="MstBtnPermission.permission" maxlength="1" />
+        </div>
+        <div id="timeStampCreate">
+          <label for="MstBtnPermission.timeStampCreate" th:text="#{MstBtnPermission.timeStampCreate}">TIME_STAMP_CREATE</label><span id="MstBtnPermission.timeStampCreate"></span><input type="hidden" id="MstBtnPermission.timeStampCreate" name="MstBtnPermission.timeStampCreate" />
+        </div>
+        <div id="timeStampChange">
+          <label for="MstBtnPermission.timeStampChange" th:text="#{MstBtnPermission.timeStampChange}">TIME_STAMP_CHANGE</label><span id="MstBtnPermission.timeStampChange"></span><input type="hidden" id="MstBtnPermission.timeStampChange" name="MstBtnPermission.timeStampChange" />
+        </div>
+        <div id="userIdCreate">
+          <label for="MstBtnPermission.userIdCreate" th:text="#{MstBtnPermission.userIdCreate}">USER_ID_CREATE</label><span id="MstBtnPermission.userIdCreate"></span><input type="hidden" id="MstBtnPermission.userIdCreate" name="MstBtnPermission.userIdCreate" />
+        </div>
+        <div id="userIdChange">
+          <label for="MstBtnPermission.userIdChange" th:text="#{MstBtnPermission.userIdChange}">USER_ID_CHANGE</label><span id="MstBtnPermission.userIdChange"></span><input type="hidden" id="MstBtnPermission.userIdChange" name="MstBtnPermission.userIdChange" />
+        </div>
+        <div id="deleteFlag">
+          <fieldset id="MstBtnPermission.deleteFlagList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:delete_flag" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstBtnPermission.deleteFlag}">DELETE_FLAG</legend>
+          </fieldset>
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="Dialogate.refresh(event);">reset</button>
+        <a th:href="@{MstBtnPermissionGet.xlsx(baseMei=#{MstBtnPermission.h2})}" id="MstBtnPermissionGet.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeleteMstBtnPermission" class="delete" data-action="MstBtnPermissionDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistMstBtnPermission" class="regist" th:text="#{common.regist}">登録</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

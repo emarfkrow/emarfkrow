@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{PrdWNesKanban.title}">PRD_W_NES_KANBAN</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/PrdWNesKanbanGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{PrdWNesKanban.h2}">h2</h2>
+    <form name="PrdWNesKanbanRegistForm" action="PrdWNesKanbanRegist.ajax" class="regist">
+      <fieldset>
+        <legend th:text="#{PrdWNesKanban.legend}">legend</legend>
+        <div id="proHinban">
+          <label for="PrdWNesKanban.proHinban" th:text="#{PrdWNesKanban.proHinban}">PRO_HINBAN</label><span id="PrdWNesKanban.proHinban"></span><input type="hidden" id="PrdWNesKanban.proHinban" name="PrdWNesKanban.proHinban" class="primaryKey" />
+        </div>
+        <div id="storeWc">
+          <label for="PrdWNesKanban.storeWc" th:text="#{PrdWNesKanban.storeWc}">STORE_WC</label><input type="text" id="PrdWNesKanban.storeWc" name="PrdWNesKanban.storeWc" maxlength="3" />
+        </div>
+        <div id="routing">
+          <label for="PrdWNesKanban.routing" th:text="#{PrdWNesKanban.routing}">ROUTING</label><input type="text" id="PrdWNesKanban.routing" name="PrdWNesKanban.routing" maxlength="2" class="primaryKey" />
+        </div>
+        <div id="routingDefGroup">
+          <label for="PrdWNesKanban.routingDefGroup" th:text="#{PrdWNesKanban.routingDefGroup}">ROUTING_DEF_GROUP</label><input type="text" id="PrdWNesKanban.routingDefGroup" name="PrdWNesKanban.routingDefGroup" maxlength="2" class="primaryKey" />
+        </div>
+        <div id="storeOpeDetail">
+          <label for="PrdWNesKanban.storeOpeDetail" th:text="#{PrdWNesKanban.storeOpeDetail}">STORE_OPE_DETAIL</label><input type="text" id="PrdWNesKanban.storeOpeDetail" name="PrdWNesKanban.storeOpeDetail" maxlength="10" />
+        </div>
+        <div id="proNesCounts">
+          <label for="PrdWNesKanban.proNesCounts" th:text="#{PrdWNesKanban.proNesCounts}">PRO_NES_COUNTS</label><input type="text" id="PrdWNesKanban.proNesCounts" name="PrdWNesKanban.proNesCounts" maxlength="6" />
+        </div>
+        <div id="timeStampCreate">
+          <label for="PrdWNesKanban.timeStampCreate" th:text="#{PrdWNesKanban.timeStampCreate}">TIME_STAMP_CREATE</label><span id="PrdWNesKanban.timeStampCreate"></span><input type="hidden" id="PrdWNesKanban.timeStampCreate" name="PrdWNesKanban.timeStampCreate" />
+        </div>
+        <div id="timeStampChange">
+          <label for="PrdWNesKanban.timeStampChange" th:text="#{PrdWNesKanban.timeStampChange}">TIME_STAMP_CHANGE</label><span id="PrdWNesKanban.timeStampChange"></span><input type="hidden" id="PrdWNesKanban.timeStampChange" name="PrdWNesKanban.timeStampChange" />
+        </div>
+        <div id="userIdCreate">
+          <label for="PrdWNesKanban.userIdCreate" th:text="#{PrdWNesKanban.userIdCreate}">USER_ID_CREATE</label><span id="PrdWNesKanban.userIdCreate"></span><input type="hidden" id="PrdWNesKanban.userIdCreate" name="PrdWNesKanban.userIdCreate" />
+        </div>
+        <div id="userIdChange">
+          <label for="PrdWNesKanban.userIdChange" th:text="#{PrdWNesKanban.userIdChange}">USER_ID_CHANGE</label><span id="PrdWNesKanban.userIdChange"></span><input type="hidden" id="PrdWNesKanban.userIdChange" name="PrdWNesKanban.userIdChange" />
+        </div>
+        <div id="lotSize">
+          <label for="PrdWNesKanban.lotSize" th:text="#{PrdWNesKanban.lotSize}">LOT_SIZE</label><input type="text" id="PrdWNesKanban.lotSize" name="PrdWNesKanban.lotSize" maxlength="6" />
+        </div>
+        <div id="accCounts">
+          <label for="PrdWNesKanban.accCounts" th:text="#{PrdWNesKanban.accCounts}">ACC_COUNTS</label><input type="text" id="PrdWNesKanban.accCounts" name="PrdWNesKanban.accCounts" maxlength="6" />
+        </div>
+        <div id="counts">
+          <label for="PrdWNesKanban.counts" th:text="#{PrdWNesKanban.counts}">COUNTS</label><input type="text" id="PrdWNesKanban.counts" name="PrdWNesKanban.counts" maxlength="6" />
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend th:text="#{PrdWNesKanbanOld.legend}">legend</legend>
+        <div id="storeWc">
+          <label for="PrdWNesKanbanOld.storeWc" th:text="#{PrdWNesKanbanOld.storeWc}">STORE_WC</label><input type="text" id="PrdWNesKanbanOld.storeWc" name="PrdWNesKanbanOld.storeWc" maxlength="3" />
+        </div>
+        <div id="storeOpeDetail">
+          <label for="PrdWNesKanbanOld.storeOpeDetail" th:text="#{PrdWNesKanbanOld.storeOpeDetail}">STORE_OPE_DETAIL</label><input type="text" id="PrdWNesKanbanOld.storeOpeDetail" name="PrdWNesKanbanOld.storeOpeDetail" maxlength="10" />
+        </div>
+        <div id="proNesCounts">
+          <label for="PrdWNesKanbanOld.proNesCounts" th:text="#{PrdWNesKanbanOld.proNesCounts}">PRO_NES_COUNTS</label><input type="text" id="PrdWNesKanbanOld.proNesCounts" name="PrdWNesKanbanOld.proNesCounts" maxlength="6" />
+        </div>
+        <input type="hidden" name="PrdWNesKanbanOld.timeStampChange" />
+      </fieldset>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="Dialogate.refresh(event);">reset</button>
+        <a th:href="@{PrdWNesKanbanGet.xlsx(baseMei=#{PrdWNesKanban.h2})}" id="PrdWNesKanbanGet.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeletePrdWNesKanban" class="delete" data-action="PrdWNesKanbanDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistPrdWNesKanban" class="regist" th:text="#{common.regist}">登録</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

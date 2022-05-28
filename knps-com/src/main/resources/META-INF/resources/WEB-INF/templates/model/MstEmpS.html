@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{MstEmpS.title}">MST_EMP</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/MstEmpGridColumns.js}"></script>
+<script th:src="@{/model/MstDivisionGridColumns.js}"></script>
+<script th:src="@{/model/MstCompanyGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{MstEmpS.h2}">h2</h2>
+    <form name="MstEmpSearchForm" action="MstEmpSearch.ajax" class="search">
+      <fieldset>
+        <legend th:text="#{MstEmpS.legend}">legend</legend>
+        <div id="empCode">
+          <fieldset id="MstEmp.empCodeList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:emp_code" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstEmp.empCode}">EMP_CODE</legend>
+          </fieldset>
+        </div>
+        <div id="empName">
+          <label for="MstEmp.empName" th:text="#{MstEmp.empName}">EMP_NAME</label><input type="text" id="MstEmp.empName" name="MstEmp.empName" maxlength="30" />
+        </div>
+        <div id="position">
+          <fieldset id="MstEmp.positionList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:position" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstEmp.position}">POSITION</legend>
+          </fieldset>
+        </div>
+        <div id="compCode">
+          <fieldset id="MstEmp.compCodeList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:comp_code" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstEmp.compCode}">COMP_CODE</legend>
+          </fieldset>
+        </div>
+        <div id="password">
+          <label for="MstEmp.password" th:text="#{MstEmp.password}">PASSWORD</label><input type="text" id="MstEmp.password" name="MstEmp.password" maxlength="10" />
+        </div>
+        <div id="telNo">
+          <label for="MstEmp.telNo" th:text="#{MstEmp.telNo}">TEL_NO</label><input type="text" id="MstEmp.telNo" name="MstEmp.telNo" maxlength="14" />
+        </div>
+        <div id="deleteFlag">
+          <fieldset id="MstEmp.deleteFlagList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:delete_flag" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstEmp.deleteFlag}">DELETE_FLAG</legend>
+          </fieldset>
+        </div>
+        <div id="mailAddress">
+          <label for="MstEmp.mailAddress" th:text="#{MstEmp.mailAddress}">MAIL_ADDRESS</label><input type="text" id="MstEmp.mailAddress" name="MstEmp.mailAddress" maxlength="128" />
+        </div>
+        <div id="divisionCode">
+          <label for="MstEmp.divisionCode" th:text="#{MstEmp.divisionCode}">DIVISION_CODE</label><input type="text" id="MstEmp.divisionCode" name="MstEmp.divisionCode" maxlength="10" data-json="MstDivisionSearch.json" data-srcDef="DIVISION_CODE:MstEmp.divisionCode" data-destDef="MstEmp.divisionName:DIVISION_NAME" /><a id="MstEmp.divisionCode" th:href="@{/model/MstDivisionS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MstEmp.divisionName" class="refer" data-json="MstDivisionSearch.json" data-srcDef="DIVISION_CODE:MstEmp.divisionCode" data-destDef="MstEmp.divisionName:DIVISION_NAME"></span>
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="reset" th:text="#{common.reset}">reset</button>
+        <a th:href="@{/model/MstEmp.html}" id="MstEmp" target="dialog" th:text="#{MstEmp.add}" tabindex="-1">MST_EMP</a>
+      </div>
+      <div class="submits">
+        <button id="SearchMstEmp" class="search" data-gridId="MstEmpGrid" th:text="#{common.search}">submit</button>
+      </div>
+    </form>
+    <form name="MstEmpSRegistForm" action="MstEmpSRegist.ajax" class="regist">
+      <h3 th:text="#{MstEmp.h3}">h3</h3>
+      <div id="MstEmpGrid" data-selectionMode="checkbox" data-addRow="true" data-frozenColumn="0" th:data-href="@{/model/MstEmp.html}"></div>
+      <div id="MstEmpPager"></div>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="$('[id=&quot;SearchMstEmp&quot;]').click();">reset</button>
+        <a th:href="@{MstEmpSearch.xlsx(baseMei=#{MstEmpS.h2})}" id="MstEmpSearch.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeleteMstEmpS" class="delete selectRows" data-action="MstEmpSDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistMstEmpS" class="regist" th:text="#{common.regist}">submit</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

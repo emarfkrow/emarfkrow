@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{MfgObservanceRateInS.title}">MFG_OBSERVANCE_RATE_IN</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/MfgObservanceRateInGridColumns.js}"></script>
+<script th:src="@{/model/MstWcGridColumns.js}"></script>
+<script th:src="@{/model/MstWcBkGridColumns.js}"></script>
+<script th:src="@{/model/MstProcGridColumns.js}"></script>
+<script th:src="@{/model/MstWsGridColumns.js}"></script>
+<script th:src="@{/model/MstTeamGridColumns.js}"></script>
+<script th:src="@{/model/MstGroupGridColumns.js}"></script>
+<script th:src="@{/model/MstDivisionGridColumns.js}"></script>
+<script th:src="@{/model/MstCompanyGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierGridColumns.js}"></script>
+<script th:src="@{/model/InvStockProcessSupplyGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierBkGridColumns.js}"></script>
+<script th:src="@{/model/MstTaxGridColumns.js}"></script>
+<script th:src="@{/model/MstCostCenterGridColumns.js}"></script>
+<script th:src="@{/model/MstCostCenterBkGridColumns.js}"></script>
+<script th:src="@{/model/MstSubinvGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{MfgObservanceRateInS.h2}">h2</h2>
+    <form name="MfgObservanceRateInSearchForm" action="MfgObservanceRateInSearch.ajax" class="search">
+      <fieldset>
+        <legend th:text="#{MfgObservanceRateInS.legend}">legend</legend>
+        <div id="yyyy">
+          <label for="MfgObservanceRateIn.yyyy" th:text="#{MfgObservanceRateIn.yyyy}">YYYY</label><input type="text" id="MfgObservanceRateIn.yyyy" name="MfgObservanceRateIn.yyyy" maxlength="4" />
+        </div>
+        <div id="mm">
+          <label for="MfgObservanceRateIn.mm" th:text="#{MfgObservanceRateIn.mm}">MM</label><input type="text" id="MfgObservanceRateIn.mm" name="MfgObservanceRateIn.mm" maxlength="2" />
+        </div>
+        <div id="wcCode">
+          <label for="MfgObservanceRateIn.wcCode" th:text="#{MfgObservanceRateIn.wcCode}">WC_CODE</label><input type="text" id="MfgObservanceRateIn.wcCode" name="MfgObservanceRateIn.wcCode" maxlength="3" data-json="MstWcSearch.json" data-srcDef="WC_CODE:MfgObservanceRateIn.wcCode" data-destDef="MfgObservanceRateIn.wcName:WC_NAME" /><a id="MfgObservanceRateIn.wcCode" th:href="@{/model/MstWcS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MfgObservanceRateIn.wcName" class="refer" data-json="MstWcSearch.json" data-srcDef="WC_CODE:MfgObservanceRateIn.wcCode" data-destDef="MfgObservanceRateIn.wcName:WC_NAME"></span>
+        </div>
+        <div id="observanceRate">
+          <label for="MfgObservanceRateIn.observanceRate" th:text="#{MfgObservanceRateIn.observanceRate}">OBSERVANCE_RATE</label><input type="text" id="MfgObservanceRateIn.observanceRate" name="MfgObservanceRateIn.observanceRate" maxlength="5" />
+        </div>
+        <div id="lateM5Over">
+          <label for="MfgObservanceRateIn.lateM5Over" th:text="#{MfgObservanceRateIn.lateM5Over}">LATE_M5OVER</label><input type="text" id="MfgObservanceRateIn.lateM5Over" name="MfgObservanceRateIn.lateM5Over" maxlength="4" />
+        </div>
+        <div id="lateM5">
+          <label for="MfgObservanceRateIn.lateM5" th:text="#{MfgObservanceRateIn.lateM5}">LATE_M5</label><input type="text" id="MfgObservanceRateIn.lateM5" name="MfgObservanceRateIn.lateM5" maxlength="4" />
+        </div>
+        <div id="lateM4">
+          <label for="MfgObservanceRateIn.lateM4" th:text="#{MfgObservanceRateIn.lateM4}">LATE_M4</label><input type="text" id="MfgObservanceRateIn.lateM4" name="MfgObservanceRateIn.lateM4" maxlength="4" />
+        </div>
+        <div id="lateM3">
+          <label for="MfgObservanceRateIn.lateM3" th:text="#{MfgObservanceRateIn.lateM3}">LATE_M3</label><input type="text" id="MfgObservanceRateIn.lateM3" name="MfgObservanceRateIn.lateM3" maxlength="4" />
+        </div>
+        <div id="lateM2">
+          <label for="MfgObservanceRateIn.lateM2" th:text="#{MfgObservanceRateIn.lateM2}">LATE_M2</label><input type="text" id="MfgObservanceRateIn.lateM2" name="MfgObservanceRateIn.lateM2" maxlength="4" />
+        </div>
+        <div id="lateM1">
+          <label for="MfgObservanceRateIn.lateM1" th:text="#{MfgObservanceRateIn.lateM1}">LATE_M1</label><input type="text" id="MfgObservanceRateIn.lateM1" name="MfgObservanceRateIn.lateM1" maxlength="4" />
+        </div>
+        <div id="late0">
+          <label for="MfgObservanceRateIn.late0" th:text="#{MfgObservanceRateIn.late0}">LATE_0</label><input type="text" id="MfgObservanceRateIn.late0" name="MfgObservanceRateIn.late0" maxlength="4" />
+        </div>
+        <div id="lateP1">
+          <label for="MfgObservanceRateIn.lateP1" th:text="#{MfgObservanceRateIn.lateP1}">LATE_P1</label><input type="text" id="MfgObservanceRateIn.lateP1" name="MfgObservanceRateIn.lateP1" maxlength="4" />
+        </div>
+        <div id="lateP2">
+          <label for="MfgObservanceRateIn.lateP2" th:text="#{MfgObservanceRateIn.lateP2}">LATE_P2</label><input type="text" id="MfgObservanceRateIn.lateP2" name="MfgObservanceRateIn.lateP2" maxlength="4" />
+        </div>
+        <div id="lateP3">
+          <label for="MfgObservanceRateIn.lateP3" th:text="#{MfgObservanceRateIn.lateP3}">LATE_P3</label><input type="text" id="MfgObservanceRateIn.lateP3" name="MfgObservanceRateIn.lateP3" maxlength="4" />
+        </div>
+        <div id="lateP4">
+          <label for="MfgObservanceRateIn.lateP4" th:text="#{MfgObservanceRateIn.lateP4}">LATE_P4</label><input type="text" id="MfgObservanceRateIn.lateP4" name="MfgObservanceRateIn.lateP4" maxlength="4" />
+        </div>
+        <div id="lateP5">
+          <label for="MfgObservanceRateIn.lateP5" th:text="#{MfgObservanceRateIn.lateP5}">LATE_P5</label><input type="text" id="MfgObservanceRateIn.lateP5" name="MfgObservanceRateIn.lateP5" maxlength="4" />
+        </div>
+        <div id="lateP6">
+          <label for="MfgObservanceRateIn.lateP6" th:text="#{MfgObservanceRateIn.lateP6}">LATE_P6</label><input type="text" id="MfgObservanceRateIn.lateP6" name="MfgObservanceRateIn.lateP6" maxlength="4" />
+        </div>
+        <div id="lateP7">
+          <label for="MfgObservanceRateIn.lateP7" th:text="#{MfgObservanceRateIn.lateP7}">LATE_P7</label><input type="text" id="MfgObservanceRateIn.lateP7" name="MfgObservanceRateIn.lateP7" maxlength="4" />
+        </div>
+        <div id="lateP8">
+          <label for="MfgObservanceRateIn.lateP8" th:text="#{MfgObservanceRateIn.lateP8}">LATE_P8</label><input type="text" id="MfgObservanceRateIn.lateP8" name="MfgObservanceRateIn.lateP8" maxlength="4" />
+        </div>
+        <div id="lateP9">
+          <label for="MfgObservanceRateIn.lateP9" th:text="#{MfgObservanceRateIn.lateP9}">LATE_P9</label><input type="text" id="MfgObservanceRateIn.lateP9" name="MfgObservanceRateIn.lateP9" maxlength="4" />
+        </div>
+        <div id="lateP10">
+          <label for="MfgObservanceRateIn.lateP10" th:text="#{MfgObservanceRateIn.lateP10}">LATE_P10</label><input type="text" id="MfgObservanceRateIn.lateP10" name="MfgObservanceRateIn.lateP10" maxlength="4" />
+        </div>
+        <div id="lateP11">
+          <label for="MfgObservanceRateIn.lateP11" th:text="#{MfgObservanceRateIn.lateP11}">LATE_P11</label><input type="text" id="MfgObservanceRateIn.lateP11" name="MfgObservanceRateIn.lateP11" maxlength="4" />
+        </div>
+        <div id="lateP12">
+          <label for="MfgObservanceRateIn.lateP12" th:text="#{MfgObservanceRateIn.lateP12}">LATE_P12</label><input type="text" id="MfgObservanceRateIn.lateP12" name="MfgObservanceRateIn.lateP12" maxlength="4" />
+        </div>
+        <div id="lateP13">
+          <label for="MfgObservanceRateIn.lateP13" th:text="#{MfgObservanceRateIn.lateP13}">LATE_P13</label><input type="text" id="MfgObservanceRateIn.lateP13" name="MfgObservanceRateIn.lateP13" maxlength="4" />
+        </div>
+        <div id="lateP14">
+          <label for="MfgObservanceRateIn.lateP14" th:text="#{MfgObservanceRateIn.lateP14}">LATE_P14</label><input type="text" id="MfgObservanceRateIn.lateP14" name="MfgObservanceRateIn.lateP14" maxlength="4" />
+        </div>
+        <div id="lateP15">
+          <label for="MfgObservanceRateIn.lateP15" th:text="#{MfgObservanceRateIn.lateP15}">LATE_P15</label><input type="text" id="MfgObservanceRateIn.lateP15" name="MfgObservanceRateIn.lateP15" maxlength="4" />
+        </div>
+        <div id="lateP16">
+          <label for="MfgObservanceRateIn.lateP16" th:text="#{MfgObservanceRateIn.lateP16}">LATE_P16</label><input type="text" id="MfgObservanceRateIn.lateP16" name="MfgObservanceRateIn.lateP16" maxlength="4" />
+        </div>
+        <div id="lateP17">
+          <label for="MfgObservanceRateIn.lateP17" th:text="#{MfgObservanceRateIn.lateP17}">LATE_P17</label><input type="text" id="MfgObservanceRateIn.lateP17" name="MfgObservanceRateIn.lateP17" maxlength="4" />
+        </div>
+        <div id="lateP18">
+          <label for="MfgObservanceRateIn.lateP18" th:text="#{MfgObservanceRateIn.lateP18}">LATE_P18</label><input type="text" id="MfgObservanceRateIn.lateP18" name="MfgObservanceRateIn.lateP18" maxlength="4" />
+        </div>
+        <div id="lateP19">
+          <label for="MfgObservanceRateIn.lateP19" th:text="#{MfgObservanceRateIn.lateP19}">LATE_P19</label><input type="text" id="MfgObservanceRateIn.lateP19" name="MfgObservanceRateIn.lateP19" maxlength="4" />
+        </div>
+        <div id="lateP20">
+          <label for="MfgObservanceRateIn.lateP20" th:text="#{MfgObservanceRateIn.lateP20}">LATE_P20</label><input type="text" id="MfgObservanceRateIn.lateP20" name="MfgObservanceRateIn.lateP20" maxlength="4" />
+        </div>
+        <div id="lateP20Over">
+          <label for="MfgObservanceRateIn.lateP20Over" th:text="#{MfgObservanceRateIn.lateP20Over}">LATE_P20OVER</label><input type="text" id="MfgObservanceRateIn.lateP20Over" name="MfgObservanceRateIn.lateP20Over" maxlength="4" />
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="reset" th:text="#{common.reset}">reset</button>
+      </div>
+      <div class="submits">
+        <button id="SearchMfgObservanceRateIn" class="search" data-gridId="MfgObservanceRateInGrid" th:text="#{common.search}">submit</button>
+      </div>
+    </form>
+    <form name="MfgObservanceRateInSRegistForm" action="MfgObservanceRateInSRegist.ajax" class="regist">
+      <h3 th:text="#{MfgObservanceRateIn.h3}">h3</h3>
+      <div id="MfgObservanceRateInGrid" data-selectionMode="checkbox" data-frozenColumn="2" th:data-href="@{/model/MfgObservanceRateIn.html}"></div>
+      <div id="MfgObservanceRateInPager"></div>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="$('[id=&quot;SearchMfgObservanceRateIn&quot;]').click();">reset</button>
+        <a th:href="@{MfgObservanceRateInSearch.xlsx(baseMei=#{MfgObservanceRateInS.h2})}" id="MfgObservanceRateInSearch.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeleteMfgObservanceRateInS" class="delete selectRows" data-action="MfgObservanceRateInSDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistMfgObservanceRateInS" class="regist" th:text="#{common.regist}">submit</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{MstStructureBkYmS.title}">MST_STRUCTURE_BK_YM</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/MstStructureBkYmGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{MstStructureBkYmS.h2}">h2</h2>
+    <form name="MstStructureBkYmSearchForm" action="MstStructureBkYmSearch.ajax" class="search">
+      <fieldset>
+        <legend th:text="#{MstStructureBkYmS.legend}">legend</legend>
+        <div id="yy">
+          <label for="MstStructureBkYm.yy" th:text="#{MstStructureBkYm.yy}">YY</label><input type="text" id="MstStructureBkYm.yy" name="MstStructureBkYm.yy" maxlength="4" />
+        </div>
+        <div id="mm">
+          <label for="MstStructureBkYm.mm" th:text="#{MstStructureBkYm.mm}">MM</label><input type="text" id="MstStructureBkYm.mm" name="MstStructureBkYm.mm" maxlength="2" />
+        </div>
+        <div id="manHinban">
+          <label for="MstStructureBkYm.manHinban" th:text="#{MstStructureBkYm.manHinban}">MAN_HINBAN</label><input type="text" id="MstStructureBkYm.manHinban" name="MstStructureBkYm.manHinban" maxlength="25" />
+        </div>
+        <div id="hinban">
+          <label for="MstStructureBkYm.hinban" th:text="#{MstStructureBkYm.hinban}">HINBAN</label><input type="text" id="MstStructureBkYm.hinban" name="MstStructureBkYm.hinban" maxlength="25" />
+        </div>
+        <div id="counts">
+          <label for="MstStructureBkYm.counts" th:text="#{MstStructureBkYm.counts}">COUNTS</label><input type="text" id="MstStructureBkYm.counts" name="MstStructureBkYm.counts" maxlength="11" />
+        </div>
+        <div id="deleteFlag">
+          <fieldset id="MstStructureBkYm.deleteFlagList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:delete_flag" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstStructureBkYm.deleteFlag}">DELETE_FLAG</legend>
+          </fieldset>
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="reset" th:text="#{common.reset}">reset</button>
+      </div>
+      <div class="submits">
+        <button id="SearchMstStructureBkYm" class="search" data-gridId="MstStructureBkYmGrid" th:text="#{common.search}">submit</button>
+      </div>
+    </form>
+    <form name="MstStructureBkYmSRegistForm" action="MstStructureBkYmSRegist.ajax" class="regist">
+      <h3 th:text="#{MstStructureBkYm.h3}">h3</h3>
+      <div id="MstStructureBkYmGrid" data-selectionMode="checkbox" data-frozenColumn="3" th:data-href="@{/model/MstStructureBkYm.html}"></div>
+      <div id="MstStructureBkYmPager"></div>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="$('[id=&quot;SearchMstStructureBkYm&quot;]').click();">reset</button>
+        <a th:href="@{MstStructureBkYmSearch.xlsx(baseMei=#{MstStructureBkYmS.h2})}" id="MstStructureBkYmSearch.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeleteMstStructureBkYmS" class="delete selectRows" data-action="MstStructureBkYmSDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistMstStructureBkYmS" class="regist" th:text="#{common.regist}">submit</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

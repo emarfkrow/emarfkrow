@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{MstReasonS.title}">MST_REASON</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/MstReasonGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{MstReasonS.h2}">h2</h2>
+    <form name="MstReasonSearchForm" action="MstReasonSearch.ajax" class="search">
+      <fieldset>
+        <legend th:text="#{MstReasonS.legend}">legend</legend>
+        <div id="reasonCode">
+          <fieldset id="MstReason.reasonCodeList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:reason_code" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstReason.reasonCode}">REASON_CODE</legend>
+          </fieldset>
+        </div>
+        <div id="reasonName">
+          <label for="MstReason.reasonName" th:text="#{MstReason.reasonName}">REASON_NAME</label><input type="text" id="MstReason.reasonName" name="MstReason.reasonName" maxlength="60" />
+        </div>
+        <div id="reasonKbn">
+          <fieldset id="MstReason.reasonKbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:reason_kbn" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstReason.reasonKbn}">REASON_KBN</legend>
+          </fieldset>
+        </div>
+        <div id="deleteFlag">
+          <fieldset id="MstReason.deleteFlagList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:delete_flag" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstReason.deleteFlag}">DELETE_FLAG</legend>
+          </fieldset>
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="reset" th:text="#{common.reset}">reset</button>
+        <a th:href="@{/model/MstReason.html}" id="MstReason" target="dialog" th:text="#{MstReason.add}" tabindex="-1">MST_REASON</a>
+      </div>
+      <div class="submits">
+        <button id="SearchMstReason" class="search" data-gridId="MstReasonGrid" th:text="#{common.search}">submit</button>
+      </div>
+    </form>
+    <form name="MstReasonSRegistForm" action="MstReasonSRegist.ajax" class="regist">
+      <h3 th:text="#{MstReason.h3}">h3</h3>
+      <div id="MstReasonGrid" data-selectionMode="checkbox" data-addRow="true" data-frozenColumn="0" th:data-href="@{/model/MstReason.html}"></div>
+      <div id="MstReasonPager"></div>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="$('[id=&quot;SearchMstReason&quot;]').click();">reset</button>
+        <a th:href="@{MstReasonSearch.xlsx(baseMei=#{MstReasonS.h2})}" id="MstReasonSearch.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeleteMstReasonS" class="delete selectRows" data-action="MstReasonSDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistMstReasonS" class="regist" th:text="#{common.regist}">submit</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

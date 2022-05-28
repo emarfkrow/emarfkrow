@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{PrdStoreMainteGyoDetS.title}">PRD_STORE_MAINTE_GYO_DET</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/PrdStoreMainteGyoDetGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{PrdStoreMainteGyoDetS.h2}">h2</h2>
+    <form name="PrdStoreMainteGyoDetSearchForm" action="PrdStoreMainteGyoDetSearch.ajax" class="search">
+      <fieldset>
+        <legend th:text="#{PrdStoreMainteGyoDetS.legend}">legend</legend>
+        <div id="gyoNo">
+          <label for="PrdStoreMainteGyoDet.gyoNo" th:text="#{PrdStoreMainteGyoDet.gyoNo}">GYO_NO</label><input type="text" id="PrdStoreMainteGyoDet.gyoNo" name="PrdStoreMainteGyoDet.gyoNo" maxlength="3" />
+        </div>
+        <div id="gyoPos">
+          <label for="PrdStoreMainteGyoDet.gyoPos" th:text="#{PrdStoreMainteGyoDet.gyoPos}">GYO_POS</label><input type="text" id="PrdStoreMainteGyoDet.gyoPos" name="PrdStoreMainteGyoDet.gyoPos" maxlength="4" />
+        </div>
+        <div id="hinban">
+          <label for="PrdStoreMainteGyoDet.hinban" th:text="#{PrdStoreMainteGyoDet.hinban}">HINBAN</label><input type="text" id="PrdStoreMainteGyoDet.hinban" name="PrdStoreMainteGyoDet.hinban" maxlength="25" />
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="reset" th:text="#{common.reset}">reset</button>
+        <a th:href="@{/model/PrdStoreMainteGyoDet.html}" id="PrdStoreMainteGyoDet" target="dialog" th:text="#{PrdStoreMainteGyoDet.add}" tabindex="-1">PRD_STORE_MAINTE_GYO_DET</a>
+      </div>
+      <div class="submits">
+        <button id="SearchPrdStoreMainteGyoDet" class="search" data-gridId="PrdStoreMainteGyoDetGrid" th:text="#{common.search}">submit</button>
+      </div>
+    </form>
+    <form name="PrdStoreMainteGyoDetSRegistForm" action="PrdStoreMainteGyoDetSRegist.ajax" class="regist">
+      <h3 th:text="#{PrdStoreMainteGyoDet.h3}">h3</h3>
+      <div id="PrdStoreMainteGyoDetGrid" data-selectionMode="checkbox" data-frozenColumn="1" th:data-href="@{/model/PrdStoreMainteGyoDet.html}"></div>
+      <div id="PrdStoreMainteGyoDetPager"></div>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="$('[id=&quot;SearchPrdStoreMainteGyoDet&quot;]').click();">reset</button>
+        <a th:href="@{PrdStoreMainteGyoDetSearch.xlsx(baseMei=#{PrdStoreMainteGyoDetS.h2})}" id="PrdStoreMainteGyoDetSearch.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeletePrdStoreMainteGyoDetS" class="delete selectRows" data-action="PrdStoreMainteGyoDetSDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistPrdStoreMainteGyoDetS" class="regist" th:text="#{common.regist}">submit</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{PrdStoreMainteReportS.title}">PRD_STORE_MAINTE_REPORT</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/PrdStoreMainteReportGridColumns.js}"></script>
+<script th:src="@{/model/MstGroupGridColumns.js}"></script>
+<script th:src="@{/model/MstDivisionGridColumns.js}"></script>
+<script th:src="@{/model/MstCompanyGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{PrdStoreMainteReportS.h2}">h2</h2>
+    <form name="PrdStoreMainteReportSearchForm" action="PrdStoreMainteReportSearch.ajax" class="search">
+      <fieldset>
+        <legend th:text="#{PrdStoreMainteReportS.legend}">legend</legend>
+        <div id="repGroupCode">
+          <label for="PrdStoreMainteReport.repGroupCode" th:text="#{PrdStoreMainteReport.repGroupCode}">REP_GROUP_CODE</label><input type="text" id="PrdStoreMainteReport.repGroupCode" name="PrdStoreMainteReport.repGroupCode" maxlength="2" data-json="MstGroupSearch.json" data-srcDef="GROUP_CODE:PrdStoreMainteReport.repGroupCode" data-destDef="PrdStoreMainteReport.repGroupName:GROUP_NAME" /><a id="PrdStoreMainteReport.repGroupCode" th:href="@{/model/MstGroupS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="PrdStoreMainteReport.repGroupName" class="refer" data-json="MstGroupSearch.json" data-srcDef="GROUP_CODE:PrdStoreMainteReport.repGroupCode" data-destDef="PrdStoreMainteReport.repGroupName:GROUP_NAME"></span>
+        </div>
+        <div id="groupName">
+          <label for="PrdStoreMainteReport.groupName" th:text="#{PrdStoreMainteReport.groupName}">GROUP_NAME</label><input type="text" id="PrdStoreMainteReport.groupName" name="PrdStoreMainteReport.groupName" maxlength="20" />
+        </div>
+        <div id="retsuNo">
+          <label for="PrdStoreMainteReport.retsuNo" th:text="#{PrdStoreMainteReport.retsuNo}">RETSU_NO</label><input type="text" id="PrdStoreMainteReport.retsuNo" name="PrdStoreMainteReport.retsuNo" maxlength="3" />
+        </div>
+        <div id="gyoNo">
+          <label for="PrdStoreMainteReport.gyoNo" th:text="#{PrdStoreMainteReport.gyoNo}">GYO_NO</label><input type="text" id="PrdStoreMainteReport.gyoNo" name="PrdStoreMainteReport.gyoNo" maxlength="3" />
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="reset" th:text="#{common.reset}">reset</button>
+        <a th:href="@{/model/PrdStoreMainteReport.html}" id="PrdStoreMainteReport" target="dialog" th:text="#{PrdStoreMainteReport.add}" tabindex="-1">PRD_STORE_MAINTE_REPORT</a>
+      </div>
+      <div class="submits">
+        <button id="SearchPrdStoreMainteReport" class="search" data-gridId="PrdStoreMainteReportGrid" th:text="#{common.search}">submit</button>
+      </div>
+    </form>
+    <form name="PrdStoreMainteReportSRegistForm" action="PrdStoreMainteReportSRegist.ajax" class="regist">
+      <h3 th:text="#{PrdStoreMainteReport.h3}">h3</h3>
+      <div id="PrdStoreMainteReportGrid" data-selectionMode="checkbox" data-addRow="true" data-frozenColumn="0" th:data-href="@{/model/PrdStoreMainteReport.html}"></div>
+      <div id="PrdStoreMainteReportPager"></div>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="$('[id=&quot;SearchPrdStoreMainteReport&quot;]').click();">reset</button>
+        <a th:href="@{PrdStoreMainteReportSearch.xlsx(baseMei=#{PrdStoreMainteReportS.h2})}" id="PrdStoreMainteReportSearch.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeletePrdStoreMainteReportS" class="delete selectRows" data-action="PrdStoreMainteReportSDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistPrdStoreMainteReportS" class="regist" th:text="#{common.regist}">submit</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

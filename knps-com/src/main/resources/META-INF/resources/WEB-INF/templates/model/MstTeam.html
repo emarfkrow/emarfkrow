@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{MstTeam.title}">MST_TEAM</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/MstTeamGridColumns.js}"></script>
+<script th:src="@{/model/MstGroupGridColumns.js}"></script>
+<script th:src="@{/model/MstDivisionGridColumns.js}"></script>
+<script th:src="@{/model/MstCompanyGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{MstTeam.h2}">h2</h2>
+    <form name="MstTeamRegistForm" action="MstTeamRegist.ajax" class="regist">
+      <fieldset>
+        <legend th:text="#{MstTeam.legend}">legend</legend>
+        <div id="teamCode">
+          <label for="MstTeam.teamCode" th:text="#{MstTeam.teamCode}">TEAM_CODE</label><span id="MstTeam.teamCode"></span><input type="hidden" id="MstTeam.teamCode" name="MstTeam.teamCode" class="primaryKey" />
+        </div>
+        <div id="teamName">
+          <label for="MstTeam.teamName" th:text="#{MstTeam.teamName}">TEAM_NAME</label><input type="text" id="MstTeam.teamName" name="MstTeam.teamName" maxlength="60" />
+        </div>
+        <div id="adminCode">
+          <fieldset id="MstTeam.adminCodeList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:admin_code" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstTeam.adminCode}">ADMIN_CODE</legend>
+          </fieldset>
+        </div>
+        <div id="groupCode">
+          <label for="MstTeam.groupCode" th:text="#{MstTeam.groupCode}">GROUP_CODE</label><input type="text" id="MstTeam.groupCode" name="MstTeam.groupCode" maxlength="10" data-json="MstGroupSearch.json" data-srcDef="GROUP_CODE:MstTeam.groupCode" data-destDef="MstTeam.groupName:GROUP_NAME" /><a id="MstTeam.groupCode" th:href="@{/model/MstGroupS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MstTeam.groupName" class="refer" data-json="MstGroupSearch.json" data-srcDef="GROUP_CODE:MstTeam.groupCode" data-destDef="MstTeam.groupName:GROUP_NAME"></span>
+        </div>
+        <div id="individualCounts">
+          <label for="MstTeam.individualCounts" th:text="#{MstTeam.individualCounts}">INDIVIDUAL_COUNTS</label><input type="text" id="MstTeam.individualCounts" name="MstTeam.individualCounts" maxlength="7" />
+        </div>
+        <div id="timeStampCreate">
+          <label for="MstTeam.timeStampCreate" th:text="#{MstTeam.timeStampCreate}">TIME_STAMP_CREATE</label><span id="MstTeam.timeStampCreate"></span><input type="hidden" id="MstTeam.timeStampCreate" name="MstTeam.timeStampCreate" />
+        </div>
+        <div id="timeStampChange">
+          <label for="MstTeam.timeStampChange" th:text="#{MstTeam.timeStampChange}">TIME_STAMP_CHANGE</label><span id="MstTeam.timeStampChange"></span><input type="hidden" id="MstTeam.timeStampChange" name="MstTeam.timeStampChange" />
+        </div>
+        <div id="userIdCreate">
+          <label for="MstTeam.userIdCreate" th:text="#{MstTeam.userIdCreate}">USER_ID_CREATE</label><span id="MstTeam.userIdCreate"></span><input type="hidden" id="MstTeam.userIdCreate" name="MstTeam.userIdCreate" />
+        </div>
+        <div id="userIdChange">
+          <label for="MstTeam.userIdChange" th:text="#{MstTeam.userIdChange}">USER_ID_CHANGE</label><span id="MstTeam.userIdChange"></span><input type="hidden" id="MstTeam.userIdChange" name="MstTeam.userIdChange" />
+        </div>
+        <div id="deleteFlag">
+          <fieldset id="MstTeam.deleteFlagList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:delete_flag" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstTeam.deleteFlag}">DELETE_FLAG</legend>
+          </fieldset>
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="Dialogate.refresh(event);">reset</button>
+        <a th:href="@{MstTeamGet.xlsx(baseMei=#{MstTeam.h2})}" id="MstTeamGet.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeleteMstTeam" class="delete" data-action="MstTeamDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistMstTeam" class="regist" th:text="#{common.regist}">登録</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{MfgDailyPlanExchangeId.title}">MFG_DAILY_PLAN_EXCHANGE_ID</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/MfgDailyPlanExchangeIdGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{MfgDailyPlanExchangeId.h2}">h2</h2>
+    <form name="MfgDailyPlanExchangeIdRegistForm" action="MfgDailyPlanExchangeIdRegist.ajax" class="regist">
+      <fieldset>
+        <legend th:text="#{MfgDailyPlanExchangeId.legend}">legend</legend>
+        <div id="exchangeId">
+          <label for="MfgDailyPlanExchangeId.exchangeId" th:text="#{MfgDailyPlanExchangeId.exchangeId}">EXCHANGE_ID</label><span id="MfgDailyPlanExchangeId.exchangeId"></span><input type="hidden" id="MfgDailyPlanExchangeId.exchangeId" name="MfgDailyPlanExchangeId.exchangeId" class="primaryKey" />
+        </div>
+        <div id="proNo">
+          <label for="MfgDailyPlanExchangeId.proNo" th:text="#{MfgDailyPlanExchangeId.proNo}">PRO_NO</label><input type="text" id="MfgDailyPlanExchangeId.proNo" name="MfgDailyPlanExchangeId.proNo" maxlength="14" />
+        </div>
+        <div id="idType">
+          <label for="MfgDailyPlanExchangeId.idType" th:text="#{MfgDailyPlanExchangeId.idType}">ID_TYPE</label><input type="text" id="MfgDailyPlanExchangeId.idType" name="MfgDailyPlanExchangeId.idType" maxlength="10" />
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="Dialogate.refresh(event);">reset</button>
+        <a th:href="@{MfgDailyPlanExchangeIdGet.xlsx(baseMei=#{MfgDailyPlanExchangeId.h2})}" id="MfgDailyPlanExchangeIdGet.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeleteMfgDailyPlanExchangeId" class="delete" data-action="MfgDailyPlanExchangeIdDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistMfgDailyPlanExchangeId" class="regist" th:text="#{common.regist}">登録</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

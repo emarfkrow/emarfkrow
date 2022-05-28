@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{FChumonxS.title}">F_CHUMONX</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/FChumonxGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{FChumonxS.h2}">h2</h2>
+    <form name="FChumonxSearchForm" action="FChumonxSearch.ajax" class="search">
+      <fieldset>
+        <legend th:text="#{FChumonxS.legend}">legend</legend>
+        <div id="tokucd">
+          <label for="FChumonx.tokucd" th:text="#{FChumonx.tokucd}">TOKUCD</label><input type="text" id="FChumonx.tokucd" name="FChumonx.tokucd" maxlength="8" />
+        </div>
+        <div id="hhinban">
+          <label for="FChumonx.hhinban" th:text="#{FChumonx.hhinban}">HHINBAN</label><input type="text" id="FChumonx.hhinban" name="FChumonx.hhinban" maxlength="20" />
+        </div>
+        <div id="shukkasuRui">
+          <label for="FChumonx.shukkasuRui" th:text="#{FChumonx.shukkasuRui}">SHUKKASU-RUI</label><input type="text" id="FChumonx.shukkasuRui" name="FChumonx.shukkasuRui" maxlength="7" />
+        </div>
+        <div id="juchuno">
+          <label for="FChumonx.juchuno" th:text="#{FChumonx.juchuno}">JUCHUNO</label><input type="text" id="FChumonx.juchuno" name="FChumonx.juchuno" maxlength="16" />
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="reset" th:text="#{common.reset}">reset</button>
+        <a th:href="@{/model/FChumonx.html}" id="FChumonx" target="dialog" th:text="#{FChumonx.add}" tabindex="-1">F_CHUMONX</a>
+      </div>
+      <div class="submits">
+        <button id="SearchFChumonx" class="search" data-gridId="FChumonxGrid" th:text="#{common.search}">submit</button>
+      </div>
+    </form>
+    <form name="FChumonxSRegistForm" action="FChumonxSRegist.ajax" class="regist">
+      <h3 th:text="#{FChumonx.h3}">h3</h3>
+      <div id="FChumonxGrid" data-selectionMode="checkbox" data-frozenColumn="2" th:data-href="@{/model/FChumonx.html}"></div>
+      <div id="FChumonxPager"></div>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="$('[id=&quot;SearchFChumonx&quot;]').click();">reset</button>
+        <a th:href="@{FChumonxSearch.xlsx(baseMei=#{FChumonxS.h2})}" id="FChumonxSearch.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeleteFChumonxS" class="delete selectRows" data-action="FChumonxSDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistFChumonxS" class="regist" th:text="#{common.regist}">submit</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

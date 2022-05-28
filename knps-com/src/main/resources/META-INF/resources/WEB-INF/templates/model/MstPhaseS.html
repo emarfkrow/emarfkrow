@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{MstPhaseS.title}">MST_PHASE</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/MstPhaseGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{MstPhaseS.h2}">h2</h2>
+    <form name="MstPhaseSearchForm" action="MstPhaseSearch.ajax" class="search">
+      <fieldset>
+        <legend th:text="#{MstPhaseS.legend}">legend</legend>
+        <div id="phase">
+          <label for="MstPhase.phase" th:text="#{MstPhase.phase}">PHASE</label><input type="text" id="MstPhase.phase" name="MstPhase.phase" maxlength="3" />
+        </div>
+        <div id="yy">
+          <label for="MstPhase.yy" th:text="#{MstPhase.yy}">YY</label><input type="text" id="MstPhase.yy" name="MstPhase.yy" maxlength="4" />
+        </div>
+        <div id="phaseFrom">
+          <label for="MstPhase.phaseFrom" th:text="#{MstPhase.phaseFrom}">PHASE_FROM</label><input type="text" id="MstPhase.phaseFrom" name="MstPhase.phaseFrom" maxlength="7" />
+        </div>
+        <div id="phaseTo">
+          <label for="MstPhase.phaseTo" th:text="#{MstPhase.phaseTo}">PHASE_TO</label><input type="text" id="MstPhase.phaseTo" name="MstPhase.phaseTo" maxlength="7" />
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="reset" th:text="#{common.reset}">reset</button>
+        <a th:href="@{/model/MstPhase.html}" id="MstPhase" target="dialog" th:text="#{MstPhase.add}" tabindex="-1">MST_PHASE</a>
+      </div>
+      <div class="submits">
+        <button id="SearchMstPhase" class="search" data-gridId="MstPhaseGrid" th:text="#{common.search}">submit</button>
+      </div>
+    </form>
+    <form name="MstPhaseSRegistForm" action="MstPhaseSRegist.ajax" class="regist">
+      <h3 th:text="#{MstPhase.h3}">h3</h3>
+      <div id="MstPhaseGrid" data-selectionMode="checkbox" data-frozenColumn="0" th:data-href="@{/model/MstPhase.html}"></div>
+      <div id="MstPhasePager"></div>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="$('[id=&quot;SearchMstPhase&quot;]').click();">reset</button>
+        <a th:href="@{MstPhaseSearch.xlsx(baseMei=#{MstPhaseS.h2})}" id="MstPhaseSearch.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeleteMstPhaseS" class="delete selectRows" data-action="MstPhaseSDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistMstPhaseS" class="regist" th:text="#{common.regist}">submit</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

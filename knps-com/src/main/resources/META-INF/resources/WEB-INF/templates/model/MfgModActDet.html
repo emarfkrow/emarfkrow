@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{MfgModActDet.title}">MFG_MOD_ACT_DET</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/MfgModActDetGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{MfgModActDet.h2}">h2</h2>
+    <form name="MfgModActDetRegistForm" action="MfgModActDetRegist.ajax" class="regist">
+      <fieldset>
+        <legend th:text="#{MfgModActDet.legend}">legend</legend>
+        <div id="modActNo">
+          <label for="MfgModActDet.modActNo" th:text="#{MfgModActDet.modActNo}">MOD_ACT_NO</label><span id="MfgModActDet.modActNo"></span><input type="hidden" id="MfgModActDet.modActNo" name="MfgModActDet.modActNo" class="primaryKey" />
+        </div>
+        <div id="modActBranchNo">
+          <label for="MfgModActDet.modActBranchNo" th:text="#{MfgModActDet.modActBranchNo}">MOD_ACT_BRANCH_NO</label><input type="text" id="MfgModActDet.modActBranchNo" name="MfgModActDet.modActBranchNo" maxlength="2" class="primaryKey" />
+        </div>
+        <div id="modActItem">
+          <label for="MfgModActDet.modActItem" th:text="#{MfgModActDet.modActItem}">MOD_ACT_ITEM</label><input type="text" id="MfgModActDet.modActItem" name="MfgModActDet.modActItem" maxlength="1" />
+        </div>
+        <div id="actDate">
+          <label for="MfgModActDet.actDate" th:text="#{MfgModActDet.actDate}">ACT_DATE</label><input type="date" id="MfgModActDet.actDate" name="MfgModActDet.actDate" maxlength="7" />
+        </div>
+        <div id="operator">
+          <label for="MfgModActDet.operator" th:text="#{MfgModActDet.operator}">OPERATOR</label><input type="text" id="MfgModActDet.operator" name="MfgModActDet.operator" maxlength="10" />
+        </div>
+        <div id="timeStampCreate">
+          <label for="MfgModActDet.timeStampCreate" th:text="#{MfgModActDet.timeStampCreate}">TIME_STAMP_CREATE</label><span id="MfgModActDet.timeStampCreate"></span><input type="hidden" id="MfgModActDet.timeStampCreate" name="MfgModActDet.timeStampCreate" />
+        </div>
+        <div id="timeStampChange">
+          <label for="MfgModActDet.timeStampChange" th:text="#{MfgModActDet.timeStampChange}">TIME_STAMP_CHANGE</label><span id="MfgModActDet.timeStampChange"></span><input type="hidden" id="MfgModActDet.timeStampChange" name="MfgModActDet.timeStampChange" />
+        </div>
+        <div id="userIdCreate">
+          <label for="MfgModActDet.userIdCreate" th:text="#{MfgModActDet.userIdCreate}">USER_ID_CREATE</label><span id="MfgModActDet.userIdCreate"></span><input type="hidden" id="MfgModActDet.userIdCreate" name="MfgModActDet.userIdCreate" />
+        </div>
+        <div id="userIdChange">
+          <label for="MfgModActDet.userIdChange" th:text="#{MfgModActDet.userIdChange}">USER_ID_CHANGE</label><span id="MfgModActDet.userIdChange"></span><input type="hidden" id="MfgModActDet.userIdChange" name="MfgModActDet.userIdChange" />
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="Dialogate.refresh(event);">reset</button>
+        <a th:href="@{MfgModActDetGet.xlsx(baseMei=#{MfgModActDet.h2})}" id="MfgModActDetGet.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeleteMfgModActDet" class="delete" data-action="MfgModActDetDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistMfgModActDet" class="regist" th:text="#{common.regist}">登録</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

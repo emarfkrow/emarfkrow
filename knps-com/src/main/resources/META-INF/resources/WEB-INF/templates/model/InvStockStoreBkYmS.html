@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{InvStockStoreBkYmS.title}">INV_STOCK_STORE_BK_YM</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/InvStockStoreBkYmGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{InvStockStoreBkYmS.h2}">h2</h2>
+    <form name="InvStockStoreBkYmSearchForm" action="InvStockStoreBkYmSearch.ajax" class="search">
+      <fieldset>
+        <legend th:text="#{InvStockStoreBkYmS.legend}">legend</legend>
+        <div id="yy">
+          <label for="InvStockStoreBkYm.yy" th:text="#{InvStockStoreBkYm.yy}">YY</label><input type="text" id="InvStockStoreBkYm.yy" name="InvStockStoreBkYm.yy" maxlength="4" />
+        </div>
+        <div id="mm">
+          <label for="InvStockStoreBkYm.mm" th:text="#{InvStockStoreBkYm.mm}">MM</label><input type="text" id="InvStockStoreBkYm.mm" name="InvStockStoreBkYm.mm" maxlength="2" />
+        </div>
+        <div id="hinban">
+          <label for="InvStockStoreBkYm.hinban" th:text="#{InvStockStoreBkYm.hinban}">HINBAN</label><input type="text" id="InvStockStoreBkYm.hinban" name="InvStockStoreBkYm.hinban" maxlength="25" />
+        </div>
+        <div id="storeNo">
+          <label for="InvStockStoreBkYm.storeNo" th:text="#{InvStockStoreBkYm.storeNo}">STORE_NO</label><input type="text" id="InvStockStoreBkYm.storeNo" name="InvStockStoreBkYm.storeNo" maxlength="10" />
+        </div>
+        <div id="counts">
+          <label for="InvStockStoreBkYm.counts" th:text="#{InvStockStoreBkYm.counts}">COUNTS</label><input type="text" id="InvStockStoreBkYm.counts" name="InvStockStoreBkYm.counts" maxlength="6" />
+        </div>
+        <div id="hakoSu">
+          <label for="InvStockStoreBkYm.hakoSu" th:text="#{InvStockStoreBkYm.hakoSu}">HAKO_SU</label><input type="text" id="InvStockStoreBkYm.hakoSu" name="InvStockStoreBkYm.hakoSu" maxlength="3" />
+        </div>
+        <div id="stock">
+          <label for="InvStockStoreBkYm.stock" th:text="#{InvStockStoreBkYm.stock}">STOCK</label><input type="text" id="InvStockStoreBkYm.stock" name="InvStockStoreBkYm.stock" maxlength="9" />
+        </div>
+        <div id="totalSumCost">
+          <label for="InvStockStoreBkYm.totalSumCost" th:text="#{InvStockStoreBkYm.totalSumCost}">TOTAL_SUM_COST</label><input type="text" id="InvStockStoreBkYm.totalSumCost" name="InvStockStoreBkYm.totalSumCost" maxlength="9" />
+        </div>
+        <div id="amount">
+          <label for="InvStockStoreBkYm.amount" th:text="#{InvStockStoreBkYm.amount}">AMOUNT</label><input type="text" id="InvStockStoreBkYm.amount" name="InvStockStoreBkYm.amount" maxlength="11" />
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="reset" th:text="#{common.reset}">reset</button>
+      </div>
+      <div class="submits">
+        <button id="SearchInvStockStoreBkYm" class="search" data-gridId="InvStockStoreBkYmGrid" th:text="#{common.search}">submit</button>
+      </div>
+    </form>
+    <form name="InvStockStoreBkYmSRegistForm" action="InvStockStoreBkYmSRegist.ajax" class="regist">
+      <h3 th:text="#{InvStockStoreBkYm.h3}">h3</h3>
+      <div id="InvStockStoreBkYmGrid" data-selectionMode="checkbox" data-frozenColumn="3" th:data-href="@{/model/InvStockStoreBkYm.html}"></div>
+      <div id="InvStockStoreBkYmPager"></div>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="$('[id=&quot;SearchInvStockStoreBkYm&quot;]').click();">reset</button>
+        <a th:href="@{InvStockStoreBkYmSearch.xlsx(baseMei=#{InvStockStoreBkYmS.h2})}" id="InvStockStoreBkYmSearch.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeleteInvStockStoreBkYmS" class="delete selectRows" data-action="InvStockStoreBkYmSDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistInvStockStoreBkYmS" class="regist" th:text="#{common.regist}">submit</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

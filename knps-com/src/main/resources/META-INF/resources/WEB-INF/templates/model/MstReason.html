@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{MstReason.title}">MST_REASON</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/MstReasonGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{MstReason.h2}">h2</h2>
+    <form name="MstReasonRegistForm" action="MstReasonRegist.ajax" class="regist">
+      <fieldset>
+        <legend th:text="#{MstReason.legend}">legend</legend>
+        <div id="reasonCode">
+          <label for="MstReason.reasonCode" th:text="#{MstReason.reasonCode}">REASON_CODE</label><span id="MstReason.reasonCode"></span><input type="hidden" id="MstReason.reasonCode" name="MstReason.reasonCode" class="primaryKey" />
+        </div>
+        <div id="reasonName">
+          <label for="MstReason.reasonName" th:text="#{MstReason.reasonName}">REASON_NAME</label><input type="text" id="MstReason.reasonName" name="MstReason.reasonName" maxlength="60" />
+        </div>
+        <div id="reasonKbn">
+          <fieldset id="MstReason.reasonKbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:reason_kbn" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstReason.reasonKbn}">REASON_KBN</legend>
+          </fieldset>
+        </div>
+        <div id="timeStampCreate">
+          <label for="MstReason.timeStampCreate" th:text="#{MstReason.timeStampCreate}">TIME_STAMP_CREATE</label><span id="MstReason.timeStampCreate"></span><input type="hidden" id="MstReason.timeStampCreate" name="MstReason.timeStampCreate" />
+        </div>
+        <div id="timeStampChange">
+          <label for="MstReason.timeStampChange" th:text="#{MstReason.timeStampChange}">TIME_STAMP_CHANGE</label><span id="MstReason.timeStampChange"></span><input type="hidden" id="MstReason.timeStampChange" name="MstReason.timeStampChange" />
+        </div>
+        <div id="userIdCreate">
+          <label for="MstReason.userIdCreate" th:text="#{MstReason.userIdCreate}">USER_ID_CREATE</label><span id="MstReason.userIdCreate"></span><input type="hidden" id="MstReason.userIdCreate" name="MstReason.userIdCreate" />
+        </div>
+        <div id="userIdChange">
+          <label for="MstReason.userIdChange" th:text="#{MstReason.userIdChange}">USER_ID_CHANGE</label><span id="MstReason.userIdChange"></span><input type="hidden" id="MstReason.userIdChange" name="MstReason.userIdChange" />
+        </div>
+        <div id="deleteFlag">
+          <fieldset id="MstReason.deleteFlagList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:delete_flag" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstReason.deleteFlag}">DELETE_FLAG</legend>
+          </fieldset>
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="Dialogate.refresh(event);">reset</button>
+        <a th:href="@{MstReasonGet.xlsx(baseMei=#{MstReason.h2})}" id="MstReasonGet.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeleteMstReason" class="delete" data-action="MstReasonDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistMstReason" class="regist" th:text="#{common.regist}">登録</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

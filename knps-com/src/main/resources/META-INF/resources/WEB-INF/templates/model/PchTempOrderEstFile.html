@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{PchTempOrderEstFile.title}">PCH_TEMP_ORDER_EST_FILE</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/PchTempOrderEstFileGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{PchTempOrderEstFile.h2}">h2</h2>
+    <form name="PchTempOrderEstFileRegistForm" action="PchTempOrderEstFileRegist.ajax" class="regist">
+      <fieldset>
+        <legend th:text="#{PchTempOrderEstFile.legend}">legend</legend>
+        <div id="tempOrderNo">
+          <label for="PchTempOrderEstFile.tempOrderNo" th:text="#{PchTempOrderEstFile.tempOrderNo}">TEMP_ORDER_NO</label><span id="PchTempOrderEstFile.tempOrderNo"></span><input type="hidden" id="PchTempOrderEstFile.tempOrderNo" name="PchTempOrderEstFile.tempOrderNo" class="primaryKey" />
+        </div>
+        <div id="estFileSeq">
+          <label for="PchTempOrderEstFile.estFileSeq" th:text="#{PchTempOrderEstFile.estFileSeq}">EST_FILE_SEQ</label><input type="text" id="PchTempOrderEstFile.estFileSeq" name="PchTempOrderEstFile.estFileSeq" maxlength="10" class="primaryKey" />
+        </div>
+        <div id="uploadFileNm">
+          <label for="PchTempOrderEstFile.uploadFileNm" th:text="#{PchTempOrderEstFile.uploadFileNm}">UPLOAD_FILE_NM</label><input type="text" id="PchTempOrderEstFile.uploadFileNm" name="PchTempOrderEstFile.uploadFileNm" maxlength="120" />
+        </div>
+        <div id="saveFilePath">
+          <label for="PchTempOrderEstFile.saveFilePath" th:text="#{PchTempOrderEstFile.saveFilePath}">SAVE_FILE_PATH</label><input type="text" id="PchTempOrderEstFile.saveFilePath" name="PchTempOrderEstFile.saveFilePath" maxlength="120" />
+        </div>
+        <div id="timeStampCreate">
+          <label for="PchTempOrderEstFile.timeStampCreate" th:text="#{PchTempOrderEstFile.timeStampCreate}">TIME_STAMP_CREATE</label><span id="PchTempOrderEstFile.timeStampCreate"></span><input type="hidden" id="PchTempOrderEstFile.timeStampCreate" name="PchTempOrderEstFile.timeStampCreate" />
+        </div>
+        <div id="timeStampChange">
+          <label for="PchTempOrderEstFile.timeStampChange" th:text="#{PchTempOrderEstFile.timeStampChange}">TIME_STAMP_CHANGE</label><span id="PchTempOrderEstFile.timeStampChange"></span><input type="hidden" id="PchTempOrderEstFile.timeStampChange" name="PchTempOrderEstFile.timeStampChange" />
+        </div>
+        <div id="userIdCreate">
+          <label for="PchTempOrderEstFile.userIdCreate" th:text="#{PchTempOrderEstFile.userIdCreate}">USER_ID_CREATE</label><span id="PchTempOrderEstFile.userIdCreate"></span><input type="hidden" id="PchTempOrderEstFile.userIdCreate" name="PchTempOrderEstFile.userIdCreate" />
+        </div>
+        <div id="userIdChange">
+          <label for="PchTempOrderEstFile.userIdChange" th:text="#{PchTempOrderEstFile.userIdChange}">USER_ID_CHANGE</label><span id="PchTempOrderEstFile.userIdChange"></span><input type="hidden" id="PchTempOrderEstFile.userIdChange" name="PchTempOrderEstFile.userIdChange" />
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="Dialogate.refresh(event);">reset</button>
+        <a th:href="@{PchTempOrderEstFileGet.xlsx(baseMei=#{PchTempOrderEstFile.h2})}" id="PchTempOrderEstFileGet.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeletePchTempOrderEstFile" class="delete" data-action="PchTempOrderEstFileDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistPchTempOrderEstFile" class="regist" th:text="#{common.regist}">登録</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

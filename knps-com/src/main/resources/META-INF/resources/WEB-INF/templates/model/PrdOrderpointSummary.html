@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{PrdOrderpointSummary.title}">PRD_ORDERPOINT_SUMMARY</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/PrdOrderpointSummaryGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{PrdOrderpointSummary.h2}">h2</h2>
+    <form name="PrdOrderpointSummaryRegistForm" action="PrdOrderpointSummaryRegist.ajax" class="regist">
+      <fieldset>
+        <legend th:text="#{PrdOrderpointSummary.legend}">legend</legend>
+        <div id="hinban">
+          <label for="PrdOrderpointSummary.hinban" th:text="#{PrdOrderpointSummary.hinban}">HINBAN</label><span id="PrdOrderpointSummary.hinban"></span><input type="hidden" id="PrdOrderpointSummary.hinban" name="PrdOrderpointSummary.hinban" class="primaryKey" />
+        </div>
+        <div id="proNesCounts">
+          <label for="PrdOrderpointSummary.proNesCounts" th:text="#{PrdOrderpointSummary.proNesCounts}">PRO_NES_COUNTS</label><input type="text" id="PrdOrderpointSummary.proNesCounts" name="PrdOrderpointSummary.proNesCounts" maxlength="7" />
+        </div>
+        <div id="issueNesCounts">
+          <label for="PrdOrderpointSummary.issueNesCounts" th:text="#{PrdOrderpointSummary.issueNesCounts}">ISSUE_NES_COUNTS</label><input type="text" id="PrdOrderpointSummary.issueNesCounts" name="PrdOrderpointSummary.issueNesCounts" maxlength="7" />
+        </div>
+        <div id="timeStampCreate">
+          <label for="PrdOrderpointSummary.timeStampCreate" th:text="#{PrdOrderpointSummary.timeStampCreate}">TIME_STAMP_CREATE</label><span id="PrdOrderpointSummary.timeStampCreate"></span><input type="hidden" id="PrdOrderpointSummary.timeStampCreate" name="PrdOrderpointSummary.timeStampCreate" />
+        </div>
+        <div id="timeStampChange">
+          <label for="PrdOrderpointSummary.timeStampChange" th:text="#{PrdOrderpointSummary.timeStampChange}">TIME_STAMP_CHANGE</label><span id="PrdOrderpointSummary.timeStampChange"></span><input type="hidden" id="PrdOrderpointSummary.timeStampChange" name="PrdOrderpointSummary.timeStampChange" />
+        </div>
+        <div id="userIdCreate">
+          <label for="PrdOrderpointSummary.userIdCreate" th:text="#{PrdOrderpointSummary.userIdCreate}">USER_ID_CREATE</label><span id="PrdOrderpointSummary.userIdCreate"></span><input type="hidden" id="PrdOrderpointSummary.userIdCreate" name="PrdOrderpointSummary.userIdCreate" />
+        </div>
+        <div id="userIdChange">
+          <label for="PrdOrderpointSummary.userIdChange" th:text="#{PrdOrderpointSummary.userIdChange}">USER_ID_CHANGE</label><span id="PrdOrderpointSummary.userIdChange"></span><input type="hidden" id="PrdOrderpointSummary.userIdChange" name="PrdOrderpointSummary.userIdChange" />
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="Dialogate.refresh(event);">reset</button>
+        <a th:href="@{PrdOrderpointSummaryGet.xlsx(baseMei=#{PrdOrderpointSummary.h2})}" id="PrdOrderpointSummaryGet.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeletePrdOrderpointSummary" class="delete" data-action="PrdOrderpointSummaryDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistPrdOrderpointSummary" class="regist" th:text="#{common.regist}">登録</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

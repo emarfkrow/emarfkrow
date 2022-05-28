@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{PrdOrderpointSummaryS.title}">PRD_ORDERPOINT_SUMMARY</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/PrdOrderpointSummaryGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{PrdOrderpointSummaryS.h2}">h2</h2>
+    <form name="PrdOrderpointSummarySearchForm" action="PrdOrderpointSummarySearch.ajax" class="search">
+      <fieldset>
+        <legend th:text="#{PrdOrderpointSummaryS.legend}">legend</legend>
+        <div id="hinban">
+          <label for="PrdOrderpointSummary.hinban" th:text="#{PrdOrderpointSummary.hinban}">HINBAN</label><input type="text" id="PrdOrderpointSummary.hinban" name="PrdOrderpointSummary.hinban" maxlength="25" />
+        </div>
+        <div id="proNesCounts">
+          <label for="PrdOrderpointSummary.proNesCounts_1" th:text="#{PrdOrderpointSummary.proNesCounts}">PRO_NES_COUNTS</label><input type="text" id="PrdOrderpointSummary.proNesCounts_1" name="PrdOrderpointSummary.proNesCounts_1" maxlength="7" />～<input type="text" id="PrdOrderpointSummary.proNesCounts_2" name="PrdOrderpointSummary.proNesCounts_2" maxlength="7" />
+        </div>
+        <div id="issueNesCounts">
+          <label for="PrdOrderpointSummary.issueNesCounts_1" th:text="#{PrdOrderpointSummary.issueNesCounts}">ISSUE_NES_COUNTS</label><input type="text" id="PrdOrderpointSummary.issueNesCounts_1" name="PrdOrderpointSummary.issueNesCounts_1" maxlength="7" />～<input type="text" id="PrdOrderpointSummary.issueNesCounts_2" name="PrdOrderpointSummary.issueNesCounts_2" maxlength="7" />
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="reset" th:text="#{common.reset}">reset</button>
+        <a th:href="@{/model/PrdOrderpointSummary.html}" id="PrdOrderpointSummary" target="dialog" th:text="#{PrdOrderpointSummary.add}" tabindex="-1">PRD_ORDERPOINT_SUMMARY</a>
+      </div>
+      <div class="submits">
+        <button id="SearchPrdOrderpointSummary" class="search" data-gridId="PrdOrderpointSummaryGrid" th:text="#{common.search}">submit</button>
+      </div>
+    </form>
+    <form name="PrdOrderpointSummarySRegistForm" action="PrdOrderpointSummarySRegist.ajax" class="regist">
+      <h3 th:text="#{PrdOrderpointSummary.h3}">h3</h3>
+      <div id="PrdOrderpointSummaryGrid" data-selectionMode="checkbox" data-addRow="true" data-frozenColumn="0" th:data-href="@{/model/PrdOrderpointSummary.html}"></div>
+      <div id="PrdOrderpointSummaryPager"></div>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="$('[id=&quot;SearchPrdOrderpointSummary&quot;]').click();">reset</button>
+        <a th:href="@{PrdOrderpointSummarySearch.xlsx(baseMei=#{PrdOrderpointSummaryS.h2})}" id="PrdOrderpointSummarySearch.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeletePrdOrderpointSummaryS" class="delete selectRows" data-action="PrdOrderpointSummarySDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistPrdOrderpointSummaryS" class="regist" th:text="#{common.regist}">submit</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{MstProdUnitpriceHsS.title}">MST_PROD_UNITPRICE_HS</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/MstProdUnitpriceHsGridColumns.js}"></script>
+<script th:src="@{/model/MstWcGridColumns.js}"></script>
+<script th:src="@{/model/MstWcBkGridColumns.js}"></script>
+<script th:src="@{/model/MstProcGridColumns.js}"></script>
+<script th:src="@{/model/MstWsGridColumns.js}"></script>
+<script th:src="@{/model/MstTeamGridColumns.js}"></script>
+<script th:src="@{/model/MstGroupGridColumns.js}"></script>
+<script th:src="@{/model/MstDivisionGridColumns.js}"></script>
+<script th:src="@{/model/MstCompanyGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierGridColumns.js}"></script>
+<script th:src="@{/model/InvStockProcessSupplyGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierBkGridColumns.js}"></script>
+<script th:src="@{/model/MstTaxGridColumns.js}"></script>
+<script th:src="@{/model/MstCostCenterGridColumns.js}"></script>
+<script th:src="@{/model/MstCostCenterBkGridColumns.js}"></script>
+<script th:src="@{/model/MstSubinvGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{MstProdUnitpriceHsS.h2}">h2</h2>
+    <form name="MstProdUnitpriceHsSearchForm" action="MstProdUnitpriceHsSearch.ajax" class="search">
+      <fieldset>
+        <legend th:text="#{MstProdUnitpriceHsS.legend}">legend</legend>
+        <div id="manHinban">
+          <label for="MstProdUnitpriceHs.manHinban" th:text="#{MstProdUnitpriceHs.manHinban}">MAN_HINBAN</label><input type="text" id="MstProdUnitpriceHs.manHinban" name="MstProdUnitpriceHs.manHinban" maxlength="25" />
+        </div>
+        <div id="routingGroup">
+          <label for="MstProdUnitpriceHs.routingGroup" th:text="#{MstProdUnitpriceHs.routingGroup}">ROUTING_GROUP</label><input type="text" id="MstProdUnitpriceHs.routingGroup" name="MstProdUnitpriceHs.routingGroup" maxlength="2" />
+        </div>
+        <div id="routing">
+          <label for="MstProdUnitpriceHs.routing" th:text="#{MstProdUnitpriceHs.routing}">ROUTING</label><input type="text" id="MstProdUnitpriceHs.routing" name="MstProdUnitpriceHs.routing" maxlength="2" />
+        </div>
+        <div id="wcCode">
+          <label for="MstProdUnitpriceHs.wcCode" th:text="#{MstProdUnitpriceHs.wcCode}">WC_CODE</label><input type="text" id="MstProdUnitpriceHs.wcCode" name="MstProdUnitpriceHs.wcCode" maxlength="3" data-json="MstWcSearch.json" data-srcDef="WC_CODE:MstProdUnitpriceHs.wcCode" data-destDef="MstProdUnitpriceHs.wcName:WC_NAME" /><a id="MstProdUnitpriceHs.wcCode" th:href="@{/model/MstWcS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MstProdUnitpriceHs.wcName" class="refer" data-json="MstWcSearch.json" data-srcDef="WC_CODE:MstProdUnitpriceHs.wcCode" data-destDef="MstProdUnitpriceHs.wcName:WC_NAME"></span>
+        </div>
+        <div id="minOrder">
+          <label for="MstProdUnitpriceHs.minOrder" th:text="#{MstProdUnitpriceHs.minOrder}">MIN_ORDER</label><input type="text" id="MstProdUnitpriceHs.minOrder" name="MstProdUnitpriceHs.minOrder" maxlength="11" />
+        </div>
+        <div id="stanCounts">
+          <label for="MstProdUnitpriceHs.stanCounts_1" th:text="#{MstProdUnitpriceHs.stanCounts}">STAN_COUNTS</label><input type="text" id="MstProdUnitpriceHs.stanCounts_1" name="MstProdUnitpriceHs.stanCounts_1" maxlength="11" />～<input type="text" id="MstProdUnitpriceHs.stanCounts_2" name="MstProdUnitpriceHs.stanCounts_2" maxlength="11" />
+        </div>
+        <div id="orderUnit">
+          <label for="MstProdUnitpriceHs.orderUnit_1" th:text="#{MstProdUnitpriceHs.orderUnit}">ORDER_UNIT</label><input type="text" id="MstProdUnitpriceHs.orderUnit_1" name="MstProdUnitpriceHs.orderUnit_1" maxlength="9" />～<input type="text" id="MstProdUnitpriceHs.orderUnit_2" name="MstProdUnitpriceHs.orderUnit_2" maxlength="9" />
+        </div>
+        <div id="standardUnitpriceFlag">
+          <fieldset id="MstProdUnitpriceHs.standardUnitpriceFlagList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:standard_unitprice_flag" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstProdUnitpriceHs.standardUnitpriceFlag}">STANDARD_UNITPRICE_FLAG</legend>
+          </fieldset>
+        </div>
+        <div id="deleteFlag">
+          <fieldset id="MstProdUnitpriceHs.deleteFlagList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:delete_flag" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstProdUnitpriceHs.deleteFlag}">DELETE_FLAG</legend>
+          </fieldset>
+        </div>
+        <div id="gaikaKb">
+          <fieldset id="MstProdUnitpriceHs.gaikaKbList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:gaika_kb" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstProdUnitpriceHs.gaikaKb}">GAIKA_KB</legend>
+          </fieldset>
+        </div>
+        <div id="gaikaTk">
+          <label for="MstProdUnitpriceHs.gaikaTk" th:text="#{MstProdUnitpriceHs.gaikaTk}">GAIKA_TK</label><input type="text" id="MstProdUnitpriceHs.gaikaTk" name="MstProdUnitpriceHs.gaikaTk" maxlength="10" />
+        </div>
+        <div id="isshikiUnitF">
+          <fieldset id="MstProdUnitpriceHs.isshikiUnitFList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:isshiki_unit_f" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstProdUnitpriceHs.isshikiUnitF}">ISSHIKI_UNIT_F</legend>
+          </fieldset>
+        </div>
+        <div id="minOrderAmount">
+          <label for="MstProdUnitpriceHs.minOrderAmount_1" th:text="#{MstProdUnitpriceHs.minOrderAmount}">MIN_ORDER_AMOUNT</label><input type="text" id="MstProdUnitpriceHs.minOrderAmount_1" name="MstProdUnitpriceHs.minOrderAmount_1" maxlength="11" />～<input type="text" id="MstProdUnitpriceHs.minOrderAmount_2" name="MstProdUnitpriceHs.minOrderAmount_2" maxlength="11" />
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="reset" th:text="#{common.reset}">reset</button>
+        <a th:href="@{/model/MstProdUnitpriceHs.html}" id="MstProdUnitpriceHs" target="dialog" th:text="#{MstProdUnitpriceHs.add}" tabindex="-1">MST_PROD_UNITPRICE_HS</a>
+      </div>
+      <div class="submits">
+        <button id="SearchMstProdUnitpriceHs" class="search" data-gridId="MstProdUnitpriceHsGrid" th:text="#{common.search}">submit</button>
+      </div>
+    </form>
+    <form name="MstProdUnitpriceHsSRegistForm" action="MstProdUnitpriceHsSRegist.ajax" class="regist">
+      <h3 th:text="#{MstProdUnitpriceHs.h3}">h3</h3>
+      <div id="MstProdUnitpriceHsGrid" data-selectionMode="checkbox" data-frozenColumn="5" th:data-href="@{/model/MstProdUnitpriceHs.html}"></div>
+      <div id="MstProdUnitpriceHsPager"></div>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="$('[id=&quot;SearchMstProdUnitpriceHs&quot;]').click();">reset</button>
+        <a th:href="@{MstProdUnitpriceHsSearch.xlsx(baseMei=#{MstProdUnitpriceHsS.h2})}" id="MstProdUnitpriceHsSearch.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeleteMstProdUnitpriceHsS" class="delete selectRows" data-action="MstProdUnitpriceHsSDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistMstProdUnitpriceHsS" class="regist" th:text="#{common.regist}">submit</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

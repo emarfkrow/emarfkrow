@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{InvYStkProdAmountProdS.title}">INV_Y_STK_PROD_AMOUNT_PROD</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/InvYStkProdAmountProdGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{InvYStkProdAmountProdS.h2}">h2</h2>
+    <form name="InvYStkProdAmountProdSearchForm" action="InvYStkProdAmountProdSearch.ajax" class="search">
+      <fieldset>
+        <legend th:text="#{InvYStkProdAmountProdS.legend}">legend</legend>
+        <div id="proHinban">
+          <label for="InvYStkProdAmountProd.proHinban" th:text="#{InvYStkProdAmountProd.proHinban}">PRO_HINBAN</label><input type="text" id="InvYStkProdAmountProd.proHinban" name="InvYStkProdAmountProd.proHinban" maxlength="25" />
+        </div>
+        <div id="yyyy">
+          <label for="InvYStkProdAmountProd.yyyy" th:text="#{InvYStkProdAmountProd.yyyy}">YYYY</label><input type="text" id="InvYStkProdAmountProd.yyyy" name="InvYStkProdAmountProd.yyyy" maxlength="4" />
+        </div>
+        <div id="mm">
+          <label for="InvYStkProdAmountProd.mm" th:text="#{InvYStkProdAmountProd.mm}">MM</label><input type="text" id="InvYStkProdAmountProd.mm" name="InvYStkProdAmountProd.mm" maxlength="2" />
+        </div>
+        <div id="nesCounts">
+          <label for="InvYStkProdAmountProd.nesCounts_1" th:text="#{InvYStkProdAmountProd.nesCounts}">NES_COUNTS</label><input type="text" id="InvYStkProdAmountProd.nesCounts_1" name="InvYStkProdAmountProd.nesCounts_1" maxlength="7" />～<input type="text" id="InvYStkProdAmountProd.nesCounts_2" name="InvYStkProdAmountProd.nesCounts_2" maxlength="7" />
+        </div>
+        <div id="stanCosts">
+          <label for="InvYStkProdAmountProd.stanCosts" th:text="#{InvYStkProdAmountProd.stanCosts}">STAN_COSTS</label><input type="text" id="InvYStkProdAmountProd.stanCosts" name="InvYStkProdAmountProd.stanCosts" maxlength="9" />
+        </div>
+        <div id="shikakeKbn">
+          <fieldset id="InvYStkProdAmountProd.shikakeKbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:shikake_kbn" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{InvYStkProdAmountProd.shikakeKbn}">SHIKAKE_KBN</legend>
+          </fieldset>
+        </div>
+        <div id="proLt">
+          <label for="InvYStkProdAmountProd.proLt" th:text="#{InvYStkProdAmountProd.proLt}">PRO_LT</label><input type="text" id="InvYStkProdAmountProd.proLt" name="InvYStkProdAmountProd.proLt" maxlength="6" />
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="reset" th:text="#{common.reset}">reset</button>
+      </div>
+      <div class="submits">
+        <button id="SearchInvYStkProdAmountProd" class="search" data-gridId="InvYStkProdAmountProdGrid" th:text="#{common.search}">submit</button>
+      </div>
+    </form>
+    <form name="InvYStkProdAmountProdSRegistForm" action="InvYStkProdAmountProdSRegist.ajax" class="regist">
+      <h3 th:text="#{InvYStkProdAmountProd.h3}">h3</h3>
+      <div id="InvYStkProdAmountProdGrid" data-selectionMode="checkbox" data-frozenColumn="2" th:data-href="@{/model/InvYStkProdAmountProd.html}"></div>
+      <div id="InvYStkProdAmountProdPager"></div>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="$('[id=&quot;SearchInvYStkProdAmountProd&quot;]').click();">reset</button>
+        <a th:href="@{InvYStkProdAmountProdSearch.xlsx(baseMei=#{InvYStkProdAmountProdS.h2})}" id="InvYStkProdAmountProdSearch.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeleteInvYStkProdAmountProdS" class="delete selectRows" data-action="InvYStkProdAmountProdSDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistInvYStkProdAmountProdS" class="regist" th:text="#{common.regist}">submit</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

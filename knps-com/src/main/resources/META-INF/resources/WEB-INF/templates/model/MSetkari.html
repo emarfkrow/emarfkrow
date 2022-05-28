@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{MSetkari.title}">M_SETKARI</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/MSetkariGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{MSetkari.h2}">h2</h2>
+    <form name="MSetkariRegistForm" action="MSetkariRegist.ajax" class="regist">
+      <fieldset>
+        <legend th:text="#{MSetkari.legend}">legend</legend>
+        <div id="setHinban">
+          <label for="MSetkari.setHinban" th:text="#{MSetkari.setHinban}">SET-HINBAN</label><span id="MSetkari.setHinban"></span><input type="hidden" id="MSetkari.setHinban" name="MSetkari.setHinban" class="primaryKey" />
+        </div>
+        <div id="setKhinban">
+          <label for="MSetkari.setKhinban" th:text="#{MSetkari.setKhinban}">SET-KHINBAN</label><span id="MSetkari.setKhinban"></span><input type="hidden" id="MSetkari.setKhinban" name="MSetkari.setKhinban" class="primaryKey" />
+        </div>
+        <div id="setinzu">
+          <label for="MSetkari.setinzu" th:text="#{MSetkari.setinzu}">SETINZU</label><input type="text" id="MSetkari.setinzu" name="MSetkari.setinzu" maxlength="3" />
+        </div>
+        <div id="timeStampCreate">
+          <label for="MSetkari.timeStampCreate" th:text="#{MSetkari.timeStampCreate}">TIME_STAMP_CREATE</label><span id="MSetkari.timeStampCreate"></span><input type="hidden" id="MSetkari.timeStampCreate" name="MSetkari.timeStampCreate" />
+        </div>
+        <div id="timeStampChange">
+          <label for="MSetkari.timeStampChange" th:text="#{MSetkari.timeStampChange}">TIME_STAMP_CHANGE</label><span id="MSetkari.timeStampChange"></span><input type="hidden" id="MSetkari.timeStampChange" name="MSetkari.timeStampChange" />
+        </div>
+        <div id="userIdCreate">
+          <label for="MSetkari.userIdCreate" th:text="#{MSetkari.userIdCreate}">USER_ID_CREATE</label><span id="MSetkari.userIdCreate"></span><input type="hidden" id="MSetkari.userIdCreate" name="MSetkari.userIdCreate" />
+        </div>
+        <div id="userIdChange">
+          <label for="MSetkari.userIdChange" th:text="#{MSetkari.userIdChange}">USER_ID_CHANGE</label><span id="MSetkari.userIdChange"></span><input type="hidden" id="MSetkari.userIdChange" name="MSetkari.userIdChange" />
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend th:text="#{MSetkose.legend}">legend</legend>
+        <div id="dltflg">
+          <label for="MSetkose.dltflg" th:text="#{MSetkose.dltflg}">DLTFLG</label><input type="text" id="MSetkose.dltflg" name="MSetkose.dltflg" maxlength="1" />
+        </div>
+        <div id="setinzu">
+          <label for="MSetkose.setinzu" th:text="#{MSetkose.setinzu}">SETINZU</label><input type="text" id="MSetkose.setinzu" name="MSetkose.setinzu" maxlength="3" />
+        </div>
+        <input type="hidden" name="MSetkose.timeStampChange" />
+      </fieldset>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="Dialogate.refresh(event);">reset</button>
+        <a th:href="@{MSetkariGet.xlsx(baseMei=#{MSetkari.h2})}" id="MSetkariGet.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeleteMSetkari" class="delete" data-action="MSetkariDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistMSetkari" class="regist" th:text="#{common.regist}">登録</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

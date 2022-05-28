@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{MfgOrderHinbanDeploy.title}">MFG_ORDER_HINBAN_DEPLOY</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/MfgOrderHinbanDeployGridColumns.js}"></script>
+<script th:src="@{/model/MstUnitGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{MfgOrderHinbanDeploy.h2}">h2</h2>
+    <form name="MfgOrderHinbanDeployRegistForm" action="MfgOrderHinbanDeployRegist.ajax" class="regist">
+      <fieldset>
+        <legend th:text="#{MfgOrderHinbanDeploy.legend}">legend</legend>
+        <div id="reqid">
+          <label for="MfgOrderHinbanDeploy.reqid" th:text="#{MfgOrderHinbanDeploy.reqid}">REQID</label><span id="MfgOrderHinbanDeploy.reqid"></span><input type="hidden" id="MfgOrderHinbanDeploy.reqid" name="MfgOrderHinbanDeploy.reqid" class="primaryKey" />
+        </div>
+        <div id="hinban">
+          <label for="MfgOrderHinbanDeploy.hinban" th:text="#{MfgOrderHinbanDeploy.hinban}">HINBAN</label><span id="MfgOrderHinbanDeploy.hinban"></span><input type="hidden" id="MfgOrderHinbanDeploy.hinban" name="MfgOrderHinbanDeploy.hinban" class="primaryKey" />
+        </div>
+        <div id="deliveryDate">
+          <label for="MfgOrderHinbanDeploy.deliveryDate" th:text="#{MfgOrderHinbanDeploy.deliveryDate}">DELIVERY_DATE</label><span id="MfgOrderHinbanDeploy.deliveryDate"></span><input type="hidden" id="MfgOrderHinbanDeploy.deliveryDate" name="MfgOrderHinbanDeploy.deliveryDate" class="primaryKey" />
+        </div>
+        <div id="unitCode">
+          <label for="MfgOrderHinbanDeploy.unitCode" th:text="#{MfgOrderHinbanDeploy.unitCode}">UNIT_CODE</label><input type="text" id="MfgOrderHinbanDeploy.unitCode" name="MfgOrderHinbanDeploy.unitCode" maxlength="2" data-json="MstUnitSearch.json" data-srcDef="UNIT_CODE:MfgOrderHinbanDeploy.unitCode" data-destDef="MfgOrderHinbanDeploy.unitName:UNIT_NAME" /><a id="MfgOrderHinbanDeploy.unitCode" th:href="@{/model/MstUnitS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MfgOrderHinbanDeploy.unitName" class="refer" data-json="MstUnitSearch.json" data-srcDef="UNIT_CODE:MfgOrderHinbanDeploy.unitCode" data-destDef="MfgOrderHinbanDeploy.unitName:UNIT_NAME"></span>
+        </div>
+        <div id="counts">
+          <label for="MfgOrderHinbanDeploy.counts" th:text="#{MfgOrderHinbanDeploy.counts}">COUNTS</label><input type="text" id="MfgOrderHinbanDeploy.counts" name="MfgOrderHinbanDeploy.counts" maxlength="7" />
+        </div>
+        <div id="timeStampCreate">
+          <label for="MfgOrderHinbanDeploy.timeStampCreate" th:text="#{MfgOrderHinbanDeploy.timeStampCreate}">TIME_STAMP_CREATE</label><span id="MfgOrderHinbanDeploy.timeStampCreate"></span><input type="hidden" id="MfgOrderHinbanDeploy.timeStampCreate" name="MfgOrderHinbanDeploy.timeStampCreate" />
+        </div>
+        <div id="timeStampChange">
+          <label for="MfgOrderHinbanDeploy.timeStampChange" th:text="#{MfgOrderHinbanDeploy.timeStampChange}">TIME_STAMP_CHANGE</label><span id="MfgOrderHinbanDeploy.timeStampChange"></span><input type="hidden" id="MfgOrderHinbanDeploy.timeStampChange" name="MfgOrderHinbanDeploy.timeStampChange" />
+        </div>
+        <div id="userIdCreate">
+          <label for="MfgOrderHinbanDeploy.userIdCreate" th:text="#{MfgOrderHinbanDeploy.userIdCreate}">USER_ID_CREATE</label><span id="MfgOrderHinbanDeploy.userIdCreate"></span><input type="hidden" id="MfgOrderHinbanDeploy.userIdCreate" name="MfgOrderHinbanDeploy.userIdCreate" />
+        </div>
+        <div id="userIdChange">
+          <label for="MfgOrderHinbanDeploy.userIdChange" th:text="#{MfgOrderHinbanDeploy.userIdChange}">USER_ID_CHANGE</label><span id="MfgOrderHinbanDeploy.userIdChange"></span><input type="hidden" id="MfgOrderHinbanDeploy.userIdChange" name="MfgOrderHinbanDeploy.userIdChange" />
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="Dialogate.refresh(event);">reset</button>
+        <a th:href="@{MfgOrderHinbanDeployGet.xlsx(baseMei=#{MfgOrderHinbanDeploy.h2})}" id="MfgOrderHinbanDeployGet.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeleteMfgOrderHinbanDeploy" class="delete" data-action="MfgOrderHinbanDeployDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistMfgOrderHinbanDeploy" class="regist" th:text="#{common.regist}">登録</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{MstCodeValue.title}">MST_CODE_VALUE</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/MstCodeValueGridColumns.js}"></script>
+<script th:src="@{/model/MstCodeGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{MstCodeValue.h2}">h2</h2>
+    <form name="MstCodeValueRegistForm" action="MstCodeValueRegist.ajax" class="regist">
+      <fieldset>
+        <legend th:text="#{MstCodeValue.legend}">legend</legend>
+        <div id="codeNm">
+          <label for="MstCodeValue.codeNm" th:text="#{MstCodeValue.codeNm}">CODE_NM</label><input type="text" id="MstCodeValue.codeNm" name="MstCodeValue.codeNm" maxlength="30" class="primaryKey" data-json="MstCodeSearch.json" data-srcDef="CODE_NM:MstCodeValue.codeNm" data-destDef="MstCodeValue.codeMei:CODE_MEI" /><a id="MstCodeValue.codeNm" th:href="@{/model/MstCodeS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MstCodeValue.codeMei" class="refer" data-json="MstCodeSearch.json" data-srcDef="CODE_NM:MstCodeValue.codeNm" data-destDef="MstCodeValue.codeMei:CODE_MEI"></span>
+        </div>
+        <div id="codeValue">
+          <label for="MstCodeValue.codeValue" th:text="#{MstCodeValue.codeValue}">CODE_VALUE</label><input type="text" id="MstCodeValue.codeValue" name="MstCodeValue.codeValue" maxlength="2" class="primaryKey" />
+        </div>
+        <div id="codeValueMei">
+          <label for="MstCodeValue.codeValueMei" th:text="#{MstCodeValue.codeValueMei}">CODE_VALUE_MEI</label><input type="text" id="MstCodeValue.codeValueMei" name="MstCodeValue.codeValueMei" maxlength="60" />
+        </div>
+        <div id="hyojiJun">
+          <label for="MstCodeValue.hyojiJun" th:text="#{MstCodeValue.hyojiJun}">HYOJI_JUN</label><input type="text" id="MstCodeValue.hyojiJun" name="MstCodeValue.hyojiJun" maxlength="10" />
+        </div>
+        <div id="criteria">
+          <label for="MstCodeValue.criteria" th:text="#{MstCodeValue.criteria}">CRITERIA</label><input type="text" id="MstCodeValue.criteria" name="MstCodeValue.criteria" maxlength="256" />
+        </div>
+        <div id="timeStampCreate">
+          <label for="MstCodeValue.timeStampCreate" th:text="#{MstCodeValue.timeStampCreate}">TIME_STAMP_CREATE</label><span id="MstCodeValue.timeStampCreate"></span><input type="hidden" id="MstCodeValue.timeStampCreate" name="MstCodeValue.timeStampCreate" />
+        </div>
+        <div id="timeStampChange">
+          <label for="MstCodeValue.timeStampChange" th:text="#{MstCodeValue.timeStampChange}">TIME_STAMP_CHANGE</label><span id="MstCodeValue.timeStampChange"></span><input type="hidden" id="MstCodeValue.timeStampChange" name="MstCodeValue.timeStampChange" />
+        </div>
+        <div id="userIdCreate">
+          <label for="MstCodeValue.userIdCreate" th:text="#{MstCodeValue.userIdCreate}">USER_ID_CREATE</label><span id="MstCodeValue.userIdCreate"></span><input type="hidden" id="MstCodeValue.userIdCreate" name="MstCodeValue.userIdCreate" />
+        </div>
+        <div id="userIdChange">
+          <label for="MstCodeValue.userIdChange" th:text="#{MstCodeValue.userIdChange}">USER_ID_CHANGE</label><span id="MstCodeValue.userIdChange"></span><input type="hidden" id="MstCodeValue.userIdChange" name="MstCodeValue.userIdChange" />
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="Dialogate.refresh(event);">reset</button>
+        <a th:href="@{MstCodeValueGet.xlsx(baseMei=#{MstCodeValue.h2})}" id="MstCodeValueGet.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeleteMstCodeValue" class="delete" data-action="MstCodeValueDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistMstCodeValue" class="regist" th:text="#{common.regist}">登録</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

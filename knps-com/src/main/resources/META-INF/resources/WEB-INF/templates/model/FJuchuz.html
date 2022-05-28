@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{FJuchuz.title}">F_JUCHUZ</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/FJuchuzGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{FJuchuz.h2}">h2</h2>
+    <form name="FJuchuzRegistForm" action="FJuchuzRegist.ajax" class="regist">
+      <fieldset>
+        <legend th:text="#{FJuchuz.legend}">legend</legend>
+        <div id="tokucd">
+          <label for="FJuchuz.tokucd" th:text="#{FJuchuz.tokucd}">TOKUCD</label><input type="text" id="FJuchuz.tokucd" name="FJuchuz.tokucd" maxlength="8" class="primaryKey" />
+        </div>
+        <div id="chokucd">
+          <label for="FJuchuz.chokucd" th:text="#{FJuchuz.chokucd}">CHOKUCD</label><input type="text" id="FJuchuz.chokucd" name="FJuchuz.chokucd" maxlength="8" />
+        </div>
+        <div id="hhinban">
+          <label for="FJuchuz.hhinban" th:text="#{FJuchuz.hhinban}">HHINBAN</label><input type="text" id="FJuchuz.hhinban" name="FJuchuz.hhinban" maxlength="20" class="primaryKey" />
+        </div>
+        <div id="chuban">
+          <label for="FJuchuz.chuban" th:text="#{FJuchuz.chuban}">CHUBAN</label><input type="text" id="FJuchuz.chuban" name="FJuchuz.chuban" maxlength="10" />
+        </div>
+        <div id="juchusu">
+          <label for="FJuchuz.juchusu" th:text="#{FJuchuz.juchusu}">JUCHUSU</label><input type="text" id="FJuchuz.juchusu" name="FJuchuz.juchusu" maxlength="7" />
+        </div>
+        <div id="juchuno">
+          <label for="FJuchuz.juchuno" th:text="#{FJuchuz.juchuno}">JUCHUNO</label><input type="text" id="FJuchuz.juchuno" name="FJuchuz.juchuno" maxlength="16" class="primaryKey" />
+        </div>
+        <div id="timeStampCreate">
+          <label for="FJuchuz.timeStampCreate" th:text="#{FJuchuz.timeStampCreate}">TIME_STAMP_CREATE</label><span id="FJuchuz.timeStampCreate"></span><input type="hidden" id="FJuchuz.timeStampCreate" name="FJuchuz.timeStampCreate" />
+        </div>
+        <div id="timeStampChange">
+          <label for="FJuchuz.timeStampChange" th:text="#{FJuchuz.timeStampChange}">TIME_STAMP_CHANGE</label><span id="FJuchuz.timeStampChange"></span><input type="hidden" id="FJuchuz.timeStampChange" name="FJuchuz.timeStampChange" />
+        </div>
+        <div id="userIdCreate">
+          <label for="FJuchuz.userIdCreate" th:text="#{FJuchuz.userIdCreate}">USER_ID_CREATE</label><span id="FJuchuz.userIdCreate"></span><input type="hidden" id="FJuchuz.userIdCreate" name="FJuchuz.userIdCreate" />
+        </div>
+        <div id="userIdChange">
+          <label for="FJuchuz.userIdChange" th:text="#{FJuchuz.userIdChange}">USER_ID_CHANGE</label><span id="FJuchuz.userIdChange"></span><input type="hidden" id="FJuchuz.userIdChange" name="FJuchuz.userIdChange" />
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="Dialogate.refresh(event);">reset</button>
+        <a th:href="@{FJuchuzGet.xlsx(baseMei=#{FJuchuz.h2})}" id="FJuchuzGet.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeleteFJuchuz" class="delete" data-action="FJuchuzDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistFJuchuz" class="regist" th:text="#{common.regist}">登録</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

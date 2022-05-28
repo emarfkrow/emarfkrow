@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{InvStockProcessS.title}">INV_STOCK_PROCESS</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/InvStockProcessGridColumns.js}"></script>
+<script th:src="@{/model/MstLocationGridColumns.js}"></script>
+<script th:src="@{/model/MstSubinvGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierGridColumns.js}"></script>
+<script th:src="@{/model/InvStockProcessSupplyGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierBkGridColumns.js}"></script>
+<script th:src="@{/model/MstTaxGridColumns.js}"></script>
+<script th:src="@{/model/MstStoreManGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{InvStockProcessS.h2}">h2</h2>
+    <form name="InvStockProcessSearchForm" action="InvStockProcessSearch.ajax" class="search">
+      <fieldset>
+        <legend th:text="#{InvStockProcessS.legend}">legend</legend>
+        <div id="locationCode">
+          <label for="InvStockProcess.locationCode" th:text="#{InvStockProcess.locationCode}">LOCATION_CODE</label><input type="text" id="InvStockProcess.locationCode" name="InvStockProcess.locationCode" maxlength="10" data-json="MstLocationSearch.json" data-srcDef="LOCATION_CODE:InvStockProcess.locationCode" data-destDef="InvStockProcess.locationName:LOCATION_NAME" /><a id="InvStockProcess.locationCode" th:href="@{/model/MstLocationS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="InvStockProcess.locationName" class="refer" data-json="MstLocationSearch.json" data-srcDef="LOCATION_CODE:InvStockProcess.locationCode" data-destDef="InvStockProcess.locationName:LOCATION_NAME"></span>
+        </div>
+        <div id="hinban">
+          <label for="InvStockProcess.hinban" th:text="#{InvStockProcess.hinban}">HINBAN</label><input type="text" id="InvStockProcess.hinban" name="InvStockProcess.hinban" maxlength="25" />
+        </div>
+        <div id="stock">
+          <label for="InvStockProcess.stock" th:text="#{InvStockProcess.stock}">STOCK</label><input type="text" id="InvStockProcess.stock" name="InvStockProcess.stock" maxlength="11" />
+        </div>
+        <div id="lastInOutDate">
+          <label for="InvStockProcess.lastInOutDate_1" th:text="#{InvStockProcess.lastInOutDate}">LAST_IN_OUT_DATE</label><input type="date" id="InvStockProcess.lastInOutDate_1" name="InvStockProcess.lastInOutDate_1" maxlength="7" />～<input type="date" id="InvStockProcess.lastInOutDate_2" name="InvStockProcess.lastInOutDate_2" maxlength="7" />
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="reset" th:text="#{common.reset}">reset</button>
+        <a th:href="@{/model/InvStockProcess.html}" id="InvStockProcess" target="dialog" th:text="#{InvStockProcess.add}" tabindex="-1">INV_STOCK_PROCESS</a>
+      </div>
+      <div class="submits">
+        <button id="SearchInvStockProcess" class="search" data-gridId="InvStockProcessGrid" th:text="#{common.search}">submit</button>
+      </div>
+    </form>
+    <form name="InvStockProcessSRegistForm" action="InvStockProcessSRegist.ajax" class="regist">
+      <h3 th:text="#{InvStockProcess.h3}">h3</h3>
+      <div id="InvStockProcessGrid" data-selectionMode="checkbox" data-frozenColumn="1" th:data-href="@{/model/InvStockProcess.html}"></div>
+      <div id="InvStockProcessPager"></div>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="$('[id=&quot;SearchInvStockProcess&quot;]').click();">reset</button>
+        <a th:href="@{InvStockProcessSearch.xlsx(baseMei=#{InvStockProcessS.h2})}" id="InvStockProcessSearch.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeleteInvStockProcessS" class="delete selectRows" data-action="InvStockProcessSDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistInvStockProcessS" class="regist" th:text="#{common.regist}">submit</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

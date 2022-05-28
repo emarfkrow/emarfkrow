@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{PrdPreStatusHeadS.title}">PRD_PRE_STATUS_HEAD</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/PrdPreStatusHeadGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{PrdPreStatusHeadS.h2}">h2</h2>
+    <form name="PrdPreStatusHeadSearchForm" action="PrdPreStatusHeadSearch.ajax" class="search">
+      <fieldset>
+        <legend th:text="#{PrdPreStatusHeadS.legend}">legend</legend>
+        <div id="recNo">
+          <label for="PrdPreStatusHead.recNo" th:text="#{PrdPreStatusHead.recNo}">REC_NO</label><input type="text" id="PrdPreStatusHead.recNo" name="PrdPreStatusHead.recNo" maxlength="3" />
+        </div>
+        <div id="currentYearY">
+          <label for="PrdPreStatusHead.currentYearY_1" th:text="#{PrdPreStatusHead.currentYearY}">CURRENT_YEAR_Y</label><input type="text" id="PrdPreStatusHead.currentYearY_1" name="PrdPreStatusHead.currentYearY_1" maxlength="4" />～<input type="text" id="PrdPreStatusHead.currentYearY_2" name="PrdPreStatusHead.currentYearY_2" maxlength="4" />
+        </div>
+        <div id="currentYearM">
+          <label for="PrdPreStatusHead.currentYearM_1" th:text="#{PrdPreStatusHead.currentYearM}">CURRENT_YEAR_M</label><input type="text" id="PrdPreStatusHead.currentYearM_1" name="PrdPreStatusHead.currentYearM_1" maxlength="4" />～<input type="text" id="PrdPreStatusHead.currentYearM_2" name="PrdPreStatusHead.currentYearM_2" maxlength="4" />
+        </div>
+        <div id="currentMonthM">
+          <label for="PrdPreStatusHead.currentMonthM_1" th:text="#{PrdPreStatusHead.currentMonthM}">CURRENT_MONTH_M</label><input type="text" id="PrdPreStatusHead.currentMonthM_1" name="PrdPreStatusHead.currentMonthM_1" maxlength="2" />～<input type="text" id="PrdPreStatusHead.currentMonthM_2" name="PrdPreStatusHead.currentMonthM_2" maxlength="2" />
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="reset" th:text="#{common.reset}">reset</button>
+        <a th:href="@{/model/PrdPreStatusHead.html}" id="PrdPreStatusHead" target="dialog" th:text="#{PrdPreStatusHead.add}" tabindex="-1">PRD_PRE_STATUS_HEAD</a>
+      </div>
+      <div class="submits">
+        <button id="SearchPrdPreStatusHead" class="search" data-gridId="PrdPreStatusHeadGrid" th:text="#{common.search}">submit</button>
+      </div>
+    </form>
+    <form name="PrdPreStatusHeadSRegistForm" action="PrdPreStatusHeadSRegist.ajax" class="regist">
+      <h3 th:text="#{PrdPreStatusHead.h3}">h3</h3>
+      <div id="PrdPreStatusHeadGrid" data-selectionMode="checkbox" data-addRow="true" data-frozenColumn="0" th:data-href="@{/model/PrdPreStatusHead.html}"></div>
+      <div id="PrdPreStatusHeadPager"></div>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="$('[id=&quot;SearchPrdPreStatusHead&quot;]').click();">reset</button>
+        <a th:href="@{PrdPreStatusHeadSearch.xlsx(baseMei=#{PrdPreStatusHeadS.h2})}" id="PrdPreStatusHeadSearch.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeletePrdPreStatusHeadS" class="delete selectRows" data-action="PrdPreStatusHeadSDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistPrdPreStatusHeadS" class="regist" th:text="#{common.regist}">submit</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

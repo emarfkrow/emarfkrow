@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{MstMaterialS.title}">MST_MATERIAL</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/MstMaterialGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{MstMaterialS.h2}">h2</h2>
+    <form name="MstMaterialSearchForm" action="MstMaterialSearch.ajax" class="search">
+      <fieldset>
+        <legend th:text="#{MstMaterialS.legend}">legend</legend>
+        <div id="material">
+          <label for="MstMaterial.material" th:text="#{MstMaterial.material}">MATERIAL</label><input type="text" id="MstMaterial.material" name="MstMaterial.material" maxlength="5" />
+        </div>
+        <div id="materialName">
+          <label for="MstMaterial.materialName" th:text="#{MstMaterial.materialName}">MATERIAL_NAME</label><input type="text" id="MstMaterial.materialName" name="MstMaterial.materialName" maxlength="60" />
+        </div>
+        <div id="deleteFlag">
+          <fieldset id="MstMaterial.deleteFlagList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:delete_flag" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstMaterial.deleteFlag}">DELETE_FLAG</legend>
+          </fieldset>
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="reset" th:text="#{common.reset}">reset</button>
+        <a th:href="@{/model/MstMaterial.html}" id="MstMaterial" target="dialog" th:text="#{MstMaterial.add}" tabindex="-1">MST_MATERIAL</a>
+      </div>
+      <div class="submits">
+        <button id="SearchMstMaterial" class="search" data-gridId="MstMaterialGrid" th:text="#{common.search}">submit</button>
+      </div>
+    </form>
+    <form name="MstMaterialSRegistForm" action="MstMaterialSRegist.ajax" class="regist">
+      <h3 th:text="#{MstMaterial.h3}">h3</h3>
+      <div id="MstMaterialGrid" data-selectionMode="checkbox" data-addRow="true" data-frozenColumn="0" th:data-href="@{/model/MstMaterial.html}"></div>
+      <div id="MstMaterialPager"></div>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="$('[id=&quot;SearchMstMaterial&quot;]').click();">reset</button>
+        <a th:href="@{MstMaterialSearch.xlsx(baseMei=#{MstMaterialS.h2})}" id="MstMaterialSearch.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeleteMstMaterialS" class="delete selectRows" data-action="MstMaterialSDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistMstMaterialS" class="regist" th:text="#{common.regist}">submit</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

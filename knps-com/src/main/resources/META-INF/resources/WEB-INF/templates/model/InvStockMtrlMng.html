@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{InvStockMtrlMng.title}">INV_STOCK_MTRL_MNG</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/InvStockMtrlMngGridColumns.js}"></script>
+<script th:src="@{/model/MstSubinvGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierGridColumns.js}"></script>
+<script th:src="@{/model/InvStockProcessSupplyGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierBkGridColumns.js}"></script>
+<script th:src="@{/model/MstTaxGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{InvStockMtrlMng.h2}">h2</h2>
+    <form name="InvStockMtrlMngRegistForm" action="InvStockMtrlMngRegist.ajax" class="regist">
+      <fieldset>
+        <legend th:text="#{InvStockMtrlMng.legend}">legend</legend>
+        <div id="stockManagementSection">
+          <label for="InvStockMtrlMng.stockManagementSection" th:text="#{InvStockMtrlMng.stockManagementSection}">STOCK_MANAGEMENT_SECTION</label><input type="text" id="InvStockMtrlMng.stockManagementSection" name="InvStockMtrlMng.stockManagementSection" maxlength="1" class="primaryKey" />
+        </div>
+        <div id="hinban">
+          <label for="InvStockMtrlMng.hinban" th:text="#{InvStockMtrlMng.hinban}">HINBAN</label><span id="InvStockMtrlMng.hinban"></span><input type="hidden" id="InvStockMtrlMng.hinban" name="InvStockMtrlMng.hinban" class="primaryKey" />
+        </div>
+        <div id="subInvCode">
+          <label for="InvStockMtrlMng.subInvCode" th:text="#{InvStockMtrlMng.subInvCode}">SUB_INV_CODE</label><span id="InvStockMtrlMng.subInvCode"></span><input type="hidden" id="InvStockMtrlMng.subInvCode" name="InvStockMtrlMng.subInvCode" class="primaryKey" /><a id="InvStockMtrlMng.subInvCode" th:href="@{/model/MstSubinvS.html}" target="dialog" class="primaryKey refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="InvStockMtrlMng.subInvName" class="refer" data-json="MstSubinvSearch.json" data-srcDef="SUB_INV_CODE:InvStockMtrlMng.subInvCode" data-destDef="InvStockMtrlMng.subInvName:SUB_INV_NAME"></span>
+        </div>
+        <div id="stock">
+          <label for="InvStockMtrlMng.stock" th:text="#{InvStockMtrlMng.stock}">STOCK</label><input type="text" id="InvStockMtrlMng.stock" name="InvStockMtrlMng.stock" maxlength="11" />
+        </div>
+        <div id="mainStockCode">
+          <fieldset id="InvStockMtrlMng.mainStockCodeList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:main_stock_code" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{InvStockMtrlMng.mainStockCode}">MAIN_STOCK_CODE</legend>
+          </fieldset>
+        </div>
+        <div id="lastInOutDate">
+          <label for="InvStockMtrlMng.lastInOutDate" th:text="#{InvStockMtrlMng.lastInOutDate}">LAST_IN_OUT_DATE</label><input type="date" id="InvStockMtrlMng.lastInOutDate" name="InvStockMtrlMng.lastInOutDate" maxlength="7" />
+        </div>
+        <div id="timeStampCreate">
+          <label for="InvStockMtrlMng.timeStampCreate" th:text="#{InvStockMtrlMng.timeStampCreate}">TIME_STAMP_CREATE</label><span id="InvStockMtrlMng.timeStampCreate"></span><input type="hidden" id="InvStockMtrlMng.timeStampCreate" name="InvStockMtrlMng.timeStampCreate" />
+        </div>
+        <div id="timeStampChange">
+          <label for="InvStockMtrlMng.timeStampChange" th:text="#{InvStockMtrlMng.timeStampChange}">TIME_STAMP_CHANGE</label><span id="InvStockMtrlMng.timeStampChange"></span><input type="hidden" id="InvStockMtrlMng.timeStampChange" name="InvStockMtrlMng.timeStampChange" />
+        </div>
+        <div id="userIdCreate">
+          <label for="InvStockMtrlMng.userIdCreate" th:text="#{InvStockMtrlMng.userIdCreate}">USER_ID_CREATE</label><span id="InvStockMtrlMng.userIdCreate"></span><input type="hidden" id="InvStockMtrlMng.userIdCreate" name="InvStockMtrlMng.userIdCreate" />
+        </div>
+        <div id="userIdChange">
+          <label for="InvStockMtrlMng.userIdChange" th:text="#{InvStockMtrlMng.userIdChange}">USER_ID_CHANGE</label><span id="InvStockMtrlMng.userIdChange"></span><input type="hidden" id="InvStockMtrlMng.userIdChange" name="InvStockMtrlMng.userIdChange" />
+        </div>
+        <div id="deleteFlag">
+          <fieldset id="InvStockMtrlMng.deleteFlagList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:delete_flag" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{InvStockMtrlMng.deleteFlag}">DELETE_FLAG</legend>
+          </fieldset>
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend th:text="#{InvStockToolMngHed.legend}">legend</legend>
+        <div id="stock">
+          <label for="InvStockToolMngHed.stock" th:text="#{InvStockToolMngHed.stock}">STOCK</label><input type="text" id="InvStockToolMngHed.stock" name="InvStockToolMngHed.stock" maxlength="11" />
+        </div>
+        <div id="lastInOutDate">
+          <label for="InvStockToolMngHed.lastInOutDate" th:text="#{InvStockToolMngHed.lastInOutDate}">LAST_IN_OUT_DATE</label><input type="date" id="InvStockToolMngHed.lastInOutDate" name="InvStockToolMngHed.lastInOutDate" maxlength="7" />
+        </div>
+        <input type="hidden" name="InvStockToolMngHed.timeStampChange" />
+        <div id="deleteFlag">
+          <fieldset id="InvStockToolMngHed.deleteFlagList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:delete_flag" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{InvStockToolMngHed.deleteFlag}">DELETE_FLAG</legend>
+          </fieldset>
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="Dialogate.refresh(event);">reset</button>
+        <a th:href="@{InvStockMtrlMngGet.xlsx(baseMei=#{InvStockMtrlMng.h2})}" id="InvStockMtrlMngGet.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeleteInvStockMtrlMng" class="delete" data-action="InvStockMtrlMngDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistInvStockMtrlMng" class="regist" th:text="#{common.regist}">登録</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

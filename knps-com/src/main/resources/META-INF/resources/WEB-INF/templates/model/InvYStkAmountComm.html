@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{InvYStkAmountComm.title}">INV_Y_STK_AMOUNT_COMM</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/InvYStkAmountCommGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{InvYStkAmountComm.h2}">h2</h2>
+    <form name="InvYStkAmountCommRegistForm" action="InvYStkAmountCommRegist.ajax" class="regist">
+      <fieldset>
+        <legend th:text="#{InvYStkAmountComm.legend}">legend</legend>
+        <div id="proHinban">
+          <label for="InvYStkAmountComm.proHinban" th:text="#{InvYStkAmountComm.proHinban}">PRO_HINBAN</label><span id="InvYStkAmountComm.proHinban"></span><input type="hidden" id="InvYStkAmountComm.proHinban" name="InvYStkAmountComm.proHinban" class="primaryKey" />
+        </div>
+        <div id="yyyy">
+          <label for="InvYStkAmountComm.yyyy" th:text="#{InvYStkAmountComm.yyyy}">YYYY</label><span id="InvYStkAmountComm.yyyy"></span><input type="hidden" id="InvYStkAmountComm.yyyy" name="InvYStkAmountComm.yyyy" class="primaryKey" />
+        </div>
+        <div id="mm">
+          <label for="InvYStkAmountComm.mm" th:text="#{InvYStkAmountComm.mm}">MM</label><span id="InvYStkAmountComm.mm"></span><input type="hidden" id="InvYStkAmountComm.mm" name="InvYStkAmountComm.mm" class="primaryKey" />
+        </div>
+        <div id="nesCounts">
+          <label for="InvYStkAmountComm.nesCounts" th:text="#{InvYStkAmountComm.nesCounts}">NES_COUNTS</label><input type="text" id="InvYStkAmountComm.nesCounts" name="InvYStkAmountComm.nesCounts" maxlength="7" />
+        </div>
+        <div id="stanCosts">
+          <label for="InvYStkAmountComm.stanCosts" th:text="#{InvYStkAmountComm.stanCosts}">STAN_COSTS</label><input type="text" id="InvYStkAmountComm.stanCosts" name="InvYStkAmountComm.stanCosts" maxlength="9" />
+        </div>
+        <div id="procureLt">
+          <label for="InvYStkAmountComm.procureLt" th:text="#{InvYStkAmountComm.procureLt}">PROCURE_LT</label><input type="text" id="InvYStkAmountComm.procureLt" name="InvYStkAmountComm.procureLt" maxlength="4" />
+        </div>
+        <div id="timeStampCreate">
+          <label for="InvYStkAmountComm.timeStampCreate" th:text="#{InvYStkAmountComm.timeStampCreate}">TIME_STAMP_CREATE</label><span id="InvYStkAmountComm.timeStampCreate"></span><input type="hidden" id="InvYStkAmountComm.timeStampCreate" name="InvYStkAmountComm.timeStampCreate" />
+        </div>
+        <div id="timeStampChange">
+          <label for="InvYStkAmountComm.timeStampChange" th:text="#{InvYStkAmountComm.timeStampChange}">TIME_STAMP_CHANGE</label><span id="InvYStkAmountComm.timeStampChange"></span><input type="hidden" id="InvYStkAmountComm.timeStampChange" name="InvYStkAmountComm.timeStampChange" />
+        </div>
+        <div id="userIdCreate">
+          <label for="InvYStkAmountComm.userIdCreate" th:text="#{InvYStkAmountComm.userIdCreate}">USER_ID_CREATE</label><span id="InvYStkAmountComm.userIdCreate"></span><input type="hidden" id="InvYStkAmountComm.userIdCreate" name="InvYStkAmountComm.userIdCreate" />
+        </div>
+        <div id="userIdChange">
+          <label for="InvYStkAmountComm.userIdChange" th:text="#{InvYStkAmountComm.userIdChange}">USER_ID_CHANGE</label><span id="InvYStkAmountComm.userIdChange"></span><input type="hidden" id="InvYStkAmountComm.userIdChange" name="InvYStkAmountComm.userIdChange" />
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend th:text="#{InvYStkProdAmountProd.legend}">legend</legend>
+        <div id="nesCounts">
+          <label for="InvYStkProdAmountProd.nesCounts" th:text="#{InvYStkProdAmountProd.nesCounts}">NES_COUNTS</label><input type="text" id="InvYStkProdAmountProd.nesCounts" name="InvYStkProdAmountProd.nesCounts" maxlength="7" />
+        </div>
+        <div id="stanCosts">
+          <label for="InvYStkProdAmountProd.stanCosts" th:text="#{InvYStkProdAmountProd.stanCosts}">STAN_COSTS</label><input type="text" id="InvYStkProdAmountProd.stanCosts" name="InvYStkProdAmountProd.stanCosts" maxlength="9" />
+        </div>
+        <div id="shikakeKbn">
+          <fieldset id="InvYStkProdAmountProd.shikakeKbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:shikake_kbn" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{InvYStkProdAmountProd.shikakeKbn}">SHIKAKE_KBN</legend>
+          </fieldset>
+        </div>
+        <div id="proLt">
+          <label for="InvYStkProdAmountProd.proLt" th:text="#{InvYStkProdAmountProd.proLt}">PRO_LT</label><input type="text" id="InvYStkProdAmountProd.proLt" name="InvYStkProdAmountProd.proLt" maxlength="6" />
+        </div>
+        <input type="hidden" name="InvYStkProdAmountProd.timeStampChange" />
+      </fieldset>
+      <fieldset>
+        <legend th:text="#{PrdMProNesCounts.legend}">legend</legend>
+        <div id="proNesCounts">
+          <label for="PrdMProNesCounts.proNesCounts" th:text="#{PrdMProNesCounts.proNesCounts}">PRO_NES_COUNTS</label><input type="text" id="PrdMProNesCounts.proNesCounts" name="PrdMProNesCounts.proNesCounts" maxlength="7" />
+        </div>
+        <div id="proAdjCounts">
+          <label for="PrdMProNesCounts.proAdjCounts" th:text="#{PrdMProNesCounts.proAdjCounts}">PRO_ADJ_COUNTS</label><input type="text" id="PrdMProNesCounts.proAdjCounts" name="PrdMProNesCounts.proAdjCounts" maxlength="8" />
+        </div>
+        <input type="hidden" name="PrdMProNesCounts.timeStampChange" />
+      </fieldset>
+      <fieldset>
+        <legend th:text="#{PrdYProNesCounts.legend}">legend</legend>
+        <div id="proNesCounts">
+          <label for="PrdYProNesCounts.proNesCounts" th:text="#{PrdYProNesCounts.proNesCounts}">PRO_NES_COUNTS</label><input type="text" id="PrdYProNesCounts.proNesCounts" name="PrdYProNesCounts.proNesCounts" maxlength="7" />
+        </div>
+        <div id="proAdjCounts">
+          <label for="PrdYProNesCounts.proAdjCounts" th:text="#{PrdYProNesCounts.proAdjCounts}">PRO_ADJ_COUNTS</label><input type="text" id="PrdYProNesCounts.proAdjCounts" name="PrdYProNesCounts.proAdjCounts" maxlength="8" />
+        </div>
+        <input type="hidden" name="PrdYProNesCounts.timeStampChange" />
+      </fieldset>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="Dialogate.refresh(event);">reset</button>
+        <a th:href="@{InvYStkAmountCommGet.xlsx(baseMei=#{InvYStkAmountComm.h2})}" id="InvYStkAmountCommGet.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeleteInvYStkAmountComm" class="delete" data-action="InvYStkAmountCommDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistInvYStkAmountComm" class="regist" th:text="#{common.regist}">登録</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

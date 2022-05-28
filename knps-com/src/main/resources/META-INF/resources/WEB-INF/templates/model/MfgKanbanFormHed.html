@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{MfgKanbanFormHed.title}">MFG_KANBAN_FORM_HED</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/MfgKanbanFormHedGridColumns.js}"></script>
+<script th:src="@{/model/MfgKanbanFormDetGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{MfgKanbanFormHed.h2}">h2</h2>
+    <form name="MfgKanbanFormHedRegistForm" action="MfgKanbanFormHedRegist.ajax" class="regist">
+      <fieldset>
+        <legend th:text="#{MfgKanbanFormHed.legend}">legend</legend>
+        <div id="kanbanFormDefName">
+          <label for="MfgKanbanFormHed.kanbanFormDefName" th:text="#{MfgKanbanFormHed.kanbanFormDefName}">KANBAN_FORM_DEF_NAME</label><input type="text" id="MfgKanbanFormHed.kanbanFormDefName" name="MfgKanbanFormHed.kanbanFormDefName" maxlength="60" class="primaryKey" />
+        </div>
+        <div id="kanbanTemplateName">
+          <label for="MfgKanbanFormHed.kanbanTemplateName" th:text="#{MfgKanbanFormHed.kanbanTemplateName}">KANBAN_TEMPLATE_NAME</label><input type="text" id="MfgKanbanFormHed.kanbanTemplateName" name="MfgKanbanFormHed.kanbanTemplateName" maxlength="60" />
+        </div>
+        <div id="selfProcAfterTunnelFlg">
+          <fieldset id="MfgKanbanFormHed.selfProcAfterTunnelFlgList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:self_proc_after_tunnel_flg" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MfgKanbanFormHed.selfProcAfterTunnelFlg}">SELF_PROC_AFTER_TUNNEL_FLG</legend>
+          </fieldset>
+        </div>
+        <div id="outputPerPage">
+          <label for="MfgKanbanFormHed.outputPerPage" th:text="#{MfgKanbanFormHed.outputPerPage}">OUTPUT_PER_PAGE</label><input type="text" id="MfgKanbanFormHed.outputPerPage" name="MfgKanbanFormHed.outputPerPage" maxlength="2" />
+        </div>
+        <div id="autoShapeFlg">
+          <fieldset id="MfgKanbanFormHed.autoShapeFlgList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:auto_shape_flg" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MfgKanbanFormHed.autoShapeFlg}">AUTO_SHAPE_FLG</legend>
+          </fieldset>
+        </div>
+        <div id="timeStampCreate">
+          <label for="MfgKanbanFormHed.timeStampCreate" th:text="#{MfgKanbanFormHed.timeStampCreate}">TIME_STAMP_CREATE</label><span id="MfgKanbanFormHed.timeStampCreate"></span><input type="hidden" id="MfgKanbanFormHed.timeStampCreate" name="MfgKanbanFormHed.timeStampCreate" />
+        </div>
+        <div id="timeStampChange">
+          <label for="MfgKanbanFormHed.timeStampChange" th:text="#{MfgKanbanFormHed.timeStampChange}">TIME_STAMP_CHANGE</label><span id="MfgKanbanFormHed.timeStampChange"></span><input type="hidden" id="MfgKanbanFormHed.timeStampChange" name="MfgKanbanFormHed.timeStampChange" />
+        </div>
+        <div id="userIdCreate">
+          <label for="MfgKanbanFormHed.userIdCreate" th:text="#{MfgKanbanFormHed.userIdCreate}">USER_ID_CREATE</label><span id="MfgKanbanFormHed.userIdCreate"></span><input type="hidden" id="MfgKanbanFormHed.userIdCreate" name="MfgKanbanFormHed.userIdCreate" />
+        </div>
+        <div id="userIdChange">
+          <label for="MfgKanbanFormHed.userIdChange" th:text="#{MfgKanbanFormHed.userIdChange}">USER_ID_CHANGE</label><span id="MfgKanbanFormHed.userIdChange"></span><input type="hidden" id="MfgKanbanFormHed.userIdChange" name="MfgKanbanFormHed.userIdChange" />
+        </div>
+      </fieldset>
+      <h3 th:text="#{MfgKanbanFormDet.h3}">h3</h3>
+      <a th:href="@{/model/MfgKanbanFormDet.html}" id="MfgKanbanFormDet" target="dialog" th:text="#{MfgKanbanFormDet.add}" class="addChild" tabindex="-1">MFG_KANBAN_FORM_DET</a>
+      <div id="MfgKanbanFormDetGrid" data-selectionMode="link" data-addRow="true" data-frozenColumn="1" th:data-href="@{/model/MfgKanbanFormDet.html}"></div>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="Dialogate.refresh(event);">reset</button>
+        <a th:href="@{MfgKanbanFormHedGet.xlsx(baseMei=#{MfgKanbanFormHed.h2})}" id="MfgKanbanFormHedGet.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeleteMfgKanbanFormHed" class="delete" data-action="MfgKanbanFormHedDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistMfgKanbanFormHed" class="regist" th:text="#{common.regist}">登録</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

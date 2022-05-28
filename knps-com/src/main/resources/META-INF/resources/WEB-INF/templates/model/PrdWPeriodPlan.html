@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{PrdWPeriodPlan.title}">PRD_W_PERIOD_PLAN</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/PrdWPeriodPlanGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{PrdWPeriodPlan.h2}">h2</h2>
+    <form name="PrdWPeriodPlanRegistForm" action="PrdWPeriodPlanRegist.ajax" class="regist">
+      <fieldset>
+        <legend th:text="#{PrdWPeriodPlan.legend}">legend</legend>
+        <div id="wPlanId">
+          <label for="PrdWPeriodPlan.wPlanId" th:text="#{PrdWPeriodPlan.wPlanId}">W_PLAN_ID</label><input type="text" id="PrdWPeriodPlan.wPlanId" name="PrdWPeriodPlan.wPlanId" maxlength="6" class="primaryKey" />
+        </div>
+        <div id="dateOfProc">
+          <label for="PrdWPeriodPlan.dateOfProc" th:text="#{PrdWPeriodPlan.dateOfProc}">DATE_OF_PROC</label><input type="text" id="PrdWPeriodPlan.dateOfProc" name="PrdWPeriodPlan.dateOfProc" maxlength="7" />
+        </div>
+        <div id="begDate">
+          <label for="PrdWPeriodPlan.begDate" th:text="#{PrdWPeriodPlan.begDate}">BEG_DATE</label><input type="date" id="PrdWPeriodPlan.begDate" name="PrdWPeriodPlan.begDate" maxlength="7" />
+        </div>
+        <div id="endDate">
+          <label for="PrdWPeriodPlan.endDate" th:text="#{PrdWPeriodPlan.endDate}">END_DATE</label><input type="date" id="PrdWPeriodPlan.endDate" name="PrdWPeriodPlan.endDate" maxlength="7" />
+        </div>
+        <div id="procStatus">
+          <label for="PrdWPeriodPlan.procStatus" th:text="#{PrdWPeriodPlan.procStatus}">PROC_STATUS</label><input type="text" id="PrdWPeriodPlan.procStatus" name="PrdWPeriodPlan.procStatus" maxlength="1" />
+        </div>
+        <div id="resultProcStatus">
+          <label for="PrdWPeriodPlan.resultProcStatus" th:text="#{PrdWPeriodPlan.resultProcStatus}">RESULT_PROC_STATUS</label><input type="text" id="PrdWPeriodPlan.resultProcStatus" name="PrdWPeriodPlan.resultProcStatus" maxlength="1" />
+        </div>
+        <div id="planComment">
+          <label for="PrdWPeriodPlan.planComment" th:text="#{PrdWPeriodPlan.planComment}">PLAN_COMMENT</label><input type="text" id="PrdWPeriodPlan.planComment" name="PrdWPeriodPlan.planComment" maxlength="60" />
+        </div>
+        <div id="timeStampCreate">
+          <label for="PrdWPeriodPlan.timeStampCreate" th:text="#{PrdWPeriodPlan.timeStampCreate}">TIME_STAMP_CREATE</label><span id="PrdWPeriodPlan.timeStampCreate"></span><input type="hidden" id="PrdWPeriodPlan.timeStampCreate" name="PrdWPeriodPlan.timeStampCreate" />
+        </div>
+        <div id="timeStampChange">
+          <label for="PrdWPeriodPlan.timeStampChange" th:text="#{PrdWPeriodPlan.timeStampChange}">TIME_STAMP_CHANGE</label><span id="PrdWPeriodPlan.timeStampChange"></span><input type="hidden" id="PrdWPeriodPlan.timeStampChange" name="PrdWPeriodPlan.timeStampChange" />
+        </div>
+        <div id="userIdCreate">
+          <label for="PrdWPeriodPlan.userIdCreate" th:text="#{PrdWPeriodPlan.userIdCreate}">USER_ID_CREATE</label><span id="PrdWPeriodPlan.userIdCreate"></span><input type="hidden" id="PrdWPeriodPlan.userIdCreate" name="PrdWPeriodPlan.userIdCreate" />
+        </div>
+        <div id="userIdChange">
+          <label for="PrdWPeriodPlan.userIdChange" th:text="#{PrdWPeriodPlan.userIdChange}">USER_ID_CHANGE</label><span id="PrdWPeriodPlan.userIdChange"></span><input type="hidden" id="PrdWPeriodPlan.userIdChange" name="PrdWPeriodPlan.userIdChange" />
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="Dialogate.refresh(event);">reset</button>
+        <a th:href="@{PrdWPeriodPlanGet.xlsx(baseMei=#{PrdWPeriodPlan.h2})}" id="PrdWPeriodPlanGet.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeletePrdWPeriodPlan" class="delete" data-action="PrdWPeriodPlanDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistPrdWPeriodPlan" class="regist" th:text="#{common.regist}">登録</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

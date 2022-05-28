@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{MstComponentSales.title}">MST_COMPONENT_SALES</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/MstComponentSalesGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{MstComponentSales.h2}">h2</h2>
+    <form name="MstComponentSalesRegistForm" action="MstComponentSalesRegist.ajax" class="regist">
+      <fieldset>
+        <legend th:text="#{MstComponentSales.legend}">legend</legend>
+        <div id="compHinbanParent">
+          <label for="MstComponentSales.compHinbanParent" th:text="#{MstComponentSales.compHinbanParent}">COMP_HINBAN_PARENT</label><span id="MstComponentSales.compHinbanParent"></span><input type="hidden" id="MstComponentSales.compHinbanParent" name="MstComponentSales.compHinbanParent" class="primaryKey" />
+        </div>
+        <div id="compHinbanChild">
+          <label for="MstComponentSales.compHinbanChild" th:text="#{MstComponentSales.compHinbanChild}">COMP_HINBAN_CHILD</label><span id="MstComponentSales.compHinbanChild"></span><input type="hidden" id="MstComponentSales.compHinbanChild" name="MstComponentSales.compHinbanChild" class="primaryKey" />
+        </div>
+        <div id="setNumber">
+          <label for="MstComponentSales.setNumber" th:text="#{MstComponentSales.setNumber}">SET_NUMBER</label><input type="text" id="MstComponentSales.setNumber" name="MstComponentSales.setNumber" maxlength="3" />
+        </div>
+        <div id="bottomFlag">
+          <fieldset id="MstComponentSales.bottomFlagList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:bottom_flag" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstComponentSales.bottomFlag}">BOTTOM_FLAG</legend>
+          </fieldset>
+        </div>
+        <div id="provisionsKbn">
+          <fieldset id="MstComponentSales.provisionsKbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:provisions_kbn" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstComponentSales.provisionsKbn}">PROVISIONS_KBN</legend>
+          </fieldset>
+        </div>
+        <div id="timeStampCreate">
+          <label for="MstComponentSales.timeStampCreate" th:text="#{MstComponentSales.timeStampCreate}">TIME_STAMP_CREATE</label><span id="MstComponentSales.timeStampCreate"></span><input type="hidden" id="MstComponentSales.timeStampCreate" name="MstComponentSales.timeStampCreate" />
+        </div>
+        <div id="timeStampChange">
+          <label for="MstComponentSales.timeStampChange" th:text="#{MstComponentSales.timeStampChange}">TIME_STAMP_CHANGE</label><span id="MstComponentSales.timeStampChange"></span><input type="hidden" id="MstComponentSales.timeStampChange" name="MstComponentSales.timeStampChange" />
+        </div>
+        <div id="userIdCreate">
+          <label for="MstComponentSales.userIdCreate" th:text="#{MstComponentSales.userIdCreate}">USER_ID_CREATE</label><span id="MstComponentSales.userIdCreate"></span><input type="hidden" id="MstComponentSales.userIdCreate" name="MstComponentSales.userIdCreate" />
+        </div>
+        <div id="userIdChange">
+          <label for="MstComponentSales.userIdChange" th:text="#{MstComponentSales.userIdChange}">USER_ID_CHANGE</label><span id="MstComponentSales.userIdChange"></span><input type="hidden" id="MstComponentSales.userIdChange" name="MstComponentSales.userIdChange" />
+        </div>
+        <div id="deleteFlag">
+          <fieldset id="MstComponentSales.deleteFlagList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:delete_flag" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstComponentSales.deleteFlag}">DELETE_FLAG</legend>
+          </fieldset>
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="Dialogate.refresh(event);">reset</button>
+        <a th:href="@{MstComponentSalesGet.xlsx(baseMei=#{MstComponentSales.h2})}" id="MstComponentSalesGet.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeleteMstComponentSales" class="delete" data-action="MstComponentSalesDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistMstComponentSales" class="regist" th:text="#{common.regist}">登録</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{MstGroupS.title}">MST_GROUP</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/MstGroupGridColumns.js}"></script>
+<script th:src="@{/model/MstDivisionGridColumns.js}"></script>
+<script th:src="@{/model/MstCompanyGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{MstGroupS.h2}">h2</h2>
+    <form name="MstGroupSearchForm" action="MstGroupSearch.ajax" class="search">
+      <fieldset>
+        <legend th:text="#{MstGroupS.legend}">legend</legend>
+        <div id="groupCode">
+          <fieldset id="MstGroup.groupCodeList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:group_code" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstGroup.groupCode}">GROUP_CODE</legend>
+          </fieldset>
+        </div>
+        <div id="groupName">
+          <label for="MstGroup.groupName" th:text="#{MstGroup.groupName}">GROUP_NAME</label><input type="text" id="MstGroup.groupName" name="MstGroup.groupName" maxlength="60" />
+        </div>
+        <div id="adminCode">
+          <fieldset id="MstGroup.adminCodeList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:admin_code" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstGroup.adminCode}">ADMIN_CODE</legend>
+          </fieldset>
+        </div>
+        <div id="divisionCode">
+          <label for="MstGroup.divisionCode" th:text="#{MstGroup.divisionCode}">DIVISION_CODE</label><input type="text" id="MstGroup.divisionCode" name="MstGroup.divisionCode" maxlength="10" data-json="MstDivisionSearch.json" data-srcDef="DIVISION_CODE:MstGroup.divisionCode" data-destDef="MstGroup.divisionName:DIVISION_NAME" /><a id="MstGroup.divisionCode" th:href="@{/model/MstDivisionS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MstGroup.divisionName" class="refer" data-json="MstDivisionSearch.json" data-srcDef="DIVISION_CODE:MstGroup.divisionCode" data-destDef="MstGroup.divisionName:DIVISION_NAME"></span>
+        </div>
+        <div id="individualCounts">
+          <label for="MstGroup.individualCounts_1" th:text="#{MstGroup.individualCounts}">INDIVIDUAL_COUNTS</label><input type="text" id="MstGroup.individualCounts_1" name="MstGroup.individualCounts_1" maxlength="7" />～<input type="text" id="MstGroup.individualCounts_2" name="MstGroup.individualCounts_2" maxlength="7" />
+        </div>
+        <div id="deleteFlag">
+          <fieldset id="MstGroup.deleteFlagList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:delete_flag" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstGroup.deleteFlag}">DELETE_FLAG</legend>
+          </fieldset>
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="reset" th:text="#{common.reset}">reset</button>
+        <a th:href="@{/model/MstGroup.html}" id="MstGroup" target="dialog" th:text="#{MstGroup.add}" tabindex="-1">MST_GROUP</a>
+      </div>
+      <div class="submits">
+        <button id="SearchMstGroup" class="search" data-gridId="MstGroupGrid" th:text="#{common.search}">submit</button>
+      </div>
+    </form>
+    <form name="MstGroupSRegistForm" action="MstGroupSRegist.ajax" class="regist">
+      <h3 th:text="#{MstGroup.h3}">h3</h3>
+      <div id="MstGroupGrid" data-selectionMode="checkbox" data-addRow="true" data-frozenColumn="0" th:data-href="@{/model/MstGroup.html}"></div>
+      <div id="MstGroupPager"></div>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="$('[id=&quot;SearchMstGroup&quot;]').click();">reset</button>
+        <a th:href="@{MstGroupSearch.xlsx(baseMei=#{MstGroupS.h2})}" id="MstGroupSearch.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeleteMstGroupS" class="delete selectRows" data-action="MstGroupSDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistMstGroupS" class="regist" th:text="#{common.regist}">submit</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{PrdDailyTimeSchS.title}">PRD_DAILY_TIME_SCH</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/PrdDailyTimeSchGridColumns.js}"></script>
+<script th:src="@{/model/MstWcGridColumns.js}"></script>
+<script th:src="@{/model/MstWcBkGridColumns.js}"></script>
+<script th:src="@{/model/MstProcGridColumns.js}"></script>
+<script th:src="@{/model/MstWsGridColumns.js}"></script>
+<script th:src="@{/model/MstTeamGridColumns.js}"></script>
+<script th:src="@{/model/MstGroupGridColumns.js}"></script>
+<script th:src="@{/model/MstDivisionGridColumns.js}"></script>
+<script th:src="@{/model/MstCompanyGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierGridColumns.js}"></script>
+<script th:src="@{/model/InvStockProcessSupplyGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierBkGridColumns.js}"></script>
+<script th:src="@{/model/MstTaxGridColumns.js}"></script>
+<script th:src="@{/model/MstCostCenterGridColumns.js}"></script>
+<script th:src="@{/model/MstCostCenterBkGridColumns.js}"></script>
+<script th:src="@{/model/MstSubinvGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{PrdDailyTimeSchS.h2}">h2</h2>
+    <form name="PrdDailyTimeSchSearchForm" action="PrdDailyTimeSchSearch.ajax" class="search">
+      <fieldset>
+        <legend th:text="#{PrdDailyTimeSchS.legend}">legend</legend>
+        <div id="layoutDate">
+          <label for="PrdDailyTimeSch.layoutDate_1" th:text="#{PrdDailyTimeSch.layoutDate}">LAYOUT_DATE</label><input type="date" id="PrdDailyTimeSch.layoutDate_1" name="PrdDailyTimeSch.layoutDate_1" maxlength="7" />～<input type="date" id="PrdDailyTimeSch.layoutDate_2" name="PrdDailyTimeSch.layoutDate_2" maxlength="7" />
+        </div>
+        <div id="wcCode">
+          <label for="PrdDailyTimeSch.wcCode" th:text="#{PrdDailyTimeSch.wcCode}">WC_CODE</label><input type="text" id="PrdDailyTimeSch.wcCode" name="PrdDailyTimeSch.wcCode" maxlength="3" data-json="MstWcSearch.json" data-srcDef="WC_CODE:PrdDailyTimeSch.wcCode" data-destDef="PrdDailyTimeSch.wcName:WC_NAME" /><a id="PrdDailyTimeSch.wcCode" th:href="@{/model/MstWcS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="PrdDailyTimeSch.wcName" class="refer" data-json="MstWcSearch.json" data-srcDef="WC_CODE:PrdDailyTimeSch.wcCode" data-destDef="PrdDailyTimeSch.wcName:WC_NAME"></span>
+        </div>
+        <div id="layoutInTime">
+          <label for="PrdDailyTimeSch.layoutInTime" th:text="#{PrdDailyTimeSch.layoutInTime}">LAYOUT_IN_TIME</label><input type="text" id="PrdDailyTimeSch.layoutInTime" name="PrdDailyTimeSch.layoutInTime" maxlength="6" />
+        </div>
+        <div id="changeStat">
+          <label for="PrdDailyTimeSch.changeStat" th:text="#{PrdDailyTimeSch.changeStat}">CHANGE_STAT</label><input type="text" id="PrdDailyTimeSch.changeStat" name="PrdDailyTimeSch.changeStat" maxlength="1" />
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="reset" th:text="#{common.reset}">reset</button>
+        <a th:href="@{/model/PrdDailyTimeSch.html}" id="PrdDailyTimeSch" target="dialog" th:text="#{PrdDailyTimeSch.add}" tabindex="-1">PRD_DAILY_TIME_SCH</a>
+      </div>
+      <div class="submits">
+        <button id="SearchPrdDailyTimeSch" class="search" data-gridId="PrdDailyTimeSchGrid" th:text="#{common.search}">submit</button>
+      </div>
+    </form>
+    <form name="PrdDailyTimeSchSRegistForm" action="PrdDailyTimeSchSRegist.ajax" class="regist">
+      <h3 th:text="#{PrdDailyTimeSch.h3}">h3</h3>
+      <div id="PrdDailyTimeSchGrid" data-selectionMode="checkbox" data-frozenColumn="1" th:data-href="@{/model/PrdDailyTimeSch.html}"></div>
+      <div id="PrdDailyTimeSchPager"></div>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="$('[id=&quot;SearchPrdDailyTimeSch&quot;]').click();">reset</button>
+        <a th:href="@{PrdDailyTimeSchSearch.xlsx(baseMei=#{PrdDailyTimeSchS.h2})}" id="PrdDailyTimeSchSearch.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeletePrdDailyTimeSchS" class="delete selectRows" data-action="PrdDailyTimeSchSDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistPrdDailyTimeSchS" class="regist" th:text="#{common.regist}">submit</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

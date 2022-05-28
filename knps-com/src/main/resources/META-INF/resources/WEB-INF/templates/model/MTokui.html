@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{MTokui.title}">M_TOKUI</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/MTokuiGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{MTokui.h2}">h2</h2>
+    <form name="MTokuiRegistForm" action="MTokuiRegist.ajax" class="regist">
+      <fieldset>
+        <legend th:text="#{MTokui.legend}">legend</legend>
+        <div id="tokucd">
+          <label for="MTokui.tokucd" th:text="#{MTokui.tokucd}">TOKUCD</label><input type="text" id="MTokui.tokucd" name="MTokui.tokucd" maxlength="8" class="primaryKey" />
+        </div>
+        <div id="tokumei1">
+          <label for="MTokui.tokumei1" th:text="#{MTokui.tokumei1}">TOKUMEI1</label><input type="text" id="MTokui.tokumei1" name="MTokui.tokumei1" maxlength="28" />
+        </div>
+        <div id="tokumei2">
+          <label for="MTokui.tokumei2" th:text="#{MTokui.tokumei2}">TOKUMEI2</label><input type="text" id="MTokui.tokumei2" name="MTokui.tokumei2" maxlength="22" />
+        </div>
+        <div id="timeStampCreate">
+          <label for="MTokui.timeStampCreate" th:text="#{MTokui.timeStampCreate}">TIME_STAMP_CREATE</label><span id="MTokui.timeStampCreate"></span><input type="hidden" id="MTokui.timeStampCreate" name="MTokui.timeStampCreate" />
+        </div>
+        <div id="timeStampChange">
+          <label for="MTokui.timeStampChange" th:text="#{MTokui.timeStampChange}">TIME_STAMP_CHANGE</label><span id="MTokui.timeStampChange"></span><input type="hidden" id="MTokui.timeStampChange" name="MTokui.timeStampChange" />
+        </div>
+        <div id="userIdCreate">
+          <label for="MTokui.userIdCreate" th:text="#{MTokui.userIdCreate}">USER_ID_CREATE</label><span id="MTokui.userIdCreate"></span><input type="hidden" id="MTokui.userIdCreate" name="MTokui.userIdCreate" />
+        </div>
+        <div id="userIdChange">
+          <label for="MTokui.userIdChange" th:text="#{MTokui.userIdChange}">USER_ID_CHANGE</label><span id="MTokui.userIdChange"></span><input type="hidden" id="MTokui.userIdChange" name="MTokui.userIdChange" />
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="Dialogate.refresh(event);">reset</button>
+        <a th:href="@{MTokuiGet.xlsx(baseMei=#{MTokui.h2})}" id="MTokuiGet.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeleteMTokui" class="delete" data-action="MTokuiDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistMTokui" class="regist" th:text="#{common.regist}">登録</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

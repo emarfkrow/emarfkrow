@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{SysCloseStatus.title}">SYS_CLOSE_STATUS</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/SysCloseStatusGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{SysCloseStatus.h2}">h2</h2>
+    <form name="SysCloseStatusRegistForm" action="SysCloseStatusRegist.ajax" class="regist">
+      <fieldset>
+        <legend th:text="#{SysCloseStatus.legend}">legend</legend>
+        <div id="recNo">
+          <label for="SysCloseStatus.recNo" th:text="#{SysCloseStatus.recNo}">REC_NO</label><span id="SysCloseStatus.recNo"></span><input type="hidden" id="SysCloseStatus.recNo" name="SysCloseStatus.recNo" class="primaryKey" />
+        </div>
+        <div id="dairyCloseTargetDate">
+          <label for="SysCloseStatus.dairyCloseTargetDate" th:text="#{SysCloseStatus.dairyCloseTargetDate}">DAIRY_CLOSE_TARGET_DATE</label><input type="date" id="SysCloseStatus.dairyCloseTargetDate" name="SysCloseStatus.dairyCloseTargetDate" maxlength="8" />
+        </div>
+        <div id="dairyCloseStatus">
+          <label for="SysCloseStatus.dairyCloseStatus" th:text="#{SysCloseStatus.dairyCloseStatus}">DAIRY_CLOSE_STATUS</label><input type="text" id="SysCloseStatus.dairyCloseStatus" name="SysCloseStatus.dairyCloseStatus" maxlength="1" />
+        </div>
+        <div id="dairyCloseDate">
+          <label for="SysCloseStatus.dairyCloseDate" th:text="#{SysCloseStatus.dairyCloseDate}">DAIRY_CLOSE_DATE</label><input type="date" id="SysCloseStatus.dairyCloseDate" name="SysCloseStatus.dairyCloseDate" maxlength="7" />
+        </div>
+        <div id="monthryCloseTargetDate">
+          <label for="SysCloseStatus.monthryCloseTargetDate" th:text="#{SysCloseStatus.monthryCloseTargetDate}">MONTHRY_CLOSE_TARGET_DATE</label><input type="date" id="SysCloseStatus.monthryCloseTargetDate" name="SysCloseStatus.monthryCloseTargetDate" maxlength="6" />
+        </div>
+        <div id="monthryCloseStatus">
+          <label for="SysCloseStatus.monthryCloseStatus" th:text="#{SysCloseStatus.monthryCloseStatus}">MONTHRY_CLOSE_STATUS</label><input type="text" id="SysCloseStatus.monthryCloseStatus" name="SysCloseStatus.monthryCloseStatus" maxlength="1" />
+        </div>
+        <div id="monthryCloseDate">
+          <label for="SysCloseStatus.monthryCloseDate" th:text="#{SysCloseStatus.monthryCloseDate}">MONTHRY_CLOSE_DATE</label><input type="date" id="SysCloseStatus.monthryCloseDate" name="SysCloseStatus.monthryCloseDate" maxlength="7" />
+        </div>
+        <div id="monthrySettleTargetDate">
+          <label for="SysCloseStatus.monthrySettleTargetDate" th:text="#{SysCloseStatus.monthrySettleTargetDate}">MONTHRY_SETTLE_TARGET_DATE</label><input type="date" id="SysCloseStatus.monthrySettleTargetDate" name="SysCloseStatus.monthrySettleTargetDate" maxlength="6" />
+        </div>
+        <div id="monthrySettleStatus">
+          <label for="SysCloseStatus.monthrySettleStatus" th:text="#{SysCloseStatus.monthrySettleStatus}">MONTHRY_SETTLE_STATUS</label><input type="text" id="SysCloseStatus.monthrySettleStatus" name="SysCloseStatus.monthrySettleStatus" maxlength="1" />
+        </div>
+        <div id="monthrySettleDate">
+          <label for="SysCloseStatus.monthrySettleDate" th:text="#{SysCloseStatus.monthrySettleDate}">MONTHRY_SETTLE_DATE</label><input type="date" id="SysCloseStatus.monthrySettleDate" name="SysCloseStatus.monthrySettleDate" maxlength="7" />
+        </div>
+        <div id="monthrySettleCostFixed">
+          <label for="SysCloseStatus.monthrySettleCostFixed" th:text="#{SysCloseStatus.monthrySettleCostFixed}">MONTHRY_SETTLE_COST_FIXED</label><input type="text" id="SysCloseStatus.monthrySettleCostFixed" name="SysCloseStatus.monthrySettleCostFixed" maxlength="1" />
+        </div>
+        <div id="annualSettleTargetDate">
+          <label for="SysCloseStatus.annualSettleTargetDate" th:text="#{SysCloseStatus.annualSettleTargetDate}">ANNUAL_SETTLE_TARGET_DATE</label><input type="date" id="SysCloseStatus.annualSettleTargetDate" name="SysCloseStatus.annualSettleTargetDate" maxlength="4" />
+        </div>
+        <div id="annualSettleStatus">
+          <label for="SysCloseStatus.annualSettleStatus" th:text="#{SysCloseStatus.annualSettleStatus}">ANNUAL_SETTLE_STATUS</label><input type="text" id="SysCloseStatus.annualSettleStatus" name="SysCloseStatus.annualSettleStatus" maxlength="1" />
+        </div>
+        <div id="annualSettleDate">
+          <label for="SysCloseStatus.annualSettleDate" th:text="#{SysCloseStatus.annualSettleDate}">ANNUAL_SETTLE_DATE</label><input type="date" id="SysCloseStatus.annualSettleDate" name="SysCloseStatus.annualSettleDate" maxlength="7" />
+        </div>
+        <div id="annualSettleCostFixed">
+          <label for="SysCloseStatus.annualSettleCostFixed" th:text="#{SysCloseStatus.annualSettleCostFixed}">ANNUAL_SETTLE_COST_FIXED</label><input type="text" id="SysCloseStatus.annualSettleCostFixed" name="SysCloseStatus.annualSettleCostFixed" maxlength="1" />
+        </div>
+        <div id="masterCopyFlag">
+          <fieldset id="SysCloseStatus.masterCopyFlagList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:master_copy_flag" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{SysCloseStatus.masterCopyFlag}">MASTER_COPY_FLAG</legend>
+          </fieldset>
+        </div>
+        <div id="masterCopyDate">
+          <label for="SysCloseStatus.masterCopyDate" th:text="#{SysCloseStatus.masterCopyDate}">MASTER_COPY_DATE</label><input type="date" id="SysCloseStatus.masterCopyDate" name="SysCloseStatus.masterCopyDate" maxlength="7" />
+        </div>
+        <div id="timeStampCreate">
+          <label for="SysCloseStatus.timeStampCreate" th:text="#{SysCloseStatus.timeStampCreate}">TIME_STAMP_CREATE</label><span id="SysCloseStatus.timeStampCreate"></span><input type="hidden" id="SysCloseStatus.timeStampCreate" name="SysCloseStatus.timeStampCreate" />
+        </div>
+        <div id="timeStampChange">
+          <label for="SysCloseStatus.timeStampChange" th:text="#{SysCloseStatus.timeStampChange}">TIME_STAMP_CHANGE</label><span id="SysCloseStatus.timeStampChange"></span><input type="hidden" id="SysCloseStatus.timeStampChange" name="SysCloseStatus.timeStampChange" />
+        </div>
+        <div id="userIdCreate">
+          <label for="SysCloseStatus.userIdCreate" th:text="#{SysCloseStatus.userIdCreate}">USER_ID_CREATE</label><span id="SysCloseStatus.userIdCreate"></span><input type="hidden" id="SysCloseStatus.userIdCreate" name="SysCloseStatus.userIdCreate" />
+        </div>
+        <div id="userIdChange">
+          <label for="SysCloseStatus.userIdChange" th:text="#{SysCloseStatus.userIdChange}">USER_ID_CHANGE</label><span id="SysCloseStatus.userIdChange"></span><input type="hidden" id="SysCloseStatus.userIdChange" name="SysCloseStatus.userIdChange" />
+        </div>
+        <div id="quarterSettleTargetDate">
+          <label for="SysCloseStatus.quarterSettleTargetDate" th:text="#{SysCloseStatus.quarterSettleTargetDate}">QUARTER_SETTLE_TARGET_DATE</label><input type="date" id="SysCloseStatus.quarterSettleTargetDate" name="SysCloseStatus.quarterSettleTargetDate" maxlength="6" />
+        </div>
+        <div id="quarterSettleStatus">
+          <label for="SysCloseStatus.quarterSettleStatus" th:text="#{SysCloseStatus.quarterSettleStatus}">QUARTER_SETTLE_STATUS</label><input type="text" id="SysCloseStatus.quarterSettleStatus" name="SysCloseStatus.quarterSettleStatus" maxlength="1" />
+        </div>
+        <div id="quarterSettleDate">
+          <label for="SysCloseStatus.quarterSettleDate" th:text="#{SysCloseStatus.quarterSettleDate}">QUARTER_SETTLE_DATE</label><input type="date" id="SysCloseStatus.quarterSettleDate" name="SysCloseStatus.quarterSettleDate" maxlength="7" />
+        </div>
+        <div id="quarterSettleCostFixed">
+          <label for="SysCloseStatus.quarterSettleCostFixed" th:text="#{SysCloseStatus.quarterSettleCostFixed}">QUARTER_SETTLE_COST_FIXED</label><input type="text" id="SysCloseStatus.quarterSettleCostFixed" name="SysCloseStatus.quarterSettleCostFixed" maxlength="1" />
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="Dialogate.refresh(event);">reset</button>
+        <a th:href="@{SysCloseStatusGet.xlsx(baseMei=#{SysCloseStatus.h2})}" id="SysCloseStatusGet.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeleteSysCloseStatus" class="delete" data-action="SysCloseStatusDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistSysCloseStatus" class="regist" th:text="#{common.regist}">登録</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

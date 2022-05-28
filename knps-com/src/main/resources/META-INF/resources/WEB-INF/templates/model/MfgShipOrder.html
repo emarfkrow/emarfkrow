@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{MfgShipOrder.title}">MFG_SHIP_ORDER</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/MfgShipOrderGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{MfgShipOrder.h2}">h2</h2>
+    <form name="MfgShipOrderRegistForm" action="MfgShipOrderRegist.ajax" class="regist">
+      <fieldset>
+        <legend th:text="#{MfgShipOrder.legend}">legend</legend>
+        <div id="shipOrderNo">
+          <label for="MfgShipOrder.shipOrderNo" th:text="#{MfgShipOrder.shipOrderNo}">SHIP_ORDER_NO</label><span id="MfgShipOrder.shipOrderNo"></span><input type="hidden" id="MfgShipOrder.shipOrderNo" name="MfgShipOrder.shipOrderNo" class="primaryKey" />
+        </div>
+        <div id="childPlanNo">
+          <label for="MfgShipOrder.childPlanNo" th:text="#{MfgShipOrder.childPlanNo}">CHILD_PLAN_NO</label><input type="text" id="MfgShipOrder.childPlanNo" name="MfgShipOrder.childPlanNo" maxlength="12" />
+        </div>
+        <div id="hinban">
+          <label for="MfgShipOrder.hinban" th:text="#{MfgShipOrder.hinban}">HINBAN</label><input type="text" id="MfgShipOrder.hinban" name="MfgShipOrder.hinban" maxlength="25" />
+        </div>
+        <div id="shipDirectCounts">
+          <label for="MfgShipOrder.shipDirectCounts" th:text="#{MfgShipOrder.shipDirectCounts}">SHIP_DIRECT_COUNTS</label><input type="text" id="MfgShipOrder.shipDirectCounts" name="MfgShipOrder.shipDirectCounts" maxlength="11" />
+        </div>
+        <div id="shipStatus">
+          <label for="MfgShipOrder.shipStatus" th:text="#{MfgShipOrder.shipStatus}">SHIP_STATUS</label><input type="text" id="MfgShipOrder.shipStatus" name="MfgShipOrder.shipStatus" maxlength="1" />
+        </div>
+        <div id="shipCounts">
+          <label for="MfgShipOrder.shipCounts" th:text="#{MfgShipOrder.shipCounts}">SHIP_COUNTS</label><input type="text" id="MfgShipOrder.shipCounts" name="MfgShipOrder.shipCounts" maxlength="11" />
+        </div>
+        <div id="shipDate">
+          <label for="MfgShipOrder.shipDate" th:text="#{MfgShipOrder.shipDate}">SHIP_DATE</label><input type="date" id="MfgShipOrder.shipDate" name="MfgShipOrder.shipDate" maxlength="7" />
+        </div>
+        <div id="timeStampCreate">
+          <label for="MfgShipOrder.timeStampCreate" th:text="#{MfgShipOrder.timeStampCreate}">TIME_STAMP_CREATE</label><span id="MfgShipOrder.timeStampCreate"></span><input type="hidden" id="MfgShipOrder.timeStampCreate" name="MfgShipOrder.timeStampCreate" />
+        </div>
+        <div id="timeStampChange">
+          <label for="MfgShipOrder.timeStampChange" th:text="#{MfgShipOrder.timeStampChange}">TIME_STAMP_CHANGE</label><span id="MfgShipOrder.timeStampChange"></span><input type="hidden" id="MfgShipOrder.timeStampChange" name="MfgShipOrder.timeStampChange" />
+        </div>
+        <div id="userIdCreate">
+          <label for="MfgShipOrder.userIdCreate" th:text="#{MfgShipOrder.userIdCreate}">USER_ID_CREATE</label><span id="MfgShipOrder.userIdCreate"></span><input type="hidden" id="MfgShipOrder.userIdCreate" name="MfgShipOrder.userIdCreate" />
+        </div>
+        <div id="userIdChange">
+          <label for="MfgShipOrder.userIdChange" th:text="#{MfgShipOrder.userIdChange}">USER_ID_CHANGE</label><span id="MfgShipOrder.userIdChange"></span><input type="hidden" id="MfgShipOrder.userIdChange" name="MfgShipOrder.userIdChange" />
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="Dialogate.refresh(event);">reset</button>
+        <a th:href="@{MfgShipOrderGet.xlsx(baseMei=#{MfgShipOrder.h2})}" id="MfgShipOrderGet.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeleteMfgShipOrder" class="delete" data-action="MfgShipOrderDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistMfgShipOrder" class="regist" th:text="#{common.regist}">登録</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

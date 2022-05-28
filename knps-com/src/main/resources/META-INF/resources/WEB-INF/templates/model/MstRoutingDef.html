@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{MstRoutingDef.title}">MST_ROUTING_DEF</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/MstRoutingDefGridColumns.js}"></script>
+<script th:src="@{/model/MfgKanbanHedGridColumns.js}"></script>
+<script th:src="@{/model/MstRoutingBkGridColumns.js}"></script>
+<script th:src="@{/model/MstWcGridColumns.js}"></script>
+<script th:src="@{/model/MstWcBkGridColumns.js}"></script>
+<script th:src="@{/model/MstProcGridColumns.js}"></script>
+<script th:src="@{/model/MstWsGridColumns.js}"></script>
+<script th:src="@{/model/MstTeamGridColumns.js}"></script>
+<script th:src="@{/model/MstGroupGridColumns.js}"></script>
+<script th:src="@{/model/MstDivisionGridColumns.js}"></script>
+<script th:src="@{/model/MstCompanyGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierGridColumns.js}"></script>
+<script th:src="@{/model/InvStockProcessSupplyGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierBkGridColumns.js}"></script>
+<script th:src="@{/model/MstTaxGridColumns.js}"></script>
+<script th:src="@{/model/MstCostCenterGridColumns.js}"></script>
+<script th:src="@{/model/MstCostCenterBkGridColumns.js}"></script>
+<script th:src="@{/model/MstSubinvGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplyListGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplyListBkGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplyListHsGridColumns.js}"></script>
+<script th:src="@{/model/MstRoutingDefBkGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{MstRoutingDef.h2}">h2</h2>
+    <form name="MstRoutingDefRegistForm" action="MstRoutingDefRegist.ajax" class="regist">
+      <fieldset>
+        <legend th:text="#{MstRoutingDef.legend}">legend</legend>
+        <div id="manHinban">
+          <label for="MstRoutingDef.manHinban" th:text="#{MstRoutingDef.manHinban}">MAN_HINBAN</label><span id="MstRoutingDef.manHinban"></span><input type="hidden" id="MstRoutingDef.manHinban" name="MstRoutingDef.manHinban" class="primaryKey" />
+        </div>
+        <div id="routingGroup">
+          <label for="MstRoutingDef.routingGroup" th:text="#{MstRoutingDef.routingGroup}">ROUTING_GROUP</label><input type="text" id="MstRoutingDef.routingGroup" name="MstRoutingDef.routingGroup" maxlength="2" class="primaryKey" />
+        </div>
+        <div id="permissionFlag">
+          <fieldset id="MstRoutingDef.permissionFlagList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:permission_flag" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstRoutingDef.permissionFlag}">PERMISSION_FLAG</legend>
+          </fieldset>
+        </div>
+        <div id="usableFlag">
+          <fieldset id="MstRoutingDef.usableFlagList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:usable_flag" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstRoutingDef.usableFlag}">USABLE_FLAG</legend>
+          </fieldset>
+        </div>
+        <div id="maxRouting">
+          <label for="MstRoutingDef.maxRouting" th:text="#{MstRoutingDef.maxRouting}">MAX_ROUTING</label><input type="text" id="MstRoutingDef.maxRouting" name="MstRoutingDef.maxRouting" maxlength="2" />
+        </div>
+        <div id="copySourceGroup">
+          <label for="MstRoutingDef.copySourceGroup" th:text="#{MstRoutingDef.copySourceGroup}">COPY_SOURCE_GROUP</label><input type="text" id="MstRoutingDef.copySourceGroup" name="MstRoutingDef.copySourceGroup" maxlength="2" />
+        </div>
+        <div id="timeStampCreate">
+          <label for="MstRoutingDef.timeStampCreate" th:text="#{MstRoutingDef.timeStampCreate}">TIME_STAMP_CREATE</label><span id="MstRoutingDef.timeStampCreate"></span><input type="hidden" id="MstRoutingDef.timeStampCreate" name="MstRoutingDef.timeStampCreate" />
+        </div>
+        <div id="timeStampChange">
+          <label for="MstRoutingDef.timeStampChange" th:text="#{MstRoutingDef.timeStampChange}">TIME_STAMP_CHANGE</label><span id="MstRoutingDef.timeStampChange"></span><input type="hidden" id="MstRoutingDef.timeStampChange" name="MstRoutingDef.timeStampChange" />
+        </div>
+        <div id="userIdCreate">
+          <label for="MstRoutingDef.userIdCreate" th:text="#{MstRoutingDef.userIdCreate}">USER_ID_CREATE</label><span id="MstRoutingDef.userIdCreate"></span><input type="hidden" id="MstRoutingDef.userIdCreate" name="MstRoutingDef.userIdCreate" />
+        </div>
+        <div id="userIdChange">
+          <label for="MstRoutingDef.userIdChange" th:text="#{MstRoutingDef.userIdChange}">USER_ID_CHANGE</label><span id="MstRoutingDef.userIdChange"></span><input type="hidden" id="MstRoutingDef.userIdChange" name="MstRoutingDef.userIdChange" />
+        </div>
+      </fieldset>
+      <h3 th:text="#{MfgKanbanHed.h3}">h3</h3>
+      <a th:href="@{/model/MfgKanbanHed.html}" id="MfgKanbanHed" target="dialog" th:text="#{MfgKanbanHed.add}" class="addChild" tabindex="-1">MFG_KANBAN_HED</a>
+      <div id="MfgKanbanHedGrid" data-selectionMode="link" data-addRow="true" data-frozenColumn="2" th:data-href="@{/model/MfgKanbanHed.html}"></div>
+      <h3 th:text="#{MstRoutingDefBk.h3}">h3</h3>
+      <a th:href="@{/model/MstRoutingDefBk.html}" id="MstRoutingDefBk" target="dialog" th:text="#{MstRoutingDefBk.add}" class="addChild" tabindex="-1">MST_ROUTING_DEF_BK</a>
+      <div id="MstRoutingDefBkGrid" data-selectionMode="link" data-addRow="true" data-frozenColumn="2" th:data-href="@{/model/MstRoutingDefBk.html}"></div>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="Dialogate.refresh(event);">reset</button>
+        <a th:href="@{MstRoutingDefGet.xlsx(baseMei=#{MstRoutingDef.h2})}" id="MstRoutingDefGet.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeleteMstRoutingDef" class="delete" data-action="MstRoutingDefDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistMstRoutingDef" class="regist" th:text="#{common.regist}">登録</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

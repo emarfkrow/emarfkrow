@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{MfgTotalResultQ.title}">MFG_TOTAL_RESULT_Q</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/MfgTotalResultQGridColumns.js}"></script>
+<script th:src="@{/model/MstWcGridColumns.js}"></script>
+<script th:src="@{/model/MstWcBkGridColumns.js}"></script>
+<script th:src="@{/model/MstProcGridColumns.js}"></script>
+<script th:src="@{/model/MstWsGridColumns.js}"></script>
+<script th:src="@{/model/MstTeamGridColumns.js}"></script>
+<script th:src="@{/model/MstGroupGridColumns.js}"></script>
+<script th:src="@{/model/MstDivisionGridColumns.js}"></script>
+<script th:src="@{/model/MstCompanyGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierGridColumns.js}"></script>
+<script th:src="@{/model/InvStockProcessSupplyGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierBkGridColumns.js}"></script>
+<script th:src="@{/model/MstTaxGridColumns.js}"></script>
+<script th:src="@{/model/MstCostCenterGridColumns.js}"></script>
+<script th:src="@{/model/MstCostCenterBkGridColumns.js}"></script>
+<script th:src="@{/model/MstSubinvGridColumns.js}"></script>
+<script th:src="@{/model/MstUnitGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{MfgTotalResultQ.h2}">h2</h2>
+    <form name="MfgTotalResultQRegistForm" action="MfgTotalResultQRegist.ajax" class="regist">
+      <fieldset>
+        <legend th:text="#{MfgTotalResultQ.legend}">legend</legend>
+        <div id="resultDate">
+          <label for="MfgTotalResultQ.resultDate" th:text="#{MfgTotalResultQ.resultDate}">RESULT_DATE</label><span id="MfgTotalResultQ.resultDate"></span><input type="hidden" id="MfgTotalResultQ.resultDate" name="MfgTotalResultQ.resultDate" class="primaryKey" />
+        </div>
+        <div id="proGroupNo">
+          <label for="MfgTotalResultQ.proGroupNo" th:text="#{MfgTotalResultQ.proGroupNo}">PRO_GROUP_NO</label><input type="text" id="MfgTotalResultQ.proGroupNo" name="MfgTotalResultQ.proGroupNo" maxlength="2" class="primaryKey" />
+        </div>
+        <div id="hinban">
+          <label for="MfgTotalResultQ.hinban" th:text="#{MfgTotalResultQ.hinban}">HINBAN</label><span id="MfgTotalResultQ.hinban"></span><input type="hidden" id="MfgTotalResultQ.hinban" name="MfgTotalResultQ.hinban" class="primaryKey" />
+        </div>
+        <div id="routing">
+          <label for="MfgTotalResultQ.routing" th:text="#{MfgTotalResultQ.routing}">ROUTING</label><span id="MfgTotalResultQ.routing"></span><input type="hidden" id="MfgTotalResultQ.routing" name="MfgTotalResultQ.routing" class="primaryKey" />
+        </div>
+        <div id="wcCode">
+          <label for="MfgTotalResultQ.wcCode" th:text="#{MfgTotalResultQ.wcCode}">WC_CODE</label><span id="MfgTotalResultQ.wcCode"></span><input type="hidden" id="MfgTotalResultQ.wcCode" name="MfgTotalResultQ.wcCode" class="primaryKey" /><a id="MfgTotalResultQ.wcCode" th:href="@{/model/MstWcS.html}" target="dialog" class="primaryKey refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MfgTotalResultQ.wcName" class="refer" data-json="MstWcSearch.json" data-srcDef="WC_CODE:MfgTotalResultQ.wcCode" data-destDef="MfgTotalResultQ.wcName:WC_NAME"></span>
+        </div>
+        <div id="opeDetail">
+          <label for="MfgTotalResultQ.opeDetail" th:text="#{MfgTotalResultQ.opeDetail}">OPE_DETAIL</label><span id="MfgTotalResultQ.opeDetail"></span><input type="hidden" id="MfgTotalResultQ.opeDetail" name="MfgTotalResultQ.opeDetail" class="primaryKey" />
+        </div>
+        <div id="humPreTime">
+          <label for="MfgTotalResultQ.humPreTime" th:text="#{MfgTotalResultQ.humPreTime}">HUM_PRE_TIME</label><input type="text" id="MfgTotalResultQ.humPreTime" name="MfgTotalResultQ.humPreTime" maxlength="8" />
+        </div>
+        <div id="humActTime">
+          <label for="MfgTotalResultQ.humActTime" th:text="#{MfgTotalResultQ.humActTime}">HUM_ACT_TIME</label><input type="text" id="MfgTotalResultQ.humActTime" name="MfgTotalResultQ.humActTime" maxlength="8" />
+        </div>
+        <div id="macPreTime">
+          <label for="MfgTotalResultQ.macPreTime" th:text="#{MfgTotalResultQ.macPreTime}">MAC_PRE_TIME</label><input type="text" id="MfgTotalResultQ.macPreTime" name="MfgTotalResultQ.macPreTime" maxlength="8" />
+        </div>
+        <div id="macActTime">
+          <label for="MfgTotalResultQ.macActTime" th:text="#{MfgTotalResultQ.macActTime}">MAC_ACT_TIME</label><input type="text" id="MfgTotalResultQ.macActTime" name="MfgTotalResultQ.macActTime" maxlength="8" />
+        </div>
+        <div id="goodCounts">
+          <label for="MfgTotalResultQ.goodCounts" th:text="#{MfgTotalResultQ.goodCounts}">GOOD_COUNTS</label><input type="text" id="MfgTotalResultQ.goodCounts" name="MfgTotalResultQ.goodCounts" maxlength="6" />
+        </div>
+        <div id="rejectCounts">
+          <label for="MfgTotalResultQ.rejectCounts" th:text="#{MfgTotalResultQ.rejectCounts}">REJECT_COUNTS</label><input type="text" id="MfgTotalResultQ.rejectCounts" name="MfgTotalResultQ.rejectCounts" maxlength="6" />
+        </div>
+        <div id="unitCode">
+          <label for="MfgTotalResultQ.unitCode" th:text="#{MfgTotalResultQ.unitCode}">UNIT_CODE</label><input type="text" id="MfgTotalResultQ.unitCode" name="MfgTotalResultQ.unitCode" maxlength="2" data-json="MstUnitSearch.json" data-srcDef="UNIT_CODE:MfgTotalResultQ.unitCode" data-destDef="MfgTotalResultQ.unitName:UNIT_NAME" /><a id="MfgTotalResultQ.unitCode" th:href="@{/model/MstUnitS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MfgTotalResultQ.unitName" class="refer" data-json="MstUnitSearch.json" data-srcDef="UNIT_CODE:MfgTotalResultQ.unitCode" data-destDef="MfgTotalResultQ.unitName:UNIT_NAME"></span>
+        </div>
+        <div id="actLt">
+          <label for="MfgTotalResultQ.actLt" th:text="#{MfgTotalResultQ.actLt}">ACT_LT</label><input type="text" id="MfgTotalResultQ.actLt" name="MfgTotalResultQ.actLt" maxlength="8" />
+        </div>
+        <div id="actWaitTime">
+          <label for="MfgTotalResultQ.actWaitTime" th:text="#{MfgTotalResultQ.actWaitTime}">ACT_WAIT_TIME</label><input type="text" id="MfgTotalResultQ.actWaitTime" name="MfgTotalResultQ.actWaitTime" maxlength="8" />
+        </div>
+        <div id="expWaitTime">
+          <label for="MfgTotalResultQ.expWaitTime" th:text="#{MfgTotalResultQ.expWaitTime}">EXP_WAIT_TIME</label><input type="text" id="MfgTotalResultQ.expWaitTime" name="MfgTotalResultQ.expWaitTime" maxlength="8" />
+        </div>
+        <div id="expPreTime">
+          <label for="MfgTotalResultQ.expPreTime" th:text="#{MfgTotalResultQ.expPreTime}">EXP_PRE_TIME</label><input type="text" id="MfgTotalResultQ.expPreTime" name="MfgTotalResultQ.expPreTime" maxlength="8" />
+        </div>
+        <div id="expProTime">
+          <label for="MfgTotalResultQ.expProTime" th:text="#{MfgTotalResultQ.expProTime}">EXP_PRO_TIME</label><input type="text" id="MfgTotalResultQ.expProTime" name="MfgTotalResultQ.expProTime" maxlength="8" />
+        </div>
+        <div id="expRestTime">
+          <label for="MfgTotalResultQ.expRestTime" th:text="#{MfgTotalResultQ.expRestTime}">EXP_REST_TIME</label><input type="text" id="MfgTotalResultQ.expRestTime" name="MfgTotalResultQ.expRestTime" maxlength="8" />
+        </div>
+        <div id="expChokoTime">
+          <label for="MfgTotalResultQ.expChokoTime" th:text="#{MfgTotalResultQ.expChokoTime}">EXP_CHOKO_TIME</label><input type="text" id="MfgTotalResultQ.expChokoTime" name="MfgTotalResultQ.expChokoTime" maxlength="8" />
+        </div>
+        <div id="expTroubTime">
+          <label for="MfgTotalResultQ.expTroubTime" th:text="#{MfgTotalResultQ.expTroubTime}">EXP_TROUB_TIME</label><input type="text" id="MfgTotalResultQ.expTroubTime" name="MfgTotalResultQ.expTroubTime" maxlength="8" />
+        </div>
+        <div id="expSelfModTime">
+          <label for="MfgTotalResultQ.expSelfModTime" th:text="#{MfgTotalResultQ.expSelfModTime}">EXP_SELF_MOD_TIME</label><input type="text" id="MfgTotalResultQ.expSelfModTime" name="MfgTotalResultQ.expSelfModTime" maxlength="8" />
+        </div>
+        <div id="expOthrModTime">
+          <label for="MfgTotalResultQ.expOthrModTime" th:text="#{MfgTotalResultQ.expOthrModTime}">EXP_OTHR_MOD_TIME</label><input type="text" id="MfgTotalResultQ.expOthrModTime" name="MfgTotalResultQ.expOthrModTime" maxlength="8" />
+        </div>
+        <div id="expEtcTime">
+          <label for="MfgTotalResultQ.expEtcTime" th:text="#{MfgTotalResultQ.expEtcTime}">EXP_ETC_TIME</label><input type="text" id="MfgTotalResultQ.expEtcTime" name="MfgTotalResultQ.expEtcTime" maxlength="8" />
+        </div>
+        <div id="volumeWeight">
+          <label for="MfgTotalResultQ.volumeWeight" th:text="#{MfgTotalResultQ.volumeWeight}">VOLUME_WEIGHT</label><input type="text" id="MfgTotalResultQ.volumeWeight" name="MfgTotalResultQ.volumeWeight" maxlength="11" />
+        </div>
+        <div id="unitWeight">
+          <label for="MfgTotalResultQ.unitWeight" th:text="#{MfgTotalResultQ.unitWeight}">UNIT_WEIGHT</label><input type="text" id="MfgTotalResultQ.unitWeight" name="MfgTotalResultQ.unitWeight" maxlength="11" />
+        </div>
+        <div id="endMaterialWeight">
+          <label for="MfgTotalResultQ.endMaterialWeight" th:text="#{MfgTotalResultQ.endMaterialWeight}">END_MATERIAL_WEIGHT</label><input type="text" id="MfgTotalResultQ.endMaterialWeight" name="MfgTotalResultQ.endMaterialWeight" maxlength="11" />
+        </div>
+        <div id="proCounts">
+          <label for="MfgTotalResultQ.proCounts" th:text="#{MfgTotalResultQ.proCounts}">PRO_COUNTS</label><input type="text" id="MfgTotalResultQ.proCounts" name="MfgTotalResultQ.proCounts" maxlength="3" />
+        </div>
+        <div id="lastRouting">
+          <label for="MfgTotalResultQ.lastRouting" th:text="#{MfgTotalResultQ.lastRouting}">LAST_ROUTING</label><input type="text" id="MfgTotalResultQ.lastRouting" name="MfgTotalResultQ.lastRouting" maxlength="1" />
+        </div>
+        <div id="timeStampCreate">
+          <label for="MfgTotalResultQ.timeStampCreate" th:text="#{MfgTotalResultQ.timeStampCreate}">TIME_STAMP_CREATE</label><span id="MfgTotalResultQ.timeStampCreate"></span><input type="hidden" id="MfgTotalResultQ.timeStampCreate" name="MfgTotalResultQ.timeStampCreate" />
+        </div>
+        <div id="timeStampChange">
+          <label for="MfgTotalResultQ.timeStampChange" th:text="#{MfgTotalResultQ.timeStampChange}">TIME_STAMP_CHANGE</label><span id="MfgTotalResultQ.timeStampChange"></span><input type="hidden" id="MfgTotalResultQ.timeStampChange" name="MfgTotalResultQ.timeStampChange" />
+        </div>
+        <div id="userIdCreate">
+          <label for="MfgTotalResultQ.userIdCreate" th:text="#{MfgTotalResultQ.userIdCreate}">USER_ID_CREATE</label><span id="MfgTotalResultQ.userIdCreate"></span><input type="hidden" id="MfgTotalResultQ.userIdCreate" name="MfgTotalResultQ.userIdCreate" />
+        </div>
+        <div id="userIdChange">
+          <label for="MfgTotalResultQ.userIdChange" th:text="#{MfgTotalResultQ.userIdChange}">USER_ID_CHANGE</label><span id="MfgTotalResultQ.userIdChange"></span><input type="hidden" id="MfgTotalResultQ.userIdChange" name="MfgTotalResultQ.userIdChange" />
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend th:text="#{MfgTotalResultY.legend}">legend</legend>
+        <div id="humPreTime">
+          <label for="MfgTotalResultY.humPreTime" th:text="#{MfgTotalResultY.humPreTime}">HUM_PRE_TIME</label><input type="text" id="MfgTotalResultY.humPreTime" name="MfgTotalResultY.humPreTime" maxlength="8" />
+        </div>
+        <div id="humActTime">
+          <label for="MfgTotalResultY.humActTime" th:text="#{MfgTotalResultY.humActTime}">HUM_ACT_TIME</label><input type="text" id="MfgTotalResultY.humActTime" name="MfgTotalResultY.humActTime" maxlength="8" />
+        </div>
+        <div id="macPreTime">
+          <label for="MfgTotalResultY.macPreTime" th:text="#{MfgTotalResultY.macPreTime}">MAC_PRE_TIME</label><input type="text" id="MfgTotalResultY.macPreTime" name="MfgTotalResultY.macPreTime" maxlength="8" />
+        </div>
+        <div id="macActTime">
+          <label for="MfgTotalResultY.macActTime" th:text="#{MfgTotalResultY.macActTime}">MAC_ACT_TIME</label><input type="text" id="MfgTotalResultY.macActTime" name="MfgTotalResultY.macActTime" maxlength="8" />
+        </div>
+        <div id="goodCounts">
+          <label for="MfgTotalResultY.goodCounts" th:text="#{MfgTotalResultY.goodCounts}">GOOD_COUNTS</label><input type="text" id="MfgTotalResultY.goodCounts" name="MfgTotalResultY.goodCounts" maxlength="6" />
+        </div>
+        <div id="rejectCounts">
+          <label for="MfgTotalResultY.rejectCounts" th:text="#{MfgTotalResultY.rejectCounts}">REJECT_COUNTS</label><input type="text" id="MfgTotalResultY.rejectCounts" name="MfgTotalResultY.rejectCounts" maxlength="6" />
+        </div>
+        <div id="unitCode">
+          <label for="MfgTotalResultY.unitCode" th:text="#{MfgTotalResultY.unitCode}">UNIT_CODE</label><input type="text" id="MfgTotalResultY.unitCode" name="MfgTotalResultY.unitCode" maxlength="2" data-json="MstUnitSearch.json" data-srcDef="UNIT_CODE:MfgTotalResultY.unitCode" data-destDef="MfgTotalResultY.unitName:UNIT_NAME" /><a id="MfgTotalResultY.unitCode" th:href="@{/model/MstUnitS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MfgTotalResultY.unitName" class="refer" data-json="MstUnitSearch.json" data-srcDef="UNIT_CODE:MfgTotalResultY.unitCode" data-destDef="MfgTotalResultY.unitName:UNIT_NAME"></span>
+        </div>
+        <div id="actLt">
+          <label for="MfgTotalResultY.actLt" th:text="#{MfgTotalResultY.actLt}">ACT_LT</label><input type="text" id="MfgTotalResultY.actLt" name="MfgTotalResultY.actLt" maxlength="8" />
+        </div>
+        <div id="actWaitTime">
+          <label for="MfgTotalResultY.actWaitTime" th:text="#{MfgTotalResultY.actWaitTime}">ACT_WAIT_TIME</label><input type="text" id="MfgTotalResultY.actWaitTime" name="MfgTotalResultY.actWaitTime" maxlength="8" />
+        </div>
+        <div id="expWaitTime">
+          <label for="MfgTotalResultY.expWaitTime" th:text="#{MfgTotalResultY.expWaitTime}">EXP_WAIT_TIME</label><input type="text" id="MfgTotalResultY.expWaitTime" name="MfgTotalResultY.expWaitTime" maxlength="8" />
+        </div>
+        <div id="expPreTime">
+          <label for="MfgTotalResultY.expPreTime" th:text="#{MfgTotalResultY.expPreTime}">EXP_PRE_TIME</label><input type="text" id="MfgTotalResultY.expPreTime" name="MfgTotalResultY.expPreTime" maxlength="8" />
+        </div>
+        <div id="expProTime">
+          <label for="MfgTotalResultY.expProTime" th:text="#{MfgTotalResultY.expProTime}">EXP_PRO_TIME</label><input type="text" id="MfgTotalResultY.expProTime" name="MfgTotalResultY.expProTime" maxlength="8" />
+        </div>
+        <div id="expRestTime">
+          <label for="MfgTotalResultY.expRestTime" th:text="#{MfgTotalResultY.expRestTime}">EXP_REST_TIME</label><input type="text" id="MfgTotalResultY.expRestTime" name="MfgTotalResultY.expRestTime" maxlength="8" />
+        </div>
+        <div id="expChokoTime">
+          <label for="MfgTotalResultY.expChokoTime" th:text="#{MfgTotalResultY.expChokoTime}">EXP_CHOKO_TIME</label><input type="text" id="MfgTotalResultY.expChokoTime" name="MfgTotalResultY.expChokoTime" maxlength="8" />
+        </div>
+        <div id="expTroubTime">
+          <label for="MfgTotalResultY.expTroubTime" th:text="#{MfgTotalResultY.expTroubTime}">EXP_TROUB_TIME</label><input type="text" id="MfgTotalResultY.expTroubTime" name="MfgTotalResultY.expTroubTime" maxlength="8" />
+        </div>
+        <div id="expSelfModTime">
+          <label for="MfgTotalResultY.expSelfModTime" th:text="#{MfgTotalResultY.expSelfModTime}">EXP_SELF_MOD_TIME</label><input type="text" id="MfgTotalResultY.expSelfModTime" name="MfgTotalResultY.expSelfModTime" maxlength="8" />
+        </div>
+        <div id="expOthrModTime">
+          <label for="MfgTotalResultY.expOthrModTime" th:text="#{MfgTotalResultY.expOthrModTime}">EXP_OTHR_MOD_TIME</label><input type="text" id="MfgTotalResultY.expOthrModTime" name="MfgTotalResultY.expOthrModTime" maxlength="8" />
+        </div>
+        <div id="expEtcTime">
+          <label for="MfgTotalResultY.expEtcTime" th:text="#{MfgTotalResultY.expEtcTime}">EXP_ETC_TIME</label><input type="text" id="MfgTotalResultY.expEtcTime" name="MfgTotalResultY.expEtcTime" maxlength="8" />
+        </div>
+        <div id="volumeWeight">
+          <label for="MfgTotalResultY.volumeWeight" th:text="#{MfgTotalResultY.volumeWeight}">VOLUME_WEIGHT</label><input type="text" id="MfgTotalResultY.volumeWeight" name="MfgTotalResultY.volumeWeight" maxlength="11" />
+        </div>
+        <div id="unitWeight">
+          <label for="MfgTotalResultY.unitWeight" th:text="#{MfgTotalResultY.unitWeight}">UNIT_WEIGHT</label><input type="text" id="MfgTotalResultY.unitWeight" name="MfgTotalResultY.unitWeight" maxlength="11" />
+        </div>
+        <div id="endMaterialWeight">
+          <label for="MfgTotalResultY.endMaterialWeight" th:text="#{MfgTotalResultY.endMaterialWeight}">END_MATERIAL_WEIGHT</label><input type="text" id="MfgTotalResultY.endMaterialWeight" name="MfgTotalResultY.endMaterialWeight" maxlength="11" />
+        </div>
+        <div id="proCounts">
+          <label for="MfgTotalResultY.proCounts" th:text="#{MfgTotalResultY.proCounts}">PRO_COUNTS</label><input type="text" id="MfgTotalResultY.proCounts" name="MfgTotalResultY.proCounts" maxlength="3" />
+        </div>
+        <div id="lastRouting">
+          <label for="MfgTotalResultY.lastRouting" th:text="#{MfgTotalResultY.lastRouting}">LAST_ROUTING</label><input type="text" id="MfgTotalResultY.lastRouting" name="MfgTotalResultY.lastRouting" maxlength="1" />
+        </div>
+        <input type="hidden" name="MfgTotalResultY.timeStampChange" />
+      </fieldset>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="Dialogate.refresh(event);">reset</button>
+        <a th:href="@{MfgTotalResultQGet.xlsx(baseMei=#{MfgTotalResultQ.h2})}" id="MfgTotalResultQGet.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeleteMfgTotalResultQ" class="delete" data-action="MfgTotalResultQDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistMfgTotalResultQ" class="regist" th:text="#{common.regist}">登録</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

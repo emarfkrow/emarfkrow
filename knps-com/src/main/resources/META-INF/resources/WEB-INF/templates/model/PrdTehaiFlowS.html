@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{PrdTehaiFlowS.title}">PRD_TEHAI_FLOW</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/PrdTehaiFlowGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{PrdTehaiFlowS.h2}">h2</h2>
+    <form name="PrdTehaiFlowSearchForm" action="PrdTehaiFlowSearch.ajax" class="search">
+      <fieldset>
+        <legend th:text="#{PrdTehaiFlowS.legend}">legend</legend>
+        <div id="prdTehaiNo">
+          <label for="PrdTehaiFlow.prdTehaiNo" th:text="#{PrdTehaiFlow.prdTehaiNo}">PRD_TEHAI_NO</label><input type="text" id="PrdTehaiFlow.prdTehaiNo" name="PrdTehaiFlow.prdTehaiNo" maxlength="10" />
+        </div>
+        <div id="tehaiFlowSeq">
+          <label for="PrdTehaiFlow.tehaiFlowSeq" th:text="#{PrdTehaiFlow.tehaiFlowSeq}">TEHAI_FLOW_SEQ</label><input type="text" id="PrdTehaiFlow.tehaiFlowSeq" name="PrdTehaiFlow.tehaiFlowSeq" maxlength="10" />
+        </div>
+        <div id="tehaiJokyoKb">
+          <fieldset id="PrdTehaiFlow.tehaiJokyoKbList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:tehai_jokyo_kb" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{PrdTehaiFlow.tehaiJokyoKb}">TEHAI_JOKYO_KB</legend>
+          </fieldset>
+        </div>
+        <div id="kaiteiJokyoKb">
+          <fieldset id="PrdTehaiFlow.kaiteiJokyoKbList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:kaitei_jokyo_kb" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{PrdTehaiFlow.kaiteiJokyoKb}">KAITEI_JOKYO_KB</legend>
+          </fieldset>
+        </div>
+        <div id="shorishaCd">
+          <label for="PrdTehaiFlow.shorishaCd" th:text="#{PrdTehaiFlow.shorishaCd}">SHORISHA_CD</label><input type="text" id="PrdTehaiFlow.shorishaCd" name="PrdTehaiFlow.shorishaCd" maxlength="10" />
+        </div>
+        <div id="shoriDt">
+          <label for="PrdTehaiFlow.shoriDt_1" th:text="#{PrdTehaiFlow.shoriDt}">SHORI_DT</label><input type="datetime-local" id="PrdTehaiFlow.shoriDt_1" name="PrdTehaiFlow.shoriDt_1" maxlength="7" />～<input type="datetime-local" id="PrdTehaiFlow.shoriDt_2" name="PrdTehaiFlow.shoriDt_2" maxlength="7" />
+        </div>
+        <div id="shoriCmt">
+          <label for="PrdTehaiFlow.shoriCmt" th:text="#{PrdTehaiFlow.shoriCmt}">SHORI_CMT</label><input type="text" id="PrdTehaiFlow.shoriCmt" name="PrdTehaiFlow.shoriCmt" maxlength="120" />
+        </div>
+        <div id="aitesakiCd">
+          <label for="PrdTehaiFlow.aitesakiCd" th:text="#{PrdTehaiFlow.aitesakiCd}">AITESAKI_CD</label><input type="text" id="PrdTehaiFlow.aitesakiCd" name="PrdTehaiFlow.aitesakiCd" maxlength="10" />
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="reset" th:text="#{common.reset}">reset</button>
+        <a th:href="@{/model/PrdTehaiFlow.html}" id="PrdTehaiFlow" target="dialog" th:text="#{PrdTehaiFlow.add}" tabindex="-1">PRD_TEHAI_FLOW</a>
+      </div>
+      <div class="submits">
+        <button id="SearchPrdTehaiFlow" class="search" data-gridId="PrdTehaiFlowGrid" th:text="#{common.search}">submit</button>
+      </div>
+    </form>
+    <form name="PrdTehaiFlowSRegistForm" action="PrdTehaiFlowSRegist.ajax" class="regist">
+      <h3 th:text="#{PrdTehaiFlow.h3}">h3</h3>
+      <div id="PrdTehaiFlowGrid" data-selectionMode="checkbox" data-frozenColumn="1" th:data-href="@{/model/PrdTehaiFlow.html}"></div>
+      <div id="PrdTehaiFlowPager"></div>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="$('[id=&quot;SearchPrdTehaiFlow&quot;]').click();">reset</button>
+        <a th:href="@{PrdTehaiFlowSearch.xlsx(baseMei=#{PrdTehaiFlowS.h2})}" id="PrdTehaiFlowSearch.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeletePrdTehaiFlowS" class="delete selectRows" data-action="PrdTehaiFlowSDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistPrdTehaiFlowS" class="regist" th:text="#{common.regist}">submit</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{MstSupUnitpriceHs.title}">MST_SUP_UNITPRICE_HS</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/MstSupUnitpriceHsGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierGridColumns.js}"></script>
+<script th:src="@{/model/InvStockProcessSupplyGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierBkGridColumns.js}"></script>
+<script th:src="@{/model/MstTaxGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{MstSupUnitpriceHs.h2}">h2</h2>
+    <form name="MstSupUnitpriceHsRegistForm" action="MstSupUnitpriceHsRegist.ajax" class="regist">
+      <fieldset>
+        <legend th:text="#{MstSupUnitpriceHs.legend}">legend</legend>
+        <div id="hinban">
+          <label for="MstSupUnitpriceHs.hinban" th:text="#{MstSupUnitpriceHs.hinban}">HINBAN</label><span id="MstSupUnitpriceHs.hinban"></span><input type="hidden" id="MstSupUnitpriceHs.hinban" name="MstSupUnitpriceHs.hinban" class="primaryKey" />
+        </div>
+        <div id="supCode">
+          <label for="MstSupUnitpriceHs.supCode" th:text="#{MstSupUnitpriceHs.supCode}">SUP_CODE</label><span id="MstSupUnitpriceHs.supCode"></span><input type="hidden" id="MstSupUnitpriceHs.supCode" name="MstSupUnitpriceHs.supCode" class="primaryKey" /><a id="MstSupUnitpriceHs.supCode" th:href="@{/model/MstSupplierS.html}" target="dialog" class="primaryKey refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MstSupUnitpriceHs.supName" class="refer" data-json="MstSupplierSearch.json" data-srcDef="SUP_CODE:MstSupUnitpriceHs.supCode" data-destDef="MstSupUnitpriceHs.supName:SUP_NAME"></span>
+        </div>
+        <div id="subinvCode">
+          <fieldset id="MstSupUnitpriceHs.subinvCodeList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:subinv_code" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstSupUnitpriceHs.subinvCode}">SUBINV_CODE</legend>
+          </fieldset>
+        </div>
+        <div id="procureLt">
+          <label for="MstSupUnitpriceHs.procureLt" th:text="#{MstSupUnitpriceHs.procureLt}">PROCURE_LT</label><input type="text" id="MstSupUnitpriceHs.procureLt" name="MstSupUnitpriceHs.procureLt" maxlength="9" />
+        </div>
+        <div id="timeStampCreate">
+          <label for="MstSupUnitpriceHs.timeStampCreate" th:text="#{MstSupUnitpriceHs.timeStampCreate}">TIME_STAMP_CREATE</label><span id="MstSupUnitpriceHs.timeStampCreate"></span><input type="hidden" id="MstSupUnitpriceHs.timeStampCreate" name="MstSupUnitpriceHs.timeStampCreate" />
+        </div>
+        <div id="timeStampChange">
+          <label for="MstSupUnitpriceHs.timeStampChange" th:text="#{MstSupUnitpriceHs.timeStampChange}">TIME_STAMP_CHANGE</label><span id="MstSupUnitpriceHs.timeStampChange"></span><input type="hidden" id="MstSupUnitpriceHs.timeStampChange" name="MstSupUnitpriceHs.timeStampChange" />
+        </div>
+        <div id="userIdCreate">
+          <label for="MstSupUnitpriceHs.userIdCreate" th:text="#{MstSupUnitpriceHs.userIdCreate}">USER_ID_CREATE</label><span id="MstSupUnitpriceHs.userIdCreate"></span><input type="hidden" id="MstSupUnitpriceHs.userIdCreate" name="MstSupUnitpriceHs.userIdCreate" />
+        </div>
+        <div id="userIdChange">
+          <label for="MstSupUnitpriceHs.userIdChange" th:text="#{MstSupUnitpriceHs.userIdChange}">USER_ID_CHANGE</label><span id="MstSupUnitpriceHs.userIdChange"></span><input type="hidden" id="MstSupUnitpriceHs.userIdChange" name="MstSupUnitpriceHs.userIdChange" />
+        </div>
+        <div id="deleteFlag">
+          <fieldset id="MstSupUnitpriceHs.deleteFlagList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:delete_flag" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstSupUnitpriceHs.deleteFlag}">DELETE_FLAG</legend>
+          </fieldset>
+        </div>
+        <div id="mushoHacchuF">
+          <fieldset id="MstSupUnitpriceHs.mushoHacchuFList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:musho_hacchu_f" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstSupUnitpriceHs.mushoHacchuF}">MUSHO_HACCHU_F</legend>
+          </fieldset>
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="Dialogate.refresh(event);">reset</button>
+        <a th:href="@{MstSupUnitpriceHsGet.xlsx(baseMei=#{MstSupUnitpriceHs.h2})}" id="MstSupUnitpriceHsGet.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeleteMstSupUnitpriceHs" class="delete" data-action="MstSupUnitpriceHsDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistMstSupUnitpriceHs" class="regist" th:text="#{common.regist}">登録</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

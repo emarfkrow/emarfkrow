@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{MstComponentSalesS.title}">MST_COMPONENT_SALES</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/MstComponentSalesGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{MstComponentSalesS.h2}">h2</h2>
+    <form name="MstComponentSalesSearchForm" action="MstComponentSalesSearch.ajax" class="search">
+      <fieldset>
+        <legend th:text="#{MstComponentSalesS.legend}">legend</legend>
+        <div id="compHinbanParent">
+          <label for="MstComponentSales.compHinbanParent" th:text="#{MstComponentSales.compHinbanParent}">COMP_HINBAN_PARENT</label><input type="text" id="MstComponentSales.compHinbanParent" name="MstComponentSales.compHinbanParent" maxlength="20" />
+        </div>
+        <div id="compHinbanChild">
+          <label for="MstComponentSales.compHinbanChild" th:text="#{MstComponentSales.compHinbanChild}">COMP_HINBAN_CHILD</label><input type="text" id="MstComponentSales.compHinbanChild" name="MstComponentSales.compHinbanChild" maxlength="20" />
+        </div>
+        <div id="setNumber">
+          <label for="MstComponentSales.setNumber" th:text="#{MstComponentSales.setNumber}">SET_NUMBER</label><input type="text" id="MstComponentSales.setNumber" name="MstComponentSales.setNumber" maxlength="3" />
+        </div>
+        <div id="bottomFlag">
+          <fieldset id="MstComponentSales.bottomFlagList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:bottom_flag" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstComponentSales.bottomFlag}">BOTTOM_FLAG</legend>
+          </fieldset>
+        </div>
+        <div id="provisionsKbn">
+          <fieldset id="MstComponentSales.provisionsKbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:provisions_kbn" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstComponentSales.provisionsKbn}">PROVISIONS_KBN</legend>
+          </fieldset>
+        </div>
+        <div id="deleteFlag">
+          <fieldset id="MstComponentSales.deleteFlagList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:delete_flag" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstComponentSales.deleteFlag}">DELETE_FLAG</legend>
+          </fieldset>
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="reset" th:text="#{common.reset}">reset</button>
+      </div>
+      <div class="submits">
+        <button id="SearchMstComponentSales" class="search" data-gridId="MstComponentSalesGrid" th:text="#{common.search}">submit</button>
+      </div>
+    </form>
+    <form name="MstComponentSalesSRegistForm" action="MstComponentSalesSRegist.ajax" class="regist">
+      <h3 th:text="#{MstComponentSales.h3}">h3</h3>
+      <div id="MstComponentSalesGrid" data-selectionMode="checkbox" data-frozenColumn="1" th:data-href="@{/model/MstComponentSales.html}"></div>
+      <div id="MstComponentSalesPager"></div>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="$('[id=&quot;SearchMstComponentSales&quot;]').click();">reset</button>
+        <a th:href="@{MstComponentSalesSearch.xlsx(baseMei=#{MstComponentSalesS.h2})}" id="MstComponentSalesSearch.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeleteMstComponentSalesS" class="delete selectRows" data-action="MstComponentSalesSDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistMstComponentSalesS" class="regist" th:text="#{common.regist}">submit</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

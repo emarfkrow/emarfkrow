@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{MSetkose.title}">M_SETKOSE</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/MSetkoseGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{MSetkose.h2}">h2</h2>
+    <form name="MSetkoseRegistForm" action="MSetkoseRegist.ajax" class="regist">
+      <fieldset>
+        <legend th:text="#{MSetkose.legend}">legend</legend>
+        <div id="setHinban">
+          <label for="MSetkose.setHinban" th:text="#{MSetkose.setHinban}">SET-HINBAN</label><span id="MSetkose.setHinban"></span><input type="hidden" id="MSetkose.setHinban" name="MSetkose.setHinban" class="primaryKey" />
+        </div>
+        <div id="setKhinban">
+          <label for="MSetkose.setKhinban" th:text="#{MSetkose.setKhinban}">SET-KHINBAN</label><span id="MSetkose.setKhinban"></span><input type="hidden" id="MSetkose.setKhinban" name="MSetkose.setKhinban" class="primaryKey" />
+        </div>
+        <div id="dltflg">
+          <label for="MSetkose.dltflg" th:text="#{MSetkose.dltflg}">DLTFLG</label><input type="text" id="MSetkose.dltflg" name="MSetkose.dltflg" maxlength="1" />
+        </div>
+        <div id="setinzu">
+          <label for="MSetkose.setinzu" th:text="#{MSetkose.setinzu}">SETINZU</label><input type="text" id="MSetkose.setinzu" name="MSetkose.setinzu" maxlength="3" />
+        </div>
+        <div id="timeStampCreate">
+          <label for="MSetkose.timeStampCreate" th:text="#{MSetkose.timeStampCreate}">TIME_STAMP_CREATE</label><span id="MSetkose.timeStampCreate"></span><input type="hidden" id="MSetkose.timeStampCreate" name="MSetkose.timeStampCreate" />
+        </div>
+        <div id="timeStampChange">
+          <label for="MSetkose.timeStampChange" th:text="#{MSetkose.timeStampChange}">TIME_STAMP_CHANGE</label><span id="MSetkose.timeStampChange"></span><input type="hidden" id="MSetkose.timeStampChange" name="MSetkose.timeStampChange" />
+        </div>
+        <div id="userIdCreate">
+          <label for="MSetkose.userIdCreate" th:text="#{MSetkose.userIdCreate}">USER_ID_CREATE</label><span id="MSetkose.userIdCreate"></span><input type="hidden" id="MSetkose.userIdCreate" name="MSetkose.userIdCreate" />
+        </div>
+        <div id="userIdChange">
+          <label for="MSetkose.userIdChange" th:text="#{MSetkose.userIdChange}">USER_ID_CHANGE</label><span id="MSetkose.userIdChange"></span><input type="hidden" id="MSetkose.userIdChange" name="MSetkose.userIdChange" />
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="Dialogate.refresh(event);">reset</button>
+        <a th:href="@{MSetkoseGet.xlsx(baseMei=#{MSetkose.h2})}" id="MSetkoseGet.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeleteMSetkose" class="delete" data-action="MSetkoseDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistMSetkose" class="regist" th:text="#{common.regist}">登録</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

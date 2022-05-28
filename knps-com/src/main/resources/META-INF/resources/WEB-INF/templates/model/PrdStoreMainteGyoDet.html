@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{PrdStoreMainteGyoDet.title}">PRD_STORE_MAINTE_GYO_DET</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/PrdStoreMainteGyoDetGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{PrdStoreMainteGyoDet.h2}">h2</h2>
+    <form name="PrdStoreMainteGyoDetRegistForm" action="PrdStoreMainteGyoDetRegist.ajax" class="regist">
+      <fieldset>
+        <legend th:text="#{PrdStoreMainteGyoDet.legend}">legend</legend>
+        <div id="gyoNo">
+          <label for="PrdStoreMainteGyoDet.gyoNo" th:text="#{PrdStoreMainteGyoDet.gyoNo}">GYO_NO</label><span id="PrdStoreMainteGyoDet.gyoNo"></span><input type="hidden" id="PrdStoreMainteGyoDet.gyoNo" name="PrdStoreMainteGyoDet.gyoNo" class="primaryKey" />
+        </div>
+        <div id="gyoPos">
+          <label for="PrdStoreMainteGyoDet.gyoPos" th:text="#{PrdStoreMainteGyoDet.gyoPos}">GYO_POS</label><input type="text" id="PrdStoreMainteGyoDet.gyoPos" name="PrdStoreMainteGyoDet.gyoPos" maxlength="4" class="primaryKey" />
+        </div>
+        <div id="hinban">
+          <label for="PrdStoreMainteGyoDet.hinban" th:text="#{PrdStoreMainteGyoDet.hinban}">HINBAN</label><input type="text" id="PrdStoreMainteGyoDet.hinban" name="PrdStoreMainteGyoDet.hinban" maxlength="25" />
+        </div>
+        <div id="timeStampCreate">
+          <label for="PrdStoreMainteGyoDet.timeStampCreate" th:text="#{PrdStoreMainteGyoDet.timeStampCreate}">TIME_STAMP_CREATE</label><span id="PrdStoreMainteGyoDet.timeStampCreate"></span><input type="hidden" id="PrdStoreMainteGyoDet.timeStampCreate" name="PrdStoreMainteGyoDet.timeStampCreate" />
+        </div>
+        <div id="timeStampChange">
+          <label for="PrdStoreMainteGyoDet.timeStampChange" th:text="#{PrdStoreMainteGyoDet.timeStampChange}">TIME_STAMP_CHANGE</label><span id="PrdStoreMainteGyoDet.timeStampChange"></span><input type="hidden" id="PrdStoreMainteGyoDet.timeStampChange" name="PrdStoreMainteGyoDet.timeStampChange" />
+        </div>
+        <div id="userIdCreate">
+          <label for="PrdStoreMainteGyoDet.userIdCreate" th:text="#{PrdStoreMainteGyoDet.userIdCreate}">USER_ID_CREATE</label><span id="PrdStoreMainteGyoDet.userIdCreate"></span><input type="hidden" id="PrdStoreMainteGyoDet.userIdCreate" name="PrdStoreMainteGyoDet.userIdCreate" />
+        </div>
+        <div id="userIdChange">
+          <label for="PrdStoreMainteGyoDet.userIdChange" th:text="#{PrdStoreMainteGyoDet.userIdChange}">USER_ID_CHANGE</label><span id="PrdStoreMainteGyoDet.userIdChange"></span><input type="hidden" id="PrdStoreMainteGyoDet.userIdChange" name="PrdStoreMainteGyoDet.userIdChange" />
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="Dialogate.refresh(event);">reset</button>
+        <a th:href="@{PrdStoreMainteGyoDetGet.xlsx(baseMei=#{PrdStoreMainteGyoDet.h2})}" id="PrdStoreMainteGyoDetGet.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeletePrdStoreMainteGyoDet" class="delete" data-action="PrdStoreMainteGyoDetDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistPrdStoreMainteGyoDet" class="regist" th:text="#{common.regist}">登録</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

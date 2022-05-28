@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{InvStockProcess.title}">INV_STOCK_PROCESS</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/InvStockProcessGridColumns.js}"></script>
+<script th:src="@{/model/MstLocationGridColumns.js}"></script>
+<script th:src="@{/model/MstSubinvGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierGridColumns.js}"></script>
+<script th:src="@{/model/InvStockProcessSupplyGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierBkGridColumns.js}"></script>
+<script th:src="@{/model/MstTaxGridColumns.js}"></script>
+<script th:src="@{/model/MstStoreManGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{InvStockProcess.h2}">h2</h2>
+    <form name="InvStockProcessRegistForm" action="InvStockProcessRegist.ajax" class="regist">
+      <fieldset>
+        <legend th:text="#{InvStockProcess.legend}">legend</legend>
+        <div id="locationCode">
+          <label for="InvStockProcess.locationCode" th:text="#{InvStockProcess.locationCode}">LOCATION_CODE</label><input type="text" id="InvStockProcess.locationCode" name="InvStockProcess.locationCode" maxlength="10" class="primaryKey" data-json="MstLocationSearch.json" data-srcDef="LOCATION_CODE:InvStockProcess.locationCode" data-destDef="InvStockProcess.locationName:LOCATION_NAME" /><a id="InvStockProcess.locationCode" th:href="@{/model/MstLocationS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="InvStockProcess.locationName" class="refer" data-json="MstLocationSearch.json" data-srcDef="LOCATION_CODE:InvStockProcess.locationCode" data-destDef="InvStockProcess.locationName:LOCATION_NAME"></span>
+        </div>
+        <div id="hinban">
+          <label for="InvStockProcess.hinban" th:text="#{InvStockProcess.hinban}">HINBAN</label><input type="text" id="InvStockProcess.hinban" name="InvStockProcess.hinban" maxlength="25" class="primaryKey" />
+        </div>
+        <div id="stock">
+          <label for="InvStockProcess.stock" th:text="#{InvStockProcess.stock}">STOCK</label><input type="text" id="InvStockProcess.stock" name="InvStockProcess.stock" maxlength="11" />
+        </div>
+        <div id="lastInOutDate">
+          <label for="InvStockProcess.lastInOutDate" th:text="#{InvStockProcess.lastInOutDate}">LAST_IN_OUT_DATE</label><input type="date" id="InvStockProcess.lastInOutDate" name="InvStockProcess.lastInOutDate" maxlength="7" />
+        </div>
+        <div id="timeStampCreate">
+          <label for="InvStockProcess.timeStampCreate" th:text="#{InvStockProcess.timeStampCreate}">TIME_STAMP_CREATE</label><span id="InvStockProcess.timeStampCreate"></span><input type="hidden" id="InvStockProcess.timeStampCreate" name="InvStockProcess.timeStampCreate" />
+        </div>
+        <div id="timeStampChange">
+          <label for="InvStockProcess.timeStampChange" th:text="#{InvStockProcess.timeStampChange}">TIME_STAMP_CHANGE</label><span id="InvStockProcess.timeStampChange"></span><input type="hidden" id="InvStockProcess.timeStampChange" name="InvStockProcess.timeStampChange" />
+        </div>
+        <div id="userIdCreate">
+          <label for="InvStockProcess.userIdCreate" th:text="#{InvStockProcess.userIdCreate}">USER_ID_CREATE</label><span id="InvStockProcess.userIdCreate"></span><input type="hidden" id="InvStockProcess.userIdCreate" name="InvStockProcess.userIdCreate" />
+        </div>
+        <div id="userIdChange">
+          <label for="InvStockProcess.userIdChange" th:text="#{InvStockProcess.userIdChange}">USER_ID_CHANGE</label><span id="InvStockProcess.userIdChange"></span><input type="hidden" id="InvStockProcess.userIdChange" name="InvStockProcess.userIdChange" />
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="Dialogate.refresh(event);">reset</button>
+        <a th:href="@{InvStockProcessGet.xlsx(baseMei=#{InvStockProcess.h2})}" id="InvStockProcessGet.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeleteInvStockProcess" class="delete" data-action="InvStockProcessDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistInvStockProcess" class="regist" th:text="#{common.regist}">登録</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

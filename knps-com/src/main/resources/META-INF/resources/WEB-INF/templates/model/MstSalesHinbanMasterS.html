@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{MstSalesHinbanMasterS.title}">MST_SALES_HINBAN_MASTER</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/MstSalesHinbanMasterGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{MstSalesHinbanMasterS.h2}">h2</h2>
+    <form name="MstSalesHinbanMasterSearchForm" action="MstSalesHinbanMasterSearch.ajax" class="search">
+      <fieldset>
+        <legend th:text="#{MstSalesHinbanMasterS.legend}">legend</legend>
+        <div id="salesHinban">
+          <label for="MstSalesHinbanMaster.salesHinban" th:text="#{MstSalesHinbanMaster.salesHinban}">SALES_HINBAN</label><input type="text" id="MstSalesHinbanMaster.salesHinban" name="MstSalesHinbanMaster.salesHinban" maxlength="20" />
+        </div>
+        <div id="lowLevelCode">
+          <fieldset id="MstSalesHinbanMaster.lowLevelCodeList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:low_level_code" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstSalesHinbanMaster.lowLevelCode}">LOW_LEVEL_CODE</legend>
+          </fieldset>
+        </div>
+        <div id="deleteFlag">
+          <fieldset id="MstSalesHinbanMaster.deleteFlagList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:delete_flag" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstSalesHinbanMaster.deleteFlag}">DELETE_FLAG</legend>
+          </fieldset>
+        </div>
+        <div id="hinbanCode">
+          <fieldset id="MstSalesHinbanMaster.hinbanCodeList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:hinban_code" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstSalesHinbanMaster.hinbanCode}">HINBAN_CODE</legend>
+          </fieldset>
+        </div>
+        <div id="item">
+          <label for="MstSalesHinbanMaster.item" th:text="#{MstSalesHinbanMaster.item}">ITEM</label><input type="text" id="MstSalesHinbanMaster.item" name="MstSalesHinbanMaster.item" maxlength="10" />
+        </div>
+        <div id="setKbn">
+          <fieldset id="MstSalesHinbanMaster.setKbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:set_kbn" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstSalesHinbanMaster.setKbn}">SET_KBN</legend>
+          </fieldset>
+        </div>
+        <div id="strategyProKbn">
+          <fieldset id="MstSalesHinbanMaster.strategyProKbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:strategy_pro_kbn" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstSalesHinbanMaster.strategyProKbn}">STRATEGY_PRO_KBN</legend>
+          </fieldset>
+        </div>
+        <div id="orderBanKbn">
+          <fieldset id="MstSalesHinbanMaster.orderBanKbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:order_ban_kbn" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstSalesHinbanMaster.orderBanKbn}">ORDER_BAN_KBN</legend>
+          </fieldset>
+        </div>
+        <div id="resaleBanKbn">
+          <fieldset id="MstSalesHinbanMaster.resaleBanKbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:resale_ban_kbn" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstSalesHinbanMaster.resaleBanKbn}">RESALE_BAN_KBN</legend>
+          </fieldset>
+        </div>
+        <div id="warehousingBanKbn">
+          <fieldset id="MstSalesHinbanMaster.warehousingBanKbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:warehousing_ban_kbn" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstSalesHinbanMaster.warehousingBanKbn}">WAREHOUSING_BAN_KBN</legend>
+          </fieldset>
+        </div>
+        <div id="productKbn">
+          <fieldset id="MstSalesHinbanMaster.productKbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:product_kbn" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstSalesHinbanMaster.productKbn}">PRODUCT_KBN</legend>
+          </fieldset>
+        </div>
+        <div id="shipInstructionsKbn">
+          <fieldset id="MstSalesHinbanMaster.shipInstructionsKbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:ship_instructions_kbn" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstSalesHinbanMaster.shipInstructionsKbn}">SHIP_INSTRUCTIONS_KBN</legend>
+          </fieldset>
+        </div>
+        <div id="productClass">
+          <label for="MstSalesHinbanMaster.productClass" th:text="#{MstSalesHinbanMaster.productClass}">PRODUCT_CLASS</label><input type="text" id="MstSalesHinbanMaster.productClass" name="MstSalesHinbanMaster.productClass" maxlength="2" />
+        </div>
+        <div id="standardStock">
+          <label for="MstSalesHinbanMaster.standardStock" th:text="#{MstSalesHinbanMaster.standardStock}">STANDARD_STOCK</label><input type="text" id="MstSalesHinbanMaster.standardStock" name="MstSalesHinbanMaster.standardStock" maxlength="8" />
+        </div>
+        <div id="productWeight">
+          <label for="MstSalesHinbanMaster.productWeight" th:text="#{MstSalesHinbanMaster.productWeight}">PRODUCT_WEIGHT</label><input type="text" id="MstSalesHinbanMaster.productWeight" name="MstSalesHinbanMaster.productWeight" maxlength="7" />
+        </div>
+        <div id="locationNo">
+          <label for="MstSalesHinbanMaster.locationNo" th:text="#{MstSalesHinbanMaster.locationNo}">LOCATION_NO</label><input type="text" id="MstSalesHinbanMaster.locationNo" name="MstSalesHinbanMaster.locationNo" maxlength="10" />
+        </div>
+        <div id="packageCode">
+          <fieldset id="MstSalesHinbanMaster.packageCodeList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:package_code" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstSalesHinbanMaster.packageCode}">PACKAGE_CODE</legend>
+          </fieldset>
+        </div>
+        <div id="packageUnit">
+          <label for="MstSalesHinbanMaster.packageUnit_1" th:text="#{MstSalesHinbanMaster.packageUnit}">PACKAGE_UNIT</label><input type="text" id="MstSalesHinbanMaster.packageUnit_1" name="MstSalesHinbanMaster.packageUnit_1" maxlength="7" />～<input type="text" id="MstSalesHinbanMaster.packageUnit_2" name="MstSalesHinbanMaster.packageUnit_2" maxlength="7" />
+        </div>
+        <div id="packageShortageKbn">
+          <fieldset id="MstSalesHinbanMaster.packageShortageKbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:package_shortage_kbn" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstSalesHinbanMaster.packageShortageKbn}">PACKAGE_SHORTAGE_KBN</legend>
+          </fieldset>
+        </div>
+        <div id="packingKbn">
+          <fieldset id="MstSalesHinbanMaster.packingKbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:packing_kbn" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstSalesHinbanMaster.packingKbn}">PACKING_KBN</legend>
+          </fieldset>
+        </div>
+        <div id="knbanLotKbn">
+          <fieldset id="MstSalesHinbanMaster.knbanLotKbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:knban_lot_kbn" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstSalesHinbanMaster.knbanLotKbn}">KNBAN_LOT_KBN</legend>
+          </fieldset>
+        </div>
+        <div id="jisKbn">
+          <fieldset id="MstSalesHinbanMaster.jisKbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:jis_kbn" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstSalesHinbanMaster.jisKbn}">JIS_KBN</legend>
+          </fieldset>
+        </div>
+        <div id="setStandardTime">
+          <label for="MstSalesHinbanMaster.setStandardTime" th:text="#{MstSalesHinbanMaster.setStandardTime}">SET_STANDARD_TIME</label><input type="text" id="MstSalesHinbanMaster.setStandardTime" name="MstSalesHinbanMaster.setStandardTime" maxlength="4" />
+        </div>
+        <div id="endPeriodCost">
+          <label for="MstSalesHinbanMaster.endPeriodCost" th:text="#{MstSalesHinbanMaster.endPeriodCost}">END_PERIOD_COST</label><input type="text" id="MstSalesHinbanMaster.endPeriodCost" name="MstSalesHinbanMaster.endPeriodCost" maxlength="9" />
+        </div>
+        <div id="standardCost">
+          <label for="MstSalesHinbanMaster.standardCost" th:text="#{MstSalesHinbanMaster.standardCost}">STANDARD_COST</label><input type="text" id="MstSalesHinbanMaster.standardCost" name="MstSalesHinbanMaster.standardCost" maxlength="9" />
+        </div>
+        <div id="secondEvalCost">
+          <label for="MstSalesHinbanMaster.secondEvalCost" th:text="#{MstSalesHinbanMaster.secondEvalCost}">SECOND_EVAL_COST</label><input type="text" id="MstSalesHinbanMaster.secondEvalCost" name="MstSalesHinbanMaster.secondEvalCost" maxlength="9" />
+        </div>
+        <div id="standardPrice">
+          <label for="MstSalesHinbanMaster.standardPrice" th:text="#{MstSalesHinbanMaster.standardPrice}">STANDARD_PRICE</label><input type="text" id="MstSalesHinbanMaster.standardPrice" name="MstSalesHinbanMaster.standardPrice" maxlength="9" />
+        </div>
+        <div id="masterRegistDate">
+          <label for="MstSalesHinbanMaster.masterRegistDate_1" th:text="#{MstSalesHinbanMaster.masterRegistDate}">MASTER_REGIST_DATE</label><input type="date" id="MstSalesHinbanMaster.masterRegistDate_1" name="MstSalesHinbanMaster.masterRegistDate_1" maxlength="8" />～<input type="date" id="MstSalesHinbanMaster.masterRegistDate_2" name="MstSalesHinbanMaster.masterRegistDate_2" maxlength="8" />
+        </div>
+        <div id="productSaleDate">
+          <label for="MstSalesHinbanMaster.productSaleDate_1" th:text="#{MstSalesHinbanMaster.productSaleDate}">PRODUCT_SALE_DATE</label><input type="date" id="MstSalesHinbanMaster.productSaleDate_1" name="MstSalesHinbanMaster.productSaleDate_1" maxlength="8" />～<input type="date" id="MstSalesHinbanMaster.productSaleDate_2" name="MstSalesHinbanMaster.productSaleDate_2" maxlength="8" />
+        </div>
+        <div id="shipTargetKbn">
+          <fieldset id="MstSalesHinbanMaster.shipTargetKbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:ship_target_kbn" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstSalesHinbanMaster.shipTargetKbn}">SHIP_TARGET_KBN</legend>
+          </fieldset>
+        </div>
+        <div id="newProductClass">
+          <label for="MstSalesHinbanMaster.newProductClass" th:text="#{MstSalesHinbanMaster.newProductClass}">NEW_PRODUCT_CLASS</label><input type="text" id="MstSalesHinbanMaster.newProductClass" name="MstSalesHinbanMaster.newProductClass" maxlength="2" />
+        </div>
+        <div id="diyClassicKbn">
+          <fieldset id="MstSalesHinbanMaster.diyClassicKbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:diy_classic_kbn" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstSalesHinbanMaster.diyClassicKbn}">DIY_CLASSIC_KBN</legend>
+          </fieldset>
+        </div>
+        <div id="stockOrderKbn">
+          <fieldset id="MstSalesHinbanMaster.stockOrderKbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:stock_order_kbn" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstSalesHinbanMaster.stockOrderKbn}">STOCK_ORDER_KBN</legend>
+          </fieldset>
+        </div>
+        <div id="productOpeCode">
+          <fieldset id="MstSalesHinbanMaster.productOpeCodeList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:product_ope_code" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstSalesHinbanMaster.productOpeCode}">PRODUCT_OPE_CODE</legend>
+          </fieldset>
+        </div>
+        <div id="directDeliveryCancelNgKbn">
+          <fieldset id="MstSalesHinbanMaster.directDeliveryCancelNgKbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:direct_delivery_cancel_ng_kbn" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstSalesHinbanMaster.directDeliveryCancelNgKbn}">DIRECT_DELIVERY_CANCEL_NG_KBN</legend>
+          </fieldset>
+        </div>
+        <div id="productionStopKbn">
+          <fieldset id="MstSalesHinbanMaster.productionStopKbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:production_stop_kbn" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstSalesHinbanMaster.productionStopKbn}">PRODUCTION_STOP_KBN</legend>
+          </fieldset>
+        </div>
+        <div id="varietyClass4">
+          <label for="MstSalesHinbanMaster.varietyClass4" th:text="#{MstSalesHinbanMaster.varietyClass4}">VARIETY_CLASS4</label><input type="text" id="MstSalesHinbanMaster.varietyClass4" name="MstSalesHinbanMaster.varietyClass4" maxlength="2" />
+        </div>
+        <div id="yobi2">
+          <label for="MstSalesHinbanMaster.yobi2" th:text="#{MstSalesHinbanMaster.yobi2}">YOBI2</label><input type="text" id="MstSalesHinbanMaster.yobi2" name="MstSalesHinbanMaster.yobi2" maxlength="1" />
+        </div>
+        <div id="barcode">
+          <label for="MstSalesHinbanMaster.barcode" th:text="#{MstSalesHinbanMaster.barcode}">BARCODE</label><input type="text" id="MstSalesHinbanMaster.barcode" name="MstSalesHinbanMaster.barcode" maxlength="13" />
+        </div>
+        <div id="dataSendKbn">
+          <fieldset id="MstSalesHinbanMaster.dataSendKbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:data_send_kbn" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstSalesHinbanMaster.dataSendKbn}">DATA_SEND_KBN</legend>
+          </fieldset>
+        </div>
+        <div id="yobi3">
+          <label for="MstSalesHinbanMaster.yobi3" th:text="#{MstSalesHinbanMaster.yobi3}">YOBI3</label><input type="text" id="MstSalesHinbanMaster.yobi3" name="MstSalesHinbanMaster.yobi3" maxlength="6" />
+        </div>
+        <div id="upcCode">
+          <fieldset id="MstSalesHinbanMaster.upcCodeList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:upc_code" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstSalesHinbanMaster.upcCode}">UPC_CODE</legend>
+          </fieldset>
+        </div>
+        <div id="normal1Stock">
+          <label for="MstSalesHinbanMaster.normal1Stock" th:text="#{MstSalesHinbanMaster.normal1Stock}">NORMAL_1_STOCK</label><input type="text" id="MstSalesHinbanMaster.normal1Stock" name="MstSalesHinbanMaster.normal1Stock" maxlength="8" />
+        </div>
+        <div id="normal2Stock">
+          <label for="MstSalesHinbanMaster.normal2Stock" th:text="#{MstSalesHinbanMaster.normal2Stock}">NORMAL_2_STOCK</label><input type="text" id="MstSalesHinbanMaster.normal2Stock" name="MstSalesHinbanMaster.normal2Stock" maxlength="8" />
+        </div>
+        <div id="normal3Stock">
+          <label for="MstSalesHinbanMaster.normal3Stock" th:text="#{MstSalesHinbanMaster.normal3Stock}">NORMAL_3_STOCK</label><input type="text" id="MstSalesHinbanMaster.normal3Stock" name="MstSalesHinbanMaster.normal3Stock" maxlength="8" />
+        </div>
+        <div id="normal4Stock">
+          <label for="MstSalesHinbanMaster.normal4Stock" th:text="#{MstSalesHinbanMaster.normal4Stock}">NORMAL_4_STOCK</label><input type="text" id="MstSalesHinbanMaster.normal4Stock" name="MstSalesHinbanMaster.normal4Stock" maxlength="8" />
+        </div>
+        <div id="normal5Stock">
+          <label for="MstSalesHinbanMaster.normal5Stock" th:text="#{MstSalesHinbanMaster.normal5Stock}">NORMAL_5_STOCK</label><input type="text" id="MstSalesHinbanMaster.normal5Stock" name="MstSalesHinbanMaster.normal5Stock" maxlength="8" />
+        </div>
+        <div id="normal1Instructions">
+          <label for="MstSalesHinbanMaster.normal1Instructions" th:text="#{MstSalesHinbanMaster.normal1Instructions}">NORMAL_1_INSTRUCTIONS</label><input type="text" id="MstSalesHinbanMaster.normal1Instructions" name="MstSalesHinbanMaster.normal1Instructions" maxlength="8" />
+        </div>
+        <div id="normal2Instructions">
+          <label for="MstSalesHinbanMaster.normal2Instructions" th:text="#{MstSalesHinbanMaster.normal2Instructions}">NORMAL_2_INSTRUCTIONS</label><input type="text" id="MstSalesHinbanMaster.normal2Instructions" name="MstSalesHinbanMaster.normal2Instructions" maxlength="8" />
+        </div>
+        <div id="normal3Instructions">
+          <label for="MstSalesHinbanMaster.normal3Instructions" th:text="#{MstSalesHinbanMaster.normal3Instructions}">NORMAL_3_INSTRUCTIONS</label><input type="text" id="MstSalesHinbanMaster.normal3Instructions" name="MstSalesHinbanMaster.normal3Instructions" maxlength="8" />
+        </div>
+        <div id="normal4Instructions">
+          <label for="MstSalesHinbanMaster.normal4Instructions" th:text="#{MstSalesHinbanMaster.normal4Instructions}">NORMAL_4_INSTRUCTIONS</label><input type="text" id="MstSalesHinbanMaster.normal4Instructions" name="MstSalesHinbanMaster.normal4Instructions" maxlength="8" />
+        </div>
+        <div id="normal1Provision">
+          <label for="MstSalesHinbanMaster.normal1Provision" th:text="#{MstSalesHinbanMaster.normal1Provision}">NORMAL_1_PROVISION</label><input type="text" id="MstSalesHinbanMaster.normal1Provision" name="MstSalesHinbanMaster.normal1Provision" maxlength="8" />
+        </div>
+        <div id="normal2Provision">
+          <label for="MstSalesHinbanMaster.normal2Provision" th:text="#{MstSalesHinbanMaster.normal2Provision}">NORMAL_2_PROVISION</label><input type="text" id="MstSalesHinbanMaster.normal2Provision" name="MstSalesHinbanMaster.normal2Provision" maxlength="8" />
+        </div>
+        <div id="normal3Provision">
+          <label for="MstSalesHinbanMaster.normal3Provision" th:text="#{MstSalesHinbanMaster.normal3Provision}">NORMAL_3_PROVISION</label><input type="text" id="MstSalesHinbanMaster.normal3Provision" name="MstSalesHinbanMaster.normal3Provision" maxlength="8" />
+        </div>
+        <div id="normal4Provision">
+          <label for="MstSalesHinbanMaster.normal4Provision" th:text="#{MstSalesHinbanMaster.normal4Provision}">NORMAL_4_PROVISION</label><input type="text" id="MstSalesHinbanMaster.normal4Provision" name="MstSalesHinbanMaster.normal4Provision" maxlength="8" />
+        </div>
+        <div id="commThisMonthLeftorcer">
+          <label for="MstSalesHinbanMaster.commThisMonthLeftorcer" th:text="#{MstSalesHinbanMaster.commThisMonthLeftorcer}">COMM_THIS_MONTH_LEFTORCER</label><input type="text" id="MstSalesHinbanMaster.commThisMonthLeftorcer" name="MstSalesHinbanMaster.commThisMonthLeftorcer" maxlength="8" />
+        </div>
+        <div id="commNextMonthLeftorcer">
+          <label for="MstSalesHinbanMaster.commNextMonthLeftorcer" th:text="#{MstSalesHinbanMaster.commNextMonthLeftorcer}">COMM_NEXT_MONTH_LEFTORCER</label><input type="text" id="MstSalesHinbanMaster.commNextMonthLeftorcer" name="MstSalesHinbanMaster.commNextMonthLeftorcer" maxlength="8" />
+        </div>
+        <div id="commTwoNextMonthLeftorcer">
+          <label for="MstSalesHinbanMaster.commTwoNextMonthLeftorcer" th:text="#{MstSalesHinbanMaster.commTwoNextMonthLeftorcer}">COMM_TWO_NEXT_MONTH_LEFTORCER</label><input type="text" id="MstSalesHinbanMaster.commTwoNextMonthLeftorcer" name="MstSalesHinbanMaster.commTwoNextMonthLeftorcer" maxlength="8" />
+        </div>
+        <div id="expThisMonthLeftorcer">
+          <label for="MstSalesHinbanMaster.expThisMonthLeftorcer" th:text="#{MstSalesHinbanMaster.expThisMonthLeftorcer}">EXP_THIS_MONTH_LEFTORCER</label><input type="text" id="MstSalesHinbanMaster.expThisMonthLeftorcer" name="MstSalesHinbanMaster.expThisMonthLeftorcer" maxlength="8" />
+        </div>
+        <div id="expNextMonthLeftorcer">
+          <label for="MstSalesHinbanMaster.expNextMonthLeftorcer" th:text="#{MstSalesHinbanMaster.expNextMonthLeftorcer}">EXP_NEXT_MONTH_LEFTORCER</label><input type="text" id="MstSalesHinbanMaster.expNextMonthLeftorcer" name="MstSalesHinbanMaster.expNextMonthLeftorcer" maxlength="8" />
+        </div>
+        <div id="expTwoNextMonthLeftorcer">
+          <label for="MstSalesHinbanMaster.expTwoNextMonthLeftorcer" th:text="#{MstSalesHinbanMaster.expTwoNextMonthLeftorcer}">EXP_TWO_NEXT_MONTH_LEFTORCER</label><input type="text" id="MstSalesHinbanMaster.expTwoNextMonthLeftorcer" name="MstSalesHinbanMaster.expTwoNextMonthLeftorcer" maxlength="8" />
+        </div>
+        <div id="diyThisMonthLeftorcer">
+          <label for="MstSalesHinbanMaster.diyThisMonthLeftorcer" th:text="#{MstSalesHinbanMaster.diyThisMonthLeftorcer}">DIY_THIS_MONTH_LEFTORCER</label><input type="text" id="MstSalesHinbanMaster.diyThisMonthLeftorcer" name="MstSalesHinbanMaster.diyThisMonthLeftorcer" maxlength="8" />
+        </div>
+        <div id="diyNextMonthLeftorcer">
+          <label for="MstSalesHinbanMaster.diyNextMonthLeftorcer" th:text="#{MstSalesHinbanMaster.diyNextMonthLeftorcer}">DIY_NEXT_MONTH_LEFTORCER</label><input type="text" id="MstSalesHinbanMaster.diyNextMonthLeftorcer" name="MstSalesHinbanMaster.diyNextMonthLeftorcer" maxlength="8" />
+        </div>
+        <div id="diyTwoNextMonthLeftorcer">
+          <label for="MstSalesHinbanMaster.diyTwoNextMonthLeftorcer" th:text="#{MstSalesHinbanMaster.diyTwoNextMonthLeftorcer}">DIY_TWO_NEXT_MONTH_LEFTORCER</label><input type="text" id="MstSalesHinbanMaster.diyTwoNextMonthLeftorcer" name="MstSalesHinbanMaster.diyTwoNextMonthLeftorcer" maxlength="8" />
+        </div>
+        <div id="normal1WarehousingPlan">
+          <label for="MstSalesHinbanMaster.normal1WarehousingPlan" th:text="#{MstSalesHinbanMaster.normal1WarehousingPlan}">NORMAL_1_WAREHOUSING_PLAN</label><input type="text" id="MstSalesHinbanMaster.normal1WarehousingPlan" name="MstSalesHinbanMaster.normal1WarehousingPlan" maxlength="8" />
+        </div>
+        <div id="normal2WarehousingPlan">
+          <label for="MstSalesHinbanMaster.normal2WarehousingPlan" th:text="#{MstSalesHinbanMaster.normal2WarehousingPlan}">NORMAL_2_WAREHOUSING_PLAN</label><input type="text" id="MstSalesHinbanMaster.normal2WarehousingPlan" name="MstSalesHinbanMaster.normal2WarehousingPlan" maxlength="8" />
+        </div>
+        <div id="normal3WarehousingPlan">
+          <label for="MstSalesHinbanMaster.normal3WarehousingPlan" th:text="#{MstSalesHinbanMaster.normal3WarehousingPlan}">NORMAL_3_WAREHOUSING_PLAN</label><input type="text" id="MstSalesHinbanMaster.normal3WarehousingPlan" name="MstSalesHinbanMaster.normal3WarehousingPlan" maxlength="8" />
+        </div>
+        <div id="normal4WarehousingPlan">
+          <label for="MstSalesHinbanMaster.normal4WarehousingPlan" th:text="#{MstSalesHinbanMaster.normal4WarehousingPlan}">NORMAL_4_WAREHOUSING_PLAN</label><input type="text" id="MstSalesHinbanMaster.normal4WarehousingPlan" name="MstSalesHinbanMaster.normal4WarehousingPlan" maxlength="8" />
+        </div>
+        <div id="sapporoStock">
+          <label for="MstSalesHinbanMaster.sapporoStock" th:text="#{MstSalesHinbanMaster.sapporoStock}">SAPPORO_STOCK</label><input type="text" id="MstSalesHinbanMaster.sapporoStock" name="MstSalesHinbanMaster.sapporoStock" maxlength="8" />
+        </div>
+        <div id="sendaiStock">
+          <label for="MstSalesHinbanMaster.sendaiStock" th:text="#{MstSalesHinbanMaster.sendaiStock}">SENDAI_STOCK</label><input type="text" id="MstSalesHinbanMaster.sendaiStock" name="MstSalesHinbanMaster.sendaiStock" maxlength="8" />
+        </div>
+        <div id="tokyoStock">
+          <label for="MstSalesHinbanMaster.tokyoStock" th:text="#{MstSalesHinbanMaster.tokyoStock}">TOKYO_STOCK</label><input type="text" id="MstSalesHinbanMaster.tokyoStock" name="MstSalesHinbanMaster.tokyoStock" maxlength="8" />
+        </div>
+        <div id="kantouStock">
+          <label for="MstSalesHinbanMaster.kantouStock" th:text="#{MstSalesHinbanMaster.kantouStock}">KANTOU_STOCK</label><input type="text" id="MstSalesHinbanMaster.kantouStock" name="MstSalesHinbanMaster.kantouStock" maxlength="8" />
+        </div>
+        <div id="kanazawaStock">
+          <label for="MstSalesHinbanMaster.kanazawaStock" th:text="#{MstSalesHinbanMaster.kanazawaStock}">KANAZAWA_STOCK</label><input type="text" id="MstSalesHinbanMaster.kanazawaStock" name="MstSalesHinbanMaster.kanazawaStock" maxlength="8" />
+        </div>
+        <div id="nagoyaStock">
+          <label for="MstSalesHinbanMaster.nagoyaStock" th:text="#{MstSalesHinbanMaster.nagoyaStock}">NAGOYA_STOCK</label><input type="text" id="MstSalesHinbanMaster.nagoyaStock" name="MstSalesHinbanMaster.nagoyaStock" maxlength="8" />
+        </div>
+        <div id="kinkiStock">
+          <label for="MstSalesHinbanMaster.kinkiStock" th:text="#{MstSalesHinbanMaster.kinkiStock}">KINKI_STOCK</label><input type="text" id="MstSalesHinbanMaster.kinkiStock" name="MstSalesHinbanMaster.kinkiStock" maxlength="8" />
+        </div>
+        <div id="hiroshimaStock">
+          <label for="MstSalesHinbanMaster.hiroshimaStock" th:text="#{MstSalesHinbanMaster.hiroshimaStock}">HIROSHIMA_STOCK</label><input type="text" id="MstSalesHinbanMaster.hiroshimaStock" name="MstSalesHinbanMaster.hiroshimaStock" maxlength="8" />
+        </div>
+        <div id="hukuokaStock">
+          <label for="MstSalesHinbanMaster.hukuokaStock" th:text="#{MstSalesHinbanMaster.hukuokaStock}">HUKUOKA_STOCK</label><input type="text" id="MstSalesHinbanMaster.hukuokaStock" name="MstSalesHinbanMaster.hukuokaStock" maxlength="8" />
+        </div>
+        <div id="businessStock">
+          <label for="MstSalesHinbanMaster.businessStock" th:text="#{MstSalesHinbanMaster.businessStock}">BUSINESS_STOCK</label><input type="text" id="MstSalesHinbanMaster.businessStock" name="MstSalesHinbanMaster.businessStock" maxlength="8" />
+        </div>
+        <div id="tradeStock">
+          <label for="MstSalesHinbanMaster.tradeStock" th:text="#{MstSalesHinbanMaster.tradeStock}">TRADE_STOCK</label><input type="text" id="MstSalesHinbanMaster.tradeStock" name="MstSalesHinbanMaster.tradeStock" maxlength="8" />
+        </div>
+        <div id="highTechStock">
+          <label for="MstSalesHinbanMaster.highTechStock" th:text="#{MstSalesHinbanMaster.highTechStock}">HIGH_TECH_STOCK</label><input type="text" id="MstSalesHinbanMaster.highTechStock" name="MstSalesHinbanMaster.highTechStock" maxlength="8" />
+        </div>
+        <div id="tradeConsigStock">
+          <label for="MstSalesHinbanMaster.tradeConsigStock" th:text="#{MstSalesHinbanMaster.tradeConsigStock}">TRADE_CONSIG_STOCK</label><input type="text" id="MstSalesHinbanMaster.tradeConsigStock" name="MstSalesHinbanMaster.tradeConsigStock" maxlength="8" />
+        </div>
+        <div id="shanghaiKtcBondedStock">
+          <label for="MstSalesHinbanMaster.shanghaiKtcBondedStock" th:text="#{MstSalesHinbanMaster.shanghaiKtcBondedStock}">SHANGHAI_KTC_BONDED_STOCK</label><input type="text" id="MstSalesHinbanMaster.shanghaiKtcBondedStock" name="MstSalesHinbanMaster.shanghaiKtcBondedStock" maxlength="8" />
+        </div>
+        <div id="packageMaterialStock">
+          <label for="MstSalesHinbanMaster.packageMaterialStock" th:text="#{MstSalesHinbanMaster.packageMaterialStock}">PACKAGE_MATERIAL_STOCK</label><input type="text" id="MstSalesHinbanMaster.packageMaterialStock" name="MstSalesHinbanMaster.packageMaterialStock" maxlength="8" />
+        </div>
+        <div id="productEndPlanDate">
+          <label for="MstSalesHinbanMaster.productEndPlanDate_1" th:text="#{MstSalesHinbanMaster.productEndPlanDate}">PRODUCT_END_PLAN_DATE</label><input type="date" id="MstSalesHinbanMaster.productEndPlanDate_1" name="MstSalesHinbanMaster.productEndPlanDate_1" maxlength="8" />～<input type="date" id="MstSalesHinbanMaster.productEndPlanDate_2" name="MstSalesHinbanMaster.productEndPlanDate_2" maxlength="8" />
+        </div>
+        <div id="productEndDate">
+          <label for="MstSalesHinbanMaster.productEndDate_1" th:text="#{MstSalesHinbanMaster.productEndDate}">PRODUCT_END_DATE</label><input type="date" id="MstSalesHinbanMaster.productEndDate_1" name="MstSalesHinbanMaster.productEndDate_1" maxlength="8" />～<input type="date" id="MstSalesHinbanMaster.productEndDate_2" name="MstSalesHinbanMaster.productEndDate_2" maxlength="8" />
+        </div>
+        <div id="alternativeHinban1">
+          <label for="MstSalesHinbanMaster.alternativeHinban1" th:text="#{MstSalesHinbanMaster.alternativeHinban1}">ALTERNATIVE_HINBAN1</label><input type="text" id="MstSalesHinbanMaster.alternativeHinban1" name="MstSalesHinbanMaster.alternativeHinban1" maxlength="20" />
+        </div>
+        <div id="alternativeHinban2">
+          <label for="MstSalesHinbanMaster.alternativeHinban2" th:text="#{MstSalesHinbanMaster.alternativeHinban2}">ALTERNATIVE_HINBAN2</label><input type="text" id="MstSalesHinbanMaster.alternativeHinban2" name="MstSalesHinbanMaster.alternativeHinban2" maxlength="20" />
+        </div>
+        <div id="noukiAnswerNgKbn">
+          <fieldset id="MstSalesHinbanMaster.noukiAnswerNgKbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:nouki_answer_ng_kbn" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstSalesHinbanMaster.noukiAnswerNgKbn}">NOUKI_ANSWER_NG_KBN</legend>
+          </fieldset>
+        </div>
+        <div id="directDeliveryTargetKbn">
+          <fieldset id="MstSalesHinbanMaster.directDeliveryTargetKbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:direct_delivery_target_kbn" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstSalesHinbanMaster.directDeliveryTargetKbn}">DIRECT_DELIVERY_TARGET_KBN</legend>
+          </fieldset>
+        </div>
+        <div id="yobi">
+          <label for="MstSalesHinbanMaster.yobi" th:text="#{MstSalesHinbanMaster.yobi}">YOBI</label><input type="text" id="MstSalesHinbanMaster.yobi" name="MstSalesHinbanMaster.yobi" maxlength="23" />
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="reset" th:text="#{common.reset}">reset</button>
+        <a th:href="@{/model/MstSalesHinbanMaster.html}" id="MstSalesHinbanMaster" target="dialog" th:text="#{MstSalesHinbanMaster.add}" tabindex="-1">MST_SALES_HINBAN_MASTER</a>
+      </div>
+      <div class="submits">
+        <button id="SearchMstSalesHinbanMaster" class="search" data-gridId="MstSalesHinbanMasterGrid" th:text="#{common.search}">submit</button>
+      </div>
+    </form>
+    <form name="MstSalesHinbanMasterSRegistForm" action="MstSalesHinbanMasterSRegist.ajax" class="regist">
+      <h3 th:text="#{MstSalesHinbanMaster.h3}">h3</h3>
+      <div id="MstSalesHinbanMasterGrid" data-selectionMode="checkbox" data-addRow="true" data-frozenColumn="0" th:data-href="@{/model/MstSalesHinbanMaster.html}"></div>
+      <div id="MstSalesHinbanMasterPager"></div>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="$('[id=&quot;SearchMstSalesHinbanMaster&quot;]').click();">reset</button>
+        <a th:href="@{MstSalesHinbanMasterSearch.xlsx(baseMei=#{MstSalesHinbanMasterS.h2})}" id="MstSalesHinbanMasterSearch.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeleteMstSalesHinbanMasterS" class="delete selectRows" data-action="MstSalesHinbanMasterSDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistMstSalesHinbanMasterS" class="regist" th:text="#{common.regist}">submit</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

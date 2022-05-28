@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{MHhinmokS.title}">M_HHINMOK</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/MHhinmokGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{MHhinmokS.h2}">h2</h2>
+    <form name="MHhinmokSearchForm" action="MHhinmokSearch.ajax" class="search">
+      <fieldset>
+        <legend th:text="#{MHhinmokS.legend}">legend</legend>
+        <div id="hhinban">
+          <label for="MHhinmok.hhinban" th:text="#{MHhinmok.hhinban}">HHINBAN</label><input type="text" id="MHhinmok.hhinban" name="MHhinmok.hhinban" maxlength="20" />
+        </div>
+        <div id="dltflg">
+          <label for="MHhinmok.dltflg" th:text="#{MHhinmok.dltflg}">DLTFLG</label><input type="text" id="MHhinmok.dltflg" name="MHhinmok.dltflg" maxlength="1" />
+        </div>
+        <div id="setkbn">
+          <label for="MHhinmok.setkbn" th:text="#{MHhinmok.setkbn}">SETKBN</label><input type="text" id="MHhinmok.setkbn" name="MHhinmok.setkbn" maxlength="1" />
+        </div>
+        <div id="hyojunGenka">
+          <label for="MHhinmok.hyojunGenka" th:text="#{MHhinmok.hyojunGenka}">HYOJUN-GENKA</label><input type="text" id="MHhinmok.hyojunGenka" name="MHhinmok.hyojunGenka" maxlength="9" />
+        </div>
+        <div id="hyojunBaika">
+          <label for="MHhinmok.hyojunBaika" th:text="#{MHhinmok.hyojunBaika}">HYOJUN-BAIKA</label><input type="text" id="MHhinmok.hyojunBaika" name="MHhinmok.hyojunBaika" maxlength="9" />
+        </div>
+        <div id="zaikosuH1">
+          <label for="MHhinmok.zaikosuH1" th:text="#{MHhinmok.zaikosuH1}">ZAIKOSU-H1</label><input type="text" id="MHhinmok.zaikosuH1" name="MHhinmok.zaikosuH1" maxlength="7" />
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="reset" th:text="#{common.reset}">reset</button>
+        <a th:href="@{/model/MHhinmok.html}" id="MHhinmok" target="dialog" th:text="#{MHhinmok.add}" tabindex="-1">M_HHINMOK</a>
+      </div>
+      <div class="submits">
+        <button id="SearchMHhinmok" class="search" data-gridId="MHhinmokGrid" th:text="#{common.search}">submit</button>
+      </div>
+    </form>
+    <form name="MHhinmokSRegistForm" action="MHhinmokSRegist.ajax" class="regist">
+      <h3 th:text="#{MHhinmok.h3}">h3</h3>
+      <div id="MHhinmokGrid" data-selectionMode="checkbox" data-addRow="true" data-frozenColumn="0" th:data-href="@{/model/MHhinmok.html}"></div>
+      <div id="MHhinmokPager"></div>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="$('[id=&quot;SearchMHhinmok&quot;]').click();">reset</button>
+        <a th:href="@{MHhinmokSearch.xlsx(baseMei=#{MHhinmokS.h2})}" id="MHhinmokSearch.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeleteMHhinmokS" class="delete selectRows" data-action="MHhinmokSDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistMHhinmokS" class="regist" th:text="#{common.regist}">submit</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

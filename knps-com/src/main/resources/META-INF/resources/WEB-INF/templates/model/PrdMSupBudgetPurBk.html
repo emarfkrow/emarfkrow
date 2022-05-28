@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{PrdMSupBudgetPurBk.title}">PRD_M_SUP_BUDGET_PUR_BK</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/PrdMSupBudgetPurBkGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierGridColumns.js}"></script>
+<script th:src="@{/model/InvStockProcessSupplyGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierBkGridColumns.js}"></script>
+<script th:src="@{/model/MstTaxGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{PrdMSupBudgetPurBk.h2}">h2</h2>
+    <form name="PrdMSupBudgetPurBkRegistForm" action="PrdMSupBudgetPurBkRegist.ajax" class="regist">
+      <fieldset>
+        <legend th:text="#{PrdMSupBudgetPurBk.legend}">legend</legend>
+        <div id="yyyy">
+          <label for="PrdMSupBudgetPurBk.yyyy" th:text="#{PrdMSupBudgetPurBk.yyyy}">YYYY</label><input type="text" id="PrdMSupBudgetPurBk.yyyy" name="PrdMSupBudgetPurBk.yyyy" maxlength="4" />
+        </div>
+        <div id="mm">
+          <label for="PrdMSupBudgetPurBk.mm" th:text="#{PrdMSupBudgetPurBk.mm}">MM</label><input type="text" id="PrdMSupBudgetPurBk.mm" name="PrdMSupBudgetPurBk.mm" maxlength="2" />
+        </div>
+        <div id="hinban">
+          <label for="PrdMSupBudgetPurBk.hinban" th:text="#{PrdMSupBudgetPurBk.hinban}">HINBAN</label><input type="text" id="PrdMSupBudgetPurBk.hinban" name="PrdMSupBudgetPurBk.hinban" maxlength="25" />
+        </div>
+        <div id="supCode">
+          <label for="PrdMSupBudgetPurBk.supCode" th:text="#{PrdMSupBudgetPurBk.supCode}">SUP_CODE</label><input type="text" id="PrdMSupBudgetPurBk.supCode" name="PrdMSupBudgetPurBk.supCode" maxlength="6" data-json="MstSupplierSearch.json" data-srcDef="SUP_CODE:PrdMSupBudgetPurBk.supCode" data-destDef="PrdMSupBudgetPurBk.supName:SUP_NAME" /><a id="PrdMSupBudgetPurBk.supCode" th:href="@{/model/MstSupplierS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="PrdMSupBudgetPurBk.supName" class="refer" data-json="MstSupplierSearch.json" data-srcDef="SUP_CODE:PrdMSupBudgetPurBk.supCode" data-destDef="PrdMSupBudgetPurBk.supName:SUP_NAME"></span>
+        </div>
+        <div id="orderCounts">
+          <label for="PrdMSupBudgetPurBk.orderCounts" th:text="#{PrdMSupBudgetPurBk.orderCounts}">ORDER_COUNTS</label><input type="text" id="PrdMSupBudgetPurBk.orderCounts" name="PrdMSupBudgetPurBk.orderCounts" maxlength="11" />
+        </div>
+        <div id="orderUnit">
+          <label for="PrdMSupBudgetPurBk.orderUnit" th:text="#{PrdMSupBudgetPurBk.orderUnit}">ORDER_UNIT</label><input type="text" id="PrdMSupBudgetPurBk.orderUnit" name="PrdMSupBudgetPurBk.orderUnit" maxlength="9" />
+        </div>
+        <div id="orderAmount">
+          <label for="PrdMSupBudgetPurBk.orderAmount" th:text="#{PrdMSupBudgetPurBk.orderAmount}">ORDER_AMOUNT</label><input type="text" id="PrdMSupBudgetPurBk.orderAmount" name="PrdMSupBudgetPurBk.orderAmount" maxlength="11" />
+        </div>
+        <div id="itemKbn">
+          <fieldset id="PrdMSupBudgetPurBk.itemKbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:item_kbn" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{PrdMSupBudgetPurBk.itemKbn}">ITEM_KBN</legend>
+          </fieldset>
+        </div>
+        <div id="timeStampCreate">
+          <label for="PrdMSupBudgetPurBk.timeStampCreate" th:text="#{PrdMSupBudgetPurBk.timeStampCreate}">TIME_STAMP_CREATE</label><span id="PrdMSupBudgetPurBk.timeStampCreate"></span><input type="hidden" id="PrdMSupBudgetPurBk.timeStampCreate" name="PrdMSupBudgetPurBk.timeStampCreate" />
+        </div>
+        <div id="timeStampChange">
+          <label for="PrdMSupBudgetPurBk.timeStampChange" th:text="#{PrdMSupBudgetPurBk.timeStampChange}">TIME_STAMP_CHANGE</label><span id="PrdMSupBudgetPurBk.timeStampChange"></span><input type="hidden" id="PrdMSupBudgetPurBk.timeStampChange" name="PrdMSupBudgetPurBk.timeStampChange" />
+        </div>
+        <div id="userIdCreate">
+          <label for="PrdMSupBudgetPurBk.userIdCreate" th:text="#{PrdMSupBudgetPurBk.userIdCreate}">USER_ID_CREATE</label><span id="PrdMSupBudgetPurBk.userIdCreate"></span><input type="hidden" id="PrdMSupBudgetPurBk.userIdCreate" name="PrdMSupBudgetPurBk.userIdCreate" />
+        </div>
+        <div id="userIdChange">
+          <label for="PrdMSupBudgetPurBk.userIdChange" th:text="#{PrdMSupBudgetPurBk.userIdChange}">USER_ID_CHANGE</label><span id="PrdMSupBudgetPurBk.userIdChange"></span><input type="hidden" id="PrdMSupBudgetPurBk.userIdChange" name="PrdMSupBudgetPurBk.userIdChange" />
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="Dialogate.refresh(event);">reset</button>
+        <a th:href="@{PrdMSupBudgetPurBkGet.xlsx(baseMei=#{PrdMSupBudgetPurBk.h2})}" id="PrdMSupBudgetPurBkGet.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeletePrdMSupBudgetPurBk" class="delete" data-action="PrdMSupBudgetPurBkDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistPrdMSupBudgetPurBk" class="regist" th:text="#{common.regist}">登録</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{MstCodeValueS.title}">MST_CODE_VALUE</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/MstCodeValueGridColumns.js}"></script>
+<script th:src="@{/model/MstCodeGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{MstCodeValueS.h2}">h2</h2>
+    <form name="MstCodeValueSearchForm" action="MstCodeValueSearch.ajax" class="search">
+      <fieldset>
+        <legend th:text="#{MstCodeValueS.legend}">legend</legend>
+        <div id="codeNm">
+          <label for="MstCodeValue.codeNm" th:text="#{MstCodeValue.codeNm}">CODE_NM</label><input type="text" id="MstCodeValue.codeNm" name="MstCodeValue.codeNm" maxlength="30" data-json="MstCodeSearch.json" data-srcDef="CODE_NM:MstCodeValue.codeNm" data-destDef="MstCodeValue.codeMei:CODE_MEI" /><a id="MstCodeValue.codeNm" th:href="@{/model/MstCodeS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MstCodeValue.codeMei" class="refer" data-json="MstCodeSearch.json" data-srcDef="CODE_NM:MstCodeValue.codeNm" data-destDef="MstCodeValue.codeMei:CODE_MEI"></span>
+        </div>
+        <div id="codeValue">
+          <label for="MstCodeValue.codeValue" th:text="#{MstCodeValue.codeValue}">CODE_VALUE</label><input type="text" id="MstCodeValue.codeValue" name="MstCodeValue.codeValue" maxlength="2" />
+        </div>
+        <div id="codeValueMei">
+          <label for="MstCodeValue.codeValueMei" th:text="#{MstCodeValue.codeValueMei}">CODE_VALUE_MEI</label><input type="text" id="MstCodeValue.codeValueMei" name="MstCodeValue.codeValueMei" maxlength="60" />
+        </div>
+        <div id="hyojiJun">
+          <label for="MstCodeValue.hyojiJun" th:text="#{MstCodeValue.hyojiJun}">HYOJI_JUN</label><input type="text" id="MstCodeValue.hyojiJun" name="MstCodeValue.hyojiJun" maxlength="10" />
+        </div>
+        <div id="criteria">
+          <label for="MstCodeValue.criteria" th:text="#{MstCodeValue.criteria}">CRITERIA</label><input type="text" id="MstCodeValue.criteria" name="MstCodeValue.criteria" maxlength="256" />
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="reset" th:text="#{common.reset}">reset</button>
+        <a th:href="@{/model/MstCodeValue.html}" id="MstCodeValue" target="dialog" th:text="#{MstCodeValue.add}" tabindex="-1">MST_CODE_VALUE</a>
+      </div>
+      <div class="submits">
+        <button id="SearchMstCodeValue" class="search" data-gridId="MstCodeValueGrid" th:text="#{common.search}">submit</button>
+      </div>
+    </form>
+    <form name="MstCodeValueSRegistForm" action="MstCodeValueSRegist.ajax" class="regist">
+      <h3 th:text="#{MstCodeValue.h3}">h3</h3>
+      <div id="MstCodeValueGrid" data-selectionMode="checkbox" data-frozenColumn="1" th:data-href="@{/model/MstCodeValue.html}"></div>
+      <div id="MstCodeValuePager"></div>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="$('[id=&quot;SearchMstCodeValue&quot;]').click();">reset</button>
+        <a th:href="@{MstCodeValueSearch.xlsx(baseMei=#{MstCodeValueS.h2})}" id="MstCodeValueSearch.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeleteMstCodeValueS" class="delete selectRows" data-action="MstCodeValueSDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistMstCodeValueS" class="regist" th:text="#{common.regist}">submit</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

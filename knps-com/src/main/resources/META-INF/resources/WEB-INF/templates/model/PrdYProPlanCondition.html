@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{PrdYProPlanCondition.title}">PRD_Y_PRO_PLAN_CONDITION</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/PrdYProPlanConditionGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{PrdYProPlanCondition.h2}">h2</h2>
+    <form name="PrdYProPlanConditionRegistForm" action="PrdYProPlanConditionRegist.ajax" class="regist">
+      <fieldset>
+        <legend th:text="#{PrdYProPlanCondition.legend}">legend</legend>
+        <div id="yyyy">
+          <label for="PrdYProPlanCondition.yyyy" th:text="#{PrdYProPlanCondition.yyyy}">YYYY</label><span id="PrdYProPlanCondition.yyyy"></span><input type="hidden" id="PrdYProPlanCondition.yyyy" name="PrdYProPlanCondition.yyyy" class="primaryKey" />
+        </div>
+        <div id="mm">
+          <label for="PrdYProPlanCondition.mm" th:text="#{PrdYProPlanCondition.mm}">MM</label><span id="PrdYProPlanCondition.mm"></span><input type="hidden" id="PrdYProPlanCondition.mm" name="PrdYProPlanCondition.mm" class="primaryKey" />
+        </div>
+        <div id="opeDays">
+          <label for="PrdYProPlanCondition.opeDays" th:text="#{PrdYProPlanCondition.opeDays}">OPE_DAYS</label><input type="text" id="PrdYProPlanCondition.opeDays" name="PrdYProPlanCondition.opeDays" maxlength="2" />
+        </div>
+        <div id="fixedStatus">
+          <label for="PrdYProPlanCondition.fixedStatus" th:text="#{PrdYProPlanCondition.fixedStatus}">FIXED_STATUS</label><input type="text" id="PrdYProPlanCondition.fixedStatus" name="PrdYProPlanCondition.fixedStatus" maxlength="1" />
+        </div>
+        <div id="timeStampCreate">
+          <label for="PrdYProPlanCondition.timeStampCreate" th:text="#{PrdYProPlanCondition.timeStampCreate}">TIME_STAMP_CREATE</label><span id="PrdYProPlanCondition.timeStampCreate"></span><input type="hidden" id="PrdYProPlanCondition.timeStampCreate" name="PrdYProPlanCondition.timeStampCreate" />
+        </div>
+        <div id="timeStampChange">
+          <label for="PrdYProPlanCondition.timeStampChange" th:text="#{PrdYProPlanCondition.timeStampChange}">TIME_STAMP_CHANGE</label><span id="PrdYProPlanCondition.timeStampChange"></span><input type="hidden" id="PrdYProPlanCondition.timeStampChange" name="PrdYProPlanCondition.timeStampChange" />
+        </div>
+        <div id="userIdCreate">
+          <label for="PrdYProPlanCondition.userIdCreate" th:text="#{PrdYProPlanCondition.userIdCreate}">USER_ID_CREATE</label><span id="PrdYProPlanCondition.userIdCreate"></span><input type="hidden" id="PrdYProPlanCondition.userIdCreate" name="PrdYProPlanCondition.userIdCreate" />
+        </div>
+        <div id="userIdChange">
+          <label for="PrdYProPlanCondition.userIdChange" th:text="#{PrdYProPlanCondition.userIdChange}">USER_ID_CHANGE</label><span id="PrdYProPlanCondition.userIdChange"></span><input type="hidden" id="PrdYProPlanCondition.userIdChange" name="PrdYProPlanCondition.userIdChange" />
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="Dialogate.refresh(event);">reset</button>
+        <a th:href="@{PrdYProPlanConditionGet.xlsx(baseMei=#{PrdYProPlanCondition.h2})}" id="PrdYProPlanConditionGet.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeletePrdYProPlanCondition" class="delete" data-action="PrdYProPlanConditionDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistPrdYProPlanCondition" class="regist" th:text="#{common.regist}">登録</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

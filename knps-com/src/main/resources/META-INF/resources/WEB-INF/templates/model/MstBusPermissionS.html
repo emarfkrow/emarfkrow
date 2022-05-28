@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{MstBusPermissionS.title}">MST_BUS_PERMISSION</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/MstBusPermissionGridColumns.js}"></script>
+<script th:src="@{/model/MstGamenPermissionGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{MstBusPermissionS.h2}">h2</h2>
+    <form name="MstBusPermissionSearchForm" action="MstBusPermissionSearch.ajax" class="search">
+      <fieldset>
+        <legend th:text="#{MstBusPermissionS.legend}">legend</legend>
+        <div id="compCode">
+          <fieldset id="MstBusPermission.compCodeList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:comp_code" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstBusPermission.compCode}">COMP_CODE</legend>
+          </fieldset>
+        </div>
+        <div id="businessNo">
+          <label for="MstBusPermission.businessNo" th:text="#{MstBusPermission.businessNo}">BUSINESS_NO</label><input type="text" id="MstBusPermission.businessNo" name="MstBusPermission.businessNo" maxlength="1" />
+        </div>
+        <div id="permission">
+          <label for="MstBusPermission.permission" th:text="#{MstBusPermission.permission}">PERMISSION</label><input type="text" id="MstBusPermission.permission" name="MstBusPermission.permission" maxlength="1" />
+        </div>
+        <div id="deleteFlag">
+          <fieldset id="MstBusPermission.deleteFlagList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:delete_flag" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstBusPermission.deleteFlag}">DELETE_FLAG</legend>
+          </fieldset>
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="reset" th:text="#{common.reset}">reset</button>
+        <a th:href="@{/model/MstBusPermission.html}" id="MstBusPermission" target="dialog" th:text="#{MstBusPermission.add}" tabindex="-1">MST_BUS_PERMISSION</a>
+      </div>
+      <div class="submits">
+        <button id="SearchMstBusPermission" class="search" data-gridId="MstBusPermissionGrid" th:text="#{common.search}">submit</button>
+      </div>
+    </form>
+    <form name="MstBusPermissionSRegistForm" action="MstBusPermissionSRegist.ajax" class="regist">
+      <h3 th:text="#{MstBusPermission.h3}">h3</h3>
+      <div id="MstBusPermissionGrid" data-selectionMode="checkbox" data-frozenColumn="1" th:data-href="@{/model/MstBusPermission.html}"></div>
+      <div id="MstBusPermissionPager"></div>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="$('[id=&quot;SearchMstBusPermission&quot;]').click();">reset</button>
+        <a th:href="@{MstBusPermissionSearch.xlsx(baseMei=#{MstBusPermissionS.h2})}" id="MstBusPermissionSearch.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeleteMstBusPermissionS" class="delete selectRows" data-action="MstBusPermissionSDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistMstBusPermissionS" class="regist" th:text="#{common.regist}">submit</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{PrdSalesTargetMonth.title}">PRD_SALES_TARGET_MONTH</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/PrdSalesTargetMonthGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{PrdSalesTargetMonth.h2}">h2</h2>
+    <form name="PrdSalesTargetMonthRegistForm" action="PrdSalesTargetMonthRegist.ajax" class="regist">
+      <fieldset>
+        <legend th:text="#{PrdSalesTargetMonth.legend}">legend</legend>
+        <div id="yyyy">
+          <label for="PrdSalesTargetMonth.yyyy" th:text="#{PrdSalesTargetMonth.yyyy}">YYYY</label><span id="PrdSalesTargetMonth.yyyy"></span><input type="hidden" id="PrdSalesTargetMonth.yyyy" name="PrdSalesTargetMonth.yyyy" class="primaryKey" />
+        </div>
+        <div id="mm">
+          <label for="PrdSalesTargetMonth.mm" th:text="#{PrdSalesTargetMonth.mm}">MM</label><span id="PrdSalesTargetMonth.mm"></span><input type="hidden" id="PrdSalesTargetMonth.mm" name="PrdSalesTargetMonth.mm" class="primaryKey" />
+        </div>
+        <div id="fileId">
+          <label for="PrdSalesTargetMonth.fileId" th:text="#{PrdSalesTargetMonth.fileId}">FILE_ID</label><input type="text" id="PrdSalesTargetMonth.fileId" name="PrdSalesTargetMonth.fileId" maxlength="1" class="primaryKey" />
+        </div>
+        <div id="salesHinban">
+          <label for="PrdSalesTargetMonth.salesHinban" th:text="#{PrdSalesTargetMonth.salesHinban}">SALES_HINBAN</label><span id="PrdSalesTargetMonth.salesHinban"></span><input type="hidden" id="PrdSalesTargetMonth.salesHinban" name="PrdSalesTargetMonth.salesHinban" class="primaryKey" />
+        </div>
+        <div id="salesTargetCounts">
+          <label for="PrdSalesTargetMonth.salesTargetCounts" th:text="#{PrdSalesTargetMonth.salesTargetCounts}">SALES_TARGET_COUNTS</label><input type="text" id="PrdSalesTargetMonth.salesTargetCounts" name="PrdSalesTargetMonth.salesTargetCounts" maxlength="7" />
+        </div>
+        <div id="timeStampCreate">
+          <label for="PrdSalesTargetMonth.timeStampCreate" th:text="#{PrdSalesTargetMonth.timeStampCreate}">TIME_STAMP_CREATE</label><span id="PrdSalesTargetMonth.timeStampCreate"></span><input type="hidden" id="PrdSalesTargetMonth.timeStampCreate" name="PrdSalesTargetMonth.timeStampCreate" />
+        </div>
+        <div id="timeStampChange">
+          <label for="PrdSalesTargetMonth.timeStampChange" th:text="#{PrdSalesTargetMonth.timeStampChange}">TIME_STAMP_CHANGE</label><span id="PrdSalesTargetMonth.timeStampChange"></span><input type="hidden" id="PrdSalesTargetMonth.timeStampChange" name="PrdSalesTargetMonth.timeStampChange" />
+        </div>
+        <div id="userIdCreate">
+          <label for="PrdSalesTargetMonth.userIdCreate" th:text="#{PrdSalesTargetMonth.userIdCreate}">USER_ID_CREATE</label><span id="PrdSalesTargetMonth.userIdCreate"></span><input type="hidden" id="PrdSalesTargetMonth.userIdCreate" name="PrdSalesTargetMonth.userIdCreate" />
+        </div>
+        <div id="userIdChange">
+          <label for="PrdSalesTargetMonth.userIdChange" th:text="#{PrdSalesTargetMonth.userIdChange}">USER_ID_CHANGE</label><span id="PrdSalesTargetMonth.userIdChange"></span><input type="hidden" id="PrdSalesTargetMonth.userIdChange" name="PrdSalesTargetMonth.userIdChange" />
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend th:text="#{PrdSalesTargetYear.legend}">legend</legend>
+        <div id="salesTargetCounts">
+          <label for="PrdSalesTargetYear.salesTargetCounts" th:text="#{PrdSalesTargetYear.salesTargetCounts}">SALES_TARGET_COUNTS</label><input type="text" id="PrdSalesTargetYear.salesTargetCounts" name="PrdSalesTargetYear.salesTargetCounts" maxlength="7" />
+        </div>
+        <input type="hidden" name="PrdSalesTargetYear.timeStampChange" />
+      </fieldset>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="Dialogate.refresh(event);">reset</button>
+        <a th:href="@{PrdSalesTargetMonthGet.xlsx(baseMei=#{PrdSalesTargetMonth.h2})}" id="PrdSalesTargetMonthGet.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeletePrdSalesTargetMonth" class="delete" data-action="PrdSalesTargetMonthDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistPrdSalesTargetMonth" class="regist" th:text="#{common.regist}">登録</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

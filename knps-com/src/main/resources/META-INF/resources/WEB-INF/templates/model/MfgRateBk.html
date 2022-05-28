@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{MfgRateBk.title}">MFG_RATE_BK</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/MfgRateBkGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{MfgRateBk.h2}">h2</h2>
+    <form name="MfgRateBkRegistForm" action="MfgRateBkRegist.ajax" class="regist">
+      <fieldset>
+        <legend th:text="#{MfgRateBk.legend}">legend</legend>
+        <div id="yy">
+          <label for="MfgRateBk.yy" th:text="#{MfgRateBk.yy}">YY</label><span id="MfgRateBk.yy"></span><input type="hidden" id="MfgRateBk.yy" name="MfgRateBk.yy" class="primaryKey" />
+        </div>
+        <div id="rateCode">
+          <label for="MfgRateBk.rateCode" th:text="#{MfgRateBk.rateCode}">RATE_CODE</label><span id="MfgRateBk.rateCode"></span><input type="hidden" id="MfgRateBk.rateCode" name="MfgRateBk.rateCode" class="primaryKey" />
+        </div>
+        <div id="inOutKbn">
+          <fieldset id="MfgRateBk.inOutKbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:in_out_kbn" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MfgRateBk.inOutKbn}">IN_OUT_KBN</legend>
+          </fieldset>
+        </div>
+        <div id="rateKbn">
+          <fieldset id="MfgRateBk.rateKbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:rate_kbn" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MfgRateBk.rateKbn}">RATE_KBN</legend>
+          </fieldset>
+        </div>
+        <div id="humLaborCostFirst">
+          <label for="MfgRateBk.humLaborCostFirst" th:text="#{MfgRateBk.humLaborCostFirst}">HUM_LABOR_COST_FIRST</label><input type="text" id="MfgRateBk.humLaborCostFirst" name="MfgRateBk.humLaborCostFirst" maxlength="9" />
+        </div>
+        <div id="humExpensesFirst">
+          <label for="MfgRateBk.humExpensesFirst" th:text="#{MfgRateBk.humExpensesFirst}">HUM_EXPENSES_FIRST</label><input type="text" id="MfgRateBk.humExpensesFirst" name="MfgRateBk.humExpensesFirst" maxlength="9" />
+        </div>
+        <div id="humLaborCostSecond">
+          <label for="MfgRateBk.humLaborCostSecond" th:text="#{MfgRateBk.humLaborCostSecond}">HUM_LABOR_COST_SECOND</label><input type="text" id="MfgRateBk.humLaborCostSecond" name="MfgRateBk.humLaborCostSecond" maxlength="9" />
+        </div>
+        <div id="humExpensesSecond">
+          <label for="MfgRateBk.humExpensesSecond" th:text="#{MfgRateBk.humExpensesSecond}">HUM_EXPENSES_SECOND</label><input type="text" id="MfgRateBk.humExpensesSecond" name="MfgRateBk.humExpensesSecond" maxlength="9" />
+        </div>
+        <div id="macLaborCostFirst">
+          <label for="MfgRateBk.macLaborCostFirst" th:text="#{MfgRateBk.macLaborCostFirst}">MAC_LABOR_COST_FIRST</label><input type="text" id="MfgRateBk.macLaborCostFirst" name="MfgRateBk.macLaborCostFirst" maxlength="9" />
+        </div>
+        <div id="macExpensesFirst">
+          <label for="MfgRateBk.macExpensesFirst" th:text="#{MfgRateBk.macExpensesFirst}">MAC_EXPENSES_FIRST</label><input type="text" id="MfgRateBk.macExpensesFirst" name="MfgRateBk.macExpensesFirst" maxlength="9" />
+        </div>
+        <div id="macLaborCostSecond">
+          <label for="MfgRateBk.macLaborCostSecond" th:text="#{MfgRateBk.macLaborCostSecond}">MAC_LABOR_COST_SECOND</label><input type="text" id="MfgRateBk.macLaborCostSecond" name="MfgRateBk.macLaborCostSecond" maxlength="9" />
+        </div>
+        <div id="macExpensesSecond">
+          <label for="MfgRateBk.macExpensesSecond" th:text="#{MfgRateBk.macExpensesSecond}">MAC_EXPENSES_SECOND</label><input type="text" id="MfgRateBk.macExpensesSecond" name="MfgRateBk.macExpensesSecond" maxlength="9" />
+        </div>
+        <div id="outCostSecond">
+          <label for="MfgRateBk.outCostSecond" th:text="#{MfgRateBk.outCostSecond}">OUT_COST_SECOND</label><input type="text" id="MfgRateBk.outCostSecond" name="MfgRateBk.outCostSecond" maxlength="6" />
+        </div>
+        <div id="timeStampCreate">
+          <label for="MfgRateBk.timeStampCreate" th:text="#{MfgRateBk.timeStampCreate}">TIME_STAMP_CREATE</label><span id="MfgRateBk.timeStampCreate"></span><input type="hidden" id="MfgRateBk.timeStampCreate" name="MfgRateBk.timeStampCreate" />
+        </div>
+        <div id="timeStampChange">
+          <label for="MfgRateBk.timeStampChange" th:text="#{MfgRateBk.timeStampChange}">TIME_STAMP_CHANGE</label><span id="MfgRateBk.timeStampChange"></span><input type="hidden" id="MfgRateBk.timeStampChange" name="MfgRateBk.timeStampChange" />
+        </div>
+        <div id="userIdCreate">
+          <label for="MfgRateBk.userIdCreate" th:text="#{MfgRateBk.userIdCreate}">USER_ID_CREATE</label><span id="MfgRateBk.userIdCreate"></span><input type="hidden" id="MfgRateBk.userIdCreate" name="MfgRateBk.userIdCreate" />
+        </div>
+        <div id="userIdChange">
+          <label for="MfgRateBk.userIdChange" th:text="#{MfgRateBk.userIdChange}">USER_ID_CHANGE</label><span id="MfgRateBk.userIdChange"></span><input type="hidden" id="MfgRateBk.userIdChange" name="MfgRateBk.userIdChange" />
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="Dialogate.refresh(event);">reset</button>
+        <a th:href="@{MfgRateBkGet.xlsx(baseMei=#{MfgRateBk.h2})}" id="MfgRateBkGet.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeleteMfgRateBk" class="delete" data-action="MfgRateBkDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistMfgRateBk" class="regist" th:text="#{common.regist}">登録</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{MstSupplyList.title}">MST_SUPPLY_LIST</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/MstSupplyListGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplyListBkGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplyListHsGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{MstSupplyList.h2}">h2</h2>
+    <form name="MstSupplyListRegistForm" action="MstSupplyListRegist.ajax" class="regist">
+      <fieldset>
+        <legend th:text="#{MstSupplyList.legend}">legend</legend>
+        <div id="routingGroup">
+          <label for="MstSupplyList.routingGroup" th:text="#{MstSupplyList.routingGroup}">ROUTING_GROUP</label><input type="text" id="MstSupplyList.routingGroup" name="MstSupplyList.routingGroup" maxlength="2" class="primaryKey" />
+        </div>
+        <div id="manHinban">
+          <label for="MstSupplyList.manHinban" th:text="#{MstSupplyList.manHinban}">MAN_HINBAN</label><span id="MstSupplyList.manHinban"></span><input type="hidden" id="MstSupplyList.manHinban" name="MstSupplyList.manHinban" class="primaryKey" />
+        </div>
+        <div id="routing">
+          <label for="MstSupplyList.routing" th:text="#{MstSupplyList.routing}">ROUTING</label><input type="text" id="MstSupplyList.routing" name="MstSupplyList.routing" maxlength="2" class="primaryKey" />
+        </div>
+        <div id="supplyHinban">
+          <label for="MstSupplyList.supplyHinban" th:text="#{MstSupplyList.supplyHinban}">SUPPLY_HINBAN</label><span id="MstSupplyList.supplyHinban"></span><input type="hidden" id="MstSupplyList.supplyHinban" name="MstSupplyList.supplyHinban" class="primaryKey" />
+        </div>
+        <div id="counts">
+          <label for="MstSupplyList.counts" th:text="#{MstSupplyList.counts}">COUNTS</label><input type="text" id="MstSupplyList.counts" name="MstSupplyList.counts" maxlength="11" />
+        </div>
+        <div id="supplyKbn">
+          <fieldset id="MstSupplyList.supplyKbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:supply_kbn" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstSupplyList.supplyKbn}">SUPPLY_KBN</legend>
+          </fieldset>
+        </div>
+        <div id="stanCounts">
+          <label for="MstSupplyList.stanCounts" th:text="#{MstSupplyList.stanCounts}">STAN_COUNTS</label><input type="text" id="MstSupplyList.stanCounts" name="MstSupplyList.stanCounts" maxlength="11" />
+        </div>
+        <div id="unitSupply">
+          <label for="MstSupplyList.unitSupply" th:text="#{MstSupplyList.unitSupply}">UNIT_SUPPLY</label><input type="text" id="MstSupplyList.unitSupply" name="MstSupplyList.unitSupply" maxlength="9" />
+        </div>
+        <div id="timeStampCreate">
+          <label for="MstSupplyList.timeStampCreate" th:text="#{MstSupplyList.timeStampCreate}">TIME_STAMP_CREATE</label><span id="MstSupplyList.timeStampCreate"></span><input type="hidden" id="MstSupplyList.timeStampCreate" name="MstSupplyList.timeStampCreate" />
+        </div>
+        <div id="timeStampChange">
+          <label for="MstSupplyList.timeStampChange" th:text="#{MstSupplyList.timeStampChange}">TIME_STAMP_CHANGE</label><span id="MstSupplyList.timeStampChange"></span><input type="hidden" id="MstSupplyList.timeStampChange" name="MstSupplyList.timeStampChange" />
+        </div>
+        <div id="userIdCreate">
+          <label for="MstSupplyList.userIdCreate" th:text="#{MstSupplyList.userIdCreate}">USER_ID_CREATE</label><span id="MstSupplyList.userIdCreate"></span><input type="hidden" id="MstSupplyList.userIdCreate" name="MstSupplyList.userIdCreate" />
+        </div>
+        <div id="userIdChange">
+          <label for="MstSupplyList.userIdChange" th:text="#{MstSupplyList.userIdChange}">USER_ID_CHANGE</label><span id="MstSupplyList.userIdChange"></span><input type="hidden" id="MstSupplyList.userIdChange" name="MstSupplyList.userIdChange" />
+        </div>
+        <div id="deleteFlag">
+          <fieldset id="MstSupplyList.deleteFlagList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:delete_flag" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstSupplyList.deleteFlag}">DELETE_FLAG</legend>
+          </fieldset>
+        </div>
+      </fieldset>
+      <h3 th:text="#{MstSupplyListBk.h3}">h3</h3>
+      <a th:href="@{/model/MstSupplyListBk.html}" id="MstSupplyListBk" target="dialog" th:text="#{MstSupplyListBk.add}" class="addChild" tabindex="-1">MST_SUPPLY_LIST_BK</a>
+      <div id="MstSupplyListBkGrid" data-selectionMode="link" data-addRow="true" data-frozenColumn="4" th:data-href="@{/model/MstSupplyListBk.html}"></div>
+      <h3 th:text="#{MstSupplyListHs.h3}">h3</h3>
+      <a th:href="@{/model/MstSupplyListHs.html}" id="MstSupplyListHs" target="dialog" th:text="#{MstSupplyListHs.add}" class="addChild" tabindex="-1">MST_SUPPLY_LIST_HS</a>
+      <div id="MstSupplyListHsGrid" data-selectionMode="link" data-addRow="true" data-frozenColumn="4" th:data-href="@{/model/MstSupplyListHs.html}"></div>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="Dialogate.refresh(event);">reset</button>
+        <a th:href="@{MstSupplyListGet.xlsx(baseMei=#{MstSupplyList.h2})}" id="MstSupplyListGet.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeleteMstSupplyList" class="delete" data-action="MstSupplyListDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistMstSupplyList" class="regist" th:text="#{common.regist}">登録</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

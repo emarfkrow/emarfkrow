@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{InvSurveyResultHalf.title}">INV_SURVEY_RESULT_HALF</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/InvSurveyResultHalfGridColumns.js}"></script>
+<script th:src="@{/model/MstWcGridColumns.js}"></script>
+<script th:src="@{/model/MstWcBkGridColumns.js}"></script>
+<script th:src="@{/model/MstProcGridColumns.js}"></script>
+<script th:src="@{/model/MstWsGridColumns.js}"></script>
+<script th:src="@{/model/MstTeamGridColumns.js}"></script>
+<script th:src="@{/model/MstGroupGridColumns.js}"></script>
+<script th:src="@{/model/MstDivisionGridColumns.js}"></script>
+<script th:src="@{/model/MstCompanyGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierGridColumns.js}"></script>
+<script th:src="@{/model/InvStockProcessSupplyGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierBkGridColumns.js}"></script>
+<script th:src="@{/model/MstTaxGridColumns.js}"></script>
+<script th:src="@{/model/MstCostCenterGridColumns.js}"></script>
+<script th:src="@{/model/MstCostCenterBkGridColumns.js}"></script>
+<script th:src="@{/model/MstSubinvGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{InvSurveyResultHalf.h2}">h2</h2>
+    <form name="InvSurveyResultHalfRegistForm" action="InvSurveyResultHalfRegist.ajax" class="regist">
+      <fieldset>
+        <legend th:text="#{InvSurveyResultHalf.legend}">legend</legend>
+        <div id="discriminationId">
+          <label for="InvSurveyResultHalf.discriminationId" th:text="#{InvSurveyResultHalf.discriminationId}">DISCRIMINATION_ID</label><span id="InvSurveyResultHalf.discriminationId"></span><input type="hidden" id="InvSurveyResultHalf.discriminationId" name="InvSurveyResultHalf.discriminationId" class="primaryKey" />
+        </div>
+        <div id="yyyy">
+          <label for="InvSurveyResultHalf.yyyy" th:text="#{InvSurveyResultHalf.yyyy}">YYYY</label><input type="text" id="InvSurveyResultHalf.yyyy" name="InvSurveyResultHalf.yyyy" maxlength="4" />
+        </div>
+        <div id="mm">
+          <label for="InvSurveyResultHalf.mm" th:text="#{InvSurveyResultHalf.mm}">MM</label><input type="text" id="InvSurveyResultHalf.mm" name="InvSurveyResultHalf.mm" maxlength="2" />
+        </div>
+        <div id="hinban">
+          <label for="InvSurveyResultHalf.hinban" th:text="#{InvSurveyResultHalf.hinban}">HINBAN</label><input type="text" id="InvSurveyResultHalf.hinban" name="InvSurveyResultHalf.hinban" maxlength="25" />
+        </div>
+        <div id="stock">
+          <label for="InvSurveyResultHalf.stock" th:text="#{InvSurveyResultHalf.stock}">STOCK</label><input type="text" id="InvSurveyResultHalf.stock" name="InvSurveyResultHalf.stock" maxlength="11" />
+        </div>
+        <div id="decisionKbn">
+          <fieldset id="InvSurveyResultHalf.decisionKbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:decision_kbn" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{InvSurveyResultHalf.decisionKbn}">DECISION_KBN</legend>
+          </fieldset>
+        </div>
+        <div id="proGroupNo">
+          <label for="InvSurveyResultHalf.proGroupNo" th:text="#{InvSurveyResultHalf.proGroupNo}">PRO_GROUP_NO</label><input type="text" id="InvSurveyResultHalf.proGroupNo" name="InvSurveyResultHalf.proGroupNo" maxlength="2" />
+        </div>
+        <div id="routing">
+          <label for="InvSurveyResultHalf.routing" th:text="#{InvSurveyResultHalf.routing}">ROUTING</label><input type="text" id="InvSurveyResultHalf.routing" name="InvSurveyResultHalf.routing" maxlength="2" />
+        </div>
+        <div id="wcCode">
+          <label for="InvSurveyResultHalf.wcCode" th:text="#{InvSurveyResultHalf.wcCode}">WC_CODE</label><input type="text" id="InvSurveyResultHalf.wcCode" name="InvSurveyResultHalf.wcCode" maxlength="3" data-json="MstWcSearch.json" data-srcDef="WC_CODE:InvSurveyResultHalf.wcCode" data-destDef="InvSurveyResultHalf.wcName:WC_NAME" /><a id="InvSurveyResultHalf.wcCode" th:href="@{/model/MstWcS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="InvSurveyResultHalf.wcName" class="refer" data-json="MstWcSearch.json" data-srcDef="WC_CODE:InvSurveyResultHalf.wcCode" data-destDef="InvSurveyResultHalf.wcName:WC_NAME"></span>
+        </div>
+        <div id="entryDate">
+          <label for="InvSurveyResultHalf.entryDate" th:text="#{InvSurveyResultHalf.entryDate}">ENTRY_DATE</label><input type="date" id="InvSurveyResultHalf.entryDate" name="InvSurveyResultHalf.entryDate" maxlength="7" />
+        </div>
+        <div id="registrant">
+          <label for="InvSurveyResultHalf.registrant" th:text="#{InvSurveyResultHalf.registrant}">REGISTRANT</label><input type="text" id="InvSurveyResultHalf.registrant" name="InvSurveyResultHalf.registrant" maxlength="10" />
+        </div>
+        <div id="outputStatus">
+          <label for="InvSurveyResultHalf.outputStatus" th:text="#{InvSurveyResultHalf.outputStatus}">OUTPUT_STATUS</label><input type="text" id="InvSurveyResultHalf.outputStatus" name="InvSurveyResultHalf.outputStatus" maxlength="1" />
+        </div>
+        <div id="timeStampCreate">
+          <label for="InvSurveyResultHalf.timeStampCreate" th:text="#{InvSurveyResultHalf.timeStampCreate}">TIME_STAMP_CREATE</label><span id="InvSurveyResultHalf.timeStampCreate"></span><input type="hidden" id="InvSurveyResultHalf.timeStampCreate" name="InvSurveyResultHalf.timeStampCreate" />
+        </div>
+        <div id="timeStampChange">
+          <label for="InvSurveyResultHalf.timeStampChange" th:text="#{InvSurveyResultHalf.timeStampChange}">TIME_STAMP_CHANGE</label><span id="InvSurveyResultHalf.timeStampChange"></span><input type="hidden" id="InvSurveyResultHalf.timeStampChange" name="InvSurveyResultHalf.timeStampChange" />
+        </div>
+        <div id="userIdCreate">
+          <label for="InvSurveyResultHalf.userIdCreate" th:text="#{InvSurveyResultHalf.userIdCreate}">USER_ID_CREATE</label><span id="InvSurveyResultHalf.userIdCreate"></span><input type="hidden" id="InvSurveyResultHalf.userIdCreate" name="InvSurveyResultHalf.userIdCreate" />
+        </div>
+        <div id="userIdChange">
+          <label for="InvSurveyResultHalf.userIdChange" th:text="#{InvSurveyResultHalf.userIdChange}">USER_ID_CHANGE</label><span id="InvSurveyResultHalf.userIdChange"></span><input type="hidden" id="InvSurveyResultHalf.userIdChange" name="InvSurveyResultHalf.userIdChange" />
+        </div>
+        <div id="shukeiTaniMei">
+          <label for="InvSurveyResultHalf.shukeiTaniMei" th:text="#{InvSurveyResultHalf.shukeiTaniMei}">SHUKEI_TANI_MEI</label><input type="text" id="InvSurveyResultHalf.shukeiTaniMei" name="InvSurveyResultHalf.shukeiTaniMei" maxlength="20" />
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="Dialogate.refresh(event);">reset</button>
+        <a th:href="@{InvSurveyResultHalfGet.xlsx(baseMei=#{InvSurveyResultHalf.h2})}" id="InvSurveyResultHalfGet.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeleteInvSurveyResultHalf" class="delete" data-action="InvSurveyResultHalfDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistInvSurveyResultHalf" class="regist" th:text="#{common.regist}">登録</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

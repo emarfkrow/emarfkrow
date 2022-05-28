@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{PrdStoreMainteRetsuHed.title}">PRD_STORE_MAINTE_RETSU_HED</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/PrdStoreMainteRetsuHedGridColumns.js}"></script>
+<script th:src="@{/model/PrdStoreMainteRetsuDetGridColumns.js}"></script>
+<script th:src="@{/model/MstWcGridColumns.js}"></script>
+<script th:src="@{/model/MstWcBkGridColumns.js}"></script>
+<script th:src="@{/model/MstProcGridColumns.js}"></script>
+<script th:src="@{/model/MstWsGridColumns.js}"></script>
+<script th:src="@{/model/MstTeamGridColumns.js}"></script>
+<script th:src="@{/model/MstGroupGridColumns.js}"></script>
+<script th:src="@{/model/MstDivisionGridColumns.js}"></script>
+<script th:src="@{/model/MstCompanyGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierGridColumns.js}"></script>
+<script th:src="@{/model/InvStockProcessSupplyGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierBkGridColumns.js}"></script>
+<script th:src="@{/model/MstTaxGridColumns.js}"></script>
+<script th:src="@{/model/MstCostCenterGridColumns.js}"></script>
+<script th:src="@{/model/MstCostCenterBkGridColumns.js}"></script>
+<script th:src="@{/model/MstSubinvGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{PrdStoreMainteRetsuHed.h2}">h2</h2>
+    <form name="PrdStoreMainteRetsuHedRegistForm" action="PrdStoreMainteRetsuHedRegist.ajax" class="regist">
+      <fieldset>
+        <legend th:text="#{PrdStoreMainteRetsuHed.legend}">legend</legend>
+        <div id="retsuNo">
+          <label for="PrdStoreMainteRetsuHed.retsuNo" th:text="#{PrdStoreMainteRetsuHed.retsuNo}">RETSU_NO</label><span id="PrdStoreMainteRetsuHed.retsuNo"></span><input type="hidden" id="PrdStoreMainteRetsuHed.retsuNo" name="PrdStoreMainteRetsuHed.retsuNo" class="primaryKey" />
+        </div>
+        <div id="retsuName">
+          <label for="PrdStoreMainteRetsuHed.retsuName" th:text="#{PrdStoreMainteRetsuHed.retsuName}">RETSU_NAME</label><input type="text" id="PrdStoreMainteRetsuHed.retsuName" name="PrdStoreMainteRetsuHed.retsuName" maxlength="60" />
+        </div>
+        <div id="timeStampCreate">
+          <label for="PrdStoreMainteRetsuHed.timeStampCreate" th:text="#{PrdStoreMainteRetsuHed.timeStampCreate}">TIME_STAMP_CREATE</label><span id="PrdStoreMainteRetsuHed.timeStampCreate"></span><input type="hidden" id="PrdStoreMainteRetsuHed.timeStampCreate" name="PrdStoreMainteRetsuHed.timeStampCreate" />
+        </div>
+        <div id="timeStampChange">
+          <label for="PrdStoreMainteRetsuHed.timeStampChange" th:text="#{PrdStoreMainteRetsuHed.timeStampChange}">TIME_STAMP_CHANGE</label><span id="PrdStoreMainteRetsuHed.timeStampChange"></span><input type="hidden" id="PrdStoreMainteRetsuHed.timeStampChange" name="PrdStoreMainteRetsuHed.timeStampChange" />
+        </div>
+        <div id="userIdCreate">
+          <label for="PrdStoreMainteRetsuHed.userIdCreate" th:text="#{PrdStoreMainteRetsuHed.userIdCreate}">USER_ID_CREATE</label><span id="PrdStoreMainteRetsuHed.userIdCreate"></span><input type="hidden" id="PrdStoreMainteRetsuHed.userIdCreate" name="PrdStoreMainteRetsuHed.userIdCreate" />
+        </div>
+        <div id="userIdChange">
+          <label for="PrdStoreMainteRetsuHed.userIdChange" th:text="#{PrdStoreMainteRetsuHed.userIdChange}">USER_ID_CHANGE</label><span id="PrdStoreMainteRetsuHed.userIdChange"></span><input type="hidden" id="PrdStoreMainteRetsuHed.userIdChange" name="PrdStoreMainteRetsuHed.userIdChange" />
+        </div>
+      </fieldset>
+      <h3 th:text="#{PrdStoreMainteRetsuDet.h3}">h3</h3>
+      <a th:href="@{/model/PrdStoreMainteRetsuDet.html}" id="PrdStoreMainteRetsuDet" target="dialog" th:text="#{PrdStoreMainteRetsuDet.add}" class="addChild" tabindex="-1">PRD_STORE_MAINTE_RETSU_DET</a>
+      <div id="PrdStoreMainteRetsuDetGrid" data-selectionMode="link" data-addRow="true" data-frozenColumn="1" th:data-href="@{/model/PrdStoreMainteRetsuDet.html}"></div>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="Dialogate.refresh(event);">reset</button>
+        <a th:href="@{PrdStoreMainteRetsuHedGet.xlsx(baseMei=#{PrdStoreMainteRetsuHed.h2})}" id="PrdStoreMainteRetsuHedGet.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeletePrdStoreMainteRetsuHed" class="delete" data-action="PrdStoreMainteRetsuHedDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistPrdStoreMainteRetsuHed" class="regist" th:text="#{common.regist}">登録</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

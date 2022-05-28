@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{MstBusinessS.title}">MST_BUSINESS</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/MstBusinessGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{MstBusinessS.h2}">h2</h2>
+    <form name="MstBusinessSearchForm" action="MstBusinessSearch.ajax" class="search">
+      <fieldset>
+        <legend th:text="#{MstBusinessS.legend}">legend</legend>
+        <div id="businessId">
+          <label for="MstBusiness.businessId" th:text="#{MstBusiness.businessId}">BUSINESS_ID</label><input type="text" id="MstBusiness.businessId" name="MstBusiness.businessId" maxlength="1" />
+        </div>
+        <div id="businessName">
+          <label for="MstBusiness.businessName" th:text="#{MstBusiness.businessName}">BUSINESS_NAME</label><input type="text" id="MstBusiness.businessName" name="MstBusiness.businessName" maxlength="20" />
+        </div>
+        <div id="deleteFlag">
+          <fieldset id="MstBusiness.deleteFlagList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:delete_flag" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstBusiness.deleteFlag}">DELETE_FLAG</legend>
+          </fieldset>
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="reset" th:text="#{common.reset}">reset</button>
+        <a th:href="@{/model/MstBusiness.html}" id="MstBusiness" target="dialog" th:text="#{MstBusiness.add}" tabindex="-1">MST_BUSINESS</a>
+      </div>
+      <div class="submits">
+        <button id="SearchMstBusiness" class="search" data-gridId="MstBusinessGrid" th:text="#{common.search}">submit</button>
+      </div>
+    </form>
+    <form name="MstBusinessSRegistForm" action="MstBusinessSRegist.ajax" class="regist">
+      <h3 th:text="#{MstBusiness.h3}">h3</h3>
+      <div id="MstBusinessGrid" data-selectionMode="checkbox" data-frozenColumn="0" th:data-href="@{/model/MstBusiness.html}"></div>
+      <div id="MstBusinessPager"></div>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="$('[id=&quot;SearchMstBusiness&quot;]').click();">reset</button>
+        <a th:href="@{MstBusinessSearch.xlsx(baseMei=#{MstBusinessS.h2})}" id="MstBusinessSearch.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeleteMstBusinessS" class="delete selectRows" data-action="MstBusinessSDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistMstBusinessS" class="regist" th:text="#{common.regist}">submit</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

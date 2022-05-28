@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{MstStoreMan.title}">MST_STORE_MAN</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/MstStoreManGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{MstStoreMan.h2}">h2</h2>
+    <form name="MstStoreManRegistForm" action="MstStoreManRegist.ajax" class="regist">
+      <fieldset>
+        <legend th:text="#{MstStoreMan.legend}">legend</legend>
+        <div id="storeManId">
+          <label for="MstStoreMan.storeManId" th:text="#{MstStoreMan.storeManId}">STORE_MAN_ID</label><input type="text" id="MstStoreMan.storeManId" name="MstStoreMan.storeManId" maxlength="10" class="primaryKey" />
+        </div>
+        <div id="storeManMei">
+          <label for="MstStoreMan.storeManMei" th:text="#{MstStoreMan.storeManMei}">STORE_MAN_MEI</label><input type="text" id="MstStoreMan.storeManMei" name="MstStoreMan.storeManMei" maxlength="60" />
+        </div>
+        <div id="memo">
+          <label for="MstStoreMan.memo" th:text="#{MstStoreMan.memo}">MEMO</label>
+          <textarea id="MstStoreMan.memo" name="MstStoreMan.memo"></textarea>
+        </div>
+        <div id="timeStampCreate">
+          <label for="MstStoreMan.timeStampCreate" th:text="#{MstStoreMan.timeStampCreate}">TIME_STAMP_CREATE</label><span id="MstStoreMan.timeStampCreate"></span><input type="hidden" id="MstStoreMan.timeStampCreate" name="MstStoreMan.timeStampCreate" />
+        </div>
+        <div id="timeStampChange">
+          <label for="MstStoreMan.timeStampChange" th:text="#{MstStoreMan.timeStampChange}">TIME_STAMP_CHANGE</label><span id="MstStoreMan.timeStampChange"></span><input type="hidden" id="MstStoreMan.timeStampChange" name="MstStoreMan.timeStampChange" />
+        </div>
+        <div id="userIdCreate">
+          <label for="MstStoreMan.userIdCreate" th:text="#{MstStoreMan.userIdCreate}">USER_ID_CREATE</label><span id="MstStoreMan.userIdCreate"></span><input type="hidden" id="MstStoreMan.userIdCreate" name="MstStoreMan.userIdCreate" />
+        </div>
+        <div id="userIdChange">
+          <label for="MstStoreMan.userIdChange" th:text="#{MstStoreMan.userIdChange}">USER_ID_CHANGE</label><span id="MstStoreMan.userIdChange"></span><input type="hidden" id="MstStoreMan.userIdChange" name="MstStoreMan.userIdChange" />
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="Dialogate.refresh(event);">reset</button>
+        <a th:href="@{MstStoreManGet.xlsx(baseMei=#{MstStoreMan.h2})}" id="MstStoreManGet.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeleteMstStoreMan" class="delete" data-action="MstStoreManDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistMstStoreMan" class="regist" th:text="#{common.regist}">登録</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

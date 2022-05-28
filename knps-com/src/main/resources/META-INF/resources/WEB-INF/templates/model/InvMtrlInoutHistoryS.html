@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{InvMtrlInoutHistoryS.title}">INV_MTRL_INOUT_HISTORY</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/InvMtrlInoutHistoryGridColumns.js}"></script>
+<script th:src="@{/model/MstSubinvGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierGridColumns.js}"></script>
+<script th:src="@{/model/InvStockProcessSupplyGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierBkGridColumns.js}"></script>
+<script th:src="@{/model/MstTaxGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{InvMtrlInoutHistoryS.h2}">h2</h2>
+    <form name="InvMtrlInoutHistorySearchForm" action="InvMtrlInoutHistorySearch.ajax" class="search">
+      <fieldset>
+        <legend th:text="#{InvMtrlInoutHistoryS.legend}">legend</legend>
+        <div id="stockManagementSection">
+          <label for="InvMtrlInoutHistory.stockManagementSection" th:text="#{InvMtrlInoutHistory.stockManagementSection}">STOCK_MANAGEMENT_SECTION</label><input type="text" id="InvMtrlInoutHistory.stockManagementSection" name="InvMtrlInoutHistory.stockManagementSection" maxlength="1" />
+        </div>
+        <div id="hinban">
+          <label for="InvMtrlInoutHistory.hinban" th:text="#{InvMtrlInoutHistory.hinban}">HINBAN</label><input type="text" id="InvMtrlInoutHistory.hinban" name="InvMtrlInoutHistory.hinban" maxlength="25" />
+        </div>
+        <div id="subInvCode">
+          <label for="InvMtrlInoutHistory.subInvCode" th:text="#{InvMtrlInoutHistory.subInvCode}">SUB_INV_CODE</label><input type="text" id="InvMtrlInoutHistory.subInvCode" name="InvMtrlInoutHistory.subInvCode" maxlength="10" data-json="MstSubinvSearch.json" data-srcDef="SUB_INV_CODE:InvMtrlInoutHistory.subInvCode" data-destDef="InvMtrlInoutHistory.subInvName:SUB_INV_NAME" /><a id="InvMtrlInoutHistory.subInvCode" th:href="@{/model/MstSubinvS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="InvMtrlInoutHistory.subInvName" class="refer" data-json="MstSubinvSearch.json" data-srcDef="SUB_INV_CODE:InvMtrlInoutHistory.subInvCode" data-destDef="InvMtrlInoutHistory.subInvName:SUB_INV_NAME"></span>
+        </div>
+        <div id="inOutDate">
+          <label for="InvMtrlInoutHistory.inOutDate_1" th:text="#{InvMtrlInoutHistory.inOutDate}">IN_OUT_DATE</label><input type="date" id="InvMtrlInoutHistory.inOutDate_1" name="InvMtrlInoutHistory.inOutDate_1" maxlength="7" />～<input type="date" id="InvMtrlInoutHistory.inOutDate_2" name="InvMtrlInoutHistory.inOutDate_2" maxlength="7" />
+        </div>
+        <div id="stockBranchNumber">
+          <label for="InvMtrlInoutHistory.stockBranchNumber" th:text="#{InvMtrlInoutHistory.stockBranchNumber}">STOCK_BRANCH_NUMBER</label><input type="text" id="InvMtrlInoutHistory.stockBranchNumber" name="InvMtrlInoutHistory.stockBranchNumber" maxlength="5" />
+        </div>
+        <div id="actNo">
+          <label for="InvMtrlInoutHistory.actNo" th:text="#{InvMtrlInoutHistory.actNo}">ACT_NO</label><input type="text" id="InvMtrlInoutHistory.actNo" name="InvMtrlInoutHistory.actNo" maxlength="10" />
+        </div>
+        <div id="actBranchNo">
+          <label for="InvMtrlInoutHistory.actBranchNo" th:text="#{InvMtrlInoutHistory.actBranchNo}">ACT_BRANCH_NO</label><input type="text" id="InvMtrlInoutHistory.actBranchNo" name="InvMtrlInoutHistory.actBranchNo" maxlength="2" />
+        </div>
+        <div id="orderNo">
+          <label for="InvMtrlInoutHistory.orderNo" th:text="#{InvMtrlInoutHistory.orderNo}">ORDER_NO</label><input type="text" id="InvMtrlInoutHistory.orderNo" name="InvMtrlInoutHistory.orderNo" maxlength="10" />
+        </div>
+        <div id="proNo">
+          <label for="InvMtrlInoutHistory.proNo" th:text="#{InvMtrlInoutHistory.proNo}">PRO_NO</label><input type="text" id="InvMtrlInoutHistory.proNo" name="InvMtrlInoutHistory.proNo" maxlength="14" />
+        </div>
+        <div id="inOutStatus">
+          <label for="InvMtrlInoutHistory.inOutStatus" th:text="#{InvMtrlInoutHistory.inOutStatus}">IN_OUT_STATUS</label><input type="text" id="InvMtrlInoutHistory.inOutStatus" name="InvMtrlInoutHistory.inOutStatus" maxlength="1" />
+        </div>
+        <div id="receiptSupCode">
+          <label for="InvMtrlInoutHistory.receiptSupCode" th:text="#{InvMtrlInoutHistory.receiptSupCode}">RECEIPT_SUP_CODE</label><input type="text" id="InvMtrlInoutHistory.receiptSupCode" name="InvMtrlInoutHistory.receiptSupCode" maxlength="10" data-json="MstSupplierSearch.json" data-srcDef="SUP_CODE:InvMtrlInoutHistory.receiptSupCode" data-destDef="InvMtrlInoutHistory.receiptSupName:SUP_NAME" /><a id="InvMtrlInoutHistory.receiptSupCode" th:href="@{/model/MstSupplierS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="InvMtrlInoutHistory.receiptSupName" class="refer" data-json="MstSupplierSearch.json" data-srcDef="SUP_CODE:InvMtrlInoutHistory.receiptSupCode" data-destDef="InvMtrlInoutHistory.receiptSupName:SUP_NAME"></span>
+        </div>
+        <div id="issueHinban">
+          <label for="InvMtrlInoutHistory.issueHinban" th:text="#{InvMtrlInoutHistory.issueHinban}">ISSUE_HINBAN</label><input type="text" id="InvMtrlInoutHistory.issueHinban" name="InvMtrlInoutHistory.issueHinban" maxlength="25" />
+        </div>
+        <div id="stock">
+          <label for="InvMtrlInoutHistory.stock" th:text="#{InvMtrlInoutHistory.stock}">STOCK</label><input type="text" id="InvMtrlInoutHistory.stock" name="InvMtrlInoutHistory.stock" maxlength="11" />
+        </div>
+        <div id="goodCounts">
+          <label for="InvMtrlInoutHistory.goodCounts_1" th:text="#{InvMtrlInoutHistory.goodCounts}">GOOD_COUNTS</label><input type="text" id="InvMtrlInoutHistory.goodCounts_1" name="InvMtrlInoutHistory.goodCounts_1" maxlength="11" />～<input type="text" id="InvMtrlInoutHistory.goodCounts_2" name="InvMtrlInoutHistory.goodCounts_2" maxlength="11" />
+        </div>
+        <div id="masterCounts">
+          <label for="InvMtrlInoutHistory.masterCounts_1" th:text="#{InvMtrlInoutHistory.masterCounts}">MASTER_COUNTS</label><input type="text" id="InvMtrlInoutHistory.masterCounts_1" name="InvMtrlInoutHistory.masterCounts_1" maxlength="12" />～<input type="text" id="InvMtrlInoutHistory.masterCounts_2" name="InvMtrlInoutHistory.masterCounts_2" maxlength="12" />
+        </div>
+        <div id="amountUsedPhi">
+          <label for="InvMtrlInoutHistory.amountUsedPhi" th:text="#{InvMtrlInoutHistory.amountUsedPhi}">AMOUNT_USED_PHI</label><input type="text" id="InvMtrlInoutHistory.amountUsedPhi" name="InvMtrlInoutHistory.amountUsedPhi" maxlength="5" />
+        </div>
+        <div id="amountUsedLength">
+          <label for="InvMtrlInoutHistory.amountUsedLength" th:text="#{InvMtrlInoutHistory.amountUsedLength}">AMOUNT_USED_LENGTH</label><input type="text" id="InvMtrlInoutHistory.amountUsedLength" name="InvMtrlInoutHistory.amountUsedLength" maxlength="5" />
+        </div>
+        <div id="invComment">
+          <label for="InvMtrlInoutHistory.invComment" th:text="#{InvMtrlInoutHistory.invComment}">INV_COMMENT</label><input type="text" id="InvMtrlInoutHistory.invComment" name="InvMtrlInoutHistory.invComment" maxlength="25" />
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="reset" th:text="#{common.reset}">reset</button>
+        <a th:href="@{/model/InvMtrlInoutHistory.html}" id="InvMtrlInoutHistory" target="dialog" th:text="#{InvMtrlInoutHistory.add}" tabindex="-1">INV_MTRL_INOUT_HISTORY</a>
+      </div>
+      <div class="submits">
+        <button id="SearchInvMtrlInoutHistory" class="search" data-gridId="InvMtrlInoutHistoryGrid" th:text="#{common.search}">submit</button>
+      </div>
+    </form>
+    <form name="InvMtrlInoutHistorySRegistForm" action="InvMtrlInoutHistorySRegist.ajax" class="regist">
+      <h3 th:text="#{InvMtrlInoutHistory.h3}">h3</h3>
+      <div id="InvMtrlInoutHistoryGrid" data-selectionMode="checkbox" data-frozenColumn="4" th:data-href="@{/model/InvMtrlInoutHistory.html}"></div>
+      <div id="InvMtrlInoutHistoryPager"></div>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="$('[id=&quot;SearchInvMtrlInoutHistory&quot;]').click();">reset</button>
+        <a th:href="@{InvMtrlInoutHistorySearch.xlsx(baseMei=#{InvMtrlInoutHistoryS.h2})}" id="InvMtrlInoutHistorySearch.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeleteInvMtrlInoutHistoryS" class="delete selectRows" data-action="InvMtrlInoutHistorySDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistInvMtrlInoutHistoryS" class="regist" th:text="#{common.regist}">submit</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

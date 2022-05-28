@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{InvPeriodS.title}">INV_PERIOD</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/InvPeriodGridColumns.js}"></script>
+<script th:src="@{/model/MstSubinvGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierGridColumns.js}"></script>
+<script th:src="@{/model/InvStockProcessSupplyGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierBkGridColumns.js}"></script>
+<script th:src="@{/model/MstTaxGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{InvPeriodS.h2}">h2</h2>
+    <form name="InvPeriodSearchForm" action="InvPeriodSearch.ajax" class="search">
+      <fieldset>
+        <legend th:text="#{InvPeriodS.legend}">legend</legend>
+        <div id="stockManagementSection">
+          <label for="InvPeriod.stockManagementSection" th:text="#{InvPeriod.stockManagementSection}">STOCK_MANAGEMENT_SECTION</label><input type="text" id="InvPeriod.stockManagementSection" name="InvPeriod.stockManagementSection" maxlength="1" />
+        </div>
+        <div id="invPhase">
+          <label for="InvPeriod.invPhase" th:text="#{InvPeriod.invPhase}">INV_PHASE</label><input type="text" id="InvPeriod.invPhase" name="InvPeriod.invPhase" maxlength="3" />
+        </div>
+        <div id="invPhaseMonth">
+          <label for="InvPeriod.invPhaseMonth" th:text="#{InvPeriod.invPhaseMonth}">INV_PHASE_MONTH</label><input type="text" id="InvPeriod.invPhaseMonth" name="InvPeriod.invPhaseMonth" maxlength="2" />
+        </div>
+        <div id="subInvCode">
+          <label for="InvPeriod.subInvCode" th:text="#{InvPeriod.subInvCode}">SUB_INV_CODE</label><input type="text" id="InvPeriod.subInvCode" name="InvPeriod.subInvCode" maxlength="10" data-json="MstSubinvSearch.json" data-srcDef="SUB_INV_CODE:InvPeriod.subInvCode" data-destDef="InvPeriod.subInvName:SUB_INV_NAME" /><a id="InvPeriod.subInvCode" th:href="@{/model/MstSubinvS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="InvPeriod.subInvName" class="refer" data-json="MstSubinvSearch.json" data-srcDef="SUB_INV_CODE:InvPeriod.subInvCode" data-destDef="InvPeriod.subInvName:SUB_INV_NAME"></span>
+        </div>
+        <div id="invDateFrom">
+          <label for="InvPeriod.invDateFrom" th:text="#{InvPeriod.invDateFrom}">INV_DATE_FROM</label><input type="text" id="InvPeriod.invDateFrom" name="InvPeriod.invDateFrom" maxlength="7" />
+        </div>
+        <div id="invDateTo">
+          <label for="InvPeriod.invDateTo" th:text="#{InvPeriod.invDateTo}">INV_DATE_TO</label><input type="text" id="InvPeriod.invDateTo" name="InvPeriod.invDateTo" maxlength="7" />
+        </div>
+        <div id="invStatus">
+          <label for="InvPeriod.invStatus" th:text="#{InvPeriod.invStatus}">INV_STATUS</label><input type="text" id="InvPeriod.invStatus" name="InvPeriod.invStatus" maxlength="1" />
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="reset" th:text="#{common.reset}">reset</button>
+        <a th:href="@{/model/InvPeriod.html}" id="InvPeriod" target="dialog" th:text="#{InvPeriod.add}" tabindex="-1">INV_PERIOD</a>
+      </div>
+      <div class="submits">
+        <button id="SearchInvPeriod" class="search" data-gridId="InvPeriodGrid" th:text="#{common.search}">submit</button>
+      </div>
+    </form>
+    <form name="InvPeriodSRegistForm" action="InvPeriodSRegist.ajax" class="regist">
+      <h3 th:text="#{InvPeriod.h3}">h3</h3>
+      <div id="InvPeriodGrid" data-selectionMode="checkbox" data-frozenColumn="3" th:data-href="@{/model/InvPeriod.html}"></div>
+      <div id="InvPeriodPager"></div>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="$('[id=&quot;SearchInvPeriod&quot;]').click();">reset</button>
+        <a th:href="@{InvPeriodSearch.xlsx(baseMei=#{InvPeriodS.h2})}" id="InvPeriodSearch.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeleteInvPeriodS" class="delete selectRows" data-action="InvPeriodSDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistInvPeriodS" class="regist" th:text="#{common.regist}">submit</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

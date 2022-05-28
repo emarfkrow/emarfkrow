@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{InvPrintWarehousingslip.title}">INV_PRINT_WAREHOUSINGSLIP</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/InvPrintWarehousingslipGridColumns.js}"></script>
+<script th:src="@{/model/MstEmpGridColumns.js}"></script>
+<script th:src="@{/model/MstDivisionGridColumns.js}"></script>
+<script th:src="@{/model/MstCompanyGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{InvPrintWarehousingslip.h2}">h2</h2>
+    <form name="InvPrintWarehousingslipRegistForm" action="InvPrintWarehousingslipRegist.ajax" class="regist">
+      <fieldset>
+        <legend th:text="#{InvPrintWarehousingslip.legend}">legend</legend>
+        <div id="empCode">
+          <label for="InvPrintWarehousingslip.empCode" th:text="#{InvPrintWarehousingslip.empCode}">EMP_CODE</label><span id="InvPrintWarehousingslip.empCode"></span><input type="hidden" id="InvPrintWarehousingslip.empCode" name="InvPrintWarehousingslip.empCode" class="primaryKey" /><a id="InvPrintWarehousingslip.empCode" th:href="@{/model/MstEmpS.html}" target="dialog" class="primaryKey refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="InvPrintWarehousingslip.empName" class="refer" data-json="MstEmpSearch.json" data-srcDef="EMP_CODE:InvPrintWarehousingslip.empCode" data-destDef="InvPrintWarehousingslip.empName:EMP_NAME"></span>
+        </div>
+        <div id="hinban">
+          <label for="InvPrintWarehousingslip.hinban" th:text="#{InvPrintWarehousingslip.hinban}">HINBAN</label><span id="InvPrintWarehousingslip.hinban"></span><input type="hidden" id="InvPrintWarehousingslip.hinban" name="InvPrintWarehousingslip.hinban" class="primaryKey" />
+        </div>
+        <div id="kanbanAccCounts">
+          <label for="InvPrintWarehousingslip.kanbanAccCounts" th:text="#{InvPrintWarehousingslip.kanbanAccCounts}">KANBAN_ACC_COUNTS</label><input type="text" id="InvPrintWarehousingslip.kanbanAccCounts" name="InvPrintWarehousingslip.kanbanAccCounts" maxlength="6" />
+        </div>
+        <div id="kanbanCounts">
+          <label for="InvPrintWarehousingslip.kanbanCounts" th:text="#{InvPrintWarehousingslip.kanbanCounts}">KANBAN_COUNTS</label><input type="text" id="InvPrintWarehousingslip.kanbanCounts" name="InvPrintWarehousingslip.kanbanCounts" maxlength="3" />
+        </div>
+        <div id="hostNKbn">
+          <fieldset id="InvPrintWarehousingslip.hostNKbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:host_n_kbn" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{InvPrintWarehousingslip.hostNKbn}">HOST_N_KBN</legend>
+          </fieldset>
+        </div>
+        <div id="printKbn">
+          <fieldset id="InvPrintWarehousingslip.printKbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:print_kbn" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{InvPrintWarehousingslip.printKbn}">PRINT_KBN</legend>
+          </fieldset>
+        </div>
+        <div id="reqId">
+          <label for="InvPrintWarehousingslip.reqId" th:text="#{InvPrintWarehousingslip.reqId}">REQ_ID</label><input type="text" id="InvPrintWarehousingslip.reqId" name="InvPrintWarehousingslip.reqId" maxlength="11" />
+        </div>
+        <div id="timeStampCreate">
+          <label for="InvPrintWarehousingslip.timeStampCreate" th:text="#{InvPrintWarehousingslip.timeStampCreate}">TIME_STAMP_CREATE</label><span id="InvPrintWarehousingslip.timeStampCreate"></span><input type="hidden" id="InvPrintWarehousingslip.timeStampCreate" name="InvPrintWarehousingslip.timeStampCreate" />
+        </div>
+        <div id="timeStampChange">
+          <label for="InvPrintWarehousingslip.timeStampChange" th:text="#{InvPrintWarehousingslip.timeStampChange}">TIME_STAMP_CHANGE</label><span id="InvPrintWarehousingslip.timeStampChange"></span><input type="hidden" id="InvPrintWarehousingslip.timeStampChange" name="InvPrintWarehousingslip.timeStampChange" />
+        </div>
+        <div id="userIdCreate">
+          <label for="InvPrintWarehousingslip.userIdCreate" th:text="#{InvPrintWarehousingslip.userIdCreate}">USER_ID_CREATE</label><span id="InvPrintWarehousingslip.userIdCreate"></span><input type="hidden" id="InvPrintWarehousingslip.userIdCreate" name="InvPrintWarehousingslip.userIdCreate" />
+        </div>
+        <div id="userIdChange">
+          <label for="InvPrintWarehousingslip.userIdChange" th:text="#{InvPrintWarehousingslip.userIdChange}">USER_ID_CHANGE</label><span id="InvPrintWarehousingslip.userIdChange"></span><input type="hidden" id="InvPrintWarehousingslip.userIdChange" name="InvPrintWarehousingslip.userIdChange" />
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="Dialogate.refresh(event);">reset</button>
+        <a th:href="@{InvPrintWarehousingslipGet.xlsx(baseMei=#{InvPrintWarehousingslip.h2})}" id="InvPrintWarehousingslipGet.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeleteInvPrintWarehousingslip" class="delete" data-action="InvPrintWarehousingslipDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistInvPrintWarehousingslip" class="regist" th:text="#{common.regist}">登録</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

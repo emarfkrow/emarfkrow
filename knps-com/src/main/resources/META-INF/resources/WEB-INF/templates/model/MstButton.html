@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{MstButton.title}">MST_BUTTON</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/MstButtonGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{MstButton.h2}">h2</h2>
+    <form name="MstButtonRegistForm" action="MstButtonRegist.ajax" class="regist">
+      <fieldset>
+        <legend th:text="#{MstButton.legend}">legend</legend>
+        <div id="gamenId">
+          <label for="MstButton.gamenId" th:text="#{MstButton.gamenId}">GAMEN_ID</label><input type="text" id="MstButton.gamenId" name="MstButton.gamenId" maxlength="80" />
+        </div>
+        <div id="btnId">
+          <label for="MstButton.btnId" th:text="#{MstButton.btnId}">BTN_ID</label><input type="text" id="MstButton.btnId" name="MstButton.btnId" maxlength="80" class="primaryKey" />
+        </div>
+        <div id="btnName">
+          <label for="MstButton.btnName" th:text="#{MstButton.btnName}">BTN_NAME</label><input type="text" id="MstButton.btnName" name="MstButton.btnName" maxlength="160" />
+        </div>
+        <div id="timeStampCreate">
+          <label for="MstButton.timeStampCreate" th:text="#{MstButton.timeStampCreate}">TIME_STAMP_CREATE</label><span id="MstButton.timeStampCreate"></span><input type="hidden" id="MstButton.timeStampCreate" name="MstButton.timeStampCreate" />
+        </div>
+        <div id="timeStampChange">
+          <label for="MstButton.timeStampChange" th:text="#{MstButton.timeStampChange}">TIME_STAMP_CHANGE</label><span id="MstButton.timeStampChange"></span><input type="hidden" id="MstButton.timeStampChange" name="MstButton.timeStampChange" />
+        </div>
+        <div id="userIdCreate">
+          <label for="MstButton.userIdCreate" th:text="#{MstButton.userIdCreate}">USER_ID_CREATE</label><span id="MstButton.userIdCreate"></span><input type="hidden" id="MstButton.userIdCreate" name="MstButton.userIdCreate" />
+        </div>
+        <div id="userIdChange">
+          <label for="MstButton.userIdChange" th:text="#{MstButton.userIdChange}">USER_ID_CHANGE</label><span id="MstButton.userIdChange"></span><input type="hidden" id="MstButton.userIdChange" name="MstButton.userIdChange" />
+        </div>
+        <div id="deleteFlag">
+          <fieldset id="MstButton.deleteFlagList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:delete_flag" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstButton.deleteFlag}">DELETE_FLAG</legend>
+          </fieldset>
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="Dialogate.refresh(event);">reset</button>
+        <a th:href="@{MstButtonGet.xlsx(baseMei=#{MstButton.h2})}" id="MstButtonGet.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeleteMstButton" class="delete" data-action="MstButtonDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistMstButton" class="regist" th:text="#{common.regist}">登録</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

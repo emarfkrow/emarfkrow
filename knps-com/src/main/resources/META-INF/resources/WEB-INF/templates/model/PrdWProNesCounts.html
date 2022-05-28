@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{PrdWProNesCounts.title}">PRD_W_PRO_NES_COUNTS</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/PrdWProNesCountsGridColumns.js}"></script>
+<script th:src="@{/model/MstEmpGridColumns.js}"></script>
+<script th:src="@{/model/MstDivisionGridColumns.js}"></script>
+<script th:src="@{/model/MstCompanyGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{PrdWProNesCounts.h2}">h2</h2>
+    <form name="PrdWProNesCountsRegistForm" action="PrdWProNesCountsRegist.ajax" class="regist">
+      <fieldset>
+        <legend th:text="#{PrdWProNesCounts.legend}">legend</legend>
+        <div id="prdWProNesCountsKey">
+          <label for="PrdWProNesCounts.prdWProNesCountsKey" th:text="#{PrdWProNesCounts.prdWProNesCountsKey}">PRD_W_PRO_NES_COUNTS_KEY</label><input type="text" id="PrdWProNesCounts.prdWProNesCountsKey" name="PrdWProNesCounts.prdWProNesCountsKey" maxlength="10" class="primaryKey" />
+        </div>
+        <div id="proHinban">
+          <label for="PrdWProNesCounts.proHinban" th:text="#{PrdWProNesCounts.proHinban}">PRO_HINBAN</label><input type="text" id="PrdWProNesCounts.proHinban" name="PrdWProNesCounts.proHinban" maxlength="20" />
+        </div>
+        <div id="scheduledDate">
+          <label for="PrdWProNesCounts.scheduledDate" th:text="#{PrdWProNesCounts.scheduledDate}">SCHEDULED_DATE</label><input type="date" id="PrdWProNesCounts.scheduledDate" name="PrdWProNesCounts.scheduledDate" maxlength="7" />
+        </div>
+        <div id="proNesCounts">
+          <label for="PrdWProNesCounts.proNesCounts" th:text="#{PrdWProNesCounts.proNesCounts}">PRO_NES_COUNTS</label><input type="text" id="PrdWProNesCounts.proNesCounts" name="PrdWProNesCounts.proNesCounts" maxlength="6" />
+        </div>
+        <div id="proNesComment">
+          <label for="PrdWProNesCounts.proNesComment" th:text="#{PrdWProNesCounts.proNesComment}">PRO_NES_COMMENT</label><input type="text" id="PrdWProNesCounts.proNesComment" name="PrdWProNesCounts.proNesComment" maxlength="60" />
+        </div>
+        <div id="deleteFlag">
+          <fieldset id="PrdWProNesCounts.deleteFlagList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:delete_flag" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{PrdWProNesCounts.deleteFlag}">DELETE_FLAG</legend>
+          </fieldset>
+        </div>
+        <div id="timeStampCreate">
+          <label for="PrdWProNesCounts.timeStampCreate" th:text="#{PrdWProNesCounts.timeStampCreate}">TIME_STAMP_CREATE</label><span id="PrdWProNesCounts.timeStampCreate"></span><input type="hidden" id="PrdWProNesCounts.timeStampCreate" name="PrdWProNesCounts.timeStampCreate" />
+        </div>
+        <div id="timeStampChange">
+          <label for="PrdWProNesCounts.timeStampChange" th:text="#{PrdWProNesCounts.timeStampChange}">TIME_STAMP_CHANGE</label><span id="PrdWProNesCounts.timeStampChange"></span><input type="hidden" id="PrdWProNesCounts.timeStampChange" name="PrdWProNesCounts.timeStampChange" />
+        </div>
+        <div id="userIdCreate">
+          <label for="PrdWProNesCounts.userIdCreate" th:text="#{PrdWProNesCounts.userIdCreate}">USER_ID_CREATE</label><span id="PrdWProNesCounts.userIdCreate"></span><input type="hidden" id="PrdWProNesCounts.userIdCreate" name="PrdWProNesCounts.userIdCreate" />
+        </div>
+        <div id="userIdChange">
+          <label for="PrdWProNesCounts.userIdChange" th:text="#{PrdWProNesCounts.userIdChange}">USER_ID_CHANGE</label><span id="PrdWProNesCounts.userIdChange"></span><input type="hidden" id="PrdWProNesCounts.userIdChange" name="PrdWProNesCounts.userIdChange" />
+        </div>
+        <div id="empCode">
+          <label for="PrdWProNesCounts.empCode" th:text="#{PrdWProNesCounts.empCode}">EMP_CODE</label><input type="text" id="PrdWProNesCounts.empCode" name="PrdWProNesCounts.empCode" maxlength="10" data-json="MstEmpSearch.json" data-srcDef="EMP_CODE:PrdWProNesCounts.empCode" data-destDef="PrdWProNesCounts.empName:EMP_NAME" /><a id="PrdWProNesCounts.empCode" th:href="@{/model/MstEmpS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="PrdWProNesCounts.empName" class="refer" data-json="MstEmpSearch.json" data-srcDef="EMP_CODE:PrdWProNesCounts.empCode" data-destDef="PrdWProNesCounts.empName:EMP_NAME"></span>
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="Dialogate.refresh(event);">reset</button>
+        <a th:href="@{PrdWProNesCountsGet.xlsx(baseMei=#{PrdWProNesCounts.h2})}" id="PrdWProNesCountsGet.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeletePrdWProNesCounts" class="delete" data-action="PrdWProNesCountsDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistPrdWProNesCounts" class="regist" th:text="#{common.regist}">登録</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

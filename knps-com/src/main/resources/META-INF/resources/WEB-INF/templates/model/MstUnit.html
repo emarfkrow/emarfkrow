@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{MstUnit.title}">MST_UNIT</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/MstUnitGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{MstUnit.h2}">h2</h2>
+    <form name="MstUnitRegistForm" action="MstUnitRegist.ajax" class="regist">
+      <fieldset>
+        <legend th:text="#{MstUnit.legend}">legend</legend>
+        <div id="unitCode">
+          <label for="MstUnit.unitCode" th:text="#{MstUnit.unitCode}">UNIT_CODE</label><span id="MstUnit.unitCode"></span><input type="hidden" id="MstUnit.unitCode" name="MstUnit.unitCode" class="primaryKey" />
+        </div>
+        <div id="unitName">
+          <label for="MstUnit.unitName" th:text="#{MstUnit.unitName}">UNIT_NAME</label><input type="text" id="MstUnit.unitName" name="MstUnit.unitName" maxlength="10" />
+        </div>
+        <div id="stanUnitKbn">
+          <fieldset id="MstUnit.stanUnitKbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:stan_unit_kbn" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstUnit.stanUnitKbn}">STAN_UNIT_KBN</legend>
+          </fieldset>
+        </div>
+        <div id="stanUnitCode">
+          <fieldset id="MstUnit.stanUnitCodeList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:stan_unit_code" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstUnit.stanUnitCode}">STAN_UNIT_CODE</legend>
+          </fieldset>
+        </div>
+        <div id="exchangeRate">
+          <label for="MstUnit.exchangeRate" th:text="#{MstUnit.exchangeRate}">EXCHANGE_RATE</label><input type="text" id="MstUnit.exchangeRate" name="MstUnit.exchangeRate" maxlength="16" />
+        </div>
+        <div id="timeStampCreate">
+          <label for="MstUnit.timeStampCreate" th:text="#{MstUnit.timeStampCreate}">TIME_STAMP_CREATE</label><span id="MstUnit.timeStampCreate"></span><input type="hidden" id="MstUnit.timeStampCreate" name="MstUnit.timeStampCreate" />
+        </div>
+        <div id="timeStampChange">
+          <label for="MstUnit.timeStampChange" th:text="#{MstUnit.timeStampChange}">TIME_STAMP_CHANGE</label><span id="MstUnit.timeStampChange"></span><input type="hidden" id="MstUnit.timeStampChange" name="MstUnit.timeStampChange" />
+        </div>
+        <div id="userIdCreate">
+          <label for="MstUnit.userIdCreate" th:text="#{MstUnit.userIdCreate}">USER_ID_CREATE</label><span id="MstUnit.userIdCreate"></span><input type="hidden" id="MstUnit.userIdCreate" name="MstUnit.userIdCreate" />
+        </div>
+        <div id="userIdChange">
+          <label for="MstUnit.userIdChange" th:text="#{MstUnit.userIdChange}">USER_ID_CHANGE</label><span id="MstUnit.userIdChange"></span><input type="hidden" id="MstUnit.userIdChange" name="MstUnit.userIdChange" />
+        </div>
+        <div id="deleteFlag">
+          <fieldset id="MstUnit.deleteFlagList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:delete_flag" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstUnit.deleteFlag}">DELETE_FLAG</legend>
+          </fieldset>
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="Dialogate.refresh(event);">reset</button>
+        <a th:href="@{MstUnitGet.xlsx(baseMei=#{MstUnit.h2})}" id="MstUnitGet.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeleteMstUnit" class="delete" data-action="MstUnitDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistMstUnit" class="regist" th:text="#{common.regist}">登録</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{MstReserveLoc.title}">MST_RESERVE_LOC</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/MstReserveLocGridColumns.js}"></script>
+<script th:src="@{/model/MstLocationGridColumns.js}"></script>
+<script th:src="@{/model/MstSubinvGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierGridColumns.js}"></script>
+<script th:src="@{/model/InvStockProcessSupplyGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierBkGridColumns.js}"></script>
+<script th:src="@{/model/MstTaxGridColumns.js}"></script>
+<script th:src="@{/model/MstStoreManGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{MstReserveLoc.h2}">h2</h2>
+    <form name="MstReserveLocRegistForm" action="MstReserveLocRegist.ajax" class="regist">
+      <fieldset>
+        <legend th:text="#{MstReserveLoc.legend}">legend</legend>
+        <div id="hinban">
+          <label for="MstReserveLoc.hinban" th:text="#{MstReserveLoc.hinban}">HINBAN</label><input type="text" id="MstReserveLoc.hinban" name="MstReserveLoc.hinban" maxlength="25" class="primaryKey" />
+        </div>
+        <div id="opeDetail">
+          <label for="MstReserveLoc.opeDetail" th:text="#{MstReserveLoc.opeDetail}">OPE_DETAIL</label><input type="text" id="MstReserveLoc.opeDetail" name="MstReserveLoc.opeDetail" maxlength="10" class="primaryKey" />
+        </div>
+        <div id="reserveLocSeq">
+          <label for="MstReserveLoc.reserveLocSeq" th:text="#{MstReserveLoc.reserveLocSeq}">RESERVE_LOC_SEQ</label><input type="text" id="MstReserveLoc.reserveLocSeq" name="MstReserveLoc.reserveLocSeq" maxlength="10" class="primaryKey" />
+        </div>
+        <div id="locationCode">
+          <label for="MstReserveLoc.locationCode" th:text="#{MstReserveLoc.locationCode}">LOCATION_CODE</label><input type="text" id="MstReserveLoc.locationCode" name="MstReserveLoc.locationCode" maxlength="10" data-json="MstLocationSearch.json" data-srcDef="LOCATION_CODE:MstReserveLoc.locationCode" data-destDef="MstReserveLoc.locationName:LOCATION_NAME" /><a id="MstReserveLoc.locationCode" th:href="@{/model/MstLocationS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MstReserveLoc.locationName" class="refer" data-json="MstLocationSearch.json" data-srcDef="LOCATION_CODE:MstReserveLoc.locationCode" data-destDef="MstReserveLoc.locationName:LOCATION_NAME"></span>
+        </div>
+        <div id="timeStampCreate">
+          <label for="MstReserveLoc.timeStampCreate" th:text="#{MstReserveLoc.timeStampCreate}">TIME_STAMP_CREATE</label><span id="MstReserveLoc.timeStampCreate"></span><input type="hidden" id="MstReserveLoc.timeStampCreate" name="MstReserveLoc.timeStampCreate" />
+        </div>
+        <div id="timeStampChange">
+          <label for="MstReserveLoc.timeStampChange" th:text="#{MstReserveLoc.timeStampChange}">TIME_STAMP_CHANGE</label><span id="MstReserveLoc.timeStampChange"></span><input type="hidden" id="MstReserveLoc.timeStampChange" name="MstReserveLoc.timeStampChange" />
+        </div>
+        <div id="userIdCreate">
+          <label for="MstReserveLoc.userIdCreate" th:text="#{MstReserveLoc.userIdCreate}">USER_ID_CREATE</label><span id="MstReserveLoc.userIdCreate"></span><input type="hidden" id="MstReserveLoc.userIdCreate" name="MstReserveLoc.userIdCreate" />
+        </div>
+        <div id="userIdChange">
+          <label for="MstReserveLoc.userIdChange" th:text="#{MstReserveLoc.userIdChange}">USER_ID_CHANGE</label><span id="MstReserveLoc.userIdChange"></span><input type="hidden" id="MstReserveLoc.userIdChange" name="MstReserveLoc.userIdChange" />
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="Dialogate.refresh(event);">reset</button>
+        <a th:href="@{MstReserveLocGet.xlsx(baseMei=#{MstReserveLoc.h2})}" id="MstReserveLocGet.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeleteMstReserveLoc" class="delete" data-action="MstReserveLocDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistMstReserveLoc" class="regist" th:text="#{common.regist}">登録</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

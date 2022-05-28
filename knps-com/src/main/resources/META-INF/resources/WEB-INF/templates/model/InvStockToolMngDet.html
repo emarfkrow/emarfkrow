@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{InvStockToolMngDet.title}">INV_STOCK_TOOL_MNG_DET</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/InvStockToolMngDetGridColumns.js}"></script>
+<script th:src="@{/model/MstSubinvGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierGridColumns.js}"></script>
+<script th:src="@{/model/InvStockProcessSupplyGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierBkGridColumns.js}"></script>
+<script th:src="@{/model/MstTaxGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{InvStockToolMngDet.h2}">h2</h2>
+    <form name="InvStockToolMngDetRegistForm" action="InvStockToolMngDetRegist.ajax" class="regist">
+      <fieldset>
+        <legend th:text="#{InvStockToolMngDet.legend}">legend</legend>
+        <div id="stockManagementSection">
+          <label for="InvStockToolMngDet.stockManagementSection" th:text="#{InvStockToolMngDet.stockManagementSection}">STOCK_MANAGEMENT_SECTION</label><input type="text" id="InvStockToolMngDet.stockManagementSection" name="InvStockToolMngDet.stockManagementSection" maxlength="1" class="primaryKey" />
+        </div>
+        <div id="hinban">
+          <label for="InvStockToolMngDet.hinban" th:text="#{InvStockToolMngDet.hinban}">HINBAN</label><span id="InvStockToolMngDet.hinban"></span><input type="hidden" id="InvStockToolMngDet.hinban" name="InvStockToolMngDet.hinban" class="primaryKey" />
+        </div>
+        <div id="subInvCode">
+          <label for="InvStockToolMngDet.subInvCode" th:text="#{InvStockToolMngDet.subInvCode}">SUB_INV_CODE</label><span id="InvStockToolMngDet.subInvCode"></span><input type="hidden" id="InvStockToolMngDet.subInvCode" name="InvStockToolMngDet.subInvCode" class="primaryKey" /><a id="InvStockToolMngDet.subInvCode" th:href="@{/model/MstSubinvS.html}" target="dialog" class="primaryKey refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="InvStockToolMngDet.subInvName" class="refer" data-json="MstSubinvSearch.json" data-srcDef="SUB_INV_CODE:InvStockToolMngDet.subInvCode" data-destDef="InvStockToolMngDet.subInvName:SUB_INV_NAME"></span>
+        </div>
+        <div id="inOutDate">
+          <label for="InvStockToolMngDet.inOutDate" th:text="#{InvStockToolMngDet.inOutDate}">IN_OUT_DATE</label><input type="date" id="InvStockToolMngDet.inOutDate" name="InvStockToolMngDet.inOutDate" maxlength="7" class="primaryKey" />
+        </div>
+        <div id="stockBranchNumber">
+          <label for="InvStockToolMngDet.stockBranchNumber" th:text="#{InvStockToolMngDet.stockBranchNumber}">STOCK_BRANCH_NUMBER</label><input type="text" id="InvStockToolMngDet.stockBranchNumber" name="InvStockToolMngDet.stockBranchNumber" maxlength="5" class="primaryKey" />
+        </div>
+        <div id="inOutStatus">
+          <label for="InvStockToolMngDet.inOutStatus" th:text="#{InvStockToolMngDet.inOutStatus}">IN_OUT_STATUS</label><input type="text" id="InvStockToolMngDet.inOutStatus" name="InvStockToolMngDet.inOutStatus" maxlength="1" />
+        </div>
+        <div id="receiptSupCode">
+          <label for="InvStockToolMngDet.receiptSupCode" th:text="#{InvStockToolMngDet.receiptSupCode}">RECEIPT_SUP_CODE</label><input type="text" id="InvStockToolMngDet.receiptSupCode" name="InvStockToolMngDet.receiptSupCode" maxlength="6" data-json="MstSupplierSearch.json" data-srcDef="SUP_CODE:InvStockToolMngDet.receiptSupCode" data-destDef="InvStockToolMngDet.receiptSupName:SUP_NAME" /><a id="InvStockToolMngDet.receiptSupCode" th:href="@{/model/MstSupplierS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="InvStockToolMngDet.receiptSupName" class="refer" data-json="MstSupplierSearch.json" data-srcDef="SUP_CODE:InvStockToolMngDet.receiptSupCode" data-destDef="InvStockToolMngDet.receiptSupName:SUP_NAME"></span>
+        </div>
+        <div id="stock">
+          <label for="InvStockToolMngDet.stock" th:text="#{InvStockToolMngDet.stock}">STOCK</label><input type="text" id="InvStockToolMngDet.stock" name="InvStockToolMngDet.stock" maxlength="11" />
+        </div>
+        <div id="invComment">
+          <label for="InvStockToolMngDet.invComment" th:text="#{InvStockToolMngDet.invComment}">INV_COMMENT</label><input type="text" id="InvStockToolMngDet.invComment" name="InvStockToolMngDet.invComment" maxlength="25" />
+        </div>
+        <div id="timeStampCreate">
+          <label for="InvStockToolMngDet.timeStampCreate" th:text="#{InvStockToolMngDet.timeStampCreate}">TIME_STAMP_CREATE</label><span id="InvStockToolMngDet.timeStampCreate"></span><input type="hidden" id="InvStockToolMngDet.timeStampCreate" name="InvStockToolMngDet.timeStampCreate" />
+        </div>
+        <div id="timeStampChange">
+          <label for="InvStockToolMngDet.timeStampChange" th:text="#{InvStockToolMngDet.timeStampChange}">TIME_STAMP_CHANGE</label><span id="InvStockToolMngDet.timeStampChange"></span><input type="hidden" id="InvStockToolMngDet.timeStampChange" name="InvStockToolMngDet.timeStampChange" />
+        </div>
+        <div id="userIdCreate">
+          <label for="InvStockToolMngDet.userIdCreate" th:text="#{InvStockToolMngDet.userIdCreate}">USER_ID_CREATE</label><span id="InvStockToolMngDet.userIdCreate"></span><input type="hidden" id="InvStockToolMngDet.userIdCreate" name="InvStockToolMngDet.userIdCreate" />
+        </div>
+        <div id="userIdChange">
+          <label for="InvStockToolMngDet.userIdChange" th:text="#{InvStockToolMngDet.userIdChange}">USER_ID_CHANGE</label><span id="InvStockToolMngDet.userIdChange"></span><input type="hidden" id="InvStockToolMngDet.userIdChange" name="InvStockToolMngDet.userIdChange" />
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="Dialogate.refresh(event);">reset</button>
+        <a th:href="@{InvStockToolMngDetGet.xlsx(baseMei=#{InvStockToolMngDet.h2})}" id="InvStockToolMngDetGet.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeleteInvStockToolMngDet" class="delete" data-action="InvStockToolMngDetDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistInvStockToolMngDet" class="regist" th:text="#{common.regist}">登録</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

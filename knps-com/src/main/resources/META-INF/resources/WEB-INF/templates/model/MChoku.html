@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{MChoku.title}">M_CHOKU</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/MChokuGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{MChoku.h2}">h2</h2>
+    <form name="MChokuRegistForm" action="MChokuRegist.ajax" class="regist">
+      <fieldset>
+        <legend th:text="#{MChoku.legend}">legend</legend>
+        <div id="chokucd">
+          <label for="MChoku.chokucd" th:text="#{MChoku.chokucd}">CHOKUCD</label><input type="text" id="MChoku.chokucd" name="MChoku.chokucd" maxlength="8" class="primaryKey" />
+        </div>
+        <div id="chokumei1">
+          <label for="MChoku.chokumei1" th:text="#{MChoku.chokumei1}">CHOKUMEI1</label><input type="text" id="MChoku.chokumei1" name="MChoku.chokumei1" maxlength="28" />
+        </div>
+        <div id="chokumei2">
+          <label for="MChoku.chokumei2" th:text="#{MChoku.chokumei2}">CHOKUMEI2</label><input type="text" id="MChoku.chokumei2" name="MChoku.chokumei2" maxlength="22" />
+        </div>
+        <div id="timeStampCreate">
+          <label for="MChoku.timeStampCreate" th:text="#{MChoku.timeStampCreate}">TIME_STAMP_CREATE</label><span id="MChoku.timeStampCreate"></span><input type="hidden" id="MChoku.timeStampCreate" name="MChoku.timeStampCreate" />
+        </div>
+        <div id="timeStampChange">
+          <label for="MChoku.timeStampChange" th:text="#{MChoku.timeStampChange}">TIME_STAMP_CHANGE</label><span id="MChoku.timeStampChange"></span><input type="hidden" id="MChoku.timeStampChange" name="MChoku.timeStampChange" />
+        </div>
+        <div id="userIdCreate">
+          <label for="MChoku.userIdCreate" th:text="#{MChoku.userIdCreate}">USER_ID_CREATE</label><span id="MChoku.userIdCreate"></span><input type="hidden" id="MChoku.userIdCreate" name="MChoku.userIdCreate" />
+        </div>
+        <div id="userIdChange">
+          <label for="MChoku.userIdChange" th:text="#{MChoku.userIdChange}">USER_ID_CHANGE</label><span id="MChoku.userIdChange"></span><input type="hidden" id="MChoku.userIdChange" name="MChoku.userIdChange" />
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="Dialogate.refresh(event);">reset</button>
+        <a th:href="@{MChokuGet.xlsx(baseMei=#{MChoku.h2})}" id="MChokuGet.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeleteMChoku" class="delete" data-action="MChokuDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistMChoku" class="regist" th:text="#{common.regist}">登録</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

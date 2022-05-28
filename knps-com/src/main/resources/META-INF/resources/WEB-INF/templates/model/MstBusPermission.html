@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{MstBusPermission.title}">MST_BUS_PERMISSION</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/MstBusPermissionGridColumns.js}"></script>
+<script th:src="@{/model/MstGamenPermissionGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{MstBusPermission.h2}">h2</h2>
+    <form name="MstBusPermissionRegistForm" action="MstBusPermissionRegist.ajax" class="regist">
+      <fieldset>
+        <legend th:text="#{MstBusPermission.legend}">legend</legend>
+        <div id="compCode">
+          <fieldset id="MstBusPermission.compCodeList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:comp_code" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstBusPermission.compCode}">COMP_CODE</legend>
+          </fieldset>
+        </div>
+        <div id="businessNo">
+          <label for="MstBusPermission.businessNo" th:text="#{MstBusPermission.businessNo}">BUSINESS_NO</label><input type="text" id="MstBusPermission.businessNo" name="MstBusPermission.businessNo" maxlength="1" class="primaryKey" />
+        </div>
+        <div id="permission">
+          <label for="MstBusPermission.permission" th:text="#{MstBusPermission.permission}">PERMISSION</label><input type="text" id="MstBusPermission.permission" name="MstBusPermission.permission" maxlength="1" />
+        </div>
+        <div id="timeStampCreate">
+          <label for="MstBusPermission.timeStampCreate" th:text="#{MstBusPermission.timeStampCreate}">TIME_STAMP_CREATE</label><span id="MstBusPermission.timeStampCreate"></span><input type="hidden" id="MstBusPermission.timeStampCreate" name="MstBusPermission.timeStampCreate" />
+        </div>
+        <div id="timeStampChange">
+          <label for="MstBusPermission.timeStampChange" th:text="#{MstBusPermission.timeStampChange}">TIME_STAMP_CHANGE</label><span id="MstBusPermission.timeStampChange"></span><input type="hidden" id="MstBusPermission.timeStampChange" name="MstBusPermission.timeStampChange" />
+        </div>
+        <div id="userIdCreate">
+          <label for="MstBusPermission.userIdCreate" th:text="#{MstBusPermission.userIdCreate}">USER_ID_CREATE</label><span id="MstBusPermission.userIdCreate"></span><input type="hidden" id="MstBusPermission.userIdCreate" name="MstBusPermission.userIdCreate" />
+        </div>
+        <div id="userIdChange">
+          <label for="MstBusPermission.userIdChange" th:text="#{MstBusPermission.userIdChange}">USER_ID_CHANGE</label><span id="MstBusPermission.userIdChange"></span><input type="hidden" id="MstBusPermission.userIdChange" name="MstBusPermission.userIdChange" />
+        </div>
+        <div id="deleteFlag">
+          <fieldset id="MstBusPermission.deleteFlagList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:delete_flag" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstBusPermission.deleteFlag}">DELETE_FLAG</legend>
+          </fieldset>
+        </div>
+      </fieldset>
+      <h3 th:text="#{MstGamenPermission.h3}">h3</h3>
+      <a th:href="@{/model/MstGamenPermission.html}" id="MstGamenPermission" target="dialog" th:text="#{MstGamenPermission.add}" class="addChild" tabindex="-1">MST_GAMEN_PERMISSION</a>
+      <div id="MstGamenPermissionGrid" data-selectionMode="link" data-addRow="true" data-frozenColumn="2" th:data-href="@{/model/MstGamenPermission.html}"></div>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="Dialogate.refresh(event);">reset</button>
+        <a th:href="@{MstBusPermissionGet.xlsx(baseMei=#{MstBusPermission.h2})}" id="MstBusPermissionGet.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeleteMstBusPermission" class="delete" data-action="MstBusPermissionDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistMstBusPermission" class="regist" th:text="#{common.regist}">登録</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{PrdMProPlanRoutingBkS.title}">PRD_M_PRO_PLAN_ROUTING_BK</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/PrdMProPlanRoutingBkGridColumns.js}"></script>
+<script th:src="@{/model/MstWcGridColumns.js}"></script>
+<script th:src="@{/model/MstWcBkGridColumns.js}"></script>
+<script th:src="@{/model/MstProcGridColumns.js}"></script>
+<script th:src="@{/model/MstWsGridColumns.js}"></script>
+<script th:src="@{/model/MstTeamGridColumns.js}"></script>
+<script th:src="@{/model/MstGroupGridColumns.js}"></script>
+<script th:src="@{/model/MstDivisionGridColumns.js}"></script>
+<script th:src="@{/model/MstCompanyGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierGridColumns.js}"></script>
+<script th:src="@{/model/InvStockProcessSupplyGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierBkGridColumns.js}"></script>
+<script th:src="@{/model/MstTaxGridColumns.js}"></script>
+<script th:src="@{/model/MstCostCenterGridColumns.js}"></script>
+<script th:src="@{/model/MstCostCenterBkGridColumns.js}"></script>
+<script th:src="@{/model/MstSubinvGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{PrdMProPlanRoutingBkS.h2}">h2</h2>
+    <form name="PrdMProPlanRoutingBkSearchForm" action="PrdMProPlanRoutingBkSearch.ajax" class="search">
+      <fieldset>
+        <legend th:text="#{PrdMProPlanRoutingBkS.legend}">legend</legend>
+        <div id="yyyy">
+          <label for="PrdMProPlanRoutingBk.yyyy" th:text="#{PrdMProPlanRoutingBk.yyyy}">YYYY</label><input type="text" id="PrdMProPlanRoutingBk.yyyy" name="PrdMProPlanRoutingBk.yyyy" maxlength="4" />
+        </div>
+        <div id="mm">
+          <label for="PrdMProPlanRoutingBk.mm" th:text="#{PrdMProPlanRoutingBk.mm}">MM</label><input type="text" id="PrdMProPlanRoutingBk.mm" name="PrdMProPlanRoutingBk.mm" maxlength="2" />
+        </div>
+        <div id="proHinban">
+          <label for="PrdMProPlanRoutingBk.proHinban" th:text="#{PrdMProPlanRoutingBk.proHinban}">PRO_HINBAN</label><input type="text" id="PrdMProPlanRoutingBk.proHinban" name="PrdMProPlanRoutingBk.proHinban" maxlength="25" />
+        </div>
+        <div id="hinban">
+          <label for="PrdMProPlanRoutingBk.hinban" th:text="#{PrdMProPlanRoutingBk.hinban}">HINBAN</label><input type="text" id="PrdMProPlanRoutingBk.hinban" name="PrdMProPlanRoutingBk.hinban" maxlength="25" />
+        </div>
+        <div id="routingGroup">
+          <label for="PrdMProPlanRoutingBk.routingGroup" th:text="#{PrdMProPlanRoutingBk.routingGroup}">ROUTING_GROUP</label><input type="text" id="PrdMProPlanRoutingBk.routingGroup" name="PrdMProPlanRoutingBk.routingGroup" maxlength="2" />
+        </div>
+        <div id="routing">
+          <label for="PrdMProPlanRoutingBk.routing" th:text="#{PrdMProPlanRoutingBk.routing}">ROUTING</label><input type="text" id="PrdMProPlanRoutingBk.routing" name="PrdMProPlanRoutingBk.routing" maxlength="2" />
+        </div>
+        <div id="opeDetail">
+          <label for="PrdMProPlanRoutingBk.opeDetail" th:text="#{PrdMProPlanRoutingBk.opeDetail}">OPE_DETAIL</label><input type="text" id="PrdMProPlanRoutingBk.opeDetail" name="PrdMProPlanRoutingBk.opeDetail" maxlength="10" />
+        </div>
+        <div id="wcCode">
+          <label for="PrdMProPlanRoutingBk.wcCode" th:text="#{PrdMProPlanRoutingBk.wcCode}">WC_CODE</label><input type="text" id="PrdMProPlanRoutingBk.wcCode" name="PrdMProPlanRoutingBk.wcCode" maxlength="3" data-json="MstWcSearch.json" data-srcDef="WC_CODE:PrdMProPlanRoutingBk.wcCode" data-destDef="PrdMProPlanRoutingBk.wcName:WC_NAME" /><a id="PrdMProPlanRoutingBk.wcCode" th:href="@{/model/MstWcS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="PrdMProPlanRoutingBk.wcName" class="refer" data-json="MstWcSearch.json" data-srcDef="WC_CODE:PrdMProPlanRoutingBk.wcCode" data-destDef="PrdMProPlanRoutingBk.wcName:WC_NAME"></span>
+        </div>
+        <div id="wscode">
+          <label for="PrdMProPlanRoutingBk.wscode" th:text="#{PrdMProPlanRoutingBk.wscode}">WSCODE</label><input type="text" id="PrdMProPlanRoutingBk.wscode" name="PrdMProPlanRoutingBk.wscode" maxlength="4" />
+        </div>
+        <div id="inOutKbn">
+          <fieldset id="PrdMProPlanRoutingBk.inOutKbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:in_out_kbn" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{PrdMProPlanRoutingBk.inOutKbn}">IN_OUT_KBN</legend>
+          </fieldset>
+        </div>
+        <div id="supCode">
+          <label for="PrdMProPlanRoutingBk.supCode" th:text="#{PrdMProPlanRoutingBk.supCode}">SUP_CODE</label><input type="text" id="PrdMProPlanRoutingBk.supCode" name="PrdMProPlanRoutingBk.supCode" maxlength="6" data-json="MstSupplierSearch.json" data-srcDef="SUP_CODE:PrdMProPlanRoutingBk.supCode" data-destDef="PrdMProPlanRoutingBk.supName:SUP_NAME" /><a id="PrdMProPlanRoutingBk.supCode" th:href="@{/model/MstSupplierS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="PrdMProPlanRoutingBk.supName" class="refer" data-json="MstSupplierSearch.json" data-srcDef="SUP_CODE:PrdMProPlanRoutingBk.supCode" data-destDef="PrdMProPlanRoutingBk.supName:SUP_NAME"></span>
+        </div>
+        <div id="nesCounts">
+          <label for="PrdMProPlanRoutingBk.nesCounts_1" th:text="#{PrdMProPlanRoutingBk.nesCounts}">NES_COUNTS</label><input type="text" id="PrdMProPlanRoutingBk.nesCounts_1" name="PrdMProPlanRoutingBk.nesCounts_1" maxlength="7" />～<input type="text" id="PrdMProPlanRoutingBk.nesCounts_2" name="PrdMProPlanRoutingBk.nesCounts_2" maxlength="7" />
+        </div>
+        <div id="macLoadKbn">
+          <fieldset id="PrdMProPlanRoutingBk.macLoadKbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:mac_load_kbn" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{PrdMProPlanRoutingBk.macLoadKbn}">MAC_LOAD_KBN</legend>
+          </fieldset>
+        </div>
+        <div id="humPreTime">
+          <label for="PrdMProPlanRoutingBk.humPreTime" th:text="#{PrdMProPlanRoutingBk.humPreTime}">HUM_PRE_TIME</label><input type="text" id="PrdMProPlanRoutingBk.humPreTime" name="PrdMProPlanRoutingBk.humPreTime" maxlength="7" />
+        </div>
+        <div id="humActTime">
+          <label for="PrdMProPlanRoutingBk.humActTime" th:text="#{PrdMProPlanRoutingBk.humActTime}">HUM_ACT_TIME</label><input type="text" id="PrdMProPlanRoutingBk.humActTime" name="PrdMProPlanRoutingBk.humActTime" maxlength="7" />
+        </div>
+        <div id="macPreTime">
+          <label for="PrdMProPlanRoutingBk.macPreTime" th:text="#{PrdMProPlanRoutingBk.macPreTime}">MAC_PRE_TIME</label><input type="text" id="PrdMProPlanRoutingBk.macPreTime" name="PrdMProPlanRoutingBk.macPreTime" maxlength="7" />
+        </div>
+        <div id="macActTime">
+          <label for="PrdMProPlanRoutingBk.macActTime" th:text="#{PrdMProPlanRoutingBk.macActTime}">MAC_ACT_TIME</label><input type="text" id="PrdMProPlanRoutingBk.macActTime" name="PrdMProPlanRoutingBk.macActTime" maxlength="7" />
+        </div>
+        <div id="comment1">
+          <label for="PrdMProPlanRoutingBk.comment1" th:text="#{PrdMProPlanRoutingBk.comment1}">COMMENT1</label><input type="text" id="PrdMProPlanRoutingBk.comment1" name="PrdMProPlanRoutingBk.comment1" maxlength="25" />
+        </div>
+        <div id="comment2">
+          <label for="PrdMProPlanRoutingBk.comment2" th:text="#{PrdMProPlanRoutingBk.comment2}">COMMENT2</label><input type="text" id="PrdMProPlanRoutingBk.comment2" name="PrdMProPlanRoutingBk.comment2" maxlength="25" />
+        </div>
+        <div id="unitWeight">
+          <label for="PrdMProPlanRoutingBk.unitWeight" th:text="#{PrdMProPlanRoutingBk.unitWeight}">UNIT_WEIGHT</label><input type="text" id="PrdMProPlanRoutingBk.unitWeight" name="PrdMProPlanRoutingBk.unitWeight" maxlength="11" />
+        </div>
+        <div id="orderUnitPrice">
+          <label for="PrdMProPlanRoutingBk.orderUnitPrice" th:text="#{PrdMProPlanRoutingBk.orderUnitPrice}">ORDER_UNIT_PRICE</label><input type="text" id="PrdMProPlanRoutingBk.orderUnitPrice" name="PrdMProPlanRoutingBk.orderUnitPrice" maxlength="9" />
+        </div>
+        <div id="procLt">
+          <label for="PrdMProPlanRoutingBk.procLt" th:text="#{PrdMProPlanRoutingBk.procLt}">PROC_LT</label><input type="text" id="PrdMProPlanRoutingBk.procLt" name="PrdMProPlanRoutingBk.procLt" maxlength="6" />
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="reset" th:text="#{common.reset}">reset</button>
+        <a th:href="@{/model/PrdMProPlanRoutingBk.html}" id="PrdMProPlanRoutingBk" target="dialog" th:text="#{PrdMProPlanRoutingBk.add}" tabindex="-1">PRD_M_PRO_PLAN_ROUTING_BK</a>
+      </div>
+      <div class="submits">
+        <button id="SearchPrdMProPlanRoutingBk" class="search" data-gridId="PrdMProPlanRoutingBkGrid" th:text="#{common.search}">submit</button>
+      </div>
+    </form>
+    <form name="PrdMProPlanRoutingBkSRegistForm" action="PrdMProPlanRoutingBkSRegist.ajax" class="regist">
+      <h3 th:text="#{PrdMProPlanRoutingBk.h3}">h3</h3>
+      <div id="PrdMProPlanRoutingBkGrid" data-selectionMode="checkbox" data-frozenColumn="-1" th:data-href="@{/model/PrdMProPlanRoutingBk.html}"></div>
+      <div id="PrdMProPlanRoutingBkPager"></div>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="$('[id=&quot;SearchPrdMProPlanRoutingBk&quot;]').click();">reset</button>
+        <a th:href="@{PrdMProPlanRoutingBkSearch.xlsx(baseMei=#{PrdMProPlanRoutingBkS.h2})}" id="PrdMProPlanRoutingBkSearch.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeletePrdMProPlanRoutingBkS" class="delete selectRows" data-action="PrdMProPlanRoutingBkSDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistPrdMProPlanRoutingBkS" class="regist" th:text="#{common.regist}">submit</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

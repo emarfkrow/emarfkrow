@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{MstHinbanBkS.title}">MST_HINBAN_BK</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/MstHinbanBkGridColumns.js}"></script>
+<script th:src="@{/model/MstUnitGridColumns.js}"></script>
+<script th:src="@{/model/MstAccountCodeGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanEmpGridColumns.js}"></script>
+<script th:src="@{/model/MstEmpGridColumns.js}"></script>
+<script th:src="@{/model/MstDivisionGridColumns.js}"></script>
+<script th:src="@{/model/MstCompanyGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{MstHinbanBkS.h2}">h2</h2>
+    <form name="MstHinbanBkSearchForm" action="MstHinbanBkSearch.ajax" class="search">
+      <fieldset>
+        <legend th:text="#{MstHinbanBkS.legend}">legend</legend>
+        <div id="yy">
+          <label for="MstHinbanBk.yy" th:text="#{MstHinbanBk.yy}">YY</label><input type="text" id="MstHinbanBk.yy" name="MstHinbanBk.yy" maxlength="4" />
+        </div>
+        <div id="hinban">
+          <label for="MstHinbanBk.hinban" th:text="#{MstHinbanBk.hinban}">HINBAN</label><input type="text" id="MstHinbanBk.hinban" name="MstHinbanBk.hinban" maxlength="25" />
+        </div>
+        <div id="hinbanCode">
+          <fieldset id="MstHinbanBk.hinbanCodeList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:hinban_code" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstHinbanBk.hinbanCode}">HINBAN_CODE</legend>
+          </fieldset>
+        </div>
+        <div id="item">
+          <label for="MstHinbanBk.item" th:text="#{MstHinbanBk.item}">ITEM</label><input type="text" id="MstHinbanBk.item" name="MstHinbanBk.item" maxlength="60" />
+        </div>
+        <div id="itemKbn">
+          <fieldset id="MstHinbanBk.itemKbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:item_kbn" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstHinbanBk.itemKbn}">ITEM_KBN</legend>
+          </fieldset>
+        </div>
+        <div id="shikakeKbn">
+          <fieldset id="MstHinbanBk.shikakeKbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:shikake_kbn" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstHinbanBk.shikakeKbn}">SHIKAKE_KBN</legend>
+          </fieldset>
+        </div>
+        <div id="lotSize">
+          <label for="MstHinbanBk.lotSize" th:text="#{MstHinbanBk.lotSize}">LOT_SIZE</label><input type="text" id="MstHinbanBk.lotSize" name="MstHinbanBk.lotSize" maxlength="6" />
+        </div>
+        <div id="counts">
+          <label for="MstHinbanBk.counts" th:text="#{MstHinbanBk.counts}">COUNTS</label><input type="text" id="MstHinbanBk.counts" name="MstHinbanBk.counts" maxlength="6" />
+        </div>
+        <div id="unitCode">
+          <label for="MstHinbanBk.unitCode" th:text="#{MstHinbanBk.unitCode}">UNIT_CODE</label><input type="text" id="MstHinbanBk.unitCode" name="MstHinbanBk.unitCode" maxlength="2" data-json="MstUnitSearch.json" data-srcDef="UNIT_CODE:MstHinbanBk.unitCode" data-destDef="MstHinbanBk.unitName:UNIT_NAME" /><a id="MstHinbanBk.unitCode" th:href="@{/model/MstUnitS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MstHinbanBk.unitName" class="refer" data-json="MstUnitSearch.json" data-srcDef="UNIT_CODE:MstHinbanBk.unitCode" data-destDef="MstHinbanBk.unitName:UNIT_NAME"></span>
+        </div>
+        <div id="accountCode">
+          <label for="MstHinbanBk.accountCode" th:text="#{MstHinbanBk.accountCode}">ACCOUNT_CODE</label><input type="text" id="MstHinbanBk.accountCode" name="MstHinbanBk.accountCode" maxlength="5" data-json="MstAccountCodeSearch.json" data-srcDef="ACCOUNT_CODE:MstHinbanBk.accountCode" data-destDef="MstHinbanBk.accountName:ACCOUNT_NAME" /><a id="MstHinbanBk.accountCode" th:href="@{/model/MstAccountCodeS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MstHinbanBk.accountName" class="refer" data-json="MstAccountCodeSearch.json" data-srcDef="ACCOUNT_CODE:MstHinbanBk.accountCode" data-destDef="MstHinbanBk.accountName:ACCOUNT_NAME"></span>
+        </div>
+        <div id="supplyChange">
+          <label for="MstHinbanBk.supplyChange" th:text="#{MstHinbanBk.supplyChange}">SUPPLY_CHANGE</label><input type="text" id="MstHinbanBk.supplyChange" name="MstHinbanBk.supplyChange" maxlength="1" />
+        </div>
+        <div id="supplyPermission">
+          <label for="MstHinbanBk.supplyPermission" th:text="#{MstHinbanBk.supplyPermission}">SUPPLY_PERMISSION</label><input type="text" id="MstHinbanBk.supplyPermission" name="MstHinbanBk.supplyPermission" maxlength="1" />
+        </div>
+        <div id="offPostNo">
+          <label for="MstHinbanBk.offPostNo" th:text="#{MstHinbanBk.offPostNo}">OFF_POST_NO</label><input type="text" id="MstHinbanBk.offPostNo" name="MstHinbanBk.offPostNo" maxlength="3" />
+        </div>
+        <div id="isuuePostNo">
+          <label for="MstHinbanBk.isuuePostNo" th:text="#{MstHinbanBk.isuuePostNo}">ISUUE_POST_NO</label><input type="text" id="MstHinbanBk.isuuePostNo" name="MstHinbanBk.isuuePostNo" maxlength="4" />
+        </div>
+        <div id="storeNo">
+          <label for="MstHinbanBk.storeNo" th:text="#{MstHinbanBk.storeNo}">STORE_NO</label><input type="text" id="MstHinbanBk.storeNo" name="MstHinbanBk.storeNo" maxlength="10" />
+        </div>
+        <div id="stocksKindKbn">
+          <fieldset id="MstHinbanBk.stocksKindKbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:stocks_kind_kbn" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstHinbanBk.stocksKindKbn}">STOCKS_KIND_KBN</legend>
+          </fieldset>
+        </div>
+        <div id="hingunKbn">
+          <fieldset id="MstHinbanBk.hingunKbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:hingun_kbn" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstHinbanBk.hingunKbn}">HINGUN_KBN</legend>
+          </fieldset>
+        </div>
+        <div id="elecInvControl">
+          <label for="MstHinbanBk.elecInvControl" th:text="#{MstHinbanBk.elecInvControl}">ELEC_INV_CONTROL</label><input type="text" id="MstHinbanBk.elecInvControl" name="MstHinbanBk.elecInvControl" maxlength="1" />
+        </div>
+        <div id="restArticleKbn">
+          <fieldset id="MstHinbanBk.restArticleKbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:rest_article_kbn" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstHinbanBk.restArticleKbn}">REST_ARTICLE_KBN</legend>
+          </fieldset>
+        </div>
+        <div id="restArticleMax">
+          <label for="MstHinbanBk.restArticleMax" th:text="#{MstHinbanBk.restArticleMax}">REST_ARTICLE_MAX</label><input type="text" id="MstHinbanBk.restArticleMax" name="MstHinbanBk.restArticleMax" maxlength="11" />
+        </div>
+        <div id="costAmountKbn">
+          <fieldset id="MstHinbanBk.costAmountKbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:cost_amount_kbn" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstHinbanBk.costAmountKbn}">COST_AMOUNT_KBN</legend>
+          </fieldset>
+        </div>
+        <div id="fCostAmountKbn">
+          <fieldset id="MstHinbanBk.fCostAmountKbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:f_cost_amount_kbn" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstHinbanBk.fCostAmountKbn}">F_COST_AMOUNT_KBN</legend>
+          </fieldset>
+        </div>
+        <div id="sCostAmountKbn">
+          <fieldset id="MstHinbanBk.sCostAmountKbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:s_cost_amount_kbn" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstHinbanBk.sCostAmountKbn}">S_COST_AMOUNT_KBN</legend>
+          </fieldset>
+        </div>
+        <div id="hinbanOpeCode">
+          <label for="MstHinbanBk.hinbanOpeCode" th:text="#{MstHinbanBk.hinbanOpeCode}">HINBAN_OPE_CODE</label><input type="text" id="MstHinbanBk.hinbanOpeCode" name="MstHinbanBk.hinbanOpeCode" maxlength="10" data-json="MstHinbanEmpSearch.json" data-srcDef="HINBAN_OPE_CODE:MstHinbanBk.hinbanOpeCode" data-destDef="MstHinbanBk.hinbanOpeName:HINBAN_OPE_NAME" /><a id="MstHinbanBk.hinbanOpeCode" th:href="@{/model/MstHinbanEmpS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MstHinbanBk.hinbanOpeName" class="refer" data-json="MstHinbanEmpSearch.json" data-srcDef="HINBAN_OPE_CODE:MstHinbanBk.hinbanOpeCode" data-destDef="MstHinbanBk.hinbanOpeName:HINBAN_OPE_NAME"></span>
+        </div>
+        <div id="permissionFlag">
+          <fieldset id="MstHinbanBk.permissionFlagList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:permission_flag" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstHinbanBk.permissionFlag}">PERMISSION_FLAG</legend>
+          </fieldset>
+        </div>
+        <div id="version">
+          <label for="MstHinbanBk.version" th:text="#{MstHinbanBk.version}">VERSION</label><input type="text" id="MstHinbanBk.version" name="MstHinbanBk.version" maxlength="5" />
+        </div>
+        <div id="planCode">
+          <fieldset id="MstHinbanBk.planCodeList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:plan_code" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstHinbanBk.planCode}">PLAN_CODE</legend>
+          </fieldset>
+        </div>
+        <div id="poisonKbn">
+          <fieldset id="MstHinbanBk.poisonKbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:poison_kbn" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstHinbanBk.poisonKbn}">POISON_KBN</legend>
+          </fieldset>
+        </div>
+        <div id="material">
+          <label for="MstHinbanBk.material" th:text="#{MstHinbanBk.material}">MATERIAL</label><input type="text" id="MstHinbanBk.material" name="MstHinbanBk.material" maxlength="5" />
+        </div>
+        <div id="materialSize">
+          <label for="MstHinbanBk.materialSize" th:text="#{MstHinbanBk.materialSize}">MATERIAL_SIZE</label><input type="text" id="MstHinbanBk.materialSize" name="MstHinbanBk.materialSize" maxlength="30" />
+        </div>
+        <div id="maker">
+          <label for="MstHinbanBk.maker" th:text="#{MstHinbanBk.maker}">MAKER</label><input type="text" id="MstHinbanBk.maker" name="MstHinbanBk.maker" maxlength="30" />
+        </div>
+        <div id="materialRecycle">
+          <label for="MstHinbanBk.materialRecycle" th:text="#{MstHinbanBk.materialRecycle}">MATERIAL_RECYCLE</label><input type="text" id="MstHinbanBk.materialRecycle" name="MstHinbanBk.materialRecycle" maxlength="5" />
+        </div>
+        <div id="makerSimuke">
+          <label for="MstHinbanBk.makerSimuke" th:text="#{MstHinbanBk.makerSimuke}">MAKER_SIMUKE</label><input type="text" id="MstHinbanBk.makerSimuke" name="MstHinbanBk.makerSimuke" maxlength="3" />
+        </div>
+        <div id="makerWeight">
+          <label for="MstHinbanBk.makerWeight" th:text="#{MstHinbanBk.makerWeight}">MAKER_WEIGHT</label><input type="text" id="MstHinbanBk.makerWeight" name="MstHinbanBk.makerWeight" maxlength="7" />
+        </div>
+        <div id="actInvFirst">
+          <label for="MstHinbanBk.actInvFirst" th:text="#{MstHinbanBk.actInvFirst}">ACT_INV_FIRST</label><input type="text" id="MstHinbanBk.actInvFirst" name="MstHinbanBk.actInvFirst" maxlength="1" />
+        </div>
+        <div id="actInvLast">
+          <label for="MstHinbanBk.actInvLast" th:text="#{MstHinbanBk.actInvLast}">ACT_INV_LAST</label><input type="text" id="MstHinbanBk.actInvLast" name="MstHinbanBk.actInvLast" maxlength="1" />
+        </div>
+        <div id="supUnit">
+          <label for="MstHinbanBk.supUnit_1" th:text="#{MstHinbanBk.supUnit}">SUP_UNIT</label><input type="text" id="MstHinbanBk.supUnit_1" name="MstHinbanBk.supUnit_1" maxlength="9" />～<input type="text" id="MstHinbanBk.supUnit_2" name="MstHinbanBk.supUnit_2" maxlength="9" />
+        </div>
+        <div id="routingDefGroup">
+          <label for="MstHinbanBk.routingDefGroup" th:text="#{MstHinbanBk.routingDefGroup}">ROUTING_DEF_GROUP</label><input type="text" id="MstHinbanBk.routingDefGroup" name="MstHinbanBk.routingDefGroup" maxlength="2" />
+        </div>
+        <div id="costCalculateGroup">
+          <label for="MstHinbanBk.costCalculateGroup" th:text="#{MstHinbanBk.costCalculateGroup}">COST_CALCULATE_GROUP</label><input type="text" id="MstHinbanBk.costCalculateGroup" name="MstHinbanBk.costCalculateGroup" maxlength="2" />
+        </div>
+        <div id="kbn1">
+          <label for="MstHinbanBk.kbn1" th:text="#{MstHinbanBk.kbn1}">KBN1</label><input type="text" id="MstHinbanBk.kbn1" name="MstHinbanBk.kbn1" maxlength="5" />
+        </div>
+        <div id="kbn2">
+          <label for="MstHinbanBk.kbn2" th:text="#{MstHinbanBk.kbn2}">KBN2</label><input type="text" id="MstHinbanBk.kbn2" name="MstHinbanBk.kbn2" maxlength="4" />
+        </div>
+        <div id="kbn3">
+          <label for="MstHinbanBk.kbn3" th:text="#{MstHinbanBk.kbn3}">KBN3</label><input type="text" id="MstHinbanBk.kbn3" name="MstHinbanBk.kbn3" maxlength="5" />
+        </div>
+        <div id="stockStatus">
+          <label for="MstHinbanBk.stockStatus" th:text="#{MstHinbanBk.stockStatus}">STOCK_STATUS</label><input type="text" id="MstHinbanBk.stockStatus" name="MstHinbanBk.stockStatus" maxlength="1" />
+        </div>
+        <div id="stockStatusDate">
+          <label for="MstHinbanBk.stockStatusDate_1" th:text="#{MstHinbanBk.stockStatusDate}">STOCK_STATUS_DATE</label><input type="date" id="MstHinbanBk.stockStatusDate_1" name="MstHinbanBk.stockStatusDate_1" maxlength="8" />～<input type="date" id="MstHinbanBk.stockStatusDate_2" name="MstHinbanBk.stockStatusDate_2" maxlength="8" />
+        </div>
+        <div id="printStructureFlg">
+          <fieldset id="MstHinbanBk.printStructureFlgList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:print_structure_flg" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstHinbanBk.printStructureFlg}">PRINT_STRUCTURE_FLG</legend>
+          </fieldset>
+        </div>
+        <div id="printWorkFlowFlg">
+          <fieldset id="MstHinbanBk.printWorkFlowFlgList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:print_work_flow_flg" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstHinbanBk.printWorkFlowFlg}">PRINT_WORK_FLOW_FLG</legend>
+          </fieldset>
+        </div>
+        <div id="printWorkResultFlg">
+          <fieldset id="MstHinbanBk.printWorkResultFlgList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:print_work_result_flg" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstHinbanBk.printWorkResultFlg}">PRINT_WORK_RESULT_FLG</legend>
+          </fieldset>
+        </div>
+        <div id="printShipSheetFlg">
+          <fieldset id="MstHinbanBk.printShipSheetFlgList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:print_ship_sheet_flg" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstHinbanBk.printShipSheetFlg}">PRINT_SHIP_SHEET_FLG</legend>
+          </fieldset>
+        </div>
+        <div id="printInspectFlg">
+          <fieldset id="MstHinbanBk.printInspectFlgList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:print_inspect_flg" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstHinbanBk.printInspectFlg}">PRINT_INSPECT_FLG</legend>
+          </fieldset>
+        </div>
+        <div id="printProductBoxFlg">
+          <fieldset id="MstHinbanBk.printProductBoxFlgList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:print_product_box_flg" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstHinbanBk.printProductBoxFlg}">PRINT_PRODUCT_BOX_FLG</legend>
+          </fieldset>
+        </div>
+        <div id="printHinbanStructFlg">
+          <fieldset id="MstHinbanBk.printHinbanStructFlgList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:print_hinban_struct_flg" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstHinbanBk.printHinbanStructFlg}">PRINT_HINBAN_STRUCT_FLG</legend>
+          </fieldset>
+        </div>
+        <div id="semiProductFlg">
+          <fieldset id="MstHinbanBk.semiProductFlgList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:semi_product_flg" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstHinbanBk.semiProductFlg}">SEMI_PRODUCT_FLG</legend>
+          </fieldset>
+        </div>
+        <div id="stockManagementSection">
+          <label for="MstHinbanBk.stockManagementSection" th:text="#{MstHinbanBk.stockManagementSection}">STOCK_MANAGEMENT_SECTION</label><input type="text" id="MstHinbanBk.stockManagementSection" name="MstHinbanBk.stockManagementSection" maxlength="1" />
+        </div>
+        <div id="totalLt">
+          <label for="MstHinbanBk.totalLt" th:text="#{MstHinbanBk.totalLt}">TOTAL_LT</label><input type="text" id="MstHinbanBk.totalLt" name="MstHinbanBk.totalLt" maxlength="7" />
+        </div>
+        <div id="companyDivCode">
+          <fieldset id="MstHinbanBk.companyDivCodeList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:company_div_code" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstHinbanBk.companyDivCode}">COMPANY_DIV_CODE</legend>
+          </fieldset>
+        </div>
+        <div id="kbn4">
+          <label for="MstHinbanBk.kbn4" th:text="#{MstHinbanBk.kbn4}">KBN4</label><input type="text" id="MstHinbanBk.kbn4" name="MstHinbanBk.kbn4" maxlength="10" />
+        </div>
+        <div id="kbn5">
+          <label for="MstHinbanBk.kbn5" th:text="#{MstHinbanBk.kbn5}">KBN5</label><input type="text" id="MstHinbanBk.kbn5" name="MstHinbanBk.kbn5" maxlength="10" />
+        </div>
+        <div id="kbn6">
+          <label for="MstHinbanBk.kbn6" th:text="#{MstHinbanBk.kbn6}">KBN6</label><input type="text" id="MstHinbanBk.kbn6" name="MstHinbanBk.kbn6" maxlength="10" />
+        </div>
+        <div id="rohs">
+          <label for="MstHinbanBk.rohs" th:text="#{MstHinbanBk.rohs}">ROHS</label><input type="text" id="MstHinbanBk.rohs" name="MstHinbanBk.rohs" maxlength="1" />
+        </div>
+        <div id="tantaiLt">
+          <label for="MstHinbanBk.tantaiLt" th:text="#{MstHinbanBk.tantaiLt}">TANTAI_LT</label><input type="text" id="MstHinbanBk.tantaiLt" name="MstHinbanBk.tantaiLt" maxlength="7" />
+        </div>
+        <div id="tsukesu">
+          <label for="MstHinbanBk.tsukesu" th:text="#{MstHinbanBk.tsukesu}">TSUKESU</label><input type="text" id="MstHinbanBk.tsukesu" name="MstHinbanBk.tsukesu" maxlength="3" />
+        </div>
+        <div id="exTaxRate">
+          <label for="MstHinbanBk.exTaxRate" th:text="#{MstHinbanBk.exTaxRate}">EX_TAX_RATE</label><input type="text" id="MstHinbanBk.exTaxRate" name="MstHinbanBk.exTaxRate" maxlength="2" />
+        </div>
+        <div id="memo">
+          <label for="MstHinbanBk.memo" th:text="#{MstHinbanBk.memo}">MEMO</label><input type="text" id="MstHinbanBk.memo" name="MstHinbanBk.memo" maxlength="60" />
+        </div>
+        <div id="haibanKbn">
+          <fieldset id="MstHinbanBk.haibanKbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:haiban_kbn" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstHinbanBk.haibanKbn}">HAIBAN_KBN</legend>
+          </fieldset>
+        </div>
+        <div id="haibanYm">
+          <label for="MstHinbanBk.haibanYm_1" th:text="#{MstHinbanBk.haibanYm}">HAIBAN_YM</label><input type="month" id="MstHinbanBk.haibanYm_1" name="MstHinbanBk.haibanYm_1" maxlength="6" />～<input type="month" id="MstHinbanBk.haibanYm_2" name="MstHinbanBk.haibanYm_2" maxlength="6" />
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="reset" th:text="#{common.reset}">reset</button>
+      </div>
+      <div class="submits">
+        <button id="SearchMstHinbanBk" class="search" data-gridId="MstHinbanBkGrid" th:text="#{common.search}">submit</button>
+      </div>
+    </form>
+    <form name="MstHinbanBkSRegistForm" action="MstHinbanBkSRegist.ajax" class="regist">
+      <h3 th:text="#{MstHinbanBk.h3}">h3</h3>
+      <div id="MstHinbanBkGrid" data-selectionMode="checkbox" data-frozenColumn="1" th:data-href="@{/model/MstHinbanBk.html}"></div>
+      <div id="MstHinbanBkPager"></div>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="$('[id=&quot;SearchMstHinbanBk&quot;]').click();">reset</button>
+        <a th:href="@{MstHinbanBkSearch.xlsx(baseMei=#{MstHinbanBkS.h2})}" id="MstHinbanBkSearch.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeleteMstHinbanBkS" class="delete selectRows" data-action="MstHinbanBkSDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistMstHinbanBkS" class="regist" th:text="#{common.regist}">submit</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

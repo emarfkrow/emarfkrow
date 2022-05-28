@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{MChokuS.title}">M_CHOKU</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/MChokuGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{MChokuS.h2}">h2</h2>
+    <form name="MChokuSearchForm" action="MChokuSearch.ajax" class="search">
+      <fieldset>
+        <legend th:text="#{MChokuS.legend}">legend</legend>
+        <div id="chokucd">
+          <label for="MChoku.chokucd" th:text="#{MChoku.chokucd}">CHOKUCD</label><input type="text" id="MChoku.chokucd" name="MChoku.chokucd" maxlength="8" />
+        </div>
+        <div id="chokumei1">
+          <label for="MChoku.chokumei1" th:text="#{MChoku.chokumei1}">CHOKUMEI1</label><input type="text" id="MChoku.chokumei1" name="MChoku.chokumei1" maxlength="28" />
+        </div>
+        <div id="chokumei2">
+          <label for="MChoku.chokumei2" th:text="#{MChoku.chokumei2}">CHOKUMEI2</label><input type="text" id="MChoku.chokumei2" name="MChoku.chokumei2" maxlength="22" />
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="reset" th:text="#{common.reset}">reset</button>
+        <a th:href="@{/model/MChoku.html}" id="MChoku" target="dialog" th:text="#{MChoku.add}" tabindex="-1">M_CHOKU</a>
+      </div>
+      <div class="submits">
+        <button id="SearchMChoku" class="search" data-gridId="MChokuGrid" th:text="#{common.search}">submit</button>
+      </div>
+    </form>
+    <form name="MChokuSRegistForm" action="MChokuSRegist.ajax" class="regist">
+      <h3 th:text="#{MChoku.h3}">h3</h3>
+      <div id="MChokuGrid" data-selectionMode="checkbox" data-frozenColumn="0" th:data-href="@{/model/MChoku.html}"></div>
+      <div id="MChokuPager"></div>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="$('[id=&quot;SearchMChoku&quot;]').click();">reset</button>
+        <a th:href="@{MChokuSearch.xlsx(baseMei=#{MChokuS.h2})}" id="MChokuSearch.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeleteMChokuS" class="delete selectRows" data-action="MChokuSDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistMChokuS" class="regist" th:text="#{common.regist}">submit</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

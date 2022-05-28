@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{MstOpeDetailS.title}">MST_OPE_DETAIL</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/MstOpeDetailGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{MstOpeDetailS.h2}">h2</h2>
+    <form name="MstOpeDetailSearchForm" action="MstOpeDetailSearch.ajax" class="search">
+      <fieldset>
+        <legend th:text="#{MstOpeDetailS.legend}">legend</legend>
+        <div id="opeDetail">
+          <label for="MstOpeDetail.opeDetail" th:text="#{MstOpeDetail.opeDetail}">OPE_DETAIL</label><input type="text" id="MstOpeDetail.opeDetail" name="MstOpeDetail.opeDetail" maxlength="10" />
+        </div>
+        <div id="opeDetailName">
+          <label for="MstOpeDetail.opeDetailName" th:text="#{MstOpeDetail.opeDetailName}">OPE_DETAIL_NAME</label><input type="text" id="MstOpeDetail.opeDetailName" name="MstOpeDetail.opeDetailName" maxlength="20" />
+        </div>
+        <div id="opeDetailComment">
+          <label for="MstOpeDetail.opeDetailComment" th:text="#{MstOpeDetail.opeDetailComment}">OPE_DETAIL_COMMENT</label><input type="text" id="MstOpeDetail.opeDetailComment" name="MstOpeDetail.opeDetailComment" maxlength="100" />
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="reset" th:text="#{common.reset}">reset</button>
+        <a th:href="@{/model/MstOpeDetail.html}" id="MstOpeDetail" target="dialog" th:text="#{MstOpeDetail.add}" tabindex="-1">MST_OPE_DETAIL</a>
+      </div>
+      <div class="submits">
+        <button id="SearchMstOpeDetail" class="search" data-gridId="MstOpeDetailGrid" th:text="#{common.search}">submit</button>
+      </div>
+    </form>
+    <form name="MstOpeDetailSRegistForm" action="MstOpeDetailSRegist.ajax" class="regist">
+      <h3 th:text="#{MstOpeDetail.h3}">h3</h3>
+      <div id="MstOpeDetailGrid" data-selectionMode="checkbox" data-addRow="true" data-frozenColumn="0" th:data-href="@{/model/MstOpeDetail.html}"></div>
+      <div id="MstOpeDetailPager"></div>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="$('[id=&quot;SearchMstOpeDetail&quot;]').click();">reset</button>
+        <a th:href="@{MstOpeDetailSearch.xlsx(baseMei=#{MstOpeDetailS.h2})}" id="MstOpeDetailSearch.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeleteMstOpeDetailS" class="delete selectRows" data-action="MstOpeDetailSDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistMstOpeDetailS" class="regist" th:text="#{common.regist}">submit</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

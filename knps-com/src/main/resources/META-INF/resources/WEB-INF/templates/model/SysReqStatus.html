@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{SysReqStatus.title}">SYS_REQ_STATUS</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/SysReqStatusGridColumns.js}"></script>
+<script th:src="@{/model/MstEmpGridColumns.js}"></script>
+<script th:src="@{/model/MstDivisionGridColumns.js}"></script>
+<script th:src="@{/model/MstCompanyGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{SysReqStatus.h2}">h2</h2>
+    <form name="SysReqStatusRegistForm" action="SysReqStatusRegist.ajax" class="regist">
+      <fieldset>
+        <legend th:text="#{SysReqStatus.legend}">legend</legend>
+        <div id="reqId">
+          <label for="SysReqStatus.reqId" th:text="#{SysReqStatus.reqId}">REQ_ID</label><span id="SysReqStatus.reqId"></span><input type="hidden" id="SysReqStatus.reqId" name="SysReqStatus.reqId" class="primaryKey" />
+        </div>
+        <div id="reqPrgName">
+          <label for="SysReqStatus.reqPrgName" th:text="#{SysReqStatus.reqPrgName}">REQ_PRG_NAME</label><input type="text" id="SysReqStatus.reqPrgName" name="SysReqStatus.reqPrgName" maxlength="40" />
+        </div>
+        <div id="reqEmpCode">
+          <label for="SysReqStatus.reqEmpCode" th:text="#{SysReqStatus.reqEmpCode}">REQ_EMP_CODE</label><input type="text" id="SysReqStatus.reqEmpCode" name="SysReqStatus.reqEmpCode" maxlength="10" data-json="MstEmpSearch.json" data-srcDef="EMP_CODE:SysReqStatus.reqEmpCode" data-destDef="SysReqStatus.reqEmpName:EMP_NAME" /><a id="SysReqStatus.reqEmpCode" th:href="@{/model/MstEmpS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="SysReqStatus.reqEmpName" class="refer" data-json="MstEmpSearch.json" data-srcDef="EMP_CODE:SysReqStatus.reqEmpCode" data-destDef="SysReqStatus.reqEmpName:EMP_NAME"></span>
+        </div>
+        <div id="reqDate">
+          <label for="SysReqStatus.reqDate" th:text="#{SysReqStatus.reqDate}">REQ_DATE</label><input type="date" id="SysReqStatus.reqDate" name="SysReqStatus.reqDate" maxlength="7" />
+        </div>
+        <div id="reqExecDate">
+          <label for="SysReqStatus.reqExecDate" th:text="#{SysReqStatus.reqExecDate}">REQ_EXEC_DATE</label><input type="date" id="SysReqStatus.reqExecDate" name="SysReqStatus.reqExecDate" maxlength="7" />
+        </div>
+        <div id="reqCompDate">
+          <label for="SysReqStatus.reqCompDate" th:text="#{SysReqStatus.reqCompDate}">REQ_COMP_DATE</label><input type="date" id="SysReqStatus.reqCompDate" name="SysReqStatus.reqCompDate" maxlength="7" />
+        </div>
+        <div id="execPhase">
+          <label for="SysReqStatus.execPhase" th:text="#{SysReqStatus.execPhase}">EXEC_PHASE</label><input type="text" id="SysReqStatus.execPhase" name="SysReqStatus.execPhase" maxlength="1" />
+        </div>
+        <div id="execStatus">
+          <label for="SysReqStatus.execStatus" th:text="#{SysReqStatus.execStatus}">EXEC_STATUS</label><input type="text" id="SysReqStatus.execStatus" name="SysReqStatus.execStatus" maxlength="1" />
+        </div>
+        <div id="timeStampCreate">
+          <label for="SysReqStatus.timeStampCreate" th:text="#{SysReqStatus.timeStampCreate}">TIME_STAMP_CREATE</label><span id="SysReqStatus.timeStampCreate"></span><input type="hidden" id="SysReqStatus.timeStampCreate" name="SysReqStatus.timeStampCreate" />
+        </div>
+        <div id="timeStampChange">
+          <label for="SysReqStatus.timeStampChange" th:text="#{SysReqStatus.timeStampChange}">TIME_STAMP_CHANGE</label><span id="SysReqStatus.timeStampChange"></span><input type="hidden" id="SysReqStatus.timeStampChange" name="SysReqStatus.timeStampChange" />
+        </div>
+        <div id="userIdCreate">
+          <label for="SysReqStatus.userIdCreate" th:text="#{SysReqStatus.userIdCreate}">USER_ID_CREATE</label><span id="SysReqStatus.userIdCreate"></span><input type="hidden" id="SysReqStatus.userIdCreate" name="SysReqStatus.userIdCreate" />
+        </div>
+        <div id="userIdChange">
+          <label for="SysReqStatus.userIdChange" th:text="#{SysReqStatus.userIdChange}">USER_ID_CHANGE</label><span id="SysReqStatus.userIdChange"></span><input type="hidden" id="SysReqStatus.userIdChange" name="SysReqStatus.userIdChange" />
+        </div>
+        <div id="params">
+          <label for="SysReqStatus.params" th:text="#{SysReqStatus.params}">PARAMS</label><input type="text" id="SysReqStatus.params" name="SysReqStatus.params" maxlength="200" />
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="Dialogate.refresh(event);">reset</button>
+        <a th:href="@{SysReqStatusGet.xlsx(baseMei=#{SysReqStatus.h2})}" id="SysReqStatusGet.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeleteSysReqStatus" class="delete" data-action="SysReqStatusDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistSysReqStatus" class="regist" th:text="#{common.regist}">登録</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

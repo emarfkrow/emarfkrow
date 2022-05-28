@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{PrdOrderpointConditionS.title}">PRD_ORDERPOINT_CONDITION</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/PrdOrderpointConditionGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{PrdOrderpointConditionS.h2}">h2</h2>
+    <form name="PrdOrderpointConditionSearchForm" action="PrdOrderpointConditionSearch.ajax" class="search">
+      <fieldset>
+        <legend th:text="#{PrdOrderpointConditionS.legend}">legend</legend>
+        <div id="recNo">
+          <label for="PrdOrderpointCondition.recNo" th:text="#{PrdOrderpointCondition.recNo}">REC_NO</label><input type="text" id="PrdOrderpointCondition.recNo" name="PrdOrderpointCondition.recNo" maxlength="3" />
+        </div>
+        <div id="yyyy">
+          <label for="PrdOrderpointCondition.yyyy" th:text="#{PrdOrderpointCondition.yyyy}">YYYY</label><input type="text" id="PrdOrderpointCondition.yyyy" name="PrdOrderpointCondition.yyyy" maxlength="4" />
+        </div>
+        <div id="mm">
+          <label for="PrdOrderpointCondition.mm" th:text="#{PrdOrderpointCondition.mm}">MM</label><input type="text" id="PrdOrderpointCondition.mm" name="PrdOrderpointCondition.mm" maxlength="2" />
+        </div>
+        <div id="opeDays">
+          <label for="PrdOrderpointCondition.opeDays" th:text="#{PrdOrderpointCondition.opeDays}">OPE_DAYS</label><input type="text" id="PrdOrderpointCondition.opeDays" name="PrdOrderpointCondition.opeDays" maxlength="2" />
+        </div>
+        <div id="lastProcessDate">
+          <label for="PrdOrderpointCondition.lastProcessDate_1" th:text="#{PrdOrderpointCondition.lastProcessDate}">LAST_PROCESS_DATE</label><input type="date" id="PrdOrderpointCondition.lastProcessDate_1" name="PrdOrderpointCondition.lastProcessDate_1" maxlength="7" />～<input type="date" id="PrdOrderpointCondition.lastProcessDate_2" name="PrdOrderpointCondition.lastProcessDate_2" maxlength="7" />
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="reset" th:text="#{common.reset}">reset</button>
+        <a th:href="@{/model/PrdOrderpointCondition.html}" id="PrdOrderpointCondition" target="dialog" th:text="#{PrdOrderpointCondition.add}" tabindex="-1">PRD_ORDERPOINT_CONDITION</a>
+      </div>
+      <div class="submits">
+        <button id="SearchPrdOrderpointCondition" class="search" data-gridId="PrdOrderpointConditionGrid" th:text="#{common.search}">submit</button>
+      </div>
+    </form>
+    <form name="PrdOrderpointConditionSRegistForm" action="PrdOrderpointConditionSRegist.ajax" class="regist">
+      <h3 th:text="#{PrdOrderpointCondition.h3}">h3</h3>
+      <div id="PrdOrderpointConditionGrid" data-selectionMode="checkbox" data-addRow="true" data-frozenColumn="0" th:data-href="@{/model/PrdOrderpointCondition.html}"></div>
+      <div id="PrdOrderpointConditionPager"></div>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="$('[id=&quot;SearchPrdOrderpointCondition&quot;]').click();">reset</button>
+        <a th:href="@{PrdOrderpointConditionSearch.xlsx(baseMei=#{PrdOrderpointConditionS.h2})}" id="PrdOrderpointConditionSearch.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeletePrdOrderpointConditionS" class="delete selectRows" data-action="PrdOrderpointConditionSDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistPrdOrderpointConditionS" class="regist" th:text="#{common.regist}">submit</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{MstGamen.title}">MST_GAMEN</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/MstGamenGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{MstGamen.h2}">h2</h2>
+    <form name="MstGamenRegistForm" action="MstGamenRegist.ajax" class="regist">
+      <fieldset>
+        <legend th:text="#{MstGamen.legend}">legend</legend>
+        <div id="businessId">
+          <label for="MstGamen.businessId" th:text="#{MstGamen.businessId}">BUSINESS_ID</label><input type="text" id="MstGamen.businessId" name="MstGamen.businessId" maxlength="1" />
+        </div>
+        <div id="gamenId">
+          <label for="MstGamen.gamenId" th:text="#{MstGamen.gamenId}">GAMEN_ID</label><input type="text" id="MstGamen.gamenId" name="MstGamen.gamenId" maxlength="80" class="primaryKey" />
+        </div>
+        <div id="gamenName">
+          <label for="MstGamen.gamenName" th:text="#{MstGamen.gamenName}">GAMEN_NAME</label><input type="text" id="MstGamen.gamenName" name="MstGamen.gamenName" maxlength="160" />
+        </div>
+        <div id="timeStampCreate">
+          <label for="MstGamen.timeStampCreate" th:text="#{MstGamen.timeStampCreate}">TIME_STAMP_CREATE</label><span id="MstGamen.timeStampCreate"></span><input type="hidden" id="MstGamen.timeStampCreate" name="MstGamen.timeStampCreate" />
+        </div>
+        <div id="timeStampChange">
+          <label for="MstGamen.timeStampChange" th:text="#{MstGamen.timeStampChange}">TIME_STAMP_CHANGE</label><span id="MstGamen.timeStampChange"></span><input type="hidden" id="MstGamen.timeStampChange" name="MstGamen.timeStampChange" />
+        </div>
+        <div id="userIdCreate">
+          <label for="MstGamen.userIdCreate" th:text="#{MstGamen.userIdCreate}">USER_ID_CREATE</label><span id="MstGamen.userIdCreate"></span><input type="hidden" id="MstGamen.userIdCreate" name="MstGamen.userIdCreate" />
+        </div>
+        <div id="userIdChange">
+          <label for="MstGamen.userIdChange" th:text="#{MstGamen.userIdChange}">USER_ID_CHANGE</label><span id="MstGamen.userIdChange"></span><input type="hidden" id="MstGamen.userIdChange" name="MstGamen.userIdChange" />
+        </div>
+        <div id="deleteFlag">
+          <fieldset id="MstGamen.deleteFlagList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:delete_flag" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstGamen.deleteFlag}">DELETE_FLAG</legend>
+          </fieldset>
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend th:text="#{SysReqLockStatus.legend}">legend</legend>
+        <div id="userId">
+          <label for="SysReqLockStatus.userId" th:text="#{SysReqLockStatus.userId}">USER_ID</label><input type="text" id="SysReqLockStatus.userId" name="SysReqLockStatus.userId" maxlength="10" />
+        </div>
+        <div id="lockDate">
+          <label for="SysReqLockStatus.lockDate" th:text="#{SysReqLockStatus.lockDate}">LOCK_DATE</label><input type="date" id="SysReqLockStatus.lockDate" name="SysReqLockStatus.lockDate" maxlength="7" />
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="Dialogate.refresh(event);">reset</button>
+        <a th:href="@{MstGamenGet.xlsx(baseMei=#{MstGamen.h2})}" id="MstGamenGet.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeleteMstGamen" class="delete" data-action="MstGamenDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistMstGamen" class="regist" th:text="#{common.regist}">登録</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

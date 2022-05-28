@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{PrdWNesKanbanOldS.title}">PRD_W_NES_KANBAN_OLD</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/PrdWNesKanbanOldGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{PrdWNesKanbanOldS.h2}">h2</h2>
+    <form name="PrdWNesKanbanOldSearchForm" action="PrdWNesKanbanOldSearch.ajax" class="search">
+      <fieldset>
+        <legend th:text="#{PrdWNesKanbanOldS.legend}">legend</legend>
+        <div id="proHinban">
+          <label for="PrdWNesKanbanOld.proHinban" th:text="#{PrdWNesKanbanOld.proHinban}">PRO_HINBAN</label><input type="text" id="PrdWNesKanbanOld.proHinban" name="PrdWNesKanbanOld.proHinban" maxlength="25" />
+        </div>
+        <div id="storeWc">
+          <label for="PrdWNesKanbanOld.storeWc" th:text="#{PrdWNesKanbanOld.storeWc}">STORE_WC</label><input type="text" id="PrdWNesKanbanOld.storeWc" name="PrdWNesKanbanOld.storeWc" maxlength="3" />
+        </div>
+        <div id="routing">
+          <label for="PrdWNesKanbanOld.routing" th:text="#{PrdWNesKanbanOld.routing}">ROUTING</label><input type="text" id="PrdWNesKanbanOld.routing" name="PrdWNesKanbanOld.routing" maxlength="2" />
+        </div>
+        <div id="routingDefGroup">
+          <label for="PrdWNesKanbanOld.routingDefGroup" th:text="#{PrdWNesKanbanOld.routingDefGroup}">ROUTING_DEF_GROUP</label><input type="text" id="PrdWNesKanbanOld.routingDefGroup" name="PrdWNesKanbanOld.routingDefGroup" maxlength="2" />
+        </div>
+        <div id="storeOpeDetail">
+          <label for="PrdWNesKanbanOld.storeOpeDetail" th:text="#{PrdWNesKanbanOld.storeOpeDetail}">STORE_OPE_DETAIL</label><input type="text" id="PrdWNesKanbanOld.storeOpeDetail" name="PrdWNesKanbanOld.storeOpeDetail" maxlength="10" />
+        </div>
+        <div id="proNesCounts">
+          <label for="PrdWNesKanbanOld.proNesCounts_1" th:text="#{PrdWNesKanbanOld.proNesCounts}">PRO_NES_COUNTS</label><input type="text" id="PrdWNesKanbanOld.proNesCounts_1" name="PrdWNesKanbanOld.proNesCounts_1" maxlength="6" />～<input type="text" id="PrdWNesKanbanOld.proNesCounts_2" name="PrdWNesKanbanOld.proNesCounts_2" maxlength="6" />
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="reset" th:text="#{common.reset}">reset</button>
+        <a th:href="@{/model/PrdWNesKanbanOld.html}" id="PrdWNesKanbanOld" target="dialog" th:text="#{PrdWNesKanbanOld.add}" tabindex="-1">PRD_W_NES_KANBAN_OLD</a>
+      </div>
+      <div class="submits">
+        <button id="SearchPrdWNesKanbanOld" class="search" data-gridId="PrdWNesKanbanOldGrid" th:text="#{common.search}">submit</button>
+      </div>
+    </form>
+    <form name="PrdWNesKanbanOldSRegistForm" action="PrdWNesKanbanOldSRegist.ajax" class="regist">
+      <h3 th:text="#{PrdWNesKanbanOld.h3}">h3</h3>
+      <div id="PrdWNesKanbanOldGrid" data-selectionMode="checkbox" data-frozenColumn="2" th:data-href="@{/model/PrdWNesKanbanOld.html}"></div>
+      <div id="PrdWNesKanbanOldPager"></div>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="$('[id=&quot;SearchPrdWNesKanbanOld&quot;]').click();">reset</button>
+        <a th:href="@{PrdWNesKanbanOldSearch.xlsx(baseMei=#{PrdWNesKanbanOldS.h2})}" id="PrdWNesKanbanOldSearch.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeletePrdWNesKanbanOldS" class="delete selectRows" data-action="PrdWNesKanbanOldSDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistPrdWNesKanbanOldS" class="regist" th:text="#{common.regist}">submit</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

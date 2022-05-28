@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{MstSupplyListBkS.title}">MST_SUPPLY_LIST_BK</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/MstSupplyListBkGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{MstSupplyListBkS.h2}">h2</h2>
+    <form name="MstSupplyListBkSearchForm" action="MstSupplyListBkSearch.ajax" class="search">
+      <fieldset>
+        <legend th:text="#{MstSupplyListBkS.legend}">legend</legend>
+        <div id="yy">
+          <label for="MstSupplyListBk.yy" th:text="#{MstSupplyListBk.yy}">YY</label><input type="text" id="MstSupplyListBk.yy" name="MstSupplyListBk.yy" maxlength="4" />
+        </div>
+        <div id="routingGroup">
+          <label for="MstSupplyListBk.routingGroup" th:text="#{MstSupplyListBk.routingGroup}">ROUTING_GROUP</label><input type="text" id="MstSupplyListBk.routingGroup" name="MstSupplyListBk.routingGroup" maxlength="2" />
+        </div>
+        <div id="manHinban">
+          <label for="MstSupplyListBk.manHinban" th:text="#{MstSupplyListBk.manHinban}">MAN_HINBAN</label><input type="text" id="MstSupplyListBk.manHinban" name="MstSupplyListBk.manHinban" maxlength="25" />
+        </div>
+        <div id="routing">
+          <label for="MstSupplyListBk.routing" th:text="#{MstSupplyListBk.routing}">ROUTING</label><input type="text" id="MstSupplyListBk.routing" name="MstSupplyListBk.routing" maxlength="2" />
+        </div>
+        <div id="supplyHinban">
+          <label for="MstSupplyListBk.supplyHinban" th:text="#{MstSupplyListBk.supplyHinban}">SUPPLY_HINBAN</label><input type="text" id="MstSupplyListBk.supplyHinban" name="MstSupplyListBk.supplyHinban" maxlength="25" />
+        </div>
+        <div id="counts">
+          <label for="MstSupplyListBk.counts" th:text="#{MstSupplyListBk.counts}">COUNTS</label><input type="text" id="MstSupplyListBk.counts" name="MstSupplyListBk.counts" maxlength="11" />
+        </div>
+        <div id="supplyKbn">
+          <fieldset id="MstSupplyListBk.supplyKbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:supply_kbn" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstSupplyListBk.supplyKbn}">SUPPLY_KBN</legend>
+          </fieldset>
+        </div>
+        <div id="stanCounts">
+          <label for="MstSupplyListBk.stanCounts_1" th:text="#{MstSupplyListBk.stanCounts}">STAN_COUNTS</label><input type="text" id="MstSupplyListBk.stanCounts_1" name="MstSupplyListBk.stanCounts_1" maxlength="11" />～<input type="text" id="MstSupplyListBk.stanCounts_2" name="MstSupplyListBk.stanCounts_2" maxlength="11" />
+        </div>
+        <div id="unitSupply">
+          <label for="MstSupplyListBk.unitSupply" th:text="#{MstSupplyListBk.unitSupply}">UNIT_SUPPLY</label><input type="text" id="MstSupplyListBk.unitSupply" name="MstSupplyListBk.unitSupply" maxlength="9" />
+        </div>
+        <div id="deleteFlag">
+          <fieldset id="MstSupplyListBk.deleteFlagList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:delete_flag" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstSupplyListBk.deleteFlag}">DELETE_FLAG</legend>
+          </fieldset>
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="reset" th:text="#{common.reset}">reset</button>
+      </div>
+      <div class="submits">
+        <button id="SearchMstSupplyListBk" class="search" data-gridId="MstSupplyListBkGrid" th:text="#{common.search}">submit</button>
+      </div>
+    </form>
+    <form name="MstSupplyListBkSRegistForm" action="MstSupplyListBkSRegist.ajax" class="regist">
+      <h3 th:text="#{MstSupplyListBk.h3}">h3</h3>
+      <div id="MstSupplyListBkGrid" data-selectionMode="checkbox" data-frozenColumn="4" th:data-href="@{/model/MstSupplyListBk.html}"></div>
+      <div id="MstSupplyListBkPager"></div>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="$('[id=&quot;SearchMstSupplyListBk&quot;]').click();">reset</button>
+        <a th:href="@{MstSupplyListBkSearch.xlsx(baseMei=#{MstSupplyListBkS.h2})}" id="MstSupplyListBkSearch.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeleteMstSupplyListBkS" class="delete selectRows" data-action="MstSupplyListBkSDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistMstSupplyListBkS" class="regist" th:text="#{common.regist}">submit</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

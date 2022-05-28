@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{MstRoutingDefS.title}">MST_ROUTING_DEF</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/MstRoutingDefGridColumns.js}"></script>
+<script th:src="@{/model/MfgKanbanHedGridColumns.js}"></script>
+<script th:src="@{/model/MstRoutingBkGridColumns.js}"></script>
+<script th:src="@{/model/MstWcGridColumns.js}"></script>
+<script th:src="@{/model/MstWcBkGridColumns.js}"></script>
+<script th:src="@{/model/MstProcGridColumns.js}"></script>
+<script th:src="@{/model/MstWsGridColumns.js}"></script>
+<script th:src="@{/model/MstTeamGridColumns.js}"></script>
+<script th:src="@{/model/MstGroupGridColumns.js}"></script>
+<script th:src="@{/model/MstDivisionGridColumns.js}"></script>
+<script th:src="@{/model/MstCompanyGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierGridColumns.js}"></script>
+<script th:src="@{/model/InvStockProcessSupplyGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierBkGridColumns.js}"></script>
+<script th:src="@{/model/MstTaxGridColumns.js}"></script>
+<script th:src="@{/model/MstCostCenterGridColumns.js}"></script>
+<script th:src="@{/model/MstCostCenterBkGridColumns.js}"></script>
+<script th:src="@{/model/MstSubinvGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplyListGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplyListBkGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplyListHsGridColumns.js}"></script>
+<script th:src="@{/model/MstRoutingDefBkGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{MstRoutingDefS.h2}">h2</h2>
+    <form name="MstRoutingDefSearchForm" action="MstRoutingDefSearch.ajax" class="search">
+      <fieldset>
+        <legend th:text="#{MstRoutingDefS.legend}">legend</legend>
+        <div id="manHinban">
+          <label for="MstRoutingDef.manHinban" th:text="#{MstRoutingDef.manHinban}">MAN_HINBAN</label><input type="text" id="MstRoutingDef.manHinban" name="MstRoutingDef.manHinban" maxlength="25" />
+        </div>
+        <div id="routingGroup">
+          <label for="MstRoutingDef.routingGroup" th:text="#{MstRoutingDef.routingGroup}">ROUTING_GROUP</label><input type="text" id="MstRoutingDef.routingGroup" name="MstRoutingDef.routingGroup" maxlength="2" />
+        </div>
+        <div id="permissionFlag">
+          <fieldset id="MstRoutingDef.permissionFlagList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:permission_flag" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstRoutingDef.permissionFlag}">PERMISSION_FLAG</legend>
+          </fieldset>
+        </div>
+        <div id="usableFlag">
+          <fieldset id="MstRoutingDef.usableFlagList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:usable_flag" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstRoutingDef.usableFlag}">USABLE_FLAG</legend>
+          </fieldset>
+        </div>
+        <div id="maxRouting">
+          <label for="MstRoutingDef.maxRouting" th:text="#{MstRoutingDef.maxRouting}">MAX_ROUTING</label><input type="text" id="MstRoutingDef.maxRouting" name="MstRoutingDef.maxRouting" maxlength="2" />
+        </div>
+        <div id="copySourceGroup">
+          <label for="MstRoutingDef.copySourceGroup" th:text="#{MstRoutingDef.copySourceGroup}">COPY_SOURCE_GROUP</label><input type="text" id="MstRoutingDef.copySourceGroup" name="MstRoutingDef.copySourceGroup" maxlength="2" />
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="reset" th:text="#{common.reset}">reset</button>
+        <a th:href="@{/model/MstRoutingDef.html}" id="MstRoutingDef" target="dialog" th:text="#{MstRoutingDef.add}" tabindex="-1">MST_ROUTING_DEF</a>
+      </div>
+      <div class="submits">
+        <button id="SearchMstRoutingDef" class="search" data-gridId="MstRoutingDefGrid" th:text="#{common.search}">submit</button>
+      </div>
+    </form>
+    <form name="MstRoutingDefSRegistForm" action="MstRoutingDefSRegist.ajax" class="regist">
+      <h3 th:text="#{MstRoutingDef.h3}">h3</h3>
+      <div id="MstRoutingDefGrid" data-selectionMode="checkbox" data-frozenColumn="1" th:data-href="@{/model/MstRoutingDef.html}"></div>
+      <div id="MstRoutingDefPager"></div>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="$('[id=&quot;SearchMstRoutingDef&quot;]').click();">reset</button>
+        <a th:href="@{MstRoutingDefSearch.xlsx(baseMei=#{MstRoutingDefS.h2})}" id="MstRoutingDefSearch.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeleteMstRoutingDefS" class="delete selectRows" data-action="MstRoutingDefSDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistMstRoutingDefS" class="regist" th:text="#{common.regist}">submit</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

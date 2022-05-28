@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{PrdMSupBudgetOutBkS.title}">PRD_M_SUP_BUDGET_OUT_BK</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/PrdMSupBudgetOutBkGridColumns.js}"></script>
+<script th:src="@{/model/MstWcGridColumns.js}"></script>
+<script th:src="@{/model/MstWcBkGridColumns.js}"></script>
+<script th:src="@{/model/MstProcGridColumns.js}"></script>
+<script th:src="@{/model/MstWsGridColumns.js}"></script>
+<script th:src="@{/model/MstTeamGridColumns.js}"></script>
+<script th:src="@{/model/MstGroupGridColumns.js}"></script>
+<script th:src="@{/model/MstDivisionGridColumns.js}"></script>
+<script th:src="@{/model/MstCompanyGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierGridColumns.js}"></script>
+<script th:src="@{/model/InvStockProcessSupplyGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierBkGridColumns.js}"></script>
+<script th:src="@{/model/MstTaxGridColumns.js}"></script>
+<script th:src="@{/model/MstCostCenterGridColumns.js}"></script>
+<script th:src="@{/model/MstCostCenterBkGridColumns.js}"></script>
+<script th:src="@{/model/MstSubinvGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{PrdMSupBudgetOutBkS.h2}">h2</h2>
+    <form name="PrdMSupBudgetOutBkSearchForm" action="PrdMSupBudgetOutBkSearch.ajax" class="search">
+      <fieldset>
+        <legend th:text="#{PrdMSupBudgetOutBkS.legend}">legend</legend>
+        <div id="yyyy">
+          <label for="PrdMSupBudgetOutBk.yyyy" th:text="#{PrdMSupBudgetOutBk.yyyy}">YYYY</label><input type="text" id="PrdMSupBudgetOutBk.yyyy" name="PrdMSupBudgetOutBk.yyyy" maxlength="4" />
+        </div>
+        <div id="mm">
+          <label for="PrdMSupBudgetOutBk.mm" th:text="#{PrdMSupBudgetOutBk.mm}">MM</label><input type="text" id="PrdMSupBudgetOutBk.mm" name="PrdMSupBudgetOutBk.mm" maxlength="2" />
+        </div>
+        <div id="hinban">
+          <label for="PrdMSupBudgetOutBk.hinban" th:text="#{PrdMSupBudgetOutBk.hinban}">HINBAN</label><input type="text" id="PrdMSupBudgetOutBk.hinban" name="PrdMSupBudgetOutBk.hinban" maxlength="25" />
+        </div>
+        <div id="routing">
+          <label for="PrdMSupBudgetOutBk.routing" th:text="#{PrdMSupBudgetOutBk.routing}">ROUTING</label><input type="text" id="PrdMSupBudgetOutBk.routing" name="PrdMSupBudgetOutBk.routing" maxlength="2" />
+        </div>
+        <div id="wcCode">
+          <label for="PrdMSupBudgetOutBk.wcCode" th:text="#{PrdMSupBudgetOutBk.wcCode}">WC_CODE</label><input type="text" id="PrdMSupBudgetOutBk.wcCode" name="PrdMSupBudgetOutBk.wcCode" maxlength="3" data-json="MstWcSearch.json" data-srcDef="WC_CODE:PrdMSupBudgetOutBk.wcCode" data-destDef="PrdMSupBudgetOutBk.wcName:WC_NAME" /><a id="PrdMSupBudgetOutBk.wcCode" th:href="@{/model/MstWcS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="PrdMSupBudgetOutBk.wcName" class="refer" data-json="MstWcSearch.json" data-srcDef="WC_CODE:PrdMSupBudgetOutBk.wcCode" data-destDef="PrdMSupBudgetOutBk.wcName:WC_NAME"></span>
+        </div>
+        <div id="opeDetail">
+          <label for="PrdMSupBudgetOutBk.opeDetail" th:text="#{PrdMSupBudgetOutBk.opeDetail}">OPE_DETAIL</label><input type="text" id="PrdMSupBudgetOutBk.opeDetail" name="PrdMSupBudgetOutBk.opeDetail" maxlength="10" />
+        </div>
+        <div id="supCode">
+          <label for="PrdMSupBudgetOutBk.supCode" th:text="#{PrdMSupBudgetOutBk.supCode}">SUP_CODE</label><input type="text" id="PrdMSupBudgetOutBk.supCode" name="PrdMSupBudgetOutBk.supCode" maxlength="6" data-json="MstSupplierSearch.json" data-srcDef="SUP_CODE:PrdMSupBudgetOutBk.supCode" data-destDef="PrdMSupBudgetOutBk.supName:SUP_NAME" /><a id="PrdMSupBudgetOutBk.supCode" th:href="@{/model/MstSupplierS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="PrdMSupBudgetOutBk.supName" class="refer" data-json="MstSupplierSearch.json" data-srcDef="SUP_CODE:PrdMSupBudgetOutBk.supCode" data-destDef="PrdMSupBudgetOutBk.supName:SUP_NAME"></span>
+        </div>
+        <div id="orderCounts">
+          <label for="PrdMSupBudgetOutBk.orderCounts_1" th:text="#{PrdMSupBudgetOutBk.orderCounts}">ORDER_COUNTS</label><input type="text" id="PrdMSupBudgetOutBk.orderCounts_1" name="PrdMSupBudgetOutBk.orderCounts_1" maxlength="7" />～<input type="text" id="PrdMSupBudgetOutBk.orderCounts_2" name="PrdMSupBudgetOutBk.orderCounts_2" maxlength="7" />
+        </div>
+        <div id="orderUnit">
+          <label for="PrdMSupBudgetOutBk.orderUnit_1" th:text="#{PrdMSupBudgetOutBk.orderUnit}">ORDER_UNIT</label><input type="text" id="PrdMSupBudgetOutBk.orderUnit_1" name="PrdMSupBudgetOutBk.orderUnit_1" maxlength="9" />～<input type="text" id="PrdMSupBudgetOutBk.orderUnit_2" name="PrdMSupBudgetOutBk.orderUnit_2" maxlength="9" />
+        </div>
+        <div id="orderAmount">
+          <label for="PrdMSupBudgetOutBk.orderAmount_1" th:text="#{PrdMSupBudgetOutBk.orderAmount}">ORDER_AMOUNT</label><input type="text" id="PrdMSupBudgetOutBk.orderAmount_1" name="PrdMSupBudgetOutBk.orderAmount_1" maxlength="11" />～<input type="text" id="PrdMSupBudgetOutBk.orderAmount_2" name="PrdMSupBudgetOutBk.orderAmount_2" maxlength="11" />
+        </div>
+        <div id="itemKbn">
+          <fieldset id="PrdMSupBudgetOutBk.itemKbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:item_kbn" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{PrdMSupBudgetOutBk.itemKbn}">ITEM_KBN</legend>
+          </fieldset>
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="reset" th:text="#{common.reset}">reset</button>
+        <a th:href="@{/model/PrdMSupBudgetOutBk.html}" id="PrdMSupBudgetOutBk" target="dialog" th:text="#{PrdMSupBudgetOutBk.add}" tabindex="-1">PRD_M_SUP_BUDGET_OUT_BK</a>
+      </div>
+      <div class="submits">
+        <button id="SearchPrdMSupBudgetOutBk" class="search" data-gridId="PrdMSupBudgetOutBkGrid" th:text="#{common.search}">submit</button>
+      </div>
+    </form>
+    <form name="PrdMSupBudgetOutBkSRegistForm" action="PrdMSupBudgetOutBkSRegist.ajax" class="regist">
+      <h3 th:text="#{PrdMSupBudgetOutBk.h3}">h3</h3>
+      <div id="PrdMSupBudgetOutBkGrid" data-selectionMode="checkbox" data-frozenColumn="-1" th:data-href="@{/model/PrdMSupBudgetOutBk.html}"></div>
+      <div id="PrdMSupBudgetOutBkPager"></div>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="$('[id=&quot;SearchPrdMSupBudgetOutBk&quot;]').click();">reset</button>
+        <a th:href="@{PrdMSupBudgetOutBkSearch.xlsx(baseMei=#{PrdMSupBudgetOutBkS.h2})}" id="PrdMSupBudgetOutBkSearch.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeletePrdMSupBudgetOutBkS" class="delete selectRows" data-action="PrdMSupBudgetOutBkSDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistPrdMSupBudgetOutBkS" class="regist" th:text="#{common.regist}">submit</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

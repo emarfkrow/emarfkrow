@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{PrdPreStatusM.title}">PRD_PRE_STATUS_M</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/PrdPreStatusMGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{PrdPreStatusM.h2}">h2</h2>
+    <form name="PrdPreStatusMRegistForm" action="PrdPreStatusMRegist.ajax" class="regist">
+      <fieldset>
+        <legend th:text="#{PrdPreStatusM.legend}">legend</legend>
+        <div id="yy">
+          <label for="PrdPreStatusM.yy" th:text="#{PrdPreStatusM.yy}">YY</label><span id="PrdPreStatusM.yy"></span><input type="hidden" id="PrdPreStatusM.yy" name="PrdPreStatusM.yy" class="primaryKey" />
+        </div>
+        <div id="mm">
+          <label for="PrdPreStatusM.mm" th:text="#{PrdPreStatusM.mm}">MM</label><span id="PrdPreStatusM.mm"></span><input type="hidden" id="PrdPreStatusM.mm" name="PrdPreStatusM.mm" class="primaryKey" />
+        </div>
+        <div id="salesTargetStatus">
+          <label for="PrdPreStatusM.salesTargetStatus" th:text="#{PrdPreStatusM.salesTargetStatus}">SALES_TARGET_STATUS</label><input type="text" id="PrdPreStatusM.salesTargetStatus" name="PrdPreStatusM.salesTargetStatus" maxlength="1" />
+        </div>
+        <div id="prdPlanMakeStatus">
+          <label for="PrdPreStatusM.prdPlanMakeStatus" th:text="#{PrdPreStatusM.prdPlanMakeStatus}">PRD_PLAN_MAKE_STATUS</label><input type="text" id="PrdPreStatusM.prdPlanMakeStatus" name="PrdPreStatusM.prdPlanMakeStatus" maxlength="1" />
+        </div>
+        <div id="prdPlanFixedStatus">
+          <label for="PrdPreStatusM.prdPlanFixedStatus" th:text="#{PrdPreStatusM.prdPlanFixedStatus}">PRD_PLAN_FIXED_STATUS</label><input type="text" id="PrdPreStatusM.prdPlanFixedStatus" name="PrdPreStatusM.prdPlanFixedStatus" maxlength="1" />
+        </div>
+        <div id="timeStampCreate">
+          <label for="PrdPreStatusM.timeStampCreate" th:text="#{PrdPreStatusM.timeStampCreate}">TIME_STAMP_CREATE</label><span id="PrdPreStatusM.timeStampCreate"></span><input type="hidden" id="PrdPreStatusM.timeStampCreate" name="PrdPreStatusM.timeStampCreate" />
+        </div>
+        <div id="timeStampChange">
+          <label for="PrdPreStatusM.timeStampChange" th:text="#{PrdPreStatusM.timeStampChange}">TIME_STAMP_CHANGE</label><span id="PrdPreStatusM.timeStampChange"></span><input type="hidden" id="PrdPreStatusM.timeStampChange" name="PrdPreStatusM.timeStampChange" />
+        </div>
+        <div id="userIdCreate">
+          <label for="PrdPreStatusM.userIdCreate" th:text="#{PrdPreStatusM.userIdCreate}">USER_ID_CREATE</label><span id="PrdPreStatusM.userIdCreate"></span><input type="hidden" id="PrdPreStatusM.userIdCreate" name="PrdPreStatusM.userIdCreate" />
+        </div>
+        <div id="userIdChange">
+          <label for="PrdPreStatusM.userIdChange" th:text="#{PrdPreStatusM.userIdChange}">USER_ID_CHANGE</label><span id="PrdPreStatusM.userIdChange"></span><input type="hidden" id="PrdPreStatusM.userIdChange" name="PrdPreStatusM.userIdChange" />
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="Dialogate.refresh(event);">reset</button>
+        <a th:href="@{PrdPreStatusMGet.xlsx(baseMei=#{PrdPreStatusM.h2})}" id="PrdPreStatusMGet.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeletePrdPreStatusM" class="delete" data-action="PrdPreStatusMDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistPrdPreStatusM" class="regist" th:text="#{common.regist}">登録</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

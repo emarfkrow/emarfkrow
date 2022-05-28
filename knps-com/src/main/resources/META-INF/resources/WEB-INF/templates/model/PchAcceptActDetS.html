@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{PchAcceptActDetS.title}">PCH_ACCEPT_ACT_DET</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/PchAcceptActDetGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{PchAcceptActDetS.h2}">h2</h2>
+    <form name="PchAcceptActDetSearchForm" action="PchAcceptActDetSearch.ajax" class="search">
+      <fieldset>
+        <legend th:text="#{PchAcceptActDetS.legend}">legend</legend>
+        <div id="actNo">
+          <label for="PchAcceptActDet.actNo" th:text="#{PchAcceptActDet.actNo}">ACT_NO</label><input type="text" id="PchAcceptActDet.actNo" name="PchAcceptActDet.actNo" maxlength="10" />
+        </div>
+        <div id="actBranchNo">
+          <label for="PchAcceptActDet.actBranchNo" th:text="#{PchAcceptActDet.actBranchNo}">ACT_BRANCH_NO</label><input type="text" id="PchAcceptActDet.actBranchNo" name="PchAcceptActDet.actBranchNo" maxlength="2" />
+        </div>
+        <div id="inspectCounts">
+          <label for="PchAcceptActDet.inspectCounts_1" th:text="#{PchAcceptActDet.inspectCounts}">INSPECT_COUNTS</label><input type="text" id="PchAcceptActDet.inspectCounts_1" name="PchAcceptActDet.inspectCounts_1" maxlength="11" />～<input type="text" id="PchAcceptActDet.inspectCounts_2" name="PchAcceptActDet.inspectCounts_2" maxlength="11" />
+        </div>
+        <div id="inspectUnit">
+          <label for="PchAcceptActDet.inspectUnit_1" th:text="#{PchAcceptActDet.inspectUnit}">INSPECT_UNIT</label><input type="text" id="PchAcceptActDet.inspectUnit_1" name="PchAcceptActDet.inspectUnit_1" maxlength="9" />～<input type="text" id="PchAcceptActDet.inspectUnit_2" name="PchAcceptActDet.inspectUnit_2" maxlength="9" />
+        </div>
+        <div id="amount">
+          <label for="PchAcceptActDet.amount" th:text="#{PchAcceptActDet.amount}">AMOUNT</label><input type="text" id="PchAcceptActDet.amount" name="PchAcceptActDet.amount" maxlength="11" />
+        </div>
+        <div id="taxAmount">
+          <label for="PchAcceptActDet.taxAmount_1" th:text="#{PchAcceptActDet.taxAmount}">TAX_AMOUNT</label><input type="text" id="PchAcceptActDet.taxAmount_1" name="PchAcceptActDet.taxAmount_1" maxlength="11" />～<input type="text" id="PchAcceptActDet.taxAmount_2" name="PchAcceptActDet.taxAmount_2" maxlength="11" />
+        </div>
+        <div id="checkIssueDate">
+          <label for="PchAcceptActDet.checkIssueDate_1" th:text="#{PchAcceptActDet.checkIssueDate}">CHECK_ISSUE_DATE</label><input type="date" id="PchAcceptActDet.checkIssueDate_1" name="PchAcceptActDet.checkIssueDate_1" maxlength="7" />～<input type="date" id="PchAcceptActDet.checkIssueDate_2" name="PchAcceptActDet.checkIssueDate_2" maxlength="7" />
+        </div>
+        <div id="checkListNo">
+          <label for="PchAcceptActDet.checkListNo" th:text="#{PchAcceptActDet.checkListNo}">CHECK_LIST_NO</label><input type="text" id="PchAcceptActDet.checkListNo" name="PchAcceptActDet.checkListNo" maxlength="8" />
+        </div>
+        <div id="checkIssueOpe">
+          <label for="PchAcceptActDet.checkIssueOpe" th:text="#{PchAcceptActDet.checkIssueOpe}">CHECK_ISSUE_OPE</label><input type="text" id="PchAcceptActDet.checkIssueOpe" name="PchAcceptActDet.checkIssueOpe" maxlength="10" />
+        </div>
+        <div id="checkFlg">
+          <fieldset id="PchAcceptActDet.checkFlgList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:check_flg" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{PchAcceptActDet.checkFlg}">CHECK_FLG</legend>
+          </fieldset>
+        </div>
+        <div id="checkCompDate">
+          <label for="PchAcceptActDet.checkCompDate_1" th:text="#{PchAcceptActDet.checkCompDate}">CHECK_COMP_DATE</label><input type="date" id="PchAcceptActDet.checkCompDate_1" name="PchAcceptActDet.checkCompDate_1" maxlength="7" />～<input type="date" id="PchAcceptActDet.checkCompDate_2" name="PchAcceptActDet.checkCompDate_2" maxlength="7" />
+        </div>
+        <div id="checkCompOpe">
+          <label for="PchAcceptActDet.checkCompOpe" th:text="#{PchAcceptActDet.checkCompOpe}">CHECK_COMP_OPE</label><input type="text" id="PchAcceptActDet.checkCompOpe" name="PchAcceptActDet.checkCompOpe" maxlength="10" />
+        </div>
+        <div id="closeDate">
+          <label for="PchAcceptActDet.closeDate_1" th:text="#{PchAcceptActDet.closeDate}">CLOSE_DATE</label><input type="date" id="PchAcceptActDet.closeDate_1" name="PchAcceptActDet.closeDate_1" maxlength="7" />～<input type="date" id="PchAcceptActDet.closeDate_2" name="PchAcceptActDet.closeDate_2" maxlength="7" />
+        </div>
+        <div id="inspectIsshikiUnitF">
+          <fieldset id="PchAcceptActDet.inspectIsshikiUnitFList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:inspect_isshiki_unit_f" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{PchAcceptActDet.inspectIsshikiUnitF}">INSPECT_ISSHIKI_UNIT_F</legend>
+          </fieldset>
+        </div>
+        <div id="inspectIsshikiCounts">
+          <label for="PchAcceptActDet.inspectIsshikiCounts_1" th:text="#{PchAcceptActDet.inspectIsshikiCounts}">INSPECT_ISSHIKI_COUNTS</label><input type="text" id="PchAcceptActDet.inspectIsshikiCounts_1" name="PchAcceptActDet.inspectIsshikiCounts_1" maxlength="11" />～<input type="text" id="PchAcceptActDet.inspectIsshikiCounts_2" name="PchAcceptActDet.inspectIsshikiCounts_2" maxlength="11" />
+        </div>
+        <div id="inspectIsshikiUnit">
+          <label for="PchAcceptActDet.inspectIsshikiUnit_1" th:text="#{PchAcceptActDet.inspectIsshikiUnit}">INSPECT_ISSHIKI_UNIT</label><input type="text" id="PchAcceptActDet.inspectIsshikiUnit_1" name="PchAcceptActDet.inspectIsshikiUnit_1" maxlength="9" />～<input type="text" id="PchAcceptActDet.inspectIsshikiUnit_2" name="PchAcceptActDet.inspectIsshikiUnit_2" maxlength="9" />
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="reset" th:text="#{common.reset}">reset</button>
+        <a th:href="@{/model/PchAcceptActDet.html}" id="PchAcceptActDet" target="dialog" th:text="#{PchAcceptActDet.add}" tabindex="-1">PCH_ACCEPT_ACT_DET</a>
+      </div>
+      <div class="submits">
+        <button id="SearchPchAcceptActDet" class="search" data-gridId="PchAcceptActDetGrid" th:text="#{common.search}">submit</button>
+      </div>
+    </form>
+    <form name="PchAcceptActDetSRegistForm" action="PchAcceptActDetSRegist.ajax" class="regist">
+      <h3 th:text="#{PchAcceptActDet.h3}">h3</h3>
+      <div id="PchAcceptActDetGrid" data-selectionMode="checkbox" data-frozenColumn="1" th:data-href="@{/model/PchAcceptActDet.html}"></div>
+      <div id="PchAcceptActDetPager"></div>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="$('[id=&quot;SearchPchAcceptActDet&quot;]').click();">reset</button>
+        <a th:href="@{PchAcceptActDetSearch.xlsx(baseMei=#{PchAcceptActDetS.h2})}" id="PchAcceptActDetSearch.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeletePchAcceptActDetS" class="delete selectRows" data-action="PchAcceptActDetSDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistPchAcceptActDetS" class="regist" th:text="#{common.regist}">submit</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

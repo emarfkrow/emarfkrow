@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{PchProdTotalInfS.title}">PCH_PROD_TOTAL_INF</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/PchProdTotalInfGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{PchProdTotalInfS.h2}">h2</h2>
+    <form name="PchProdTotalInfSearchForm" action="PchProdTotalInfSearch.ajax" class="search">
+      <fieldset>
+        <legend th:text="#{PchProdTotalInfS.legend}">legend</legend>
+        <div id="closeDate">
+          <label for="PchProdTotalInf.closeDate_1" th:text="#{PchProdTotalInf.closeDate}">CLOSE_DATE</label><input type="date" id="PchProdTotalInf.closeDate_1" name="PchProdTotalInf.closeDate_1" maxlength="4" />～<input type="date" id="PchProdTotalInf.closeDate_2" name="PchProdTotalInf.closeDate_2" maxlength="4" />
+        </div>
+        <div id="routingGroup">
+          <label for="PchProdTotalInf.routingGroup" th:text="#{PchProdTotalInf.routingGroup}">ROUTING_GROUP</label><input type="text" id="PchProdTotalInf.routingGroup" name="PchProdTotalInf.routingGroup" maxlength="2" />
+        </div>
+        <div id="hinban">
+          <label for="PchProdTotalInf.hinban" th:text="#{PchProdTotalInf.hinban}">HINBAN</label><input type="text" id="PchProdTotalInf.hinban" name="PchProdTotalInf.hinban" maxlength="25" />
+        </div>
+        <div id="routing">
+          <label for="PchProdTotalInf.routing" th:text="#{PchProdTotalInf.routing}">ROUTING</label><input type="text" id="PchProdTotalInf.routing" name="PchProdTotalInf.routing" maxlength="2" />
+        </div>
+        <div id="totalCounts">
+          <label for="PchProdTotalInf.totalCounts_1" th:text="#{PchProdTotalInf.totalCounts}">TOTAL_COUNTS</label><input type="text" id="PchProdTotalInf.totalCounts_1" name="PchProdTotalInf.totalCounts_1" maxlength="11" />～<input type="text" id="PchProdTotalInf.totalCounts_2" name="PchProdTotalInf.totalCounts_2" maxlength="11" />
+        </div>
+        <div id="totalAmount">
+          <label for="PchProdTotalInf.totalAmount_1" th:text="#{PchProdTotalInf.totalAmount}">TOTAL_AMOUNT</label><input type="text" id="PchProdTotalInf.totalAmount_1" name="PchProdTotalInf.totalAmount_1" maxlength="13" />～<input type="text" id="PchProdTotalInf.totalAmount_2" name="PchProdTotalInf.totalAmount_2" maxlength="13" />
+        </div>
+        <div id="sumSupply">
+          <label for="PchProdTotalInf.sumSupply" th:text="#{PchProdTotalInf.sumSupply}">SUM_SUPPLY</label><input type="text" id="PchProdTotalInf.sumSupply" name="PchProdTotalInf.sumSupply" maxlength="13" />
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="reset" th:text="#{common.reset}">reset</button>
+      </div>
+      <div class="submits">
+        <button id="SearchPchProdTotalInf" class="search" data-gridId="PchProdTotalInfGrid" th:text="#{common.search}">submit</button>
+      </div>
+    </form>
+    <form name="PchProdTotalInfSRegistForm" action="PchProdTotalInfSRegist.ajax" class="regist">
+      <h3 th:text="#{PchProdTotalInf.h3}">h3</h3>
+      <div id="PchProdTotalInfGrid" data-selectionMode="checkbox" data-frozenColumn="3" th:data-href="@{/model/PchProdTotalInf.html}"></div>
+      <div id="PchProdTotalInfPager"></div>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="$('[id=&quot;SearchPchProdTotalInf&quot;]').click();">reset</button>
+        <a th:href="@{PchProdTotalInfSearch.xlsx(baseMei=#{PchProdTotalInfS.h2})}" id="PchProdTotalInfSearch.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeletePchProdTotalInfS" class="delete selectRows" data-action="PchProdTotalInfSDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistPchProdTotalInfS" class="regist" th:text="#{common.regist}">submit</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

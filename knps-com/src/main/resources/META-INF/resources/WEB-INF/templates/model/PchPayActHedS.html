@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{PchPayActHedS.title}">PCH_PAY_ACT_HED</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/PchPayActHedGridColumns.js}"></script>
+<script th:src="@{/model/PchPayActDetGridColumns.js}"></script>
+<script th:src="@{/model/MstUnitGridColumns.js}"></script>
+<script th:src="@{/model/MstTaxGridColumns.js}"></script>
+<script th:src="@{/model/MstAccountCodeGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{PchPayActHedS.h2}">h2</h2>
+    <form name="PchPayActHedSearchForm" action="PchPayActHedSearch.ajax" class="search">
+      <fieldset>
+        <legend th:text="#{PchPayActHedS.legend}">legend</legend>
+        <div id="payNo">
+          <label for="PchPayActHed.payNo" th:text="#{PchPayActHed.payNo}">PAY_NO</label><input type="text" id="PchPayActHed.payNo" name="PchPayActHed.payNo" maxlength="10" />
+        </div>
+        <div id="hinban">
+          <label for="PchPayActHed.hinban" th:text="#{PchPayActHed.hinban}">HINBAN</label><input type="text" id="PchPayActHed.hinban" name="PchPayActHed.hinban" maxlength="25" />
+        </div>
+        <div id="item">
+          <label for="PchPayActHed.item" th:text="#{PchPayActHed.item}">ITEM</label><input type="text" id="PchPayActHed.item" name="PchPayActHed.item" maxlength="60" />
+        </div>
+        <div id="supplyKbn">
+          <fieldset id="PchPayActHed.supplyKbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:supply_kbn" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{PchPayActHed.supplyKbn}">SUPPLY_KBN</legend>
+          </fieldset>
+        </div>
+        <div id="fromPay">
+          <label for="PchPayActHed.fromPay" th:text="#{PchPayActHed.fromPay}">FROM_PAY</label><input type="text" id="PchPayActHed.fromPay" name="PchPayActHed.fromPay" maxlength="10" />
+        </div>
+        <div id="toPay">
+          <label for="PchPayActHed.toPay" th:text="#{PchPayActHed.toPay}">TO_PAY</label><input type="text" id="PchPayActHed.toPay" name="PchPayActHed.toPay" maxlength="10" />
+        </div>
+        <div id="unitCode">
+          <label for="PchPayActHed.unitCode" th:text="#{PchPayActHed.unitCode}">UNIT_CODE</label><input type="text" id="PchPayActHed.unitCode" name="PchPayActHed.unitCode" maxlength="2" data-json="MstUnitSearch.json" data-srcDef="UNIT_CODE:PchPayActHed.unitCode" data-destDef="PchPayActHed.unitName:UNIT_NAME" /><a id="PchPayActHed.unitCode" th:href="@{/model/MstUnitS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="PchPayActHed.unitName" class="refer" data-json="MstUnitSearch.json" data-srcDef="UNIT_CODE:PchPayActHed.unitCode" data-destDef="PchPayActHed.unitName:UNIT_NAME"></span>
+        </div>
+        <div id="taxCode">
+          <label for="PchPayActHed.taxCode" th:text="#{PchPayActHed.taxCode}">TAX_CODE</label><input type="text" id="PchPayActHed.taxCode" name="PchPayActHed.taxCode" maxlength="2" data-json="MstTaxSearch.json" data-srcDef="TAX_CODE:PchPayActHed.taxCode" data-destDef="PchPayActHed.taxName:TAX_NAME" /><a id="PchPayActHed.taxCode" th:href="@{/model/MstTaxS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="PchPayActHed.taxName" class="refer" data-json="MstTaxSearch.json" data-srcDef="TAX_CODE:PchPayActHed.taxCode" data-destDef="PchPayActHed.taxName:TAX_NAME"></span>
+        </div>
+        <div id="taxCalCode">
+          <fieldset id="PchPayActHed.taxCalCodeList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:tax_cal_code" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{PchPayActHed.taxCalCode}">TAX_CAL_CODE</legend>
+          </fieldset>
+        </div>
+        <div id="accountCode">
+          <label for="PchPayActHed.accountCode" th:text="#{PchPayActHed.accountCode}">ACCOUNT_CODE</label><input type="text" id="PchPayActHed.accountCode" name="PchPayActHed.accountCode" maxlength="5" data-json="MstAccountCodeSearch.json" data-srcDef="ACCOUNT_CODE:PchPayActHed.accountCode" data-destDef="PchPayActHed.accountName:ACCOUNT_NAME" /><a id="PchPayActHed.accountCode" th:href="@{/model/MstAccountCodeS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="PchPayActHed.accountName" class="refer" data-json="MstAccountCodeSearch.json" data-srcDef="ACCOUNT_CODE:PchPayActHed.accountCode" data-destDef="PchPayActHed.accountName:ACCOUNT_NAME"></span>
+        </div>
+        <div id="supplyNo">
+          <label for="PchPayActHed.supplyNo" th:text="#{PchPayActHed.supplyNo}">SUPPLY_NO</label><input type="text" id="PchPayActHed.supplyNo" name="PchPayActHed.supplyNo" maxlength="12" />
+        </div>
+        <div id="shipOrderNo">
+          <label for="PchPayActHed.shipOrderNo" th:text="#{PchPayActHed.shipOrderNo}">SHIP_ORDER_NO</label><input type="text" id="PchPayActHed.shipOrderNo" name="PchPayActHed.shipOrderNo" maxlength="10" />
+        </div>
+        <div id="payDate">
+          <label for="PchPayActHed.payDate_1" th:text="#{PchPayActHed.payDate}">PAY_DATE</label><input type="date" id="PchPayActHed.payDate_1" name="PchPayActHed.payDate_1" maxlength="7" />～<input type="date" id="PchPayActHed.payDate_2" name="PchPayActHed.payDate_2" maxlength="7" />
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="reset" th:text="#{common.reset}">reset</button>
+        <a th:href="@{/model/PchPayActHed.html}" id="PchPayActHed" target="dialog" th:text="#{PchPayActHed.add}" tabindex="-1">PCH_PAY_ACT_HED</a>
+      </div>
+      <div class="submits">
+        <button id="SearchPchPayActHed" class="search" data-gridId="PchPayActHedGrid" th:text="#{common.search}">submit</button>
+      </div>
+    </form>
+    <form name="PchPayActHedSRegistForm" action="PchPayActHedSRegist.ajax" class="regist">
+      <h3 th:text="#{PchPayActHed.h3}">h3</h3>
+      <div id="PchPayActHedGrid" data-selectionMode="checkbox" data-addRow="true" data-frozenColumn="0" th:data-href="@{/model/PchPayActHed.html}"></div>
+      <div id="PchPayActHedPager"></div>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="$('[id=&quot;SearchPchPayActHed&quot;]').click();">reset</button>
+        <a th:href="@{PchPayActHedSearch.xlsx(baseMei=#{PchPayActHedS.h2})}" id="PchPayActHedSearch.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeletePchPayActHedS" class="delete selectRows" data-action="PchPayActHedSDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistPchPayActHedS" class="regist" th:text="#{common.regist}">submit</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

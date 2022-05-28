@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{MstSupEmpS.title}">MST_SUP_EMP</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/MstSupEmpGridColumns.js}"></script>
+<script th:src="@{/model/MstEmpGridColumns.js}"></script>
+<script th:src="@{/model/MstDivisionGridColumns.js}"></script>
+<script th:src="@{/model/MstCompanyGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{MstSupEmpS.h2}">h2</h2>
+    <form name="MstSupEmpSearchForm" action="MstSupEmpSearch.ajax" class="search">
+      <fieldset>
+        <legend th:text="#{MstSupEmpS.legend}">legend</legend>
+        <div id="supplierOpeCode">
+          <fieldset id="MstSupEmp.supplierOpeCodeList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:supplier_ope_code" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstSupEmp.supplierOpeCode}">SUPPLIER_OPE_CODE</legend>
+          </fieldset>
+        </div>
+        <div id="supplierOpeName">
+          <label for="MstSupEmp.supplierOpeName" th:text="#{MstSupEmp.supplierOpeName}">SUPPLIER_OPE_NAME</label><input type="text" id="MstSupEmp.supplierOpeName" name="MstSupEmp.supplierOpeName" maxlength="30" />
+        </div>
+        <div id="empCode">
+          <label for="MstSupEmp.empCode" th:text="#{MstSupEmp.empCode}">EMP_CODE</label><input type="text" id="MstSupEmp.empCode" name="MstSupEmp.empCode" maxlength="10" data-json="MstEmpSearch.json" data-srcDef="EMP_CODE:MstSupEmp.empCode" data-destDef="MstSupEmp.empName:EMP_NAME" /><a id="MstSupEmp.empCode" th:href="@{/model/MstEmpS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MstSupEmp.empName" class="refer" data-json="MstEmpSearch.json" data-srcDef="EMP_CODE:MstSupEmp.empCode" data-destDef="MstSupEmp.empName:EMP_NAME"></span>
+        </div>
+        <div id="deleteFlag">
+          <fieldset id="MstSupEmp.deleteFlagList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:delete_flag" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstSupEmp.deleteFlag}">DELETE_FLAG</legend>
+          </fieldset>
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="reset" th:text="#{common.reset}">reset</button>
+        <a th:href="@{/model/MstSupEmp.html}" id="MstSupEmp" target="dialog" th:text="#{MstSupEmp.add}" tabindex="-1">MST_SUP_EMP</a>
+      </div>
+      <div class="submits">
+        <button id="SearchMstSupEmp" class="search" data-gridId="MstSupEmpGrid" th:text="#{common.search}">submit</button>
+      </div>
+    </form>
+    <form name="MstSupEmpSRegistForm" action="MstSupEmpSRegist.ajax" class="regist">
+      <h3 th:text="#{MstSupEmp.h3}">h3</h3>
+      <div id="MstSupEmpGrid" data-selectionMode="checkbox" data-addRow="true" data-frozenColumn="0" th:data-href="@{/model/MstSupEmp.html}"></div>
+      <div id="MstSupEmpPager"></div>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="$('[id=&quot;SearchMstSupEmp&quot;]').click();">reset</button>
+        <a th:href="@{MstSupEmpSearch.xlsx(baseMei=#{MstSupEmpS.h2})}" id="MstSupEmpSearch.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeleteMstSupEmpS" class="delete selectRows" data-action="MstSupEmpSDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistMstSupEmpS" class="regist" th:text="#{common.regist}">submit</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

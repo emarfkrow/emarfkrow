@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{MstMaterial.title}">MST_MATERIAL</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/MstMaterialGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{MstMaterial.h2}">h2</h2>
+    <form name="MstMaterialRegistForm" action="MstMaterialRegist.ajax" class="regist">
+      <fieldset>
+        <legend th:text="#{MstMaterial.legend}">legend</legend>
+        <div id="material">
+          <label for="MstMaterial.material" th:text="#{MstMaterial.material}">MATERIAL</label><span id="MstMaterial.material"></span><input type="hidden" id="MstMaterial.material" name="MstMaterial.material" class="primaryKey" />
+        </div>
+        <div id="materialName">
+          <label for="MstMaterial.materialName" th:text="#{MstMaterial.materialName}">MATERIAL_NAME</label><input type="text" id="MstMaterial.materialName" name="MstMaterial.materialName" maxlength="60" />
+        </div>
+        <div id="timeStampCreate">
+          <label for="MstMaterial.timeStampCreate" th:text="#{MstMaterial.timeStampCreate}">TIME_STAMP_CREATE</label><span id="MstMaterial.timeStampCreate"></span><input type="hidden" id="MstMaterial.timeStampCreate" name="MstMaterial.timeStampCreate" />
+        </div>
+        <div id="timeStampChange">
+          <label for="MstMaterial.timeStampChange" th:text="#{MstMaterial.timeStampChange}">TIME_STAMP_CHANGE</label><span id="MstMaterial.timeStampChange"></span><input type="hidden" id="MstMaterial.timeStampChange" name="MstMaterial.timeStampChange" />
+        </div>
+        <div id="userIdCreate">
+          <label for="MstMaterial.userIdCreate" th:text="#{MstMaterial.userIdCreate}">USER_ID_CREATE</label><span id="MstMaterial.userIdCreate"></span><input type="hidden" id="MstMaterial.userIdCreate" name="MstMaterial.userIdCreate" />
+        </div>
+        <div id="userIdChange">
+          <label for="MstMaterial.userIdChange" th:text="#{MstMaterial.userIdChange}">USER_ID_CHANGE</label><span id="MstMaterial.userIdChange"></span><input type="hidden" id="MstMaterial.userIdChange" name="MstMaterial.userIdChange" />
+        </div>
+        <div id="deleteFlag">
+          <fieldset id="MstMaterial.deleteFlagList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:delete_flag" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstMaterial.deleteFlag}">DELETE_FLAG</legend>
+          </fieldset>
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="Dialogate.refresh(event);">reset</button>
+        <a th:href="@{MstMaterialGet.xlsx(baseMei=#{MstMaterial.h2})}" id="MstMaterialGet.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeleteMstMaterial" class="delete" data-action="MstMaterialDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistMstMaterial" class="regist" th:text="#{common.regist}">登録</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

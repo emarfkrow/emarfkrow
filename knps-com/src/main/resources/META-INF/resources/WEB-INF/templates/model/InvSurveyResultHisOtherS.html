@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{InvSurveyResultHisOtherS.title}">INV_SURVEY_RESULT_HIS_OTHER</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/InvSurveyResultHisOtherGridColumns.js}"></script>
+<script th:src="@{/model/MstLocationGridColumns.js}"></script>
+<script th:src="@{/model/MstSubinvGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierGridColumns.js}"></script>
+<script th:src="@{/model/InvStockProcessSupplyGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierBkGridColumns.js}"></script>
+<script th:src="@{/model/MstTaxGridColumns.js}"></script>
+<script th:src="@{/model/MstStoreManGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{InvSurveyResultHisOtherS.h2}">h2</h2>
+    <form name="InvSurveyResultHisOtherSearchForm" action="InvSurveyResultHisOtherSearch.ajax" class="search">
+      <fieldset>
+        <legend th:text="#{InvSurveyResultHisOtherS.legend}">legend</legend>
+        <div id="locationCode">
+          <label for="InvSurveyResultHisOther.locationCode" th:text="#{InvSurveyResultHisOther.locationCode}">LOCATION_CODE</label><input type="text" id="InvSurveyResultHisOther.locationCode" name="InvSurveyResultHisOther.locationCode" maxlength="10" data-json="MstLocationSearch.json" data-srcDef="LOCATION_CODE:InvSurveyResultHisOther.locationCode" data-destDef="InvSurveyResultHisOther.locationName:LOCATION_NAME" /><a id="InvSurveyResultHisOther.locationCode" th:href="@{/model/MstLocationS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="InvSurveyResultHisOther.locationName" class="refer" data-json="MstLocationSearch.json" data-srcDef="LOCATION_CODE:InvSurveyResultHisOther.locationCode" data-destDef="InvSurveyResultHisOther.locationName:LOCATION_NAME"></span>
+        </div>
+        <div id="resultBranchNo">
+          <label for="InvSurveyResultHisOther.resultBranchNo" th:text="#{InvSurveyResultHisOther.resultBranchNo}">RESULT_BRANCH_NO</label><input type="text" id="InvSurveyResultHisOther.resultBranchNo" name="InvSurveyResultHisOther.resultBranchNo" maxlength="2" />
+        </div>
+        <div id="yyyy">
+          <label for="InvSurveyResultHisOther.yyyy" th:text="#{InvSurveyResultHisOther.yyyy}">YYYY</label><input type="text" id="InvSurveyResultHisOther.yyyy" name="InvSurveyResultHisOther.yyyy" maxlength="4" />
+        </div>
+        <div id="mm">
+          <label for="InvSurveyResultHisOther.mm" th:text="#{InvSurveyResultHisOther.mm}">MM</label><input type="text" id="InvSurveyResultHisOther.mm" name="InvSurveyResultHisOther.mm" maxlength="2" />
+        </div>
+        <div id="hinban">
+          <label for="InvSurveyResultHisOther.hinban" th:text="#{InvSurveyResultHisOther.hinban}">HINBAN</label><input type="text" id="InvSurveyResultHisOther.hinban" name="InvSurveyResultHisOther.hinban" maxlength="25" />
+        </div>
+        <div id="stock">
+          <label for="InvSurveyResultHisOther.stock" th:text="#{InvSurveyResultHisOther.stock}">STOCK</label><input type="text" id="InvSurveyResultHisOther.stock" name="InvSurveyResultHisOther.stock" maxlength="11" />
+        </div>
+        <div id="decisionKbn">
+          <fieldset id="InvSurveyResultHisOther.decisionKbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:decision_kbn" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{InvSurveyResultHisOther.decisionKbn}">DECISION_KBN</legend>
+          </fieldset>
+        </div>
+        <div id="entryDate">
+          <label for="InvSurveyResultHisOther.entryDate_1" th:text="#{InvSurveyResultHisOther.entryDate}">ENTRY_DATE</label><input type="date" id="InvSurveyResultHisOther.entryDate_1" name="InvSurveyResultHisOther.entryDate_1" maxlength="7" />～<input type="date" id="InvSurveyResultHisOther.entryDate_2" name="InvSurveyResultHisOther.entryDate_2" maxlength="7" />
+        </div>
+        <div id="registrant">
+          <label for="InvSurveyResultHisOther.registrant" th:text="#{InvSurveyResultHisOther.registrant}">REGISTRANT</label><input type="text" id="InvSurveyResultHisOther.registrant" name="InvSurveyResultHisOther.registrant" maxlength="10" />
+        </div>
+        <div id="shukeiTaniMei">
+          <label for="InvSurveyResultHisOther.shukeiTaniMei" th:text="#{InvSurveyResultHisOther.shukeiTaniMei}">SHUKEI_TANI_MEI</label><input type="text" id="InvSurveyResultHisOther.shukeiTaniMei" name="InvSurveyResultHisOther.shukeiTaniMei" maxlength="20" />
+        </div>
+        <div id="denpyoNo">
+          <label for="InvSurveyResultHisOther.denpyoNo" th:text="#{InvSurveyResultHisOther.denpyoNo}">DENPYO_NO</label><input type="text" id="InvSurveyResultHisOther.denpyoNo" name="InvSurveyResultHisOther.denpyoNo" maxlength="10" />
+        </div>
+        <div id="opeDetail">
+          <label for="InvSurveyResultHisOther.opeDetail" th:text="#{InvSurveyResultHisOther.opeDetail}">OPE_DETAIL</label><input type="text" id="InvSurveyResultHisOther.opeDetail" name="InvSurveyResultHisOther.opeDetail" maxlength="10" />
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="reset" th:text="#{common.reset}">reset</button>
+      </div>
+      <div class="submits">
+        <button id="SearchInvSurveyResultHisOther" class="search" data-gridId="InvSurveyResultHisOtherGrid" th:text="#{common.search}">submit</button>
+      </div>
+    </form>
+    <form name="InvSurveyResultHisOtherSRegistForm" action="InvSurveyResultHisOtherSRegist.ajax" class="regist">
+      <h3 th:text="#{InvSurveyResultHisOther.h3}">h3</h3>
+      <div id="InvSurveyResultHisOtherGrid" data-selectionMode="checkbox" data-frozenColumn="3" th:data-href="@{/model/InvSurveyResultHisOther.html}"></div>
+      <div id="InvSurveyResultHisOtherPager"></div>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="$('[id=&quot;SearchInvSurveyResultHisOther&quot;]').click();">reset</button>
+        <a th:href="@{InvSurveyResultHisOtherSearch.xlsx(baseMei=#{InvSurveyResultHisOtherS.h2})}" id="InvSurveyResultHisOtherSearch.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeleteInvSurveyResultHisOtherS" class="delete selectRows" data-action="InvSurveyResultHisOtherSDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistInvSurveyResultHisOtherS" class="regist" th:text="#{common.regist}">submit</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

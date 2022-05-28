@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{MstWs.title}">MST_WS</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/MstWsGridColumns.js}"></script>
+<script th:src="@{/model/MstTeamGridColumns.js}"></script>
+<script th:src="@{/model/MstGroupGridColumns.js}"></script>
+<script th:src="@{/model/MstDivisionGridColumns.js}"></script>
+<script th:src="@{/model/MstCompanyGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierGridColumns.js}"></script>
+<script th:src="@{/model/InvStockProcessSupplyGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierBkGridColumns.js}"></script>
+<script th:src="@{/model/MstTaxGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{MstWs.h2}">h2</h2>
+    <form name="MstWsRegistForm" action="MstWsRegist.ajax" class="regist">
+      <fieldset>
+        <legend th:text="#{MstWs.legend}">legend</legend>
+        <div id="wsCode">
+          <label for="MstWs.wsCode" th:text="#{MstWs.wsCode}">WS_CODE</label><span id="MstWs.wsCode"></span><input type="hidden" id="MstWs.wsCode" name="MstWs.wsCode" class="primaryKey" />
+        </div>
+        <div id="wsName">
+          <label for="MstWs.wsName" th:text="#{MstWs.wsName}">WS_NAME</label><input type="text" id="MstWs.wsName" name="MstWs.wsName" maxlength="60" />
+        </div>
+        <div id="inOutKbn">
+          <fieldset id="MstWs.inOutKbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:in_out_kbn" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstWs.inOutKbn}">IN_OUT_KBN</legend>
+          </fieldset>
+        </div>
+        <div id="humNormAbility">
+          <label for="MstWs.humNormAbility" th:text="#{MstWs.humNormAbility}">HUM_NORM_ABILITY</label><input type="text" id="MstWs.humNormAbility" name="MstWs.humNormAbility" maxlength="7" />
+        </div>
+        <div id="humMaxAbility">
+          <label for="MstWs.humMaxAbility" th:text="#{MstWs.humMaxAbility}">HUM_MAX_ABILITY</label><input type="text" id="MstWs.humMaxAbility" name="MstWs.humMaxAbility" maxlength="7" />
+        </div>
+        <div id="normMember">
+          <label for="MstWs.normMember" th:text="#{MstWs.normMember}">NORM_MEMBER</label><input type="text" id="MstWs.normMember" name="MstWs.normMember" maxlength="7" />
+        </div>
+        <div id="adminCode">
+          <fieldset id="MstWs.adminCodeList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:admin_code" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstWs.adminCode}">ADMIN_CODE</legend>
+          </fieldset>
+        </div>
+        <div id="teamCode">
+          <label for="MstWs.teamCode" th:text="#{MstWs.teamCode}">TEAM_CODE</label><input type="text" id="MstWs.teamCode" name="MstWs.teamCode" maxlength="10" data-json="MstTeamSearch.json" data-srcDef="TEAM_CODE:MstWs.teamCode" data-destDef="MstWs.teamName:TEAM_NAME" /><a id="MstWs.teamCode" th:href="@{/model/MstTeamS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MstWs.teamName" class="refer" data-json="MstTeamSearch.json" data-srcDef="TEAM_CODE:MstWs.teamCode" data-destDef="MstWs.teamName:TEAM_NAME"></span>
+        </div>
+        <div id="supCode">
+          <label for="MstWs.supCode" th:text="#{MstWs.supCode}">SUP_CODE</label><input type="text" id="MstWs.supCode" name="MstWs.supCode" maxlength="6" data-json="MstSupplierSearch.json" data-srcDef="SUP_CODE:MstWs.supCode" data-destDef="MstWs.supName:SUP_NAME" /><a id="MstWs.supCode" th:href="@{/model/MstSupplierS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MstWs.supName" class="refer" data-json="MstSupplierSearch.json" data-srcDef="SUP_CODE:MstWs.supCode" data-destDef="MstWs.supName:SUP_NAME"></span>
+        </div>
+        <div id="timeStampCreate">
+          <label for="MstWs.timeStampCreate" th:text="#{MstWs.timeStampCreate}">TIME_STAMP_CREATE</label><span id="MstWs.timeStampCreate"></span><input type="hidden" id="MstWs.timeStampCreate" name="MstWs.timeStampCreate" />
+        </div>
+        <div id="timeStampChange">
+          <label for="MstWs.timeStampChange" th:text="#{MstWs.timeStampChange}">TIME_STAMP_CHANGE</label><span id="MstWs.timeStampChange"></span><input type="hidden" id="MstWs.timeStampChange" name="MstWs.timeStampChange" />
+        </div>
+        <div id="userIdCreate">
+          <label for="MstWs.userIdCreate" th:text="#{MstWs.userIdCreate}">USER_ID_CREATE</label><span id="MstWs.userIdCreate"></span><input type="hidden" id="MstWs.userIdCreate" name="MstWs.userIdCreate" />
+        </div>
+        <div id="userIdChange">
+          <label for="MstWs.userIdChange" th:text="#{MstWs.userIdChange}">USER_ID_CHANGE</label><span id="MstWs.userIdChange"></span><input type="hidden" id="MstWs.userIdChange" name="MstWs.userIdChange" />
+        </div>
+        <div id="deleteFlag">
+          <fieldset id="MstWs.deleteFlagList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:delete_flag" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstWs.deleteFlag}">DELETE_FLAG</legend>
+          </fieldset>
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="Dialogate.refresh(event);">reset</button>
+        <a th:href="@{MstWsGet.xlsx(baseMei=#{MstWs.h2})}" id="MstWsGet.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeleteMstWs" class="delete" data-action="MstWsDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistMstWs" class="regist" th:text="#{common.regist}">登録</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

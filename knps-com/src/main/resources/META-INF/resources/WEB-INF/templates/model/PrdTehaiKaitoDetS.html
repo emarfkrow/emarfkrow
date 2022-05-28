@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{PrdTehaiKaitoDetS.title}">PRD_TEHAI_KAITO_DET</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/PrdTehaiKaitoDetGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{PrdTehaiKaitoDetS.h2}">h2</h2>
+    <form name="PrdTehaiKaitoDetSearchForm" action="PrdTehaiKaitoDetSearch.ajax" class="search">
+      <fieldset>
+        <legend th:text="#{PrdTehaiKaitoDetS.legend}">legend</legend>
+        <div id="prdTehaiNo">
+          <label for="PrdTehaiKaitoDet.prdTehaiNo" th:text="#{PrdTehaiKaitoDet.prdTehaiNo}">PRD_TEHAI_NO</label><input type="text" id="PrdTehaiKaitoDet.prdTehaiNo" name="PrdTehaiKaitoDet.prdTehaiNo" maxlength="10" />
+        </div>
+        <div id="kaitoDetSeq">
+          <label for="PrdTehaiKaitoDet.kaitoDetSeq" th:text="#{PrdTehaiKaitoDet.kaitoDetSeq}">KAITO_DET_SEQ</label><input type="text" id="PrdTehaiKaitoDet.kaitoDetSeq" name="PrdTehaiKaitoDet.kaitoDetSeq" maxlength="10" />
+        </div>
+        <div id="iraiDetSeq">
+          <label for="PrdTehaiKaitoDet.iraiDetSeq" th:text="#{PrdTehaiKaitoDet.iraiDetSeq}">IRAI_DET_SEQ</label><input type="text" id="PrdTehaiKaitoDet.iraiDetSeq" name="PrdTehaiKaitoDet.iraiDetSeq" maxlength="10" />
+        </div>
+        <div id="id">
+          <label for="PrdTehaiKaitoDet.id" th:text="#{PrdTehaiKaitoDet.id}">ID</label><input type="text" id="PrdTehaiKaitoDet.id" name="PrdTehaiKaitoDet.id" maxlength="14" />
+        </div>
+        <div id="parentId">
+          <label for="PrdTehaiKaitoDet.parentId" th:text="#{PrdTehaiKaitoDet.parentId}">PARENT_ID</label><input type="text" id="PrdTehaiKaitoDet.parentId" name="PrdTehaiKaitoDet.parentId" maxlength="14" />
+        </div>
+        <div id="kaitoHinban">
+          <label for="PrdTehaiKaitoDet.kaitoHinban" th:text="#{PrdTehaiKaitoDet.kaitoHinban}">KAITO_HINBAN</label><input type="text" id="PrdTehaiKaitoDet.kaitoHinban" name="PrdTehaiKaitoDet.kaitoHinban" maxlength="25" />
+        </div>
+        <div id="kaitoQt">
+          <label for="PrdTehaiKaitoDet.kaitoQt_1" th:text="#{PrdTehaiKaitoDet.kaitoQt}">KAITO_QT</label><input type="text" id="PrdTehaiKaitoDet.kaitoQt_1" name="PrdTehaiKaitoDet.kaitoQt_1" maxlength="11" />～<input type="text" id="PrdTehaiKaitoDet.kaitoQt_2" name="PrdTehaiKaitoDet.kaitoQt_2" maxlength="11" />
+        </div>
+        <div id="fumeihinF">
+          <fieldset id="PrdTehaiKaitoDet.fumeihinFList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:fumeihin_f" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{PrdTehaiKaitoDet.fumeihinF}">FUMEIHIN_F</legend>
+          </fieldset>
+        </div>
+        <div id="sethinF">
+          <fieldset id="PrdTehaiKaitoDet.sethinFList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:sethin_f" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{PrdTehaiKaitoDet.sethinF}">SETHIN_F</legend>
+          </fieldset>
+        </div>
+        <div id="kiboNokiYmd">
+          <label for="PrdTehaiKaitoDet.kiboNokiYmd_1" th:text="#{PrdTehaiKaitoDet.kiboNokiYmd}">KIBO_NOKI_YMD</label><input type="date" id="PrdTehaiKaitoDet.kiboNokiYmd_1" name="PrdTehaiKaitoDet.kiboNokiYmd_1" maxlength="10" />～<input type="date" id="PrdTehaiKaitoDet.kiboNokiYmd_2" name="PrdTehaiKaitoDet.kiboNokiYmd_2" maxlength="10" />
+        </div>
+        <div id="hinbanTantoshaCd">
+          <label for="PrdTehaiKaitoDet.hinbanTantoshaCd" th:text="#{PrdTehaiKaitoDet.hinbanTantoshaCd}">HINBAN_TANTOSHA_CD</label><input type="text" id="PrdTehaiKaitoDet.hinbanTantoshaCd" name="PrdTehaiKaitoDet.hinbanTantoshaCd" maxlength="10" />
+        </div>
+        <div id="setNokiTuchiF">
+          <fieldset id="PrdTehaiKaitoDet.setNokiTuchiFList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:set_noki_tuchi_f" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{PrdTehaiKaitoDet.setNokiTuchiF}">SET_NOKI_TUCHI_F</legend>
+          </fieldset>
+        </div>
+        <div id="kaitoNokiYmd">
+          <label for="PrdTehaiKaitoDet.kaitoNokiYmd_1" th:text="#{PrdTehaiKaitoDet.kaitoNokiYmd}">KAITO_NOKI_YMD</label><input type="date" id="PrdTehaiKaitoDet.kaitoNokiYmd_1" name="PrdTehaiKaitoDet.kaitoNokiYmd_1" maxlength="10" />～<input type="date" id="PrdTehaiKaitoDet.kaitoNokiYmd_2" name="PrdTehaiKaitoDet.kaitoNokiYmd_2" maxlength="10" />
+        </div>
+        <div id="kaitoNokiCmt">
+          <label for="PrdTehaiKaitoDet.kaitoNokiCmt" th:text="#{PrdTehaiKaitoDet.kaitoNokiCmt}">KAITO_NOKI_CMT</label><input type="text" id="PrdTehaiKaitoDet.kaitoNokiCmt" name="PrdTehaiKaitoDet.kaitoNokiCmt" maxlength="120" />
+        </div>
+        <div id="nokiKaitoshaCd">
+          <label for="PrdTehaiKaitoDet.nokiKaitoshaCd" th:text="#{PrdTehaiKaitoDet.nokiKaitoshaCd}">NOKI_KAITOSHA_CD</label><input type="text" id="PrdTehaiKaitoDet.nokiKaitoshaCd" name="PrdTehaiKaitoDet.nokiKaitoshaCd" maxlength="10" />
+        </div>
+        <div id="nokiKaitoDt">
+          <label for="PrdTehaiKaitoDet.nokiKaitoDt_1" th:text="#{PrdTehaiKaitoDet.nokiKaitoDt}">NOKI_KAITO_DT</label><input type="datetime-local" id="PrdTehaiKaitoDet.nokiKaitoDt_1" name="PrdTehaiKaitoDet.nokiKaitoDt_1" maxlength="7" />～<input type="datetime-local" id="PrdTehaiKaitoDet.nokiKaitoDt_2" name="PrdTehaiKaitoDet.nokiKaitoDt_2" maxlength="7" />
+        </div>
+        <div id="kaitoNokiHininF">
+          <fieldset id="PrdTehaiKaitoDet.kaitoNokiHininFList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:kaito_noki_hinin_f" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{PrdTehaiKaitoDet.kaitoNokiHininF}">KAITO_NOKI_HININ_F</legend>
+          </fieldset>
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="reset" th:text="#{common.reset}">reset</button>
+        <a th:href="@{/model/PrdTehaiKaitoDet.html}" id="PrdTehaiKaitoDet" target="dialog" th:text="#{PrdTehaiKaitoDet.add}" tabindex="-1">PRD_TEHAI_KAITO_DET</a>
+      </div>
+      <div class="submits">
+        <button id="SearchPrdTehaiKaitoDet" class="search" data-gridId="PrdTehaiKaitoDetGrid" th:text="#{common.search}">submit</button>
+      </div>
+    </form>
+    <form name="PrdTehaiKaitoDetSRegistForm" action="PrdTehaiKaitoDetSRegist.ajax" class="regist">
+      <h3 th:text="#{PrdTehaiKaitoDet.h3}">h3</h3>
+      <div id="PrdTehaiKaitoDetGrid" data-selectionMode="checkbox" data-frozenColumn="1" th:data-href="@{/model/PrdTehaiKaitoDet.html}"></div>
+      <div id="PrdTehaiKaitoDetPager"></div>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="$('[id=&quot;SearchPrdTehaiKaitoDet&quot;]').click();">reset</button>
+        <a th:href="@{PrdTehaiKaitoDetSearch.xlsx(baseMei=#{PrdTehaiKaitoDetS.h2})}" id="PrdTehaiKaitoDetSearch.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeletePrdTehaiKaitoDetS" class="delete selectRows" data-action="PrdTehaiKaitoDetSDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistPrdTehaiKaitoDetS" class="regist" th:text="#{common.regist}">submit</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

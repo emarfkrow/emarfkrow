@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{MstSupplier.title}">MST_SUPPLIER</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/MstSupplierGridColumns.js}"></script>
+<script th:src="@{/model/InvStockProcessSupplyGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierBkGridColumns.js}"></script>
+<script th:src="@{/model/MstTaxGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{MstSupplier.h2}">h2</h2>
+    <form name="MstSupplierRegistForm" action="MstSupplierRegist.ajax" class="regist">
+      <fieldset>
+        <legend th:text="#{MstSupplier.legend}">legend</legend>
+        <div id="supCode">
+          <label for="MstSupplier.supCode" th:text="#{MstSupplier.supCode}">SUP_CODE</label><span id="MstSupplier.supCode"></span><input type="hidden" id="MstSupplier.supCode" name="MstSupplier.supCode" class="primaryKey" />
+        </div>
+        <div id="supKbn">
+          <fieldset id="MstSupplier.supKbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:sup_kbn" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstSupplier.supKbn}">SUP_KBN</legend>
+          </fieldset>
+        </div>
+        <div id="supName">
+          <label for="MstSupplier.supName" th:text="#{MstSupplier.supName}">SUP_NAME</label><input type="text" id="MstSupplier.supName" name="MstSupplier.supName" maxlength="60" />
+        </div>
+        <div id="supRyaku">
+          <label for="MstSupplier.supRyaku" th:text="#{MstSupplier.supRyaku}">SUP_RYAKU</label><input type="text" id="MstSupplier.supRyaku" name="MstSupplier.supRyaku" maxlength="20" />
+        </div>
+        <div id="zipCode">
+          <fieldset id="MstSupplier.zipCodeList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:zip_code" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstSupplier.zipCode}">ZIP_CODE</legend>
+          </fieldset>
+        </div>
+        <div id="address1">
+          <label for="MstSupplier.address1" th:text="#{MstSupplier.address1}">ADDRESS1</label><input type="text" id="MstSupplier.address1" name="MstSupplier.address1" maxlength="60" />
+        </div>
+        <div id="address2">
+          <label for="MstSupplier.address2" th:text="#{MstSupplier.address2}">ADDRESS2</label><input type="text" id="MstSupplier.address2" name="MstSupplier.address2" maxlength="60" />
+        </div>
+        <div id="telNo">
+          <label for="MstSupplier.telNo" th:text="#{MstSupplier.telNo}">TEL_NO</label><input type="text" id="MstSupplier.telNo" name="MstSupplier.telNo" maxlength="14" />
+        </div>
+        <div id="faxNo">
+          <label for="MstSupplier.faxNo" th:text="#{MstSupplier.faxNo}">FAX_NO</label><input type="text" id="MstSupplier.faxNo" name="MstSupplier.faxNo" maxlength="14" />
+        </div>
+        <div id="divName">
+          <label for="MstSupplier.divName" th:text="#{MstSupplier.divName}">DIV_NAME</label><input type="text" id="MstSupplier.divName" name="MstSupplier.divName" maxlength="30" />
+        </div>
+        <div id="supOpeName">
+          <label for="MstSupplier.supOpeName" th:text="#{MstSupplier.supOpeName}">SUP_OPE_NAME</label><input type="text" id="MstSupplier.supOpeName" name="MstSupplier.supOpeName" maxlength="30" />
+        </div>
+        <div id="supOpeMailAdd">
+          <label for="MstSupplier.supOpeMailAdd" th:text="#{MstSupplier.supOpeMailAdd}">SUP_OPE_MAIL_ADD</label><input type="text" id="MstSupplier.supOpeMailAdd" name="MstSupplier.supOpeMailAdd" maxlength="30" />
+        </div>
+        <div id="supPeriodDay">
+          <label for="MstSupplier.supPeriodDay" th:text="#{MstSupplier.supPeriodDay}">SUP_PERIOD_DAY</label><input type="text" id="MstSupplier.supPeriodDay" name="MstSupplier.supPeriodDay" maxlength="2" />
+        </div>
+        <div id="payDay">
+          <label for="MstSupplier.payDay" th:text="#{MstSupplier.payDay}">PAY_DAY</label><input type="text" id="MstSupplier.payDay" name="MstSupplier.payDay" maxlength="2" />
+        </div>
+        <div id="taxCode">
+          <label for="MstSupplier.taxCode" th:text="#{MstSupplier.taxCode}">TAX_CODE</label><input type="text" id="MstSupplier.taxCode" name="MstSupplier.taxCode" maxlength="2" data-json="MstTaxSearch.json" data-srcDef="TAX_CODE:MstSupplier.taxCode" data-destDef="MstSupplier.taxName:TAX_NAME" /><a id="MstSupplier.taxCode" th:href="@{/model/MstTaxS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MstSupplier.taxName" class="refer" data-json="MstTaxSearch.json" data-srcDef="TAX_CODE:MstSupplier.taxCode" data-destDef="MstSupplier.taxName:TAX_NAME"></span>
+        </div>
+        <div id="taxCalCode">
+          <fieldset id="MstSupplier.taxCalCodeList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:tax_cal_code" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstSupplier.taxCalCode}">TAX_CAL_CODE</legend>
+          </fieldset>
+        </div>
+        <div id="taxDispCode">
+          <fieldset id="MstSupplier.taxDispCodeList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:tax_disp_code" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstSupplier.taxDispCode}">TAX_DISP_CODE</legend>
+          </fieldset>
+        </div>
+        <div id="fractionKbn">
+          <fieldset id="MstSupplier.fractionKbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:fraction_kbn" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstSupplier.fractionKbn}">FRACTION_KBN</legend>
+          </fieldset>
+        </div>
+        <div id="yoshingendo">
+          <label for="MstSupplier.yoshingendo" th:text="#{MstSupplier.yoshingendo}">YOSHINGENDO</label><input type="text" id="MstSupplier.yoshingendo" name="MstSupplier.yoshingendo" maxlength="11" />
+        </div>
+        <div id="companyOpeCode">
+          <fieldset id="MstSupplier.companyOpeCodeList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:company_ope_code" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstSupplier.companyOpeCode}">COMPANY_OPE_CODE</legend>
+          </fieldset>
+        </div>
+        <div id="orderAcceptKbn">
+          <fieldset id="MstSupplier.orderAcceptKbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:order_accept_kbn" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstSupplier.orderAcceptKbn}">ORDER_ACCEPT_KBN</legend>
+          </fieldset>
+        </div>
+        <div id="listOutputKbn">
+          <fieldset id="MstSupplier.listOutputKbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:list_output_kbn" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstSupplier.listOutputKbn}">LIST_OUTPUT_KBN</legend>
+          </fieldset>
+        </div>
+        <div id="pchCostRateCode">
+          <fieldset id="MstSupplier.pchCostRateCodeList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:pch_cost_rate_code" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstSupplier.pchCostRateCode}">PCH_COST_RATE_CODE</legend>
+          </fieldset>
+        </div>
+        <div id="sendSupKbn">
+          <fieldset id="MstSupplier.sendSupKbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:send_sup_kbn" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstSupplier.sendSupKbn}">SEND_SUP_KBN</legend>
+          </fieldset>
+        </div>
+        <div id="sendSupName">
+          <label for="MstSupplier.sendSupName" th:text="#{MstSupplier.sendSupName}">SEND_SUP_NAME</label><input type="text" id="MstSupplier.sendSupName" name="MstSupplier.sendSupName" maxlength="60" />
+        </div>
+        <div id="sendSupRyaku">
+          <label for="MstSupplier.sendSupRyaku" th:text="#{MstSupplier.sendSupRyaku}">SEND_SUP_RYAKU</label><input type="text" id="MstSupplier.sendSupRyaku" name="MstSupplier.sendSupRyaku" maxlength="20" />
+        </div>
+        <div id="sendZipCode">
+          <fieldset id="MstSupplier.sendZipCodeList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:send_zip_code" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstSupplier.sendZipCode}">SEND_ZIP_CODE</legend>
+          </fieldset>
+        </div>
+        <div id="sendAddress1">
+          <label for="MstSupplier.sendAddress1" th:text="#{MstSupplier.sendAddress1}">SEND_ADDRESS1</label><input type="text" id="MstSupplier.sendAddress1" name="MstSupplier.sendAddress1" maxlength="60" />
+        </div>
+        <div id="sendAddress2">
+          <label for="MstSupplier.sendAddress2" th:text="#{MstSupplier.sendAddress2}">SEND_ADDRESS2</label><input type="text" id="MstSupplier.sendAddress2" name="MstSupplier.sendAddress2" maxlength="60" />
+        </div>
+        <div id="sendTelNo">
+          <label for="MstSupplier.sendTelNo" th:text="#{MstSupplier.sendTelNo}">SEND_TEL_NO</label><input type="text" id="MstSupplier.sendTelNo" name="MstSupplier.sendTelNo" maxlength="14" />
+        </div>
+        <div id="sendFaxNo">
+          <label for="MstSupplier.sendFaxNo" th:text="#{MstSupplier.sendFaxNo}">SEND_FAX_NO</label><input type="text" id="MstSupplier.sendFaxNo" name="MstSupplier.sendFaxNo" maxlength="14" />
+        </div>
+        <div id="sendInspectList">
+          <label for="MstSupplier.sendInspectList" th:text="#{MstSupplier.sendInspectList}">SEND_INSPECT_LIST</label><input type="text" id="MstSupplier.sendInspectList" name="MstSupplier.sendInspectList" maxlength="1" />
+        </div>
+        <div id="companyDivName">
+          <label for="MstSupplier.companyDivName" th:text="#{MstSupplier.companyDivName}">COMPANY_DIV_NAME</label><input type="text" id="MstSupplier.companyDivName" name="MstSupplier.companyDivName" maxlength="30" />
+        </div>
+        <div id="timeStampCreate">
+          <label for="MstSupplier.timeStampCreate" th:text="#{MstSupplier.timeStampCreate}">TIME_STAMP_CREATE</label><span id="MstSupplier.timeStampCreate"></span><input type="hidden" id="MstSupplier.timeStampCreate" name="MstSupplier.timeStampCreate" />
+        </div>
+        <div id="timeStampChange">
+          <label for="MstSupplier.timeStampChange" th:text="#{MstSupplier.timeStampChange}">TIME_STAMP_CHANGE</label><span id="MstSupplier.timeStampChange"></span><input type="hidden" id="MstSupplier.timeStampChange" name="MstSupplier.timeStampChange" />
+        </div>
+        <div id="userIdCreate">
+          <label for="MstSupplier.userIdCreate" th:text="#{MstSupplier.userIdCreate}">USER_ID_CREATE</label><span id="MstSupplier.userIdCreate"></span><input type="hidden" id="MstSupplier.userIdCreate" name="MstSupplier.userIdCreate" />
+        </div>
+        <div id="userIdChange">
+          <label for="MstSupplier.userIdChange" th:text="#{MstSupplier.userIdChange}">USER_ID_CHANGE</label><span id="MstSupplier.userIdChange"></span><input type="hidden" id="MstSupplier.userIdChange" name="MstSupplier.userIdChange" />
+        </div>
+        <div id="deleteFlag">
+          <fieldset id="MstSupplier.deleteFlagList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:delete_flag" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstSupplier.deleteFlag}">DELETE_FLAG</legend>
+          </fieldset>
+        </div>
+        <div id="nohinYobiSun">
+          <label for="MstSupplier.nohinYobiSun" th:text="#{MstSupplier.nohinYobiSun}">NOHIN_YOBI_SUN</label><input type="text" id="MstSupplier.nohinYobiSun" name="MstSupplier.nohinYobiSun" maxlength="1" />
+        </div>
+        <div id="nohinYobiMon">
+          <label for="MstSupplier.nohinYobiMon" th:text="#{MstSupplier.nohinYobiMon}">NOHIN_YOBI_MON</label><input type="text" id="MstSupplier.nohinYobiMon" name="MstSupplier.nohinYobiMon" maxlength="1" />
+        </div>
+        <div id="nohinYobiTue">
+          <label for="MstSupplier.nohinYobiTue" th:text="#{MstSupplier.nohinYobiTue}">NOHIN_YOBI_TUE</label><input type="text" id="MstSupplier.nohinYobiTue" name="MstSupplier.nohinYobiTue" maxlength="1" />
+        </div>
+        <div id="nohinYobiWed">
+          <label for="MstSupplier.nohinYobiWed" th:text="#{MstSupplier.nohinYobiWed}">NOHIN_YOBI_WED</label><input type="text" id="MstSupplier.nohinYobiWed" name="MstSupplier.nohinYobiWed" maxlength="1" />
+        </div>
+        <div id="nohinYobiThu">
+          <label for="MstSupplier.nohinYobiThu" th:text="#{MstSupplier.nohinYobiThu}">NOHIN_YOBI_THU</label><input type="text" id="MstSupplier.nohinYobiThu" name="MstSupplier.nohinYobiThu" maxlength="1" />
+        </div>
+        <div id="nohinYobiFri">
+          <label for="MstSupplier.nohinYobiFri" th:text="#{MstSupplier.nohinYobiFri}">NOHIN_YOBI_FRI</label><input type="text" id="MstSupplier.nohinYobiFri" name="MstSupplier.nohinYobiFri" maxlength="1" />
+        </div>
+        <div id="nohinYobiSat">
+          <label for="MstSupplier.nohinYobiSat" th:text="#{MstSupplier.nohinYobiSat}">NOHIN_YOBI_SAT</label><input type="text" id="MstSupplier.nohinYobiSat" name="MstSupplier.nohinYobiSat" maxlength="1" />
+        </div>
+        <div id="nohinSendYohiKbn">
+          <fieldset id="MstSupplier.nohinSendYohiKbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:nohin_send_yohi_kbn" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstSupplier.nohinSendYohiKbn}">NOHIN_SEND_YOHI_KBN</legend>
+          </fieldset>
+        </div>
+        <div id="bunkatsuMailF">
+          <fieldset id="MstSupplier.bunkatsuMailFList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:bunkatsu_mail_f" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstSupplier.bunkatsuMailF}">BUNKATSU_MAIL_F</legend>
+          </fieldset>
+        </div>
+        <div id="chumonMailF">
+          <fieldset id="MstSupplier.chumonMailFList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:chumon_mail_f" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstSupplier.chumonMailF}">CHUMON_MAIL_F</legend>
+          </fieldset>
+        </div>
+        <div id="chumonMailHm">
+          <label for="MstSupplier.chumonMailHm" th:text="#{MstSupplier.chumonMailHm}">CHUMON_MAIL_HM</label><input type="time" id="MstSupplier.chumonMailHm" name="MstSupplier.chumonMailHm" maxlength="5" />
+        </div>
+        <div id="kenshuMailF">
+          <fieldset id="MstSupplier.kenshuMailFList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:kenshu_mail_f" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstSupplier.kenshuMailF}">KENSHU_MAIL_F</legend>
+          </fieldset>
+        </div>
+        <div id="kenshuMailHm">
+          <label for="MstSupplier.kenshuMailHm" th:text="#{MstSupplier.kenshuMailHm}">KENSHU_MAIL_HM</label><input type="time" id="MstSupplier.kenshuMailHm" name="MstSupplier.kenshuMailHm" maxlength="5" />
+        </div>
+        <div id="mailBccF">
+          <fieldset id="MstSupplier.mailBccFList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:mail_bcc_f" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstSupplier.mailBccF}">MAIL_BCC_F</legend>
+          </fieldset>
+        </div>
+      </fieldset>
+      <h3 th:text="#{InvStockProcessSupply.h3}">h3</h3>
+      <a th:href="@{/model/InvStockProcessSupply.html}" id="InvStockProcessSupply" target="dialog" th:text="#{InvStockProcessSupply.add}" class="addChild" tabindex="-1">INV_STOCK_PROCESS_SUPPLY</a>
+      <div id="InvStockProcessSupplyGrid" data-selectionMode="link" data-addRow="true" data-frozenColumn="1" th:data-href="@{/model/InvStockProcessSupply.html}"></div>
+      <h3 th:text="#{MstSupplierBk.h3}">h3</h3>
+      <a th:href="@{/model/MstSupplierBk.html}" id="MstSupplierBk" target="dialog" th:text="#{MstSupplierBk.add}" class="addChild" tabindex="-1">MST_SUPPLIER_BK</a>
+      <div id="MstSupplierBkGrid" data-selectionMode="link" data-addRow="true" data-frozenColumn="1" th:data-href="@{/model/MstSupplierBk.html}"></div>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="Dialogate.refresh(event);">reset</button>
+        <a th:href="@{MstSupplierGet.xlsx(baseMei=#{MstSupplier.h2})}" id="MstSupplierGet.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeleteMstSupplier" class="delete" data-action="MstSupplierDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistMstSupplier" class="regist" th:text="#{common.regist}">登録</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

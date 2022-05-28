@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{PchProdUnitCost.title}">PCH_PROD_UNIT_COST</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/PchProdUnitCostGridColumns.js}"></script>
+<script th:src="@{/model/MstWcGridColumns.js}"></script>
+<script th:src="@{/model/MstWcBkGridColumns.js}"></script>
+<script th:src="@{/model/MstProcGridColumns.js}"></script>
+<script th:src="@{/model/MstWsGridColumns.js}"></script>
+<script th:src="@{/model/MstTeamGridColumns.js}"></script>
+<script th:src="@{/model/MstGroupGridColumns.js}"></script>
+<script th:src="@{/model/MstDivisionGridColumns.js}"></script>
+<script th:src="@{/model/MstCompanyGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierGridColumns.js}"></script>
+<script th:src="@{/model/InvStockProcessSupplyGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierBkGridColumns.js}"></script>
+<script th:src="@{/model/MstTaxGridColumns.js}"></script>
+<script th:src="@{/model/MstCostCenterGridColumns.js}"></script>
+<script th:src="@{/model/MstCostCenterBkGridColumns.js}"></script>
+<script th:src="@{/model/MstSubinvGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{PchProdUnitCost.h2}">h2</h2>
+    <form name="PchProdUnitCostRegistForm" action="PchProdUnitCostRegist.ajax" class="regist">
+      <fieldset>
+        <legend th:text="#{PchProdUnitCost.legend}">legend</legend>
+        <div id="closeDate">
+          <label for="PchProdUnitCost.closeDate" th:text="#{PchProdUnitCost.closeDate}">CLOSE_DATE</label><span id="PchProdUnitCost.closeDate"></span><input type="hidden" id="PchProdUnitCost.closeDate" name="PchProdUnitCost.closeDate" class="primaryKey" />
+        </div>
+        <div id="proGroupNo">
+          <label for="PchProdUnitCost.proGroupNo" th:text="#{PchProdUnitCost.proGroupNo}">PRO_GROUP_NO</label><input type="text" id="PchProdUnitCost.proGroupNo" name="PchProdUnitCost.proGroupNo" maxlength="2" class="primaryKey" />
+        </div>
+        <div id="hinban">
+          <label for="PchProdUnitCost.hinban" th:text="#{PchProdUnitCost.hinban}">HINBAN</label><span id="PchProdUnitCost.hinban"></span><input type="hidden" id="PchProdUnitCost.hinban" name="PchProdUnitCost.hinban" class="primaryKey" />
+        </div>
+        <div id="routing">
+          <label for="PchProdUnitCost.routing" th:text="#{PchProdUnitCost.routing}">ROUTING</label><input type="text" id="PchProdUnitCost.routing" name="PchProdUnitCost.routing" maxlength="2" class="primaryKey" />
+        </div>
+        <div id="wcCode">
+          <label for="PchProdUnitCost.wcCode" th:text="#{PchProdUnitCost.wcCode}">WC_CODE</label><input type="text" id="PchProdUnitCost.wcCode" name="PchProdUnitCost.wcCode" maxlength="3" data-json="MstWcSearch.json" data-srcDef="WC_CODE:PchProdUnitCost.wcCode" data-destDef="PchProdUnitCost.wcName:WC_NAME" /><a id="PchProdUnitCost.wcCode" th:href="@{/model/MstWcS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="PchProdUnitCost.wcName" class="refer" data-json="MstWcSearch.json" data-srcDef="WC_CODE:PchProdUnitCost.wcCode" data-destDef="PchProdUnitCost.wcName:WC_NAME"></span>
+        </div>
+        <div id="opeDetail">
+          <label for="PchProdUnitCost.opeDetail" th:text="#{PchProdUnitCost.opeDetail}">OPE_DETAIL</label><input type="text" id="PchProdUnitCost.opeDetail" name="PchProdUnitCost.opeDetail" maxlength="10" />
+        </div>
+        <div id="proprietaryTotalCounts">
+          <label for="PchProdUnitCost.proprietaryTotalCounts" th:text="#{PchProdUnitCost.proprietaryTotalCounts}">PROPRIETARY_TOTAL_COUNTS</label><input type="text" id="PchProdUnitCost.proprietaryTotalCounts" name="PchProdUnitCost.proprietaryTotalCounts" maxlength="11" />
+        </div>
+        <div id="proprietaryTotalCost">
+          <label for="PchProdUnitCost.proprietaryTotalCost" th:text="#{PchProdUnitCost.proprietaryTotalCost}">PROPRIETARY_TOTAL_COST</label><input type="text" id="PchProdUnitCost.proprietaryTotalCost" name="PchProdUnitCost.proprietaryTotalCost" maxlength="11" />
+        </div>
+        <div id="lastPrchUnitCost">
+          <label for="PchProdUnitCost.lastPrchUnitCost" th:text="#{PchProdUnitCost.lastPrchUnitCost}">LAST_PRCH_UNIT_COST</label><input type="text" id="PchProdUnitCost.lastPrchUnitCost" name="PchProdUnitCost.lastPrchUnitCost" maxlength="9" />
+        </div>
+        <div id="timeStampCreate">
+          <label for="PchProdUnitCost.timeStampCreate" th:text="#{PchProdUnitCost.timeStampCreate}">TIME_STAMP_CREATE</label><span id="PchProdUnitCost.timeStampCreate"></span><input type="hidden" id="PchProdUnitCost.timeStampCreate" name="PchProdUnitCost.timeStampCreate" />
+        </div>
+        <div id="timeStampChange">
+          <label for="PchProdUnitCost.timeStampChange" th:text="#{PchProdUnitCost.timeStampChange}">TIME_STAMP_CHANGE</label><span id="PchProdUnitCost.timeStampChange"></span><input type="hidden" id="PchProdUnitCost.timeStampChange" name="PchProdUnitCost.timeStampChange" />
+        </div>
+        <div id="userIdCreate">
+          <label for="PchProdUnitCost.userIdCreate" th:text="#{PchProdUnitCost.userIdCreate}">USER_ID_CREATE</label><span id="PchProdUnitCost.userIdCreate"></span><input type="hidden" id="PchProdUnitCost.userIdCreate" name="PchProdUnitCost.userIdCreate" />
+        </div>
+        <div id="userIdChange">
+          <label for="PchProdUnitCost.userIdChange" th:text="#{PchProdUnitCost.userIdChange}">USER_ID_CHANGE</label><span id="PchProdUnitCost.userIdChange"></span><input type="hidden" id="PchProdUnitCost.userIdChange" name="PchProdUnitCost.userIdChange" />
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="Dialogate.refresh(event);">reset</button>
+        <a th:href="@{PchProdUnitCostGet.xlsx(baseMei=#{PchProdUnitCost.h2})}" id="PchProdUnitCostGet.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeletePchProdUnitCost" class="delete" data-action="PchProdUnitCostDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistPchProdUnitCost" class="regist" th:text="#{common.regist}">登録</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{MstAccountCode.title}">MST_ACCOUNT_CODE</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/MstAccountCodeGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{MstAccountCode.h2}">h2</h2>
+    <form name="MstAccountCodeRegistForm" action="MstAccountCodeRegist.ajax" class="regist">
+      <fieldset>
+        <legend th:text="#{MstAccountCode.legend}">legend</legend>
+        <div id="accountCode">
+          <label for="MstAccountCode.accountCode" th:text="#{MstAccountCode.accountCode}">ACCOUNT_CODE</label><span id="MstAccountCode.accountCode"></span><input type="hidden" id="MstAccountCode.accountCode" name="MstAccountCode.accountCode" class="primaryKey" />
+        </div>
+        <div id="accountName">
+          <label for="MstAccountCode.accountName" th:text="#{MstAccountCode.accountName}">ACCOUNT_NAME</label><input type="text" id="MstAccountCode.accountName" name="MstAccountCode.accountName" maxlength="60" />
+        </div>
+        <div id="expenseKbn1">
+          <label for="MstAccountCode.expenseKbn1" th:text="#{MstAccountCode.expenseKbn1}">EXPENSE_KBN1</label><input type="text" id="MstAccountCode.expenseKbn1" name="MstAccountCode.expenseKbn1" maxlength="1" />
+        </div>
+        <div id="expenseKbn2">
+          <label for="MstAccountCode.expenseKbn2" th:text="#{MstAccountCode.expenseKbn2}">EXPENSE_KBN2</label><input type="text" id="MstAccountCode.expenseKbn2" name="MstAccountCode.expenseKbn2" maxlength="1" />
+        </div>
+        <div id="expenseKbn3">
+          <label for="MstAccountCode.expenseKbn3" th:text="#{MstAccountCode.expenseKbn3}">EXPENSE_KBN3</label><input type="text" id="MstAccountCode.expenseKbn3" name="MstAccountCode.expenseKbn3" maxlength="1" />
+        </div>
+        <div id="timeStampCreate">
+          <label for="MstAccountCode.timeStampCreate" th:text="#{MstAccountCode.timeStampCreate}">TIME_STAMP_CREATE</label><span id="MstAccountCode.timeStampCreate"></span><input type="hidden" id="MstAccountCode.timeStampCreate" name="MstAccountCode.timeStampCreate" />
+        </div>
+        <div id="timeStampChange">
+          <label for="MstAccountCode.timeStampChange" th:text="#{MstAccountCode.timeStampChange}">TIME_STAMP_CHANGE</label><span id="MstAccountCode.timeStampChange"></span><input type="hidden" id="MstAccountCode.timeStampChange" name="MstAccountCode.timeStampChange" />
+        </div>
+        <div id="userIdCreate">
+          <label for="MstAccountCode.userIdCreate" th:text="#{MstAccountCode.userIdCreate}">USER_ID_CREATE</label><span id="MstAccountCode.userIdCreate"></span><input type="hidden" id="MstAccountCode.userIdCreate" name="MstAccountCode.userIdCreate" />
+        </div>
+        <div id="userIdChange">
+          <label for="MstAccountCode.userIdChange" th:text="#{MstAccountCode.userIdChange}">USER_ID_CHANGE</label><span id="MstAccountCode.userIdChange"></span><input type="hidden" id="MstAccountCode.userIdChange" name="MstAccountCode.userIdChange" />
+        </div>
+        <div id="deleteFlag">
+          <fieldset id="MstAccountCode.deleteFlagList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:delete_flag" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstAccountCode.deleteFlag}">DELETE_FLAG</legend>
+          </fieldset>
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="Dialogate.refresh(event);">reset</button>
+        <a th:href="@{MstAccountCodeGet.xlsx(baseMei=#{MstAccountCode.h2})}" id="MstAccountCodeGet.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeleteMstAccountCode" class="delete" data-action="MstAccountCodeDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistMstAccountCode" class="regist" th:text="#{common.regist}">登録</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

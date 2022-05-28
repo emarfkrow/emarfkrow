@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{InvStkPlanBk.title}">INV_STK_PLAN_BK</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/InvStkPlanBkGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{InvStkPlanBk.h2}">h2</h2>
+    <form name="InvStkPlanBkRegistForm" action="InvStkPlanBkRegist.ajax" class="regist">
+      <fieldset>
+        <legend th:text="#{InvStkPlanBk.legend}">legend</legend>
+        <div id="proHinban">
+          <label for="InvStkPlanBk.proHinban" th:text="#{InvStkPlanBk.proHinban}">PRO_HINBAN</label><input type="text" id="InvStkPlanBk.proHinban" name="InvStkPlanBk.proHinban" maxlength="25" />
+        </div>
+        <div id="yyyy">
+          <label for="InvStkPlanBk.yyyy" th:text="#{InvStkPlanBk.yyyy}">YYYY</label><input type="text" id="InvStkPlanBk.yyyy" name="InvStkPlanBk.yyyy" maxlength="4" />
+        </div>
+        <div id="mm">
+          <label for="InvStkPlanBk.mm" th:text="#{InvStkPlanBk.mm}">MM</label><input type="text" id="InvStkPlanBk.mm" name="InvStkPlanBk.mm" maxlength="2" />
+        </div>
+        <div id="papKanAmtSch">
+          <label for="InvStkPlanBk.papKanAmtSch" th:text="#{InvStkPlanBk.papKanAmtSch}">PAP_KAN_AMT_SCH</label><input type="text" id="InvStkPlanBk.papKanAmtSch" name="InvStkPlanBk.papKanAmtSch" maxlength="4" />
+        </div>
+        <div id="papKanAmtSchFst">
+          <label for="InvStkPlanBk.papKanAmtSchFst" th:text="#{InvStkPlanBk.papKanAmtSchFst}">PAP_KAN_AMT_SCH_FST</label><input type="text" id="InvStkPlanBk.papKanAmtSchFst" name="InvStkPlanBk.papKanAmtSchFst" maxlength="4" />
+        </div>
+        <div id="papKanAmtSchMid">
+          <label for="InvStkPlanBk.papKanAmtSchMid" th:text="#{InvStkPlanBk.papKanAmtSchMid}">PAP_KAN_AMT_SCH_MID</label><input type="text" id="InvStkPlanBk.papKanAmtSchMid" name="InvStkPlanBk.papKanAmtSchMid" maxlength="4" />
+        </div>
+        <div id="papKanAmtSchLst">
+          <label for="InvStkPlanBk.papKanAmtSchLst" th:text="#{InvStkPlanBk.papKanAmtSchLst}">PAP_KAN_AMT_SCH_LST</label><input type="text" id="InvStkPlanBk.papKanAmtSchLst" name="InvStkPlanBk.papKanAmtSchLst" maxlength="4" />
+        </div>
+        <div id="papKanAmtActFst">
+          <label for="InvStkPlanBk.papKanAmtActFst" th:text="#{InvStkPlanBk.papKanAmtActFst}">PAP_KAN_AMT_ACT_FST</label><input type="text" id="InvStkPlanBk.papKanAmtActFst" name="InvStkPlanBk.papKanAmtActFst" maxlength="4" />
+        </div>
+        <div id="papKanAmtActMid">
+          <label for="InvStkPlanBk.papKanAmtActMid" th:text="#{InvStkPlanBk.papKanAmtActMid}">PAP_KAN_AMT_ACT_MID</label><input type="text" id="InvStkPlanBk.papKanAmtActMid" name="InvStkPlanBk.papKanAmtActMid" maxlength="4" />
+        </div>
+        <div id="papKanAmtActLst">
+          <label for="InvStkPlanBk.papKanAmtActLst" th:text="#{InvStkPlanBk.papKanAmtActLst}">PAP_KAN_AMT_ACT_LST</label><input type="text" id="InvStkPlanBk.papKanAmtActLst" name="InvStkPlanBk.papKanAmtActLst" maxlength="4" />
+        </div>
+        <div id="papKanAmtAct">
+          <label for="InvStkPlanBk.papKanAmtAct" th:text="#{InvStkPlanBk.papKanAmtAct}">PAP_KAN_AMT_ACT</label><input type="text" id="InvStkPlanBk.papKanAmtAct" name="InvStkPlanBk.papKanAmtAct" maxlength="4" />
+        </div>
+        <div id="reqCounts">
+          <label for="InvStkPlanBk.reqCounts" th:text="#{InvStkPlanBk.reqCounts}">REQ_COUNTS</label><input type="text" id="InvStkPlanBk.reqCounts" name="InvStkPlanBk.reqCounts" maxlength="7" />
+        </div>
+        <div id="reqNesCounts">
+          <label for="InvStkPlanBk.reqNesCounts" th:text="#{InvStkPlanBk.reqNesCounts}">REQ_NES_COUNTS</label><input type="text" id="InvStkPlanBk.reqNesCounts" name="InvStkPlanBk.reqNesCounts" maxlength="7" />
+        </div>
+        <div id="reqPapKanAmtSch">
+          <label for="InvStkPlanBk.reqPapKanAmtSch" th:text="#{InvStkPlanBk.reqPapKanAmtSch}">REQ_PAP_KAN_AMT_SCH</label><input type="text" id="InvStkPlanBk.reqPapKanAmtSch" name="InvStkPlanBk.reqPapKanAmtSch" maxlength="4" />
+        </div>
+        <div id="reqPapKanAmtSchFst">
+          <label for="InvStkPlanBk.reqPapKanAmtSchFst" th:text="#{InvStkPlanBk.reqPapKanAmtSchFst}">REQ_PAP_KAN_AMT_SCH_FST</label><input type="text" id="InvStkPlanBk.reqPapKanAmtSchFst" name="InvStkPlanBk.reqPapKanAmtSchFst" maxlength="4" />
+        </div>
+        <div id="reqPapKanAmtSchMid">
+          <label for="InvStkPlanBk.reqPapKanAmtSchMid" th:text="#{InvStkPlanBk.reqPapKanAmtSchMid}">REQ_PAP_KAN_AMT_SCH_MID</label><input type="text" id="InvStkPlanBk.reqPapKanAmtSchMid" name="InvStkPlanBk.reqPapKanAmtSchMid" maxlength="4" />
+        </div>
+        <div id="reqPapKanAmtSchLst">
+          <label for="InvStkPlanBk.reqPapKanAmtSchLst" th:text="#{InvStkPlanBk.reqPapKanAmtSchLst}">REQ_PAP_KAN_AMT_SCH_LST</label><input type="text" id="InvStkPlanBk.reqPapKanAmtSchLst" name="InvStkPlanBk.reqPapKanAmtSchLst" maxlength="4" />
+        </div>
+        <div id="reqPapKanAmtActFst">
+          <label for="InvStkPlanBk.reqPapKanAmtActFst" th:text="#{InvStkPlanBk.reqPapKanAmtActFst}">REQ_PAP_KAN_AMT_ACT_FST</label><input type="text" id="InvStkPlanBk.reqPapKanAmtActFst" name="InvStkPlanBk.reqPapKanAmtActFst" maxlength="4" />
+        </div>
+        <div id="reqPapKanAmtActMid">
+          <label for="InvStkPlanBk.reqPapKanAmtActMid" th:text="#{InvStkPlanBk.reqPapKanAmtActMid}">REQ_PAP_KAN_AMT_ACT_MID</label><input type="text" id="InvStkPlanBk.reqPapKanAmtActMid" name="InvStkPlanBk.reqPapKanAmtActMid" maxlength="4" />
+        </div>
+        <div id="reqPapKanAmtActLst">
+          <label for="InvStkPlanBk.reqPapKanAmtActLst" th:text="#{InvStkPlanBk.reqPapKanAmtActLst}">REQ_PAP_KAN_AMT_ACT_LST</label><input type="text" id="InvStkPlanBk.reqPapKanAmtActLst" name="InvStkPlanBk.reqPapKanAmtActLst" maxlength="4" />
+        </div>
+        <div id="reqPapKanAmtAct">
+          <label for="InvStkPlanBk.reqPapKanAmtAct" th:text="#{InvStkPlanBk.reqPapKanAmtAct}">REQ_PAP_KAN_AMT_ACT</label><input type="text" id="InvStkPlanBk.reqPapKanAmtAct" name="InvStkPlanBk.reqPapKanAmtAct" maxlength="4" />
+        </div>
+        <div id="timeStampCreate">
+          <label for="InvStkPlanBk.timeStampCreate" th:text="#{InvStkPlanBk.timeStampCreate}">TIME_STAMP_CREATE</label><span id="InvStkPlanBk.timeStampCreate"></span><input type="hidden" id="InvStkPlanBk.timeStampCreate" name="InvStkPlanBk.timeStampCreate" />
+        </div>
+        <div id="timeStampChange">
+          <label for="InvStkPlanBk.timeStampChange" th:text="#{InvStkPlanBk.timeStampChange}">TIME_STAMP_CHANGE</label><span id="InvStkPlanBk.timeStampChange"></span><input type="hidden" id="InvStkPlanBk.timeStampChange" name="InvStkPlanBk.timeStampChange" />
+        </div>
+        <div id="userIdCreate">
+          <label for="InvStkPlanBk.userIdCreate" th:text="#{InvStkPlanBk.userIdCreate}">USER_ID_CREATE</label><span id="InvStkPlanBk.userIdCreate"></span><input type="hidden" id="InvStkPlanBk.userIdCreate" name="InvStkPlanBk.userIdCreate" />
+        </div>
+        <div id="userIdChange">
+          <label for="InvStkPlanBk.userIdChange" th:text="#{InvStkPlanBk.userIdChange}">USER_ID_CHANGE</label><span id="InvStkPlanBk.userIdChange"></span><input type="hidden" id="InvStkPlanBk.userIdChange" name="InvStkPlanBk.userIdChange" />
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="Dialogate.refresh(event);">reset</button>
+        <a th:href="@{InvStkPlanBkGet.xlsx(baseMei=#{InvStkPlanBk.h2})}" id="InvStkPlanBkGet.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeleteInvStkPlanBk" class="delete" data-action="InvStkPlanBkDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistInvStkPlanBk" class="regist" th:text="#{common.regist}">登録</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{MfgShipOrderS.title}">MFG_SHIP_ORDER</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/MfgShipOrderGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{MfgShipOrderS.h2}">h2</h2>
+    <form name="MfgShipOrderSearchForm" action="MfgShipOrderSearch.ajax" class="search">
+      <fieldset>
+        <legend th:text="#{MfgShipOrderS.legend}">legend</legend>
+        <div id="shipOrderNo">
+          <label for="MfgShipOrder.shipOrderNo" th:text="#{MfgShipOrder.shipOrderNo}">SHIP_ORDER_NO</label><input type="text" id="MfgShipOrder.shipOrderNo" name="MfgShipOrder.shipOrderNo" maxlength="12" />
+        </div>
+        <div id="childPlanNo">
+          <label for="MfgShipOrder.childPlanNo" th:text="#{MfgShipOrder.childPlanNo}">CHILD_PLAN_NO</label><input type="text" id="MfgShipOrder.childPlanNo" name="MfgShipOrder.childPlanNo" maxlength="12" />
+        </div>
+        <div id="hinban">
+          <label for="MfgShipOrder.hinban" th:text="#{MfgShipOrder.hinban}">HINBAN</label><input type="text" id="MfgShipOrder.hinban" name="MfgShipOrder.hinban" maxlength="25" />
+        </div>
+        <div id="shipDirectCounts">
+          <label for="MfgShipOrder.shipDirectCounts_1" th:text="#{MfgShipOrder.shipDirectCounts}">SHIP_DIRECT_COUNTS</label><input type="text" id="MfgShipOrder.shipDirectCounts_1" name="MfgShipOrder.shipDirectCounts_1" maxlength="11" />～<input type="text" id="MfgShipOrder.shipDirectCounts_2" name="MfgShipOrder.shipDirectCounts_2" maxlength="11" />
+        </div>
+        <div id="shipStatus">
+          <label for="MfgShipOrder.shipStatus" th:text="#{MfgShipOrder.shipStatus}">SHIP_STATUS</label><input type="text" id="MfgShipOrder.shipStatus" name="MfgShipOrder.shipStatus" maxlength="1" />
+        </div>
+        <div id="shipCounts">
+          <label for="MfgShipOrder.shipCounts_1" th:text="#{MfgShipOrder.shipCounts}">SHIP_COUNTS</label><input type="text" id="MfgShipOrder.shipCounts_1" name="MfgShipOrder.shipCounts_1" maxlength="11" />～<input type="text" id="MfgShipOrder.shipCounts_2" name="MfgShipOrder.shipCounts_2" maxlength="11" />
+        </div>
+        <div id="shipDate">
+          <label for="MfgShipOrder.shipDate_1" th:text="#{MfgShipOrder.shipDate}">SHIP_DATE</label><input type="date" id="MfgShipOrder.shipDate_1" name="MfgShipOrder.shipDate_1" maxlength="7" />～<input type="date" id="MfgShipOrder.shipDate_2" name="MfgShipOrder.shipDate_2" maxlength="7" />
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="reset" th:text="#{common.reset}">reset</button>
+        <a th:href="@{/model/MfgShipOrder.html}" id="MfgShipOrder" target="dialog" th:text="#{MfgShipOrder.add}" tabindex="-1">MFG_SHIP_ORDER</a>
+      </div>
+      <div class="submits">
+        <button id="SearchMfgShipOrder" class="search" data-gridId="MfgShipOrderGrid" th:text="#{common.search}">submit</button>
+      </div>
+    </form>
+    <form name="MfgShipOrderSRegistForm" action="MfgShipOrderSRegist.ajax" class="regist">
+      <h3 th:text="#{MfgShipOrder.h3}">h3</h3>
+      <div id="MfgShipOrderGrid" data-selectionMode="checkbox" data-addRow="true" data-frozenColumn="0" th:data-href="@{/model/MfgShipOrder.html}"></div>
+      <div id="MfgShipOrderPager"></div>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="$('[id=&quot;SearchMfgShipOrder&quot;]').click();">reset</button>
+        <a th:href="@{MfgShipOrderSearch.xlsx(baseMei=#{MfgShipOrderS.h2})}" id="MfgShipOrderSearch.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeleteMfgShipOrderS" class="delete selectRows" data-action="MfgShipOrderSDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistMfgShipOrderS" class="regist" th:text="#{common.regist}">submit</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{MstStoreManS.title}">MST_STORE_MAN</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/MstStoreManGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{MstStoreManS.h2}">h2</h2>
+    <form name="MstStoreManSearchForm" action="MstStoreManSearch.ajax" class="search">
+      <fieldset>
+        <legend th:text="#{MstStoreManS.legend}">legend</legend>
+        <div id="storeManId">
+          <label for="MstStoreMan.storeManId" th:text="#{MstStoreMan.storeManId}">STORE_MAN_ID</label><input type="text" id="MstStoreMan.storeManId" name="MstStoreMan.storeManId" maxlength="10" />
+        </div>
+        <div id="storeManMei">
+          <label for="MstStoreMan.storeManMei" th:text="#{MstStoreMan.storeManMei}">STORE_MAN_MEI</label><input type="text" id="MstStoreMan.storeManMei" name="MstStoreMan.storeManMei" maxlength="60" />
+        </div>
+        <div id="memo">
+          <label for="MstStoreMan.memo" th:text="#{MstStoreMan.memo}">MEMO</label><input type="text" id="MstStoreMan.memo" name="MstStoreMan.memo" maxlength="120" />
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="reset" th:text="#{common.reset}">reset</button>
+        <a th:href="@{/model/MstStoreMan.html}" id="MstStoreMan" target="dialog" th:text="#{MstStoreMan.add}" tabindex="-1">MST_STORE_MAN</a>
+      </div>
+      <div class="submits">
+        <button id="SearchMstStoreMan" class="search" data-gridId="MstStoreManGrid" th:text="#{common.search}">submit</button>
+      </div>
+    </form>
+    <form name="MstStoreManSRegistForm" action="MstStoreManSRegist.ajax" class="regist">
+      <h3 th:text="#{MstStoreMan.h3}">h3</h3>
+      <div id="MstStoreManGrid" data-selectionMode="checkbox" data-frozenColumn="0" th:data-href="@{/model/MstStoreMan.html}"></div>
+      <div id="MstStoreManPager"></div>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="$('[id=&quot;SearchMstStoreMan&quot;]').click();">reset</button>
+        <a th:href="@{MstStoreManSearch.xlsx(baseMei=#{MstStoreManS.h2})}" id="MstStoreManSearch.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeleteMstStoreManS" class="delete selectRows" data-action="MstStoreManSDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistMstStoreManS" class="regist" th:text="#{common.regist}">submit</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

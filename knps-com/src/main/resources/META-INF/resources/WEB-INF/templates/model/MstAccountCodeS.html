@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{MstAccountCodeS.title}">MST_ACCOUNT_CODE</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/MstAccountCodeGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{MstAccountCodeS.h2}">h2</h2>
+    <form name="MstAccountCodeSearchForm" action="MstAccountCodeSearch.ajax" class="search">
+      <fieldset>
+        <legend th:text="#{MstAccountCodeS.legend}">legend</legend>
+        <div id="accountCode">
+          <fieldset id="MstAccountCode.accountCodeList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:account_code" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstAccountCode.accountCode}">ACCOUNT_CODE</legend>
+          </fieldset>
+        </div>
+        <div id="accountName">
+          <label for="MstAccountCode.accountName" th:text="#{MstAccountCode.accountName}">ACCOUNT_NAME</label><input type="text" id="MstAccountCode.accountName" name="MstAccountCode.accountName" maxlength="60" />
+        </div>
+        <div id="expenseKbn1">
+          <label for="MstAccountCode.expenseKbn1" th:text="#{MstAccountCode.expenseKbn1}">EXPENSE_KBN1</label><input type="text" id="MstAccountCode.expenseKbn1" name="MstAccountCode.expenseKbn1" maxlength="1" />
+        </div>
+        <div id="expenseKbn2">
+          <label for="MstAccountCode.expenseKbn2" th:text="#{MstAccountCode.expenseKbn2}">EXPENSE_KBN2</label><input type="text" id="MstAccountCode.expenseKbn2" name="MstAccountCode.expenseKbn2" maxlength="1" />
+        </div>
+        <div id="expenseKbn3">
+          <label for="MstAccountCode.expenseKbn3" th:text="#{MstAccountCode.expenseKbn3}">EXPENSE_KBN3</label><input type="text" id="MstAccountCode.expenseKbn3" name="MstAccountCode.expenseKbn3" maxlength="1" />
+        </div>
+        <div id="deleteFlag">
+          <fieldset id="MstAccountCode.deleteFlagList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:delete_flag" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstAccountCode.deleteFlag}">DELETE_FLAG</legend>
+          </fieldset>
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="reset" th:text="#{common.reset}">reset</button>
+        <a th:href="@{/model/MstAccountCode.html}" id="MstAccountCode" target="dialog" th:text="#{MstAccountCode.add}" tabindex="-1">MST_ACCOUNT_CODE</a>
+      </div>
+      <div class="submits">
+        <button id="SearchMstAccountCode" class="search" data-gridId="MstAccountCodeGrid" th:text="#{common.search}">submit</button>
+      </div>
+    </form>
+    <form name="MstAccountCodeSRegistForm" action="MstAccountCodeSRegist.ajax" class="regist">
+      <h3 th:text="#{MstAccountCode.h3}">h3</h3>
+      <div id="MstAccountCodeGrid" data-selectionMode="checkbox" data-addRow="true" data-frozenColumn="0" th:data-href="@{/model/MstAccountCode.html}"></div>
+      <div id="MstAccountCodePager"></div>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="$('[id=&quot;SearchMstAccountCode&quot;]').click();">reset</button>
+        <a th:href="@{MstAccountCodeSearch.xlsx(baseMei=#{MstAccountCodeS.h2})}" id="MstAccountCodeSearch.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeleteMstAccountCodeS" class="delete selectRows" data-action="MstAccountCodeSDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistMstAccountCodeS" class="regist" th:text="#{common.regist}">submit</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

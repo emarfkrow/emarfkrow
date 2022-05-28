@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{InvSalesInventoryS.title}">INV_SALES_INVENTORY</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/InvSalesInventoryGridColumns.js}"></script>
+<script th:src="@{/model/MstLocationGridColumns.js}"></script>
+<script th:src="@{/model/MstSubinvGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierGridColumns.js}"></script>
+<script th:src="@{/model/InvStockProcessSupplyGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierBkGridColumns.js}"></script>
+<script th:src="@{/model/MstTaxGridColumns.js}"></script>
+<script th:src="@{/model/MstStoreManGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{InvSalesInventoryS.h2}">h2</h2>
+    <form name="InvSalesInventorySearchForm" action="InvSalesInventorySearch.ajax" class="search">
+      <fieldset>
+        <legend th:text="#{InvSalesInventoryS.legend}">legend</legend>
+        <div id="salesHinban">
+          <label for="InvSalesInventory.salesHinban" th:text="#{InvSalesInventory.salesHinban}">SALES_HINBAN</label><input type="text" id="InvSalesInventory.salesHinban" name="InvSalesInventory.salesHinban" maxlength="20" />
+        </div>
+        <div id="hinban">
+          <label for="InvSalesInventory.hinban" th:text="#{InvSalesInventory.hinban}">HINBAN</label><input type="text" id="InvSalesInventory.hinban" name="InvSalesInventory.hinban" maxlength="25" />
+        </div>
+        <div id="inventory">
+          <label for="InvSalesInventory.inventory" th:text="#{InvSalesInventory.inventory}">INVENTORY</label><input type="text" id="InvSalesInventory.inventory" name="InvSalesInventory.inventory" maxlength="11" />
+        </div>
+        <div id="locationCode">
+          <label for="InvSalesInventory.locationCode" th:text="#{InvSalesInventory.locationCode}">LOCATION_CODE</label><input type="text" id="InvSalesInventory.locationCode" name="InvSalesInventory.locationCode" maxlength="10" data-json="MstLocationSearch.json" data-srcDef="LOCATION_CODE:InvSalesInventory.locationCode" data-destDef="InvSalesInventory.locationName:LOCATION_NAME" /><a id="InvSalesInventory.locationCode" th:href="@{/model/MstLocationS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="InvSalesInventory.locationName" class="refer" data-json="MstLocationSearch.json" data-srcDef="LOCATION_CODE:InvSalesInventory.locationCode" data-destDef="InvSalesInventory.locationName:LOCATION_NAME"></span>
+        </div>
+        <div id="lastDownloadDate">
+          <label for="InvSalesInventory.lastDownloadDate_1" th:text="#{InvSalesInventory.lastDownloadDate}">LAST_DOWNLOAD_DATE</label><input type="date" id="InvSalesInventory.lastDownloadDate_1" name="InvSalesInventory.lastDownloadDate_1" maxlength="7" />～<input type="date" id="InvSalesInventory.lastDownloadDate_2" name="InvSalesInventory.lastDownloadDate_2" maxlength="7" />
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="reset" th:text="#{common.reset}">reset</button>
+      </div>
+      <div class="submits">
+        <button id="SearchInvSalesInventory" class="search" data-gridId="InvSalesInventoryGrid" th:text="#{common.search}">submit</button>
+      </div>
+    </form>
+    <form name="InvSalesInventorySRegistForm" action="InvSalesInventorySRegist.ajax" class="regist">
+      <h3 th:text="#{InvSalesInventory.h3}">h3</h3>
+      <div id="InvSalesInventoryGrid" data-selectionMode="checkbox" data-frozenColumn="1" th:data-href="@{/model/InvSalesInventory.html}"></div>
+      <div id="InvSalesInventoryPager"></div>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="$('[id=&quot;SearchInvSalesInventory&quot;]').click();">reset</button>
+        <a th:href="@{InvSalesInventorySearch.xlsx(baseMei=#{InvSalesInventoryS.h2})}" id="InvSalesInventorySearch.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeleteInvSalesInventoryS" class="delete selectRows" data-action="InvSalesInventorySDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistInvSalesInventoryS" class="regist" th:text="#{common.regist}">submit</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

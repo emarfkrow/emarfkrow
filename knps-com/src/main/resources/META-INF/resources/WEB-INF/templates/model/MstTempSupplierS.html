@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{MstTempSupplierS.title}">MST_TEMP_SUPPLIER</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/MstTempSupplierGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierGridColumns.js}"></script>
+<script th:src="@{/model/InvStockProcessSupplyGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierBkGridColumns.js}"></script>
+<script th:src="@{/model/MstTaxGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{MstTempSupplierS.h2}">h2</h2>
+    <form name="MstTempSupplierSearchForm" action="MstTempSupplierSearch.ajax" class="search">
+      <fieldset>
+        <legend th:text="#{MstTempSupplierS.legend}">legend</legend>
+        <div id="tempSupCode">
+          <label for="MstTempSupplier.tempSupCode" th:text="#{MstTempSupplier.tempSupCode}">TEMP_SUP_CODE</label><input type="text" id="MstTempSupplier.tempSupCode" name="MstTempSupplier.tempSupCode" maxlength="6" data-json="MstSupplierSearch.json" data-srcDef="SUP_CODE:MstTempSupplier.tempSupCode" data-destDef="MstTempSupplier.tempSupName:SUP_NAME" /><a id="MstTempSupplier.tempSupCode" th:href="@{/model/MstSupplierS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a>
+        </div>
+        <div id="tempSupName">
+          <label for="MstTempSupplier.tempSupName" th:text="#{MstTempSupplier.tempSupName}">TEMP_SUP_NAME</label><input type="text" id="MstTempSupplier.tempSupName" name="MstTempSupplier.tempSupName" maxlength="30" />
+        </div>
+        <div id="tempSupStaffName">
+          <label for="MstTempSupplier.tempSupStaffName" th:text="#{MstTempSupplier.tempSupStaffName}">TEMP_SUP_STAFF_NAME</label><input type="text" id="MstTempSupplier.tempSupStaffName" name="MstTempSupplier.tempSupStaffName" maxlength="30" />
+        </div>
+        <div id="tempSupTelNo">
+          <label for="MstTempSupplier.tempSupTelNo" th:text="#{MstTempSupplier.tempSupTelNo}">TEMP_SUP_TEL_NO</label><input type="text" id="MstTempSupplier.tempSupTelNo" name="MstTempSupplier.tempSupTelNo" maxlength="15" />
+        </div>
+        <div id="tempSupFaxNo">
+          <label for="MstTempSupplier.tempSupFaxNo" th:text="#{MstTempSupplier.tempSupFaxNo}">TEMP_SUP_FAX_NO</label><input type="text" id="MstTempSupplier.tempSupFaxNo" name="MstTempSupplier.tempSupFaxNo" maxlength="15" />
+        </div>
+        <div id="tempSupDivCode">
+          <fieldset id="MstTempSupplier.tempSupDivCodeList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:temp_sup_div_code" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstTempSupplier.tempSupDivCode}">TEMP_SUP_DIV_CODE</legend>
+          </fieldset>
+        </div>
+        <div id="tempKozaNo">
+          <label for="MstTempSupplier.tempKozaNo" th:text="#{MstTempSupplier.tempKozaNo}">TEMP_KOZA_NO</label><input type="text" id="MstTempSupplier.tempKozaNo" name="MstTempSupplier.tempKozaNo" maxlength="8" />
+        </div>
+        <div id="tempKozaMeigi">
+          <label for="MstTempSupplier.tempKozaMeigi" th:text="#{MstTempSupplier.tempKozaMeigi}">TEMP_KOZA_MEIGI</label><input type="text" id="MstTempSupplier.tempKozaMeigi" name="MstTempSupplier.tempKozaMeigi" maxlength="30" />
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="reset" th:text="#{common.reset}">reset</button>
+        <a th:href="@{/model/MstTempSupplier.html}" id="MstTempSupplier" target="dialog" th:text="#{MstTempSupplier.add}" tabindex="-1">MST_TEMP_SUPPLIER</a>
+      </div>
+      <div class="submits">
+        <button id="SearchMstTempSupplier" class="search" data-gridId="MstTempSupplierGrid" th:text="#{common.search}">submit</button>
+      </div>
+    </form>
+    <form name="MstTempSupplierSRegistForm" action="MstTempSupplierSRegist.ajax" class="regist">
+      <h3 th:text="#{MstTempSupplier.h3}">h3</h3>
+      <div id="MstTempSupplierGrid" data-selectionMode="checkbox" data-frozenColumn="0" th:data-href="@{/model/MstTempSupplier.html}"></div>
+      <div id="MstTempSupplierPager"></div>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="$('[id=&quot;SearchMstTempSupplier&quot;]').click();">reset</button>
+        <a th:href="@{MstTempSupplierSearch.xlsx(baseMei=#{MstTempSupplierS.h2})}" id="MstTempSupplierSearch.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeleteMstTempSupplierS" class="delete selectRows" data-action="MstTempSupplierSDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistMstTempSupplierS" class="regist" th:text="#{common.regist}">submit</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

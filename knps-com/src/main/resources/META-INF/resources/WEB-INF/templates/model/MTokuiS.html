@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{MTokuiS.title}">M_TOKUI</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/MTokuiGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{MTokuiS.h2}">h2</h2>
+    <form name="MTokuiSearchForm" action="MTokuiSearch.ajax" class="search">
+      <fieldset>
+        <legend th:text="#{MTokuiS.legend}">legend</legend>
+        <div id="tokucd">
+          <label for="MTokui.tokucd" th:text="#{MTokui.tokucd}">TOKUCD</label><input type="text" id="MTokui.tokucd" name="MTokui.tokucd" maxlength="8" />
+        </div>
+        <div id="tokumei1">
+          <label for="MTokui.tokumei1" th:text="#{MTokui.tokumei1}">TOKUMEI1</label><input type="text" id="MTokui.tokumei1" name="MTokui.tokumei1" maxlength="28" />
+        </div>
+        <div id="tokumei2">
+          <label for="MTokui.tokumei2" th:text="#{MTokui.tokumei2}">TOKUMEI2</label><input type="text" id="MTokui.tokumei2" name="MTokui.tokumei2" maxlength="22" />
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="reset" th:text="#{common.reset}">reset</button>
+        <a th:href="@{/model/MTokui.html}" id="MTokui" target="dialog" th:text="#{MTokui.add}" tabindex="-1">M_TOKUI</a>
+      </div>
+      <div class="submits">
+        <button id="SearchMTokui" class="search" data-gridId="MTokuiGrid" th:text="#{common.search}">submit</button>
+      </div>
+    </form>
+    <form name="MTokuiSRegistForm" action="MTokuiSRegist.ajax" class="regist">
+      <h3 th:text="#{MTokui.h3}">h3</h3>
+      <div id="MTokuiGrid" data-selectionMode="checkbox" data-frozenColumn="0" th:data-href="@{/model/MTokui.html}"></div>
+      <div id="MTokuiPager"></div>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="$('[id=&quot;SearchMTokui&quot;]').click();">reset</button>
+        <a th:href="@{MTokuiSearch.xlsx(baseMei=#{MTokuiS.h2})}" id="MTokuiSearch.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeleteMTokuiS" class="delete selectRows" data-action="MTokuiSDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistMTokuiS" class="regist" th:text="#{common.regist}">submit</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

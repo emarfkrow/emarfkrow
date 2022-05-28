@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{MfgKanbanDetS.title}">MFG_KANBAN_DET</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/MfgKanbanDetGridColumns.js}"></script>
+<script th:src="@{/model/MfgKanbanShippingGridColumns.js}"></script>
+<script th:src="@{/model/MstLocationGridColumns.js}"></script>
+<script th:src="@{/model/MstSubinvGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierGridColumns.js}"></script>
+<script th:src="@{/model/InvStockProcessSupplyGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierBkGridColumns.js}"></script>
+<script th:src="@{/model/MstTaxGridColumns.js}"></script>
+<script th:src="@{/model/MstStoreManGridColumns.js}"></script>
+<script th:src="@{/model/MfgKanbanStatusGridColumns.js}"></script>
+<script th:src="@{/model/MstProcGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{MfgKanbanDetS.h2}">h2</h2>
+    <form name="MfgKanbanDetSearchForm" action="MfgKanbanDetSearch.ajax" class="search">
+      <fieldset>
+        <legend th:text="#{MfgKanbanDetS.legend}">legend</legend>
+        <div id="kanbanId">
+          <label for="MfgKanbanDet.kanbanId" th:text="#{MfgKanbanDet.kanbanId}">KANBAN_ID</label><input type="text" id="MfgKanbanDet.kanbanId" name="MfgKanbanDet.kanbanId" maxlength="9" />
+        </div>
+        <div id="hinban">
+          <label for="MfgKanbanDet.hinban" th:text="#{MfgKanbanDet.hinban}">HINBAN</label><input type="text" id="MfgKanbanDet.hinban" name="MfgKanbanDet.hinban" maxlength="25" />
+        </div>
+        <div id="neckRoutingCode">
+          <label for="MfgKanbanDet.neckRoutingCode" th:text="#{MfgKanbanDet.neckRoutingCode}">NECK_ROUTING_CODE</label><input type="text" id="MfgKanbanDet.neckRoutingCode" name="MfgKanbanDet.neckRoutingCode" maxlength="10" data-json="MstProcSearch.json" data-srcDef="ROUTING_CODE:MfgKanbanDet.neckRoutingCode" data-destDef="MfgKanbanDet.neckRoutingName:ROUTING_NAME" /><a id="MfgKanbanDet.neckRoutingCode" th:href="@{/model/MstProcS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MfgKanbanDet.neckRoutingName" class="refer" data-json="MstProcSearch.json" data-srcDef="ROUTING_CODE:MfgKanbanDet.neckRoutingCode" data-destDef="MfgKanbanDet.neckRoutingName:ROUTING_NAME"></span>
+        </div>
+        <div id="forProCode">
+          <fieldset id="MfgKanbanDet.forProCodeList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:for_pro_code" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MfgKanbanDet.forProCode}">FOR_PRO_CODE</legend>
+          </fieldset>
+        </div>
+        <div id="forProLocationCode">
+          <label for="MfgKanbanDet.forProLocationCode" th:text="#{MfgKanbanDet.forProLocationCode}">FOR_PRO_LOCATION_CODE</label><input type="text" id="MfgKanbanDet.forProLocationCode" name="MfgKanbanDet.forProLocationCode" maxlength="10" data-json="MstLocationSearch.json" data-srcDef="LOCATION_CODE:MfgKanbanDet.forProLocationCode" data-destDef="MfgKanbanDet.forProLocationName:LOCATION_NAME" /><a id="MfgKanbanDet.forProLocationCode" th:href="@{/model/MstLocationS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MfgKanbanDet.forProLocationName" class="refer" data-json="MstLocationSearch.json" data-srcDef="LOCATION_CODE:MfgKanbanDet.forProLocationCode" data-destDef="MfgKanbanDet.forProLocationName:LOCATION_NAME"></span>
+        </div>
+        <div id="proCode">
+          <fieldset id="MfgKanbanDet.proCodeList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:pro_code" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MfgKanbanDet.proCode}">PRO_CODE</legend>
+          </fieldset>
+        </div>
+        <div id="proLocationCode">
+          <label for="MfgKanbanDet.proLocationCode" th:text="#{MfgKanbanDet.proLocationCode}">PRO_LOCATION_CODE</label><input type="text" id="MfgKanbanDet.proLocationCode" name="MfgKanbanDet.proLocationCode" maxlength="10" data-json="MstLocationSearch.json" data-srcDef="LOCATION_CODE:MfgKanbanDet.proLocationCode" data-destDef="MfgKanbanDet.proLocationName:LOCATION_NAME" /><a id="MfgKanbanDet.proLocationCode" th:href="@{/model/MstLocationS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MfgKanbanDet.proLocationName" class="refer" data-json="MstLocationSearch.json" data-srcDef="LOCATION_CODE:MfgKanbanDet.proLocationCode" data-destDef="MfgKanbanDet.proLocationName:LOCATION_NAME"></span>
+        </div>
+        <div id="comment1">
+          <label for="MfgKanbanDet.comment1" th:text="#{MfgKanbanDet.comment1}">COMMENT1</label><input type="text" id="MfgKanbanDet.comment1" name="MfgKanbanDet.comment1" maxlength="50" />
+        </div>
+        <div id="comment2">
+          <label for="MfgKanbanDet.comment2" th:text="#{MfgKanbanDet.comment2}">COMMENT2</label><input type="text" id="MfgKanbanDet.comment2" name="MfgKanbanDet.comment2" maxlength="50" />
+        </div>
+        <div id="routing1">
+          <label for="MfgKanbanDet.routing1" th:text="#{MfgKanbanDet.routing1}">ROUTING1</label><input type="text" id="MfgKanbanDet.routing1" name="MfgKanbanDet.routing1" maxlength="2" />
+        </div>
+        <div id="tunnelProCode1">
+          <label for="MfgKanbanDet.tunnelProCode1" th:text="#{MfgKanbanDet.tunnelProCode1}">TUNNEL_PRO_CODE1</label><input type="text" id="MfgKanbanDet.tunnelProCode1" name="MfgKanbanDet.tunnelProCode1" maxlength="10" />
+        </div>
+        <div id="routing2">
+          <label for="MfgKanbanDet.routing2" th:text="#{MfgKanbanDet.routing2}">ROUTING2</label><input type="text" id="MfgKanbanDet.routing2" name="MfgKanbanDet.routing2" maxlength="2" />
+        </div>
+        <div id="tunnelProCode2">
+          <label for="MfgKanbanDet.tunnelProCode2" th:text="#{MfgKanbanDet.tunnelProCode2}">TUNNEL_PRO_CODE2</label><input type="text" id="MfgKanbanDet.tunnelProCode2" name="MfgKanbanDet.tunnelProCode2" maxlength="10" />
+        </div>
+        <div id="routing3">
+          <label for="MfgKanbanDet.routing3" th:text="#{MfgKanbanDet.routing3}">ROUTING3</label><input type="text" id="MfgKanbanDet.routing3" name="MfgKanbanDet.routing3" maxlength="2" />
+        </div>
+        <div id="tunnelProCode3">
+          <label for="MfgKanbanDet.tunnelProCode3" th:text="#{MfgKanbanDet.tunnelProCode3}">TUNNEL_PRO_CODE3</label><input type="text" id="MfgKanbanDet.tunnelProCode3" name="MfgKanbanDet.tunnelProCode3" maxlength="10" />
+        </div>
+        <div id="routing4">
+          <label for="MfgKanbanDet.routing4" th:text="#{MfgKanbanDet.routing4}">ROUTING4</label><input type="text" id="MfgKanbanDet.routing4" name="MfgKanbanDet.routing4" maxlength="2" />
+        </div>
+        <div id="tunnelProCode4">
+          <label for="MfgKanbanDet.tunnelProCode4" th:text="#{MfgKanbanDet.tunnelProCode4}">TUNNEL_PRO_CODE4</label><input type="text" id="MfgKanbanDet.tunnelProCode4" name="MfgKanbanDet.tunnelProCode4" maxlength="10" />
+        </div>
+        <div id="routing5">
+          <label for="MfgKanbanDet.routing5" th:text="#{MfgKanbanDet.routing5}">ROUTING5</label><input type="text" id="MfgKanbanDet.routing5" name="MfgKanbanDet.routing5" maxlength="2" />
+        </div>
+        <div id="tunnelProCode5">
+          <label for="MfgKanbanDet.tunnelProCode5" th:text="#{MfgKanbanDet.tunnelProCode5}">TUNNEL_PRO_CODE5</label><input type="text" id="MfgKanbanDet.tunnelProCode5" name="MfgKanbanDet.tunnelProCode5" maxlength="10" />
+        </div>
+        <div id="kanbanAccCounts">
+          <label for="MfgKanbanDet.kanbanAccCounts_1" th:text="#{MfgKanbanDet.kanbanAccCounts}">KANBAN_ACC_COUNTS</label><input type="text" id="MfgKanbanDet.kanbanAccCounts_1" name="MfgKanbanDet.kanbanAccCounts_1" maxlength="6" />～<input type="text" id="MfgKanbanDet.kanbanAccCounts_2" name="MfgKanbanDet.kanbanAccCounts_2" maxlength="6" />
+        </div>
+        <div id="lotSize">
+          <label for="MfgKanbanDet.lotSize" th:text="#{MfgKanbanDet.lotSize}">LOT_SIZE</label><input type="text" id="MfgKanbanDet.lotSize" name="MfgKanbanDet.lotSize" maxlength="6" />
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="reset" th:text="#{common.reset}">reset</button>
+        <a th:href="@{/model/MfgKanbanDet.html}" id="MfgKanbanDet" target="dialog" th:text="#{MfgKanbanDet.add}" tabindex="-1">MFG_KANBAN_DET</a>
+      </div>
+      <div class="submits">
+        <button id="SearchMfgKanbanDet" class="search" data-gridId="MfgKanbanDetGrid" th:text="#{common.search}">submit</button>
+      </div>
+    </form>
+    <form name="MfgKanbanDetSRegistForm" action="MfgKanbanDetSRegist.ajax" class="regist">
+      <h3 th:text="#{MfgKanbanDet.h3}">h3</h3>
+      <div id="MfgKanbanDetGrid" data-selectionMode="checkbox" data-addRow="true" data-frozenColumn="0" th:data-href="@{/model/MfgKanbanDet.html}"></div>
+      <div id="MfgKanbanDetPager"></div>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="$('[id=&quot;SearchMfgKanbanDet&quot;]').click();">reset</button>
+        <a th:href="@{MfgKanbanDetSearch.xlsx(baseMei=#{MfgKanbanDetS.h2})}" id="MfgKanbanDetSearch.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeleteMfgKanbanDetS" class="delete selectRows" data-action="MfgKanbanDetSDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistMfgKanbanDetS" class="regist" th:text="#{common.regist}">submit</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

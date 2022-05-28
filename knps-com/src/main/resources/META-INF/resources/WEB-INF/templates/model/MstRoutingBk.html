@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{MstRoutingBk.title}">MST_ROUTING_BK</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/MstRoutingBkGridColumns.js}"></script>
+<script th:src="@{/model/MstWcGridColumns.js}"></script>
+<script th:src="@{/model/MstWcBkGridColumns.js}"></script>
+<script th:src="@{/model/MstProcGridColumns.js}"></script>
+<script th:src="@{/model/MstWsGridColumns.js}"></script>
+<script th:src="@{/model/MstTeamGridColumns.js}"></script>
+<script th:src="@{/model/MstGroupGridColumns.js}"></script>
+<script th:src="@{/model/MstDivisionGridColumns.js}"></script>
+<script th:src="@{/model/MstCompanyGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierGridColumns.js}"></script>
+<script th:src="@{/model/InvStockProcessSupplyGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierBkGridColumns.js}"></script>
+<script th:src="@{/model/MstTaxGridColumns.js}"></script>
+<script th:src="@{/model/MstCostCenterGridColumns.js}"></script>
+<script th:src="@{/model/MstCostCenterBkGridColumns.js}"></script>
+<script th:src="@{/model/MstSubinvGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{MstRoutingBk.h2}">h2</h2>
+    <form name="MstRoutingBkRegistForm" action="MstRoutingBkRegist.ajax" class="regist">
+      <fieldset>
+        <legend th:text="#{MstRoutingBk.legend}">legend</legend>
+        <div id="yy">
+          <label for="MstRoutingBk.yy" th:text="#{MstRoutingBk.yy}">YY</label><span id="MstRoutingBk.yy"></span><input type="hidden" id="MstRoutingBk.yy" name="MstRoutingBk.yy" class="primaryKey" />
+        </div>
+        <div id="manHinban">
+          <label for="MstRoutingBk.manHinban" th:text="#{MstRoutingBk.manHinban}">MAN_HINBAN</label><span id="MstRoutingBk.manHinban"></span><input type="hidden" id="MstRoutingBk.manHinban" name="MstRoutingBk.manHinban" class="primaryKey" />
+        </div>
+        <div id="routingGroup">
+          <label for="MstRoutingBk.routingGroup" th:text="#{MstRoutingBk.routingGroup}">ROUTING_GROUP</label><input type="text" id="MstRoutingBk.routingGroup" name="MstRoutingBk.routingGroup" maxlength="2" class="primaryKey" />
+        </div>
+        <div id="routing">
+          <label for="MstRoutingBk.routing" th:text="#{MstRoutingBk.routing}">ROUTING</label><input type="text" id="MstRoutingBk.routing" name="MstRoutingBk.routing" maxlength="2" class="primaryKey" />
+        </div>
+        <div id="neckRouting">
+          <label for="MstRoutingBk.neckRouting" th:text="#{MstRoutingBk.neckRouting}">NECK_ROUTING</label><input type="text" id="MstRoutingBk.neckRouting" name="MstRoutingBk.neckRouting" maxlength="1" />
+        </div>
+        <div id="opeDetail">
+          <label for="MstRoutingBk.opeDetail" th:text="#{MstRoutingBk.opeDetail}">OPE_DETAIL</label><input type="text" id="MstRoutingBk.opeDetail" name="MstRoutingBk.opeDetail" maxlength="10" />
+        </div>
+        <div id="wcCode">
+          <label for="MstRoutingBk.wcCode" th:text="#{MstRoutingBk.wcCode}">WC_CODE</label><input type="text" id="MstRoutingBk.wcCode" name="MstRoutingBk.wcCode" maxlength="3" data-json="MstWcSearch.json" data-srcDef="WC_CODE:MstRoutingBk.wcCode" data-destDef="MstRoutingBk.wcName:WC_NAME" /><a id="MstRoutingBk.wcCode" th:href="@{/model/MstWcS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MstRoutingBk.wcName" class="refer" data-json="MstWcSearch.json" data-srcDef="WC_CODE:MstRoutingBk.wcCode" data-destDef="MstRoutingBk.wcName:WC_NAME"></span>
+        </div>
+        <div id="humPreTime">
+          <label for="MstRoutingBk.humPreTime" th:text="#{MstRoutingBk.humPreTime}">HUM_PRE_TIME</label><input type="text" id="MstRoutingBk.humPreTime" name="MstRoutingBk.humPreTime" maxlength="7" />
+        </div>
+        <div id="humActTime">
+          <label for="MstRoutingBk.humActTime" th:text="#{MstRoutingBk.humActTime}">HUM_ACT_TIME</label><input type="text" id="MstRoutingBk.humActTime" name="MstRoutingBk.humActTime" maxlength="7" />
+        </div>
+        <div id="macPreTime">
+          <label for="MstRoutingBk.macPreTime" th:text="#{MstRoutingBk.macPreTime}">MAC_PRE_TIME</label><input type="text" id="MstRoutingBk.macPreTime" name="MstRoutingBk.macPreTime" maxlength="7" />
+        </div>
+        <div id="macActTime">
+          <label for="MstRoutingBk.macActTime" th:text="#{MstRoutingBk.macActTime}">MAC_ACT_TIME</label><input type="text" id="MstRoutingBk.macActTime" name="MstRoutingBk.macActTime" maxlength="7" />
+        </div>
+        <div id="comment1">
+          <label for="MstRoutingBk.comment1" th:text="#{MstRoutingBk.comment1}">COMMENT1</label><input type="text" id="MstRoutingBk.comment1" name="MstRoutingBk.comment1" maxlength="25" />
+        </div>
+        <div id="comment2">
+          <label for="MstRoutingBk.comment2" th:text="#{MstRoutingBk.comment2}">COMMENT2</label><input type="text" id="MstRoutingBk.comment2" name="MstRoutingBk.comment2" maxlength="25" />
+        </div>
+        <div id="lotSize">
+          <label for="MstRoutingBk.lotSize" th:text="#{MstRoutingBk.lotSize}">LOT_SIZE</label><input type="text" id="MstRoutingBk.lotSize" name="MstRoutingBk.lotSize" maxlength="6" />
+        </div>
+        <div id="accCounts">
+          <label for="MstRoutingBk.accCounts" th:text="#{MstRoutingBk.accCounts}">ACC_COUNTS</label><input type="text" id="MstRoutingBk.accCounts" name="MstRoutingBk.accCounts" maxlength="6" />
+        </div>
+        <div id="unitWeight">
+          <label for="MstRoutingBk.unitWeight" th:text="#{MstRoutingBk.unitWeight}">UNIT_WEIGHT</label><input type="text" id="MstRoutingBk.unitWeight" name="MstRoutingBk.unitWeight" maxlength="11" />
+        </div>
+        <div id="storeKbn">
+          <fieldset id="MstRoutingBk.storeKbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:store_kbn" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstRoutingBk.storeKbn}">STORE_KBN</legend>
+          </fieldset>
+        </div>
+        <div id="storeNo">
+          <label for="MstRoutingBk.storeNo" th:text="#{MstRoutingBk.storeNo}">STORE_NO</label><input type="text" id="MstRoutingBk.storeNo" name="MstRoutingBk.storeNo" maxlength="10" />
+        </div>
+        <div id="inspectLaneKbn">
+          <fieldset id="MstRoutingBk.inspectLaneKbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:inspect_lane_kbn" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstRoutingBk.inspectLaneKbn}">INSPECT_LANE_KBN</legend>
+          </fieldset>
+        </div>
+        <div id="inspectKbn">
+          <fieldset id="MstRoutingBk.inspectKbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:inspect_kbn" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstRoutingBk.inspectKbn}">INSPECT_KBN</legend>
+          </fieldset>
+        </div>
+        <div id="subinvCode">
+          <fieldset id="MstRoutingBk.subinvCodeList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:subinv_code" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstRoutingBk.subinvCode}">SUBINV_CODE</legend>
+          </fieldset>
+        </div>
+        <div id="humPreTimeKbn">
+          <fieldset id="MstRoutingBk.humPreTimeKbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:hum_pre_time_kbn" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstRoutingBk.humPreTimeKbn}">HUM_PRE_TIME_KBN</legend>
+          </fieldset>
+        </div>
+        <div id="humActTimeKbn">
+          <fieldset id="MstRoutingBk.humActTimeKbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:hum_act_time_kbn" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstRoutingBk.humActTimeKbn}">HUM_ACT_TIME_KBN</legend>
+          </fieldset>
+        </div>
+        <div id="macPreTimeKbn">
+          <fieldset id="MstRoutingBk.macPreTimeKbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:mac_pre_time_kbn" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstRoutingBk.macPreTimeKbn}">MAC_PRE_TIME_KBN</legend>
+          </fieldset>
+        </div>
+        <div id="macActTimeKbn">
+          <fieldset id="MstRoutingBk.macActTimeKbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:mac_act_time_kbn" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstRoutingBk.macActTimeKbn}">MAC_ACT_TIME_KBN</legend>
+          </fieldset>
+        </div>
+        <div id="supplyFlag">
+          <fieldset id="MstRoutingBk.supplyFlagList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:supply_flag" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstRoutingBk.supplyFlag}">SUPPLY_FLAG</legend>
+          </fieldset>
+        </div>
+        <div id="timeStampCreate">
+          <label for="MstRoutingBk.timeStampCreate" th:text="#{MstRoutingBk.timeStampCreate}">TIME_STAMP_CREATE</label><span id="MstRoutingBk.timeStampCreate"></span><input type="hidden" id="MstRoutingBk.timeStampCreate" name="MstRoutingBk.timeStampCreate" />
+        </div>
+        <div id="timeStampChange">
+          <label for="MstRoutingBk.timeStampChange" th:text="#{MstRoutingBk.timeStampChange}">TIME_STAMP_CHANGE</label><span id="MstRoutingBk.timeStampChange"></span><input type="hidden" id="MstRoutingBk.timeStampChange" name="MstRoutingBk.timeStampChange" />
+        </div>
+        <div id="userIdCreate">
+          <label for="MstRoutingBk.userIdCreate" th:text="#{MstRoutingBk.userIdCreate}">USER_ID_CREATE</label><span id="MstRoutingBk.userIdCreate"></span><input type="hidden" id="MstRoutingBk.userIdCreate" name="MstRoutingBk.userIdCreate" />
+        </div>
+        <div id="userIdChange">
+          <label for="MstRoutingBk.userIdChange" th:text="#{MstRoutingBk.userIdChange}">USER_ID_CHANGE</label><span id="MstRoutingBk.userIdChange"></span><input type="hidden" id="MstRoutingBk.userIdChange" name="MstRoutingBk.userIdChange" />
+        </div>
+        <div id="mushoHacchuF">
+          <fieldset id="MstRoutingBk.mushoHacchuFList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:musho_hacchu_f" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstRoutingBk.mushoHacchuF}">MUSHO_HACCHU_F</legend>
+          </fieldset>
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="Dialogate.refresh(event);">reset</button>
+        <a th:href="@{MstRoutingBkGet.xlsx(baseMei=#{MstRoutingBk.h2})}" id="MstRoutingBkGet.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeleteMstRoutingBk" class="delete" data-action="MstRoutingBkDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistMstRoutingBk" class="regist" th:text="#{common.regist}">登録</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

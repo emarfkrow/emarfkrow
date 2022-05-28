@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{PrdTehaiIraiDetHisS.title}">PRD_TEHAI_IRAI_DET_HIS</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/PrdTehaiIraiDetHisGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{PrdTehaiIraiDetHisS.h2}">h2</h2>
+    <form name="PrdTehaiIraiDetHisSearchForm" action="PrdTehaiIraiDetHisSearch.ajax" class="search">
+      <fieldset>
+        <legend th:text="#{PrdTehaiIraiDetHisS.legend}">legend</legend>
+        <div id="prdTehaiNo">
+          <label for="PrdTehaiIraiDetHis.prdTehaiNo" th:text="#{PrdTehaiIraiDetHis.prdTehaiNo}">PRD_TEHAI_NO</label><input type="text" id="PrdTehaiIraiDetHis.prdTehaiNo" name="PrdTehaiIraiDetHis.prdTehaiNo" maxlength="10" />
+        </div>
+        <div id="iraiDetSeq">
+          <label for="PrdTehaiIraiDetHis.iraiDetSeq" th:text="#{PrdTehaiIraiDetHis.iraiDetSeq}">IRAI_DET_SEQ</label><input type="text" id="PrdTehaiIraiDetHis.iraiDetSeq" name="PrdTehaiIraiDetHis.iraiDetSeq" maxlength="10" />
+        </div>
+        <div id="iraiDetHisSeq">
+          <label for="PrdTehaiIraiDetHis.iraiDetHisSeq" th:text="#{PrdTehaiIraiDetHis.iraiDetHisSeq}">IRAI_DET_HIS_SEQ</label><input type="text" id="PrdTehaiIraiDetHis.iraiDetHisSeq" name="PrdTehaiIraiDetHis.iraiDetHisSeq" maxlength="10" />
+        </div>
+        <div id="id">
+          <label for="PrdTehaiIraiDetHis.id" th:text="#{PrdTehaiIraiDetHis.id}">ID</label><input type="text" id="PrdTehaiIraiDetHis.id" name="PrdTehaiIraiDetHis.id" maxlength="14" />
+        </div>
+        <div id="parentId">
+          <label for="PrdTehaiIraiDetHis.parentId" th:text="#{PrdTehaiIraiDetHis.parentId}">PARENT_ID</label><input type="text" id="PrdTehaiIraiDetHis.parentId" name="PrdTehaiIraiDetHis.parentId" maxlength="14" />
+        </div>
+        <div id="iraiHinban">
+          <label for="PrdTehaiIraiDetHis.iraiHinban" th:text="#{PrdTehaiIraiDetHis.iraiHinban}">IRAI_HINBAN</label><input type="text" id="PrdTehaiIraiDetHis.iraiHinban" name="PrdTehaiIraiDetHis.iraiHinban" maxlength="25" />
+        </div>
+        <div id="iraiQt">
+          <label for="PrdTehaiIraiDetHis.iraiQt_1" th:text="#{PrdTehaiIraiDetHis.iraiQt}">IRAI_QT</label><input type="text" id="PrdTehaiIraiDetHis.iraiQt_1" name="PrdTehaiIraiDetHis.iraiQt_1" maxlength="11" />～<input type="text" id="PrdTehaiIraiDetHis.iraiQt_2" name="PrdTehaiIraiDetHis.iraiQt_2" maxlength="11" />
+        </div>
+        <div id="shinsetsuhinF">
+          <fieldset id="PrdTehaiIraiDetHis.shinsetsuhinFList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:shinsetsuhin_f" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{PrdTehaiIraiDetHis.shinsetsuhinF}">SHINSETSUHIN_F</legend>
+          </fieldset>
+        </div>
+        <div id="sethinF">
+          <fieldset id="PrdTehaiIraiDetHis.sethinFList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:sethin_f" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{PrdTehaiIraiDetHis.sethinF}">SETHIN_F</legend>
+          </fieldset>
+        </div>
+        <div id="hanmokugaiF">
+          <fieldset id="PrdTehaiIraiDetHis.hanmokugaiFList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:hanmokugai_f" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{PrdTehaiIraiDetHis.hanmokugaiF}">HANMOKUGAI_F</legend>
+          </fieldset>
+        </div>
+        <div id="chumonNyuryokuZumiF">
+          <fieldset id="PrdTehaiIraiDetHis.chumonNyuryokuZumiFList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:chumon_nyuryoku_zumi_f" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{PrdTehaiIraiDetHis.chumonNyuryokuZumiF}">CHUMON_NYURYOKU_ZUMI_F</legend>
+          </fieldset>
+        </div>
+        <div id="kiboNokiYmd">
+          <label for="PrdTehaiIraiDetHis.kiboNokiYmd_1" th:text="#{PrdTehaiIraiDetHis.kiboNokiYmd}">KIBO_NOKI_YMD</label><input type="date" id="PrdTehaiIraiDetHis.kiboNokiYmd_1" name="PrdTehaiIraiDetHis.kiboNokiYmd_1" maxlength="10" />～<input type="date" id="PrdTehaiIraiDetHis.kiboNokiYmd_2" name="PrdTehaiIraiDetHis.kiboNokiYmd_2" maxlength="10" />
+        </div>
+        <div id="shukkaZumiF">
+          <fieldset id="PrdTehaiIraiDetHis.shukkaZumiFList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:shukka_zumi_f" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{PrdTehaiIraiDetHis.shukkaZumiF}">SHUKKA_ZUMI_F</legend>
+          </fieldset>
+        </div>
+        <div id="tehaiJokyoKb">
+          <fieldset id="PrdTehaiIraiDetHis.tehaiJokyoKbList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:tehai_jokyo_kb" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{PrdTehaiIraiDetHis.tehaiJokyoKb}">TEHAI_JOKYO_KB</legend>
+          </fieldset>
+        </div>
+        <div id="kaiteiJokyoKb">
+          <fieldset id="PrdTehaiIraiDetHis.kaiteiJokyoKbList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:kaitei_jokyo_kb" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{PrdTehaiIraiDetHis.kaiteiJokyoKb}">KAITEI_JOKYO_KB</legend>
+          </fieldset>
+        </div>
+        <div id="iraiInzuQt">
+          <label for="PrdTehaiIraiDetHis.iraiInzuQt_1" th:text="#{PrdTehaiIraiDetHis.iraiInzuQt}">IRAI_INZU_QT</label><input type="text" id="PrdTehaiIraiDetHis.iraiInzuQt_1" name="PrdTehaiIraiDetHis.iraiInzuQt_1" maxlength="11" />～<input type="text" id="PrdTehaiIraiDetHis.iraiInzuQt_2" name="PrdTehaiIraiDetHis.iraiInzuQt_2" maxlength="11" />
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="reset" th:text="#{common.reset}">reset</button>
+        <a th:href="@{/model/PrdTehaiIraiDetHis.html}" id="PrdTehaiIraiDetHis" target="dialog" th:text="#{PrdTehaiIraiDetHis.add}" tabindex="-1">PRD_TEHAI_IRAI_DET_HIS</a>
+      </div>
+      <div class="submits">
+        <button id="SearchPrdTehaiIraiDetHis" class="search" data-gridId="PrdTehaiIraiDetHisGrid" th:text="#{common.search}">submit</button>
+      </div>
+    </form>
+    <form name="PrdTehaiIraiDetHisSRegistForm" action="PrdTehaiIraiDetHisSRegist.ajax" class="regist">
+      <h3 th:text="#{PrdTehaiIraiDetHis.h3}">h3</h3>
+      <div id="PrdTehaiIraiDetHisGrid" data-selectionMode="checkbox" data-frozenColumn="2" th:data-href="@{/model/PrdTehaiIraiDetHis.html}"></div>
+      <div id="PrdTehaiIraiDetHisPager"></div>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="$('[id=&quot;SearchPrdTehaiIraiDetHis&quot;]').click();">reset</button>
+        <a th:href="@{PrdTehaiIraiDetHisSearch.xlsx(baseMei=#{PrdTehaiIraiDetHisS.h2})}" id="PrdTehaiIraiDetHisSearch.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeletePrdTehaiIraiDetHisS" class="delete selectRows" data-action="PrdTehaiIraiDetHisSDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistPrdTehaiIraiDetHisS" class="regist" th:text="#{common.regist}">submit</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

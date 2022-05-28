@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{PchInspectionListS.title}">PCH_INSPECTION_LIST</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/PchInspectionListGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierGridColumns.js}"></script>
+<script th:src="@{/model/InvStockProcessSupplyGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierBkGridColumns.js}"></script>
+<script th:src="@{/model/MstTaxGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{PchInspectionListS.h2}">h2</h2>
+    <form name="PchInspectionListSearchForm" action="PchInspectionListSearch.ajax" class="search">
+      <fieldset>
+        <legend th:text="#{PchInspectionListS.legend}">legend</legend>
+        <div id="targetDate">
+          <label for="PchInspectionList.targetDate_1" th:text="#{PchInspectionList.targetDate}">TARGET_DATE</label><input type="date" id="PchInspectionList.targetDate_1" name="PchInspectionList.targetDate_1" maxlength="6" />～<input type="date" id="PchInspectionList.targetDate_2" name="PchInspectionList.targetDate_2" maxlength="6" />
+        </div>
+        <div id="supCode">
+          <label for="PchInspectionList.supCode" th:text="#{PchInspectionList.supCode}">SUP_CODE</label><input type="text" id="PchInspectionList.supCode" name="PchInspectionList.supCode" maxlength="6" data-json="MstSupplierSearch.json" data-srcDef="SUP_CODE:PchInspectionList.supCode" data-destDef="PchInspectionList.supName:SUP_NAME" /><a id="PchInspectionList.supCode" th:href="@{/model/MstSupplierS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a>
+        </div>
+        <div id="supName">
+          <label for="PchInspectionList.supName" th:text="#{PchInspectionList.supName}">SUP_NAME</label><input type="text" id="PchInspectionList.supName" name="PchInspectionList.supName" maxlength="60" />
+        </div>
+        <div id="orderNo">
+          <label for="PchInspectionList.orderNo" th:text="#{PchInspectionList.orderNo}">ORDER_NO</label><input type="text" id="PchInspectionList.orderNo" name="PchInspectionList.orderNo" maxlength="10" />
+        </div>
+        <div id="hinban">
+          <label for="PchInspectionList.hinban" th:text="#{PchInspectionList.hinban}">HINBAN</label><input type="text" id="PchInspectionList.hinban" name="PchInspectionList.hinban" maxlength="25" />
+        </div>
+        <div id="item">
+          <label for="PchInspectionList.item" th:text="#{PchInspectionList.item}">ITEM</label><input type="text" id="PchInspectionList.item" name="PchInspectionList.item" maxlength="60" />
+        </div>
+        <div id="opeDetail">
+          <label for="PchInspectionList.opeDetail" th:text="#{PchInspectionList.opeDetail}">OPE_DETAIL</label><input type="text" id="PchInspectionList.opeDetail" name="PchInspectionList.opeDetail" maxlength="10" />
+        </div>
+        <div id="memo">
+          <label for="PchInspectionList.memo" th:text="#{PchInspectionList.memo}">MEMO</label><input type="text" id="PchInspectionList.memo" name="PchInspectionList.memo" maxlength="30" />
+        </div>
+        <div id="sumInspectCounts">
+          <label for="PchInspectionList.sumInspectCounts_1" th:text="#{PchInspectionList.sumInspectCounts}">SUM_INSPECT_COUNTS</label><input type="text" id="PchInspectionList.sumInspectCounts_1" name="PchInspectionList.sumInspectCounts_1" maxlength="11" />～<input type="text" id="PchInspectionList.sumInspectCounts_2" name="PchInspectionList.sumInspectCounts_2" maxlength="11" />
+        </div>
+        <div id="inspectUnit">
+          <label for="PchInspectionList.inspectUnit_1" th:text="#{PchInspectionList.inspectUnit}">INSPECT_UNIT</label><input type="text" id="PchInspectionList.inspectUnit_1" name="PchInspectionList.inspectUnit_1" maxlength="9" />～<input type="text" id="PchInspectionList.inspectUnit_2" name="PchInspectionList.inspectUnit_2" maxlength="9" />
+        </div>
+        <div id="acceptDate">
+          <label for="PchInspectionList.acceptDate_1" th:text="#{PchInspectionList.acceptDate}">ACCEPT_DATE</label><input type="date" id="PchInspectionList.acceptDate_1" name="PchInspectionList.acceptDate_1" maxlength="7" />～<input type="date" id="PchInspectionList.acceptDate_2" name="PchInspectionList.acceptDate_2" maxlength="7" />
+        </div>
+        <div id="sumInspectAmount">
+          <label for="PchInspectionList.sumInspectAmount_1" th:text="#{PchInspectionList.sumInspectAmount}">SUM_INSPECT_AMOUNT</label><input type="text" id="PchInspectionList.sumInspectAmount_1" name="PchInspectionList.sumInspectAmount_1" maxlength="11" />～<input type="text" id="PchInspectionList.sumInspectAmount_2" name="PchInspectionList.sumInspectAmount_2" maxlength="11" />
+        </div>
+        <div id="sumTaxAmount">
+          <label for="PchInspectionList.sumTaxAmount_1" th:text="#{PchInspectionList.sumTaxAmount}">SUM_TAX_AMOUNT</label><input type="text" id="PchInspectionList.sumTaxAmount_1" name="PchInspectionList.sumTaxAmount_1" maxlength="11" />～<input type="text" id="PchInspectionList.sumTaxAmount_2" name="PchInspectionList.sumTaxAmount_2" maxlength="11" />
+        </div>
+        <div id="sumAmount">
+          <label for="PchInspectionList.sumAmount_1" th:text="#{PchInspectionList.sumAmount}">SUM_AMOUNT</label><input type="text" id="PchInspectionList.sumAmount_1" name="PchInspectionList.sumAmount_1" maxlength="11" />～<input type="text" id="PchInspectionList.sumAmount_2" name="PchInspectionList.sumAmount_2" maxlength="11" />
+        </div>
+        <div id="sendInspectList">
+          <label for="PchInspectionList.sendInspectList" th:text="#{PchInspectionList.sendInspectList}">SEND_INSPECT_LIST</label><input type="text" id="PchInspectionList.sendInspectList" name="PchInspectionList.sendInspectList" maxlength="1" />
+        </div>
+        <div id="isshikiUnitF">
+          <fieldset id="PchInspectionList.isshikiUnitFList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:isshiki_unit_f" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{PchInspectionList.isshikiUnitF}">ISSHIKI_UNIT_F</legend>
+          </fieldset>
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="reset" th:text="#{common.reset}">reset</button>
+      </div>
+      <div class="submits">
+        <button id="SearchPchInspectionList" class="search" data-gridId="PchInspectionListGrid" th:text="#{common.search}">submit</button>
+      </div>
+    </form>
+    <form name="PchInspectionListSRegistForm" action="PchInspectionListSRegist.ajax" class="regist">
+      <h3 th:text="#{PchInspectionList.h3}">h3</h3>
+      <div id="PchInspectionListGrid" data-selectionMode="checkbox" data-frozenColumn="2" th:data-href="@{/model/PchInspectionList.html}"></div>
+      <div id="PchInspectionListPager"></div>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="$('[id=&quot;SearchPchInspectionList&quot;]').click();">reset</button>
+        <a th:href="@{PchInspectionListSearch.xlsx(baseMei=#{PchInspectionListS.h2})}" id="PchInspectionListSearch.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeletePchInspectionListS" class="delete selectRows" data-action="PchInspectionListSDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistPchInspectionListS" class="regist" th:text="#{common.regist}">submit</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

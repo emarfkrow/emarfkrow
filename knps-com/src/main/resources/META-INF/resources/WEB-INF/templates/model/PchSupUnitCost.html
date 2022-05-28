@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{PchSupUnitCost.title}">PCH_SUP_UNIT_COST</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/PchSupUnitCostGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierGridColumns.js}"></script>
+<script th:src="@{/model/InvStockProcessSupplyGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierBkGridColumns.js}"></script>
+<script th:src="@{/model/MstTaxGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{PchSupUnitCost.h2}">h2</h2>
+    <form name="PchSupUnitCostRegistForm" action="PchSupUnitCostRegist.ajax" class="regist">
+      <fieldset>
+        <legend th:text="#{PchSupUnitCost.legend}">legend</legend>
+        <div id="closeDate">
+          <label for="PchSupUnitCost.closeDate" th:text="#{PchSupUnitCost.closeDate}">CLOSE_DATE</label><input type="date" id="PchSupUnitCost.closeDate" name="PchSupUnitCost.closeDate" maxlength="4" />
+        </div>
+        <div id="hinban">
+          <label for="PchSupUnitCost.hinban" th:text="#{PchSupUnitCost.hinban}">HINBAN</label><input type="text" id="PchSupUnitCost.hinban" name="PchSupUnitCost.hinban" maxlength="25" />
+        </div>
+        <div id="supCode">
+          <label for="PchSupUnitCost.supCode" th:text="#{PchSupUnitCost.supCode}">SUP_CODE</label><input type="text" id="PchSupUnitCost.supCode" name="PchSupUnitCost.supCode" maxlength="6" data-json="MstSupplierSearch.json" data-srcDef="SUP_CODE:PchSupUnitCost.supCode" data-destDef="PchSupUnitCost.supName:SUP_NAME" /><a id="PchSupUnitCost.supCode" th:href="@{/model/MstSupplierS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="PchSupUnitCost.supName" class="refer" data-json="MstSupplierSearch.json" data-srcDef="SUP_CODE:PchSupUnitCost.supCode" data-destDef="PchSupUnitCost.supName:SUP_NAME"></span>
+        </div>
+        <div id="proprietaryTotalCounts">
+          <label for="PchSupUnitCost.proprietaryTotalCounts" th:text="#{PchSupUnitCost.proprietaryTotalCounts}">PROPRIETARY_TOTAL_COUNTS</label><input type="text" id="PchSupUnitCost.proprietaryTotalCounts" name="PchSupUnitCost.proprietaryTotalCounts" maxlength="11" />
+        </div>
+        <div id="proprietaryTotalCost">
+          <label for="PchSupUnitCost.proprietaryTotalCost" th:text="#{PchSupUnitCost.proprietaryTotalCost}">PROPRIETARY_TOTAL_COST</label><input type="text" id="PchSupUnitCost.proprietaryTotalCost" name="PchSupUnitCost.proprietaryTotalCost" maxlength="11" />
+        </div>
+        <div id="lastPrchUnitCost">
+          <label for="PchSupUnitCost.lastPrchUnitCost" th:text="#{PchSupUnitCost.lastPrchUnitCost}">LAST_PRCH_UNIT_COST</label><input type="text" id="PchSupUnitCost.lastPrchUnitCost" name="PchSupUnitCost.lastPrchUnitCost" maxlength="9" />
+        </div>
+        <div id="lastActDate">
+          <label for="PchSupUnitCost.lastActDate" th:text="#{PchSupUnitCost.lastActDate}">LAST_ACT_DATE</label><input type="date" id="PchSupUnitCost.lastActDate" name="PchSupUnitCost.lastActDate" maxlength="4" />
+        </div>
+        <div id="timeStampCreate">
+          <label for="PchSupUnitCost.timeStampCreate" th:text="#{PchSupUnitCost.timeStampCreate}">TIME_STAMP_CREATE</label><span id="PchSupUnitCost.timeStampCreate"></span><input type="hidden" id="PchSupUnitCost.timeStampCreate" name="PchSupUnitCost.timeStampCreate" />
+        </div>
+        <div id="timeStampChange">
+          <label for="PchSupUnitCost.timeStampChange" th:text="#{PchSupUnitCost.timeStampChange}">TIME_STAMP_CHANGE</label><span id="PchSupUnitCost.timeStampChange"></span><input type="hidden" id="PchSupUnitCost.timeStampChange" name="PchSupUnitCost.timeStampChange" />
+        </div>
+        <div id="userIdCreate">
+          <label for="PchSupUnitCost.userIdCreate" th:text="#{PchSupUnitCost.userIdCreate}">USER_ID_CREATE</label><span id="PchSupUnitCost.userIdCreate"></span><input type="hidden" id="PchSupUnitCost.userIdCreate" name="PchSupUnitCost.userIdCreate" />
+        </div>
+        <div id="userIdChange">
+          <label for="PchSupUnitCost.userIdChange" th:text="#{PchSupUnitCost.userIdChange}">USER_ID_CHANGE</label><span id="PchSupUnitCost.userIdChange"></span><input type="hidden" id="PchSupUnitCost.userIdChange" name="PchSupUnitCost.userIdChange" />
+        </div>
+        <div id="lowerCostKbn">
+          <fieldset id="PchSupUnitCost.lowerCostKbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:lower_cost_kbn" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{PchSupUnitCost.lowerCostKbn}">LOWER_COST_KBN</legend>
+          </fieldset>
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="Dialogate.refresh(event);">reset</button>
+        <a th:href="@{PchSupUnitCostGet.xlsx(baseMei=#{PchSupUnitCost.h2})}" id="PchSupUnitCostGet.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeletePchSupUnitCost" class="delete" data-action="PchSupUnitCostDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistPchSupUnitCost" class="regist" th:text="#{common.regist}">登録</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>
