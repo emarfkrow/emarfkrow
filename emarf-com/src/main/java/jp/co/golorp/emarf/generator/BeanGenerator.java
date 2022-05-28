@@ -453,6 +453,7 @@ public final class BeanGenerator {
         s.add("     * @return 追加件数");
         s.add("     */");
         s.add("    public int insert(final LocalDateTime now, final String id) {");
+
         ColumnInfo lastKeyInfo = null;
         if (tableInfo.getPrimaryKeys() != null && tableInfo.getPrimaryKeys().size() > 0) {
             List<String> primaryKeys = tableInfo.getPrimaryKeys();
@@ -464,6 +465,7 @@ public final class BeanGenerator {
                 s.add("        numbering();");
             }
         }
+
         // 子モデル
         for (TableInfo childInfo : tableInfo.getChildInfos()) {
             String childName = childInfo.getTableName();
@@ -481,6 +483,7 @@ public final class BeanGenerator {
             s.add("            }");
             s.add("        }");
         }
+
         // 兄弟モデル
         for (TableInfo brosInfo : tableInfo.getBrosInfos()) {
             String brosName = brosInfo.getTableName();
@@ -495,14 +498,14 @@ public final class BeanGenerator {
             s.add("            this." + camel + ".insert(now, id);");
             s.add("        }");
         }
+
         // 履歴モデル
-        TableInfo historyInfo = tableInfo.getHistoryInfo();
-        if (historyInfo != null) {
-            String historyName = historyInfo.getTableName();
+        if (tableInfo.getHistoryInfo() != null) {
+            String historyName = tableInfo.getHistoryInfo().getTableName();
             String camel = StringUtil.toCamelCase(historyName);
             String pascal = StringUtil.toPascalCase(historyName);
             s.add("");
-            s.add("        // " + historyInfo.getRemarks() + "の登録");
+            s.add("        // " + tableInfo.getHistoryInfo().getRemarks() + "の登録");
             s.add("        " + pascal + " " + camel + " = new " + pascal + "();");
             for (String columnName : tableInfo.getColumnInfos().keySet()) {
                 String camelColumn = StringUtil.toCamelCase(columnName);
@@ -511,31 +514,39 @@ public final class BeanGenerator {
             }
             s.add("        " + camel + ".insert(now, id);");
         }
+
         s.add("");
         s.add("        // " + tableInfo.getRemarks() + "の登録");
         s.add("        List<String> nameList = new ArrayList<String>();");
         for (String columnName : tableInfo.getColumnInfos().keySet()) {
-            columnName = columnName.toLowerCase();
-            s.add("        nameList.add(\"" + columnName + " -- :" + columnName + "\");");
+            s.add("        nameList.add(\"" + columnName.toLowerCase() + " -- :" + columnName.toLowerCase() + "\");");
         }
         s.add("        String name = String.join(\"\\r\\n    , \", nameList);");
         s.add("");
         s.add("        String sql = \"INSERT INTO " + tableName
-                + "(\\r\\n      \" + name + \"\\r\\n) VALUES (\\r\\n      \" + getValues() + \"\\r\\n); \";");
+                + "(\\r\\n      \" + name + \"\\r\\n) VALUES (\\r\\n      \" + getValues() + \"\\r\\n)\";");
         s.add("");
         s.add("        Map<String, Object> params = toMap(now, id);");
         s.add("");
         s.add("        return Queries.regist(sql, params);");
         s.add("    }");
         s.add("");
+
         s.add("    private String getValues() {");
         s.add("        List<String> valueList = new ArrayList<String>();");
-        for (String columnName : tableInfo.getColumnInfos().keySet()) {
-            columnName = columnName.toLowerCase();
-            s.add("        valueList.add(\":" + columnName + "\");");
+
+        DataSourcesAssist assist = DataSources.getAssist();
+        for (Entry<String, ColumnInfo> e : tableInfo.getColumnInfos().entrySet()) {
+            String rightHand = ":" + e.getKey().toLowerCase();
+            if (e.getValue().getDataType().equals("java.time.LocalDateTime")) {
+                rightHand = assist.toTimestamp(rightHand);
+            }
+            s.add("        valueList.add(\"" + rightHand + "\");");
         }
+
         s.add("        return String.join(\"\\r\\n    , \", valueList);");
         s.add("    }");
+
         if (lastKeyInfo != null && lastKeyInfo.isNumbering()) {
             String lastPk = tableInfo.getPrimaryKeys().get(tableInfo.getPrimaryKeys().size() - 1);
             String columnRemarks = tableInfo.getColumnInfos().get(lastKeyInfo.getColumnName()).getRemarks();
