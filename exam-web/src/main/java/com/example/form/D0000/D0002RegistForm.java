@@ -32,4 +32,60 @@ public class D0002RegistForm implements IForm {
 
     }
 
+    /**
+     * @return sosenId
+     */
+    public String getSosenId() {
+        return sosenId;
+    }
+
+    /**
+     * @param p セットする sosenId
+     */
+    public void setSosenId(final String p) {
+        this.sosenId = p;
+    }
+
+    /**
+     * @return oyaSn
+     */
+    public String getOyaSn() {
+        return oyaSn;
+    }
+
+    /**
+     * @param p セットする oyaSn
+     */
+    public void setOyaSn(final String p) {
+        this.oyaSn = p;
+    }
+
+    /**
+     * @return entitySn
+     */
+    public String getEntitySn() {
+        return entitySn;
+    }
+
+    /**
+     * @param p セットする entitySn
+     */
+    public void setEntitySn(final String p) {
+        this.entitySn = p;
+    }
+
+    /**
+     * @return entityMei
+     */
+    public String getEntityMei() {
+        return entityMei;
+    }
+
+    /**
+     * @param p セットする entityMei
+     */
+    public void setEntityMei(final String p) {
+        this.entityMei = p;
+    }
+
 }
