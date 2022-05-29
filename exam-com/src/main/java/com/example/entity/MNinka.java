@@ -314,7 +314,7 @@ public class MNinka implements IEntity {
         nameList.add("delete_f -- :delete_f");
         String name = String.join("\r\n    , ", nameList);
 
-        String sql = "INSERT INTO m_ninka(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n); ";
+        String sql = "INSERT INTO m_ninka(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
 
         Map<String, Object> params = toMap(now, id);
 

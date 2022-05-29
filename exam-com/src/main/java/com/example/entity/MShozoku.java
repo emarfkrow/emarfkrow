@@ -295,7 +295,7 @@ public class MShozoku implements IEntity {
         nameList.add("delete_f -- :delete_f");
         String name = String.join("\r\n    , ", nameList);
 
-        String sql = "INSERT INTO m_shozoku(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n); ";
+        String sql = "INSERT INTO m_shozoku(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
 
         Map<String, Object> params = toMap(now, id);
 
@@ -324,7 +324,7 @@ public class MShozoku implements IEntity {
             return;
         }
 
-        String sql = "SELECT CASE WHEN MAX(e.USER_ID) IS NULL THEN 0 ELSE MAX(e.USER_ID) END + 1 AS USER_ID FROM m_shozoku e";
+        String sql = "SELECT CASE WHEN MAX(e.USER_ID) IS NULL THEN 0 ELSE MAX(e.USER_ID) * 1 END + 1 AS USER_ID FROM m_shozoku e";
 
         Map<String, Object> params = new HashMap<String, Object>();
 

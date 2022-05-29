@@ -223,7 +223,7 @@ public class MSansho2 implements IEntity {
         nameList.add("delete_f -- :delete_f");
         String name = String.join("\r\n    , ", nameList);
 
-        String sql = "INSERT INTO m_sansho2(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n); ";
+        String sql = "INSERT INTO m_sansho2(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
 
         Map<String, Object> params = toMap(now, id);
 
@@ -249,7 +249,7 @@ public class MSansho2 implements IEntity {
             return;
         }
 
-        String sql = "SELECT LPAD (CASE WHEN MAX(e.SANSHO2_ID) IS NULL THEN 0 ELSE MAX(e.SANSHO2_ID) END + 1, 6, '0') AS SANSHO2_ID FROM m_sansho2 e";
+        String sql = "SELECT LPAD (CASE WHEN MAX(e.SANSHO2_ID) IS NULL THEN 0 ELSE MAX(e.SANSHO2_ID) * 1 END + 1, 6, '0') AS SANSHO2_ID FROM m_sansho2 e WHERE e.SANSHO2_ID < '999999'";
 
         Map<String, Object> params = new HashMap<String, Object>();
 

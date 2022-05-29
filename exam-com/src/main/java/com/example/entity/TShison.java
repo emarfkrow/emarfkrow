@@ -323,7 +323,7 @@ public class TShison implements IEntity {
         nameList.add("delete_f -- :delete_f");
         String name = String.join("\r\n    , ", nameList);
 
-        String sql = "INSERT INTO t_shison(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n); ";
+        String sql = "INSERT INTO t_shison(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
 
         Map<String, Object> params = toMap(now, id);
 
@@ -353,7 +353,7 @@ public class TShison implements IEntity {
             return;
         }
 
-        String sql = "SELECT CASE WHEN MAX(e.SHISON_SN) IS NULL THEN 0 ELSE MAX(e.SHISON_SN) END + 1 AS SHISON_SN FROM t_shison e";
+        String sql = "SELECT CASE WHEN MAX(e.SHISON_SN) IS NULL THEN 0 ELSE MAX(e.SHISON_SN) * 1 END + 1 AS SHISON_SN FROM t_shison e";
 
         Map<String, Object> params = new HashMap<String, Object>();
 

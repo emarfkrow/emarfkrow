@@ -257,7 +257,7 @@ public class TOya implements IEntity {
         nameList.add("delete_f -- :delete_f");
         String name = String.join("\r\n    , ", nameList);
 
-        String sql = "INSERT INTO t_oya(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n); ";
+        String sql = "INSERT INTO t_oya(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
 
         Map<String, Object> params = toMap(now, id);
 
@@ -284,7 +284,7 @@ public class TOya implements IEntity {
             return;
         }
 
-        String sql = "SELECT CASE WHEN MAX(e.OYA_SN) IS NULL THEN 0 ELSE MAX(e.OYA_SN) END + 1 AS OYA_SN FROM t_oya e";
+        String sql = "SELECT CASE WHEN MAX(e.OYA_SN) IS NULL THEN 0 ELSE MAX(e.OYA_SN) * 1 END + 1 AS OYA_SN FROM t_oya e";
 
         Map<String, Object> params = new HashMap<String, Object>();
 

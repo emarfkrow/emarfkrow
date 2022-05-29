@@ -231,7 +231,7 @@ public class TSosen implements IEntity {
         nameList.add("delete_f -- :delete_f");
         String name = String.join("\r\n    , ", nameList);
 
-        String sql = "INSERT INTO t_sosen(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n); ";
+        String sql = "INSERT INTO t_sosen(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
 
         Map<String, Object> params = toMap(now, id);
 
@@ -257,7 +257,7 @@ public class TSosen implements IEntity {
             return;
         }
 
-        String sql = "SELECT CASE WHEN MAX(e.SOSEN_ID) IS NULL THEN 0 ELSE MAX(e.SOSEN_ID) END + 1 AS SOSEN_ID FROM t_sosen e";
+        String sql = "SELECT CASE WHEN MAX(e.SOSEN_ID) IS NULL THEN 0 ELSE MAX(e.SOSEN_ID) * 1 END + 1 AS SOSEN_ID FROM t_sosen e";
 
         Map<String, Object> params = new HashMap<String, Object>();
 

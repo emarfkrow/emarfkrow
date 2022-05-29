@@ -320,7 +320,7 @@ public class TTenpuFile implements IEntity {
         nameList.add("delete_f -- :delete_f");
         String name = String.join("\r\n    , ", nameList);
 
-        String sql = "INSERT INTO t_tenpu_file(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n); ";
+        String sql = "INSERT INTO t_tenpu_file(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
 
         Map<String, Object> params = toMap(now, id);
 
@@ -350,7 +350,7 @@ public class TTenpuFile implements IEntity {
             return;
         }
 
-        String sql = "SELECT CASE WHEN MAX(e.TENPU_FILE_SN) IS NULL THEN 0 ELSE MAX(e.TENPU_FILE_SN) END + 1 AS TENPU_FILE_SN FROM t_tenpu_file e";
+        String sql = "SELECT CASE WHEN MAX(e.TENPU_FILE_SN) IS NULL THEN 0 ELSE MAX(e.TENPU_FILE_SN) * 1 END + 1 AS TENPU_FILE_SN FROM t_tenpu_file e";
 
         Map<String, Object> params = new HashMap<String, Object>();
 

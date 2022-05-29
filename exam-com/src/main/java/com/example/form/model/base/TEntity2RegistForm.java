@@ -110,7 +110,6 @@ public class TEntity2RegistForm implements IForm {
     }
 
     /** チェックフラグ */
-    @jakarta.validation.constraints.NotBlank
     @jakarta.validation.constraints.Size(max = 1)
     private String checkF;
 

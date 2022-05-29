@@ -289,7 +289,7 @@ public class MBusho implements IEntity {
         nameList.add("delete_f -- :delete_f");
         String name = String.join("\r\n    , ", nameList);
 
-        String sql = "INSERT INTO m_busho(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n); ";
+        String sql = "INSERT INTO m_busho(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
 
         Map<String, Object> params = toMap(now, id);
 
@@ -318,7 +318,7 @@ public class MBusho implements IEntity {
             return;
         }
 
-        String sql = "SELECT CASE WHEN MAX(e.BUSHO_ID) IS NULL THEN 0 ELSE MAX(e.BUSHO_ID) END + 1 AS BUSHO_ID FROM m_busho e";
+        String sql = "SELECT CASE WHEN MAX(e.BUSHO_ID) IS NULL THEN 0 ELSE MAX(e.BUSHO_ID) * 1 END + 1 AS BUSHO_ID FROM m_busho e";
 
         Map<String, Object> params = new HashMap<String, Object>();
 

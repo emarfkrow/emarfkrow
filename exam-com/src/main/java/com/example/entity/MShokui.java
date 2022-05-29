@@ -289,7 +289,7 @@ public class MShokui implements IEntity {
         nameList.add("delete_f -- :delete_f");
         String name = String.join("\r\n    , ", nameList);
 
-        String sql = "INSERT INTO m_shokui(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n); ";
+        String sql = "INSERT INTO m_shokui(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
 
         Map<String, Object> params = toMap(now, id);
 
@@ -318,7 +318,7 @@ public class MShokui implements IEntity {
             return;
         }
 
-        String sql = "SELECT CASE WHEN MAX(e.SHOKUI_ID) IS NULL THEN 0 ELSE MAX(e.SHOKUI_ID) END + 1 AS SHOKUI_ID FROM m_shokui e";
+        String sql = "SELECT CASE WHEN MAX(e.SHOKUI_ID) IS NULL THEN 0 ELSE MAX(e.SHOKUI_ID) * 1 END + 1 AS SHOKUI_ID FROM m_shokui e";
 
         Map<String, Object> params = new HashMap<String, Object>();
 
