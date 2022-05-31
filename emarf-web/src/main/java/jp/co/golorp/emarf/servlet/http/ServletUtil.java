@@ -360,7 +360,7 @@ public final class ServletUtil {
         try {
             ObjectMapper mapper = new ObjectMapper();
             String s = mapper.writeValueAsString(map);
-            LOG.debug("ResponseJson: " + mapper.writerWithDefaultPrettyPrinter().writeValueAsString(map));
+            LOG.trace("ResponseJson: " + mapper.writerWithDefaultPrettyPrinter().writeValueAsString(map));
             response.getWriter().append(s);
         } catch (Exception e) {
             throw new SysError(e);
