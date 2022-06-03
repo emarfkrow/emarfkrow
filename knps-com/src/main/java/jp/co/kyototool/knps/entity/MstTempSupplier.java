@@ -295,7 +295,7 @@ public class MstTempSupplier implements IEntity {
     public static MstTempSupplier get(final Object param1) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("temp_sup_code = :temp_sup_code");
+        whereList.add("\"TEMP_SUP_CODE\" = :temp_sup_code");
 
         String sql = "SELECT * FROM MST_TEMP_SUPPLIER WHERE " + String.join(" AND ", whereList);
 

@@ -211,7 +211,7 @@ public class PrdPreStatusHead implements IEntity {
     public static PrdPreStatusHead get(final Object param1) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (rec_no) = TRIM (:rec_no)");
+        whereList.add("TRIM (\"REC_NO\") = TRIM (:rec_no)");
 
         String sql = "SELECT * FROM PRD_PRE_STATUS_HEAD WHERE " + String.join(" AND ", whereList);
 

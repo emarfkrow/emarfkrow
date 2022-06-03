@@ -4,13 +4,13 @@ FROM
     M_HCALEND a 
 WHERE
     1 = 1 
-    AND a.yymm = :yymm 
-    AND TRIM (a.calendkbn) = TRIM (:calendkbn) 
-    AND a.kadonitusu = :kadonitusu 
-    AND a.dd = :dd 
-    AND TRIM (a.youbi) = TRIM (:youbi) 
-    AND TRIM (a.kadoukbn) = TRIM (:kadoukbn) 
-    AND a.kadourui = :kadourui 
-    AND TRIM (a.filler) = TRIM (:filler) 
+    AND a."YYMM" = :yymm 
+    AND TRIM (a."CALENDKBN") = TRIM (:calendkbn) 
+    AND a."KADONITUSU" = :kadonitusu 
+    AND a."DD" = :dd 
+    AND TRIM (a."YOUBI") = TRIM (:youbi) 
+    AND TRIM (a."KADOUKBN") = TRIM (:kadoukbn) 
+    AND a."KADOURUI" = :kadourui 
+    AND TRIM (a."FILLER") = TRIM (:filler) 
 ORDER BY
-    a.YYMM, a.CALENDKBN
+    a."YYMM", a."CALENDKBN"

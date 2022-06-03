@@ -190,7 +190,7 @@ public class MstOpeDetail implements IEntity {
     public static MstOpeDetail get(final Object param1) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (ope_detail) = TRIM (:ope_detail)");
+        whereList.add("TRIM (\"OPE_DETAIL\") = TRIM (:ope_detail)");
 
         String sql = "SELECT * FROM MST_OPE_DETAIL WHERE " + String.join(" AND ", whereList);
 

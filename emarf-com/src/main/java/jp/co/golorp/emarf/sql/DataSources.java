@@ -3,6 +3,7 @@ package jp.co.golorp.emarf.sql;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -45,12 +46,14 @@ public final class DataSources {
      */
     private static final ResourceBundle BUNDLE = ResourceBundles.getBundle(DataSources.class);
 
-    //    /** 参照IDサフィックス */
-    //    private static String[] referIdSuffixs;
-    //    /** 参照名サフィックス */
-    //    private static String referMeiSuffix;
     /** 参照列名ペア */
     private static Map<String, String> referPairs = new HashMap<String, String>();
+
+    /** 他のテーブルの兄弟テーブルにしないテーブル名 */
+    private static String[] eldests;
+
+    /** 弟テーブルを設定しないテーブル名 */
+    private static String[] onlychilds;
 
     /**
      * DataSourceのJNDI名
@@ -185,111 +188,76 @@ public final class DataSources {
      */
     public static List<TableInfo> getTableInfos() {
 
-        /* 設定ファイル読み込み */
+        // 設定ファイル読み込み
         ResourceBundle bundle = ResourceBundles.getBundle(BeanGenerator.class);
+
         String[] pairs = bundle.getString("BeanGenerator.refer.pairs").split(",");
         for (String pair : pairs) {
             String[] kv = pair.split(":");
             referPairs.put(kv[0], kv[1]);
         }
 
+        eldests = bundle.getString("BeanGenerator.eldests").split(",");
+
+        onlychilds = bundle.getString("BeanGenerator.onlychilds").split(",");
+
         // テーブル情報の取得
         List<TableInfo> tableInfos = new ArrayList<TableInfo>();
 
         // データベースからテーブル情報を取得してループ
         try {
+
             Connection cn = Connections.get();
+
             DatabaseMetaData metaData = cn.getMetaData();
+
             String schemaPattern = BUNDLE.getString("username");
-            ResultSet tables = metaData.getTables(null, schemaPattern.toUpperCase(), null, new String[] { "TABLE" });
-            while (tables.next()) {
 
-                String tableName = tables.getString("TABLE_NAME");
-                if (tableName.equals("PLAN_TABLE") || tableName.startsWith("SYS_IMPORT_TABLE_")
-                        || tableName.contains("$")) {
-                    continue;
-                }
+            // テーブル情報を取得
+            addTableInfos(tableInfos, metaData, schemaPattern);
 
-                // テーブル情報を追加
-                TableInfo tableInfo = new TableInfo();
-                tableInfos.add(tableInfo);
-
-                tableInfo.setTableName(tableName);
-
-                String remarks = tables.getString("REMARKS");
-                if (remarks == null || remarks.length() == 0) {
-                    remarks = assist.getTableComment(tableName);
-                }
-                if (remarks == null || remarks.length() == 0) {
-                    remarks = tableName;
-                }
-                tableInfo.setRemarks(remarks);
+            // テーブル毎に主キー情報を取得
+            for (TableInfo tableInfo : tableInfos) {
+                addPrimaryKeys(metaData, tableInfo);
             }
-            tables.close();
 
+            // テーブル毎にカラム情報を取得
             for (TableInfo tableInfo : tableInfos) {
 
-                // テーブルの主キーカラム名を取得
-                List<String> pkList = new ArrayList<String>();
-                ResultSet primaryKeys = metaData.getPrimaryKeys(null, null, tableInfo.getTableName());
-                while (primaryKeys.next()) {
-                    String columnName = primaryKeys.getString("COLUMN_NAME");
+                // テーブルのカラム情報を取得してループ
+                ResultSet columns = metaData.getColumns(null, null, tableInfo.getTableName(), null);
 
+                while (columns.next()) {
+
+                    // カラム名が合致しなければスキップ
+                    String columnName = columns.getString("COLUMN_NAME");
                     if (columnName.equals("ABSTRACT") || !columnName.matches("^[0-9A-Za-z\\_\\-]+$")) {
                         continue;
                     }
-
-                    short keySeq = primaryKeys.getShort("KEY_SEQ");
-                    while (pkList.size() <= keySeq) {
-                        pkList.add("");
-                    }
-                    pkList.set(keySeq, columnName);
-                }
-                primaryKeys.close();
-
-                // 一部DBではKEY_SEQが「1origin」なので「0origin」に詰め替え
-                List<String> pks = tableInfo.getPrimaryKeys();
-                for (String pk : pkList) {
-                    if (pk.length() > 0) {
-                        pks.add(pk);
-                    }
-                }
-            }
-
-            for (TableInfo tableInfo : tableInfos) {
-
-                String tableName = tableInfo.getTableName();
-                Map<String, ColumnInfo> columnInfos = tableInfo.getColumnInfos();
-
-                // テーブルのカラム情報を取得してループ
-                LOG.debug(tableInfo.getTableName());
-                ResultSet columns = metaData.getColumns(null, null, tableInfo.getTableName(), null);
-                while (columns.next()) {
 
                     // カラム情報を追加
                     ColumnInfo columnInfo = new ColumnInfo();
-                    String columnName = columns.getString("COLUMN_NAME");
-
-                    if (columnName.equals("ABSTRACT") || !columnName.matches("^[0-9A-Za-z\\_\\-]+$")) {
-                        continue;
-                    }
-
-                    columnInfos.put(columnName, columnInfo);
+                    tableInfo.getColumnInfos().put(columnName, columnInfo);
 
                     // カラム物理名
                     columnInfo.setColumnName(columnName);
+
                     // DBデータ型
                     columnInfo.setTypeName(columns.getString("TYPE_NAME"));
+
                     // カラムサイズ
                     columnInfo.setColumnSize(columns.getInt("COLUMN_SIZE"));
+
                     // 小数桁数
                     columnInfo.setDecimalDigits(columns.getInt("DECIMAL_DIGITS"));
+
                     // NULL可否
                     columnInfo.setNullable(columns.getInt("NULLABLE"));
+
                     // カラム論理名
                     String remarks = columns.getString("REMARKS");
                     if (remarks == null || remarks.length() == 0) {
-                        remarks = assist.getColumnComment(tableName, columnName);
+                        remarks = assist.getColumnComment(tableInfo.getTableName(), columnName);
                     }
                     if (remarks == null || remarks.length() == 0) {
                         remarks = columnName;
@@ -312,25 +280,102 @@ public final class DataSources {
                     String dataType = getDataType(typeName, columnInfo);
                     columnInfo.setDataType(dataType);
                 }
+
                 columns.close();
             }
+
         } catch (Exception e) {
+
             LOG.error(e.getMessage(), e);
             throw new SysError(e);
+
         } finally {
+
             Connections.close();
         }
 
         //兄弟モデルの評価
         addBrotherTable(tableInfos);
+
         //履歴モデルの評価
         addHistoryTable(tableInfos);
+
         //子モデルの評価
         addChildTables(tableInfos);
+
         //参照モデルの評価
         addReferTable(tableInfos);
 
         return tableInfos;
+    }
+
+    private static void addPrimaryKeys(final DatabaseMetaData metaData, final TableInfo tableInfo)
+            throws SQLException {
+
+        List<String> primaryKeys = new ArrayList<String>();
+
+        ResultSet rs = metaData.getPrimaryKeys(null, null, tableInfo.getTableName());
+
+        while (rs.next()) {
+
+            String columnName = rs.getString("COLUMN_NAME");
+
+            if (columnName.equals("ABSTRACT") || !columnName.matches("^[0-9A-Za-z\\_\\-]+$")) {
+                continue;
+            }
+
+            short keySeq = rs.getShort("KEY_SEQ");
+
+            while (primaryKeys.size() <= keySeq) {
+                primaryKeys.add("");
+            }
+
+            primaryKeys.set(keySeq, columnName);
+        }
+
+        rs.close();
+
+        // 一部DBではKEY_SEQが「[1]origin」なので「[0]origin」に詰め替え
+        for (String primaryKey : primaryKeys) {
+            if (primaryKey.length() > 0) {
+                tableInfo.getPrimaryKeys().add(primaryKey);
+            }
+        }
+    }
+
+    private static void addTableInfos(final List<TableInfo> tableInfos, final DatabaseMetaData metaData,
+            final String schemaPattern) throws SQLException {
+
+        ResultSet rs = metaData.getTables(null, schemaPattern.toUpperCase(), null, new String[] { "TABLE" });
+
+        while (rs.next()) {
+
+            String tableName = rs.getString("TABLE_NAME");
+
+            if (tableName.equals("PLAN_TABLE") || tableName.startsWith("SYS_IMPORT_TABLE_")
+                    || tableName.contains("$")) {
+                continue;
+            }
+
+            // テーブル情報を追加
+            TableInfo tableInfo = new TableInfo();
+            tableInfos.add(tableInfo);
+
+            // テーブル物理名
+            tableInfo.setTableName(tableName);
+
+            // テーブル論理名
+            String remarks = rs.getString("REMARKS");
+            if (remarks == null || remarks.length() == 0) {
+                remarks = assist.getTableComment(tableName);
+            }
+            if (remarks == null || remarks.length() == 0) {
+                remarks = tableName;
+            }
+            tableInfo.setRemarks(remarks);
+        }
+
+        rs.close();
     }
 
     private static String getDataType(final String typeName, final ColumnInfo columnInfo) {
@@ -374,7 +419,20 @@ public final class DataSources {
         while (srcIterator.hasNext()) {
             TableInfo srcInfo = srcIterator.next();
 
+            // 比較元に主キーがなければスキップ
             if (srcInfo.getPrimaryKeys().size() == 0) {
+                continue;
+            }
+
+            // 弟を設定しないテーブルならスキップ
+            boolean isOnlyChild = false;
+            for (String onlychild : onlychilds) {
+                if (onlychild.equals(srcInfo.getTableName())) {
+                    isOnlyChild = true;
+                    break;
+                }
+            }
+            if (isOnlyChild) {
                 continue;
             }
 
@@ -388,16 +446,32 @@ public final class DataSources {
                     continue;
                 }
 
+                // 弟に設定しないテーブルならスキップ
+                boolean isEldest = false;
+                for (String eldest : eldests) {
+                    if (eldest.equals(destInfo.getTableName())) {
+                        isEldest = true;
+                        break;
+                    }
+                }
+                if (isEldest) {
+                    continue;
+                }
+
                 String srcPrimaryKeys = srcInfo.getPrimaryKeys().toString().replaceAll("[\\[\\]]", "");
                 String destPrimaryKeys = destInfo.getPrimaryKeys().toString().replaceAll("[\\[\\]]", "");
 
+                // 主キーが合致しなければスキップ
                 if (!srcPrimaryKeys.equals(destPrimaryKeys)) {
                     continue;
                 }
+
+                // 比較元が既に比較先の弟ならスキップ
                 if (destInfo.getBrosInfos().contains(srcInfo)) {
                     continue;
                 }
 
+                // 比較元に弟を追加
                 destInfo.setBrother(true);
                 srcInfo.getBrosInfos().add(destInfo);
             }
@@ -461,13 +535,17 @@ public final class DataSources {
 
         // テーブル情報でループ（比較元）
         Iterator<TableInfo> srcIterator = tableInfos.iterator();
+
         while (srcIterator.hasNext()) {
+
             TableInfo srcInfo = srcIterator.next();
 
+            // 主キーがなければスキップ
             if (srcInfo.getPrimaryKeys().size() == 0) {
                 continue;
             }
 
+            // 弟モデルには子モデルを設定しない
             if (srcInfo.isBrother()) {
                 continue;
             }

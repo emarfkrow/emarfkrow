@@ -187,12 +187,12 @@ input[type="datetime-local"] {
 }
 
 [role="dialog"] form>fieldset {
-	width: 1000px;
+	width: 1190px;
 }
 
 [role="dialog"] [id$="Grid"] {
 	height: 150px;
-	width: 1000px;
+	width: 1210px;
 }
 
 button#logout {

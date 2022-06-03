@@ -234,9 +234,9 @@ public class MstBtnPermission implements IEntity {
     public static MstBtnPermission get(final Object param1, final Object param2, final Object param3) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("comp_code = :comp_code");
-        whereList.add("gamen_id = :gamen_id");
-        whereList.add("button_id = :button_id");
+        whereList.add("\"COMP_CODE\" = :comp_code");
+        whereList.add("\"GAMEN_ID\" = :gamen_id");
+        whereList.add("\"BUTTON_ID\" = :button_id");
 
         String sql = "SELECT * FROM MST_BTN_PERMISSION WHERE " + String.join(" AND ", whereList);
 

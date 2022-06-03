@@ -571,7 +571,7 @@ public class PrdTehaiIrai implements IEntity {
     public static PrdTehaiIrai get(final Object param1) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (prd_tehai_no) = TRIM (:prd_tehai_no)");
+        whereList.add("TRIM (\"PRD_TEHAI_NO\") = TRIM (:prd_tehai_no)");
 
         String sql = "SELECT * FROM PRD_TEHAI_IRAI WHERE " + String.join(" AND ", whereList);
 

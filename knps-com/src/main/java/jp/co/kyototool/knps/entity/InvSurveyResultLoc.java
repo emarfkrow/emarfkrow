@@ -346,7 +346,7 @@ public class InvSurveyResultLoc implements IEntity {
     public static InvSurveyResultLoc get(final Object param1) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (location_code) = TRIM (:location_code)");
+        whereList.add("TRIM (\"LOCATION_CODE\") = TRIM (:location_code)");
 
         String sql = "SELECT * FROM INV_SURVEY_RESULT_LOC WHERE " + String.join(" AND ", whereList);
 

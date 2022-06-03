@@ -255,9 +255,9 @@ public class FJuchuz implements IEntity {
     public static FJuchuz get(final Object param1, final Object param2, final Object param3) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("tokucd = :tokucd");
-        whereList.add("hhinban = :hhinban");
-        whereList.add("juchuno = :juchuno");
+        whereList.add("\"TOKUCD\" = :tokucd");
+        whereList.add("\"HHINBAN\" = :hhinban");
+        whereList.add("\"JUCHUNO\" = :juchuno");
 
         String sql = "SELECT * FROM F_JUCHUZ WHERE " + String.join(" AND ", whereList);
 

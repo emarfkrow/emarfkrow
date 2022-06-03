@@ -319,10 +319,10 @@ public class PchProdUnitCost implements IEntity {
     public static PchProdUnitCost get(final Object param1, final Object param2, final Object param3, final Object param4) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (close_date) = TRIM (:close_date)");
-        whereList.add("pro_group_no = :pro_group_no");
-        whereList.add("TRIM (hinban) = TRIM (:hinban)");
-        whereList.add("routing = :routing");
+        whereList.add("TRIM (\"CLOSE_DATE\") = TRIM (:close_date)");
+        whereList.add("\"PRO_GROUP_NO\" = :pro_group_no");
+        whereList.add("TRIM (\"HINBAN\") = TRIM (:hinban)");
+        whereList.add("\"ROUTING\" = :routing");
 
         String sql = "SELECT * FROM PCH_PROD_UNIT_COST WHERE " + String.join(" AND ", whereList);
 

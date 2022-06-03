@@ -313,7 +313,7 @@ public class PchTempOrder implements IEntity {
     public static PchTempOrder get(final Object param1) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (temp_order_no) = TRIM (:temp_order_no)");
+        whereList.add("TRIM (\"TEMP_ORDER_NO\") = TRIM (:temp_order_no)");
 
         String sql = "SELECT * FROM PCH_TEMP_ORDER WHERE " + String.join(" AND ", whereList);
 

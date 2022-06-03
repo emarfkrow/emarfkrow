@@ -169,7 +169,7 @@ public class MstCode implements IEntity {
     public static MstCode get(final Object param1) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("code_nm = :code_nm");
+        whereList.add("\"CODE_NM\" = :code_nm");
 
         String sql = "SELECT * FROM MST_CODE WHERE " + String.join(" AND ", whereList);
 

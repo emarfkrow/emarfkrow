@@ -194,8 +194,8 @@ public class MYubojo implements IEntity {
     public static MYubojo get(final Object param1, final Object param2) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (yuryokukbn) = TRIM (:yuryokukbn)");
-        whereList.add("yuryocd = :yuryocd");
+        whereList.add("TRIM (\"YURYOKUKBN\") = TRIM (:yuryokukbn)");
+        whereList.add("\"YURYOCD\" = :yuryocd");
 
         String sql = "SELECT * FROM M_YUBOJO WHERE " + String.join(" AND ", whereList);
 
@@ -220,8 +220,8 @@ public class MYubojo implements IEntity {
         nameList.add("yuryokukbn -- :yuryokukbn");
         nameList.add("yuryocd -- :yuryocd");
         nameList.add("ryuryokumei -- :ryuryokumei");
-        nameList.add("konyu-min -- :konyu-min");
-        nameList.add("konyu-max -- :konyu-max");
+        nameList.add("konyu_min -- :konyu_min");
+        nameList.add("konyu_max -- :konyu_max");
         nameList.add("yuboritu -- :yuboritu");
         nameList.add("upddate -- :upddate");
         nameList.add("filler -- :filler");

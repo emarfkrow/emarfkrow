@@ -232,7 +232,7 @@ public class MstDivision implements IEntity {
     public static MstDivision get(final Object param1) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (division_code) = TRIM (:division_code)");
+        whereList.add("TRIM (\"DIVISION_CODE\") = TRIM (:division_code)");
 
         String sql = "SELECT * FROM MST_DIVISION WHERE " + String.join(" AND ", whereList);
 

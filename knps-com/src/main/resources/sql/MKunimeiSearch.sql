@@ -4,10 +4,10 @@ FROM
     M_KUNIMEI a 
 WHERE
     1 = 1 
-    AND TRIM (a.kokusaicd) = TRIM (:kokusaicd) 
-    AND TRIM (a.kunicd) = TRIM (:kunicd) 
-    AND TRIM (a.gensankoku) = TRIM (:gensankoku) 
-    AND TRIM (a.kunimei) = TRIM (:kunimei) 
-    AND TRIM (a.filler) = TRIM (:filler) 
+    AND TRIM (a."KOKUSAICD") = TRIM (:kokusaicd) 
+    AND TRIM (a."KUNICD") = TRIM (:kunicd) 
+    AND TRIM (a."GENSANKOKU") = TRIM (:gensankoku) 
+    AND TRIM (a."KUNIMEI") = TRIM (:kunimei) 
+    AND TRIM (a."FILLER") = TRIM (:filler) 
 ORDER BY
-    a.KOKUSAICD, a.KUNICD
+    a."KOKUSAICD", a."KUNICD"

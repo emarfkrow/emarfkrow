@@ -190,7 +190,7 @@ public class MstSalesHinban implements IEntity {
     public static MstSalesHinban get(final Object param1) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (sales_hinban) = TRIM (:sales_hinban)");
+        whereList.add("TRIM (\"SALES_HINBAN\") = TRIM (:sales_hinban)");
 
         String sql = "SELECT * FROM MST_SALES_HINBAN WHERE " + String.join(" AND ", whereList);
 

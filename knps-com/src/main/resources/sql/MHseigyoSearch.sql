@@ -4,19 +4,19 @@ FROM
     M_HSEIGYO a 
 WHERE
     1 = 1 
-    AND a.keycd = :keycd 
-    AND a.kaisibi = :kaisibi 
-    AND a.shuryobi = :shuryobi 
-    AND a.zeiritu = :zeiritu 
-    AND a.yuboent = :yuboent 
-    AND a.shusijino1 = :shusijino1 
-    AND a.nohinshono = :nohinshono 
-    AND a.setkeino = :setkeino 
-    AND a.getuji_yymm = :getuji_yymm 
-    AND a.t_juccnt = :t_juccnt 
-    AND a.t_maxcnt = :t_maxcnt 
-    AND a.chokucnt = :chokucnt 
-    AND a.hyotanka = :hyotanka 
-    AND TRIM (a.filler) = TRIM (:filler) 
+    AND a."KEYCD" = :keycd 
+    AND a."KAISIBI" = :kaisibi 
+    AND a."SHURYOBI" = :shuryobi 
+    AND a."ZEIRITU" = :zeiritu 
+    AND a."YUBOENT" = :yuboent 
+    AND a."SHUSIJINO1" = :shusijino1 
+    AND a."NOHINSHONO" = :nohinshono 
+    AND a."SETKEINO" = :setkeino 
+    AND a."GETUJI-YYMM" = :getuji_yymm 
+    AND a."T-JUCCNT" = :t_juccnt 
+    AND a."T-MAXCNT" = :t_maxcnt 
+    AND a."CHOKUCNT" = :chokucnt 
+    AND a."HYOTANKA" = :hyotanka 
+    AND TRIM (a."FILLER") = TRIM (:filler) 
 ORDER BY
-    a.KEYCD
+    a."KEYCD"

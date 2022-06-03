@@ -211,7 +211,7 @@ public class MstHinbanEmp implements IEntity {
     public static MstHinbanEmp get(final Object param1) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (hinban_ope_code) = TRIM (:hinban_ope_code)");
+        whereList.add("TRIM (\"HINBAN_OPE_CODE\") = TRIM (:hinban_ope_code)");
 
         String sql = "SELECT * FROM MST_HINBAN_EMP WHERE " + String.join(" AND ", whereList);
 

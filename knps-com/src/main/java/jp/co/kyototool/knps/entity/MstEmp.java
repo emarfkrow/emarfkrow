@@ -316,7 +316,7 @@ public class MstEmp implements IEntity {
     public static MstEmp get(final Object param1) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (emp_code) = TRIM (:emp_code)");
+        whereList.add("TRIM (\"EMP_CODE\") = TRIM (:emp_code)");
 
         String sql = "SELECT * FROM MST_EMP WHERE " + String.join(" AND ", whereList);
 

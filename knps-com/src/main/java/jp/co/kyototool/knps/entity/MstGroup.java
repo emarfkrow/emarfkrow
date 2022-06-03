@@ -253,7 +253,7 @@ public class MstGroup implements IEntity {
     public static MstGroup get(final Object param1) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (group_code) = TRIM (:group_code)");
+        whereList.add("TRIM (\"GROUP_CODE\") = TRIM (:group_code)");
 
         String sql = "SELECT * FROM MST_GROUP WHERE " + String.join(" AND ", whereList);
 

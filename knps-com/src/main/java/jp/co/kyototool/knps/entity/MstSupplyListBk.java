@@ -341,11 +341,11 @@ public class MstSupplyListBk implements IEntity {
     public static MstSupplyListBk get(final Object param1, final Object param2, final Object param3, final Object param4, final Object param5) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (man_hinban) = TRIM (:man_hinban)");
-        whereList.add("routing_group = :routing_group");
-        whereList.add("routing = :routing");
-        whereList.add("TRIM (supply_hinban) = TRIM (:supply_hinban)");
-        whereList.add("TRIM (yy) = TRIM (:yy)");
+        whereList.add("TRIM (\"MAN_HINBAN\") = TRIM (:man_hinban)");
+        whereList.add("\"ROUTING_GROUP\" = :routing_group");
+        whereList.add("\"ROUTING\" = :routing");
+        whereList.add("TRIM (\"SUPPLY_HINBAN\") = TRIM (:supply_hinban)");
+        whereList.add("TRIM (\"YY\") = TRIM (:yy)");
 
         String sql = "SELECT * FROM MST_SUPPLY_LIST_BK WHERE " + String.join(" AND ", whereList);
 

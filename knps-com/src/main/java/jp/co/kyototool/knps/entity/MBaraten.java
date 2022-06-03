@@ -299,14 +299,14 @@ public class MBaraten implements IEntity {
     public static MBaraten get(final Object param1, final Object param2) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (oya-hinban) = TRIM (:oya-hinban)");
-        whereList.add("TRIM (ko-hinban) = TRIM (:ko-hinban)");
+        whereList.add("TRIM (\"OYA-HINBAN\") = TRIM (:oya_hinban)");
+        whereList.add("TRIM (\"KO-HINBAN\") = TRIM (:ko_hinban)");
 
         String sql = "SELECT * FROM M_BARATEN WHERE " + String.join(" AND ", whereList);
 
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("oya-hinban", param1);
-        params.put("ko-hinban", param2);
+        params.put("oya_hinban", param1);
+        params.put("ko_hinban", param2);
 
         return Queries.get(sql, params, MBaraten.class);
     }
@@ -325,16 +325,16 @@ public class MBaraten implements IEntity {
 
         // バラ展開マスタの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("oya-hinban -- :oya-hinban");
-        nameList.add("ko-hinban -- :ko-hinban");
-        nameList.add("oya-hinc -- :oya-hinc");
-        nameList.add("ko-hinc -- :ko-hinc");
+        nameList.add("oya_hinban -- :oya_hinban");
+        nameList.add("ko_hinban -- :ko_hinban");
+        nameList.add("oya_hinc -- :oya_hinc");
+        nameList.add("ko_hinc -- :ko_hinc");
         nameList.add("inzu -- :inzu");
-        nameList.add("oya-baika -- :oya-baika");
-        nameList.add("oya-genka -- :oya-genka");
-        nameList.add("ko-tanka -- :ko-tanka");
-        nameList.add("ko-genka -- :ko-genka");
-        nameList.add("ko-tanritu -- :ko-tanritu");
+        nameList.add("oya_baika -- :oya_baika");
+        nameList.add("oya_genka -- :oya_genka");
+        nameList.add("ko_tanka -- :ko_tanka");
+        nameList.add("ko_genka -- :ko_genka");
+        nameList.add("ko_tanritu -- :ko_tanritu");
         nameList.add("kensakum -- :kensakum");
         nameList.add("casekbn -- :casekbn");
         nameList.add("filler -- :filler");

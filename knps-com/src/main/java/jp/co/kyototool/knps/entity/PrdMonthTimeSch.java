@@ -234,9 +234,9 @@ public class PrdMonthTimeSch implements IEntity {
     public static PrdMonthTimeSch get(final Object param1, final Object param2, final Object param3) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (yyyy) = TRIM (:yyyy)");
-        whereList.add("TRIM (mm) = TRIM (:mm)");
-        whereList.add("TRIM (wc_code) = TRIM (:wc_code)");
+        whereList.add("TRIM (\"YYYY\") = TRIM (:yyyy)");
+        whereList.add("TRIM (\"MM\") = TRIM (:mm)");
+        whereList.add("TRIM (\"WC_CODE\") = TRIM (:wc_code)");
 
         String sql = "SELECT * FROM PRD_MONTH_TIME_SCH WHERE " + String.join(" AND ", whereList);
 

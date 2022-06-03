@@ -388,7 +388,7 @@ public class PchSupplySch implements IEntity {
     public static PchSupplySch get(final Object param1) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (supply_no) = TRIM (:supply_no)");
+        whereList.add("TRIM (\"SUPPLY_NO\") = TRIM (:supply_no)");
 
         String sql = "SELECT * FROM PCH_SUPPLY_SCH WHERE " + String.join(" AND ", whereList);
 

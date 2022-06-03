@@ -199,24 +199,6 @@ public class MBarindxRegistForm implements IForm {
         this.barOiban9 = p;
     }
 
-    /** 販売制御マスタ */
-    @jakarta.validation.Valid
-    private MHseigyoRegistForm mHseigyoRegistForm;
-
-    /**
-     * @return MHseigyoRegistForm
-     */
-    public MHseigyoRegistForm getMHseigyoRegistForm() {
-        return mHseigyoRegistForm;
-    }
-
-    /**
-     * @param p
-     */
-    public void setMHseigyoRegistForm(final MHseigyoRegistForm p) {
-        this.mHseigyoRegistForm = p;
-    }
-
     /** 関連チェック */
     @Override
     public void validate(final Map<String, String> errors, final BaseProcess baseProcess) {

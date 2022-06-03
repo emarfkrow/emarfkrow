@@ -418,7 +418,7 @@ public class MfgModActHed implements IEntity {
     public static MfgModActHed get(final Object param1) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (mod_act_no) = TRIM (:mod_act_no)");
+        whereList.add("TRIM (\"MOD_ACT_NO\") = TRIM (:mod_act_no)");
 
         String sql = "SELECT * FROM MFG_MOD_ACT_HED WHERE " + String.join(" AND ", whereList);
 

@@ -213,9 +213,9 @@ public class PrdRackMainte implements IEntity {
     public static PrdRackMainte get(final Object param1, final Object param2, final Object param3) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (yyyy) = TRIM (:yyyy)");
-        whereList.add("TRIM (mm) = TRIM (:mm)");
-        whereList.add("rack_name = :rack_name");
+        whereList.add("TRIM (\"YYYY\") = TRIM (:yyyy)");
+        whereList.add("TRIM (\"MM\") = TRIM (:mm)");
+        whereList.add("\"RACK_NAME\" = :rack_name");
 
         String sql = "SELECT * FROM PRD_RACK_MAINTE WHERE " + String.join(" AND ", whereList);
 

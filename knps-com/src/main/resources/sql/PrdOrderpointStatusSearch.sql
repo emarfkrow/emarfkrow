@@ -4,13 +4,13 @@ FROM
     PRD_ORDERPOINT_STATUS a 
 WHERE
     1 = 1 
-    AND TRIM (a.hinban) = TRIM (:hinban) 
-    AND a.published_counts = :published_counts 
-    AND a.published_counts >= :published_counts_1 
-    AND a.published_counts <= :published_counts_2 
-    AND a.time_stamp_create = :time_stamp_create 
-    AND a.time_stamp_change = :time_stamp_change 
-    AND TRIM (a.user_id_create) = TRIM (:user_id_create) 
-    AND TRIM (a.user_id_change) = TRIM (:user_id_change) 
+    AND TRIM (a."HINBAN") = TRIM (:hinban) 
+    AND a."PUBLISHED_COUNTS" = :published_counts 
+    AND a."PUBLISHED_COUNTS" >= :published_counts_1 
+    AND a."PUBLISHED_COUNTS" <= :published_counts_2 
+    AND a."TIME_STAMP_CREATE" = :time_stamp_create 
+    AND a."TIME_STAMP_CHANGE" = :time_stamp_change 
+    AND TRIM (a."USER_ID_CREATE") = TRIM (:user_id_create) 
+    AND TRIM (a."USER_ID_CHANGE") = TRIM (:user_id_change) 
 ORDER BY
-    a.HINBAN
+    a."HINBAN"

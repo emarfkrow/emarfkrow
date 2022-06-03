@@ -233,8 +233,8 @@ public class MfgKanbanStatus implements IEntity {
     public static MfgKanbanStatus get(final Object param1, final Object param2) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (kanban_id) = TRIM (:kanban_id)");
-        whereList.add("serial_no = :serial_no");
+        whereList.add("TRIM (\"KANBAN_ID\") = TRIM (:kanban_id)");
+        whereList.add("\"SERIAL_NO\" = :serial_no");
 
         String sql = "SELECT * FROM MFG_KANBAN_STATUS WHERE " + String.join(" AND ", whereList);
 

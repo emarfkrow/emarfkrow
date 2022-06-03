@@ -592,7 +592,7 @@ public class MTokuyak implements IEntity {
     public static MTokuyak get(final Object param1) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("tokuyakucd = :tokuyakucd");
+        whereList.add("\"TOKUYAKUCD\" = :tokuyakucd");
 
         String sql = "SELECT * FROM M_TOKUYAK WHERE " + String.join(" AND ", whereList);
 
@@ -618,7 +618,7 @@ public class MTokuyak implements IEntity {
         nameList.add("htokuyakucd -- :htokuyakucd");
         nameList.add("eigyokbn -- :eigyokbn");
         nameList.add("yuryokukbn -- :yuryokukbn");
-        nameList.add("gyoshu-kbn -- :gyoshu-kbn");
+        nameList.add("gyoshu_kbn -- :gyoshu_kbn");
         nameList.add("rtokuyakumei -- :rtokuyakumei");
         nameList.add("tokuyakumei1 -- :tokuyakumei1");
         nameList.add("tokuyakumei2 -- :tokuyakumei2");
@@ -629,7 +629,7 @@ public class MTokuyak implements IEntity {
         nameList.add("telno -- :telno");
         nameList.add("faxno -- :faxno");
         nameList.add("tourokubi -- :tourokubi");
-        nameList.add("torihiki-kbn -- :torihiki-kbn");
+        nameList.add("torihiki_kbn -- :torihiki_kbn");
         nameList.add("kon_npjuchukin -- :kon_npjuchukin");
         nameList.add("kon_npshukka -- :kon_npshukka");
         nameList.add("zen_npjuchukin -- :zen_npjuchukin");

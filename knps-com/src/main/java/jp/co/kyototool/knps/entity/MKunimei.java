@@ -131,8 +131,8 @@ public class MKunimei implements IEntity {
     public static MKunimei get(final Object param1, final Object param2) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (kokusaicd) = TRIM (:kokusaicd)");
-        whereList.add("TRIM (kunicd) = TRIM (:kunicd)");
+        whereList.add("TRIM (\"KOKUSAICD\") = TRIM (:kokusaicd)");
+        whereList.add("TRIM (\"KUNICD\") = TRIM (:kunicd)");
 
         String sql = "SELECT * FROM M_KUNIMEI WHERE " + String.join(" AND ", whereList);
 

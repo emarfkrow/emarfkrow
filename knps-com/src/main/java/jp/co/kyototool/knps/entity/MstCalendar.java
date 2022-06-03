@@ -241,7 +241,7 @@ public class MstCalendar implements IEntity {
     public static MstCalendar get(final Object param1) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("serial_day = :serial_day");
+        whereList.add("\"SERIAL_DAY\" = :serial_day");
 
         String sql = "SELECT * FROM MST_CALENDAR WHERE " + String.join(" AND ", whereList);
 

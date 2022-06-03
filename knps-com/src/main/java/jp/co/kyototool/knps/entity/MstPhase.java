@@ -127,7 +127,7 @@ public class MstPhase implements IEntity {
     public static MstPhase get(final Object param1) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("phase = :phase");
+        whereList.add("\"PHASE\" = :phase");
 
         String sql = "SELECT * FROM MST_PHASE WHERE " + String.join(" AND ", whereList);
 

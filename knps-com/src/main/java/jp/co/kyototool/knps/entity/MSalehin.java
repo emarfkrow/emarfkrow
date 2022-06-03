@@ -242,26 +242,26 @@ public class MSalehin implements IEntity {
     public static MSalehin get(final Object param1, final Object param2, final Object param3, final Object param4, final Object param5, final Object param6, final Object param7, final Object param8) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (salekbn) = TRIM (:salekbn)");
-        whereList.add("TRIM (hhinban) = TRIM (:hhinban)");
-        whereList.add("kaisi-yy = :kaisi-yy");
-        whereList.add("kaisi-mm = :kaisi-mm");
-        whereList.add("kaisi-dd = :kaisi-dd");
-        whereList.add("shuryo-yy = :shuryo-yy");
-        whereList.add("shuryo-mm = :shuryo-mm");
-        whereList.add("shuryo-dd = :shuryo-dd");
+        whereList.add("TRIM (\"SALEKBN\") = TRIM (:salekbn)");
+        whereList.add("TRIM (\"HHINBAN\") = TRIM (:hhinban)");
+        whereList.add("\"KAISI-YY\" = :kaisi_yy");
+        whereList.add("\"KAISI-MM\" = :kaisi_mm");
+        whereList.add("\"KAISI-DD\" = :kaisi_dd");
+        whereList.add("\"SHURYO-YY\" = :shuryo_yy");
+        whereList.add("\"SHURYO-MM\" = :shuryo_mm");
+        whereList.add("\"SHURYO-DD\" = :shuryo_dd");
 
         String sql = "SELECT * FROM M_SALEHIN WHERE " + String.join(" AND ", whereList);
 
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("salekbn", param1);
         params.put("hhinban", param2);
-        params.put("kaisi-yy", param3);
-        params.put("kaisi-mm", param4);
-        params.put("kaisi-dd", param5);
-        params.put("shuryo-yy", param6);
-        params.put("shuryo-mm", param7);
-        params.put("shuryo-dd", param8);
+        params.put("kaisi_yy", param3);
+        params.put("kaisi_mm", param4);
+        params.put("kaisi_dd", param5);
+        params.put("shuryo_yy", param6);
+        params.put("shuryo_mm", param7);
+        params.put("shuryo_dd", param8);
 
         return Queries.get(sql, params, MSalehin.class);
     }
@@ -280,12 +280,12 @@ public class MSalehin implements IEntity {
         nameList.add("salekbn -- :salekbn");
         nameList.add("salemei -- :salemei");
         nameList.add("hhinban -- :hhinban");
-        nameList.add("kaisi-yy -- :kaisi-yy");
-        nameList.add("kaisi-mm -- :kaisi-mm");
-        nameList.add("kaisi-dd -- :kaisi-dd");
-        nameList.add("shuryo-yy -- :shuryo-yy");
-        nameList.add("shuryo-mm -- :shuryo-mm");
-        nameList.add("shuryo-dd -- :shuryo-dd");
+        nameList.add("kaisi_yy -- :kaisi_yy");
+        nameList.add("kaisi_mm -- :kaisi_mm");
+        nameList.add("kaisi_dd -- :kaisi_dd");
+        nameList.add("shuryo_yy -- :shuryo_yy");
+        nameList.add("shuryo_mm -- :shuryo_mm");
+        nameList.add("shuryo_dd -- :shuryo_dd");
         nameList.add("filler -- :filler");
         String name = String.join("\r\n    , ", nameList);
 

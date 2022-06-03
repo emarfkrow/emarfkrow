@@ -1357,7 +1357,7 @@ public class PchOrderInf implements IEntity {
     public static PchOrderInf get(final Object param1) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (order_no) = TRIM (:order_no)");
+        whereList.add("TRIM (\"ORDER_NO\") = TRIM (:order_no)");
 
         String sql = "SELECT * FROM PCH_ORDER_INF WHERE " + String.join(" AND ", whereList);
 

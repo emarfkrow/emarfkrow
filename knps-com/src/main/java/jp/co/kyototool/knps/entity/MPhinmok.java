@@ -361,7 +361,7 @@ public class MPhinmok implements IEntity {
     public static MPhinmok get(final Object param1) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (phinban) = TRIM (:phinban)");
+        whereList.add("TRIM (\"PHINBAN\") = TRIM (:phinban)");
 
         String sql = "SELECT * FROM M_PHINMOK WHERE " + String.join(" AND ", whereList);
 
@@ -389,9 +389,9 @@ public class MPhinmok implements IEntity {
         nameList.add("phinmei -- :phinmei");
         nameList.add("phinmeik -- :phinmeik");
         nameList.add("hinban -- :hinban");
-        nameList.add("p-kakaku -- :p-kakaku");
-        nameList.add("p-genka -- :p-genka");
-        nameList.add("p-kbn -- :p-kbn");
+        nameList.add("p_kakaku -- :p_kakaku");
+        nameList.add("p_genka -- :p_genka");
+        nameList.add("p_kbn -- :p_kbn");
         nameList.add("kishuzan -- :kishuzan");
         nameList.add("kijyunzaiko -- :kijyunzaiko");
         nameList.add("hachuten -- :hachuten");

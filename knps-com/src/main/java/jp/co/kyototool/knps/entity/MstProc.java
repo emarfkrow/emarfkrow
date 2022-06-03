@@ -232,7 +232,7 @@ public class MstProc implements IEntity {
     public static MstProc get(final Object param1) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (routing_code) = TRIM (:routing_code)");
+        whereList.add("TRIM (\"ROUTING_CODE\") = TRIM (:routing_code)");
 
         String sql = "SELECT * FROM MST_PROC WHERE " + String.join(" AND ", whereList);
 

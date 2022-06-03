@@ -275,8 +275,8 @@ public class InvStockStore implements IEntity {
     public static InvStockStore get(final Object param1, final Object param2) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("hinban = :hinban");
-        whereList.add("store_no = :store_no");
+        whereList.add("\"HINBAN\" = :hinban");
+        whereList.add("\"STORE_NO\" = :store_no");
 
         String sql = "SELECT * FROM INV_STOCK_STORE WHERE " + String.join(" AND ", whereList);
 

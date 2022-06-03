@@ -379,7 +379,7 @@ public class MfgRateQ implements IEntity {
     public static MfgRateQ get(final Object param1) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (rate_code) = TRIM (:rate_code)");
+        whereList.add("TRIM (\"RATE_CODE\") = TRIM (:rate_code)");
 
         String sql = "SELECT * FROM MFG_RATE_Q WHERE " + String.join(" AND ", whereList);
 

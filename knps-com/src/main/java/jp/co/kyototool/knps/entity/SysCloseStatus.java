@@ -622,7 +622,7 @@ public class SysCloseStatus implements IEntity {
     public static SysCloseStatus get(final Object param1) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (rec_no) = TRIM (:rec_no)");
+        whereList.add("TRIM (\"REC_NO\") = TRIM (:rec_no)");
 
         String sql = "SELECT * FROM SYS_CLOSE_STATUS WHERE " + String.join(" AND ", whereList);
 

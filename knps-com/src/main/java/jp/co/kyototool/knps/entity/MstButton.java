@@ -211,7 +211,7 @@ public class MstButton implements IEntity {
     public static MstButton get(final Object param1) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("btn_id = :btn_id");
+        whereList.add("\"BTN_ID\" = :btn_id");
 
         String sql = "SELECT * FROM MST_BUTTON WHERE " + String.join(" AND ", whereList);
 

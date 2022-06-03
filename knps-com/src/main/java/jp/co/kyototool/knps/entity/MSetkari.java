@@ -236,14 +236,14 @@ public class MSetkari implements IEntity {
     public static MSetkari get(final Object param1, final Object param2) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (set-hinban) = TRIM (:set-hinban)");
-        whereList.add("TRIM (set-khinban) = TRIM (:set-khinban)");
+        whereList.add("TRIM (\"SET-HINBAN\") = TRIM (:set_hinban)");
+        whereList.add("TRIM (\"SET-KHINBAN\") = TRIM (:set_khinban)");
 
         String sql = "SELECT * FROM M_SETKARI WHERE " + String.join(" AND ", whereList);
 
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("set-hinban", param1);
-        params.put("set-khinban", param2);
+        params.put("set_hinban", param1);
+        params.put("set_khinban", param2);
 
         return Queries.get(sql, params, MSetkari.class);
     }
@@ -269,14 +269,14 @@ public class MSetkari implements IEntity {
 
         // 仮セット構成マスタの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("set-hinban -- :set-hinban");
-        nameList.add("set-khinban -- :set-khinban");
+        nameList.add("set_hinban -- :set_hinban");
+        nameList.add("set_khinban -- :set_khinban");
         nameList.add("tokucd -- :tokucd");
         nameList.add("hinmei -- :hinmei");
-        nameList.add("ko-hinmei -- :ko-hinmei");
+        nameList.add("ko_hinmei -- :ko_hinmei");
         nameList.add("setkbn -- :setkbn");
         nameList.add("setinzu -- :setinzu");
-        nameList.add("ko-tanka -- :ko-tanka");
+        nameList.add("ko_tanka -- :ko_tanka");
         nameList.add("mushokbn -- :mushokbn");
         nameList.add("rtokumei -- :rtokumei");
         String name = String.join("\r\n    , ", nameList);

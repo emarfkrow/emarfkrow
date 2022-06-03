@@ -4,13 +4,13 @@ FROM
     PRD_PRE_STATUS_Y a 
 WHERE
     1 = 1 
-    AND TRIM (a.yy) = TRIM (:yy) 
-    AND a.sales_target_status = :sales_target_status 
-    AND a.prd_plan_make_status = :prd_plan_make_status 
-    AND a.prd_plan_fixed_status = :prd_plan_fixed_status 
-    AND a.time_stamp_create = :time_stamp_create 
-    AND a.time_stamp_change = :time_stamp_change 
-    AND TRIM (a.user_id_create) = TRIM (:user_id_create) 
-    AND TRIM (a.user_id_change) = TRIM (:user_id_change) 
+    AND TRIM (a."YY") = TRIM (:yy) 
+    AND a."SALES_TARGET_STATUS" = :sales_target_status 
+    AND a."PRD_PLAN_MAKE_STATUS" = :prd_plan_make_status 
+    AND a."PRD_PLAN_FIXED_STATUS" = :prd_plan_fixed_status 
+    AND a."TIME_STAMP_CREATE" = :time_stamp_create 
+    AND a."TIME_STAMP_CHANGE" = :time_stamp_change 
+    AND TRIM (a."USER_ID_CREATE") = TRIM (:user_id_create) 
+    AND TRIM (a."USER_ID_CHANGE") = TRIM (:user_id_change) 
 ORDER BY
-    a.YY
+    a."YY"

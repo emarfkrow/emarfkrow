@@ -319,7 +319,7 @@ public class MHseigyo implements IEntity {
     public static MHseigyo get(final Object param1) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("keycd = :keycd");
+        whereList.add("\"KEYCD\" = :keycd");
 
         String sql = "SELECT * FROM M_HSEIGYO WHERE " + String.join(" AND ", whereList);
 
@@ -338,6 +338,12 @@ public class MHseigyo implements IEntity {
      */
     public int insert(final LocalDateTime now, final String id) {
 
+        // バーコード管理マスタの登録
+        if (this.mBarindx != null) {
+            this.mBarindx.setKeycd(this.getKeycd());
+            this.mBarindx.insert(now, id);
+        }
+
         // 販売制御マスタの登録
         List<String> nameList = new ArrayList<String>();
         nameList.add("keycd -- :keycd");
@@ -348,9 +354,9 @@ public class MHseigyo implements IEntity {
         nameList.add("shusijino1 -- :shusijino1");
         nameList.add("nohinshono -- :nohinshono");
         nameList.add("setkeino -- :setkeino");
-        nameList.add("getuji-yymm -- :getuji-yymm");
-        nameList.add("t-juccnt -- :t-juccnt");
-        nameList.add("t-maxcnt -- :t-maxcnt");
+        nameList.add("getuji_yymm -- :getuji_yymm");
+        nameList.add("t_juccnt -- :t_juccnt");
+        nameList.add("t_maxcnt -- :t_maxcnt");
         nameList.add("chokucnt -- :chokucnt");
         nameList.add("hyotanka -- :hyotanka");
         nameList.add("filler -- :filler");
@@ -391,6 +397,16 @@ public class MHseigyo implements IEntity {
      */
     public int update(final LocalDateTime now, final String id) {
 
+        // バーコード管理マスタの登録
+        if (this.mBarindx != null) {
+            mBarindx.setKeycd(this.getKeycd());
+            try {
+                mBarindx.insert(now, id);
+            } catch (Exception e) {
+                mBarindx.update(now, id);
+            }
+        }
+
         // 販売制御マスタの登録
         String sql = "UPDATE M_HSEIGYO\r\nSET\r\n      " + getSet() + "\r\nWHERE\r\n    " + getWhere();
         Map<String, Object> params = toMap(now, id);
@@ -423,6 +439,11 @@ public class MHseigyo implements IEntity {
      * @return 削除件数
      */
     public int delete() {
+
+        // バーコード管理マスタの削除
+        if (this.mBarindx != null) {
+            this.mBarindx.delete();
+        }
 
         // 販売制御マスタの削除
         String sql = "DELETE FROM M_HSEIGYO WHERE " + getWhere();
@@ -459,5 +480,38 @@ public class MHseigyo implements IEntity {
         params.put("time_stamp_change", now);
         params.put("user_id_change", id);
         return params;
+    }
+
+    /**
+     * バーコード管理マスタ
+     */
+    private MBarindx mBarindx;
+
+    /**
+     * @return バーコード管理マスタ
+     */
+    @com.fasterxml.jackson.annotation.JsonProperty("MBarindx")
+    public MBarindx getMBarindx() {
+        return this.mBarindx;
+    }
+
+    /**
+     * @param p バーコード管理マスタ
+     */
+    public void setMBarindx(final MBarindx p) {
+        this.mBarindx = p;
+    }
+
+    /**
+     * @return バーコード管理マスタ
+     */
+    public MBarindx referMBarindx() {
+        if (this.mBarindx == null) {
+            try {
+                this.mBarindx = MBarindx.get(this.keycd);
+            } catch (jp.co.golorp.emarf.exception.NoDataError e) {
+            }
+        }
+        return this.mBarindx;
     }
 }

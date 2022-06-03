@@ -31,6 +31,8 @@ public class MSkhinGetAction extends BaseAction {
         }
 
         MSkhin mSkhin = MSkhin.get(hhinban);
+        mSkhin.referMBarcd();
+        mSkhin.referMGenka();
         mSkhin.referMTanka();
         mSkhin.referMWebkan();
         map.put("MSkhin", mSkhin);

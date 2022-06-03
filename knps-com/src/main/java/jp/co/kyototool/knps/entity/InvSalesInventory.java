@@ -242,8 +242,8 @@ public class InvSalesInventory implements IEntity {
     public static InvSalesInventory get(final Object param1, final Object param2) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (sales_hinban) = TRIM (:sales_hinban)");
-        whereList.add("TRIM (hinban) = TRIM (:hinban)");
+        whereList.add("TRIM (\"SALES_HINBAN\") = TRIM (:sales_hinban)");
+        whereList.add("TRIM (\"HINBAN\") = TRIM (:hinban)");
 
         String sql = "SELECT * FROM INV_SALES_INVENTORY WHERE " + String.join(" AND ", whereList);
 

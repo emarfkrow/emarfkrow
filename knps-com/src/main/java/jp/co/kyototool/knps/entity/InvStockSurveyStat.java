@@ -253,7 +253,7 @@ public class InvStockSurveyStat implements IEntity {
     public static InvStockSurveyStat get(final Object param1) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (rec_no) = TRIM (:rec_no)");
+        whereList.add("TRIM (\"REC_NO\") = TRIM (:rec_no)");
 
         String sql = "SELECT * FROM INV_STOCK_SURVEY_STAT WHERE " + String.join(" AND ", whereList);
 

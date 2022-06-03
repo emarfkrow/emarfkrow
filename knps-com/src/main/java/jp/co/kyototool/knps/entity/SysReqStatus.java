@@ -343,7 +343,7 @@ public class SysReqStatus implements IEntity {
     public static SysReqStatus get(final Object param1) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (req_id) = TRIM (:req_id)");
+        whereList.add("TRIM (\"REQ_ID\") = TRIM (:req_id)");
 
         String sql = "SELECT * FROM SYS_REQ_STATUS WHERE " + String.join(" AND ", whereList);
 

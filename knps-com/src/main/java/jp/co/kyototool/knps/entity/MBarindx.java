@@ -235,7 +235,7 @@ public class MBarindx implements IEntity {
     public static MBarindx get(final Object param1) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("keycd = :keycd");
+        whereList.add("\"KEYCD\" = :keycd");
 
         String sql = "SELECT * FROM M_BARINDX WHERE " + String.join(" AND ", whereList);
 
@@ -254,24 +254,18 @@ public class MBarindx implements IEntity {
      */
     public int insert(final LocalDateTime now, final String id) {
 
-        // 販売制御マスタの登録
-        if (this.mHseigyo != null) {
-            this.mHseigyo.setKeycd(this.getKeycd());
-            this.mHseigyo.insert(now, id);
-        }
-
         // バーコード管理マスタの登録
         List<String> nameList = new ArrayList<String>();
         nameList.add("keycd -- :keycd");
-        nameList.add("bar-oiban1 -- :bar-oiban1");
-        nameList.add("bar-oiban2 -- :bar-oiban2");
-        nameList.add("bar-oiban3 -- :bar-oiban3");
-        nameList.add("bar-oiban4 -- :bar-oiban4");
-        nameList.add("bar-oiban5 -- :bar-oiban5");
-        nameList.add("bar-oiban6 -- :bar-oiban6");
-        nameList.add("bar-oiban7 -- :bar-oiban7");
-        nameList.add("bar-oiban8 -- :bar-oiban8");
-        nameList.add("bar-oiban9 -- :bar-oiban9");
+        nameList.add("bar_oiban1 -- :bar_oiban1");
+        nameList.add("bar_oiban2 -- :bar_oiban2");
+        nameList.add("bar_oiban3 -- :bar_oiban3");
+        nameList.add("bar_oiban4 -- :bar_oiban4");
+        nameList.add("bar_oiban5 -- :bar_oiban5");
+        nameList.add("bar_oiban6 -- :bar_oiban6");
+        nameList.add("bar_oiban7 -- :bar_oiban7");
+        nameList.add("bar_oiban8 -- :bar_oiban8");
+        nameList.add("bar_oiban9 -- :bar_oiban9");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO M_BARINDX(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -305,16 +299,6 @@ public class MBarindx implements IEntity {
      */
     public int update(final LocalDateTime now, final String id) {
 
-        // 販売制御マスタの登録
-        if (this.mHseigyo != null) {
-            mHseigyo.setKeycd(this.getKeycd());
-            try {
-                mHseigyo.insert(now, id);
-            } catch (Exception e) {
-                mHseigyo.update(now, id);
-            }
-        }
-
         // バーコード管理マスタの登録
         String sql = "UPDATE M_BARINDX\r\nSET\r\n      " + getSet() + "\r\nWHERE\r\n    " + getWhere();
         Map<String, Object> params = toMap(now, id);
@@ -343,11 +327,6 @@ public class MBarindx implements IEntity {
      * @return 削除件数
      */
     public int delete() {
-
-        // 販売制御マスタの削除
-        if (this.mHseigyo != null) {
-            this.mHseigyo.delete();
-        }
 
         // バーコード管理マスタの削除
         String sql = "DELETE FROM M_BARINDX WHERE " + getWhere();
@@ -380,38 +359,5 @@ public class MBarindx implements IEntity {
         params.put("time_stamp_change", now);
         params.put("user_id_change", id);
         return params;
-    }
-
-    /**
-     * 販売制御マスタ
-     */
-    private MHseigyo mHseigyo;
-
-    /**
-     * @return 販売制御マスタ
-     */
-    @com.fasterxml.jackson.annotation.JsonProperty("MHseigyo")
-    public MHseigyo getMHseigyo() {
-        return this.mHseigyo;
-    }
-
-    /**
-     * @param p 販売制御マスタ
-     */
-    public void setMHseigyo(final MHseigyo p) {
-        this.mHseigyo = p;
-    }
-
-    /**
-     * @return 販売制御マスタ
-     */
-    public MHseigyo referMHseigyo() {
-        if (this.mHseigyo == null) {
-            try {
-                this.mHseigyo = MHseigyo.get(this.keycd);
-            } catch (jp.co.golorp.emarf.exception.NoDataError e) {
-            }
-        }
-        return this.mHseigyo;
     }
 }

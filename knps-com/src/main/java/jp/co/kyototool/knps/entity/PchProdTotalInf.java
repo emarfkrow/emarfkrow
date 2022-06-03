@@ -277,10 +277,10 @@ public class PchProdTotalInf implements IEntity {
     public static PchProdTotalInf get(final Object param1, final Object param2, final Object param3, final Object param4) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (hinban) = TRIM (:hinban)");
-        whereList.add("routing_group = :routing_group");
-        whereList.add("routing = :routing");
-        whereList.add("TRIM (close_date) = TRIM (:close_date)");
+        whereList.add("TRIM (\"HINBAN\") = TRIM (:hinban)");
+        whereList.add("\"ROUTING_GROUP\" = :routing_group");
+        whereList.add("\"ROUTING\" = :routing");
+        whereList.add("TRIM (\"CLOSE_DATE\") = TRIM (:close_date)");
 
         String sql = "SELECT * FROM PCH_PROD_TOTAL_INF WHERE " + String.join(" AND ", whereList);
 

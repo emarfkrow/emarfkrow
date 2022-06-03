@@ -4,15 +4,15 @@ FROM
     M_GENKA a 
 WHERE
     1 = 1 
-    AND TRIM (a.hhinban) = TRIM (:hhinban) 
-    AND TRIM (a.hincd) = TRIM (:hincd) 
-    AND TRIM (a.setkbn) = TRIM (:setkbn) 
-    AND a.genka = :genka 
-    AND a.seihin_genka = :seihin_genka 
-    AND a.shohin_genka = :shohin_genka 
-    AND a.baika = :baika 
-    AND a.seihin_baika = :seihin_baika 
-    AND a.shohin_baika = :shohin_baika 
-    AND TRIM (a.filler) = TRIM (:filler) 
+    AND TRIM (a."HHINBAN") = TRIM (:hhinban) 
+    AND TRIM (a."HINCD") = TRIM (:hincd) 
+    AND TRIM (a."SETKBN") = TRIM (:setkbn) 
+    AND a."GENKA" = :genka 
+    AND a."SEIHIN-GENKA" = :seihin_genka 
+    AND a."SHOHIN-GENKA" = :shohin_genka 
+    AND a."BAIKA" = :baika 
+    AND a."SEIHIN-BAIKA" = :seihin_baika 
+    AND a."SHOHIN-BAIKA" = :shohin_baika 
+    AND TRIM (a."FILLER") = TRIM (:filler) 
 ORDER BY
-    a.HHINBAN
+    a."HHINBAN"

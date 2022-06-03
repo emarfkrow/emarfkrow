@@ -253,7 +253,7 @@ public class MstAccountCode implements IEntity {
     public static MstAccountCode get(final Object param1) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (account_code) = TRIM (:account_code)");
+        whereList.add("TRIM (\"ACCOUNT_CODE\") = TRIM (:account_code)");
 
         String sql = "SELECT * FROM MST_ACCOUNT_CODE WHERE " + String.join(" AND ", whereList);
 

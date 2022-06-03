@@ -31,6 +31,7 @@ public class MHseigyoGetAction extends BaseAction {
         }
 
         MHseigyo mHseigyo = MHseigyo.get(keycd);
+        mHseigyo.referMBarindx();
         map.put("MHseigyo", mHseigyo);
         return map;
     }

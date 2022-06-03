@@ -212,8 +212,8 @@ public class PrdYProPlanCondition implements IEntity {
     public static PrdYProPlanCondition get(final Object param1, final Object param2) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (yyyy) = TRIM (:yyyy)");
-        whereList.add("TRIM (mm) = TRIM (:mm)");
+        whereList.add("TRIM (\"YYYY\") = TRIM (:yyyy)");
+        whereList.add("TRIM (\"MM\") = TRIM (:mm)");
 
         String sql = "SELECT * FROM PRD_Y_PRO_PLAN_CONDITION WHERE " + String.join(" AND ", whereList);
 

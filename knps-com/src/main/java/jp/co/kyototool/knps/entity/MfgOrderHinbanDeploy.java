@@ -234,9 +234,9 @@ public class MfgOrderHinbanDeploy implements IEntity {
     public static MfgOrderHinbanDeploy get(final Object param1, final Object param2, final Object param3) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (reqid) = TRIM (:reqid)");
-        whereList.add("TRIM (hinban) = TRIM (:hinban)");
-        whereList.add("TRIM (delivery_date) = TRIM (:delivery_date)");
+        whereList.add("TRIM (\"REQID\") = TRIM (:reqid)");
+        whereList.add("TRIM (\"HINBAN\") = TRIM (:hinban)");
+        whereList.add("TRIM (\"DELIVERY_DATE\") = TRIM (:delivery_date)");
 
         String sql = "SELECT * FROM MFG_ORDER_HINBAN_DEPLOY WHERE " + String.join(" AND ", whereList);
 

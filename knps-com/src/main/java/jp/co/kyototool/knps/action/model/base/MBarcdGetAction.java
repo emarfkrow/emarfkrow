@@ -31,15 +31,6 @@ public class MBarcdGetAction extends BaseAction {
         }
 
         MBarcd mBarcd = MBarcd.get(hhinban);
-        mBarcd.referMGenka();
-        mBarcd.referMHhinmok();
-        mBarcd.referMNtanka();
-        mBarcd.referMSgenka();
-        mBarcd.referMSkhin();
-        mBarcd.referMTanka();
-        mBarcd.referMWebkan();
-        mBarcd.referMHososets();
-        mBarcd.referMPkoses();
         map.put("MBarcd", mBarcd);
         return map;
     }

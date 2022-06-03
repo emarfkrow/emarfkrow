@@ -822,9 +822,9 @@ public class MstTotalCostRegLineQ implements IEntity {
     public static MstTotalCostRegLineQ get(final Object param1, final Object param2, final Object param3) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (hinban) = TRIM (:hinban)");
-        whereList.add("pro_group_no = :pro_group_no");
-        whereList.add("routing = :routing");
+        whereList.add("TRIM (\"HINBAN\") = TRIM (:hinban)");
+        whereList.add("\"PRO_GROUP_NO\" = :pro_group_no");
+        whereList.add("\"ROUTING\" = :routing");
 
         String sql = "SELECT * FROM MST_TOTAL_COST_REG_LINE_Q WHERE " + String.join(" AND ", whereList);
 

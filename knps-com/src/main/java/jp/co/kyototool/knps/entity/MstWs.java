@@ -337,7 +337,7 @@ public class MstWs implements IEntity {
     public static MstWs get(final Object param1) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (ws_code) = TRIM (:ws_code)");
+        whereList.add("TRIM (\"WS_CODE\") = TRIM (:ws_code)");
 
         String sql = "SELECT * FROM MST_WS WHERE " + String.join(" AND ", whereList);
 

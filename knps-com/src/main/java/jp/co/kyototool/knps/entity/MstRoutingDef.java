@@ -254,8 +254,8 @@ public class MstRoutingDef implements IEntity {
     public static MstRoutingDef get(final Object param1, final Object param2) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (man_hinban) = TRIM (:man_hinban)");
-        whereList.add("routing_group = :routing_group");
+        whereList.add("TRIM (\"MAN_HINBAN\") = TRIM (:man_hinban)");
+        whereList.add("\"ROUTING_GROUP\" = :routing_group");
 
         String sql = "SELECT * FROM MST_ROUTING_DEF WHERE " + String.join(" AND ", whereList);
 

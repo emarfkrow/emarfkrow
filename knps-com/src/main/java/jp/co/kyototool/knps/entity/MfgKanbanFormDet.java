@@ -254,8 +254,8 @@ public class MfgKanbanFormDet implements IEntity {
     public static MfgKanbanFormDet get(final Object param1, final Object param2) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("kanban_form_def_name = :kanban_form_def_name");
-        whereList.add("excel_cell_name = :excel_cell_name");
+        whereList.add("\"KANBAN_FORM_DEF_NAME\" = :kanban_form_def_name");
+        whereList.add("\"EXCEL_CELL_NAME\" = :excel_cell_name");
 
         String sql = "SELECT * FROM MFG_KANBAN_FORM_DET WHERE " + String.join(" AND ", whereList);
 

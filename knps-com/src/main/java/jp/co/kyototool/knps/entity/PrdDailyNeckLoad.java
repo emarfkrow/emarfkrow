@@ -263,8 +263,8 @@ public class PrdDailyNeckLoad implements IEntity {
     public static PrdDailyNeckLoad get(final Object param1, final Object param2) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (pro_no) = TRIM (:pro_no)");
-        whereList.add("branch_no = :branch_no");
+        whereList.add("TRIM (\"PRO_NO\") = TRIM (:pro_no)");
+        whereList.add("\"BRANCH_NO\" = :branch_no");
 
         String sql = "SELECT * FROM PRD_DAILY_NECK_LOAD WHERE " + String.join(" AND ", whereList);
 

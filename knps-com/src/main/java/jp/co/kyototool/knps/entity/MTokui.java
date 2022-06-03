@@ -1054,7 +1054,7 @@ public class MTokui implements IEntity {
     public static MTokui get(final Object param1) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("tokucd = :tokucd");
+        whereList.add("\"TOKUCD\" = :tokucd");
 
         String sql = "SELECT * FROM M_TOKUI WHERE " + String.join(" AND ", whereList);
 
@@ -1080,8 +1080,8 @@ public class MTokui implements IEntity {
         nameList.add("tokumei2 -- :tokumei2");
         nameList.add("rtokumei -- :rtokumei");
         nameList.add("ubinno -- :ubinno");
-        nameList.add("toku-jusho1 -- :toku-jusho1");
-        nameList.add("toku-jusho2 -- :toku-jusho2");
+        nameList.add("toku_jusho1 -- :toku_jusho1");
+        nameList.add("toku_jusho2 -- :toku_jusho2");
         nameList.add("telno -- :telno");
         nameList.add("seikyucd -- :seikyucd");
         nameList.add("mailcd -- :mailcd");
@@ -1107,7 +1107,7 @@ public class MTokui implements IEntity {
         nameList.add("diykbn -- :diykbn");
         nameList.add("ktokumei -- :ktokumei");
         nameList.add("zeikbn -- :zeikbn");
-        nameList.add("ei-tantocd -- :ei-tantocd");
+        nameList.add("ei_tantocd -- :ei_tantocd");
         nameList.add("sichocd -- :sichocd");
         nameList.add("faxno -- :faxno");
         nameList.add("tokuikbn1 -- :tokuikbn1");
@@ -1122,7 +1122,7 @@ public class MTokui implements IEntity {
         nameList.add("kunicd -- :kunicd");
         nameList.add("eigyoareacd -- :eigyoareacd");
         nameList.add("kensyukikan -- :kensyukikan");
-        nameList.add("e-seikyukbn -- :e-seikyukbn");
+        nameList.add("e_seikyukbn -- :e_seikyukbn");
         nameList.add("filler -- :filler");
         String name = String.join("\r\n    , ", nameList);
 

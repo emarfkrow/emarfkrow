@@ -318,9 +318,9 @@ public class PrdWNesKanban implements IEntity {
     public static PrdWNesKanban get(final Object param1, final Object param2, final Object param3) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (pro_hinban) = TRIM (:pro_hinban)");
-        whereList.add("routing = :routing");
-        whereList.add("routing_def_group = :routing_def_group");
+        whereList.add("TRIM (\"PRO_HINBAN\") = TRIM (:pro_hinban)");
+        whereList.add("\"ROUTING\" = :routing");
+        whereList.add("\"ROUTING_DEF_GROUP\" = :routing_def_group");
 
         String sql = "SELECT * FROM PRD_W_NES_KANBAN WHERE " + String.join(" AND ", whereList);
 

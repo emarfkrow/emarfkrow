@@ -76,7 +76,7 @@ public class MstSalesTax implements IEntity {
     public static MstSalesTax get(final Object param1) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("start_date = :start_date");
+        whereList.add("\"START_DATE\" = :start_date");
 
         String sql = "SELECT * FROM MST_SALES_TAX WHERE " + String.join(" AND ", whereList);
 

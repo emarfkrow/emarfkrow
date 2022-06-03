@@ -4,9 +4,9 @@ FROM
     M_HINCCVT a 
 WHERE
     1 = 1 
-    AND TRIM (a.cvthinban) = TRIM (:cvthinban) 
-    AND TRIM (a.hhinban) = TRIM (:hhinban) 
-    AND TRIM (a.chokuhinkbn) = TRIM (:chokuhinkbn) 
-    AND TRIM (a.filler) = TRIM (:filler) 
+    AND TRIM (a."CVTHINBAN") = TRIM (:cvthinban) 
+    AND TRIM (a."HHINBAN") = TRIM (:hhinban) 
+    AND TRIM (a."CHOKUHINKBN") = TRIM (:chokuhinkbn) 
+    AND TRIM (a."FILLER") = TRIM (:filler) 
 ORDER BY
-    a.CVTHINBAN, a.CHOKUHINKBN
+    a."CVTHINBAN", a."CHOKUHINKBN"

@@ -253,7 +253,7 @@ public class MstSubinv implements IEntity {
     public static MstSubinv get(final Object param1) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (sub_inv_code) = TRIM (:sub_inv_code)");
+        whereList.add("TRIM (\"SUB_INV_CODE\") = TRIM (:sub_inv_code)");
 
         String sql = "SELECT * FROM MST_SUBINV WHERE " + String.join(" AND ", whereList);
 

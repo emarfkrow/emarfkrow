@@ -211,7 +211,7 @@ public class MstTax implements IEntity {
     public static MstTax get(final Object param1) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (tax_code) = TRIM (:tax_code)");
+        whereList.add("TRIM (\"TAX_CODE\") = TRIM (:tax_code)");
 
         String sql = "SELECT * FROM MST_TAX WHERE " + String.join(" AND ", whereList);
 

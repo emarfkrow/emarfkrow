@@ -4,11 +4,11 @@ FROM
     M_GHINMOK a 
 WHERE
     1 = 1 
-    AND TRIM (a.hinban) = TRIM (:hinban) 
-    AND TRIM (a.hincd) = TRIM (:hincd) 
-    AND a.hingenka = :hingenka 
-    AND TRIM (a.renkeibi) = TRIM (:renkeibi) 
-    AND TRIM (a.shoriflg) = TRIM (:shoriflg) 
-    AND TRIM (a.filler) = TRIM (:filler) 
+    AND TRIM (a."HINBAN") = TRIM (:hinban) 
+    AND TRIM (a."HINCD") = TRIM (:hincd) 
+    AND a."HINGENKA" = :hingenka 
+    AND TRIM (a."RENKEIBI") = TRIM (:renkeibi) 
+    AND TRIM (a."SHORIFLG") = TRIM (:shoriflg) 
+    AND TRIM (a."FILLER") = TRIM (:filler) 
 ORDER BY
-    a.HINBAN
+    a."HINBAN"

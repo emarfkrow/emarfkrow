@@ -474,9 +474,9 @@ public class PchInspectionList implements IEntity {
     public static PchInspectionList get(final Object param1, final Object param2, final Object param3) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (order_no) = TRIM (:order_no)");
-        whereList.add("TRIM (target_date) = TRIM (:target_date)");
-        whereList.add("TRIM (sup_code) = TRIM (:sup_code)");
+        whereList.add("TRIM (\"ORDER_NO\") = TRIM (:order_no)");
+        whereList.add("TRIM (\"TARGET_DATE\") = TRIM (:target_date)");
+        whereList.add("TRIM (\"SUP_CODE\") = TRIM (:sup_code)");
 
         String sql = "SELECT * FROM PCH_INSPECTION_LIST WHERE " + String.join(" AND ", whereList);
 

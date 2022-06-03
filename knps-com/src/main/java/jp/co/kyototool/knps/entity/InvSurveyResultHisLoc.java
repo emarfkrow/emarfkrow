@@ -327,9 +327,9 @@ public class InvSurveyResultHisLoc implements IEntity {
     public static InvSurveyResultHisLoc get(final Object param1, final Object param2, final Object param3) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (location_code) = TRIM (:location_code)");
-        whereList.add("TRIM (yyyy) = TRIM (:yyyy)");
-        whereList.add("TRIM (mm) = TRIM (:mm)");
+        whereList.add("TRIM (\"LOCATION_CODE\") = TRIM (:location_code)");
+        whereList.add("TRIM (\"YYYY\") = TRIM (:yyyy)");
+        whereList.add("TRIM (\"MM\") = TRIM (:mm)");
 
         String sql = "SELECT * FROM INV_SURVEY_RESULT_HIS_LOC WHERE " + String.join(" AND ", whereList);
 

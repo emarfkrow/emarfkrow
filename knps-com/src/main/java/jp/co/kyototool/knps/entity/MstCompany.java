@@ -211,7 +211,7 @@ public class MstCompany implements IEntity {
     public static MstCompany get(final Object param1) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (company_code) = TRIM (:company_code)");
+        whereList.add("TRIM (\"COMPANY_CODE\") = TRIM (:company_code)");
 
         String sql = "SELECT * FROM MST_COMPANY WHERE " + String.join(" AND ", whereList);
 

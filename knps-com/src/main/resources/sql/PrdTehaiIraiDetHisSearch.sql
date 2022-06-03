@@ -4,31 +4,31 @@ FROM
     PRD_TEHAI_IRAI_DET_HIS a 
 WHERE
     1 = 1 
-    AND TRIM (a.prd_tehai_no) = TRIM (:prd_tehai_no) 
-    AND a.irai_det_seq = :irai_det_seq 
-    AND a.irai_det_his_seq = :irai_det_his_seq 
-    AND a.id = :id 
-    AND a.parent_id = :parent_id 
-    AND a.irai_hinban = :irai_hinban 
-    AND a.irai_qt = :irai_qt 
-    AND a.irai_qt >= :irai_qt_1 
-    AND a.irai_qt <= :irai_qt_2 
-    AND CASE WHEN a.shinsetsuhin_f IS NULL THEN '0' ELSE TO_CHAR (a.shinsetsuhin_f) END IN (:shinsetsuhin_f) 
-    AND CASE WHEN a.sethin_f IS NULL THEN '0' ELSE TO_CHAR (a.sethin_f) END IN (:sethin_f) 
-    AND CASE WHEN a.hanmokugai_f IS NULL THEN '0' ELSE TO_CHAR (a.hanmokugai_f) END IN (:hanmokugai_f) 
-    AND CASE WHEN a.chumon_nyuryoku_zumi_f IS NULL THEN '0' ELSE TO_CHAR (a.chumon_nyuryoku_zumi_f) END IN (:chumon_nyuryoku_zumi_f) 
-    AND TRIM (a.kibo_noki_ymd) = TRIM (:kibo_noki_ymd) 
-    AND a.kibo_noki_ymd >= :kibo_noki_ymd_1 
-    AND a.kibo_noki_ymd <= :kibo_noki_ymd_2 
-    AND CASE WHEN a.shukka_zumi_f IS NULL THEN '0' ELSE TO_CHAR (a.shukka_zumi_f) END IN (:shukka_zumi_f) 
-    AND a.tehai_jokyo_kb IN (:tehai_jokyo_kb) 
-    AND a.kaitei_jokyo_kb IN (:kaitei_jokyo_kb) 
-    AND a.time_stamp_create = :time_stamp_create 
-    AND a.time_stamp_change = :time_stamp_change 
-    AND a.user_id_create = :user_id_create 
-    AND a.user_id_change = :user_id_change 
-    AND a.irai_inzu_qt = :irai_inzu_qt 
-    AND a.irai_inzu_qt >= :irai_inzu_qt_1 
-    AND a.irai_inzu_qt <= :irai_inzu_qt_2 
+    AND TRIM (a."PRD_TEHAI_NO") = TRIM (:prd_tehai_no) 
+    AND a."IRAI_DET_SEQ" = :irai_det_seq 
+    AND a."IRAI_DET_HIS_SEQ" = :irai_det_his_seq 
+    AND a."ID" = :id 
+    AND a."PARENT_ID" = :parent_id 
+    AND a."IRAI_HINBAN" = :irai_hinban 
+    AND a."IRAI_QT" = :irai_qt 
+    AND a."IRAI_QT" >= :irai_qt_1 
+    AND a."IRAI_QT" <= :irai_qt_2 
+    AND CASE WHEN a."SHINSETSUHIN_F" IS NULL THEN '0' ELSE TO_CHAR (a.SHINSETSUHIN_F) END IN (:shinsetsuhin_f) 
+    AND CASE WHEN a."SETHIN_F" IS NULL THEN '0' ELSE TO_CHAR (a.SETHIN_F) END IN (:sethin_f) 
+    AND CASE WHEN a."HANMOKUGAI_F" IS NULL THEN '0' ELSE TO_CHAR (a.HANMOKUGAI_F) END IN (:hanmokugai_f) 
+    AND CASE WHEN a."CHUMON_NYURYOKU_ZUMI_F" IS NULL THEN '0' ELSE TO_CHAR (a.CHUMON_NYURYOKU_ZUMI_F) END IN (:chumon_nyuryoku_zumi_f) 
+    AND TRIM (a."KIBO_NOKI_YMD") = TRIM (:kibo_noki_ymd) 
+    AND a."KIBO_NOKI_YMD" >= :kibo_noki_ymd_1 
+    AND a."KIBO_NOKI_YMD" <= :kibo_noki_ymd_2 
+    AND CASE WHEN a."SHUKKA_ZUMI_F" IS NULL THEN '0' ELSE TO_CHAR (a.SHUKKA_ZUMI_F) END IN (:shukka_zumi_f) 
+    AND a."TEHAI_JOKYO_KB" IN (:tehai_jokyo_kb) 
+    AND a."KAITEI_JOKYO_KB" IN (:kaitei_jokyo_kb) 
+    AND a."TIME_STAMP_CREATE" = :time_stamp_create 
+    AND a."TIME_STAMP_CHANGE" = :time_stamp_change 
+    AND a."USER_ID_CREATE" = :user_id_create 
+    AND a."USER_ID_CHANGE" = :user_id_change 
+    AND a."IRAI_INZU_QT" = :irai_inzu_qt 
+    AND a."IRAI_INZU_QT" >= :irai_inzu_qt_1 
+    AND a."IRAI_INZU_QT" <= :irai_inzu_qt_2 
 ORDER BY
-    a.PRD_TEHAI_NO, a.IRAI_DET_SEQ, a.IRAI_DET_HIS_SEQ
+    a."PRD_TEHAI_NO", a."IRAI_DET_SEQ", a."IRAI_DET_HIS_SEQ"

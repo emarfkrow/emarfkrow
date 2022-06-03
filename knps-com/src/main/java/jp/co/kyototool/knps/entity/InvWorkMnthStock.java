@@ -133,10 +133,10 @@ public class InvWorkMnthStock implements IEntity {
     public static InvWorkMnthStock get(final Object param1, final Object param2, final Object param3, final Object param4) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (data_id) = TRIM (:data_id)");
-        whereList.add("TRIM (hinban) = TRIM (:hinban)");
-        whereList.add("routing_group = :routing_group");
-        whereList.add("routing = :routing");
+        whereList.add("TRIM (\"DATA_ID\") = TRIM (:data_id)");
+        whereList.add("TRIM (\"HINBAN\") = TRIM (:hinban)");
+        whereList.add("\"ROUTING_GROUP\" = :routing_group");
+        whereList.add("\"ROUTING\" = :routing");
 
         String sql = "SELECT * FROM INV_WORK_MNTH_STOCK WHERE " + String.join(" AND ", whereList);
 

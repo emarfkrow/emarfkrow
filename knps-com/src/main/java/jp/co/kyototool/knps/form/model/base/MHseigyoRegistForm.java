@@ -271,6 +271,24 @@ public class MHseigyoRegistForm implements IForm {
         this.filler = p;
     }
 
+    /** バーコード管理マスタ */
+    @jakarta.validation.Valid
+    private MBarindxRegistForm mBarindxRegistForm;
+
+    /**
+     * @return MBarindxRegistForm
+     */
+    public MBarindxRegistForm getMBarindxRegistForm() {
+        return mBarindxRegistForm;
+    }
+
+    /**
+     * @param p
+     */
+    public void setMBarindxRegistForm(final MBarindxRegistForm p) {
+        this.mBarindxRegistForm = p;
+    }
+
     /** 関連チェック */
     @Override
     public void validate(final Map<String, String> errors, final BaseProcess baseProcess) {

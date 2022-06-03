@@ -319,10 +319,10 @@ public class InvStockStoreBkYm implements IEntity {
     public static InvStockStoreBkYm get(final Object param1, final Object param2, final Object param3, final Object param4) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (yy) = TRIM (:yy)");
-        whereList.add("TRIM (mm) = TRIM (:mm)");
-        whereList.add("hinban = :hinban");
-        whereList.add("store_no = :store_no");
+        whereList.add("TRIM (\"YY\") = TRIM (:yy)");
+        whereList.add("TRIM (\"MM\") = TRIM (:mm)");
+        whereList.add("\"HINBAN\" = :hinban");
+        whereList.add("\"STORE_NO\" = :store_no");
 
         String sql = "SELECT * FROM INV_STOCK_STORE_BK_YM WHERE " + String.join(" AND ", whereList);
 

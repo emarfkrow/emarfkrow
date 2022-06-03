@@ -583,7 +583,7 @@ public class PrdDailyProPlanDetail implements IEntity {
     public static PrdDailyProPlanDetail get(final Object param1) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (child_plan_no) = TRIM (:child_plan_no)");
+        whereList.add("TRIM (\"CHILD_PLAN_NO\") = TRIM (:child_plan_no)");
 
         String sql = "SELECT * FROM PRD_DAILY_PRO_PLAN_DETAIL WHERE " + String.join(" AND ", whereList);
 

@@ -173,14 +173,14 @@ public class MSetkose implements IEntity {
     public static MSetkose get(final Object param1, final Object param2) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (set-hinban) = TRIM (:set-hinban)");
-        whereList.add("TRIM (set-khinban) = TRIM (:set-khinban)");
+        whereList.add("TRIM (\"SET-HINBAN\") = TRIM (:set_hinban)");
+        whereList.add("TRIM (\"SET-KHINBAN\") = TRIM (:set_khinban)");
 
         String sql = "SELECT * FROM M_SETKOSE WHERE " + String.join(" AND ", whereList);
 
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("set-hinban", param1);
-        params.put("set-khinban", param2);
+        params.put("set_hinban", param1);
+        params.put("set_khinban", param2);
 
         return Queries.get(sql, params, MSetkose.class);
     }
@@ -199,8 +199,8 @@ public class MSetkose implements IEntity {
 
         // セット構成マスタの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("set-hinban -- :set-hinban");
-        nameList.add("set-khinban -- :set-khinban");
+        nameList.add("set_hinban -- :set_hinban");
+        nameList.add("set_khinban -- :set_khinban");
         nameList.add("dltflg -- :dltflg");
         nameList.add("botm -- :botm");
         nameList.add("setinzu -- :setinzu");

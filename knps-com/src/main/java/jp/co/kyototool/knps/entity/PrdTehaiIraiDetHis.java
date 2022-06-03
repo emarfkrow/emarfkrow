@@ -465,9 +465,9 @@ public class PrdTehaiIraiDetHis implements IEntity {
     public static PrdTehaiIraiDetHis get(final Object param1, final Object param2, final Object param3) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (prd_tehai_no) = TRIM (:prd_tehai_no)");
-        whereList.add("irai_det_seq = :irai_det_seq");
-        whereList.add("irai_det_his_seq = :irai_det_his_seq");
+        whereList.add("TRIM (\"PRD_TEHAI_NO\") = TRIM (:prd_tehai_no)");
+        whereList.add("\"IRAI_DET_SEQ\" = :irai_det_seq");
+        whereList.add("\"IRAI_DET_HIS_SEQ\" = :irai_det_his_seq");
 
         String sql = "SELECT * FROM PRD_TEHAI_IRAI_DET_HIS WHERE " + String.join(" AND ", whereList);
 

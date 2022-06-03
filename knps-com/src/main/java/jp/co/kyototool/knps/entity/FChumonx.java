@@ -213,9 +213,9 @@ public class FChumonx implements IEntity {
     public static FChumonx get(final Object param1, final Object param2, final Object param3) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("tokucd = :tokucd");
-        whereList.add("hhinban = :hhinban");
-        whereList.add("juchuno = :juchuno");
+        whereList.add("\"TOKUCD\" = :tokucd");
+        whereList.add("\"HHINBAN\" = :hhinban");
+        whereList.add("\"JUCHUNO\" = :juchuno");
 
         String sql = "SELECT * FROM F_CHUMONX WHERE " + String.join(" AND ", whereList);
 
@@ -256,7 +256,7 @@ public class FChumonx implements IEntity {
         List<String> nameList = new ArrayList<String>();
         nameList.add("tokucd -- :tokucd");
         nameList.add("hhinban -- :hhinban");
-        nameList.add("shukkasu-rui -- :shukkasu-rui");
+        nameList.add("shukkasu_rui -- :shukkasu_rui");
         nameList.add("juchuno -- :juchuno");
         nameList.add("time_stamp_create -- :time_stamp_create");
         nameList.add("time_stamp_change -- :time_stamp_change");

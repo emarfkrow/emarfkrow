@@ -88,7 +88,7 @@ public class MSimuke implements IEntity {
     public static MSimuke get(final Object param1) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (simukecd) = TRIM (:simukecd)");
+        whereList.add("TRIM (\"SIMUKECD\") = TRIM (:simukecd)");
 
         String sql = "SELECT * FROM M_SIMUKE WHERE " + String.join(" AND ", whereList);
 

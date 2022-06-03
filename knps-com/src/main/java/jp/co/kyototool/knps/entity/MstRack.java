@@ -211,7 +211,7 @@ public class MstRack implements IEntity {
     public static MstRack get(final Object param1) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (man_hinban) = TRIM (:man_hinban)");
+        whereList.add("TRIM (\"MAN_HINBAN\") = TRIM (:man_hinban)");
 
         String sql = "SELECT * FROM MST_RACK WHERE " + String.join(" AND ", whereList);
 

@@ -4,15 +4,15 @@ FROM
     INV_STOCK_SURVEY_STAT a 
 WHERE
     1 = 1 
-    AND TRIM (a.rec_no) = TRIM (:rec_no) 
-    AND TRIM (a.yyyy) = TRIM (:yyyy) 
-    AND TRIM (a.mm) = TRIM (:mm) 
-    AND a.survey_stat = :survey_stat 
-    AND a.develop_products_stat = :develop_products_stat 
-    AND a.develop_parts_stat = :develop_parts_stat 
-    AND a.time_stamp_create = :time_stamp_create 
-    AND a.time_stamp_change = :time_stamp_change 
-    AND TRIM (a.user_id_create) = TRIM (:user_id_create) 
-    AND TRIM (a.user_id_change) = TRIM (:user_id_change) 
+    AND TRIM (a."REC_NO") = TRIM (:rec_no) 
+    AND TRIM (a."YYYY") = TRIM (:yyyy) 
+    AND TRIM (a."MM") = TRIM (:mm) 
+    AND a."SURVEY_STAT" = :survey_stat 
+    AND a."DEVELOP_PRODUCTS_STAT" = :develop_products_stat 
+    AND a."DEVELOP_PARTS_STAT" = :develop_parts_stat 
+    AND a."TIME_STAMP_CREATE" = :time_stamp_create 
+    AND a."TIME_STAMP_CHANGE" = :time_stamp_change 
+    AND TRIM (a."USER_ID_CREATE") = TRIM (:user_id_create) 
+    AND TRIM (a."USER_ID_CHANGE") = TRIM (:user_id_change) 
 ORDER BY
-    a.REC_NO
+    a."REC_NO"

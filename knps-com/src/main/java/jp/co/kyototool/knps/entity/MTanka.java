@@ -424,7 +424,7 @@ public class MTanka implements IEntity {
     public static MTanka get(final Object param1) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (hhinban) = TRIM (:hhinban)");
+        whereList.add("TRIM (\"HHINBAN\") = TRIM (:hhinban)");
 
         String sql = "SELECT * FROM M_TANKA WHERE " + String.join(" AND ", whereList);
 
@@ -446,6 +446,18 @@ public class MTanka implements IEntity {
         // 販売品番の採番処理
         numbering();
 
+        // バーコードマスタの登録
+        if (this.mBarcd != null) {
+            this.mBarcd.setHhinban(this.getHhinban());
+            this.mBarcd.insert(now, id);
+        }
+
+        // 原価マスタの登録
+        if (this.mGenka != null) {
+            this.mGenka.setHhinban(this.getHhinban());
+            this.mGenka.insert(now, id);
+        }
+
         // WEB在庫管理マスタの登録
         if (this.mWebkan != null) {
             this.mWebkan.setHhinban(this.getHhinban());
@@ -455,15 +467,15 @@ public class MTanka implements IEntity {
         // 単価マスタの登録
         List<String> nameList = new ArrayList<String>();
         nameList.add("hhinban -- :hhinban");
-        nameList.add("dairi-tanka -- :dairi-tanka");
-        nameList.add("cdaiko-tanka -- :cdaiko-tanka");
-        nameList.add("jdaiko-tanka -- :jdaiko-tanka");
-        nameList.add("orosi-tanka -- :orosi-tanka");
-        nameList.add("kouri-kakaku -- :kouri-kakaku");
-        nameList.add("diy-kakaku -- :diy-kakaku");
-        nameList.add("yushutu1-kakaku -- :yushutu1-kakaku");
-        nameList.add("yushutu2-kakaku -- :yushutu2-kakaku");
-        nameList.add("yushutu3-kakaku -- :yushutu3-kakaku");
+        nameList.add("dairi_tanka -- :dairi_tanka");
+        nameList.add("cdaiko_tanka -- :cdaiko_tanka");
+        nameList.add("jdaiko_tanka -- :jdaiko_tanka");
+        nameList.add("orosi_tanka -- :orosi_tanka");
+        nameList.add("kouri_kakaku -- :kouri_kakaku");
+        nameList.add("diy_kakaku -- :diy_kakaku");
+        nameList.add("yushutu1_kakaku -- :yushutu1_kakaku");
+        nameList.add("yushutu2_kakaku -- :yushutu2_kakaku");
+        nameList.add("yushutu3_kakaku -- :yushutu3_kakaku");
         nameList.add("kakaku1 -- :kakaku1");
         nameList.add("kakaku2 -- :kakaku2");
         nameList.add("kakaku3 -- :kakaku3");
@@ -532,6 +544,26 @@ public class MTanka implements IEntity {
      */
     public int update(final LocalDateTime now, final String id) {
 
+        // バーコードマスタの登録
+        if (this.mBarcd != null) {
+            mBarcd.setHhinban(this.getHhinban());
+            try {
+                mBarcd.insert(now, id);
+            } catch (Exception e) {
+                mBarcd.update(now, id);
+            }
+        }
+
+        // 原価マスタの登録
+        if (this.mGenka != null) {
+            mGenka.setHhinban(this.getHhinban());
+            try {
+                mGenka.insert(now, id);
+            } catch (Exception e) {
+                mGenka.update(now, id);
+            }
+        }
+
         // WEB在庫管理マスタの登録
         if (this.mWebkan != null) {
             mWebkan.setHhinban(this.getHhinban());
@@ -580,6 +612,16 @@ public class MTanka implements IEntity {
      */
     public int delete() {
 
+        // バーコードマスタの削除
+        if (this.mBarcd != null) {
+            this.mBarcd.delete();
+        }
+
+        // 原価マスタの削除
+        if (this.mGenka != null) {
+            this.mGenka.delete();
+        }
+
         // WEB在庫管理マスタの削除
         if (this.mWebkan != null) {
             this.mWebkan.delete();
@@ -625,6 +667,72 @@ public class MTanka implements IEntity {
         params.put("time_stamp_change", now);
         params.put("user_id_change", id);
         return params;
+    }
+
+    /**
+     * バーコードマスタ
+     */
+    private MBarcd mBarcd;
+
+    /**
+     * @return バーコードマスタ
+     */
+    @com.fasterxml.jackson.annotation.JsonProperty("MBarcd")
+    public MBarcd getMBarcd() {
+        return this.mBarcd;
+    }
+
+    /**
+     * @param p バーコードマスタ
+     */
+    public void setMBarcd(final MBarcd p) {
+        this.mBarcd = p;
+    }
+
+    /**
+     * @return バーコードマスタ
+     */
+    public MBarcd referMBarcd() {
+        if (this.mBarcd == null) {
+            try {
+                this.mBarcd = MBarcd.get(this.hhinban);
+            } catch (jp.co.golorp.emarf.exception.NoDataError e) {
+            }
+        }
+        return this.mBarcd;
+    }
+
+    /**
+     * 原価マスタ
+     */
+    private MGenka mGenka;
+
+    /**
+     * @return 原価マスタ
+     */
+    @com.fasterxml.jackson.annotation.JsonProperty("MGenka")
+    public MGenka getMGenka() {
+        return this.mGenka;
+    }
+
+    /**
+     * @param p 原価マスタ
+     */
+    public void setMGenka(final MGenka p) {
+        this.mGenka = p;
+    }
+
+    /**
+     * @return 原価マスタ
+     */
+    public MGenka referMGenka() {
+        if (this.mGenka == null) {
+            try {
+                this.mGenka = MGenka.get(this.hhinban);
+            } catch (jp.co.golorp.emarf.exception.NoDataError e) {
+            }
+        }
+        return this.mGenka;
     }
 
     /**

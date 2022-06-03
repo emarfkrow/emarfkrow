@@ -212,8 +212,8 @@ public class PchTempOrderEstFile implements IEntity {
     public static PchTempOrderEstFile get(final Object param1, final Object param2) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (temp_order_no) = TRIM (:temp_order_no)");
-        whereList.add("est_file_seq = :est_file_seq");
+        whereList.add("TRIM (\"TEMP_ORDER_NO\") = TRIM (:temp_order_no)");
+        whereList.add("\"EST_FILE_SEQ\" = :est_file_seq");
 
         String sql = "SELECT * FROM PCH_TEMP_ORDER_EST_FILE WHERE " + String.join(" AND ", whereList);
 

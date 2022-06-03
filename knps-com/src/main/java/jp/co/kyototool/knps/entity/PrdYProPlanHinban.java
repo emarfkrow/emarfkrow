@@ -319,10 +319,10 @@ public class PrdYProPlanHinban implements IEntity {
     public static PrdYProPlanHinban get(final Object param1, final Object param2, final Object param3, final Object param4) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (yyyy) = TRIM (:yyyy)");
-        whereList.add("TRIM (mm) = TRIM (:mm)");
-        whereList.add("TRIM (pro_hinban) = TRIM (:pro_hinban)");
-        whereList.add("TRIM (hinban) = TRIM (:hinban)");
+        whereList.add("TRIM (\"YYYY\") = TRIM (:yyyy)");
+        whereList.add("TRIM (\"MM\") = TRIM (:mm)");
+        whereList.add("TRIM (\"PRO_HINBAN\") = TRIM (:pro_hinban)");
+        whereList.add("TRIM (\"HINBAN\") = TRIM (:hinban)");
 
         String sql = "SELECT * FROM PRD_Y_PRO_PLAN_HINBAN WHERE " + String.join(" AND ", whereList);
 

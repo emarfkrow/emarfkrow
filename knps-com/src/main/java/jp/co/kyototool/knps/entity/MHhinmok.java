@@ -1978,7 +1978,7 @@ public class MHhinmok implements IEntity {
     public static MHhinmok get(final Object param1) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (hhinban) = TRIM (:hhinban)");
+        whereList.add("TRIM (\"HHINBAN\") = TRIM (:hhinban)");
 
         String sql = "SELECT * FROM M_HHINMOK WHERE " + String.join(" AND ", whereList);
 
@@ -1999,6 +1999,34 @@ public class MHhinmok implements IEntity {
 
         // 販売品番の採番処理
         numbering();
+
+        // 包装材構成マスタの登録
+        if (this.mHososets != null) {
+            for (MHososet mHososet : this.mHososets) {
+                mHososet.setHhinban(this.getHhinban());
+                mHososet.insert(now, id);
+            }
+        }
+
+        // 部品構成マスタの登録
+        if (this.mPkoses != null) {
+            for (MPkose mPkose : this.mPkoses) {
+                mPkose.setHhinban(this.getHhinban());
+                mPkose.insert(now, id);
+            }
+        }
+
+        // バーコードマスタの登録
+        if (this.mBarcd != null) {
+            this.mBarcd.setHhinban(this.getHhinban());
+            this.mBarcd.insert(now, id);
+        }
+
+        // 原価マスタの登録
+        if (this.mGenka != null) {
+            this.mGenka.setHhinban(this.getHhinban());
+            this.mGenka.insert(now, id);
+        }
 
         // 日産単価マスタの登録
         if (this.mNtanka != null) {
@@ -2044,9 +2072,9 @@ public class MHhinmok implements IEntity {
         nameList.add("nyukokinkbn -- :nyukokinkbn");
         nameList.add("seihinkbn -- :seihinkbn");
         nameList.add("sijikbn -- :sijikbn");
-        nameList.add("shohin-bunrui -- :shohin-bunrui");
+        nameList.add("shohin_bunrui -- :shohin_bunrui");
         nameList.add("kijunzaiko -- :kijunzaiko");
-        nameList.add("sei-tanju -- :sei-tanju");
+        nameList.add("sei_tanju -- :sei_tanju");
         nameList.add("locationno -- :locationno");
         nameList.add("hosocd -- :hosocd");
         nameList.add("hosotani -- :hosotani");
@@ -2055,14 +2083,14 @@ public class MHhinmok implements IEntity {
         nameList.add("klkbn -- :klkbn");
         nameList.add("jiskbn -- :jiskbn");
         nameList.add("setkijunh -- :setkijunh");
-        nameList.add("kimatu-genka -- :kimatu-genka");
-        nameList.add("hyojun-genka -- :hyojun-genka");
-        nameList.add("niji-genka -- :niji-genka");
-        nameList.add("hyojun-baika -- :hyojun-baika");
+        nameList.add("kimatu_genka -- :kimatu_genka");
+        nameList.add("hyojun_genka -- :hyojun_genka");
+        nameList.add("niji_genka -- :niji_genka");
+        nameList.add("hyojun_baika -- :hyojun_baika");
         nameList.add("tourokubi -- :tourokubi");
         nameList.add("hatubaibi -- :hatubaibi");
         nameList.add("tojitukbn -- :tojitukbn");
-        nameList.add("sin-seihin-bunrui -- :sin-seihin-bunrui");
+        nameList.add("sin_seihin_bunrui -- :sin_seihin_bunrui");
         nameList.add("dteibankbn -- :dteibankbn");
         nameList.add("zaijuckbn -- :zaijuckbn");
         nameList.add("stantocd -- :stantocd");
@@ -2071,22 +2099,22 @@ public class MHhinmok implements IEntity {
         nameList.add("bunrui4 -- :bunrui4");
         nameList.add("zaishukbn -- :zaishukbn");
         nameList.add("barcode -- :barcode");
-        nameList.add("data-flg -- :data-flg");
+        nameList.add("data_flg -- :data_flg");
         nameList.add("filler3 -- :filler3");
         nameList.add("upccd -- :upccd");
-        nameList.add("zaikosu-h1 -- :zaikosu-h1");
-        nameList.add("zaikosu-h2 -- :zaikosu-h2");
-        nameList.add("zaikosu-h3 -- :zaikosu-h3");
-        nameList.add("zaikosu-h4 -- :zaikosu-h4");
-        nameList.add("zaikosu-h5 -- :zaikosu-h5");
-        nameList.add("sijisu-h1 -- :sijisu-h1");
-        nameList.add("sijisu-h2 -- :sijisu-h2");
-        nameList.add("sijisu-h3 -- :sijisu-h3");
-        nameList.add("sijisu-h4 -- :sijisu-h4");
-        nameList.add("hikiate-h1 -- :hikiate-h1");
-        nameList.add("hikiate-h2 -- :hikiate-h2");
-        nameList.add("hikiate-h3 -- :hikiate-h3");
-        nameList.add("hikiate-h4 -- :hikiate-h4");
+        nameList.add("zaikosu_h1 -- :zaikosu_h1");
+        nameList.add("zaikosu_h2 -- :zaikosu_h2");
+        nameList.add("zaikosu_h3 -- :zaikosu_h3");
+        nameList.add("zaikosu_h4 -- :zaikosu_h4");
+        nameList.add("zaikosu_h5 -- :zaikosu_h5");
+        nameList.add("sijisu_h1 -- :sijisu_h1");
+        nameList.add("sijisu_h2 -- :sijisu_h2");
+        nameList.add("sijisu_h3 -- :sijisu_h3");
+        nameList.add("sijisu_h4 -- :sijisu_h4");
+        nameList.add("hikiate_h1 -- :hikiate_h1");
+        nameList.add("hikiate_h2 -- :hikiate_h2");
+        nameList.add("hikiate_h3 -- :hikiate_h3");
+        nameList.add("hikiate_h4 -- :hikiate_h4");
         nameList.add("schuzansu1 -- :schuzansu1");
         nameList.add("schuzansu2 -- :schuzansu2");
         nameList.add("schuzansu3 -- :schuzansu3");
@@ -2096,10 +2124,10 @@ public class MHhinmok implements IEntity {
         nameList.add("dchuzansu1 -- :dchuzansu1");
         nameList.add("dchuzansu2 -- :dchuzansu2");
         nameList.add("dchuzansu3 -- :dchuzansu3");
-        nameList.add("nyukoyote-h1 -- :nyukoyote-h1");
-        nameList.add("nyukoyote-h2 -- :nyukoyote-h2");
-        nameList.add("nyukoyote-h3 -- :nyukoyote-h3");
-        nameList.add("nyukoyote-h4 -- :nyukoyote-h4");
+        nameList.add("nyukoyote_h1 -- :nyukoyote_h1");
+        nameList.add("nyukoyote_h2 -- :nyukoyote_h2");
+        nameList.add("nyukoyote_h3 -- :nyukoyote_h3");
+        nameList.add("nyukoyote_h4 -- :nyukoyote_h4");
         nameList.add("sapporozaiko -- :sapporozaiko");
         nameList.add("sendaizaiko -- :sendaizaiko");
         nameList.add("tokyozaiko -- :tokyozaiko");
@@ -2257,6 +2285,52 @@ public class MHhinmok implements IEntity {
      * @return 更新件数
      */
     public int update(final LocalDateTime now, final String id) {
+
+        // 包装材構成マスタの登録
+        if (this.mHososets != null) {
+            Queries.regist("DELETE FROM M_HOSOSET WHERE HHINBAN = :HHINBAN AND HOSO-HINBAN = :HOSO-HINBAN", toMap(now, id));
+            for (MHososet mHososet : this.mHososets) {
+                mHososet.setHhinban(this.hhinban);
+                try {
+                    mHososet.insert(now, id);
+                } catch (Exception e) {
+                    mHososet.update(now, id);
+                }
+            }
+        }
+
+        // 部品構成マスタの登録
+        if (this.mPkoses != null) {
+            Queries.regist("DELETE FROM M_PKOSE WHERE HHINBAN = :HHINBAN AND PHINBAN = :PHINBAN", toMap(now, id));
+            for (MPkose mPkose : this.mPkoses) {
+                mPkose.setHhinban(this.hhinban);
+                try {
+                    mPkose.insert(now, id);
+                } catch (Exception e) {
+                    mPkose.update(now, id);
+                }
+            }
+        }
+
+        // バーコードマスタの登録
+        if (this.mBarcd != null) {
+            mBarcd.setHhinban(this.getHhinban());
+            try {
+                mBarcd.insert(now, id);
+            } catch (Exception e) {
+                mBarcd.update(now, id);
+            }
+        }
+
+        // 原価マスタの登録
+        if (this.mGenka != null) {
+            mGenka.setHhinban(this.getHhinban());
+            try {
+                mGenka.insert(now, id);
+            } catch (Exception e) {
+                mGenka.update(now, id);
+            }
+        }
 
         // 日産単価マスタの登録
         if (this.mNtanka != null) {
@@ -2420,6 +2494,30 @@ public class MHhinmok implements IEntity {
      */
     public int delete() {
 
+        // 包装材構成マスタの削除
+        if (this.mHososets != null) {
+            for (MHososet mHososet : this.mHososets) {
+                mHososet.delete();
+            }
+        }
+
+        // 部品構成マスタの削除
+        if (this.mPkoses != null) {
+            for (MPkose mPkose : this.mPkoses) {
+                mPkose.delete();
+            }
+        }
+
+        // バーコードマスタの削除
+        if (this.mBarcd != null) {
+            this.mBarcd.delete();
+        }
+
+        // 原価マスタの削除
+        if (this.mGenka != null) {
+            this.mGenka.delete();
+        }
+
         // 日産単価マスタの削除
         if (this.mNtanka != null) {
             this.mNtanka.delete();
@@ -2559,6 +2657,72 @@ public class MHhinmok implements IEntity {
         params.put("time_stamp_change", now);
         params.put("user_id_change", id);
         return params;
+    }
+
+    /**
+     * バーコードマスタ
+     */
+    private MBarcd mBarcd;
+
+    /**
+     * @return バーコードマスタ
+     */
+    @com.fasterxml.jackson.annotation.JsonProperty("MBarcd")
+    public MBarcd getMBarcd() {
+        return this.mBarcd;
+    }
+
+    /**
+     * @param p バーコードマスタ
+     */
+    public void setMBarcd(final MBarcd p) {
+        this.mBarcd = p;
+    }
+
+    /**
+     * @return バーコードマスタ
+     */
+    public MBarcd referMBarcd() {
+        if (this.mBarcd == null) {
+            try {
+                this.mBarcd = MBarcd.get(this.hhinban);
+            } catch (jp.co.golorp.emarf.exception.NoDataError e) {
+            }
+        }
+        return this.mBarcd;
+    }
+
+    /**
+     * 原価マスタ
+     */
+    private MGenka mGenka;
+
+    /**
+     * @return 原価マスタ
+     */
+    @com.fasterxml.jackson.annotation.JsonProperty("MGenka")
+    public MGenka getMGenka() {
+        return this.mGenka;
+    }
+
+    /**
+     * @param p 原価マスタ
+     */
+    public void setMGenka(final MGenka p) {
+        this.mGenka = p;
+    }
+
+    /**
+     * @return 原価マスタ
+     */
+    public MGenka referMGenka() {
+        if (this.mGenka == null) {
+            try {
+                this.mGenka = MGenka.get(this.hhinban);
+            } catch (jp.co.golorp.emarf.exception.NoDataError e) {
+            }
+        }
+        return this.mGenka;
     }
 
     /**
@@ -2724,5 +2888,119 @@ public class MHhinmok implements IEntity {
             }
         }
         return this.mWebkan;
+    }
+
+    /**
+     * 包装材構成マスタのリスト
+     */
+    private List<MHososet> mHososets;
+
+    /**
+     * @return 包装材構成マスタのリスト
+     */
+    @com.fasterxml.jackson.annotation.JsonProperty("MHososets")
+    public List<MHososet> getMHososets() {
+        return this.mHososets;
+    }
+
+    /**
+     * @param list 包装材構成マスタのリスト
+     */
+    public void setMHososets(final List<MHososet> list) {
+        this.mHososets = list;
+    }
+
+    /**
+     * @param mHososet
+     */
+    public void addMHososets(final MHososet mHososet) {
+        if (this.mHososets == null) {
+            this.mHososets = new ArrayList<MHososet>();
+        }
+        this.mHososets.add(mHososet);
+    }
+
+    /**
+     * @return 包装材構成マスタのリスト
+     */
+    public List<MHososet> referMHososets() {
+        if (this.mHososets == null) {
+            this.mHososets = MHhinmok.referMHososets(this.hhinban);
+        }
+        return this.mHososets;
+    }
+
+    /**
+     * @param param1 hhinban
+     * @return List<MHososet>
+     */
+    public static List<MHososet> referMHososets(final String param1) {
+
+        List<String> whereList = new ArrayList<String>();
+        whereList.add("hhinban = :hhinban");
+
+        String sql = "SELECT * FROM M_HOSOSET WHERE " + String.join(" AND ", whereList);
+
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("hhinban", param1);
+
+        return Queries.select(sql, params, MHososet.class);
+    }
+
+    /**
+     * 部品構成マスタのリスト
+     */
+    private List<MPkose> mPkoses;
+
+    /**
+     * @return 部品構成マスタのリスト
+     */
+    @com.fasterxml.jackson.annotation.JsonProperty("MPkoses")
+    public List<MPkose> getMPkoses() {
+        return this.mPkoses;
+    }
+
+    /**
+     * @param list 部品構成マスタのリスト
+     */
+    public void setMPkoses(final List<MPkose> list) {
+        this.mPkoses = list;
+    }
+
+    /**
+     * @param mPkose
+     */
+    public void addMPkoses(final MPkose mPkose) {
+        if (this.mPkoses == null) {
+            this.mPkoses = new ArrayList<MPkose>();
+        }
+        this.mPkoses.add(mPkose);
+    }
+
+    /**
+     * @return 部品構成マスタのリスト
+     */
+    public List<MPkose> referMPkoses() {
+        if (this.mPkoses == null) {
+            this.mPkoses = MHhinmok.referMPkoses(this.hhinban);
+        }
+        return this.mPkoses;
+    }
+
+    /**
+     * @param param1 hhinban
+     * @return List<MPkose>
+     */
+    public static List<MPkose> referMPkoses(final String param1) {
+
+        List<String> whereList = new ArrayList<String>();
+        whereList.add("hhinban = :hhinban");
+
+        String sql = "SELECT * FROM M_PKOSE WHERE " + String.join(" AND ", whereList);
+
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("hhinban", param1);
+
+        return Queries.select(sql, params, MPkose.class);
     }
 }

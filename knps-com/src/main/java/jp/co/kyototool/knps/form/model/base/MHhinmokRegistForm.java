@@ -1,5 +1,6 @@
 package jp.co.kyototool.knps.form.model.base;
 
+import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -1692,6 +1693,42 @@ public class MHhinmokRegistForm implements IForm {
         this.filler = p;
     }
 
+    /** バーコードマスタ */
+    @jakarta.validation.Valid
+    private MBarcdRegistForm mBarcdRegistForm;
+
+    /**
+     * @return MBarcdRegistForm
+     */
+    public MBarcdRegistForm getMBarcdRegistForm() {
+        return mBarcdRegistForm;
+    }
+
+    /**
+     * @param p
+     */
+    public void setMBarcdRegistForm(final MBarcdRegistForm p) {
+        this.mBarcdRegistForm = p;
+    }
+
+    /** 原価マスタ */
+    @jakarta.validation.Valid
+    private MGenkaRegistForm mGenkaRegistForm;
+
+    /**
+     * @return MGenkaRegistForm
+     */
+    public MGenkaRegistForm getMGenkaRegistForm() {
+        return mGenkaRegistForm;
+    }
+
+    /**
+     * @param p
+     */
+    public void setMGenkaRegistForm(final MGenkaRegistForm p) {
+        this.mGenkaRegistForm = p;
+    }
+
     /** 日産単価マスタ */
     @jakarta.validation.Valid
     private MNtankaRegistForm mNtankaRegistForm;
@@ -1780,6 +1817,42 @@ public class MHhinmokRegistForm implements IForm {
      */
     public void setMWebkanRegistForm(final MWebkanRegistForm p) {
         this.mWebkanRegistForm = p;
+    }
+
+    /** 包装材構成マスタ */
+    @jakarta.validation.Valid
+    private List<MHososetRegistForm> mHososetGrid;
+
+    /**
+     * @return 包装材構成マスタ
+     */
+    public List<MHososetRegistForm> getMHososetGrid() {
+        return mHososetGrid;
+    }
+
+    /**
+     * @param p
+     */
+    public void setMHososetGrid(final List<MHososetRegistForm> p) {
+        this.mHososetGrid = p;
+    }
+
+    /** 部品構成マスタ */
+    @jakarta.validation.Valid
+    private List<MPkoseRegistForm> mPkoseGrid;
+
+    /**
+     * @return 部品構成マスタ
+     */
+    public List<MPkoseRegistForm> getMPkoseGrid() {
+        return mPkoseGrid;
+    }
+
+    /**
+     * @param p
+     */
+    public void setMPkoseGrid(final List<MPkoseRegistForm> p) {
+        this.mPkoseGrid = p;
     }
 
     /** 関連チェック */

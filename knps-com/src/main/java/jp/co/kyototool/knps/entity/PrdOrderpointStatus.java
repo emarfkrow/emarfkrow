@@ -169,7 +169,7 @@ public class PrdOrderpointStatus implements IEntity {
     public static PrdOrderpointStatus get(final Object param1) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (hinban) = TRIM (:hinban)");
+        whereList.add("TRIM (\"HINBAN\") = TRIM (:hinban)");
 
         String sql = "SELECT * FROM PRD_ORDERPOINT_STATUS WHERE " + String.join(" AND ", whereList);
 

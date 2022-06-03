@@ -190,7 +190,7 @@ public class MstMaterial implements IEntity {
     public static MstMaterial get(final Object param1) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (material) = TRIM (:material)");
+        whereList.add("TRIM (\"MATERIAL\") = TRIM (:material)");
 
         String sql = "SELECT * FROM MST_MATERIAL WHERE " + String.join(" AND ", whereList);
 

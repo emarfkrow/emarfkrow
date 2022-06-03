@@ -211,7 +211,7 @@ public class PrdStoreMainteReport implements IEntity {
     public static PrdStoreMainteReport get(final Object param1) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (rep_group_code) = TRIM (:rep_group_code)");
+        whereList.add("TRIM (\"REP_GROUP_CODE\") = TRIM (:rep_group_code)");
 
         String sql = "SELECT * FROM PRD_STORE_MAINTE_REPORT WHERE " + String.join(" AND ", whereList);
 

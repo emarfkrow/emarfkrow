@@ -306,9 +306,9 @@ public class MfgProActDet implements IEntity {
     public static MfgProActDet get(final Object param1, final Object param2, final Object param3) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (pro_no) = TRIM (:pro_no)");
-        whereList.add("pro_routing_branch = :pro_routing_branch");
-        whereList.add("pro_act_branch_no = :pro_act_branch_no");
+        whereList.add("TRIM (\"PRO_NO\") = TRIM (:pro_no)");
+        whereList.add("\"PRO_ROUTING_BRANCH\" = :pro_routing_branch");
+        whereList.add("\"PRO_ACT_BRANCH_NO\" = :pro_act_branch_no");
 
         String sql = "SELECT * FROM MFG_PRO_ACT_DET WHERE " + String.join(" AND ", whereList);
 

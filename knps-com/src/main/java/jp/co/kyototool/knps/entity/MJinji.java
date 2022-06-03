@@ -109,12 +109,12 @@ public class MJinji implements IEntity {
     public static MJinji get(final Object param1) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("shain-no = :shain-no");
+        whereList.add("\"SHAIN-NO\" = :shain_no");
 
         String sql = "SELECT * FROM M_JINJI WHERE " + String.join(" AND ", whereList);
 
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("shain-no", param1);
+        params.put("shain_no", param1);
 
         return Queries.get(sql, params, MJinji.class);
     }
@@ -130,9 +130,9 @@ public class MJinji implements IEntity {
 
         // 人事マスタの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("shain-no -- :shain-no");
-        nameList.add("shain-mei -- :shain-mei");
-        nameList.add("jinji-shozokucd -- :jinji-shozokucd");
+        nameList.add("shain_no -- :shain_no");
+        nameList.add("shain_mei -- :shain_mei");
+        nameList.add("jinji_shozokucd -- :jinji_shozokucd");
         nameList.add("filler -- :filler");
         String name = String.join("\r\n    , ", nameList);
 

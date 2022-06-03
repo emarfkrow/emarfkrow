@@ -233,8 +233,8 @@ public class MstStructure implements IEntity {
     public static MstStructure get(final Object param1, final Object param2) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (man_hinban) = TRIM (:man_hinban)");
-        whereList.add("TRIM (hinban) = TRIM (:hinban)");
+        whereList.add("TRIM (\"MAN_HINBAN\") = TRIM (:man_hinban)");
+        whereList.add("TRIM (\"HINBAN\") = TRIM (:hinban)");
 
         String sql = "SELECT * FROM MST_STRUCTURE WHERE " + String.join(" AND ", whereList);
 

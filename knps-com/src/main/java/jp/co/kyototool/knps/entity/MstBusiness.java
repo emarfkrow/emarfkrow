@@ -190,7 +190,7 @@ public class MstBusiness implements IEntity {
     public static MstBusiness get(final Object param1) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("business_id = :business_id");
+        whereList.add("\"BUSINESS_ID\" = :business_id");
 
         String sql = "SELECT * FROM MST_BUSINESS WHERE " + String.join(" AND ", whereList);
 

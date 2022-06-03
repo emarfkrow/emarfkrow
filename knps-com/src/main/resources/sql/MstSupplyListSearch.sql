@@ -4,20 +4,20 @@ FROM
     MST_SUPPLY_LIST a 
 WHERE
     1 = 1 
-    AND a.routing_group = :routing_group 
-    AND TRIM (a.man_hinban) = TRIM (:man_hinban) 
-    AND a.routing = :routing 
-    AND TRIM (a.supply_hinban) = TRIM (:supply_hinban) 
-    AND a.counts = :counts 
-    AND a.supply_kbn IN (:supply_kbn) 
-    AND a.stan_counts = :stan_counts 
-    AND a.stan_counts >= :stan_counts_1 
-    AND a.stan_counts <= :stan_counts_2 
-    AND a.unit_supply = :unit_supply 
-    AND a.time_stamp_create = :time_stamp_create 
-    AND a.time_stamp_change = :time_stamp_change 
-    AND TRIM (a.user_id_create) = TRIM (:user_id_create) 
-    AND TRIM (a.user_id_change) = TRIM (:user_id_change) 
-    AND CASE WHEN a.delete_flag IS NULL THEN '0' ELSE TO_CHAR (a.delete_flag) END IN (:delete_flag) 
+    AND a."ROUTING_GROUP" = :routing_group 
+    AND TRIM (a."MAN_HINBAN") = TRIM (:man_hinban) 
+    AND a."ROUTING" = :routing 
+    AND TRIM (a."SUPPLY_HINBAN") = TRIM (:supply_hinban) 
+    AND a."COUNTS" = :counts 
+    AND a."SUPPLY_KBN" IN (:supply_kbn) 
+    AND a."STAN_COUNTS" = :stan_counts 
+    AND a."STAN_COUNTS" >= :stan_counts_1 
+    AND a."STAN_COUNTS" <= :stan_counts_2 
+    AND a."UNIT_SUPPLY" = :unit_supply 
+    AND a."TIME_STAMP_CREATE" = :time_stamp_create 
+    AND a."TIME_STAMP_CHANGE" = :time_stamp_change 
+    AND TRIM (a."USER_ID_CREATE") = TRIM (:user_id_create) 
+    AND TRIM (a."USER_ID_CHANGE") = TRIM (:user_id_change) 
+    AND CASE WHEN a."DELETE_FLAG" IS NULL THEN '0' ELSE TO_CHAR (a.DELETE_FLAG) END IN (:delete_flag) 
 ORDER BY
-    a.MAN_HINBAN, a.ROUTING_GROUP, a.ROUTING, a.SUPPLY_HINBAN
+    a."MAN_HINBAN", a."ROUTING_GROUP", a."ROUTING", a."SUPPLY_HINBAN"

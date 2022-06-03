@@ -97,7 +97,7 @@ public class SysReqLockStatus implements IEntity {
     public static SysReqLockStatus get(final Object param1) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (gamen_id) = TRIM (:gamen_id)");
+        whereList.add("TRIM (\"GAMEN_ID\") = TRIM (:gamen_id)");
 
         String sql = "SELECT * FROM SYS_REQ_LOCK_STATUS WHERE " + String.join(" AND ", whereList);
 

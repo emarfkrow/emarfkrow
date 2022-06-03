@@ -403,10 +403,10 @@ public class PrdMWsManLoadPlan implements IEntity {
     public static PrdMWsManLoadPlan get(final Object param1, final Object param2, final Object param3, final Object param4) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (yyyy) = TRIM (:yyyy)");
-        whereList.add("TRIM (mm) = TRIM (:mm)");
-        whereList.add("TRIM (man_hinban) = TRIM (:man_hinban)");
-        whereList.add("TRIM (ws_code) = TRIM (:ws_code)");
+        whereList.add("TRIM (\"YYYY\") = TRIM (:yyyy)");
+        whereList.add("TRIM (\"MM\") = TRIM (:mm)");
+        whereList.add("TRIM (\"MAN_HINBAN\") = TRIM (:man_hinban)");
+        whereList.add("TRIM (\"WS_CODE\") = TRIM (:ws_code)");
 
         String sql = "SELECT * FROM PRD_M_WS_MAN_LOAD_PLAN WHERE " + String.join(" AND ", whereList);
 

@@ -295,10 +295,10 @@ public class InvPeriod implements IEntity {
     public static InvPeriod get(final Object param1, final Object param2, final Object param3, final Object param4) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("stock_management_section = :stock_management_section");
-        whereList.add("inv_phase = :inv_phase");
-        whereList.add("inv_phase_month = :inv_phase_month");
-        whereList.add("TRIM (sub_inv_code) = TRIM (:sub_inv_code)");
+        whereList.add("\"STOCK_MANAGEMENT_SECTION\" = :stock_management_section");
+        whereList.add("\"INV_PHASE\" = :inv_phase");
+        whereList.add("\"INV_PHASE_MONTH\" = :inv_phase_month");
+        whereList.add("TRIM (\"SUB_INV_CODE\") = TRIM (:sub_inv_code)");
 
         String sql = "SELECT * FROM INV_PERIOD WHERE " + String.join(" AND ", whereList);
 

@@ -242,8 +242,8 @@ public class MfgModActDet implements IEntity {
     public static MfgModActDet get(final Object param1, final Object param2) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (mod_act_no) = TRIM (:mod_act_no)");
-        whereList.add("mod_act_branch_no = :mod_act_branch_no");
+        whereList.add("TRIM (\"MOD_ACT_NO\") = TRIM (:mod_act_no)");
+        whereList.add("\"MOD_ACT_BRANCH_NO\" = :mod_act_branch_no");
 
         String sql = "SELECT * FROM MFG_MOD_ACT_DET WHERE " + String.join(" AND ", whereList);
 

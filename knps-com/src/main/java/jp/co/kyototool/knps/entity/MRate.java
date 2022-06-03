@@ -280,10 +280,10 @@ public class MRate implements IEntity {
     public static MRate get(final Object param1, final Object param2, final Object param3, final Object param4) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("yy = :yy");
-        whereList.add("mm = :mm");
-        whereList.add("dd = :dd");
-        whereList.add("TRIM (tuuka) = TRIM (:tuuka)");
+        whereList.add("\"YY\" = :yy");
+        whereList.add("\"MM\" = :mm");
+        whereList.add("\"DD\" = :dd");
+        whereList.add("TRIM (\"TUUKA\") = TRIM (:tuuka)");
 
         String sql = "SELECT * FROM M_RATE WHERE " + String.join(" AND ", whereList);
 
@@ -317,8 +317,8 @@ public class MRate implements IEntity {
         nameList.add("ttm -- :ttm");
         nameList.add("tts -- :tts");
         nameList.add("ttb -- :ttb");
-        nameList.add("tts-org -- :tts-org");
-        nameList.add("ttb-org -- :ttb-org");
+        nameList.add("tts_org -- :tts_org");
+        nameList.add("ttb_org -- :ttb_org");
         nameList.add("lstymd -- :lstymd");
         nameList.add("lsthm -- :lsthm");
         nameList.add("upddate -- :upddate");

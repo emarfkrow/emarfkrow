@@ -283,7 +283,7 @@ public class PrdWProNesCounts implements IEntity {
     public static PrdWProNesCounts get(final Object param1) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("prd_w_pro_nes_counts_key = :prd_w_pro_nes_counts_key");
+        whereList.add("\"PRD_W_PRO_NES_COUNTS_KEY\" = :prd_w_pro_nes_counts_key");
 
         String sql = "SELECT * FROM PRD_W_PRO_NES_COUNTS WHERE " + String.join(" AND ", whereList);
 

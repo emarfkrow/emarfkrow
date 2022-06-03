@@ -31,7 +31,6 @@ public class MBarindxGetAction extends BaseAction {
         }
 
         MBarindx mBarindx = MBarindx.get(keycd);
-        mBarindx.referMHseigyo();
         map.put("MBarindx", mBarindx);
         return map;
     }

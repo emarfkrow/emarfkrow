@@ -211,7 +211,7 @@ public class MstArea implements IEntity {
     public static MstArea get(final Object param1) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("area_cd = :area_cd");
+        whereList.add("\"AREA_CD\" = :area_cd");
 
         String sql = "SELECT * FROM MST_AREA WHERE " + String.join(" AND ", whereList);
 

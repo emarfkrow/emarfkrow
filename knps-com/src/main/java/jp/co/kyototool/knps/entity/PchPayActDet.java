@@ -305,8 +305,8 @@ public class PchPayActDet implements IEntity {
     public static PchPayActDet get(final Object param1, final Object param2) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (pay_no) = TRIM (:pay_no)");
-        whereList.add("pay_branch_no = :pay_branch_no");
+        whereList.add("TRIM (\"PAY_NO\") = TRIM (:pay_no)");
+        whereList.add("\"PAY_BRANCH_NO\" = :pay_branch_no");
 
         String sql = "SELECT * FROM PCH_PAY_ACT_DET WHERE " + String.join(" AND ", whereList);
 

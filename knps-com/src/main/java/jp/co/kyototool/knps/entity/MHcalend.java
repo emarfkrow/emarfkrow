@@ -194,8 +194,8 @@ public class MHcalend implements IEntity {
     public static MHcalend get(final Object param1, final Object param2) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("yymm = :yymm");
-        whereList.add("TRIM (calendkbn) = TRIM (:calendkbn)");
+        whereList.add("\"YYMM\" = :yymm");
+        whereList.add("TRIM (\"CALENDKBN\") = TRIM (:calendkbn)");
 
         String sql = "SELECT * FROM M_HCALEND WHERE " + String.join(" AND ", whereList);
 

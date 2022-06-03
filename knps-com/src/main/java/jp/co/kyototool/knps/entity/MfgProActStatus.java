@@ -139,7 +139,7 @@ public class MfgProActStatus implements IEntity {
     public static MfgProActStatus get(final Object param1) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (child_plan_no) = TRIM (:child_plan_no)");
+        whereList.add("TRIM (\"CHILD_PLAN_NO\") = TRIM (:child_plan_no)");
 
         String sql = "SELECT * FROM MFG_PRO_ACT_STATUS WHERE " + String.join(" AND ", whereList);
 

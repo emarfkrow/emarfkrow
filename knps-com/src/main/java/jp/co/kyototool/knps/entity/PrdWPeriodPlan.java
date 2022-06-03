@@ -301,7 +301,7 @@ public class PrdWPeriodPlan implements IEntity {
     public static PrdWPeriodPlan get(final Object param1) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("w_plan_id = :w_plan_id");
+        whereList.add("\"W_PLAN_ID\" = :w_plan_id");
 
         String sql = "SELECT * FROM PRD_W_PERIOD_PLAN WHERE " + String.join(" AND ", whereList);
 

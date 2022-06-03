@@ -191,8 +191,8 @@ public class InvStockProcessSupply implements IEntity {
     public static InvStockProcessSupply get(final Object param1, final Object param2) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("sup_code = :sup_code");
-        whereList.add("hinban = :hinban");
+        whereList.add("\"SUP_CODE\" = :sup_code");
+        whereList.add("\"HINBAN\" = :hinban");
 
         String sql = "SELECT * FROM INV_STOCK_PROCESS_SUPPLY WHERE " + String.join(" AND ", whereList);
 

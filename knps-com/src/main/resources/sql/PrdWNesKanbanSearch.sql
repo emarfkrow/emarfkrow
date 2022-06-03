@@ -4,22 +4,22 @@ FROM
     PRD_W_NES_KANBAN a 
 WHERE
     1 = 1 
-    AND TRIM (a.pro_hinban) = TRIM (:pro_hinban) 
-    AND TRIM (a.store_wc) = TRIM (:store_wc) 
-    AND a.routing = :routing 
-    AND a.routing_def_group = :routing_def_group 
-    AND TRIM (a.store_ope_detail) = TRIM (:store_ope_detail) 
-    AND a.pro_nes_counts = :pro_nes_counts 
-    AND a.pro_nes_counts >= :pro_nes_counts_1 
-    AND a.pro_nes_counts <= :pro_nes_counts_2 
-    AND a.time_stamp_create = :time_stamp_create 
-    AND a.time_stamp_change = :time_stamp_change 
-    AND TRIM (a.user_id_create) = TRIM (:user_id_create) 
-    AND TRIM (a.user_id_change) = TRIM (:user_id_change) 
-    AND a.lot_size = :lot_size 
-    AND a.acc_counts = :acc_counts 
-    AND a.acc_counts >= :acc_counts_1 
-    AND a.acc_counts <= :acc_counts_2 
-    AND a.counts = :counts 
+    AND TRIM (a."PRO_HINBAN") = TRIM (:pro_hinban) 
+    AND TRIM (a."STORE_WC") = TRIM (:store_wc) 
+    AND a."ROUTING" = :routing 
+    AND a."ROUTING_DEF_GROUP" = :routing_def_group 
+    AND TRIM (a."STORE_OPE_DETAIL") = TRIM (:store_ope_detail) 
+    AND a."PRO_NES_COUNTS" = :pro_nes_counts 
+    AND a."PRO_NES_COUNTS" >= :pro_nes_counts_1 
+    AND a."PRO_NES_COUNTS" <= :pro_nes_counts_2 
+    AND a."TIME_STAMP_CREATE" = :time_stamp_create 
+    AND a."TIME_STAMP_CHANGE" = :time_stamp_change 
+    AND TRIM (a."USER_ID_CREATE") = TRIM (:user_id_create) 
+    AND TRIM (a."USER_ID_CHANGE") = TRIM (:user_id_change) 
+    AND a."LOT_SIZE" = :lot_size 
+    AND a."ACC_COUNTS" = :acc_counts 
+    AND a."ACC_COUNTS" >= :acc_counts_1 
+    AND a."ACC_COUNTS" <= :acc_counts_2 
+    AND a."COUNTS" = :counts 
 ORDER BY
-    a.PRO_HINBAN, a.ROUTING, a.ROUTING_DEF_GROUP
+    a."PRO_HINBAN", a."ROUTING", a."ROUTING_DEF_GROUP"

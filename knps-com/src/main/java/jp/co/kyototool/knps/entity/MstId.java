@@ -190,7 +190,7 @@ public class MstId implements IEntity {
     public static MstId get(final Object param1) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("id_type = :id_type");
+        whereList.add("\"ID_TYPE\" = :id_type");
 
         String sql = "SELECT * FROM MST_ID WHERE " + String.join(" AND ", whereList);
 

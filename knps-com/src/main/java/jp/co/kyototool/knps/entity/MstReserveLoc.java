@@ -213,9 +213,9 @@ public class MstReserveLoc implements IEntity {
     public static MstReserveLoc get(final Object param1, final Object param2, final Object param3) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("hinban = :hinban");
-        whereList.add("ope_detail = :ope_detail");
-        whereList.add("reserve_loc_seq = :reserve_loc_seq");
+        whereList.add("\"HINBAN\" = :hinban");
+        whereList.add("\"OPE_DETAIL\" = :ope_detail");
+        whereList.add("\"RESERVE_LOC_SEQ\" = :reserve_loc_seq");
 
         String sql = "SELECT * FROM MST_RESERVE_LOC WHERE " + String.join(" AND ", whereList);
 

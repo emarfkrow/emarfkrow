@@ -286,10 +286,10 @@ public class InvInoutHistory implements IEntity {
     public static InvInoutHistory get(final Object param1, final Object param2, final Object param3, final Object param4) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("action_date = :action_date");
-        whereList.add("TRIM (hinban) = TRIM (:hinban)");
-        whereList.add("in_out_counts = :in_out_counts");
-        whereList.add("in_out_kbn = :in_out_kbn");
+        whereList.add("\"ACTION_DATE\" = :action_date");
+        whereList.add("TRIM (\"HINBAN\") = TRIM (:hinban)");
+        whereList.add("\"IN_OUT_COUNTS\" = :in_out_counts");
+        whereList.add("\"IN_OUT_KBN\" = :in_out_kbn");
 
         String sql = "SELECT * FROM INV_INOUT_HISTORY WHERE " + String.join(" AND ", whereList);
 

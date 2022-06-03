@@ -570,12 +570,12 @@ public class PrdWWcMcnLoadPlan implements IEntity {
     public static PrdWWcMcnLoadPlan get(final Object param1, final Object param2, final Object param3, final Object param4, final Object param5, final Object param6) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("w_plan_id = :w_plan_id");
-        whereList.add("TRIM (man_hinban) = TRIM (:man_hinban)");
-        whereList.add("TRIM (wc_code) = TRIM (:wc_code)");
-        whereList.add("data_source_kbn = :data_source_kbn");
-        whereList.add("period = :period");
-        whereList.add("TRIM (plan_no) = TRIM (:plan_no)");
+        whereList.add("\"W_PLAN_ID\" = :w_plan_id");
+        whereList.add("TRIM (\"MAN_HINBAN\") = TRIM (:man_hinban)");
+        whereList.add("TRIM (\"WC_CODE\") = TRIM (:wc_code)");
+        whereList.add("\"DATA_SOURCE_KBN\" = :data_source_kbn");
+        whereList.add("\"PERIOD\" = :period");
+        whereList.add("TRIM (\"PLAN_NO\") = TRIM (:plan_no)");
 
         String sql = "SELECT * FROM PRD_W_WC_MCN_LOAD_PLAN WHERE " + String.join(" AND ", whereList);
 

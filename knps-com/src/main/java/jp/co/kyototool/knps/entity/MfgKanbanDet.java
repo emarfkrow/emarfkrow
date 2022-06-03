@@ -568,7 +568,7 @@ public class MfgKanbanDet implements IEntity {
     public static MfgKanbanDet get(final Object param1) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (kanban_id) = TRIM (:kanban_id)");
+        whereList.add("TRIM (\"KANBAN_ID\") = TRIM (:kanban_id)");
 
         String sql = "SELECT * FROM MFG_KANBAN_DET WHERE " + String.join(" AND ", whereList);
 

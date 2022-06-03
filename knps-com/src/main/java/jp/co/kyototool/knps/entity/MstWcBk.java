@@ -590,8 +590,8 @@ public class MstWcBk implements IEntity {
     public static MstWcBk get(final Object param1, final Object param2) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (wc_code) = TRIM (:wc_code)");
-        whereList.add("TRIM (yy) = TRIM (:yy)");
+        whereList.add("TRIM (\"WC_CODE\") = TRIM (:wc_code)");
+        whereList.add("TRIM (\"YY\") = TRIM (:yy)");
 
         String sql = "SELECT * FROM MST_WC_BK WHERE " + String.join(" AND ", whereList);
 

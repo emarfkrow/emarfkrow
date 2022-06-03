@@ -568,7 +568,7 @@ public class HktcPrdDailyProPlan implements IEntity {
     public static HktcPrdDailyProPlan get(final Object param1) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (plan_no) = TRIM (:plan_no)");
+        whereList.add("TRIM (\"PLAN_NO\") = TRIM (:plan_no)");
 
         String sql = "SELECT * FROM HKTC_PRD_DAILY_PRO_PLAN WHERE " + String.join(" AND ", whereList);
 

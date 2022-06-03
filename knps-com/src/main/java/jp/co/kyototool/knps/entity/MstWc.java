@@ -568,7 +568,7 @@ public class MstWc implements IEntity {
     public static MstWc get(final Object param1) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (wc_code) = TRIM (:wc_code)");
+        whereList.add("TRIM (\"WC_CODE\") = TRIM (:wc_code)");
 
         String sql = "SELECT * FROM MST_WC WHERE " + String.join(" AND ", whereList);
 

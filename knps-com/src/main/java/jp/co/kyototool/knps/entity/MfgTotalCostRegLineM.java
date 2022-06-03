@@ -1580,11 +1580,11 @@ public class MfgTotalCostRegLineM implements IEntity {
     public static MfgTotalCostRegLineM get(final Object param1, final Object param2, final Object param3, final Object param4, final Object param5) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (hinban) = TRIM (:hinban)");
-        whereList.add("pro_group_no = :pro_group_no");
-        whereList.add("routing = :routing");
-        whereList.add("TRIM (yy) = TRIM (:yy)");
-        whereList.add("TRIM (mm) = TRIM (:mm)");
+        whereList.add("TRIM (\"HINBAN\") = TRIM (:hinban)");
+        whereList.add("\"PRO_GROUP_NO\" = :pro_group_no");
+        whereList.add("\"ROUTING\" = :routing");
+        whereList.add("TRIM (\"YY\") = TRIM (:yy)");
+        whereList.add("TRIM (\"MM\") = TRIM (:mm)");
 
         String sql = "SELECT * FROM MFG_TOTAL_COST_REG_LINE_M WHERE " + String.join(" AND ", whereList);
 

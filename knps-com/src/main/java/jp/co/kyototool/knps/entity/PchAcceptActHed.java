@@ -367,7 +367,7 @@ public class PchAcceptActHed implements IEntity {
     public static PchAcceptActHed get(final Object param1) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (act_no) = TRIM (:act_no)");
+        whereList.add("TRIM (\"ACT_NO\") = TRIM (:act_no)");
 
         String sql = "SELECT * FROM PCH_ACCEPT_ACT_HED WHERE " + String.join(" AND ", whereList);
 

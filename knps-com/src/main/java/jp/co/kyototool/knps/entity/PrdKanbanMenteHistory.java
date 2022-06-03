@@ -416,8 +416,8 @@ public class PrdKanbanMenteHistory implements IEntity {
     public static PrdKanbanMenteHistory get(final Object param1, final Object param2) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (kanban_id) = TRIM (:kanban_id)");
-        whereList.add("serial_no = :serial_no");
+        whereList.add("TRIM (\"KANBAN_ID\") = TRIM (:kanban_id)");
+        whereList.add("\"SERIAL_NO\" = :serial_no");
 
         String sql = "SELECT * FROM PRD_KANBAN_MENTE_HISTORY WHERE " + String.join(" AND ", whereList);
 

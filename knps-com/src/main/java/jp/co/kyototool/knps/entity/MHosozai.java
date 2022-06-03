@@ -235,12 +235,12 @@ public class MHosozai implements IEntity {
     public static MHosozai get(final Object param1) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (hoso-hinban) = TRIM (:hoso-hinban)");
+        whereList.add("TRIM (\"HOSO-HINBAN\") = TRIM (:hoso_hinban)");
 
         String sql = "SELECT * FROM M_HOSOZAI WHERE " + String.join(" AND ", whereList);
 
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("hoso-hinban", param1);
+        params.put("hoso_hinban", param1);
 
         return Queries.get(sql, params, MHosozai.class);
     }
@@ -259,13 +259,13 @@ public class MHosozai implements IEntity {
 
         // 包装材マスタの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("hoso-hinban -- :hoso-hinban");
-        nameList.add("hoso-hinmei -- :hoso-hinmei");
-        nameList.add("hoso-hinmei-ryaku -- :hoso-hinmei-ryaku");
-        nameList.add("hoso-size -- :hoso-size");
-        nameList.add("hoso-tanka -- :hoso-tanka");
-        nameList.add("hoso-zaicode -- :hoso-zaicode");
-        nameList.add("hoso-weight -- :hoso-weight");
+        nameList.add("hoso_hinban -- :hoso_hinban");
+        nameList.add("hoso_hinmei -- :hoso_hinmei");
+        nameList.add("hoso_hinmei_ryaku -- :hoso_hinmei_ryaku");
+        nameList.add("hoso_size -- :hoso_size");
+        nameList.add("hoso_tanka -- :hoso_tanka");
+        nameList.add("hoso_zaicode -- :hoso_zaicode");
+        nameList.add("hoso_weight -- :hoso_weight");
         nameList.add("makedate -- :makedate");
         nameList.add("upddate -- :upddate");
         nameList.add("filler -- :filler");

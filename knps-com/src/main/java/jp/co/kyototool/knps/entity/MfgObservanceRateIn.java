@@ -801,9 +801,9 @@ public class MfgObservanceRateIn implements IEntity {
     public static MfgObservanceRateIn get(final Object param1, final Object param2, final Object param3) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (yyyy) = TRIM (:yyyy)");
-        whereList.add("TRIM (mm) = TRIM (:mm)");
-        whereList.add("TRIM (wc_code) = TRIM (:wc_code)");
+        whereList.add("TRIM (\"YYYY\") = TRIM (:yyyy)");
+        whereList.add("TRIM (\"MM\") = TRIM (:mm)");
+        whereList.add("TRIM (\"WC_CODE\") = TRIM (:wc_code)");
 
         String sql = "SELECT * FROM MFG_OBSERVANCE_RATE_IN WHERE " + String.join(" AND ", whereList);
 
@@ -849,7 +849,7 @@ public class MfgObservanceRateIn implements IEntity {
         nameList.add("mm -- :mm");
         nameList.add("wc_code -- :wc_code");
         nameList.add("observance_rate -- :observance_rate");
-        nameList.add("late_m5over -- :late_m5over");
+        nameList.add("late_m5_over -- :late_m5_over");
         nameList.add("late_m5 -- :late_m5");
         nameList.add("late_m4 -- :late_m4");
         nameList.add("late_m3 -- :late_m3");
@@ -876,7 +876,7 @@ public class MfgObservanceRateIn implements IEntity {
         nameList.add("late_p18 -- :late_p18");
         nameList.add("late_p19 -- :late_p19");
         nameList.add("late_p20 -- :late_p20");
-        nameList.add("late_p20over -- :late_p20over");
+        nameList.add("late_p20_over -- :late_p20_over");
         nameList.add("time_stamp_create -- :time_stamp_create");
         nameList.add("time_stamp_change -- :time_stamp_change");
         nameList.add("user_id_create -- :user_id_create");

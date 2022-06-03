@@ -318,9 +318,9 @@ public class MstSupUnitpriceDetail implements IEntity {
     public static MstSupUnitpriceDetail get(final Object param1, final Object param2, final Object param3) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (hinban) = TRIM (:hinban)");
-        whereList.add("TRIM (sup_code) = TRIM (:sup_code)");
-        whereList.add("min_order = :min_order");
+        whereList.add("TRIM (\"HINBAN\") = TRIM (:hinban)");
+        whereList.add("TRIM (\"SUP_CODE\") = TRIM (:sup_code)");
+        whereList.add("\"MIN_ORDER\" = :min_order");
 
         String sql = "SELECT * FROM MST_SUP_UNITPRICE_DETAIL WHERE " + String.join(" AND ", whereList);
 

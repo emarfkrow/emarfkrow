@@ -110,14 +110,14 @@ public class MHososet implements IEntity {
     public static MHososet get(final Object param1, final Object param2) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (hhinban) = TRIM (:hhinban)");
-        whereList.add("TRIM (hoso-hinban) = TRIM (:hoso-hinban)");
+        whereList.add("TRIM (\"HHINBAN\") = TRIM (:hhinban)");
+        whereList.add("TRIM (\"HOSO-HINBAN\") = TRIM (:hoso_hinban)");
 
         String sql = "SELECT * FROM M_HOSOSET WHERE " + String.join(" AND ", whereList);
 
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("hhinban", param1);
-        params.put("hoso-hinban", param2);
+        params.put("hoso_hinban", param2);
 
         return Queries.get(sql, params, MHososet.class);
     }
@@ -137,7 +137,7 @@ public class MHososet implements IEntity {
         // 包装材構成マスタの登録
         List<String> nameList = new ArrayList<String>();
         nameList.add("hhinban -- :hhinban");
-        nameList.add("hoso-hinban -- :hoso-hinban");
+        nameList.add("hoso_hinban -- :hoso_hinban");
         nameList.add("inzu -- :inzu");
         nameList.add("filler -- :filler");
         String name = String.join("\r\n    , ", nameList);

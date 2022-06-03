@@ -755,8 +755,8 @@ public class MfgProActHed implements IEntity {
     public static MfgProActHed get(final Object param1, final Object param2) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (pro_no) = TRIM (:pro_no)");
-        whereList.add("pro_routing_branch = :pro_routing_branch");
+        whereList.add("TRIM (\"PRO_NO\") = TRIM (:pro_no)");
+        whereList.add("\"PRO_ROUTING_BRANCH\" = :pro_routing_branch");
 
         String sql = "SELECT * FROM MFG_PRO_ACT_HED WHERE " + String.join(" AND ", whereList);
 

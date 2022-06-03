@@ -1135,7 +1135,7 @@ public class MstSupplier implements IEntity {
     public static MstSupplier get(final Object param1) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (sup_code) = TRIM (:sup_code)");
+        whereList.add("TRIM (\"SUP_CODE\") = TRIM (:sup_code)");
 
         String sql = "SELECT * FROM MST_SUPPLIER WHERE " + String.join(" AND ", whereList);
 

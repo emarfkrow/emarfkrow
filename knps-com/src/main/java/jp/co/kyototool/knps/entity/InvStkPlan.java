@@ -570,9 +570,9 @@ public class InvStkPlan implements IEntity {
     public static InvStkPlan get(final Object param1, final Object param2, final Object param3) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (pro_hinban) = TRIM (:pro_hinban)");
-        whereList.add("TRIM (yyyy) = TRIM (:yyyy)");
-        whereList.add("TRIM (mm) = TRIM (:mm)");
+        whereList.add("TRIM (\"PRO_HINBAN\") = TRIM (:pro_hinban)");
+        whereList.add("TRIM (\"YYYY\") = TRIM (:yyyy)");
+        whereList.add("TRIM (\"MM\") = TRIM (:mm)");
 
         String sql = "SELECT * FROM INV_STK_PLAN WHERE " + String.join(" AND ", whereList);
 

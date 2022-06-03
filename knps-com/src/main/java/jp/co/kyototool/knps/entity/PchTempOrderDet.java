@@ -401,8 +401,8 @@ public class PchTempOrderDet implements IEntity {
     public static PchTempOrderDet get(final Object param1, final Object param2) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (temp_order_no) = TRIM (:temp_order_no)");
-        whereList.add("temp_order_seq = :temp_order_seq");
+        whereList.add("TRIM (\"TEMP_ORDER_NO\") = TRIM (:temp_order_no)");
+        whereList.add("\"TEMP_ORDER_SEQ\" = :temp_order_seq");
 
         String sql = "SELECT * FROM PCH_TEMP_ORDER_DET WHERE " + String.join(" AND ", whereList);
 

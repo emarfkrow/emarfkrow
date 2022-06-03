@@ -410,8 +410,8 @@ public class InvSurveyResultOther implements IEntity {
     public static InvSurveyResultOther get(final Object param1, final Object param2) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (location_code) = TRIM (:location_code)");
-        whereList.add("result_branch_no = :result_branch_no");
+        whereList.add("TRIM (\"LOCATION_CODE\") = TRIM (:location_code)");
+        whereList.add("\"RESULT_BRANCH_NO\" = :result_branch_no");
 
         String sql = "SELECT * FROM INV_SURVEY_RESULT_OTHER WHERE " + String.join(" AND ", whereList);
 

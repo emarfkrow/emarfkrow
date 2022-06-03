@@ -88,12 +88,12 @@ public class MWseigyo implements IEntity {
     public static MWseigyo get(final Object param1) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("web-datakbn = :web-datakbn");
+        whereList.add("\"WEB-DATAKBN\" = :web_datakbn");
 
         String sql = "SELECT * FROM M_WSEIGYO WHERE " + String.join(" AND ", whereList);
 
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("web-datakbn", param1);
+        params.put("web_datakbn", param1);
 
         return Queries.get(sql, params, MWseigyo.class);
     }
@@ -109,8 +109,8 @@ public class MWseigyo implements IEntity {
 
         // WEB制御マスタの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("web-datakbn -- :web-datakbn");
-        nameList.add("web-juchuno1 -- :web-juchuno1");
+        nameList.add("web_datakbn -- :web_datakbn");
+        nameList.add("web_juchuno1 -- :web_juchuno1");
         nameList.add("filler -- :filler");
         String name = String.join("\r\n    , ", nameList);
 

@@ -283,7 +283,7 @@ public class MfgShipOrder implements IEntity {
     public static MfgShipOrder get(final Object param1) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (ship_order_no) = TRIM (:ship_order_no)");
+        whereList.add("TRIM (\"SHIP_ORDER_NO\") = TRIM (:ship_order_no)");
 
         String sql = "SELECT * FROM MFG_SHIP_ORDER WHERE " + String.join(" AND ", whereList);
 

@@ -741,12 +741,12 @@ public class MfgTotalResultY implements IEntity {
     public static MfgTotalResultY get(final Object param1, final Object param2, final Object param3, final Object param4, final Object param5, final Object param6) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (result_date) = TRIM (:result_date)");
-        whereList.add("pro_group_no = :pro_group_no");
-        whereList.add("TRIM (hinban) = TRIM (:hinban)");
-        whereList.add("TRIM (routing) = TRIM (:routing)");
-        whereList.add("TRIM (wc_code) = TRIM (:wc_code)");
-        whereList.add("TRIM (ope_detail) = TRIM (:ope_detail)");
+        whereList.add("TRIM (\"RESULT_DATE\") = TRIM (:result_date)");
+        whereList.add("\"PRO_GROUP_NO\" = :pro_group_no");
+        whereList.add("TRIM (\"HINBAN\") = TRIM (:hinban)");
+        whereList.add("TRIM (\"ROUTING\") = TRIM (:routing)");
+        whereList.add("TRIM (\"WC_CODE\") = TRIM (:wc_code)");
+        whereList.add("TRIM (\"OPE_DETAIL\") = TRIM (:ope_detail)");
 
         String sql = "SELECT * FROM MFG_TOTAL_RESULT_Y WHERE " + String.join(" AND ", whereList);
 

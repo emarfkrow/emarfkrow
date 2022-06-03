@@ -151,7 +151,7 @@ public class MNetinc implements IEntity {
     public static MNetinc get(final Object param1) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("honshacd = :honshacd");
+        whereList.add("\"HONSHACD\" = :honshacd");
 
         String sql = "SELECT * FROM M_NETINC WHERE " + String.join(" AND ", whereList);
 

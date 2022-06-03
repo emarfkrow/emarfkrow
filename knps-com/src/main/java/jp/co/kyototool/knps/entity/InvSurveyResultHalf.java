@@ -409,7 +409,7 @@ public class InvSurveyResultHalf implements IEntity {
     public static InvSurveyResultHalf get(final Object param1) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (discrimination_id) = TRIM (:discrimination_id)");
+        whereList.add("TRIM (\"DISCRIMINATION_ID\") = TRIM (:discrimination_id)");
 
         String sql = "SELECT * FROM INV_SURVEY_RESULT_HALF WHERE " + String.join(" AND ", whereList);
 

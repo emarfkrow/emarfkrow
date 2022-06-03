@@ -340,10 +340,10 @@ public class InvStockProcessDet implements IEntity {
     public static InvStockProcessDet get(final Object param1, final Object param2, final Object param3, final Object param4) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("location_code = :location_code");
-        whereList.add("hinban = :hinban");
-        whereList.add("TRIM (in_out_ymd) = TRIM (:in_out_ymd)");
-        whereList.add("in_out_seq = :in_out_seq");
+        whereList.add("\"LOCATION_CODE\" = :location_code");
+        whereList.add("\"HINBAN\" = :hinban");
+        whereList.add("TRIM (\"IN_OUT_YMD\") = TRIM (:in_out_ymd)");
+        whereList.add("\"IN_OUT_SEQ\" = :in_out_seq");
 
         String sql = "SELECT * FROM INV_STOCK_PROCESS_DET WHERE " + String.join(" AND ", whereList);
 

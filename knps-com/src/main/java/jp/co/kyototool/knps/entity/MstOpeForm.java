@@ -337,7 +337,7 @@ public class MstOpeForm implements IEntity {
     public static MstOpeForm get(final Object param1) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (pattern_no) = TRIM (:pattern_no)");
+        whereList.add("TRIM (\"PATTERN_NO\") = TRIM (:pattern_no)");
 
         String sql = "SELECT * FROM MST_OPE_FORM WHERE " + String.join(" AND ", whereList);
 

@@ -317,8 +317,8 @@ public class MstCostCenterBk implements IEntity {
     public static MstCostCenterBk get(final Object param1, final Object param2) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (cost_center_code) = TRIM (:cost_center_code)");
-        whereList.add("TRIM (yy) = TRIM (:yy)");
+        whereList.add("TRIM (\"COST_CENTER_CODE\") = TRIM (:cost_center_code)");
+        whereList.add("TRIM (\"YY\") = TRIM (:yy)");
 
         String sql = "SELECT * FROM MST_COST_CENTER_BK WHERE " + String.join(" AND ", whereList);
 

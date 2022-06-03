@@ -233,8 +233,8 @@ public class PrdPreStatusM implements IEntity {
     public static PrdPreStatusM get(final Object param1, final Object param2) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (yy) = TRIM (:yy)");
-        whereList.add("TRIM (mm) = TRIM (:mm)");
+        whereList.add("TRIM (\"YY\") = TRIM (:yy)");
+        whereList.add("TRIM (\"MM\") = TRIM (:mm)");
 
         String sql = "SELECT * FROM PRD_PRE_STATUS_M WHERE " + String.join(" AND ", whereList);
 

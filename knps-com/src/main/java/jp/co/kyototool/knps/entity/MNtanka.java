@@ -193,7 +193,7 @@ public class MNtanka implements IEntity {
     public static MNtanka get(final Object param1) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (hhinban) = TRIM (:hhinban)");
+        whereList.add("TRIM (\"HHINBAN\") = TRIM (:hhinban)");
 
         String sql = "SELECT * FROM M_NTANKA WHERE " + String.join(" AND ", whereList);
 
@@ -214,6 +214,18 @@ public class MNtanka implements IEntity {
 
         // 販売品番の採番処理
         numbering();
+
+        // バーコードマスタの登録
+        if (this.mBarcd != null) {
+            this.mBarcd.setHhinban(this.getHhinban());
+            this.mBarcd.insert(now, id);
+        }
+
+        // 原価マスタの登録
+        if (this.mGenka != null) {
+            this.mGenka.setHhinban(this.getHhinban());
+            this.mGenka.insert(now, id);
+        }
 
         // 製品原価マスタの登録
         if (this.mSgenka != null) {
@@ -242,9 +254,9 @@ public class MNtanka implements IEntity {
         // 日産単価マスタの登録
         List<String> nameList = new ArrayList<String>();
         nameList.add("hhinban -- :hhinban");
-        nameList.add("nissan-hinban -- :nissan-hinban");
-        nameList.add("nissan-tanka -- :nissan-tanka");
-        nameList.add("kouri-kakaku -- :kouri-kakaku");
+        nameList.add("nissan_hinban -- :nissan_hinban");
+        nameList.add("nissan_tanka -- :nissan_tanka");
+        nameList.add("kouri_kakaku -- :kouri_kakaku");
         nameList.add("shohinkbn -- :shohinkbn");
         nameList.add("persokbn -- :persokbn");
         nameList.add("kakakukbn -- :kakakukbn");
@@ -296,6 +308,26 @@ public class MNtanka implements IEntity {
      * @return 更新件数
      */
     public int update(final LocalDateTime now, final String id) {
+
+        // バーコードマスタの登録
+        if (this.mBarcd != null) {
+            mBarcd.setHhinban(this.getHhinban());
+            try {
+                mBarcd.insert(now, id);
+            } catch (Exception e) {
+                mBarcd.update(now, id);
+            }
+        }
+
+        // 原価マスタの登録
+        if (this.mGenka != null) {
+            mGenka.setHhinban(this.getHhinban());
+            try {
+                mGenka.insert(now, id);
+            } catch (Exception e) {
+                mGenka.update(now, id);
+            }
+        }
 
         // 製品原価マスタの登録
         if (this.mSgenka != null) {
@@ -364,6 +396,16 @@ public class MNtanka implements IEntity {
      */
     public int delete() {
 
+        // バーコードマスタの削除
+        if (this.mBarcd != null) {
+            this.mBarcd.delete();
+        }
+
+        // 原価マスタの削除
+        if (this.mGenka != null) {
+            this.mGenka.delete();
+        }
+
         // 製品原価マスタの削除
         if (this.mSgenka != null) {
             this.mSgenka.delete();
@@ -413,6 +455,72 @@ public class MNtanka implements IEntity {
         params.put("time_stamp_change", now);
         params.put("user_id_change", id);
         return params;
+    }
+
+    /**
+     * バーコードマスタ
+     */
+    private MBarcd mBarcd;
+
+    /**
+     * @return バーコードマスタ
+     */
+    @com.fasterxml.jackson.annotation.JsonProperty("MBarcd")
+    public MBarcd getMBarcd() {
+        return this.mBarcd;
+    }
+
+    /**
+     * @param p バーコードマスタ
+     */
+    public void setMBarcd(final MBarcd p) {
+        this.mBarcd = p;
+    }
+
+    /**
+     * @return バーコードマスタ
+     */
+    public MBarcd referMBarcd() {
+        if (this.mBarcd == null) {
+            try {
+                this.mBarcd = MBarcd.get(this.hhinban);
+            } catch (jp.co.golorp.emarf.exception.NoDataError e) {
+            }
+        }
+        return this.mBarcd;
+    }
+
+    /**
+     * 原価マスタ
+     */
+    private MGenka mGenka;
+
+    /**
+     * @return 原価マスタ
+     */
+    @com.fasterxml.jackson.annotation.JsonProperty("MGenka")
+    public MGenka getMGenka() {
+        return this.mGenka;
+    }
+
+    /**
+     * @param p 原価マスタ
+     */
+    public void setMGenka(final MGenka p) {
+        this.mGenka = p;
+    }
+
+    /**
+     * @return 原価マスタ
+     */
+    public MGenka referMGenka() {
+        if (this.mGenka == null) {
+            try {
+                this.mGenka = MGenka.get(this.hhinban);
+            } catch (jp.co.golorp.emarf.exception.NoDataError e) {
+            }
+        }
+        return this.mGenka;
     }
 
     /**

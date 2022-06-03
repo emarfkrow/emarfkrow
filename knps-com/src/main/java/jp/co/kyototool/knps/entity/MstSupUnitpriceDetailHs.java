@@ -319,10 +319,10 @@ public class MstSupUnitpriceDetailHs implements IEntity {
     public static MstSupUnitpriceDetailHs get(final Object param1, final Object param2, final Object param3, final Object param4) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (hinban) = TRIM (:hinban)");
-        whereList.add("TRIM (sup_code) = TRIM (:sup_code)");
-        whereList.add("min_order = :min_order");
-        whereList.add("time_stamp_change = :time_stamp_change");
+        whereList.add("TRIM (\"HINBAN\") = TRIM (:hinban)");
+        whereList.add("TRIM (\"SUP_CODE\") = TRIM (:sup_code)");
+        whereList.add("\"MIN_ORDER\" = :min_order");
+        whereList.add("\"TIME_STAMP_CHANGE\" = :time_stamp_change");
 
         String sql = "SELECT * FROM MST_SUP_UNITPRICE_DETAIL_HS WHERE " + String.join(" AND ", whereList);
 

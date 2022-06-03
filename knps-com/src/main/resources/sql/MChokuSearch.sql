@@ -4,23 +4,23 @@ FROM
     M_CHOKU a 
 WHERE
     1 = 1 
-    AND a.chokucd = :chokucd 
-    AND TRIM (a.chokumei1) = TRIM (:chokumei1) 
-    AND TRIM (a.chokumei2) = TRIM (:chokumei2) 
-    AND TRIM (a.rchokumei) = TRIM (:rchokumei) 
-    AND TRIM (a.choku_jusho1) = TRIM (:choku_jusho1) 
-    AND TRIM (a.choku_jusho2) = TRIM (:choku_jusho2) 
-    AND TRIM (a.ubinno) = TRIM (:ubinno) 
-    AND TRIM (a.telno) = TRIM (:telno) 
-    AND a.tourokubi = :tourokubi 
-    AND TRIM (a.kchokumei) = TRIM (:kchokumei) 
-    AND TRIM (a.sichocd) = TRIM (:sichocd) 
-    AND TRIM (a.faxno) = TRIM (:faxno) 
-    AND TRIM (a.torikesi_kbn) IN (:torikesi_kbn) 
-    AND TRIM (a.unsocd) = TRIM (:unsocd) 
-    AND TRIM (a.tikucd) = TRIM (:tikucd) 
-    AND TRIM (a.todofukencd) = TRIM (:todofukencd) 
-    AND TRIM (a.updnkinkbn) = TRIM (:updnkinkbn) 
-    AND TRIM (a.filler) = TRIM (:filler) 
+    AND a."CHOKUCD" = :chokucd 
+    AND TRIM (a."CHOKUMEI1") = TRIM (:chokumei1) 
+    AND TRIM (a."CHOKUMEI2") = TRIM (:chokumei2) 
+    AND TRIM (a."RCHOKUMEI") = TRIM (:rchokumei) 
+    AND TRIM (a."CHOKU-JUSHO1") = TRIM (:choku_jusho1) 
+    AND TRIM (a."CHOKU-JUSHO2") = TRIM (:choku_jusho2) 
+    AND TRIM (a."UBINNO") = TRIM (:ubinno) 
+    AND TRIM (a."TELNO") = TRIM (:telno) 
+    AND a."TOUROKUBI" = :tourokubi 
+    AND TRIM (a."KCHOKUMEI") = TRIM (:kchokumei) 
+    AND TRIM (a."SICHOCD") = TRIM (:sichocd) 
+    AND TRIM (a."FAXNO") = TRIM (:faxno) 
+    AND TRIM (a."TORIKESI-KBN") IN (:torikesi_kbn) 
+    AND TRIM (a."UNSOCD") = TRIM (:unsocd) 
+    AND TRIM (a."TIKUCD") = TRIM (:tikucd) 
+    AND TRIM (a."TODOFUKENCD") = TRIM (:todofukencd) 
+    AND TRIM (a."UPDNKINKBN") = TRIM (:updnkinkbn) 
+    AND TRIM (a."FILLER") = TRIM (:filler) 
 ORDER BY
-    a.CHOKUCD
+    a."CHOKUCD"

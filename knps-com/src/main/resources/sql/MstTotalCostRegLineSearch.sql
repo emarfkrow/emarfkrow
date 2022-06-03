@@ -1,53 +1,53 @@
 SELECT
       a.*
-    , (SELECT r1.WC_NAME FROM MST_WC r1 WHERE r1.WC_CODE = a.WC_CODE) AS WC_NAME
-    , (SELECT r2.SUP_NAME FROM MST_SUPPLIER r2 WHERE r2.SUP_CODE = a.SUP_CODE) AS SUP_NAME
+    , (SELECT r1.WC_NAME FROM MST_WC r1 WHERE r1.WC_CODE = a."WC_CODE") AS WC_NAME
+    , (SELECT r2.SUP_NAME FROM MST_SUPPLIER r2 WHERE r2.SUP_CODE = a."SUP_CODE") AS SUP_NAME
 FROM
     MST_TOTAL_COST_REG_LINE a 
 WHERE
     1 = 1 
-    AND a.pro_group_no = :pro_group_no 
-    AND TRIM (a.hinban) = TRIM (:hinban) 
-    AND a.routing = :routing 
-    AND TRIM (a.wc_code) IN (:wc_code) 
-    AND TRIM (a.sup_code) IN (:sup_code) 
-    AND TRIM (a.ope_detail) = TRIM (:ope_detail) 
-    AND a.last_routing_kbn IN (:last_routing_kbn) 
-    AND CASE WHEN a.total_cost_target_flag IS NULL THEN '0' ELSE TO_CHAR (a.total_cost_target_flag) END IN (:total_cost_target_flag) 
-    AND a.cost_rate_kbn IN (:cost_rate_kbn) 
-    AND a.unit_cost_first = :unit_cost_first 
-    AND a.unit_cost_second = :unit_cost_second 
-    AND a.total_unit_cost = :total_unit_cost 
-    AND a.sum_cost_first = :sum_cost_first 
-    AND a.sum_cost_second = :sum_cost_second 
-    AND a.total_sum_cost = :total_sum_cost 
-    AND a.ope_counts = :ope_counts 
-    AND a.ope_counts >= :ope_counts_1 
-    AND a.ope_counts <= :ope_counts_2 
-    AND a.ope_amounts = :ope_amounts 
-    AND a.unit_weight = :unit_weight 
-    AND a.ope_time = :ope_time 
-    AND a.hum_pre_time = :hum_pre_time 
-    AND a.hum_act_time = :hum_act_time 
-    AND a.mac_pre_time = :mac_pre_time 
-    AND a.mac_act_time = :mac_act_time 
-    AND a.sum_unit_supply = :sum_unit_supply 
-    AND a.materials_cost = :materials_cost 
-    AND a.hum_labor_cost_first = :hum_labor_cost_first 
-    AND a.hum_expenses_first = :hum_expenses_first 
-    AND a.hum_labor_cost_second = :hum_labor_cost_second 
-    AND a.hum_expenses_second = :hum_expenses_second 
-    AND a.mac_labor_cost_first = :mac_labor_cost_first 
-    AND a.mac_expenses_first = :mac_expenses_first 
-    AND a.mac_labor_cost_second = :mac_labor_cost_second 
-    AND a.mac_expenses_second = :mac_expenses_second 
-    AND a.time_stamp_create = :time_stamp_create 
-    AND a.time_stamp_change = :time_stamp_change 
-    AND TRIM (a.user_id_create) = TRIM (:user_id_create) 
-    AND TRIM (a.user_id_change) = TRIM (:user_id_change) 
-    AND a.gross_sum_cost_first = :gross_sum_cost_first 
-    AND a.gross_sum_cost_second = :gross_sum_cost_second 
-    AND a.total_gross_sum_cost = :total_gross_sum_cost 
-    AND a.gross_sum_unit_supply = :gross_sum_unit_supply 
+    AND a."PRO_GROUP_NO" = :pro_group_no 
+    AND TRIM (a."HINBAN") = TRIM (:hinban) 
+    AND a."ROUTING" = :routing 
+    AND TRIM (a."WC_CODE") IN (:wc_code) 
+    AND TRIM (a."SUP_CODE") IN (:sup_code) 
+    AND TRIM (a."OPE_DETAIL") = TRIM (:ope_detail) 
+    AND a."LAST_ROUTING_KBN" IN (:last_routing_kbn) 
+    AND CASE WHEN a."TOTAL_COST_TARGET_FLAG" IS NULL THEN '0' ELSE TO_CHAR (a.TOTAL_COST_TARGET_FLAG) END IN (:total_cost_target_flag) 
+    AND a."COST_RATE_KBN" IN (:cost_rate_kbn) 
+    AND a."UNIT_COST_FIRST" = :unit_cost_first 
+    AND a."UNIT_COST_SECOND" = :unit_cost_second 
+    AND a."TOTAL_UNIT_COST" = :total_unit_cost 
+    AND a."SUM_COST_FIRST" = :sum_cost_first 
+    AND a."SUM_COST_SECOND" = :sum_cost_second 
+    AND a."TOTAL_SUM_COST" = :total_sum_cost 
+    AND a."OPE_COUNTS" = :ope_counts 
+    AND a."OPE_COUNTS" >= :ope_counts_1 
+    AND a."OPE_COUNTS" <= :ope_counts_2 
+    AND a."OPE_AMOUNTS" = :ope_amounts 
+    AND a."UNIT_WEIGHT" = :unit_weight 
+    AND a."OPE_TIME" = :ope_time 
+    AND a."HUM_PRE_TIME" = :hum_pre_time 
+    AND a."HUM_ACT_TIME" = :hum_act_time 
+    AND a."MAC_PRE_TIME" = :mac_pre_time 
+    AND a."MAC_ACT_TIME" = :mac_act_time 
+    AND a."SUM_UNIT_SUPPLY" = :sum_unit_supply 
+    AND a."MATERIALS_COST" = :materials_cost 
+    AND a."HUM_LABOR_COST_FIRST" = :hum_labor_cost_first 
+    AND a."HUM_EXPENSES_FIRST" = :hum_expenses_first 
+    AND a."HUM_LABOR_COST_SECOND" = :hum_labor_cost_second 
+    AND a."HUM_EXPENSES_SECOND" = :hum_expenses_second 
+    AND a."MAC_LABOR_COST_FIRST" = :mac_labor_cost_first 
+    AND a."MAC_EXPENSES_FIRST" = :mac_expenses_first 
+    AND a."MAC_LABOR_COST_SECOND" = :mac_labor_cost_second 
+    AND a."MAC_EXPENSES_SECOND" = :mac_expenses_second 
+    AND a."TIME_STAMP_CREATE" = :time_stamp_create 
+    AND a."TIME_STAMP_CHANGE" = :time_stamp_change 
+    AND TRIM (a."USER_ID_CREATE") = TRIM (:user_id_create) 
+    AND TRIM (a."USER_ID_CHANGE") = TRIM (:user_id_change) 
+    AND a."GROSS_SUM_COST_FIRST" = :gross_sum_cost_first 
+    AND a."GROSS_SUM_COST_SECOND" = :gross_sum_cost_second 
+    AND a."TOTAL_GROSS_SUM_COST" = :total_gross_sum_cost 
+    AND a."GROSS_SUM_UNIT_SUPPLY" = :gross_sum_unit_supply 
 ORDER BY
-    a.HINBAN, a.PRO_GROUP_NO, a.ROUTING
+    a."HINBAN", a."PRO_GROUP_NO", a."ROUTING"

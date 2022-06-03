@@ -320,11 +320,11 @@ public class MstSupplyListHs implements IEntity {
     public static MstSupplyListHs get(final Object param1, final Object param2, final Object param3, final Object param4, final Object param5) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (man_hinban) = TRIM (:man_hinban)");
-        whereList.add("routing_group = :routing_group");
-        whereList.add("routing = :routing");
-        whereList.add("TRIM (supply_hinban) = TRIM (:supply_hinban)");
-        whereList.add("time_stamp_change = :time_stamp_change");
+        whereList.add("TRIM (\"MAN_HINBAN\") = TRIM (:man_hinban)");
+        whereList.add("\"ROUTING_GROUP\" = :routing_group");
+        whereList.add("\"ROUTING\" = :routing");
+        whereList.add("TRIM (\"SUPPLY_HINBAN\") = TRIM (:supply_hinban)");
+        whereList.add("\"TIME_STAMP_CHANGE\" = :time_stamp_change");
 
         String sql = "SELECT * FROM MST_SUPPLY_LIST_HS WHERE " + String.join(" AND ", whereList);
 

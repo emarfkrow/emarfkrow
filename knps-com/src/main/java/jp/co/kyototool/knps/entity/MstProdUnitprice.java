@@ -404,11 +404,11 @@ public class MstProdUnitprice implements IEntity {
     public static MstProdUnitprice get(final Object param1, final Object param2, final Object param3, final Object param4, final Object param5) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (man_hinban) = TRIM (:man_hinban)");
-        whereList.add("routing_group = :routing_group");
-        whereList.add("routing = :routing");
-        whereList.add("TRIM (wc_code) = TRIM (:wc_code)");
-        whereList.add("min_order = :min_order");
+        whereList.add("TRIM (\"MAN_HINBAN\") = TRIM (:man_hinban)");
+        whereList.add("\"ROUTING_GROUP\" = :routing_group");
+        whereList.add("\"ROUTING\" = :routing");
+        whereList.add("TRIM (\"WC_CODE\") = TRIM (:wc_code)");
+        whereList.add("\"MIN_ORDER\" = :min_order");
 
         String sql = "SELECT * FROM MST_PROD_UNITPRICE WHERE " + String.join(" AND ", whereList);
 

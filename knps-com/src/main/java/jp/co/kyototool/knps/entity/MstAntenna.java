@@ -191,8 +191,8 @@ public class MstAntenna implements IEntity {
     public static MstAntenna get(final Object param1, final Object param2) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("reader_no = :reader_no");
-        whereList.add("antenna_no = :antenna_no");
+        whereList.add("\"READER_NO\" = :reader_no");
+        whereList.add("\"ANTENNA_NO\" = :antenna_no");
 
         String sql = "SELECT * FROM MST_ANTENNA WHERE " + String.join(" AND ", whereList);
 

@@ -285,9 +285,9 @@ public class InvStockMtrlMng implements IEntity {
     public static InvStockMtrlMng get(final Object param1, final Object param2, final Object param3) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (hinban) = TRIM (:hinban)");
-        whereList.add("TRIM (sub_inv_code) = TRIM (:sub_inv_code)");
-        whereList.add("stock_management_section = :stock_management_section");
+        whereList.add("TRIM (\"HINBAN\") = TRIM (:hinban)");
+        whereList.add("TRIM (\"SUB_INV_CODE\") = TRIM (:sub_inv_code)");
+        whereList.add("\"STOCK_MANAGEMENT_SECTION\" = :stock_management_section");
 
         String sql = "SELECT * FROM INV_STOCK_MTRL_MNG WHERE " + String.join(" AND ", whereList);
 

@@ -211,7 +211,7 @@ public class MstReason implements IEntity {
     public static MstReason get(final Object param1) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (reason_code) = TRIM (:reason_code)");
+        whereList.add("TRIM (\"REASON_CODE\") = TRIM (:reason_code)");
 
         String sql = "SELECT * FROM MST_REASON WHERE " + String.join(" AND ", whereList);
 

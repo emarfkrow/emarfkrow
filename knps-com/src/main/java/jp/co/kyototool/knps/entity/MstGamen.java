@@ -211,7 +211,7 @@ public class MstGamen implements IEntity {
     public static MstGamen get(final Object param1) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("gamen_id = :gamen_id");
+        whereList.add("\"GAMEN_ID\" = :gamen_id");
 
         String sql = "SELECT * FROM MST_GAMEN WHERE " + String.join(" AND ", whereList);
 

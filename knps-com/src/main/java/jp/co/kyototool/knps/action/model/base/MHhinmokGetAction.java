@@ -31,11 +31,15 @@ public class MHhinmokGetAction extends BaseAction {
         }
 
         MHhinmok mHhinmok = MHhinmok.get(hhinban);
+        mHhinmok.referMBarcd();
+        mHhinmok.referMGenka();
         mHhinmok.referMNtanka();
         mHhinmok.referMSgenka();
         mHhinmok.referMSkhin();
         mHhinmok.referMTanka();
         mHhinmok.referMWebkan();
+        mHhinmok.referMHososets();
+        mHhinmok.referMPkoses();
         map.put("MHhinmok", mHhinmok);
         return map;
     }

@@ -360,6 +360,42 @@ public class MTankaRegistForm implements IForm {
         this.filler = p;
     }
 
+    /** バーコードマスタ */
+    @jakarta.validation.Valid
+    private MBarcdRegistForm mBarcdRegistForm;
+
+    /**
+     * @return MBarcdRegistForm
+     */
+    public MBarcdRegistForm getMBarcdRegistForm() {
+        return mBarcdRegistForm;
+    }
+
+    /**
+     * @param p
+     */
+    public void setMBarcdRegistForm(final MBarcdRegistForm p) {
+        this.mBarcdRegistForm = p;
+    }
+
+    /** 原価マスタ */
+    @jakarta.validation.Valid
+    private MGenkaRegistForm mGenkaRegistForm;
+
+    /**
+     * @return MGenkaRegistForm
+     */
+    public MGenkaRegistForm getMGenkaRegistForm() {
+        return mGenkaRegistForm;
+    }
+
+    /**
+     * @param p
+     */
+    public void setMGenkaRegistForm(final MGenkaRegistForm p) {
+        this.mGenkaRegistForm = p;
+    }
+
     /** WEB在庫管理マスタ */
     @jakarta.validation.Valid
     private MWebkanRegistForm mWebkanRegistForm;

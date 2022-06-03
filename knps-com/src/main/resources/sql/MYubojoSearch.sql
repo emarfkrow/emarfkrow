@@ -4,13 +4,13 @@ FROM
     M_YUBOJO a 
 WHERE
     1 = 1 
-    AND TRIM (a.yuryokukbn) = TRIM (:yuryokukbn) 
-    AND a.yuryocd = :yuryocd 
-    AND TRIM (a.ryuryokumei) = TRIM (:ryuryokumei) 
-    AND a.konyu_min = :konyu_min 
-    AND a.konyu_max = :konyu_max 
-    AND a.yuboritu = :yuboritu 
-    AND a.upddate = :upddate 
-    AND TRIM (a.filler) = TRIM (:filler) 
+    AND TRIM (a."YURYOKUKBN") = TRIM (:yuryokukbn) 
+    AND a."YURYOCD" = :yuryocd 
+    AND TRIM (a."RYURYOKUMEI") = TRIM (:ryuryokumei) 
+    AND a."KONYU-MIN" = :konyu_min 
+    AND a."KONYU-MAX" = :konyu_max 
+    AND a."YUBORITU" = :yuboritu 
+    AND a."UPDDATE" = :upddate 
+    AND TRIM (a."FILLER") = TRIM (:filler) 
 ORDER BY
-    a.YURYOKUKBN, a.YURYOCD
+    a."YURYOKUKBN", a."YURYOCD"

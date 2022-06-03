@@ -739,7 +739,7 @@ public class MYuryoku implements IEntity {
     public static MYuryoku get(final Object param1) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("yuryocd = :yuryocd");
+        whereList.add("\"YURYOCD\" = :yuryocd");
 
         String sql = "SELECT * FROM M_YURYOKU WHERE " + String.join(" AND ", whereList);
 
@@ -764,8 +764,8 @@ public class MYuryoku implements IEntity {
         nameList.add("ryuryokumei -- :ryuryokumei");
         nameList.add("yuryomei1 -- :yuryomei1");
         nameList.add("yuryomei2 -- :yuryomei2");
-        nameList.add("yuryoku-jusho1 -- :yuryoku-jusho1");
-        nameList.add("yuryoku-jusho2 -- :yuryoku-jusho2");
+        nameList.add("yuryoku_jusho1 -- :yuryoku_jusho1");
+        nameList.add("yuryoku_jusho2 -- :yuryoku_jusho2");
         nameList.add("ubinno -- :ubinno");
         nameList.add("telno -- :telno");
         nameList.add("faxno -- :faxno");
@@ -773,17 +773,17 @@ public class MYuryoku implements IEntity {
         nameList.add("tourokubi -- :tourokubi");
         nameList.add("kyuryokumei -- :kyuryokumei");
         nameList.add("ki -- :ki");
-        nameList.add("kami-konyu -- :kami-konyu");
-        nameList.add("kami-siharai -- :kami-siharai");
-        nameList.add("kami-yuboritu -- :kami-yuboritu");
-        nameList.add("kami-tasseikbn -- :kami-tasseikbn");
-        nameList.add("simo-konyu -- :simo-konyu");
-        nameList.add("simo-siharai -- :simo-siharai");
-        nameList.add("simo-yuboritu -- :simo-yuboritu");
-        nameList.add("simo-tasseikbn -- :simo-tasseikbn");
+        nameList.add("kami_konyu -- :kami_konyu");
+        nameList.add("kami_siharai -- :kami_siharai");
+        nameList.add("kami_yuboritu -- :kami_yuboritu");
+        nameList.add("kami_tasseikbn -- :kami_tasseikbn");
+        nameList.add("simo_konyu -- :simo_konyu");
+        nameList.add("simo_siharai -- :simo_siharai");
+        nameList.add("simo_yuboritu -- :simo_yuboritu");
+        nameList.add("simo_tasseikbn -- :simo_tasseikbn");
         nameList.add("yutenkaikbn -- :yutenkaikbn");
-        nameList.add("torihiki-kbn -- :torihiki-kbn");
-        nameList.add("gyoshu-kbn -- :gyoshu-kbn");
+        nameList.add("torihiki_kbn -- :torihiki_kbn");
+        nameList.add("gyoshu_kbn -- :gyoshu_kbn");
         nameList.add("sichocd -- :sichocd");
         nameList.add("faxkbn -- :faxkbn");
         nameList.add("ritukbn -- :ritukbn");
@@ -791,7 +791,7 @@ public class MYuryoku implements IEntity {
         nameList.add("tikucd -- :tikucd");
         nameList.add("todofukencd -- :todofukencd");
         nameList.add("eigyokbn -- :eigyokbn");
-        nameList.add("yuryoku-rank -- :yuryoku-rank");
+        nameList.add("yuryoku_rank -- :yuryoku_rank");
         nameList.add("stkbn -- :stkbn");
         nameList.add("filler -- :filler");
         String name = String.join("\r\n    , ", nameList);

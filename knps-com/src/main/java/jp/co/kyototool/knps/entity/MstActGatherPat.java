@@ -274,7 +274,7 @@ public class MstActGatherPat implements IEntity {
     public static MstActGatherPat get(final Object param1) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (act_gather_pat_no) = TRIM (:act_gather_pat_no)");
+        whereList.add("TRIM (\"ACT_GATHER_PAT_NO\") = TRIM (:act_gather_pat_no)");
 
         String sql = "SELECT * FROM MST_ACT_GATHER_PAT WHERE " + String.join(" AND ", whereList);
 

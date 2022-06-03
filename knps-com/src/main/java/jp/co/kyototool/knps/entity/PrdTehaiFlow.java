@@ -305,8 +305,8 @@ public class PrdTehaiFlow implements IEntity {
     public static PrdTehaiFlow get(final Object param1, final Object param2) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (prd_tehai_no) = TRIM (:prd_tehai_no)");
-        whereList.add("tehai_flow_seq = :tehai_flow_seq");
+        whereList.add("TRIM (\"PRD_TEHAI_NO\") = TRIM (:prd_tehai_no)");
+        whereList.add("\"TEHAI_FLOW_SEQ\" = :tehai_flow_seq");
 
         String sql = "SELECT * FROM PRD_TEHAI_FLOW WHERE " + String.join(" AND ", whereList);
 

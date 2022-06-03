@@ -255,9 +255,9 @@ public class MstStructureBk implements IEntity {
     public static MstStructureBk get(final Object param1, final Object param2, final Object param3) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (man_hinban) = TRIM (:man_hinban)");
-        whereList.add("TRIM (hinban) = TRIM (:hinban)");
-        whereList.add("TRIM (yy) = TRIM (:yy)");
+        whereList.add("TRIM (\"MAN_HINBAN\") = TRIM (:man_hinban)");
+        whereList.add("TRIM (\"HINBAN\") = TRIM (:hinban)");
+        whereList.add("TRIM (\"YY\") = TRIM (:yy)");
 
         String sql = "SELECT * FROM MST_STRUCTURE_BK WHERE " + String.join(" AND ", whereList);
 

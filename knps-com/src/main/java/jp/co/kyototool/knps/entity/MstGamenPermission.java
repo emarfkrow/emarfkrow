@@ -234,9 +234,9 @@ public class MstGamenPermission implements IEntity {
     public static MstGamenPermission get(final Object param1, final Object param2, final Object param3) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("comp_code = :comp_code");
-        whereList.add("business_no = :business_no");
-        whereList.add("gamen_id = :gamen_id");
+        whereList.add("\"COMP_CODE\" = :comp_code");
+        whereList.add("\"BUSINESS_NO\" = :business_no");
+        whereList.add("\"GAMEN_ID\" = :gamen_id");
 
         String sql = "SELECT * FROM MST_GAMEN_PERMISSION WHERE " + String.join(" AND ", whereList);
 

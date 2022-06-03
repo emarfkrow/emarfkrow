@@ -969,9 +969,9 @@ public class MfgTotalCostRegLineI1 implements IEntity {
     public static MfgTotalCostRegLineI1 get(final Object param1, final Object param2, final Object param3) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("pro_group_no = :pro_group_no");
-        whereList.add("TRIM (hinban) = TRIM (:hinban)");
-        whereList.add("routing = :routing");
+        whereList.add("\"PRO_GROUP_NO\" = :pro_group_no");
+        whereList.add("TRIM (\"HINBAN\") = TRIM (:hinban)");
+        whereList.add("\"ROUTING\" = :routing");
 
         String sql = "SELECT * FROM MFG_TOTAL_COST_REG_LINE_I1 WHERE " + String.join(" AND ", whereList);
 

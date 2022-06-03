@@ -170,8 +170,8 @@ public class PrdStoreMainteTeamDet implements IEntity {
     public static PrdStoreMainteTeamDet get(final Object param1, final Object param2) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (mfg_team_code) = TRIM (:mfg_team_code)");
-        whereList.add("TRIM (ws_code) = TRIM (:ws_code)");
+        whereList.add("TRIM (\"MFG_TEAM_CODE\") = TRIM (:mfg_team_code)");
+        whereList.add("TRIM (\"WS_CODE\") = TRIM (:ws_code)");
 
         String sql = "SELECT * FROM PRD_STORE_MAINTE_TEAM_DET WHERE " + String.join(" AND ", whereList);
 

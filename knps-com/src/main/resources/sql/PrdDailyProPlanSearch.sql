@@ -4,37 +4,37 @@ FROM
     PRD_DAILY_PRO_PLAN a 
 WHERE
     1 = 1 
-    AND TRIM (a.plan_no) = TRIM (:plan_no) 
-    AND TRIM (a.arrange_kbn) IN (:arrange_kbn) 
-    AND TRIM (a.hinban) = TRIM (:hinban) 
-    AND a.detail_plan_counts = :detail_plan_counts 
-    AND a.detail_plan_counts >= :detail_plan_counts_1 
-    AND a.detail_plan_counts <= :detail_plan_counts_2 
-    AND a.plan_comment = :plan_comment 
-    AND a.plan_status = :plan_status 
-    AND a.period = :period 
-    AND a.period_chg = :period_chg 
-    AND a.period_chg_counts = :period_chg_counts 
-    AND a.period_chg_counts >= :period_chg_counts_1 
-    AND a.period_chg_counts <= :period_chg_counts_2 
-    AND a.plan_date_appoint = :plan_date_appoint 
-    AND a.beg_date = :beg_date 
-    AND a.beg_date >= :beg_date_1 
-    AND a.beg_date <= :beg_date_2 
-    AND a.end_date = :end_date 
-    AND a.end_date >= :end_date_1 
-    AND a.end_date <= :end_date_2 
-    AND a.start_date = :start_date 
-    AND a.start_date >= :start_date_1 
-    AND a.start_date <= :start_date_2 
-    AND a.comp_date = :comp_date 
-    AND a.comp_date >= :comp_date_1 
-    AND a.comp_date <= :comp_date_2 
-    AND a.short_no = :short_no 
-    AND a.time_stamp_create = :time_stamp_create 
-    AND a.time_stamp_change = :time_stamp_change 
-    AND TRIM (a.user_id_create) = TRIM (:user_id_create) 
-    AND TRIM (a.user_id_change) = TRIM (:user_id_change) 
-    AND CASE WHEN a.delete_flag IS NULL THEN '0' ELSE TO_CHAR (a.delete_flag) END IN (:delete_flag) 
+    AND TRIM (a."PLAN_NO") = TRIM (:plan_no) 
+    AND TRIM (a."ARRANGE_KBN") IN (:arrange_kbn) 
+    AND TRIM (a."HINBAN") = TRIM (:hinban) 
+    AND a."DETAIL_PLAN_COUNTS" = :detail_plan_counts 
+    AND a."DETAIL_PLAN_COUNTS" >= :detail_plan_counts_1 
+    AND a."DETAIL_PLAN_COUNTS" <= :detail_plan_counts_2 
+    AND a."PLAN_COMMENT" = :plan_comment 
+    AND a."PLAN_STATUS" = :plan_status 
+    AND a."PERIOD" = :period 
+    AND a."PERIOD_CHG" = :period_chg 
+    AND a."PERIOD_CHG_COUNTS" = :period_chg_counts 
+    AND a."PERIOD_CHG_COUNTS" >= :period_chg_counts_1 
+    AND a."PERIOD_CHG_COUNTS" <= :period_chg_counts_2 
+    AND a."PLAN_DATE_APPOINT" = :plan_date_appoint 
+    AND a."BEG_DATE" = :beg_date 
+    AND a."BEG_DATE" >= :beg_date_1 
+    AND a."BEG_DATE" <= :beg_date_2 
+    AND a."END_DATE" = :end_date 
+    AND a."END_DATE" >= :end_date_1 
+    AND a."END_DATE" <= :end_date_2 
+    AND a."START_DATE" = :start_date 
+    AND a."START_DATE" >= :start_date_1 
+    AND a."START_DATE" <= :start_date_2 
+    AND a."COMP_DATE" = :comp_date 
+    AND a."COMP_DATE" >= :comp_date_1 
+    AND a."COMP_DATE" <= :comp_date_2 
+    AND a."SHORT_NO" = :short_no 
+    AND a."TIME_STAMP_CREATE" = :time_stamp_create 
+    AND a."TIME_STAMP_CHANGE" = :time_stamp_change 
+    AND TRIM (a."USER_ID_CREATE") = TRIM (:user_id_create) 
+    AND TRIM (a."USER_ID_CHANGE") = TRIM (:user_id_change) 
+    AND CASE WHEN a."DELETE_FLAG" IS NULL THEN '0' ELSE TO_CHAR (a.DELETE_FLAG) END IN (:delete_flag) 
 ORDER BY
-    a.PLAN_NO
+    a."PLAN_NO"

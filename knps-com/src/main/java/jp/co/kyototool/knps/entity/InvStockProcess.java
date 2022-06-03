@@ -221,8 +221,8 @@ public class InvStockProcess implements IEntity {
     public static InvStockProcess get(final Object param1, final Object param2) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("location_code = :location_code");
-        whereList.add("hinban = :hinban");
+        whereList.add("\"LOCATION_CODE\" = :location_code");
+        whereList.add("\"HINBAN\" = :hinban");
 
         String sql = "SELECT * FROM INV_STOCK_PROCESS WHERE " + String.join(" AND ", whereList);
 

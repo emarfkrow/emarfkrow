@@ -215,14 +215,14 @@ public class MKtanka implements IEntity {
     public static MKtanka get(final Object param1, final Object param2) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("honshacd = :honshacd");
-        whereList.add("TRIM (shagai-hinban) = TRIM (:shagai-hinban)");
+        whereList.add("\"HONSHACD\" = :honshacd");
+        whereList.add("TRIM (\"SHAGAI-HINBAN\") = TRIM (:shagai_hinban)");
 
         String sql = "SELECT * FROM M_KTANKA WHERE " + String.join(" AND ", whereList);
 
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("honshacd", param1);
-        params.put("shagai-hinban", param2);
+        params.put("shagai_hinban", param2);
 
         return Queries.get(sql, params, MKtanka.class);
     }
@@ -242,11 +242,11 @@ public class MKtanka implements IEntity {
         // 契約単価マスタの登録
         List<String> nameList = new ArrayList<String>();
         nameList.add("honshacd -- :honshacd");
-        nameList.add("shagai-hinban -- :shagai-hinban");
+        nameList.add("shagai_hinban -- :shagai_hinban");
         nameList.add("kkaisibi -- :kkaisibi");
         nameList.add("kshuryobi -- :kshuryobi");
         nameList.add("hhinban -- :hhinban");
-        nameList.add("keiyaku-tanka -- :keiyaku-tanka");
+        nameList.add("keiyaku_tanka -- :keiyaku_tanka");
         nameList.add("shohinkbn -- :shohinkbn");
         nameList.add("kakakukbn -- :kakakukbn");
         nameList.add("filler -- :filler");

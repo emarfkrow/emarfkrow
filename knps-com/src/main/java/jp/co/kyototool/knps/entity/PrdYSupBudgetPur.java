@@ -298,10 +298,10 @@ public class PrdYSupBudgetPur implements IEntity {
     public static PrdYSupBudgetPur get(final Object param1, final Object param2, final Object param3, final Object param4) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (yyyy) = TRIM (:yyyy)");
-        whereList.add("TRIM (mm) = TRIM (:mm)");
-        whereList.add("TRIM (hinban) = TRIM (:hinban)");
-        whereList.add("TRIM (sup_code) = TRIM (:sup_code)");
+        whereList.add("TRIM (\"YYYY\") = TRIM (:yyyy)");
+        whereList.add("TRIM (\"MM\") = TRIM (:mm)");
+        whereList.add("TRIM (\"HINBAN\") = TRIM (:hinban)");
+        whereList.add("TRIM (\"SUP_CODE\") = TRIM (:sup_code)");
 
         String sql = "SELECT * FROM PRD_Y_SUP_BUDGET_PUR WHERE " + String.join(" AND ", whereList);
 

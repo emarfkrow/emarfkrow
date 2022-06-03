@@ -4,15 +4,15 @@ FROM
     M_SETKARI a 
 WHERE
     1 = 1 
-    AND TRIM (a.set_hinban) = TRIM (:set_hinban) 
-    AND TRIM (a.set_khinban) = TRIM (:set_khinban) 
-    AND a.tokucd = :tokucd 
-    AND TRIM (a.hinmei) = TRIM (:hinmei) 
-    AND TRIM (a.ko_hinmei) = TRIM (:ko_hinmei) 
-    AND TRIM (a.setkbn) = TRIM (:setkbn) 
-    AND a.setinzu = :setinzu 
-    AND a.ko_tanka = :ko_tanka 
-    AND TRIM (a.mushokbn) = TRIM (:mushokbn) 
-    AND TRIM (a.rtokumei) = TRIM (:rtokumei) 
+    AND TRIM (a."SET-HINBAN") = TRIM (:set_hinban) 
+    AND TRIM (a."SET-KHINBAN") = TRIM (:set_khinban) 
+    AND a."TOKUCD" = :tokucd 
+    AND TRIM (a."HINMEI") = TRIM (:hinmei) 
+    AND TRIM (a."KO-HINMEI") = TRIM (:ko_hinmei) 
+    AND TRIM (a."SETKBN") = TRIM (:setkbn) 
+    AND a."SETINZU" = :setinzu 
+    AND a."KO-TANKA" = :ko_tanka 
+    AND TRIM (a."MUSHOKBN") = TRIM (:mushokbn) 
+    AND TRIM (a."RTOKUMEI") = TRIM (:rtokumei) 
 ORDER BY
-    a.SET-HINBAN, a.SET-KHINBAN
+    a."SET-HINBAN", a."SET-KHINBAN"

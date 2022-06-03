@@ -4,18 +4,18 @@ FROM
     INV_Y_STK_PROD_AMOUNT_PROD a 
 WHERE
     1 = 1 
-    AND TRIM (a.pro_hinban) = TRIM (:pro_hinban) 
-    AND TRIM (a.yyyy) = TRIM (:yyyy) 
-    AND TRIM (a.mm) = TRIM (:mm) 
-    AND a.nes_counts = :nes_counts 
-    AND a.nes_counts >= :nes_counts_1 
-    AND a.nes_counts <= :nes_counts_2 
-    AND a.stan_costs = :stan_costs 
-    AND TRIM (a.shikake_kbn) IN (:shikake_kbn) 
-    AND a.pro_lt = :pro_lt 
-    AND a.time_stamp_create = :time_stamp_create 
-    AND a.time_stamp_change = :time_stamp_change 
-    AND TRIM (a.user_id_create) = TRIM (:user_id_create) 
-    AND TRIM (a.user_id_change) = TRIM (:user_id_change) 
+    AND TRIM (a."PRO_HINBAN") = TRIM (:pro_hinban) 
+    AND TRIM (a."YYYY") = TRIM (:yyyy) 
+    AND TRIM (a."MM") = TRIM (:mm) 
+    AND a."NES_COUNTS" = :nes_counts 
+    AND a."NES_COUNTS" >= :nes_counts_1 
+    AND a."NES_COUNTS" <= :nes_counts_2 
+    AND a."STAN_COSTS" = :stan_costs 
+    AND TRIM (a."SHIKAKE_KBN") IN (:shikake_kbn) 
+    AND a."PRO_LT" = :pro_lt 
+    AND a."TIME_STAMP_CREATE" = :time_stamp_create 
+    AND a."TIME_STAMP_CHANGE" = :time_stamp_change 
+    AND TRIM (a."USER_ID_CREATE") = TRIM (:user_id_create) 
+    AND TRIM (a."USER_ID_CHANGE") = TRIM (:user_id_change) 
 ORDER BY
-    a.PRO_HINBAN, a.YYYY, a.MM
+    a."PRO_HINBAN", a."YYYY", a."MM"

@@ -9,6 +9,8 @@
 
 </script>
 <script th:src="@{/model/MHhinmokGridColumns.js}"></script>
+<script th:src="@{/model/MHososetGridColumns.js}"></script>
+<script th:src="@{/model/MPkoseGridColumns.js}"></script>
 </head>
 <body>
   <div layout:fragment="article">
@@ -297,6 +299,57 @@
         </div>
       </fieldset>
       <fieldset>
+        <legend th:text="#{MBarcd.legend}">legend</legend>
+        <div id="hinmei">
+          <label for="MBarcd.hinmei" th:text="#{MBarcd.hinmei}">品名</label><input type="text" id="MBarcd.hinmei" name="MBarcd.hinmei" maxlength="10" />
+        </div>
+        <div id="barcode">
+          <label for="MBarcd.barcode" th:text="#{MBarcd.barcode}">バーコード</label><input type="text" id="MBarcd.barcode" name="MBarcd.barcode" maxlength="13" />
+        </div>
+        <div id="free1">
+          <label for="MBarcd.free1" th:text="#{MBarcd.free1}">自由項目１</label><input type="text" id="MBarcd.free1" name="MBarcd.free1" maxlength="15" />
+        </div>
+        <div id="free2">
+          <label for="MBarcd.free2" th:text="#{MBarcd.free2}">自由項目２</label><input type="text" id="MBarcd.free2" name="MBarcd.free2" maxlength="10" />
+        </div>
+        <div id="free3">
+          <label for="MBarcd.free3" th:text="#{MBarcd.free3}">自由項目３</label><input type="text" id="MBarcd.free3" name="MBarcd.free3" maxlength="10" />
+        </div>
+        <div id="fller">
+          <label for="MBarcd.fller" th:text="#{MBarcd.fller}">予備領域</label><input type="text" id="MBarcd.fller" name="MBarcd.fller" maxlength="22" />
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend th:text="#{MGenka.legend}">legend</legend>
+        <div id="hincd">
+          <label for="MGenka.hincd" th:text="#{MGenka.hincd}">品目コード</label><input type="text" id="MGenka.hincd" name="MGenka.hincd" maxlength="20" />
+        </div>
+        <div id="setkbn">
+          <label for="MGenka.setkbn" th:text="#{MGenka.setkbn}">セット区分</label><input type="text" id="MGenka.setkbn" name="MGenka.setkbn" maxlength="1" />
+        </div>
+        <div id="genka">
+          <label for="MGenka.genka" th:text="#{MGenka.genka}">原価</label><input type="text" id="MGenka.genka" name="MGenka.genka" maxlength="7" />
+        </div>
+        <div id="seihinGenka">
+          <label for="MGenka.seihinGenka" th:text="#{MGenka.seihinGenka}">製品原価</label><input type="text" id="MGenka.seihinGenka" name="MGenka.seihinGenka" maxlength="7" />
+        </div>
+        <div id="shohinGenka">
+          <label for="MGenka.shohinGenka" th:text="#{MGenka.shohinGenka}">商品原価</label><input type="text" id="MGenka.shohinGenka" name="MGenka.shohinGenka" maxlength="7" />
+        </div>
+        <div id="baika">
+          <label for="MGenka.baika" th:text="#{MGenka.baika}">売価</label><input type="text" id="MGenka.baika" name="MGenka.baika" maxlength="7" />
+        </div>
+        <div id="seihinBaika">
+          <label for="MGenka.seihinBaika" th:text="#{MGenka.seihinBaika}">製品売価</label><input type="text" id="MGenka.seihinBaika" name="MGenka.seihinBaika" maxlength="7" />
+        </div>
+        <div id="shohinBaika">
+          <label for="MGenka.shohinBaika" th:text="#{MGenka.shohinBaika}">商品売価</label><input type="text" id="MGenka.shohinBaika" name="MGenka.shohinBaika" maxlength="7" />
+        </div>
+        <div id="filler">
+          <label for="MGenka.filler" th:text="#{MGenka.filler}">予備領域</label><input type="text" id="MGenka.filler" name="MGenka.filler" maxlength="9" />
+        </div>
+      </fieldset>
+      <fieldset>
         <legend th:text="#{MNtanka.legend}">legend</legend>
         <div id="nissanHinban">
           <label for="MNtanka.nissanHinban" th:text="#{MNtanka.nissanHinban}">日産品番</label><input type="text" id="MNtanka.nissanHinban" name="MNtanka.nissanHinban" maxlength="20" />
@@ -473,6 +526,12 @@
           <label for="MWebkan.filler" th:text="#{MWebkan.filler}">予備領域</label><input type="text" id="MWebkan.filler" name="MWebkan.filler" maxlength="49" />
         </div>
       </fieldset>
+      <h3 th:text="#{MHososet.h3}">h3</h3>
+      <a th:href="@{/model/MHososet.html}" id="MHososet" target="dialog" th:text="#{MHososet.add}" class="addChild" tabindex="-1">包装材構成マスタ</a>
+      <div id="MHososetGrid" data-selectionMode="link" data-addRow="true" data-frozenColumn="1" th:data-href="@{/model/MHososet.html}"></div>
+      <h3 th:text="#{MPkose.h3}">h3</h3>
+      <a th:href="@{/model/MPkose.html}" id="MPkose" target="dialog" th:text="#{MPkose.add}" class="addChild" tabindex="-1">部品構成マスタ</a>
+      <div id="MPkoseGrid" data-selectionMode="link" data-addRow="true" data-frozenColumn="1" th:data-href="@{/model/MPkose.html}"></div>
       <div class="buttons">
         <button type="button" th:text="#{common.reset}" onClick="Dialogate.refresh(event);">reset</button>
         <a th:href="@{MHhinmokGet.xlsx(baseMei=#{MHhinmok.h2})}" id="MHhinmokGet.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>

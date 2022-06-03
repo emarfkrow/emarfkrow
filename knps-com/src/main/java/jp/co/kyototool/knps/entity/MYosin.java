@@ -298,7 +298,7 @@ public class MYosin implements IEntity {
     public static MYosin get(final Object param1) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("shukincd = :shukincd");
+        whereList.add("\"SHUKINCD\" = :shukincd");
 
         String sql = "SELECT * FROM M_YOSIN WHERE " + String.join(" AND ", whereList);
 
@@ -322,13 +322,13 @@ public class MYosin implements IEntity {
         nameList.add("shukincd -- :shukincd");
         nameList.add("honshacd -- :honshacd");
         nameList.add("rtokumei -- :rtokumei");
-        nameList.add("sinyo-rank -- :sinyo-rank");
-        nameList.add("sinyo-hoken -- :sinyo-hoken");
-        nameList.add("eigyo-hosyokin -- :eigyo-hosyokin");
-        nameList.add("tanpo-kabusu -- :tanpo-kabusu");
+        nameList.add("sinyo_rank -- :sinyo_rank");
+        nameList.add("sinyo_hoken -- :sinyo_hoken");
+        nameList.add("eigyo_hosyokin -- :eigyo_hosyokin");
+        nameList.add("tanpo_kabusu -- :tanpo_kabusu");
         nameList.add("shushigaku -- :shushigaku");
-        nameList.add("kasidaore-hikiate -- :kasidaore-hikiate");
-        nameList.add("shuka-gendo -- :shuka-gendo");
+        nameList.add("kasidaore_hikiate -- :kasidaore_hikiate");
+        nameList.add("shuka_gendo -- :shuka_gendo");
         nameList.add("tourokubi -- :tourokubi");
         nameList.add("upddate -- :upddate");
         nameList.add("filler -- :filler");

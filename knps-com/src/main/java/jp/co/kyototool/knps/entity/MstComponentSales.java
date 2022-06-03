@@ -254,8 +254,8 @@ public class MstComponentSales implements IEntity {
     public static MstComponentSales get(final Object param1, final Object param2) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (comp_hinban_parent) = TRIM (:comp_hinban_parent)");
-        whereList.add("TRIM (comp_hinban_child) = TRIM (:comp_hinban_child)");
+        whereList.add("TRIM (\"COMP_HINBAN_PARENT\") = TRIM (:comp_hinban_parent)");
+        whereList.add("TRIM (\"COMP_HINBAN_CHILD\") = TRIM (:comp_hinban_child)");
 
         String sql = "SELECT * FROM MST_COMPONENT_SALES WHERE " + String.join(" AND ", whereList);
 

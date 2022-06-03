@@ -4,21 +4,21 @@ FROM
     M_PHINMOK a 
 WHERE
     1 = 1 
-    AND TRIM (a.phinban) = TRIM (:phinban) 
-    AND TRIM (a.phinmei) = TRIM (:phinmei) 
-    AND TRIM (a.phinmeik) = TRIM (:phinmeik) 
-    AND TRIM (a.hinban) = TRIM (:hinban) 
-    AND a.p_kakaku = :p_kakaku 
-    AND a.p_genka = :p_genka 
-    AND TRIM (a.p_kbn) IN (:p_kbn) 
-    AND a.kishuzan = :kishuzan 
-    AND a.kijyunzaiko = :kijyunzaiko 
-    AND a.hachuten = :hachuten 
-    AND TRIM (a.tourokukbn) = TRIM (:tourokukbn) 
-    AND TRIM (a.denpyotkbn) = TRIM (:denpyotkbn) 
-    AND TRIM (a.jukinkbn) = TRIM (:jukinkbn) 
-    AND a.dltflg = :dltflg 
-    AND a.upddate = :upddate 
-    AND TRIM (a.filler) = TRIM (:filler) 
+    AND TRIM (a."PHINBAN") = TRIM (:phinban) 
+    AND TRIM (a."PHINMEI") = TRIM (:phinmei) 
+    AND TRIM (a."PHINMEIK") = TRIM (:phinmeik) 
+    AND TRIM (a."HINBAN") = TRIM (:hinban) 
+    AND a."P-KAKAKU" = :p_kakaku 
+    AND a."P-GENKA" = :p_genka 
+    AND TRIM (a."P-KBN") IN (:p_kbn) 
+    AND a."KISHUZAN" = :kishuzan 
+    AND a."KIJYUNZAIKO" = :kijyunzaiko 
+    AND a."HACHUTEN" = :hachuten 
+    AND TRIM (a."TOUROKUKBN") = TRIM (:tourokukbn) 
+    AND TRIM (a."DENPYOTKBN") = TRIM (:denpyotkbn) 
+    AND TRIM (a."JUKINKBN") = TRIM (:jukinkbn) 
+    AND a."DLTFLG" = :dltflg 
+    AND a."UPDDATE" = :upddate 
+    AND TRIM (a."FILLER") = TRIM (:filler) 
 ORDER BY
-    a.PHINBAN
+    a."PHINBAN"

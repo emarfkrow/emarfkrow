@@ -316,7 +316,7 @@ public class MstLocation implements IEntity {
     public static MstLocation get(final Object param1) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (location_code) = TRIM (:location_code)");
+        whereList.add("TRIM (\"LOCATION_CODE\") = TRIM (:location_code)");
 
         String sql = "SELECT * FROM MST_LOCATION WHERE " + String.join(" AND ", whereList);
 

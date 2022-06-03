@@ -403,7 +403,7 @@ public class MChoku implements IEntity {
     public static MChoku get(final Object param1) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("chokucd = :chokucd");
+        whereList.add("\"CHOKUCD\" = :chokucd");
 
         String sql = "SELECT * FROM M_CHOKU WHERE " + String.join(" AND ", whereList);
 
@@ -428,15 +428,15 @@ public class MChoku implements IEntity {
         nameList.add("chokumei1 -- :chokumei1");
         nameList.add("chokumei2 -- :chokumei2");
         nameList.add("rchokumei -- :rchokumei");
-        nameList.add("choku-jusho1 -- :choku-jusho1");
-        nameList.add("choku-jusho2 -- :choku-jusho2");
+        nameList.add("choku_jusho1 -- :choku_jusho1");
+        nameList.add("choku_jusho2 -- :choku_jusho2");
         nameList.add("ubinno -- :ubinno");
         nameList.add("telno -- :telno");
         nameList.add("tourokubi -- :tourokubi");
         nameList.add("kchokumei -- :kchokumei");
         nameList.add("sichocd -- :sichocd");
         nameList.add("faxno -- :faxno");
-        nameList.add("torikesi-kbn -- :torikesi-kbn");
+        nameList.add("torikesi_kbn -- :torikesi_kbn");
         nameList.add("unsocd -- :unsocd");
         nameList.add("tikucd -- :tikucd");
         nameList.add("todofukencd -- :todofukencd");

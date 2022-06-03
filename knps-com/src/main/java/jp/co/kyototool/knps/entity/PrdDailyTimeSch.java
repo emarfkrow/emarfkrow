@@ -221,8 +221,8 @@ public class PrdDailyTimeSch implements IEntity {
     public static PrdDailyTimeSch get(final Object param1, final Object param2) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("layout_date = :layout_date");
-        whereList.add("TRIM (wc_code) = TRIM (:wc_code)");
+        whereList.add("\"LAYOUT_DATE\" = :layout_date");
+        whereList.add("TRIM (\"WC_CODE\") = TRIM (:wc_code)");
 
         String sql = "SELECT * FROM PRD_DAILY_TIME_SCH WHERE " + String.join(" AND ", whereList);
 

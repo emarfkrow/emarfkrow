@@ -152,8 +152,8 @@ public class MPkose implements IEntity {
     public static MPkose get(final Object param1, final Object param2) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (hhinban) = TRIM (:hhinban)");
-        whereList.add("TRIM (phinban) = TRIM (:phinban)");
+        whereList.add("TRIM (\"HHINBAN\") = TRIM (:hhinban)");
+        whereList.add("TRIM (\"PHINBAN\") = TRIM (:phinban)");
 
         String sql = "SELECT * FROM M_PKOSE WHERE " + String.join(" AND ", whereList);
 

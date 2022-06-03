@@ -232,7 +232,7 @@ public class MfgKanbanFormHed implements IEntity {
     public static MfgKanbanFormHed get(final Object param1) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("kanban_form_def_name = :kanban_form_def_name");
+        whereList.add("\"KANBAN_FORM_DEF_NAME\" = :kanban_form_def_name");
 
         String sql = "SELECT * FROM MFG_KANBAN_FORM_HED WHERE " + String.join(" AND ", whereList);
 

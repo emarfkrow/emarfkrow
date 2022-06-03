@@ -334,7 +334,7 @@ public class PrdDailyProPlanPch implements IEntity {
     public static PrdDailyProPlanPch get(final Object param1) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (pch_order_no) = TRIM (:pch_order_no)");
+        whereList.add("TRIM (\"PCH_ORDER_NO\") = TRIM (:pch_order_no)");
 
         String sql = "SELECT * FROM PRD_DAILY_PRO_PLAN_PCH WHERE " + String.join(" AND ", whereList);
 

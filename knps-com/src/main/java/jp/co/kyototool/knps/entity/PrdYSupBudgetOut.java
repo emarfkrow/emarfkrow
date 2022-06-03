@@ -361,10 +361,10 @@ public class PrdYSupBudgetOut implements IEntity {
     public static PrdYSupBudgetOut get(final Object param1, final Object param2, final Object param3, final Object param4) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (yyyy) = TRIM (:yyyy)");
-        whereList.add("TRIM (mm) = TRIM (:mm)");
-        whereList.add("TRIM (hinban) = TRIM (:hinban)");
-        whereList.add("routing = :routing");
+        whereList.add("TRIM (\"YYYY\") = TRIM (:yyyy)");
+        whereList.add("TRIM (\"MM\") = TRIM (:mm)");
+        whereList.add("TRIM (\"HINBAN\") = TRIM (:hinban)");
+        whereList.add("\"ROUTING\" = :routing");
 
         String sql = "SELECT * FROM PRD_Y_SUP_BUDGET_OUT WHERE " + String.join(" AND ", whereList);
 

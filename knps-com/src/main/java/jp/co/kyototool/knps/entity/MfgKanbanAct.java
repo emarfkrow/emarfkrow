@@ -241,7 +241,7 @@ public class MfgKanbanAct implements IEntity {
     public static MfgKanbanAct get(final Object param1) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (act_no) = TRIM (:act_no)");
+        whereList.add("TRIM (\"ACT_NO\") = TRIM (:act_no)");
 
         String sql = "SELECT * FROM MFG_KANBAN_ACT WHERE " + String.join(" AND ", whereList);
 

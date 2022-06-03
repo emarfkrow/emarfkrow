@@ -4,10 +4,10 @@ FROM
     MFG_PRO_ACT_STATUS a 
 WHERE
     1 = 1 
-    AND TRIM (a.child_plan_no) = TRIM (:child_plan_no) 
-    AND TRIM (a.pro_no) = TRIM (:pro_no) 
-    AND a.act_status = :act_status 
-    AND TRIM (a.user_id) = TRIM (:user_id) 
-    AND a.time_stamp_create = :time_stamp_create 
+    AND TRIM (a."CHILD_PLAN_NO") = TRIM (:child_plan_no) 
+    AND TRIM (a."PRO_NO") = TRIM (:pro_no) 
+    AND a."ACT_STATUS" = :act_status 
+    AND TRIM (a."USER_ID") = TRIM (:user_id) 
+    AND a."TIME_STAMP_CREATE" = :time_stamp_create 
 ORDER BY
-    a.CHILD_PLAN_NO
+    a."CHILD_PLAN_NO"

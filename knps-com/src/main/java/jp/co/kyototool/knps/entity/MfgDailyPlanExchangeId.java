@@ -88,7 +88,7 @@ public class MfgDailyPlanExchangeId implements IEntity {
     public static MfgDailyPlanExchangeId get(final Object param1) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (exchange_id) = TRIM (:exchange_id)");
+        whereList.add("TRIM (\"EXCHANGE_ID\") = TRIM (:exchange_id)");
 
         String sql = "SELECT * FROM MFG_DAILY_PLAN_EXCHANGE_ID WHERE " + String.join(" AND ", whereList);
 
