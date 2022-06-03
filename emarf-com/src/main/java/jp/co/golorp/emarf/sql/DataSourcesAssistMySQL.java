@@ -18,6 +18,11 @@ public final class DataSourcesAssistMySQL extends DataSourcesAssist {
     }
 
     @Override
+    protected String getColumnComment(final String tableName, final String columnName) {
+        return null;
+    }
+
+    @Override
     public String join(final String[] array) {
         return "CONCAT (" + String.join(", ", array) + ")";
     }

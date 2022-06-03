@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
 <head>
 <meta charset="UTF-8">
-<title th:text="#{MChoku.title}">M_CHOKU</title>
+<title th:text="#{MChoku.title}">直送先マスタ</title>
 <style type="text/css">
 </style>
 <script type="text/javascript">
@@ -17,25 +17,58 @@
       <fieldset>
         <legend th:text="#{MChoku.legend}">legend</legend>
         <div id="chokucd">
-          <label for="MChoku.chokucd" th:text="#{MChoku.chokucd}">CHOKUCD</label><input type="text" id="MChoku.chokucd" name="MChoku.chokucd" maxlength="8" class="primaryKey" />
+          <label for="MChoku.chokucd" th:text="#{MChoku.chokucd}">直送先コード</label><input type="text" id="MChoku.chokucd" name="MChoku.chokucd" maxlength="8" class="primaryKey" />
         </div>
         <div id="chokumei1">
-          <label for="MChoku.chokumei1" th:text="#{MChoku.chokumei1}">CHOKUMEI1</label><input type="text" id="MChoku.chokumei1" name="MChoku.chokumei1" maxlength="28" />
+          <label for="MChoku.chokumei1" th:text="#{MChoku.chokumei1}">直送先名１</label><input type="text" id="MChoku.chokumei1" name="MChoku.chokumei1" maxlength="28" />
         </div>
         <div id="chokumei2">
-          <label for="MChoku.chokumei2" th:text="#{MChoku.chokumei2}">CHOKUMEI2</label><input type="text" id="MChoku.chokumei2" name="MChoku.chokumei2" maxlength="22" />
+          <label for="MChoku.chokumei2" th:text="#{MChoku.chokumei2}">直送先名２</label><input type="text" id="MChoku.chokumei2" name="MChoku.chokumei2" maxlength="22" />
         </div>
-        <div id="timeStampCreate">
-          <label for="MChoku.timeStampCreate" th:text="#{MChoku.timeStampCreate}">TIME_STAMP_CREATE</label><span id="MChoku.timeStampCreate"></span><input type="hidden" id="MChoku.timeStampCreate" name="MChoku.timeStampCreate" />
+        <div id="rchokumei">
+          <label for="MChoku.rchokumei" th:text="#{MChoku.rchokumei}">略直送先名</label><input type="text" id="MChoku.rchokumei" name="MChoku.rchokumei" maxlength="20" />
         </div>
-        <div id="timeStampChange">
-          <label for="MChoku.timeStampChange" th:text="#{MChoku.timeStampChange}">TIME_STAMP_CHANGE</label><span id="MChoku.timeStampChange"></span><input type="hidden" id="MChoku.timeStampChange" name="MChoku.timeStampChange" />
+        <div id="chokuJusho1">
+          <label for="MChoku.chokuJusho1" th:text="#{MChoku.chokuJusho1}">直送先住所１</label><input type="text" id="MChoku.chokuJusho1" name="MChoku.chokuJusho1" maxlength="28" />
         </div>
-        <div id="userIdCreate">
-          <label for="MChoku.userIdCreate" th:text="#{MChoku.userIdCreate}">USER_ID_CREATE</label><span id="MChoku.userIdCreate"></span><input type="hidden" id="MChoku.userIdCreate" name="MChoku.userIdCreate" />
+        <div id="chokuJusho2">
+          <label for="MChoku.chokuJusho2" th:text="#{MChoku.chokuJusho2}">直送先住所２</label><input type="text" id="MChoku.chokuJusho2" name="MChoku.chokuJusho2" maxlength="22" />
         </div>
-        <div id="userIdChange">
-          <label for="MChoku.userIdChange" th:text="#{MChoku.userIdChange}">USER_ID_CHANGE</label><span id="MChoku.userIdChange"></span><input type="hidden" id="MChoku.userIdChange" name="MChoku.userIdChange" />
+        <div id="ubinno">
+          <label for="MChoku.ubinno" th:text="#{MChoku.ubinno}">郵便番号</label><input type="text" id="MChoku.ubinno" name="MChoku.ubinno" maxlength="8" />
+        </div>
+        <div id="telno">
+          <label for="MChoku.telno" th:text="#{MChoku.telno}">電話番号</label><input type="text" id="MChoku.telno" name="MChoku.telno" maxlength="12" />
+        </div>
+        <div id="tourokubi">
+          <label for="MChoku.tourokubi" th:text="#{MChoku.tourokubi}">マスター登録日</label><input type="text" id="MChoku.tourokubi" name="MChoku.tourokubi" maxlength="8" />
+        </div>
+        <div id="kchokumei">
+          <label for="MChoku.kchokumei" th:text="#{MChoku.kchokumei}">カナ直送先名</label><input type="text" id="MChoku.kchokumei" name="MChoku.kchokumei" maxlength="20" />
+        </div>
+        <div id="sichocd">
+          <label for="MChoku.sichocd" th:text="#{MChoku.sichocd}">市町村コード</label><input type="text" id="MChoku.sichocd" name="MChoku.sichocd" maxlength="6" />
+        </div>
+        <div id="faxno">
+          <label for="MChoku.faxno" th:text="#{MChoku.faxno}">ＦＡＸ番号</label><input type="text" id="MChoku.faxno" name="MChoku.faxno" maxlength="12" />
+        </div>
+        <div id="torikesiKbn">
+          <label for="MChoku.torikesiKbn" th:text="#{MChoku.torikesiKbn}">注文自動取消区分</label><input type="text" id="MChoku.torikesiKbn" name="MChoku.torikesiKbn" maxlength="1" />
+        </div>
+        <div id="unsocd">
+          <label for="MChoku.unsocd" th:text="#{MChoku.unsocd}">運送会社コード</label><input type="text" id="MChoku.unsocd" name="MChoku.unsocd" maxlength="3" />
+        </div>
+        <div id="tikucd">
+          <label for="MChoku.tikucd" th:text="#{MChoku.tikucd}">地区コード</label><input type="text" id="MChoku.tikucd" name="MChoku.tikucd" maxlength="1" />
+        </div>
+        <div id="todofukencd">
+          <label for="MChoku.todofukencd" th:text="#{MChoku.todofukencd}">都道府県コード</label><input type="text" id="MChoku.todofukencd" name="MChoku.todofukencd" maxlength="1" />
+        </div>
+        <div id="updnkinkbn">
+          <label for="MChoku.updnkinkbn" th:text="#{MChoku.updnkinkbn}">更新禁止区分</label><input type="text" id="MChoku.updnkinkbn" name="MChoku.updnkinkbn" maxlength="1" />
+        </div>
+        <div id="filler">
+          <label for="MChoku.filler" th:text="#{MChoku.filler}">予備領域</label><input type="text" id="MChoku.filler" name="MChoku.filler" maxlength="9" />
         </div>
       </fieldset>
       <div class="buttons">

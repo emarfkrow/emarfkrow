@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{MGenkaS.title}">原価マスタ</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/MGenkaGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{MGenkaS.h2}">h2</h2>
+    <form name="MGenkaSearchForm" action="MGenkaSearch.ajax" class="search">
+      <fieldset>
+        <legend th:text="#{MGenkaS.legend}">legend</legend>
+        <div id="hhinban">
+          <label for="MGenka.hhinban" th:text="#{MGenka.hhinban}">販売品番</label><input type="text" id="MGenka.hhinban" name="MGenka.hhinban" maxlength="20" />
+        </div>
+        <div id="hincd">
+          <label for="MGenka.hincd" th:text="#{MGenka.hincd}">品目コード</label><input type="text" id="MGenka.hincd" name="MGenka.hincd" maxlength="20" />
+        </div>
+        <div id="setkbn">
+          <label for="MGenka.setkbn" th:text="#{MGenka.setkbn}">セット区分</label><input type="text" id="MGenka.setkbn" name="MGenka.setkbn" maxlength="1" />
+        </div>
+        <div id="genka">
+          <label for="MGenka.genka" th:text="#{MGenka.genka}">原価</label><input type="text" id="MGenka.genka" name="MGenka.genka" maxlength="7" />
+        </div>
+        <div id="seihinGenka">
+          <label for="MGenka.seihinGenka" th:text="#{MGenka.seihinGenka}">製品原価</label><input type="text" id="MGenka.seihinGenka" name="MGenka.seihinGenka" maxlength="7" />
+        </div>
+        <div id="shohinGenka">
+          <label for="MGenka.shohinGenka" th:text="#{MGenka.shohinGenka}">商品原価</label><input type="text" id="MGenka.shohinGenka" name="MGenka.shohinGenka" maxlength="7" />
+        </div>
+        <div id="baika">
+          <label for="MGenka.baika" th:text="#{MGenka.baika}">売価</label><input type="text" id="MGenka.baika" name="MGenka.baika" maxlength="7" />
+        </div>
+        <div id="seihinBaika">
+          <label for="MGenka.seihinBaika" th:text="#{MGenka.seihinBaika}">製品売価</label><input type="text" id="MGenka.seihinBaika" name="MGenka.seihinBaika" maxlength="7" />
+        </div>
+        <div id="shohinBaika">
+          <label for="MGenka.shohinBaika" th:text="#{MGenka.shohinBaika}">商品売価</label><input type="text" id="MGenka.shohinBaika" name="MGenka.shohinBaika" maxlength="7" />
+        </div>
+        <div id="filler">
+          <label for="MGenka.filler" th:text="#{MGenka.filler}">予備領域</label><input type="text" id="MGenka.filler" name="MGenka.filler" maxlength="9" />
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="reset" th:text="#{common.reset}">reset</button>
+        <a th:href="@{/model/MGenka.html}" id="MGenka" target="dialog" th:text="#{MGenka.add}" tabindex="-1">原価マスタ</a>
+      </div>
+      <div class="submits">
+        <button id="SearchMGenka" class="search" data-gridId="MGenkaGrid" th:text="#{common.search}">submit</button>
+      </div>
+    </form>
+    <form name="MGenkaSRegistForm" action="MGenkaSRegist.ajax" class="regist">
+      <h3 th:text="#{MGenka.h3}">h3</h3>
+      <div id="MGenkaGrid" data-selectionMode="checkbox" data-addRow="true" data-frozenColumn="0" th:data-href="@{/model/MGenka.html}"></div>
+      <div id="MGenkaPager"></div>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="$('[id=&quot;SearchMGenka&quot;]').click();">reset</button>
+        <a th:href="@{MGenkaSearch.xlsx(baseMei=#{MGenkaS.h2})}" id="MGenkaSearch.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeleteMGenkaS" class="delete selectRows" data-action="MGenkaSDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistMGenkaS" class="regist" th:text="#{common.regist}">submit</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

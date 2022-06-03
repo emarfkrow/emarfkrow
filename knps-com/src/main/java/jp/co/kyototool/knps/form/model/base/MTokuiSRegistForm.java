@@ -11,7 +11,7 @@ import jp.co.golorp.emarf.process.BaseProcess;
 import jp.co.golorp.emarf.validation.IForm;
 
 /**
- * M_TOKUI一覧登録フォーム
+ * 得意先マスタ一覧登録フォーム
  *
  * @author emarfkrow
  */
@@ -20,19 +20,19 @@ public class MTokuiSRegistForm implements IForm {
     /** logger */
     private static final Logger LOG = LoggerFactory.getLogger(MTokuiRegistForm.class);
 
-    /** M_TOKUI登録フォームのリスト */
+    /** 得意先マスタ登録フォームのリスト */
     @Valid
     private List<MTokuiRegistForm> mTokuiGrid;
 
     /**
-     * @return M_TOKUI登録フォームのリスト
+     * @return 得意先マスタ登録フォームのリスト
      */
     public List<MTokuiRegistForm> getMTokuiGrid() {
         return mTokuiGrid;
     }
 
     /**
-     * @param p M_TOKUI登録フォームのリスト
+     * @param p 得意先マスタ登録フォームのリスト
      */
     public void setMTokuiGrid(final List<MTokuiRegistForm> p) {
         this.mTokuiGrid = p;

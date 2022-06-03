@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{MJinjiS.title}">人事マスタ</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/MJinjiGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{MJinjiS.h2}">h2</h2>
+    <form name="MJinjiSearchForm" action="MJinjiSearch.ajax" class="search">
+      <fieldset>
+        <legend th:text="#{MJinjiS.legend}">legend</legend>
+        <div id="shainNo">
+          <label for="MJinji.shainNo" th:text="#{MJinji.shainNo}">社員番号</label><input type="text" id="MJinji.shainNo" name="MJinji.shainNo" maxlength="4" />
+        </div>
+        <div id="shainMei">
+          <label for="MJinji.shainMei" th:text="#{MJinji.shainMei}">社員名</label><input type="text" id="MJinji.shainMei" name="MJinji.shainMei" maxlength="20" />
+        </div>
+        <div id="jinjiShozokucd">
+          <label for="MJinji.jinjiShozokucd" th:text="#{MJinji.jinjiShozokucd}">人事所属コード</label><input type="text" id="MJinji.jinjiShozokucd" name="MJinji.jinjiShozokucd" maxlength="6" />
+        </div>
+        <div id="filler">
+          <label for="MJinji.filler" th:text="#{MJinji.filler}">予備領域</label><input type="text" id="MJinji.filler" name="MJinji.filler" maxlength="19" />
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="reset" th:text="#{common.reset}">reset</button>
+        <a th:href="@{/model/MJinji.html}" id="MJinji" target="dialog" th:text="#{MJinji.add}" tabindex="-1">人事マスタ</a>
+      </div>
+      <div class="submits">
+        <button id="SearchMJinji" class="search" data-gridId="MJinjiGrid" th:text="#{common.search}">submit</button>
+      </div>
+    </form>
+    <form name="MJinjiSRegistForm" action="MJinjiSRegist.ajax" class="regist">
+      <h3 th:text="#{MJinji.h3}">h3</h3>
+      <div id="MJinjiGrid" data-selectionMode="checkbox" data-frozenColumn="0" th:data-href="@{/model/MJinji.html}"></div>
+      <div id="MJinjiPager"></div>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="$('[id=&quot;SearchMJinji&quot;]').click();">reset</button>
+        <a th:href="@{MJinjiSearch.xlsx(baseMei=#{MJinjiS.h2})}" id="MJinjiSearch.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeleteMJinjiS" class="delete selectRows" data-action="MJinjiSDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistMJinjiS" class="regist" th:text="#{common.regist}">submit</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

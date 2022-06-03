@@ -9,13 +9,13 @@ import jp.co.kyototool.knps.entity.MChoku;
 import jp.co.golorp.emarf.action.BaseAction;
 
 /**
- * M_CHOKU照会
+ * 直送先マスタ照会
  *
  * @author emarfkrow
  */
 public class MChokuGetAction extends BaseAction {
 
-    /** M_CHOKU照会処理 */
+    /** 直送先マスタ照会処理 */
     @Override
     public Map<String, Object> running(final LocalDateTime now, final String id, final Map<String, Object> postJson) {
 

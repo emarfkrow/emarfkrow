@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{MHseigyoS.title}">販売制御マスタ</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/MHseigyoGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{MHseigyoS.h2}">h2</h2>
+    <form name="MHseigyoSearchForm" action="MHseigyoSearch.ajax" class="search">
+      <fieldset>
+        <legend th:text="#{MHseigyoS.legend}">legend</legend>
+        <div id="keycd">
+          <label for="MHseigyo.keycd" th:text="#{MHseigyo.keycd}">キーコード</label><input type="text" id="MHseigyo.keycd" name="MHseigyo.keycd" maxlength="1" />
+        </div>
+        <div id="kaisibi">
+          <label for="MHseigyo.kaisibi" th:text="#{MHseigyo.kaisibi}">開始日付</label><input type="text" id="MHseigyo.kaisibi" name="MHseigyo.kaisibi" maxlength="8" />
+        </div>
+        <div id="shuryobi">
+          <label for="MHseigyo.shuryobi" th:text="#{MHseigyo.shuryobi}">終了日付</label><input type="text" id="MHseigyo.shuryobi" name="MHseigyo.shuryobi" maxlength="8" />
+        </div>
+        <div id="zeiritu">
+          <label for="MHseigyo.zeiritu" th:text="#{MHseigyo.zeiritu}">消費税率</label><input type="text" id="MHseigyo.zeiritu" name="MHseigyo.zeiritu" maxlength="2" />
+        </div>
+        <div id="yuboent">
+          <label for="MHseigyo.yuboent" th:text="#{MHseigyo.yuboent}">有ボ入力区分</label><input type="text" id="MHseigyo.yuboent" name="MHseigyo.yuboent" maxlength="1" />
+        </div>
+        <div id="shusijino1">
+          <label for="MHseigyo.shusijino1" th:text="#{MHseigyo.shusijino1}">出荷指示番号１</label><input type="text" id="MHseigyo.shusijino1" name="MHseigyo.shusijino1" maxlength="5" />
+        </div>
+        <div id="nohinshono">
+          <label for="MHseigyo.nohinshono" th:text="#{MHseigyo.nohinshono}">納品書番号</label><input type="text" id="MHseigyo.nohinshono" name="MHseigyo.nohinshono" maxlength="6" />
+        </div>
+        <div id="setkeino">
+          <label for="MHseigyo.setkeino" th:text="#{MHseigyo.setkeino}">セット計画番号</label><input type="text" id="MHseigyo.setkeino" name="MHseigyo.setkeino" maxlength="6" />
+        </div>
+        <div id="getujiYymm">
+          <label for="MHseigyo.getujiYymm" th:text="#{MHseigyo.getujiYymm}">月次年月</label><input type="text" id="MHseigyo.getujiYymm" name="MHseigyo.getujiYymm" maxlength="6" />
+        </div>
+        <div id="tJuccnt">
+          <label for="MHseigyo.tJuccnt" th:text="#{MHseigyo.tJuccnt}">当日受注件数</label><input type="text" id="MHseigyo.tJuccnt" name="MHseigyo.tJuccnt" maxlength="4" />
+        </div>
+        <div id="tMaxcnt">
+          <label for="MHseigyo.tMaxcnt" th:text="#{MHseigyo.tMaxcnt}">当日受注最大件数</label><input type="text" id="MHseigyo.tMaxcnt" name="MHseigyo.tMaxcnt" maxlength="4" />
+        </div>
+        <div id="chokucnt">
+          <label for="MHseigyo.chokucnt" th:text="#{MHseigyo.chokucnt}">直送先カウント</label><input type="text" id="MHseigyo.chokucnt" name="MHseigyo.chokucnt" maxlength="6" />
+        </div>
+        <div id="hyotanka">
+          <label for="MHseigyo.hyotanka" th:text="#{MHseigyo.hyotanka}">評価単価</label><input type="text" id="MHseigyo.hyotanka" name="MHseigyo.hyotanka" maxlength="7" />
+        </div>
+        <div id="filler">
+          <label for="MHseigyo.filler" th:text="#{MHseigyo.filler}">予備領域</label><input type="text" id="MHseigyo.filler" name="MHseigyo.filler" maxlength="7" />
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="reset" th:text="#{common.reset}">reset</button>
+        <a th:href="@{/model/MHseigyo.html}" id="MHseigyo" target="dialog" th:text="#{MHseigyo.add}" tabindex="-1">販売制御マスタ</a>
+      </div>
+      <div class="submits">
+        <button id="SearchMHseigyo" class="search" data-gridId="MHseigyoGrid" th:text="#{common.search}">submit</button>
+      </div>
+    </form>
+    <form name="MHseigyoSRegistForm" action="MHseigyoSRegist.ajax" class="regist">
+      <h3 th:text="#{MHseigyo.h3}">h3</h3>
+      <div id="MHseigyoGrid" data-selectionMode="checkbox" data-frozenColumn="0" th:data-href="@{/model/MHseigyo.html}"></div>
+      <div id="MHseigyoPager"></div>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="$('[id=&quot;SearchMHseigyo&quot;]').click();">reset</button>
+        <a th:href="@{MHseigyoSearch.xlsx(baseMei=#{MHseigyoS.h2})}" id="MHseigyoSearch.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeleteMHseigyoS" class="delete selectRows" data-action="MHseigyoSDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistMHseigyoS" class="regist" th:text="#{common.regist}">submit</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
 <head>
 <meta charset="UTF-8">
-<title th:text="#{MSetkariS.title}">M_SETKARI</title>
+<title th:text="#{MSetkariS.title}">仮セット構成マスタ</title>
 <style type="text/css">
 </style>
 <script type="text/javascript">
@@ -17,13 +17,34 @@
       <fieldset>
         <legend th:text="#{MSetkariS.legend}">legend</legend>
         <div id="setHinban">
-          <label for="MSetkari.setHinban" th:text="#{MSetkari.setHinban}">SET-HINBAN</label><input type="text" id="MSetkari.setHinban" name="MSetkari.setHinban" maxlength="20" />
+          <label for="MSetkari.setHinban" th:text="#{MSetkari.setHinban}">セット品番</label><input type="text" id="MSetkari.setHinban" name="MSetkari.setHinban" maxlength="20" />
         </div>
         <div id="setKhinban">
-          <label for="MSetkari.setKhinban" th:text="#{MSetkari.setKhinban}">SET-KHINBAN</label><input type="text" id="MSetkari.setKhinban" name="MSetkari.setKhinban" maxlength="20" />
+          <label for="MSetkari.setKhinban" th:text="#{MSetkari.setKhinban}">セット子品番</label><input type="text" id="MSetkari.setKhinban" name="MSetkari.setKhinban" maxlength="20" />
+        </div>
+        <div id="tokucd">
+          <label for="MSetkari.tokucd" th:text="#{MSetkari.tokucd}">得意先コード</label><input type="text" id="MSetkari.tokucd" name="MSetkari.tokucd" maxlength="8" />
+        </div>
+        <div id="hinmei">
+          <label for="MSetkari.hinmei" th:text="#{MSetkari.hinmei}">品名</label><input type="text" id="MSetkari.hinmei" name="MSetkari.hinmei" maxlength="10" />
+        </div>
+        <div id="koHinmei">
+          <label for="MSetkari.koHinmei" th:text="#{MSetkari.koHinmei}">子品名</label><input type="text" id="MSetkari.koHinmei" name="MSetkari.koHinmei" maxlength="10" />
+        </div>
+        <div id="setkbn">
+          <label for="MSetkari.setkbn" th:text="#{MSetkari.setkbn}">セット区分</label><input type="text" id="MSetkari.setkbn" name="MSetkari.setkbn" maxlength="1" />
         </div>
         <div id="setinzu">
-          <label for="MSetkari.setinzu" th:text="#{MSetkari.setinzu}">SETINZU</label><input type="text" id="MSetkari.setinzu" name="MSetkari.setinzu" maxlength="3" />
+          <label for="MSetkari.setinzu" th:text="#{MSetkari.setinzu}">セット員数</label><input type="text" id="MSetkari.setinzu" name="MSetkari.setinzu" maxlength="3" />
+        </div>
+        <div id="koTanka">
+          <label for="MSetkari.koTanka" th:text="#{MSetkari.koTanka}">子単価</label><input type="text" id="MSetkari.koTanka" name="MSetkari.koTanka" maxlength="7" />
+        </div>
+        <div id="mushokbn">
+          <label for="MSetkari.mushokbn" th:text="#{MSetkari.mushokbn}">無償支給区分</label><input type="text" id="MSetkari.mushokbn" name="MSetkari.mushokbn" maxlength="1" />
+        </div>
+        <div id="rtokumei">
+          <label for="MSetkari.rtokumei" th:text="#{MSetkari.rtokumei}">略得意先名</label><input type="text" id="MSetkari.rtokumei" name="MSetkari.rtokumei" maxlength="20" />
         </div>
       </fieldset>
       <div class="buttons">

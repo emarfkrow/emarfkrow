@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{MKunimei.title}">国名マスタ</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/MKunimeiGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{MKunimei.h2}">h2</h2>
+    <form name="MKunimeiRegistForm" action="MKunimeiRegist.ajax" class="regist">
+      <fieldset>
+        <legend th:text="#{MKunimei.legend}">legend</legend>
+        <div id="kokusaicd">
+          <label for="MKunimei.kokusaicd" th:text="#{MKunimei.kokusaicd}">国際地域コード</label><span id="MKunimei.kokusaicd"></span><input type="hidden" id="MKunimei.kokusaicd" name="MKunimei.kokusaicd" class="primaryKey" />
+        </div>
+        <div id="kunicd">
+          <label for="MKunimei.kunicd" th:text="#{MKunimei.kunicd}">国コード</label><span id="MKunimei.kunicd"></span><input type="hidden" id="MKunimei.kunicd" name="MKunimei.kunicd" class="primaryKey" />
+        </div>
+        <div id="gensankoku">
+          <label for="MKunimei.gensankoku" th:text="#{MKunimei.gensankoku}">原産国表示名</label><input type="text" id="MKunimei.gensankoku" name="MKunimei.gensankoku" maxlength="20" />
+        </div>
+        <div id="kunimei">
+          <label for="MKunimei.kunimei" th:text="#{MKunimei.kunimei}">国名</label><input type="text" id="MKunimei.kunimei" name="MKunimei.kunimei" maxlength="40" />
+        </div>
+        <div id="filler">
+          <label for="MKunimei.filler" th:text="#{MKunimei.filler}">予備領域</label><input type="text" id="MKunimei.filler" name="MKunimei.filler" maxlength="37" />
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="Dialogate.refresh(event);">reset</button>
+        <a th:href="@{MKunimeiGet.xlsx(baseMei=#{MKunimei.h2})}" id="MKunimeiGet.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeleteMKunimei" class="delete" data-action="MKunimeiDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistMKunimei" class="regist" th:text="#{common.regist}">登録</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

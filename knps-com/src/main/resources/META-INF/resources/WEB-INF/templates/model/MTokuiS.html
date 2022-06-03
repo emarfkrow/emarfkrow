@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
 <head>
 <meta charset="UTF-8">
-<title th:text="#{MTokuiS.title}">M_TOKUI</title>
+<title th:text="#{MTokuiS.title}">得意先マスタ</title>
 <style type="text/css">
 </style>
 <script type="text/javascript">
@@ -17,18 +17,156 @@
       <fieldset>
         <legend th:text="#{MTokuiS.legend}">legend</legend>
         <div id="tokucd">
-          <label for="MTokui.tokucd" th:text="#{MTokui.tokucd}">TOKUCD</label><input type="text" id="MTokui.tokucd" name="MTokui.tokucd" maxlength="8" />
+          <label for="MTokui.tokucd" th:text="#{MTokui.tokucd}">得意先コード</label><input type="text" id="MTokui.tokucd" name="MTokui.tokucd" maxlength="8" />
         </div>
         <div id="tokumei1">
-          <label for="MTokui.tokumei1" th:text="#{MTokui.tokumei1}">TOKUMEI1</label><input type="text" id="MTokui.tokumei1" name="MTokui.tokumei1" maxlength="28" />
+          <label for="MTokui.tokumei1" th:text="#{MTokui.tokumei1}">得意先名１</label><input type="text" id="MTokui.tokumei1" name="MTokui.tokumei1" maxlength="28" />
         </div>
         <div id="tokumei2">
-          <label for="MTokui.tokumei2" th:text="#{MTokui.tokumei2}">TOKUMEI2</label><input type="text" id="MTokui.tokumei2" name="MTokui.tokumei2" maxlength="22" />
+          <label for="MTokui.tokumei2" th:text="#{MTokui.tokumei2}">得意先名２</label><input type="text" id="MTokui.tokumei2" name="MTokui.tokumei2" maxlength="22" />
+        </div>
+        <div id="rtokumei">
+          <label for="MTokui.rtokumei" th:text="#{MTokui.rtokumei}">略得意先名</label><input type="text" id="MTokui.rtokumei" name="MTokui.rtokumei" maxlength="20" />
+        </div>
+        <div id="ubinno">
+          <label for="MTokui.ubinno" th:text="#{MTokui.ubinno}">郵便番号</label><input type="text" id="MTokui.ubinno" name="MTokui.ubinno" maxlength="8" />
+        </div>
+        <div id="tokuJusho1">
+          <label for="MTokui.tokuJusho1" th:text="#{MTokui.tokuJusho1}">得意先住所１</label><input type="text" id="MTokui.tokuJusho1" name="MTokui.tokuJusho1" maxlength="28" />
+        </div>
+        <div id="tokuJusho2">
+          <label for="MTokui.tokuJusho2" th:text="#{MTokui.tokuJusho2}">得意先住所２</label><input type="text" id="MTokui.tokuJusho2" name="MTokui.tokuJusho2" maxlength="22" />
+        </div>
+        <div id="telno">
+          <label for="MTokui.telno" th:text="#{MTokui.telno}">電話番号</label><input type="text" id="MTokui.telno" name="MTokui.telno" maxlength="12" />
+        </div>
+        <div id="seikyucd">
+          <label for="MTokui.seikyucd" th:text="#{MTokui.seikyucd}">請求先コード</label><input type="text" id="MTokui.seikyucd" name="MTokui.seikyucd" maxlength="8" />
+        </div>
+        <div id="mailcd">
+          <label for="MTokui.mailcd" th:text="#{MTokui.mailcd}">メール先コード</label><input type="text" id="MTokui.mailcd" name="MTokui.mailcd" maxlength="8" />
+        </div>
+        <div id="shukincd">
+          <label for="MTokui.shukincd" th:text="#{MTokui.shukincd}">集金先コード</label><input type="text" id="MTokui.shukincd" name="MTokui.shukincd" maxlength="8" />
+        </div>
+        <div id="honshacd">
+          <label for="MTokui.honshacd" th:text="#{MTokui.honshacd}">本社コード</label><input type="text" id="MTokui.honshacd" name="MTokui.honshacd" maxlength="8" />
+        </div>
+        <div id="shukeicd">
+          <label for="MTokui.shukeicd" th:text="#{MTokui.shukeicd}">集計先コード</label><input type="text" id="MTokui.shukeicd" name="MTokui.shukeicd" maxlength="8" />
+        </div>
+        <div id="tankakbn">
+          <label for="MTokui.tankakbn" th:text="#{MTokui.tankakbn}">単価資格区分</label><input type="text" id="MTokui.tankakbn" name="MTokui.tankakbn" maxlength="2" />
+        </div>
+        <div id="bonuskbn">
+          <label for="MTokui.bonuskbn" th:text="#{MTokui.bonuskbn}">ボーナス区分</label><input type="text" id="MTokui.bonuskbn" name="MTokui.bonuskbn" maxlength="1" />
+        </div>
+        <div id="nohinkbn">
+          <label for="MTokui.nohinkbn" th:text="#{MTokui.nohinkbn}">納品書区分</label><input type="text" id="MTokui.nohinkbn" name="MTokui.nohinkbn" maxlength="2" />
+        </div>
+        <div id="hakkokbn">
+          <label for="MTokui.hakkokbn" th:text="#{MTokui.hakkokbn}">納品書発行区分</label><input type="text" id="MTokui.hakkokbn" name="MTokui.hakkokbn" maxlength="1" />
+        </div>
+        <div id="nohinformkbn">
+          <label for="MTokui.nohinformkbn" th:text="#{MTokui.nohinformkbn}">納品書フォーム区分</label><input type="text" id="MTokui.nohinformkbn" name="MTokui.nohinformkbn" maxlength="3" />
+        </div>
+        <div id="simukekbn">
+          <label for="MTokui.simukekbn" th:text="#{MTokui.simukekbn}">仕向け区分</label><input type="text" id="MTokui.simukekbn" name="MTokui.simukekbn" maxlength="1" />
+        </div>
+        <div id="eigyokbn">
+          <label for="MTokui.eigyokbn" th:text="#{MTokui.eigyokbn}">営業所区分</label><input type="text" id="MTokui.eigyokbn" name="MTokui.eigyokbn" maxlength="2" />
+        </div>
+        <div id="filler1">
+          <label for="MTokui.filler1" th:text="#{MTokui.filler1}">予備領域１</label><input type="text" id="MTokui.filler1" name="MTokui.filler1" maxlength="1" />
+        </div>
+        <div id="kinlesskbn">
+          <label for="MTokui.kinlesskbn" th:text="#{MTokui.kinlesskbn}">金額レス区分</label><input type="text" id="MTokui.kinlesskbn" name="MTokui.kinlesskbn" maxlength="1" />
+        </div>
+        <div id="seikyokbn">
+          <label for="MTokui.seikyokbn" th:text="#{MTokui.seikyokbn}">正協レス区分</label><input type="text" id="MTokui.seikyokbn" name="MTokui.seikyokbn" maxlength="1" />
+        </div>
+        <div id="tikusimebi">
+          <label for="MTokui.tikusimebi" th:text="#{MTokui.tikusimebi}">地区締切日</label><input type="text" id="MTokui.tikusimebi" name="MTokui.tikusimebi" maxlength="2" />
+        </div>
+        <div id="misesimebi">
+          <label for="MTokui.misesimebi" th:text="#{MTokui.misesimebi}">得意先締切日</label><input type="text" id="MTokui.misesimebi" name="MTokui.misesimebi" maxlength="2" />
+        </div>
+        <div id="tourokubi">
+          <label for="MTokui.tourokubi" th:text="#{MTokui.tourokubi}">マスター登録日</label><input type="text" id="MTokui.tourokubi" name="MTokui.tourokubi" maxlength="8" />
+        </div>
+        <div id="jukinkbn">
+          <label for="MTokui.jukinkbn" th:text="#{MTokui.jukinkbn}">受注禁止区分</label><input type="text" id="MTokui.jukinkbn" name="MTokui.jukinkbn" maxlength="1" />
+        </div>
+        <div id="tenkinkbn">
+          <label for="MTokui.tenkinkbn" th:text="#{MTokui.tenkinkbn}">転売禁止区分</label><input type="text" id="MTokui.tenkinkbn" name="MTokui.tenkinkbn" maxlength="1" />
+        </div>
+        <div id="urisumkbn">
+          <label for="MTokui.urisumkbn" th:text="#{MTokui.urisumkbn}">売上集計区分</label><input type="text" id="MTokui.urisumkbn" name="MTokui.urisumkbn" maxlength="1" />
+        </div>
+        <div id="diykbn">
+          <label for="MTokui.diykbn" th:text="#{MTokui.diykbn}">ＤＩＹ区分</label><input type="text" id="MTokui.diykbn" name="MTokui.diykbn" maxlength="1" />
+        </div>
+        <div id="ktokumei">
+          <label for="MTokui.ktokumei" th:text="#{MTokui.ktokumei}">カナ得意先名</label><input type="text" id="MTokui.ktokumei" name="MTokui.ktokumei" maxlength="20" />
+        </div>
+        <div id="zeikbn">
+          <label for="MTokui.zeikbn" th:text="#{MTokui.zeikbn}">消費税区分</label><input type="text" id="MTokui.zeikbn" name="MTokui.zeikbn" maxlength="1" />
+        </div>
+        <div id="eiTantocd">
+          <label for="MTokui.eiTantocd" th:text="#{MTokui.eiTantocd}">営業担当者コード</label><input type="text" id="MTokui.eiTantocd" name="MTokui.eiTantocd" maxlength="4" />
+        </div>
+        <div id="sichocd">
+          <label for="MTokui.sichocd" th:text="#{MTokui.sichocd}">市町村コード</label><input type="text" id="MTokui.sichocd" name="MTokui.sichocd" maxlength="6" />
+        </div>
+        <div id="faxno">
+          <label for="MTokui.faxno" th:text="#{MTokui.faxno}">ＦＡＸ番号</label><input type="text" id="MTokui.faxno" name="MTokui.faxno" maxlength="12" />
+        </div>
+        <div id="tokuikbn1">
+          <label for="MTokui.tokuikbn1" th:text="#{MTokui.tokuikbn1}">得意先区分１</label><input type="text" id="MTokui.tokuikbn1" name="MTokui.tokuikbn1" maxlength="2" />
+        </div>
+        <div id="tokuikbn2">
+          <label for="MTokui.tokuikbn2" th:text="#{MTokui.tokuikbn2}">得意先区分２</label><input type="text" id="MTokui.tokuikbn2" name="MTokui.tokuikbn2" maxlength="2" />
+        </div>
+        <div id="tokuikbn3">
+          <label for="MTokui.tokuikbn3" th:text="#{MTokui.tokuikbn3}">得意先区分３</label><input type="text" id="MTokui.tokuikbn3" name="MTokui.tokuikbn3" maxlength="2" />
+        </div>
+        <div id="faxkbn">
+          <label for="MTokui.faxkbn" th:text="#{MTokui.faxkbn}">ＦＡＸ区分</label><input type="text" id="MTokui.faxkbn" name="MTokui.faxkbn" maxlength="1" />
+        </div>
+        <div id="unsocd">
+          <label for="MTokui.unsocd" th:text="#{MTokui.unsocd}">運送会社コード</label><input type="text" id="MTokui.unsocd" name="MTokui.unsocd" maxlength="3" />
+        </div>
+        <div id="urisumkbnm">
+          <label for="MTokui.urisumkbnm" th:text="#{MTokui.urisumkbnm}">売上集計区分明細</label><input type="text" id="MTokui.urisumkbnm" name="MTokui.urisumkbnm" maxlength="2" />
+        </div>
+        <div id="tikucd">
+          <label for="MTokui.tikucd" th:text="#{MTokui.tikucd}">地区コード</label><input type="text" id="MTokui.tikucd" name="MTokui.tikucd" maxlength="1" />
+        </div>
+        <div id="todofukencd">
+          <label for="MTokui.todofukencd" th:text="#{MTokui.todofukencd}">都道府県コード</label><input type="text" id="MTokui.todofukencd" name="MTokui.todofukencd" maxlength="1" />
+        </div>
+        <div id="kokusaicd">
+          <label for="MTokui.kokusaicd" th:text="#{MTokui.kokusaicd}">国際地域コード</label><input type="text" id="MTokui.kokusaicd" name="MTokui.kokusaicd" maxlength="1" />
+        </div>
+        <div id="kunicd">
+          <label for="MTokui.kunicd" th:text="#{MTokui.kunicd}">国コード</label><input type="text" id="MTokui.kunicd" name="MTokui.kunicd" maxlength="2" />
+        </div>
+        <div id="eigyoareacd">
+          <label for="MTokui.eigyoareacd" th:text="#{MTokui.eigyoareacd}">営業エリアコード</label><input type="text" id="MTokui.eigyoareacd" name="MTokui.eigyoareacd" maxlength="1" />
+        </div>
+        <div id="kensyukikan">
+          <label for="MTokui.kensyukikan" th:text="#{MTokui.kensyukikan}">検収期間</label><input type="text" id="MTokui.kensyukikan" name="MTokui.kensyukikan" maxlength="2" />
+        </div>
+        <div id="eSeikyukbn">
+          <label for="MTokui.eSeikyukbn" th:text="#{MTokui.eSeikyukbn}">請求発行区分</label><input type="text" id="MTokui.eSeikyukbn" name="MTokui.eSeikyukbn" maxlength="1" />
+        </div>
+        <div id="filler">
+          <label for="MTokui.filler" th:text="#{MTokui.filler}">予備領域</label><input type="text" id="MTokui.filler" name="MTokui.filler" maxlength="17" />
         </div>
       </fieldset>
       <div class="buttons">
         <button type="reset" th:text="#{common.reset}">reset</button>
-        <a th:href="@{/model/MTokui.html}" id="MTokui" target="dialog" th:text="#{MTokui.add}" tabindex="-1">M_TOKUI</a>
+        <a th:href="@{/model/MTokui.html}" id="MTokui" target="dialog" th:text="#{MTokui.add}" tabindex="-1">得意先マスタ</a>
       </div>
       <div class="submits">
         <button id="SearchMTokui" class="search" data-gridId="MTokuiGrid" th:text="#{common.search}">submit</button>

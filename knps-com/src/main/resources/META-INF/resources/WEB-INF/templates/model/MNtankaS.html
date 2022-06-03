@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{MNtankaS.title}">日産単価マスタ</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/MNtankaGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{MNtankaS.h2}">h2</h2>
+    <form name="MNtankaSearchForm" action="MNtankaSearch.ajax" class="search">
+      <fieldset>
+        <legend th:text="#{MNtankaS.legend}">legend</legend>
+        <div id="hhinban">
+          <label for="MNtanka.hhinban" th:text="#{MNtanka.hhinban}">販売品番</label><input type="text" id="MNtanka.hhinban" name="MNtanka.hhinban" maxlength="20" />
+        </div>
+        <div id="nissanHinban">
+          <label for="MNtanka.nissanHinban" th:text="#{MNtanka.nissanHinban}">日産品番</label><input type="text" id="MNtanka.nissanHinban" name="MNtanka.nissanHinban" maxlength="20" />
+        </div>
+        <div id="nissanTanka">
+          <label for="MNtanka.nissanTanka" th:text="#{MNtanka.nissanTanka}">日産単価</label><input type="text" id="MNtanka.nissanTanka" name="MNtanka.nissanTanka" maxlength="7" />
+        </div>
+        <div id="kouriKakaku">
+          <label for="MNtanka.kouriKakaku" th:text="#{MNtanka.kouriKakaku}">希望小売価格</label><input type="text" id="MNtanka.kouriKakaku" name="MNtanka.kouriKakaku" maxlength="7" />
+        </div>
+        <div id="shohinkbn">
+          <label for="MNtanka.shohinkbn" th:text="#{MNtanka.shohinkbn}">商品区分</label><input type="text" id="MNtanka.shohinkbn" name="MNtanka.shohinkbn" maxlength="2" />
+        </div>
+        <div id="persokbn">
+          <label for="MNtanka.persokbn" th:text="#{MNtanka.persokbn}">パーソナル区分</label><input type="text" id="MNtanka.persokbn" name="MNtanka.persokbn" maxlength="1" />
+        </div>
+        <div id="kakakukbn">
+          <label for="MNtanka.kakakukbn" th:text="#{MNtanka.kakakukbn}">価格体系区分</label><input type="text" id="MNtanka.kakakukbn" name="MNtanka.kakakukbn" maxlength="1" />
+        </div>
+        <div id="filler">
+          <label for="MNtanka.filler" th:text="#{MNtanka.filler}">予備領域</label><input type="text" id="MNtanka.filler" name="MNtanka.filler" maxlength="26" />
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="reset" th:text="#{common.reset}">reset</button>
+        <a th:href="@{/model/MNtanka.html}" id="MNtanka" target="dialog" th:text="#{MNtanka.add}" tabindex="-1">日産単価マスタ</a>
+      </div>
+      <div class="submits">
+        <button id="SearchMNtanka" class="search" data-gridId="MNtankaGrid" th:text="#{common.search}">submit</button>
+      </div>
+    </form>
+    <form name="MNtankaSRegistForm" action="MNtankaSRegist.ajax" class="regist">
+      <h3 th:text="#{MNtanka.h3}">h3</h3>
+      <div id="MNtankaGrid" data-selectionMode="checkbox" data-addRow="true" data-frozenColumn="0" th:data-href="@{/model/MNtanka.html}"></div>
+      <div id="MNtankaPager"></div>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="$('[id=&quot;SearchMNtanka&quot;]').click();">reset</button>
+        <a th:href="@{MNtankaSearch.xlsx(baseMei=#{MNtankaS.h2})}" id="MNtankaSearch.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeleteMNtankaS" class="delete selectRows" data-action="MNtankaSDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistMNtankaS" class="regist" th:text="#{common.regist}">submit</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

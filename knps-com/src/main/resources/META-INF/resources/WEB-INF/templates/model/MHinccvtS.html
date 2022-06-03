@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{MHinccvtS.title}">品番変換マスタ</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/MHinccvtGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{MHinccvtS.h2}">h2</h2>
+    <form name="MHinccvtSearchForm" action="MHinccvtSearch.ajax" class="search">
+      <fieldset>
+        <legend th:text="#{MHinccvtS.legend}">legend</legend>
+        <div id="cvthinban">
+          <label for="MHinccvt.cvthinban" th:text="#{MHinccvt.cvthinban}">変換品番</label><input type="text" id="MHinccvt.cvthinban" name="MHinccvt.cvthinban" maxlength="20" />
+        </div>
+        <div id="hhinban">
+          <label for="MHinccvt.hhinban" th:text="#{MHinccvt.hhinban}">販売品番</label><input type="text" id="MHinccvt.hhinban" name="MHinccvt.hhinban" maxlength="20" />
+        </div>
+        <div id="chokuhinkbn">
+          <label for="MHinccvt.chokuhinkbn" th:text="#{MHinccvt.chokuhinkbn}">直送対象品区分</label><input type="text" id="MHinccvt.chokuhinkbn" name="MHinccvt.chokuhinkbn" maxlength="1" />
+        </div>
+        <div id="filler">
+          <label for="MHinccvt.filler" th:text="#{MHinccvt.filler}">予備領域</label><input type="text" id="MHinccvt.filler" name="MHinccvt.filler" maxlength="9" />
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="reset" th:text="#{common.reset}">reset</button>
+      </div>
+      <div class="submits">
+        <button id="SearchMHinccvt" class="search" data-gridId="MHinccvtGrid" th:text="#{common.search}">submit</button>
+      </div>
+    </form>
+    <form name="MHinccvtSRegistForm" action="MHinccvtSRegist.ajax" class="regist">
+      <h3 th:text="#{MHinccvt.h3}">h3</h3>
+      <div id="MHinccvtGrid" data-selectionMode="checkbox" data-frozenColumn="1" th:data-href="@{/model/MHinccvt.html}"></div>
+      <div id="MHinccvtPager"></div>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="$('[id=&quot;SearchMHinccvt&quot;]').click();">reset</button>
+        <a th:href="@{MHinccvtSearch.xlsx(baseMei=#{MHinccvtS.h2})}" id="MHinccvtSearch.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeleteMHinccvtS" class="delete selectRows" data-action="MHinccvtSDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistMHinccvtS" class="regist" th:text="#{common.regist}">submit</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

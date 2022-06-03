@@ -11,7 +11,7 @@ import jp.co.golorp.emarf.process.BaseProcess;
 import jp.co.golorp.emarf.validation.IForm;
 
 /**
- * M_HHINMOK一覧登録フォーム
+ * 販売品目マスタ一覧登録フォーム
  *
  * @author emarfkrow
  */
@@ -20,19 +20,19 @@ public class MHhinmokSRegistForm implements IForm {
     /** logger */
     private static final Logger LOG = LoggerFactory.getLogger(MHhinmokRegistForm.class);
 
-    /** M_HHINMOK登録フォームのリスト */
+    /** 販売品目マスタ登録フォームのリスト */
     @Valid
     private List<MHhinmokRegistForm> mHhinmokGrid;
 
     /**
-     * @return M_HHINMOK登録フォームのリスト
+     * @return 販売品目マスタ登録フォームのリスト
      */
     public List<MHhinmokRegistForm> getMHhinmokGrid() {
         return mHhinmokGrid;
     }
 
     /**
-     * @param p M_HHINMOK登録フォームのリスト
+     * @param p 販売品目マスタ登録フォームのリスト
      */
     public void setMHhinmokGrid(final List<MHhinmokRegistForm> p) {
         this.mHhinmokGrid = p;

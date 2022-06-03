@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{MBaraten.title}">バラ展開マスタ</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/MBaratenGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{MBaraten.h2}">h2</h2>
+    <form name="MBaratenRegistForm" action="MBaratenRegist.ajax" class="regist">
+      <fieldset>
+        <legend th:text="#{MBaraten.legend}">legend</legend>
+        <div id="oyaHinban">
+          <label for="MBaraten.oyaHinban" th:text="#{MBaraten.oyaHinban}">親品番</label><span id="MBaraten.oyaHinban"></span><input type="hidden" id="MBaraten.oyaHinban" name="MBaraten.oyaHinban" class="primaryKey" />
+        </div>
+        <div id="koHinban">
+          <label for="MBaraten.koHinban" th:text="#{MBaraten.koHinban}">子品番</label><span id="MBaraten.koHinban"></span><input type="hidden" id="MBaraten.koHinban" name="MBaraten.koHinban" class="primaryKey" />
+        </div>
+        <div id="oyaHinc">
+          <label for="MBaraten.oyaHinc" th:text="#{MBaraten.oyaHinc}">親品目コード</label><input type="text" id="MBaraten.oyaHinc" name="MBaraten.oyaHinc" maxlength="20" />
+        </div>
+        <div id="koHinc">
+          <label for="MBaraten.koHinc" th:text="#{MBaraten.koHinc}">子品目コード</label><input type="text" id="MBaraten.koHinc" name="MBaraten.koHinc" maxlength="20" />
+        </div>
+        <div id="inzu">
+          <label for="MBaraten.inzu" th:text="#{MBaraten.inzu}">員数</label><input type="text" id="MBaraten.inzu" name="MBaraten.inzu" maxlength="3" />
+        </div>
+        <div id="oyaBaika">
+          <label for="MBaraten.oyaBaika" th:text="#{MBaraten.oyaBaika}">親売価</label><input type="text" id="MBaraten.oyaBaika" name="MBaraten.oyaBaika" maxlength="7" />
+        </div>
+        <div id="oyaGenka">
+          <label for="MBaraten.oyaGenka" th:text="#{MBaraten.oyaGenka}">親原価</label><input type="text" id="MBaraten.oyaGenka" name="MBaraten.oyaGenka" maxlength="7" />
+        </div>
+        <div id="koTanka">
+          <label for="MBaraten.koTanka" th:text="#{MBaraten.koTanka}">子単価</label><input type="text" id="MBaraten.koTanka" name="MBaraten.koTanka" maxlength="7" />
+        </div>
+        <div id="koGenka">
+          <label for="MBaraten.koGenka" th:text="#{MBaraten.koGenka}">子原価</label><input type="text" id="MBaraten.koGenka" name="MBaraten.koGenka" maxlength="7" />
+        </div>
+        <div id="koTanritu">
+          <label for="MBaraten.koTanritu" th:text="#{MBaraten.koTanritu}">子単価率</label><input type="text" id="MBaraten.koTanritu" name="MBaraten.koTanritu" maxlength="3" />
+        </div>
+        <div id="kensakum">
+          <label for="MBaraten.kensakum" th:text="#{MBaraten.kensakum}">検索マスター</label><input type="text" id="MBaraten.kensakum" name="MBaraten.kensakum" maxlength="4" />
+        </div>
+        <div id="casekbn">
+          <label for="MBaraten.casekbn" th:text="#{MBaraten.casekbn}">ケース区分</label><input type="text" id="MBaraten.casekbn" name="MBaraten.casekbn" maxlength="1" />
+        </div>
+        <div id="filler">
+          <label for="MBaraten.filler" th:text="#{MBaraten.filler}">予備領域</label><input type="text" id="MBaraten.filler" name="MBaraten.filler" maxlength="16" />
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="Dialogate.refresh(event);">reset</button>
+        <a th:href="@{MBaratenGet.xlsx(baseMei=#{MBaraten.h2})}" id="MBaratenGet.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeleteMBaraten" class="delete" data-action="MBaratenDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistMBaraten" class="regist" th:text="#{common.regist}">登録</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

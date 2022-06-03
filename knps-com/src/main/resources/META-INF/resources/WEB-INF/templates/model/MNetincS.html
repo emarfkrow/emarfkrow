@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{MNetincS.title}">ネットインカム</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/MNetincGridColumns.js}"></script>
+<script th:src="@{/model/MKtankaGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{MNetincS.h2}">h2</h2>
+    <form name="MNetincSearchForm" action="MNetincSearch.ajax" class="search">
+      <fieldset>
+        <legend th:text="#{MNetincS.legend}">legend</legend>
+        <div id="honshacd">
+          <label for="MNetinc.honshacd" th:text="#{MNetinc.honshacd}">本社コード</label><input type="text" id="MNetinc.honshacd" name="MNetinc.honshacd" maxlength="8" />
+        </div>
+        <div id="tokucd">
+          <label for="MNetinc.tokucd" th:text="#{MNetinc.tokucd}">得意先コード</label><input type="text" id="MNetinc.tokucd" name="MNetinc.tokucd" maxlength="8" />
+        </div>
+        <div id="rtokumei">
+          <label for="MNetinc.rtokumei" th:text="#{MNetinc.rtokumei}">略得意先名</label><input type="text" id="MNetinc.rtokumei" name="MNetinc.rtokumei" maxlength="20" />
+        </div>
+        <div id="nebikiritu">
+          <label for="MNetinc.nebikiritu" th:text="#{MNetinc.nebikiritu}">値引率</label><input type="text" id="MNetinc.nebikiritu" name="MNetinc.nebikiritu" maxlength="2" />
+        </div>
+        <div id="upddate">
+          <label for="MNetinc.upddate" th:text="#{MNetinc.upddate}">更新日付</label><input type="text" id="MNetinc.upddate" name="MNetinc.upddate" maxlength="8" />
+        </div>
+        <div id="filler">
+          <label for="MNetinc.filler" th:text="#{MNetinc.filler}">予備領域</label><input type="text" id="MNetinc.filler" name="MNetinc.filler" maxlength="13" />
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="reset" th:text="#{common.reset}">reset</button>
+        <a th:href="@{/model/MNetinc.html}" id="MNetinc" target="dialog" th:text="#{MNetinc.add}" tabindex="-1">ネットインカム</a>
+      </div>
+      <div class="submits">
+        <button id="SearchMNetinc" class="search" data-gridId="MNetincGrid" th:text="#{common.search}">submit</button>
+      </div>
+    </form>
+    <form name="MNetincSRegistForm" action="MNetincSRegist.ajax" class="regist">
+      <h3 th:text="#{MNetinc.h3}">h3</h3>
+      <div id="MNetincGrid" data-selectionMode="checkbox" data-frozenColumn="0" th:data-href="@{/model/MNetinc.html}"></div>
+      <div id="MNetincPager"></div>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="$('[id=&quot;SearchMNetinc&quot;]').click();">reset</button>
+        <a th:href="@{MNetincSearch.xlsx(baseMei=#{MNetincS.h2})}" id="MNetincSearch.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeleteMNetincS" class="delete selectRows" data-action="MNetincSDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistMNetincS" class="regist" th:text="#{common.regist}">submit</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

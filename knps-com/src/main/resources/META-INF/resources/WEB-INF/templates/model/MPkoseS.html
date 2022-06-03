@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{MPkoseS.title}">部品構成マスタ</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/MPkoseGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{MPkoseS.h2}">h2</h2>
+    <form name="MPkoseSearchForm" action="MPkoseSearch.ajax" class="search">
+      <fieldset>
+        <legend th:text="#{MPkoseS.legend}">legend</legend>
+        <div id="hhinban">
+          <label for="MPkose.hhinban" th:text="#{MPkose.hhinban}">販売品番</label><input type="text" id="MPkose.hhinban" name="MPkose.hhinban" maxlength="20" />
+        </div>
+        <div id="hinmei">
+          <label for="MPkose.hinmei" th:text="#{MPkose.hinmei}">販売品名</label><input type="text" id="MPkose.hinmei" name="MPkose.hinmei" maxlength="10" />
+        </div>
+        <div id="phinban">
+          <label for="MPkose.phinban" th:text="#{MPkose.phinban}">部品品番</label><input type="text" id="MPkose.phinban" name="MPkose.phinban" maxlength="20" />
+        </div>
+        <div id="phinmei">
+          <label for="MPkose.phinmei" th:text="#{MPkose.phinmei}">部品名</label><input type="text" id="MPkose.phinmei" name="MPkose.phinmei" maxlength="20" />
+        </div>
+        <div id="tourokubi">
+          <label for="MPkose.tourokubi" th:text="#{MPkose.tourokubi}">登録日</label><input type="text" id="MPkose.tourokubi" name="MPkose.tourokubi" maxlength="8" />
+        </div>
+        <div id="filler">
+          <label for="MPkose.filler" th:text="#{MPkose.filler}">予備領域</label><input type="text" id="MPkose.filler" name="MPkose.filler" maxlength="21" />
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="reset" th:text="#{common.reset}">reset</button>
+      </div>
+      <div class="submits">
+        <button id="SearchMPkose" class="search" data-gridId="MPkoseGrid" th:text="#{common.search}">submit</button>
+      </div>
+    </form>
+    <form name="MPkoseSRegistForm" action="MPkoseSRegist.ajax" class="regist">
+      <h3 th:text="#{MPkose.h3}">h3</h3>
+      <div id="MPkoseGrid" data-selectionMode="checkbox" data-frozenColumn="1" th:data-href="@{/model/MPkose.html}"></div>
+      <div id="MPkosePager"></div>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="$('[id=&quot;SearchMPkose&quot;]').click();">reset</button>
+        <a th:href="@{MPkoseSearch.xlsx(baseMei=#{MPkoseS.h2})}" id="MPkoseSearch.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeleteMPkoseS" class="delete selectRows" data-action="MPkoseSDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistMPkoseS" class="regist" th:text="#{common.regist}">submit</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

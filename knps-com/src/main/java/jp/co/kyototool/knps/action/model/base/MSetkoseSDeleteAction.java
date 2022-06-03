@@ -13,13 +13,13 @@ import jp.co.golorp.emarf.util.Messages;
 import jp.co.golorp.emarf.validation.FormValidator;
 
 /**
- * M_SETKOSE一覧削除
+ * セット構成マスタ一覧削除
  *
  * @author emarfkrow
  */
 public class MSetkoseSDeleteAction extends BaseAction {
 
-    /** M_SETKOSE一覧削除処理 */
+    /** セット構成マスタ一覧削除処理 */
     @Override
     public Map<String, Object> running(final LocalDateTime now, final String id, final Map<String, Object> postJson) {
 

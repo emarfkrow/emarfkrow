@@ -6,11 +6,10 @@ WHERE
     1 = 1 
     AND TRIM (a.set_hinban) = TRIM (:set_hinban) 
     AND TRIM (a.set_khinban) = TRIM (:set_khinban) 
-    AND TRIM (a.dltflg) = TRIM (:dltflg) 
+    AND a.dltflg = :dltflg 
+    AND TRIM (a.botm) = TRIM (:botm) 
     AND a.setinzu = :setinzu 
-    AND a.time_stamp_create = :time_stamp_create 
-    AND a.time_stamp_change = :time_stamp_change 
-    AND a.user_id_create = :user_id_create 
-    AND a.user_id_change = :user_id_change 
+    AND TRIM (a.mushokbn) = TRIM (:mushokbn) 
+    AND TRIM (a.filler) = TRIM (:filler) 
 ORDER BY
     a.SET-HINBAN, a.SET-KHINBAN

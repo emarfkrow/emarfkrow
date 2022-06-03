@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{MSalehin.title}">セール品目マスタ</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/MSalehinGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{MSalehin.h2}">h2</h2>
+    <form name="MSalehinRegistForm" action="MSalehinRegist.ajax" class="regist">
+      <fieldset>
+        <legend th:text="#{MSalehin.legend}">legend</legend>
+        <div id="salekbn">
+          <label for="MSalehin.salekbn" th:text="#{MSalehin.salekbn}">セール区分</label><span id="MSalehin.salekbn"></span><input type="hidden" id="MSalehin.salekbn" name="MSalehin.salekbn" class="primaryKey" />
+        </div>
+        <div id="salemei">
+          <label for="MSalehin.salemei" th:text="#{MSalehin.salemei}">セール名</label><input type="text" id="MSalehin.salemei" name="MSalehin.salemei" maxlength="20" />
+        </div>
+        <div id="hhinban">
+          <label for="MSalehin.hhinban" th:text="#{MSalehin.hhinban}">販売品番</label><span id="MSalehin.hhinban"></span><input type="hidden" id="MSalehin.hhinban" name="MSalehin.hhinban" class="primaryKey" />
+        </div>
+        <div id="kaisiYy">
+          <label for="MSalehin.kaisiYy" th:text="#{MSalehin.kaisiYy}">開始年</label><input type="text" id="MSalehin.kaisiYy" name="MSalehin.kaisiYy" maxlength="4" class="primaryKey" />
+        </div>
+        <div id="kaisiMm">
+          <label for="MSalehin.kaisiMm" th:text="#{MSalehin.kaisiMm}">開始月</label><input type="text" id="MSalehin.kaisiMm" name="MSalehin.kaisiMm" maxlength="2" class="primaryKey" />
+        </div>
+        <div id="kaisiDd">
+          <label for="MSalehin.kaisiDd" th:text="#{MSalehin.kaisiDd}">開始日</label><input type="text" id="MSalehin.kaisiDd" name="MSalehin.kaisiDd" maxlength="2" class="primaryKey" />
+        </div>
+        <div id="shuryoYy">
+          <label for="MSalehin.shuryoYy" th:text="#{MSalehin.shuryoYy}">終了年</label><input type="text" id="MSalehin.shuryoYy" name="MSalehin.shuryoYy" maxlength="4" class="primaryKey" />
+        </div>
+        <div id="shuryoMm">
+          <label for="MSalehin.shuryoMm" th:text="#{MSalehin.shuryoMm}">終了月</label><input type="text" id="MSalehin.shuryoMm" name="MSalehin.shuryoMm" maxlength="2" class="primaryKey" />
+        </div>
+        <div id="shuryoDd">
+          <label for="MSalehin.shuryoDd" th:text="#{MSalehin.shuryoDd}">終了日</label><input type="text" id="MSalehin.shuryoDd" name="MSalehin.shuryoDd" maxlength="2" class="primaryKey" />
+        </div>
+        <div id="filler">
+          <label for="MSalehin.filler" th:text="#{MSalehin.filler}">予備領域</label><input type="text" id="MSalehin.filler" name="MSalehin.filler" maxlength="32" />
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="Dialogate.refresh(event);">reset</button>
+        <a th:href="@{MSalehinGet.xlsx(baseMei=#{MSalehin.h2})}" id="MSalehinGet.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeleteMSalehin" class="delete" data-action="MSalehinDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistMSalehin" class="regist" th:text="#{common.regist}">登録</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

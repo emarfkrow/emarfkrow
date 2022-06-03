@@ -9,13 +9,13 @@ import jp.co.kyototool.knps.entity.MTokui;
 import jp.co.golorp.emarf.action.BaseAction;
 
 /**
- * M_TOKUI照会
+ * 得意先マスタ照会
  *
  * @author emarfkrow
  */
 public class MTokuiGetAction extends BaseAction {
 
-    /** M_TOKUI照会処理 */
+    /** 得意先マスタ照会処理 */
     @Override
     public Map<String, Object> running(final LocalDateTime now, final String id, final Map<String, Object> postJson) {
 

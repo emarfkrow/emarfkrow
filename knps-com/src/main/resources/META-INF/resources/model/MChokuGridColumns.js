@@ -1,13 +1,24 @@
 /**
- * M_CHOKUグリッド定義
+ * 直送先マスタグリッド定義
  */
 
 let MChokuGridColumns = [
     Column.cell('CHOKUCD', Messages['MChokuGrid.chokucd'], 80, 'primaryKey', null),
     Column.text('CHOKUMEI1', Messages['MChokuGrid.chokumei1'], 280, '', null),
     Column.text('CHOKUMEI2', Messages['MChokuGrid.chokumei2'], 220, '', null),
-    Column.cell('TIME_STAMP_CREATE', Messages['MChokuGrid.timeStampCreate'], 70, 'metaInfo', Slick.Formatters.Extends.DateTime),
-    Column.cell('TIME_STAMP_CHANGE', Messages['MChokuGrid.timeStampChange'], 70, 'metaInfo', Slick.Formatters.Extends.DateTime),
-    Column.cell('USER_ID_CREATE', Messages['MChokuGrid.userIdCreate'], 100, 'metaInfo', null),
-    Column.cell('USER_ID_CHANGE', Messages['MChokuGrid.userIdChange'], 100, 'metaInfo', null),
+    Column.text('RCHOKUMEI', Messages['MChokuGrid.rchokumei'], 200, '', null),
+    Column.text('CHOKU-JUSHO1', Messages['MChokuGrid.chokuJusho1'], 280, '', null),
+    Column.text('CHOKU-JUSHO2', Messages['MChokuGrid.chokuJusho2'], 220, '', null),
+    Column.text('UBINNO', Messages['MChokuGrid.ubinno'], 80, '', null),
+    Column.text('TELNO', Messages['MChokuGrid.telno'], 120, '', null),
+    Column.text('TOUROKUBI', Messages['MChokuGrid.tourokubi'], 80, '', null),
+    Column.text('KCHOKUMEI', Messages['MChokuGrid.kchokumei'], 200, '', null),
+    Column.text('SICHOCD', Messages['MChokuGrid.sichocd'], 60, '', null),
+    Column.text('FAXNO', Messages['MChokuGrid.faxno'], 120, '', null),
+    Column.text('TORIKESI-KBN', Messages['MChokuGrid.torikesiKbn'], 10, '', null),
+    Column.text('UNSOCD', Messages['MChokuGrid.unsocd'], 30, '', null),
+    Column.text('TIKUCD', Messages['MChokuGrid.tikucd'], 10, '', null),
+    Column.text('TODOFUKENCD', Messages['MChokuGrid.todofukencd'], 10, '', null),
+    Column.text('UPDNKINKBN', Messages['MChokuGrid.updnkinkbn'], 10, '', null),
+    Column.text('FILLER', Messages['MChokuGrid.filler'], 90, '', null),
 ];

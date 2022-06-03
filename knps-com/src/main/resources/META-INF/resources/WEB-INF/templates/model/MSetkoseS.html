@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
 <head>
 <meta charset="UTF-8">
-<title th:text="#{MSetkoseS.title}">M_SETKOSE</title>
+<title th:text="#{MSetkoseS.title}">セット構成マスタ</title>
 <style type="text/css">
 </style>
 <script type="text/javascript">
@@ -17,16 +17,25 @@
       <fieldset>
         <legend th:text="#{MSetkoseS.legend}">legend</legend>
         <div id="setHinban">
-          <label for="MSetkose.setHinban" th:text="#{MSetkose.setHinban}">SET-HINBAN</label><input type="text" id="MSetkose.setHinban" name="MSetkose.setHinban" maxlength="20" />
+          <label for="MSetkose.setHinban" th:text="#{MSetkose.setHinban}">セット品番</label><input type="text" id="MSetkose.setHinban" name="MSetkose.setHinban" maxlength="20" />
         </div>
         <div id="setKhinban">
-          <label for="MSetkose.setKhinban" th:text="#{MSetkose.setKhinban}">SET-KHINBAN</label><input type="text" id="MSetkose.setKhinban" name="MSetkose.setKhinban" maxlength="20" />
+          <label for="MSetkose.setKhinban" th:text="#{MSetkose.setKhinban}">セット子品番</label><input type="text" id="MSetkose.setKhinban" name="MSetkose.setKhinban" maxlength="20" />
         </div>
         <div id="dltflg">
-          <label for="MSetkose.dltflg" th:text="#{MSetkose.dltflg}">DLTFLG</label><input type="text" id="MSetkose.dltflg" name="MSetkose.dltflg" maxlength="1" />
+          <label for="MSetkose.dltflg" th:text="#{MSetkose.dltflg}">削除フラグ</label><input type="text" id="MSetkose.dltflg" name="MSetkose.dltflg" maxlength="1" />
+        </div>
+        <div id="botm">
+          <label for="MSetkose.botm" th:text="#{MSetkose.botm}">ボトムフラグ</label><input type="text" id="MSetkose.botm" name="MSetkose.botm" maxlength="1" />
         </div>
         <div id="setinzu">
-          <label for="MSetkose.setinzu" th:text="#{MSetkose.setinzu}">SETINZU</label><input type="text" id="MSetkose.setinzu" name="MSetkose.setinzu" maxlength="3" />
+          <label for="MSetkose.setinzu" th:text="#{MSetkose.setinzu}">セット員数</label><input type="text" id="MSetkose.setinzu" name="MSetkose.setinzu" maxlength="3" />
+        </div>
+        <div id="mushokbn">
+          <label for="MSetkose.mushokbn" th:text="#{MSetkose.mushokbn}">無償支給区分</label><input type="text" id="MSetkose.mushokbn" name="MSetkose.mushokbn" maxlength="1" />
+        </div>
+        <div id="filler">
+          <label for="MSetkose.filler" th:text="#{MSetkose.filler}">予備領域</label><input type="text" id="MSetkose.filler" name="MSetkose.filler" maxlength="34" />
         </div>
       </fieldset>
       <div class="buttons">

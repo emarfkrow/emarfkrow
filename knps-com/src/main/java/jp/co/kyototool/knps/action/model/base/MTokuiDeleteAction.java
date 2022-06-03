@@ -12,13 +12,13 @@ import jp.co.golorp.emarf.util.Messages;
 import jp.co.golorp.emarf.validation.FormValidator;
 
 /**
- * M_TOKUI削除
+ * 得意先マスタ削除
  *
  * @author emarfkrow
  */
 public class MTokuiDeleteAction extends BaseAction {
 
-    /** M_TOKUI削除処理 */
+    /** 得意先マスタ削除処理 */
     @Override
     public Map<String, Object> running(final LocalDateTime now, final String id, final Map<String, Object> postJson) {
 

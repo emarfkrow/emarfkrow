@@ -286,6 +286,24 @@
         </div>
       </fieldset>
       <fieldset>
+        <legend th:text="#{MGhinmok.legend}">legend</legend>
+        <div id="hincd">
+          <label for="MGhinmok.hincd" th:text="#{MGhinmok.hincd}">品目コード</label><input type="text" id="MGhinmok.hincd" name="MGhinmok.hincd" maxlength="20" />
+        </div>
+        <div id="hingenka">
+          <label for="MGhinmok.hingenka" th:text="#{MGhinmok.hingenka}">品目合計単価</label><input type="text" id="MGhinmok.hingenka" name="MGhinmok.hingenka" maxlength="7" />
+        </div>
+        <div id="renkeibi">
+          <label for="MGhinmok.renkeibi" th:text="#{MGhinmok.renkeibi}">データ連携日</label><input type="text" id="MGhinmok.renkeibi" name="MGhinmok.renkeibi" maxlength="8" />
+        </div>
+        <div id="shoriflg">
+          <label for="MGhinmok.shoriflg" th:text="#{MGhinmok.shoriflg}">処理済フラグ</label><input type="text" id="MGhinmok.shoriflg" name="MGhinmok.shoriflg" maxlength="1" />
+        </div>
+        <div id="filler">
+          <label for="MGhinmok.filler" th:text="#{MGhinmok.filler}">予備領域</label><input type="text" id="MGhinmok.filler" name="MGhinmok.filler" maxlength="21" />
+        </div>
+      </fieldset>
+      <fieldset>
         <legend th:text="#{PrdOrderpointStatus.legend}">legend</legend>
         <div id="publishedCounts">
           <label for="PrdOrderpointStatus.publishedCounts" th:text="#{PrdOrderpointStatus.publishedCounts}">PUBLISHED_COUNTS</label><input type="text" id="PrdOrderpointStatus.publishedCounts" name="PrdOrderpointStatus.publishedCounts" maxlength="7" />

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{MYuryokuS.title}">有力店マスタ</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/MYuryokuGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{MYuryokuS.h2}">h2</h2>
+    <form name="MYuryokuSearchForm" action="MYuryokuSearch.ajax" class="search">
+      <fieldset>
+        <legend th:text="#{MYuryokuS.legend}">legend</legend>
+        <div id="yuryocd">
+          <label for="MYuryoku.yuryocd" th:text="#{MYuryoku.yuryocd}">有力店コード</label><input type="text" id="MYuryoku.yuryocd" name="MYuryoku.yuryocd" maxlength="8" />
+        </div>
+        <div id="ryuryokumei">
+          <label for="MYuryoku.ryuryokumei" th:text="#{MYuryoku.ryuryokumei}">略有力店名</label><input type="text" id="MYuryoku.ryuryokumei" name="MYuryoku.ryuryokumei" maxlength="20" />
+        </div>
+        <div id="yuryomei1">
+          <label for="MYuryoku.yuryomei1" th:text="#{MYuryoku.yuryomei1}">有力店名１</label><input type="text" id="MYuryoku.yuryomei1" name="MYuryoku.yuryomei1" maxlength="28" />
+        </div>
+        <div id="yuryomei2">
+          <label for="MYuryoku.yuryomei2" th:text="#{MYuryoku.yuryomei2}">有力店名２</label><input type="text" id="MYuryoku.yuryomei2" name="MYuryoku.yuryomei2" maxlength="22" />
+        </div>
+        <div id="yuryokuJusho1">
+          <label for="MYuryoku.yuryokuJusho1" th:text="#{MYuryoku.yuryokuJusho1}">有力店住所１</label><input type="text" id="MYuryoku.yuryokuJusho1" name="MYuryoku.yuryokuJusho1" maxlength="28" />
+        </div>
+        <div id="yuryokuJusho2">
+          <label for="MYuryoku.yuryokuJusho2" th:text="#{MYuryoku.yuryokuJusho2}">有力店住所２</label><input type="text" id="MYuryoku.yuryokuJusho2" name="MYuryoku.yuryokuJusho2" maxlength="22" />
+        </div>
+        <div id="ubinno">
+          <label for="MYuryoku.ubinno" th:text="#{MYuryoku.ubinno}">郵便番号</label><input type="text" id="MYuryoku.ubinno" name="MYuryoku.ubinno" maxlength="8" />
+        </div>
+        <div id="telno">
+          <label for="MYuryoku.telno" th:text="#{MYuryoku.telno}">電話番号</label><input type="text" id="MYuryoku.telno" name="MYuryoku.telno" maxlength="12" />
+        </div>
+        <div id="faxno">
+          <label for="MYuryoku.faxno" th:text="#{MYuryoku.faxno}">ＦＡＸ番号</label><input type="text" id="MYuryoku.faxno" name="MYuryoku.faxno" maxlength="12" />
+        </div>
+        <div id="yuryokukbn">
+          <label for="MYuryoku.yuryokukbn" th:text="#{MYuryoku.yuryokukbn}">有力店資格区分</label><input type="text" id="MYuryoku.yuryokukbn" name="MYuryoku.yuryokukbn" maxlength="1" />
+        </div>
+        <div id="tourokubi">
+          <label for="MYuryoku.tourokubi" th:text="#{MYuryoku.tourokubi}">マスター登録日</label><input type="text" id="MYuryoku.tourokubi" name="MYuryoku.tourokubi" maxlength="8" />
+        </div>
+        <div id="kyuryokumei">
+          <label for="MYuryoku.kyuryokumei" th:text="#{MYuryoku.kyuryokumei}">カナ有力店名</label><input type="text" id="MYuryoku.kyuryokumei" name="MYuryoku.kyuryokumei" maxlength="20" />
+        </div>
+        <div id="ki">
+          <label for="MYuryoku.ki" th:text="#{MYuryoku.ki}">期</label><input type="text" id="MYuryoku.ki" name="MYuryoku.ki" maxlength="2" />
+        </div>
+        <div id="kamiKonyu">
+          <label for="MYuryoku.kamiKonyu" th:text="#{MYuryoku.kamiKonyu}">上期購入額</label><input type="text" id="MYuryoku.kamiKonyu" name="MYuryoku.kamiKonyu" maxlength="9" />
+        </div>
+        <div id="kamiSiharai">
+          <label for="MYuryoku.kamiSiharai" th:text="#{MYuryoku.kamiSiharai}">上期支払対象額</label><input type="text" id="MYuryoku.kamiSiharai" name="MYuryoku.kamiSiharai" maxlength="9" />
+        </div>
+        <div id="kamiYuboritu">
+          <label for="MYuryoku.kamiYuboritu" th:text="#{MYuryoku.kamiYuboritu}">上期有ボ支払率</label><input type="text" id="MYuryoku.kamiYuboritu" name="MYuryoku.kamiYuboritu" maxlength="2" />
+        </div>
+        <div id="kamiTasseikbn">
+          <label for="MYuryoku.kamiTasseikbn" th:text="#{MYuryoku.kamiTasseikbn}">上期達成区分</label><input type="text" id="MYuryoku.kamiTasseikbn" name="MYuryoku.kamiTasseikbn" maxlength="1" />
+        </div>
+        <div id="simoKonyu">
+          <label for="MYuryoku.simoKonyu" th:text="#{MYuryoku.simoKonyu}">下期購入額</label><input type="text" id="MYuryoku.simoKonyu" name="MYuryoku.simoKonyu" maxlength="9" />
+        </div>
+        <div id="simoSiharai">
+          <label for="MYuryoku.simoSiharai" th:text="#{MYuryoku.simoSiharai}">下期支払対象額</label><input type="text" id="MYuryoku.simoSiharai" name="MYuryoku.simoSiharai" maxlength="9" />
+        </div>
+        <div id="simoYuboritu">
+          <label for="MYuryoku.simoYuboritu" th:text="#{MYuryoku.simoYuboritu}">下期有ボ支払率</label><input type="text" id="MYuryoku.simoYuboritu" name="MYuryoku.simoYuboritu" maxlength="2" />
+        </div>
+        <div id="simoTasseikbn">
+          <label for="MYuryoku.simoTasseikbn" th:text="#{MYuryoku.simoTasseikbn}">下期達成区分</label><input type="text" id="MYuryoku.simoTasseikbn" name="MYuryoku.simoTasseikbn" maxlength="1" />
+        </div>
+        <div id="yutenkaikbn">
+          <label for="MYuryoku.yutenkaikbn" th:text="#{MYuryoku.yutenkaikbn}">有力店会区分</label><input type="text" id="MYuryoku.yutenkaikbn" name="MYuryoku.yutenkaikbn" maxlength="1" />
+        </div>
+        <div id="torihikiKbn">
+          <label for="MYuryoku.torihikiKbn" th:text="#{MYuryoku.torihikiKbn}">取引停止区分</label><input type="text" id="MYuryoku.torihikiKbn" name="MYuryoku.torihikiKbn" maxlength="1" />
+        </div>
+        <div id="gyoshuKbn">
+          <label for="MYuryoku.gyoshuKbn" th:text="#{MYuryoku.gyoshuKbn}">業種区分</label><input type="text" id="MYuryoku.gyoshuKbn" name="MYuryoku.gyoshuKbn" maxlength="2" />
+        </div>
+        <div id="sichocd">
+          <label for="MYuryoku.sichocd" th:text="#{MYuryoku.sichocd}">市町村コード</label><input type="text" id="MYuryoku.sichocd" name="MYuryoku.sichocd" maxlength="6" />
+        </div>
+        <div id="faxkbn">
+          <label for="MYuryoku.faxkbn" th:text="#{MYuryoku.faxkbn}">ＦＡＸ区分</label><input type="text" id="MYuryoku.faxkbn" name="MYuryoku.faxkbn" maxlength="1" />
+        </div>
+        <div id="ritukbn">
+          <label for="MYuryoku.ritukbn" th:text="#{MYuryoku.ritukbn}">有ボ率区分</label><input type="text" id="MYuryoku.ritukbn" name="MYuryoku.ritukbn" maxlength="1" />
+        </div>
+        <div id="unsocd">
+          <label for="MYuryoku.unsocd" th:text="#{MYuryoku.unsocd}">運送会社コード</label><input type="text" id="MYuryoku.unsocd" name="MYuryoku.unsocd" maxlength="3" />
+        </div>
+        <div id="tikucd">
+          <label for="MYuryoku.tikucd" th:text="#{MYuryoku.tikucd}">地区コード</label><input type="text" id="MYuryoku.tikucd" name="MYuryoku.tikucd" maxlength="1" />
+        </div>
+        <div id="todofukencd">
+          <label for="MYuryoku.todofukencd" th:text="#{MYuryoku.todofukencd}">都道府県コード</label><input type="text" id="MYuryoku.todofukencd" name="MYuryoku.todofukencd" maxlength="1" />
+        </div>
+        <div id="eigyokbn">
+          <label for="MYuryoku.eigyokbn" th:text="#{MYuryoku.eigyokbn}">営業所区分</label><input type="text" id="MYuryoku.eigyokbn" name="MYuryoku.eigyokbn" maxlength="2" />
+        </div>
+        <div id="yuryokuRank">
+          <label for="MYuryoku.yuryokuRank" th:text="#{MYuryoku.yuryokuRank}">有力店ランク</label><input type="text" id="MYuryoku.yuryokuRank" name="MYuryoku.yuryokuRank" maxlength="2" />
+        </div>
+        <div id="stkbn">
+          <label for="MYuryoku.stkbn" th:text="#{MYuryoku.stkbn}">戦略店区分</label><input type="text" id="MYuryoku.stkbn" name="MYuryoku.stkbn" maxlength="1" />
+        </div>
+        <div id="filler">
+          <label for="MYuryoku.filler" th:text="#{MYuryoku.filler}">予備領域</label><input type="text" id="MYuryoku.filler" name="MYuryoku.filler" maxlength="9" />
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="reset" th:text="#{common.reset}">reset</button>
+        <a th:href="@{/model/MYuryoku.html}" id="MYuryoku" target="dialog" th:text="#{MYuryoku.add}" tabindex="-1">有力店マスタ</a>
+      </div>
+      <div class="submits">
+        <button id="SearchMYuryoku" class="search" data-gridId="MYuryokuGrid" th:text="#{common.search}">submit</button>
+      </div>
+    </form>
+    <form name="MYuryokuSRegistForm" action="MYuryokuSRegist.ajax" class="regist">
+      <h3 th:text="#{MYuryoku.h3}">h3</h3>
+      <div id="MYuryokuGrid" data-selectionMode="checkbox" data-frozenColumn="0" th:data-href="@{/model/MYuryoku.html}"></div>
+      <div id="MYuryokuPager"></div>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="$('[id=&quot;SearchMYuryoku&quot;]').click();">reset</button>
+        <a th:href="@{MYuryokuSearch.xlsx(baseMei=#{MYuryokuS.h2})}" id="MYuryokuSearch.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeleteMYuryokuS" class="delete selectRows" data-action="MYuryokuSDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistMYuryokuS" class="regist" th:text="#{common.regist}">submit</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

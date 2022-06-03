@@ -1171,6 +1171,24 @@ public class MstHinbanRegistForm implements IForm {
         this.haibanYm = p;
     }
 
+    /** 原価用品目マスタ */
+    @jakarta.validation.Valid
+    private MGhinmokRegistForm mGhinmokRegistForm;
+
+    /**
+     * @return MGhinmokRegistForm
+     */
+    public MGhinmokRegistForm getMGhinmokRegistForm() {
+        return mGhinmokRegistForm;
+    }
+
+    /**
+     * @param p
+     */
+    public void setMGhinmokRegistForm(final MGhinmokRegistForm p) {
+        this.mGhinmokRegistForm = p;
+    }
+
     /** PRD_ORDERPOINT_STATUS */
     @jakarta.validation.Valid
     private PrdOrderpointStatusRegistForm prdOrderpointStatusRegistForm;

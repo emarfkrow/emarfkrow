@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{MYosin.title}">与信管理マスタ</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/MYosinGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{MYosin.h2}">h2</h2>
+    <form name="MYosinRegistForm" action="MYosinRegist.ajax" class="regist">
+      <fieldset>
+        <legend th:text="#{MYosin.legend}">legend</legend>
+        <div id="shukincd">
+          <label for="MYosin.shukincd" th:text="#{MYosin.shukincd}">集金先コード</label><input type="text" id="MYosin.shukincd" name="MYosin.shukincd" maxlength="8" class="primaryKey" />
+        </div>
+        <div id="honshacd">
+          <label for="MYosin.honshacd" th:text="#{MYosin.honshacd}">本社コード</label><input type="text" id="MYosin.honshacd" name="MYosin.honshacd" maxlength="8" />
+        </div>
+        <div id="rtokumei">
+          <label for="MYosin.rtokumei" th:text="#{MYosin.rtokumei}">略得意先名</label><input type="text" id="MYosin.rtokumei" name="MYosin.rtokumei" maxlength="20" />
+        </div>
+        <div id="sinyoRank">
+          <label for="MYosin.sinyoRank" th:text="#{MYosin.sinyoRank}">信用ランク</label><input type="text" id="MYosin.sinyoRank" name="MYosin.sinyoRank" maxlength="1" />
+        </div>
+        <div id="sinyoHoken">
+          <label for="MYosin.sinyoHoken" th:text="#{MYosin.sinyoHoken}">取引信用保険額</label><input type="text" id="MYosin.sinyoHoken" name="MYosin.sinyoHoken" maxlength="11" />
+        </div>
+        <div id="eigyoHosyokin">
+          <label for="MYosin.eigyoHosyokin" th:text="#{MYosin.eigyoHosyokin}">営業保証金</label><input type="text" id="MYosin.eigyoHosyokin" name="MYosin.eigyoHosyokin" maxlength="11" />
+        </div>
+        <div id="tanpoKabusu">
+          <label for="MYosin.tanpoKabusu" th:text="#{MYosin.tanpoKabusu}">担保株式数</label><input type="text" id="MYosin.tanpoKabusu" name="MYosin.tanpoKabusu" maxlength="11" />
+        </div>
+        <div id="shushigaku">
+          <label for="MYosin.shushigaku" th:text="#{MYosin.shushigaku}">出資額</label><input type="text" id="MYosin.shushigaku" name="MYosin.shushigaku" maxlength="11" />
+        </div>
+        <div id="kasidaoreHikiate">
+          <label for="MYosin.kasidaoreHikiate" th:text="#{MYosin.kasidaoreHikiate}">貸倒懸念先引当金</label><input type="text" id="MYosin.kasidaoreHikiate" name="MYosin.kasidaoreHikiate" maxlength="11" />
+        </div>
+        <div id="shukaGendo">
+          <label for="MYosin.shukaGendo" th:text="#{MYosin.shukaGendo}">出荷限度額</label><input type="text" id="MYosin.shukaGendo" name="MYosin.shukaGendo" maxlength="11" />
+        </div>
+        <div id="tourokubi">
+          <label for="MYosin.tourokubi" th:text="#{MYosin.tourokubi}">マスター登録日</label><input type="text" id="MYosin.tourokubi" name="MYosin.tourokubi" maxlength="8" />
+        </div>
+        <div id="upddate">
+          <label for="MYosin.upddate" th:text="#{MYosin.upddate}">更新日付</label><input type="text" id="MYosin.upddate" name="MYosin.upddate" maxlength="8" />
+        </div>
+        <div id="filler">
+          <label for="MYosin.filler" th:text="#{MYosin.filler}">予備領域</label><input type="text" id="MYosin.filler" name="MYosin.filler" maxlength="11" />
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="Dialogate.refresh(event);">reset</button>
+        <a th:href="@{MYosinGet.xlsx(baseMei=#{MYosin.h2})}" id="MYosinGet.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeleteMYosin" class="delete" data-action="MYosinDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistMYosin" class="regist" th:text="#{common.regist}">登録</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

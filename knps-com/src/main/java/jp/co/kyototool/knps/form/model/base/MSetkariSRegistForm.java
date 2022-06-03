@@ -11,7 +11,7 @@ import jp.co.golorp.emarf.process.BaseProcess;
 import jp.co.golorp.emarf.validation.IForm;
 
 /**
- * M_SETKARI一覧登録フォーム
+ * 仮セット構成マスタ一覧登録フォーム
  *
  * @author emarfkrow
  */
@@ -20,19 +20,19 @@ public class MSetkariSRegistForm implements IForm {
     /** logger */
     private static final Logger LOG = LoggerFactory.getLogger(MSetkariRegistForm.class);
 
-    /** M_SETKARI登録フォームのリスト */
+    /** 仮セット構成マスタ登録フォームのリスト */
     @Valid
     private List<MSetkariRegistForm> mSetkariGrid;
 
     /**
-     * @return M_SETKARI登録フォームのリスト
+     * @return 仮セット構成マスタ登録フォームのリスト
      */
     public List<MSetkariRegistForm> getMSetkariGrid() {
         return mSetkariGrid;
     }
 
     /**
-     * @param p M_SETKARI登録フォームのリスト
+     * @param p 仮セット構成マスタ登録フォームのリスト
      */
     public void setMSetkariGrid(final List<MSetkariRegistForm> p) {
         this.mSetkariGrid = p;

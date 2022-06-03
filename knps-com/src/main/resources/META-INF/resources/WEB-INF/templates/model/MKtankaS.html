@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{MKtankaS.title}">契約単価マスタ</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/MKtankaGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{MKtankaS.h2}">h2</h2>
+    <form name="MKtankaSearchForm" action="MKtankaSearch.ajax" class="search">
+      <fieldset>
+        <legend th:text="#{MKtankaS.legend}">legend</legend>
+        <div id="honshacd">
+          <label for="MKtanka.honshacd" th:text="#{MKtanka.honshacd}">本社コード</label><input type="text" id="MKtanka.honshacd" name="MKtanka.honshacd" maxlength="8" />
+        </div>
+        <div id="shagaiHinban">
+          <label for="MKtanka.shagaiHinban" th:text="#{MKtanka.shagaiHinban}">社外品番</label><input type="text" id="MKtanka.shagaiHinban" name="MKtanka.shagaiHinban" maxlength="20" />
+        </div>
+        <div id="kkaisibi">
+          <label for="MKtanka.kkaisibi" th:text="#{MKtanka.kkaisibi}">契約単価開始日</label><input type="text" id="MKtanka.kkaisibi" name="MKtanka.kkaisibi" maxlength="8" />
+        </div>
+        <div id="kshuryobi">
+          <label for="MKtanka.kshuryobi" th:text="#{MKtanka.kshuryobi}">契約単価終了日</label><input type="text" id="MKtanka.kshuryobi" name="MKtanka.kshuryobi" maxlength="8" />
+        </div>
+        <div id="hhinban">
+          <label for="MKtanka.hhinban" th:text="#{MKtanka.hhinban}">販売品番</label><input type="text" id="MKtanka.hhinban" name="MKtanka.hhinban" maxlength="20" />
+        </div>
+        <div id="keiyakuTanka">
+          <label for="MKtanka.keiyakuTanka" th:text="#{MKtanka.keiyakuTanka}">契約単価</label><input type="text" id="MKtanka.keiyakuTanka" name="MKtanka.keiyakuTanka" maxlength="7" />
+        </div>
+        <div id="shohinkbn">
+          <label for="MKtanka.shohinkbn" th:text="#{MKtanka.shohinkbn}">商品区分</label><input type="text" id="MKtanka.shohinkbn" name="MKtanka.shohinkbn" maxlength="2" />
+        </div>
+        <div id="kakakukbn">
+          <label for="MKtanka.kakakukbn" th:text="#{MKtanka.kakakukbn}">価格体系区分</label><input type="text" id="MKtanka.kakakukbn" name="MKtanka.kakakukbn" maxlength="1" />
+        </div>
+        <div id="filler">
+          <label for="MKtanka.filler" th:text="#{MKtanka.filler}">予備領域</label><input type="text" id="MKtanka.filler" name="MKtanka.filler" maxlength="28" />
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="reset" th:text="#{common.reset}">reset</button>
+        <a th:href="@{/model/MKtanka.html}" id="MKtanka" target="dialog" th:text="#{MKtanka.add}" tabindex="-1">契約単価マスタ</a>
+      </div>
+      <div class="submits">
+        <button id="SearchMKtanka" class="search" data-gridId="MKtankaGrid" th:text="#{common.search}">submit</button>
+      </div>
+    </form>
+    <form name="MKtankaSRegistForm" action="MKtankaSRegist.ajax" class="regist">
+      <h3 th:text="#{MKtanka.h3}">h3</h3>
+      <div id="MKtankaGrid" data-selectionMode="checkbox" data-frozenColumn="1" th:data-href="@{/model/MKtanka.html}"></div>
+      <div id="MKtankaPager"></div>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="$('[id=&quot;SearchMKtanka&quot;]').click();">reset</button>
+        <a th:href="@{MKtankaSearch.xlsx(baseMei=#{MKtankaS.h2})}" id="MKtankaSearch.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeleteMKtankaS" class="delete selectRows" data-action="MKtankaSDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistMKtankaS" class="regist" th:text="#{common.regist}">submit</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

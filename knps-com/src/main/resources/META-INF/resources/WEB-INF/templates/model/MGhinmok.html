@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{MGhinmok.title}">原価用品目マスタ</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/MGhinmokGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{MGhinmok.h2}">h2</h2>
+    <form name="MGhinmokRegistForm" action="MGhinmokRegist.ajax" class="regist">
+      <fieldset>
+        <legend th:text="#{MGhinmok.legend}">legend</legend>
+        <div id="hinban">
+          <label for="MGhinmok.hinban" th:text="#{MGhinmok.hinban}">品番</label><span id="MGhinmok.hinban"></span><input type="hidden" id="MGhinmok.hinban" name="MGhinmok.hinban" class="primaryKey" />
+        </div>
+        <div id="hincd">
+          <label for="MGhinmok.hincd" th:text="#{MGhinmok.hincd}">品目コード</label><input type="text" id="MGhinmok.hincd" name="MGhinmok.hincd" maxlength="20" />
+        </div>
+        <div id="hingenka">
+          <label for="MGhinmok.hingenka" th:text="#{MGhinmok.hingenka}">品目合計単価</label><input type="text" id="MGhinmok.hingenka" name="MGhinmok.hingenka" maxlength="7" />
+        </div>
+        <div id="renkeibi">
+          <label for="MGhinmok.renkeibi" th:text="#{MGhinmok.renkeibi}">データ連携日</label><input type="text" id="MGhinmok.renkeibi" name="MGhinmok.renkeibi" maxlength="8" />
+        </div>
+        <div id="shoriflg">
+          <label for="MGhinmok.shoriflg" th:text="#{MGhinmok.shoriflg}">処理済フラグ</label><input type="text" id="MGhinmok.shoriflg" name="MGhinmok.shoriflg" maxlength="1" />
+        </div>
+        <div id="filler">
+          <label for="MGhinmok.filler" th:text="#{MGhinmok.filler}">予備領域</label><input type="text" id="MGhinmok.filler" name="MGhinmok.filler" maxlength="21" />
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend th:text="#{PrdOrderpointStatus.legend}">legend</legend>
+        <div id="publishedCounts">
+          <label for="PrdOrderpointStatus.publishedCounts" th:text="#{PrdOrderpointStatus.publishedCounts}">PUBLISHED_COUNTS</label><input type="text" id="PrdOrderpointStatus.publishedCounts" name="PrdOrderpointStatus.publishedCounts" maxlength="7" />
+        </div>
+        <input type="hidden" name="PrdOrderpointStatus.timeStampChange" />
+      </fieldset>
+      <fieldset>
+        <legend th:text="#{PrdOrderpointSummary.legend}">legend</legend>
+        <div id="proNesCounts">
+          <label for="PrdOrderpointSummary.proNesCounts" th:text="#{PrdOrderpointSummary.proNesCounts}">PRO_NES_COUNTS</label><input type="text" id="PrdOrderpointSummary.proNesCounts" name="PrdOrderpointSummary.proNesCounts" maxlength="7" />
+        </div>
+        <div id="issueNesCounts">
+          <label for="PrdOrderpointSummary.issueNesCounts" th:text="#{PrdOrderpointSummary.issueNesCounts}">ISSUE_NES_COUNTS</label><input type="text" id="PrdOrderpointSummary.issueNesCounts" name="PrdOrderpointSummary.issueNesCounts" maxlength="7" />
+        </div>
+        <input type="hidden" name="PrdOrderpointSummary.timeStampChange" />
+      </fieldset>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="Dialogate.refresh(event);">reset</button>
+        <a th:href="@{MGhinmokGet.xlsx(baseMei=#{MGhinmok.h2})}" id="MGhinmokGet.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeleteMGhinmok" class="delete" data-action="MGhinmokDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistMGhinmok" class="regist" th:text="#{common.regist}">登録</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

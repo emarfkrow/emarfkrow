@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{MHcalendS.title}">販売カレンダー</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/MHcalendGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{MHcalendS.h2}">h2</h2>
+    <form name="MHcalendSearchForm" action="MHcalendSearch.ajax" class="search">
+      <fieldset>
+        <legend th:text="#{MHcalendS.legend}">legend</legend>
+        <div id="yymm">
+          <label for="MHcalend.yymm" th:text="#{MHcalend.yymm}">年月</label><input type="text" id="MHcalend.yymm" name="MHcalend.yymm" maxlength="6" />
+        </div>
+        <div id="calendkbn">
+          <label for="MHcalend.calendkbn" th:text="#{MHcalend.calendkbn}">カレンダ区分</label><input type="text" id="MHcalend.calendkbn" name="MHcalend.calendkbn" maxlength="1" />
+        </div>
+        <div id="kadonitusu">
+          <label for="MHcalend.kadonitusu" th:text="#{MHcalend.kadonitusu}">稼働日数</label><input type="text" id="MHcalend.kadonitusu" name="MHcalend.kadonitusu" maxlength="2" />
+        </div>
+        <div id="dd">
+          <label for="MHcalend.dd" th:text="#{MHcalend.dd}">日</label><input type="text" id="MHcalend.dd" name="MHcalend.dd" maxlength="2" />
+        </div>
+        <div id="youbi">
+          <label for="MHcalend.youbi" th:text="#{MHcalend.youbi}">曜日</label><input type="text" id="MHcalend.youbi" name="MHcalend.youbi" maxlength="2" />
+        </div>
+        <div id="kadoukbn">
+          <label for="MHcalend.kadoukbn" th:text="#{MHcalend.kadoukbn}">稼働区分</label><input type="text" id="MHcalend.kadoukbn" name="MHcalend.kadoukbn" maxlength="1" />
+        </div>
+        <div id="kadourui">
+          <label for="MHcalend.kadourui" th:text="#{MHcalend.kadourui}">稼働日累計</label><input type="text" id="MHcalend.kadourui" name="MHcalend.kadourui" maxlength="4" />
+        </div>
+        <div id="filler">
+          <label for="MHcalend.filler" th:text="#{MHcalend.filler}">予備領域</label><input type="text" id="MHcalend.filler" name="MHcalend.filler" maxlength="12" />
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="reset" th:text="#{common.reset}">reset</button>
+        <a th:href="@{/model/MHcalend.html}" id="MHcalend" target="dialog" th:text="#{MHcalend.add}" tabindex="-1">販売カレンダー</a>
+      </div>
+      <div class="submits">
+        <button id="SearchMHcalend" class="search" data-gridId="MHcalendGrid" th:text="#{common.search}">submit</button>
+      </div>
+    </form>
+    <form name="MHcalendSRegistForm" action="MHcalendSRegist.ajax" class="regist">
+      <h3 th:text="#{MHcalend.h3}">h3</h3>
+      <div id="MHcalendGrid" data-selectionMode="checkbox" data-frozenColumn="1" th:data-href="@{/model/MHcalend.html}"></div>
+      <div id="MHcalendPager"></div>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="$('[id=&quot;SearchMHcalend&quot;]').click();">reset</button>
+        <a th:href="@{MHcalendSearch.xlsx(baseMei=#{MHcalendS.h2})}" id="MHcalendSearch.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeleteMHcalendS" class="delete selectRows" data-action="MHcalendSDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistMHcalendS" class="regist" th:text="#{common.regist}">submit</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

@@ -15,6 +15,11 @@ public final class DataSourcesAssistSQLite extends DataSourcesAssist {
     }
 
     @Override
+    protected String getColumnComment(final String tableName, final String columnName) {
+        return null;
+    }
+
+    @Override
     public String join(final String[] array) {
         // TODO 自動生成されたメソッド・スタブ
         return null;

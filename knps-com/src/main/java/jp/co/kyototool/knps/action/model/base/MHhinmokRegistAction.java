@@ -12,13 +12,13 @@ import jp.co.golorp.emarf.util.Messages;
 import jp.co.golorp.emarf.validation.FormValidator;
 
 /**
- * M_HHINMOK登録
+ * 販売品目マスタ登録
  *
  * @author emarfkrow
  */
 public class MHhinmokRegistAction extends BaseAction {
 
-    /** M_HHINMOK登録処理 */
+    /** 販売品目マスタ登録処理 */
     @Override
     public Map<String, Object> running(final LocalDateTime now, final String id, final Map<String, Object> postJson) {
 

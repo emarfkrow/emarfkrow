@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{MSgenkaS.title}">製品原価マスタ</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/MSgenkaGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{MSgenkaS.h2}">h2</h2>
+    <form name="MSgenkaSearchForm" action="MSgenkaSearch.ajax" class="search">
+      <fieldset>
+        <legend th:text="#{MSgenkaS.legend}">legend</legend>
+        <div id="hhinban">
+          <label for="MSgenka.hhinban" th:text="#{MSgenka.hhinban}">販売品番</label><input type="text" id="MSgenka.hhinban" name="MSgenka.hhinban" maxlength="20" />
+        </div>
+        <div id="hincd">
+          <label for="MSgenka.hincd" th:text="#{MSgenka.hincd}">品目コード</label><input type="text" id="MSgenka.hincd" name="MSgenka.hincd" maxlength="20" />
+        </div>
+        <div id="setkbn">
+          <label for="MSgenka.setkbn" th:text="#{MSgenka.setkbn}">セット区分</label><input type="text" id="MSgenka.setkbn" name="MSgenka.setkbn" maxlength="1" />
+        </div>
+        <div id="genka">
+          <label for="MSgenka.genka" th:text="#{MSgenka.genka}">原価</label><input type="text" id="MSgenka.genka" name="MSgenka.genka" maxlength="7" />
+        </div>
+        <div id="seihinGenka">
+          <label for="MSgenka.seihinGenka" th:text="#{MSgenka.seihinGenka}">製品原価</label><input type="text" id="MSgenka.seihinGenka" name="MSgenka.seihinGenka" maxlength="7" />
+        </div>
+        <div id="shohinGenka">
+          <label for="MSgenka.shohinGenka" th:text="#{MSgenka.shohinGenka}">商品原価</label><input type="text" id="MSgenka.shohinGenka" name="MSgenka.shohinGenka" maxlength="7" />
+        </div>
+        <div id="baika">
+          <label for="MSgenka.baika" th:text="#{MSgenka.baika}">売価</label><input type="text" id="MSgenka.baika" name="MSgenka.baika" maxlength="7" />
+        </div>
+        <div id="seihinBaika">
+          <label for="MSgenka.seihinBaika" th:text="#{MSgenka.seihinBaika}">製品売価</label><input type="text" id="MSgenka.seihinBaika" name="MSgenka.seihinBaika" maxlength="7" />
+        </div>
+        <div id="shohinBaika">
+          <label for="MSgenka.shohinBaika" th:text="#{MSgenka.shohinBaika}">商品売価</label><input type="text" id="MSgenka.shohinBaika" name="MSgenka.shohinBaika" maxlength="7" />
+        </div>
+        <div id="filler">
+          <label for="MSgenka.filler" th:text="#{MSgenka.filler}">予備領域</label><input type="text" id="MSgenka.filler" name="MSgenka.filler" maxlength="9" />
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="reset" th:text="#{common.reset}">reset</button>
+        <a th:href="@{/model/MSgenka.html}" id="MSgenka" target="dialog" th:text="#{MSgenka.add}" tabindex="-1">製品原価マスタ</a>
+      </div>
+      <div class="submits">
+        <button id="SearchMSgenka" class="search" data-gridId="MSgenkaGrid" th:text="#{common.search}">submit</button>
+      </div>
+    </form>
+    <form name="MSgenkaSRegistForm" action="MSgenkaSRegist.ajax" class="regist">
+      <h3 th:text="#{MSgenka.h3}">h3</h3>
+      <div id="MSgenkaGrid" data-selectionMode="checkbox" data-addRow="true" data-frozenColumn="0" th:data-href="@{/model/MSgenka.html}"></div>
+      <div id="MSgenkaPager"></div>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="$('[id=&quot;SearchMSgenka&quot;]').click();">reset</button>
+        <a th:href="@{MSgenkaSearch.xlsx(baseMei=#{MSgenkaS.h2})}" id="MSgenkaSearch.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeleteMSgenkaS" class="delete selectRows" data-action="MSgenkaSDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistMSgenkaS" class="regist" th:text="#{common.regist}">submit</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

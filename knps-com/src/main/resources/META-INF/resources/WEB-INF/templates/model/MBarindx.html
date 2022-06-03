@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{MBarindx.title}">バーコード管理マスタ</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/MBarindxGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{MBarindx.h2}">h2</h2>
+    <form name="MBarindxRegistForm" action="MBarindxRegist.ajax" class="regist">
+      <fieldset>
+        <legend th:text="#{MBarindx.legend}">legend</legend>
+        <div id="keycd">
+          <label for="MBarindx.keycd" th:text="#{MBarindx.keycd}">キーコード</label><input type="text" id="MBarindx.keycd" name="MBarindx.keycd" maxlength="1" class="primaryKey" />
+        </div>
+        <div id="barOiban1">
+          <label for="MBarindx.barOiban1" th:text="#{MBarindx.barOiban1}">バー分類追番１</label><input type="text" id="MBarindx.barOiban1" name="MBarindx.barOiban1" maxlength="4" />
+        </div>
+        <div id="barOiban2">
+          <label for="MBarindx.barOiban2" th:text="#{MBarindx.barOiban2}">バー分類追番２</label><input type="text" id="MBarindx.barOiban2" name="MBarindx.barOiban2" maxlength="4" />
+        </div>
+        <div id="barOiban3">
+          <label for="MBarindx.barOiban3" th:text="#{MBarindx.barOiban3}">バー分類追番３</label><input type="text" id="MBarindx.barOiban3" name="MBarindx.barOiban3" maxlength="4" />
+        </div>
+        <div id="barOiban4">
+          <label for="MBarindx.barOiban4" th:text="#{MBarindx.barOiban4}">バー分類追番４</label><input type="text" id="MBarindx.barOiban4" name="MBarindx.barOiban4" maxlength="4" />
+        </div>
+        <div id="barOiban5">
+          <label for="MBarindx.barOiban5" th:text="#{MBarindx.barOiban5}">バー分類追番５</label><input type="text" id="MBarindx.barOiban5" name="MBarindx.barOiban5" maxlength="4" />
+        </div>
+        <div id="barOiban6">
+          <label for="MBarindx.barOiban6" th:text="#{MBarindx.barOiban6}">バー分類追番６</label><input type="text" id="MBarindx.barOiban6" name="MBarindx.barOiban6" maxlength="4" />
+        </div>
+        <div id="barOiban7">
+          <label for="MBarindx.barOiban7" th:text="#{MBarindx.barOiban7}">バー分類追番７</label><input type="text" id="MBarindx.barOiban7" name="MBarindx.barOiban7" maxlength="4" />
+        </div>
+        <div id="barOiban8">
+          <label for="MBarindx.barOiban8" th:text="#{MBarindx.barOiban8}">バー分類追番８</label><input type="text" id="MBarindx.barOiban8" name="MBarindx.barOiban8" maxlength="4" />
+        </div>
+        <div id="barOiban9">
+          <label for="MBarindx.barOiban9" th:text="#{MBarindx.barOiban9}">バー分類追番９</label><input type="text" id="MBarindx.barOiban9" name="MBarindx.barOiban9" maxlength="4" />
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend th:text="#{MHseigyo.legend}">legend</legend>
+        <div id="kaisibi">
+          <label for="MHseigyo.kaisibi" th:text="#{MHseigyo.kaisibi}">開始日付</label><input type="text" id="MHseigyo.kaisibi" name="MHseigyo.kaisibi" maxlength="8" />
+        </div>
+        <div id="shuryobi">
+          <label for="MHseigyo.shuryobi" th:text="#{MHseigyo.shuryobi}">終了日付</label><input type="text" id="MHseigyo.shuryobi" name="MHseigyo.shuryobi" maxlength="8" />
+        </div>
+        <div id="zeiritu">
+          <label for="MHseigyo.zeiritu" th:text="#{MHseigyo.zeiritu}">消費税率</label><input type="text" id="MHseigyo.zeiritu" name="MHseigyo.zeiritu" maxlength="2" />
+        </div>
+        <div id="yuboent">
+          <label for="MHseigyo.yuboent" th:text="#{MHseigyo.yuboent}">有ボ入力区分</label><input type="text" id="MHseigyo.yuboent" name="MHseigyo.yuboent" maxlength="1" />
+        </div>
+        <div id="shusijino1">
+          <label for="MHseigyo.shusijino1" th:text="#{MHseigyo.shusijino1}">出荷指示番号１</label><input type="text" id="MHseigyo.shusijino1" name="MHseigyo.shusijino1" maxlength="5" />
+        </div>
+        <div id="nohinshono">
+          <label for="MHseigyo.nohinshono" th:text="#{MHseigyo.nohinshono}">納品書番号</label><input type="text" id="MHseigyo.nohinshono" name="MHseigyo.nohinshono" maxlength="6" />
+        </div>
+        <div id="setkeino">
+          <label for="MHseigyo.setkeino" th:text="#{MHseigyo.setkeino}">セット計画番号</label><input type="text" id="MHseigyo.setkeino" name="MHseigyo.setkeino" maxlength="6" />
+        </div>
+        <div id="getujiYymm">
+          <label for="MHseigyo.getujiYymm" th:text="#{MHseigyo.getujiYymm}">月次年月</label><input type="text" id="MHseigyo.getujiYymm" name="MHseigyo.getujiYymm" maxlength="6" />
+        </div>
+        <div id="tJuccnt">
+          <label for="MHseigyo.tJuccnt" th:text="#{MHseigyo.tJuccnt}">当日受注件数</label><input type="text" id="MHseigyo.tJuccnt" name="MHseigyo.tJuccnt" maxlength="4" />
+        </div>
+        <div id="tMaxcnt">
+          <label for="MHseigyo.tMaxcnt" th:text="#{MHseigyo.tMaxcnt}">当日受注最大件数</label><input type="text" id="MHseigyo.tMaxcnt" name="MHseigyo.tMaxcnt" maxlength="4" />
+        </div>
+        <div id="chokucnt">
+          <label for="MHseigyo.chokucnt" th:text="#{MHseigyo.chokucnt}">直送先カウント</label><input type="text" id="MHseigyo.chokucnt" name="MHseigyo.chokucnt" maxlength="6" />
+        </div>
+        <div id="hyotanka">
+          <label for="MHseigyo.hyotanka" th:text="#{MHseigyo.hyotanka}">評価単価</label><input type="text" id="MHseigyo.hyotanka" name="MHseigyo.hyotanka" maxlength="7" />
+        </div>
+        <div id="filler">
+          <label for="MHseigyo.filler" th:text="#{MHseigyo.filler}">予備領域</label><input type="text" id="MHseigyo.filler" name="MHseigyo.filler" maxlength="7" />
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="Dialogate.refresh(event);">reset</button>
+        <a th:href="@{MBarindxGet.xlsx(baseMei=#{MBarindx.h2})}" id="MBarindxGet.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeleteMBarindx" class="delete" data-action="MBarindxDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistMBarindx" class="regist" th:text="#{common.regist}">登録</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

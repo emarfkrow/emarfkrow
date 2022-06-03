@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{MPkose.title}">部品構成マスタ</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/MPkoseGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{MPkose.h2}">h2</h2>
+    <form name="MPkoseRegistForm" action="MPkoseRegist.ajax" class="regist">
+      <fieldset>
+        <legend th:text="#{MPkose.legend}">legend</legend>
+        <div id="hhinban">
+          <label for="MPkose.hhinban" th:text="#{MPkose.hhinban}">販売品番</label><span id="MPkose.hhinban"></span><input type="hidden" id="MPkose.hhinban" name="MPkose.hhinban" class="primaryKey" />
+        </div>
+        <div id="hinmei">
+          <label for="MPkose.hinmei" th:text="#{MPkose.hinmei}">販売品名</label><input type="text" id="MPkose.hinmei" name="MPkose.hinmei" maxlength="10" />
+        </div>
+        <div id="phinban">
+          <label for="MPkose.phinban" th:text="#{MPkose.phinban}">部品品番</label><span id="MPkose.phinban"></span><input type="hidden" id="MPkose.phinban" name="MPkose.phinban" class="primaryKey" />
+        </div>
+        <div id="phinmei">
+          <label for="MPkose.phinmei" th:text="#{MPkose.phinmei}">部品名</label><input type="text" id="MPkose.phinmei" name="MPkose.phinmei" maxlength="20" />
+        </div>
+        <div id="tourokubi">
+          <label for="MPkose.tourokubi" th:text="#{MPkose.tourokubi}">登録日</label><input type="text" id="MPkose.tourokubi" name="MPkose.tourokubi" maxlength="8" />
+        </div>
+        <div id="filler">
+          <label for="MPkose.filler" th:text="#{MPkose.filler}">予備領域</label><input type="text" id="MPkose.filler" name="MPkose.filler" maxlength="21" />
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="Dialogate.refresh(event);">reset</button>
+        <a th:href="@{MPkoseGet.xlsx(baseMei=#{MPkose.h2})}" id="MPkoseGet.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeleteMPkose" class="delete" data-action="MPkoseDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistMPkose" class="regist" th:text="#{common.regist}">登録</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

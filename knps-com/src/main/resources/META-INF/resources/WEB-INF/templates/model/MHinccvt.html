@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{MHinccvt.title}">品番変換マスタ</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/MHinccvtGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{MHinccvt.h2}">h2</h2>
+    <form name="MHinccvtRegistForm" action="MHinccvtRegist.ajax" class="regist">
+      <fieldset>
+        <legend th:text="#{MHinccvt.legend}">legend</legend>
+        <div id="cvthinban">
+          <label for="MHinccvt.cvthinban" th:text="#{MHinccvt.cvthinban}">変換品番</label><span id="MHinccvt.cvthinban"></span><input type="hidden" id="MHinccvt.cvthinban" name="MHinccvt.cvthinban" class="primaryKey" />
+        </div>
+        <div id="hhinban">
+          <label for="MHinccvt.hhinban" th:text="#{MHinccvt.hhinban}">販売品番</label><input type="text" id="MHinccvt.hhinban" name="MHinccvt.hhinban" maxlength="20" />
+        </div>
+        <div id="chokuhinkbn">
+          <label for="MHinccvt.chokuhinkbn" th:text="#{MHinccvt.chokuhinkbn}">直送対象品区分</label><span id="MHinccvt.chokuhinkbn"></span><input type="hidden" id="MHinccvt.chokuhinkbn" name="MHinccvt.chokuhinkbn" class="primaryKey" />
+        </div>
+        <div id="filler">
+          <label for="MHinccvt.filler" th:text="#{MHinccvt.filler}">予備領域</label><input type="text" id="MHinccvt.filler" name="MHinccvt.filler" maxlength="9" />
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="Dialogate.refresh(event);">reset</button>
+        <a th:href="@{MHinccvtGet.xlsx(baseMei=#{MHinccvt.h2})}" id="MHinccvtGet.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeleteMHinccvt" class="delete" data-action="MHinccvtDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistMHinccvt" class="regist" th:text="#{common.regist}">登録</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

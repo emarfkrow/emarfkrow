@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{MBarcd.title}">バーコードマスタ</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/MBarcdGridColumns.js}"></script>
+<script th:src="@{/model/MHososetGridColumns.js}"></script>
+<script th:src="@{/model/MPkoseGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{MBarcd.h2}">h2</h2>
+    <form name="MBarcdRegistForm" action="MBarcdRegist.ajax" class="regist">
+      <fieldset>
+        <legend th:text="#{MBarcd.legend}">legend</legend>
+        <div id="hhinban">
+          <label for="MBarcd.hhinban" th:text="#{MBarcd.hhinban}">販売品番</label><span id="MBarcd.hhinban"></span><input type="hidden" id="MBarcd.hhinban" name="MBarcd.hhinban" class="primaryKey" />
+        </div>
+        <div id="hinmei">
+          <label for="MBarcd.hinmei" th:text="#{MBarcd.hinmei}">品名</label><input type="text" id="MBarcd.hinmei" name="MBarcd.hinmei" maxlength="10" />
+        </div>
+        <div id="barcode">
+          <label for="MBarcd.barcode" th:text="#{MBarcd.barcode}">バーコード</label><input type="text" id="MBarcd.barcode" name="MBarcd.barcode" maxlength="13" />
+        </div>
+        <div id="free1">
+          <label for="MBarcd.free1" th:text="#{MBarcd.free1}">自由項目１</label><input type="text" id="MBarcd.free1" name="MBarcd.free1" maxlength="15" />
+        </div>
+        <div id="free2">
+          <label for="MBarcd.free2" th:text="#{MBarcd.free2}">自由項目２</label><input type="text" id="MBarcd.free2" name="MBarcd.free2" maxlength="10" />
+        </div>
+        <div id="free3">
+          <label for="MBarcd.free3" th:text="#{MBarcd.free3}">自由項目３</label><input type="text" id="MBarcd.free3" name="MBarcd.free3" maxlength="10" />
+        </div>
+        <div id="fller">
+          <label for="MBarcd.fller" th:text="#{MBarcd.fller}">予備領域</label><input type="text" id="MBarcd.fller" name="MBarcd.fller" maxlength="22" />
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend th:text="#{MGenka.legend}">legend</legend>
+        <div id="hincd">
+          <label for="MGenka.hincd" th:text="#{MGenka.hincd}">品目コード</label><input type="text" id="MGenka.hincd" name="MGenka.hincd" maxlength="20" />
+        </div>
+        <div id="setkbn">
+          <label for="MGenka.setkbn" th:text="#{MGenka.setkbn}">セット区分</label><input type="text" id="MGenka.setkbn" name="MGenka.setkbn" maxlength="1" />
+        </div>
+        <div id="genka">
+          <label for="MGenka.genka" th:text="#{MGenka.genka}">原価</label><input type="text" id="MGenka.genka" name="MGenka.genka" maxlength="7" />
+        </div>
+        <div id="seihinGenka">
+          <label for="MGenka.seihinGenka" th:text="#{MGenka.seihinGenka}">製品原価</label><input type="text" id="MGenka.seihinGenka" name="MGenka.seihinGenka" maxlength="7" />
+        </div>
+        <div id="shohinGenka">
+          <label for="MGenka.shohinGenka" th:text="#{MGenka.shohinGenka}">商品原価</label><input type="text" id="MGenka.shohinGenka" name="MGenka.shohinGenka" maxlength="7" />
+        </div>
+        <div id="baika">
+          <label for="MGenka.baika" th:text="#{MGenka.baika}">売価</label><input type="text" id="MGenka.baika" name="MGenka.baika" maxlength="7" />
+        </div>
+        <div id="seihinBaika">
+          <label for="MGenka.seihinBaika" th:text="#{MGenka.seihinBaika}">製品売価</label><input type="text" id="MGenka.seihinBaika" name="MGenka.seihinBaika" maxlength="7" />
+        </div>
+        <div id="shohinBaika">
+          <label for="MGenka.shohinBaika" th:text="#{MGenka.shohinBaika}">商品売価</label><input type="text" id="MGenka.shohinBaika" name="MGenka.shohinBaika" maxlength="7" />
+        </div>
+        <div id="filler">
+          <label for="MGenka.filler" th:text="#{MGenka.filler}">予備領域</label><input type="text" id="MGenka.filler" name="MGenka.filler" maxlength="9" />
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend th:text="#{MHhinmok.legend}">legend</legend>
+        <div id="lvcd">
+          <label for="MHhinmok.lvcd" th:text="#{MHhinmok.lvcd}">ローレベルコード</label><input type="text" id="MHhinmok.lvcd" name="MHhinmok.lvcd" maxlength="2" />
+        </div>
+        <div id="dltflg">
+          <label for="MHhinmok.dltflg" th:text="#{MHhinmok.dltflg}">削除フラグ</label><input type="text" id="MHhinmok.dltflg" name="MHhinmok.dltflg" maxlength="1" />
+        </div>
+        <div id="hincd">
+          <label for="MHhinmok.hincd" th:text="#{MHhinmok.hincd}">品目コード</label><input type="text" id="MHhinmok.hincd" name="MHhinmok.hincd" maxlength="20" />
+        </div>
+        <div id="hinmei">
+          <label for="MHhinmok.hinmei" th:text="#{MHhinmok.hinmei}">品　名</label><input type="text" id="MHhinmok.hinmei" name="MHhinmok.hinmei" maxlength="10" />
+        </div>
+        <div id="setkbn">
+          <label for="MHhinmok.setkbn" th:text="#{MHhinmok.setkbn}">セット区分</label><input type="text" id="MHhinmok.setkbn" name="MHhinmok.setkbn" maxlength="1" />
+        </div>
+        <div id="sshinkbn">
+          <label for="MHhinmok.sshinkbn" th:text="#{MHhinmok.sshinkbn}">戦略商品区分</label><input type="text" id="MHhinmok.sshinkbn" name="MHhinmok.sshinkbn" maxlength="1" />
+        </div>
+        <div id="jukinkbn">
+          <label for="MHhinmok.jukinkbn" th:text="#{MHhinmok.jukinkbn}">受注禁止区分</label><input type="text" id="MHhinmok.jukinkbn" name="MHhinmok.jukinkbn" maxlength="1" />
+        </div>
+        <div id="tenkinkbn">
+          <label for="MHhinmok.tenkinkbn" th:text="#{MHhinmok.tenkinkbn}">転売禁止区分</label><input type="text" id="MHhinmok.tenkinkbn" name="MHhinmok.tenkinkbn" maxlength="1" />
+        </div>
+        <div id="nyukokinkbn">
+          <label for="MHhinmok.nyukokinkbn" th:text="#{MHhinmok.nyukokinkbn}">入庫禁止区分</label><input type="text" id="MHhinmok.nyukokinkbn" name="MHhinmok.nyukokinkbn" maxlength="1" />
+        </div>
+        <div id="seihinkbn">
+          <label for="MHhinmok.seihinkbn" th:text="#{MHhinmok.seihinkbn}">製品区分</label><input type="text" id="MHhinmok.seihinkbn" name="MHhinmok.seihinkbn" maxlength="1" />
+        </div>
+        <div id="sijikbn">
+          <label for="MHhinmok.sijikbn" th:text="#{MHhinmok.sijikbn}">出荷指示区分</label><input type="text" id="MHhinmok.sijikbn" name="MHhinmok.sijikbn" maxlength="1" />
+        </div>
+        <div id="shohinBunrui">
+          <label for="MHhinmok.shohinBunrui" th:text="#{MHhinmok.shohinBunrui}">商品分類</label><input type="text" id="MHhinmok.shohinBunrui" name="MHhinmok.shohinBunrui" maxlength="2" />
+        </div>
+        <div id="kijunzaiko">
+          <label for="MHhinmok.kijunzaiko" th:text="#{MHhinmok.kijunzaiko}">基準在庫</label><input type="text" id="MHhinmok.kijunzaiko" name="MHhinmok.kijunzaiko" maxlength="7" />
+        </div>
+        <div id="seiTanju">
+          <label for="MHhinmok.seiTanju" th:text="#{MHhinmok.seiTanju}">製品単重</label><input type="text" id="MHhinmok.seiTanju" name="MHhinmok.seiTanju" maxlength="7" />
+        </div>
+        <div id="locationno">
+          <label for="MHhinmok.locationno" th:text="#{MHhinmok.locationno}">ロケーションＮＯ</label><input type="text" id="MHhinmok.locationno" name="MHhinmok.locationno" maxlength="10" />
+        </div>
+        <div id="hosocd">
+          <label for="MHhinmok.hosocd" th:text="#{MHhinmok.hosocd}">包装コード</label><input type="text" id="MHhinmok.hosocd" name="MHhinmok.hosocd" maxlength="2" />
+        </div>
+        <div id="hosotani">
+          <label for="MHhinmok.hosotani" th:text="#{MHhinmok.hosotani}">包装単位</label><input type="text" id="MHhinmok.hosotani" name="MHhinmok.hosotani" maxlength="7" />
+        </div>
+        <div id="hosokepin">
+          <label for="MHhinmok.hosokepin" th:text="#{MHhinmok.hosokepin}">包装材欠品区分</label><input type="text" id="MHhinmok.hosokepin" name="MHhinmok.hosokepin" maxlength="1" />
+        </div>
+        <div id="konpokbn">
+          <label for="MHhinmok.konpokbn" th:text="#{MHhinmok.konpokbn}">梱包区分</label><input type="text" id="MHhinmok.konpokbn" name="MHhinmok.konpokbn" maxlength="1" />
+        </div>
+        <div id="klkbn">
+          <label for="MHhinmok.klkbn" th:text="#{MHhinmok.klkbn}">かんばんロット区分</label><input type="text" id="MHhinmok.klkbn" name="MHhinmok.klkbn" maxlength="1" />
+        </div>
+        <div id="jiskbn">
+          <label for="MHhinmok.jiskbn" th:text="#{MHhinmok.jiskbn}">ＪＩＳ区分</label><input type="text" id="MHhinmok.jiskbn" name="MHhinmok.jiskbn" maxlength="1" />
+        </div>
+        <div id="setkijunh">
+          <label for="MHhinmok.setkijunh" th:text="#{MHhinmok.setkijunh}">セット基準時間</label><input type="text" id="MHhinmok.setkijunh" name="MHhinmok.setkijunh" maxlength="4" />
+        </div>
+        <div id="kimatuGenka">
+          <label for="MHhinmok.kimatuGenka" th:text="#{MHhinmok.kimatuGenka}">期末原価</label><input type="text" id="MHhinmok.kimatuGenka" name="MHhinmok.kimatuGenka" maxlength="7" />
+        </div>
+        <div id="hyojunGenka">
+          <label for="MHhinmok.hyojunGenka" th:text="#{MHhinmok.hyojunGenka}">標準原価</label><input type="text" id="MHhinmok.hyojunGenka" name="MHhinmok.hyojunGenka" maxlength="7" />
+        </div>
+        <div id="nijiGenka">
+          <label for="MHhinmok.nijiGenka" th:text="#{MHhinmok.nijiGenka}">二次評価原価</label><input type="text" id="MHhinmok.nijiGenka" name="MHhinmok.nijiGenka" maxlength="7" />
+        </div>
+        <div id="hyojunBaika">
+          <label for="MHhinmok.hyojunBaika" th:text="#{MHhinmok.hyojunBaika}">標準売価</label><input type="text" id="MHhinmok.hyojunBaika" name="MHhinmok.hyojunBaika" maxlength="7" />
+        </div>
+        <div id="tourokubi">
+          <label for="MHhinmok.tourokubi" th:text="#{MHhinmok.tourokubi}">マスター登録日</label><input type="text" id="MHhinmok.tourokubi" name="MHhinmok.tourokubi" maxlength="8" />
+        </div>
+        <div id="hatubaibi">
+          <label for="MHhinmok.hatubaibi" th:text="#{MHhinmok.hatubaibi}">製品発売日</label><input type="text" id="MHhinmok.hatubaibi" name="MHhinmok.hatubaibi" maxlength="8" />
+        </div>
+        <div id="tojitukbn">
+          <label for="MHhinmok.tojitukbn" th:text="#{MHhinmok.tojitukbn}">当日出荷対象区分</label><input type="text" id="MHhinmok.tojitukbn" name="MHhinmok.tojitukbn" maxlength="1" />
+        </div>
+        <div id="sinSeihinBunrui">
+          <label for="MHhinmok.sinSeihinBunrui" th:text="#{MHhinmok.sinSeihinBunrui}">新製品分類</label><input type="text" id="MHhinmok.sinSeihinBunrui" name="MHhinmok.sinSeihinBunrui" maxlength="2" />
+        </div>
+        <div id="dteibankbn">
+          <label for="MHhinmok.dteibankbn" th:text="#{MHhinmok.dteibankbn}">ＤＩＹ定番区分</label><input type="text" id="MHhinmok.dteibankbn" name="MHhinmok.dteibankbn" maxlength="1" />
+        </div>
+        <div id="zaijuckbn">
+          <label for="MHhinmok.zaijuckbn" th:text="#{MHhinmok.zaijuckbn}">在庫受注区分</label><input type="text" id="MHhinmok.zaijuckbn" name="MHhinmok.zaijuckbn" maxlength="1" />
+        </div>
+        <div id="stantocd">
+          <label for="MHhinmok.stantocd" th:text="#{MHhinmok.stantocd}">生産担当者コード</label><input type="text" id="MHhinmok.stantocd" name="MHhinmok.stantocd" maxlength="3" />
+        </div>
+        <div id="torifukbn">
+          <label for="MHhinmok.torifukbn" th:text="#{MHhinmok.torifukbn}">直送取消不可区分</label><input type="text" id="MHhinmok.torifukbn" name="MHhinmok.torifukbn" maxlength="1" />
+        </div>
+        <div id="prdendkbn">
+          <label for="MHhinmok.prdendkbn" th:text="#{MHhinmok.prdendkbn}">生産中止区分</label><input type="text" id="MHhinmok.prdendkbn" name="MHhinmok.prdendkbn" maxlength="1" />
+        </div>
+        <div id="bunrui4">
+          <label for="MHhinmok.bunrui4" th:text="#{MHhinmok.bunrui4}">品種分類４</label><input type="text" id="MHhinmok.bunrui4" name="MHhinmok.bunrui4" maxlength="2" />
+        </div>
+        <div id="zaishukbn">
+          <label for="MHhinmok.zaishukbn" th:text="#{MHhinmok.zaishukbn}">在庫出荷区分</label><input type="text" id="MHhinmok.zaishukbn" name="MHhinmok.zaishukbn" maxlength="1" />
+        </div>
+        <div id="barcode">
+          <label for="MHhinmok.barcode" th:text="#{MHhinmok.barcode}">バーコード</label><input type="text" id="MHhinmok.barcode" name="MHhinmok.barcode" maxlength="13" />
+        </div>
+        <div id="dataFlg">
+          <label for="MHhinmok.dataFlg" th:text="#{MHhinmok.dataFlg}">データ送信区分</label><input type="text" id="MHhinmok.dataFlg" name="MHhinmok.dataFlg" maxlength="1" />
+        </div>
+        <div id="filler3">
+          <label for="MHhinmok.filler3" th:text="#{MHhinmok.filler3}">予備領域3</label><input type="text" id="MHhinmok.filler3" name="MHhinmok.filler3" maxlength="6" />
+        </div>
+        <div id="upccd">
+          <label for="MHhinmok.upccd" th:text="#{MHhinmok.upccd}">ＵＰＣコード</label><input type="text" id="MHhinmok.upccd" name="MHhinmok.upccd" maxlength="12" />
+        </div>
+        <div id="zaikosuH1">
+          <label for="MHhinmok.zaikosuH1" th:text="#{MHhinmok.zaikosuH1}">平１在庫数</label><input type="text" id="MHhinmok.zaikosuH1" name="MHhinmok.zaikosuH1" maxlength="7" />
+        </div>
+        <div id="zaikosuH2">
+          <label for="MHhinmok.zaikosuH2" th:text="#{MHhinmok.zaikosuH2}">平２在庫数</label><input type="text" id="MHhinmok.zaikosuH2" name="MHhinmok.zaikosuH2" maxlength="7" />
+        </div>
+        <div id="zaikosuH3">
+          <label for="MHhinmok.zaikosuH3" th:text="#{MHhinmok.zaikosuH3}">平３在庫数</label><input type="text" id="MHhinmok.zaikosuH3" name="MHhinmok.zaikosuH3" maxlength="7" />
+        </div>
+        <div id="zaikosuH4">
+          <label for="MHhinmok.zaikosuH4" th:text="#{MHhinmok.zaikosuH4}">平４在庫数</label><input type="text" id="MHhinmok.zaikosuH4" name="MHhinmok.zaikosuH4" maxlength="7" />
+        </div>
+        <div id="zaikosuH5">
+          <label for="MHhinmok.zaikosuH5" th:text="#{MHhinmok.zaikosuH5}">平５在庫数</label><input type="text" id="MHhinmok.zaikosuH5" name="MHhinmok.zaikosuH5" maxlength="7" />
+        </div>
+        <div id="sijisuH1">
+          <label for="MHhinmok.sijisuH1" th:text="#{MHhinmok.sijisuH1}">平１指示数</label><input type="text" id="MHhinmok.sijisuH1" name="MHhinmok.sijisuH1" maxlength="7" />
+        </div>
+        <div id="sijisuH2">
+          <label for="MHhinmok.sijisuH2" th:text="#{MHhinmok.sijisuH2}">平２指示数</label><input type="text" id="MHhinmok.sijisuH2" name="MHhinmok.sijisuH2" maxlength="7" />
+        </div>
+        <div id="sijisuH3">
+          <label for="MHhinmok.sijisuH3" th:text="#{MHhinmok.sijisuH3}">平３指示数</label><input type="text" id="MHhinmok.sijisuH3" name="MHhinmok.sijisuH3" maxlength="7" />
+        </div>
+        <div id="sijisuH4">
+          <label for="MHhinmok.sijisuH4" th:text="#{MHhinmok.sijisuH4}">平４指示数</label><input type="text" id="MHhinmok.sijisuH4" name="MHhinmok.sijisuH4" maxlength="7" />
+        </div>
+        <div id="hikiateH1">
+          <label for="MHhinmok.hikiateH1" th:text="#{MHhinmok.hikiateH1}">平１引当数</label><input type="text" id="MHhinmok.hikiateH1" name="MHhinmok.hikiateH1" maxlength="7" />
+        </div>
+        <div id="hikiateH2">
+          <label for="MHhinmok.hikiateH2" th:text="#{MHhinmok.hikiateH2}">平２引当数</label><input type="text" id="MHhinmok.hikiateH2" name="MHhinmok.hikiateH2" maxlength="7" />
+        </div>
+        <div id="hikiateH3">
+          <label for="MHhinmok.hikiateH3" th:text="#{MHhinmok.hikiateH3}">平３引当数</label><input type="text" id="MHhinmok.hikiateH3" name="MHhinmok.hikiateH3" maxlength="7" />
+        </div>
+        <div id="hikiateH4">
+          <label for="MHhinmok.hikiateH4" th:text="#{MHhinmok.hikiateH4}">平４引当数</label><input type="text" id="MHhinmok.hikiateH4" name="MHhinmok.hikiateH4" maxlength="7" />
+        </div>
+        <div id="schuzansu1">
+          <label for="MHhinmok.schuzansu1" th:text="#{MHhinmok.schuzansu1}">市販当月注残数</label><input type="text" id="MHhinmok.schuzansu1" name="MHhinmok.schuzansu1" maxlength="7" />
+        </div>
+        <div id="schuzansu2">
+          <label for="MHhinmok.schuzansu2" th:text="#{MHhinmok.schuzansu2}">市販翌月注残数</label><input type="text" id="MHhinmok.schuzansu2" name="MHhinmok.schuzansu2" maxlength="7" />
+        </div>
+        <div id="schuzansu3">
+          <label for="MHhinmok.schuzansu3" th:text="#{MHhinmok.schuzansu3}">市販翌々月注残数</label><input type="text" id="MHhinmok.schuzansu3" name="MHhinmok.schuzansu3" maxlength="7" />
+        </div>
+        <div id="uchuzansu1">
+          <label for="MHhinmok.uchuzansu1" th:text="#{MHhinmok.uchuzansu1}">輸出当月注残数</label><input type="text" id="MHhinmok.uchuzansu1" name="MHhinmok.uchuzansu1" maxlength="7" />
+        </div>
+        <div id="uchuzansu2">
+          <label for="MHhinmok.uchuzansu2" th:text="#{MHhinmok.uchuzansu2}">輸出翌月注残数</label><input type="text" id="MHhinmok.uchuzansu2" name="MHhinmok.uchuzansu2" maxlength="7" />
+        </div>
+        <div id="uchuzansu3">
+          <label for="MHhinmok.uchuzansu3" th:text="#{MHhinmok.uchuzansu3}">輸出翌々月注残数</label><input type="text" id="MHhinmok.uchuzansu3" name="MHhinmok.uchuzansu3" maxlength="7" />
+        </div>
+        <div id="dchuzansu1">
+          <label for="MHhinmok.dchuzansu1" th:text="#{MHhinmok.dchuzansu1}">ＤＩＹ当月注残数</label><input type="text" id="MHhinmok.dchuzansu1" name="MHhinmok.dchuzansu1" maxlength="7" />
+        </div>
+        <div id="dchuzansu2">
+          <label for="MHhinmok.dchuzansu2" th:text="#{MHhinmok.dchuzansu2}">ＤＩＹ翌月注残数</label><input type="text" id="MHhinmok.dchuzansu2" name="MHhinmok.dchuzansu2" maxlength="7" />
+        </div>
+        <div id="dchuzansu3">
+          <label for="MHhinmok.dchuzansu3" th:text="#{MHhinmok.dchuzansu3}">ＤＩＹ翌々月注残数</label><input type="text" id="MHhinmok.dchuzansu3" name="MHhinmok.dchuzansu3" maxlength="7" />
+        </div>
+        <div id="nyukoyoteH1">
+          <label for="MHhinmok.nyukoyoteH1" th:text="#{MHhinmok.nyukoyoteH1}">平１入庫予定数</label><input type="text" id="MHhinmok.nyukoyoteH1" name="MHhinmok.nyukoyoteH1" maxlength="7" />
+        </div>
+        <div id="nyukoyoteH2">
+          <label for="MHhinmok.nyukoyoteH2" th:text="#{MHhinmok.nyukoyoteH2}">平２入庫予定数</label><input type="text" id="MHhinmok.nyukoyoteH2" name="MHhinmok.nyukoyoteH2" maxlength="7" />
+        </div>
+        <div id="nyukoyoteH3">
+          <label for="MHhinmok.nyukoyoteH3" th:text="#{MHhinmok.nyukoyoteH3}">平３入庫予定数</label><input type="text" id="MHhinmok.nyukoyoteH3" name="MHhinmok.nyukoyoteH3" maxlength="7" />
+        </div>
+        <div id="nyukoyoteH4">
+          <label for="MHhinmok.nyukoyoteH4" th:text="#{MHhinmok.nyukoyoteH4}">平４入庫予定数</label><input type="text" id="MHhinmok.nyukoyoteH4" name="MHhinmok.nyukoyoteH4" maxlength="7" />
+        </div>
+        <div id="sapporozaiko">
+          <label for="MHhinmok.sapporozaiko" th:text="#{MHhinmok.sapporozaiko}">札幌在庫数</label><input type="text" id="MHhinmok.sapporozaiko" name="MHhinmok.sapporozaiko" maxlength="7" />
+        </div>
+        <div id="sendaizaiko">
+          <label for="MHhinmok.sendaizaiko" th:text="#{MHhinmok.sendaizaiko}">仙台在庫数</label><input type="text" id="MHhinmok.sendaizaiko" name="MHhinmok.sendaizaiko" maxlength="7" />
+        </div>
+        <div id="tokyozaiko">
+          <label for="MHhinmok.tokyozaiko" th:text="#{MHhinmok.tokyozaiko}">東京在庫数</label><input type="text" id="MHhinmok.tokyozaiko" name="MHhinmok.tokyozaiko" maxlength="7" />
+        </div>
+        <div id="kantozaiko">
+          <label for="MHhinmok.kantozaiko" th:text="#{MHhinmok.kantozaiko}">関東在庫数</label><input type="text" id="MHhinmok.kantozaiko" name="MHhinmok.kantozaiko" maxlength="7" />
+        </div>
+        <div id="kanazawazaiko">
+          <label for="MHhinmok.kanazawazaiko" th:text="#{MHhinmok.kanazawazaiko}">金沢在庫数</label><input type="text" id="MHhinmok.kanazawazaiko" name="MHhinmok.kanazawazaiko" maxlength="7" />
+        </div>
+        <div id="nagoyazaiko">
+          <label for="MHhinmok.nagoyazaiko" th:text="#{MHhinmok.nagoyazaiko}">名古屋在庫数</label><input type="text" id="MHhinmok.nagoyazaiko" name="MHhinmok.nagoyazaiko" maxlength="7" />
+        </div>
+        <div id="kinkizaiko">
+          <label for="MHhinmok.kinkizaiko" th:text="#{MHhinmok.kinkizaiko}">近畿在庫数</label><input type="text" id="MHhinmok.kinkizaiko" name="MHhinmok.kinkizaiko" maxlength="7" />
+        </div>
+        <div id="hirosimazaiko">
+          <label for="MHhinmok.hirosimazaiko" th:text="#{MHhinmok.hirosimazaiko}">広島在庫数</label><input type="text" id="MHhinmok.hirosimazaiko" name="MHhinmok.hirosimazaiko" maxlength="7" />
+        </div>
+        <div id="fukuokazaiko">
+          <label for="MHhinmok.fukuokazaiko" th:text="#{MHhinmok.fukuokazaiko}">福岡在庫数</label><input type="text" id="MHhinmok.fukuokazaiko" name="MHhinmok.fukuokazaiko" maxlength="7" />
+        </div>
+        <div id="gyomuzaiko">
+          <label for="MHhinmok.gyomuzaiko" th:text="#{MHhinmok.gyomuzaiko}">業務在庫数</label><input type="text" id="MHhinmok.gyomuzaiko" name="MHhinmok.gyomuzaiko" maxlength="7" />
+        </div>
+        <div id="boekizaiko">
+          <label for="MHhinmok.boekizaiko" th:text="#{MHhinmok.boekizaiko}">貿易在庫数</label><input type="text" id="MHhinmok.boekizaiko" name="MHhinmok.boekizaiko" maxlength="7" />
+        </div>
+        <div id="hiteczaiko">
+          <label for="MHhinmok.hiteczaiko" th:text="#{MHhinmok.hiteczaiko}">ハイテック在庫数</label><input type="text" id="MHhinmok.hiteczaiko" name="MHhinmok.hiteczaiko" maxlength="7" />
+        </div>
+        <div id="boekiitaku">
+          <label for="MHhinmok.boekiitaku" th:text="#{MHhinmok.boekiitaku}">貿易委託在庫数</label><input type="text" id="MHhinmok.boekiitaku" name="MHhinmok.boekiitaku" maxlength="7" />
+        </div>
+        <div id="sktchszaiko">
+          <label for="MHhinmok.sktchszaiko" th:text="#{MHhinmok.sktchszaiko}">上海ＫＴＣ保税倉庫在庫</label><input type="text" id="MHhinmok.sktchszaiko" name="MHhinmok.sktchszaiko" maxlength="7" />
+        </div>
+        <div id="hosozaiko">
+          <label for="MHhinmok.hosozaiko" th:text="#{MHhinmok.hosozaiko}">包装材在庫数</label><input type="text" id="MHhinmok.hosozaiko" name="MHhinmok.hosozaiko" maxlength="7" />
+        </div>
+        <div id="sendyoteibi">
+          <label for="MHhinmok.sendyoteibi" th:text="#{MHhinmok.sendyoteibi}">生産終了予定日</label><input type="text" id="MHhinmok.sendyoteibi" name="MHhinmok.sendyoteibi" maxlength="8" />
+        </div>
+        <div id="sendbi">
+          <label for="MHhinmok.sendbi" th:text="#{MHhinmok.sendbi}">生産終了日</label><input type="text" id="MHhinmok.sendbi" name="MHhinmok.sendbi" maxlength="8" />
+        </div>
+        <div id="hincdalt1">
+          <label for="MHhinmok.hincdalt1" th:text="#{MHhinmok.hincdalt1}">代替品番１</label><input type="text" id="MHhinmok.hincdalt1" name="MHhinmok.hincdalt1" maxlength="20" />
+        </div>
+        <div id="hincdalt2">
+          <label for="MHhinmok.hincdalt2" th:text="#{MHhinmok.hincdalt2}">代替品番２</label><input type="text" id="MHhinmok.hincdalt2" name="MHhinmok.hincdalt2" maxlength="20" />
+        </div>
+        <div id="noukifukakbn">
+          <label for="MHhinmok.noukifukakbn" th:text="#{MHhinmok.noukifukakbn}">納期回答不可区分</label><input type="text" id="MHhinmok.noukifukakbn" name="MHhinmok.noukifukakbn" maxlength="1" />
+        </div>
+        <div id="chokuhinkbn">
+          <label for="MHhinmok.chokuhinkbn" th:text="#{MHhinmok.chokuhinkbn}">直送対象品区分</label><input type="text" id="MHhinmok.chokuhinkbn" name="MHhinmok.chokuhinkbn" maxlength="1" />
+        </div>
+        <div id="kokusaicd">
+          <label for="MHhinmok.kokusaicd" th:text="#{MHhinmok.kokusaicd}">国際地域コード</label><input type="text" id="MHhinmok.kokusaicd" name="MHhinmok.kokusaicd" maxlength="1" />
+        </div>
+        <div id="kunicd">
+          <label for="MHhinmok.kunicd" th:text="#{MHhinmok.kunicd}">国コード</label><input type="text" id="MHhinmok.kunicd" name="MHhinmok.kunicd" maxlength="2" />
+        </div>
+        <div id="chokukakbn">
+          <label for="MHhinmok.chokukakbn" th:text="#{MHhinmok.chokukakbn}">直送可能区分</label><input type="text" id="MHhinmok.chokukakbn" name="MHhinmok.chokukakbn" maxlength="1" />
+        </div>
+        <div id="filler">
+          <label for="MHhinmok.filler" th:text="#{MHhinmok.filler}">予備領域</label><input type="text" id="MHhinmok.filler" name="MHhinmok.filler" maxlength="19" />
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend th:text="#{MNtanka.legend}">legend</legend>
+        <div id="nissanHinban">
+          <label for="MNtanka.nissanHinban" th:text="#{MNtanka.nissanHinban}">日産品番</label><input type="text" id="MNtanka.nissanHinban" name="MNtanka.nissanHinban" maxlength="20" />
+        </div>
+        <div id="nissanTanka">
+          <label for="MNtanka.nissanTanka" th:text="#{MNtanka.nissanTanka}">日産単価</label><input type="text" id="MNtanka.nissanTanka" name="MNtanka.nissanTanka" maxlength="7" />
+        </div>
+        <div id="kouriKakaku">
+          <label for="MNtanka.kouriKakaku" th:text="#{MNtanka.kouriKakaku}">希望小売価格</label><input type="text" id="MNtanka.kouriKakaku" name="MNtanka.kouriKakaku" maxlength="7" />
+        </div>
+        <div id="shohinkbn">
+          <label for="MNtanka.shohinkbn" th:text="#{MNtanka.shohinkbn}">商品区分</label><input type="text" id="MNtanka.shohinkbn" name="MNtanka.shohinkbn" maxlength="2" />
+        </div>
+        <div id="persokbn">
+          <label for="MNtanka.persokbn" th:text="#{MNtanka.persokbn}">パーソナル区分</label><input type="text" id="MNtanka.persokbn" name="MNtanka.persokbn" maxlength="1" />
+        </div>
+        <div id="kakakukbn">
+          <label for="MNtanka.kakakukbn" th:text="#{MNtanka.kakakukbn}">価格体系区分</label><input type="text" id="MNtanka.kakakukbn" name="MNtanka.kakakukbn" maxlength="1" />
+        </div>
+        <div id="filler">
+          <label for="MNtanka.filler" th:text="#{MNtanka.filler}">予備領域</label><input type="text" id="MNtanka.filler" name="MNtanka.filler" maxlength="26" />
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend th:text="#{MSgenka.legend}">legend</legend>
+        <div id="hincd">
+          <label for="MSgenka.hincd" th:text="#{MSgenka.hincd}">品目コード</label><input type="text" id="MSgenka.hincd" name="MSgenka.hincd" maxlength="20" />
+        </div>
+        <div id="setkbn">
+          <label for="MSgenka.setkbn" th:text="#{MSgenka.setkbn}">セット区分</label><input type="text" id="MSgenka.setkbn" name="MSgenka.setkbn" maxlength="1" />
+        </div>
+        <div id="genka">
+          <label for="MSgenka.genka" th:text="#{MSgenka.genka}">原価</label><input type="text" id="MSgenka.genka" name="MSgenka.genka" maxlength="7" />
+        </div>
+        <div id="seihinGenka">
+          <label for="MSgenka.seihinGenka" th:text="#{MSgenka.seihinGenka}">製品原価</label><input type="text" id="MSgenka.seihinGenka" name="MSgenka.seihinGenka" maxlength="7" />
+        </div>
+        <div id="shohinGenka">
+          <label for="MSgenka.shohinGenka" th:text="#{MSgenka.shohinGenka}">商品原価</label><input type="text" id="MSgenka.shohinGenka" name="MSgenka.shohinGenka" maxlength="7" />
+        </div>
+        <div id="baika">
+          <label for="MSgenka.baika" th:text="#{MSgenka.baika}">売価</label><input type="text" id="MSgenka.baika" name="MSgenka.baika" maxlength="7" />
+        </div>
+        <div id="seihinBaika">
+          <label for="MSgenka.seihinBaika" th:text="#{MSgenka.seihinBaika}">製品売価</label><input type="text" id="MSgenka.seihinBaika" name="MSgenka.seihinBaika" maxlength="7" />
+        </div>
+        <div id="shohinBaika">
+          <label for="MSgenka.shohinBaika" th:text="#{MSgenka.shohinBaika}">商品売価</label><input type="text" id="MSgenka.shohinBaika" name="MSgenka.shohinBaika" maxlength="7" />
+        </div>
+        <div id="filler">
+          <label for="MSgenka.filler" th:text="#{MSgenka.filler}">予備領域</label><input type="text" id="MSgenka.filler" name="MSgenka.filler" maxlength="9" />
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend th:text="#{MSkhin.legend}">legend</legend>
+        <div id="skkbn">
+          <label for="MSkhin.skkbn" th:text="#{MSkhin.skkbn}">ＳＫ区分</label><input type="text" id="MSkhin.skkbn" name="MSkhin.skkbn" maxlength="1" />
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend th:text="#{MTanka.legend}">legend</legend>
+        <div id="dairiTanka">
+          <label for="MTanka.dairiTanka" th:text="#{MTanka.dairiTanka}">代理店単価</label><input type="text" id="MTanka.dairiTanka" name="MTanka.dairiTanka" maxlength="7" />
+        </div>
+        <div id="cdaikoTanka">
+          <label for="MTanka.cdaikoTanka" th:text="#{MTanka.cdaikoTanka}">Ｃ代行店単価</label><input type="text" id="MTanka.cdaikoTanka" name="MTanka.cdaikoTanka" maxlength="7" />
+        </div>
+        <div id="jdaikoTanka">
+          <label for="MTanka.jdaikoTanka" th:text="#{MTanka.jdaikoTanka}">準代行店単価</label><input type="text" id="MTanka.jdaikoTanka" name="MTanka.jdaikoTanka" maxlength="7" />
+        </div>
+        <div id="orosiTanka">
+          <label for="MTanka.orosiTanka" th:text="#{MTanka.orosiTanka}">卸単価</label><input type="text" id="MTanka.orosiTanka" name="MTanka.orosiTanka" maxlength="7" />
+        </div>
+        <div id="kouriKakaku">
+          <label for="MTanka.kouriKakaku" th:text="#{MTanka.kouriKakaku}">希望小売価格</label><input type="text" id="MTanka.kouriKakaku" name="MTanka.kouriKakaku" maxlength="7" />
+        </div>
+        <div id="diyKakaku">
+          <label for="MTanka.diyKakaku" th:text="#{MTanka.diyKakaku}">ＤＩＹ価格</label><input type="text" id="MTanka.diyKakaku" name="MTanka.diyKakaku" maxlength="7" />
+        </div>
+        <div id="yushutu1Kakaku">
+          <label for="MTanka.yushutu1Kakaku" th:text="#{MTanka.yushutu1Kakaku}">輸出価格１</label><input type="text" id="MTanka.yushutu1Kakaku" name="MTanka.yushutu1Kakaku" maxlength="7" />
+        </div>
+        <div id="yushutu2Kakaku">
+          <label for="MTanka.yushutu2Kakaku" th:text="#{MTanka.yushutu2Kakaku}">輸出価格２</label><input type="text" id="MTanka.yushutu2Kakaku" name="MTanka.yushutu2Kakaku" maxlength="7" />
+        </div>
+        <div id="yushutu3Kakaku">
+          <label for="MTanka.yushutu3Kakaku" th:text="#{MTanka.yushutu3Kakaku}">輸出価格３</label><input type="text" id="MTanka.yushutu3Kakaku" name="MTanka.yushutu3Kakaku" maxlength="7" />
+        </div>
+        <div id="kakaku1">
+          <label for="MTanka.kakaku1" th:text="#{MTanka.kakaku1}">価格１</label><input type="text" id="MTanka.kakaku1" name="MTanka.kakaku1" maxlength="7" />
+        </div>
+        <div id="kakaku2">
+          <label for="MTanka.kakaku2" th:text="#{MTanka.kakaku2}">価格２</label><input type="text" id="MTanka.kakaku2" name="MTanka.kakaku2" maxlength="7" />
+        </div>
+        <div id="kakaku3">
+          <label for="MTanka.kakaku3" th:text="#{MTanka.kakaku3}">価格３</label><input type="text" id="MTanka.kakaku3" name="MTanka.kakaku3" maxlength="7" />
+        </div>
+        <div id="kakaku4">
+          <label for="MTanka.kakaku4" th:text="#{MTanka.kakaku4}">価格４</label><input type="text" id="MTanka.kakaku4" name="MTanka.kakaku4" maxlength="7" />
+        </div>
+        <div id="kakaku5">
+          <label for="MTanka.kakaku5" th:text="#{MTanka.kakaku5}">価格５</label><input type="text" id="MTanka.kakaku5" name="MTanka.kakaku5" maxlength="7" />
+        </div>
+        <div id="kakaku6">
+          <label for="MTanka.kakaku6" th:text="#{MTanka.kakaku6}">価格６</label><input type="text" id="MTanka.kakaku6" name="MTanka.kakaku6" maxlength="7" />
+        </div>
+        <div id="shohinkbn">
+          <label for="MTanka.shohinkbn" th:text="#{MTanka.shohinkbn}">商品区分</label><input type="text" id="MTanka.shohinkbn" name="MTanka.shohinkbn" maxlength="2" />
+        </div>
+        <div id="kakakukbn">
+          <label for="MTanka.kakakukbn" th:text="#{MTanka.kakakukbn}">価格体系区分</label><input type="text" id="MTanka.kakakukbn" name="MTanka.kakakukbn" maxlength="1" />
+        </div>
+        <div id="filler">
+          <label for="MTanka.filler" th:text="#{MTanka.filler}">予備領域</label><input type="text" id="MTanka.filler" name="MTanka.filler" maxlength="12" />
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend th:text="#{MWebkan.legend}">legend</legend>
+        <div id="kikaku">
+          <label for="MWebkan.kikaku" th:text="#{MWebkan.kikaku}">規格</label><input type="text" id="MWebkan.kikaku" name="MWebkan.kikaku" maxlength="40" />
+        </div>
+        <div id="daicd">
+          <label for="MWebkan.daicd" th:text="#{MWebkan.daicd}">大分類コード</label><input type="text" id="MWebkan.daicd" name="MWebkan.daicd" maxlength="1" />
+        </div>
+        <div id="chucd">
+          <label for="MWebkan.chucd" th:text="#{MWebkan.chucd}">中分類コード</label><input type="text" id="MWebkan.chucd" name="MWebkan.chucd" maxlength="2" />
+        </div>
+        <div id="shocd">
+          <label for="MWebkan.shocd" th:text="#{MWebkan.shocd}">小分類コード</label><input type="text" id="MWebkan.shocd" name="MWebkan.shocd" maxlength="4" />
+        </div>
+        <div id="abuncd">
+          <label for="MWebkan.abuncd" th:text="#{MWebkan.abuncd}">分類Ａコード</label><input type="text" id="MWebkan.abuncd" name="MWebkan.abuncd" maxlength="6" />
+        </div>
+        <div id="bbuncd">
+          <label for="MWebkan.bbuncd" th:text="#{MWebkan.bbuncd}">分類Ｂコード</label><input type="text" id="MWebkan.bbuncd" name="MWebkan.bbuncd" maxlength="20" />
+        </div>
+        <div id="whyojikbn">
+          <label for="MWebkan.whyojikbn" th:text="#{MWebkan.whyojikbn}">WEB表示区分</label><input type="text" id="MWebkan.whyojikbn" name="MWebkan.whyojikbn" maxlength="1" />
+        </div>
+        <div id="irisu">
+          <label for="MWebkan.irisu" th:text="#{MWebkan.irisu}">入数</label><input type="text" id="MWebkan.irisu" name="MWebkan.irisu" maxlength="4" />
+        </div>
+        <div id="zaisikii">
+          <label for="MWebkan.zaisikii" th:text="#{MWebkan.zaisikii}">最低在庫閾値</label><input type="text" id="MWebkan.zaisikii" name="MWebkan.zaisikii" maxlength="7" />
+        </div>
+        <div id="nyuyoteisikii">
+          <label for="MWebkan.nyuyoteisikii" th:text="#{MWebkan.nyuyoteisikii}">入庫予定数閾値</label><input type="text" id="MWebkan.nyuyoteisikii" name="MWebkan.nyuyoteisikii" maxlength="7" />
+        </div>
+        <div id="hanyou1">
+          <label for="MWebkan.hanyou1" th:text="#{MWebkan.hanyou1}">汎用文字１</label><input type="text" id="MWebkan.hanyou1" name="MWebkan.hanyou1" maxlength="40" />
+        </div>
+        <div id="hanyou2">
+          <label for="MWebkan.hanyou2" th:text="#{MWebkan.hanyou2}">汎用文字２</label><input type="text" id="MWebkan.hanyou2" name="MWebkan.hanyou2" maxlength="40" />
+        </div>
+        <div id="hanyou3">
+          <label for="MWebkan.hanyou3" th:text="#{MWebkan.hanyou3}">汎用文字３</label><input type="text" id="MWebkan.hanyou3" name="MWebkan.hanyou3" maxlength="40" />
+        </div>
+        <div id="zaihenkbn">
+          <label for="MWebkan.zaihenkbn" th:text="#{MWebkan.zaihenkbn}">在庫表示変更区分</label><input type="text" id="MWebkan.zaihenkbn" name="MWebkan.zaihenkbn" maxlength="1" />
+        </div>
+        <div id="teidspkbn">
+          <label for="MWebkan.teidspkbn" th:text="#{MWebkan.teidspkbn}">定価表示制御区分</label><input type="text" id="MWebkan.teidspkbn" name="MWebkan.teidspkbn" maxlength="1" />
+        </div>
+        <div id="updexcdkbn">
+          <label for="MWebkan.updexcdkbn" th:text="#{MWebkan.updexcdkbn}">閾値更新対象区分</label><input type="text" id="MWebkan.updexcdkbn" name="MWebkan.updexcdkbn" maxlength="1" />
+        </div>
+        <div id="tourokubi">
+          <label for="MWebkan.tourokubi" th:text="#{MWebkan.tourokubi}">作成日</label><input type="text" id="MWebkan.tourokubi" name="MWebkan.tourokubi" maxlength="8" />
+        </div>
+        <div id="shuseibi">
+          <label for="MWebkan.shuseibi" th:text="#{MWebkan.shuseibi}">更新日</label><input type="text" id="MWebkan.shuseibi" name="MWebkan.shuseibi" maxlength="8" />
+        </div>
+        <div id="filler">
+          <label for="MWebkan.filler" th:text="#{MWebkan.filler}">予備領域</label><input type="text" id="MWebkan.filler" name="MWebkan.filler" maxlength="49" />
+        </div>
+      </fieldset>
+      <h3 th:text="#{MHososet.h3}">h3</h3>
+      <a th:href="@{/model/MHososet.html}" id="MHososet" target="dialog" th:text="#{MHososet.add}" class="addChild" tabindex="-1">包装材構成マスタ</a>
+      <div id="MHososetGrid" data-selectionMode="link" data-addRow="true" data-frozenColumn="1" th:data-href="@{/model/MHososet.html}"></div>
+      <h3 th:text="#{MPkose.h3}">h3</h3>
+      <a th:href="@{/model/MPkose.html}" id="MPkose" target="dialog" th:text="#{MPkose.add}" class="addChild" tabindex="-1">部品構成マスタ</a>
+      <div id="MPkoseGrid" data-selectionMode="link" data-addRow="true" data-frozenColumn="1" th:data-href="@{/model/MPkose.html}"></div>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="Dialogate.refresh(event);">reset</button>
+        <a th:href="@{MBarcdGet.xlsx(baseMei=#{MBarcd.h2})}" id="MBarcdGet.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeleteMBarcd" class="delete" data-action="MBarcdDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistMBarcd" class="regist" th:text="#{common.regist}">登録</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

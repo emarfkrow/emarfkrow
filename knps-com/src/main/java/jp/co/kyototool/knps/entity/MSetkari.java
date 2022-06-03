@@ -10,24 +10,24 @@ import jp.co.golorp.emarf.entity.IEntity;
 import jp.co.golorp.emarf.sql.Queries;
 
 /**
- * M_SETKARI
+ * 仮セット構成マスタ
  *
  * @author emarfkrow
  */
 public class MSetkari implements IEntity {
 
-    /** SET-HINBAN */
+    /** セット品番 */
     private String setHinban;
 
     /**
-     * @return SET-HINBAN
+     * @return セット品番
      */
     public String getSetHinban() {
         return this.setHinban;
     }
 
     /**
-     * @param o SET-HINBAN
+     * @param o セット品番
      */
     public void setSetHinban(final Object o) {
         if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {
@@ -37,18 +37,18 @@ public class MSetkari implements IEntity {
         }
     }
 
-    /** SET-KHINBAN */
+    /** セット子品番 */
     private String setKhinban;
 
     /**
-     * @return SET-KHINBAN
+     * @return セット子品番
      */
     public String getSetKhinban() {
         return this.setKhinban;
     }
 
     /**
-     * @param o SET-KHINBAN
+     * @param o セット子品番
      */
     public void setSetKhinban(final Object o) {
         if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {
@@ -58,18 +58,102 @@ public class MSetkari implements IEntity {
         }
     }
 
-    /** SETINZU */
+    /** 得意先コード */
+    private java.math.BigDecimal tokucd;
+
+    /**
+     * @return 得意先コード
+     */
+    public java.math.BigDecimal getTokucd() {
+        return this.tokucd;
+    }
+
+    /**
+     * @param o 得意先コード
+     */
+    public void setTokucd(final Object o) {
+        if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {
+            this.tokucd = new java.math.BigDecimal(o.toString());
+        } else {
+            this.tokucd = null;
+        }
+    }
+
+    /** 品名 */
+    private String hinmei;
+
+    /**
+     * @return 品名
+     */
+    public String getHinmei() {
+        return this.hinmei;
+    }
+
+    /**
+     * @param o 品名
+     */
+    public void setHinmei(final Object o) {
+        if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {
+            this.hinmei = String.valueOf(o.toString());
+        } else {
+            this.hinmei = null;
+        }
+    }
+
+    /** 子品名 */
+    private String koHinmei;
+
+    /**
+     * @return 子品名
+     */
+    public String getKoHinmei() {
+        return this.koHinmei;
+    }
+
+    /**
+     * @param o 子品名
+     */
+    public void setKoHinmei(final Object o) {
+        if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {
+            this.koHinmei = String.valueOf(o.toString());
+        } else {
+            this.koHinmei = null;
+        }
+    }
+
+    /** セット区分 */
+    private String setkbn;
+
+    /**
+     * @return セット区分
+     */
+    public String getSetkbn() {
+        return this.setkbn;
+    }
+
+    /**
+     * @param o セット区分
+     */
+    public void setSetkbn(final Object o) {
+        if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {
+            this.setkbn = String.valueOf(o.toString());
+        } else {
+            this.setkbn = null;
+        }
+    }
+
+    /** セット員数 */
     private java.math.BigDecimal setinzu;
 
     /**
-     * @return SETINZU
+     * @return セット員数
      */
     public java.math.BigDecimal getSetinzu() {
         return this.setinzu;
     }
 
     /**
-     * @param o SETINZU
+     * @param o セット員数
      */
     public void setSetinzu(final Object o) {
         if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {
@@ -79,114 +163,75 @@ public class MSetkari implements IEntity {
         }
     }
 
-    /** TIME_STAMP_CREATE */
-    @com.fasterxml.jackson.annotation.JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
-    @com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer.class)
-    @com.fasterxml.jackson.databind.annotation.JsonSerialize(using = com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer.class)
-    private java.time.LocalDateTime timeStampCreate;
+    /** 子単価 */
+    private java.math.BigDecimal koTanka;
 
     /**
-     * @return TIME_STAMP_CREATE
+     * @return 子単価
      */
-    public java.time.LocalDateTime getTimeStampCreate() {
-        return this.timeStampCreate;
+    public java.math.BigDecimal getKoTanka() {
+        return this.koTanka;
     }
 
     /**
-     * @param o TIME_STAMP_CREATE
+     * @param o 子単価
      */
-    public void setTimeStampCreate(final Object o) {
-        if (o != null && o instanceof Long) {
-            java.util.Date d = new java.util.Date((Long) o);
-            this.timeStampCreate = java.time.LocalDateTime.ofInstant(d.toInstant(), java.time.ZoneId.systemDefault());
-        } else if (o != null && o.toString().matches("^[0-9]+")) {
-            java.util.Date d = new java.util.Date(Long.valueOf(o.toString()));
-            this.timeStampCreate = java.time.LocalDateTime.ofInstant(d.toInstant(), java.time.ZoneId.systemDefault());
-        } else if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {
-            this.timeStampCreate = java.time.LocalDateTime.parse(o.toString());
-        } else {
-            this.timeStampCreate = null;
-        }
-    }
-
-    /** TIME_STAMP_CHANGE */
-    @com.fasterxml.jackson.annotation.JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
-    @com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer.class)
-    @com.fasterxml.jackson.databind.annotation.JsonSerialize(using = com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer.class)
-    private java.time.LocalDateTime timeStampChange;
-
-    /**
-     * @return TIME_STAMP_CHANGE
-     */
-    public java.time.LocalDateTime getTimeStampChange() {
-        return this.timeStampChange;
-    }
-
-    /**
-     * @param o TIME_STAMP_CHANGE
-     */
-    public void setTimeStampChange(final Object o) {
-        if (o != null && o instanceof Long) {
-            java.util.Date d = new java.util.Date((Long) o);
-            this.timeStampChange = java.time.LocalDateTime.ofInstant(d.toInstant(), java.time.ZoneId.systemDefault());
-        } else if (o != null && o.toString().matches("^[0-9]+")) {
-            java.util.Date d = new java.util.Date(Long.valueOf(o.toString()));
-            this.timeStampChange = java.time.LocalDateTime.ofInstant(d.toInstant(), java.time.ZoneId.systemDefault());
-        } else if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {
-            this.timeStampChange = java.time.LocalDateTime.parse(o.toString());
-        } else {
-            this.timeStampChange = null;
-        }
-    }
-
-    /** USER_ID_CREATE */
-    private String userIdCreate;
-
-    /**
-     * @return USER_ID_CREATE
-     */
-    public String getUserIdCreate() {
-        return this.userIdCreate;
-    }
-
-    /**
-     * @param o USER_ID_CREATE
-     */
-    public void setUserIdCreate(final Object o) {
+    public void setKoTanka(final Object o) {
         if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {
-            this.userIdCreate = String.valueOf(o.toString());
+            this.koTanka = new java.math.BigDecimal(o.toString());
         } else {
-            this.userIdCreate = null;
+            this.koTanka = null;
         }
     }
 
-    /** USER_ID_CHANGE */
-    private String userIdChange;
+    /** 無償支給区分 */
+    private String mushokbn;
 
     /**
-     * @return USER_ID_CHANGE
+     * @return 無償支給区分
      */
-    public String getUserIdChange() {
-        return this.userIdChange;
+    public String getMushokbn() {
+        return this.mushokbn;
     }
 
     /**
-     * @param o USER_ID_CHANGE
+     * @param o 無償支給区分
      */
-    public void setUserIdChange(final Object o) {
+    public void setMushokbn(final Object o) {
         if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {
-            this.userIdChange = String.valueOf(o.toString());
+            this.mushokbn = String.valueOf(o.toString());
         } else {
-            this.userIdChange = null;
+            this.mushokbn = null;
+        }
+    }
+
+    /** 略得意先名 */
+    private String rtokumei;
+
+    /**
+     * @return 略得意先名
+     */
+    public String getRtokumei() {
+        return this.rtokumei;
+    }
+
+    /**
+     * @param o 略得意先名
+     */
+    public void setRtokumei(final Object o) {
+        if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {
+            this.rtokumei = String.valueOf(o.toString());
+        } else {
+            this.rtokumei = null;
         }
     }
 
     /**
-     * M_SETKARI照会
+     * 仮セット構成マスタ照会
      *
-     * @param param1 SET-HINBAN
-     * @param param2 SET-KHINBAN
-     * @return M_SETKARI
+     * @param param1 セット品番
+     * @param param2 セット子品番
+     * @return 仮セット構成マスタ
      */
     public static MSetkari get(final Object param1, final Object param2) {
 
@@ -204,7 +249,7 @@ public class MSetkari implements IEntity {
     }
 
     /**
-     * M_SETKARI追加
+     * 仮セット構成マスタ追加
      *
      * @param now システム日時
      * @param id 登録者
@@ -212,25 +257,28 @@ public class MSetkari implements IEntity {
      */
     public int insert(final LocalDateTime now, final String id) {
 
-        // SET-KHINBANの採番処理
+        // セット子品番の採番処理
         numbering();
 
-        // M_SETKOSEの登録
+        // セット構成マスタの登録
         if (this.mSetkose != null) {
             this.mSetkose.setSetHinban(this.getSetHinban());
             this.mSetkose.setSetKhinban(this.getSetKhinban());
             this.mSetkose.insert(now, id);
         }
 
-        // M_SETKARIの登録
+        // 仮セット構成マスタの登録
         List<String> nameList = new ArrayList<String>();
         nameList.add("set-hinban -- :set-hinban");
         nameList.add("set-khinban -- :set-khinban");
+        nameList.add("tokucd -- :tokucd");
+        nameList.add("hinmei -- :hinmei");
+        nameList.add("ko-hinmei -- :ko-hinmei");
+        nameList.add("setkbn -- :setkbn");
         nameList.add("setinzu -- :setinzu");
-        nameList.add("time_stamp_create -- :time_stamp_create");
-        nameList.add("time_stamp_change -- :time_stamp_change");
-        nameList.add("user_id_create -- :user_id_create");
-        nameList.add("user_id_change -- :user_id_change");
+        nameList.add("ko-tanka -- :ko-tanka");
+        nameList.add("mushokbn -- :mushokbn");
+        nameList.add("rtokumei -- :rtokumei");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO M_SETKARI(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -244,15 +292,18 @@ public class MSetkari implements IEntity {
         List<String> valueList = new ArrayList<String>();
         valueList.add(":set-hinban");
         valueList.add(":set-khinban");
+        valueList.add(":tokucd");
+        valueList.add(":hinmei");
+        valueList.add(":ko-hinmei");
+        valueList.add(":setkbn");
         valueList.add(":setinzu");
-        valueList.add("TO_TIMESTAMP (:time_stamp_create, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        valueList.add("TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        valueList.add(":user_id_create");
-        valueList.add(":user_id_change");
+        valueList.add(":ko-tanka");
+        valueList.add(":mushokbn");
+        valueList.add(":rtokumei");
         return String.join("\r\n    , ", valueList);
     }
 
-    /** SET-KHINBANの採番処理 */
+    /** セット子品番の採番処理 */
     private void numbering() {
 
         if (this.setKhinban != null) {
@@ -276,7 +327,7 @@ public class MSetkari implements IEntity {
     }
 
     /**
-     * M_SETKARI更新
+     * 仮セット構成マスタ更新
      *
      * @param now システム日時
      * @param id 更新者
@@ -284,7 +335,7 @@ public class MSetkari implements IEntity {
      */
     public int update(final LocalDateTime now, final String id) {
 
-        // M_SETKOSEの登録
+        // セット構成マスタの登録
         if (this.mSetkose != null) {
             mSetkose.setSetHinban(this.getSetHinban());
             mSetkose.setSetKhinban(this.getSetKhinban());
@@ -295,7 +346,7 @@ public class MSetkari implements IEntity {
             }
         }
 
-        // M_SETKARIの登録
+        // 仮セット構成マスタの登録
         String sql = "UPDATE M_SETKARI\r\nSET\r\n      " + getSet() + "\r\nWHERE\r\n    " + getWhere();
         Map<String, Object> params = toMap(now, id);
         return Queries.regist(sql, params);
@@ -305,26 +356,31 @@ public class MSetkari implements IEntity {
         List<String> setList = new ArrayList<String>();
         setList.add("set-hinban = :set-hinban");
         setList.add("set-khinban = :set-khinban");
+        setList.add("tokucd = :tokucd");
+        setList.add("hinmei = :hinmei");
+        setList.add("ko-hinmei = :ko-hinmei");
+        setList.add("setkbn = :setkbn");
         setList.add("setinzu = :setinzu");
-        setList.add("time_stamp_change = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("user_id_change = :user_id_change");
+        setList.add("ko-tanka = :ko-tanka");
+        setList.add("mushokbn = :mushokbn");
+        setList.add("rtokumei = :rtokumei");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
 
     /**
-     * M_SETKARI削除
+     * 仮セット構成マスタ削除
      *
      * @return 削除件数
      */
     public int delete() {
 
-        // M_SETKOSEの削除
+        // セット構成マスタの削除
         if (this.mSetkose != null) {
             this.mSetkose.delete();
         }
 
-        // M_SETKARIの削除
+        // 仮セット構成マスタの削除
         String sql = "DELETE FROM M_SETKARI WHERE " + getWhere();
 
         Map<String, Object> params = toMap(null, null);
@@ -336,7 +392,6 @@ public class MSetkari implements IEntity {
         List<String> whereList = new ArrayList<String>();
         whereList.add("TRIM (set-hinban) = TRIM (:set-hinban)");
         whereList.add("TRIM (set-khinban) = TRIM (:set-khinban)");
-        whereList.add("time_stamp_change = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
         return String.join(" AND ", whereList);
     }
 
@@ -344,7 +399,14 @@ public class MSetkari implements IEntity {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("SET-HINBAN", this.setHinban);
         params.put("SET-KHINBAN", this.setKhinban);
+        params.put("TOKUCD", this.tokucd);
+        params.put("HINMEI", this.hinmei);
+        params.put("KO-HINMEI", this.koHinmei);
+        params.put("SETKBN", this.setkbn);
         params.put("SETINZU", this.setinzu);
+        params.put("KO-TANKA", this.koTanka);
+        params.put("MUSHOKBN", this.mushokbn);
+        params.put("RTOKUMEI", this.rtokumei);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);
@@ -353,12 +415,12 @@ public class MSetkari implements IEntity {
     }
 
     /**
-     * M_SETKOSE
+     * セット構成マスタ
      */
     private MSetkose mSetkose;
 
     /**
-     * @return M_SETKOSE
+     * @return セット構成マスタ
      */
     @com.fasterxml.jackson.annotation.JsonProperty("MSetkose")
     public MSetkose getMSetkose() {
@@ -366,14 +428,14 @@ public class MSetkari implements IEntity {
     }
 
     /**
-     * @param p M_SETKOSE
+     * @param p セット構成マスタ
      */
     public void setMSetkose(final MSetkose p) {
         this.mSetkose = p;
     }
 
     /**
-     * @return M_SETKOSE
+     * @return セット構成マスタ
      */
     public MSetkose referMSetkose() {
         if (this.mSetkose == null) {

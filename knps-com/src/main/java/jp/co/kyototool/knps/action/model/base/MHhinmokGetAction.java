@@ -9,13 +9,13 @@ import jp.co.kyototool.knps.entity.MHhinmok;
 import jp.co.golorp.emarf.action.BaseAction;
 
 /**
- * M_HHINMOK照会
+ * 販売品目マスタ照会
  *
  * @author emarfkrow
  */
 public class MHhinmokGetAction extends BaseAction {
 
-    /** M_HHINMOK照会処理 */
+    /** 販売品目マスタ照会処理 */
     @Override
     public Map<String, Object> running(final LocalDateTime now, final String id, final Map<String, Object> postJson) {
 
@@ -31,6 +31,11 @@ public class MHhinmokGetAction extends BaseAction {
         }
 
         MHhinmok mHhinmok = MHhinmok.get(hhinban);
+        mHhinmok.referMNtanka();
+        mHhinmok.referMSgenka();
+        mHhinmok.referMSkhin();
+        mHhinmok.referMTanka();
+        mHhinmok.referMWebkan();
         map.put("MHhinmok", mHhinmok);
         return map;
     }

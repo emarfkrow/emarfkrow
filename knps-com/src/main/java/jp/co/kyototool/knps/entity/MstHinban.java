@@ -1525,6 +1525,12 @@ public class MstHinban implements IEntity {
             }
         }
 
+        // 原価用品目マスタの登録
+        if (this.mGhinmok != null) {
+            this.mGhinmok.setHinban(this.getHinban());
+            this.mGhinmok.insert(now, id);
+        }
+
         // PRD_ORDERPOINT_STATUSの登録
         if (this.prdOrderpointStatus != null) {
             this.prdOrderpointStatus.setHinban(this.getHinban());
@@ -1799,6 +1805,16 @@ public class MstHinban implements IEntity {
             }
         }
 
+        // 原価用品目マスタの登録
+        if (this.mGhinmok != null) {
+            mGhinmok.setHinban(this.getHinban());
+            try {
+                mGhinmok.insert(now, id);
+            } catch (Exception e) {
+                mGhinmok.update(now, id);
+            }
+        }
+
         // PRD_ORDERPOINT_STATUSの登録
         if (this.prdOrderpointStatus != null) {
             prdOrderpointStatus.setHinban(this.getHinban());
@@ -1932,6 +1948,11 @@ public class MstHinban implements IEntity {
             }
         }
 
+        // 原価用品目マスタの削除
+        if (this.mGhinmok != null) {
+            this.mGhinmok.delete();
+        }
+
         // PRD_ORDERPOINT_STATUSの削除
         if (this.prdOrderpointStatus != null) {
             this.prdOrderpointStatus.delete();
@@ -2028,6 +2049,39 @@ public class MstHinban implements IEntity {
         params.put("time_stamp_change", now);
         params.put("user_id_change", id);
         return params;
+    }
+
+    /**
+     * 原価用品目マスタ
+     */
+    private MGhinmok mGhinmok;
+
+    /**
+     * @return 原価用品目マスタ
+     */
+    @com.fasterxml.jackson.annotation.JsonProperty("MGhinmok")
+    public MGhinmok getMGhinmok() {
+        return this.mGhinmok;
+    }
+
+    /**
+     * @param p 原価用品目マスタ
+     */
+    public void setMGhinmok(final MGhinmok p) {
+        this.mGhinmok = p;
+    }
+
+    /**
+     * @return 原価用品目マスタ
+     */
+    public MGhinmok referMGhinmok() {
+        if (this.mGhinmok == null) {
+            try {
+                this.mGhinmok = MGhinmok.get(this.hinban);
+            } catch (jp.co.golorp.emarf.exception.NoDataError e) {
+            }
+        }
+        return this.mGhinmok;
     }
 
     /**

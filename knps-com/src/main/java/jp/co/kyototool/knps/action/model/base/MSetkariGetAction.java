@@ -9,13 +9,13 @@ import jp.co.kyototool.knps.entity.MSetkari;
 import jp.co.golorp.emarf.action.BaseAction;
 
 /**
- * M_SETKARI照会
+ * 仮セット構成マスタ照会
  *
  * @author emarfkrow
  */
 public class MSetkariGetAction extends BaseAction {
 
-    /** M_SETKARI照会処理 */
+    /** 仮セット構成マスタ照会処理 */
     @Override
     public Map<String, Object> running(final LocalDateTime now, final String id, final Map<String, Object> postJson) {
 

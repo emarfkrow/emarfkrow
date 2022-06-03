@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{MYubojo.title}">有力店ボーナス条件</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/MYubojoGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{MYubojo.h2}">h2</h2>
+    <form name="MYubojoRegistForm" action="MYubojoRegist.ajax" class="regist">
+      <fieldset>
+        <legend th:text="#{MYubojo.legend}">legend</legend>
+        <div id="yuryokukbn">
+          <label for="MYubojo.yuryokukbn" th:text="#{MYubojo.yuryokukbn}">有力店資格区分</label><span id="MYubojo.yuryokukbn"></span><input type="hidden" id="MYubojo.yuryokukbn" name="MYubojo.yuryokukbn" class="primaryKey" />
+        </div>
+        <div id="yuryocd">
+          <label for="MYubojo.yuryocd" th:text="#{MYubojo.yuryocd}">有力店コード</label><input type="text" id="MYubojo.yuryocd" name="MYubojo.yuryocd" maxlength="8" class="primaryKey" />
+        </div>
+        <div id="ryuryokumei">
+          <label for="MYubojo.ryuryokumei" th:text="#{MYubojo.ryuryokumei}">略有力店名</label><input type="text" id="MYubojo.ryuryokumei" name="MYubojo.ryuryokumei" maxlength="20" />
+        </div>
+        <div id="konyuMin">
+          <label for="MYubojo.konyuMin" th:text="#{MYubojo.konyuMin}">下限購入額</label><input type="text" id="MYubojo.konyuMin" name="MYubojo.konyuMin" maxlength="9" />
+        </div>
+        <div id="konyuMax">
+          <label for="MYubojo.konyuMax" th:text="#{MYubojo.konyuMax}">上限購入額</label><input type="text" id="MYubojo.konyuMax" name="MYubojo.konyuMax" maxlength="9" />
+        </div>
+        <div id="yuboritu">
+          <label for="MYubojo.yuboritu" th:text="#{MYubojo.yuboritu}">有ボ支払率</label><input type="text" id="MYubojo.yuboritu" name="MYubojo.yuboritu" maxlength="2" />
+        </div>
+        <div id="upddate">
+          <label for="MYubojo.upddate" th:text="#{MYubojo.upddate}">更新日付</label><input type="text" id="MYubojo.upddate" name="MYubojo.upddate" maxlength="8" />
+        </div>
+        <div id="filler">
+          <label for="MYubojo.filler" th:text="#{MYubojo.filler}">予備領域</label><input type="text" id="MYubojo.filler" name="MYubojo.filler" maxlength="33" />
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="Dialogate.refresh(event);">reset</button>
+        <a th:href="@{MYubojoGet.xlsx(baseMei=#{MYubojo.h2})}" id="MYubojoGet.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeleteMYubojo" class="delete" data-action="MYubojoDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistMYubojo" class="regist" th:text="#{common.regist}">登録</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

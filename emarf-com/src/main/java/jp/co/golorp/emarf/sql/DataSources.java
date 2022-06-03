@@ -187,8 +187,6 @@ public final class DataSources {
 
         /* 設定ファイル読み込み */
         ResourceBundle bundle = ResourceBundles.getBundle(BeanGenerator.class);
-        //        referIdSuffixs = bundle.getString("BeanGenerator.refer.id.suffixs").split(",");
-        //        referMeiSuffix = bundle.getString("BeanGenerator.refer.mei.suffix");
         String[] pairs = bundle.getString("BeanGenerator.refer.pairs").split(",");
         for (String pair : pairs) {
             String[] kv = pair.split(":");
@@ -202,8 +200,8 @@ public final class DataSources {
         try {
             Connection cn = Connections.get();
             DatabaseMetaData metaData = cn.getMetaData();
-            ResultSet tables = metaData.getTables(null, BUNDLE.getString("username").toUpperCase(), null,
-                    new String[] { "TABLE" });
+            String schemaPattern = BUNDLE.getString("username");
+            ResultSet tables = metaData.getTables(null, schemaPattern.toUpperCase(), null, new String[] { "TABLE" });
             while (tables.next()) {
 
                 String tableName = tables.getString("TABLE_NAME");
@@ -216,10 +214,8 @@ public final class DataSources {
                 TableInfo tableInfo = new TableInfo();
                 tableInfos.add(tableInfo);
 
-                // テーブル物理名
                 tableInfo.setTableName(tableName);
 
-                // テーブル論理名
                 String remarks = tables.getString("REMARKS");
                 if (remarks == null || remarks.length() == 0) {
                     remarks = assist.getTableComment(tableName);
@@ -262,6 +258,7 @@ public final class DataSources {
 
             for (TableInfo tableInfo : tableInfos) {
 
+                String tableName = tableInfo.getTableName();
                 Map<String, ColumnInfo> columnInfos = tableInfo.getColumnInfos();
 
                 // テーブルのカラム情報を取得してループ
@@ -291,7 +288,10 @@ public final class DataSources {
                     columnInfo.setNullable(columns.getInt("NULLABLE"));
                     // カラム論理名
                     String remarks = columns.getString("REMARKS");
-                    if (remarks == null) {
+                    if (remarks == null || remarks.length() == 0) {
+                        remarks = assist.getColumnComment(tableName, columnName);
+                    }
+                    if (remarks == null || remarks.length() == 0) {
                         remarks = columnName;
                     }
                     columnInfo.setRemarks(remarks);

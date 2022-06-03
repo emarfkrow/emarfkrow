@@ -11,7 +11,7 @@ import jp.co.golorp.emarf.process.BaseProcess;
 import jp.co.golorp.emarf.validation.IForm;
 
 /**
- * M_SETKOSE一覧登録フォーム
+ * セット構成マスタ一覧登録フォーム
  *
  * @author emarfkrow
  */
@@ -20,19 +20,19 @@ public class MSetkoseSRegistForm implements IForm {
     /** logger */
     private static final Logger LOG = LoggerFactory.getLogger(MSetkoseRegistForm.class);
 
-    /** M_SETKOSE登録フォームのリスト */
+    /** セット構成マスタ登録フォームのリスト */
     @Valid
     private List<MSetkoseRegistForm> mSetkoseGrid;
 
     /**
-     * @return M_SETKOSE登録フォームのリスト
+     * @return セット構成マスタ登録フォームのリスト
      */
     public List<MSetkoseRegistForm> getMSetkoseGrid() {
         return mSetkoseGrid;
     }
 
     /**
-     * @param p M_SETKOSE登録フォームのリスト
+     * @param p セット構成マスタ登録フォームのリスト
      */
     public void setMSetkoseGrid(final List<MSetkoseRegistForm> p) {
         this.mSetkoseGrid = p;

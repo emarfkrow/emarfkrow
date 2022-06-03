@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{MHosozai.title}">包装材マスタ</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/MHosozaiGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{MHosozai.h2}">h2</h2>
+    <form name="MHosozaiRegistForm" action="MHosozaiRegist.ajax" class="regist">
+      <fieldset>
+        <legend th:text="#{MHosozai.legend}">legend</legend>
+        <div id="hosoHinban">
+          <label for="MHosozai.hosoHinban" th:text="#{MHosozai.hosoHinban}">包装品番</label><span id="MHosozai.hosoHinban"></span><input type="hidden" id="MHosozai.hosoHinban" name="MHosozai.hosoHinban" class="primaryKey" />
+        </div>
+        <div id="hosoHinmei">
+          <label for="MHosozai.hosoHinmei" th:text="#{MHosozai.hosoHinmei}">包装品名</label><input type="text" id="MHosozai.hosoHinmei" name="MHosozai.hosoHinmei" maxlength="60" />
+        </div>
+        <div id="hosoHinmeiRyaku">
+          <label for="MHosozai.hosoHinmeiRyaku" th:text="#{MHosozai.hosoHinmeiRyaku}">包装品名略称</label><input type="text" id="MHosozai.hosoHinmeiRyaku" name="MHosozai.hosoHinmeiRyaku" maxlength="25" />
+        </div>
+        <div id="hosoSize">
+          <label for="MHosozai.hosoSize" th:text="#{MHosozai.hosoSize}">包装サイズ</label><input type="text" id="MHosozai.hosoSize" name="MHosozai.hosoSize" maxlength="30" />
+        </div>
+        <div id="hosoTanka">
+          <label for="MHosozai.hosoTanka" th:text="#{MHosozai.hosoTanka}">包装単価</label><input type="text" id="MHosozai.hosoTanka" name="MHosozai.hosoTanka" maxlength="7" />
+        </div>
+        <div id="hosoZaicode">
+          <label for="MHosozai.hosoZaicode" th:text="#{MHosozai.hosoZaicode}">包装材質コード</label><input type="text" id="MHosozai.hosoZaicode" name="MHosozai.hosoZaicode" maxlength="5" />
+        </div>
+        <div id="hosoWeight">
+          <label for="MHosozai.hosoWeight" th:text="#{MHosozai.hosoWeight}">包装重量</label><input type="text" id="MHosozai.hosoWeight" name="MHosozai.hosoWeight" maxlength="7" />
+        </div>
+        <div id="makedate">
+          <label for="MHosozai.makedate" th:text="#{MHosozai.makedate}">作成日付</label><input type="text" id="MHosozai.makedate" name="MHosozai.makedate" maxlength="8" />
+        </div>
+        <div id="upddate">
+          <label for="MHosozai.upddate" th:text="#{MHosozai.upddate}">更新日付</label><input type="text" id="MHosozai.upddate" name="MHosozai.upddate" maxlength="8" />
+        </div>
+        <div id="filler">
+          <label for="MHosozai.filler" th:text="#{MHosozai.filler}">予備領域</label><input type="text" id="MHosozai.filler" name="MHosozai.filler" maxlength="20" />
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="Dialogate.refresh(event);">reset</button>
+        <a th:href="@{MHosozaiGet.xlsx(baseMei=#{MHosozai.h2})}" id="MHosozaiGet.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeleteMHosozai" class="delete" data-action="MHosozaiDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistMHosozai" class="regist" th:text="#{common.regist}">登録</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

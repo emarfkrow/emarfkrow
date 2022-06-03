@@ -12,13 +12,13 @@ import jp.co.golorp.emarf.util.Messages;
 import jp.co.golorp.emarf.validation.FormValidator;
 
 /**
- * M_CHOKU登録
+ * 直送先マスタ登録
  *
  * @author emarfkrow
  */
 public class MChokuRegistAction extends BaseAction {
 
-    /** M_CHOKU登録処理 */
+    /** 直送先マスタ登録処理 */
     @Override
     public Map<String, Object> running(final LocalDateTime now, final String id, final Map<String, Object> postJson) {
 

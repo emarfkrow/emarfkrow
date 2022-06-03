@@ -31,6 +31,7 @@ public class MstHinbanGetAction extends BaseAction {
         }
 
         MstHinban mstHinban = MstHinban.get(hinban);
+        mstHinban.referMGhinmok();
         mstHinban.referPrdOrderpointStatus();
         mstHinban.referPrdOrderpointSummary();
         mstHinban.referInvPrintWarehousingslips();

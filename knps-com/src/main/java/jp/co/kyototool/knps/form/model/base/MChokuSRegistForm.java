@@ -11,7 +11,7 @@ import jp.co.golorp.emarf.process.BaseProcess;
 import jp.co.golorp.emarf.validation.IForm;
 
 /**
- * M_CHOKU一覧登録フォーム
+ * 直送先マスタ一覧登録フォーム
  *
  * @author emarfkrow
  */
@@ -20,19 +20,19 @@ public class MChokuSRegistForm implements IForm {
     /** logger */
     private static final Logger LOG = LoggerFactory.getLogger(MChokuRegistForm.class);
 
-    /** M_CHOKU登録フォームのリスト */
+    /** 直送先マスタ登録フォームのリスト */
     @Valid
     private List<MChokuRegistForm> mChokuGrid;
 
     /**
-     * @return M_CHOKU登録フォームのリスト
+     * @return 直送先マスタ登録フォームのリスト
      */
     public List<MChokuRegistForm> getMChokuGrid() {
         return mChokuGrid;
     }
 
     /**
-     * @param p M_CHOKU登録フォームのリスト
+     * @param p 直送先マスタ登録フォームのリスト
      */
     public void setMChokuGrid(final List<MChokuRegistForm> p) {
         this.mChokuGrid = p;

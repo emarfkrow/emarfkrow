@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{MHososetS.title}">包装材構成マスタ</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+</script>
+<script th:src="@{/model/MHososetGridColumns.js}"></script>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{MHososetS.h2}">h2</h2>
+    <form name="MHososetSearchForm" action="MHososetSearch.ajax" class="search">
+      <fieldset>
+        <legend th:text="#{MHososetS.legend}">legend</legend>
+        <div id="hhinban">
+          <label for="MHososet.hhinban" th:text="#{MHososet.hhinban}">販売品番</label><input type="text" id="MHososet.hhinban" name="MHososet.hhinban" maxlength="20" />
+        </div>
+        <div id="hosoHinban">
+          <label for="MHososet.hosoHinban" th:text="#{MHososet.hosoHinban}">包装品番</label><input type="text" id="MHososet.hosoHinban" name="MHososet.hosoHinban" maxlength="25" />
+        </div>
+        <div id="inzu">
+          <label for="MHososet.inzu" th:text="#{MHososet.inzu}">員数</label><input type="text" id="MHososet.inzu" name="MHososet.inzu" maxlength="3" />
+        </div>
+        <div id="filler">
+          <label for="MHososet.filler" th:text="#{MHososet.filler}">予備領域</label><input type="text" id="MHososet.filler" name="MHososet.filler" maxlength="22" />
+        </div>
+      </fieldset>
+      <div class="buttons">
+        <button type="reset" th:text="#{common.reset}">reset</button>
+      </div>
+      <div class="submits">
+        <button id="SearchMHososet" class="search" data-gridId="MHososetGrid" th:text="#{common.search}">submit</button>
+      </div>
+    </form>
+    <form name="MHososetSRegistForm" action="MHososetSRegist.ajax" class="regist">
+      <h3 th:text="#{MHososet.h3}">h3</h3>
+      <div id="MHososetGrid" data-selectionMode="checkbox" data-frozenColumn="1" th:data-href="@{/model/MHososet.html}"></div>
+      <div id="MHososetPager"></div>
+      <div class="buttons">
+        <button type="button" th:text="#{common.reset}" onClick="$('[id=&quot;SearchMHososet&quot;]').click();">reset</button>
+        <a th:href="@{MHososetSearch.xlsx(baseMei=#{MHososetS.h2})}" id="MHososetSearch.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>
+        <button id="DeleteMHososetS" class="delete selectRows" data-action="MHososetSDelete.ajax" th:text="#{common.delete}" tabindex="-1">削除</button>
+      </div>
+      <div class="submits">
+        <button id="RegistMHososetS" class="regist" th:text="#{common.regist}">submit</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>
