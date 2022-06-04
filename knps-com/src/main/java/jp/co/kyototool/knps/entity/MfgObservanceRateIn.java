@@ -896,7 +896,7 @@ public class MfgObservanceRateIn implements IEntity {
         valueList.add(":mm");
         valueList.add(":wc_code");
         valueList.add(":observance_rate");
-        valueList.add(":late_m5over");
+        valueList.add(":late_m5_over");
         valueList.add(":late_m5");
         valueList.add(":late_m4");
         valueList.add(":late_m3");
@@ -923,7 +923,7 @@ public class MfgObservanceRateIn implements IEntity {
         valueList.add(":late_p18");
         valueList.add(":late_p19");
         valueList.add(":late_p20");
-        valueList.add(":late_p20over");
+        valueList.add(":late_p20_over");
         valueList.add("TO_TIMESTAMP (:time_stamp_create, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
         valueList.add("TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
         valueList.add(":user_id_create");

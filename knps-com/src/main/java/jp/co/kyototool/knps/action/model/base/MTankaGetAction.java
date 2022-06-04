@@ -31,9 +31,6 @@ public class MTankaGetAction extends BaseAction {
         }
 
         MTanka mTanka = MTanka.get(hhinban);
-        mTanka.referMBarcd();
-        mTanka.referMGenka();
-        mTanka.referMWebkan();
         map.put("MTanka", mTanka);
         return map;
     }

@@ -31,12 +31,6 @@ public class MNtankaGetAction extends BaseAction {
         }
 
         MNtanka mNtanka = MNtanka.get(hhinban);
-        mNtanka.referMBarcd();
-        mNtanka.referMGenka();
-        mNtanka.referMSgenka();
-        mNtanka.referMSkhin();
-        mNtanka.referMTanka();
-        mNtanka.referMWebkan();
         map.put("MNtanka", mNtanka);
         return map;
     }

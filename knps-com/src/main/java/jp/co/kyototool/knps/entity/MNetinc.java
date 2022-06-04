@@ -217,7 +217,7 @@ public class MNetinc implements IEntity {
 
         // 契約単価マスタの登録
         if (this.mKtankas != null) {
-            Queries.regist("DELETE FROM M_KTANKA WHERE HONSHACD = :HONSHACD AND SHAGAI-HINBAN = :SHAGAI-HINBAN", toMap(now, id));
+            Queries.regist("DELETE FROM M_KTANKA WHERE \"HONSHACD\" = :honshacd AND \"SHAGAI-HINBAN\" = :shagai_hinban", toMap(now, id));
             for (MKtanka mKtanka : this.mKtankas) {
                 mKtanka.setHonshacd(this.honshacd);
                 try {

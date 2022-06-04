@@ -700,7 +700,7 @@ public class MfgKanbanDet implements IEntity {
 
         // MFG_KANBAN_SHIPPINGの登録
         if (this.mfgKanbanShippings != null) {
-            Queries.regist("DELETE FROM MFG_KANBAN_SHIPPING WHERE KANBAN_ID = :KANBAN_ID AND HINBAN = :HINBAN", toMap(now, id));
+            Queries.regist("DELETE FROM MFG_KANBAN_SHIPPING WHERE \"KANBAN_ID\" = :kanban_id AND \"HINBAN\" = :hinban", toMap(now, id));
             for (MfgKanbanShipping mfgKanbanShipping : this.mfgKanbanShippings) {
                 mfgKanbanShipping.setKanbanId(this.kanbanId);
                 try {

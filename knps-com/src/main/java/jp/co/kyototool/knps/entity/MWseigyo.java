@@ -123,8 +123,8 @@ public class MWseigyo implements IEntity {
 
     private String getValues() {
         List<String> valueList = new ArrayList<String>();
-        valueList.add(":web-datakbn");
-        valueList.add(":web-juchuno1");
+        valueList.add(":web_datakbn");
+        valueList.add(":web_juchuno1");
         valueList.add(":filler");
         return String.join("\r\n    , ", valueList);
     }

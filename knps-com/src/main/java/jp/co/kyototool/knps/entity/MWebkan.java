@@ -467,18 +467,6 @@ public class MWebkan implements IEntity {
         // 販売品番の採番処理
         numbering();
 
-        // バーコードマスタの登録
-        if (this.mBarcd != null) {
-            this.mBarcd.setHhinban(this.getHhinban());
-            this.mBarcd.insert(now, id);
-        }
-
-        // 原価マスタの登録
-        if (this.mGenka != null) {
-            this.mGenka.setHhinban(this.getHhinban());
-            this.mGenka.insert(now, id);
-        }
-
         // WEB在庫管理マスタの登録
         List<String> nameList = new ArrayList<String>();
         nameList.add("\"HHINBAN\" -- :hhinban");
@@ -561,26 +549,6 @@ public class MWebkan implements IEntity {
      */
     public int update(final LocalDateTime now, final String id) {
 
-        // バーコードマスタの登録
-        if (this.mBarcd != null) {
-            mBarcd.setHhinban(this.getHhinban());
-            try {
-                mBarcd.insert(now, id);
-            } catch (Exception e) {
-                mBarcd.update(now, id);
-            }
-        }
-
-        // 原価マスタの登録
-        if (this.mGenka != null) {
-            mGenka.setHhinban(this.getHhinban());
-            try {
-                mGenka.insert(now, id);
-            } catch (Exception e) {
-                mGenka.update(now, id);
-            }
-        }
-
         // WEB在庫管理マスタの登録
         String sql = "UPDATE M_WEBKAN\r\nSET\r\n      " + getSet() + "\r\nWHERE\r\n    " + getWhere();
         Map<String, Object> params = toMap(now, id);
@@ -619,16 +587,6 @@ public class MWebkan implements IEntity {
      * @return 削除件数
      */
     public int delete() {
-
-        // バーコードマスタの削除
-        if (this.mBarcd != null) {
-            this.mBarcd.delete();
-        }
-
-        // 原価マスタの削除
-        if (this.mGenka != null) {
-            this.mGenka.delete();
-        }
 
         // WEB在庫管理マスタの削除
         String sql = "DELETE FROM M_WEBKAN WHERE " + getWhere();
@@ -671,71 +629,5 @@ public class MWebkan implements IEntity {
         params.put("time_stamp_change", now);
         params.put("user_id_change", id);
         return params;
-    }
-
-    /**
-     * バーコードマスタ
-     */
-    private MBarcd mBarcd;
-
-    /**
-     * @return バーコードマスタ
-     */
-    @com.fasterxml.jackson.annotation.JsonProperty("MBarcd")
-    public MBarcd getMBarcd() {
-        return this.mBarcd;
-    }
-
-    /**
-     * @param p バーコードマスタ
-     */
-    public void setMBarcd(final MBarcd p) {
-        this.mBarcd = p;
-    }
-
-    /**
-     * @return バーコードマスタ
-     */
-    public MBarcd referMBarcd() {
-        if (this.mBarcd == null) {
-            try {
-                this.mBarcd = MBarcd.get(this.hhinban);
-            } catch (jp.co.golorp.emarf.exception.NoDataError e) {
-            }
-        }
-        return this.mBarcd;
-    }
-
-    /**
-     * 原価マスタ
-     */
-    private MGenka mGenka;
-
-    /**
-     * @return 原価マスタ
-     */
-    @com.fasterxml.jackson.annotation.JsonProperty("MGenka")
-    public MGenka getMGenka() {
-        return this.mGenka;
-    }
-
-    /**
-     * @param p 原価マスタ
-     */
-    public void setMGenka(final MGenka p) {
-        this.mGenka = p;
-    }
-
-    /**
-     * @return 原価マスタ
-     */
-    public MGenka referMGenka() {
-        if (this.mGenka == null) {
-            try {
-                this.mGenka = MGenka.get(this.hhinban);
-            } catch (jp.co.golorp.emarf.exception.NoDataError e) {
-            }
-        }
-        return this.mGenka;
     }
 }

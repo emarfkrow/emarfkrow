@@ -145,9 +145,9 @@ public class MJinji implements IEntity {
 
     private String getValues() {
         List<String> valueList = new ArrayList<String>();
-        valueList.add(":shain-no");
-        valueList.add(":shain-mei");
-        valueList.add(":jinji-shozokucd");
+        valueList.add(":shain_no");
+        valueList.add(":shain_mei");
+        valueList.add(":jinji_shozokucd");
         valueList.add(":filler");
         return String.join("\r\n    , ", valueList);
     }

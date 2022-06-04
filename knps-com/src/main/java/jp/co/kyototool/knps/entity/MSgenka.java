@@ -257,36 +257,6 @@ public class MSgenka implements IEntity {
         // 販売品番の採番処理
         numbering();
 
-        // バーコードマスタの登録
-        if (this.mBarcd != null) {
-            this.mBarcd.setHhinban(this.getHhinban());
-            this.mBarcd.insert(now, id);
-        }
-
-        // 原価マスタの登録
-        if (this.mGenka != null) {
-            this.mGenka.setHhinban(this.getHhinban());
-            this.mGenka.insert(now, id);
-        }
-
-        // ＳＫ品番マスタの登録
-        if (this.mSkhin != null) {
-            this.mSkhin.setHhinban(this.getHhinban());
-            this.mSkhin.insert(now, id);
-        }
-
-        // 単価マスタの登録
-        if (this.mTanka != null) {
-            this.mTanka.setHhinban(this.getHhinban());
-            this.mTanka.insert(now, id);
-        }
-
-        // WEB在庫管理マスタの登録
-        if (this.mWebkan != null) {
-            this.mWebkan.setHhinban(this.getHhinban());
-            this.mWebkan.insert(now, id);
-        }
-
         // 製品原価マスタの登録
         List<String> nameList = new ArrayList<String>();
         nameList.add("\"HHINBAN\" -- :hhinban");
@@ -314,11 +284,11 @@ public class MSgenka implements IEntity {
         valueList.add(":hincd");
         valueList.add(":setkbn");
         valueList.add(":genka");
-        valueList.add(":seihin-genka");
-        valueList.add(":shohin-genka");
+        valueList.add(":seihin_genka");
+        valueList.add(":shohin_genka");
         valueList.add(":baika");
-        valueList.add(":seihin-baika");
-        valueList.add(":shohin-baika");
+        valueList.add(":seihin_baika");
+        valueList.add(":shohin_baika");
         valueList.add(":filler");
         return String.join("\r\n    , ", valueList);
     }
@@ -349,56 +319,6 @@ public class MSgenka implements IEntity {
      */
     public int update(final LocalDateTime now, final String id) {
 
-        // バーコードマスタの登録
-        if (this.mBarcd != null) {
-            mBarcd.setHhinban(this.getHhinban());
-            try {
-                mBarcd.insert(now, id);
-            } catch (Exception e) {
-                mBarcd.update(now, id);
-            }
-        }
-
-        // 原価マスタの登録
-        if (this.mGenka != null) {
-            mGenka.setHhinban(this.getHhinban());
-            try {
-                mGenka.insert(now, id);
-            } catch (Exception e) {
-                mGenka.update(now, id);
-            }
-        }
-
-        // ＳＫ品番マスタの登録
-        if (this.mSkhin != null) {
-            mSkhin.setHhinban(this.getHhinban());
-            try {
-                mSkhin.insert(now, id);
-            } catch (Exception e) {
-                mSkhin.update(now, id);
-            }
-        }
-
-        // 単価マスタの登録
-        if (this.mTanka != null) {
-            mTanka.setHhinban(this.getHhinban());
-            try {
-                mTanka.insert(now, id);
-            } catch (Exception e) {
-                mTanka.update(now, id);
-            }
-        }
-
-        // WEB在庫管理マスタの登録
-        if (this.mWebkan != null) {
-            mWebkan.setHhinban(this.getHhinban());
-            try {
-                mWebkan.insert(now, id);
-            } catch (Exception e) {
-                mWebkan.update(now, id);
-            }
-        }
-
         // 製品原価マスタの登録
         String sql = "UPDATE M_SGENKA\r\nSET\r\n      " + getSet() + "\r\nWHERE\r\n    " + getWhere();
         Map<String, Object> params = toMap(now, id);
@@ -427,31 +347,6 @@ public class MSgenka implements IEntity {
      * @return 削除件数
      */
     public int delete() {
-
-        // バーコードマスタの削除
-        if (this.mBarcd != null) {
-            this.mBarcd.delete();
-        }
-
-        // 原価マスタの削除
-        if (this.mGenka != null) {
-            this.mGenka.delete();
-        }
-
-        // ＳＫ品番マスタの削除
-        if (this.mSkhin != null) {
-            this.mSkhin.delete();
-        }
-
-        // 単価マスタの削除
-        if (this.mTanka != null) {
-            this.mTanka.delete();
-        }
-
-        // WEB在庫管理マスタの削除
-        if (this.mWebkan != null) {
-            this.mWebkan.delete();
-        }
 
         // 製品原価マスタの削除
         String sql = "DELETE FROM M_SGENKA WHERE " + getWhere();
@@ -484,170 +379,5 @@ public class MSgenka implements IEntity {
         params.put("time_stamp_change", now);
         params.put("user_id_change", id);
         return params;
-    }
-
-    /**
-     * バーコードマスタ
-     */
-    private MBarcd mBarcd;
-
-    /**
-     * @return バーコードマスタ
-     */
-    @com.fasterxml.jackson.annotation.JsonProperty("MBarcd")
-    public MBarcd getMBarcd() {
-        return this.mBarcd;
-    }
-
-    /**
-     * @param p バーコードマスタ
-     */
-    public void setMBarcd(final MBarcd p) {
-        this.mBarcd = p;
-    }
-
-    /**
-     * @return バーコードマスタ
-     */
-    public MBarcd referMBarcd() {
-        if (this.mBarcd == null) {
-            try {
-                this.mBarcd = MBarcd.get(this.hhinban);
-            } catch (jp.co.golorp.emarf.exception.NoDataError e) {
-            }
-        }
-        return this.mBarcd;
-    }
-
-    /**
-     * 原価マスタ
-     */
-    private MGenka mGenka;
-
-    /**
-     * @return 原価マスタ
-     */
-    @com.fasterxml.jackson.annotation.JsonProperty("MGenka")
-    public MGenka getMGenka() {
-        return this.mGenka;
-    }
-
-    /**
-     * @param p 原価マスタ
-     */
-    public void setMGenka(final MGenka p) {
-        this.mGenka = p;
-    }
-
-    /**
-     * @return 原価マスタ
-     */
-    public MGenka referMGenka() {
-        if (this.mGenka == null) {
-            try {
-                this.mGenka = MGenka.get(this.hhinban);
-            } catch (jp.co.golorp.emarf.exception.NoDataError e) {
-            }
-        }
-        return this.mGenka;
-    }
-
-    /**
-     * ＳＫ品番マスタ
-     */
-    private MSkhin mSkhin;
-
-    /**
-     * @return ＳＫ品番マスタ
-     */
-    @com.fasterxml.jackson.annotation.JsonProperty("MSkhin")
-    public MSkhin getMSkhin() {
-        return this.mSkhin;
-    }
-
-    /**
-     * @param p ＳＫ品番マスタ
-     */
-    public void setMSkhin(final MSkhin p) {
-        this.mSkhin = p;
-    }
-
-    /**
-     * @return ＳＫ品番マスタ
-     */
-    public MSkhin referMSkhin() {
-        if (this.mSkhin == null) {
-            try {
-                this.mSkhin = MSkhin.get(this.hhinban);
-            } catch (jp.co.golorp.emarf.exception.NoDataError e) {
-            }
-        }
-        return this.mSkhin;
-    }
-
-    /**
-     * 単価マスタ
-     */
-    private MTanka mTanka;
-
-    /**
-     * @return 単価マスタ
-     */
-    @com.fasterxml.jackson.annotation.JsonProperty("MTanka")
-    public MTanka getMTanka() {
-        return this.mTanka;
-    }
-
-    /**
-     * @param p 単価マスタ
-     */
-    public void setMTanka(final MTanka p) {
-        this.mTanka = p;
-    }
-
-    /**
-     * @return 単価マスタ
-     */
-    public MTanka referMTanka() {
-        if (this.mTanka == null) {
-            try {
-                this.mTanka = MTanka.get(this.hhinban);
-            } catch (jp.co.golorp.emarf.exception.NoDataError e) {
-            }
-        }
-        return this.mTanka;
-    }
-
-    /**
-     * WEB在庫管理マスタ
-     */
-    private MWebkan mWebkan;
-
-    /**
-     * @return WEB在庫管理マスタ
-     */
-    @com.fasterxml.jackson.annotation.JsonProperty("MWebkan")
-    public MWebkan getMWebkan() {
-        return this.mWebkan;
-    }
-
-    /**
-     * @param p WEB在庫管理マスタ
-     */
-    public void setMWebkan(final MWebkan p) {
-        this.mWebkan = p;
-    }
-
-    /**
-     * @return WEB在庫管理マスタ
-     */
-    public MWebkan referMWebkan() {
-        if (this.mWebkan == null) {
-            try {
-                this.mWebkan = MWebkan.get(this.hhinban);
-            } catch (jp.co.golorp.emarf.exception.NoDataError e) {
-            }
-        }
-        return this.mWebkan;
     }
 }

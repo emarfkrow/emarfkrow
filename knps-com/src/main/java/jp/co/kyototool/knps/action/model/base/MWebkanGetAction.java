@@ -31,8 +31,6 @@ public class MWebkanGetAction extends BaseAction {
         }
 
         MWebkan mWebkan = MWebkan.get(hhinban);
-        mWebkan.referMBarcd();
-        mWebkan.referMGenka();
         map.put("MWebkan", mWebkan);
         return map;
     }

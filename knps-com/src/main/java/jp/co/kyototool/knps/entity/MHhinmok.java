@@ -2176,9 +2176,9 @@ public class MHhinmok implements IEntity {
         valueList.add(":nyukokinkbn");
         valueList.add(":seihinkbn");
         valueList.add(":sijikbn");
-        valueList.add(":shohin-bunrui");
+        valueList.add(":shohin_bunrui");
         valueList.add(":kijunzaiko");
-        valueList.add(":sei-tanju");
+        valueList.add(":sei_tanju");
         valueList.add(":locationno");
         valueList.add(":hosocd");
         valueList.add(":hosotani");
@@ -2187,14 +2187,14 @@ public class MHhinmok implements IEntity {
         valueList.add(":klkbn");
         valueList.add(":jiskbn");
         valueList.add(":setkijunh");
-        valueList.add(":kimatu-genka");
-        valueList.add(":hyojun-genka");
-        valueList.add(":niji-genka");
-        valueList.add(":hyojun-baika");
+        valueList.add(":kimatu_genka");
+        valueList.add(":hyojun_genka");
+        valueList.add(":niji_genka");
+        valueList.add(":hyojun_baika");
         valueList.add(":tourokubi");
         valueList.add(":hatubaibi");
         valueList.add(":tojitukbn");
-        valueList.add(":sin-seihin-bunrui");
+        valueList.add(":sin_seihin_bunrui");
         valueList.add(":dteibankbn");
         valueList.add(":zaijuckbn");
         valueList.add(":stantocd");
@@ -2203,22 +2203,22 @@ public class MHhinmok implements IEntity {
         valueList.add(":bunrui4");
         valueList.add(":zaishukbn");
         valueList.add(":barcode");
-        valueList.add(":data-flg");
+        valueList.add(":data_flg");
         valueList.add(":filler3");
         valueList.add(":upccd");
-        valueList.add(":zaikosu-h1");
-        valueList.add(":zaikosu-h2");
-        valueList.add(":zaikosu-h3");
-        valueList.add(":zaikosu-h4");
-        valueList.add(":zaikosu-h5");
-        valueList.add(":sijisu-h1");
-        valueList.add(":sijisu-h2");
-        valueList.add(":sijisu-h3");
-        valueList.add(":sijisu-h4");
-        valueList.add(":hikiate-h1");
-        valueList.add(":hikiate-h2");
-        valueList.add(":hikiate-h3");
-        valueList.add(":hikiate-h4");
+        valueList.add(":zaikosu_h1");
+        valueList.add(":zaikosu_h2");
+        valueList.add(":zaikosu_h3");
+        valueList.add(":zaikosu_h4");
+        valueList.add(":zaikosu_h5");
+        valueList.add(":sijisu_h1");
+        valueList.add(":sijisu_h2");
+        valueList.add(":sijisu_h3");
+        valueList.add(":sijisu_h4");
+        valueList.add(":hikiate_h1");
+        valueList.add(":hikiate_h2");
+        valueList.add(":hikiate_h3");
+        valueList.add(":hikiate_h4");
         valueList.add(":schuzansu1");
         valueList.add(":schuzansu2");
         valueList.add(":schuzansu3");
@@ -2228,10 +2228,10 @@ public class MHhinmok implements IEntity {
         valueList.add(":dchuzansu1");
         valueList.add(":dchuzansu2");
         valueList.add(":dchuzansu3");
-        valueList.add(":nyukoyote-h1");
-        valueList.add(":nyukoyote-h2");
-        valueList.add(":nyukoyote-h3");
-        valueList.add(":nyukoyote-h4");
+        valueList.add(":nyukoyote_h1");
+        valueList.add(":nyukoyote_h2");
+        valueList.add(":nyukoyote_h3");
+        valueList.add(":nyukoyote_h4");
         valueList.add(":sapporozaiko");
         valueList.add(":sendaizaiko");
         valueList.add(":tokyozaiko");
@@ -2288,7 +2288,7 @@ public class MHhinmok implements IEntity {
 
         // 包装材構成マスタの登録
         if (this.mHososets != null) {
-            Queries.regist("DELETE FROM M_HOSOSET WHERE HHINBAN = :HHINBAN AND HOSO-HINBAN = :HOSO-HINBAN", toMap(now, id));
+            Queries.regist("DELETE FROM M_HOSOSET WHERE \"HHINBAN\" = :hhinban AND \"HOSO-HINBAN\" = :hoso_hinban", toMap(now, id));
             for (MHososet mHososet : this.mHososets) {
                 mHososet.setHhinban(this.hhinban);
                 try {
@@ -2301,7 +2301,7 @@ public class MHhinmok implements IEntity {
 
         // 部品構成マスタの登録
         if (this.mPkoses != null) {
-            Queries.regist("DELETE FROM M_PKOSE WHERE HHINBAN = :HHINBAN AND PHINBAN = :PHINBAN", toMap(now, id));
+            Queries.regist("DELETE FROM M_PKOSE WHERE \"HHINBAN\" = :hhinban AND \"PHINBAN\" = :phinban", toMap(now, id));
             for (MPkose mPkose : this.mPkoses) {
                 mPkose.setHhinban(this.hhinban);
                 try {

@@ -275,7 +275,7 @@ public class FChumonx implements IEntity {
         List<String> valueList = new ArrayList<String>();
         valueList.add(":tokucd");
         valueList.add(":hhinban");
-        valueList.add(":shukkasu-rui");
+        valueList.add(":shukkasu_rui");
         valueList.add(":juchuno");
         valueList.add("TO_TIMESTAMP (:time_stamp_create, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
         valueList.add("TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");

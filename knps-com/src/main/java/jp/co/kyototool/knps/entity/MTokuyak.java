@@ -656,7 +656,7 @@ public class MTokuyak implements IEntity {
         valueList.add(":htokuyakucd");
         valueList.add(":eigyokbn");
         valueList.add(":yuryokukbn");
-        valueList.add(":gyoshu-kbn");
+        valueList.add(":gyoshu_kbn");
         valueList.add(":rtokuyakumei");
         valueList.add(":tokuyakumei1");
         valueList.add(":tokuyakumei2");
@@ -667,7 +667,7 @@ public class MTokuyak implements IEntity {
         valueList.add(":telno");
         valueList.add(":faxno");
         valueList.add(":tourokubi");
-        valueList.add(":torihiki-kbn");
+        valueList.add(":torihiki_kbn");
         valueList.add(":kon_npjuchukin");
         valueList.add(":kon_npshukka");
         valueList.add(":zen_npjuchukin");

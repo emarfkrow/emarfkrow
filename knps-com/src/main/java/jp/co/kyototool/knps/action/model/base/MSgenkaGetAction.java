@@ -31,11 +31,6 @@ public class MSgenkaGetAction extends BaseAction {
         }
 
         MSgenka mSgenka = MSgenka.get(hhinban);
-        mSgenka.referMBarcd();
-        mSgenka.referMGenka();
-        mSgenka.referMSkhin();
-        mSgenka.referMTanka();
-        mSgenka.referMWebkan();
         map.put("MSgenka", mSgenka);
         return map;
     }

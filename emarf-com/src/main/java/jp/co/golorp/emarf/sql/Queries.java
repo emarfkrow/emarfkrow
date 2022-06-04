@@ -335,7 +335,7 @@ public final class Queries {
             field.setAccessible(true);
 
             // フィールド名からカラム名を取得
-            String columnName = StringUtil.toSnakeCase(field.getName());
+            String snake = StringUtil.toSnakeCase(field.getName());
 
             // キャストが必要な場合は各タイプごとに対応して値を設定
             Type fieldType = field.getType();
@@ -349,15 +349,23 @@ public final class Queries {
                 continue;
             }
 
+            Object o = null;
+            try {
+                o = rs.getObject(snake);
+            } catch (Exception e) {
+                // ケバブケースでも取ってみる
+                o = rs.getObject(snake.replaceAll("\\_", "-"));
+            }
+
             Class<?> columnClass = null;
-            if (rs.getObject(columnName) != null) {
-                columnClass = rs.getObject(columnName).getClass();
+            if (o != null) {
+                columnClass = o.getClass();
             }
 
             if (fieldType == LocalDateTime.class && columnClass == Timestamp.class) {
-                field.set(t, ((Timestamp) rs.getObject(columnName)).toLocalDateTime());
+                field.set(t, ((Timestamp) o).toLocalDateTime());
             } else {
-                field.set(t, rs.getObject(columnName));
+                field.set(t, o);
             }
         }
 
@@ -508,6 +516,10 @@ public final class Queries {
         List<Object> args = new ArrayList<Object>();
 
         String sql = Queries.convRawSql(namedSql, params, args);
+
+        if (sql.equals("")) {
+            return 0;
+        }
 
         return Queries.registByRawSql(sql, args);
     }

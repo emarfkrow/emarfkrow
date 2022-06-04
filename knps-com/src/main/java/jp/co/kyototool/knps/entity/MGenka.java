@@ -284,11 +284,11 @@ public class MGenka implements IEntity {
         valueList.add(":hincd");
         valueList.add(":setkbn");
         valueList.add(":genka");
-        valueList.add(":seihin-genka");
-        valueList.add(":shohin-genka");
+        valueList.add(":seihin_genka");
+        valueList.add(":shohin_genka");
         valueList.add(":baika");
-        valueList.add(":seihin-baika");
-        valueList.add(":shohin-baika");
+        valueList.add(":seihin_baika");
+        valueList.add(":shohin_baika");
         valueList.add(":filler");
         return String.join("\r\n    , ", valueList);
     }

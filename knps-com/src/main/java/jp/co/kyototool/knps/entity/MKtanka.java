@@ -262,11 +262,11 @@ public class MKtanka implements IEntity {
     private String getValues() {
         List<String> valueList = new ArrayList<String>();
         valueList.add(":honshacd");
-        valueList.add(":shagai-hinban");
+        valueList.add(":shagai_hinban");
         valueList.add(":kkaisibi");
         valueList.add(":kshuryobi");
         valueList.add(":hhinban");
-        valueList.add(":keiyaku-tanka");
+        valueList.add(":keiyaku_tanka");
         valueList.add(":shohinkbn");
         valueList.add(":kakakukbn");
         valueList.add(":filler");

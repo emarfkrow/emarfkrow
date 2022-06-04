@@ -290,14 +290,14 @@ public class MSetkari implements IEntity {
 
     private String getValues() {
         List<String> valueList = new ArrayList<String>();
-        valueList.add(":set-hinban");
-        valueList.add(":set-khinban");
+        valueList.add(":set_hinban");
+        valueList.add(":set_khinban");
         valueList.add(":tokucd");
         valueList.add(":hinmei");
-        valueList.add(":ko-hinmei");
+        valueList.add(":ko_hinmei");
         valueList.add(":setkbn");
         valueList.add(":setinzu");
-        valueList.add(":ko-tanka");
+        valueList.add(":ko_tanka");
         valueList.add(":mushokbn");
         valueList.add(":rtokumei");
         return String.join("\r\n    , ", valueList);

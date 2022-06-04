@@ -217,8 +217,8 @@ public class MSetkose implements IEntity {
 
     private String getValues() {
         List<String> valueList = new ArrayList<String>();
-        valueList.add(":set-hinban");
-        valueList.add(":set-khinban");
+        valueList.add(":set_hinban");
+        valueList.add(":set_khinban");
         valueList.add(":dltflg");
         valueList.add(":botm");
         valueList.add(":setinzu");

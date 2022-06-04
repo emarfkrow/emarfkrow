@@ -239,8 +239,8 @@ public class MYubojo implements IEntity {
         valueList.add(":yuryokukbn");
         valueList.add(":yuryocd");
         valueList.add(":ryuryokumei");
-        valueList.add(":konyu-min");
-        valueList.add(":konyu-max");
+        valueList.add(":konyu_min");
+        valueList.add(":konyu_max");
         valueList.add(":yuboritu");
         valueList.add(":upddate");
         valueList.add(":filler");

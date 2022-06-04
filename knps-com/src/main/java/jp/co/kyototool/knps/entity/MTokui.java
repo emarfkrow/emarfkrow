@@ -1140,8 +1140,8 @@ public class MTokui implements IEntity {
         valueList.add(":tokumei2");
         valueList.add(":rtokumei");
         valueList.add(":ubinno");
-        valueList.add(":toku-jusho1");
-        valueList.add(":toku-jusho2");
+        valueList.add(":toku_jusho1");
+        valueList.add(":toku_jusho2");
         valueList.add(":telno");
         valueList.add(":seikyucd");
         valueList.add(":mailcd");
@@ -1167,7 +1167,7 @@ public class MTokui implements IEntity {
         valueList.add(":diykbn");
         valueList.add(":ktokumei");
         valueList.add(":zeikbn");
-        valueList.add(":ei-tantocd");
+        valueList.add(":ei_tantocd");
         valueList.add(":sichocd");
         valueList.add(":faxno");
         valueList.add(":tokuikbn1");
@@ -1182,7 +1182,7 @@ public class MTokui implements IEntity {
         valueList.add(":kunicd");
         valueList.add(":eigyoareacd");
         valueList.add(":kensyukikan");
-        valueList.add(":e-seikyukbn");
+        valueList.add(":e_seikyukbn");
         valueList.add(":filler");
         return String.join("\r\n    , ", valueList);
     }

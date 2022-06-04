@@ -534,7 +534,9 @@ public final class BeanGenerator {
         s.add("    private String getValues() {");
         s.add("        List<String> valueList = new ArrayList<String>();");
         for (Entry<String, ColumnInfo> e : tableInfo.getColumnInfos().entrySet()) {
-            String rightHand = ":" + e.getKey().toLowerCase();
+            String columnName = e.getKey();
+            String snake = StringUtil.toSnakeCase(columnName);
+            String rightHand = ":" + snake;
             if (e.getValue().getDataType().equals("java.time.LocalDateTime")) {
                 rightHand = assist.toTimestamp(rightHand);
             }
@@ -614,6 +616,8 @@ public final class BeanGenerator {
 
     private static void javaEntityCRUDUpdate(final TableInfo tableInfo, final List<String> s) {
 
+        DataSourcesAssist assist = DataSources.getAssist();
+
         String tableName = tableInfo.getTableName();
         String remarks = tableInfo.getRemarks();
 
@@ -639,7 +643,9 @@ public final class BeanGenerator {
             if (!childInfo.getColumnInfos().containsKey(updateDt)) {
                 List<String> childWhere = new ArrayList<String>();
                 for (String primaryKey : childInfo.getPrimaryKeys()) {
-                    childWhere.add(primaryKey + " = :" + primaryKey);
+                    String quoted = assist.quoteEscaped(primaryKey);
+                    String snake = StringUtil.toSnakeCase(primaryKey);
+                    childWhere.add(quoted + " = :" + snake);
                 }
                 String where = String.join(" AND ", childWhere);
                 s.add("            Queries.regist(\"DELETE FROM " + childName + " WHERE " + where
@@ -718,8 +724,6 @@ public final class BeanGenerator {
         s.add("");
         s.add("    private String getSet() {");
         s.add("        List<String> setList = new ArrayList<String>();");
-
-        DataSourcesAssist assist = DataSources.getAssist();
 
         for (Entry<String, ColumnInfo> e : tableInfo.getColumnInfos().entrySet()) {
             String columnName = e.getKey();

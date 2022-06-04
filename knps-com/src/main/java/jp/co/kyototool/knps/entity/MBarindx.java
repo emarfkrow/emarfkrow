@@ -278,15 +278,15 @@ public class MBarindx implements IEntity {
     private String getValues() {
         List<String> valueList = new ArrayList<String>();
         valueList.add(":keycd");
-        valueList.add(":bar-oiban1");
-        valueList.add(":bar-oiban2");
-        valueList.add(":bar-oiban3");
-        valueList.add(":bar-oiban4");
-        valueList.add(":bar-oiban5");
-        valueList.add(":bar-oiban6");
-        valueList.add(":bar-oiban7");
-        valueList.add(":bar-oiban8");
-        valueList.add(":bar-oiban9");
+        valueList.add(":bar_oiban1");
+        valueList.add(":bar_oiban2");
+        valueList.add(":bar_oiban3");
+        valueList.add(":bar_oiban4");
+        valueList.add(":bar_oiban5");
+        valueList.add(":bar_oiban6");
+        valueList.add(":bar_oiban7");
+        valueList.add(":bar_oiban8");
+        valueList.add(":bar_oiban9");
         return String.join("\r\n    , ", valueList);
     }
 

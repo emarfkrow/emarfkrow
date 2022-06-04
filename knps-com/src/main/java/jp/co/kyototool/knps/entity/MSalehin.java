@@ -301,12 +301,12 @@ public class MSalehin implements IEntity {
         valueList.add(":salekbn");
         valueList.add(":salemei");
         valueList.add(":hhinban");
-        valueList.add(":kaisi-yy");
-        valueList.add(":kaisi-mm");
-        valueList.add(":kaisi-dd");
-        valueList.add(":shuryo-yy");
-        valueList.add(":shuryo-mm");
-        valueList.add(":shuryo-dd");
+        valueList.add(":kaisi_yy");
+        valueList.add(":kaisi_mm");
+        valueList.add(":kaisi_dd");
+        valueList.add(":shuryo_yy");
+        valueList.add(":shuryo_mm");
+        valueList.add(":shuryo_dd");
         valueList.add(":filler");
         return String.join("\r\n    , ", valueList);
     }

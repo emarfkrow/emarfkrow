@@ -340,8 +340,8 @@ public class MRate implements IEntity {
         valueList.add(":ttm");
         valueList.add(":tts");
         valueList.add(":ttb");
-        valueList.add(":tts-org");
-        valueList.add(":ttb-org");
+        valueList.add(":tts_org");
+        valueList.add(":ttb_org");
         valueList.add(":lstymd");
         valueList.add(":lsthm");
         valueList.add(":upddate");

@@ -280,13 +280,13 @@ public class MHosozai implements IEntity {
 
     private String getValues() {
         List<String> valueList = new ArrayList<String>();
-        valueList.add(":hoso-hinban");
-        valueList.add(":hoso-hinmei");
-        valueList.add(":hoso-hinmei-ryaku");
-        valueList.add(":hoso-size");
-        valueList.add(":hoso-tanka");
-        valueList.add(":hoso-zaicode");
-        valueList.add(":hoso-weight");
+        valueList.add(":hoso_hinban");
+        valueList.add(":hoso_hinmei");
+        valueList.add(":hoso_hinmei_ryaku");
+        valueList.add(":hoso_size");
+        valueList.add(":hoso_tanka");
+        valueList.add(":hoso_zaicode");
+        valueList.add(":hoso_weight");
         valueList.add(":makedate");
         valueList.add(":upddate");
         valueList.add(":filler");

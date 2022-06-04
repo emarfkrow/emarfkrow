@@ -379,9 +379,9 @@ public class MHseigyo implements IEntity {
         valueList.add(":shusijino1");
         valueList.add(":nohinshono");
         valueList.add(":setkeino");
-        valueList.add(":getuji-yymm");
-        valueList.add(":t-juccnt");
-        valueList.add(":t-maxcnt");
+        valueList.add(":getuji_yymm");
+        valueList.add(":t_juccnt");
+        valueList.add(":t_maxcnt");
         valueList.add(":chokucnt");
         valueList.add(":hyotanka");
         valueList.add(":filler");

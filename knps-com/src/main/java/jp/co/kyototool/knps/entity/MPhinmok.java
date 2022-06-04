@@ -416,9 +416,9 @@ public class MPhinmok implements IEntity {
         valueList.add(":phinmei");
         valueList.add(":phinmeik");
         valueList.add(":hinban");
-        valueList.add(":p-kakaku");
-        valueList.add(":p-genka");
-        valueList.add(":p-kbn");
+        valueList.add(":p_kakaku");
+        valueList.add(":p_genka");
+        valueList.add(":p_kbn");
         valueList.add(":kishuzan");
         valueList.add(":kijyunzaiko");
         valueList.add(":hachuten");

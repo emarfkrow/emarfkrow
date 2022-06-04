@@ -457,15 +457,15 @@ public class MChoku implements IEntity {
         valueList.add(":chokumei1");
         valueList.add(":chokumei2");
         valueList.add(":rchokumei");
-        valueList.add(":choku-jusho1");
-        valueList.add(":choku-jusho2");
+        valueList.add(":choku_jusho1");
+        valueList.add(":choku_jusho2");
         valueList.add(":ubinno");
         valueList.add(":telno");
         valueList.add(":tourokubi");
         valueList.add(":kchokumei");
         valueList.add(":sichocd");
         valueList.add(":faxno");
-        valueList.add(":torikesi-kbn");
+        valueList.add(":torikesi_kbn");
         valueList.add(":unsocd");
         valueList.add(":tikucd");
         valueList.add(":todofukencd");

@@ -349,16 +349,16 @@ public class MBaraten implements IEntity {
 
     private String getValues() {
         List<String> valueList = new ArrayList<String>();
-        valueList.add(":oya-hinban");
-        valueList.add(":ko-hinban");
-        valueList.add(":oya-hinc");
-        valueList.add(":ko-hinc");
+        valueList.add(":oya_hinban");
+        valueList.add(":ko_hinban");
+        valueList.add(":oya_hinc");
+        valueList.add(":ko_hinc");
         valueList.add(":inzu");
-        valueList.add(":oya-baika");
-        valueList.add(":oya-genka");
-        valueList.add(":ko-tanka");
-        valueList.add(":ko-genka");
-        valueList.add(":ko-tanritu");
+        valueList.add(":oya_baika");
+        valueList.add(":oya_genka");
+        valueList.add(":ko_tanka");
+        valueList.add(":ko_genka");
+        valueList.add(":ko_tanritu");
         valueList.add(":kensakum");
         valueList.add(":casekbn");
         valueList.add(":filler");

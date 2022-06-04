@@ -152,7 +152,7 @@ public class MHososet implements IEntity {
     private String getValues() {
         List<String> valueList = new ArrayList<String>();
         valueList.add(":hhinban");
-        valueList.add(":hoso-hinban");
+        valueList.add(":hoso_hinban");
         valueList.add(":inzu");
         valueList.add(":filler");
         return String.join("\r\n    , ", valueList);
