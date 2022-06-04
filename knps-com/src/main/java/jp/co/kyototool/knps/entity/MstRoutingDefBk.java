@@ -304,17 +304,17 @@ public class MstRoutingDefBk implements IEntity {
 
         // MST_ROUTING_DEF_BKの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("yy -- :yy");
-        nameList.add("man_hinban -- :man_hinban");
-        nameList.add("routing_group -- :routing_group");
-        nameList.add("permission_flag -- :permission_flag");
-        nameList.add("usable_flag -- :usable_flag");
-        nameList.add("max_routing -- :max_routing");
-        nameList.add("copy_source_group -- :copy_source_group");
-        nameList.add("time_stamp_create -- :time_stamp_create");
-        nameList.add("time_stamp_change -- :time_stamp_change");
-        nameList.add("user_id_create -- :user_id_create");
-        nameList.add("user_id_change -- :user_id_change");
+        nameList.add("\"YY\" -- :yy");
+        nameList.add("\"MAN_HINBAN\" -- :man_hinban");
+        nameList.add("\"ROUTING_GROUP\" -- :routing_group");
+        nameList.add("\"PERMISSION_FLAG\" -- :permission_flag");
+        nameList.add("\"USABLE_FLAG\" -- :usable_flag");
+        nameList.add("\"MAX_ROUTING\" -- :max_routing");
+        nameList.add("\"COPY_SOURCE_GROUP\" -- :copy_source_group");
+        nameList.add("\"TIME_STAMP_CREATE\" -- :time_stamp_create");
+        nameList.add("\"TIME_STAMP_CHANGE\" -- :time_stamp_change");
+        nameList.add("\"USER_ID_CREATE\" -- :user_id_create");
+        nameList.add("\"USER_ID_CHANGE\" -- :user_id_change");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO MST_ROUTING_DEF_BK(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -347,17 +347,17 @@ public class MstRoutingDefBk implements IEntity {
             return;
         }
 
-        String sql = "SELECT LPAD (CASE WHEN MAX(e.YY) IS NULL THEN 0 ELSE MAX(e.YY) * 1 END + 1, 4, '0') AS YY FROM MST_ROUTING_DEF_BK e WHERE e.YY < '9999'";
+        String sql = "SELECT LPAD (CASE WHEN MAX(e.\"YY\") IS NULL THEN 0 ELSE MAX(e.\"YY\") * 1 END + 1, 4, '0') AS \"YY\" FROM MST_ROUTING_DEF_BK e WHERE e.\"YY\" < '9999'";
 
         Map<String, Object> params = new HashMap<String, Object>();
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("e.MAN_HINBAN = :man_hinban");
-        whereList.add("e.ROUTING_GROUP = :routing_group");
+        whereList.add("e.\"MAN_HINBAN\" = :man_hinban");
+        whereList.add("e.\"ROUTING_GROUP\" = :routing_group");
         sql += " WHERE " + String.join(" AND ", whereList);
 
-        params.put("manHinban", this.manHinban);
-        params.put("routingGroup", this.routingGroup);
+        params.put("man_hinban", this.manHinban);
+        params.put("routing_group", this.routingGroup);
 
         jp.co.golorp.emarf.util.MapList mapList = Queries.select(sql, params);
         Object o = mapList.get(0).get("YY");
@@ -382,15 +382,15 @@ public class MstRoutingDefBk implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("yy = :yy");
-        setList.add("man_hinban = :man_hinban");
-        setList.add("routing_group = :routing_group");
-        setList.add("permission_flag = :permission_flag");
-        setList.add("usable_flag = :usable_flag");
-        setList.add("max_routing = :max_routing");
-        setList.add("copy_source_group = :copy_source_group");
-        setList.add("time_stamp_change = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("user_id_change = :user_id_change");
+        setList.add("\"YY\" = :yy");
+        setList.add("\"MAN_HINBAN\" = :man_hinban");
+        setList.add("\"ROUTING_GROUP\" = :routing_group");
+        setList.add("\"PERMISSION_FLAG\" = :permission_flag");
+        setList.add("\"USABLE_FLAG\" = :usable_flag");
+        setList.add("\"MAX_ROUTING\" = :max_routing");
+        setList.add("\"COPY_SOURCE_GROUP\" = :copy_source_group");
+        setList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"USER_ID_CHANGE\" = :user_id_change");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -412,22 +412,22 @@ public class MstRoutingDefBk implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (man_hinban) = TRIM (:man_hinban)");
-        whereList.add("routing_group = :routing_group");
-        whereList.add("TRIM (yy) = TRIM (:yy)");
-        whereList.add("time_stamp_change = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        whereList.add("TRIM (\"MAN_HINBAN\") = TRIM (:man_hinban)");
+        whereList.add("\"ROUTING_GROUP\" = :routing_group");
+        whereList.add("TRIM (\"YY\") = TRIM (:yy)");
+        whereList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("YY", this.yy);
-        params.put("MAN_HINBAN", this.manHinban);
-        params.put("ROUTING_GROUP", this.routingGroup);
-        params.put("PERMISSION_FLAG", this.permissionFlag);
-        params.put("USABLE_FLAG", this.usableFlag);
-        params.put("MAX_ROUTING", this.maxRouting);
-        params.put("COPY_SOURCE_GROUP", this.copySourceGroup);
+        params.put("yy", this.yy);
+        params.put("man_hinban", this.manHinban);
+        params.put("routing_group", this.routingGroup);
+        params.put("permission_flag", this.permissionFlag);
+        params.put("usable_flag", this.usableFlag);
+        params.put("max_routing", this.maxRouting);
+        params.put("copy_source_group", this.copySourceGroup);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

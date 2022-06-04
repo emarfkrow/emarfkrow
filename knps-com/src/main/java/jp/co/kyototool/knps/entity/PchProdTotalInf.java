@@ -307,17 +307,17 @@ public class PchProdTotalInf implements IEntity {
 
         // PCH_PROD_TOTAL_INFの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("close_date -- :close_date");
-        nameList.add("routing_group -- :routing_group");
-        nameList.add("hinban -- :hinban");
-        nameList.add("routing -- :routing");
-        nameList.add("total_counts -- :total_counts");
-        nameList.add("total_amount -- :total_amount");
-        nameList.add("sum_supply -- :sum_supply");
-        nameList.add("time_stamp_create -- :time_stamp_create");
-        nameList.add("time_stamp_change -- :time_stamp_change");
-        nameList.add("user_id_create -- :user_id_create");
-        nameList.add("user_id_change -- :user_id_change");
+        nameList.add("\"CLOSE_DATE\" -- :close_date");
+        nameList.add("\"ROUTING_GROUP\" -- :routing_group");
+        nameList.add("\"HINBAN\" -- :hinban");
+        nameList.add("\"ROUTING\" -- :routing");
+        nameList.add("\"TOTAL_COUNTS\" -- :total_counts");
+        nameList.add("\"TOTAL_AMOUNT\" -- :total_amount");
+        nameList.add("\"SUM_SUPPLY\" -- :sum_supply");
+        nameList.add("\"TIME_STAMP_CREATE\" -- :time_stamp_create");
+        nameList.add("\"TIME_STAMP_CHANGE\" -- :time_stamp_change");
+        nameList.add("\"USER_ID_CREATE\" -- :user_id_create");
+        nameList.add("\"USER_ID_CHANGE\" -- :user_id_change");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO PCH_PROD_TOTAL_INF(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -350,18 +350,18 @@ public class PchProdTotalInf implements IEntity {
             return;
         }
 
-        String sql = "SELECT LPAD (CASE WHEN MAX(e.CLOSE_DATE) IS NULL THEN 0 ELSE MAX(e.CLOSE_DATE) * 1 END + 1, 4, '0') AS CLOSE_DATE FROM PCH_PROD_TOTAL_INF e WHERE e.CLOSE_DATE < '9999'";
+        String sql = "SELECT LPAD (CASE WHEN MAX(e.\"CLOSE_DATE\") IS NULL THEN 0 ELSE MAX(e.\"CLOSE_DATE\") * 1 END + 1, 4, '0') AS \"CLOSE_DATE\" FROM PCH_PROD_TOTAL_INF e WHERE e.\"CLOSE_DATE\" < '9999'";
 
         Map<String, Object> params = new HashMap<String, Object>();
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("e.HINBAN = :hinban");
-        whereList.add("e.ROUTING_GROUP = :routing_group");
-        whereList.add("e.ROUTING = :routing");
+        whereList.add("e.\"HINBAN\" = :hinban");
+        whereList.add("e.\"ROUTING_GROUP\" = :routing_group");
+        whereList.add("e.\"ROUTING\" = :routing");
         sql += " WHERE " + String.join(" AND ", whereList);
 
         params.put("hinban", this.hinban);
-        params.put("routingGroup", this.routingGroup);
+        params.put("routing_group", this.routingGroup);
         params.put("routing", this.routing);
 
         jp.co.golorp.emarf.util.MapList mapList = Queries.select(sql, params);
@@ -387,15 +387,15 @@ public class PchProdTotalInf implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("close_date = :close_date");
-        setList.add("routing_group = :routing_group");
-        setList.add("hinban = :hinban");
-        setList.add("routing = :routing");
-        setList.add("total_counts = :total_counts");
-        setList.add("total_amount = :total_amount");
-        setList.add("sum_supply = :sum_supply");
-        setList.add("time_stamp_change = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("user_id_change = :user_id_change");
+        setList.add("\"CLOSE_DATE\" = :close_date");
+        setList.add("\"ROUTING_GROUP\" = :routing_group");
+        setList.add("\"HINBAN\" = :hinban");
+        setList.add("\"ROUTING\" = :routing");
+        setList.add("\"TOTAL_COUNTS\" = :total_counts");
+        setList.add("\"TOTAL_AMOUNT\" = :total_amount");
+        setList.add("\"SUM_SUPPLY\" = :sum_supply");
+        setList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"USER_ID_CHANGE\" = :user_id_change");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -417,23 +417,23 @@ public class PchProdTotalInf implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (hinban) = TRIM (:hinban)");
-        whereList.add("routing_group = :routing_group");
-        whereList.add("routing = :routing");
-        whereList.add("TRIM (close_date) = TRIM (:close_date)");
-        whereList.add("time_stamp_change = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        whereList.add("TRIM (\"HINBAN\") = TRIM (:hinban)");
+        whereList.add("\"ROUTING_GROUP\" = :routing_group");
+        whereList.add("\"ROUTING\" = :routing");
+        whereList.add("TRIM (\"CLOSE_DATE\") = TRIM (:close_date)");
+        whereList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("CLOSE_DATE", this.closeDate);
-        params.put("ROUTING_GROUP", this.routingGroup);
-        params.put("HINBAN", this.hinban);
-        params.put("ROUTING", this.routing);
-        params.put("TOTAL_COUNTS", this.totalCounts);
-        params.put("TOTAL_AMOUNT", this.totalAmount);
-        params.put("SUM_SUPPLY", this.sumSupply);
+        params.put("close_date", this.closeDate);
+        params.put("routing_group", this.routingGroup);
+        params.put("hinban", this.hinban);
+        params.put("routing", this.routing);
+        params.put("total_counts", this.totalCounts);
+        params.put("total_amount", this.totalAmount);
+        params.put("sum_supply", this.sumSupply);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

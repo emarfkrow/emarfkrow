@@ -307,17 +307,17 @@ public class MfgShipOrder implements IEntity {
 
         // MFG_SHIP_ORDERの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("ship_order_no -- :ship_order_no");
-        nameList.add("child_plan_no -- :child_plan_no");
-        nameList.add("hinban -- :hinban");
-        nameList.add("ship_direct_counts -- :ship_direct_counts");
-        nameList.add("ship_status -- :ship_status");
-        nameList.add("ship_counts -- :ship_counts");
-        nameList.add("ship_date -- :ship_date");
-        nameList.add("time_stamp_create -- :time_stamp_create");
-        nameList.add("time_stamp_change -- :time_stamp_change");
-        nameList.add("user_id_create -- :user_id_create");
-        nameList.add("user_id_change -- :user_id_change");
+        nameList.add("\"SHIP_ORDER_NO\" -- :ship_order_no");
+        nameList.add("\"CHILD_PLAN_NO\" -- :child_plan_no");
+        nameList.add("\"HINBAN\" -- :hinban");
+        nameList.add("\"SHIP_DIRECT_COUNTS\" -- :ship_direct_counts");
+        nameList.add("\"SHIP_STATUS\" -- :ship_status");
+        nameList.add("\"SHIP_COUNTS\" -- :ship_counts");
+        nameList.add("\"SHIP_DATE\" -- :ship_date");
+        nameList.add("\"TIME_STAMP_CREATE\" -- :time_stamp_create");
+        nameList.add("\"TIME_STAMP_CHANGE\" -- :time_stamp_change");
+        nameList.add("\"USER_ID_CREATE\" -- :user_id_create");
+        nameList.add("\"USER_ID_CHANGE\" -- :user_id_change");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO MFG_SHIP_ORDER(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -350,7 +350,7 @@ public class MfgShipOrder implements IEntity {
             return;
         }
 
-        String sql = "SELECT LPAD (CASE WHEN MAX(e.SHIP_ORDER_NO) IS NULL THEN 0 ELSE MAX(e.SHIP_ORDER_NO) * 1 END + 1, 12, '0') AS SHIP_ORDER_NO FROM MFG_SHIP_ORDER e WHERE e.SHIP_ORDER_NO < '999999999999'";
+        String sql = "SELECT LPAD (CASE WHEN MAX(e.\"SHIP_ORDER_NO\") IS NULL THEN 0 ELSE MAX(e.\"SHIP_ORDER_NO\") * 1 END + 1, 12, '0') AS \"SHIP_ORDER_NO\" FROM MFG_SHIP_ORDER e WHERE e.\"SHIP_ORDER_NO\" < '999999999999'";
 
         Map<String, Object> params = new HashMap<String, Object>();
 
@@ -377,15 +377,15 @@ public class MfgShipOrder implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("ship_order_no = :ship_order_no");
-        setList.add("child_plan_no = :child_plan_no");
-        setList.add("hinban = :hinban");
-        setList.add("ship_direct_counts = :ship_direct_counts");
-        setList.add("ship_status = :ship_status");
-        setList.add("ship_counts = :ship_counts");
-        setList.add("ship_date = TO_TIMESTAMP (:ship_date, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("time_stamp_change = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("user_id_change = :user_id_change");
+        setList.add("\"SHIP_ORDER_NO\" = :ship_order_no");
+        setList.add("\"CHILD_PLAN_NO\" = :child_plan_no");
+        setList.add("\"HINBAN\" = :hinban");
+        setList.add("\"SHIP_DIRECT_COUNTS\" = :ship_direct_counts");
+        setList.add("\"SHIP_STATUS\" = :ship_status");
+        setList.add("\"SHIP_COUNTS\" = :ship_counts");
+        setList.add("\"SHIP_DATE\" = TO_TIMESTAMP (:ship_date, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"USER_ID_CHANGE\" = :user_id_change");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -407,20 +407,20 @@ public class MfgShipOrder implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (ship_order_no) = TRIM (:ship_order_no)");
-        whereList.add("time_stamp_change = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        whereList.add("TRIM (\"SHIP_ORDER_NO\") = TRIM (:ship_order_no)");
+        whereList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("SHIP_ORDER_NO", this.shipOrderNo);
-        params.put("CHILD_PLAN_NO", this.childPlanNo);
-        params.put("HINBAN", this.hinban);
-        params.put("SHIP_DIRECT_COUNTS", this.shipDirectCounts);
-        params.put("SHIP_STATUS", this.shipStatus);
-        params.put("SHIP_COUNTS", this.shipCounts);
-        params.put("SHIP_DATE", this.shipDate);
+        params.put("ship_order_no", this.shipOrderNo);
+        params.put("child_plan_no", this.childPlanNo);
+        params.put("hinban", this.hinban);
+        params.put("ship_direct_counts", this.shipDirectCounts);
+        params.put("ship_status", this.shipStatus);
+        params.put("ship_counts", this.shipCounts);
+        params.put("ship_date", this.shipDate);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

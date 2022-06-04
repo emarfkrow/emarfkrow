@@ -250,15 +250,15 @@ public class PrdMonthTimeSchBk implements IEntity {
 
         // PRD_MONTH_TIME_SCH_BKの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("yyyy -- :yyyy");
-        nameList.add("mm -- :mm");
-        nameList.add("wc_code -- :wc_code");
-        nameList.add("layout_in_time -- :layout_in_time");
-        nameList.add("change_stat -- :change_stat");
-        nameList.add("time_stamp_create -- :time_stamp_create");
-        nameList.add("time_stamp_change -- :time_stamp_change");
-        nameList.add("user_id_create -- :user_id_create");
-        nameList.add("user_id_change -- :user_id_change");
+        nameList.add("\"YYYY\" -- :yyyy");
+        nameList.add("\"MM\" -- :mm");
+        nameList.add("\"WC_CODE\" -- :wc_code");
+        nameList.add("\"LAYOUT_IN_TIME\" -- :layout_in_time");
+        nameList.add("\"CHANGE_STAT\" -- :change_stat");
+        nameList.add("\"TIME_STAMP_CREATE\" -- :time_stamp_create");
+        nameList.add("\"TIME_STAMP_CHANGE\" -- :time_stamp_change");
+        nameList.add("\"USER_ID_CREATE\" -- :user_id_create");
+        nameList.add("\"USER_ID_CHANGE\" -- :user_id_change");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO PRD_MONTH_TIME_SCH_BK(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -299,13 +299,13 @@ public class PrdMonthTimeSchBk implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("yyyy = :yyyy");
-        setList.add("mm = :mm");
-        setList.add("wc_code = :wc_code");
-        setList.add("layout_in_time = :layout_in_time");
-        setList.add("change_stat = :change_stat");
-        setList.add("time_stamp_change = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("user_id_change = :user_id_change");
+        setList.add("\"YYYY\" = :yyyy");
+        setList.add("\"MM\" = :mm");
+        setList.add("\"WC_CODE\" = :wc_code");
+        setList.add("\"LAYOUT_IN_TIME\" = :layout_in_time");
+        setList.add("\"CHANGE_STAT\" = :change_stat");
+        setList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"USER_ID_CHANGE\" = :user_id_change");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -327,17 +327,17 @@ public class PrdMonthTimeSchBk implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("time_stamp_change = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        whereList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("YYYY", this.yyyy);
-        params.put("MM", this.mm);
-        params.put("WC_CODE", this.wcCode);
-        params.put("LAYOUT_IN_TIME", this.layoutInTime);
-        params.put("CHANGE_STAT", this.changeStat);
+        params.put("yyyy", this.yyyy);
+        params.put("mm", this.mm);
+        params.put("wc_code", this.wcCode);
+        params.put("layout_in_time", this.layoutInTime);
+        params.put("change_stat", this.changeStat);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

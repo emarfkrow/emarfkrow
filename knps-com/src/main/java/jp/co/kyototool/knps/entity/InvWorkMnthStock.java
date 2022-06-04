@@ -160,11 +160,11 @@ public class InvWorkMnthStock implements IEntity {
 
         // INV_WORK_MNTH_STOCKの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("data_id -- :data_id");
-        nameList.add("hinban -- :hinban");
-        nameList.add("routing_group -- :routing_group");
-        nameList.add("routing -- :routing");
-        nameList.add("sum_lot_size -- :sum_lot_size");
+        nameList.add("\"DATA_ID\" -- :data_id");
+        nameList.add("\"HINBAN\" -- :hinban");
+        nameList.add("\"ROUTING_GROUP\" -- :routing_group");
+        nameList.add("\"ROUTING\" -- :routing");
+        nameList.add("\"SUM_LOT_SIZE\" -- :sum_lot_size");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO INV_WORK_MNTH_STOCK(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -201,11 +201,11 @@ public class InvWorkMnthStock implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("data_id = :data_id");
-        setList.add("hinban = :hinban");
-        setList.add("routing_group = :routing_group");
-        setList.add("routing = :routing");
-        setList.add("sum_lot_size = :sum_lot_size");
+        setList.add("\"DATA_ID\" = :data_id");
+        setList.add("\"HINBAN\" = :hinban");
+        setList.add("\"ROUTING_GROUP\" = :routing_group");
+        setList.add("\"ROUTING\" = :routing");
+        setList.add("\"SUM_LOT_SIZE\" = :sum_lot_size");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -227,20 +227,20 @@ public class InvWorkMnthStock implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (data_id) = TRIM (:data_id)");
-        whereList.add("TRIM (hinban) = TRIM (:hinban)");
-        whereList.add("routing_group = :routing_group");
-        whereList.add("routing = :routing");
+        whereList.add("TRIM (\"DATA_ID\") = TRIM (:data_id)");
+        whereList.add("TRIM (\"HINBAN\") = TRIM (:hinban)");
+        whereList.add("\"ROUTING_GROUP\" = :routing_group");
+        whereList.add("\"ROUTING\" = :routing");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("DATA_ID", this.dataId);
-        params.put("HINBAN", this.hinban);
-        params.put("ROUTING_GROUP", this.routingGroup);
-        params.put("ROUTING", this.routing);
-        params.put("SUM_LOT_SIZE", this.sumLotSize);
+        params.put("data_id", this.dataId);
+        params.put("hinban", this.hinban);
+        params.put("routing_group", this.routingGroup);
+        params.put("routing", this.routing);
+        params.put("sum_lot_size", this.sumLotSize);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

@@ -280,16 +280,16 @@ public class MstSupUnitpriceHs implements IEntity {
 
         // MST_SUP_UNITPRICE_HSの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("hinban -- :hinban");
-        nameList.add("sup_code -- :sup_code");
-        nameList.add("subinv_code -- :subinv_code");
-        nameList.add("procure_lt -- :procure_lt");
-        nameList.add("time_stamp_create -- :time_stamp_create");
-        nameList.add("time_stamp_change -- :time_stamp_change");
-        nameList.add("user_id_create -- :user_id_create");
-        nameList.add("user_id_change -- :user_id_change");
-        nameList.add("delete_flag -- :delete_flag");
-        nameList.add("musho_hacchu_f -- :musho_hacchu_f");
+        nameList.add("\"HINBAN\" -- :hinban");
+        nameList.add("\"SUP_CODE\" -- :sup_code");
+        nameList.add("\"SUBINV_CODE\" -- :subinv_code");
+        nameList.add("\"PROCURE_LT\" -- :procure_lt");
+        nameList.add("\"TIME_STAMP_CREATE\" -- :time_stamp_create");
+        nameList.add("\"TIME_STAMP_CHANGE\" -- :time_stamp_change");
+        nameList.add("\"USER_ID_CREATE\" -- :user_id_create");
+        nameList.add("\"USER_ID_CHANGE\" -- :user_id_change");
+        nameList.add("\"DELETE_FLAG\" -- :delete_flag");
+        nameList.add("\"MUSHO_HACCHU_F\" -- :musho_hacchu_f");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO MST_SUP_UNITPRICE_HS(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -331,14 +331,14 @@ public class MstSupUnitpriceHs implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("hinban = :hinban");
-        setList.add("sup_code = :sup_code");
-        setList.add("subinv_code = :subinv_code");
-        setList.add("procure_lt = :procure_lt");
-        setList.add("time_stamp_change = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("user_id_change = :user_id_change");
-        setList.add("delete_flag = :delete_flag");
-        setList.add("musho_hacchu_f = :musho_hacchu_f");
+        setList.add("\"HINBAN\" = :hinban");
+        setList.add("\"SUP_CODE\" = :sup_code");
+        setList.add("\"SUBINV_CODE\" = :subinv_code");
+        setList.add("\"PROCURE_LT\" = :procure_lt");
+        setList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"USER_ID_CHANGE\" = :user_id_change");
+        setList.add("\"DELETE_FLAG\" = :delete_flag");
+        setList.add("\"MUSHO_HACCHU_F\" = :musho_hacchu_f");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -360,21 +360,21 @@ public class MstSupUnitpriceHs implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (hinban) = TRIM (:hinban)");
-        whereList.add("TRIM (sup_code) = TRIM (:sup_code)");
-        whereList.add("time_stamp_change = :time_stamp_change");
-        whereList.add("time_stamp_change = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        whereList.add("TRIM (\"HINBAN\") = TRIM (:hinban)");
+        whereList.add("TRIM (\"SUP_CODE\") = TRIM (:sup_code)");
+        whereList.add("\"TIME_STAMP_CHANGE\" = :time_stamp_change");
+        whereList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("HINBAN", this.hinban);
-        params.put("SUP_CODE", this.supCode);
-        params.put("SUBINV_CODE", this.subinvCode);
-        params.put("PROCURE_LT", this.procureLt);
-        params.put("DELETE_FLAG", this.deleteFlag);
-        params.put("MUSHO_HACCHU_F", this.mushoHacchuF);
+        params.put("hinban", this.hinban);
+        params.put("sup_code", this.supCode);
+        params.put("subinv_code", this.subinvCode);
+        params.put("procure_lt", this.procureLt);
+        params.put("delete_flag", this.deleteFlag);
+        params.put("musho_hacchu_f", this.mushoHacchuF);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

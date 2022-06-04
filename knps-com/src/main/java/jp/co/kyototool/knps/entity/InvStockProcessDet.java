@@ -367,20 +367,20 @@ public class InvStockProcessDet implements IEntity {
 
         // INV_STOCK_PROCESS_DETの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("location_code -- :location_code");
-        nameList.add("hinban -- :hinban");
-        nameList.add("in_out_ymd -- :in_out_ymd");
-        nameList.add("in_out_seq -- :in_out_seq");
-        nameList.add("routing_group -- :routing_group");
-        nameList.add("ope_detail -- :ope_detail");
-        nameList.add("in_out_kb -- :in_out_kb");
-        nameList.add("in_out_qt -- :in_out_qt");
-        nameList.add("inv_cmt -- :inv_cmt");
-        nameList.add("child_plan_no -- :child_plan_no");
-        nameList.add("time_stamp_create -- :time_stamp_create");
-        nameList.add("time_stamp_change -- :time_stamp_change");
-        nameList.add("user_id_create -- :user_id_create");
-        nameList.add("user_id_change -- :user_id_change");
+        nameList.add("\"LOCATION_CODE\" -- :location_code");
+        nameList.add("\"HINBAN\" -- :hinban");
+        nameList.add("\"IN_OUT_YMD\" -- :in_out_ymd");
+        nameList.add("\"IN_OUT_SEQ\" -- :in_out_seq");
+        nameList.add("\"ROUTING_GROUP\" -- :routing_group");
+        nameList.add("\"OPE_DETAIL\" -- :ope_detail");
+        nameList.add("\"IN_OUT_KB\" -- :in_out_kb");
+        nameList.add("\"IN_OUT_QT\" -- :in_out_qt");
+        nameList.add("\"INV_CMT\" -- :inv_cmt");
+        nameList.add("\"CHILD_PLAN_NO\" -- :child_plan_no");
+        nameList.add("\"TIME_STAMP_CREATE\" -- :time_stamp_create");
+        nameList.add("\"TIME_STAMP_CHANGE\" -- :time_stamp_change");
+        nameList.add("\"USER_ID_CREATE\" -- :user_id_create");
+        nameList.add("\"USER_ID_CHANGE\" -- :user_id_change");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO INV_STOCK_PROCESS_DET(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -426,18 +426,18 @@ public class InvStockProcessDet implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("location_code = :location_code");
-        setList.add("hinban = :hinban");
-        setList.add("in_out_ymd = :in_out_ymd");
-        setList.add("in_out_seq = :in_out_seq");
-        setList.add("routing_group = :routing_group");
-        setList.add("ope_detail = :ope_detail");
-        setList.add("in_out_kb = :in_out_kb");
-        setList.add("in_out_qt = :in_out_qt");
-        setList.add("inv_cmt = :inv_cmt");
-        setList.add("child_plan_no = :child_plan_no");
-        setList.add("time_stamp_change = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("user_id_change = :user_id_change");
+        setList.add("\"LOCATION_CODE\" = :location_code");
+        setList.add("\"HINBAN\" = :hinban");
+        setList.add("\"IN_OUT_YMD\" = :in_out_ymd");
+        setList.add("\"IN_OUT_SEQ\" = :in_out_seq");
+        setList.add("\"ROUTING_GROUP\" = :routing_group");
+        setList.add("\"OPE_DETAIL\" = :ope_detail");
+        setList.add("\"IN_OUT_KB\" = :in_out_kb");
+        setList.add("\"IN_OUT_QT\" = :in_out_qt");
+        setList.add("\"INV_CMT\" = :inv_cmt");
+        setList.add("\"CHILD_PLAN_NO\" = :child_plan_no");
+        setList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"USER_ID_CHANGE\" = :user_id_change");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -459,26 +459,26 @@ public class InvStockProcessDet implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("location_code = :location_code");
-        whereList.add("hinban = :hinban");
-        whereList.add("TRIM (in_out_ymd) = TRIM (:in_out_ymd)");
-        whereList.add("in_out_seq = :in_out_seq");
-        whereList.add("time_stamp_change = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        whereList.add("\"LOCATION_CODE\" = :location_code");
+        whereList.add("\"HINBAN\" = :hinban");
+        whereList.add("TRIM (\"IN_OUT_YMD\") = TRIM (:in_out_ymd)");
+        whereList.add("\"IN_OUT_SEQ\" = :in_out_seq");
+        whereList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("LOCATION_CODE", this.locationCode);
-        params.put("HINBAN", this.hinban);
-        params.put("IN_OUT_YMD", this.inOutYmd);
-        params.put("IN_OUT_SEQ", this.inOutSeq);
-        params.put("ROUTING_GROUP", this.routingGroup);
-        params.put("OPE_DETAIL", this.opeDetail);
-        params.put("IN_OUT_KB", this.inOutKb);
-        params.put("IN_OUT_QT", this.inOutQt);
-        params.put("INV_CMT", this.invCmt);
-        params.put("CHILD_PLAN_NO", this.childPlanNo);
+        params.put("location_code", this.locationCode);
+        params.put("hinban", this.hinban);
+        params.put("in_out_ymd", this.inOutYmd);
+        params.put("in_out_seq", this.inOutSeq);
+        params.put("routing_group", this.routingGroup);
+        params.put("ope_detail", this.opeDetail);
+        params.put("in_out_kb", this.inOutKb);
+        params.put("in_out_qt", this.inOutQt);
+        params.put("inv_cmt", this.invCmt);
+        params.put("child_plan_no", this.childPlanNo);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

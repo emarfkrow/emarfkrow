@@ -5,7 +5,7 @@
 let MstEmpGridColumns = [
     Column.cell('EMP_CODE', Messages['MstEmpGrid.empCode'], 100, 'primaryKey', null),
     Column.text('EMP_NAME', Messages['MstEmpGrid.empName'], 300, '', null),
-    Column.select('POSITION', Messages['MstEmpGrid.position'], 10, '', { json: 'MstCodeValueSearch.json', paramkey: 'code_nm', value: 'CODE_VALUE', label: 'CODE_VALUE_MEI' }),
+    Column.text('POSITION', Messages['MstEmpGrid.position'], 10, '', null),
     Column.select('COMP_CODE', Messages['MstEmpGrid.compCode'], 20, '', { json: 'MstCodeValueSearch.json', paramkey: 'code_nm', value: 'CODE_VALUE', label: 'CODE_VALUE_MEI' }),
     Column.text('PASSWORD', Messages['MstEmpGrid.password'], 100, '', null),
     Column.text('TEL_NO', Messages['MstEmpGrid.telNo'], 140, '', null),

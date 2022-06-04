@@ -412,22 +412,22 @@ public class PchSupplySch implements IEntity {
 
         // PCH_SUPPLY_SCHの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("supply_no -- :supply_no");
-        nameList.add("supply_order_no -- :supply_order_no");
-        nameList.add("hinban -- :hinban");
-        nameList.add("supply_kbn -- :supply_kbn");
-        nameList.add("supply_unit -- :supply_unit");
-        nameList.add("supply_counts -- :supply_counts");
-        nameList.add("act_supply_counts -- :act_supply_counts");
-        nameList.add("sup_code -- :sup_code");
-        nameList.add("supply_date -- :supply_date");
-        nameList.add("supply_verify_stat -- :supply_verify_stat");
-        nameList.add("user_id_verify -- :user_id_verify");
-        nameList.add("supply_issue_stat -- :supply_issue_stat");
-        nameList.add("time_stamp_create -- :time_stamp_create");
-        nameList.add("time_stamp_change -- :time_stamp_change");
-        nameList.add("user_id_create -- :user_id_create");
-        nameList.add("user_id_change -- :user_id_change");
+        nameList.add("\"SUPPLY_NO\" -- :supply_no");
+        nameList.add("\"SUPPLY_ORDER_NO\" -- :supply_order_no");
+        nameList.add("\"HINBAN\" -- :hinban");
+        nameList.add("\"SUPPLY_KBN\" -- :supply_kbn");
+        nameList.add("\"SUPPLY_UNIT\" -- :supply_unit");
+        nameList.add("\"SUPPLY_COUNTS\" -- :supply_counts");
+        nameList.add("\"ACT_SUPPLY_COUNTS\" -- :act_supply_counts");
+        nameList.add("\"SUP_CODE\" -- :sup_code");
+        nameList.add("\"SUPPLY_DATE\" -- :supply_date");
+        nameList.add("\"SUPPLY_VERIFY_STAT\" -- :supply_verify_stat");
+        nameList.add("\"USER_ID_VERIFY\" -- :user_id_verify");
+        nameList.add("\"SUPPLY_ISSUE_STAT\" -- :supply_issue_stat");
+        nameList.add("\"TIME_STAMP_CREATE\" -- :time_stamp_create");
+        nameList.add("\"TIME_STAMP_CHANGE\" -- :time_stamp_change");
+        nameList.add("\"USER_ID_CREATE\" -- :user_id_create");
+        nameList.add("\"USER_ID_CHANGE\" -- :user_id_change");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO PCH_SUPPLY_SCH(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -465,7 +465,7 @@ public class PchSupplySch implements IEntity {
             return;
         }
 
-        String sql = "SELECT LPAD (CASE WHEN MAX(e.SUPPLY_NO) IS NULL THEN 0 ELSE MAX(e.SUPPLY_NO) * 1 END + 1, 12, '0') AS SUPPLY_NO FROM PCH_SUPPLY_SCH e WHERE e.SUPPLY_NO < '999999999999'";
+        String sql = "SELECT LPAD (CASE WHEN MAX(e.\"SUPPLY_NO\") IS NULL THEN 0 ELSE MAX(e.\"SUPPLY_NO\") * 1 END + 1, 12, '0') AS \"SUPPLY_NO\" FROM PCH_SUPPLY_SCH e WHERE e.\"SUPPLY_NO\" < '999999999999'";
 
         Map<String, Object> params = new HashMap<String, Object>();
 
@@ -492,20 +492,20 @@ public class PchSupplySch implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("supply_no = :supply_no");
-        setList.add("supply_order_no = :supply_order_no");
-        setList.add("hinban = :hinban");
-        setList.add("supply_kbn = :supply_kbn");
-        setList.add("supply_unit = :supply_unit");
-        setList.add("supply_counts = :supply_counts");
-        setList.add("act_supply_counts = :act_supply_counts");
-        setList.add("sup_code = :sup_code");
-        setList.add("supply_date = TO_TIMESTAMP (:supply_date, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("supply_verify_stat = :supply_verify_stat");
-        setList.add("user_id_verify = :user_id_verify");
-        setList.add("supply_issue_stat = :supply_issue_stat");
-        setList.add("time_stamp_change = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("user_id_change = :user_id_change");
+        setList.add("\"SUPPLY_NO\" = :supply_no");
+        setList.add("\"SUPPLY_ORDER_NO\" = :supply_order_no");
+        setList.add("\"HINBAN\" = :hinban");
+        setList.add("\"SUPPLY_KBN\" = :supply_kbn");
+        setList.add("\"SUPPLY_UNIT\" = :supply_unit");
+        setList.add("\"SUPPLY_COUNTS\" = :supply_counts");
+        setList.add("\"ACT_SUPPLY_COUNTS\" = :act_supply_counts");
+        setList.add("\"SUP_CODE\" = :sup_code");
+        setList.add("\"SUPPLY_DATE\" = TO_TIMESTAMP (:supply_date, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"SUPPLY_VERIFY_STAT\" = :supply_verify_stat");
+        setList.add("\"USER_ID_VERIFY\" = :user_id_verify");
+        setList.add("\"SUPPLY_ISSUE_STAT\" = :supply_issue_stat");
+        setList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"USER_ID_CHANGE\" = :user_id_change");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -527,25 +527,25 @@ public class PchSupplySch implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (supply_no) = TRIM (:supply_no)");
-        whereList.add("time_stamp_change = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        whereList.add("TRIM (\"SUPPLY_NO\") = TRIM (:supply_no)");
+        whereList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("SUPPLY_NO", this.supplyNo);
-        params.put("SUPPLY_ORDER_NO", this.supplyOrderNo);
-        params.put("HINBAN", this.hinban);
-        params.put("SUPPLY_KBN", this.supplyKbn);
-        params.put("SUPPLY_UNIT", this.supplyUnit);
-        params.put("SUPPLY_COUNTS", this.supplyCounts);
-        params.put("ACT_SUPPLY_COUNTS", this.actSupplyCounts);
-        params.put("SUP_CODE", this.supCode);
-        params.put("SUPPLY_DATE", this.supplyDate);
-        params.put("SUPPLY_VERIFY_STAT", this.supplyVerifyStat);
-        params.put("USER_ID_VERIFY", this.userIdVerify);
-        params.put("SUPPLY_ISSUE_STAT", this.supplyIssueStat);
+        params.put("supply_no", this.supplyNo);
+        params.put("supply_order_no", this.supplyOrderNo);
+        params.put("hinban", this.hinban);
+        params.put("supply_kbn", this.supplyKbn);
+        params.put("supply_unit", this.supplyUnit);
+        params.put("supply_counts", this.supplyCounts);
+        params.put("act_supply_counts", this.actSupplyCounts);
+        params.put("sup_code", this.supCode);
+        params.put("supply_date", this.supplyDate);
+        params.put("supply_verify_stat", this.supplyVerifyStat);
+        params.put("user_id_verify", this.userIdVerify);
+        params.put("supply_issue_stat", this.supplyIssueStat);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

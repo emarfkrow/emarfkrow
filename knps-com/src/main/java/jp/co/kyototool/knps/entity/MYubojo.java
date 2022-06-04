@@ -217,14 +217,14 @@ public class MYubojo implements IEntity {
 
         // 有力店ボーナス条件の登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("yuryokukbn -- :yuryokukbn");
-        nameList.add("yuryocd -- :yuryocd");
-        nameList.add("ryuryokumei -- :ryuryokumei");
-        nameList.add("konyu_min -- :konyu_min");
-        nameList.add("konyu_max -- :konyu_max");
-        nameList.add("yuboritu -- :yuboritu");
-        nameList.add("upddate -- :upddate");
-        nameList.add("filler -- :filler");
+        nameList.add("\"YURYOKUKBN\" -- :yuryokukbn");
+        nameList.add("\"YURYOCD\" -- :yuryocd");
+        nameList.add("\"RYURYOKUMEI\" -- :ryuryokumei");
+        nameList.add("\"KONYU-MIN\" -- :konyu_min");
+        nameList.add("\"KONYU-MAX\" -- :konyu_max");
+        nameList.add("\"YUBORITU\" -- :yuboritu");
+        nameList.add("\"UPDDATE\" -- :upddate");
+        nameList.add("\"FILLER\" -- :filler");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO M_YUBOJO(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -264,14 +264,14 @@ public class MYubojo implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("yuryokukbn = :yuryokukbn");
-        setList.add("yuryocd = :yuryocd");
-        setList.add("ryuryokumei = :ryuryokumei");
-        setList.add("konyu-min = :konyu-min");
-        setList.add("konyu-max = :konyu-max");
-        setList.add("yuboritu = :yuboritu");
-        setList.add("upddate = :upddate");
-        setList.add("filler = :filler");
+        setList.add("\"YURYOKUKBN\" = :yuryokukbn");
+        setList.add("\"YURYOCD\" = :yuryocd");
+        setList.add("\"RYURYOKUMEI\" = :ryuryokumei");
+        setList.add("\"KONYU-MIN\" = :konyu_min");
+        setList.add("\"KONYU-MAX\" = :konyu_max");
+        setList.add("\"YUBORITU\" = :yuboritu");
+        setList.add("\"UPDDATE\" = :upddate");
+        setList.add("\"FILLER\" = :filler");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -293,21 +293,21 @@ public class MYubojo implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (yuryokukbn) = TRIM (:yuryokukbn)");
-        whereList.add("yuryocd = :yuryocd");
+        whereList.add("TRIM (\"YURYOKUKBN\") = TRIM (:yuryokukbn)");
+        whereList.add("\"YURYOCD\" = :yuryocd");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("YURYOKUKBN", this.yuryokukbn);
-        params.put("YURYOCD", this.yuryocd);
-        params.put("RYURYOKUMEI", this.ryuryokumei);
-        params.put("KONYU-MIN", this.konyuMin);
-        params.put("KONYU-MAX", this.konyuMax);
-        params.put("YUBORITU", this.yuboritu);
-        params.put("UPDDATE", this.upddate);
-        params.put("FILLER", this.filler);
+        params.put("yuryokukbn", this.yuryokukbn);
+        params.put("yuryocd", this.yuryocd);
+        params.put("ryuryokumei", this.ryuryokumei);
+        params.put("konyu_min", this.konyuMin);
+        params.put("konyu_max", this.konyuMax);
+        params.put("yuboritu", this.yuboritu);
+        params.put("upddate", this.upddate);
+        params.put("filler", this.filler);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

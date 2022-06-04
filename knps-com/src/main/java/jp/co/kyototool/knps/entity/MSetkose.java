@@ -199,13 +199,13 @@ public class MSetkose implements IEntity {
 
         // セット構成マスタの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("set_hinban -- :set_hinban");
-        nameList.add("set_khinban -- :set_khinban");
-        nameList.add("dltflg -- :dltflg");
-        nameList.add("botm -- :botm");
-        nameList.add("setinzu -- :setinzu");
-        nameList.add("mushokbn -- :mushokbn");
-        nameList.add("filler -- :filler");
+        nameList.add("\"SET-HINBAN\" -- :set_hinban");
+        nameList.add("\"SET-KHINBAN\" -- :set_khinban");
+        nameList.add("\"DLTFLG\" -- :dltflg");
+        nameList.add("\"BOTM\" -- :botm");
+        nameList.add("\"SETINZU\" -- :setinzu");
+        nameList.add("\"MUSHOKBN\" -- :mushokbn");
+        nameList.add("\"FILLER\" -- :filler");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO M_SETKOSE(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -234,15 +234,15 @@ public class MSetkose implements IEntity {
             return;
         }
 
-        String sql = "SELECT LPAD (CASE WHEN MAX(e.SET-KHINBAN) IS NULL THEN 0 ELSE MAX(e.SET-KHINBAN) * 1 END + 1, 20, '0') AS SET-KHINBAN FROM M_SETKOSE e WHERE e.SET-KHINBAN < '99999999999999999999'";
+        String sql = "SELECT LPAD (CASE WHEN MAX(e.\"SET-KHINBAN\") IS NULL THEN 0 ELSE MAX(e.\"SET-KHINBAN\") * 1 END + 1, 20, '0') AS \"SET-KHINBAN\" FROM M_SETKOSE e WHERE e.\"SET-KHINBAN\" < '99999999999999999999'";
 
         Map<String, Object> params = new HashMap<String, Object>();
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("e.SET-HINBAN = :set-hinban");
+        whereList.add("e.\"SET-HINBAN\" = :set_hinban");
         sql += " WHERE " + String.join(" AND ", whereList);
 
-        params.put("setHinban", this.setHinban);
+        params.put("set_hinban", this.setHinban);
 
         jp.co.golorp.emarf.util.MapList mapList = Queries.select(sql, params);
         Object o = mapList.get(0).get("SET-KHINBAN");
@@ -267,13 +267,13 @@ public class MSetkose implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("set-hinban = :set-hinban");
-        setList.add("set-khinban = :set-khinban");
-        setList.add("dltflg = :dltflg");
-        setList.add("botm = :botm");
-        setList.add("setinzu = :setinzu");
-        setList.add("mushokbn = :mushokbn");
-        setList.add("filler = :filler");
+        setList.add("\"SET-HINBAN\" = :set_hinban");
+        setList.add("\"SET-KHINBAN\" = :set_khinban");
+        setList.add("\"DLTFLG\" = :dltflg");
+        setList.add("\"BOTM\" = :botm");
+        setList.add("\"SETINZU\" = :setinzu");
+        setList.add("\"MUSHOKBN\" = :mushokbn");
+        setList.add("\"FILLER\" = :filler");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -295,20 +295,20 @@ public class MSetkose implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (set-hinban) = TRIM (:set-hinban)");
-        whereList.add("TRIM (set-khinban) = TRIM (:set-khinban)");
+        whereList.add("TRIM (\"SET-HINBAN\") = TRIM (:set_hinban)");
+        whereList.add("TRIM (\"SET-KHINBAN\") = TRIM (:set_khinban)");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("SET-HINBAN", this.setHinban);
-        params.put("SET-KHINBAN", this.setKhinban);
-        params.put("DLTFLG", this.dltflg);
-        params.put("BOTM", this.botm);
-        params.put("SETINZU", this.setinzu);
-        params.put("MUSHOKBN", this.mushokbn);
-        params.put("FILLER", this.filler);
+        params.put("set_hinban", this.setHinban);
+        params.put("set_khinban", this.setKhinban);
+        params.put("dltflg", this.dltflg);
+        params.put("botm", this.botm);
+        params.put("setinzu", this.setinzu);
+        params.put("mushokbn", this.mushokbn);
+        params.put("filler", this.filler);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

@@ -295,16 +295,16 @@ public class InvStockSurveyStat implements IEntity {
 
         // INV_STOCK_SURVEY_STATの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("rec_no -- :rec_no");
-        nameList.add("yyyy -- :yyyy");
-        nameList.add("mm -- :mm");
-        nameList.add("survey_stat -- :survey_stat");
-        nameList.add("develop_products_stat -- :develop_products_stat");
-        nameList.add("develop_parts_stat -- :develop_parts_stat");
-        nameList.add("time_stamp_create -- :time_stamp_create");
-        nameList.add("time_stamp_change -- :time_stamp_change");
-        nameList.add("user_id_create -- :user_id_create");
-        nameList.add("user_id_change -- :user_id_change");
+        nameList.add("\"REC_NO\" -- :rec_no");
+        nameList.add("\"YYYY\" -- :yyyy");
+        nameList.add("\"MM\" -- :mm");
+        nameList.add("\"SURVEY_STAT\" -- :survey_stat");
+        nameList.add("\"DEVELOP_PRODUCTS_STAT\" -- :develop_products_stat");
+        nameList.add("\"DEVELOP_PARTS_STAT\" -- :develop_parts_stat");
+        nameList.add("\"TIME_STAMP_CREATE\" -- :time_stamp_create");
+        nameList.add("\"TIME_STAMP_CHANGE\" -- :time_stamp_change");
+        nameList.add("\"USER_ID_CREATE\" -- :user_id_create");
+        nameList.add("\"USER_ID_CHANGE\" -- :user_id_change");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO INV_STOCK_SURVEY_STAT(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -336,7 +336,7 @@ public class InvStockSurveyStat implements IEntity {
             return;
         }
 
-        String sql = "SELECT LPAD (CASE WHEN MAX(e.REC_NO) IS NULL THEN 0 ELSE MAX(e.REC_NO) * 1 END + 1, 3, '0') AS REC_NO FROM INV_STOCK_SURVEY_STAT e WHERE e.REC_NO < '999'";
+        String sql = "SELECT LPAD (CASE WHEN MAX(e.\"REC_NO\") IS NULL THEN 0 ELSE MAX(e.\"REC_NO\") * 1 END + 1, 3, '0') AS \"REC_NO\" FROM INV_STOCK_SURVEY_STAT e WHERE e.\"REC_NO\" < '999'";
 
         Map<String, Object> params = new HashMap<String, Object>();
 
@@ -393,14 +393,14 @@ public class InvStockSurveyStat implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("rec_no = :rec_no");
-        setList.add("yyyy = :yyyy");
-        setList.add("mm = :mm");
-        setList.add("survey_stat = :survey_stat");
-        setList.add("develop_products_stat = :develop_products_stat");
-        setList.add("develop_parts_stat = :develop_parts_stat");
-        setList.add("time_stamp_change = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("user_id_change = :user_id_change");
+        setList.add("\"REC_NO\" = :rec_no");
+        setList.add("\"YYYY\" = :yyyy");
+        setList.add("\"MM\" = :mm");
+        setList.add("\"SURVEY_STAT\" = :survey_stat");
+        setList.add("\"DEVELOP_PRODUCTS_STAT\" = :develop_products_stat");
+        setList.add("\"DEVELOP_PARTS_STAT\" = :develop_parts_stat");
+        setList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"USER_ID_CHANGE\" = :user_id_change");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -437,19 +437,19 @@ public class InvStockSurveyStat implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (rec_no) = TRIM (:rec_no)");
-        whereList.add("time_stamp_change = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        whereList.add("TRIM (\"REC_NO\") = TRIM (:rec_no)");
+        whereList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("REC_NO", this.recNo);
-        params.put("YYYY", this.yyyy);
-        params.put("MM", this.mm);
-        params.put("SURVEY_STAT", this.surveyStat);
-        params.put("DEVELOP_PRODUCTS_STAT", this.developProductsStat);
-        params.put("DEVELOP_PARTS_STAT", this.developPartsStat);
+        params.put("rec_no", this.recNo);
+        params.put("yyyy", this.yyyy);
+        params.put("mm", this.mm);
+        params.put("survey_stat", this.surveyStat);
+        params.put("develop_products_stat", this.developProductsStat);
+        params.put("develop_parts_stat", this.developPartsStat);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

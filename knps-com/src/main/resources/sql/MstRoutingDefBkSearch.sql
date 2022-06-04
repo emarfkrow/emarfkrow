@@ -7,8 +7,8 @@ WHERE
     AND TRIM (a."YY") = TRIM (:yy) 
     AND TRIM (a."MAN_HINBAN") = TRIM (:man_hinban) 
     AND a."ROUTING_GROUP" = :routing_group 
-    AND CASE WHEN a."PERMISSION_FLAG" IS NULL THEN '0' ELSE TO_CHAR (a.PERMISSION_FLAG) END IN (:permission_flag) 
-    AND CASE WHEN a."USABLE_FLAG" IS NULL THEN '0' ELSE TO_CHAR (a.USABLE_FLAG) END IN (:usable_flag) 
+    AND CASE WHEN a."PERMISSION_FLAG" IS NULL THEN '0' ELSE TO_CHAR (a."PERMISSION_FLAG") END IN (:permission_flag) 
+    AND CASE WHEN a."USABLE_FLAG" IS NULL THEN '0' ELSE TO_CHAR (a."USABLE_FLAG") END IN (:usable_flag) 
     AND a."MAX_ROUTING" = :max_routing 
     AND a."COPY_SOURCE_GROUP" = :copy_source_group 
     AND a."TIME_STAMP_CREATE" = :time_stamp_create 

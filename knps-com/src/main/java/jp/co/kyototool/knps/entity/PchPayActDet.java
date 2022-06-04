@@ -328,18 +328,18 @@ public class PchPayActDet implements IEntity {
 
         // PCH_PAY_ACT_DETの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("pay_no -- :pay_no");
-        nameList.add("pay_branch_no -- :pay_branch_no");
-        nameList.add("pay_counts -- :pay_counts");
-        nameList.add("unit_price -- :unit_price");
-        nameList.add("amount -- :amount");
-        nameList.add("tax_amount -- :tax_amount");
-        nameList.add("memo -- :memo");
-        nameList.add("close_date -- :close_date");
-        nameList.add("time_stamp_create -- :time_stamp_create");
-        nameList.add("time_stamp_change -- :time_stamp_change");
-        nameList.add("user_id_create -- :user_id_create");
-        nameList.add("user_id_change -- :user_id_change");
+        nameList.add("\"PAY_NO\" -- :pay_no");
+        nameList.add("\"PAY_BRANCH_NO\" -- :pay_branch_no");
+        nameList.add("\"PAY_COUNTS\" -- :pay_counts");
+        nameList.add("\"UNIT_PRICE\" -- :unit_price");
+        nameList.add("\"AMOUNT\" -- :amount");
+        nameList.add("\"TAX_AMOUNT\" -- :tax_amount");
+        nameList.add("\"MEMO\" -- :memo");
+        nameList.add("\"CLOSE_DATE\" -- :close_date");
+        nameList.add("\"TIME_STAMP_CREATE\" -- :time_stamp_create");
+        nameList.add("\"TIME_STAMP_CHANGE\" -- :time_stamp_change");
+        nameList.add("\"USER_ID_CREATE\" -- :user_id_create");
+        nameList.add("\"USER_ID_CHANGE\" -- :user_id_change");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO PCH_PAY_ACT_DET(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -383,16 +383,16 @@ public class PchPayActDet implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("pay_no = :pay_no");
-        setList.add("pay_branch_no = :pay_branch_no");
-        setList.add("pay_counts = :pay_counts");
-        setList.add("unit_price = :unit_price");
-        setList.add("amount = :amount");
-        setList.add("tax_amount = :tax_amount");
-        setList.add("memo = :memo");
-        setList.add("close_date = TO_TIMESTAMP (:close_date, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("time_stamp_change = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("user_id_change = :user_id_change");
+        setList.add("\"PAY_NO\" = :pay_no");
+        setList.add("\"PAY_BRANCH_NO\" = :pay_branch_no");
+        setList.add("\"PAY_COUNTS\" = :pay_counts");
+        setList.add("\"UNIT_PRICE\" = :unit_price");
+        setList.add("\"AMOUNT\" = :amount");
+        setList.add("\"TAX_AMOUNT\" = :tax_amount");
+        setList.add("\"MEMO\" = :memo");
+        setList.add("\"CLOSE_DATE\" = TO_TIMESTAMP (:close_date, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"USER_ID_CHANGE\" = :user_id_change");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -414,22 +414,22 @@ public class PchPayActDet implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (pay_no) = TRIM (:pay_no)");
-        whereList.add("pay_branch_no = :pay_branch_no");
-        whereList.add("time_stamp_change = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        whereList.add("TRIM (\"PAY_NO\") = TRIM (:pay_no)");
+        whereList.add("\"PAY_BRANCH_NO\" = :pay_branch_no");
+        whereList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("PAY_NO", this.payNo);
-        params.put("PAY_BRANCH_NO", this.payBranchNo);
-        params.put("PAY_COUNTS", this.payCounts);
-        params.put("UNIT_PRICE", this.unitPrice);
-        params.put("AMOUNT", this.amount);
-        params.put("TAX_AMOUNT", this.taxAmount);
-        params.put("MEMO", this.memo);
-        params.put("CLOSE_DATE", this.closeDate);
+        params.put("pay_no", this.payNo);
+        params.put("pay_branch_no", this.payBranchNo);
+        params.put("pay_counts", this.payCounts);
+        params.put("unit_price", this.unitPrice);
+        params.put("amount", this.amount);
+        params.put("tax_amount", this.taxAmount);
+        params.put("memo", this.memo);
+        params.put("close_date", this.closeDate);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

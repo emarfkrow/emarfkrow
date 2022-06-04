@@ -361,20 +361,20 @@ public class MstOpeForm implements IEntity {
 
         // MST_OPE_FORMの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("pattern_no -- :pattern_no");
-        nameList.add("f_choku_start -- :f_choku_start");
-        nameList.add("f_choku_end -- :f_choku_end");
-        nameList.add("f_choku_start_ded -- :f_choku_start_ded");
-        nameList.add("f_choku_end_ded -- :f_choku_end_ded");
-        nameList.add("s_choku_start_ded -- :s_choku_start_ded");
-        nameList.add("s_choku_end_ded -- :s_choku_end_ded");
-        nameList.add("t_choku_start_ded -- :t_choku_start_ded");
-        nameList.add("t_choku_end_ded -- :t_choku_end_ded");
-        nameList.add("time_stamp_create -- :time_stamp_create");
-        nameList.add("time_stamp_change -- :time_stamp_change");
-        nameList.add("user_id_create -- :user_id_create");
-        nameList.add("user_id_change -- :user_id_change");
-        nameList.add("delete_flag -- :delete_flag");
+        nameList.add("\"PATTERN_NO\" -- :pattern_no");
+        nameList.add("\"F_CHOKU_START\" -- :f_choku_start");
+        nameList.add("\"F_CHOKU_END\" -- :f_choku_end");
+        nameList.add("\"F_CHOKU_START_DED\" -- :f_choku_start_ded");
+        nameList.add("\"F_CHOKU_END_DED\" -- :f_choku_end_ded");
+        nameList.add("\"S_CHOKU_START_DED\" -- :s_choku_start_ded");
+        nameList.add("\"S_CHOKU_END_DED\" -- :s_choku_end_ded");
+        nameList.add("\"T_CHOKU_START_DED\" -- :t_choku_start_ded");
+        nameList.add("\"T_CHOKU_END_DED\" -- :t_choku_end_ded");
+        nameList.add("\"TIME_STAMP_CREATE\" -- :time_stamp_create");
+        nameList.add("\"TIME_STAMP_CHANGE\" -- :time_stamp_change");
+        nameList.add("\"USER_ID_CREATE\" -- :user_id_create");
+        nameList.add("\"USER_ID_CHANGE\" -- :user_id_change");
+        nameList.add("\"DELETE_FLAG\" -- :delete_flag");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO MST_OPE_FORM(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -410,7 +410,7 @@ public class MstOpeForm implements IEntity {
             return;
         }
 
-        String sql = "SELECT LPAD (CASE WHEN MAX(e.PATTERN_NO) IS NULL THEN 0 ELSE MAX(e.PATTERN_NO) * 1 END + 1, 2, '0') AS PATTERN_NO FROM MST_OPE_FORM e WHERE e.PATTERN_NO < '99'";
+        String sql = "SELECT LPAD (CASE WHEN MAX(e.\"PATTERN_NO\") IS NULL THEN 0 ELSE MAX(e.\"PATTERN_NO\") * 1 END + 1, 2, '0') AS \"PATTERN_NO\" FROM MST_OPE_FORM e WHERE e.\"PATTERN_NO\" < '99'";
 
         Map<String, Object> params = new HashMap<String, Object>();
 
@@ -437,18 +437,18 @@ public class MstOpeForm implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("pattern_no = :pattern_no");
-        setList.add("f_choku_start = :f_choku_start");
-        setList.add("f_choku_end = :f_choku_end");
-        setList.add("f_choku_start_ded = :f_choku_start_ded");
-        setList.add("f_choku_end_ded = :f_choku_end_ded");
-        setList.add("s_choku_start_ded = :s_choku_start_ded");
-        setList.add("s_choku_end_ded = :s_choku_end_ded");
-        setList.add("t_choku_start_ded = :t_choku_start_ded");
-        setList.add("t_choku_end_ded = :t_choku_end_ded");
-        setList.add("time_stamp_change = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("user_id_change = :user_id_change");
-        setList.add("delete_flag = :delete_flag");
+        setList.add("\"PATTERN_NO\" = :pattern_no");
+        setList.add("\"F_CHOKU_START\" = :f_choku_start");
+        setList.add("\"F_CHOKU_END\" = :f_choku_end");
+        setList.add("\"F_CHOKU_START_DED\" = :f_choku_start_ded");
+        setList.add("\"F_CHOKU_END_DED\" = :f_choku_end_ded");
+        setList.add("\"S_CHOKU_START_DED\" = :s_choku_start_ded");
+        setList.add("\"S_CHOKU_END_DED\" = :s_choku_end_ded");
+        setList.add("\"T_CHOKU_START_DED\" = :t_choku_start_ded");
+        setList.add("\"T_CHOKU_END_DED\" = :t_choku_end_ded");
+        setList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"USER_ID_CHANGE\" = :user_id_change");
+        setList.add("\"DELETE_FLAG\" = :delete_flag");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -470,23 +470,23 @@ public class MstOpeForm implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (pattern_no) = TRIM (:pattern_no)");
-        whereList.add("time_stamp_change = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        whereList.add("TRIM (\"PATTERN_NO\") = TRIM (:pattern_no)");
+        whereList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("PATTERN_NO", this.patternNo);
-        params.put("F_CHOKU_START", this.fChokuStart);
-        params.put("F_CHOKU_END", this.fChokuEnd);
-        params.put("F_CHOKU_START_DED", this.fChokuStartDed);
-        params.put("F_CHOKU_END_DED", this.fChokuEndDed);
-        params.put("S_CHOKU_START_DED", this.sChokuStartDed);
-        params.put("S_CHOKU_END_DED", this.sChokuEndDed);
-        params.put("T_CHOKU_START_DED", this.tChokuStartDed);
-        params.put("T_CHOKU_END_DED", this.tChokuEndDed);
-        params.put("DELETE_FLAG", this.deleteFlag);
+        params.put("pattern_no", this.patternNo);
+        params.put("f_choku_start", this.fChokuStart);
+        params.put("f_choku_end", this.fChokuEnd);
+        params.put("f_choku_start_ded", this.fChokuStartDed);
+        params.put("f_choku_end_ded", this.fChokuEndDed);
+        params.put("s_choku_start_ded", this.sChokuStartDed);
+        params.put("s_choku_end_ded", this.sChokuEndDed);
+        params.put("t_choku_start_ded", this.tChokuStartDed);
+        params.put("t_choku_end_ded", this.tChokuEndDed);
+        params.put("delete_flag", this.deleteFlag);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

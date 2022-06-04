@@ -346,20 +346,20 @@ public class MHseigyo implements IEntity {
 
         // 販売制御マスタの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("keycd -- :keycd");
-        nameList.add("kaisibi -- :kaisibi");
-        nameList.add("shuryobi -- :shuryobi");
-        nameList.add("zeiritu -- :zeiritu");
-        nameList.add("yuboent -- :yuboent");
-        nameList.add("shusijino1 -- :shusijino1");
-        nameList.add("nohinshono -- :nohinshono");
-        nameList.add("setkeino -- :setkeino");
-        nameList.add("getuji_yymm -- :getuji_yymm");
-        nameList.add("t_juccnt -- :t_juccnt");
-        nameList.add("t_maxcnt -- :t_maxcnt");
-        nameList.add("chokucnt -- :chokucnt");
-        nameList.add("hyotanka -- :hyotanka");
-        nameList.add("filler -- :filler");
+        nameList.add("\"KEYCD\" -- :keycd");
+        nameList.add("\"KAISIBI\" -- :kaisibi");
+        nameList.add("\"SHURYOBI\" -- :shuryobi");
+        nameList.add("\"ZEIRITU\" -- :zeiritu");
+        nameList.add("\"YUBOENT\" -- :yuboent");
+        nameList.add("\"SHUSIJINO1\" -- :shusijino1");
+        nameList.add("\"NOHINSHONO\" -- :nohinshono");
+        nameList.add("\"SETKEINO\" -- :setkeino");
+        nameList.add("\"GETUJI-YYMM\" -- :getuji_yymm");
+        nameList.add("\"T-JUCCNT\" -- :t_juccnt");
+        nameList.add("\"T-MAXCNT\" -- :t_maxcnt");
+        nameList.add("\"CHOKUCNT\" -- :chokucnt");
+        nameList.add("\"HYOTANKA\" -- :hyotanka");
+        nameList.add("\"FILLER\" -- :filler");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO M_HSEIGYO(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -415,20 +415,20 @@ public class MHseigyo implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("keycd = :keycd");
-        setList.add("kaisibi = :kaisibi");
-        setList.add("shuryobi = :shuryobi");
-        setList.add("zeiritu = :zeiritu");
-        setList.add("yuboent = :yuboent");
-        setList.add("shusijino1 = :shusijino1");
-        setList.add("nohinshono = :nohinshono");
-        setList.add("setkeino = :setkeino");
-        setList.add("getuji-yymm = :getuji-yymm");
-        setList.add("t-juccnt = :t-juccnt");
-        setList.add("t-maxcnt = :t-maxcnt");
-        setList.add("chokucnt = :chokucnt");
-        setList.add("hyotanka = :hyotanka");
-        setList.add("filler = :filler");
+        setList.add("\"KEYCD\" = :keycd");
+        setList.add("\"KAISIBI\" = :kaisibi");
+        setList.add("\"SHURYOBI\" = :shuryobi");
+        setList.add("\"ZEIRITU\" = :zeiritu");
+        setList.add("\"YUBOENT\" = :yuboent");
+        setList.add("\"SHUSIJINO1\" = :shusijino1");
+        setList.add("\"NOHINSHONO\" = :nohinshono");
+        setList.add("\"SETKEINO\" = :setkeino");
+        setList.add("\"GETUJI-YYMM\" = :getuji_yymm");
+        setList.add("\"T-JUCCNT\" = :t_juccnt");
+        setList.add("\"T-MAXCNT\" = :t_maxcnt");
+        setList.add("\"CHOKUCNT\" = :chokucnt");
+        setList.add("\"HYOTANKA\" = :hyotanka");
+        setList.add("\"FILLER\" = :filler");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -455,26 +455,26 @@ public class MHseigyo implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("keycd = :keycd");
+        whereList.add("\"KEYCD\" = :keycd");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("KEYCD", this.keycd);
-        params.put("KAISIBI", this.kaisibi);
-        params.put("SHURYOBI", this.shuryobi);
-        params.put("ZEIRITU", this.zeiritu);
-        params.put("YUBOENT", this.yuboent);
-        params.put("SHUSIJINO1", this.shusijino1);
-        params.put("NOHINSHONO", this.nohinshono);
-        params.put("SETKEINO", this.setkeino);
-        params.put("GETUJI-YYMM", this.getujiYymm);
-        params.put("T-JUCCNT", this.tJuccnt);
-        params.put("T-MAXCNT", this.tMaxcnt);
-        params.put("CHOKUCNT", this.chokucnt);
-        params.put("HYOTANKA", this.hyotanka);
-        params.put("FILLER", this.filler);
+        params.put("keycd", this.keycd);
+        params.put("kaisibi", this.kaisibi);
+        params.put("shuryobi", this.shuryobi);
+        params.put("zeiritu", this.zeiritu);
+        params.put("yuboent", this.yuboent);
+        params.put("shusijino1", this.shusijino1);
+        params.put("nohinshono", this.nohinshono);
+        params.put("setkeino", this.setkeino);
+        params.put("getuji_yymm", this.getujiYymm);
+        params.put("t_juccnt", this.tJuccnt);
+        params.put("t_maxcnt", this.tMaxcnt);
+        params.put("chokucnt", this.chokucnt);
+        params.put("hyotanka", this.hyotanka);
+        params.put("filler", this.filler);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

@@ -136,10 +136,10 @@ public class MHososet implements IEntity {
 
         // 包装材構成マスタの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("hhinban -- :hhinban");
-        nameList.add("hoso_hinban -- :hoso_hinban");
-        nameList.add("inzu -- :inzu");
-        nameList.add("filler -- :filler");
+        nameList.add("\"HHINBAN\" -- :hhinban");
+        nameList.add("\"HOSO-HINBAN\" -- :hoso_hinban");
+        nameList.add("\"INZU\" -- :inzu");
+        nameList.add("\"FILLER\" -- :filler");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO M_HOSOSET(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -165,12 +165,12 @@ public class MHososet implements IEntity {
             return;
         }
 
-        String sql = "SELECT LPAD (CASE WHEN MAX(e.HOSO-HINBAN) IS NULL THEN 0 ELSE MAX(e.HOSO-HINBAN) * 1 END + 1, 25, '0') AS HOSO-HINBAN FROM M_HOSOSET e WHERE e.HOSO-HINBAN < '9999999999999999999999999'";
+        String sql = "SELECT LPAD (CASE WHEN MAX(e.\"HOSO-HINBAN\") IS NULL THEN 0 ELSE MAX(e.\"HOSO-HINBAN\") * 1 END + 1, 25, '0') AS \"HOSO-HINBAN\" FROM M_HOSOSET e WHERE e.\"HOSO-HINBAN\" < '9999999999999999999999999'";
 
         Map<String, Object> params = new HashMap<String, Object>();
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("e.HHINBAN = :hhinban");
+        whereList.add("e.\"HHINBAN\" = :hhinban");
         sql += " WHERE " + String.join(" AND ", whereList);
 
         params.put("hhinban", this.hhinban);
@@ -198,10 +198,10 @@ public class MHososet implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("hhinban = :hhinban");
-        setList.add("hoso-hinban = :hoso-hinban");
-        setList.add("inzu = :inzu");
-        setList.add("filler = :filler");
+        setList.add("\"HHINBAN\" = :hhinban");
+        setList.add("\"HOSO-HINBAN\" = :hoso_hinban");
+        setList.add("\"INZU\" = :inzu");
+        setList.add("\"FILLER\" = :filler");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -223,17 +223,17 @@ public class MHososet implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (hhinban) = TRIM (:hhinban)");
-        whereList.add("TRIM (hoso-hinban) = TRIM (:hoso-hinban)");
+        whereList.add("TRIM (\"HHINBAN\") = TRIM (:hhinban)");
+        whereList.add("TRIM (\"HOSO-HINBAN\") = TRIM (:hoso_hinban)");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("HHINBAN", this.hhinban);
-        params.put("HOSO-HINBAN", this.hosoHinban);
-        params.put("INZU", this.inzu);
-        params.put("FILLER", this.filler);
+        params.put("hhinban", this.hhinban);
+        params.put("hoso_hinban", this.hosoHinban);
+        params.put("inzu", this.inzu);
+        params.put("filler", this.filler);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

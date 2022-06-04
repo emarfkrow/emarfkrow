@@ -279,15 +279,15 @@ public class MfgKanbanAct implements IEntity {
 
         // MFG_KANBAN_ACTの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("act_no -- :act_no");
-        nameList.add("kanban_id -- :kanban_id");
-        nameList.add("serial_no -- :serial_no");
-        nameList.add("wc_code -- :wc_code");
-        nameList.add("act_date -- :act_date");
-        nameList.add("time_stamp_create -- :time_stamp_create");
-        nameList.add("time_stamp_change -- :time_stamp_change");
-        nameList.add("user_id_create -- :user_id_create");
-        nameList.add("user_id_change -- :user_id_change");
+        nameList.add("\"ACT_NO\" -- :act_no");
+        nameList.add("\"KANBAN_ID\" -- :kanban_id");
+        nameList.add("\"SERIAL_NO\" -- :serial_no");
+        nameList.add("\"WC_CODE\" -- :wc_code");
+        nameList.add("\"ACT_DATE\" -- :act_date");
+        nameList.add("\"TIME_STAMP_CREATE\" -- :time_stamp_create");
+        nameList.add("\"TIME_STAMP_CHANGE\" -- :time_stamp_change");
+        nameList.add("\"USER_ID_CREATE\" -- :user_id_create");
+        nameList.add("\"USER_ID_CHANGE\" -- :user_id_change");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO MFG_KANBAN_ACT(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -318,7 +318,7 @@ public class MfgKanbanAct implements IEntity {
             return;
         }
 
-        String sql = "SELECT LPAD (CASE WHEN MAX(e.ACT_NO) IS NULL THEN 0 ELSE MAX(e.ACT_NO) * 1 END + 1, 12, '0') AS ACT_NO FROM MFG_KANBAN_ACT e WHERE e.ACT_NO < '999999999999'";
+        String sql = "SELECT LPAD (CASE WHEN MAX(e.\"ACT_NO\") IS NULL THEN 0 ELSE MAX(e.\"ACT_NO\") * 1 END + 1, 12, '0') AS \"ACT_NO\" FROM MFG_KANBAN_ACT e WHERE e.\"ACT_NO\" < '999999999999'";
 
         Map<String, Object> params = new HashMap<String, Object>();
 
@@ -376,13 +376,13 @@ public class MfgKanbanAct implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("act_no = :act_no");
-        setList.add("kanban_id = :kanban_id");
-        setList.add("serial_no = :serial_no");
-        setList.add("wc_code = :wc_code");
-        setList.add("act_date = TO_TIMESTAMP (:act_date, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("time_stamp_change = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("user_id_change = :user_id_change");
+        setList.add("\"ACT_NO\" = :act_no");
+        setList.add("\"KANBAN_ID\" = :kanban_id");
+        setList.add("\"SERIAL_NO\" = :serial_no");
+        setList.add("\"WC_CODE\" = :wc_code");
+        setList.add("\"ACT_DATE\" = TO_TIMESTAMP (:act_date, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"USER_ID_CHANGE\" = :user_id_change");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -416,18 +416,18 @@ public class MfgKanbanAct implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (act_no) = TRIM (:act_no)");
-        whereList.add("time_stamp_change = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        whereList.add("TRIM (\"ACT_NO\") = TRIM (:act_no)");
+        whereList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("ACT_NO", this.actNo);
-        params.put("KANBAN_ID", this.kanbanId);
-        params.put("SERIAL_NO", this.serialNo);
-        params.put("WC_CODE", this.wcCode);
-        params.put("ACT_DATE", this.actDate);
+        params.put("act_no", this.actNo);
+        params.put("kanban_id", this.kanbanId);
+        params.put("serial_no", this.serialNo);
+        params.put("wc_code", this.wcCode);
+        params.put("act_date", this.actDate);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

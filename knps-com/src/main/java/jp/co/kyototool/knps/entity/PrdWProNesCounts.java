@@ -304,17 +304,17 @@ public class PrdWProNesCounts implements IEntity {
 
         // PRD_W_PRO_NES_COUNTSの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("prd_w_pro_nes_counts_key -- :prd_w_pro_nes_counts_key");
-        nameList.add("pro_hinban -- :pro_hinban");
-        nameList.add("scheduled_date -- :scheduled_date");
-        nameList.add("pro_nes_counts -- :pro_nes_counts");
-        nameList.add("pro_nes_comment -- :pro_nes_comment");
-        nameList.add("delete_flag -- :delete_flag");
-        nameList.add("time_stamp_create -- :time_stamp_create");
-        nameList.add("time_stamp_change -- :time_stamp_change");
-        nameList.add("user_id_create -- :user_id_create");
-        nameList.add("user_id_change -- :user_id_change");
-        nameList.add("emp_code -- :emp_code");
+        nameList.add("\"PRD_W_PRO_NES_COUNTS_KEY\" -- :prd_w_pro_nes_counts_key");
+        nameList.add("\"PRO_HINBAN\" -- :pro_hinban");
+        nameList.add("\"SCHEDULED_DATE\" -- :scheduled_date");
+        nameList.add("\"PRO_NES_COUNTS\" -- :pro_nes_counts");
+        nameList.add("\"PRO_NES_COMMENT\" -- :pro_nes_comment");
+        nameList.add("\"DELETE_FLAG\" -- :delete_flag");
+        nameList.add("\"TIME_STAMP_CREATE\" -- :time_stamp_create");
+        nameList.add("\"TIME_STAMP_CHANGE\" -- :time_stamp_change");
+        nameList.add("\"USER_ID_CREATE\" -- :user_id_create");
+        nameList.add("\"USER_ID_CHANGE\" -- :user_id_change");
+        nameList.add("\"EMP_CODE\" -- :emp_code");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO PRD_W_PRO_NES_COUNTS(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -357,15 +357,15 @@ public class PrdWProNesCounts implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("prd_w_pro_nes_counts_key = :prd_w_pro_nes_counts_key");
-        setList.add("pro_hinban = :pro_hinban");
-        setList.add("scheduled_date = TO_TIMESTAMP (:scheduled_date, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("pro_nes_counts = :pro_nes_counts");
-        setList.add("pro_nes_comment = :pro_nes_comment");
-        setList.add("delete_flag = :delete_flag");
-        setList.add("time_stamp_change = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("user_id_change = :user_id_change");
-        setList.add("emp_code = :emp_code");
+        setList.add("\"PRD_W_PRO_NES_COUNTS_KEY\" = :prd_w_pro_nes_counts_key");
+        setList.add("\"PRO_HINBAN\" = :pro_hinban");
+        setList.add("\"SCHEDULED_DATE\" = TO_TIMESTAMP (:scheduled_date, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"PRO_NES_COUNTS\" = :pro_nes_counts");
+        setList.add("\"PRO_NES_COMMENT\" = :pro_nes_comment");
+        setList.add("\"DELETE_FLAG\" = :delete_flag");
+        setList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"USER_ID_CHANGE\" = :user_id_change");
+        setList.add("\"EMP_CODE\" = :emp_code");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -387,20 +387,20 @@ public class PrdWProNesCounts implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("prd_w_pro_nes_counts_key = :prd_w_pro_nes_counts_key");
-        whereList.add("time_stamp_change = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        whereList.add("\"PRD_W_PRO_NES_COUNTS_KEY\" = :prd_w_pro_nes_counts_key");
+        whereList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("PRD_W_PRO_NES_COUNTS_KEY", this.prdWProNesCountsKey);
-        params.put("PRO_HINBAN", this.proHinban);
-        params.put("SCHEDULED_DATE", this.scheduledDate);
-        params.put("PRO_NES_COUNTS", this.proNesCounts);
-        params.put("PRO_NES_COMMENT", this.proNesComment);
-        params.put("DELETE_FLAG", this.deleteFlag);
-        params.put("EMP_CODE", this.empCode);
+        params.put("prd_w_pro_nes_counts_key", this.prdWProNesCountsKey);
+        params.put("pro_hinban", this.proHinban);
+        params.put("scheduled_date", this.scheduledDate);
+        params.put("pro_nes_counts", this.proNesCounts);
+        params.put("pro_nes_comment", this.proNesComment);
+        params.put("delete_flag", this.deleteFlag);
+        params.put("emp_code", this.empCode);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

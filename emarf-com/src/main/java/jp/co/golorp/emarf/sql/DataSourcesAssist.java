@@ -33,4 +33,16 @@ public abstract class DataSourcesAssist {
      */
     public abstract String toTimestamp(String s);
 
+    /**
+     * @param columnName
+     * @return 引用符付きの文字列
+     */
+    public abstract String quoted(String columnName);
+
+    /**
+     * @param columnName
+     * @return エスケープ引用符付きの文字列
+     */
+    public abstract String quoteEscaped(String columnName);
+
 }

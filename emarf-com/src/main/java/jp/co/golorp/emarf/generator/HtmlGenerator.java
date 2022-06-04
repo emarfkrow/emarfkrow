@@ -375,22 +375,27 @@ public final class HtmlGenerator {
         s.add("let " + entityName + "GridColumns = [");
 
         for (ColumnInfo columnInfo : tableInfo.getColumnInfos().values()) {
+
             String columnName = columnInfo.getColumnName();
             String lower = columnName.toLowerCase();
             String camel = StringUtil.toCamelCase(lower);
             String name = "Messages['" + entityName + "Grid." + camel + "']";
             String field = lower.toUpperCase();
+
             int width = columnInfo.getColumnSize() * COLUMN_WIDTH_PX_MULTIPLIER;
             if (width > 300) {
                 width = 300;
             }
 
+            boolean isInsertDt = columnName.matches("(?i)^" + insertDt + "$");
+            boolean isUpdateDt = columnName.matches("(?i)^" + updateDt + "$");
+            boolean isInsertBy = columnName.matches("(?i)^" + insertBy + "$");
+            boolean isUpdateBy = columnName.matches("(?i)^" + updateBy + "$");
+
             String css = "";
             if (columnInfo.isPk()) {
                 css = "primaryKey";
-            } else if (lower.equals(insertDt) || lower.equals(updateDt)) {
-                css = "metaInfo";
-            } else if (lower.equals(insertBy) || lower.equals(updateBy)) {
+            } else if (isInsertDt || isUpdateDt || isInsertBy || isUpdateBy) {
                 css = "metaInfo";
             }
 
@@ -426,11 +431,7 @@ public final class HtmlGenerator {
 
                 c = "Column.cell('" + field + "', " + name + ", " + width + ", '" + css + "', " + formatter + "),";
 
-            } else if (lower.equals(insertDt) || lower.equals(updateDt)) {
-
-                c = "Column.cell('" + field + "', " + name + ", " + width + ", '" + css + "', " + formatter + "),";
-
-            } else if (lower.equals(insertBy) || lower.equals(updateBy)) {
+            } else if (isInsertDt || isUpdateDt || isInsertBy || isUpdateBy) {
 
                 c = "Column.cell('" + field + "', " + name + ", " + width + ", '" + css + "', " + formatter + "),";
 
@@ -616,8 +617,12 @@ public final class HtmlGenerator {
                 continue;
             }
 
-            if (lower.equals(insertDt) || lower.equals(insertBy)
-                    || lower.equals(updateDt) || lower.equals(updateBy)) {
+            boolean isInsertDt = columnName.matches("(?i)^" + insertDt + "$");
+            boolean isUpdateDt = columnName.matches("(?i)^" + updateDt + "$");
+            boolean isInsertBy = columnName.matches("(?i)^" + insertBy + "$");
+            boolean isUpdateBy = columnName.matches("(?i)^" + updateBy + "$");
+
+            if (isInsertDt || isInsertBy || isUpdateDt || isUpdateBy) {
                 // メタ情報の場合
 
                 // 検索画面の場合はスキップ（検索条件にはしない）
@@ -627,7 +632,7 @@ public final class HtmlGenerator {
 
                 // 詳細画面の兄弟モデルは更新日時のみhiddenで出力
                 if (isBrother) {
-                    if (lower.equals(updateDt)) {
+                    if (isUpdateDt) {
                         s.add("        <input type=\"hidden\" name=\"" + id + "\" />");
                     }
                     continue;
@@ -635,8 +640,7 @@ public final class HtmlGenerator {
             }
 
             s.add("        <div id=\"" + camel + "\">");
-            if (lower.equals(insertDt) || lower.equals(insertBy)
-                    || lower.equals(updateDt) || lower.equals(updateBy)) {
+            if (isInsertDt || isInsertBy || isUpdateDt || isUpdateBy) {
                 // メタ情報の場合は表示項目（編集画面の自モデルのみここに到達する）
 
                 htmlFieldsMeta(s, id, remarks);

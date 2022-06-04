@@ -514,26 +514,26 @@ public class PchAcceptActDet implements IEntity {
 
         // PCH_ACCEPT_ACT_DETの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("act_no -- :act_no");
-        nameList.add("act_branch_no -- :act_branch_no");
-        nameList.add("inspect_counts -- :inspect_counts");
-        nameList.add("inspect_unit -- :inspect_unit");
-        nameList.add("amount -- :amount");
-        nameList.add("tax_amount -- :tax_amount");
-        nameList.add("check_issue_date -- :check_issue_date");
-        nameList.add("check_list_no -- :check_list_no");
-        nameList.add("check_issue_ope -- :check_issue_ope");
-        nameList.add("check_flg -- :check_flg");
-        nameList.add("check_comp_date -- :check_comp_date");
-        nameList.add("check_comp_ope -- :check_comp_ope");
-        nameList.add("close_date -- :close_date");
-        nameList.add("time_stamp_create -- :time_stamp_create");
-        nameList.add("time_stamp_change -- :time_stamp_change");
-        nameList.add("user_id_create -- :user_id_create");
-        nameList.add("user_id_change -- :user_id_change");
-        nameList.add("inspect_isshiki_unit_f -- :inspect_isshiki_unit_f");
-        nameList.add("inspect_isshiki_counts -- :inspect_isshiki_counts");
-        nameList.add("inspect_isshiki_unit -- :inspect_isshiki_unit");
+        nameList.add("\"ACT_NO\" -- :act_no");
+        nameList.add("\"ACT_BRANCH_NO\" -- :act_branch_no");
+        nameList.add("\"INSPECT_COUNTS\" -- :inspect_counts");
+        nameList.add("\"INSPECT_UNIT\" -- :inspect_unit");
+        nameList.add("\"AMOUNT\" -- :amount");
+        nameList.add("\"TAX_AMOUNT\" -- :tax_amount");
+        nameList.add("\"CHECK_ISSUE_DATE\" -- :check_issue_date");
+        nameList.add("\"CHECK_LIST_NO\" -- :check_list_no");
+        nameList.add("\"CHECK_ISSUE_OPE\" -- :check_issue_ope");
+        nameList.add("\"CHECK_FLG\" -- :check_flg");
+        nameList.add("\"CHECK_COMP_DATE\" -- :check_comp_date");
+        nameList.add("\"CHECK_COMP_OPE\" -- :check_comp_ope");
+        nameList.add("\"CLOSE_DATE\" -- :close_date");
+        nameList.add("\"TIME_STAMP_CREATE\" -- :time_stamp_create");
+        nameList.add("\"TIME_STAMP_CHANGE\" -- :time_stamp_change");
+        nameList.add("\"USER_ID_CREATE\" -- :user_id_create");
+        nameList.add("\"USER_ID_CHANGE\" -- :user_id_change");
+        nameList.add("\"INSPECT_ISSHIKI_UNIT_F\" -- :inspect_isshiki_unit_f");
+        nameList.add("\"INSPECT_ISSHIKI_COUNTS\" -- :inspect_isshiki_counts");
+        nameList.add("\"INSPECT_ISSHIKI_UNIT\" -- :inspect_isshiki_unit");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO PCH_ACCEPT_ACT_DET(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -585,24 +585,24 @@ public class PchAcceptActDet implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("act_no = :act_no");
-        setList.add("act_branch_no = :act_branch_no");
-        setList.add("inspect_counts = :inspect_counts");
-        setList.add("inspect_unit = :inspect_unit");
-        setList.add("amount = :amount");
-        setList.add("tax_amount = :tax_amount");
-        setList.add("check_issue_date = TO_TIMESTAMP (:check_issue_date, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("check_list_no = :check_list_no");
-        setList.add("check_issue_ope = :check_issue_ope");
-        setList.add("check_flg = :check_flg");
-        setList.add("check_comp_date = TO_TIMESTAMP (:check_comp_date, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("check_comp_ope = :check_comp_ope");
-        setList.add("close_date = TO_TIMESTAMP (:close_date, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("time_stamp_change = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("user_id_change = :user_id_change");
-        setList.add("inspect_isshiki_unit_f = :inspect_isshiki_unit_f");
-        setList.add("inspect_isshiki_counts = :inspect_isshiki_counts");
-        setList.add("inspect_isshiki_unit = :inspect_isshiki_unit");
+        setList.add("\"ACT_NO\" = :act_no");
+        setList.add("\"ACT_BRANCH_NO\" = :act_branch_no");
+        setList.add("\"INSPECT_COUNTS\" = :inspect_counts");
+        setList.add("\"INSPECT_UNIT\" = :inspect_unit");
+        setList.add("\"AMOUNT\" = :amount");
+        setList.add("\"TAX_AMOUNT\" = :tax_amount");
+        setList.add("\"CHECK_ISSUE_DATE\" = TO_TIMESTAMP (:check_issue_date, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"CHECK_LIST_NO\" = :check_list_no");
+        setList.add("\"CHECK_ISSUE_OPE\" = :check_issue_ope");
+        setList.add("\"CHECK_FLG\" = :check_flg");
+        setList.add("\"CHECK_COMP_DATE\" = TO_TIMESTAMP (:check_comp_date, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"CHECK_COMP_OPE\" = :check_comp_ope");
+        setList.add("\"CLOSE_DATE\" = TO_TIMESTAMP (:close_date, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"USER_ID_CHANGE\" = :user_id_change");
+        setList.add("\"INSPECT_ISSHIKI_UNIT_F\" = :inspect_isshiki_unit_f");
+        setList.add("\"INSPECT_ISSHIKI_COUNTS\" = :inspect_isshiki_counts");
+        setList.add("\"INSPECT_ISSHIKI_UNIT\" = :inspect_isshiki_unit");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -624,30 +624,30 @@ public class PchAcceptActDet implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (act_no) = TRIM (:act_no)");
-        whereList.add("act_branch_no = :act_branch_no");
-        whereList.add("time_stamp_change = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        whereList.add("TRIM (\"ACT_NO\") = TRIM (:act_no)");
+        whereList.add("\"ACT_BRANCH_NO\" = :act_branch_no");
+        whereList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("ACT_NO", this.actNo);
-        params.put("ACT_BRANCH_NO", this.actBranchNo);
-        params.put("INSPECT_COUNTS", this.inspectCounts);
-        params.put("INSPECT_UNIT", this.inspectUnit);
-        params.put("AMOUNT", this.amount);
-        params.put("TAX_AMOUNT", this.taxAmount);
-        params.put("CHECK_ISSUE_DATE", this.checkIssueDate);
-        params.put("CHECK_LIST_NO", this.checkListNo);
-        params.put("CHECK_ISSUE_OPE", this.checkIssueOpe);
-        params.put("CHECK_FLG", this.checkFlg);
-        params.put("CHECK_COMP_DATE", this.checkCompDate);
-        params.put("CHECK_COMP_OPE", this.checkCompOpe);
-        params.put("CLOSE_DATE", this.closeDate);
-        params.put("INSPECT_ISSHIKI_UNIT_F", this.inspectIsshikiUnitF);
-        params.put("INSPECT_ISSHIKI_COUNTS", this.inspectIsshikiCounts);
-        params.put("INSPECT_ISSHIKI_UNIT", this.inspectIsshikiUnit);
+        params.put("act_no", this.actNo);
+        params.put("act_branch_no", this.actBranchNo);
+        params.put("inspect_counts", this.inspectCounts);
+        params.put("inspect_unit", this.inspectUnit);
+        params.put("amount", this.amount);
+        params.put("tax_amount", this.taxAmount);
+        params.put("check_issue_date", this.checkIssueDate);
+        params.put("check_list_no", this.checkListNo);
+        params.put("check_issue_ope", this.checkIssueOpe);
+        params.put("check_flg", this.checkFlg);
+        params.put("check_comp_date", this.checkCompDate);
+        params.put("check_comp_ope", this.checkCompOpe);
+        params.put("close_date", this.closeDate);
+        params.put("inspect_isshiki_unit_f", this.inspectIsshikiUnitF);
+        params.put("inspect_isshiki_counts", this.inspectIsshikiCounts);
+        params.put("inspect_isshiki_unit", this.inspectIsshikiUnit);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

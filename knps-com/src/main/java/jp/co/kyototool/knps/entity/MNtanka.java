@@ -253,14 +253,14 @@ public class MNtanka implements IEntity {
 
         // 日産単価マスタの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("hhinban -- :hhinban");
-        nameList.add("nissan_hinban -- :nissan_hinban");
-        nameList.add("nissan_tanka -- :nissan_tanka");
-        nameList.add("kouri_kakaku -- :kouri_kakaku");
-        nameList.add("shohinkbn -- :shohinkbn");
-        nameList.add("persokbn -- :persokbn");
-        nameList.add("kakakukbn -- :kakakukbn");
-        nameList.add("filler -- :filler");
+        nameList.add("\"HHINBAN\" -- :hhinban");
+        nameList.add("\"NISSAN-HINBAN\" -- :nissan_hinban");
+        nameList.add("\"NISSAN-TANKA\" -- :nissan_tanka");
+        nameList.add("\"KOURI-KAKAKU\" -- :kouri_kakaku");
+        nameList.add("\"SHOHINKBN\" -- :shohinkbn");
+        nameList.add("\"PERSOKBN\" -- :persokbn");
+        nameList.add("\"KAKAKUKBN\" -- :kakakukbn");
+        nameList.add("\"FILLER\" -- :filler");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO M_NTANKA(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -290,7 +290,7 @@ public class MNtanka implements IEntity {
             return;
         }
 
-        String sql = "SELECT LPAD (CASE WHEN MAX(e.HHINBAN) IS NULL THEN 0 ELSE MAX(e.HHINBAN) * 1 END + 1, 20, '0') AS HHINBAN FROM M_NTANKA e WHERE e.HHINBAN < '99999999999999999999'";
+        String sql = "SELECT LPAD (CASE WHEN MAX(e.\"HHINBAN\") IS NULL THEN 0 ELSE MAX(e.\"HHINBAN\") * 1 END + 1, 20, '0') AS \"HHINBAN\" FROM M_NTANKA e WHERE e.\"HHINBAN\" < '99999999999999999999'";
 
         Map<String, Object> params = new HashMap<String, Object>();
 
@@ -377,14 +377,14 @@ public class MNtanka implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("hhinban = :hhinban");
-        setList.add("nissan-hinban = :nissan-hinban");
-        setList.add("nissan-tanka = :nissan-tanka");
-        setList.add("kouri-kakaku = :kouri-kakaku");
-        setList.add("shohinkbn = :shohinkbn");
-        setList.add("persokbn = :persokbn");
-        setList.add("kakakukbn = :kakakukbn");
-        setList.add("filler = :filler");
+        setList.add("\"HHINBAN\" = :hhinban");
+        setList.add("\"NISSAN-HINBAN\" = :nissan_hinban");
+        setList.add("\"NISSAN-TANKA\" = :nissan_tanka");
+        setList.add("\"KOURI-KAKAKU\" = :kouri_kakaku");
+        setList.add("\"SHOHINKBN\" = :shohinkbn");
+        setList.add("\"PERSOKBN\" = :persokbn");
+        setList.add("\"KAKAKUKBN\" = :kakakukbn");
+        setList.add("\"FILLER\" = :filler");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -436,20 +436,20 @@ public class MNtanka implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (hhinban) = TRIM (:hhinban)");
+        whereList.add("TRIM (\"HHINBAN\") = TRIM (:hhinban)");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("HHINBAN", this.hhinban);
-        params.put("NISSAN-HINBAN", this.nissanHinban);
-        params.put("NISSAN-TANKA", this.nissanTanka);
-        params.put("KOURI-KAKAKU", this.kouriKakaku);
-        params.put("SHOHINKBN", this.shohinkbn);
-        params.put("PERSOKBN", this.persokbn);
-        params.put("KAKAKUKBN", this.kakakukbn);
-        params.put("FILLER", this.filler);
+        params.put("hhinban", this.hhinban);
+        params.put("nissan_hinban", this.nissanHinban);
+        params.put("nissan_tanka", this.nissanTanka);
+        params.put("kouri_kakaku", this.kouriKakaku);
+        params.put("shohinkbn", this.shohinkbn);
+        params.put("persokbn", this.persokbn);
+        params.put("kakakukbn", this.kakakukbn);
+        params.put("filler", this.filler);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

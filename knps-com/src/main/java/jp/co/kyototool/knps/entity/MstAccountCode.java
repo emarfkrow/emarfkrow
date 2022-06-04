@@ -277,16 +277,16 @@ public class MstAccountCode implements IEntity {
 
         // MST_ACCOUNT_CODEの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("account_code -- :account_code");
-        nameList.add("account_name -- :account_name");
-        nameList.add("expense_kbn1 -- :expense_kbn1");
-        nameList.add("expense_kbn2 -- :expense_kbn2");
-        nameList.add("expense_kbn3 -- :expense_kbn3");
-        nameList.add("time_stamp_create -- :time_stamp_create");
-        nameList.add("time_stamp_change -- :time_stamp_change");
-        nameList.add("user_id_create -- :user_id_create");
-        nameList.add("user_id_change -- :user_id_change");
-        nameList.add("delete_flag -- :delete_flag");
+        nameList.add("\"ACCOUNT_CODE\" -- :account_code");
+        nameList.add("\"ACCOUNT_NAME\" -- :account_name");
+        nameList.add("\"EXPENSE_KBN1\" -- :expense_kbn1");
+        nameList.add("\"EXPENSE_KBN2\" -- :expense_kbn2");
+        nameList.add("\"EXPENSE_KBN3\" -- :expense_kbn3");
+        nameList.add("\"TIME_STAMP_CREATE\" -- :time_stamp_create");
+        nameList.add("\"TIME_STAMP_CHANGE\" -- :time_stamp_change");
+        nameList.add("\"USER_ID_CREATE\" -- :user_id_create");
+        nameList.add("\"USER_ID_CHANGE\" -- :user_id_change");
+        nameList.add("\"DELETE_FLAG\" -- :delete_flag");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO MST_ACCOUNT_CODE(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -318,7 +318,7 @@ public class MstAccountCode implements IEntity {
             return;
         }
 
-        String sql = "SELECT LPAD (CASE WHEN MAX(e.ACCOUNT_CODE) IS NULL THEN 0 ELSE MAX(e.ACCOUNT_CODE) * 1 END + 1, 5, '0') AS ACCOUNT_CODE FROM MST_ACCOUNT_CODE e WHERE e.ACCOUNT_CODE < '99999'";
+        String sql = "SELECT LPAD (CASE WHEN MAX(e.\"ACCOUNT_CODE\") IS NULL THEN 0 ELSE MAX(e.\"ACCOUNT_CODE\") * 1 END + 1, 5, '0') AS \"ACCOUNT_CODE\" FROM MST_ACCOUNT_CODE e WHERE e.\"ACCOUNT_CODE\" < '99999'";
 
         Map<String, Object> params = new HashMap<String, Object>();
 
@@ -345,14 +345,14 @@ public class MstAccountCode implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("account_code = :account_code");
-        setList.add("account_name = :account_name");
-        setList.add("expense_kbn1 = :expense_kbn1");
-        setList.add("expense_kbn2 = :expense_kbn2");
-        setList.add("expense_kbn3 = :expense_kbn3");
-        setList.add("time_stamp_change = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("user_id_change = :user_id_change");
-        setList.add("delete_flag = :delete_flag");
+        setList.add("\"ACCOUNT_CODE\" = :account_code");
+        setList.add("\"ACCOUNT_NAME\" = :account_name");
+        setList.add("\"EXPENSE_KBN1\" = :expense_kbn1");
+        setList.add("\"EXPENSE_KBN2\" = :expense_kbn2");
+        setList.add("\"EXPENSE_KBN3\" = :expense_kbn3");
+        setList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"USER_ID_CHANGE\" = :user_id_change");
+        setList.add("\"DELETE_FLAG\" = :delete_flag");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -374,19 +374,19 @@ public class MstAccountCode implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (account_code) = TRIM (:account_code)");
-        whereList.add("time_stamp_change = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        whereList.add("TRIM (\"ACCOUNT_CODE\") = TRIM (:account_code)");
+        whereList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("ACCOUNT_CODE", this.accountCode);
-        params.put("ACCOUNT_NAME", this.accountName);
-        params.put("EXPENSE_KBN1", this.expenseKbn1);
-        params.put("EXPENSE_KBN2", this.expenseKbn2);
-        params.put("EXPENSE_KBN3", this.expenseKbn3);
-        params.put("DELETE_FLAG", this.deleteFlag);
+        params.put("account_code", this.accountCode);
+        params.put("account_name", this.accountName);
+        params.put("expense_kbn1", this.expenseKbn1);
+        params.put("expense_kbn2", this.expenseKbn2);
+        params.put("expense_kbn3", this.expenseKbn3);
+        params.put("delete_flag", this.deleteFlag);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

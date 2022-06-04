@@ -256,16 +256,16 @@ public class MBarindx implements IEntity {
 
         // バーコード管理マスタの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("keycd -- :keycd");
-        nameList.add("bar_oiban1 -- :bar_oiban1");
-        nameList.add("bar_oiban2 -- :bar_oiban2");
-        nameList.add("bar_oiban3 -- :bar_oiban3");
-        nameList.add("bar_oiban4 -- :bar_oiban4");
-        nameList.add("bar_oiban5 -- :bar_oiban5");
-        nameList.add("bar_oiban6 -- :bar_oiban6");
-        nameList.add("bar_oiban7 -- :bar_oiban7");
-        nameList.add("bar_oiban8 -- :bar_oiban8");
-        nameList.add("bar_oiban9 -- :bar_oiban9");
+        nameList.add("\"KEYCD\" -- :keycd");
+        nameList.add("\"BAR-OIBAN1\" -- :bar_oiban1");
+        nameList.add("\"BAR-OIBAN2\" -- :bar_oiban2");
+        nameList.add("\"BAR-OIBAN3\" -- :bar_oiban3");
+        nameList.add("\"BAR-OIBAN4\" -- :bar_oiban4");
+        nameList.add("\"BAR-OIBAN5\" -- :bar_oiban5");
+        nameList.add("\"BAR-OIBAN6\" -- :bar_oiban6");
+        nameList.add("\"BAR-OIBAN7\" -- :bar_oiban7");
+        nameList.add("\"BAR-OIBAN8\" -- :bar_oiban8");
+        nameList.add("\"BAR-OIBAN9\" -- :bar_oiban9");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO M_BARINDX(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -307,16 +307,16 @@ public class MBarindx implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("keycd = :keycd");
-        setList.add("bar-oiban1 = :bar-oiban1");
-        setList.add("bar-oiban2 = :bar-oiban2");
-        setList.add("bar-oiban3 = :bar-oiban3");
-        setList.add("bar-oiban4 = :bar-oiban4");
-        setList.add("bar-oiban5 = :bar-oiban5");
-        setList.add("bar-oiban6 = :bar-oiban6");
-        setList.add("bar-oiban7 = :bar-oiban7");
-        setList.add("bar-oiban8 = :bar-oiban8");
-        setList.add("bar-oiban9 = :bar-oiban9");
+        setList.add("\"KEYCD\" = :keycd");
+        setList.add("\"BAR-OIBAN1\" = :bar_oiban1");
+        setList.add("\"BAR-OIBAN2\" = :bar_oiban2");
+        setList.add("\"BAR-OIBAN3\" = :bar_oiban3");
+        setList.add("\"BAR-OIBAN4\" = :bar_oiban4");
+        setList.add("\"BAR-OIBAN5\" = :bar_oiban5");
+        setList.add("\"BAR-OIBAN6\" = :bar_oiban6");
+        setList.add("\"BAR-OIBAN7\" = :bar_oiban7");
+        setList.add("\"BAR-OIBAN8\" = :bar_oiban8");
+        setList.add("\"BAR-OIBAN9\" = :bar_oiban9");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -338,22 +338,22 @@ public class MBarindx implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("keycd = :keycd");
+        whereList.add("\"KEYCD\" = :keycd");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("KEYCD", this.keycd);
-        params.put("BAR-OIBAN1", this.barOiban1);
-        params.put("BAR-OIBAN2", this.barOiban2);
-        params.put("BAR-OIBAN3", this.barOiban3);
-        params.put("BAR-OIBAN4", this.barOiban4);
-        params.put("BAR-OIBAN5", this.barOiban5);
-        params.put("BAR-OIBAN6", this.barOiban6);
-        params.put("BAR-OIBAN7", this.barOiban7);
-        params.put("BAR-OIBAN8", this.barOiban8);
-        params.put("BAR-OIBAN9", this.barOiban9);
+        params.put("keycd", this.keycd);
+        params.put("bar_oiban1", this.barOiban1);
+        params.put("bar_oiban2", this.barOiban2);
+        params.put("bar_oiban3", this.barOiban3);
+        params.put("bar_oiban4", this.barOiban4);
+        params.put("bar_oiban5", this.barOiban5);
+        params.put("bar_oiban6", this.barOiban6);
+        params.put("bar_oiban7", this.barOiban7);
+        params.put("bar_oiban8", this.barOiban8);
+        params.put("bar_oiban9", this.barOiban9);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

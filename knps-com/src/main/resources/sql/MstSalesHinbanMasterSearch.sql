@@ -6,7 +6,7 @@ WHERE
     1 = 1 
     AND TRIM (a."SALES_HINBAN") = TRIM (:sales_hinban) 
     AND a."LOW_LEVEL_CODE" IN (:low_level_code) 
-    AND CASE WHEN a."DELETE_FLAG" IS NULL THEN '0' ELSE TO_CHAR (a.DELETE_FLAG) END IN (:delete_flag) 
+    AND CASE WHEN a."DELETE_FLAG" IS NULL THEN '0' ELSE TO_CHAR (a."DELETE_FLAG") END IN (:delete_flag) 
     AND a."HINBAN_CODE" IN (:hinban_code) 
     AND TRIM (a."ITEM") = TRIM (:item) 
     AND TRIM (a."SET_KBN") IN (:set_kbn) 

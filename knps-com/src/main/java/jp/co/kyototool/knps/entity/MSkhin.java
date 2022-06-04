@@ -115,8 +115,8 @@ public class MSkhin implements IEntity {
 
         // ＳＫ品番マスタの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("hhinban -- :hhinban");
-        nameList.add("skkbn -- :skkbn");
+        nameList.add("\"HHINBAN\" -- :hhinban");
+        nameList.add("\"SKKBN\" -- :skkbn");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO M_SKHIN(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -140,7 +140,7 @@ public class MSkhin implements IEntity {
             return;
         }
 
-        String sql = "SELECT LPAD (CASE WHEN MAX(e.HHINBAN) IS NULL THEN 0 ELSE MAX(e.HHINBAN) * 1 END + 1, 20, '0') AS HHINBAN FROM M_SKHIN e WHERE e.HHINBAN < '99999999999999999999'";
+        String sql = "SELECT LPAD (CASE WHEN MAX(e.\"HHINBAN\") IS NULL THEN 0 ELSE MAX(e.\"HHINBAN\") * 1 END + 1, 20, '0') AS \"HHINBAN\" FROM M_SKHIN e WHERE e.\"HHINBAN\" < '99999999999999999999'";
 
         Map<String, Object> params = new HashMap<String, Object>();
 
@@ -207,8 +207,8 @@ public class MSkhin implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("hhinban = :hhinban");
-        setList.add("skkbn = :skkbn");
+        setList.add("\"HHINBAN\" = :hhinban");
+        setList.add("\"SKKBN\" = :skkbn");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -250,14 +250,14 @@ public class MSkhin implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (hhinban) = TRIM (:hhinban)");
+        whereList.add("TRIM (\"HHINBAN\") = TRIM (:hhinban)");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("HHINBAN", this.hhinban);
-        params.put("SKKBN", this.skkbn);
+        params.put("hhinban", this.hhinban);
+        params.put("skkbn", this.skkbn);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

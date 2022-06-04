@@ -14,8 +14,8 @@ WHERE
     AND a."UNIT_NAME" LIKE '%' || :unit_name || '%' 
     AND a."ORDER_COUNTS_2" = :order_counts_2 
     AND a."UNIT_NAME_2" = :unit_name_2 
-    AND CASE WHEN a."ISSHIKI_F" IS NULL THEN '0' ELSE TO_CHAR (a.ISSHIKI_F) END IN (:isshiki_f) 
-    AND CASE WHEN a."FUTAI_F" IS NULL THEN '0' ELSE TO_CHAR (a.FUTAI_F) END IN (:futai_f) 
+    AND CASE WHEN a."ISSHIKI_F" IS NULL THEN '0' ELSE TO_CHAR (a."ISSHIKI_F") END IN (:isshiki_f) 
+    AND CASE WHEN a."FUTAI_F" IS NULL THEN '0' ELSE TO_CHAR (a."FUTAI_F") END IN (:futai_f) 
     AND TRIM (a."IKKATSU_ORDER_NO") = TRIM (:ikkatsu_order_no) 
     AND a."TIME_STAMP_CREATE" = :time_stamp_create 
     AND a."TIME_STAMP_CHANGE" = :time_stamp_change 

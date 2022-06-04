@@ -490,26 +490,26 @@ public class PrdTehaiIraiDetHis implements IEntity {
 
         // PRD_TEHAI_IRAI_DET_HISの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("prd_tehai_no -- :prd_tehai_no");
-        nameList.add("irai_det_seq -- :irai_det_seq");
-        nameList.add("irai_det_his_seq -- :irai_det_his_seq");
-        nameList.add("id -- :id");
-        nameList.add("parent_id -- :parent_id");
-        nameList.add("irai_hinban -- :irai_hinban");
-        nameList.add("irai_qt -- :irai_qt");
-        nameList.add("shinsetsuhin_f -- :shinsetsuhin_f");
-        nameList.add("sethin_f -- :sethin_f");
-        nameList.add("hanmokugai_f -- :hanmokugai_f");
-        nameList.add("chumon_nyuryoku_zumi_f -- :chumon_nyuryoku_zumi_f");
-        nameList.add("kibo_noki_ymd -- :kibo_noki_ymd");
-        nameList.add("shukka_zumi_f -- :shukka_zumi_f");
-        nameList.add("tehai_jokyo_kb -- :tehai_jokyo_kb");
-        nameList.add("kaitei_jokyo_kb -- :kaitei_jokyo_kb");
-        nameList.add("time_stamp_create -- :time_stamp_create");
-        nameList.add("time_stamp_change -- :time_stamp_change");
-        nameList.add("user_id_create -- :user_id_create");
-        nameList.add("user_id_change -- :user_id_change");
-        nameList.add("irai_inzu_qt -- :irai_inzu_qt");
+        nameList.add("\"PRD_TEHAI_NO\" -- :prd_tehai_no");
+        nameList.add("\"IRAI_DET_SEQ\" -- :irai_det_seq");
+        nameList.add("\"IRAI_DET_HIS_SEQ\" -- :irai_det_his_seq");
+        nameList.add("\"ID\" -- :id");
+        nameList.add("\"PARENT_ID\" -- :parent_id");
+        nameList.add("\"IRAI_HINBAN\" -- :irai_hinban");
+        nameList.add("\"IRAI_QT\" -- :irai_qt");
+        nameList.add("\"SHINSETSUHIN_F\" -- :shinsetsuhin_f");
+        nameList.add("\"SETHIN_F\" -- :sethin_f");
+        nameList.add("\"HANMOKUGAI_F\" -- :hanmokugai_f");
+        nameList.add("\"CHUMON_NYURYOKU_ZUMI_F\" -- :chumon_nyuryoku_zumi_f");
+        nameList.add("\"KIBO_NOKI_YMD\" -- :kibo_noki_ymd");
+        nameList.add("\"SHUKKA_ZUMI_F\" -- :shukka_zumi_f");
+        nameList.add("\"TEHAI_JOKYO_KB\" -- :tehai_jokyo_kb");
+        nameList.add("\"KAITEI_JOKYO_KB\" -- :kaitei_jokyo_kb");
+        nameList.add("\"TIME_STAMP_CREATE\" -- :time_stamp_create");
+        nameList.add("\"TIME_STAMP_CHANGE\" -- :time_stamp_change");
+        nameList.add("\"USER_ID_CREATE\" -- :user_id_create");
+        nameList.add("\"USER_ID_CHANGE\" -- :user_id_change");
+        nameList.add("\"IRAI_INZU_QT\" -- :irai_inzu_qt");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO PRD_TEHAI_IRAI_DET_HIS(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -561,24 +561,24 @@ public class PrdTehaiIraiDetHis implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("prd_tehai_no = :prd_tehai_no");
-        setList.add("irai_det_seq = :irai_det_seq");
-        setList.add("irai_det_his_seq = :irai_det_his_seq");
-        setList.add("id = :id");
-        setList.add("parent_id = :parent_id");
-        setList.add("irai_hinban = :irai_hinban");
-        setList.add("irai_qt = :irai_qt");
-        setList.add("shinsetsuhin_f = :shinsetsuhin_f");
-        setList.add("sethin_f = :sethin_f");
-        setList.add("hanmokugai_f = :hanmokugai_f");
-        setList.add("chumon_nyuryoku_zumi_f = :chumon_nyuryoku_zumi_f");
-        setList.add("kibo_noki_ymd = :kibo_noki_ymd");
-        setList.add("shukka_zumi_f = :shukka_zumi_f");
-        setList.add("tehai_jokyo_kb = :tehai_jokyo_kb");
-        setList.add("kaitei_jokyo_kb = :kaitei_jokyo_kb");
-        setList.add("time_stamp_change = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("user_id_change = :user_id_change");
-        setList.add("irai_inzu_qt = :irai_inzu_qt");
+        setList.add("\"PRD_TEHAI_NO\" = :prd_tehai_no");
+        setList.add("\"IRAI_DET_SEQ\" = :irai_det_seq");
+        setList.add("\"IRAI_DET_HIS_SEQ\" = :irai_det_his_seq");
+        setList.add("\"ID\" = :id");
+        setList.add("\"PARENT_ID\" = :parent_id");
+        setList.add("\"IRAI_HINBAN\" = :irai_hinban");
+        setList.add("\"IRAI_QT\" = :irai_qt");
+        setList.add("\"SHINSETSUHIN_F\" = :shinsetsuhin_f");
+        setList.add("\"SETHIN_F\" = :sethin_f");
+        setList.add("\"HANMOKUGAI_F\" = :hanmokugai_f");
+        setList.add("\"CHUMON_NYURYOKU_ZUMI_F\" = :chumon_nyuryoku_zumi_f");
+        setList.add("\"KIBO_NOKI_YMD\" = :kibo_noki_ymd");
+        setList.add("\"SHUKKA_ZUMI_F\" = :shukka_zumi_f");
+        setList.add("\"TEHAI_JOKYO_KB\" = :tehai_jokyo_kb");
+        setList.add("\"KAITEI_JOKYO_KB\" = :kaitei_jokyo_kb");
+        setList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"USER_ID_CHANGE\" = :user_id_change");
+        setList.add("\"IRAI_INZU_QT\" = :irai_inzu_qt");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -600,31 +600,31 @@ public class PrdTehaiIraiDetHis implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (prd_tehai_no) = TRIM (:prd_tehai_no)");
-        whereList.add("irai_det_seq = :irai_det_seq");
-        whereList.add("irai_det_his_seq = :irai_det_his_seq");
-        whereList.add("time_stamp_change = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        whereList.add("TRIM (\"PRD_TEHAI_NO\") = TRIM (:prd_tehai_no)");
+        whereList.add("\"IRAI_DET_SEQ\" = :irai_det_seq");
+        whereList.add("\"IRAI_DET_HIS_SEQ\" = :irai_det_his_seq");
+        whereList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("PRD_TEHAI_NO", this.prdTehaiNo);
-        params.put("IRAI_DET_SEQ", this.iraiDetSeq);
-        params.put("IRAI_DET_HIS_SEQ", this.iraiDetHisSeq);
-        params.put("ID", this.id);
-        params.put("PARENT_ID", this.parentId);
-        params.put("IRAI_HINBAN", this.iraiHinban);
-        params.put("IRAI_QT", this.iraiQt);
-        params.put("SHINSETSUHIN_F", this.shinsetsuhinF);
-        params.put("SETHIN_F", this.sethinF);
-        params.put("HANMOKUGAI_F", this.hanmokugaiF);
-        params.put("CHUMON_NYURYOKU_ZUMI_F", this.chumonNyuryokuZumiF);
-        params.put("KIBO_NOKI_YMD", this.kiboNokiYmd);
-        params.put("SHUKKA_ZUMI_F", this.shukkaZumiF);
-        params.put("TEHAI_JOKYO_KB", this.tehaiJokyoKb);
-        params.put("KAITEI_JOKYO_KB", this.kaiteiJokyoKb);
-        params.put("IRAI_INZU_QT", this.iraiInzuQt);
+        params.put("prd_tehai_no", this.prdTehaiNo);
+        params.put("irai_det_seq", this.iraiDetSeq);
+        params.put("irai_det_his_seq", this.iraiDetHisSeq);
+        params.put("id", this.id);
+        params.put("parent_id", this.parentId);
+        params.put("irai_hinban", this.iraiHinban);
+        params.put("irai_qt", this.iraiQt);
+        params.put("shinsetsuhin_f", this.shinsetsuhinF);
+        params.put("sethin_f", this.sethinF);
+        params.put("hanmokugai_f", this.hanmokugaiF);
+        params.put("chumon_nyuryoku_zumi_f", this.chumonNyuryokuZumiF);
+        params.put("kibo_noki_ymd", this.kiboNokiYmd);
+        params.put("shukka_zumi_f", this.shukkaZumiF);
+        params.put("tehai_jokyo_kb", this.tehaiJokyoKb);
+        params.put("kaitei_jokyo_kb", this.kaiteiJokyoKb);
+        params.put("irai_inzu_qt", this.iraiInzuQt);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

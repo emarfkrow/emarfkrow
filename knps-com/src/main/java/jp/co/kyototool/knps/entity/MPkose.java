@@ -178,12 +178,12 @@ public class MPkose implements IEntity {
 
         // 部品構成マスタの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("hhinban -- :hhinban");
-        nameList.add("hinmei -- :hinmei");
-        nameList.add("phinban -- :phinban");
-        nameList.add("phinmei -- :phinmei");
-        nameList.add("tourokubi -- :tourokubi");
-        nameList.add("filler -- :filler");
+        nameList.add("\"HHINBAN\" -- :hhinban");
+        nameList.add("\"HINMEI\" -- :hinmei");
+        nameList.add("\"PHINBAN\" -- :phinban");
+        nameList.add("\"PHINMEI\" -- :phinmei");
+        nameList.add("\"TOUROKUBI\" -- :tourokubi");
+        nameList.add("\"FILLER\" -- :filler");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO M_PKOSE(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -211,12 +211,12 @@ public class MPkose implements IEntity {
             return;
         }
 
-        String sql = "SELECT LPAD (CASE WHEN MAX(e.PHINBAN) IS NULL THEN 0 ELSE MAX(e.PHINBAN) * 1 END + 1, 20, '0') AS PHINBAN FROM M_PKOSE e WHERE e.PHINBAN < '99999999999999999999'";
+        String sql = "SELECT LPAD (CASE WHEN MAX(e.\"PHINBAN\") IS NULL THEN 0 ELSE MAX(e.\"PHINBAN\") * 1 END + 1, 20, '0') AS \"PHINBAN\" FROM M_PKOSE e WHERE e.\"PHINBAN\" < '99999999999999999999'";
 
         Map<String, Object> params = new HashMap<String, Object>();
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("e.HHINBAN = :hhinban");
+        whereList.add("e.\"HHINBAN\" = :hhinban");
         sql += " WHERE " + String.join(" AND ", whereList);
 
         params.put("hhinban", this.hhinban);
@@ -244,12 +244,12 @@ public class MPkose implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("hhinban = :hhinban");
-        setList.add("hinmei = :hinmei");
-        setList.add("phinban = :phinban");
-        setList.add("phinmei = :phinmei");
-        setList.add("tourokubi = :tourokubi");
-        setList.add("filler = :filler");
+        setList.add("\"HHINBAN\" = :hhinban");
+        setList.add("\"HINMEI\" = :hinmei");
+        setList.add("\"PHINBAN\" = :phinban");
+        setList.add("\"PHINMEI\" = :phinmei");
+        setList.add("\"TOUROKUBI\" = :tourokubi");
+        setList.add("\"FILLER\" = :filler");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -271,19 +271,19 @@ public class MPkose implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (hhinban) = TRIM (:hhinban)");
-        whereList.add("TRIM (phinban) = TRIM (:phinban)");
+        whereList.add("TRIM (\"HHINBAN\") = TRIM (:hhinban)");
+        whereList.add("TRIM (\"PHINBAN\") = TRIM (:phinban)");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("HHINBAN", this.hhinban);
-        params.put("HINMEI", this.hinmei);
-        params.put("PHINBAN", this.phinban);
-        params.put("PHINMEI", this.phinmei);
-        params.put("TOUROKUBI", this.tourokubi);
-        params.put("FILLER", this.filler);
+        params.put("hhinban", this.hhinban);
+        params.put("hinmei", this.hinmei);
+        params.put("phinban", this.phinban);
+        params.put("phinmei", this.phinmei);
+        params.put("tourokubi", this.tourokubi);
+        params.put("filler", this.filler);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

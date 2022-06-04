@@ -316,18 +316,18 @@ public class MstTempSupplier implements IEntity {
 
         // MST_TEMP_SUPPLIERの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("temp_sup_code -- :temp_sup_code");
-        nameList.add("temp_sup_name -- :temp_sup_name");
-        nameList.add("temp_sup_staff_name -- :temp_sup_staff_name");
-        nameList.add("temp_sup_tel_no -- :temp_sup_tel_no");
-        nameList.add("temp_sup_fax_no -- :temp_sup_fax_no");
-        nameList.add("temp_sup_div_code -- :temp_sup_div_code");
-        nameList.add("temp_koza_no -- :temp_koza_no");
-        nameList.add("temp_koza_meigi -- :temp_koza_meigi");
-        nameList.add("time_stamp_create -- :time_stamp_create");
-        nameList.add("time_stamp_change -- :time_stamp_change");
-        nameList.add("user_id_create -- :user_id_create");
-        nameList.add("user_id_change -- :user_id_change");
+        nameList.add("\"TEMP_SUP_CODE\" -- :temp_sup_code");
+        nameList.add("\"TEMP_SUP_NAME\" -- :temp_sup_name");
+        nameList.add("\"TEMP_SUP_STAFF_NAME\" -- :temp_sup_staff_name");
+        nameList.add("\"TEMP_SUP_TEL_NO\" -- :temp_sup_tel_no");
+        nameList.add("\"TEMP_SUP_FAX_NO\" -- :temp_sup_fax_no");
+        nameList.add("\"TEMP_SUP_DIV_CODE\" -- :temp_sup_div_code");
+        nameList.add("\"TEMP_KOZA_NO\" -- :temp_koza_no");
+        nameList.add("\"TEMP_KOZA_MEIGI\" -- :temp_koza_meigi");
+        nameList.add("\"TIME_STAMP_CREATE\" -- :time_stamp_create");
+        nameList.add("\"TIME_STAMP_CHANGE\" -- :time_stamp_change");
+        nameList.add("\"USER_ID_CREATE\" -- :user_id_create");
+        nameList.add("\"USER_ID_CHANGE\" -- :user_id_change");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO MST_TEMP_SUPPLIER(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -371,16 +371,16 @@ public class MstTempSupplier implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("temp_sup_code = :temp_sup_code");
-        setList.add("temp_sup_name = :temp_sup_name");
-        setList.add("temp_sup_staff_name = :temp_sup_staff_name");
-        setList.add("temp_sup_tel_no = :temp_sup_tel_no");
-        setList.add("temp_sup_fax_no = :temp_sup_fax_no");
-        setList.add("temp_sup_div_code = :temp_sup_div_code");
-        setList.add("temp_koza_no = :temp_koza_no");
-        setList.add("temp_koza_meigi = :temp_koza_meigi");
-        setList.add("time_stamp_change = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("user_id_change = :user_id_change");
+        setList.add("\"TEMP_SUP_CODE\" = :temp_sup_code");
+        setList.add("\"TEMP_SUP_NAME\" = :temp_sup_name");
+        setList.add("\"TEMP_SUP_STAFF_NAME\" = :temp_sup_staff_name");
+        setList.add("\"TEMP_SUP_TEL_NO\" = :temp_sup_tel_no");
+        setList.add("\"TEMP_SUP_FAX_NO\" = :temp_sup_fax_no");
+        setList.add("\"TEMP_SUP_DIV_CODE\" = :temp_sup_div_code");
+        setList.add("\"TEMP_KOZA_NO\" = :temp_koza_no");
+        setList.add("\"TEMP_KOZA_MEIGI\" = :temp_koza_meigi");
+        setList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"USER_ID_CHANGE\" = :user_id_change");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -402,21 +402,21 @@ public class MstTempSupplier implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("temp_sup_code = :temp_sup_code");
-        whereList.add("time_stamp_change = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        whereList.add("\"TEMP_SUP_CODE\" = :temp_sup_code");
+        whereList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("TEMP_SUP_CODE", this.tempSupCode);
-        params.put("TEMP_SUP_NAME", this.tempSupName);
-        params.put("TEMP_SUP_STAFF_NAME", this.tempSupStaffName);
-        params.put("TEMP_SUP_TEL_NO", this.tempSupTelNo);
-        params.put("TEMP_SUP_FAX_NO", this.tempSupFaxNo);
-        params.put("TEMP_SUP_DIV_CODE", this.tempSupDivCode);
-        params.put("TEMP_KOZA_NO", this.tempKozaNo);
-        params.put("TEMP_KOZA_MEIGI", this.tempKozaMeigi);
+        params.put("temp_sup_code", this.tempSupCode);
+        params.put("temp_sup_name", this.tempSupName);
+        params.put("temp_sup_staff_name", this.tempSupStaffName);
+        params.put("temp_sup_tel_no", this.tempSupTelNo);
+        params.put("temp_sup_fax_no", this.tempSupFaxNo);
+        params.put("temp_sup_div_code", this.tempSupDivCode);
+        params.put("temp_koza_no", this.tempKozaNo);
+        params.put("temp_koza_meigi", this.tempKozaMeigi);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

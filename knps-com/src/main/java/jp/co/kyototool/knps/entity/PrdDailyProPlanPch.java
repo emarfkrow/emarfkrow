@@ -358,19 +358,19 @@ public class PrdDailyProPlanPch implements IEntity {
 
         // PRD_DAILY_PRO_PLAN_PCHの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("pch_order_no -- :pch_order_no");
-        nameList.add("child_plan_no -- :child_plan_no");
-        nameList.add("hinban -- :hinban");
-        nameList.add("nes_counts -- :nes_counts");
-        nameList.add("sup_code -- :sup_code");
-        nameList.add("order_counts -- :order_counts");
-        nameList.add("order_limit_date -- :order_limit_date");
-        nameList.add("period -- :period");
-        nameList.add("pch_order_status -- :pch_order_status");
-        nameList.add("time_stamp_create -- :time_stamp_create");
-        nameList.add("time_stamp_change -- :time_stamp_change");
-        nameList.add("user_id_create -- :user_id_create");
-        nameList.add("user_id_change -- :user_id_change");
+        nameList.add("\"PCH_ORDER_NO\" -- :pch_order_no");
+        nameList.add("\"CHILD_PLAN_NO\" -- :child_plan_no");
+        nameList.add("\"HINBAN\" -- :hinban");
+        nameList.add("\"NES_COUNTS\" -- :nes_counts");
+        nameList.add("\"SUP_CODE\" -- :sup_code");
+        nameList.add("\"ORDER_COUNTS\" -- :order_counts");
+        nameList.add("\"ORDER_LIMIT_DATE\" -- :order_limit_date");
+        nameList.add("\"PERIOD\" -- :period");
+        nameList.add("\"PCH_ORDER_STATUS\" -- :pch_order_status");
+        nameList.add("\"TIME_STAMP_CREATE\" -- :time_stamp_create");
+        nameList.add("\"TIME_STAMP_CHANGE\" -- :time_stamp_change");
+        nameList.add("\"USER_ID_CREATE\" -- :user_id_create");
+        nameList.add("\"USER_ID_CHANGE\" -- :user_id_change");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO PRD_DAILY_PRO_PLAN_PCH(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -405,7 +405,7 @@ public class PrdDailyProPlanPch implements IEntity {
             return;
         }
 
-        String sql = "SELECT LPAD (CASE WHEN MAX(e.PCH_ORDER_NO) IS NULL THEN 0 ELSE MAX(e.PCH_ORDER_NO) * 1 END + 1, 14, '0') AS PCH_ORDER_NO FROM PRD_DAILY_PRO_PLAN_PCH e WHERE e.PCH_ORDER_NO < '99999999999999'";
+        String sql = "SELECT LPAD (CASE WHEN MAX(e.\"PCH_ORDER_NO\") IS NULL THEN 0 ELSE MAX(e.\"PCH_ORDER_NO\") * 1 END + 1, 14, '0') AS \"PCH_ORDER_NO\" FROM PRD_DAILY_PRO_PLAN_PCH e WHERE e.\"PCH_ORDER_NO\" < '99999999999999'";
 
         Map<String, Object> params = new HashMap<String, Object>();
 
@@ -432,17 +432,17 @@ public class PrdDailyProPlanPch implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("pch_order_no = :pch_order_no");
-        setList.add("child_plan_no = :child_plan_no");
-        setList.add("hinban = :hinban");
-        setList.add("nes_counts = :nes_counts");
-        setList.add("sup_code = :sup_code");
-        setList.add("order_counts = :order_counts");
-        setList.add("order_limit_date = TO_TIMESTAMP (:order_limit_date, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("period = TO_TIMESTAMP (:period, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("pch_order_status = :pch_order_status");
-        setList.add("time_stamp_change = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("user_id_change = :user_id_change");
+        setList.add("\"PCH_ORDER_NO\" = :pch_order_no");
+        setList.add("\"CHILD_PLAN_NO\" = :child_plan_no");
+        setList.add("\"HINBAN\" = :hinban");
+        setList.add("\"NES_COUNTS\" = :nes_counts");
+        setList.add("\"SUP_CODE\" = :sup_code");
+        setList.add("\"ORDER_COUNTS\" = :order_counts");
+        setList.add("\"ORDER_LIMIT_DATE\" = TO_TIMESTAMP (:order_limit_date, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"PERIOD\" = TO_TIMESTAMP (:period, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"PCH_ORDER_STATUS\" = :pch_order_status");
+        setList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"USER_ID_CHANGE\" = :user_id_change");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -464,22 +464,22 @@ public class PrdDailyProPlanPch implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (pch_order_no) = TRIM (:pch_order_no)");
-        whereList.add("time_stamp_change = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        whereList.add("TRIM (\"PCH_ORDER_NO\") = TRIM (:pch_order_no)");
+        whereList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("PCH_ORDER_NO", this.pchOrderNo);
-        params.put("CHILD_PLAN_NO", this.childPlanNo);
-        params.put("HINBAN", this.hinban);
-        params.put("NES_COUNTS", this.nesCounts);
-        params.put("SUP_CODE", this.supCode);
-        params.put("ORDER_COUNTS", this.orderCounts);
-        params.put("ORDER_LIMIT_DATE", this.orderLimitDate);
-        params.put("PERIOD", this.period);
-        params.put("PCH_ORDER_STATUS", this.pchOrderStatus);
+        params.put("pch_order_no", this.pchOrderNo);
+        params.put("child_plan_no", this.childPlanNo);
+        params.put("hinban", this.hinban);
+        params.put("nes_counts", this.nesCounts);
+        params.put("sup_code", this.supCode);
+        params.put("order_counts", this.orderCounts);
+        params.put("order_limit_date", this.orderLimitDate);
+        params.put("period", this.period);
+        params.put("pch_order_status", this.pchOrderStatus);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

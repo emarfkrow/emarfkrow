@@ -201,12 +201,12 @@ public class PrdStoreMainteRetsuHed implements IEntity {
 
         // PRD_STORE_MAINTE_RETSU_HEDの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("retsu_no -- :retsu_no");
-        nameList.add("retsu_name -- :retsu_name");
-        nameList.add("time_stamp_create -- :time_stamp_create");
-        nameList.add("time_stamp_change -- :time_stamp_change");
-        nameList.add("user_id_create -- :user_id_create");
-        nameList.add("user_id_change -- :user_id_change");
+        nameList.add("\"RETSU_NO\" -- :retsu_no");
+        nameList.add("\"RETSU_NAME\" -- :retsu_name");
+        nameList.add("\"TIME_STAMP_CREATE\" -- :time_stamp_create");
+        nameList.add("\"TIME_STAMP_CHANGE\" -- :time_stamp_change");
+        nameList.add("\"USER_ID_CREATE\" -- :user_id_create");
+        nameList.add("\"USER_ID_CHANGE\" -- :user_id_change");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO PRD_STORE_MAINTE_RETSU_HED(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -234,7 +234,7 @@ public class PrdStoreMainteRetsuHed implements IEntity {
             return;
         }
 
-        String sql = "SELECT LPAD (CASE WHEN MAX(e.RETSU_NO) IS NULL THEN 0 ELSE MAX(e.RETSU_NO) * 1 END + 1, 3, '0') AS RETSU_NO FROM PRD_STORE_MAINTE_RETSU_HED e WHERE e.RETSU_NO < '999'";
+        String sql = "SELECT LPAD (CASE WHEN MAX(e.\"RETSU_NO\") IS NULL THEN 0 ELSE MAX(e.\"RETSU_NO\") * 1 END + 1, 3, '0') AS \"RETSU_NO\" FROM PRD_STORE_MAINTE_RETSU_HED e WHERE e.\"RETSU_NO\" < '999'";
 
         Map<String, Object> params = new HashMap<String, Object>();
 
@@ -282,10 +282,10 @@ public class PrdStoreMainteRetsuHed implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("retsu_no = :retsu_no");
-        setList.add("retsu_name = :retsu_name");
-        setList.add("time_stamp_change = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("user_id_change = :user_id_change");
+        setList.add("\"RETSU_NO\" = :retsu_no");
+        setList.add("\"RETSU_NAME\" = :retsu_name");
+        setList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"USER_ID_CHANGE\" = :user_id_change");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -314,15 +314,15 @@ public class PrdStoreMainteRetsuHed implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (retsu_no) = TRIM (:retsu_no)");
-        whereList.add("time_stamp_change = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        whereList.add("TRIM (\"RETSU_NO\") = TRIM (:retsu_no)");
+        whereList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("RETSU_NO", this.retsuNo);
-        params.put("RETSU_NAME", this.retsuName);
+        params.put("retsu_no", this.retsuNo);
+        params.put("retsu_name", this.retsuName);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

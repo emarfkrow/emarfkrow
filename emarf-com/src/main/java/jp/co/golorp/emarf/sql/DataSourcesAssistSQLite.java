@@ -31,4 +31,14 @@ public final class DataSourcesAssistSQLite extends DataSourcesAssist {
         return null;
     }
 
+    @Override
+    public String quoted(final String columnName) {
+        return null;
+    }
+
+    @Override
+    public String quoteEscaped(final String columnName) {
+        return null;
+    }
+
 }

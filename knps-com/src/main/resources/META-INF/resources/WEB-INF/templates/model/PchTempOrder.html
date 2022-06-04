@@ -42,8 +42,7 @@
           <label for="PchTempOrder.tempSupCode" th:text="#{PchTempOrder.tempSupCode}">TEMP_SUP_CODE</label><input type="text" id="PchTempOrder.tempSupCode" name="PchTempOrder.tempSupCode" maxlength="6" data-json="MstTempSupplierSearch.json" data-srcDef="TEMP_SUP_CODE:PchTempOrder.tempSupCode" data-destDef="PchTempOrder.tempSupName:TEMP_SUP_NAME" /><a id="PchTempOrder.tempSupCode" th:href="@{/model/MstTempSupplierS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="PchTempOrder.tempSupName" class="refer" data-json="MstTempSupplierSearch.json" data-srcDef="TEMP_SUP_CODE:PchTempOrder.tempSupCode" data-destDef="PchTempOrder.tempSupName:TEMP_SUP_NAME"></span>
         </div>
         <div id="memo">
-          <label for="PchTempOrder.memo" th:text="#{PchTempOrder.memo}">MEMO</label>
-          <textarea id="PchTempOrder.memo" name="PchTempOrder.memo"></textarea>
+          <label for="PchTempOrder.memo" th:text="#{PchTempOrder.memo}">MEMO</label><input type="text" id="PchTempOrder.memo" name="PchTempOrder.memo" maxlength="500" />
         </div>
         <div id="payIraiDt">
           <label for="PchTempOrder.payIraiDt" th:text="#{PchTempOrder.payIraiDt}">PAY_IRAI_DT</label><input type="datetime-local" id="PchTempOrder.payIraiDt" name="PchTempOrder.payIraiDt" maxlength="7" />

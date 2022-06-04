@@ -44,4 +44,14 @@ public final class DataSourcesAssistOracle extends DataSourcesAssist {
         return "TO_TIMESTAMP (" + s + ", 'YYYY-MM-DD\\\"T\\\"HH24:MI:SS.FF3')";
     }
 
+    @Override
+    public String quoted(final String columnName) {
+        return "\"" + columnName + "\"";
+    }
+
+    @Override
+    public String quoteEscaped(final String columnName) {
+        return "\\\"" + columnName + "\\\"";
+    }
+
 }

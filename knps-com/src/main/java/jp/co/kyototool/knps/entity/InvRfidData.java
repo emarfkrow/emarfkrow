@@ -292,17 +292,17 @@ public class InvRfidData implements IEntity {
 
         // INV_RFID_DATAの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("target_kbn -- :target_kbn");
-        nameList.add("tid -- :tid");
-        nameList.add("tag_data -- :tag_data");
-        nameList.add("reader_no -- :reader_no");
-        nameList.add("antenna_no -- :antenna_no");
-        nameList.add("spot_kbn -- :spot_kbn");
-        nameList.add("recive_time -- :recive_time");
-        nameList.add("time_stamp_create -- :time_stamp_create");
-        nameList.add("time_stamp_change -- :time_stamp_change");
-        nameList.add("user_id_create -- :user_id_create");
-        nameList.add("user_id_change -- :user_id_change");
+        nameList.add("\"TARGET_KBN\" -- :target_kbn");
+        nameList.add("\"TID\" -- :tid");
+        nameList.add("\"TAG_DATA\" -- :tag_data");
+        nameList.add("\"READER_NO\" -- :reader_no");
+        nameList.add("\"ANTENNA_NO\" -- :antenna_no");
+        nameList.add("\"SPOT_KBN\" -- :spot_kbn");
+        nameList.add("\"RECIVE_TIME\" -- :recive_time");
+        nameList.add("\"TIME_STAMP_CREATE\" -- :time_stamp_create");
+        nameList.add("\"TIME_STAMP_CHANGE\" -- :time_stamp_change");
+        nameList.add("\"USER_ID_CREATE\" -- :user_id_create");
+        nameList.add("\"USER_ID_CHANGE\" -- :user_id_change");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO INV_RFID_DATA(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -345,15 +345,15 @@ public class InvRfidData implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("target_kbn = :target_kbn");
-        setList.add("tid = :tid");
-        setList.add("tag_data = :tag_data");
-        setList.add("reader_no = :reader_no");
-        setList.add("antenna_no = :antenna_no");
-        setList.add("spot_kbn = :spot_kbn");
-        setList.add("recive_time = :recive_time");
-        setList.add("time_stamp_change = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("user_id_change = :user_id_change");
+        setList.add("\"TARGET_KBN\" = :target_kbn");
+        setList.add("\"TID\" = :tid");
+        setList.add("\"TAG_DATA\" = :tag_data");
+        setList.add("\"READER_NO\" = :reader_no");
+        setList.add("\"ANTENNA_NO\" = :antenna_no");
+        setList.add("\"SPOT_KBN\" = :spot_kbn");
+        setList.add("\"RECIVE_TIME\" = :recive_time");
+        setList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"USER_ID_CHANGE\" = :user_id_change");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -375,19 +375,19 @@ public class InvRfidData implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("time_stamp_change = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        whereList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("TARGET_KBN", this.targetKbn);
-        params.put("TID", this.tid);
-        params.put("TAG_DATA", this.tagData);
-        params.put("READER_NO", this.readerNo);
-        params.put("ANTENNA_NO", this.antennaNo);
-        params.put("SPOT_KBN", this.spotKbn);
-        params.put("RECIVE_TIME", this.reciveTime);
+        params.put("target_kbn", this.targetKbn);
+        params.put("tid", this.tid);
+        params.put("tag_data", this.tagData);
+        params.put("reader_no", this.readerNo);
+        params.put("antenna_no", this.antennaNo);
+        params.put("spot_kbn", this.spotKbn);
+        params.put("recive_time", this.reciveTime);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

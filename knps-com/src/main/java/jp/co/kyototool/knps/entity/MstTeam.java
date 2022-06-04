@@ -277,16 +277,16 @@ public class MstTeam implements IEntity {
 
         // MST_TEAMの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("team_code -- :team_code");
-        nameList.add("team_name -- :team_name");
-        nameList.add("admin_code -- :admin_code");
-        nameList.add("group_code -- :group_code");
-        nameList.add("individual_counts -- :individual_counts");
-        nameList.add("time_stamp_create -- :time_stamp_create");
-        nameList.add("time_stamp_change -- :time_stamp_change");
-        nameList.add("user_id_create -- :user_id_create");
-        nameList.add("user_id_change -- :user_id_change");
-        nameList.add("delete_flag -- :delete_flag");
+        nameList.add("\"TEAM_CODE\" -- :team_code");
+        nameList.add("\"TEAM_NAME\" -- :team_name");
+        nameList.add("\"ADMIN_CODE\" -- :admin_code");
+        nameList.add("\"GROUP_CODE\" -- :group_code");
+        nameList.add("\"INDIVIDUAL_COUNTS\" -- :individual_counts");
+        nameList.add("\"TIME_STAMP_CREATE\" -- :time_stamp_create");
+        nameList.add("\"TIME_STAMP_CHANGE\" -- :time_stamp_change");
+        nameList.add("\"USER_ID_CREATE\" -- :user_id_create");
+        nameList.add("\"USER_ID_CHANGE\" -- :user_id_change");
+        nameList.add("\"DELETE_FLAG\" -- :delete_flag");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO MST_TEAM(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -318,7 +318,7 @@ public class MstTeam implements IEntity {
             return;
         }
 
-        String sql = "SELECT LPAD (CASE WHEN MAX(e.TEAM_CODE) IS NULL THEN 0 ELSE MAX(e.TEAM_CODE) * 1 END + 1, 10, '0') AS TEAM_CODE FROM MST_TEAM e WHERE e.TEAM_CODE < '9999999999'";
+        String sql = "SELECT LPAD (CASE WHEN MAX(e.\"TEAM_CODE\") IS NULL THEN 0 ELSE MAX(e.\"TEAM_CODE\") * 1 END + 1, 10, '0') AS \"TEAM_CODE\" FROM MST_TEAM e WHERE e.\"TEAM_CODE\" < '9999999999'";
 
         Map<String, Object> params = new HashMap<String, Object>();
 
@@ -345,14 +345,14 @@ public class MstTeam implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("team_code = :team_code");
-        setList.add("team_name = :team_name");
-        setList.add("admin_code = :admin_code");
-        setList.add("group_code = :group_code");
-        setList.add("individual_counts = :individual_counts");
-        setList.add("time_stamp_change = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("user_id_change = :user_id_change");
-        setList.add("delete_flag = :delete_flag");
+        setList.add("\"TEAM_CODE\" = :team_code");
+        setList.add("\"TEAM_NAME\" = :team_name");
+        setList.add("\"ADMIN_CODE\" = :admin_code");
+        setList.add("\"GROUP_CODE\" = :group_code");
+        setList.add("\"INDIVIDUAL_COUNTS\" = :individual_counts");
+        setList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"USER_ID_CHANGE\" = :user_id_change");
+        setList.add("\"DELETE_FLAG\" = :delete_flag");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -374,19 +374,19 @@ public class MstTeam implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (team_code) = TRIM (:team_code)");
-        whereList.add("time_stamp_change = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        whereList.add("TRIM (\"TEAM_CODE\") = TRIM (:team_code)");
+        whereList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("TEAM_CODE", this.teamCode);
-        params.put("TEAM_NAME", this.teamName);
-        params.put("ADMIN_CODE", this.adminCode);
-        params.put("GROUP_CODE", this.groupCode);
-        params.put("INDIVIDUAL_COUNTS", this.individualCounts);
-        params.put("DELETE_FLAG", this.deleteFlag);
+        params.put("team_code", this.teamCode);
+        params.put("team_name", this.teamName);
+        params.put("admin_code", this.adminCode);
+        params.put("group_code", this.groupCode);
+        params.put("individual_counts", this.individualCounts);
+        params.put("delete_flag", this.deleteFlag);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

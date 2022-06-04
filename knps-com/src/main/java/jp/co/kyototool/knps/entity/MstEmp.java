@@ -340,19 +340,19 @@ public class MstEmp implements IEntity {
 
         // MST_EMPの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("emp_code -- :emp_code");
-        nameList.add("emp_name -- :emp_name");
-        nameList.add("position -- :position");
-        nameList.add("comp_code -- :comp_code");
-        nameList.add("password -- :password");
-        nameList.add("tel_no -- :tel_no");
-        nameList.add("time_stamp_create -- :time_stamp_create");
-        nameList.add("time_stamp_change -- :time_stamp_change");
-        nameList.add("user_id_create -- :user_id_create");
-        nameList.add("user_id_change -- :user_id_change");
-        nameList.add("delete_flag -- :delete_flag");
-        nameList.add("mail_address -- :mail_address");
-        nameList.add("division_code -- :division_code");
+        nameList.add("\"EMP_CODE\" -- :emp_code");
+        nameList.add("\"EMP_NAME\" -- :emp_name");
+        nameList.add("\"POSITION\" -- :position");
+        nameList.add("\"COMP_CODE\" -- :comp_code");
+        nameList.add("\"PASSWORD\" -- :password");
+        nameList.add("\"TEL_NO\" -- :tel_no");
+        nameList.add("\"TIME_STAMP_CREATE\" -- :time_stamp_create");
+        nameList.add("\"TIME_STAMP_CHANGE\" -- :time_stamp_change");
+        nameList.add("\"USER_ID_CREATE\" -- :user_id_create");
+        nameList.add("\"USER_ID_CHANGE\" -- :user_id_change");
+        nameList.add("\"DELETE_FLAG\" -- :delete_flag");
+        nameList.add("\"MAIL_ADDRESS\" -- :mail_address");
+        nameList.add("\"DIVISION_CODE\" -- :division_code");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO MST_EMP(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -387,7 +387,7 @@ public class MstEmp implements IEntity {
             return;
         }
 
-        String sql = "SELECT LPAD (CASE WHEN MAX(e.EMP_CODE) IS NULL THEN 0 ELSE MAX(e.EMP_CODE) * 1 END + 1, 10, '0') AS EMP_CODE FROM MST_EMP e WHERE e.EMP_CODE < '9999999999'";
+        String sql = "SELECT LPAD (CASE WHEN MAX(e.\"EMP_CODE\") IS NULL THEN 0 ELSE MAX(e.\"EMP_CODE\") * 1 END + 1, 10, '0') AS \"EMP_CODE\" FROM MST_EMP e WHERE e.\"EMP_CODE\" < '9999999999'";
 
         Map<String, Object> params = new HashMap<String, Object>();
 
@@ -414,17 +414,17 @@ public class MstEmp implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("emp_code = :emp_code");
-        setList.add("emp_name = :emp_name");
-        setList.add("position = :position");
-        setList.add("comp_code = :comp_code");
-        setList.add("password = :password");
-        setList.add("tel_no = :tel_no");
-        setList.add("time_stamp_change = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("user_id_change = :user_id_change");
-        setList.add("delete_flag = :delete_flag");
-        setList.add("mail_address = :mail_address");
-        setList.add("division_code = :division_code");
+        setList.add("\"EMP_CODE\" = :emp_code");
+        setList.add("\"EMP_NAME\" = :emp_name");
+        setList.add("\"POSITION\" = :position");
+        setList.add("\"COMP_CODE\" = :comp_code");
+        setList.add("\"PASSWORD\" = :password");
+        setList.add("\"TEL_NO\" = :tel_no");
+        setList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"USER_ID_CHANGE\" = :user_id_change");
+        setList.add("\"DELETE_FLAG\" = :delete_flag");
+        setList.add("\"MAIL_ADDRESS\" = :mail_address");
+        setList.add("\"DIVISION_CODE\" = :division_code");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -446,22 +446,22 @@ public class MstEmp implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (emp_code) = TRIM (:emp_code)");
-        whereList.add("time_stamp_change = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        whereList.add("TRIM (\"EMP_CODE\") = TRIM (:emp_code)");
+        whereList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("EMP_CODE", this.empCode);
-        params.put("EMP_NAME", this.empName);
-        params.put("POSITION", this.position);
-        params.put("COMP_CODE", this.compCode);
-        params.put("PASSWORD", this.password);
-        params.put("TEL_NO", this.telNo);
-        params.put("DELETE_FLAG", this.deleteFlag);
-        params.put("MAIL_ADDRESS", this.mailAddress);
-        params.put("DIVISION_CODE", this.divisionCode);
+        params.put("emp_code", this.empCode);
+        params.put("emp_name", this.empName);
+        params.put("position", this.position);
+        params.put("comp_code", this.compCode);
+        params.put("password", this.password);
+        params.put("tel_no", this.telNo);
+        params.put("delete_flag", this.deleteFlag);
+        params.put("mail_address", this.mailAddress);
+        params.put("division_code", this.divisionCode);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

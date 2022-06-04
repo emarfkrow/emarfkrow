@@ -301,17 +301,17 @@ public class InvPrintWarehousingslip implements IEntity {
 
         // INV_PRINT_WAREHOUSINGSLIPの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("emp_code -- :emp_code");
-        nameList.add("hinban -- :hinban");
-        nameList.add("kanban_acc_counts -- :kanban_acc_counts");
-        nameList.add("kanban_counts -- :kanban_counts");
-        nameList.add("host_n_kbn -- :host_n_kbn");
-        nameList.add("print_kbn -- :print_kbn");
-        nameList.add("req_id -- :req_id");
-        nameList.add("time_stamp_create -- :time_stamp_create");
-        nameList.add("time_stamp_change -- :time_stamp_change");
-        nameList.add("user_id_create -- :user_id_create");
-        nameList.add("user_id_change -- :user_id_change");
+        nameList.add("\"EMP_CODE\" -- :emp_code");
+        nameList.add("\"HINBAN\" -- :hinban");
+        nameList.add("\"KANBAN_ACC_COUNTS\" -- :kanban_acc_counts");
+        nameList.add("\"KANBAN_COUNTS\" -- :kanban_counts");
+        nameList.add("\"HOST_N_KBN\" -- :host_n_kbn");
+        nameList.add("\"PRINT_KBN\" -- :print_kbn");
+        nameList.add("\"REQ_ID\" -- :req_id");
+        nameList.add("\"TIME_STAMP_CREATE\" -- :time_stamp_create");
+        nameList.add("\"TIME_STAMP_CHANGE\" -- :time_stamp_change");
+        nameList.add("\"USER_ID_CREATE\" -- :user_id_create");
+        nameList.add("\"USER_ID_CHANGE\" -- :user_id_change");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO INV_PRINT_WAREHOUSINGSLIP(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -344,12 +344,12 @@ public class InvPrintWarehousingslip implements IEntity {
             return;
         }
 
-        String sql = "SELECT LPAD (CASE WHEN MAX(e.EMP_CODE) IS NULL THEN 0 ELSE MAX(e.EMP_CODE) * 1 END + 1, 10, '0') AS EMP_CODE FROM INV_PRINT_WAREHOUSINGSLIP e WHERE e.EMP_CODE < '9999999999'";
+        String sql = "SELECT LPAD (CASE WHEN MAX(e.\"EMP_CODE\") IS NULL THEN 0 ELSE MAX(e.\"EMP_CODE\") * 1 END + 1, 10, '0') AS \"EMP_CODE\" FROM INV_PRINT_WAREHOUSINGSLIP e WHERE e.\"EMP_CODE\" < '9999999999'";
 
         Map<String, Object> params = new HashMap<String, Object>();
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("e.HINBAN = :hinban");
+        whereList.add("e.\"HINBAN\" = :hinban");
         sql += " WHERE " + String.join(" AND ", whereList);
 
         params.put("hinban", this.hinban);
@@ -377,15 +377,15 @@ public class InvPrintWarehousingslip implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("emp_code = :emp_code");
-        setList.add("hinban = :hinban");
-        setList.add("kanban_acc_counts = :kanban_acc_counts");
-        setList.add("kanban_counts = :kanban_counts");
-        setList.add("host_n_kbn = :host_n_kbn");
-        setList.add("print_kbn = :print_kbn");
-        setList.add("req_id = :req_id");
-        setList.add("time_stamp_change = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("user_id_change = :user_id_change");
+        setList.add("\"EMP_CODE\" = :emp_code");
+        setList.add("\"HINBAN\" = :hinban");
+        setList.add("\"KANBAN_ACC_COUNTS\" = :kanban_acc_counts");
+        setList.add("\"KANBAN_COUNTS\" = :kanban_counts");
+        setList.add("\"HOST_N_KBN\" = :host_n_kbn");
+        setList.add("\"PRINT_KBN\" = :print_kbn");
+        setList.add("\"REQ_ID\" = :req_id");
+        setList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"USER_ID_CHANGE\" = :user_id_change");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -407,21 +407,21 @@ public class InvPrintWarehousingslip implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (hinban) = TRIM (:hinban)");
-        whereList.add("TRIM (emp_code) = TRIM (:emp_code)");
-        whereList.add("time_stamp_change = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        whereList.add("TRIM (\"HINBAN\") = TRIM (:hinban)");
+        whereList.add("TRIM (\"EMP_CODE\") = TRIM (:emp_code)");
+        whereList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("EMP_CODE", this.empCode);
-        params.put("HINBAN", this.hinban);
-        params.put("KANBAN_ACC_COUNTS", this.kanbanAccCounts);
-        params.put("KANBAN_COUNTS", this.kanbanCounts);
-        params.put("HOST_N_KBN", this.hostNKbn);
-        params.put("PRINT_KBN", this.printKbn);
-        params.put("REQ_ID", this.reqId);
+        params.put("emp_code", this.empCode);
+        params.put("hinban", this.hinban);
+        params.put("kanban_acc_counts", this.kanbanAccCounts);
+        params.put("kanban_counts", this.kanbanCounts);
+        params.put("host_n_kbn", this.hostNKbn);
+        params.put("print_kbn", this.printKbn);
+        params.put("req_id", this.reqId);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

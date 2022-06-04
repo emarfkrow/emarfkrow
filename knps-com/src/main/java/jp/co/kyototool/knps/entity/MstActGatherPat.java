@@ -298,17 +298,17 @@ public class MstActGatherPat implements IEntity {
 
         // MST_ACT_GATHER_PATの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("act_gather_pat_no -- :act_gather_pat_no");
-        nameList.add("in_pre_start -- :in_pre_start");
-        nameList.add("in_pre_end -- :in_pre_end");
-        nameList.add("proc_end -- :proc_end");
-        nameList.add("proc_stop -- :proc_stop");
-        nameList.add("proc_cancel -- :proc_cancel");
-        nameList.add("time_stamp_create -- :time_stamp_create");
-        nameList.add("time_stamp_change -- :time_stamp_change");
-        nameList.add("user_id_create -- :user_id_create");
-        nameList.add("user_id_change -- :user_id_change");
-        nameList.add("delete_flag -- :delete_flag");
+        nameList.add("\"ACT_GATHER_PAT_NO\" -- :act_gather_pat_no");
+        nameList.add("\"IN_PRE_START\" -- :in_pre_start");
+        nameList.add("\"IN_PRE_END\" -- :in_pre_end");
+        nameList.add("\"PROC_END\" -- :proc_end");
+        nameList.add("\"PROC_STOP\" -- :proc_stop");
+        nameList.add("\"PROC_CANCEL\" -- :proc_cancel");
+        nameList.add("\"TIME_STAMP_CREATE\" -- :time_stamp_create");
+        nameList.add("\"TIME_STAMP_CHANGE\" -- :time_stamp_change");
+        nameList.add("\"USER_ID_CREATE\" -- :user_id_create");
+        nameList.add("\"USER_ID_CHANGE\" -- :user_id_change");
+        nameList.add("\"DELETE_FLAG\" -- :delete_flag");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO MST_ACT_GATHER_PAT(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -341,7 +341,7 @@ public class MstActGatherPat implements IEntity {
             return;
         }
 
-        String sql = "SELECT LPAD (CASE WHEN MAX(e.ACT_GATHER_PAT_NO) IS NULL THEN 0 ELSE MAX(e.ACT_GATHER_PAT_NO) * 1 END + 1, 3, '0') AS ACT_GATHER_PAT_NO FROM MST_ACT_GATHER_PAT e WHERE e.ACT_GATHER_PAT_NO < '999'";
+        String sql = "SELECT LPAD (CASE WHEN MAX(e.\"ACT_GATHER_PAT_NO\") IS NULL THEN 0 ELSE MAX(e.\"ACT_GATHER_PAT_NO\") * 1 END + 1, 3, '0') AS \"ACT_GATHER_PAT_NO\" FROM MST_ACT_GATHER_PAT e WHERE e.\"ACT_GATHER_PAT_NO\" < '999'";
 
         Map<String, Object> params = new HashMap<String, Object>();
 
@@ -368,15 +368,15 @@ public class MstActGatherPat implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("act_gather_pat_no = :act_gather_pat_no");
-        setList.add("in_pre_start = :in_pre_start");
-        setList.add("in_pre_end = :in_pre_end");
-        setList.add("proc_end = :proc_end");
-        setList.add("proc_stop = :proc_stop");
-        setList.add("proc_cancel = :proc_cancel");
-        setList.add("time_stamp_change = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("user_id_change = :user_id_change");
-        setList.add("delete_flag = :delete_flag");
+        setList.add("\"ACT_GATHER_PAT_NO\" = :act_gather_pat_no");
+        setList.add("\"IN_PRE_START\" = :in_pre_start");
+        setList.add("\"IN_PRE_END\" = :in_pre_end");
+        setList.add("\"PROC_END\" = :proc_end");
+        setList.add("\"PROC_STOP\" = :proc_stop");
+        setList.add("\"PROC_CANCEL\" = :proc_cancel");
+        setList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"USER_ID_CHANGE\" = :user_id_change");
+        setList.add("\"DELETE_FLAG\" = :delete_flag");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -398,20 +398,20 @@ public class MstActGatherPat implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (act_gather_pat_no) = TRIM (:act_gather_pat_no)");
-        whereList.add("time_stamp_change = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        whereList.add("TRIM (\"ACT_GATHER_PAT_NO\") = TRIM (:act_gather_pat_no)");
+        whereList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("ACT_GATHER_PAT_NO", this.actGatherPatNo);
-        params.put("IN_PRE_START", this.inPreStart);
-        params.put("IN_PRE_END", this.inPreEnd);
-        params.put("PROC_END", this.procEnd);
-        params.put("PROC_STOP", this.procStop);
-        params.put("PROC_CANCEL", this.procCancel);
-        params.put("DELETE_FLAG", this.deleteFlag);
+        params.put("act_gather_pat_no", this.actGatherPatNo);
+        params.put("in_pre_start", this.inPreStart);
+        params.put("in_pre_end", this.inPreEnd);
+        params.put("proc_end", this.procEnd);
+        params.put("proc_stop", this.procStop);
+        params.put("proc_cancel", this.procCancel);
+        params.put("delete_flag", this.deleteFlag);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

@@ -235,14 +235,14 @@ public class MstTax implements IEntity {
 
         // MST_TAXの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("tax_code -- :tax_code");
-        nameList.add("tax_name -- :tax_name");
-        nameList.add("tax_rate -- :tax_rate");
-        nameList.add("time_stamp_create -- :time_stamp_create");
-        nameList.add("time_stamp_change -- :time_stamp_change");
-        nameList.add("user_id_create -- :user_id_create");
-        nameList.add("user_id_change -- :user_id_change");
-        nameList.add("delete_flag -- :delete_flag");
+        nameList.add("\"TAX_CODE\" -- :tax_code");
+        nameList.add("\"TAX_NAME\" -- :tax_name");
+        nameList.add("\"TAX_RATE\" -- :tax_rate");
+        nameList.add("\"TIME_STAMP_CREATE\" -- :time_stamp_create");
+        nameList.add("\"TIME_STAMP_CHANGE\" -- :time_stamp_change");
+        nameList.add("\"USER_ID_CREATE\" -- :user_id_create");
+        nameList.add("\"USER_ID_CHANGE\" -- :user_id_change");
+        nameList.add("\"DELETE_FLAG\" -- :delete_flag");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO MST_TAX(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -272,7 +272,7 @@ public class MstTax implements IEntity {
             return;
         }
 
-        String sql = "SELECT LPAD (CASE WHEN MAX(e.TAX_CODE) IS NULL THEN 0 ELSE MAX(e.TAX_CODE) * 1 END + 1, 2, '0') AS TAX_CODE FROM MST_TAX e WHERE e.TAX_CODE < '99'";
+        String sql = "SELECT LPAD (CASE WHEN MAX(e.\"TAX_CODE\") IS NULL THEN 0 ELSE MAX(e.\"TAX_CODE\") * 1 END + 1, 2, '0') AS \"TAX_CODE\" FROM MST_TAX e WHERE e.\"TAX_CODE\" < '99'";
 
         Map<String, Object> params = new HashMap<String, Object>();
 
@@ -299,12 +299,12 @@ public class MstTax implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("tax_code = :tax_code");
-        setList.add("tax_name = :tax_name");
-        setList.add("tax_rate = :tax_rate");
-        setList.add("time_stamp_change = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("user_id_change = :user_id_change");
-        setList.add("delete_flag = :delete_flag");
+        setList.add("\"TAX_CODE\" = :tax_code");
+        setList.add("\"TAX_NAME\" = :tax_name");
+        setList.add("\"TAX_RATE\" = :tax_rate");
+        setList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"USER_ID_CHANGE\" = :user_id_change");
+        setList.add("\"DELETE_FLAG\" = :delete_flag");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -326,17 +326,17 @@ public class MstTax implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (tax_code) = TRIM (:tax_code)");
-        whereList.add("time_stamp_change = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        whereList.add("TRIM (\"TAX_CODE\") = TRIM (:tax_code)");
+        whereList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("TAX_CODE", this.taxCode);
-        params.put("TAX_NAME", this.taxName);
-        params.put("TAX_RATE", this.taxRate);
-        params.put("DELETE_FLAG", this.deleteFlag);
+        params.put("tax_code", this.taxCode);
+        params.put("tax_name", this.taxName);
+        params.put("tax_rate", this.taxRate);
+        params.put("delete_flag", this.deleteFlag);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

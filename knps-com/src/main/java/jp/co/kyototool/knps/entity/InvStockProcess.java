@@ -244,14 +244,14 @@ public class InvStockProcess implements IEntity {
 
         // INV_STOCK_PROCESSの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("location_code -- :location_code");
-        nameList.add("hinban -- :hinban");
-        nameList.add("stock -- :stock");
-        nameList.add("last_in_out_date -- :last_in_out_date");
-        nameList.add("time_stamp_create -- :time_stamp_create");
-        nameList.add("time_stamp_change -- :time_stamp_change");
-        nameList.add("user_id_create -- :user_id_create");
-        nameList.add("user_id_change -- :user_id_change");
+        nameList.add("\"LOCATION_CODE\" -- :location_code");
+        nameList.add("\"HINBAN\" -- :hinban");
+        nameList.add("\"STOCK\" -- :stock");
+        nameList.add("\"LAST_IN_OUT_DATE\" -- :last_in_out_date");
+        nameList.add("\"TIME_STAMP_CREATE\" -- :time_stamp_create");
+        nameList.add("\"TIME_STAMP_CHANGE\" -- :time_stamp_change");
+        nameList.add("\"USER_ID_CREATE\" -- :user_id_create");
+        nameList.add("\"USER_ID_CHANGE\" -- :user_id_change");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO INV_STOCK_PROCESS(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -291,12 +291,12 @@ public class InvStockProcess implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("location_code = :location_code");
-        setList.add("hinban = :hinban");
-        setList.add("stock = :stock");
-        setList.add("last_in_out_date = TO_TIMESTAMP (:last_in_out_date, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("time_stamp_change = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("user_id_change = :user_id_change");
+        setList.add("\"LOCATION_CODE\" = :location_code");
+        setList.add("\"HINBAN\" = :hinban");
+        setList.add("\"STOCK\" = :stock");
+        setList.add("\"LAST_IN_OUT_DATE\" = TO_TIMESTAMP (:last_in_out_date, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"USER_ID_CHANGE\" = :user_id_change");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -318,18 +318,18 @@ public class InvStockProcess implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("location_code = :location_code");
-        whereList.add("hinban = :hinban");
-        whereList.add("time_stamp_change = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        whereList.add("\"LOCATION_CODE\" = :location_code");
+        whereList.add("\"HINBAN\" = :hinban");
+        whereList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("LOCATION_CODE", this.locationCode);
-        params.put("HINBAN", this.hinban);
-        params.put("STOCK", this.stock);
-        params.put("LAST_IN_OUT_DATE", this.lastInOutDate);
+        params.put("location_code", this.locationCode);
+        params.put("hinban", this.hinban);
+        params.put("stock", this.stock);
+        params.put("last_in_out_date", this.lastInOutDate);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

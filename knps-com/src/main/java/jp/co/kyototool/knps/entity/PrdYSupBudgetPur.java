@@ -328,18 +328,18 @@ public class PrdYSupBudgetPur implements IEntity {
 
         // PRD_Y_SUP_BUDGET_PURの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("yyyy -- :yyyy");
-        nameList.add("mm -- :mm");
-        nameList.add("hinban -- :hinban");
-        nameList.add("sup_code -- :sup_code");
-        nameList.add("order_counts -- :order_counts");
-        nameList.add("order_unit -- :order_unit");
-        nameList.add("order_amount -- :order_amount");
-        nameList.add("item_kbn -- :item_kbn");
-        nameList.add("time_stamp_create -- :time_stamp_create");
-        nameList.add("time_stamp_change -- :time_stamp_change");
-        nameList.add("user_id_create -- :user_id_create");
-        nameList.add("user_id_change -- :user_id_change");
+        nameList.add("\"YYYY\" -- :yyyy");
+        nameList.add("\"MM\" -- :mm");
+        nameList.add("\"HINBAN\" -- :hinban");
+        nameList.add("\"SUP_CODE\" -- :sup_code");
+        nameList.add("\"ORDER_COUNTS\" -- :order_counts");
+        nameList.add("\"ORDER_UNIT\" -- :order_unit");
+        nameList.add("\"ORDER_AMOUNT\" -- :order_amount");
+        nameList.add("\"ITEM_KBN\" -- :item_kbn");
+        nameList.add("\"TIME_STAMP_CREATE\" -- :time_stamp_create");
+        nameList.add("\"TIME_STAMP_CHANGE\" -- :time_stamp_change");
+        nameList.add("\"USER_ID_CREATE\" -- :user_id_create");
+        nameList.add("\"USER_ID_CHANGE\" -- :user_id_change");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO PRD_Y_SUP_BUDGET_PUR(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -373,14 +373,14 @@ public class PrdYSupBudgetPur implements IEntity {
             return;
         }
 
-        String sql = "SELECT LPAD (CASE WHEN MAX(e.SUP_CODE) IS NULL THEN 0 ELSE MAX(e.SUP_CODE) * 1 END + 1, 6, '0') AS SUP_CODE FROM PRD_Y_SUP_BUDGET_PUR e WHERE e.SUP_CODE < '999999'";
+        String sql = "SELECT LPAD (CASE WHEN MAX(e.\"SUP_CODE\") IS NULL THEN 0 ELSE MAX(e.\"SUP_CODE\") * 1 END + 1, 6, '0') AS \"SUP_CODE\" FROM PRD_Y_SUP_BUDGET_PUR e WHERE e.\"SUP_CODE\" < '999999'";
 
         Map<String, Object> params = new HashMap<String, Object>();
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("e.YYYY = :yyyy");
-        whereList.add("e.MM = :mm");
-        whereList.add("e.HINBAN = :hinban");
+        whereList.add("e.\"YYYY\" = :yyyy");
+        whereList.add("e.\"MM\" = :mm");
+        whereList.add("e.\"HINBAN\" = :hinban");
         sql += " WHERE " + String.join(" AND ", whereList);
 
         params.put("yyyy", this.yyyy);
@@ -410,16 +410,16 @@ public class PrdYSupBudgetPur implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("yyyy = :yyyy");
-        setList.add("mm = :mm");
-        setList.add("hinban = :hinban");
-        setList.add("sup_code = :sup_code");
-        setList.add("order_counts = :order_counts");
-        setList.add("order_unit = :order_unit");
-        setList.add("order_amount = :order_amount");
-        setList.add("item_kbn = :item_kbn");
-        setList.add("time_stamp_change = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("user_id_change = :user_id_change");
+        setList.add("\"YYYY\" = :yyyy");
+        setList.add("\"MM\" = :mm");
+        setList.add("\"HINBAN\" = :hinban");
+        setList.add("\"SUP_CODE\" = :sup_code");
+        setList.add("\"ORDER_COUNTS\" = :order_counts");
+        setList.add("\"ORDER_UNIT\" = :order_unit");
+        setList.add("\"ORDER_AMOUNT\" = :order_amount");
+        setList.add("\"ITEM_KBN\" = :item_kbn");
+        setList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"USER_ID_CHANGE\" = :user_id_change");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -441,24 +441,24 @@ public class PrdYSupBudgetPur implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (yyyy) = TRIM (:yyyy)");
-        whereList.add("TRIM (mm) = TRIM (:mm)");
-        whereList.add("TRIM (hinban) = TRIM (:hinban)");
-        whereList.add("TRIM (sup_code) = TRIM (:sup_code)");
-        whereList.add("time_stamp_change = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        whereList.add("TRIM (\"YYYY\") = TRIM (:yyyy)");
+        whereList.add("TRIM (\"MM\") = TRIM (:mm)");
+        whereList.add("TRIM (\"HINBAN\") = TRIM (:hinban)");
+        whereList.add("TRIM (\"SUP_CODE\") = TRIM (:sup_code)");
+        whereList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("YYYY", this.yyyy);
-        params.put("MM", this.mm);
-        params.put("HINBAN", this.hinban);
-        params.put("SUP_CODE", this.supCode);
-        params.put("ORDER_COUNTS", this.orderCounts);
-        params.put("ORDER_UNIT", this.orderUnit);
-        params.put("ORDER_AMOUNT", this.orderAmount);
-        params.put("ITEM_KBN", this.itemKbn);
+        params.put("yyyy", this.yyyy);
+        params.put("mm", this.mm);
+        params.put("hinban", this.hinban);
+        params.put("sup_code", this.supCode);
+        params.put("order_counts", this.orderCounts);
+        params.put("order_unit", this.orderUnit);
+        params.put("order_amount", this.orderAmount);
+        params.put("item_kbn", this.itemKbn);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

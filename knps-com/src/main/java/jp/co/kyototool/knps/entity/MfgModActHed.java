@@ -450,23 +450,23 @@ public class MfgModActHed implements IEntity {
 
         // MFG_MOD_ACT_HEDの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("mod_act_no -- :mod_act_no");
-        nameList.add("wc_code -- :wc_code");
-        nameList.add("mod_kind -- :mod_kind");
-        nameList.add("amount_time -- :amount_time");
-        nameList.add("act_mod_time -- :act_mod_time");
-        nameList.add("exp_time -- :exp_time");
-        nameList.add("mod_counts -- :mod_counts");
-        nameList.add("act_mod_counts -- :act_mod_counts");
-        nameList.add("memo -- :memo");
-        nameList.add("mod_status -- :mod_status");
-        nameList.add("exp_flag -- :exp_flag");
-        nameList.add("beg_date -- :beg_date");
-        nameList.add("end_date -- :end_date");
-        nameList.add("time_stamp_create -- :time_stamp_create");
-        nameList.add("time_stamp_change -- :time_stamp_change");
-        nameList.add("user_id_create -- :user_id_create");
-        nameList.add("user_id_change -- :user_id_change");
+        nameList.add("\"MOD_ACT_NO\" -- :mod_act_no");
+        nameList.add("\"WC_CODE\" -- :wc_code");
+        nameList.add("\"MOD_KIND\" -- :mod_kind");
+        nameList.add("\"AMOUNT_TIME\" -- :amount_time");
+        nameList.add("\"ACT_MOD_TIME\" -- :act_mod_time");
+        nameList.add("\"EXP_TIME\" -- :exp_time");
+        nameList.add("\"MOD_COUNTS\" -- :mod_counts");
+        nameList.add("\"ACT_MOD_COUNTS\" -- :act_mod_counts");
+        nameList.add("\"MEMO\" -- :memo");
+        nameList.add("\"MOD_STATUS\" -- :mod_status");
+        nameList.add("\"EXP_FLAG\" -- :exp_flag");
+        nameList.add("\"BEG_DATE\" -- :beg_date");
+        nameList.add("\"END_DATE\" -- :end_date");
+        nameList.add("\"TIME_STAMP_CREATE\" -- :time_stamp_create");
+        nameList.add("\"TIME_STAMP_CHANGE\" -- :time_stamp_change");
+        nameList.add("\"USER_ID_CREATE\" -- :user_id_create");
+        nameList.add("\"USER_ID_CHANGE\" -- :user_id_change");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO MFG_MOD_ACT_HED(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -505,7 +505,7 @@ public class MfgModActHed implements IEntity {
             return;
         }
 
-        String sql = "SELECT LPAD (CASE WHEN MAX(e.MOD_ACT_NO) IS NULL THEN 0 ELSE MAX(e.MOD_ACT_NO) * 1 END + 1, 12, '0') AS MOD_ACT_NO FROM MFG_MOD_ACT_HED e WHERE e.MOD_ACT_NO < '999999999999'";
+        String sql = "SELECT LPAD (CASE WHEN MAX(e.\"MOD_ACT_NO\") IS NULL THEN 0 ELSE MAX(e.\"MOD_ACT_NO\") * 1 END + 1, 12, '0') AS \"MOD_ACT_NO\" FROM MFG_MOD_ACT_HED e WHERE e.\"MOD_ACT_NO\" < '999999999999'";
 
         Map<String, Object> params = new HashMap<String, Object>();
 
@@ -553,21 +553,21 @@ public class MfgModActHed implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("mod_act_no = :mod_act_no");
-        setList.add("wc_code = :wc_code");
-        setList.add("mod_kind = :mod_kind");
-        setList.add("amount_time = :amount_time");
-        setList.add("act_mod_time = :act_mod_time");
-        setList.add("exp_time = :exp_time");
-        setList.add("mod_counts = :mod_counts");
-        setList.add("act_mod_counts = :act_mod_counts");
-        setList.add("memo = :memo");
-        setList.add("mod_status = :mod_status");
-        setList.add("exp_flag = :exp_flag");
-        setList.add("beg_date = TO_TIMESTAMP (:beg_date, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("end_date = TO_TIMESTAMP (:end_date, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("time_stamp_change = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("user_id_change = :user_id_change");
+        setList.add("\"MOD_ACT_NO\" = :mod_act_no");
+        setList.add("\"WC_CODE\" = :wc_code");
+        setList.add("\"MOD_KIND\" = :mod_kind");
+        setList.add("\"AMOUNT_TIME\" = :amount_time");
+        setList.add("\"ACT_MOD_TIME\" = :act_mod_time");
+        setList.add("\"EXP_TIME\" = :exp_time");
+        setList.add("\"MOD_COUNTS\" = :mod_counts");
+        setList.add("\"ACT_MOD_COUNTS\" = :act_mod_counts");
+        setList.add("\"MEMO\" = :memo");
+        setList.add("\"MOD_STATUS\" = :mod_status");
+        setList.add("\"EXP_FLAG\" = :exp_flag");
+        setList.add("\"BEG_DATE\" = TO_TIMESTAMP (:beg_date, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"END_DATE\" = TO_TIMESTAMP (:end_date, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"USER_ID_CHANGE\" = :user_id_change");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -596,26 +596,26 @@ public class MfgModActHed implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (mod_act_no) = TRIM (:mod_act_no)");
-        whereList.add("time_stamp_change = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        whereList.add("TRIM (\"MOD_ACT_NO\") = TRIM (:mod_act_no)");
+        whereList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("MOD_ACT_NO", this.modActNo);
-        params.put("WC_CODE", this.wcCode);
-        params.put("MOD_KIND", this.modKind);
-        params.put("AMOUNT_TIME", this.amountTime);
-        params.put("ACT_MOD_TIME", this.actModTime);
-        params.put("EXP_TIME", this.expTime);
-        params.put("MOD_COUNTS", this.modCounts);
-        params.put("ACT_MOD_COUNTS", this.actModCounts);
-        params.put("MEMO", this.memo);
-        params.put("MOD_STATUS", this.modStatus);
-        params.put("EXP_FLAG", this.expFlag);
-        params.put("BEG_DATE", this.begDate);
-        params.put("END_DATE", this.endDate);
+        params.put("mod_act_no", this.modActNo);
+        params.put("wc_code", this.wcCode);
+        params.put("mod_kind", this.modKind);
+        params.put("amount_time", this.amountTime);
+        params.put("act_mod_time", this.actModTime);
+        params.put("exp_time", this.expTime);
+        params.put("mod_counts", this.modCounts);
+        params.put("act_mod_counts", this.actModCounts);
+        params.put("memo", this.memo);
+        params.put("mod_status", this.modStatus);
+        params.put("exp_flag", this.expFlag);
+        params.put("beg_date", this.begDate);
+        params.put("end_date", this.endDate);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

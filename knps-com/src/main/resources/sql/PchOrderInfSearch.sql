@@ -1,8 +1,8 @@
 SELECT
       a.*
-    , (SELECT r1.WC_NAME FROM MST_WC r1 WHERE r1.WC_CODE = a."WC_CODE") AS WC_NAME
-    , (SELECT r2.UNIT_NAME FROM MST_UNIT r2 WHERE r2.UNIT_CODE = a."UNIT_CODE") AS UNIT_NAME
-    , (SELECT r3.SUP_NAME FROM MST_SUPPLIER r3 WHERE r3.SUP_CODE = a."SUP_CODE") AS SUP_NAME
+    , (SELECT r1."WC_NAME" FROM MST_WC r1 WHERE r1."WC_CODE" = a."WC_CODE") AS "WC_NAME"
+    , (SELECT r2."UNIT_NAME" FROM MST_UNIT r2 WHERE r2."UNIT_CODE" = a."UNIT_CODE") AS "UNIT_NAME"
+    , (SELECT r3."SUP_NAME" FROM MST_SUPPLIER r3 WHERE r3."SUP_CODE" = a."SUP_CODE") AS "SUP_NAME"
 FROM
     PCH_ORDER_INF a 
 WHERE
@@ -82,17 +82,17 @@ WHERE
     AND a."ORG_ORDER_UNIT" = :org_order_unit 
     AND a."ORG_ORDER_UNIT" >= :org_order_unit_1 
     AND a."ORG_ORDER_UNIT" <= :org_order_unit_2 
-    AND CASE WHEN a."MUSHO_HACCHU_F" IS NULL THEN '0' ELSE TO_CHAR (a.MUSHO_HACCHU_F) END IN (:musho_hacchu_f) 
+    AND CASE WHEN a."MUSHO_HACCHU_F" IS NULL THEN '0' ELSE TO_CHAR (a."MUSHO_HACCHU_F") END IN (:musho_hacchu_f) 
     AND a."SUP_MEMO" = :sup_memo 
     AND TRIM (a."SHIHARAI_HOHO_KBN") IN (:shiharai_hoho_kbn) 
-    AND CASE WHEN a."ORDER_ISSHIKI_UNIT_F" IS NULL THEN '0' ELSE TO_CHAR (a.ORDER_ISSHIKI_UNIT_F) END IN (:order_isshiki_unit_f) 
+    AND CASE WHEN a."ORDER_ISSHIKI_UNIT_F" IS NULL THEN '0' ELSE TO_CHAR (a."ORDER_ISSHIKI_UNIT_F") END IN (:order_isshiki_unit_f) 
     AND a."ORDER_ISSHIKI_COUNTS" = :order_isshiki_counts 
     AND a."ORDER_ISSHIKI_COUNTS" >= :order_isshiki_counts_1 
     AND a."ORDER_ISSHIKI_COUNTS" <= :order_isshiki_counts_2 
     AND a."ORDER_ISSHIKI_UNIT" = :order_isshiki_unit 
     AND a."ORDER_ISSHIKI_UNIT" >= :order_isshiki_unit_1 
     AND a."ORDER_ISSHIKI_UNIT" <= :order_isshiki_unit_2 
-    AND CASE WHEN a."INSPECT_ISSHIKI_UNIT_F" IS NULL THEN '0' ELSE TO_CHAR (a.INSPECT_ISSHIKI_UNIT_F) END IN (:inspect_isshiki_unit_f) 
+    AND CASE WHEN a."INSPECT_ISSHIKI_UNIT_F" IS NULL THEN '0' ELSE TO_CHAR (a."INSPECT_ISSHIKI_UNIT_F") END IN (:inspect_isshiki_unit_f) 
     AND a."INSPECT_ISSHIKI_COUNTS" = :inspect_isshiki_counts 
     AND a."INSPECT_ISSHIKI_COUNTS" >= :inspect_isshiki_counts_1 
     AND a."INSPECT_ISSHIKI_COUNTS" <= :inspect_isshiki_counts_2 

@@ -466,25 +466,25 @@ public class MTanka implements IEntity {
 
         // 単価マスタの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("hhinban -- :hhinban");
-        nameList.add("dairi_tanka -- :dairi_tanka");
-        nameList.add("cdaiko_tanka -- :cdaiko_tanka");
-        nameList.add("jdaiko_tanka -- :jdaiko_tanka");
-        nameList.add("orosi_tanka -- :orosi_tanka");
-        nameList.add("kouri_kakaku -- :kouri_kakaku");
-        nameList.add("diy_kakaku -- :diy_kakaku");
-        nameList.add("yushutu1_kakaku -- :yushutu1_kakaku");
-        nameList.add("yushutu2_kakaku -- :yushutu2_kakaku");
-        nameList.add("yushutu3_kakaku -- :yushutu3_kakaku");
-        nameList.add("kakaku1 -- :kakaku1");
-        nameList.add("kakaku2 -- :kakaku2");
-        nameList.add("kakaku3 -- :kakaku3");
-        nameList.add("kakaku4 -- :kakaku4");
-        nameList.add("kakaku5 -- :kakaku5");
-        nameList.add("kakaku6 -- :kakaku6");
-        nameList.add("shohinkbn -- :shohinkbn");
-        nameList.add("kakakukbn -- :kakakukbn");
-        nameList.add("filler -- :filler");
+        nameList.add("\"HHINBAN\" -- :hhinban");
+        nameList.add("\"DAIRI-TANKA\" -- :dairi_tanka");
+        nameList.add("\"CDAIKO-TANKA\" -- :cdaiko_tanka");
+        nameList.add("\"JDAIKO-TANKA\" -- :jdaiko_tanka");
+        nameList.add("\"OROSI-TANKA\" -- :orosi_tanka");
+        nameList.add("\"KOURI-KAKAKU\" -- :kouri_kakaku");
+        nameList.add("\"DIY-KAKAKU\" -- :diy_kakaku");
+        nameList.add("\"YUSHUTU1-KAKAKU\" -- :yushutu1_kakaku");
+        nameList.add("\"YUSHUTU2-KAKAKU\" -- :yushutu2_kakaku");
+        nameList.add("\"YUSHUTU3-KAKAKU\" -- :yushutu3_kakaku");
+        nameList.add("\"KAKAKU1\" -- :kakaku1");
+        nameList.add("\"KAKAKU2\" -- :kakaku2");
+        nameList.add("\"KAKAKU3\" -- :kakaku3");
+        nameList.add("\"KAKAKU4\" -- :kakaku4");
+        nameList.add("\"KAKAKU5\" -- :kakaku5");
+        nameList.add("\"KAKAKU6\" -- :kakaku6");
+        nameList.add("\"SHOHINKBN\" -- :shohinkbn");
+        nameList.add("\"KAKAKUKBN\" -- :kakakukbn");
+        nameList.add("\"FILLER\" -- :filler");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO M_TANKA(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -525,7 +525,7 @@ public class MTanka implements IEntity {
             return;
         }
 
-        String sql = "SELECT LPAD (CASE WHEN MAX(e.HHINBAN) IS NULL THEN 0 ELSE MAX(e.HHINBAN) * 1 END + 1, 20, '0') AS HHINBAN FROM M_TANKA e WHERE e.HHINBAN < '99999999999999999999'";
+        String sql = "SELECT LPAD (CASE WHEN MAX(e.\"HHINBAN\") IS NULL THEN 0 ELSE MAX(e.\"HHINBAN\") * 1 END + 1, 20, '0') AS \"HHINBAN\" FROM M_TANKA e WHERE e.\"HHINBAN\" < '99999999999999999999'";
 
         Map<String, Object> params = new HashMap<String, Object>();
 
@@ -582,25 +582,25 @@ public class MTanka implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("hhinban = :hhinban");
-        setList.add("dairi-tanka = :dairi-tanka");
-        setList.add("cdaiko-tanka = :cdaiko-tanka");
-        setList.add("jdaiko-tanka = :jdaiko-tanka");
-        setList.add("orosi-tanka = :orosi-tanka");
-        setList.add("kouri-kakaku = :kouri-kakaku");
-        setList.add("diy-kakaku = :diy-kakaku");
-        setList.add("yushutu1-kakaku = :yushutu1-kakaku");
-        setList.add("yushutu2-kakaku = :yushutu2-kakaku");
-        setList.add("yushutu3-kakaku = :yushutu3-kakaku");
-        setList.add("kakaku1 = :kakaku1");
-        setList.add("kakaku2 = :kakaku2");
-        setList.add("kakaku3 = :kakaku3");
-        setList.add("kakaku4 = :kakaku4");
-        setList.add("kakaku5 = :kakaku5");
-        setList.add("kakaku6 = :kakaku6");
-        setList.add("shohinkbn = :shohinkbn");
-        setList.add("kakakukbn = :kakakukbn");
-        setList.add("filler = :filler");
+        setList.add("\"HHINBAN\" = :hhinban");
+        setList.add("\"DAIRI-TANKA\" = :dairi_tanka");
+        setList.add("\"CDAIKO-TANKA\" = :cdaiko_tanka");
+        setList.add("\"JDAIKO-TANKA\" = :jdaiko_tanka");
+        setList.add("\"OROSI-TANKA\" = :orosi_tanka");
+        setList.add("\"KOURI-KAKAKU\" = :kouri_kakaku");
+        setList.add("\"DIY-KAKAKU\" = :diy_kakaku");
+        setList.add("\"YUSHUTU1-KAKAKU\" = :yushutu1_kakaku");
+        setList.add("\"YUSHUTU2-KAKAKU\" = :yushutu2_kakaku");
+        setList.add("\"YUSHUTU3-KAKAKU\" = :yushutu3_kakaku");
+        setList.add("\"KAKAKU1\" = :kakaku1");
+        setList.add("\"KAKAKU2\" = :kakaku2");
+        setList.add("\"KAKAKU3\" = :kakaku3");
+        setList.add("\"KAKAKU4\" = :kakaku4");
+        setList.add("\"KAKAKU5\" = :kakaku5");
+        setList.add("\"KAKAKU6\" = :kakaku6");
+        setList.add("\"SHOHINKBN\" = :shohinkbn");
+        setList.add("\"KAKAKUKBN\" = :kakakukbn");
+        setList.add("\"FILLER\" = :filler");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -637,31 +637,31 @@ public class MTanka implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (hhinban) = TRIM (:hhinban)");
+        whereList.add("TRIM (\"HHINBAN\") = TRIM (:hhinban)");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("HHINBAN", this.hhinban);
-        params.put("DAIRI-TANKA", this.dairiTanka);
-        params.put("CDAIKO-TANKA", this.cdaikoTanka);
-        params.put("JDAIKO-TANKA", this.jdaikoTanka);
-        params.put("OROSI-TANKA", this.orosiTanka);
-        params.put("KOURI-KAKAKU", this.kouriKakaku);
-        params.put("DIY-KAKAKU", this.diyKakaku);
-        params.put("YUSHUTU1-KAKAKU", this.yushutu1Kakaku);
-        params.put("YUSHUTU2-KAKAKU", this.yushutu2Kakaku);
-        params.put("YUSHUTU3-KAKAKU", this.yushutu3Kakaku);
-        params.put("KAKAKU1", this.kakaku1);
-        params.put("KAKAKU2", this.kakaku2);
-        params.put("KAKAKU3", this.kakaku3);
-        params.put("KAKAKU4", this.kakaku4);
-        params.put("KAKAKU5", this.kakaku5);
-        params.put("KAKAKU6", this.kakaku6);
-        params.put("SHOHINKBN", this.shohinkbn);
-        params.put("KAKAKUKBN", this.kakakukbn);
-        params.put("FILLER", this.filler);
+        params.put("hhinban", this.hhinban);
+        params.put("dairi_tanka", this.dairiTanka);
+        params.put("cdaiko_tanka", this.cdaikoTanka);
+        params.put("jdaiko_tanka", this.jdaikoTanka);
+        params.put("orosi_tanka", this.orosiTanka);
+        params.put("kouri_kakaku", this.kouriKakaku);
+        params.put("diy_kakaku", this.diyKakaku);
+        params.put("yushutu1_kakaku", this.yushutu1Kakaku);
+        params.put("yushutu2_kakaku", this.yushutu2Kakaku);
+        params.put("yushutu3_kakaku", this.yushutu3Kakaku);
+        params.put("kakaku1", this.kakaku1);
+        params.put("kakaku2", this.kakaku2);
+        params.put("kakaku3", this.kakaku3);
+        params.put("kakaku4", this.kakaku4);
+        params.put("kakaku5", this.kakaku5);
+        params.put("kakaku6", this.kakaku6);
+        params.put("shohinkbn", this.shohinkbn);
+        params.put("kakakukbn", this.kakakukbn);
+        params.put("filler", this.filler);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

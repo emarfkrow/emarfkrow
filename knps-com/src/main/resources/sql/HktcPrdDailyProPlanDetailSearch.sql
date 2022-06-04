@@ -30,13 +30,13 @@ WHERE
     AND a."COMP_DATE" = :comp_date 
     AND a."COMP_DATE" >= :comp_date_1 
     AND a."COMP_DATE" <= :comp_date_2 
-    AND CASE WHEN a."PCH_FLAG" IS NULL THEN '0' ELSE TO_CHAR (a.PCH_FLAG) END IN (:pch_flag) 
+    AND CASE WHEN a."PCH_FLAG" IS NULL THEN '0' ELSE TO_CHAR (a."PCH_FLAG") END IN (:pch_flag) 
     AND a."PRINT_ORDER" = :print_order 
     AND a."SHORT_NO" = :short_no 
     AND a."TIME_STAMP_CREATE" = :time_stamp_create 
     AND a."TIME_STAMP_CHANGE" = :time_stamp_change 
     AND TRIM (a."USER_ID_CREATE") = TRIM (:user_id_create) 
     AND TRIM (a."USER_ID_CHANGE") = TRIM (:user_id_change) 
-    AND CASE WHEN a."DELETE_FLAG" IS NULL THEN '0' ELSE TO_CHAR (a.DELETE_FLAG) END IN (:delete_flag) 
+    AND CASE WHEN a."DELETE_FLAG" IS NULL THEN '0' ELSE TO_CHAR (a."DELETE_FLAG") END IN (:delete_flag) 
 ORDER BY
     a."CHILD_PLAN_NO"

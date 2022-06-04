@@ -373,19 +373,19 @@ public class InvYStkAmountProg implements IEntity {
 
         // INV_Y_STK_AMOUNT_PROGの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("yyyy -- :yyyy");
-        nameList.add("mm -- :mm");
-        nameList.add("hinban -- :hinban");
-        nameList.add("routing -- :routing");
-        nameList.add("wc_code -- :wc_code");
-        nameList.add("ope_detail -- :ope_detail");
-        nameList.add("nes_counts -- :nes_counts");
-        nameList.add("rou_amount -- :rou_amount");
-        nameList.add("rou_lt -- :rou_lt");
-        nameList.add("time_stamp_create -- :time_stamp_create");
-        nameList.add("time_stamp_change -- :time_stamp_change");
-        nameList.add("user_id_create -- :user_id_create");
-        nameList.add("user_id_change -- :user_id_change");
+        nameList.add("\"YYYY\" -- :yyyy");
+        nameList.add("\"MM\" -- :mm");
+        nameList.add("\"HINBAN\" -- :hinban");
+        nameList.add("\"ROUTING\" -- :routing");
+        nameList.add("\"WC_CODE\" -- :wc_code");
+        nameList.add("\"OPE_DETAIL\" -- :ope_detail");
+        nameList.add("\"NES_COUNTS\" -- :nes_counts");
+        nameList.add("\"ROU_AMOUNT\" -- :rou_amount");
+        nameList.add("\"ROU_LT\" -- :rou_lt");
+        nameList.add("\"TIME_STAMP_CREATE\" -- :time_stamp_create");
+        nameList.add("\"TIME_STAMP_CHANGE\" -- :time_stamp_change");
+        nameList.add("\"USER_ID_CREATE\" -- :user_id_create");
+        nameList.add("\"USER_ID_CHANGE\" -- :user_id_change");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO INV_Y_STK_AMOUNT_PROG(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -469,17 +469,17 @@ public class InvYStkAmountProg implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("yyyy = :yyyy");
-        setList.add("mm = :mm");
-        setList.add("hinban = :hinban");
-        setList.add("routing = :routing");
-        setList.add("wc_code = :wc_code");
-        setList.add("ope_detail = :ope_detail");
-        setList.add("nes_counts = :nes_counts");
-        setList.add("rou_amount = :rou_amount");
-        setList.add("rou_lt = :rou_lt");
-        setList.add("time_stamp_change = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("user_id_change = :user_id_change");
+        setList.add("\"YYYY\" = :yyyy");
+        setList.add("\"MM\" = :mm");
+        setList.add("\"HINBAN\" = :hinban");
+        setList.add("\"ROUTING\" = :routing");
+        setList.add("\"WC_CODE\" = :wc_code");
+        setList.add("\"OPE_DETAIL\" = :ope_detail");
+        setList.add("\"NES_COUNTS\" = :nes_counts");
+        setList.add("\"ROU_AMOUNT\" = :rou_amount");
+        setList.add("\"ROU_LT\" = :rou_lt");
+        setList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"USER_ID_CHANGE\" = :user_id_change");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -516,25 +516,25 @@ public class InvYStkAmountProg implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (yyyy) = TRIM (:yyyy)");
-        whereList.add("TRIM (mm) = TRIM (:mm)");
-        whereList.add("TRIM (hinban) = TRIM (:hinban)");
-        whereList.add("routing = :routing");
-        whereList.add("time_stamp_change = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        whereList.add("TRIM (\"YYYY\") = TRIM (:yyyy)");
+        whereList.add("TRIM (\"MM\") = TRIM (:mm)");
+        whereList.add("TRIM (\"HINBAN\") = TRIM (:hinban)");
+        whereList.add("\"ROUTING\" = :routing");
+        whereList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("YYYY", this.yyyy);
-        params.put("MM", this.mm);
-        params.put("HINBAN", this.hinban);
-        params.put("ROUTING", this.routing);
-        params.put("WC_CODE", this.wcCode);
-        params.put("OPE_DETAIL", this.opeDetail);
-        params.put("NES_COUNTS", this.nesCounts);
-        params.put("ROU_AMOUNT", this.rouAmount);
-        params.put("ROU_LT", this.rouLt);
+        params.put("yyyy", this.yyyy);
+        params.put("mm", this.mm);
+        params.put("hinban", this.hinban);
+        params.put("routing", this.routing);
+        params.put("wc_code", this.wcCode);
+        params.put("ope_detail", this.opeDetail);
+        params.put("nes_counts", this.nesCounts);
+        params.put("rou_amount", this.rouAmount);
+        params.put("rou_lt", this.rouLt);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

@@ -422,21 +422,21 @@ public class InvStockManagementInv implements IEntity {
 
         // INV_STOCK_MANAGEMENT_INVの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("inv_phase -- :inv_phase");
-        nameList.add("inv_phase_month -- :inv_phase_month");
-        nameList.add("stock_management_section -- :stock_management_section");
-        nameList.add("hinban -- :hinban");
-        nameList.add("sub_inv_code -- :sub_inv_code");
-        nameList.add("inv_stock -- :inv_stock");
-        nameList.add("stock -- :stock");
-        nameList.add("unit_cost -- :unit_cost");
-        nameList.add("last_in_out_date -- :last_in_out_date");
-        nameList.add("time_stamp_create -- :time_stamp_create");
-        nameList.add("time_stamp_change -- :time_stamp_change");
-        nameList.add("user_id_create -- :user_id_create");
-        nameList.add("user_id_change -- :user_id_change");
-        nameList.add("delete_flag -- :delete_flag");
-        nameList.add("store_no -- :store_no");
+        nameList.add("\"INV_PHASE\" -- :inv_phase");
+        nameList.add("\"INV_PHASE_MONTH\" -- :inv_phase_month");
+        nameList.add("\"STOCK_MANAGEMENT_SECTION\" -- :stock_management_section");
+        nameList.add("\"HINBAN\" -- :hinban");
+        nameList.add("\"SUB_INV_CODE\" -- :sub_inv_code");
+        nameList.add("\"INV_STOCK\" -- :inv_stock");
+        nameList.add("\"STOCK\" -- :stock");
+        nameList.add("\"UNIT_COST\" -- :unit_cost");
+        nameList.add("\"LAST_IN_OUT_DATE\" -- :last_in_out_date");
+        nameList.add("\"TIME_STAMP_CREATE\" -- :time_stamp_create");
+        nameList.add("\"TIME_STAMP_CHANGE\" -- :time_stamp_change");
+        nameList.add("\"USER_ID_CREATE\" -- :user_id_create");
+        nameList.add("\"USER_ID_CHANGE\" -- :user_id_change");
+        nameList.add("\"DELETE_FLAG\" -- :delete_flag");
+        nameList.add("\"STORE_NO\" -- :store_no");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO INV_STOCK_MANAGEMENT_INV(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -522,19 +522,19 @@ public class InvStockManagementInv implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("inv_phase = :inv_phase");
-        setList.add("inv_phase_month = :inv_phase_month");
-        setList.add("stock_management_section = :stock_management_section");
-        setList.add("hinban = :hinban");
-        setList.add("sub_inv_code = :sub_inv_code");
-        setList.add("inv_stock = :inv_stock");
-        setList.add("stock = :stock");
-        setList.add("unit_cost = :unit_cost");
-        setList.add("last_in_out_date = TO_TIMESTAMP (:last_in_out_date, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("time_stamp_change = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("user_id_change = :user_id_change");
-        setList.add("delete_flag = :delete_flag");
-        setList.add("store_no = :store_no");
+        setList.add("\"INV_PHASE\" = :inv_phase");
+        setList.add("\"INV_PHASE_MONTH\" = :inv_phase_month");
+        setList.add("\"STOCK_MANAGEMENT_SECTION\" = :stock_management_section");
+        setList.add("\"HINBAN\" = :hinban");
+        setList.add("\"SUB_INV_CODE\" = :sub_inv_code");
+        setList.add("\"INV_STOCK\" = :inv_stock");
+        setList.add("\"STOCK\" = :stock");
+        setList.add("\"UNIT_COST\" = :unit_cost");
+        setList.add("\"LAST_IN_OUT_DATE\" = TO_TIMESTAMP (:last_in_out_date, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"USER_ID_CHANGE\" = :user_id_change");
+        setList.add("\"DELETE_FLAG\" = :delete_flag");
+        setList.add("\"STORE_NO\" = :store_no");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -568,28 +568,28 @@ public class InvStockManagementInv implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (hinban) = TRIM (:hinban)");
-        whereList.add("TRIM (sub_inv_code) = TRIM (:sub_inv_code)");
-        whereList.add("stock_management_section = :stock_management_section");
-        whereList.add("inv_phase = :inv_phase");
-        whereList.add("inv_phase_month = :inv_phase_month");
-        whereList.add("time_stamp_change = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        whereList.add("TRIM (\"HINBAN\") = TRIM (:hinban)");
+        whereList.add("TRIM (\"SUB_INV_CODE\") = TRIM (:sub_inv_code)");
+        whereList.add("\"STOCK_MANAGEMENT_SECTION\" = :stock_management_section");
+        whereList.add("\"INV_PHASE\" = :inv_phase");
+        whereList.add("\"INV_PHASE_MONTH\" = :inv_phase_month");
+        whereList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("INV_PHASE", this.invPhase);
-        params.put("INV_PHASE_MONTH", this.invPhaseMonth);
-        params.put("STOCK_MANAGEMENT_SECTION", this.stockManagementSection);
-        params.put("HINBAN", this.hinban);
-        params.put("SUB_INV_CODE", this.subInvCode);
-        params.put("INV_STOCK", this.invStock);
-        params.put("STOCK", this.stock);
-        params.put("UNIT_COST", this.unitCost);
-        params.put("LAST_IN_OUT_DATE", this.lastInOutDate);
-        params.put("DELETE_FLAG", this.deleteFlag);
-        params.put("STORE_NO", this.storeNo);
+        params.put("inv_phase", this.invPhase);
+        params.put("inv_phase_month", this.invPhaseMonth);
+        params.put("stock_management_section", this.stockManagementSection);
+        params.put("hinban", this.hinban);
+        params.put("sub_inv_code", this.subInvCode);
+        params.put("inv_stock", this.invStock);
+        params.put("stock", this.stock);
+        params.put("unit_cost", this.unitCost);
+        params.put("last_in_out_date", this.lastInOutDate);
+        params.put("delete_flag", this.deleteFlag);
+        params.put("store_no", this.storeNo);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

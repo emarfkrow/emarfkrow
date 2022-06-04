@@ -229,14 +229,14 @@ public class PrdMProPlanConditionBk implements IEntity {
 
         // PRD_M_PRO_PLAN_CONDITION_BKの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("yyyy -- :yyyy");
-        nameList.add("mm -- :mm");
-        nameList.add("ope_days -- :ope_days");
-        nameList.add("fixed_status -- :fixed_status");
-        nameList.add("time_stamp_create -- :time_stamp_create");
-        nameList.add("time_stamp_change -- :time_stamp_change");
-        nameList.add("user_id_create -- :user_id_create");
-        nameList.add("user_id_change -- :user_id_change");
+        nameList.add("\"YYYY\" -- :yyyy");
+        nameList.add("\"MM\" -- :mm");
+        nameList.add("\"OPE_DAYS\" -- :ope_days");
+        nameList.add("\"FIXED_STATUS\" -- :fixed_status");
+        nameList.add("\"TIME_STAMP_CREATE\" -- :time_stamp_create");
+        nameList.add("\"TIME_STAMP_CHANGE\" -- :time_stamp_change");
+        nameList.add("\"USER_ID_CREATE\" -- :user_id_create");
+        nameList.add("\"USER_ID_CHANGE\" -- :user_id_change");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO PRD_M_PRO_PLAN_CONDITION_BK(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -276,12 +276,12 @@ public class PrdMProPlanConditionBk implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("yyyy = :yyyy");
-        setList.add("mm = :mm");
-        setList.add("ope_days = :ope_days");
-        setList.add("fixed_status = :fixed_status");
-        setList.add("time_stamp_change = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("user_id_change = :user_id_change");
+        setList.add("\"YYYY\" = :yyyy");
+        setList.add("\"MM\" = :mm");
+        setList.add("\"OPE_DAYS\" = :ope_days");
+        setList.add("\"FIXED_STATUS\" = :fixed_status");
+        setList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"USER_ID_CHANGE\" = :user_id_change");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -303,16 +303,16 @@ public class PrdMProPlanConditionBk implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("time_stamp_change = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        whereList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("YYYY", this.yyyy);
-        params.put("MM", this.mm);
-        params.put("OPE_DAYS", this.opeDays);
-        params.put("FIXED_STATUS", this.fixedStatus);
+        params.put("yyyy", this.yyyy);
+        params.put("mm", this.mm);
+        params.put("ope_days", this.opeDays);
+        params.put("fixed_status", this.fixedStatus);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

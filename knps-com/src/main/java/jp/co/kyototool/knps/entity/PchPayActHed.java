@@ -441,23 +441,23 @@ public class PchPayActHed implements IEntity {
 
         // PCH_PAY_ACT_HEDの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("pay_no -- :pay_no");
-        nameList.add("hinban -- :hinban");
-        nameList.add("item -- :item");
-        nameList.add("supply_kbn -- :supply_kbn");
-        nameList.add("from_pay -- :from_pay");
-        nameList.add("to_pay -- :to_pay");
-        nameList.add("unit_code -- :unit_code");
-        nameList.add("tax_code -- :tax_code");
-        nameList.add("tax_cal_code -- :tax_cal_code");
-        nameList.add("account_code -- :account_code");
-        nameList.add("supply_no -- :supply_no");
-        nameList.add("ship_order_no -- :ship_order_no");
-        nameList.add("pay_date -- :pay_date");
-        nameList.add("time_stamp_create -- :time_stamp_create");
-        nameList.add("time_stamp_change -- :time_stamp_change");
-        nameList.add("user_id_create -- :user_id_create");
-        nameList.add("user_id_change -- :user_id_change");
+        nameList.add("\"PAY_NO\" -- :pay_no");
+        nameList.add("\"HINBAN\" -- :hinban");
+        nameList.add("\"ITEM\" -- :item");
+        nameList.add("\"SUPPLY_KBN\" -- :supply_kbn");
+        nameList.add("\"FROM_PAY\" -- :from_pay");
+        nameList.add("\"TO_PAY\" -- :to_pay");
+        nameList.add("\"UNIT_CODE\" -- :unit_code");
+        nameList.add("\"TAX_CODE\" -- :tax_code");
+        nameList.add("\"TAX_CAL_CODE\" -- :tax_cal_code");
+        nameList.add("\"ACCOUNT_CODE\" -- :account_code");
+        nameList.add("\"SUPPLY_NO\" -- :supply_no");
+        nameList.add("\"SHIP_ORDER_NO\" -- :ship_order_no");
+        nameList.add("\"PAY_DATE\" -- :pay_date");
+        nameList.add("\"TIME_STAMP_CREATE\" -- :time_stamp_create");
+        nameList.add("\"TIME_STAMP_CHANGE\" -- :time_stamp_change");
+        nameList.add("\"USER_ID_CREATE\" -- :user_id_create");
+        nameList.add("\"USER_ID_CHANGE\" -- :user_id_change");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO PCH_PAY_ACT_HED(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -496,7 +496,7 @@ public class PchPayActHed implements IEntity {
             return;
         }
 
-        String sql = "SELECT LPAD (CASE WHEN MAX(e.PAY_NO) IS NULL THEN 0 ELSE MAX(e.PAY_NO) * 1 END + 1, 10, '0') AS PAY_NO FROM PCH_PAY_ACT_HED e WHERE e.PAY_NO < '9999999999'";
+        String sql = "SELECT LPAD (CASE WHEN MAX(e.\"PAY_NO\") IS NULL THEN 0 ELSE MAX(e.\"PAY_NO\") * 1 END + 1, 10, '0') AS \"PAY_NO\" FROM PCH_PAY_ACT_HED e WHERE e.\"PAY_NO\" < '9999999999'";
 
         Map<String, Object> params = new HashMap<String, Object>();
 
@@ -544,21 +544,21 @@ public class PchPayActHed implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("pay_no = :pay_no");
-        setList.add("hinban = :hinban");
-        setList.add("item = :item");
-        setList.add("supply_kbn = :supply_kbn");
-        setList.add("from_pay = :from_pay");
-        setList.add("to_pay = :to_pay");
-        setList.add("unit_code = :unit_code");
-        setList.add("tax_code = :tax_code");
-        setList.add("tax_cal_code = :tax_cal_code");
-        setList.add("account_code = :account_code");
-        setList.add("supply_no = :supply_no");
-        setList.add("ship_order_no = :ship_order_no");
-        setList.add("pay_date = TO_TIMESTAMP (:pay_date, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("time_stamp_change = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("user_id_change = :user_id_change");
+        setList.add("\"PAY_NO\" = :pay_no");
+        setList.add("\"HINBAN\" = :hinban");
+        setList.add("\"ITEM\" = :item");
+        setList.add("\"SUPPLY_KBN\" = :supply_kbn");
+        setList.add("\"FROM_PAY\" = :from_pay");
+        setList.add("\"TO_PAY\" = :to_pay");
+        setList.add("\"UNIT_CODE\" = :unit_code");
+        setList.add("\"TAX_CODE\" = :tax_code");
+        setList.add("\"TAX_CAL_CODE\" = :tax_cal_code");
+        setList.add("\"ACCOUNT_CODE\" = :account_code");
+        setList.add("\"SUPPLY_NO\" = :supply_no");
+        setList.add("\"SHIP_ORDER_NO\" = :ship_order_no");
+        setList.add("\"PAY_DATE\" = TO_TIMESTAMP (:pay_date, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"USER_ID_CHANGE\" = :user_id_change");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -587,26 +587,26 @@ public class PchPayActHed implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (pay_no) = TRIM (:pay_no)");
-        whereList.add("time_stamp_change = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        whereList.add("TRIM (\"PAY_NO\") = TRIM (:pay_no)");
+        whereList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("PAY_NO", this.payNo);
-        params.put("HINBAN", this.hinban);
-        params.put("ITEM", this.item);
-        params.put("SUPPLY_KBN", this.supplyKbn);
-        params.put("FROM_PAY", this.fromPay);
-        params.put("TO_PAY", this.toPay);
-        params.put("UNIT_CODE", this.unitCode);
-        params.put("TAX_CODE", this.taxCode);
-        params.put("TAX_CAL_CODE", this.taxCalCode);
-        params.put("ACCOUNT_CODE", this.accountCode);
-        params.put("SUPPLY_NO", this.supplyNo);
-        params.put("SHIP_ORDER_NO", this.shipOrderNo);
-        params.put("PAY_DATE", this.payDate);
+        params.put("pay_no", this.payNo);
+        params.put("hinban", this.hinban);
+        params.put("item", this.item);
+        params.put("supply_kbn", this.supplyKbn);
+        params.put("from_pay", this.fromPay);
+        params.put("to_pay", this.toPay);
+        params.put("unit_code", this.unitCode);
+        params.put("tax_code", this.taxCode);
+        params.put("tax_cal_code", this.taxCalCode);
+        params.put("account_code", this.accountCode);
+        params.put("supply_no", this.supplyNo);
+        params.put("ship_order_no", this.shipOrderNo);
+        params.put("pay_date", this.payDate);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

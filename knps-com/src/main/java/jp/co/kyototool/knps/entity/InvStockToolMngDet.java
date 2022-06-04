@@ -358,19 +358,19 @@ public class InvStockToolMngDet implements IEntity {
 
         // INV_STOCK_TOOL_MNG_DETの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("stock_management_section -- :stock_management_section");
-        nameList.add("hinban -- :hinban");
-        nameList.add("sub_inv_code -- :sub_inv_code");
-        nameList.add("in_out_date -- :in_out_date");
-        nameList.add("stock_branch_number -- :stock_branch_number");
-        nameList.add("in_out_status -- :in_out_status");
-        nameList.add("receipt_sup_code -- :receipt_sup_code");
-        nameList.add("stock -- :stock");
-        nameList.add("inv_comment -- :inv_comment");
-        nameList.add("time_stamp_create -- :time_stamp_create");
-        nameList.add("time_stamp_change -- :time_stamp_change");
-        nameList.add("user_id_create -- :user_id_create");
-        nameList.add("user_id_change -- :user_id_change");
+        nameList.add("\"STOCK_MANAGEMENT_SECTION\" -- :stock_management_section");
+        nameList.add("\"HINBAN\" -- :hinban");
+        nameList.add("\"SUB_INV_CODE\" -- :sub_inv_code");
+        nameList.add("\"IN_OUT_DATE\" -- :in_out_date");
+        nameList.add("\"STOCK_BRANCH_NUMBER\" -- :stock_branch_number");
+        nameList.add("\"IN_OUT_STATUS\" -- :in_out_status");
+        nameList.add("\"RECEIPT_SUP_CODE\" -- :receipt_sup_code");
+        nameList.add("\"STOCK\" -- :stock");
+        nameList.add("\"INV_COMMENT\" -- :inv_comment");
+        nameList.add("\"TIME_STAMP_CREATE\" -- :time_stamp_create");
+        nameList.add("\"TIME_STAMP_CHANGE\" -- :time_stamp_change");
+        nameList.add("\"USER_ID_CREATE\" -- :user_id_create");
+        nameList.add("\"USER_ID_CHANGE\" -- :user_id_change");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO INV_STOCK_TOOL_MNG_DET(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -415,17 +415,17 @@ public class InvStockToolMngDet implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("stock_management_section = :stock_management_section");
-        setList.add("hinban = :hinban");
-        setList.add("sub_inv_code = :sub_inv_code");
-        setList.add("in_out_date = TO_TIMESTAMP (:in_out_date, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("stock_branch_number = :stock_branch_number");
-        setList.add("in_out_status = :in_out_status");
-        setList.add("receipt_sup_code = :receipt_sup_code");
-        setList.add("stock = :stock");
-        setList.add("inv_comment = :inv_comment");
-        setList.add("time_stamp_change = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("user_id_change = :user_id_change");
+        setList.add("\"STOCK_MANAGEMENT_SECTION\" = :stock_management_section");
+        setList.add("\"HINBAN\" = :hinban");
+        setList.add("\"SUB_INV_CODE\" = :sub_inv_code");
+        setList.add("\"IN_OUT_DATE\" = TO_TIMESTAMP (:in_out_date, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"STOCK_BRANCH_NUMBER\" = :stock_branch_number");
+        setList.add("\"IN_OUT_STATUS\" = :in_out_status");
+        setList.add("\"RECEIPT_SUP_CODE\" = :receipt_sup_code");
+        setList.add("\"STOCK\" = :stock");
+        setList.add("\"INV_COMMENT\" = :inv_comment");
+        setList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"USER_ID_CHANGE\" = :user_id_change");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -447,26 +447,26 @@ public class InvStockToolMngDet implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (hinban) = TRIM (:hinban)");
-        whereList.add("TRIM (sub_inv_code) = TRIM (:sub_inv_code)");
-        whereList.add("stock_management_section = :stock_management_section");
-        whereList.add("in_out_date = :in_out_date");
-        whereList.add("stock_branch_number = :stock_branch_number");
-        whereList.add("time_stamp_change = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        whereList.add("TRIM (\"HINBAN\") = TRIM (:hinban)");
+        whereList.add("TRIM (\"SUB_INV_CODE\") = TRIM (:sub_inv_code)");
+        whereList.add("\"STOCK_MANAGEMENT_SECTION\" = :stock_management_section");
+        whereList.add("\"IN_OUT_DATE\" = :in_out_date");
+        whereList.add("\"STOCK_BRANCH_NUMBER\" = :stock_branch_number");
+        whereList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("STOCK_MANAGEMENT_SECTION", this.stockManagementSection);
-        params.put("HINBAN", this.hinban);
-        params.put("SUB_INV_CODE", this.subInvCode);
-        params.put("IN_OUT_DATE", this.inOutDate);
-        params.put("STOCK_BRANCH_NUMBER", this.stockBranchNumber);
-        params.put("IN_OUT_STATUS", this.inOutStatus);
-        params.put("RECEIPT_SUP_CODE", this.receiptSupCode);
-        params.put("STOCK", this.stock);
-        params.put("INV_COMMENT", this.invComment);
+        params.put("stock_management_section", this.stockManagementSection);
+        params.put("hinban", this.hinban);
+        params.put("sub_inv_code", this.subInvCode);
+        params.put("in_out_date", this.inOutDate);
+        params.put("stock_branch_number", this.stockBranchNumber);
+        params.put("in_out_status", this.inOutStatus);
+        params.put("receipt_sup_code", this.receiptSupCode);
+        params.put("stock", this.stock);
+        params.put("inv_comment", this.invComment);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

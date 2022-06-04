@@ -10,7 +10,7 @@ let PchInspectionListGridColumns = [
     Column.text('HINBAN', Messages['PchInspectionListGrid.hinban'], 250, '', null),
     Column.text('ITEM', Messages['PchInspectionListGrid.item'], 300, '', null),
     Column.text('OPE_DETAIL', Messages['PchInspectionListGrid.opeDetail'], 100, '', null),
-    Column.longText('MEMO', Messages['PchInspectionListGrid.memo'], 300, '', null),
+    Column.text('MEMO', Messages['PchInspectionListGrid.memo'], 300, '', null),
     Column.text('SUM_INSPECT_COUNTS', Messages['PchInspectionListGrid.sumInspectCounts'], 110, '', null),
     Column.text('INSPECT_UNIT', Messages['PchInspectionListGrid.inspectUnit'], 90, '', null),
     Column.date('ACCEPT_DATE', Messages['PchInspectionListGrid.acceptDate'], 70, '', Slick.Formatters.Extends.DateTime),

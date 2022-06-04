@@ -265,15 +265,15 @@ public class MfgModActDet implements IEntity {
 
         // MFG_MOD_ACT_DETの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("mod_act_no -- :mod_act_no");
-        nameList.add("mod_act_branch_no -- :mod_act_branch_no");
-        nameList.add("mod_act_item -- :mod_act_item");
-        nameList.add("act_date -- :act_date");
-        nameList.add("operator -- :operator");
-        nameList.add("time_stamp_create -- :time_stamp_create");
-        nameList.add("time_stamp_change -- :time_stamp_change");
-        nameList.add("user_id_create -- :user_id_create");
-        nameList.add("user_id_change -- :user_id_change");
+        nameList.add("\"MOD_ACT_NO\" -- :mod_act_no");
+        nameList.add("\"MOD_ACT_BRANCH_NO\" -- :mod_act_branch_no");
+        nameList.add("\"MOD_ACT_ITEM\" -- :mod_act_item");
+        nameList.add("\"ACT_DATE\" -- :act_date");
+        nameList.add("\"OPERATOR\" -- :operator");
+        nameList.add("\"TIME_STAMP_CREATE\" -- :time_stamp_create");
+        nameList.add("\"TIME_STAMP_CHANGE\" -- :time_stamp_change");
+        nameList.add("\"USER_ID_CREATE\" -- :user_id_create");
+        nameList.add("\"USER_ID_CHANGE\" -- :user_id_change");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO MFG_MOD_ACT_DET(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -314,13 +314,13 @@ public class MfgModActDet implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("mod_act_no = :mod_act_no");
-        setList.add("mod_act_branch_no = :mod_act_branch_no");
-        setList.add("mod_act_item = :mod_act_item");
-        setList.add("act_date = TO_TIMESTAMP (:act_date, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("operator = :operator");
-        setList.add("time_stamp_change = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("user_id_change = :user_id_change");
+        setList.add("\"MOD_ACT_NO\" = :mod_act_no");
+        setList.add("\"MOD_ACT_BRANCH_NO\" = :mod_act_branch_no");
+        setList.add("\"MOD_ACT_ITEM\" = :mod_act_item");
+        setList.add("\"ACT_DATE\" = TO_TIMESTAMP (:act_date, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"OPERATOR\" = :operator");
+        setList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"USER_ID_CHANGE\" = :user_id_change");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -342,19 +342,19 @@ public class MfgModActDet implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (mod_act_no) = TRIM (:mod_act_no)");
-        whereList.add("mod_act_branch_no = :mod_act_branch_no");
-        whereList.add("time_stamp_change = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        whereList.add("TRIM (\"MOD_ACT_NO\") = TRIM (:mod_act_no)");
+        whereList.add("\"MOD_ACT_BRANCH_NO\" = :mod_act_branch_no");
+        whereList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("MOD_ACT_NO", this.modActNo);
-        params.put("MOD_ACT_BRANCH_NO", this.modActBranchNo);
-        params.put("MOD_ACT_ITEM", this.modActItem);
-        params.put("ACT_DATE", this.actDate);
-        params.put("OPERATOR", this.operator);
+        params.put("mod_act_no", this.modActNo);
+        params.put("mod_act_branch_no", this.modActBranchNo);
+        params.put("mod_act_item", this.modActItem);
+        params.put("act_date", this.actDate);
+        params.put("operator", this.operator);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

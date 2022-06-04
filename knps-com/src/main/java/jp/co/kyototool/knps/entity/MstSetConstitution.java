@@ -178,12 +178,12 @@ public class MstSetConstitution implements IEntity {
 
         // MST_SET_CONSTITUTIONの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("set_hinban -- :set_hinban");
-        nameList.add("set_child_hinban -- :set_child_hinban");
-        nameList.add("delete_flag -- :delete_flag");
-        nameList.add("bottom_flag -- :bottom_flag");
-        nameList.add("set_count -- :set_count");
-        nameList.add("gratis_supply_kbn -- :gratis_supply_kbn");
+        nameList.add("\"SET_HINBAN\" -- :set_hinban");
+        nameList.add("\"SET_CHILD_HINBAN\" -- :set_child_hinban");
+        nameList.add("\"DELETE_FLAG\" -- :delete_flag");
+        nameList.add("\"BOTTOM_FLAG\" -- :bottom_flag");
+        nameList.add("\"SET_COUNT\" -- :set_count");
+        nameList.add("\"GRATIS_SUPPLY_KBN\" -- :gratis_supply_kbn");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO MST_SET_CONSTITUTION(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -211,15 +211,15 @@ public class MstSetConstitution implements IEntity {
             return;
         }
 
-        String sql = "SELECT LPAD (CASE WHEN MAX(e.SET_CHILD_HINBAN) IS NULL THEN 0 ELSE MAX(e.SET_CHILD_HINBAN) * 1 END + 1, 20, '0') AS SET_CHILD_HINBAN FROM MST_SET_CONSTITUTION e WHERE e.SET_CHILD_HINBAN < '99999999999999999999'";
+        String sql = "SELECT LPAD (CASE WHEN MAX(e.\"SET_CHILD_HINBAN\") IS NULL THEN 0 ELSE MAX(e.\"SET_CHILD_HINBAN\") * 1 END + 1, 20, '0') AS \"SET_CHILD_HINBAN\" FROM MST_SET_CONSTITUTION e WHERE e.\"SET_CHILD_HINBAN\" < '99999999999999999999'";
 
         Map<String, Object> params = new HashMap<String, Object>();
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("e.SET_HINBAN = :set_hinban");
+        whereList.add("e.\"SET_HINBAN\" = :set_hinban");
         sql += " WHERE " + String.join(" AND ", whereList);
 
-        params.put("setHinban", this.setHinban);
+        params.put("set_hinban", this.setHinban);
 
         jp.co.golorp.emarf.util.MapList mapList = Queries.select(sql, params);
         Object o = mapList.get(0).get("SET_CHILD_HINBAN");
@@ -244,12 +244,12 @@ public class MstSetConstitution implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("set_hinban = :set_hinban");
-        setList.add("set_child_hinban = :set_child_hinban");
-        setList.add("delete_flag = :delete_flag");
-        setList.add("bottom_flag = :bottom_flag");
-        setList.add("set_count = :set_count");
-        setList.add("gratis_supply_kbn = :gratis_supply_kbn");
+        setList.add("\"SET_HINBAN\" = :set_hinban");
+        setList.add("\"SET_CHILD_HINBAN\" = :set_child_hinban");
+        setList.add("\"DELETE_FLAG\" = :delete_flag");
+        setList.add("\"BOTTOM_FLAG\" = :bottom_flag");
+        setList.add("\"SET_COUNT\" = :set_count");
+        setList.add("\"GRATIS_SUPPLY_KBN\" = :gratis_supply_kbn");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -271,19 +271,19 @@ public class MstSetConstitution implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (set_hinban) = TRIM (:set_hinban)");
-        whereList.add("TRIM (set_child_hinban) = TRIM (:set_child_hinban)");
+        whereList.add("TRIM (\"SET_HINBAN\") = TRIM (:set_hinban)");
+        whereList.add("TRIM (\"SET_CHILD_HINBAN\") = TRIM (:set_child_hinban)");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("SET_HINBAN", this.setHinban);
-        params.put("SET_CHILD_HINBAN", this.setChildHinban);
-        params.put("DELETE_FLAG", this.deleteFlag);
-        params.put("BOTTOM_FLAG", this.bottomFlag);
-        params.put("SET_COUNT", this.setCount);
-        params.put("GRATIS_SUPPLY_KBN", this.gratisSupplyKbn);
+        params.put("set_hinban", this.setHinban);
+        params.put("set_child_hinban", this.setChildHinban);
+        params.put("delete_flag", this.deleteFlag);
+        params.put("bottom_flag", this.bottomFlag);
+        params.put("set_count", this.setCount);
+        params.put("gratis_supply_kbn", this.gratisSupplyKbn);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

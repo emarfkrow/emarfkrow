@@ -1,7 +1,7 @@
 SELECT
       a.*
-    , (SELECT r1.WC_NAME FROM MST_WC r1 WHERE r1.WC_CODE = a."WC_CODE") AS WC_NAME
-    , (SELECT r2.SUP_NAME FROM MST_SUPPLIER r2 WHERE r2.SUP_CODE = a."SUP_CODE") AS SUP_NAME
+    , (SELECT r1."WC_NAME" FROM MST_WC r1 WHERE r1."WC_CODE" = a."WC_CODE") AS "WC_NAME"
+    , (SELECT r2."SUP_NAME" FROM MST_SUPPLIER r2 WHERE r2."SUP_CODE" = a."SUP_CODE") AS "SUP_NAME"
 FROM
     MFG_TOTAL_COST_REG_LINE_M_Q a 
 WHERE
@@ -15,7 +15,7 @@ WHERE
     AND TRIM (a."OPE_DETAIL") = TRIM (:ope_detail) 
     AND TRIM (a."MM") = TRIM (:mm) 
     AND a."LAST_ROUTING_KBN" IN (:last_routing_kbn) 
-    AND CASE WHEN a."TOTAL_COST_TARGET_FLAG" IS NULL THEN '0' ELSE TO_CHAR (a.TOTAL_COST_TARGET_FLAG) END IN (:total_cost_target_flag) 
+    AND CASE WHEN a."TOTAL_COST_TARGET_FLAG" IS NULL THEN '0' ELSE TO_CHAR (a."TOTAL_COST_TARGET_FLAG") END IN (:total_cost_target_flag) 
     AND a."COST_RATE_KBN" IN (:cost_rate_kbn) 
     AND a."UNIT_COST_FIRST" = :unit_cost_first 
     AND a."UNIT_COST_SECOND" = :unit_cost_second 

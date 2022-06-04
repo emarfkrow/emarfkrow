@@ -235,14 +235,14 @@ public class PrdStoreMainteReport implements IEntity {
 
         // PRD_STORE_MAINTE_REPORTの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("rep_group_code -- :rep_group_code");
-        nameList.add("group_name -- :group_name");
-        nameList.add("retsu_no -- :retsu_no");
-        nameList.add("gyo_no -- :gyo_no");
-        nameList.add("time_stamp_create -- :time_stamp_create");
-        nameList.add("time_stamp_change -- :time_stamp_change");
-        nameList.add("user_id_create -- :user_id_create");
-        nameList.add("user_id_change -- :user_id_change");
+        nameList.add("\"REP_GROUP_CODE\" -- :rep_group_code");
+        nameList.add("\"GROUP_NAME\" -- :group_name");
+        nameList.add("\"RETSU_NO\" -- :retsu_no");
+        nameList.add("\"GYO_NO\" -- :gyo_no");
+        nameList.add("\"TIME_STAMP_CREATE\" -- :time_stamp_create");
+        nameList.add("\"TIME_STAMP_CHANGE\" -- :time_stamp_change");
+        nameList.add("\"USER_ID_CREATE\" -- :user_id_create");
+        nameList.add("\"USER_ID_CHANGE\" -- :user_id_change");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO PRD_STORE_MAINTE_REPORT(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -272,7 +272,7 @@ public class PrdStoreMainteReport implements IEntity {
             return;
         }
 
-        String sql = "SELECT LPAD (CASE WHEN MAX(e.REP_GROUP_CODE) IS NULL THEN 0 ELSE MAX(e.REP_GROUP_CODE) * 1 END + 1, 2, '0') AS REP_GROUP_CODE FROM PRD_STORE_MAINTE_REPORT e WHERE e.REP_GROUP_CODE < '99'";
+        String sql = "SELECT LPAD (CASE WHEN MAX(e.\"REP_GROUP_CODE\") IS NULL THEN 0 ELSE MAX(e.\"REP_GROUP_CODE\") * 1 END + 1, 2, '0') AS \"REP_GROUP_CODE\" FROM PRD_STORE_MAINTE_REPORT e WHERE e.\"REP_GROUP_CODE\" < '99'";
 
         Map<String, Object> params = new HashMap<String, Object>();
 
@@ -299,12 +299,12 @@ public class PrdStoreMainteReport implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("rep_group_code = :rep_group_code");
-        setList.add("group_name = :group_name");
-        setList.add("retsu_no = :retsu_no");
-        setList.add("gyo_no = :gyo_no");
-        setList.add("time_stamp_change = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("user_id_change = :user_id_change");
+        setList.add("\"REP_GROUP_CODE\" = :rep_group_code");
+        setList.add("\"GROUP_NAME\" = :group_name");
+        setList.add("\"RETSU_NO\" = :retsu_no");
+        setList.add("\"GYO_NO\" = :gyo_no");
+        setList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"USER_ID_CHANGE\" = :user_id_change");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -326,17 +326,17 @@ public class PrdStoreMainteReport implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (rep_group_code) = TRIM (:rep_group_code)");
-        whereList.add("time_stamp_change = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        whereList.add("TRIM (\"REP_GROUP_CODE\") = TRIM (:rep_group_code)");
+        whereList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("REP_GROUP_CODE", this.repGroupCode);
-        params.put("GROUP_NAME", this.groupName);
-        params.put("RETSU_NO", this.retsuNo);
-        params.put("GYO_NO", this.gyoNo);
+        params.put("rep_group_code", this.repGroupCode);
+        params.put("group_name", this.groupName);
+        params.put("retsu_no", this.retsuNo);
+        params.put("gyo_no", this.gyoNo);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

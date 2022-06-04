@@ -619,29 +619,29 @@ public class PrdTehaiIrai implements IEntity {
 
         // PRD_TEHAI_IRAIの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("prd_tehai_no -- :prd_tehai_no");
-        nameList.add("tehai_jokyo_kb -- :tehai_jokyo_kb");
-        nameList.add("kaitei_jokyo_kb -- :kaitei_jokyo_kb");
-        nameList.add("irai_busho_cd -- :irai_busho_cd");
-        nameList.add("dairiten_mei -- :dairiten_mei");
-        nameList.add("nonyusaki_mei -- :nonyusaki_mei");
-        nameList.add("kihyosha_cd -- :kihyosha_cd");
-        nameList.add("kihyo_dt -- :kihyo_dt");
-        nameList.add("shinseisha_cd -- :shinseisha_cd");
-        nameList.add("shinsei_dt -- :shinsei_dt");
-        nameList.add("shinsei_cmt -- :shinsei_cmt");
-        nameList.add("shinseisaki_cd -- :shinseisaki_cd");
-        nameList.add("shoninsha_cd -- :shoninsha_cd");
-        nameList.add("shonin_dt -- :shonin_dt");
-        nameList.add("uketsukesha_cd -- :uketsukesha_cd");
-        nameList.add("uketsuke_dt -- :uketsuke_dt");
-        nameList.add("kaitosha_cd -- :kaitosha_cd");
-        nameList.add("kaito_dt -- :kaito_dt");
-        nameList.add("juchuno_csv -- :juchuno_csv");
-        nameList.add("time_stamp_create -- :time_stamp_create");
-        nameList.add("time_stamp_change -- :time_stamp_change");
-        nameList.add("user_id_create -- :user_id_create");
-        nameList.add("user_id_change -- :user_id_change");
+        nameList.add("\"PRD_TEHAI_NO\" -- :prd_tehai_no");
+        nameList.add("\"TEHAI_JOKYO_KB\" -- :tehai_jokyo_kb");
+        nameList.add("\"KAITEI_JOKYO_KB\" -- :kaitei_jokyo_kb");
+        nameList.add("\"IRAI_BUSHO_CD\" -- :irai_busho_cd");
+        nameList.add("\"DAIRITEN_MEI\" -- :dairiten_mei");
+        nameList.add("\"NONYUSAKI_MEI\" -- :nonyusaki_mei");
+        nameList.add("\"KIHYOSHA_CD\" -- :kihyosha_cd");
+        nameList.add("\"KIHYO_DT\" -- :kihyo_dt");
+        nameList.add("\"SHINSEISHA_CD\" -- :shinseisha_cd");
+        nameList.add("\"SHINSEI_DT\" -- :shinsei_dt");
+        nameList.add("\"SHINSEI_CMT\" -- :shinsei_cmt");
+        nameList.add("\"SHINSEISAKI_CD\" -- :shinseisaki_cd");
+        nameList.add("\"SHONINSHA_CD\" -- :shoninsha_cd");
+        nameList.add("\"SHONIN_DT\" -- :shonin_dt");
+        nameList.add("\"UKETSUKESHA_CD\" -- :uketsukesha_cd");
+        nameList.add("\"UKETSUKE_DT\" -- :uketsuke_dt");
+        nameList.add("\"KAITOSHA_CD\" -- :kaitosha_cd");
+        nameList.add("\"KAITO_DT\" -- :kaito_dt");
+        nameList.add("\"JUCHUNO_CSV\" -- :juchuno_csv");
+        nameList.add("\"TIME_STAMP_CREATE\" -- :time_stamp_create");
+        nameList.add("\"TIME_STAMP_CHANGE\" -- :time_stamp_change");
+        nameList.add("\"USER_ID_CREATE\" -- :user_id_create");
+        nameList.add("\"USER_ID_CHANGE\" -- :user_id_change");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO PRD_TEHAI_IRAI(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -686,7 +686,7 @@ public class PrdTehaiIrai implements IEntity {
             return;
         }
 
-        String sql = "SELECT LPAD (CASE WHEN MAX(e.PRD_TEHAI_NO) IS NULL THEN 0 ELSE MAX(e.PRD_TEHAI_NO) * 1 END + 1, 10, '0') AS PRD_TEHAI_NO FROM PRD_TEHAI_IRAI e WHERE e.PRD_TEHAI_NO < '9999999999'";
+        String sql = "SELECT LPAD (CASE WHEN MAX(e.\"PRD_TEHAI_NO\") IS NULL THEN 0 ELSE MAX(e.\"PRD_TEHAI_NO\") * 1 END + 1, 10, '0') AS \"PRD_TEHAI_NO\" FROM PRD_TEHAI_IRAI e WHERE e.\"PRD_TEHAI_NO\" < '9999999999'";
 
         Map<String, Object> params = new HashMap<String, Object>();
 
@@ -776,27 +776,27 @@ public class PrdTehaiIrai implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("prd_tehai_no = :prd_tehai_no");
-        setList.add("tehai_jokyo_kb = :tehai_jokyo_kb");
-        setList.add("kaitei_jokyo_kb = :kaitei_jokyo_kb");
-        setList.add("irai_busho_cd = :irai_busho_cd");
-        setList.add("dairiten_mei = :dairiten_mei");
-        setList.add("nonyusaki_mei = :nonyusaki_mei");
-        setList.add("kihyosha_cd = :kihyosha_cd");
-        setList.add("kihyo_dt = TO_TIMESTAMP (:kihyo_dt, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("shinseisha_cd = :shinseisha_cd");
-        setList.add("shinsei_dt = TO_TIMESTAMP (:shinsei_dt, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("shinsei_cmt = :shinsei_cmt");
-        setList.add("shinseisaki_cd = :shinseisaki_cd");
-        setList.add("shoninsha_cd = :shoninsha_cd");
-        setList.add("shonin_dt = TO_TIMESTAMP (:shonin_dt, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("uketsukesha_cd = :uketsukesha_cd");
-        setList.add("uketsuke_dt = TO_TIMESTAMP (:uketsuke_dt, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("kaitosha_cd = :kaitosha_cd");
-        setList.add("kaito_dt = TO_TIMESTAMP (:kaito_dt, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("juchuno_csv = :juchuno_csv");
-        setList.add("time_stamp_change = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("user_id_change = :user_id_change");
+        setList.add("\"PRD_TEHAI_NO\" = :prd_tehai_no");
+        setList.add("\"TEHAI_JOKYO_KB\" = :tehai_jokyo_kb");
+        setList.add("\"KAITEI_JOKYO_KB\" = :kaitei_jokyo_kb");
+        setList.add("\"IRAI_BUSHO_CD\" = :irai_busho_cd");
+        setList.add("\"DAIRITEN_MEI\" = :dairiten_mei");
+        setList.add("\"NONYUSAKI_MEI\" = :nonyusaki_mei");
+        setList.add("\"KIHYOSHA_CD\" = :kihyosha_cd");
+        setList.add("\"KIHYO_DT\" = TO_TIMESTAMP (:kihyo_dt, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"SHINSEISHA_CD\" = :shinseisha_cd");
+        setList.add("\"SHINSEI_DT\" = TO_TIMESTAMP (:shinsei_dt, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"SHINSEI_CMT\" = :shinsei_cmt");
+        setList.add("\"SHINSEISAKI_CD\" = :shinseisaki_cd");
+        setList.add("\"SHONINSHA_CD\" = :shoninsha_cd");
+        setList.add("\"SHONIN_DT\" = TO_TIMESTAMP (:shonin_dt, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"UKETSUKESHA_CD\" = :uketsukesha_cd");
+        setList.add("\"UKETSUKE_DT\" = TO_TIMESTAMP (:uketsuke_dt, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"KAITOSHA_CD\" = :kaitosha_cd");
+        setList.add("\"KAITO_DT\" = TO_TIMESTAMP (:kaito_dt, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"JUCHUNO_CSV\" = :juchuno_csv");
+        setList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"USER_ID_CHANGE\" = :user_id_change");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -839,32 +839,32 @@ public class PrdTehaiIrai implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (prd_tehai_no) = TRIM (:prd_tehai_no)");
-        whereList.add("time_stamp_change = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        whereList.add("TRIM (\"PRD_TEHAI_NO\") = TRIM (:prd_tehai_no)");
+        whereList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("PRD_TEHAI_NO", this.prdTehaiNo);
-        params.put("TEHAI_JOKYO_KB", this.tehaiJokyoKb);
-        params.put("KAITEI_JOKYO_KB", this.kaiteiJokyoKb);
-        params.put("IRAI_BUSHO_CD", this.iraiBushoCd);
-        params.put("DAIRITEN_MEI", this.dairitenMei);
-        params.put("NONYUSAKI_MEI", this.nonyusakiMei);
-        params.put("KIHYOSHA_CD", this.kihyoshaCd);
-        params.put("KIHYO_DT", this.kihyoDt);
-        params.put("SHINSEISHA_CD", this.shinseishaCd);
-        params.put("SHINSEI_DT", this.shinseiDt);
-        params.put("SHINSEI_CMT", this.shinseiCmt);
-        params.put("SHINSEISAKI_CD", this.shinseisakiCd);
-        params.put("SHONINSHA_CD", this.shoninshaCd);
-        params.put("SHONIN_DT", this.shoninDt);
-        params.put("UKETSUKESHA_CD", this.uketsukeshaCd);
-        params.put("UKETSUKE_DT", this.uketsukeDt);
-        params.put("KAITOSHA_CD", this.kaitoshaCd);
-        params.put("KAITO_DT", this.kaitoDt);
-        params.put("JUCHUNO_CSV", this.juchunoCsv);
+        params.put("prd_tehai_no", this.prdTehaiNo);
+        params.put("tehai_jokyo_kb", this.tehaiJokyoKb);
+        params.put("kaitei_jokyo_kb", this.kaiteiJokyoKb);
+        params.put("irai_busho_cd", this.iraiBushoCd);
+        params.put("dairiten_mei", this.dairitenMei);
+        params.put("nonyusaki_mei", this.nonyusakiMei);
+        params.put("kihyosha_cd", this.kihyoshaCd);
+        params.put("kihyo_dt", this.kihyoDt);
+        params.put("shinseisha_cd", this.shinseishaCd);
+        params.put("shinsei_dt", this.shinseiDt);
+        params.put("shinsei_cmt", this.shinseiCmt);
+        params.put("shinseisaki_cd", this.shinseisakiCd);
+        params.put("shoninsha_cd", this.shoninshaCd);
+        params.put("shonin_dt", this.shoninDt);
+        params.put("uketsukesha_cd", this.uketsukeshaCd);
+        params.put("uketsuke_dt", this.uketsukeDt);
+        params.put("kaitosha_cd", this.kaitoshaCd);
+        params.put("kaito_dt", this.kaitoDt);
+        params.put("juchuno_csv", this.juchunoCsv);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

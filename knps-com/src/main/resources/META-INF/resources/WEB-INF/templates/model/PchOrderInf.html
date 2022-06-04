@@ -79,8 +79,7 @@
           <label for="PchOrderInf.unitCode" th:text="#{PchOrderInf.unitCode}">UNIT_CODE</label><input type="text" id="PchOrderInf.unitCode" name="PchOrderInf.unitCode" maxlength="2" data-json="MstUnitSearch.json" data-srcDef="UNIT_CODE:PchOrderInf.unitCode" data-destDef="PchOrderInf.unitName:UNIT_NAME" /><a id="PchOrderInf.unitCode" th:href="@{/model/MstUnitS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="PchOrderInf.unitName" class="refer" data-json="MstUnitSearch.json" data-srcDef="UNIT_CODE:PchOrderInf.unitCode" data-destDef="PchOrderInf.unitName:UNIT_NAME"></span>
         </div>
         <div id="memo">
-          <label for="PchOrderInf.memo" th:text="#{PchOrderInf.memo}">MEMO</label>
-          <textarea id="PchOrderInf.memo" name="PchOrderInf.memo"></textarea>
+          <label for="PchOrderInf.memo" th:text="#{PchOrderInf.memo}">MEMO</label><input type="text" id="PchOrderInf.memo" name="PchOrderInf.memo" maxlength="30" />
         </div>
         <div id="period">
           <label for="PchOrderInf.period" th:text="#{PchOrderInf.period}">PERIOD</label><input type="text" id="PchOrderInf.period" name="PchOrderInf.period" maxlength="7" />

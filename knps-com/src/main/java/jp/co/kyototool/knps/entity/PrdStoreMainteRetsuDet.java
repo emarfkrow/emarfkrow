@@ -235,14 +235,14 @@ public class PrdStoreMainteRetsuDet implements IEntity {
 
         // PRD_STORE_MAINTE_RETSU_DETの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("retsu_no -- :retsu_no");
-        nameList.add("retsu_pos -- :retsu_pos");
-        nameList.add("wc_code -- :wc_code");
-        nameList.add("ope_detail -- :ope_detail");
-        nameList.add("time_stamp_create -- :time_stamp_create");
-        nameList.add("time_stamp_change -- :time_stamp_change");
-        nameList.add("user_id_create -- :user_id_create");
-        nameList.add("user_id_change -- :user_id_change");
+        nameList.add("\"RETSU_NO\" -- :retsu_no");
+        nameList.add("\"RETSU_POS\" -- :retsu_pos");
+        nameList.add("\"WC_CODE\" -- :wc_code");
+        nameList.add("\"OPE_DETAIL\" -- :ope_detail");
+        nameList.add("\"TIME_STAMP_CREATE\" -- :time_stamp_create");
+        nameList.add("\"TIME_STAMP_CHANGE\" -- :time_stamp_change");
+        nameList.add("\"USER_ID_CREATE\" -- :user_id_create");
+        nameList.add("\"USER_ID_CHANGE\" -- :user_id_change");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO PRD_STORE_MAINTE_RETSU_DET(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -282,12 +282,12 @@ public class PrdStoreMainteRetsuDet implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("retsu_no = :retsu_no");
-        setList.add("retsu_pos = :retsu_pos");
-        setList.add("wc_code = :wc_code");
-        setList.add("ope_detail = :ope_detail");
-        setList.add("time_stamp_change = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("user_id_change = :user_id_change");
+        setList.add("\"RETSU_NO\" = :retsu_no");
+        setList.add("\"RETSU_POS\" = :retsu_pos");
+        setList.add("\"WC_CODE\" = :wc_code");
+        setList.add("\"OPE_DETAIL\" = :ope_detail");
+        setList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"USER_ID_CHANGE\" = :user_id_change");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -309,18 +309,18 @@ public class PrdStoreMainteRetsuDet implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (retsu_no) = TRIM (:retsu_no)");
-        whereList.add("retsu_pos = :retsu_pos");
-        whereList.add("time_stamp_change = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        whereList.add("TRIM (\"RETSU_NO\") = TRIM (:retsu_no)");
+        whereList.add("\"RETSU_POS\" = :retsu_pos");
+        whereList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("RETSU_NO", this.retsuNo);
-        params.put("RETSU_POS", this.retsuPos);
-        params.put("WC_CODE", this.wcCode);
-        params.put("OPE_DETAIL", this.opeDetail);
+        params.put("retsu_no", this.retsuNo);
+        params.put("retsu_pos", this.retsuPos);
+        params.put("wc_code", this.wcCode);
+        params.put("ope_detail", this.opeDetail);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

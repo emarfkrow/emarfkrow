@@ -251,14 +251,14 @@ public class MstRack implements IEntity {
 
         // MST_RACKの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("man_hinban -- :man_hinban");
-        nameList.add("rack_name -- :rack_name");
-        nameList.add("kakesu -- :kakesu");
-        nameList.add("time_stamp_create -- :time_stamp_create");
-        nameList.add("time_stamp_change -- :time_stamp_change");
-        nameList.add("user_id_create -- :user_id_create");
-        nameList.add("user_id_change -- :user_id_change");
-        nameList.add("delete_flag -- :delete_flag");
+        nameList.add("\"MAN_HINBAN\" -- :man_hinban");
+        nameList.add("\"RACK_NAME\" -- :rack_name");
+        nameList.add("\"KAKESU\" -- :kakesu");
+        nameList.add("\"TIME_STAMP_CREATE\" -- :time_stamp_create");
+        nameList.add("\"TIME_STAMP_CHANGE\" -- :time_stamp_change");
+        nameList.add("\"USER_ID_CREATE\" -- :user_id_create");
+        nameList.add("\"USER_ID_CHANGE\" -- :user_id_change");
+        nameList.add("\"DELETE_FLAG\" -- :delete_flag");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO MST_RACK(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -288,7 +288,7 @@ public class MstRack implements IEntity {
             return;
         }
 
-        String sql = "SELECT LPAD (CASE WHEN MAX(e.MAN_HINBAN) IS NULL THEN 0 ELSE MAX(e.MAN_HINBAN) * 1 END + 1, 25, '0') AS MAN_HINBAN FROM MST_RACK e WHERE e.MAN_HINBAN < '9999999999999999999999999'";
+        String sql = "SELECT LPAD (CASE WHEN MAX(e.\"MAN_HINBAN\") IS NULL THEN 0 ELSE MAX(e.\"MAN_HINBAN\") * 1 END + 1, 25, '0') AS \"MAN_HINBAN\" FROM MST_RACK e WHERE e.\"MAN_HINBAN\" < '9999999999999999999999999'";
 
         Map<String, Object> params = new HashMap<String, Object>();
 
@@ -357,12 +357,12 @@ public class MstRack implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("man_hinban = :man_hinban");
-        setList.add("rack_name = :rack_name");
-        setList.add("kakesu = :kakesu");
-        setList.add("time_stamp_change = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("user_id_change = :user_id_change");
-        setList.add("delete_flag = :delete_flag");
+        setList.add("\"MAN_HINBAN\" = :man_hinban");
+        setList.add("\"RACK_NAME\" = :rack_name");
+        setList.add("\"KAKESU\" = :kakesu");
+        setList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"USER_ID_CHANGE\" = :user_id_change");
+        setList.add("\"DELETE_FLAG\" = :delete_flag");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -398,17 +398,17 @@ public class MstRack implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (man_hinban) = TRIM (:man_hinban)");
-        whereList.add("time_stamp_change = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        whereList.add("TRIM (\"MAN_HINBAN\") = TRIM (:man_hinban)");
+        whereList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("MAN_HINBAN", this.manHinban);
-        params.put("RACK_NAME", this.rackName);
-        params.put("KAKESU", this.kakesu);
-        params.put("DELETE_FLAG", this.deleteFlag);
+        params.put("man_hinban", this.manHinban);
+        params.put("rack_name", this.rackName);
+        params.put("kakesu", this.kakesu);
+        params.put("delete_flag", this.deleteFlag);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

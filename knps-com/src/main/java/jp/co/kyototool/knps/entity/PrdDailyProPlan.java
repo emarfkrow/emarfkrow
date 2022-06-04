@@ -541,26 +541,26 @@ public class PrdDailyProPlan implements IEntity {
 
         // PRD_DAILY_PRO_PLANの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("plan_no -- :plan_no");
-        nameList.add("arrange_kbn -- :arrange_kbn");
-        nameList.add("hinban -- :hinban");
-        nameList.add("detail_plan_counts -- :detail_plan_counts");
-        nameList.add("plan_comment -- :plan_comment");
-        nameList.add("plan_status -- :plan_status");
-        nameList.add("period -- :period");
-        nameList.add("period_chg -- :period_chg");
-        nameList.add("period_chg_counts -- :period_chg_counts");
-        nameList.add("plan_date_appoint -- :plan_date_appoint");
-        nameList.add("beg_date -- :beg_date");
-        nameList.add("end_date -- :end_date");
-        nameList.add("start_date -- :start_date");
-        nameList.add("comp_date -- :comp_date");
-        nameList.add("short_no -- :short_no");
-        nameList.add("time_stamp_create -- :time_stamp_create");
-        nameList.add("time_stamp_change -- :time_stamp_change");
-        nameList.add("user_id_create -- :user_id_create");
-        nameList.add("user_id_change -- :user_id_change");
-        nameList.add("delete_flag -- :delete_flag");
+        nameList.add("\"PLAN_NO\" -- :plan_no");
+        nameList.add("\"ARRANGE_KBN\" -- :arrange_kbn");
+        nameList.add("\"HINBAN\" -- :hinban");
+        nameList.add("\"DETAIL_PLAN_COUNTS\" -- :detail_plan_counts");
+        nameList.add("\"PLAN_COMMENT\" -- :plan_comment");
+        nameList.add("\"PLAN_STATUS\" -- :plan_status");
+        nameList.add("\"PERIOD\" -- :period");
+        nameList.add("\"PERIOD_CHG\" -- :period_chg");
+        nameList.add("\"PERIOD_CHG_COUNTS\" -- :period_chg_counts");
+        nameList.add("\"PLAN_DATE_APPOINT\" -- :plan_date_appoint");
+        nameList.add("\"BEG_DATE\" -- :beg_date");
+        nameList.add("\"END_DATE\" -- :end_date");
+        nameList.add("\"START_DATE\" -- :start_date");
+        nameList.add("\"COMP_DATE\" -- :comp_date");
+        nameList.add("\"SHORT_NO\" -- :short_no");
+        nameList.add("\"TIME_STAMP_CREATE\" -- :time_stamp_create");
+        nameList.add("\"TIME_STAMP_CHANGE\" -- :time_stamp_change");
+        nameList.add("\"USER_ID_CREATE\" -- :user_id_create");
+        nameList.add("\"USER_ID_CHANGE\" -- :user_id_change");
+        nameList.add("\"DELETE_FLAG\" -- :delete_flag");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO PRD_DAILY_PRO_PLAN(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -602,7 +602,7 @@ public class PrdDailyProPlan implements IEntity {
             return;
         }
 
-        String sql = "SELECT LPAD (CASE WHEN MAX(e.PLAN_NO) IS NULL THEN 0 ELSE MAX(e.PLAN_NO) * 1 END + 1, 10, '0') AS PLAN_NO FROM PRD_DAILY_PRO_PLAN e WHERE e.PLAN_NO < '9999999999'";
+        String sql = "SELECT LPAD (CASE WHEN MAX(e.\"PLAN_NO\") IS NULL THEN 0 ELSE MAX(e.\"PLAN_NO\") * 1 END + 1, 10, '0') AS \"PLAN_NO\" FROM PRD_DAILY_PRO_PLAN e WHERE e.\"PLAN_NO\" < '9999999999'";
 
         Map<String, Object> params = new HashMap<String, Object>();
 
@@ -629,24 +629,24 @@ public class PrdDailyProPlan implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("plan_no = :plan_no");
-        setList.add("arrange_kbn = :arrange_kbn");
-        setList.add("hinban = :hinban");
-        setList.add("detail_plan_counts = :detail_plan_counts");
-        setList.add("plan_comment = :plan_comment");
-        setList.add("plan_status = :plan_status");
-        setList.add("period = TO_TIMESTAMP (:period, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("period_chg = TO_TIMESTAMP (:period_chg, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("period_chg_counts = :period_chg_counts");
-        setList.add("plan_date_appoint = :plan_date_appoint");
-        setList.add("beg_date = TO_TIMESTAMP (:beg_date, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("end_date = TO_TIMESTAMP (:end_date, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("start_date = TO_TIMESTAMP (:start_date, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("comp_date = TO_TIMESTAMP (:comp_date, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("short_no = :short_no");
-        setList.add("time_stamp_change = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("user_id_change = :user_id_change");
-        setList.add("delete_flag = :delete_flag");
+        setList.add("\"PLAN_NO\" = :plan_no");
+        setList.add("\"ARRANGE_KBN\" = :arrange_kbn");
+        setList.add("\"HINBAN\" = :hinban");
+        setList.add("\"DETAIL_PLAN_COUNTS\" = :detail_plan_counts");
+        setList.add("\"PLAN_COMMENT\" = :plan_comment");
+        setList.add("\"PLAN_STATUS\" = :plan_status");
+        setList.add("\"PERIOD\" = TO_TIMESTAMP (:period, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"PERIOD_CHG\" = TO_TIMESTAMP (:period_chg, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"PERIOD_CHG_COUNTS\" = :period_chg_counts");
+        setList.add("\"PLAN_DATE_APPOINT\" = :plan_date_appoint");
+        setList.add("\"BEG_DATE\" = TO_TIMESTAMP (:beg_date, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"END_DATE\" = TO_TIMESTAMP (:end_date, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"START_DATE\" = TO_TIMESTAMP (:start_date, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"COMP_DATE\" = TO_TIMESTAMP (:comp_date, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"SHORT_NO\" = :short_no");
+        setList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"USER_ID_CHANGE\" = :user_id_change");
+        setList.add("\"DELETE_FLAG\" = :delete_flag");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -668,29 +668,29 @@ public class PrdDailyProPlan implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (plan_no) = TRIM (:plan_no)");
-        whereList.add("time_stamp_change = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        whereList.add("TRIM (\"PLAN_NO\") = TRIM (:plan_no)");
+        whereList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("PLAN_NO", this.planNo);
-        params.put("ARRANGE_KBN", this.arrangeKbn);
-        params.put("HINBAN", this.hinban);
-        params.put("DETAIL_PLAN_COUNTS", this.detailPlanCounts);
-        params.put("PLAN_COMMENT", this.planComment);
-        params.put("PLAN_STATUS", this.planStatus);
-        params.put("PERIOD", this.period);
-        params.put("PERIOD_CHG", this.periodChg);
-        params.put("PERIOD_CHG_COUNTS", this.periodChgCounts);
-        params.put("PLAN_DATE_APPOINT", this.planDateAppoint);
-        params.put("BEG_DATE", this.begDate);
-        params.put("END_DATE", this.endDate);
-        params.put("START_DATE", this.startDate);
-        params.put("COMP_DATE", this.compDate);
-        params.put("SHORT_NO", this.shortNo);
-        params.put("DELETE_FLAG", this.deleteFlag);
+        params.put("plan_no", this.planNo);
+        params.put("arrange_kbn", this.arrangeKbn);
+        params.put("hinban", this.hinban);
+        params.put("detail_plan_counts", this.detailPlanCounts);
+        params.put("plan_comment", this.planComment);
+        params.put("plan_status", this.planStatus);
+        params.put("period", this.period);
+        params.put("period_chg", this.periodChg);
+        params.put("period_chg_counts", this.periodChgCounts);
+        params.put("plan_date_appoint", this.planDateAppoint);
+        params.put("beg_date", this.begDate);
+        params.put("end_date", this.endDate);
+        params.put("start_date", this.startDate);
+        params.put("comp_date", this.compDate);
+        params.put("short_no", this.shortNo);
+        params.put("delete_flag", this.deleteFlag);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

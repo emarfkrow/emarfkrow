@@ -289,16 +289,16 @@ public class InvStockToolMngHed implements IEntity {
 
         // INV_STOCK_TOOL_MNG_HEDの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("stock_management_section -- :stock_management_section");
-        nameList.add("hinban -- :hinban");
-        nameList.add("sub_inv_code -- :sub_inv_code");
-        nameList.add("stock -- :stock");
-        nameList.add("last_in_out_date -- :last_in_out_date");
-        nameList.add("time_stamp_create -- :time_stamp_create");
-        nameList.add("time_stamp_change -- :time_stamp_change");
-        nameList.add("user_id_create -- :user_id_create");
-        nameList.add("user_id_change -- :user_id_change");
-        nameList.add("delete_flag -- :delete_flag");
+        nameList.add("\"STOCK_MANAGEMENT_SECTION\" -- :stock_management_section");
+        nameList.add("\"HINBAN\" -- :hinban");
+        nameList.add("\"SUB_INV_CODE\" -- :sub_inv_code");
+        nameList.add("\"STOCK\" -- :stock");
+        nameList.add("\"LAST_IN_OUT_DATE\" -- :last_in_out_date");
+        nameList.add("\"TIME_STAMP_CREATE\" -- :time_stamp_create");
+        nameList.add("\"TIME_STAMP_CHANGE\" -- :time_stamp_change");
+        nameList.add("\"USER_ID_CREATE\" -- :user_id_create");
+        nameList.add("\"USER_ID_CHANGE\" -- :user_id_change");
+        nameList.add("\"DELETE_FLAG\" -- :delete_flag");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO INV_STOCK_TOOL_MNG_HED(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -340,14 +340,14 @@ public class InvStockToolMngHed implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("stock_management_section = :stock_management_section");
-        setList.add("hinban = :hinban");
-        setList.add("sub_inv_code = :sub_inv_code");
-        setList.add("stock = :stock");
-        setList.add("last_in_out_date = TO_TIMESTAMP (:last_in_out_date, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("time_stamp_change = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("user_id_change = :user_id_change");
-        setList.add("delete_flag = :delete_flag");
+        setList.add("\"STOCK_MANAGEMENT_SECTION\" = :stock_management_section");
+        setList.add("\"HINBAN\" = :hinban");
+        setList.add("\"SUB_INV_CODE\" = :sub_inv_code");
+        setList.add("\"STOCK\" = :stock");
+        setList.add("\"LAST_IN_OUT_DATE\" = TO_TIMESTAMP (:last_in_out_date, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"USER_ID_CHANGE\" = :user_id_change");
+        setList.add("\"DELETE_FLAG\" = :delete_flag");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -369,21 +369,21 @@ public class InvStockToolMngHed implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (hinban) = TRIM (:hinban)");
-        whereList.add("TRIM (sub_inv_code) = TRIM (:sub_inv_code)");
-        whereList.add("stock_management_section = :stock_management_section");
-        whereList.add("time_stamp_change = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        whereList.add("TRIM (\"HINBAN\") = TRIM (:hinban)");
+        whereList.add("TRIM (\"SUB_INV_CODE\") = TRIM (:sub_inv_code)");
+        whereList.add("\"STOCK_MANAGEMENT_SECTION\" = :stock_management_section");
+        whereList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("STOCK_MANAGEMENT_SECTION", this.stockManagementSection);
-        params.put("HINBAN", this.hinban);
-        params.put("SUB_INV_CODE", this.subInvCode);
-        params.put("STOCK", this.stock);
-        params.put("LAST_IN_OUT_DATE", this.lastInOutDate);
-        params.put("DELETE_FLAG", this.deleteFlag);
+        params.put("stock_management_section", this.stockManagementSection);
+        params.put("hinban", this.hinban);
+        params.put("sub_inv_code", this.subInvCode);
+        params.put("stock", this.stock);
+        params.put("last_in_out_date", this.lastInOutDate);
+        params.put("delete_flag", this.deleteFlag);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

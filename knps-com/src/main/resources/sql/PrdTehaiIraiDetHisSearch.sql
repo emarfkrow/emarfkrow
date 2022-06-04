@@ -13,14 +13,14 @@ WHERE
     AND a."IRAI_QT" = :irai_qt 
     AND a."IRAI_QT" >= :irai_qt_1 
     AND a."IRAI_QT" <= :irai_qt_2 
-    AND CASE WHEN a."SHINSETSUHIN_F" IS NULL THEN '0' ELSE TO_CHAR (a.SHINSETSUHIN_F) END IN (:shinsetsuhin_f) 
-    AND CASE WHEN a."SETHIN_F" IS NULL THEN '0' ELSE TO_CHAR (a.SETHIN_F) END IN (:sethin_f) 
-    AND CASE WHEN a."HANMOKUGAI_F" IS NULL THEN '0' ELSE TO_CHAR (a.HANMOKUGAI_F) END IN (:hanmokugai_f) 
-    AND CASE WHEN a."CHUMON_NYURYOKU_ZUMI_F" IS NULL THEN '0' ELSE TO_CHAR (a.CHUMON_NYURYOKU_ZUMI_F) END IN (:chumon_nyuryoku_zumi_f) 
+    AND CASE WHEN a."SHINSETSUHIN_F" IS NULL THEN '0' ELSE TO_CHAR (a."SHINSETSUHIN_F") END IN (:shinsetsuhin_f) 
+    AND CASE WHEN a."SETHIN_F" IS NULL THEN '0' ELSE TO_CHAR (a."SETHIN_F") END IN (:sethin_f) 
+    AND CASE WHEN a."HANMOKUGAI_F" IS NULL THEN '0' ELSE TO_CHAR (a."HANMOKUGAI_F") END IN (:hanmokugai_f) 
+    AND CASE WHEN a."CHUMON_NYURYOKU_ZUMI_F" IS NULL THEN '0' ELSE TO_CHAR (a."CHUMON_NYURYOKU_ZUMI_F") END IN (:chumon_nyuryoku_zumi_f) 
     AND TRIM (a."KIBO_NOKI_YMD") = TRIM (:kibo_noki_ymd) 
     AND a."KIBO_NOKI_YMD" >= :kibo_noki_ymd_1 
     AND a."KIBO_NOKI_YMD" <= :kibo_noki_ymd_2 
-    AND CASE WHEN a."SHUKKA_ZUMI_F" IS NULL THEN '0' ELSE TO_CHAR (a.SHUKKA_ZUMI_F) END IN (:shukka_zumi_f) 
+    AND CASE WHEN a."SHUKKA_ZUMI_F" IS NULL THEN '0' ELSE TO_CHAR (a."SHUKKA_ZUMI_F") END IN (:shukka_zumi_f) 
     AND a."TEHAI_JOKYO_KB" IN (:tehai_jokyo_kb) 
     AND a."KAITEI_JOKYO_KB" IN (:kaitei_jokyo_kb) 
     AND a."TIME_STAMP_CREATE" = :time_stamp_create 

@@ -616,32 +616,32 @@ public class MstWcBk implements IEntity {
 
         // MST_WC_BKの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("yy -- :yy");
-        nameList.add("wc_code -- :wc_code");
-        nameList.add("wc_name -- :wc_name");
-        nameList.add("norm_lt -- :norm_lt");
-        nameList.add("mac_norm_ability -- :mac_norm_ability");
-        nameList.add("mac_max_ability -- :mac_max_ability");
-        nameList.add("mac_counts -- :mac_counts");
-        nameList.add("act_gather_pat_no -- :act_gather_pat_no");
-        nameList.add("ope_form_pat_no -- :ope_form_pat_no");
-        nameList.add("delay_alert_days -- :delay_alert_days");
-        nameList.add("ato_control -- :ato_control");
-        nameList.add("routing_code -- :routing_code");
-        nameList.add("in_out_kbn -- :in_out_kbn");
-        nameList.add("ws_code -- :ws_code");
-        nameList.add("cost_center_code -- :cost_center_code");
-        nameList.add("neck_kbn -- :neck_kbn");
-        nameList.add("sub_inv_code -- :sub_inv_code");
-        nameList.add("stock_control -- :stock_control");
-        nameList.add("time_stamp_create -- :time_stamp_create");
-        nameList.add("time_stamp_change -- :time_stamp_change");
-        nameList.add("user_id_create -- :user_id_create");
-        nameList.add("user_id_change -- :user_id_change");
-        nameList.add("delete_flag -- :delete_flag");
-        nameList.add("st_alert_ratio -- :st_alert_ratio");
-        nameList.add("act_input_type -- :act_input_type");
-        nameList.add("nichiji_shime_f -- :nichiji_shime_f");
+        nameList.add("\"YY\" -- :yy");
+        nameList.add("\"WC_CODE\" -- :wc_code");
+        nameList.add("\"WC_NAME\" -- :wc_name");
+        nameList.add("\"NORM_LT\" -- :norm_lt");
+        nameList.add("\"MAC_NORM_ABILITY\" -- :mac_norm_ability");
+        nameList.add("\"MAC_MAX_ABILITY\" -- :mac_max_ability");
+        nameList.add("\"MAC_COUNTS\" -- :mac_counts");
+        nameList.add("\"ACT_GATHER_PAT_NO\" -- :act_gather_pat_no");
+        nameList.add("\"OPE_FORM_PAT_NO\" -- :ope_form_pat_no");
+        nameList.add("\"DELAY_ALERT_DAYS\" -- :delay_alert_days");
+        nameList.add("\"ATO_CONTROL\" -- :ato_control");
+        nameList.add("\"ROUTING_CODE\" -- :routing_code");
+        nameList.add("\"IN_OUT_KBN\" -- :in_out_kbn");
+        nameList.add("\"WS_CODE\" -- :ws_code");
+        nameList.add("\"COST_CENTER_CODE\" -- :cost_center_code");
+        nameList.add("\"NECK_KBN\" -- :neck_kbn");
+        nameList.add("\"SUB_INV_CODE\" -- :sub_inv_code");
+        nameList.add("\"STOCK_CONTROL\" -- :stock_control");
+        nameList.add("\"TIME_STAMP_CREATE\" -- :time_stamp_create");
+        nameList.add("\"TIME_STAMP_CHANGE\" -- :time_stamp_change");
+        nameList.add("\"USER_ID_CREATE\" -- :user_id_create");
+        nameList.add("\"USER_ID_CHANGE\" -- :user_id_change");
+        nameList.add("\"DELETE_FLAG\" -- :delete_flag");
+        nameList.add("\"ST_ALERT_RATIO\" -- :st_alert_ratio");
+        nameList.add("\"ACT_INPUT_TYPE\" -- :act_input_type");
+        nameList.add("\"NICHIJI_SHIME_F\" -- :nichiji_shime_f");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO MST_WC_BK(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -689,15 +689,15 @@ public class MstWcBk implements IEntity {
             return;
         }
 
-        String sql = "SELECT LPAD (CASE WHEN MAX(e.YY) IS NULL THEN 0 ELSE MAX(e.YY) * 1 END + 1, 4, '0') AS YY FROM MST_WC_BK e WHERE e.YY < '9999'";
+        String sql = "SELECT LPAD (CASE WHEN MAX(e.\"YY\") IS NULL THEN 0 ELSE MAX(e.\"YY\") * 1 END + 1, 4, '0') AS \"YY\" FROM MST_WC_BK e WHERE e.\"YY\" < '9999'";
 
         Map<String, Object> params = new HashMap<String, Object>();
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("e.WC_CODE = :wc_code");
+        whereList.add("e.\"WC_CODE\" = :wc_code");
         sql += " WHERE " + String.join(" AND ", whereList);
 
-        params.put("wcCode", this.wcCode);
+        params.put("wc_code", this.wcCode);
 
         jp.co.golorp.emarf.util.MapList mapList = Queries.select(sql, params);
         Object o = mapList.get(0).get("YY");
@@ -722,30 +722,30 @@ public class MstWcBk implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("yy = :yy");
-        setList.add("wc_code = :wc_code");
-        setList.add("wc_name = :wc_name");
-        setList.add("norm_lt = :norm_lt");
-        setList.add("mac_norm_ability = :mac_norm_ability");
-        setList.add("mac_max_ability = :mac_max_ability");
-        setList.add("mac_counts = :mac_counts");
-        setList.add("act_gather_pat_no = :act_gather_pat_no");
-        setList.add("ope_form_pat_no = :ope_form_pat_no");
-        setList.add("delay_alert_days = :delay_alert_days");
-        setList.add("ato_control = :ato_control");
-        setList.add("routing_code = :routing_code");
-        setList.add("in_out_kbn = :in_out_kbn");
-        setList.add("ws_code = :ws_code");
-        setList.add("cost_center_code = :cost_center_code");
-        setList.add("neck_kbn = :neck_kbn");
-        setList.add("sub_inv_code = :sub_inv_code");
-        setList.add("stock_control = :stock_control");
-        setList.add("time_stamp_change = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("user_id_change = :user_id_change");
-        setList.add("delete_flag = :delete_flag");
-        setList.add("st_alert_ratio = :st_alert_ratio");
-        setList.add("act_input_type = :act_input_type");
-        setList.add("nichiji_shime_f = :nichiji_shime_f");
+        setList.add("\"YY\" = :yy");
+        setList.add("\"WC_CODE\" = :wc_code");
+        setList.add("\"WC_NAME\" = :wc_name");
+        setList.add("\"NORM_LT\" = :norm_lt");
+        setList.add("\"MAC_NORM_ABILITY\" = :mac_norm_ability");
+        setList.add("\"MAC_MAX_ABILITY\" = :mac_max_ability");
+        setList.add("\"MAC_COUNTS\" = :mac_counts");
+        setList.add("\"ACT_GATHER_PAT_NO\" = :act_gather_pat_no");
+        setList.add("\"OPE_FORM_PAT_NO\" = :ope_form_pat_no");
+        setList.add("\"DELAY_ALERT_DAYS\" = :delay_alert_days");
+        setList.add("\"ATO_CONTROL\" = :ato_control");
+        setList.add("\"ROUTING_CODE\" = :routing_code");
+        setList.add("\"IN_OUT_KBN\" = :in_out_kbn");
+        setList.add("\"WS_CODE\" = :ws_code");
+        setList.add("\"COST_CENTER_CODE\" = :cost_center_code");
+        setList.add("\"NECK_KBN\" = :neck_kbn");
+        setList.add("\"SUB_INV_CODE\" = :sub_inv_code");
+        setList.add("\"STOCK_CONTROL\" = :stock_control");
+        setList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"USER_ID_CHANGE\" = :user_id_change");
+        setList.add("\"DELETE_FLAG\" = :delete_flag");
+        setList.add("\"ST_ALERT_RATIO\" = :st_alert_ratio");
+        setList.add("\"ACT_INPUT_TYPE\" = :act_input_type");
+        setList.add("\"NICHIJI_SHIME_F\" = :nichiji_shime_f");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -767,36 +767,36 @@ public class MstWcBk implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (wc_code) = TRIM (:wc_code)");
-        whereList.add("TRIM (yy) = TRIM (:yy)");
-        whereList.add("time_stamp_change = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        whereList.add("TRIM (\"WC_CODE\") = TRIM (:wc_code)");
+        whereList.add("TRIM (\"YY\") = TRIM (:yy)");
+        whereList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("YY", this.yy);
-        params.put("WC_CODE", this.wcCode);
-        params.put("WC_NAME", this.wcName);
-        params.put("NORM_LT", this.normLt);
-        params.put("MAC_NORM_ABILITY", this.macNormAbility);
-        params.put("MAC_MAX_ABILITY", this.macMaxAbility);
-        params.put("MAC_COUNTS", this.macCounts);
-        params.put("ACT_GATHER_PAT_NO", this.actGatherPatNo);
-        params.put("OPE_FORM_PAT_NO", this.opeFormPatNo);
-        params.put("DELAY_ALERT_DAYS", this.delayAlertDays);
-        params.put("ATO_CONTROL", this.atoControl);
-        params.put("ROUTING_CODE", this.routingCode);
-        params.put("IN_OUT_KBN", this.inOutKbn);
-        params.put("WS_CODE", this.wsCode);
-        params.put("COST_CENTER_CODE", this.costCenterCode);
-        params.put("NECK_KBN", this.neckKbn);
-        params.put("SUB_INV_CODE", this.subInvCode);
-        params.put("STOCK_CONTROL", this.stockControl);
-        params.put("DELETE_FLAG", this.deleteFlag);
-        params.put("ST_ALERT_RATIO", this.stAlertRatio);
-        params.put("ACT_INPUT_TYPE", this.actInputType);
-        params.put("NICHIJI_SHIME_F", this.nichijiShimeF);
+        params.put("yy", this.yy);
+        params.put("wc_code", this.wcCode);
+        params.put("wc_name", this.wcName);
+        params.put("norm_lt", this.normLt);
+        params.put("mac_norm_ability", this.macNormAbility);
+        params.put("mac_max_ability", this.macMaxAbility);
+        params.put("mac_counts", this.macCounts);
+        params.put("act_gather_pat_no", this.actGatherPatNo);
+        params.put("ope_form_pat_no", this.opeFormPatNo);
+        params.put("delay_alert_days", this.delayAlertDays);
+        params.put("ato_control", this.atoControl);
+        params.put("routing_code", this.routingCode);
+        params.put("in_out_kbn", this.inOutKbn);
+        params.put("ws_code", this.wsCode);
+        params.put("cost_center_code", this.costCenterCode);
+        params.put("neck_kbn", this.neckKbn);
+        params.put("sub_inv_code", this.subInvCode);
+        params.put("stock_control", this.stockControl);
+        params.put("delete_flag", this.deleteFlag);
+        params.put("st_alert_ratio", this.stAlertRatio);
+        params.put("act_input_type", this.actInputType);
+        params.put("nichiji_shime_f", this.nichijiShimeF);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

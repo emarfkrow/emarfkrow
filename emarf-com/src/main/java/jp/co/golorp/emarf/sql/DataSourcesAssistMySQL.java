@@ -32,4 +32,14 @@ public final class DataSourcesAssistMySQL extends DataSourcesAssist {
         return s;
     }
 
+    @Override
+    public String quoted(final String columnName) {
+        return "`" + columnName + "`";
+    }
+
+    @Override
+    public String quoteEscaped(final String columnName) {
+        return "`" + columnName + "`";
+    }
+
 }

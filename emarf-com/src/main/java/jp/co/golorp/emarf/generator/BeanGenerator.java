@@ -451,14 +451,14 @@ public final class BeanGenerator {
         s.add("    public int insert(final LocalDateTime now, final String id) {");
 
         // 最後のキーを取得
-        ColumnInfo keyInfo = null;
+        ColumnInfo lastKeyInfo = null;
         if (tableInfo.getPrimaryKeys() != null && tableInfo.getPrimaryKeys().size() > 0) {
             List<String> primaryKeys = tableInfo.getPrimaryKeys();
             String lastKey = primaryKeys.get(primaryKeys.size() - 1);
-            keyInfo = tableInfo.getColumnInfos().get(lastKey);
-            if (keyInfo != null && keyInfo.isNumbering()) {
+            lastKeyInfo = tableInfo.getColumnInfos().get(lastKey);
+            if (lastKeyInfo != null && lastKeyInfo.isNumbering()) {
                 s.add("");
-                s.add("        // " + keyInfo.getRemarks() + "の採番処理");
+                s.add("        // " + lastKeyInfo.getRemarks() + "の採番処理");
                 s.add("        numbering();");
             }
         }
@@ -512,12 +512,14 @@ public final class BeanGenerator {
             s.add("        " + camel + ".insert(now, id);");
         }
 
+        DataSourcesAssist assist = DataSources.getAssist();
+
         s.add("");
         s.add("        // " + tableInfo.getRemarks() + "の登録");
         s.add("        List<String> nameList = new ArrayList<String>();");
         for (String columnName : tableInfo.getColumnInfos().keySet()) {
             String snake = StringUtil.toSnakeCase(columnName);
-            s.add("        nameList.add(\"" + snake + " -- :" + snake + "\");");
+            s.add("        nameList.add(\"" + assist.quoteEscaped(columnName) + " -- :" + snake + "\");");
         }
         s.add("        String name = String.join(\"\\r\\n    , \", nameList);");
         s.add("");
@@ -534,56 +536,80 @@ public final class BeanGenerator {
         for (Entry<String, ColumnInfo> e : tableInfo.getColumnInfos().entrySet()) {
             String rightHand = ":" + e.getKey().toLowerCase();
             if (e.getValue().getDataType().equals("java.time.LocalDateTime")) {
-                rightHand = DataSources.getAssist().toTimestamp(rightHand);
+                rightHand = assist.toTimestamp(rightHand);
             }
             s.add("        valueList.add(\"" + rightHand + "\");");
         }
         s.add("        return String.join(\"\\r\\n    , \", valueList);");
         s.add("    }");
 
-        if (keyInfo != null && keyInfo.isNumbering()) {
-            String pk = tableInfo.getPrimaryKeys().get(tableInfo.getPrimaryKeys().size() - 1);
-            String columnRemarks = tableInfo.getColumnInfos().get(keyInfo.getColumnName()).getRemarks();
-            s.add("");
-            s.add("    /** " + columnRemarks + "の採番処理 */");
-            s.add("    private void numbering() {");
-            s.add("");
-            String camelPk = StringUtil.toCamelCase(pk);
-            s.add("        if (this." + camelPk + " != null) {");
-            s.add("            return;");
-            s.add("        }");
-            s.add("");
-            String numbering = "CASE WHEN MAX(e." + pk + ") IS NULL THEN 0 ELSE MAX(e." + pk + ") * 1 END + 1";
-            String w = "";
-            if (keyInfo.getTypeName().equals("CHAR")) {
-                numbering = "LPAD (" + numbering + ", " + keyInfo.getColumnSize() + ", '0')";
-                w = " WHERE e." + pk + " < '" + new String(new char[keyInfo.getColumnSize()]).replace("\0", "9") + "'";
-            }
-            s.add("        String sql = \"SELECT " + numbering + " AS " + pk + " FROM " + tableName + " e" + w + "\";");
-            s.add("");
-            s.add("        Map<String, Object> params = new HashMap<String, Object>();");
-            if (tableInfo.getPrimaryKeys().size() > 1) {
-                s.add("");
-                s.add("        List<String> whereList = new ArrayList<String>();");
-                for (int j = 0; j < tableInfo.getPrimaryKeys().size() - 1; j++) {
-                    String primaryKey = tableInfo.getPrimaryKeys().get(j);
-                    s.add("        whereList.add(\"e." + primaryKey + " = :" + primaryKey.toLowerCase() + "\");");
-                }
-                s.add("        sql += \" WHERE \" + String.join(\" AND \", whereList);");
-                s.add("");
-                for (int j = 0; j < tableInfo.getPrimaryKeys().size() - 1; j++) {
-                    String primaryKey = tableInfo.getPrimaryKeys().get(j);
-                    String camel = StringUtil.toCamelCase(primaryKey);
-                    s.add("        params.put(\"" + camel + "\", this." + camel + ");");
-                }
-            }
-            s.add("");
-            s.add("        jp.co.golorp.emarf.util.MapList mapList = Queries.select(sql, params);");
-            s.add("        Object o = mapList.get(0).get(\"" + pk + "\");");
-            s.add("");
-            s.add("        this.set" + StringUtil.toPascalCase(pk) + "(o);");
-            s.add("    }");
+        if (lastKeyInfo != null && lastKeyInfo.isNumbering()) {
+            javaEntityCRUDInsertNumbering(tableInfo, s, lastKeyInfo);
         }
+    }
+
+    private static void javaEntityCRUDInsertNumbering(final TableInfo tableInfo, final List<String> s,
+            final ColumnInfo lastKeyInfo) {
+
+        String tableName = tableInfo.getTableName();
+
+        String keyName = lastKeyInfo.getColumnName();
+
+        String camel = StringUtil.toCamelCase(keyName);
+
+        DataSourcesAssist assist = DataSources.getAssist();
+        String quoted = assist.quoteEscaped(keyName);
+
+        s.add("");
+        s.add("    /** " + lastKeyInfo.getRemarks() + "の採番処理 */");
+        s.add("    private void numbering() {");
+        s.add("");
+        s.add("        if (this." + camel + " != null) {");
+        s.add("            return;");
+        s.add("        }");
+        s.add("");
+
+        String numbering = "CASE WHEN MAX(e." + quoted + ") IS NULL THEN 0 ELSE MAX(e." + quoted + ") * 1 END + 1";
+        String w = "";
+        if (lastKeyInfo.getTypeName().equals("CHAR")) {
+            int columnSize = lastKeyInfo.getColumnSize();
+            numbering = "LPAD (" + numbering + ", " + columnSize + ", '0')";
+            w = " WHERE e." + quoted + " < '" + new String(new char[columnSize]).replace("\0", "9") + "'";
+        }
+        s.add("        String sql = \"SELECT " + numbering + " AS " + quoted + " FROM " + tableName + " e" + w + "\";");
+        s.add("");
+        s.add("        Map<String, Object> params = new HashMap<String, Object>();");
+
+        if (tableInfo.getPrimaryKeys().size() > 1) {
+
+            s.add("");
+            s.add("        List<String> whereList = new ArrayList<String>();");
+
+            // 一つ前までループ
+            for (int j = 0; j < tableInfo.getPrimaryKeys().size() - 1; j++) {
+                String primaryKey = tableInfo.getPrimaryKeys().get(j);
+                String quotedKey = assist.quoteEscaped(primaryKey);
+                String snakeKey = StringUtil.toSnakeCase(primaryKey);
+                s.add("        whereList.add(\"e." + quotedKey + " = :" + snakeKey + "\");");
+            }
+
+            s.add("        sql += \" WHERE \" + String.join(\" AND \", whereList);");
+            s.add("");
+
+            // 一つ前までループ
+            for (int j = 0; j < tableInfo.getPrimaryKeys().size() - 1; j++) {
+                String primaryKey = tableInfo.getPrimaryKeys().get(j);
+                String snakeKey = StringUtil.toSnakeCase(primaryKey);
+                String camelKey = StringUtil.toCamelCase(primaryKey);
+                s.add("        params.put(\"" + snakeKey + "\", this." + camelKey + ");");
+            }
+        }
+        s.add("");
+        s.add("        jp.co.golorp.emarf.util.MapList mapList = Queries.select(sql, params);");
+        s.add("        Object o = mapList.get(0).get(\"" + keyName + "\");");
+        s.add("");
+        s.add("        this.set" + StringUtil.toPascalCase(keyName) + "(o);");
+        s.add("    }");
     }
 
     private static void javaEntityCRUDUpdate(final TableInfo tableInfo, final List<String> s) {
@@ -600,6 +626,7 @@ public final class BeanGenerator {
         s.add("     * @return 更新件数");
         s.add("     */");
         s.add("    public int update(final LocalDateTime now, final String id) {");
+
         // 子モデル
         for (TableInfo childInfo : tableInfo.getChildInfos()) {
             String childName = childInfo.getTableName();
@@ -608,8 +635,8 @@ public final class BeanGenerator {
             s.add("");
             s.add("        // " + childInfo.getRemarks() + "の登録");
             s.add("        if (this." + camel + "s != null) {");
-            if (!childInfo.getColumnInfos().containsKey(updateDt.toLowerCase())
-                    && !childInfo.getColumnInfos().containsKey(updateDt.toUpperCase())) {
+
+            if (!childInfo.getColumnInfos().containsKey(updateDt)) {
                 List<String> childWhere = new ArrayList<String>();
                 for (String primaryKey : childInfo.getPrimaryKeys()) {
                     childWhere.add(primaryKey + " = :" + primaryKey);
@@ -618,6 +645,7 @@ public final class BeanGenerator {
                 s.add("            Queries.regist(\"DELETE FROM " + childName + " WHERE " + where
                         + "\", toMap(now, id));");
             }
+
             s.add("            for (" + pascal + " " + camel + " : this." + camel + "s) {");
             for (String primaryKey : tableInfo.getPrimaryKeys()) {
                 String camelKey = StringUtil.toCamelCase(primaryKey);
@@ -630,8 +658,7 @@ public final class BeanGenerator {
             s.add("                    " + camel + ".update(now, id);");
             s.add("                }");
             s.add("            }");
-            if (childInfo.getColumnInfos().containsKey(updateDt.toLowerCase())
-                    || childInfo.getColumnInfos().containsKey(updateDt.toUpperCase())) {
+            if (childInfo.getColumnInfos().containsKey(updateDt)) {
                 s.add("            this." + camel + "s = null;");
                 s.add("            this.refer" + pascal + "s();");
                 s.add("            if (this." + camel + "s != null) {");
@@ -645,6 +672,7 @@ public final class BeanGenerator {
             }
             s.add("        }");
         }
+
         // 兄弟モデル
         for (TableInfo brosInfo : tableInfo.getBrosInfos()) {
             String brosName = brosInfo.getTableName();
@@ -663,6 +691,7 @@ public final class BeanGenerator {
             s.add("            }");
             s.add("        }");
         }
+
         // 履歴モデル
         TableInfo historyInfo = tableInfo.getHistoryInfo();
         if (historyInfo != null) {
@@ -686,7 +715,6 @@ public final class BeanGenerator {
         s.add("        Map<String, Object> params = toMap(now, id);");
         s.add("        return Queries.regist(sql, params);");
         s.add("    }");
-
         s.add("");
         s.add("    private String getSet() {");
         s.add("        List<String> setList = new ArrayList<String>();");
@@ -696,17 +724,19 @@ public final class BeanGenerator {
         for (Entry<String, ColumnInfo> e : tableInfo.getColumnInfos().entrySet()) {
             String columnName = e.getKey();
             ColumnInfo columnInfo = e.getValue();
-            String lowerColumn = columnName.toLowerCase();
 
             // 追加時のメタ情報でない場合
-            if (!insertDt.toLowerCase().equals(lowerColumn) && !insertBy.toLowerCase().equals(lowerColumn)) {
+            boolean isInsertDt = columnName.matches("(?i)^" + insertDt + "$");
+            boolean isInsertBy = columnName.matches("(?i)^" + insertBy + "$");
+            if (!isInsertDt && !isInsertBy) {
 
-                String rightHand = ":" + lowerColumn;
+                String snake = StringUtil.toSnakeCase(columnName);
+                String rightHand = ":" + snake;
                 if (columnInfo.getDataType().equals("java.time.LocalDateTime")) {
                     rightHand = assist.toTimestamp(rightHand);
                 }
 
-                s.add("        setList.add(\"" + lowerColumn + " = " + rightHand + "\");");
+                s.add("        setList.add(\"" + assist.quoteEscaped(columnName) + " = " + rightHand + "\");");
             }
         }
         s.add("        String set = String.join(\"\\r\\n    , \", setList);");
@@ -721,41 +751,37 @@ public final class BeanGenerator {
      */
     private static void javaEntityUtil(final TableInfo tableInfo, final List<String> s) {
 
+        DataSourcesAssist assist = DataSources.getAssist();
+
         s.add("");
         s.add("    private String getWhere() {");
         s.add("        List<String> whereList = new ArrayList<String>();");
 
         // 主キー条件
-        for (String pk : tableInfo.getPrimaryKeys()) {
-            if (pk.length() == 0) {
+        for (String primaryKey : tableInfo.getPrimaryKeys()) {
+            if (primaryKey.length() == 0) {
                 continue;
             }
-            ColumnInfo pkInfo = tableInfo.getColumnInfos().get(pk);
-            String lowerPk = pk.toLowerCase();
-            if (pkInfo.getTypeName().equals("CHAR")) {
-                s.add("        whereList.add(\"TRIM (" + lowerPk + ") = TRIM (:" + lowerPk + ")\");");
+            String quoted = assist.quoteEscaped(primaryKey);
+            String snake = StringUtil.toSnakeCase(primaryKey);
+            ColumnInfo primaryKeyInfo = tableInfo.getColumnInfos().get(primaryKey);
+            if (primaryKeyInfo.getTypeName().equals("CHAR")) {
+                s.add("        whereList.add(\"TRIM (" + quoted + ") = TRIM (:" + snake + ")\");");
             } else {
-                s.add("        whereList.add(\"" + lowerPk + " = :" + lowerPk + "\");");
+                s.add("        whereList.add(\"" + quoted + " = :" + snake + "\");");
             }
         }
 
-        DataSourcesAssist assist = DataSources.getAssist();
-
         // 楽観ロック
-        ColumnInfo columnInfo = tableInfo.getColumnInfos().get(updateDt.toLowerCase());
-        if (columnInfo == null) {
-            columnInfo = tableInfo.getColumnInfos().get(updateDt.toUpperCase());
-        }
-
+        ColumnInfo columnInfo = tableInfo.getColumnInfos().get(updateDt);
         if (columnInfo != null) {
 
             String rightHand = "'\" + this." + StringUtil.toCamelCase(updateDt) + " + \"'";
-
             if (columnInfo.getDataType().equals("java.time.LocalDateTime")) {
                 rightHand = assist.toTimestamp(rightHand);
             }
 
-            s.add("        whereList.add(\"" + updateDt + " = " + rightHand + "\");");
+            s.add("        whereList.add(\"" + assist.quoteEscaped(updateDt) + " = " + rightHand + "\");");
         }
 
         s.add("        return String.join(\" AND \", whereList);");
@@ -766,18 +792,21 @@ public final class BeanGenerator {
         s.add("    private Map<String, Object> toMap(final LocalDateTime now, final String id) {");
         s.add("        Map<String, Object> params = new HashMap<String, Object>();");
         for (String columnName : tableInfo.getColumnInfos().keySet()) {
-            String lower = columnName.toLowerCase();
-            if (insertDt.toLowerCase().equals(lower) || insertBy.toLowerCase().equals(lower)
-                    || updateDt.toLowerCase().equals(lower) || updateBy.toLowerCase().equals(lower)) {
+            boolean isInsertDt = columnName.matches("(?i)^" + insertDt + "$");
+            boolean isUpdateDt = columnName.matches("(?i)^" + updateDt + "$");
+            boolean isInsertBy = columnName.matches("(?i)^" + insertBy + "$");
+            boolean isUpdateBy = columnName.matches("(?i)^" + updateBy + "$");
+            if (isInsertDt || isInsertBy || isUpdateDt || isUpdateBy) {
                 continue;
             }
-            String camelCase = StringUtil.toCamelCase(columnName);
-            s.add("        params.put(\"" + columnName + "\", this." + camelCase + ");");
+            String snake = StringUtil.toSnakeCase(columnName);
+            String camel = StringUtil.toCamelCase(columnName);
+            s.add("        params.put(\"" + snake + "\", this." + camel + ");");
         }
-        s.add("        params.put(\"" + insertDt + "\", now);");
-        s.add("        params.put(\"" + insertBy + "\", id);");
-        s.add("        params.put(\"" + updateDt + "\", now);");
-        s.add("        params.put(\"" + updateBy + "\", id);");
+        s.add("        params.put(\"" + StringUtil.toSnakeCase(insertDt) + "\", now);");
+        s.add("        params.put(\"" + StringUtil.toSnakeCase(insertBy) + "\", id);");
+        s.add("        params.put(\"" + StringUtil.toSnakeCase(updateDt) + "\", now);");
+        s.add("        params.put(\"" + StringUtil.toSnakeCase(updateBy) + "\", id);");
         s.add("        return params;");
         s.add("    }");
     }
@@ -1465,15 +1494,19 @@ public final class BeanGenerator {
             s.add("    private static final Logger LOG = LoggerFactory.getLogger(" + entityName + "RegistForm.class);");
             for (ColumnInfo columnInfo : tableInfo.getColumnInfos().values()) {
 
+                String columnName = columnInfo.getColumnName();
+
                 // レコードメタデータならスキップ
-                String lower = columnInfo.getColumnName().toLowerCase();
-                if (lower.equals(insertDt) || lower.equals(insertBy) || lower.equals(updateDt)
-                        || lower.equals(updateBy)) {
+                boolean isInsertDt = columnName.matches("(?i)^" + insertDt + "$");
+                boolean isUpdateDt = columnName.matches("(?i)^" + updateDt + "$");
+                boolean isInsertBy = columnName.matches("(?i)^" + insertBy + "$");
+                boolean isUpdateBy = columnName.matches("(?i)^" + updateBy + "$");
+                if (isInsertDt || isInsertBy || isUpdateDt || isUpdateBy) {
                     continue;
                 }
 
-                String camel = StringUtil.toCamelCase(lower);
-                String pascal = StringUtil.toPascalCase(lower);
+                String camel = StringUtil.toCamelCase(columnName);
+                String pascal = StringUtil.toPascalCase(columnName);
 
                 s.add("");
                 s.add("    /** " + columnInfo.getRemarks() + " */");
@@ -1742,32 +1775,51 @@ public final class BeanGenerator {
         String entityName = StringUtil.toPascalCase(tableName);
 
         List<String> s = new ArrayList<String>();
-
         s.add("SELECT");
         s.add("      a.*");
+
+        // 他マスタでの名称解決
         int i = 0;
         for (ColumnInfo columnInfo : tableInfo.getColumnInfos().values()) {
+
+            String srcColumnName = columnInfo.getColumnName();
+
+            // 列の参照モデル情報
             TableInfo referInfo = columnInfo.getReferInfo();
+
             if (referInfo != null) {
+
                 ++i;
-                String referName = referInfo.getTableName();
-                String srcColumnName = columnInfo.getColumnName();
-                String srcColumnMei = srcColumnName;
+
+                // 合致するID/名のサフィックスを取得
                 String referIdSuffix = null;
-                for (String suffix : referPairs.keySet()) {
-                    if (srcColumnMei.matches("(?i).+" + suffix + "$")) {
-                        referIdSuffix = suffix;
-                        srcColumnMei = srcColumnMei.replaceAll("(?i)" + suffix + "$", referPairs.get(referIdSuffix));
+                String referMeiSuffix = null;
+                for (Entry<String, String> e : referPairs.entrySet()) {
+                    String idSuffix = e.getKey();
+                    String meiSuffix = e.getValue();
+                    if (srcColumnName.matches("(?i).+" + idSuffix + "$")) {
+                        referIdSuffix = idSuffix;
+                        referMeiSuffix = meiSuffix;
+                        break;
                     }
                 }
-                srcColumnMei = StringUtil.toUpperCase(srcColumnMei);
+
+                String srcColumnMei = srcColumnName.replaceAll("(?i)" + referIdSuffix + "$", referMeiSuffix);
+
+                // 名称カラムがない場合はselect句に追加
                 if (!tableInfo.getColumnInfos().containsKey(srcColumnMei)) {
+
                     String destColumnName = referInfo.getPrimaryKeys().get(0);
                     String destColumnMei = destColumnName.replaceAll("(?i)" + referIdSuffix + "$",
                             referPairs.get(referIdSuffix));
-                    destColumnMei = StringUtil.toUpperCase(destColumnMei);
-                    s.add("    , (SELECT r" + i + "." + destColumnMei + " FROM " + referName + " r" + i + " WHERE r" + i
-                            + "." + destColumnName + " = a.\"" + srcColumnName + "\") AS " + srcColumnMei);
+
+                    String srcIdQuoted = DataSources.getAssist().quoted(srcColumnName);
+                    String srcMeiQuoted = DataSources.getAssist().quoted(srcColumnMei);
+                    String destIdQuoted = DataSources.getAssist().quoted(destColumnName);
+                    String destMeiQuoted = DataSources.getAssist().quoted(destColumnMei);
+
+                    s.add("    , (SELECT r" + i + "." + destMeiQuoted + " FROM " + referInfo.getTableName() + " r" + i
+                            + " WHERE r" + i + "." + destIdQuoted + " = a." + srcIdQuoted + ") AS " + srcMeiQuoted);
                 }
             }
         }
@@ -1787,39 +1839,41 @@ public final class BeanGenerator {
             boolean isInputFlag = StringUtil.endsWith(inputFlagSuffixs, snake);
             boolean isOption = StringUtil.endsWith(optionsSuffixs, snake);
 
+            String quoted = DataSources.getAssist().quoted(columnName);
+
             if (isInputLike) {
 
                 String[] array = new String[] { "'%'", ":" + snake, "'%'" };
                 String joined = DataSources.getAssist().join(array);
-                s.add("    AND a.\"" + columnName + "\" LIKE " + joined + " ");
+                s.add("    AND a." + quoted + " LIKE " + joined + " ");
 
             } else if (isInputFlag) {
 
-                s.add("    AND CASE WHEN a.\"" + columnName + "\" IS NULL THEN '0' ELSE TO_CHAR (a." + columnName
-                        + ") END IN (:" + snake + ") ");
+                s.add("    AND CASE WHEN a." + quoted + " IS NULL THEN '0' ELSE TO_CHAR (a." + quoted + ") END IN (:"
+                        + snake + ") ");
 
             } else if (isOption) {
 
                 if (columnInfo.getTypeName().equals("CHAR")) {
-                    s.add("    AND TRIM (a.\"" + columnName + "\") IN (:" + snake + ") ");
+                    s.add("    AND TRIM (a." + quoted + ") IN (:" + snake + ") ");
                 } else {
-                    s.add("    AND a.\"" + columnName + "\" IN (:" + snake + ") ");
+                    s.add("    AND a." + quoted + " IN (:" + snake + ") ");
                 }
 
             } else if (columnInfo.getTypeName().equals("CHAR")) {
 
-                s.add("    AND TRIM (a.\"" + columnName + "\") = TRIM (:" + snake + ") ");
+                s.add("    AND TRIM (a." + quoted + ") = TRIM (:" + snake + ") ");
 
             } else {
 
-                s.add("    AND a.\"" + columnName + "\" = :" + snake + " ");
+                s.add("    AND a." + quoted + " = :" + snake + " ");
             }
 
             boolean isInputRange = StringUtil.endsWith(inputRangeSuffixs, snake);
 
             if (isInputRange) {
-                s.add("    AND a.\"" + columnName + "\" >= :" + snake + "_1 ");
-                s.add("    AND a.\"" + columnName + "\" <= :" + snake + "_2 ");
+                s.add("    AND a." + quoted + " >= :" + snake + "_1 ");
+                s.add("    AND a." + quoted + " <= :" + snake + "_2 ");
             }
         }
 

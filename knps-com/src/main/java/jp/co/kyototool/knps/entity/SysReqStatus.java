@@ -367,19 +367,19 @@ public class SysReqStatus implements IEntity {
 
         // SYS_REQ_STATUSの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("req_id -- :req_id");
-        nameList.add("req_prg_name -- :req_prg_name");
-        nameList.add("req_emp_code -- :req_emp_code");
-        nameList.add("req_date -- :req_date");
-        nameList.add("req_exec_date -- :req_exec_date");
-        nameList.add("req_comp_date -- :req_comp_date");
-        nameList.add("exec_phase -- :exec_phase");
-        nameList.add("exec_status -- :exec_status");
-        nameList.add("time_stamp_create -- :time_stamp_create");
-        nameList.add("time_stamp_change -- :time_stamp_change");
-        nameList.add("user_id_create -- :user_id_create");
-        nameList.add("user_id_change -- :user_id_change");
-        nameList.add("params -- :params");
+        nameList.add("\"REQ_ID\" -- :req_id");
+        nameList.add("\"REQ_PRG_NAME\" -- :req_prg_name");
+        nameList.add("\"REQ_EMP_CODE\" -- :req_emp_code");
+        nameList.add("\"REQ_DATE\" -- :req_date");
+        nameList.add("\"REQ_EXEC_DATE\" -- :req_exec_date");
+        nameList.add("\"REQ_COMP_DATE\" -- :req_comp_date");
+        nameList.add("\"EXEC_PHASE\" -- :exec_phase");
+        nameList.add("\"EXEC_STATUS\" -- :exec_status");
+        nameList.add("\"TIME_STAMP_CREATE\" -- :time_stamp_create");
+        nameList.add("\"TIME_STAMP_CHANGE\" -- :time_stamp_change");
+        nameList.add("\"USER_ID_CREATE\" -- :user_id_create");
+        nameList.add("\"USER_ID_CHANGE\" -- :user_id_change");
+        nameList.add("\"PARAMS\" -- :params");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO SYS_REQ_STATUS(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -414,7 +414,7 @@ public class SysReqStatus implements IEntity {
             return;
         }
 
-        String sql = "SELECT LPAD (CASE WHEN MAX(e.REQ_ID) IS NULL THEN 0 ELSE MAX(e.REQ_ID) * 1 END + 1, 11, '0') AS REQ_ID FROM SYS_REQ_STATUS e WHERE e.REQ_ID < '99999999999'";
+        String sql = "SELECT LPAD (CASE WHEN MAX(e.\"REQ_ID\") IS NULL THEN 0 ELSE MAX(e.\"REQ_ID\") * 1 END + 1, 11, '0') AS \"REQ_ID\" FROM SYS_REQ_STATUS e WHERE e.\"REQ_ID\" < '99999999999'";
 
         Map<String, Object> params = new HashMap<String, Object>();
 
@@ -441,17 +441,17 @@ public class SysReqStatus implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("req_id = :req_id");
-        setList.add("req_prg_name = :req_prg_name");
-        setList.add("req_emp_code = :req_emp_code");
-        setList.add("req_date = TO_TIMESTAMP (:req_date, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("req_exec_date = TO_TIMESTAMP (:req_exec_date, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("req_comp_date = TO_TIMESTAMP (:req_comp_date, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("exec_phase = :exec_phase");
-        setList.add("exec_status = :exec_status");
-        setList.add("time_stamp_change = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("user_id_change = :user_id_change");
-        setList.add("params = :params");
+        setList.add("\"REQ_ID\" = :req_id");
+        setList.add("\"REQ_PRG_NAME\" = :req_prg_name");
+        setList.add("\"REQ_EMP_CODE\" = :req_emp_code");
+        setList.add("\"REQ_DATE\" = TO_TIMESTAMP (:req_date, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"REQ_EXEC_DATE\" = TO_TIMESTAMP (:req_exec_date, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"REQ_COMP_DATE\" = TO_TIMESTAMP (:req_comp_date, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"EXEC_PHASE\" = :exec_phase");
+        setList.add("\"EXEC_STATUS\" = :exec_status");
+        setList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"USER_ID_CHANGE\" = :user_id_change");
+        setList.add("\"PARAMS\" = :params");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -473,22 +473,22 @@ public class SysReqStatus implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (req_id) = TRIM (:req_id)");
-        whereList.add("time_stamp_change = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        whereList.add("TRIM (\"REQ_ID\") = TRIM (:req_id)");
+        whereList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("REQ_ID", this.reqId);
-        params.put("REQ_PRG_NAME", this.reqPrgName);
-        params.put("REQ_EMP_CODE", this.reqEmpCode);
-        params.put("REQ_DATE", this.reqDate);
-        params.put("REQ_EXEC_DATE", this.reqExecDate);
-        params.put("REQ_COMP_DATE", this.reqCompDate);
-        params.put("EXEC_PHASE", this.execPhase);
-        params.put("EXEC_STATUS", this.execStatus);
-        params.put("PARAMS", this.params);
+        params.put("req_id", this.reqId);
+        params.put("req_prg_name", this.reqPrgName);
+        params.put("req_emp_code", this.reqEmpCode);
+        params.put("req_date", this.reqDate);
+        params.put("req_exec_date", this.reqExecDate);
+        params.put("req_comp_date", this.reqCompDate);
+        params.put("exec_phase", this.execPhase);
+        params.put("exec_status", this.execStatus);
+        params.put("params", this.params);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

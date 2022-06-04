@@ -235,14 +235,14 @@ public class MstSupEmp implements IEntity {
 
         // MST_SUP_EMPの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("supplier_ope_code -- :supplier_ope_code");
-        nameList.add("supplier_ope_name -- :supplier_ope_name");
-        nameList.add("emp_code -- :emp_code");
-        nameList.add("time_stamp_create -- :time_stamp_create");
-        nameList.add("time_stamp_change -- :time_stamp_change");
-        nameList.add("user_id_create -- :user_id_create");
-        nameList.add("user_id_change -- :user_id_change");
-        nameList.add("delete_flag -- :delete_flag");
+        nameList.add("\"SUPPLIER_OPE_CODE\" -- :supplier_ope_code");
+        nameList.add("\"SUPPLIER_OPE_NAME\" -- :supplier_ope_name");
+        nameList.add("\"EMP_CODE\" -- :emp_code");
+        nameList.add("\"TIME_STAMP_CREATE\" -- :time_stamp_create");
+        nameList.add("\"TIME_STAMP_CHANGE\" -- :time_stamp_change");
+        nameList.add("\"USER_ID_CREATE\" -- :user_id_create");
+        nameList.add("\"USER_ID_CHANGE\" -- :user_id_change");
+        nameList.add("\"DELETE_FLAG\" -- :delete_flag");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO MST_SUP_EMP(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -272,7 +272,7 @@ public class MstSupEmp implements IEntity {
             return;
         }
 
-        String sql = "SELECT LPAD (CASE WHEN MAX(e.SUPPLIER_OPE_CODE) IS NULL THEN 0 ELSE MAX(e.SUPPLIER_OPE_CODE) * 1 END + 1, 10, '0') AS SUPPLIER_OPE_CODE FROM MST_SUP_EMP e WHERE e.SUPPLIER_OPE_CODE < '9999999999'";
+        String sql = "SELECT LPAD (CASE WHEN MAX(e.\"SUPPLIER_OPE_CODE\") IS NULL THEN 0 ELSE MAX(e.\"SUPPLIER_OPE_CODE\") * 1 END + 1, 10, '0') AS \"SUPPLIER_OPE_CODE\" FROM MST_SUP_EMP e WHERE e.\"SUPPLIER_OPE_CODE\" < '9999999999'";
 
         Map<String, Object> params = new HashMap<String, Object>();
 
@@ -299,12 +299,12 @@ public class MstSupEmp implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("supplier_ope_code = :supplier_ope_code");
-        setList.add("supplier_ope_name = :supplier_ope_name");
-        setList.add("emp_code = :emp_code");
-        setList.add("time_stamp_change = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("user_id_change = :user_id_change");
-        setList.add("delete_flag = :delete_flag");
+        setList.add("\"SUPPLIER_OPE_CODE\" = :supplier_ope_code");
+        setList.add("\"SUPPLIER_OPE_NAME\" = :supplier_ope_name");
+        setList.add("\"EMP_CODE\" = :emp_code");
+        setList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"USER_ID_CHANGE\" = :user_id_change");
+        setList.add("\"DELETE_FLAG\" = :delete_flag");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -326,17 +326,17 @@ public class MstSupEmp implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (supplier_ope_code) = TRIM (:supplier_ope_code)");
-        whereList.add("time_stamp_change = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        whereList.add("TRIM (\"SUPPLIER_OPE_CODE\") = TRIM (:supplier_ope_code)");
+        whereList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("SUPPLIER_OPE_CODE", this.supplierOpeCode);
-        params.put("SUPPLIER_OPE_NAME", this.supplierOpeName);
-        params.put("EMP_CODE", this.empCode);
-        params.put("DELETE_FLAG", this.deleteFlag);
+        params.put("supplier_ope_code", this.supplierOpeCode);
+        params.put("supplier_ope_name", this.supplierOpeName);
+        params.put("emp_code", this.empCode);
+        params.put("delete_flag", this.deleteFlag);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

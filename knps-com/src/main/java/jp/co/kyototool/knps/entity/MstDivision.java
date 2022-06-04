@@ -256,15 +256,15 @@ public class MstDivision implements IEntity {
 
         // MST_DIVISIONの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("division_code -- :division_code");
-        nameList.add("division_name -- :division_name");
-        nameList.add("admin_code -- :admin_code");
-        nameList.add("company_code -- :company_code");
-        nameList.add("time_stamp_create -- :time_stamp_create");
-        nameList.add("time_stamp_change -- :time_stamp_change");
-        nameList.add("user_id_create -- :user_id_create");
-        nameList.add("user_id_change -- :user_id_change");
-        nameList.add("delete_flag -- :delete_flag");
+        nameList.add("\"DIVISION_CODE\" -- :division_code");
+        nameList.add("\"DIVISION_NAME\" -- :division_name");
+        nameList.add("\"ADMIN_CODE\" -- :admin_code");
+        nameList.add("\"COMPANY_CODE\" -- :company_code");
+        nameList.add("\"TIME_STAMP_CREATE\" -- :time_stamp_create");
+        nameList.add("\"TIME_STAMP_CHANGE\" -- :time_stamp_change");
+        nameList.add("\"USER_ID_CREATE\" -- :user_id_create");
+        nameList.add("\"USER_ID_CHANGE\" -- :user_id_change");
+        nameList.add("\"DELETE_FLAG\" -- :delete_flag");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO MST_DIVISION(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -295,7 +295,7 @@ public class MstDivision implements IEntity {
             return;
         }
 
-        String sql = "SELECT LPAD (CASE WHEN MAX(e.DIVISION_CODE) IS NULL THEN 0 ELSE MAX(e.DIVISION_CODE) * 1 END + 1, 10, '0') AS DIVISION_CODE FROM MST_DIVISION e WHERE e.DIVISION_CODE < '9999999999'";
+        String sql = "SELECT LPAD (CASE WHEN MAX(e.\"DIVISION_CODE\") IS NULL THEN 0 ELSE MAX(e.\"DIVISION_CODE\") * 1 END + 1, 10, '0') AS \"DIVISION_CODE\" FROM MST_DIVISION e WHERE e.\"DIVISION_CODE\" < '9999999999'";
 
         Map<String, Object> params = new HashMap<String, Object>();
 
@@ -322,13 +322,13 @@ public class MstDivision implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("division_code = :division_code");
-        setList.add("division_name = :division_name");
-        setList.add("admin_code = :admin_code");
-        setList.add("company_code = :company_code");
-        setList.add("time_stamp_change = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("user_id_change = :user_id_change");
-        setList.add("delete_flag = :delete_flag");
+        setList.add("\"DIVISION_CODE\" = :division_code");
+        setList.add("\"DIVISION_NAME\" = :division_name");
+        setList.add("\"ADMIN_CODE\" = :admin_code");
+        setList.add("\"COMPANY_CODE\" = :company_code");
+        setList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"USER_ID_CHANGE\" = :user_id_change");
+        setList.add("\"DELETE_FLAG\" = :delete_flag");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -350,18 +350,18 @@ public class MstDivision implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (division_code) = TRIM (:division_code)");
-        whereList.add("time_stamp_change = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        whereList.add("TRIM (\"DIVISION_CODE\") = TRIM (:division_code)");
+        whereList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("DIVISION_CODE", this.divisionCode);
-        params.put("DIVISION_NAME", this.divisionName);
-        params.put("ADMIN_CODE", this.adminCode);
-        params.put("COMPANY_CODE", this.companyCode);
-        params.put("DELETE_FLAG", this.deleteFlag);
+        params.put("division_code", this.divisionCode);
+        params.put("division_name", this.divisionName);
+        params.put("admin_code", this.adminCode);
+        params.put("company_code", this.companyCode);
+        params.put("delete_flag", this.deleteFlag);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

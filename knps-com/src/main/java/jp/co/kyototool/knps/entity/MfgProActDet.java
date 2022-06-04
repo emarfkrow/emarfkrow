@@ -331,18 +331,18 @@ public class MfgProActDet implements IEntity {
 
         // MFG_PRO_ACT_DETの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("pro_no -- :pro_no");
-        nameList.add("pro_routing_branch -- :pro_routing_branch");
-        nameList.add("pro_act_branch_no -- :pro_act_branch_no");
-        nameList.add("act_item -- :act_item");
-        nameList.add("act_date -- :act_date");
-        nameList.add("cause_code -- :cause_code");
-        nameList.add("operator -- :operator");
-        nameList.add("last_routing -- :last_routing");
-        nameList.add("time_stamp_create -- :time_stamp_create");
-        nameList.add("time_stamp_change -- :time_stamp_change");
-        nameList.add("user_id_create -- :user_id_create");
-        nameList.add("user_id_change -- :user_id_change");
+        nameList.add("\"PRO_NO\" -- :pro_no");
+        nameList.add("\"PRO_ROUTING_BRANCH\" -- :pro_routing_branch");
+        nameList.add("\"PRO_ACT_BRANCH_NO\" -- :pro_act_branch_no");
+        nameList.add("\"ACT_ITEM\" -- :act_item");
+        nameList.add("\"ACT_DATE\" -- :act_date");
+        nameList.add("\"CAUSE_CODE\" -- :cause_code");
+        nameList.add("\"OPERATOR\" -- :operator");
+        nameList.add("\"LAST_ROUTING\" -- :last_routing");
+        nameList.add("\"TIME_STAMP_CREATE\" -- :time_stamp_create");
+        nameList.add("\"TIME_STAMP_CHANGE\" -- :time_stamp_change");
+        nameList.add("\"USER_ID_CREATE\" -- :user_id_create");
+        nameList.add("\"USER_ID_CHANGE\" -- :user_id_change");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO MFG_PRO_ACT_DET(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -386,16 +386,16 @@ public class MfgProActDet implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("pro_no = :pro_no");
-        setList.add("pro_routing_branch = :pro_routing_branch");
-        setList.add("pro_act_branch_no = :pro_act_branch_no");
-        setList.add("act_item = :act_item");
-        setList.add("act_date = TO_TIMESTAMP (:act_date, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("cause_code = :cause_code");
-        setList.add("operator = :operator");
-        setList.add("last_routing = :last_routing");
-        setList.add("time_stamp_change = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("user_id_change = :user_id_change");
+        setList.add("\"PRO_NO\" = :pro_no");
+        setList.add("\"PRO_ROUTING_BRANCH\" = :pro_routing_branch");
+        setList.add("\"PRO_ACT_BRANCH_NO\" = :pro_act_branch_no");
+        setList.add("\"ACT_ITEM\" = :act_item");
+        setList.add("\"ACT_DATE\" = TO_TIMESTAMP (:act_date, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"CAUSE_CODE\" = :cause_code");
+        setList.add("\"OPERATOR\" = :operator");
+        setList.add("\"LAST_ROUTING\" = :last_routing");
+        setList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"USER_ID_CHANGE\" = :user_id_change");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -417,23 +417,23 @@ public class MfgProActDet implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (pro_no) = TRIM (:pro_no)");
-        whereList.add("pro_routing_branch = :pro_routing_branch");
-        whereList.add("pro_act_branch_no = :pro_act_branch_no");
-        whereList.add("time_stamp_change = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        whereList.add("TRIM (\"PRO_NO\") = TRIM (:pro_no)");
+        whereList.add("\"PRO_ROUTING_BRANCH\" = :pro_routing_branch");
+        whereList.add("\"PRO_ACT_BRANCH_NO\" = :pro_act_branch_no");
+        whereList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("PRO_NO", this.proNo);
-        params.put("PRO_ROUTING_BRANCH", this.proRoutingBranch);
-        params.put("PRO_ACT_BRANCH_NO", this.proActBranchNo);
-        params.put("ACT_ITEM", this.actItem);
-        params.put("ACT_DATE", this.actDate);
-        params.put("CAUSE_CODE", this.causeCode);
-        params.put("OPERATOR", this.operator);
-        params.put("LAST_ROUTING", this.lastRouting);
+        params.put("pro_no", this.proNo);
+        params.put("pro_routing_branch", this.proRoutingBranch);
+        params.put("pro_act_branch_no", this.proActBranchNo);
+        params.put("act_item", this.actItem);
+        params.put("act_date", this.actDate);
+        params.put("cause_code", this.causeCode);
+        params.put("operator", this.operator);
+        params.put("last_routing", this.lastRouting);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

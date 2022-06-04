@@ -259,16 +259,16 @@ public class MGenka implements IEntity {
 
         // 原価マスタの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("hhinban -- :hhinban");
-        nameList.add("hincd -- :hincd");
-        nameList.add("setkbn -- :setkbn");
-        nameList.add("genka -- :genka");
-        nameList.add("seihin_genka -- :seihin_genka");
-        nameList.add("shohin_genka -- :shohin_genka");
-        nameList.add("baika -- :baika");
-        nameList.add("seihin_baika -- :seihin_baika");
-        nameList.add("shohin_baika -- :shohin_baika");
-        nameList.add("filler -- :filler");
+        nameList.add("\"HHINBAN\" -- :hhinban");
+        nameList.add("\"HINCD\" -- :hincd");
+        nameList.add("\"SETKBN\" -- :setkbn");
+        nameList.add("\"GENKA\" -- :genka");
+        nameList.add("\"SEIHIN-GENKA\" -- :seihin_genka");
+        nameList.add("\"SHOHIN-GENKA\" -- :shohin_genka");
+        nameList.add("\"BAIKA\" -- :baika");
+        nameList.add("\"SEIHIN-BAIKA\" -- :seihin_baika");
+        nameList.add("\"SHOHIN-BAIKA\" -- :shohin_baika");
+        nameList.add("\"FILLER\" -- :filler");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO M_GENKA(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -300,7 +300,7 @@ public class MGenka implements IEntity {
             return;
         }
 
-        String sql = "SELECT LPAD (CASE WHEN MAX(e.HHINBAN) IS NULL THEN 0 ELSE MAX(e.HHINBAN) * 1 END + 1, 20, '0') AS HHINBAN FROM M_GENKA e WHERE e.HHINBAN < '99999999999999999999'";
+        String sql = "SELECT LPAD (CASE WHEN MAX(e.\"HHINBAN\") IS NULL THEN 0 ELSE MAX(e.\"HHINBAN\") * 1 END + 1, 20, '0') AS \"HHINBAN\" FROM M_GENKA e WHERE e.\"HHINBAN\" < '99999999999999999999'";
 
         Map<String, Object> params = new HashMap<String, Object>();
 
@@ -327,16 +327,16 @@ public class MGenka implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("hhinban = :hhinban");
-        setList.add("hincd = :hincd");
-        setList.add("setkbn = :setkbn");
-        setList.add("genka = :genka");
-        setList.add("seihin-genka = :seihin-genka");
-        setList.add("shohin-genka = :shohin-genka");
-        setList.add("baika = :baika");
-        setList.add("seihin-baika = :seihin-baika");
-        setList.add("shohin-baika = :shohin-baika");
-        setList.add("filler = :filler");
+        setList.add("\"HHINBAN\" = :hhinban");
+        setList.add("\"HINCD\" = :hincd");
+        setList.add("\"SETKBN\" = :setkbn");
+        setList.add("\"GENKA\" = :genka");
+        setList.add("\"SEIHIN-GENKA\" = :seihin_genka");
+        setList.add("\"SHOHIN-GENKA\" = :shohin_genka");
+        setList.add("\"BAIKA\" = :baika");
+        setList.add("\"SEIHIN-BAIKA\" = :seihin_baika");
+        setList.add("\"SHOHIN-BAIKA\" = :shohin_baika");
+        setList.add("\"FILLER\" = :filler");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -358,22 +358,22 @@ public class MGenka implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (hhinban) = TRIM (:hhinban)");
+        whereList.add("TRIM (\"HHINBAN\") = TRIM (:hhinban)");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("HHINBAN", this.hhinban);
-        params.put("HINCD", this.hincd);
-        params.put("SETKBN", this.setkbn);
-        params.put("GENKA", this.genka);
-        params.put("SEIHIN-GENKA", this.seihinGenka);
-        params.put("SHOHIN-GENKA", this.shohinGenka);
-        params.put("BAIKA", this.baika);
-        params.put("SEIHIN-BAIKA", this.seihinBaika);
-        params.put("SHOHIN-BAIKA", this.shohinBaika);
-        params.put("FILLER", this.filler);
+        params.put("hhinban", this.hhinban);
+        params.put("hincd", this.hincd);
+        params.put("setkbn", this.setkbn);
+        params.put("genka", this.genka);
+        params.put("seihin_genka", this.seihinGenka);
+        params.put("shohin_genka", this.shohinGenka);
+        params.put("baika", this.baika);
+        params.put("seihin_baika", this.seihinBaika);
+        params.put("shohin_baika", this.shohinBaika);
+        params.put("filler", this.filler);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

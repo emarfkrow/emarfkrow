@@ -241,15 +241,15 @@ public class MKtanka implements IEntity {
 
         // 契約単価マスタの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("honshacd -- :honshacd");
-        nameList.add("shagai_hinban -- :shagai_hinban");
-        nameList.add("kkaisibi -- :kkaisibi");
-        nameList.add("kshuryobi -- :kshuryobi");
-        nameList.add("hhinban -- :hhinban");
-        nameList.add("keiyaku_tanka -- :keiyaku_tanka");
-        nameList.add("shohinkbn -- :shohinkbn");
-        nameList.add("kakakukbn -- :kakakukbn");
-        nameList.add("filler -- :filler");
+        nameList.add("\"HONSHACD\" -- :honshacd");
+        nameList.add("\"SHAGAI-HINBAN\" -- :shagai_hinban");
+        nameList.add("\"KKAISIBI\" -- :kkaisibi");
+        nameList.add("\"KSHURYOBI\" -- :kshuryobi");
+        nameList.add("\"HHINBAN\" -- :hhinban");
+        nameList.add("\"KEIYAKU-TANKA\" -- :keiyaku_tanka");
+        nameList.add("\"SHOHINKBN\" -- :shohinkbn");
+        nameList.add("\"KAKAKUKBN\" -- :kakakukbn");
+        nameList.add("\"FILLER\" -- :filler");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO M_KTANKA(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -280,12 +280,12 @@ public class MKtanka implements IEntity {
             return;
         }
 
-        String sql = "SELECT LPAD (CASE WHEN MAX(e.SHAGAI-HINBAN) IS NULL THEN 0 ELSE MAX(e.SHAGAI-HINBAN) * 1 END + 1, 20, '0') AS SHAGAI-HINBAN FROM M_KTANKA e WHERE e.SHAGAI-HINBAN < '99999999999999999999'";
+        String sql = "SELECT LPAD (CASE WHEN MAX(e.\"SHAGAI-HINBAN\") IS NULL THEN 0 ELSE MAX(e.\"SHAGAI-HINBAN\") * 1 END + 1, 20, '0') AS \"SHAGAI-HINBAN\" FROM M_KTANKA e WHERE e.\"SHAGAI-HINBAN\" < '99999999999999999999'";
 
         Map<String, Object> params = new HashMap<String, Object>();
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("e.HONSHACD = :honshacd");
+        whereList.add("e.\"HONSHACD\" = :honshacd");
         sql += " WHERE " + String.join(" AND ", whereList);
 
         params.put("honshacd", this.honshacd);
@@ -313,15 +313,15 @@ public class MKtanka implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("honshacd = :honshacd");
-        setList.add("shagai-hinban = :shagai-hinban");
-        setList.add("kkaisibi = :kkaisibi");
-        setList.add("kshuryobi = :kshuryobi");
-        setList.add("hhinban = :hhinban");
-        setList.add("keiyaku-tanka = :keiyaku-tanka");
-        setList.add("shohinkbn = :shohinkbn");
-        setList.add("kakakukbn = :kakakukbn");
-        setList.add("filler = :filler");
+        setList.add("\"HONSHACD\" = :honshacd");
+        setList.add("\"SHAGAI-HINBAN\" = :shagai_hinban");
+        setList.add("\"KKAISIBI\" = :kkaisibi");
+        setList.add("\"KSHURYOBI\" = :kshuryobi");
+        setList.add("\"HHINBAN\" = :hhinban");
+        setList.add("\"KEIYAKU-TANKA\" = :keiyaku_tanka");
+        setList.add("\"SHOHINKBN\" = :shohinkbn");
+        setList.add("\"KAKAKUKBN\" = :kakakukbn");
+        setList.add("\"FILLER\" = :filler");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -343,22 +343,22 @@ public class MKtanka implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("honshacd = :honshacd");
-        whereList.add("TRIM (shagai-hinban) = TRIM (:shagai-hinban)");
+        whereList.add("\"HONSHACD\" = :honshacd");
+        whereList.add("TRIM (\"SHAGAI-HINBAN\") = TRIM (:shagai_hinban)");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("HONSHACD", this.honshacd);
-        params.put("SHAGAI-HINBAN", this.shagaiHinban);
-        params.put("KKAISIBI", this.kkaisibi);
-        params.put("KSHURYOBI", this.kshuryobi);
-        params.put("HHINBAN", this.hhinban);
-        params.put("KEIYAKU-TANKA", this.keiyakuTanka);
-        params.put("SHOHINKBN", this.shohinkbn);
-        params.put("KAKAKUKBN", this.kakakukbn);
-        params.put("FILLER", this.filler);
+        params.put("honshacd", this.honshacd);
+        params.put("shagai_hinban", this.shagaiHinban);
+        params.put("kkaisibi", this.kkaisibi);
+        params.put("kshuryobi", this.kshuryobi);
+        params.put("hhinban", this.hhinban);
+        params.put("keiyaku_tanka", this.keiyakuTanka);
+        params.put("shohinkbn", this.shohinkbn);
+        params.put("kakakukbn", this.kakakukbn);
+        params.put("filler", this.filler);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

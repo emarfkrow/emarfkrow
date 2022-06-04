@@ -259,16 +259,16 @@ public class MHosozai implements IEntity {
 
         // 包装材マスタの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("hoso_hinban -- :hoso_hinban");
-        nameList.add("hoso_hinmei -- :hoso_hinmei");
-        nameList.add("hoso_hinmei_ryaku -- :hoso_hinmei_ryaku");
-        nameList.add("hoso_size -- :hoso_size");
-        nameList.add("hoso_tanka -- :hoso_tanka");
-        nameList.add("hoso_zaicode -- :hoso_zaicode");
-        nameList.add("hoso_weight -- :hoso_weight");
-        nameList.add("makedate -- :makedate");
-        nameList.add("upddate -- :upddate");
-        nameList.add("filler -- :filler");
+        nameList.add("\"HOSO-HINBAN\" -- :hoso_hinban");
+        nameList.add("\"HOSO-HINMEI\" -- :hoso_hinmei");
+        nameList.add("\"HOSO-HINMEI-RYAKU\" -- :hoso_hinmei_ryaku");
+        nameList.add("\"HOSO-SIZE\" -- :hoso_size");
+        nameList.add("\"HOSO-TANKA\" -- :hoso_tanka");
+        nameList.add("\"HOSO-ZAICODE\" -- :hoso_zaicode");
+        nameList.add("\"HOSO-WEIGHT\" -- :hoso_weight");
+        nameList.add("\"MAKEDATE\" -- :makedate");
+        nameList.add("\"UPDDATE\" -- :upddate");
+        nameList.add("\"FILLER\" -- :filler");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO M_HOSOZAI(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -300,7 +300,7 @@ public class MHosozai implements IEntity {
             return;
         }
 
-        String sql = "SELECT LPAD (CASE WHEN MAX(e.HOSO-HINBAN) IS NULL THEN 0 ELSE MAX(e.HOSO-HINBAN) * 1 END + 1, 25, '0') AS HOSO-HINBAN FROM M_HOSOZAI e WHERE e.HOSO-HINBAN < '9999999999999999999999999'";
+        String sql = "SELECT LPAD (CASE WHEN MAX(e.\"HOSO-HINBAN\") IS NULL THEN 0 ELSE MAX(e.\"HOSO-HINBAN\") * 1 END + 1, 25, '0') AS \"HOSO-HINBAN\" FROM M_HOSOZAI e WHERE e.\"HOSO-HINBAN\" < '9999999999999999999999999'";
 
         Map<String, Object> params = new HashMap<String, Object>();
 
@@ -327,16 +327,16 @@ public class MHosozai implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("hoso-hinban = :hoso-hinban");
-        setList.add("hoso-hinmei = :hoso-hinmei");
-        setList.add("hoso-hinmei-ryaku = :hoso-hinmei-ryaku");
-        setList.add("hoso-size = :hoso-size");
-        setList.add("hoso-tanka = :hoso-tanka");
-        setList.add("hoso-zaicode = :hoso-zaicode");
-        setList.add("hoso-weight = :hoso-weight");
-        setList.add("makedate = :makedate");
-        setList.add("upddate = :upddate");
-        setList.add("filler = :filler");
+        setList.add("\"HOSO-HINBAN\" = :hoso_hinban");
+        setList.add("\"HOSO-HINMEI\" = :hoso_hinmei");
+        setList.add("\"HOSO-HINMEI-RYAKU\" = :hoso_hinmei_ryaku");
+        setList.add("\"HOSO-SIZE\" = :hoso_size");
+        setList.add("\"HOSO-TANKA\" = :hoso_tanka");
+        setList.add("\"HOSO-ZAICODE\" = :hoso_zaicode");
+        setList.add("\"HOSO-WEIGHT\" = :hoso_weight");
+        setList.add("\"MAKEDATE\" = :makedate");
+        setList.add("\"UPDDATE\" = :upddate");
+        setList.add("\"FILLER\" = :filler");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -358,22 +358,22 @@ public class MHosozai implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (hoso-hinban) = TRIM (:hoso-hinban)");
+        whereList.add("TRIM (\"HOSO-HINBAN\") = TRIM (:hoso_hinban)");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("HOSO-HINBAN", this.hosoHinban);
-        params.put("HOSO-HINMEI", this.hosoHinmei);
-        params.put("HOSO-HINMEI-RYAKU", this.hosoHinmeiRyaku);
-        params.put("HOSO-SIZE", this.hosoSize);
-        params.put("HOSO-TANKA", this.hosoTanka);
-        params.put("HOSO-ZAICODE", this.hosoZaicode);
-        params.put("HOSO-WEIGHT", this.hosoWeight);
-        params.put("MAKEDATE", this.makedate);
-        params.put("UPDDATE", this.upddate);
-        params.put("FILLER", this.filler);
+        params.put("hoso_hinban", this.hosoHinban);
+        params.put("hoso_hinmei", this.hosoHinmei);
+        params.put("hoso_hinmei_ryaku", this.hosoHinmeiRyaku);
+        params.put("hoso_size", this.hosoSize);
+        params.put("hoso_tanka", this.hosoTanka);
+        params.put("hoso_zaicode", this.hosoZaicode);
+        params.put("hoso_weight", this.hosoWeight);
+        params.put("makedate", this.makedate);
+        params.put("upddate", this.upddate);
+        params.put("filler", this.filler);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

@@ -130,10 +130,10 @@ public class MJinji implements IEntity {
 
         // 人事マスタの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("shain_no -- :shain_no");
-        nameList.add("shain_mei -- :shain_mei");
-        nameList.add("jinji_shozokucd -- :jinji_shozokucd");
-        nameList.add("filler -- :filler");
+        nameList.add("\"SHAIN-NO\" -- :shain_no");
+        nameList.add("\"SHAIN-MEI\" -- :shain_mei");
+        nameList.add("\"JINJI-SHOZOKUCD\" -- :jinji_shozokucd");
+        nameList.add("\"FILLER\" -- :filler");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO M_JINJI(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -169,10 +169,10 @@ public class MJinji implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("shain-no = :shain-no");
-        setList.add("shain-mei = :shain-mei");
-        setList.add("jinji-shozokucd = :jinji-shozokucd");
-        setList.add("filler = :filler");
+        setList.add("\"SHAIN-NO\" = :shain_no");
+        setList.add("\"SHAIN-MEI\" = :shain_mei");
+        setList.add("\"JINJI-SHOZOKUCD\" = :jinji_shozokucd");
+        setList.add("\"FILLER\" = :filler");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -194,16 +194,16 @@ public class MJinji implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("shain-no = :shain-no");
+        whereList.add("\"SHAIN-NO\" = :shain_no");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("SHAIN-NO", this.shainNo);
-        params.put("SHAIN-MEI", this.shainMei);
-        params.put("JINJI-SHOZOKUCD", this.jinjiShozokucd);
-        params.put("FILLER", this.filler);
+        params.put("shain_no", this.shainNo);
+        params.put("shain_mei", this.shainMei);
+        params.put("jinji_shozokucd", this.jinjiShozokucd);
+        params.put("filler", this.filler);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

@@ -481,26 +481,26 @@ public class MWebkan implements IEntity {
 
         // WEB在庫管理マスタの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("hhinban -- :hhinban");
-        nameList.add("kikaku -- :kikaku");
-        nameList.add("daicd -- :daicd");
-        nameList.add("chucd -- :chucd");
-        nameList.add("shocd -- :shocd");
-        nameList.add("abuncd -- :abuncd");
-        nameList.add("bbuncd -- :bbuncd");
-        nameList.add("whyojikbn -- :whyojikbn");
-        nameList.add("irisu -- :irisu");
-        nameList.add("zaisikii -- :zaisikii");
-        nameList.add("nyuyoteisikii -- :nyuyoteisikii");
-        nameList.add("hanyou1 -- :hanyou1");
-        nameList.add("hanyou2 -- :hanyou2");
-        nameList.add("hanyou3 -- :hanyou3");
-        nameList.add("zaihenkbn -- :zaihenkbn");
-        nameList.add("teidspkbn -- :teidspkbn");
-        nameList.add("updexcdkbn -- :updexcdkbn");
-        nameList.add("tourokubi -- :tourokubi");
-        nameList.add("shuseibi -- :shuseibi");
-        nameList.add("filler -- :filler");
+        nameList.add("\"HHINBAN\" -- :hhinban");
+        nameList.add("\"KIKAKU\" -- :kikaku");
+        nameList.add("\"DAICD\" -- :daicd");
+        nameList.add("\"CHUCD\" -- :chucd");
+        nameList.add("\"SHOCD\" -- :shocd");
+        nameList.add("\"ABUNCD\" -- :abuncd");
+        nameList.add("\"BBUNCD\" -- :bbuncd");
+        nameList.add("\"WHYOJIKBN\" -- :whyojikbn");
+        nameList.add("\"IRISU\" -- :irisu");
+        nameList.add("\"ZAISIKII\" -- :zaisikii");
+        nameList.add("\"NYUYOTEISIKII\" -- :nyuyoteisikii");
+        nameList.add("\"HANYOU1\" -- :hanyou1");
+        nameList.add("\"HANYOU2\" -- :hanyou2");
+        nameList.add("\"HANYOU3\" -- :hanyou3");
+        nameList.add("\"ZAIHENKBN\" -- :zaihenkbn");
+        nameList.add("\"TEIDSPKBN\" -- :teidspkbn");
+        nameList.add("\"UPDEXCDKBN\" -- :updexcdkbn");
+        nameList.add("\"TOUROKUBI\" -- :tourokubi");
+        nameList.add("\"SHUSEIBI\" -- :shuseibi");
+        nameList.add("\"FILLER\" -- :filler");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO M_WEBKAN(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -542,7 +542,7 @@ public class MWebkan implements IEntity {
             return;
         }
 
-        String sql = "SELECT LPAD (CASE WHEN MAX(e.HHINBAN) IS NULL THEN 0 ELSE MAX(e.HHINBAN) * 1 END + 1, 20, '0') AS HHINBAN FROM M_WEBKAN e WHERE e.HHINBAN < '99999999999999999999'";
+        String sql = "SELECT LPAD (CASE WHEN MAX(e.\"HHINBAN\") IS NULL THEN 0 ELSE MAX(e.\"HHINBAN\") * 1 END + 1, 20, '0') AS \"HHINBAN\" FROM M_WEBKAN e WHERE e.\"HHINBAN\" < '99999999999999999999'";
 
         Map<String, Object> params = new HashMap<String, Object>();
 
@@ -589,26 +589,26 @@ public class MWebkan implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("hhinban = :hhinban");
-        setList.add("kikaku = :kikaku");
-        setList.add("daicd = :daicd");
-        setList.add("chucd = :chucd");
-        setList.add("shocd = :shocd");
-        setList.add("abuncd = :abuncd");
-        setList.add("bbuncd = :bbuncd");
-        setList.add("whyojikbn = :whyojikbn");
-        setList.add("irisu = :irisu");
-        setList.add("zaisikii = :zaisikii");
-        setList.add("nyuyoteisikii = :nyuyoteisikii");
-        setList.add("hanyou1 = :hanyou1");
-        setList.add("hanyou2 = :hanyou2");
-        setList.add("hanyou3 = :hanyou3");
-        setList.add("zaihenkbn = :zaihenkbn");
-        setList.add("teidspkbn = :teidspkbn");
-        setList.add("updexcdkbn = :updexcdkbn");
-        setList.add("tourokubi = :tourokubi");
-        setList.add("shuseibi = :shuseibi");
-        setList.add("filler = :filler");
+        setList.add("\"HHINBAN\" = :hhinban");
+        setList.add("\"KIKAKU\" = :kikaku");
+        setList.add("\"DAICD\" = :daicd");
+        setList.add("\"CHUCD\" = :chucd");
+        setList.add("\"SHOCD\" = :shocd");
+        setList.add("\"ABUNCD\" = :abuncd");
+        setList.add("\"BBUNCD\" = :bbuncd");
+        setList.add("\"WHYOJIKBN\" = :whyojikbn");
+        setList.add("\"IRISU\" = :irisu");
+        setList.add("\"ZAISIKII\" = :zaisikii");
+        setList.add("\"NYUYOTEISIKII\" = :nyuyoteisikii");
+        setList.add("\"HANYOU1\" = :hanyou1");
+        setList.add("\"HANYOU2\" = :hanyou2");
+        setList.add("\"HANYOU3\" = :hanyou3");
+        setList.add("\"ZAIHENKBN\" = :zaihenkbn");
+        setList.add("\"TEIDSPKBN\" = :teidspkbn");
+        setList.add("\"UPDEXCDKBN\" = :updexcdkbn");
+        setList.add("\"TOUROKUBI\" = :tourokubi");
+        setList.add("\"SHUSEIBI\" = :shuseibi");
+        setList.add("\"FILLER\" = :filler");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -640,32 +640,32 @@ public class MWebkan implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (hhinban) = TRIM (:hhinban)");
+        whereList.add("TRIM (\"HHINBAN\") = TRIM (:hhinban)");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("HHINBAN", this.hhinban);
-        params.put("KIKAKU", this.kikaku);
-        params.put("DAICD", this.daicd);
-        params.put("CHUCD", this.chucd);
-        params.put("SHOCD", this.shocd);
-        params.put("ABUNCD", this.abuncd);
-        params.put("BBUNCD", this.bbuncd);
-        params.put("WHYOJIKBN", this.whyojikbn);
-        params.put("IRISU", this.irisu);
-        params.put("ZAISIKII", this.zaisikii);
-        params.put("NYUYOTEISIKII", this.nyuyoteisikii);
-        params.put("HANYOU1", this.hanyou1);
-        params.put("HANYOU2", this.hanyou2);
-        params.put("HANYOU3", this.hanyou3);
-        params.put("ZAIHENKBN", this.zaihenkbn);
-        params.put("TEIDSPKBN", this.teidspkbn);
-        params.put("UPDEXCDKBN", this.updexcdkbn);
-        params.put("TOUROKUBI", this.tourokubi);
-        params.put("SHUSEIBI", this.shuseibi);
-        params.put("FILLER", this.filler);
+        params.put("hhinban", this.hhinban);
+        params.put("kikaku", this.kikaku);
+        params.put("daicd", this.daicd);
+        params.put("chucd", this.chucd);
+        params.put("shocd", this.shocd);
+        params.put("abuncd", this.abuncd);
+        params.put("bbuncd", this.bbuncd);
+        params.put("whyojikbn", this.whyojikbn);
+        params.put("irisu", this.irisu);
+        params.put("zaisikii", this.zaisikii);
+        params.put("nyuyoteisikii", this.nyuyoteisikii);
+        params.put("hanyou1", this.hanyou1);
+        params.put("hanyou2", this.hanyou2);
+        params.put("hanyou3", this.hanyou3);
+        params.put("zaihenkbn", this.zaihenkbn);
+        params.put("teidspkbn", this.teidspkbn);
+        params.put("updexcdkbn", this.updexcdkbn);
+        params.put("tourokubi", this.tourokubi);
+        params.put("shuseibi", this.shuseibi);
+        params.put("filler", this.filler);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

@@ -112,9 +112,9 @@ public class MSimuke implements IEntity {
 
         // 仕向先マスタの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("simukecd -- :simukecd");
-        nameList.add("simukemei -- :simukemei");
-        nameList.add("filler -- :filler");
+        nameList.add("\"SIMUKECD\" -- :simukecd");
+        nameList.add("\"SIMUKEMEI\" -- :simukemei");
+        nameList.add("\"FILLER\" -- :filler");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO M_SIMUKE(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -139,7 +139,7 @@ public class MSimuke implements IEntity {
             return;
         }
 
-        String sql = "SELECT LPAD (CASE WHEN MAX(e.SIMUKECD) IS NULL THEN 0 ELSE MAX(e.SIMUKECD) * 1 END + 1, 3, '0') AS SIMUKECD FROM M_SIMUKE e WHERE e.SIMUKECD < '999'";
+        String sql = "SELECT LPAD (CASE WHEN MAX(e.\"SIMUKECD\") IS NULL THEN 0 ELSE MAX(e.\"SIMUKECD\") * 1 END + 1, 3, '0') AS \"SIMUKECD\" FROM M_SIMUKE e WHERE e.\"SIMUKECD\" < '999'";
 
         Map<String, Object> params = new HashMap<String, Object>();
 
@@ -166,9 +166,9 @@ public class MSimuke implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("simukecd = :simukecd");
-        setList.add("simukemei = :simukemei");
-        setList.add("filler = :filler");
+        setList.add("\"SIMUKECD\" = :simukecd");
+        setList.add("\"SIMUKEMEI\" = :simukemei");
+        setList.add("\"FILLER\" = :filler");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -190,15 +190,15 @@ public class MSimuke implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (simukecd) = TRIM (:simukecd)");
+        whereList.add("TRIM (\"SIMUKECD\") = TRIM (:simukecd)");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("SIMUKECD", this.simukecd);
-        params.put("SIMUKEMEI", this.simukemei);
-        params.put("FILLER", this.filler);
+        params.put("simukecd", this.simukecd);
+        params.put("simukemei", this.simukemei);
+        params.put("filler", this.filler);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

@@ -214,13 +214,13 @@ public class MstAntenna implements IEntity {
 
         // MST_ANTENNAの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("reader_no -- :reader_no");
-        nameList.add("antenna_no -- :antenna_no");
-        nameList.add("store_man_id -- :store_man_id");
-        nameList.add("time_stamp_create -- :time_stamp_create");
-        nameList.add("time_stamp_change -- :time_stamp_change");
-        nameList.add("user_id_create -- :user_id_create");
-        nameList.add("user_id_change -- :user_id_change");
+        nameList.add("\"READER_NO\" -- :reader_no");
+        nameList.add("\"ANTENNA_NO\" -- :antenna_no");
+        nameList.add("\"STORE_MAN_ID\" -- :store_man_id");
+        nameList.add("\"TIME_STAMP_CREATE\" -- :time_stamp_create");
+        nameList.add("\"TIME_STAMP_CHANGE\" -- :time_stamp_change");
+        nameList.add("\"USER_ID_CREATE\" -- :user_id_create");
+        nameList.add("\"USER_ID_CHANGE\" -- :user_id_change");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO MST_ANTENNA(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -259,11 +259,11 @@ public class MstAntenna implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("reader_no = :reader_no");
-        setList.add("antenna_no = :antenna_no");
-        setList.add("store_man_id = :store_man_id");
-        setList.add("time_stamp_change = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("user_id_change = :user_id_change");
+        setList.add("\"READER_NO\" = :reader_no");
+        setList.add("\"ANTENNA_NO\" = :antenna_no");
+        setList.add("\"STORE_MAN_ID\" = :store_man_id");
+        setList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"USER_ID_CHANGE\" = :user_id_change");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -285,17 +285,17 @@ public class MstAntenna implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("reader_no = :reader_no");
-        whereList.add("antenna_no = :antenna_no");
-        whereList.add("time_stamp_change = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        whereList.add("\"READER_NO\" = :reader_no");
+        whereList.add("\"ANTENNA_NO\" = :antenna_no");
+        whereList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("READER_NO", this.readerNo);
-        params.put("ANTENNA_NO", this.antennaNo);
-        params.put("STORE_MAN_ID", this.storeManId);
+        params.put("reader_no", this.readerNo);
+        params.put("antenna_no", this.antennaNo);
+        params.put("store_man_id", this.storeManId);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

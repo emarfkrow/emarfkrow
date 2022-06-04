@@ -235,14 +235,14 @@ public class MstHinbanEmp implements IEntity {
 
         // MST_HINBAN_EMPの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("hinban_ope_code -- :hinban_ope_code");
-        nameList.add("hinban_ope_name -- :hinban_ope_name");
-        nameList.add("emp_code -- :emp_code");
-        nameList.add("time_stamp_create -- :time_stamp_create");
-        nameList.add("time_stamp_change -- :time_stamp_change");
-        nameList.add("user_id_create -- :user_id_create");
-        nameList.add("user_id_change -- :user_id_change");
-        nameList.add("delete_flag -- :delete_flag");
+        nameList.add("\"HINBAN_OPE_CODE\" -- :hinban_ope_code");
+        nameList.add("\"HINBAN_OPE_NAME\" -- :hinban_ope_name");
+        nameList.add("\"EMP_CODE\" -- :emp_code");
+        nameList.add("\"TIME_STAMP_CREATE\" -- :time_stamp_create");
+        nameList.add("\"TIME_STAMP_CHANGE\" -- :time_stamp_change");
+        nameList.add("\"USER_ID_CREATE\" -- :user_id_create");
+        nameList.add("\"USER_ID_CHANGE\" -- :user_id_change");
+        nameList.add("\"DELETE_FLAG\" -- :delete_flag");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO MST_HINBAN_EMP(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -272,7 +272,7 @@ public class MstHinbanEmp implements IEntity {
             return;
         }
 
-        String sql = "SELECT LPAD (CASE WHEN MAX(e.HINBAN_OPE_CODE) IS NULL THEN 0 ELSE MAX(e.HINBAN_OPE_CODE) * 1 END + 1, 10, '0') AS HINBAN_OPE_CODE FROM MST_HINBAN_EMP e WHERE e.HINBAN_OPE_CODE < '9999999999'";
+        String sql = "SELECT LPAD (CASE WHEN MAX(e.\"HINBAN_OPE_CODE\") IS NULL THEN 0 ELSE MAX(e.\"HINBAN_OPE_CODE\") * 1 END + 1, 10, '0') AS \"HINBAN_OPE_CODE\" FROM MST_HINBAN_EMP e WHERE e.\"HINBAN_OPE_CODE\" < '9999999999'";
 
         Map<String, Object> params = new HashMap<String, Object>();
 
@@ -299,12 +299,12 @@ public class MstHinbanEmp implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("hinban_ope_code = :hinban_ope_code");
-        setList.add("hinban_ope_name = :hinban_ope_name");
-        setList.add("emp_code = :emp_code");
-        setList.add("time_stamp_change = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("user_id_change = :user_id_change");
-        setList.add("delete_flag = :delete_flag");
+        setList.add("\"HINBAN_OPE_CODE\" = :hinban_ope_code");
+        setList.add("\"HINBAN_OPE_NAME\" = :hinban_ope_name");
+        setList.add("\"EMP_CODE\" = :emp_code");
+        setList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"USER_ID_CHANGE\" = :user_id_change");
+        setList.add("\"DELETE_FLAG\" = :delete_flag");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -326,17 +326,17 @@ public class MstHinbanEmp implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (hinban_ope_code) = TRIM (:hinban_ope_code)");
-        whereList.add("time_stamp_change = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        whereList.add("TRIM (\"HINBAN_OPE_CODE\") = TRIM (:hinban_ope_code)");
+        whereList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("HINBAN_OPE_CODE", this.hinbanOpeCode);
-        params.put("HINBAN_OPE_NAME", this.hinbanOpeName);
-        params.put("EMP_CODE", this.empCode);
-        params.put("DELETE_FLAG", this.deleteFlag);
+        params.put("hinban_ope_code", this.hinbanOpeCode);
+        params.put("hinban_ope_name", this.hinbanOpeName);
+        params.put("emp_code", this.empCode);
+        params.put("delete_flag", this.deleteFlag);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

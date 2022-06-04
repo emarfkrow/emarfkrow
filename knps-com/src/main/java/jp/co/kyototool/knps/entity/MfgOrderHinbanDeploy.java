@@ -262,15 +262,15 @@ public class MfgOrderHinbanDeploy implements IEntity {
 
         // MFG_ORDER_HINBAN_DEPLOYの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("reqid -- :reqid");
-        nameList.add("hinban -- :hinban");
-        nameList.add("delivery_date -- :delivery_date");
-        nameList.add("unit_code -- :unit_code");
-        nameList.add("counts -- :counts");
-        nameList.add("time_stamp_create -- :time_stamp_create");
-        nameList.add("time_stamp_change -- :time_stamp_change");
-        nameList.add("user_id_create -- :user_id_create");
-        nameList.add("user_id_change -- :user_id_change");
+        nameList.add("\"REQID\" -- :reqid");
+        nameList.add("\"HINBAN\" -- :hinban");
+        nameList.add("\"DELIVERY_DATE\" -- :delivery_date");
+        nameList.add("\"UNIT_CODE\" -- :unit_code");
+        nameList.add("\"COUNTS\" -- :counts");
+        nameList.add("\"TIME_STAMP_CREATE\" -- :time_stamp_create");
+        nameList.add("\"TIME_STAMP_CHANGE\" -- :time_stamp_change");
+        nameList.add("\"USER_ID_CREATE\" -- :user_id_create");
+        nameList.add("\"USER_ID_CHANGE\" -- :user_id_change");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO MFG_ORDER_HINBAN_DEPLOY(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -301,13 +301,13 @@ public class MfgOrderHinbanDeploy implements IEntity {
             return;
         }
 
-        String sql = "SELECT LPAD (CASE WHEN MAX(e.DELIVERY_DATE) IS NULL THEN 0 ELSE MAX(e.DELIVERY_DATE) * 1 END + 1, 10, '0') AS DELIVERY_DATE FROM MFG_ORDER_HINBAN_DEPLOY e WHERE e.DELIVERY_DATE < '9999999999'";
+        String sql = "SELECT LPAD (CASE WHEN MAX(e.\"DELIVERY_DATE\") IS NULL THEN 0 ELSE MAX(e.\"DELIVERY_DATE\") * 1 END + 1, 10, '0') AS \"DELIVERY_DATE\" FROM MFG_ORDER_HINBAN_DEPLOY e WHERE e.\"DELIVERY_DATE\" < '9999999999'";
 
         Map<String, Object> params = new HashMap<String, Object>();
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("e.REQID = :reqid");
-        whereList.add("e.HINBAN = :hinban");
+        whereList.add("e.\"REQID\" = :reqid");
+        whereList.add("e.\"HINBAN\" = :hinban");
         sql += " WHERE " + String.join(" AND ", whereList);
 
         params.put("reqid", this.reqid);
@@ -336,13 +336,13 @@ public class MfgOrderHinbanDeploy implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("reqid = :reqid");
-        setList.add("hinban = :hinban");
-        setList.add("delivery_date = :delivery_date");
-        setList.add("unit_code = :unit_code");
-        setList.add("counts = :counts");
-        setList.add("time_stamp_change = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("user_id_change = :user_id_change");
+        setList.add("\"REQID\" = :reqid");
+        setList.add("\"HINBAN\" = :hinban");
+        setList.add("\"DELIVERY_DATE\" = :delivery_date");
+        setList.add("\"UNIT_CODE\" = :unit_code");
+        setList.add("\"COUNTS\" = :counts");
+        setList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"USER_ID_CHANGE\" = :user_id_change");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -364,20 +364,20 @@ public class MfgOrderHinbanDeploy implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (reqid) = TRIM (:reqid)");
-        whereList.add("TRIM (hinban) = TRIM (:hinban)");
-        whereList.add("TRIM (delivery_date) = TRIM (:delivery_date)");
-        whereList.add("time_stamp_change = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        whereList.add("TRIM (\"REQID\") = TRIM (:reqid)");
+        whereList.add("TRIM (\"HINBAN\") = TRIM (:hinban)");
+        whereList.add("TRIM (\"DELIVERY_DATE\") = TRIM (:delivery_date)");
+        whereList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("REQID", this.reqid);
-        params.put("HINBAN", this.hinban);
-        params.put("DELIVERY_DATE", this.deliveryDate);
-        params.put("UNIT_CODE", this.unitCode);
-        params.put("COUNTS", this.counts);
+        params.put("reqid", this.reqid);
+        params.put("hinban", this.hinban);
+        params.put("delivery_date", this.deliveryDate);
+        params.put("unit_code", this.unitCode);
+        params.put("counts", this.counts);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

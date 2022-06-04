@@ -97,8 +97,8 @@ public class MstSalesTax implements IEntity {
 
         // MST_SALES_TAXの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("start_date -- :start_date");
-        nameList.add("salse_tax -- :salse_tax");
+        nameList.add("\"START_DATE\" -- :start_date");
+        nameList.add("\"SALSE_TAX\" -- :salse_tax");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO MST_SALES_TAX(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -132,8 +132,8 @@ public class MstSalesTax implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("start_date = TO_TIMESTAMP (:start_date, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("salse_tax = :salse_tax");
+        setList.add("\"START_DATE\" = TO_TIMESTAMP (:start_date, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"SALSE_TAX\" = :salse_tax");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -155,14 +155,14 @@ public class MstSalesTax implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("start_date = :start_date");
+        whereList.add("\"START_DATE\" = :start_date");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("START_DATE", this.startDate);
-        params.put("SALSE_TAX", this.salseTax);
+        params.put("start_date", this.startDate);
+        params.put("salse_tax", this.salseTax);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

@@ -180,12 +180,12 @@ public class MNetinc implements IEntity {
 
         // ネットインカムの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("honshacd -- :honshacd");
-        nameList.add("tokucd -- :tokucd");
-        nameList.add("rtokumei -- :rtokumei");
-        nameList.add("nebikiritu -- :nebikiritu");
-        nameList.add("upddate -- :upddate");
-        nameList.add("filler -- :filler");
+        nameList.add("\"HONSHACD\" -- :honshacd");
+        nameList.add("\"TOKUCD\" -- :tokucd");
+        nameList.add("\"RTOKUMEI\" -- :rtokumei");
+        nameList.add("\"NEBIKIRITU\" -- :nebikiritu");
+        nameList.add("\"UPDDATE\" -- :upddate");
+        nameList.add("\"FILLER\" -- :filler");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO M_NETINC(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -236,12 +236,12 @@ public class MNetinc implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("honshacd = :honshacd");
-        setList.add("tokucd = :tokucd");
-        setList.add("rtokumei = :rtokumei");
-        setList.add("nebikiritu = :nebikiritu");
-        setList.add("upddate = :upddate");
-        setList.add("filler = :filler");
+        setList.add("\"HONSHACD\" = :honshacd");
+        setList.add("\"TOKUCD\" = :tokucd");
+        setList.add("\"RTOKUMEI\" = :rtokumei");
+        setList.add("\"NEBIKIRITU\" = :nebikiritu");
+        setList.add("\"UPDDATE\" = :upddate");
+        setList.add("\"FILLER\" = :filler");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -270,18 +270,18 @@ public class MNetinc implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("honshacd = :honshacd");
+        whereList.add("\"HONSHACD\" = :honshacd");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("HONSHACD", this.honshacd);
-        params.put("TOKUCD", this.tokucd);
-        params.put("RTOKUMEI", this.rtokumei);
-        params.put("NEBIKIRITU", this.nebikiritu);
-        params.put("UPDDATE", this.upddate);
-        params.put("FILLER", this.filler);
+        params.put("honshacd", this.honshacd);
+        params.put("tokucd", this.tokucd);
+        params.put("rtokumei", this.rtokumei);
+        params.put("nebikiritu", this.nebikiritu);
+        params.put("upddate", this.upddate);
+        params.put("filler", this.filler);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

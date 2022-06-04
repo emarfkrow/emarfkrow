@@ -1,6 +1,6 @@
 SELECT
       a.*
-    , (SELECT r1.WC_NAME FROM MST_WC r1 WHERE r1.WC_CODE = a."WC_CODE") AS WC_NAME
+    , (SELECT r1."WC_NAME" FROM MST_WC r1 WHERE r1."WC_CODE" = a."WC_CODE") AS "WC_NAME"
 FROM
     MST_ROUTING a 
 WHERE
@@ -31,12 +31,12 @@ WHERE
     AND a."HUM_ACT_TIME_KBN" IN (:hum_act_time_kbn) 
     AND a."MAC_PRE_TIME_KBN" IN (:mac_pre_time_kbn) 
     AND a."MAC_ACT_TIME_KBN" IN (:mac_act_time_kbn) 
-    AND CASE WHEN a."SUPPLY_FLAG" IS NULL THEN '0' ELSE TO_CHAR (a.SUPPLY_FLAG) END IN (:supply_flag) 
+    AND CASE WHEN a."SUPPLY_FLAG" IS NULL THEN '0' ELSE TO_CHAR (a."SUPPLY_FLAG") END IN (:supply_flag) 
     AND a."TIME_STAMP_CREATE" = :time_stamp_create 
     AND a."TIME_STAMP_CHANGE" = :time_stamp_change 
     AND TRIM (a."USER_ID_CREATE") = TRIM (:user_id_create) 
     AND TRIM (a."USER_ID_CHANGE") = TRIM (:user_id_change) 
-    AND CASE WHEN a."MUSHO_HACCHU_F" IS NULL THEN '0' ELSE TO_CHAR (a.MUSHO_HACCHU_F) END IN (:musho_hacchu_f) 
+    AND CASE WHEN a."MUSHO_HACCHU_F" IS NULL THEN '0' ELSE TO_CHAR (a."MUSHO_HACCHU_F") END IN (:musho_hacchu_f) 
     AND TRIM (a."TARGET_KBN") IN (:target_kbn) 
 ORDER BY
     a."MAN_HINBAN", a."ROUTING_GROUP", a."ROUTING"

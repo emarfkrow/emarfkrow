@@ -403,22 +403,22 @@ public class MfgRateQ implements IEntity {
 
         // MFG_RATE_Qの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("rate_code -- :rate_code");
-        nameList.add("in_out_kbn -- :in_out_kbn");
-        nameList.add("rate_kbn -- :rate_kbn");
-        nameList.add("hum_labor_cost_first -- :hum_labor_cost_first");
-        nameList.add("hum_expenses_first -- :hum_expenses_first");
-        nameList.add("hum_labor_cost_second -- :hum_labor_cost_second");
-        nameList.add("hum_expenses_second -- :hum_expenses_second");
-        nameList.add("mac_labor_cost_first -- :mac_labor_cost_first");
-        nameList.add("mac_expenses_first -- :mac_expenses_first");
-        nameList.add("mac_labor_cost_second -- :mac_labor_cost_second");
-        nameList.add("mac_expenses_second -- :mac_expenses_second");
-        nameList.add("out_cost_second -- :out_cost_second");
-        nameList.add("time_stamp_create -- :time_stamp_create");
-        nameList.add("time_stamp_change -- :time_stamp_change");
-        nameList.add("user_id_create -- :user_id_create");
-        nameList.add("user_id_change -- :user_id_change");
+        nameList.add("\"RATE_CODE\" -- :rate_code");
+        nameList.add("\"IN_OUT_KBN\" -- :in_out_kbn");
+        nameList.add("\"RATE_KBN\" -- :rate_kbn");
+        nameList.add("\"HUM_LABOR_COST_FIRST\" -- :hum_labor_cost_first");
+        nameList.add("\"HUM_EXPENSES_FIRST\" -- :hum_expenses_first");
+        nameList.add("\"HUM_LABOR_COST_SECOND\" -- :hum_labor_cost_second");
+        nameList.add("\"HUM_EXPENSES_SECOND\" -- :hum_expenses_second");
+        nameList.add("\"MAC_LABOR_COST_FIRST\" -- :mac_labor_cost_first");
+        nameList.add("\"MAC_EXPENSES_FIRST\" -- :mac_expenses_first");
+        nameList.add("\"MAC_LABOR_COST_SECOND\" -- :mac_labor_cost_second");
+        nameList.add("\"MAC_EXPENSES_SECOND\" -- :mac_expenses_second");
+        nameList.add("\"OUT_COST_SECOND\" -- :out_cost_second");
+        nameList.add("\"TIME_STAMP_CREATE\" -- :time_stamp_create");
+        nameList.add("\"TIME_STAMP_CHANGE\" -- :time_stamp_change");
+        nameList.add("\"USER_ID_CREATE\" -- :user_id_create");
+        nameList.add("\"USER_ID_CHANGE\" -- :user_id_change");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO MFG_RATE_Q(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -456,7 +456,7 @@ public class MfgRateQ implements IEntity {
             return;
         }
 
-        String sql = "SELECT LPAD (CASE WHEN MAX(e.RATE_CODE) IS NULL THEN 0 ELSE MAX(e.RATE_CODE) * 1 END + 1, 10, '0') AS RATE_CODE FROM MFG_RATE_Q e WHERE e.RATE_CODE < '9999999999'";
+        String sql = "SELECT LPAD (CASE WHEN MAX(e.\"RATE_CODE\") IS NULL THEN 0 ELSE MAX(e.\"RATE_CODE\") * 1 END + 1, 10, '0') AS \"RATE_CODE\" FROM MFG_RATE_Q e WHERE e.\"RATE_CODE\" < '9999999999'";
 
         Map<String, Object> params = new HashMap<String, Object>();
 
@@ -483,20 +483,20 @@ public class MfgRateQ implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("rate_code = :rate_code");
-        setList.add("in_out_kbn = :in_out_kbn");
-        setList.add("rate_kbn = :rate_kbn");
-        setList.add("hum_labor_cost_first = :hum_labor_cost_first");
-        setList.add("hum_expenses_first = :hum_expenses_first");
-        setList.add("hum_labor_cost_second = :hum_labor_cost_second");
-        setList.add("hum_expenses_second = :hum_expenses_second");
-        setList.add("mac_labor_cost_first = :mac_labor_cost_first");
-        setList.add("mac_expenses_first = :mac_expenses_first");
-        setList.add("mac_labor_cost_second = :mac_labor_cost_second");
-        setList.add("mac_expenses_second = :mac_expenses_second");
-        setList.add("out_cost_second = :out_cost_second");
-        setList.add("time_stamp_change = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("user_id_change = :user_id_change");
+        setList.add("\"RATE_CODE\" = :rate_code");
+        setList.add("\"IN_OUT_KBN\" = :in_out_kbn");
+        setList.add("\"RATE_KBN\" = :rate_kbn");
+        setList.add("\"HUM_LABOR_COST_FIRST\" = :hum_labor_cost_first");
+        setList.add("\"HUM_EXPENSES_FIRST\" = :hum_expenses_first");
+        setList.add("\"HUM_LABOR_COST_SECOND\" = :hum_labor_cost_second");
+        setList.add("\"HUM_EXPENSES_SECOND\" = :hum_expenses_second");
+        setList.add("\"MAC_LABOR_COST_FIRST\" = :mac_labor_cost_first");
+        setList.add("\"MAC_EXPENSES_FIRST\" = :mac_expenses_first");
+        setList.add("\"MAC_LABOR_COST_SECOND\" = :mac_labor_cost_second");
+        setList.add("\"MAC_EXPENSES_SECOND\" = :mac_expenses_second");
+        setList.add("\"OUT_COST_SECOND\" = :out_cost_second");
+        setList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"USER_ID_CHANGE\" = :user_id_change");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -518,25 +518,25 @@ public class MfgRateQ implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (rate_code) = TRIM (:rate_code)");
-        whereList.add("time_stamp_change = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        whereList.add("TRIM (\"RATE_CODE\") = TRIM (:rate_code)");
+        whereList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("RATE_CODE", this.rateCode);
-        params.put("IN_OUT_KBN", this.inOutKbn);
-        params.put("RATE_KBN", this.rateKbn);
-        params.put("HUM_LABOR_COST_FIRST", this.humLaborCostFirst);
-        params.put("HUM_EXPENSES_FIRST", this.humExpensesFirst);
-        params.put("HUM_LABOR_COST_SECOND", this.humLaborCostSecond);
-        params.put("HUM_EXPENSES_SECOND", this.humExpensesSecond);
-        params.put("MAC_LABOR_COST_FIRST", this.macLaborCostFirst);
-        params.put("MAC_EXPENSES_FIRST", this.macExpensesFirst);
-        params.put("MAC_LABOR_COST_SECOND", this.macLaborCostSecond);
-        params.put("MAC_EXPENSES_SECOND", this.macExpensesSecond);
-        params.put("OUT_COST_SECOND", this.outCostSecond);
+        params.put("rate_code", this.rateCode);
+        params.put("in_out_kbn", this.inOutKbn);
+        params.put("rate_kbn", this.rateKbn);
+        params.put("hum_labor_cost_first", this.humLaborCostFirst);
+        params.put("hum_expenses_first", this.humExpensesFirst);
+        params.put("hum_labor_cost_second", this.humLaborCostSecond);
+        params.put("hum_expenses_second", this.humExpensesSecond);
+        params.put("mac_labor_cost_first", this.macLaborCostFirst);
+        params.put("mac_expenses_first", this.macExpensesFirst);
+        params.put("mac_labor_cost_second", this.macLaborCostSecond);
+        params.put("mac_expenses_second", this.macExpensesSecond);
+        params.put("out_cost_second", this.outCostSecond);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

@@ -269,16 +269,16 @@ public class MSetkari implements IEntity {
 
         // 仮セット構成マスタの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("set_hinban -- :set_hinban");
-        nameList.add("set_khinban -- :set_khinban");
-        nameList.add("tokucd -- :tokucd");
-        nameList.add("hinmei -- :hinmei");
-        nameList.add("ko_hinmei -- :ko_hinmei");
-        nameList.add("setkbn -- :setkbn");
-        nameList.add("setinzu -- :setinzu");
-        nameList.add("ko_tanka -- :ko_tanka");
-        nameList.add("mushokbn -- :mushokbn");
-        nameList.add("rtokumei -- :rtokumei");
+        nameList.add("\"SET-HINBAN\" -- :set_hinban");
+        nameList.add("\"SET-KHINBAN\" -- :set_khinban");
+        nameList.add("\"TOKUCD\" -- :tokucd");
+        nameList.add("\"HINMEI\" -- :hinmei");
+        nameList.add("\"KO-HINMEI\" -- :ko_hinmei");
+        nameList.add("\"SETKBN\" -- :setkbn");
+        nameList.add("\"SETINZU\" -- :setinzu");
+        nameList.add("\"KO-TANKA\" -- :ko_tanka");
+        nameList.add("\"MUSHOKBN\" -- :mushokbn");
+        nameList.add("\"RTOKUMEI\" -- :rtokumei");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO M_SETKARI(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -310,15 +310,15 @@ public class MSetkari implements IEntity {
             return;
         }
 
-        String sql = "SELECT LPAD (CASE WHEN MAX(e.SET-KHINBAN) IS NULL THEN 0 ELSE MAX(e.SET-KHINBAN) * 1 END + 1, 20, '0') AS SET-KHINBAN FROM M_SETKARI e WHERE e.SET-KHINBAN < '99999999999999999999'";
+        String sql = "SELECT LPAD (CASE WHEN MAX(e.\"SET-KHINBAN\") IS NULL THEN 0 ELSE MAX(e.\"SET-KHINBAN\") * 1 END + 1, 20, '0') AS \"SET-KHINBAN\" FROM M_SETKARI e WHERE e.\"SET-KHINBAN\" < '99999999999999999999'";
 
         Map<String, Object> params = new HashMap<String, Object>();
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("e.SET-HINBAN = :set-hinban");
+        whereList.add("e.\"SET-HINBAN\" = :set_hinban");
         sql += " WHERE " + String.join(" AND ", whereList);
 
-        params.put("setHinban", this.setHinban);
+        params.put("set_hinban", this.setHinban);
 
         jp.co.golorp.emarf.util.MapList mapList = Queries.select(sql, params);
         Object o = mapList.get(0).get("SET-KHINBAN");
@@ -354,16 +354,16 @@ public class MSetkari implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("set-hinban = :set-hinban");
-        setList.add("set-khinban = :set-khinban");
-        setList.add("tokucd = :tokucd");
-        setList.add("hinmei = :hinmei");
-        setList.add("ko-hinmei = :ko-hinmei");
-        setList.add("setkbn = :setkbn");
-        setList.add("setinzu = :setinzu");
-        setList.add("ko-tanka = :ko-tanka");
-        setList.add("mushokbn = :mushokbn");
-        setList.add("rtokumei = :rtokumei");
+        setList.add("\"SET-HINBAN\" = :set_hinban");
+        setList.add("\"SET-KHINBAN\" = :set_khinban");
+        setList.add("\"TOKUCD\" = :tokucd");
+        setList.add("\"HINMEI\" = :hinmei");
+        setList.add("\"KO-HINMEI\" = :ko_hinmei");
+        setList.add("\"SETKBN\" = :setkbn");
+        setList.add("\"SETINZU\" = :setinzu");
+        setList.add("\"KO-TANKA\" = :ko_tanka");
+        setList.add("\"MUSHOKBN\" = :mushokbn");
+        setList.add("\"RTOKUMEI\" = :rtokumei");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -390,23 +390,23 @@ public class MSetkari implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (set-hinban) = TRIM (:set-hinban)");
-        whereList.add("TRIM (set-khinban) = TRIM (:set-khinban)");
+        whereList.add("TRIM (\"SET-HINBAN\") = TRIM (:set_hinban)");
+        whereList.add("TRIM (\"SET-KHINBAN\") = TRIM (:set_khinban)");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("SET-HINBAN", this.setHinban);
-        params.put("SET-KHINBAN", this.setKhinban);
-        params.put("TOKUCD", this.tokucd);
-        params.put("HINMEI", this.hinmei);
-        params.put("KO-HINMEI", this.koHinmei);
-        params.put("SETKBN", this.setkbn);
-        params.put("SETINZU", this.setinzu);
-        params.put("KO-TANKA", this.koTanka);
-        params.put("MUSHOKBN", this.mushokbn);
-        params.put("RTOKUMEI", this.rtokumei);
+        params.put("set_hinban", this.setHinban);
+        params.put("set_khinban", this.setKhinban);
+        params.put("tokucd", this.tokucd);
+        params.put("hinmei", this.hinmei);
+        params.put("ko_hinmei", this.koHinmei);
+        params.put("setkbn", this.setkbn);
+        params.put("setinzu", this.setinzu);
+        params.put("ko_tanka", this.koTanka);
+        params.put("mushokbn", this.mushokbn);
+        params.put("rtokumei", this.rtokumei);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

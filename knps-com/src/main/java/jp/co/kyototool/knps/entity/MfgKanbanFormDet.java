@@ -277,16 +277,16 @@ public class MfgKanbanFormDet implements IEntity {
 
         // MFG_KANBAN_FORM_DETの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("kanban_form_def_name -- :kanban_form_def_name");
-        nameList.add("excel_cell_name -- :excel_cell_name");
-        nameList.add("basic_or_tunnnel_flg -- :basic_or_tunnnel_flg");
-        nameList.add("disp_order -- :disp_order");
-        nameList.add("item_code -- :item_code");
-        nameList.add("valid_flg -- :valid_flg");
-        nameList.add("time_stamp_create -- :time_stamp_create");
-        nameList.add("time_stamp_change -- :time_stamp_change");
-        nameList.add("user_id_create -- :user_id_create");
-        nameList.add("user_id_change -- :user_id_change");
+        nameList.add("\"KANBAN_FORM_DEF_NAME\" -- :kanban_form_def_name");
+        nameList.add("\"EXCEL_CELL_NAME\" -- :excel_cell_name");
+        nameList.add("\"BASIC_OR_TUNNNEL_FLG\" -- :basic_or_tunnnel_flg");
+        nameList.add("\"DISP_ORDER\" -- :disp_order");
+        nameList.add("\"ITEM_CODE\" -- :item_code");
+        nameList.add("\"VALID_FLG\" -- :valid_flg");
+        nameList.add("\"TIME_STAMP_CREATE\" -- :time_stamp_create");
+        nameList.add("\"TIME_STAMP_CHANGE\" -- :time_stamp_change");
+        nameList.add("\"USER_ID_CREATE\" -- :user_id_create");
+        nameList.add("\"USER_ID_CHANGE\" -- :user_id_change");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO MFG_KANBAN_FORM_DET(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -328,14 +328,14 @@ public class MfgKanbanFormDet implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("kanban_form_def_name = :kanban_form_def_name");
-        setList.add("excel_cell_name = :excel_cell_name");
-        setList.add("basic_or_tunnnel_flg = :basic_or_tunnnel_flg");
-        setList.add("disp_order = :disp_order");
-        setList.add("item_code = :item_code");
-        setList.add("valid_flg = :valid_flg");
-        setList.add("time_stamp_change = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("user_id_change = :user_id_change");
+        setList.add("\"KANBAN_FORM_DEF_NAME\" = :kanban_form_def_name");
+        setList.add("\"EXCEL_CELL_NAME\" = :excel_cell_name");
+        setList.add("\"BASIC_OR_TUNNNEL_FLG\" = :basic_or_tunnnel_flg");
+        setList.add("\"DISP_ORDER\" = :disp_order");
+        setList.add("\"ITEM_CODE\" = :item_code");
+        setList.add("\"VALID_FLG\" = :valid_flg");
+        setList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"USER_ID_CHANGE\" = :user_id_change");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -357,20 +357,20 @@ public class MfgKanbanFormDet implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("kanban_form_def_name = :kanban_form_def_name");
-        whereList.add("excel_cell_name = :excel_cell_name");
-        whereList.add("time_stamp_change = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        whereList.add("\"KANBAN_FORM_DEF_NAME\" = :kanban_form_def_name");
+        whereList.add("\"EXCEL_CELL_NAME\" = :excel_cell_name");
+        whereList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("KANBAN_FORM_DEF_NAME", this.kanbanFormDefName);
-        params.put("EXCEL_CELL_NAME", this.excelCellName);
-        params.put("BASIC_OR_TUNNNEL_FLG", this.basicOrTunnnelFlg);
-        params.put("DISP_ORDER", this.dispOrder);
-        params.put("ITEM_CODE", this.itemCode);
-        params.put("VALID_FLG", this.validFlg);
+        params.put("kanban_form_def_name", this.kanbanFormDefName);
+        params.put("excel_cell_name", this.excelCellName);
+        params.put("basic_or_tunnnel_flg", this.basicOrTunnnelFlg);
+        params.put("disp_order", this.dispOrder);
+        params.put("item_code", this.itemCode);
+        params.put("valid_flg", this.validFlg);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

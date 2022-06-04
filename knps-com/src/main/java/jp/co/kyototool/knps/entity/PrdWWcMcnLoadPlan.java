@@ -604,30 +604,30 @@ public class PrdWWcMcnLoadPlan implements IEntity {
 
         // PRD_W_WC_MCN_LOAD_PLANの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("w_plan_id -- :w_plan_id");
-        nameList.add("man_hinban -- :man_hinban");
-        nameList.add("wc_code -- :wc_code");
-        nameList.add("wc_name -- :wc_name");
-        nameList.add("ws_code -- :ws_code");
-        nameList.add("ws_name -- :ws_name");
-        nameList.add("ope_detail -- :ope_detail");
-        nameList.add("hum_pre_time -- :hum_pre_time");
-        nameList.add("hum_act_time -- :hum_act_time");
-        nameList.add("hum_total_time -- :hum_total_time");
-        nameList.add("mac_pre_time -- :mac_pre_time");
-        nameList.add("mac_act_time -- :mac_act_time");
-        nameList.add("mac_total_time -- :mac_total_time");
-        nameList.add("pro_nes_counts -- :pro_nes_counts");
-        nameList.add("pro_nes_weight -- :pro_nes_weight");
-        nameList.add("data_source_kbn -- :data_source_kbn");
-        nameList.add("period -- :period");
-        nameList.add("plan_no -- :plan_no");
-        nameList.add("beg_date -- :beg_date");
-        nameList.add("end_date -- :end_date");
-        nameList.add("time_stamp_create -- :time_stamp_create");
-        nameList.add("time_stamp_change -- :time_stamp_change");
-        nameList.add("user_id_create -- :user_id_create");
-        nameList.add("user_id_change -- :user_id_change");
+        nameList.add("\"W_PLAN_ID\" -- :w_plan_id");
+        nameList.add("\"MAN_HINBAN\" -- :man_hinban");
+        nameList.add("\"WC_CODE\" -- :wc_code");
+        nameList.add("\"WC_NAME\" -- :wc_name");
+        nameList.add("\"WS_CODE\" -- :ws_code");
+        nameList.add("\"WS_NAME\" -- :ws_name");
+        nameList.add("\"OPE_DETAIL\" -- :ope_detail");
+        nameList.add("\"HUM_PRE_TIME\" -- :hum_pre_time");
+        nameList.add("\"HUM_ACT_TIME\" -- :hum_act_time");
+        nameList.add("\"HUM_TOTAL_TIME\" -- :hum_total_time");
+        nameList.add("\"MAC_PRE_TIME\" -- :mac_pre_time");
+        nameList.add("\"MAC_ACT_TIME\" -- :mac_act_time");
+        nameList.add("\"MAC_TOTAL_TIME\" -- :mac_total_time");
+        nameList.add("\"PRO_NES_COUNTS\" -- :pro_nes_counts");
+        nameList.add("\"PRO_NES_WEIGHT\" -- :pro_nes_weight");
+        nameList.add("\"DATA_SOURCE_KBN\" -- :data_source_kbn");
+        nameList.add("\"PERIOD\" -- :period");
+        nameList.add("\"PLAN_NO\" -- :plan_no");
+        nameList.add("\"BEG_DATE\" -- :beg_date");
+        nameList.add("\"END_DATE\" -- :end_date");
+        nameList.add("\"TIME_STAMP_CREATE\" -- :time_stamp_create");
+        nameList.add("\"TIME_STAMP_CHANGE\" -- :time_stamp_change");
+        nameList.add("\"USER_ID_CREATE\" -- :user_id_create");
+        nameList.add("\"USER_ID_CHANGE\" -- :user_id_change");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO PRD_W_WC_MCN_LOAD_PLAN(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -673,22 +673,22 @@ public class PrdWWcMcnLoadPlan implements IEntity {
             return;
         }
 
-        String sql = "SELECT LPAD (CASE WHEN MAX(e.PLAN_NO) IS NULL THEN 0 ELSE MAX(e.PLAN_NO) * 1 END + 1, 12, '0') AS PLAN_NO FROM PRD_W_WC_MCN_LOAD_PLAN e WHERE e.PLAN_NO < '999999999999'";
+        String sql = "SELECT LPAD (CASE WHEN MAX(e.\"PLAN_NO\") IS NULL THEN 0 ELSE MAX(e.\"PLAN_NO\") * 1 END + 1, 12, '0') AS \"PLAN_NO\" FROM PRD_W_WC_MCN_LOAD_PLAN e WHERE e.\"PLAN_NO\" < '999999999999'";
 
         Map<String, Object> params = new HashMap<String, Object>();
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("e.W_PLAN_ID = :w_plan_id");
-        whereList.add("e.MAN_HINBAN = :man_hinban");
-        whereList.add("e.WC_CODE = :wc_code");
-        whereList.add("e.DATA_SOURCE_KBN = :data_source_kbn");
-        whereList.add("e.PERIOD = :period");
+        whereList.add("e.\"W_PLAN_ID\" = :w_plan_id");
+        whereList.add("e.\"MAN_HINBAN\" = :man_hinban");
+        whereList.add("e.\"WC_CODE\" = :wc_code");
+        whereList.add("e.\"DATA_SOURCE_KBN\" = :data_source_kbn");
+        whereList.add("e.\"PERIOD\" = :period");
         sql += " WHERE " + String.join(" AND ", whereList);
 
-        params.put("wPlanId", this.wPlanId);
-        params.put("manHinban", this.manHinban);
-        params.put("wcCode", this.wcCode);
-        params.put("dataSourceKbn", this.dataSourceKbn);
+        params.put("w_plan_id", this.wPlanId);
+        params.put("man_hinban", this.manHinban);
+        params.put("wc_code", this.wcCode);
+        params.put("data_source_kbn", this.dataSourceKbn);
         params.put("period", this.period);
 
         jp.co.golorp.emarf.util.MapList mapList = Queries.select(sql, params);
@@ -714,28 +714,28 @@ public class PrdWWcMcnLoadPlan implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("w_plan_id = :w_plan_id");
-        setList.add("man_hinban = :man_hinban");
-        setList.add("wc_code = :wc_code");
-        setList.add("wc_name = :wc_name");
-        setList.add("ws_code = :ws_code");
-        setList.add("ws_name = :ws_name");
-        setList.add("ope_detail = :ope_detail");
-        setList.add("hum_pre_time = :hum_pre_time");
-        setList.add("hum_act_time = :hum_act_time");
-        setList.add("hum_total_time = :hum_total_time");
-        setList.add("mac_pre_time = :mac_pre_time");
-        setList.add("mac_act_time = :mac_act_time");
-        setList.add("mac_total_time = :mac_total_time");
-        setList.add("pro_nes_counts = :pro_nes_counts");
-        setList.add("pro_nes_weight = :pro_nes_weight");
-        setList.add("data_source_kbn = :data_source_kbn");
-        setList.add("period = :period");
-        setList.add("plan_no = :plan_no");
-        setList.add("beg_date = TO_TIMESTAMP (:beg_date, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("end_date = TO_TIMESTAMP (:end_date, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("time_stamp_change = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("user_id_change = :user_id_change");
+        setList.add("\"W_PLAN_ID\" = :w_plan_id");
+        setList.add("\"MAN_HINBAN\" = :man_hinban");
+        setList.add("\"WC_CODE\" = :wc_code");
+        setList.add("\"WC_NAME\" = :wc_name");
+        setList.add("\"WS_CODE\" = :ws_code");
+        setList.add("\"WS_NAME\" = :ws_name");
+        setList.add("\"OPE_DETAIL\" = :ope_detail");
+        setList.add("\"HUM_PRE_TIME\" = :hum_pre_time");
+        setList.add("\"HUM_ACT_TIME\" = :hum_act_time");
+        setList.add("\"HUM_TOTAL_TIME\" = :hum_total_time");
+        setList.add("\"MAC_PRE_TIME\" = :mac_pre_time");
+        setList.add("\"MAC_ACT_TIME\" = :mac_act_time");
+        setList.add("\"MAC_TOTAL_TIME\" = :mac_total_time");
+        setList.add("\"PRO_NES_COUNTS\" = :pro_nes_counts");
+        setList.add("\"PRO_NES_WEIGHT\" = :pro_nes_weight");
+        setList.add("\"DATA_SOURCE_KBN\" = :data_source_kbn");
+        setList.add("\"PERIOD\" = :period");
+        setList.add("\"PLAN_NO\" = :plan_no");
+        setList.add("\"BEG_DATE\" = TO_TIMESTAMP (:beg_date, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"END_DATE\" = TO_TIMESTAMP (:end_date, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"USER_ID_CHANGE\" = :user_id_change");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -757,38 +757,38 @@ public class PrdWWcMcnLoadPlan implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("w_plan_id = :w_plan_id");
-        whereList.add("TRIM (man_hinban) = TRIM (:man_hinban)");
-        whereList.add("TRIM (wc_code) = TRIM (:wc_code)");
-        whereList.add("data_source_kbn = :data_source_kbn");
-        whereList.add("period = :period");
-        whereList.add("TRIM (plan_no) = TRIM (:plan_no)");
-        whereList.add("time_stamp_change = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        whereList.add("\"W_PLAN_ID\" = :w_plan_id");
+        whereList.add("TRIM (\"MAN_HINBAN\") = TRIM (:man_hinban)");
+        whereList.add("TRIM (\"WC_CODE\") = TRIM (:wc_code)");
+        whereList.add("\"DATA_SOURCE_KBN\" = :data_source_kbn");
+        whereList.add("\"PERIOD\" = :period");
+        whereList.add("TRIM (\"PLAN_NO\") = TRIM (:plan_no)");
+        whereList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("W_PLAN_ID", this.wPlanId);
-        params.put("MAN_HINBAN", this.manHinban);
-        params.put("WC_CODE", this.wcCode);
-        params.put("WC_NAME", this.wcName);
-        params.put("WS_CODE", this.wsCode);
-        params.put("WS_NAME", this.wsName);
-        params.put("OPE_DETAIL", this.opeDetail);
-        params.put("HUM_PRE_TIME", this.humPreTime);
-        params.put("HUM_ACT_TIME", this.humActTime);
-        params.put("HUM_TOTAL_TIME", this.humTotalTime);
-        params.put("MAC_PRE_TIME", this.macPreTime);
-        params.put("MAC_ACT_TIME", this.macActTime);
-        params.put("MAC_TOTAL_TIME", this.macTotalTime);
-        params.put("PRO_NES_COUNTS", this.proNesCounts);
-        params.put("PRO_NES_WEIGHT", this.proNesWeight);
-        params.put("DATA_SOURCE_KBN", this.dataSourceKbn);
-        params.put("PERIOD", this.period);
-        params.put("PLAN_NO", this.planNo);
-        params.put("BEG_DATE", this.begDate);
-        params.put("END_DATE", this.endDate);
+        params.put("w_plan_id", this.wPlanId);
+        params.put("man_hinban", this.manHinban);
+        params.put("wc_code", this.wcCode);
+        params.put("wc_name", this.wcName);
+        params.put("ws_code", this.wsCode);
+        params.put("ws_name", this.wsName);
+        params.put("ope_detail", this.opeDetail);
+        params.put("hum_pre_time", this.humPreTime);
+        params.put("hum_act_time", this.humActTime);
+        params.put("hum_total_time", this.humTotalTime);
+        params.put("mac_pre_time", this.macPreTime);
+        params.put("mac_act_time", this.macActTime);
+        params.put("mac_total_time", this.macTotalTime);
+        params.put("pro_nes_counts", this.proNesCounts);
+        params.put("pro_nes_weight", this.proNesWeight);
+        params.put("data_source_kbn", this.dataSourceKbn);
+        params.put("period", this.period);
+        params.put("plan_no", this.planNo);
+        params.put("beg_date", this.begDate);
+        params.put("end_date", this.endDate);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

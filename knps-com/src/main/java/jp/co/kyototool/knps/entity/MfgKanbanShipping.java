@@ -178,12 +178,12 @@ public class MfgKanbanShipping implements IEntity {
 
         // MFG_KANBAN_SHIPPINGの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("kanban_id -- :kanban_id");
-        nameList.add("hinban -- :hinban");
-        nameList.add("for_pro_code -- :for_pro_code");
-        nameList.add("for_pro_location_code -- :for_pro_location_code");
-        nameList.add("kanban_acc_counts -- :kanban_acc_counts");
-        nameList.add("counts -- :counts");
+        nameList.add("\"KANBAN_ID\" -- :kanban_id");
+        nameList.add("\"HINBAN\" -- :hinban");
+        nameList.add("\"FOR_PRO_CODE\" -- :for_pro_code");
+        nameList.add("\"FOR_PRO_LOCATION_CODE\" -- :for_pro_location_code");
+        nameList.add("\"KANBAN_ACC_COUNTS\" -- :kanban_acc_counts");
+        nameList.add("\"COUNTS\" -- :counts");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO MFG_KANBAN_SHIPPING(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -211,15 +211,15 @@ public class MfgKanbanShipping implements IEntity {
             return;
         }
 
-        String sql = "SELECT LPAD (CASE WHEN MAX(e.HINBAN) IS NULL THEN 0 ELSE MAX(e.HINBAN) * 1 END + 1, 25, '0') AS HINBAN FROM MFG_KANBAN_SHIPPING e WHERE e.HINBAN < '9999999999999999999999999'";
+        String sql = "SELECT LPAD (CASE WHEN MAX(e.\"HINBAN\") IS NULL THEN 0 ELSE MAX(e.\"HINBAN\") * 1 END + 1, 25, '0') AS \"HINBAN\" FROM MFG_KANBAN_SHIPPING e WHERE e.\"HINBAN\" < '9999999999999999999999999'";
 
         Map<String, Object> params = new HashMap<String, Object>();
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("e.KANBAN_ID = :kanban_id");
+        whereList.add("e.\"KANBAN_ID\" = :kanban_id");
         sql += " WHERE " + String.join(" AND ", whereList);
 
-        params.put("kanbanId", this.kanbanId);
+        params.put("kanban_id", this.kanbanId);
 
         jp.co.golorp.emarf.util.MapList mapList = Queries.select(sql, params);
         Object o = mapList.get(0).get("HINBAN");
@@ -244,12 +244,12 @@ public class MfgKanbanShipping implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("kanban_id = :kanban_id");
-        setList.add("hinban = :hinban");
-        setList.add("for_pro_code = :for_pro_code");
-        setList.add("for_pro_location_code = :for_pro_location_code");
-        setList.add("kanban_acc_counts = :kanban_acc_counts");
-        setList.add("counts = :counts");
+        setList.add("\"KANBAN_ID\" = :kanban_id");
+        setList.add("\"HINBAN\" = :hinban");
+        setList.add("\"FOR_PRO_CODE\" = :for_pro_code");
+        setList.add("\"FOR_PRO_LOCATION_CODE\" = :for_pro_location_code");
+        setList.add("\"KANBAN_ACC_COUNTS\" = :kanban_acc_counts");
+        setList.add("\"COUNTS\" = :counts");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -271,19 +271,19 @@ public class MfgKanbanShipping implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (kanban_id) = TRIM (:kanban_id)");
-        whereList.add("TRIM (hinban) = TRIM (:hinban)");
+        whereList.add("TRIM (\"KANBAN_ID\") = TRIM (:kanban_id)");
+        whereList.add("TRIM (\"HINBAN\") = TRIM (:hinban)");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("KANBAN_ID", this.kanbanId);
-        params.put("HINBAN", this.hinban);
-        params.put("FOR_PRO_CODE", this.forProCode);
-        params.put("FOR_PRO_LOCATION_CODE", this.forProLocationCode);
-        params.put("KANBAN_ACC_COUNTS", this.kanbanAccCounts);
-        params.put("COUNTS", this.counts);
+        params.put("kanban_id", this.kanbanId);
+        params.put("hinban", this.hinban);
+        params.put("for_pro_code", this.forProCode);
+        params.put("for_pro_location_code", this.forProLocationCode);
+        params.put("kanban_acc_counts", this.kanbanAccCounts);
+        params.put("counts", this.counts);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

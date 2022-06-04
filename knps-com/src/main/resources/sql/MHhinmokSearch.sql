@@ -43,7 +43,7 @@ WHERE
     AND a."BUNRUI4" = :bunrui4 
     AND TRIM (a."ZAISHUKBN") = TRIM (:zaishukbn) 
     AND a."BARCODE" = :barcode 
-    AND CASE WHEN a."DATA-FLG" IS NULL THEN '0' ELSE TO_CHAR (a.DATA-FLG) END IN (:data_flg) 
+    AND CASE WHEN a."DATA-FLG" IS NULL THEN '0' ELSE TO_CHAR (a."DATA-FLG") END IN (:data_flg) 
     AND TRIM (a."FILLER3") = TRIM (:filler3) 
     AND TRIM (a."UPCCD") = TRIM (:upccd) 
     AND a."ZAIKOSU-H1" = :zaikosu_h1 

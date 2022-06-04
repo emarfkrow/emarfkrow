@@ -368,19 +368,19 @@ public class InvInventory implements IEntity {
 
         // INV_INVENTORYの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("location_code -- :location_code");
-        nameList.add("hinban -- :hinban");
-        nameList.add("good_stock -- :good_stock");
-        nameList.add("bad_stock -- :bad_stock");
-        nameList.add("latest_in_date -- :latest_in_date");
-        nameList.add("latest_out_date -- :latest_out_date");
-        nameList.add("remains_kbn -- :remains_kbn");
-        nameList.add("reason_code -- :reason_code");
-        nameList.add("note -- :note");
-        nameList.add("time_stamp_create -- :time_stamp_create");
-        nameList.add("time_stamp_change -- :time_stamp_change");
-        nameList.add("user_id_create -- :user_id_create");
-        nameList.add("user_id_change -- :user_id_change");
+        nameList.add("\"LOCATION_CODE\" -- :location_code");
+        nameList.add("\"HINBAN\" -- :hinban");
+        nameList.add("\"GOOD_STOCK\" -- :good_stock");
+        nameList.add("\"BAD_STOCK\" -- :bad_stock");
+        nameList.add("\"LATEST_IN_DATE\" -- :latest_in_date");
+        nameList.add("\"LATEST_OUT_DATE\" -- :latest_out_date");
+        nameList.add("\"REMAINS_KBN\" -- :remains_kbn");
+        nameList.add("\"REASON_CODE\" -- :reason_code");
+        nameList.add("\"NOTE\" -- :note");
+        nameList.add("\"TIME_STAMP_CREATE\" -- :time_stamp_create");
+        nameList.add("\"TIME_STAMP_CHANGE\" -- :time_stamp_change");
+        nameList.add("\"USER_ID_CREATE\" -- :user_id_create");
+        nameList.add("\"USER_ID_CHANGE\" -- :user_id_change");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO INV_INVENTORY(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -415,15 +415,15 @@ public class InvInventory implements IEntity {
             return;
         }
 
-        String sql = "SELECT LPAD (CASE WHEN MAX(e.HINBAN) IS NULL THEN 0 ELSE MAX(e.HINBAN) * 1 END + 1, 25, '0') AS HINBAN FROM INV_INVENTORY e WHERE e.HINBAN < '9999999999999999999999999'";
+        String sql = "SELECT LPAD (CASE WHEN MAX(e.\"HINBAN\") IS NULL THEN 0 ELSE MAX(e.\"HINBAN\") * 1 END + 1, 25, '0') AS \"HINBAN\" FROM INV_INVENTORY e WHERE e.\"HINBAN\" < '9999999999999999999999999'";
 
         Map<String, Object> params = new HashMap<String, Object>();
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("e.LOCATION_CODE = :location_code");
+        whereList.add("e.\"LOCATION_CODE\" = :location_code");
         sql += " WHERE " + String.join(" AND ", whereList);
 
-        params.put("locationCode", this.locationCode);
+        params.put("location_code", this.locationCode);
 
         jp.co.golorp.emarf.util.MapList mapList = Queries.select(sql, params);
         Object o = mapList.get(0).get("HINBAN");
@@ -459,17 +459,17 @@ public class InvInventory implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("location_code = :location_code");
-        setList.add("hinban = :hinban");
-        setList.add("good_stock = :good_stock");
-        setList.add("bad_stock = :bad_stock");
-        setList.add("latest_in_date = TO_TIMESTAMP (:latest_in_date, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("latest_out_date = TO_TIMESTAMP (:latest_out_date, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("remains_kbn = :remains_kbn");
-        setList.add("reason_code = :reason_code");
-        setList.add("note = :note");
-        setList.add("time_stamp_change = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("user_id_change = :user_id_change");
+        setList.add("\"LOCATION_CODE\" = :location_code");
+        setList.add("\"HINBAN\" = :hinban");
+        setList.add("\"GOOD_STOCK\" = :good_stock");
+        setList.add("\"BAD_STOCK\" = :bad_stock");
+        setList.add("\"LATEST_IN_DATE\" = TO_TIMESTAMP (:latest_in_date, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"LATEST_OUT_DATE\" = TO_TIMESTAMP (:latest_out_date, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"REMAINS_KBN\" = :remains_kbn");
+        setList.add("\"REASON_CODE\" = :reason_code");
+        setList.add("\"NOTE\" = :note");
+        setList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"USER_ID_CHANGE\" = :user_id_change");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -496,23 +496,23 @@ public class InvInventory implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (location_code) = TRIM (:location_code)");
-        whereList.add("TRIM (hinban) = TRIM (:hinban)");
-        whereList.add("time_stamp_change = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        whereList.add("TRIM (\"LOCATION_CODE\") = TRIM (:location_code)");
+        whereList.add("TRIM (\"HINBAN\") = TRIM (:hinban)");
+        whereList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("LOCATION_CODE", this.locationCode);
-        params.put("HINBAN", this.hinban);
-        params.put("GOOD_STOCK", this.goodStock);
-        params.put("BAD_STOCK", this.badStock);
-        params.put("LATEST_IN_DATE", this.latestInDate);
-        params.put("LATEST_OUT_DATE", this.latestOutDate);
-        params.put("REMAINS_KBN", this.remainsKbn);
-        params.put("REASON_CODE", this.reasonCode);
-        params.put("NOTE", this.note);
+        params.put("location_code", this.locationCode);
+        params.put("hinban", this.hinban);
+        params.put("good_stock", this.goodStock);
+        params.put("bad_stock", this.badStock);
+        params.put("latest_in_date", this.latestInDate);
+        params.put("latest_out_date", this.latestOutDate);
+        params.put("remains_kbn", this.remainsKbn);
+        params.put("reason_code", this.reasonCode);
+        params.put("note", this.note);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

@@ -277,16 +277,16 @@ public class MstSubinv implements IEntity {
 
         // MST_SUBINVの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("sub_inv_code -- :sub_inv_code");
-        nameList.add("sub_inv_name -- :sub_inv_name");
-        nameList.add("manage_kbn -- :manage_kbn");
-        nameList.add("in_out_kbn -- :in_out_kbn");
-        nameList.add("sup_code -- :sup_code");
-        nameList.add("time_stamp_create -- :time_stamp_create");
-        nameList.add("time_stamp_change -- :time_stamp_change");
-        nameList.add("user_id_create -- :user_id_create");
-        nameList.add("user_id_change -- :user_id_change");
-        nameList.add("delete_flag -- :delete_flag");
+        nameList.add("\"SUB_INV_CODE\" -- :sub_inv_code");
+        nameList.add("\"SUB_INV_NAME\" -- :sub_inv_name");
+        nameList.add("\"MANAGE_KBN\" -- :manage_kbn");
+        nameList.add("\"IN_OUT_KBN\" -- :in_out_kbn");
+        nameList.add("\"SUP_CODE\" -- :sup_code");
+        nameList.add("\"TIME_STAMP_CREATE\" -- :time_stamp_create");
+        nameList.add("\"TIME_STAMP_CHANGE\" -- :time_stamp_change");
+        nameList.add("\"USER_ID_CREATE\" -- :user_id_create");
+        nameList.add("\"USER_ID_CHANGE\" -- :user_id_change");
+        nameList.add("\"DELETE_FLAG\" -- :delete_flag");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO MST_SUBINV(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -318,7 +318,7 @@ public class MstSubinv implements IEntity {
             return;
         }
 
-        String sql = "SELECT LPAD (CASE WHEN MAX(e.SUB_INV_CODE) IS NULL THEN 0 ELSE MAX(e.SUB_INV_CODE) * 1 END + 1, 10, '0') AS SUB_INV_CODE FROM MST_SUBINV e WHERE e.SUB_INV_CODE < '9999999999'";
+        String sql = "SELECT LPAD (CASE WHEN MAX(e.\"SUB_INV_CODE\") IS NULL THEN 0 ELSE MAX(e.\"SUB_INV_CODE\") * 1 END + 1, 10, '0') AS \"SUB_INV_CODE\" FROM MST_SUBINV e WHERE e.\"SUB_INV_CODE\" < '9999999999'";
 
         Map<String, Object> params = new HashMap<String, Object>();
 
@@ -345,14 +345,14 @@ public class MstSubinv implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("sub_inv_code = :sub_inv_code");
-        setList.add("sub_inv_name = :sub_inv_name");
-        setList.add("manage_kbn = :manage_kbn");
-        setList.add("in_out_kbn = :in_out_kbn");
-        setList.add("sup_code = :sup_code");
-        setList.add("time_stamp_change = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("user_id_change = :user_id_change");
-        setList.add("delete_flag = :delete_flag");
+        setList.add("\"SUB_INV_CODE\" = :sub_inv_code");
+        setList.add("\"SUB_INV_NAME\" = :sub_inv_name");
+        setList.add("\"MANAGE_KBN\" = :manage_kbn");
+        setList.add("\"IN_OUT_KBN\" = :in_out_kbn");
+        setList.add("\"SUP_CODE\" = :sup_code");
+        setList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"USER_ID_CHANGE\" = :user_id_change");
+        setList.add("\"DELETE_FLAG\" = :delete_flag");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -374,19 +374,19 @@ public class MstSubinv implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (sub_inv_code) = TRIM (:sub_inv_code)");
-        whereList.add("time_stamp_change = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        whereList.add("TRIM (\"SUB_INV_CODE\") = TRIM (:sub_inv_code)");
+        whereList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("SUB_INV_CODE", this.subInvCode);
-        params.put("SUB_INV_NAME", this.subInvName);
-        params.put("MANAGE_KBN", this.manageKbn);
-        params.put("IN_OUT_KBN", this.inOutKbn);
-        params.put("SUP_CODE", this.supCode);
-        params.put("DELETE_FLAG", this.deleteFlag);
+        params.put("sub_inv_code", this.subInvCode);
+        params.put("sub_inv_name", this.subInvName);
+        params.put("manage_kbn", this.manageKbn);
+        params.put("in_out_kbn", this.inOutKbn);
+        params.put("sup_code", this.supCode);
+        params.put("delete_flag", this.deleteFlag);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

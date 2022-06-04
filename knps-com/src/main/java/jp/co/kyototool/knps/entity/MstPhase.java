@@ -148,10 +148,10 @@ public class MstPhase implements IEntity {
 
         // MST_PHASEの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("phase -- :phase");
-        nameList.add("yy -- :yy");
-        nameList.add("phase_from -- :phase_from");
-        nameList.add("phase_to -- :phase_to");
+        nameList.add("\"PHASE\" -- :phase");
+        nameList.add("\"YY\" -- :yy");
+        nameList.add("\"PHASE_FROM\" -- :phase_from");
+        nameList.add("\"PHASE_TO\" -- :phase_to");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO MST_PHASE(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -187,10 +187,10 @@ public class MstPhase implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("phase = :phase");
-        setList.add("yy = :yy");
-        setList.add("phase_from = TO_TIMESTAMP (:phase_from, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("phase_to = TO_TIMESTAMP (:phase_to, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"PHASE\" = :phase");
+        setList.add("\"YY\" = :yy");
+        setList.add("\"PHASE_FROM\" = TO_TIMESTAMP (:phase_from, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"PHASE_TO\" = TO_TIMESTAMP (:phase_to, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -212,16 +212,16 @@ public class MstPhase implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("phase = :phase");
+        whereList.add("\"PHASE\" = :phase");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("PHASE", this.phase);
-        params.put("YY", this.yy);
-        params.put("PHASE_FROM", this.phaseFrom);
-        params.put("PHASE_TO", this.phaseTo);
+        params.put("phase", this.phase);
+        params.put("yy", this.yy);
+        params.put("phase_from", this.phaseFrom);
+        params.put("phase_to", this.phaseTo);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

@@ -280,16 +280,16 @@ public class MstComponentSales implements IEntity {
 
         // MST_COMPONENT_SALESの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("comp_hinban_parent -- :comp_hinban_parent");
-        nameList.add("comp_hinban_child -- :comp_hinban_child");
-        nameList.add("set_number -- :set_number");
-        nameList.add("bottom_flag -- :bottom_flag");
-        nameList.add("provisions_kbn -- :provisions_kbn");
-        nameList.add("time_stamp_create -- :time_stamp_create");
-        nameList.add("time_stamp_change -- :time_stamp_change");
-        nameList.add("user_id_create -- :user_id_create");
-        nameList.add("user_id_change -- :user_id_change");
-        nameList.add("delete_flag -- :delete_flag");
+        nameList.add("\"COMP_HINBAN_PARENT\" -- :comp_hinban_parent");
+        nameList.add("\"COMP_HINBAN_CHILD\" -- :comp_hinban_child");
+        nameList.add("\"SET_NUMBER\" -- :set_number");
+        nameList.add("\"BOTTOM_FLAG\" -- :bottom_flag");
+        nameList.add("\"PROVISIONS_KBN\" -- :provisions_kbn");
+        nameList.add("\"TIME_STAMP_CREATE\" -- :time_stamp_create");
+        nameList.add("\"TIME_STAMP_CHANGE\" -- :time_stamp_change");
+        nameList.add("\"USER_ID_CREATE\" -- :user_id_create");
+        nameList.add("\"USER_ID_CHANGE\" -- :user_id_change");
+        nameList.add("\"DELETE_FLAG\" -- :delete_flag");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO MST_COMPONENT_SALES(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -321,15 +321,15 @@ public class MstComponentSales implements IEntity {
             return;
         }
 
-        String sql = "SELECT LPAD (CASE WHEN MAX(e.COMP_HINBAN_CHILD) IS NULL THEN 0 ELSE MAX(e.COMP_HINBAN_CHILD) * 1 END + 1, 20, '0') AS COMP_HINBAN_CHILD FROM MST_COMPONENT_SALES e WHERE e.COMP_HINBAN_CHILD < '99999999999999999999'";
+        String sql = "SELECT LPAD (CASE WHEN MAX(e.\"COMP_HINBAN_CHILD\") IS NULL THEN 0 ELSE MAX(e.\"COMP_HINBAN_CHILD\") * 1 END + 1, 20, '0') AS \"COMP_HINBAN_CHILD\" FROM MST_COMPONENT_SALES e WHERE e.\"COMP_HINBAN_CHILD\" < '99999999999999999999'";
 
         Map<String, Object> params = new HashMap<String, Object>();
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("e.COMP_HINBAN_PARENT = :comp_hinban_parent");
+        whereList.add("e.\"COMP_HINBAN_PARENT\" = :comp_hinban_parent");
         sql += " WHERE " + String.join(" AND ", whereList);
 
-        params.put("compHinbanParent", this.compHinbanParent);
+        params.put("comp_hinban_parent", this.compHinbanParent);
 
         jp.co.golorp.emarf.util.MapList mapList = Queries.select(sql, params);
         Object o = mapList.get(0).get("COMP_HINBAN_CHILD");
@@ -354,14 +354,14 @@ public class MstComponentSales implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("comp_hinban_parent = :comp_hinban_parent");
-        setList.add("comp_hinban_child = :comp_hinban_child");
-        setList.add("set_number = :set_number");
-        setList.add("bottom_flag = :bottom_flag");
-        setList.add("provisions_kbn = :provisions_kbn");
-        setList.add("time_stamp_change = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("user_id_change = :user_id_change");
-        setList.add("delete_flag = :delete_flag");
+        setList.add("\"COMP_HINBAN_PARENT\" = :comp_hinban_parent");
+        setList.add("\"COMP_HINBAN_CHILD\" = :comp_hinban_child");
+        setList.add("\"SET_NUMBER\" = :set_number");
+        setList.add("\"BOTTOM_FLAG\" = :bottom_flag");
+        setList.add("\"PROVISIONS_KBN\" = :provisions_kbn");
+        setList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"USER_ID_CHANGE\" = :user_id_change");
+        setList.add("\"DELETE_FLAG\" = :delete_flag");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -383,20 +383,20 @@ public class MstComponentSales implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (comp_hinban_parent) = TRIM (:comp_hinban_parent)");
-        whereList.add("TRIM (comp_hinban_child) = TRIM (:comp_hinban_child)");
-        whereList.add("time_stamp_change = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        whereList.add("TRIM (\"COMP_HINBAN_PARENT\") = TRIM (:comp_hinban_parent)");
+        whereList.add("TRIM (\"COMP_HINBAN_CHILD\") = TRIM (:comp_hinban_child)");
+        whereList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("COMP_HINBAN_PARENT", this.compHinbanParent);
-        params.put("COMP_HINBAN_CHILD", this.compHinbanChild);
-        params.put("SET_NUMBER", this.setNumber);
-        params.put("BOTTOM_FLAG", this.bottomFlag);
-        params.put("PROVISIONS_KBN", this.provisionsKbn);
-        params.put("DELETE_FLAG", this.deleteFlag);
+        params.put("comp_hinban_parent", this.compHinbanParent);
+        params.put("comp_hinban_child", this.compHinbanChild);
+        params.put("set_number", this.setNumber);
+        params.put("bottom_flag", this.bottomFlag);
+        params.put("provisions_kbn", this.provisionsKbn);
+        params.put("delete_flag", this.deleteFlag);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

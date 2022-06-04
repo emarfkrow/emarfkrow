@@ -601,18 +601,18 @@ public final class DataSources {
         // テーブル情報でループ（比較元）
         Iterator<TableInfo> srcIterator = tableInfos.iterator();
         while (srcIterator.hasNext()) {
-            TableInfo srcInfo = srcIterator.next();
+            TableInfo srcTableInfo = srcIterator.next();
 
             // 複合キーならスキップ
-            if (srcInfo.getPrimaryKeys().size() != 1) {
+            if (srcTableInfo.getPrimaryKeys().size() != 1) {
                 continue;
             }
 
             // ユニークキーを取得
-            String srcPk = srcInfo.getPrimaryKeys().get(0);
+            String srcPrimaryKey = srcTableInfo.getPrimaryKeys().get(0);
 
             // ユニークキーが参照IDでなければスキップ
-            if (!StringUtil.endsWith(referPairs, srcPk)) {
+            if (!StringUtil.endsWith(referPairs, srcPrimaryKey)) {
                 continue;
             }
 
@@ -621,10 +621,10 @@ public final class DataSources {
             for (Entry<String, String> entry : referPairs.entrySet()) {
                 String referIdSuffix = entry.getKey();
                 String referMeiSuffix = entry.getValue();
-                if (srcPk.toLowerCase().endsWith(referIdSuffix)) {
-                    String mei = srcPk.replaceAll("(?i)" + referIdSuffix, referMeiSuffix);
-                    for (String columnName : srcInfo.getColumnInfos().keySet()) {
-                        if (mei.toLowerCase().equals(columnName.toLowerCase())) {
+                if (srcPrimaryKey.endsWith(referIdSuffix)) {
+                    String mei = srcPrimaryKey.replaceAll("(?i)" + referIdSuffix + "$", referMeiSuffix);
+                    for (String columnName : srcTableInfo.getColumnInfos().keySet()) {
+                        if (mei.equals(columnName)) {
                             referMei = mei;
                             break;
                         }
@@ -638,19 +638,19 @@ public final class DataSources {
             // テーブル情報でループ（比較先）
             Iterator<TableInfo> destIterator = tableInfos.iterator();
             while (destIterator.hasNext()) {
-                TableInfo destInfo = destIterator.next();
+                TableInfo destTableInfo = destIterator.next();
 
                 // 比較元と同じならスキップ
-                if (srcInfo == destInfo) {
+                if (srcTableInfo == destTableInfo) {
                     continue;
                 }
 
                 // 比較先のカラム情報でループして比較元のユニークキーがあれば参照テーブルリストに追加
-                for (Entry<String, ColumnInfo> e : destInfo.getColumnInfos().entrySet()) {
-                    String columnName = e.getKey();
-                    ColumnInfo columnInfo = e.getValue();
-                    if (/*!destInfo.getPrimaryKeys().contains(columnName) &&*/ columnName.endsWith(srcPk)) {
-                        columnInfo.setReferInfo(srcInfo);
+                for (Entry<String, ColumnInfo> e : destTableInfo.getColumnInfos().entrySet()) {
+                    String destColumnName = e.getKey();
+                    ColumnInfo destColumnInfo = e.getValue();
+                    if (destColumnName.endsWith(srcPrimaryKey)) {
+                        destColumnInfo.setReferInfo(srcTableInfo);
                     }
                 }
             }

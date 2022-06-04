@@ -619,30 +619,30 @@ public class HktcPrdDailyProPlanDetail implements IEntity {
 
         // HKTC_PRD_DAILY_PRO_PLAN_DETAILの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("child_plan_no -- :child_plan_no");
-        nameList.add("parent_plan_no -- :parent_plan_no");
-        nameList.add("plan_no -- :plan_no");
-        nameList.add("hinban -- :hinban");
-        nameList.add("lot_size -- :lot_size");
-        nameList.add("lot_size_change -- :lot_size_change");
-        nameList.add("kanban_id -- :kanban_id");
-        nameList.add("serial_no -- :serial_no");
-        nameList.add("routing_counts -- :routing_counts");
-        nameList.add("plan_status -- :plan_status");
-        nameList.add("pro_group_no -- :pro_group_no");
-        nameList.add("out_plan_trans -- :out_plan_trans");
-        nameList.add("beg_date -- :beg_date");
-        nameList.add("end_date -- :end_date");
-        nameList.add("start_date -- :start_date");
-        nameList.add("comp_date -- :comp_date");
-        nameList.add("pch_flag -- :pch_flag");
-        nameList.add("print_order -- :print_order");
-        nameList.add("short_no -- :short_no");
-        nameList.add("time_stamp_create -- :time_stamp_create");
-        nameList.add("time_stamp_change -- :time_stamp_change");
-        nameList.add("user_id_create -- :user_id_create");
-        nameList.add("user_id_change -- :user_id_change");
-        nameList.add("delete_flag -- :delete_flag");
+        nameList.add("\"CHILD_PLAN_NO\" -- :child_plan_no");
+        nameList.add("\"PARENT_PLAN_NO\" -- :parent_plan_no");
+        nameList.add("\"PLAN_NO\" -- :plan_no");
+        nameList.add("\"HINBAN\" -- :hinban");
+        nameList.add("\"LOT_SIZE\" -- :lot_size");
+        nameList.add("\"LOT_SIZE_CHANGE\" -- :lot_size_change");
+        nameList.add("\"KANBAN_ID\" -- :kanban_id");
+        nameList.add("\"SERIAL_NO\" -- :serial_no");
+        nameList.add("\"ROUTING_COUNTS\" -- :routing_counts");
+        nameList.add("\"PLAN_STATUS\" -- :plan_status");
+        nameList.add("\"PRO_GROUP_NO\" -- :pro_group_no");
+        nameList.add("\"OUT_PLAN_TRANS\" -- :out_plan_trans");
+        nameList.add("\"BEG_DATE\" -- :beg_date");
+        nameList.add("\"END_DATE\" -- :end_date");
+        nameList.add("\"START_DATE\" -- :start_date");
+        nameList.add("\"COMP_DATE\" -- :comp_date");
+        nameList.add("\"PCH_FLAG\" -- :pch_flag");
+        nameList.add("\"PRINT_ORDER\" -- :print_order");
+        nameList.add("\"SHORT_NO\" -- :short_no");
+        nameList.add("\"TIME_STAMP_CREATE\" -- :time_stamp_create");
+        nameList.add("\"TIME_STAMP_CHANGE\" -- :time_stamp_change");
+        nameList.add("\"USER_ID_CREATE\" -- :user_id_create");
+        nameList.add("\"USER_ID_CHANGE\" -- :user_id_change");
+        nameList.add("\"DELETE_FLAG\" -- :delete_flag");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO HKTC_PRD_DAILY_PRO_PLAN_DETAIL(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -688,7 +688,7 @@ public class HktcPrdDailyProPlanDetail implements IEntity {
             return;
         }
 
-        String sql = "SELECT LPAD (CASE WHEN MAX(e.CHILD_PLAN_NO) IS NULL THEN 0 ELSE MAX(e.CHILD_PLAN_NO) * 1 END + 1, 12, '0') AS CHILD_PLAN_NO FROM HKTC_PRD_DAILY_PRO_PLAN_DETAIL e WHERE e.CHILD_PLAN_NO < '999999999999'";
+        String sql = "SELECT LPAD (CASE WHEN MAX(e.\"CHILD_PLAN_NO\") IS NULL THEN 0 ELSE MAX(e.\"CHILD_PLAN_NO\") * 1 END + 1, 12, '0') AS \"CHILD_PLAN_NO\" FROM HKTC_PRD_DAILY_PRO_PLAN_DETAIL e WHERE e.\"CHILD_PLAN_NO\" < '999999999999'";
 
         Map<String, Object> params = new HashMap<String, Object>();
 
@@ -735,28 +735,28 @@ public class HktcPrdDailyProPlanDetail implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("child_plan_no = :child_plan_no");
-        setList.add("parent_plan_no = :parent_plan_no");
-        setList.add("plan_no = :plan_no");
-        setList.add("hinban = :hinban");
-        setList.add("lot_size = :lot_size");
-        setList.add("lot_size_change = :lot_size_change");
-        setList.add("kanban_id = :kanban_id");
-        setList.add("serial_no = :serial_no");
-        setList.add("routing_counts = :routing_counts");
-        setList.add("plan_status = :plan_status");
-        setList.add("pro_group_no = :pro_group_no");
-        setList.add("out_plan_trans = :out_plan_trans");
-        setList.add("beg_date = TO_TIMESTAMP (:beg_date, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("end_date = TO_TIMESTAMP (:end_date, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("start_date = TO_TIMESTAMP (:start_date, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("comp_date = TO_TIMESTAMP (:comp_date, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("pch_flag = :pch_flag");
-        setList.add("print_order = :print_order");
-        setList.add("short_no = :short_no");
-        setList.add("time_stamp_change = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("user_id_change = :user_id_change");
-        setList.add("delete_flag = :delete_flag");
+        setList.add("\"CHILD_PLAN_NO\" = :child_plan_no");
+        setList.add("\"PARENT_PLAN_NO\" = :parent_plan_no");
+        setList.add("\"PLAN_NO\" = :plan_no");
+        setList.add("\"HINBAN\" = :hinban");
+        setList.add("\"LOT_SIZE\" = :lot_size");
+        setList.add("\"LOT_SIZE_CHANGE\" = :lot_size_change");
+        setList.add("\"KANBAN_ID\" = :kanban_id");
+        setList.add("\"SERIAL_NO\" = :serial_no");
+        setList.add("\"ROUTING_COUNTS\" = :routing_counts");
+        setList.add("\"PLAN_STATUS\" = :plan_status");
+        setList.add("\"PRO_GROUP_NO\" = :pro_group_no");
+        setList.add("\"OUT_PLAN_TRANS\" = :out_plan_trans");
+        setList.add("\"BEG_DATE\" = TO_TIMESTAMP (:beg_date, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"END_DATE\" = TO_TIMESTAMP (:end_date, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"START_DATE\" = TO_TIMESTAMP (:start_date, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"COMP_DATE\" = TO_TIMESTAMP (:comp_date, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"PCH_FLAG\" = :pch_flag");
+        setList.add("\"PRINT_ORDER\" = :print_order");
+        setList.add("\"SHORT_NO\" = :short_no");
+        setList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"USER_ID_CHANGE\" = :user_id_change");
+        setList.add("\"DELETE_FLAG\" = :delete_flag");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -788,33 +788,33 @@ public class HktcPrdDailyProPlanDetail implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (child_plan_no) = TRIM (:child_plan_no)");
-        whereList.add("time_stamp_change = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        whereList.add("TRIM (\"CHILD_PLAN_NO\") = TRIM (:child_plan_no)");
+        whereList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("CHILD_PLAN_NO", this.childPlanNo);
-        params.put("PARENT_PLAN_NO", this.parentPlanNo);
-        params.put("PLAN_NO", this.planNo);
-        params.put("HINBAN", this.hinban);
-        params.put("LOT_SIZE", this.lotSize);
-        params.put("LOT_SIZE_CHANGE", this.lotSizeChange);
-        params.put("KANBAN_ID", this.kanbanId);
-        params.put("SERIAL_NO", this.serialNo);
-        params.put("ROUTING_COUNTS", this.routingCounts);
-        params.put("PLAN_STATUS", this.planStatus);
-        params.put("PRO_GROUP_NO", this.proGroupNo);
-        params.put("OUT_PLAN_TRANS", this.outPlanTrans);
-        params.put("BEG_DATE", this.begDate);
-        params.put("END_DATE", this.endDate);
-        params.put("START_DATE", this.startDate);
-        params.put("COMP_DATE", this.compDate);
-        params.put("PCH_FLAG", this.pchFlag);
-        params.put("PRINT_ORDER", this.printOrder);
-        params.put("SHORT_NO", this.shortNo);
-        params.put("DELETE_FLAG", this.deleteFlag);
+        params.put("child_plan_no", this.childPlanNo);
+        params.put("parent_plan_no", this.parentPlanNo);
+        params.put("plan_no", this.planNo);
+        params.put("hinban", this.hinban);
+        params.put("lot_size", this.lotSize);
+        params.put("lot_size_change", this.lotSizeChange);
+        params.put("kanban_id", this.kanbanId);
+        params.put("serial_no", this.serialNo);
+        params.put("routing_counts", this.routingCounts);
+        params.put("plan_status", this.planStatus);
+        params.put("pro_group_no", this.proGroupNo);
+        params.put("out_plan_trans", this.outPlanTrans);
+        params.put("beg_date", this.begDate);
+        params.put("end_date", this.endDate);
+        params.put("start_date", this.startDate);
+        params.put("comp_date", this.compDate);
+        params.put("pch_flag", this.pchFlag);
+        params.put("print_order", this.printOrder);
+        params.put("short_no", this.shortNo);
+        params.put("delete_flag", this.deleteFlag);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

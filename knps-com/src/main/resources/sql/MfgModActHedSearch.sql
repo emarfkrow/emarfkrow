@@ -1,6 +1,6 @@
 SELECT
       a.*
-    , (SELECT r1.WC_NAME FROM MST_WC r1 WHERE r1.WC_CODE = a."WC_CODE") AS WC_NAME
+    , (SELECT r1."WC_NAME" FROM MST_WC r1 WHERE r1."WC_CODE" = a."WC_CODE") AS "WC_NAME"
 FROM
     MFG_MOD_ACT_HED a 
 WHERE
@@ -19,7 +19,7 @@ WHERE
     AND a."ACT_MOD_COUNTS" <= :act_mod_counts_2 
     AND TRIM (a."MEMO") = TRIM (:memo) 
     AND a."MOD_STATUS" = :mod_status 
-    AND CASE WHEN a."EXP_FLAG" IS NULL THEN '0' ELSE TO_CHAR (a.EXP_FLAG) END IN (:exp_flag) 
+    AND CASE WHEN a."EXP_FLAG" IS NULL THEN '0' ELSE TO_CHAR (a."EXP_FLAG") END IN (:exp_flag) 
     AND a."BEG_DATE" = :beg_date 
     AND a."BEG_DATE" >= :beg_date_1 
     AND a."BEG_DATE" <= :beg_date_2 

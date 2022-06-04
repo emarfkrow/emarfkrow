@@ -286,16 +286,16 @@ public class PrdDailyNeckLoad implements IEntity {
 
         // PRD_DAILY_NECK_LOADの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("pro_no -- :pro_no");
-        nameList.add("branch_no -- :branch_no");
-        nameList.add("load_date -- :load_date");
-        nameList.add("load_time -- :load_time");
-        nameList.add("load_over_time -- :load_over_time");
-        nameList.add("time_stamp_create -- :time_stamp_create");
-        nameList.add("time_stamp_change -- :time_stamp_change");
-        nameList.add("user_id_create -- :user_id_create");
-        nameList.add("user_id_change -- :user_id_change");
-        nameList.add("wc_code -- :wc_code");
+        nameList.add("\"PRO_NO\" -- :pro_no");
+        nameList.add("\"BRANCH_NO\" -- :branch_no");
+        nameList.add("\"LOAD_DATE\" -- :load_date");
+        nameList.add("\"LOAD_TIME\" -- :load_time");
+        nameList.add("\"LOAD_OVER_TIME\" -- :load_over_time");
+        nameList.add("\"TIME_STAMP_CREATE\" -- :time_stamp_create");
+        nameList.add("\"TIME_STAMP_CHANGE\" -- :time_stamp_change");
+        nameList.add("\"USER_ID_CREATE\" -- :user_id_create");
+        nameList.add("\"USER_ID_CHANGE\" -- :user_id_change");
+        nameList.add("\"WC_CODE\" -- :wc_code");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO PRD_DAILY_NECK_LOAD(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -337,14 +337,14 @@ public class PrdDailyNeckLoad implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("pro_no = :pro_no");
-        setList.add("branch_no = :branch_no");
-        setList.add("load_date = TO_TIMESTAMP (:load_date, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("load_time = :load_time");
-        setList.add("load_over_time = :load_over_time");
-        setList.add("time_stamp_change = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("user_id_change = :user_id_change");
-        setList.add("wc_code = :wc_code");
+        setList.add("\"PRO_NO\" = :pro_no");
+        setList.add("\"BRANCH_NO\" = :branch_no");
+        setList.add("\"LOAD_DATE\" = TO_TIMESTAMP (:load_date, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"LOAD_TIME\" = :load_time");
+        setList.add("\"LOAD_OVER_TIME\" = :load_over_time");
+        setList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"USER_ID_CHANGE\" = :user_id_change");
+        setList.add("\"WC_CODE\" = :wc_code");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -366,20 +366,20 @@ public class PrdDailyNeckLoad implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (pro_no) = TRIM (:pro_no)");
-        whereList.add("branch_no = :branch_no");
-        whereList.add("time_stamp_change = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        whereList.add("TRIM (\"PRO_NO\") = TRIM (:pro_no)");
+        whereList.add("\"BRANCH_NO\" = :branch_no");
+        whereList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("PRO_NO", this.proNo);
-        params.put("BRANCH_NO", this.branchNo);
-        params.put("LOAD_DATE", this.loadDate);
-        params.put("LOAD_TIME", this.loadTime);
-        params.put("LOAD_OVER_TIME", this.loadOverTime);
-        params.put("WC_CODE", this.wcCode);
+        params.put("pro_no", this.proNo);
+        params.put("branch_no", this.branchNo);
+        params.put("load_date", this.loadDate);
+        params.put("load_time", this.loadTime);
+        params.put("load_over_time", this.loadOverTime);
+        params.put("wc_code", this.wcCode);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

@@ -262,15 +262,15 @@ public class MstCalendar implements IEntity {
 
         // MST_CALENDARの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("serial_day -- :serial_day");
-        nameList.add("working_flag -- :working_flag");
-        nameList.add("day_of_week -- :day_of_week");
-        nameList.add("time_stamp_create -- :time_stamp_create");
-        nameList.add("time_stamp_change -- :time_stamp_change");
-        nameList.add("user_id_create -- :user_id_create");
-        nameList.add("user_id_change -- :user_id_change");
-        nameList.add("delete_flag -- :delete_flag");
-        nameList.add("n_working -- :n_working");
+        nameList.add("\"SERIAL_DAY\" -- :serial_day");
+        nameList.add("\"WORKING_FLAG\" -- :working_flag");
+        nameList.add("\"DAY_OF_WEEK\" -- :day_of_week");
+        nameList.add("\"TIME_STAMP_CREATE\" -- :time_stamp_create");
+        nameList.add("\"TIME_STAMP_CHANGE\" -- :time_stamp_change");
+        nameList.add("\"USER_ID_CREATE\" -- :user_id_create");
+        nameList.add("\"USER_ID_CHANGE\" -- :user_id_change");
+        nameList.add("\"DELETE_FLAG\" -- :delete_flag");
+        nameList.add("\"N_WORKING\" -- :n_working");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO MST_CALENDAR(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -311,13 +311,13 @@ public class MstCalendar implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("serial_day = TO_TIMESTAMP (:serial_day, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("working_flag = :working_flag");
-        setList.add("day_of_week = :day_of_week");
-        setList.add("time_stamp_change = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("user_id_change = :user_id_change");
-        setList.add("delete_flag = :delete_flag");
-        setList.add("n_working = :n_working");
+        setList.add("\"SERIAL_DAY\" = TO_TIMESTAMP (:serial_day, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"WORKING_FLAG\" = :working_flag");
+        setList.add("\"DAY_OF_WEEK\" = :day_of_week");
+        setList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"USER_ID_CHANGE\" = :user_id_change");
+        setList.add("\"DELETE_FLAG\" = :delete_flag");
+        setList.add("\"N_WORKING\" = :n_working");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -339,18 +339,18 @@ public class MstCalendar implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("serial_day = :serial_day");
-        whereList.add("time_stamp_change = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        whereList.add("\"SERIAL_DAY\" = :serial_day");
+        whereList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("SERIAL_DAY", this.serialDay);
-        params.put("WORKING_FLAG", this.workingFlag);
-        params.put("DAY_OF_WEEK", this.dayOfWeek);
-        params.put("DELETE_FLAG", this.deleteFlag);
-        params.put("N_WORKING", this.nWorking);
+        params.put("serial_day", this.serialDay);
+        params.put("working_flag", this.workingFlag);
+        params.put("day_of_week", this.dayOfWeek);
+        params.put("delete_flag", this.deleteFlag);
+        params.put("n_working", this.nWorking);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

@@ -112,9 +112,9 @@ public class MfgDailyPlanExchangeId implements IEntity {
 
         // MFG_DAILY_PLAN_EXCHANGE_IDの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("exchange_id -- :exchange_id");
-        nameList.add("pro_no -- :pro_no");
-        nameList.add("id_type -- :id_type");
+        nameList.add("\"EXCHANGE_ID\" -- :exchange_id");
+        nameList.add("\"PRO_NO\" -- :pro_no");
+        nameList.add("\"ID_TYPE\" -- :id_type");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO MFG_DAILY_PLAN_EXCHANGE_ID(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -139,7 +139,7 @@ public class MfgDailyPlanExchangeId implements IEntity {
             return;
         }
 
-        String sql = "SELECT LPAD (CASE WHEN MAX(e.EXCHANGE_ID) IS NULL THEN 0 ELSE MAX(e.EXCHANGE_ID) * 1 END + 1, 7, '0') AS EXCHANGE_ID FROM MFG_DAILY_PLAN_EXCHANGE_ID e WHERE e.EXCHANGE_ID < '9999999'";
+        String sql = "SELECT LPAD (CASE WHEN MAX(e.\"EXCHANGE_ID\") IS NULL THEN 0 ELSE MAX(e.\"EXCHANGE_ID\") * 1 END + 1, 7, '0') AS \"EXCHANGE_ID\" FROM MFG_DAILY_PLAN_EXCHANGE_ID e WHERE e.\"EXCHANGE_ID\" < '9999999'";
 
         Map<String, Object> params = new HashMap<String, Object>();
 
@@ -166,9 +166,9 @@ public class MfgDailyPlanExchangeId implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("exchange_id = :exchange_id");
-        setList.add("pro_no = :pro_no");
-        setList.add("id_type = :id_type");
+        setList.add("\"EXCHANGE_ID\" = :exchange_id");
+        setList.add("\"PRO_NO\" = :pro_no");
+        setList.add("\"ID_TYPE\" = :id_type");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -190,15 +190,15 @@ public class MfgDailyPlanExchangeId implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (exchange_id) = TRIM (:exchange_id)");
+        whereList.add("TRIM (\"EXCHANGE_ID\") = TRIM (:exchange_id)");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("EXCHANGE_ID", this.exchangeId);
-        params.put("PRO_NO", this.proNo);
-        params.put("ID_TYPE", this.idType);
+        params.put("exchange_id", this.exchangeId);
+        params.put("pro_no", this.proNo);
+        params.put("id_type", this.idType);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

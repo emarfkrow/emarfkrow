@@ -361,20 +361,20 @@ public class MstWs implements IEntity {
 
         // MST_WSの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("ws_code -- :ws_code");
-        nameList.add("ws_name -- :ws_name");
-        nameList.add("in_out_kbn -- :in_out_kbn");
-        nameList.add("hum_norm_ability -- :hum_norm_ability");
-        nameList.add("hum_max_ability -- :hum_max_ability");
-        nameList.add("norm_member -- :norm_member");
-        nameList.add("admin_code -- :admin_code");
-        nameList.add("team_code -- :team_code");
-        nameList.add("sup_code -- :sup_code");
-        nameList.add("time_stamp_create -- :time_stamp_create");
-        nameList.add("time_stamp_change -- :time_stamp_change");
-        nameList.add("user_id_create -- :user_id_create");
-        nameList.add("user_id_change -- :user_id_change");
-        nameList.add("delete_flag -- :delete_flag");
+        nameList.add("\"WS_CODE\" -- :ws_code");
+        nameList.add("\"WS_NAME\" -- :ws_name");
+        nameList.add("\"IN_OUT_KBN\" -- :in_out_kbn");
+        nameList.add("\"HUM_NORM_ABILITY\" -- :hum_norm_ability");
+        nameList.add("\"HUM_MAX_ABILITY\" -- :hum_max_ability");
+        nameList.add("\"NORM_MEMBER\" -- :norm_member");
+        nameList.add("\"ADMIN_CODE\" -- :admin_code");
+        nameList.add("\"TEAM_CODE\" -- :team_code");
+        nameList.add("\"SUP_CODE\" -- :sup_code");
+        nameList.add("\"TIME_STAMP_CREATE\" -- :time_stamp_create");
+        nameList.add("\"TIME_STAMP_CHANGE\" -- :time_stamp_change");
+        nameList.add("\"USER_ID_CREATE\" -- :user_id_create");
+        nameList.add("\"USER_ID_CHANGE\" -- :user_id_change");
+        nameList.add("\"DELETE_FLAG\" -- :delete_flag");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO MST_WS(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -410,7 +410,7 @@ public class MstWs implements IEntity {
             return;
         }
 
-        String sql = "SELECT LPAD (CASE WHEN MAX(e.WS_CODE) IS NULL THEN 0 ELSE MAX(e.WS_CODE) * 1 END + 1, 4, '0') AS WS_CODE FROM MST_WS e WHERE e.WS_CODE < '9999'";
+        String sql = "SELECT LPAD (CASE WHEN MAX(e.\"WS_CODE\") IS NULL THEN 0 ELSE MAX(e.\"WS_CODE\") * 1 END + 1, 4, '0') AS \"WS_CODE\" FROM MST_WS e WHERE e.\"WS_CODE\" < '9999'";
 
         Map<String, Object> params = new HashMap<String, Object>();
 
@@ -437,18 +437,18 @@ public class MstWs implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("ws_code = :ws_code");
-        setList.add("ws_name = :ws_name");
-        setList.add("in_out_kbn = :in_out_kbn");
-        setList.add("hum_norm_ability = :hum_norm_ability");
-        setList.add("hum_max_ability = :hum_max_ability");
-        setList.add("norm_member = :norm_member");
-        setList.add("admin_code = :admin_code");
-        setList.add("team_code = :team_code");
-        setList.add("sup_code = :sup_code");
-        setList.add("time_stamp_change = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("user_id_change = :user_id_change");
-        setList.add("delete_flag = :delete_flag");
+        setList.add("\"WS_CODE\" = :ws_code");
+        setList.add("\"WS_NAME\" = :ws_name");
+        setList.add("\"IN_OUT_KBN\" = :in_out_kbn");
+        setList.add("\"HUM_NORM_ABILITY\" = :hum_norm_ability");
+        setList.add("\"HUM_MAX_ABILITY\" = :hum_max_ability");
+        setList.add("\"NORM_MEMBER\" = :norm_member");
+        setList.add("\"ADMIN_CODE\" = :admin_code");
+        setList.add("\"TEAM_CODE\" = :team_code");
+        setList.add("\"SUP_CODE\" = :sup_code");
+        setList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"USER_ID_CHANGE\" = :user_id_change");
+        setList.add("\"DELETE_FLAG\" = :delete_flag");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -470,23 +470,23 @@ public class MstWs implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (ws_code) = TRIM (:ws_code)");
-        whereList.add("time_stamp_change = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        whereList.add("TRIM (\"WS_CODE\") = TRIM (:ws_code)");
+        whereList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("WS_CODE", this.wsCode);
-        params.put("WS_NAME", this.wsName);
-        params.put("IN_OUT_KBN", this.inOutKbn);
-        params.put("HUM_NORM_ABILITY", this.humNormAbility);
-        params.put("HUM_MAX_ABILITY", this.humMaxAbility);
-        params.put("NORM_MEMBER", this.normMember);
-        params.put("ADMIN_CODE", this.adminCode);
-        params.put("TEAM_CODE", this.teamCode);
-        params.put("SUP_CODE", this.supCode);
-        params.put("DELETE_FLAG", this.deleteFlag);
+        params.put("ws_code", this.wsCode);
+        params.put("ws_name", this.wsName);
+        params.put("in_out_kbn", this.inOutKbn);
+        params.put("hum_norm_ability", this.humNormAbility);
+        params.put("hum_max_ability", this.humMaxAbility);
+        params.put("norm_member", this.normMember);
+        params.put("admin_code", this.adminCode);
+        params.put("team_code", this.teamCode);
+        params.put("sup_code", this.supCode);
+        params.put("delete_flag", this.deleteFlag);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

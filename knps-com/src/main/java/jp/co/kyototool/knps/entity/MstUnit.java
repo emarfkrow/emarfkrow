@@ -277,16 +277,16 @@ public class MstUnit implements IEntity {
 
         // MST_UNITの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("unit_code -- :unit_code");
-        nameList.add("unit_name -- :unit_name");
-        nameList.add("stan_unit_kbn -- :stan_unit_kbn");
-        nameList.add("stan_unit_code -- :stan_unit_code");
-        nameList.add("exchange_rate -- :exchange_rate");
-        nameList.add("time_stamp_create -- :time_stamp_create");
-        nameList.add("time_stamp_change -- :time_stamp_change");
-        nameList.add("user_id_create -- :user_id_create");
-        nameList.add("user_id_change -- :user_id_change");
-        nameList.add("delete_flag -- :delete_flag");
+        nameList.add("\"UNIT_CODE\" -- :unit_code");
+        nameList.add("\"UNIT_NAME\" -- :unit_name");
+        nameList.add("\"STAN_UNIT_KBN\" -- :stan_unit_kbn");
+        nameList.add("\"STAN_UNIT_CODE\" -- :stan_unit_code");
+        nameList.add("\"EXCHANGE_RATE\" -- :exchange_rate");
+        nameList.add("\"TIME_STAMP_CREATE\" -- :time_stamp_create");
+        nameList.add("\"TIME_STAMP_CHANGE\" -- :time_stamp_change");
+        nameList.add("\"USER_ID_CREATE\" -- :user_id_create");
+        nameList.add("\"USER_ID_CHANGE\" -- :user_id_change");
+        nameList.add("\"DELETE_FLAG\" -- :delete_flag");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO MST_UNIT(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -318,7 +318,7 @@ public class MstUnit implements IEntity {
             return;
         }
 
-        String sql = "SELECT LPAD (CASE WHEN MAX(e.UNIT_CODE) IS NULL THEN 0 ELSE MAX(e.UNIT_CODE) * 1 END + 1, 2, '0') AS UNIT_CODE FROM MST_UNIT e WHERE e.UNIT_CODE < '99'";
+        String sql = "SELECT LPAD (CASE WHEN MAX(e.\"UNIT_CODE\") IS NULL THEN 0 ELSE MAX(e.\"UNIT_CODE\") * 1 END + 1, 2, '0') AS \"UNIT_CODE\" FROM MST_UNIT e WHERE e.\"UNIT_CODE\" < '99'";
 
         Map<String, Object> params = new HashMap<String, Object>();
 
@@ -345,14 +345,14 @@ public class MstUnit implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("unit_code = :unit_code");
-        setList.add("unit_name = :unit_name");
-        setList.add("stan_unit_kbn = :stan_unit_kbn");
-        setList.add("stan_unit_code = :stan_unit_code");
-        setList.add("exchange_rate = :exchange_rate");
-        setList.add("time_stamp_change = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("user_id_change = :user_id_change");
-        setList.add("delete_flag = :delete_flag");
+        setList.add("\"UNIT_CODE\" = :unit_code");
+        setList.add("\"UNIT_NAME\" = :unit_name");
+        setList.add("\"STAN_UNIT_KBN\" = :stan_unit_kbn");
+        setList.add("\"STAN_UNIT_CODE\" = :stan_unit_code");
+        setList.add("\"EXCHANGE_RATE\" = :exchange_rate");
+        setList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"USER_ID_CHANGE\" = :user_id_change");
+        setList.add("\"DELETE_FLAG\" = :delete_flag");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -374,19 +374,19 @@ public class MstUnit implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (unit_code) = TRIM (:unit_code)");
-        whereList.add("time_stamp_change = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        whereList.add("TRIM (\"UNIT_CODE\") = TRIM (:unit_code)");
+        whereList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("UNIT_CODE", this.unitCode);
-        params.put("UNIT_NAME", this.unitName);
-        params.put("STAN_UNIT_KBN", this.stanUnitKbn);
-        params.put("STAN_UNIT_CODE", this.stanUnitCode);
-        params.put("EXCHANGE_RATE", this.exchangeRate);
-        params.put("DELETE_FLAG", this.deleteFlag);
+        params.put("unit_code", this.unitCode);
+        params.put("unit_name", this.unitName);
+        params.put("stan_unit_kbn", this.stanUnitKbn);
+        params.put("stan_unit_code", this.stanUnitCode);
+        params.put("exchange_rate", this.exchangeRate);
+        params.put("delete_flag", this.deleteFlag);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

@@ -646,31 +646,31 @@ public class SysCloseStatus implements IEntity {
 
         // SYS_CLOSE_STATUSの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("rec_no -- :rec_no");
-        nameList.add("dairy_close_target_date -- :dairy_close_target_date");
-        nameList.add("dairy_close_status -- :dairy_close_status");
-        nameList.add("dairy_close_date -- :dairy_close_date");
-        nameList.add("monthry_close_target_date -- :monthry_close_target_date");
-        nameList.add("monthry_close_status -- :monthry_close_status");
-        nameList.add("monthry_close_date -- :monthry_close_date");
-        nameList.add("monthry_settle_target_date -- :monthry_settle_target_date");
-        nameList.add("monthry_settle_status -- :monthry_settle_status");
-        nameList.add("monthry_settle_date -- :monthry_settle_date");
-        nameList.add("monthry_settle_cost_fixed -- :monthry_settle_cost_fixed");
-        nameList.add("annual_settle_target_date -- :annual_settle_target_date");
-        nameList.add("annual_settle_status -- :annual_settle_status");
-        nameList.add("annual_settle_date -- :annual_settle_date");
-        nameList.add("annual_settle_cost_fixed -- :annual_settle_cost_fixed");
-        nameList.add("master_copy_flag -- :master_copy_flag");
-        nameList.add("master_copy_date -- :master_copy_date");
-        nameList.add("time_stamp_create -- :time_stamp_create");
-        nameList.add("time_stamp_change -- :time_stamp_change");
-        nameList.add("user_id_create -- :user_id_create");
-        nameList.add("user_id_change -- :user_id_change");
-        nameList.add("quarter_settle_target_date -- :quarter_settle_target_date");
-        nameList.add("quarter_settle_status -- :quarter_settle_status");
-        nameList.add("quarter_settle_date -- :quarter_settle_date");
-        nameList.add("quarter_settle_cost_fixed -- :quarter_settle_cost_fixed");
+        nameList.add("\"REC_NO\" -- :rec_no");
+        nameList.add("\"DAIRY_CLOSE_TARGET_DATE\" -- :dairy_close_target_date");
+        nameList.add("\"DAIRY_CLOSE_STATUS\" -- :dairy_close_status");
+        nameList.add("\"DAIRY_CLOSE_DATE\" -- :dairy_close_date");
+        nameList.add("\"MONTHRY_CLOSE_TARGET_DATE\" -- :monthry_close_target_date");
+        nameList.add("\"MONTHRY_CLOSE_STATUS\" -- :monthry_close_status");
+        nameList.add("\"MONTHRY_CLOSE_DATE\" -- :monthry_close_date");
+        nameList.add("\"MONTHRY_SETTLE_TARGET_DATE\" -- :monthry_settle_target_date");
+        nameList.add("\"MONTHRY_SETTLE_STATUS\" -- :monthry_settle_status");
+        nameList.add("\"MONTHRY_SETTLE_DATE\" -- :monthry_settle_date");
+        nameList.add("\"MONTHRY_SETTLE_COST_FIXED\" -- :monthry_settle_cost_fixed");
+        nameList.add("\"ANNUAL_SETTLE_TARGET_DATE\" -- :annual_settle_target_date");
+        nameList.add("\"ANNUAL_SETTLE_STATUS\" -- :annual_settle_status");
+        nameList.add("\"ANNUAL_SETTLE_DATE\" -- :annual_settle_date");
+        nameList.add("\"ANNUAL_SETTLE_COST_FIXED\" -- :annual_settle_cost_fixed");
+        nameList.add("\"MASTER_COPY_FLAG\" -- :master_copy_flag");
+        nameList.add("\"MASTER_COPY_DATE\" -- :master_copy_date");
+        nameList.add("\"TIME_STAMP_CREATE\" -- :time_stamp_create");
+        nameList.add("\"TIME_STAMP_CHANGE\" -- :time_stamp_change");
+        nameList.add("\"USER_ID_CREATE\" -- :user_id_create");
+        nameList.add("\"USER_ID_CHANGE\" -- :user_id_change");
+        nameList.add("\"QUARTER_SETTLE_TARGET_DATE\" -- :quarter_settle_target_date");
+        nameList.add("\"QUARTER_SETTLE_STATUS\" -- :quarter_settle_status");
+        nameList.add("\"QUARTER_SETTLE_DATE\" -- :quarter_settle_date");
+        nameList.add("\"QUARTER_SETTLE_COST_FIXED\" -- :quarter_settle_cost_fixed");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO SYS_CLOSE_STATUS(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -717,7 +717,7 @@ public class SysCloseStatus implements IEntity {
             return;
         }
 
-        String sql = "SELECT LPAD (CASE WHEN MAX(e.REC_NO) IS NULL THEN 0 ELSE MAX(e.REC_NO) * 1 END + 1, 3, '0') AS REC_NO FROM SYS_CLOSE_STATUS e WHERE e.REC_NO < '999'";
+        String sql = "SELECT LPAD (CASE WHEN MAX(e.\"REC_NO\") IS NULL THEN 0 ELSE MAX(e.\"REC_NO\") * 1 END + 1, 3, '0') AS \"REC_NO\" FROM SYS_CLOSE_STATUS e WHERE e.\"REC_NO\" < '999'";
 
         Map<String, Object> params = new HashMap<String, Object>();
 
@@ -744,29 +744,29 @@ public class SysCloseStatus implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("rec_no = :rec_no");
-        setList.add("dairy_close_target_date = :dairy_close_target_date");
-        setList.add("dairy_close_status = :dairy_close_status");
-        setList.add("dairy_close_date = TO_TIMESTAMP (:dairy_close_date, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("monthry_close_target_date = :monthry_close_target_date");
-        setList.add("monthry_close_status = :monthry_close_status");
-        setList.add("monthry_close_date = TO_TIMESTAMP (:monthry_close_date, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("monthry_settle_target_date = :monthry_settle_target_date");
-        setList.add("monthry_settle_status = :monthry_settle_status");
-        setList.add("monthry_settle_date = TO_TIMESTAMP (:monthry_settle_date, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("monthry_settle_cost_fixed = :monthry_settle_cost_fixed");
-        setList.add("annual_settle_target_date = :annual_settle_target_date");
-        setList.add("annual_settle_status = :annual_settle_status");
-        setList.add("annual_settle_date = TO_TIMESTAMP (:annual_settle_date, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("annual_settle_cost_fixed = :annual_settle_cost_fixed");
-        setList.add("master_copy_flag = :master_copy_flag");
-        setList.add("master_copy_date = TO_TIMESTAMP (:master_copy_date, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("time_stamp_change = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("user_id_change = :user_id_change");
-        setList.add("quarter_settle_target_date = :quarter_settle_target_date");
-        setList.add("quarter_settle_status = :quarter_settle_status");
-        setList.add("quarter_settle_date = TO_TIMESTAMP (:quarter_settle_date, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("quarter_settle_cost_fixed = :quarter_settle_cost_fixed");
+        setList.add("\"REC_NO\" = :rec_no");
+        setList.add("\"DAIRY_CLOSE_TARGET_DATE\" = :dairy_close_target_date");
+        setList.add("\"DAIRY_CLOSE_STATUS\" = :dairy_close_status");
+        setList.add("\"DAIRY_CLOSE_DATE\" = TO_TIMESTAMP (:dairy_close_date, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"MONTHRY_CLOSE_TARGET_DATE\" = :monthry_close_target_date");
+        setList.add("\"MONTHRY_CLOSE_STATUS\" = :monthry_close_status");
+        setList.add("\"MONTHRY_CLOSE_DATE\" = TO_TIMESTAMP (:monthry_close_date, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"MONTHRY_SETTLE_TARGET_DATE\" = :monthry_settle_target_date");
+        setList.add("\"MONTHRY_SETTLE_STATUS\" = :monthry_settle_status");
+        setList.add("\"MONTHRY_SETTLE_DATE\" = TO_TIMESTAMP (:monthry_settle_date, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"MONTHRY_SETTLE_COST_FIXED\" = :monthry_settle_cost_fixed");
+        setList.add("\"ANNUAL_SETTLE_TARGET_DATE\" = :annual_settle_target_date");
+        setList.add("\"ANNUAL_SETTLE_STATUS\" = :annual_settle_status");
+        setList.add("\"ANNUAL_SETTLE_DATE\" = TO_TIMESTAMP (:annual_settle_date, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"ANNUAL_SETTLE_COST_FIXED\" = :annual_settle_cost_fixed");
+        setList.add("\"MASTER_COPY_FLAG\" = :master_copy_flag");
+        setList.add("\"MASTER_COPY_DATE\" = TO_TIMESTAMP (:master_copy_date, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"USER_ID_CHANGE\" = :user_id_change");
+        setList.add("\"QUARTER_SETTLE_TARGET_DATE\" = :quarter_settle_target_date");
+        setList.add("\"QUARTER_SETTLE_STATUS\" = :quarter_settle_status");
+        setList.add("\"QUARTER_SETTLE_DATE\" = TO_TIMESTAMP (:quarter_settle_date, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"QUARTER_SETTLE_COST_FIXED\" = :quarter_settle_cost_fixed");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -788,34 +788,34 @@ public class SysCloseStatus implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (rec_no) = TRIM (:rec_no)");
-        whereList.add("time_stamp_change = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        whereList.add("TRIM (\"REC_NO\") = TRIM (:rec_no)");
+        whereList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("REC_NO", this.recNo);
-        params.put("DAIRY_CLOSE_TARGET_DATE", this.dairyCloseTargetDate);
-        params.put("DAIRY_CLOSE_STATUS", this.dairyCloseStatus);
-        params.put("DAIRY_CLOSE_DATE", this.dairyCloseDate);
-        params.put("MONTHRY_CLOSE_TARGET_DATE", this.monthryCloseTargetDate);
-        params.put("MONTHRY_CLOSE_STATUS", this.monthryCloseStatus);
-        params.put("MONTHRY_CLOSE_DATE", this.monthryCloseDate);
-        params.put("MONTHRY_SETTLE_TARGET_DATE", this.monthrySettleTargetDate);
-        params.put("MONTHRY_SETTLE_STATUS", this.monthrySettleStatus);
-        params.put("MONTHRY_SETTLE_DATE", this.monthrySettleDate);
-        params.put("MONTHRY_SETTLE_COST_FIXED", this.monthrySettleCostFixed);
-        params.put("ANNUAL_SETTLE_TARGET_DATE", this.annualSettleTargetDate);
-        params.put("ANNUAL_SETTLE_STATUS", this.annualSettleStatus);
-        params.put("ANNUAL_SETTLE_DATE", this.annualSettleDate);
-        params.put("ANNUAL_SETTLE_COST_FIXED", this.annualSettleCostFixed);
-        params.put("MASTER_COPY_FLAG", this.masterCopyFlag);
-        params.put("MASTER_COPY_DATE", this.masterCopyDate);
-        params.put("QUARTER_SETTLE_TARGET_DATE", this.quarterSettleTargetDate);
-        params.put("QUARTER_SETTLE_STATUS", this.quarterSettleStatus);
-        params.put("QUARTER_SETTLE_DATE", this.quarterSettleDate);
-        params.put("QUARTER_SETTLE_COST_FIXED", this.quarterSettleCostFixed);
+        params.put("rec_no", this.recNo);
+        params.put("dairy_close_target_date", this.dairyCloseTargetDate);
+        params.put("dairy_close_status", this.dairyCloseStatus);
+        params.put("dairy_close_date", this.dairyCloseDate);
+        params.put("monthry_close_target_date", this.monthryCloseTargetDate);
+        params.put("monthry_close_status", this.monthryCloseStatus);
+        params.put("monthry_close_date", this.monthryCloseDate);
+        params.put("monthry_settle_target_date", this.monthrySettleTargetDate);
+        params.put("monthry_settle_status", this.monthrySettleStatus);
+        params.put("monthry_settle_date", this.monthrySettleDate);
+        params.put("monthry_settle_cost_fixed", this.monthrySettleCostFixed);
+        params.put("annual_settle_target_date", this.annualSettleTargetDate);
+        params.put("annual_settle_status", this.annualSettleStatus);
+        params.put("annual_settle_date", this.annualSettleDate);
+        params.put("annual_settle_cost_fixed", this.annualSettleCostFixed);
+        params.put("master_copy_flag", this.masterCopyFlag);
+        params.put("master_copy_date", this.masterCopyDate);
+        params.put("quarter_settle_target_date", this.quarterSettleTargetDate);
+        params.put("quarter_settle_status", this.quarterSettleStatus);
+        params.put("quarter_settle_date", this.quarterSettleDate);
+        params.put("quarter_settle_cost_fixed", this.quarterSettleCostFixed);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

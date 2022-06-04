@@ -360,19 +360,19 @@ public class PrdYProPlanHinban implements IEntity {
 
         // PRD_Y_PRO_PLAN_HINBANの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("yyyy -- :yyyy");
-        nameList.add("mm -- :mm");
-        nameList.add("pro_hinban -- :pro_hinban");
-        nameList.add("hinban -- :hinban");
-        nameList.add("item_kbn -- :item_kbn");
-        nameList.add("shikake_kbn -- :shikake_kbn");
-        nameList.add("nes_counts -- :nes_counts");
-        nameList.add("parent_hinban -- :parent_hinban");
-        nameList.add("pro_lt -- :pro_lt");
-        nameList.add("time_stamp_create -- :time_stamp_create");
-        nameList.add("time_stamp_change -- :time_stamp_change");
-        nameList.add("user_id_create -- :user_id_create");
-        nameList.add("user_id_change -- :user_id_change");
+        nameList.add("\"YYYY\" -- :yyyy");
+        nameList.add("\"MM\" -- :mm");
+        nameList.add("\"PRO_HINBAN\" -- :pro_hinban");
+        nameList.add("\"HINBAN\" -- :hinban");
+        nameList.add("\"ITEM_KBN\" -- :item_kbn");
+        nameList.add("\"SHIKAKE_KBN\" -- :shikake_kbn");
+        nameList.add("\"NES_COUNTS\" -- :nes_counts");
+        nameList.add("\"PARENT_HINBAN\" -- :parent_hinban");
+        nameList.add("\"PRO_LT\" -- :pro_lt");
+        nameList.add("\"TIME_STAMP_CREATE\" -- :time_stamp_create");
+        nameList.add("\"TIME_STAMP_CHANGE\" -- :time_stamp_change");
+        nameList.add("\"USER_ID_CREATE\" -- :user_id_create");
+        nameList.add("\"USER_ID_CHANGE\" -- :user_id_change");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO PRD_Y_PRO_PLAN_HINBAN(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -407,19 +407,19 @@ public class PrdYProPlanHinban implements IEntity {
             return;
         }
 
-        String sql = "SELECT LPAD (CASE WHEN MAX(e.HINBAN) IS NULL THEN 0 ELSE MAX(e.HINBAN) * 1 END + 1, 25, '0') AS HINBAN FROM PRD_Y_PRO_PLAN_HINBAN e WHERE e.HINBAN < '9999999999999999999999999'";
+        String sql = "SELECT LPAD (CASE WHEN MAX(e.\"HINBAN\") IS NULL THEN 0 ELSE MAX(e.\"HINBAN\") * 1 END + 1, 25, '0') AS \"HINBAN\" FROM PRD_Y_PRO_PLAN_HINBAN e WHERE e.\"HINBAN\" < '9999999999999999999999999'";
 
         Map<String, Object> params = new HashMap<String, Object>();
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("e.YYYY = :yyyy");
-        whereList.add("e.MM = :mm");
-        whereList.add("e.PRO_HINBAN = :pro_hinban");
+        whereList.add("e.\"YYYY\" = :yyyy");
+        whereList.add("e.\"MM\" = :mm");
+        whereList.add("e.\"PRO_HINBAN\" = :pro_hinban");
         sql += " WHERE " + String.join(" AND ", whereList);
 
         params.put("yyyy", this.yyyy);
         params.put("mm", this.mm);
-        params.put("proHinban", this.proHinban);
+        params.put("pro_hinban", this.proHinban);
 
         jp.co.golorp.emarf.util.MapList mapList = Queries.select(sql, params);
         Object o = mapList.get(0).get("HINBAN");
@@ -468,17 +468,17 @@ public class PrdYProPlanHinban implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("yyyy = :yyyy");
-        setList.add("mm = :mm");
-        setList.add("pro_hinban = :pro_hinban");
-        setList.add("hinban = :hinban");
-        setList.add("item_kbn = :item_kbn");
-        setList.add("shikake_kbn = :shikake_kbn");
-        setList.add("nes_counts = :nes_counts");
-        setList.add("parent_hinban = :parent_hinban");
-        setList.add("pro_lt = :pro_lt");
-        setList.add("time_stamp_change = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("user_id_change = :user_id_change");
+        setList.add("\"YYYY\" = :yyyy");
+        setList.add("\"MM\" = :mm");
+        setList.add("\"PRO_HINBAN\" = :pro_hinban");
+        setList.add("\"HINBAN\" = :hinban");
+        setList.add("\"ITEM_KBN\" = :item_kbn");
+        setList.add("\"SHIKAKE_KBN\" = :shikake_kbn");
+        setList.add("\"NES_COUNTS\" = :nes_counts");
+        setList.add("\"PARENT_HINBAN\" = :parent_hinban");
+        setList.add("\"PRO_LT\" = :pro_lt");
+        setList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"USER_ID_CHANGE\" = :user_id_change");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -507,25 +507,25 @@ public class PrdYProPlanHinban implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (yyyy) = TRIM (:yyyy)");
-        whereList.add("TRIM (mm) = TRIM (:mm)");
-        whereList.add("TRIM (pro_hinban) = TRIM (:pro_hinban)");
-        whereList.add("TRIM (hinban) = TRIM (:hinban)");
-        whereList.add("time_stamp_change = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        whereList.add("TRIM (\"YYYY\") = TRIM (:yyyy)");
+        whereList.add("TRIM (\"MM\") = TRIM (:mm)");
+        whereList.add("TRIM (\"PRO_HINBAN\") = TRIM (:pro_hinban)");
+        whereList.add("TRIM (\"HINBAN\") = TRIM (:hinban)");
+        whereList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("YYYY", this.yyyy);
-        params.put("MM", this.mm);
-        params.put("PRO_HINBAN", this.proHinban);
-        params.put("HINBAN", this.hinban);
-        params.put("ITEM_KBN", this.itemKbn);
-        params.put("SHIKAKE_KBN", this.shikakeKbn);
-        params.put("NES_COUNTS", this.nesCounts);
-        params.put("PARENT_HINBAN", this.parentHinban);
-        params.put("PRO_LT", this.proLt);
+        params.put("yyyy", this.yyyy);
+        params.put("mm", this.mm);
+        params.put("pro_hinban", this.proHinban);
+        params.put("hinban", this.hinban);
+        params.put("item_kbn", this.itemKbn);
+        params.put("shikake_kbn", this.shikakeKbn);
+        params.put("nes_counts", this.nesCounts);
+        params.put("parent_hinban", this.parentHinban);
+        params.put("pro_lt", this.proLt);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

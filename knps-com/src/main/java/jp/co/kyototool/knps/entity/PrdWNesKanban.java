@@ -351,19 +351,19 @@ public class PrdWNesKanban implements IEntity {
 
         // PRD_W_NES_KANBANの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("pro_hinban -- :pro_hinban");
-        nameList.add("store_wc -- :store_wc");
-        nameList.add("routing -- :routing");
-        nameList.add("routing_def_group -- :routing_def_group");
-        nameList.add("store_ope_detail -- :store_ope_detail");
-        nameList.add("pro_nes_counts -- :pro_nes_counts");
-        nameList.add("time_stamp_create -- :time_stamp_create");
-        nameList.add("time_stamp_change -- :time_stamp_change");
-        nameList.add("user_id_create -- :user_id_create");
-        nameList.add("user_id_change -- :user_id_change");
-        nameList.add("lot_size -- :lot_size");
-        nameList.add("acc_counts -- :acc_counts");
-        nameList.add("counts -- :counts");
+        nameList.add("\"PRO_HINBAN\" -- :pro_hinban");
+        nameList.add("\"STORE_WC\" -- :store_wc");
+        nameList.add("\"ROUTING\" -- :routing");
+        nameList.add("\"ROUTING_DEF_GROUP\" -- :routing_def_group");
+        nameList.add("\"STORE_OPE_DETAIL\" -- :store_ope_detail");
+        nameList.add("\"PRO_NES_COUNTS\" -- :pro_nes_counts");
+        nameList.add("\"TIME_STAMP_CREATE\" -- :time_stamp_create");
+        nameList.add("\"TIME_STAMP_CHANGE\" -- :time_stamp_change");
+        nameList.add("\"USER_ID_CREATE\" -- :user_id_create");
+        nameList.add("\"USER_ID_CHANGE\" -- :user_id_change");
+        nameList.add("\"LOT_SIZE\" -- :lot_size");
+        nameList.add("\"ACC_COUNTS\" -- :acc_counts");
+        nameList.add("\"COUNTS\" -- :counts");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO PRD_W_NES_KANBAN(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -420,17 +420,17 @@ public class PrdWNesKanban implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("pro_hinban = :pro_hinban");
-        setList.add("store_wc = :store_wc");
-        setList.add("routing = :routing");
-        setList.add("routing_def_group = :routing_def_group");
-        setList.add("store_ope_detail = :store_ope_detail");
-        setList.add("pro_nes_counts = :pro_nes_counts");
-        setList.add("time_stamp_change = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("user_id_change = :user_id_change");
-        setList.add("lot_size = :lot_size");
-        setList.add("acc_counts = :acc_counts");
-        setList.add("counts = :counts");
+        setList.add("\"PRO_HINBAN\" = :pro_hinban");
+        setList.add("\"STORE_WC\" = :store_wc");
+        setList.add("\"ROUTING\" = :routing");
+        setList.add("\"ROUTING_DEF_GROUP\" = :routing_def_group");
+        setList.add("\"STORE_OPE_DETAIL\" = :store_ope_detail");
+        setList.add("\"PRO_NES_COUNTS\" = :pro_nes_counts");
+        setList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"USER_ID_CHANGE\" = :user_id_change");
+        setList.add("\"LOT_SIZE\" = :lot_size");
+        setList.add("\"ACC_COUNTS\" = :acc_counts");
+        setList.add("\"COUNTS\" = :counts");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -457,24 +457,24 @@ public class PrdWNesKanban implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (pro_hinban) = TRIM (:pro_hinban)");
-        whereList.add("routing = :routing");
-        whereList.add("routing_def_group = :routing_def_group");
-        whereList.add("time_stamp_change = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        whereList.add("TRIM (\"PRO_HINBAN\") = TRIM (:pro_hinban)");
+        whereList.add("\"ROUTING\" = :routing");
+        whereList.add("\"ROUTING_DEF_GROUP\" = :routing_def_group");
+        whereList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("PRO_HINBAN", this.proHinban);
-        params.put("STORE_WC", this.storeWc);
-        params.put("ROUTING", this.routing);
-        params.put("ROUTING_DEF_GROUP", this.routingDefGroup);
-        params.put("STORE_OPE_DETAIL", this.storeOpeDetail);
-        params.put("PRO_NES_COUNTS", this.proNesCounts);
-        params.put("LOT_SIZE", this.lotSize);
-        params.put("ACC_COUNTS", this.accCounts);
-        params.put("COUNTS", this.counts);
+        params.put("pro_hinban", this.proHinban);
+        params.put("store_wc", this.storeWc);
+        params.put("routing", this.routing);
+        params.put("routing_def_group", this.routingDefGroup);
+        params.put("store_ope_detail", this.storeOpeDetail);
+        params.put("pro_nes_counts", this.proNesCounts);
+        params.put("lot_size", this.lotSize);
+        params.put("acc_counts", this.accCounts);
+        params.put("counts", this.counts);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

@@ -274,15 +274,15 @@ public class PrdSalesTargetMonth implements IEntity {
 
         // PRD_SALES_TARGET_MONTHの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("yyyy -- :yyyy");
-        nameList.add("mm -- :mm");
-        nameList.add("file_id -- :file_id");
-        nameList.add("sales_hinban -- :sales_hinban");
-        nameList.add("sales_target_counts -- :sales_target_counts");
-        nameList.add("time_stamp_create -- :time_stamp_create");
-        nameList.add("time_stamp_change -- :time_stamp_change");
-        nameList.add("user_id_create -- :user_id_create");
-        nameList.add("user_id_change -- :user_id_change");
+        nameList.add("\"YYYY\" -- :yyyy");
+        nameList.add("\"MM\" -- :mm");
+        nameList.add("\"FILE_ID\" -- :file_id");
+        nameList.add("\"SALES_HINBAN\" -- :sales_hinban");
+        nameList.add("\"SALES_TARGET_COUNTS\" -- :sales_target_counts");
+        nameList.add("\"TIME_STAMP_CREATE\" -- :time_stamp_create");
+        nameList.add("\"TIME_STAMP_CHANGE\" -- :time_stamp_change");
+        nameList.add("\"USER_ID_CREATE\" -- :user_id_create");
+        nameList.add("\"USER_ID_CHANGE\" -- :user_id_change");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO PRD_SALES_TARGET_MONTH(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -313,19 +313,19 @@ public class PrdSalesTargetMonth implements IEntity {
             return;
         }
 
-        String sql = "SELECT LPAD (CASE WHEN MAX(e.SALES_HINBAN) IS NULL THEN 0 ELSE MAX(e.SALES_HINBAN) * 1 END + 1, 20, '0') AS SALES_HINBAN FROM PRD_SALES_TARGET_MONTH e WHERE e.SALES_HINBAN < '99999999999999999999'";
+        String sql = "SELECT LPAD (CASE WHEN MAX(e.\"SALES_HINBAN\") IS NULL THEN 0 ELSE MAX(e.\"SALES_HINBAN\") * 1 END + 1, 20, '0') AS \"SALES_HINBAN\" FROM PRD_SALES_TARGET_MONTH e WHERE e.\"SALES_HINBAN\" < '99999999999999999999'";
 
         Map<String, Object> params = new HashMap<String, Object>();
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("e.YYYY = :yyyy");
-        whereList.add("e.MM = :mm");
-        whereList.add("e.FILE_ID = :file_id");
+        whereList.add("e.\"YYYY\" = :yyyy");
+        whereList.add("e.\"MM\" = :mm");
+        whereList.add("e.\"FILE_ID\" = :file_id");
         sql += " WHERE " + String.join(" AND ", whereList);
 
         params.put("yyyy", this.yyyy);
         params.put("mm", this.mm);
-        params.put("fileId", this.fileId);
+        params.put("file_id", this.fileId);
 
         jp.co.golorp.emarf.util.MapList mapList = Queries.select(sql, params);
         Object o = mapList.get(0).get("SALES_HINBAN");
@@ -363,13 +363,13 @@ public class PrdSalesTargetMonth implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("yyyy = :yyyy");
-        setList.add("mm = :mm");
-        setList.add("file_id = :file_id");
-        setList.add("sales_hinban = :sales_hinban");
-        setList.add("sales_target_counts = :sales_target_counts");
-        setList.add("time_stamp_change = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("user_id_change = :user_id_change");
+        setList.add("\"YYYY\" = :yyyy");
+        setList.add("\"MM\" = :mm");
+        setList.add("\"FILE_ID\" = :file_id");
+        setList.add("\"SALES_HINBAN\" = :sales_hinban");
+        setList.add("\"SALES_TARGET_COUNTS\" = :sales_target_counts");
+        setList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"USER_ID_CHANGE\" = :user_id_change");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -396,21 +396,21 @@ public class PrdSalesTargetMonth implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (yyyy) = TRIM (:yyyy)");
-        whereList.add("TRIM (mm) = TRIM (:mm)");
-        whereList.add("file_id = :file_id");
-        whereList.add("TRIM (sales_hinban) = TRIM (:sales_hinban)");
-        whereList.add("time_stamp_change = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        whereList.add("TRIM (\"YYYY\") = TRIM (:yyyy)");
+        whereList.add("TRIM (\"MM\") = TRIM (:mm)");
+        whereList.add("\"FILE_ID\" = :file_id");
+        whereList.add("TRIM (\"SALES_HINBAN\") = TRIM (:sales_hinban)");
+        whereList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("YYYY", this.yyyy);
-        params.put("MM", this.mm);
-        params.put("FILE_ID", this.fileId);
-        params.put("SALES_HINBAN", this.salesHinban);
-        params.put("SALES_TARGET_COUNTS", this.salesTargetCounts);
+        params.put("yyyy", this.yyyy);
+        params.put("mm", this.mm);
+        params.put("file_id", this.fileId);
+        params.put("sales_hinban", this.salesHinban);
+        params.put("sales_target_counts", this.salesTargetCounts);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

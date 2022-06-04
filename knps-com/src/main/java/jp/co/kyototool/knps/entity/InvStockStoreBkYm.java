@@ -346,19 +346,19 @@ public class InvStockStoreBkYm implements IEntity {
 
         // INV_STOCK_STORE_BK_YMの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("yy -- :yy");
-        nameList.add("mm -- :mm");
-        nameList.add("hinban -- :hinban");
-        nameList.add("store_no -- :store_no");
-        nameList.add("counts -- :counts");
-        nameList.add("hako_su -- :hako_su");
-        nameList.add("stock -- :stock");
-        nameList.add("total_sum_cost -- :total_sum_cost");
-        nameList.add("amount -- :amount");
-        nameList.add("time_stamp_create -- :time_stamp_create");
-        nameList.add("time_stamp_change -- :time_stamp_change");
-        nameList.add("user_id_create -- :user_id_create");
-        nameList.add("user_id_change -- :user_id_change");
+        nameList.add("\"YY\" -- :yy");
+        nameList.add("\"MM\" -- :mm");
+        nameList.add("\"HINBAN\" -- :hinban");
+        nameList.add("\"STORE_NO\" -- :store_no");
+        nameList.add("\"COUNTS\" -- :counts");
+        nameList.add("\"HAKO_SU\" -- :hako_su");
+        nameList.add("\"STOCK\" -- :stock");
+        nameList.add("\"TOTAL_SUM_COST\" -- :total_sum_cost");
+        nameList.add("\"AMOUNT\" -- :amount");
+        nameList.add("\"TIME_STAMP_CREATE\" -- :time_stamp_create");
+        nameList.add("\"TIME_STAMP_CHANGE\" -- :time_stamp_change");
+        nameList.add("\"USER_ID_CREATE\" -- :user_id_create");
+        nameList.add("\"USER_ID_CHANGE\" -- :user_id_change");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO INV_STOCK_STORE_BK_YM(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -403,17 +403,17 @@ public class InvStockStoreBkYm implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("yy = :yy");
-        setList.add("mm = :mm");
-        setList.add("hinban = :hinban");
-        setList.add("store_no = :store_no");
-        setList.add("counts = :counts");
-        setList.add("hako_su = :hako_su");
-        setList.add("stock = :stock");
-        setList.add("total_sum_cost = :total_sum_cost");
-        setList.add("amount = :amount");
-        setList.add("time_stamp_change = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("user_id_change = :user_id_change");
+        setList.add("\"YY\" = :yy");
+        setList.add("\"MM\" = :mm");
+        setList.add("\"HINBAN\" = :hinban");
+        setList.add("\"STORE_NO\" = :store_no");
+        setList.add("\"COUNTS\" = :counts");
+        setList.add("\"HAKO_SU\" = :hako_su");
+        setList.add("\"STOCK\" = :stock");
+        setList.add("\"TOTAL_SUM_COST\" = :total_sum_cost");
+        setList.add("\"AMOUNT\" = :amount");
+        setList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"USER_ID_CHANGE\" = :user_id_change");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -435,25 +435,25 @@ public class InvStockStoreBkYm implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (yy) = TRIM (:yy)");
-        whereList.add("TRIM (mm) = TRIM (:mm)");
-        whereList.add("hinban = :hinban");
-        whereList.add("store_no = :store_no");
-        whereList.add("time_stamp_change = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        whereList.add("TRIM (\"YY\") = TRIM (:yy)");
+        whereList.add("TRIM (\"MM\") = TRIM (:mm)");
+        whereList.add("\"HINBAN\" = :hinban");
+        whereList.add("\"STORE_NO\" = :store_no");
+        whereList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("YY", this.yy);
-        params.put("MM", this.mm);
-        params.put("HINBAN", this.hinban);
-        params.put("STORE_NO", this.storeNo);
-        params.put("COUNTS", this.counts);
-        params.put("HAKO_SU", this.hakoSu);
-        params.put("STOCK", this.stock);
-        params.put("TOTAL_SUM_COST", this.totalSumCost);
-        params.put("AMOUNT", this.amount);
+        params.put("yy", this.yy);
+        params.put("mm", this.mm);
+        params.put("hinban", this.hinban);
+        params.put("store_no", this.storeNo);
+        params.put("counts", this.counts);
+        params.put("hako_su", this.hakoSu);
+        params.put("stock", this.stock);
+        params.put("total_sum_cost", this.totalSumCost);
+        params.put("amount", this.amount);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

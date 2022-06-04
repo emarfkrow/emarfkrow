@@ -310,18 +310,18 @@ public class MRate implements IEntity {
 
         // 為替レートマスタの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("yy -- :yy");
-        nameList.add("mm -- :mm");
-        nameList.add("dd -- :dd");
-        nameList.add("tuuka -- :tuuka");
-        nameList.add("ttm -- :ttm");
-        nameList.add("tts -- :tts");
-        nameList.add("ttb -- :ttb");
-        nameList.add("tts_org -- :tts_org");
-        nameList.add("ttb_org -- :ttb_org");
-        nameList.add("lstymd -- :lstymd");
-        nameList.add("lsthm -- :lsthm");
-        nameList.add("upddate -- :upddate");
+        nameList.add("\"YY\" -- :yy");
+        nameList.add("\"MM\" -- :mm");
+        nameList.add("\"DD\" -- :dd");
+        nameList.add("\"TUUKA\" -- :tuuka");
+        nameList.add("\"TTM\" -- :ttm");
+        nameList.add("\"TTS\" -- :tts");
+        nameList.add("\"TTB\" -- :ttb");
+        nameList.add("\"TTS-ORG\" -- :tts_org");
+        nameList.add("\"TTB-ORG\" -- :ttb_org");
+        nameList.add("\"LSTYMD\" -- :lstymd");
+        nameList.add("\"LSTHM\" -- :lsthm");
+        nameList.add("\"UPDDATE\" -- :upddate");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO M_RATE(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -355,14 +355,14 @@ public class MRate implements IEntity {
             return;
         }
 
-        String sql = "SELECT LPAD (CASE WHEN MAX(e.TUUKA) IS NULL THEN 0 ELSE MAX(e.TUUKA) * 1 END + 1, 3, '0') AS TUUKA FROM M_RATE e WHERE e.TUUKA < '999'";
+        String sql = "SELECT LPAD (CASE WHEN MAX(e.\"TUUKA\") IS NULL THEN 0 ELSE MAX(e.\"TUUKA\") * 1 END + 1, 3, '0') AS \"TUUKA\" FROM M_RATE e WHERE e.\"TUUKA\" < '999'";
 
         Map<String, Object> params = new HashMap<String, Object>();
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("e.YY = :yy");
-        whereList.add("e.MM = :mm");
-        whereList.add("e.DD = :dd");
+        whereList.add("e.\"YY\" = :yy");
+        whereList.add("e.\"MM\" = :mm");
+        whereList.add("e.\"DD\" = :dd");
         sql += " WHERE " + String.join(" AND ", whereList);
 
         params.put("yy", this.yy);
@@ -392,18 +392,18 @@ public class MRate implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("yy = :yy");
-        setList.add("mm = :mm");
-        setList.add("dd = :dd");
-        setList.add("tuuka = :tuuka");
-        setList.add("ttm = :ttm");
-        setList.add("tts = :tts");
-        setList.add("ttb = :ttb");
-        setList.add("tts-org = :tts-org");
-        setList.add("ttb-org = :ttb-org");
-        setList.add("lstymd = :lstymd");
-        setList.add("lsthm = :lsthm");
-        setList.add("upddate = :upddate");
+        setList.add("\"YY\" = :yy");
+        setList.add("\"MM\" = :mm");
+        setList.add("\"DD\" = :dd");
+        setList.add("\"TUUKA\" = :tuuka");
+        setList.add("\"TTM\" = :ttm");
+        setList.add("\"TTS\" = :tts");
+        setList.add("\"TTB\" = :ttb");
+        setList.add("\"TTS-ORG\" = :tts_org");
+        setList.add("\"TTB-ORG\" = :ttb_org");
+        setList.add("\"LSTYMD\" = :lstymd");
+        setList.add("\"LSTHM\" = :lsthm");
+        setList.add("\"UPDDATE\" = :upddate");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -425,27 +425,27 @@ public class MRate implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("yy = :yy");
-        whereList.add("mm = :mm");
-        whereList.add("dd = :dd");
-        whereList.add("TRIM (tuuka) = TRIM (:tuuka)");
+        whereList.add("\"YY\" = :yy");
+        whereList.add("\"MM\" = :mm");
+        whereList.add("\"DD\" = :dd");
+        whereList.add("TRIM (\"TUUKA\") = TRIM (:tuuka)");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("YY", this.yy);
-        params.put("MM", this.mm);
-        params.put("DD", this.dd);
-        params.put("TUUKA", this.tuuka);
-        params.put("TTM", this.ttm);
-        params.put("TTS", this.tts);
-        params.put("TTB", this.ttb);
-        params.put("TTS-ORG", this.ttsOrg);
-        params.put("TTB-ORG", this.ttbOrg);
-        params.put("LSTYMD", this.lstymd);
-        params.put("LSTHM", this.lsthm);
-        params.put("UPDDATE", this.upddate);
+        params.put("yy", this.yy);
+        params.put("mm", this.mm);
+        params.put("dd", this.dd);
+        params.put("tuuka", this.tuuka);
+        params.put("ttm", this.ttm);
+        params.put("tts", this.tts);
+        params.put("ttb", this.ttb);
+        params.put("tts_org", this.ttsOrg);
+        params.put("ttb_org", this.ttbOrg);
+        params.put("lstymd", this.lstymd);
+        params.put("lsthm", this.lsthm);
+        params.put("upddate", this.upddate);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

@@ -313,18 +313,18 @@ public class PchSupUnitCost implements IEntity {
 
         // PCH_SUP_UNIT_COSTの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("close_date -- :close_date");
-        nameList.add("hinban -- :hinban");
-        nameList.add("sup_code -- :sup_code");
-        nameList.add("proprietary_total_counts -- :proprietary_total_counts");
-        nameList.add("proprietary_total_cost -- :proprietary_total_cost");
-        nameList.add("last_prch_unit_cost -- :last_prch_unit_cost");
-        nameList.add("last_act_date -- :last_act_date");
-        nameList.add("time_stamp_create -- :time_stamp_create");
-        nameList.add("time_stamp_change -- :time_stamp_change");
-        nameList.add("user_id_create -- :user_id_create");
-        nameList.add("user_id_change -- :user_id_change");
-        nameList.add("lower_cost_kbn -- :lower_cost_kbn");
+        nameList.add("\"CLOSE_DATE\" -- :close_date");
+        nameList.add("\"HINBAN\" -- :hinban");
+        nameList.add("\"SUP_CODE\" -- :sup_code");
+        nameList.add("\"PROPRIETARY_TOTAL_COUNTS\" -- :proprietary_total_counts");
+        nameList.add("\"PROPRIETARY_TOTAL_COST\" -- :proprietary_total_cost");
+        nameList.add("\"LAST_PRCH_UNIT_COST\" -- :last_prch_unit_cost");
+        nameList.add("\"LAST_ACT_DATE\" -- :last_act_date");
+        nameList.add("\"TIME_STAMP_CREATE\" -- :time_stamp_create");
+        nameList.add("\"TIME_STAMP_CHANGE\" -- :time_stamp_change");
+        nameList.add("\"USER_ID_CREATE\" -- :user_id_create");
+        nameList.add("\"USER_ID_CHANGE\" -- :user_id_change");
+        nameList.add("\"LOWER_COST_KBN\" -- :lower_cost_kbn");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO PCH_SUP_UNIT_COST(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -368,16 +368,16 @@ public class PchSupUnitCost implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("close_date = :close_date");
-        setList.add("hinban = :hinban");
-        setList.add("sup_code = :sup_code");
-        setList.add("proprietary_total_counts = :proprietary_total_counts");
-        setList.add("proprietary_total_cost = :proprietary_total_cost");
-        setList.add("last_prch_unit_cost = :last_prch_unit_cost");
-        setList.add("last_act_date = :last_act_date");
-        setList.add("time_stamp_change = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("user_id_change = :user_id_change");
-        setList.add("lower_cost_kbn = :lower_cost_kbn");
+        setList.add("\"CLOSE_DATE\" = :close_date");
+        setList.add("\"HINBAN\" = :hinban");
+        setList.add("\"SUP_CODE\" = :sup_code");
+        setList.add("\"PROPRIETARY_TOTAL_COUNTS\" = :proprietary_total_counts");
+        setList.add("\"PROPRIETARY_TOTAL_COST\" = :proprietary_total_cost");
+        setList.add("\"LAST_PRCH_UNIT_COST\" = :last_prch_unit_cost");
+        setList.add("\"LAST_ACT_DATE\" = :last_act_date");
+        setList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"USER_ID_CHANGE\" = :user_id_change");
+        setList.add("\"LOWER_COST_KBN\" = :lower_cost_kbn");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -399,20 +399,20 @@ public class PchSupUnitCost implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("time_stamp_change = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        whereList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("CLOSE_DATE", this.closeDate);
-        params.put("HINBAN", this.hinban);
-        params.put("SUP_CODE", this.supCode);
-        params.put("PROPRIETARY_TOTAL_COUNTS", this.proprietaryTotalCounts);
-        params.put("PROPRIETARY_TOTAL_COST", this.proprietaryTotalCost);
-        params.put("LAST_PRCH_UNIT_COST", this.lastPrchUnitCost);
-        params.put("LAST_ACT_DATE", this.lastActDate);
-        params.put("LOWER_COST_KBN", this.lowerCostKbn);
+        params.put("close_date", this.closeDate);
+        params.put("hinban", this.hinban);
+        params.put("sup_code", this.supCode);
+        params.put("proprietary_total_counts", this.proprietaryTotalCounts);
+        params.put("proprietary_total_cost", this.proprietaryTotalCost);
+        params.put("last_prch_unit_cost", this.lastPrchUnitCost);
+        params.put("last_act_date", this.lastActDate);
+        params.put("lower_cost_kbn", this.lowerCostKbn);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

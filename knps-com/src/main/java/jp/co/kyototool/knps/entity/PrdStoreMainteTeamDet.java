@@ -196,12 +196,12 @@ public class PrdStoreMainteTeamDet implements IEntity {
 
         // PRD_STORE_MAINTE_TEAM_DETの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("mfg_team_code -- :mfg_team_code");
-        nameList.add("ws_code -- :ws_code");
-        nameList.add("time_stamp_create -- :time_stamp_create");
-        nameList.add("time_stamp_change -- :time_stamp_change");
-        nameList.add("user_id_create -- :user_id_create");
-        nameList.add("user_id_change -- :user_id_change");
+        nameList.add("\"MFG_TEAM_CODE\" -- :mfg_team_code");
+        nameList.add("\"WS_CODE\" -- :ws_code");
+        nameList.add("\"TIME_STAMP_CREATE\" -- :time_stamp_create");
+        nameList.add("\"TIME_STAMP_CHANGE\" -- :time_stamp_change");
+        nameList.add("\"USER_ID_CREATE\" -- :user_id_create");
+        nameList.add("\"USER_ID_CHANGE\" -- :user_id_change");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO PRD_STORE_MAINTE_TEAM_DET(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -229,15 +229,15 @@ public class PrdStoreMainteTeamDet implements IEntity {
             return;
         }
 
-        String sql = "SELECT LPAD (CASE WHEN MAX(e.WS_CODE) IS NULL THEN 0 ELSE MAX(e.WS_CODE) * 1 END + 1, 4, '0') AS WS_CODE FROM PRD_STORE_MAINTE_TEAM_DET e WHERE e.WS_CODE < '9999'";
+        String sql = "SELECT LPAD (CASE WHEN MAX(e.\"WS_CODE\") IS NULL THEN 0 ELSE MAX(e.\"WS_CODE\") * 1 END + 1, 4, '0') AS \"WS_CODE\" FROM PRD_STORE_MAINTE_TEAM_DET e WHERE e.\"WS_CODE\" < '9999'";
 
         Map<String, Object> params = new HashMap<String, Object>();
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("e.MFG_TEAM_CODE = :mfg_team_code");
+        whereList.add("e.\"MFG_TEAM_CODE\" = :mfg_team_code");
         sql += " WHERE " + String.join(" AND ", whereList);
 
-        params.put("mfgTeamCode", this.mfgTeamCode);
+        params.put("mfg_team_code", this.mfgTeamCode);
 
         jp.co.golorp.emarf.util.MapList mapList = Queries.select(sql, params);
         Object o = mapList.get(0).get("WS_CODE");
@@ -262,10 +262,10 @@ public class PrdStoreMainteTeamDet implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("mfg_team_code = :mfg_team_code");
-        setList.add("ws_code = :ws_code");
-        setList.add("time_stamp_change = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("user_id_change = :user_id_change");
+        setList.add("\"MFG_TEAM_CODE\" = :mfg_team_code");
+        setList.add("\"WS_CODE\" = :ws_code");
+        setList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"USER_ID_CHANGE\" = :user_id_change");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -287,16 +287,16 @@ public class PrdStoreMainteTeamDet implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (mfg_team_code) = TRIM (:mfg_team_code)");
-        whereList.add("TRIM (ws_code) = TRIM (:ws_code)");
-        whereList.add("time_stamp_change = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        whereList.add("TRIM (\"MFG_TEAM_CODE\") = TRIM (:mfg_team_code)");
+        whereList.add("TRIM (\"WS_CODE\") = TRIM (:ws_code)");
+        whereList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("MFG_TEAM_CODE", this.mfgTeamCode);
-        params.put("WS_CODE", this.wsCode);
+        params.put("mfg_team_code", this.mfgTeamCode);
+        params.put("ws_code", this.wsCode);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

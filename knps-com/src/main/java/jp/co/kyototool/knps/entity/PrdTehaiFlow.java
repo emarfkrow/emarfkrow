@@ -328,18 +328,18 @@ public class PrdTehaiFlow implements IEntity {
 
         // PRD_TEHAI_FLOWの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("prd_tehai_no -- :prd_tehai_no");
-        nameList.add("tehai_flow_seq -- :tehai_flow_seq");
-        nameList.add("tehai_jokyo_kb -- :tehai_jokyo_kb");
-        nameList.add("kaitei_jokyo_kb -- :kaitei_jokyo_kb");
-        nameList.add("shorisha_cd -- :shorisha_cd");
-        nameList.add("shori_dt -- :shori_dt");
-        nameList.add("shori_cmt -- :shori_cmt");
-        nameList.add("aitesaki_cd -- :aitesaki_cd");
-        nameList.add("time_stamp_create -- :time_stamp_create");
-        nameList.add("time_stamp_change -- :time_stamp_change");
-        nameList.add("user_id_create -- :user_id_create");
-        nameList.add("user_id_change -- :user_id_change");
+        nameList.add("\"PRD_TEHAI_NO\" -- :prd_tehai_no");
+        nameList.add("\"TEHAI_FLOW_SEQ\" -- :tehai_flow_seq");
+        nameList.add("\"TEHAI_JOKYO_KB\" -- :tehai_jokyo_kb");
+        nameList.add("\"KAITEI_JOKYO_KB\" -- :kaitei_jokyo_kb");
+        nameList.add("\"SHORISHA_CD\" -- :shorisha_cd");
+        nameList.add("\"SHORI_DT\" -- :shori_dt");
+        nameList.add("\"SHORI_CMT\" -- :shori_cmt");
+        nameList.add("\"AITESAKI_CD\" -- :aitesaki_cd");
+        nameList.add("\"TIME_STAMP_CREATE\" -- :time_stamp_create");
+        nameList.add("\"TIME_STAMP_CHANGE\" -- :time_stamp_change");
+        nameList.add("\"USER_ID_CREATE\" -- :user_id_create");
+        nameList.add("\"USER_ID_CHANGE\" -- :user_id_change");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO PRD_TEHAI_FLOW(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -383,16 +383,16 @@ public class PrdTehaiFlow implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("prd_tehai_no = :prd_tehai_no");
-        setList.add("tehai_flow_seq = :tehai_flow_seq");
-        setList.add("tehai_jokyo_kb = :tehai_jokyo_kb");
-        setList.add("kaitei_jokyo_kb = :kaitei_jokyo_kb");
-        setList.add("shorisha_cd = :shorisha_cd");
-        setList.add("shori_dt = TO_TIMESTAMP (:shori_dt, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("shori_cmt = :shori_cmt");
-        setList.add("aitesaki_cd = :aitesaki_cd");
-        setList.add("time_stamp_change = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("user_id_change = :user_id_change");
+        setList.add("\"PRD_TEHAI_NO\" = :prd_tehai_no");
+        setList.add("\"TEHAI_FLOW_SEQ\" = :tehai_flow_seq");
+        setList.add("\"TEHAI_JOKYO_KB\" = :tehai_jokyo_kb");
+        setList.add("\"KAITEI_JOKYO_KB\" = :kaitei_jokyo_kb");
+        setList.add("\"SHORISHA_CD\" = :shorisha_cd");
+        setList.add("\"SHORI_DT\" = TO_TIMESTAMP (:shori_dt, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"SHORI_CMT\" = :shori_cmt");
+        setList.add("\"AITESAKI_CD\" = :aitesaki_cd");
+        setList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"USER_ID_CHANGE\" = :user_id_change");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -414,22 +414,22 @@ public class PrdTehaiFlow implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (prd_tehai_no) = TRIM (:prd_tehai_no)");
-        whereList.add("tehai_flow_seq = :tehai_flow_seq");
-        whereList.add("time_stamp_change = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        whereList.add("TRIM (\"PRD_TEHAI_NO\") = TRIM (:prd_tehai_no)");
+        whereList.add("\"TEHAI_FLOW_SEQ\" = :tehai_flow_seq");
+        whereList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("PRD_TEHAI_NO", this.prdTehaiNo);
-        params.put("TEHAI_FLOW_SEQ", this.tehaiFlowSeq);
-        params.put("TEHAI_JOKYO_KB", this.tehaiJokyoKb);
-        params.put("KAITEI_JOKYO_KB", this.kaiteiJokyoKb);
-        params.put("SHORISHA_CD", this.shorishaCd);
-        params.put("SHORI_DT", this.shoriDt);
-        params.put("SHORI_CMT", this.shoriCmt);
-        params.put("AITESAKI_CD", this.aitesakiCd);
+        params.put("prd_tehai_no", this.prdTehaiNo);
+        params.put("tehai_flow_seq", this.tehaiFlowSeq);
+        params.put("tehai_jokyo_kb", this.tehaiJokyoKb);
+        params.put("kaitei_jokyo_kb", this.kaiteiJokyoKb);
+        params.put("shorisha_cd", this.shorishaCd);
+        params.put("shori_dt", this.shoriDt);
+        params.put("shori_cmt", this.shoriCmt);
+        params.put("aitesaki_cd", this.aitesakiCd);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

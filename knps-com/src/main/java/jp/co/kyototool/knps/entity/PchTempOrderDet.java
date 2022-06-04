@@ -424,23 +424,23 @@ public class PchTempOrderDet implements IEntity {
 
         // PCH_TEMP_ORDER_DETの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("temp_order_no -- :temp_order_no");
-        nameList.add("temp_order_seq -- :temp_order_seq");
-        nameList.add("order_no -- :order_no");
-        nameList.add("kbn2 -- :kbn2");
-        nameList.add("item -- :item");
-        nameList.add("material -- :material");
-        nameList.add("order_counts_1 -- :order_counts_1");
-        nameList.add("unit_name -- :unit_name");
-        nameList.add("order_counts_2 -- :order_counts_2");
-        nameList.add("unit_name_2 -- :unit_name_2");
-        nameList.add("isshiki_f -- :isshiki_f");
-        nameList.add("futai_f -- :futai_f");
-        nameList.add("ikkatsu_order_no -- :ikkatsu_order_no");
-        nameList.add("time_stamp_create -- :time_stamp_create");
-        nameList.add("time_stamp_change -- :time_stamp_change");
-        nameList.add("user_id_create -- :user_id_create");
-        nameList.add("user_id_change -- :user_id_change");
+        nameList.add("\"TEMP_ORDER_NO\" -- :temp_order_no");
+        nameList.add("\"TEMP_ORDER_SEQ\" -- :temp_order_seq");
+        nameList.add("\"ORDER_NO\" -- :order_no");
+        nameList.add("\"KBN2\" -- :kbn2");
+        nameList.add("\"ITEM\" -- :item");
+        nameList.add("\"MATERIAL\" -- :material");
+        nameList.add("\"ORDER_COUNTS_1\" -- :order_counts_1");
+        nameList.add("\"UNIT_NAME\" -- :unit_name");
+        nameList.add("\"ORDER_COUNTS_2\" -- :order_counts_2");
+        nameList.add("\"UNIT_NAME_2\" -- :unit_name_2");
+        nameList.add("\"ISSHIKI_F\" -- :isshiki_f");
+        nameList.add("\"FUTAI_F\" -- :futai_f");
+        nameList.add("\"IKKATSU_ORDER_NO\" -- :ikkatsu_order_no");
+        nameList.add("\"TIME_STAMP_CREATE\" -- :time_stamp_create");
+        nameList.add("\"TIME_STAMP_CHANGE\" -- :time_stamp_change");
+        nameList.add("\"USER_ID_CREATE\" -- :user_id_create");
+        nameList.add("\"USER_ID_CHANGE\" -- :user_id_change");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO PCH_TEMP_ORDER_DET(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -489,21 +489,21 @@ public class PchTempOrderDet implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("temp_order_no = :temp_order_no");
-        setList.add("temp_order_seq = :temp_order_seq");
-        setList.add("order_no = :order_no");
-        setList.add("kbn2 = :kbn2");
-        setList.add("item = :item");
-        setList.add("material = :material");
-        setList.add("order_counts_1 = :order_counts_1");
-        setList.add("unit_name = :unit_name");
-        setList.add("order_counts_2 = :order_counts_2");
-        setList.add("unit_name_2 = :unit_name_2");
-        setList.add("isshiki_f = :isshiki_f");
-        setList.add("futai_f = :futai_f");
-        setList.add("ikkatsu_order_no = :ikkatsu_order_no");
-        setList.add("time_stamp_change = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("user_id_change = :user_id_change");
+        setList.add("\"TEMP_ORDER_NO\" = :temp_order_no");
+        setList.add("\"TEMP_ORDER_SEQ\" = :temp_order_seq");
+        setList.add("\"ORDER_NO\" = :order_no");
+        setList.add("\"KBN2\" = :kbn2");
+        setList.add("\"ITEM\" = :item");
+        setList.add("\"MATERIAL\" = :material");
+        setList.add("\"ORDER_COUNTS_1\" = :order_counts_1");
+        setList.add("\"UNIT_NAME\" = :unit_name");
+        setList.add("\"ORDER_COUNTS_2\" = :order_counts_2");
+        setList.add("\"UNIT_NAME_2\" = :unit_name_2");
+        setList.add("\"ISSHIKI_F\" = :isshiki_f");
+        setList.add("\"FUTAI_F\" = :futai_f");
+        setList.add("\"IKKATSU_ORDER_NO\" = :ikkatsu_order_no");
+        setList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"USER_ID_CHANGE\" = :user_id_change");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -525,27 +525,27 @@ public class PchTempOrderDet implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (temp_order_no) = TRIM (:temp_order_no)");
-        whereList.add("temp_order_seq = :temp_order_seq");
-        whereList.add("time_stamp_change = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        whereList.add("TRIM (\"TEMP_ORDER_NO\") = TRIM (:temp_order_no)");
+        whereList.add("\"TEMP_ORDER_SEQ\" = :temp_order_seq");
+        whereList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("TEMP_ORDER_NO", this.tempOrderNo);
-        params.put("TEMP_ORDER_SEQ", this.tempOrderSeq);
-        params.put("ORDER_NO", this.orderNo);
-        params.put("KBN2", this.kbn2);
-        params.put("ITEM", this.item);
-        params.put("MATERIAL", this.material);
-        params.put("ORDER_COUNTS_1", this.orderCounts1);
-        params.put("UNIT_NAME", this.unitName);
-        params.put("ORDER_COUNTS_2", this.orderCounts2);
-        params.put("UNIT_NAME_2", this.unitName2);
-        params.put("ISSHIKI_F", this.isshikiF);
-        params.put("FUTAI_F", this.futaiF);
-        params.put("IKKATSU_ORDER_NO", this.ikkatsuOrderNo);
+        params.put("temp_order_no", this.tempOrderNo);
+        params.put("temp_order_seq", this.tempOrderSeq);
+        params.put("order_no", this.orderNo);
+        params.put("kbn2", this.kbn2);
+        params.put("item", this.item);
+        params.put("material", this.material);
+        params.put("order_counts_1", this.orderCounts1);
+        params.put("unit_name", this.unitName);
+        params.put("order_counts_2", this.orderCounts2);
+        params.put("unit_name_2", this.unitName2);
+        params.put("isshiki_f", this.isshikiF);
+        params.put("futai_f", this.futaiF);
+        params.put("ikkatsu_order_no", this.ikkatsuOrderNo);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

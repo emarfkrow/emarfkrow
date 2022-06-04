@@ -277,16 +277,16 @@ public class MSalehin implements IEntity {
 
         // セール品目マスタの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("salekbn -- :salekbn");
-        nameList.add("salemei -- :salemei");
-        nameList.add("hhinban -- :hhinban");
-        nameList.add("kaisi_yy -- :kaisi_yy");
-        nameList.add("kaisi_mm -- :kaisi_mm");
-        nameList.add("kaisi_dd -- :kaisi_dd");
-        nameList.add("shuryo_yy -- :shuryo_yy");
-        nameList.add("shuryo_mm -- :shuryo_mm");
-        nameList.add("shuryo_dd -- :shuryo_dd");
-        nameList.add("filler -- :filler");
+        nameList.add("\"SALEKBN\" -- :salekbn");
+        nameList.add("\"SALEMEI\" -- :salemei");
+        nameList.add("\"HHINBAN\" -- :hhinban");
+        nameList.add("\"KAISI-YY\" -- :kaisi_yy");
+        nameList.add("\"KAISI-MM\" -- :kaisi_mm");
+        nameList.add("\"KAISI-DD\" -- :kaisi_dd");
+        nameList.add("\"SHURYO-YY\" -- :shuryo_yy");
+        nameList.add("\"SHURYO-MM\" -- :shuryo_mm");
+        nameList.add("\"SHURYO-DD\" -- :shuryo_dd");
+        nameList.add("\"FILLER\" -- :filler");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO M_SALEHIN(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -328,16 +328,16 @@ public class MSalehin implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("salekbn = :salekbn");
-        setList.add("salemei = :salemei");
-        setList.add("hhinban = :hhinban");
-        setList.add("kaisi-yy = :kaisi-yy");
-        setList.add("kaisi-mm = :kaisi-mm");
-        setList.add("kaisi-dd = :kaisi-dd");
-        setList.add("shuryo-yy = :shuryo-yy");
-        setList.add("shuryo-mm = :shuryo-mm");
-        setList.add("shuryo-dd = :shuryo-dd");
-        setList.add("filler = :filler");
+        setList.add("\"SALEKBN\" = :salekbn");
+        setList.add("\"SALEMEI\" = :salemei");
+        setList.add("\"HHINBAN\" = :hhinban");
+        setList.add("\"KAISI-YY\" = :kaisi_yy");
+        setList.add("\"KAISI-MM\" = :kaisi_mm");
+        setList.add("\"KAISI-DD\" = :kaisi_dd");
+        setList.add("\"SHURYO-YY\" = :shuryo_yy");
+        setList.add("\"SHURYO-MM\" = :shuryo_mm");
+        setList.add("\"SHURYO-DD\" = :shuryo_dd");
+        setList.add("\"FILLER\" = :filler");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -359,29 +359,29 @@ public class MSalehin implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (salekbn) = TRIM (:salekbn)");
-        whereList.add("TRIM (hhinban) = TRIM (:hhinban)");
-        whereList.add("kaisi-yy = :kaisi-yy");
-        whereList.add("kaisi-mm = :kaisi-mm");
-        whereList.add("kaisi-dd = :kaisi-dd");
-        whereList.add("shuryo-yy = :shuryo-yy");
-        whereList.add("shuryo-mm = :shuryo-mm");
-        whereList.add("shuryo-dd = :shuryo-dd");
+        whereList.add("TRIM (\"SALEKBN\") = TRIM (:salekbn)");
+        whereList.add("TRIM (\"HHINBAN\") = TRIM (:hhinban)");
+        whereList.add("\"KAISI-YY\" = :kaisi_yy");
+        whereList.add("\"KAISI-MM\" = :kaisi_mm");
+        whereList.add("\"KAISI-DD\" = :kaisi_dd");
+        whereList.add("\"SHURYO-YY\" = :shuryo_yy");
+        whereList.add("\"SHURYO-MM\" = :shuryo_mm");
+        whereList.add("\"SHURYO-DD\" = :shuryo_dd");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("SALEKBN", this.salekbn);
-        params.put("SALEMEI", this.salemei);
-        params.put("HHINBAN", this.hhinban);
-        params.put("KAISI-YY", this.kaisiYy);
-        params.put("KAISI-MM", this.kaisiMm);
-        params.put("KAISI-DD", this.kaisiDd);
-        params.put("SHURYO-YY", this.shuryoYy);
-        params.put("SHURYO-MM", this.shuryoMm);
-        params.put("SHURYO-DD", this.shuryoDd);
-        params.put("FILLER", this.filler);
+        params.put("salekbn", this.salekbn);
+        params.put("salemei", this.salemei);
+        params.put("hhinban", this.hhinban);
+        params.put("kaisi_yy", this.kaisiYy);
+        params.put("kaisi_mm", this.kaisiMm);
+        params.put("kaisi_dd", this.kaisiDd);
+        params.put("shuryo_yy", this.shuryoYy);
+        params.put("shuryo_mm", this.shuryoMm);
+        params.put("shuryo_dd", this.shuryoDd);
+        params.put("filler", this.filler);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

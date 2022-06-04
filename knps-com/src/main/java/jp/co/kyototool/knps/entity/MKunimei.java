@@ -157,11 +157,11 @@ public class MKunimei implements IEntity {
 
         // 国名マスタの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("kokusaicd -- :kokusaicd");
-        nameList.add("kunicd -- :kunicd");
-        nameList.add("gensankoku -- :gensankoku");
-        nameList.add("kunimei -- :kunimei");
-        nameList.add("filler -- :filler");
+        nameList.add("\"KOKUSAICD\" -- :kokusaicd");
+        nameList.add("\"KUNICD\" -- :kunicd");
+        nameList.add("\"GENSANKOKU\" -- :gensankoku");
+        nameList.add("\"KUNIMEI\" -- :kunimei");
+        nameList.add("\"FILLER\" -- :filler");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO M_KUNIMEI(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -188,12 +188,12 @@ public class MKunimei implements IEntity {
             return;
         }
 
-        String sql = "SELECT LPAD (CASE WHEN MAX(e.KUNICD) IS NULL THEN 0 ELSE MAX(e.KUNICD) * 1 END + 1, 2, '0') AS KUNICD FROM M_KUNIMEI e WHERE e.KUNICD < '99'";
+        String sql = "SELECT LPAD (CASE WHEN MAX(e.\"KUNICD\") IS NULL THEN 0 ELSE MAX(e.\"KUNICD\") * 1 END + 1, 2, '0') AS \"KUNICD\" FROM M_KUNIMEI e WHERE e.\"KUNICD\" < '99'";
 
         Map<String, Object> params = new HashMap<String, Object>();
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("e.KOKUSAICD = :kokusaicd");
+        whereList.add("e.\"KOKUSAICD\" = :kokusaicd");
         sql += " WHERE " + String.join(" AND ", whereList);
 
         params.put("kokusaicd", this.kokusaicd);
@@ -221,11 +221,11 @@ public class MKunimei implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("kokusaicd = :kokusaicd");
-        setList.add("kunicd = :kunicd");
-        setList.add("gensankoku = :gensankoku");
-        setList.add("kunimei = :kunimei");
-        setList.add("filler = :filler");
+        setList.add("\"KOKUSAICD\" = :kokusaicd");
+        setList.add("\"KUNICD\" = :kunicd");
+        setList.add("\"GENSANKOKU\" = :gensankoku");
+        setList.add("\"KUNIMEI\" = :kunimei");
+        setList.add("\"FILLER\" = :filler");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -247,18 +247,18 @@ public class MKunimei implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (kokusaicd) = TRIM (:kokusaicd)");
-        whereList.add("TRIM (kunicd) = TRIM (:kunicd)");
+        whereList.add("TRIM (\"KOKUSAICD\") = TRIM (:kokusaicd)");
+        whereList.add("TRIM (\"KUNICD\") = TRIM (:kunicd)");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("KOKUSAICD", this.kokusaicd);
-        params.put("KUNICD", this.kunicd);
-        params.put("GENSANKOKU", this.gensankoku);
-        params.put("KUNIMEI", this.kunimei);
-        params.put("FILLER", this.filler);
+        params.put("kokusaicd", this.kokusaicd);
+        params.put("kunicd", this.kunicd);
+        params.put("gensankoku", this.gensankoku);
+        params.put("kunimei", this.kunimei);
+        params.put("filler", this.filler);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

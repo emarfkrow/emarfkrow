@@ -169,11 +169,11 @@ public class MfgProActStatus implements IEntity {
 
         // MFG_PRO_ACT_STATUSの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("child_plan_no -- :child_plan_no");
-        nameList.add("pro_no -- :pro_no");
-        nameList.add("act_status -- :act_status");
-        nameList.add("user_id -- :user_id");
-        nameList.add("time_stamp_create -- :time_stamp_create");
+        nameList.add("\"CHILD_PLAN_NO\" -- :child_plan_no");
+        nameList.add("\"PRO_NO\" -- :pro_no");
+        nameList.add("\"ACT_STATUS\" -- :act_status");
+        nameList.add("\"USER_ID\" -- :user_id");
+        nameList.add("\"TIME_STAMP_CREATE\" -- :time_stamp_create");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO MFG_PRO_ACT_STATUS(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -200,7 +200,7 @@ public class MfgProActStatus implements IEntity {
             return;
         }
 
-        String sql = "SELECT LPAD (CASE WHEN MAX(e.CHILD_PLAN_NO) IS NULL THEN 0 ELSE MAX(e.CHILD_PLAN_NO) * 1 END + 1, 12, '0') AS CHILD_PLAN_NO FROM MFG_PRO_ACT_STATUS e WHERE e.CHILD_PLAN_NO < '999999999999'";
+        String sql = "SELECT LPAD (CASE WHEN MAX(e.\"CHILD_PLAN_NO\") IS NULL THEN 0 ELSE MAX(e.\"CHILD_PLAN_NO\") * 1 END + 1, 12, '0') AS \"CHILD_PLAN_NO\" FROM MFG_PRO_ACT_STATUS e WHERE e.\"CHILD_PLAN_NO\" < '999999999999'";
 
         Map<String, Object> params = new HashMap<String, Object>();
 
@@ -237,10 +237,10 @@ public class MfgProActStatus implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("child_plan_no = :child_plan_no");
-        setList.add("pro_no = :pro_no");
-        setList.add("act_status = :act_status");
-        setList.add("user_id = :user_id");
+        setList.add("\"CHILD_PLAN_NO\" = :child_plan_no");
+        setList.add("\"PRO_NO\" = :pro_no");
+        setList.add("\"ACT_STATUS\" = :act_status");
+        setList.add("\"USER_ID\" = :user_id");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -267,16 +267,16 @@ public class MfgProActStatus implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (child_plan_no) = TRIM (:child_plan_no)");
+        whereList.add("TRIM (\"CHILD_PLAN_NO\") = TRIM (:child_plan_no)");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("CHILD_PLAN_NO", this.childPlanNo);
-        params.put("PRO_NO", this.proNo);
-        params.put("ACT_STATUS", this.actStatus);
-        params.put("USER_ID", this.userId);
+        params.put("child_plan_no", this.childPlanNo);
+        params.put("pro_no", this.proNo);
+        params.put("act_status", this.actStatus);
+        params.put("user_id", this.userId);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

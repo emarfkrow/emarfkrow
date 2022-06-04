@@ -283,16 +283,16 @@ public class MstStructureBk implements IEntity {
 
         // MST_STRUCTURE_BKの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("yy -- :yy");
-        nameList.add("man_hinban -- :man_hinban");
-        nameList.add("hinban -- :hinban");
-        nameList.add("counts -- :counts");
-        nameList.add("time_stamp_create -- :time_stamp_create");
-        nameList.add("time_stamp_change -- :time_stamp_change");
-        nameList.add("user_id_create -- :user_id_create");
-        nameList.add("user_id_change -- :user_id_change");
-        nameList.add("delete_flag -- :delete_flag");
-        nameList.add("bozai_f -- :bozai_f");
+        nameList.add("\"YY\" -- :yy");
+        nameList.add("\"MAN_HINBAN\" -- :man_hinban");
+        nameList.add("\"HINBAN\" -- :hinban");
+        nameList.add("\"COUNTS\" -- :counts");
+        nameList.add("\"TIME_STAMP_CREATE\" -- :time_stamp_create");
+        nameList.add("\"TIME_STAMP_CHANGE\" -- :time_stamp_change");
+        nameList.add("\"USER_ID_CREATE\" -- :user_id_create");
+        nameList.add("\"USER_ID_CHANGE\" -- :user_id_change");
+        nameList.add("\"DELETE_FLAG\" -- :delete_flag");
+        nameList.add("\"BOZAI_F\" -- :bozai_f");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO MST_STRUCTURE_BK(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -324,16 +324,16 @@ public class MstStructureBk implements IEntity {
             return;
         }
 
-        String sql = "SELECT LPAD (CASE WHEN MAX(e.YY) IS NULL THEN 0 ELSE MAX(e.YY) * 1 END + 1, 4, '0') AS YY FROM MST_STRUCTURE_BK e WHERE e.YY < '9999'";
+        String sql = "SELECT LPAD (CASE WHEN MAX(e.\"YY\") IS NULL THEN 0 ELSE MAX(e.\"YY\") * 1 END + 1, 4, '0') AS \"YY\" FROM MST_STRUCTURE_BK e WHERE e.\"YY\" < '9999'";
 
         Map<String, Object> params = new HashMap<String, Object>();
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("e.MAN_HINBAN = :man_hinban");
-        whereList.add("e.HINBAN = :hinban");
+        whereList.add("e.\"MAN_HINBAN\" = :man_hinban");
+        whereList.add("e.\"HINBAN\" = :hinban");
         sql += " WHERE " + String.join(" AND ", whereList);
 
-        params.put("manHinban", this.manHinban);
+        params.put("man_hinban", this.manHinban);
         params.put("hinban", this.hinban);
 
         jp.co.golorp.emarf.util.MapList mapList = Queries.select(sql, params);
@@ -359,14 +359,14 @@ public class MstStructureBk implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("yy = :yy");
-        setList.add("man_hinban = :man_hinban");
-        setList.add("hinban = :hinban");
-        setList.add("counts = :counts");
-        setList.add("time_stamp_change = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("user_id_change = :user_id_change");
-        setList.add("delete_flag = :delete_flag");
-        setList.add("bozai_f = :bozai_f");
+        setList.add("\"YY\" = :yy");
+        setList.add("\"MAN_HINBAN\" = :man_hinban");
+        setList.add("\"HINBAN\" = :hinban");
+        setList.add("\"COUNTS\" = :counts");
+        setList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"USER_ID_CHANGE\" = :user_id_change");
+        setList.add("\"DELETE_FLAG\" = :delete_flag");
+        setList.add("\"BOZAI_F\" = :bozai_f");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -388,21 +388,21 @@ public class MstStructureBk implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (man_hinban) = TRIM (:man_hinban)");
-        whereList.add("TRIM (hinban) = TRIM (:hinban)");
-        whereList.add("TRIM (yy) = TRIM (:yy)");
-        whereList.add("time_stamp_change = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        whereList.add("TRIM (\"MAN_HINBAN\") = TRIM (:man_hinban)");
+        whereList.add("TRIM (\"HINBAN\") = TRIM (:hinban)");
+        whereList.add("TRIM (\"YY\") = TRIM (:yy)");
+        whereList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("YY", this.yy);
-        params.put("MAN_HINBAN", this.manHinban);
-        params.put("HINBAN", this.hinban);
-        params.put("COUNTS", this.counts);
-        params.put("DELETE_FLAG", this.deleteFlag);
-        params.put("BOZAI_F", this.bozaiF);
+        params.put("yy", this.yy);
+        params.put("man_hinban", this.manHinban);
+        params.put("hinban", this.hinban);
+        params.put("counts", this.counts);
+        params.put("delete_flag", this.deleteFlag);
+        params.put("bozai_f", this.bozaiF);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

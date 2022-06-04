@@ -256,15 +256,15 @@ public class MstCodeValue implements IEntity {
 
         // MST_CODE_VALUEの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("code_nm -- :code_nm");
-        nameList.add("code_value -- :code_value");
-        nameList.add("code_value_mei -- :code_value_mei");
-        nameList.add("hyoji_jun -- :hyoji_jun");
-        nameList.add("criteria -- :criteria");
-        nameList.add("time_stamp_create -- :time_stamp_create");
-        nameList.add("time_stamp_change -- :time_stamp_change");
-        nameList.add("user_id_create -- :user_id_create");
-        nameList.add("user_id_change -- :user_id_change");
+        nameList.add("\"CODE_NM\" -- :code_nm");
+        nameList.add("\"CODE_VALUE\" -- :code_value");
+        nameList.add("\"CODE_VALUE_MEI\" -- :code_value_mei");
+        nameList.add("\"HYOJI_JUN\" -- :hyoji_jun");
+        nameList.add("\"CRITERIA\" -- :criteria");
+        nameList.add("\"TIME_STAMP_CREATE\" -- :time_stamp_create");
+        nameList.add("\"TIME_STAMP_CHANGE\" -- :time_stamp_change");
+        nameList.add("\"USER_ID_CREATE\" -- :user_id_create");
+        nameList.add("\"USER_ID_CHANGE\" -- :user_id_change");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO MST_CODE_VALUE(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -305,13 +305,13 @@ public class MstCodeValue implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("code_nm = :code_nm");
-        setList.add("code_value = :code_value");
-        setList.add("code_value_mei = :code_value_mei");
-        setList.add("hyoji_jun = :hyoji_jun");
-        setList.add("criteria = :criteria");
-        setList.add("time_stamp_change = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("user_id_change = :user_id_change");
+        setList.add("\"CODE_NM\" = :code_nm");
+        setList.add("\"CODE_VALUE\" = :code_value");
+        setList.add("\"CODE_VALUE_MEI\" = :code_value_mei");
+        setList.add("\"HYOJI_JUN\" = :hyoji_jun");
+        setList.add("\"CRITERIA\" = :criteria");
+        setList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"USER_ID_CHANGE\" = :user_id_change");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -333,19 +333,19 @@ public class MstCodeValue implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("code_nm = :code_nm");
-        whereList.add("code_value = :code_value");
-        whereList.add("time_stamp_change = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        whereList.add("\"CODE_NM\" = :code_nm");
+        whereList.add("\"CODE_VALUE\" = :code_value");
+        whereList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("CODE_NM", this.codeNm);
-        params.put("CODE_VALUE", this.codeValue);
-        params.put("CODE_VALUE_MEI", this.codeValueMei);
-        params.put("HYOJI_JUN", this.hyojiJun);
-        params.put("CRITERIA", this.criteria);
+        params.put("code_nm", this.codeNm);
+        params.put("code_value", this.codeValue);
+        params.put("code_value_mei", this.codeValueMei);
+        params.put("hyoji_jun", this.hyojiJun);
+        params.put("criteria", this.criteria);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

@@ -263,15 +263,15 @@ public class MfgKanbanStatus implements IEntity {
 
         // MFG_KANBAN_STATUSの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("kanban_id -- :kanban_id");
-        nameList.add("serial_no -- :serial_no");
-        nameList.add("kanban_print_status -- :kanban_print_status");
-        nameList.add("kanban_status -- :kanban_status");
-        nameList.add("re_issue_counts -- :re_issue_counts");
-        nameList.add("time_stamp_create -- :time_stamp_create");
-        nameList.add("time_stamp_change -- :time_stamp_change");
-        nameList.add("user_id_create -- :user_id_create");
-        nameList.add("user_id_change -- :user_id_change");
+        nameList.add("\"KANBAN_ID\" -- :kanban_id");
+        nameList.add("\"SERIAL_NO\" -- :serial_no");
+        nameList.add("\"KANBAN_PRINT_STATUS\" -- :kanban_print_status");
+        nameList.add("\"KANBAN_STATUS\" -- :kanban_status");
+        nameList.add("\"RE_ISSUE_COUNTS\" -- :re_issue_counts");
+        nameList.add("\"TIME_STAMP_CREATE\" -- :time_stamp_create");
+        nameList.add("\"TIME_STAMP_CHANGE\" -- :time_stamp_change");
+        nameList.add("\"USER_ID_CREATE\" -- :user_id_create");
+        nameList.add("\"USER_ID_CHANGE\" -- :user_id_change");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO MFG_KANBAN_STATUS(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -323,13 +323,13 @@ public class MfgKanbanStatus implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("kanban_id = :kanban_id");
-        setList.add("serial_no = :serial_no");
-        setList.add("kanban_print_status = :kanban_print_status");
-        setList.add("kanban_status = :kanban_status");
-        setList.add("re_issue_counts = :re_issue_counts");
-        setList.add("time_stamp_change = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("user_id_change = :user_id_change");
+        setList.add("\"KANBAN_ID\" = :kanban_id");
+        setList.add("\"SERIAL_NO\" = :serial_no");
+        setList.add("\"KANBAN_PRINT_STATUS\" = :kanban_print_status");
+        setList.add("\"KANBAN_STATUS\" = :kanban_status");
+        setList.add("\"RE_ISSUE_COUNTS\" = :re_issue_counts");
+        setList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"USER_ID_CHANGE\" = :user_id_change");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -356,19 +356,19 @@ public class MfgKanbanStatus implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (kanban_id) = TRIM (:kanban_id)");
-        whereList.add("serial_no = :serial_no");
-        whereList.add("time_stamp_change = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        whereList.add("TRIM (\"KANBAN_ID\") = TRIM (:kanban_id)");
+        whereList.add("\"SERIAL_NO\" = :serial_no");
+        whereList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("KANBAN_ID", this.kanbanId);
-        params.put("SERIAL_NO", this.serialNo);
-        params.put("KANBAN_PRINT_STATUS", this.kanbanPrintStatus);
-        params.put("KANBAN_STATUS", this.kanbanStatus);
-        params.put("RE_ISSUE_COUNTS", this.reIssueCounts);
+        params.put("kanban_id", this.kanbanId);
+        params.put("serial_no", this.serialNo);
+        params.put("kanban_print_status", this.kanbanPrintStatus);
+        params.put("kanban_status", this.kanbanStatus);
+        params.put("re_issue_counts", this.reIssueCounts);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

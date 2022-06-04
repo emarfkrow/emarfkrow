@@ -92,20 +92,20 @@ public class MfgObservanceRateOutRegistForm implements IForm {
 
     /** LATE_M5OVER */
     @jakarta.validation.constraints.Size(max = 4)
-    private String lateM5over;
+    private String lateM5Over;
 
     /**
      * @return LATE_M5OVER
      */
-    public String getLateM5over() {
-        return lateM5over;
+    public String getLateM5Over() {
+        return lateM5Over;
     }
 
     /**
      * @param p LATE_M5OVER
      */
-    public void setLateM5over(final String p) {
-        this.lateM5over = p;
+    public void setLateM5Over(final String p) {
+        this.lateM5Over = p;
     }
 
     /** LATE_M5 */
@@ -578,20 +578,20 @@ public class MfgObservanceRateOutRegistForm implements IForm {
 
     /** LATE_P20OVER */
     @jakarta.validation.constraints.Size(max = 4)
-    private String lateP20over;
+    private String lateP20Over;
 
     /**
      * @return LATE_P20OVER
      */
-    public String getLateP20over() {
-        return lateP20over;
+    public String getLateP20Over() {
+        return lateP20Over;
     }
 
     /**
      * @param p LATE_P20OVER
      */
-    public void setLateP20over(final String p) {
-        this.lateP20over = p;
+    public void setLateP20Over(final String p) {
+        this.lateP20Over = p;
     }
 
     /** PRD_MONTH_TIME_SCH */

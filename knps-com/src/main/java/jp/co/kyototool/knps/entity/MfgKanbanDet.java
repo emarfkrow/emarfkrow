@@ -608,31 +608,31 @@ public class MfgKanbanDet implements IEntity {
 
         // MFG_KANBAN_DETの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("kanban_id -- :kanban_id");
-        nameList.add("hinban -- :hinban");
-        nameList.add("neck_routing_code -- :neck_routing_code");
-        nameList.add("for_pro_code -- :for_pro_code");
-        nameList.add("for_pro_location_code -- :for_pro_location_code");
-        nameList.add("pro_code -- :pro_code");
-        nameList.add("pro_location_code -- :pro_location_code");
-        nameList.add("comment1 -- :comment1");
-        nameList.add("comment2 -- :comment2");
-        nameList.add("routing1 -- :routing1");
-        nameList.add("tunnel_pro_code1 -- :tunnel_pro_code1");
-        nameList.add("routing2 -- :routing2");
-        nameList.add("tunnel_pro_code2 -- :tunnel_pro_code2");
-        nameList.add("routing3 -- :routing3");
-        nameList.add("tunnel_pro_code3 -- :tunnel_pro_code3");
-        nameList.add("routing4 -- :routing4");
-        nameList.add("tunnel_pro_code4 -- :tunnel_pro_code4");
-        nameList.add("routing5 -- :routing5");
-        nameList.add("tunnel_pro_code5 -- :tunnel_pro_code5");
-        nameList.add("kanban_acc_counts -- :kanban_acc_counts");
-        nameList.add("lot_size -- :lot_size");
-        nameList.add("time_stamp_create -- :time_stamp_create");
-        nameList.add("time_stamp_change -- :time_stamp_change");
-        nameList.add("user_id_create -- :user_id_create");
-        nameList.add("user_id_change -- :user_id_change");
+        nameList.add("\"KANBAN_ID\" -- :kanban_id");
+        nameList.add("\"HINBAN\" -- :hinban");
+        nameList.add("\"NECK_ROUTING_CODE\" -- :neck_routing_code");
+        nameList.add("\"FOR_PRO_CODE\" -- :for_pro_code");
+        nameList.add("\"FOR_PRO_LOCATION_CODE\" -- :for_pro_location_code");
+        nameList.add("\"PRO_CODE\" -- :pro_code");
+        nameList.add("\"PRO_LOCATION_CODE\" -- :pro_location_code");
+        nameList.add("\"COMMENT1\" -- :comment1");
+        nameList.add("\"COMMENT2\" -- :comment2");
+        nameList.add("\"ROUTING1\" -- :routing1");
+        nameList.add("\"TUNNEL_PRO_CODE1\" -- :tunnel_pro_code1");
+        nameList.add("\"ROUTING2\" -- :routing2");
+        nameList.add("\"TUNNEL_PRO_CODE2\" -- :tunnel_pro_code2");
+        nameList.add("\"ROUTING3\" -- :routing3");
+        nameList.add("\"TUNNEL_PRO_CODE3\" -- :tunnel_pro_code3");
+        nameList.add("\"ROUTING4\" -- :routing4");
+        nameList.add("\"TUNNEL_PRO_CODE4\" -- :tunnel_pro_code4");
+        nameList.add("\"ROUTING5\" -- :routing5");
+        nameList.add("\"TUNNEL_PRO_CODE5\" -- :tunnel_pro_code5");
+        nameList.add("\"KANBAN_ACC_COUNTS\" -- :kanban_acc_counts");
+        nameList.add("\"LOT_SIZE\" -- :lot_size");
+        nameList.add("\"TIME_STAMP_CREATE\" -- :time_stamp_create");
+        nameList.add("\"TIME_STAMP_CHANGE\" -- :time_stamp_change");
+        nameList.add("\"USER_ID_CREATE\" -- :user_id_create");
+        nameList.add("\"USER_ID_CHANGE\" -- :user_id_change");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO MFG_KANBAN_DET(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -679,7 +679,7 @@ public class MfgKanbanDet implements IEntity {
             return;
         }
 
-        String sql = "SELECT LPAD (CASE WHEN MAX(e.KANBAN_ID) IS NULL THEN 0 ELSE MAX(e.KANBAN_ID) * 1 END + 1, 9, '0') AS KANBAN_ID FROM MFG_KANBAN_DET e WHERE e.KANBAN_ID < '999999999'";
+        String sql = "SELECT LPAD (CASE WHEN MAX(e.\"KANBAN_ID\") IS NULL THEN 0 ELSE MAX(e.\"KANBAN_ID\") * 1 END + 1, 9, '0') AS \"KANBAN_ID\" FROM MFG_KANBAN_DET e WHERE e.\"KANBAN_ID\" < '999999999'";
 
         Map<String, Object> params = new HashMap<String, Object>();
 
@@ -740,29 +740,29 @@ public class MfgKanbanDet implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("kanban_id = :kanban_id");
-        setList.add("hinban = :hinban");
-        setList.add("neck_routing_code = :neck_routing_code");
-        setList.add("for_pro_code = :for_pro_code");
-        setList.add("for_pro_location_code = :for_pro_location_code");
-        setList.add("pro_code = :pro_code");
-        setList.add("pro_location_code = :pro_location_code");
-        setList.add("comment1 = :comment1");
-        setList.add("comment2 = :comment2");
-        setList.add("routing1 = :routing1");
-        setList.add("tunnel_pro_code1 = :tunnel_pro_code1");
-        setList.add("routing2 = :routing2");
-        setList.add("tunnel_pro_code2 = :tunnel_pro_code2");
-        setList.add("routing3 = :routing3");
-        setList.add("tunnel_pro_code3 = :tunnel_pro_code3");
-        setList.add("routing4 = :routing4");
-        setList.add("tunnel_pro_code4 = :tunnel_pro_code4");
-        setList.add("routing5 = :routing5");
-        setList.add("tunnel_pro_code5 = :tunnel_pro_code5");
-        setList.add("kanban_acc_counts = :kanban_acc_counts");
-        setList.add("lot_size = :lot_size");
-        setList.add("time_stamp_change = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("user_id_change = :user_id_change");
+        setList.add("\"KANBAN_ID\" = :kanban_id");
+        setList.add("\"HINBAN\" = :hinban");
+        setList.add("\"NECK_ROUTING_CODE\" = :neck_routing_code");
+        setList.add("\"FOR_PRO_CODE\" = :for_pro_code");
+        setList.add("\"FOR_PRO_LOCATION_CODE\" = :for_pro_location_code");
+        setList.add("\"PRO_CODE\" = :pro_code");
+        setList.add("\"PRO_LOCATION_CODE\" = :pro_location_code");
+        setList.add("\"COMMENT1\" = :comment1");
+        setList.add("\"COMMENT2\" = :comment2");
+        setList.add("\"ROUTING1\" = :routing1");
+        setList.add("\"TUNNEL_PRO_CODE1\" = :tunnel_pro_code1");
+        setList.add("\"ROUTING2\" = :routing2");
+        setList.add("\"TUNNEL_PRO_CODE2\" = :tunnel_pro_code2");
+        setList.add("\"ROUTING3\" = :routing3");
+        setList.add("\"TUNNEL_PRO_CODE3\" = :tunnel_pro_code3");
+        setList.add("\"ROUTING4\" = :routing4");
+        setList.add("\"TUNNEL_PRO_CODE4\" = :tunnel_pro_code4");
+        setList.add("\"ROUTING5\" = :routing5");
+        setList.add("\"TUNNEL_PRO_CODE5\" = :tunnel_pro_code5");
+        setList.add("\"KANBAN_ACC_COUNTS\" = :kanban_acc_counts");
+        setList.add("\"LOT_SIZE\" = :lot_size");
+        setList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"USER_ID_CHANGE\" = :user_id_change");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -798,34 +798,34 @@ public class MfgKanbanDet implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (kanban_id) = TRIM (:kanban_id)");
-        whereList.add("time_stamp_change = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        whereList.add("TRIM (\"KANBAN_ID\") = TRIM (:kanban_id)");
+        whereList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("KANBAN_ID", this.kanbanId);
-        params.put("HINBAN", this.hinban);
-        params.put("NECK_ROUTING_CODE", this.neckRoutingCode);
-        params.put("FOR_PRO_CODE", this.forProCode);
-        params.put("FOR_PRO_LOCATION_CODE", this.forProLocationCode);
-        params.put("PRO_CODE", this.proCode);
-        params.put("PRO_LOCATION_CODE", this.proLocationCode);
-        params.put("COMMENT1", this.comment1);
-        params.put("COMMENT2", this.comment2);
-        params.put("ROUTING1", this.routing1);
-        params.put("TUNNEL_PRO_CODE1", this.tunnelProCode1);
-        params.put("ROUTING2", this.routing2);
-        params.put("TUNNEL_PRO_CODE2", this.tunnelProCode2);
-        params.put("ROUTING3", this.routing3);
-        params.put("TUNNEL_PRO_CODE3", this.tunnelProCode3);
-        params.put("ROUTING4", this.routing4);
-        params.put("TUNNEL_PRO_CODE4", this.tunnelProCode4);
-        params.put("ROUTING5", this.routing5);
-        params.put("TUNNEL_PRO_CODE5", this.tunnelProCode5);
-        params.put("KANBAN_ACC_COUNTS", this.kanbanAccCounts);
-        params.put("LOT_SIZE", this.lotSize);
+        params.put("kanban_id", this.kanbanId);
+        params.put("hinban", this.hinban);
+        params.put("neck_routing_code", this.neckRoutingCode);
+        params.put("for_pro_code", this.forProCode);
+        params.put("for_pro_location_code", this.forProLocationCode);
+        params.put("pro_code", this.proCode);
+        params.put("pro_location_code", this.proLocationCode);
+        params.put("comment1", this.comment1);
+        params.put("comment2", this.comment2);
+        params.put("routing1", this.routing1);
+        params.put("tunnel_pro_code1", this.tunnelProCode1);
+        params.put("routing2", this.routing2);
+        params.put("tunnel_pro_code2", this.tunnelProCode2);
+        params.put("routing3", this.routing3);
+        params.put("tunnel_pro_code3", this.tunnelProCode3);
+        params.put("routing4", this.routing4);
+        params.put("tunnel_pro_code4", this.tunnelProCode4);
+        params.put("routing5", this.routing5);
+        params.put("tunnel_pro_code5", this.tunnelProCode5);
+        params.put("kanban_acc_counts", this.kanbanAccCounts);
+        params.put("lot_size", this.lotSize);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

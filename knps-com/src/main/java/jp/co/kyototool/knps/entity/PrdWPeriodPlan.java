@@ -322,17 +322,17 @@ public class PrdWPeriodPlan implements IEntity {
 
         // PRD_W_PERIOD_PLANの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("w_plan_id -- :w_plan_id");
-        nameList.add("date_of_proc -- :date_of_proc");
-        nameList.add("beg_date -- :beg_date");
-        nameList.add("end_date -- :end_date");
-        nameList.add("proc_status -- :proc_status");
-        nameList.add("result_proc_status -- :result_proc_status");
-        nameList.add("plan_comment -- :plan_comment");
-        nameList.add("time_stamp_create -- :time_stamp_create");
-        nameList.add("time_stamp_change -- :time_stamp_change");
-        nameList.add("user_id_create -- :user_id_create");
-        nameList.add("user_id_change -- :user_id_change");
+        nameList.add("\"W_PLAN_ID\" -- :w_plan_id");
+        nameList.add("\"DATE_OF_PROC\" -- :date_of_proc");
+        nameList.add("\"BEG_DATE\" -- :beg_date");
+        nameList.add("\"END_DATE\" -- :end_date");
+        nameList.add("\"PROC_STATUS\" -- :proc_status");
+        nameList.add("\"RESULT_PROC_STATUS\" -- :result_proc_status");
+        nameList.add("\"PLAN_COMMENT\" -- :plan_comment");
+        nameList.add("\"TIME_STAMP_CREATE\" -- :time_stamp_create");
+        nameList.add("\"TIME_STAMP_CHANGE\" -- :time_stamp_change");
+        nameList.add("\"USER_ID_CREATE\" -- :user_id_create");
+        nameList.add("\"USER_ID_CHANGE\" -- :user_id_change");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO PRD_W_PERIOD_PLAN(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -375,15 +375,15 @@ public class PrdWPeriodPlan implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("w_plan_id = :w_plan_id");
-        setList.add("date_of_proc = TO_TIMESTAMP (:date_of_proc, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("beg_date = TO_TIMESTAMP (:beg_date, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("end_date = TO_TIMESTAMP (:end_date, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("proc_status = :proc_status");
-        setList.add("result_proc_status = :result_proc_status");
-        setList.add("plan_comment = :plan_comment");
-        setList.add("time_stamp_change = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("user_id_change = :user_id_change");
+        setList.add("\"W_PLAN_ID\" = :w_plan_id");
+        setList.add("\"DATE_OF_PROC\" = TO_TIMESTAMP (:date_of_proc, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"BEG_DATE\" = TO_TIMESTAMP (:beg_date, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"END_DATE\" = TO_TIMESTAMP (:end_date, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"PROC_STATUS\" = :proc_status");
+        setList.add("\"RESULT_PROC_STATUS\" = :result_proc_status");
+        setList.add("\"PLAN_COMMENT\" = :plan_comment");
+        setList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"USER_ID_CHANGE\" = :user_id_change");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -405,20 +405,20 @@ public class PrdWPeriodPlan implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("w_plan_id = :w_plan_id");
-        whereList.add("time_stamp_change = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        whereList.add("\"W_PLAN_ID\" = :w_plan_id");
+        whereList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("W_PLAN_ID", this.wPlanId);
-        params.put("DATE_OF_PROC", this.dateOfProc);
-        params.put("BEG_DATE", this.begDate);
-        params.put("END_DATE", this.endDate);
-        params.put("PROC_STATUS", this.procStatus);
-        params.put("RESULT_PROC_STATUS", this.resultProcStatus);
-        params.put("PLAN_COMMENT", this.planComment);
+        params.put("w_plan_id", this.wPlanId);
+        params.put("date_of_proc", this.dateOfProc);
+        params.put("beg_date", this.begDate);
+        params.put("end_date", this.endDate);
+        params.put("proc_status", this.procStatus);
+        params.put("result_proc_status", this.resultProcStatus);
+        params.put("plan_comment", this.planComment);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

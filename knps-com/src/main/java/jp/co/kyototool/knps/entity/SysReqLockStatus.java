@@ -121,9 +121,9 @@ public class SysReqLockStatus implements IEntity {
 
         // SYS_REQ_LOCK_STATUSの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("gamen_id -- :gamen_id");
-        nameList.add("user_id -- :user_id");
-        nameList.add("lock_date -- :lock_date");
+        nameList.add("\"GAMEN_ID\" -- :gamen_id");
+        nameList.add("\"USER_ID\" -- :user_id");
+        nameList.add("\"LOCK_DATE\" -- :lock_date");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO SYS_REQ_LOCK_STATUS(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -148,7 +148,7 @@ public class SysReqLockStatus implements IEntity {
             return;
         }
 
-        String sql = "SELECT LPAD (CASE WHEN MAX(e.GAMEN_ID) IS NULL THEN 0 ELSE MAX(e.GAMEN_ID) * 1 END + 1, 30, '0') AS GAMEN_ID FROM SYS_REQ_LOCK_STATUS e WHERE e.GAMEN_ID < '999999999999999999999999999999'";
+        String sql = "SELECT LPAD (CASE WHEN MAX(e.\"GAMEN_ID\") IS NULL THEN 0 ELSE MAX(e.\"GAMEN_ID\") * 1 END + 1, 30, '0') AS \"GAMEN_ID\" FROM SYS_REQ_LOCK_STATUS e WHERE e.\"GAMEN_ID\" < '999999999999999999999999999999'";
 
         Map<String, Object> params = new HashMap<String, Object>();
 
@@ -175,9 +175,9 @@ public class SysReqLockStatus implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("gamen_id = :gamen_id");
-        setList.add("user_id = :user_id");
-        setList.add("lock_date = TO_TIMESTAMP (:lock_date, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"GAMEN_ID\" = :gamen_id");
+        setList.add("\"USER_ID\" = :user_id");
+        setList.add("\"LOCK_DATE\" = TO_TIMESTAMP (:lock_date, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -199,15 +199,15 @@ public class SysReqLockStatus implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (gamen_id) = TRIM (:gamen_id)");
+        whereList.add("TRIM (\"GAMEN_ID\") = TRIM (:gamen_id)");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("GAMEN_ID", this.gamenId);
-        params.put("USER_ID", this.userId);
-        params.put("LOCK_DATE", this.lockDate);
+        params.put("gamen_id", this.gamenId);
+        params.put("user_id", this.userId);
+        params.put("lock_date", this.lockDate);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

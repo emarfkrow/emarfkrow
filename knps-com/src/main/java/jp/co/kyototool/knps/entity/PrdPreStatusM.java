@@ -259,15 +259,15 @@ public class PrdPreStatusM implements IEntity {
 
         // PRD_PRE_STATUS_Mの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("yy -- :yy");
-        nameList.add("mm -- :mm");
-        nameList.add("sales_target_status -- :sales_target_status");
-        nameList.add("prd_plan_make_status -- :prd_plan_make_status");
-        nameList.add("prd_plan_fixed_status -- :prd_plan_fixed_status");
-        nameList.add("time_stamp_create -- :time_stamp_create");
-        nameList.add("time_stamp_change -- :time_stamp_change");
-        nameList.add("user_id_create -- :user_id_create");
-        nameList.add("user_id_change -- :user_id_change");
+        nameList.add("\"YY\" -- :yy");
+        nameList.add("\"MM\" -- :mm");
+        nameList.add("\"SALES_TARGET_STATUS\" -- :sales_target_status");
+        nameList.add("\"PRD_PLAN_MAKE_STATUS\" -- :prd_plan_make_status");
+        nameList.add("\"PRD_PLAN_FIXED_STATUS\" -- :prd_plan_fixed_status");
+        nameList.add("\"TIME_STAMP_CREATE\" -- :time_stamp_create");
+        nameList.add("\"TIME_STAMP_CHANGE\" -- :time_stamp_change");
+        nameList.add("\"USER_ID_CREATE\" -- :user_id_create");
+        nameList.add("\"USER_ID_CHANGE\" -- :user_id_change");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO PRD_PRE_STATUS_M(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -298,12 +298,12 @@ public class PrdPreStatusM implements IEntity {
             return;
         }
 
-        String sql = "SELECT LPAD (CASE WHEN MAX(e.MM) IS NULL THEN 0 ELSE MAX(e.MM) * 1 END + 1, 2, '0') AS MM FROM PRD_PRE_STATUS_M e WHERE e.MM < '99'";
+        String sql = "SELECT LPAD (CASE WHEN MAX(e.\"MM\") IS NULL THEN 0 ELSE MAX(e.\"MM\") * 1 END + 1, 2, '0') AS \"MM\" FROM PRD_PRE_STATUS_M e WHERE e.\"MM\" < '99'";
 
         Map<String, Object> params = new HashMap<String, Object>();
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("e.YY = :yy");
+        whereList.add("e.\"YY\" = :yy");
         sql += " WHERE " + String.join(" AND ", whereList);
 
         params.put("yy", this.yy);
@@ -331,13 +331,13 @@ public class PrdPreStatusM implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("yy = :yy");
-        setList.add("mm = :mm");
-        setList.add("sales_target_status = :sales_target_status");
-        setList.add("prd_plan_make_status = :prd_plan_make_status");
-        setList.add("prd_plan_fixed_status = :prd_plan_fixed_status");
-        setList.add("time_stamp_change = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("user_id_change = :user_id_change");
+        setList.add("\"YY\" = :yy");
+        setList.add("\"MM\" = :mm");
+        setList.add("\"SALES_TARGET_STATUS\" = :sales_target_status");
+        setList.add("\"PRD_PLAN_MAKE_STATUS\" = :prd_plan_make_status");
+        setList.add("\"PRD_PLAN_FIXED_STATUS\" = :prd_plan_fixed_status");
+        setList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"USER_ID_CHANGE\" = :user_id_change");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -359,19 +359,19 @@ public class PrdPreStatusM implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (yy) = TRIM (:yy)");
-        whereList.add("TRIM (mm) = TRIM (:mm)");
-        whereList.add("time_stamp_change = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        whereList.add("TRIM (\"YY\") = TRIM (:yy)");
+        whereList.add("TRIM (\"MM\") = TRIM (:mm)");
+        whereList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("YY", this.yy);
-        params.put("MM", this.mm);
-        params.put("SALES_TARGET_STATUS", this.salesTargetStatus);
-        params.put("PRD_PLAN_MAKE_STATUS", this.prdPlanMakeStatus);
-        params.put("PRD_PLAN_FIXED_STATUS", this.prdPlanFixedStatus);
+        params.put("yy", this.yy);
+        params.put("mm", this.mm);
+        params.put("sales_target_status", this.salesTargetStatus);
+        params.put("prd_plan_make_status", this.prdPlanMakeStatus);
+        params.put("prd_plan_fixed_status", this.prdPlanFixedStatus);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

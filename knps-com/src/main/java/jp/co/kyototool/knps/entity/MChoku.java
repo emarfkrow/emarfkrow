@@ -424,24 +424,24 @@ public class MChoku implements IEntity {
 
         // 直送先マスタの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("chokucd -- :chokucd");
-        nameList.add("chokumei1 -- :chokumei1");
-        nameList.add("chokumei2 -- :chokumei2");
-        nameList.add("rchokumei -- :rchokumei");
-        nameList.add("choku_jusho1 -- :choku_jusho1");
-        nameList.add("choku_jusho2 -- :choku_jusho2");
-        nameList.add("ubinno -- :ubinno");
-        nameList.add("telno -- :telno");
-        nameList.add("tourokubi -- :tourokubi");
-        nameList.add("kchokumei -- :kchokumei");
-        nameList.add("sichocd -- :sichocd");
-        nameList.add("faxno -- :faxno");
-        nameList.add("torikesi_kbn -- :torikesi_kbn");
-        nameList.add("unsocd -- :unsocd");
-        nameList.add("tikucd -- :tikucd");
-        nameList.add("todofukencd -- :todofukencd");
-        nameList.add("updnkinkbn -- :updnkinkbn");
-        nameList.add("filler -- :filler");
+        nameList.add("\"CHOKUCD\" -- :chokucd");
+        nameList.add("\"CHOKUMEI1\" -- :chokumei1");
+        nameList.add("\"CHOKUMEI2\" -- :chokumei2");
+        nameList.add("\"RCHOKUMEI\" -- :rchokumei");
+        nameList.add("\"CHOKU-JUSHO1\" -- :choku_jusho1");
+        nameList.add("\"CHOKU-JUSHO2\" -- :choku_jusho2");
+        nameList.add("\"UBINNO\" -- :ubinno");
+        nameList.add("\"TELNO\" -- :telno");
+        nameList.add("\"TOUROKUBI\" -- :tourokubi");
+        nameList.add("\"KCHOKUMEI\" -- :kchokumei");
+        nameList.add("\"SICHOCD\" -- :sichocd");
+        nameList.add("\"FAXNO\" -- :faxno");
+        nameList.add("\"TORIKESI-KBN\" -- :torikesi_kbn");
+        nameList.add("\"UNSOCD\" -- :unsocd");
+        nameList.add("\"TIKUCD\" -- :tikucd");
+        nameList.add("\"TODOFUKENCD\" -- :todofukencd");
+        nameList.add("\"UPDNKINKBN\" -- :updnkinkbn");
+        nameList.add("\"FILLER\" -- :filler");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO M_CHOKU(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -491,24 +491,24 @@ public class MChoku implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("chokucd = :chokucd");
-        setList.add("chokumei1 = :chokumei1");
-        setList.add("chokumei2 = :chokumei2");
-        setList.add("rchokumei = :rchokumei");
-        setList.add("choku-jusho1 = :choku-jusho1");
-        setList.add("choku-jusho2 = :choku-jusho2");
-        setList.add("ubinno = :ubinno");
-        setList.add("telno = :telno");
-        setList.add("tourokubi = :tourokubi");
-        setList.add("kchokumei = :kchokumei");
-        setList.add("sichocd = :sichocd");
-        setList.add("faxno = :faxno");
-        setList.add("torikesi-kbn = :torikesi-kbn");
-        setList.add("unsocd = :unsocd");
-        setList.add("tikucd = :tikucd");
-        setList.add("todofukencd = :todofukencd");
-        setList.add("updnkinkbn = :updnkinkbn");
-        setList.add("filler = :filler");
+        setList.add("\"CHOKUCD\" = :chokucd");
+        setList.add("\"CHOKUMEI1\" = :chokumei1");
+        setList.add("\"CHOKUMEI2\" = :chokumei2");
+        setList.add("\"RCHOKUMEI\" = :rchokumei");
+        setList.add("\"CHOKU-JUSHO1\" = :choku_jusho1");
+        setList.add("\"CHOKU-JUSHO2\" = :choku_jusho2");
+        setList.add("\"UBINNO\" = :ubinno");
+        setList.add("\"TELNO\" = :telno");
+        setList.add("\"TOUROKUBI\" = :tourokubi");
+        setList.add("\"KCHOKUMEI\" = :kchokumei");
+        setList.add("\"SICHOCD\" = :sichocd");
+        setList.add("\"FAXNO\" = :faxno");
+        setList.add("\"TORIKESI-KBN\" = :torikesi_kbn");
+        setList.add("\"UNSOCD\" = :unsocd");
+        setList.add("\"TIKUCD\" = :tikucd");
+        setList.add("\"TODOFUKENCD\" = :todofukencd");
+        setList.add("\"UPDNKINKBN\" = :updnkinkbn");
+        setList.add("\"FILLER\" = :filler");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -530,30 +530,30 @@ public class MChoku implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("chokucd = :chokucd");
+        whereList.add("\"CHOKUCD\" = :chokucd");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("CHOKUCD", this.chokucd);
-        params.put("CHOKUMEI1", this.chokumei1);
-        params.put("CHOKUMEI2", this.chokumei2);
-        params.put("RCHOKUMEI", this.rchokumei);
-        params.put("CHOKU-JUSHO1", this.chokuJusho1);
-        params.put("CHOKU-JUSHO2", this.chokuJusho2);
-        params.put("UBINNO", this.ubinno);
-        params.put("TELNO", this.telno);
-        params.put("TOUROKUBI", this.tourokubi);
-        params.put("KCHOKUMEI", this.kchokumei);
-        params.put("SICHOCD", this.sichocd);
-        params.put("FAXNO", this.faxno);
-        params.put("TORIKESI-KBN", this.torikesiKbn);
-        params.put("UNSOCD", this.unsocd);
-        params.put("TIKUCD", this.tikucd);
-        params.put("TODOFUKENCD", this.todofukencd);
-        params.put("UPDNKINKBN", this.updnkinkbn);
-        params.put("FILLER", this.filler);
+        params.put("chokucd", this.chokucd);
+        params.put("chokumei1", this.chokumei1);
+        params.put("chokumei2", this.chokumei2);
+        params.put("rchokumei", this.rchokumei);
+        params.put("choku_jusho1", this.chokuJusho1);
+        params.put("choku_jusho2", this.chokuJusho2);
+        params.put("ubinno", this.ubinno);
+        params.put("telno", this.telno);
+        params.put("tourokubi", this.tourokubi);
+        params.put("kchokumei", this.kchokumei);
+        params.put("sichocd", this.sichocd);
+        params.put("faxno", this.faxno);
+        params.put("torikesi_kbn", this.torikesiKbn);
+        params.put("unsocd", this.unsocd);
+        params.put("tikucd", this.tikucd);
+        params.put("todofukencd", this.todofukencd);
+        params.put("updnkinkbn", this.updnkinkbn);
+        params.put("filler", this.filler);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

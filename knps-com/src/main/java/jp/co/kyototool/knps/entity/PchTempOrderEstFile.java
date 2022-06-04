@@ -235,14 +235,14 @@ public class PchTempOrderEstFile implements IEntity {
 
         // PCH_TEMP_ORDER_EST_FILEの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("temp_order_no -- :temp_order_no");
-        nameList.add("est_file_seq -- :est_file_seq");
-        nameList.add("upload_file_nm -- :upload_file_nm");
-        nameList.add("save_file_path -- :save_file_path");
-        nameList.add("time_stamp_create -- :time_stamp_create");
-        nameList.add("time_stamp_change -- :time_stamp_change");
-        nameList.add("user_id_create -- :user_id_create");
-        nameList.add("user_id_change -- :user_id_change");
+        nameList.add("\"TEMP_ORDER_NO\" -- :temp_order_no");
+        nameList.add("\"EST_FILE_SEQ\" -- :est_file_seq");
+        nameList.add("\"UPLOAD_FILE_NM\" -- :upload_file_nm");
+        nameList.add("\"SAVE_FILE_PATH\" -- :save_file_path");
+        nameList.add("\"TIME_STAMP_CREATE\" -- :time_stamp_create");
+        nameList.add("\"TIME_STAMP_CHANGE\" -- :time_stamp_change");
+        nameList.add("\"USER_ID_CREATE\" -- :user_id_create");
+        nameList.add("\"USER_ID_CHANGE\" -- :user_id_change");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO PCH_TEMP_ORDER_EST_FILE(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -282,12 +282,12 @@ public class PchTempOrderEstFile implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("temp_order_no = :temp_order_no");
-        setList.add("est_file_seq = :est_file_seq");
-        setList.add("upload_file_nm = :upload_file_nm");
-        setList.add("save_file_path = :save_file_path");
-        setList.add("time_stamp_change = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("user_id_change = :user_id_change");
+        setList.add("\"TEMP_ORDER_NO\" = :temp_order_no");
+        setList.add("\"EST_FILE_SEQ\" = :est_file_seq");
+        setList.add("\"UPLOAD_FILE_NM\" = :upload_file_nm");
+        setList.add("\"SAVE_FILE_PATH\" = :save_file_path");
+        setList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"USER_ID_CHANGE\" = :user_id_change");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -309,18 +309,18 @@ public class PchTempOrderEstFile implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (temp_order_no) = TRIM (:temp_order_no)");
-        whereList.add("est_file_seq = :est_file_seq");
-        whereList.add("time_stamp_change = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        whereList.add("TRIM (\"TEMP_ORDER_NO\") = TRIM (:temp_order_no)");
+        whereList.add("\"EST_FILE_SEQ\" = :est_file_seq");
+        whereList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("TEMP_ORDER_NO", this.tempOrderNo);
-        params.put("EST_FILE_SEQ", this.estFileSeq);
-        params.put("UPLOAD_FILE_NM", this.uploadFileNm);
-        params.put("SAVE_FILE_PATH", this.saveFilePath);
+        params.put("temp_order_no", this.tempOrderNo);
+        params.put("est_file_seq", this.estFileSeq);
+        params.put("upload_file_nm", this.uploadFileNm);
+        params.put("save_file_path", this.saveFilePath);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

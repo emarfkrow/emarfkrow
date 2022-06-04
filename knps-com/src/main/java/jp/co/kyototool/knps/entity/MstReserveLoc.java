@@ -238,14 +238,14 @@ public class MstReserveLoc implements IEntity {
 
         // MST_RESERVE_LOCの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("hinban -- :hinban");
-        nameList.add("ope_detail -- :ope_detail");
-        nameList.add("reserve_loc_seq -- :reserve_loc_seq");
-        nameList.add("location_code -- :location_code");
-        nameList.add("time_stamp_create -- :time_stamp_create");
-        nameList.add("time_stamp_change -- :time_stamp_change");
-        nameList.add("user_id_create -- :user_id_create");
-        nameList.add("user_id_change -- :user_id_change");
+        nameList.add("\"HINBAN\" -- :hinban");
+        nameList.add("\"OPE_DETAIL\" -- :ope_detail");
+        nameList.add("\"RESERVE_LOC_SEQ\" -- :reserve_loc_seq");
+        nameList.add("\"LOCATION_CODE\" -- :location_code");
+        nameList.add("\"TIME_STAMP_CREATE\" -- :time_stamp_create");
+        nameList.add("\"TIME_STAMP_CHANGE\" -- :time_stamp_change");
+        nameList.add("\"USER_ID_CREATE\" -- :user_id_create");
+        nameList.add("\"USER_ID_CHANGE\" -- :user_id_change");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO MST_RESERVE_LOC(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -285,12 +285,12 @@ public class MstReserveLoc implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("hinban = :hinban");
-        setList.add("ope_detail = :ope_detail");
-        setList.add("reserve_loc_seq = :reserve_loc_seq");
-        setList.add("location_code = :location_code");
-        setList.add("time_stamp_change = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("user_id_change = :user_id_change");
+        setList.add("\"HINBAN\" = :hinban");
+        setList.add("\"OPE_DETAIL\" = :ope_detail");
+        setList.add("\"RESERVE_LOC_SEQ\" = :reserve_loc_seq");
+        setList.add("\"LOCATION_CODE\" = :location_code");
+        setList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"USER_ID_CHANGE\" = :user_id_change");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -312,19 +312,19 @@ public class MstReserveLoc implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("hinban = :hinban");
-        whereList.add("ope_detail = :ope_detail");
-        whereList.add("reserve_loc_seq = :reserve_loc_seq");
-        whereList.add("time_stamp_change = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        whereList.add("\"HINBAN\" = :hinban");
+        whereList.add("\"OPE_DETAIL\" = :ope_detail");
+        whereList.add("\"RESERVE_LOC_SEQ\" = :reserve_loc_seq");
+        whereList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("HINBAN", this.hinban);
-        params.put("OPE_DETAIL", this.opeDetail);
-        params.put("RESERVE_LOC_SEQ", this.reserveLocSeq);
-        params.put("LOCATION_CODE", this.locationCode);
+        params.put("hinban", this.hinban);
+        params.put("ope_detail", this.opeDetail);
+        params.put("reserve_loc_seq", this.reserveLocSeq);
+        params.put("location_code", this.locationCode);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

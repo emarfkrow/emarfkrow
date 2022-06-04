@@ -363,19 +363,19 @@ public class MstSupUnitpriceDetail implements IEntity {
 
         // MST_SUP_UNITPRICE_DETAILの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("hinban -- :hinban");
-        nameList.add("sup_code -- :sup_code");
-        nameList.add("min_order -- :min_order");
-        nameList.add("stan_counts -- :stan_counts");
-        nameList.add("order_unit -- :order_unit");
-        nameList.add("standard_unitprice_flag -- :standard_unitprice_flag");
-        nameList.add("time_stamp_create -- :time_stamp_create");
-        nameList.add("time_stamp_change -- :time_stamp_change");
-        nameList.add("user_id_create -- :user_id_create");
-        nameList.add("user_id_change -- :user_id_change");
-        nameList.add("delete_flag -- :delete_flag");
-        nameList.add("gaika_kb -- :gaika_kb");
-        nameList.add("gaika_tk -- :gaika_tk");
+        nameList.add("\"HINBAN\" -- :hinban");
+        nameList.add("\"SUP_CODE\" -- :sup_code");
+        nameList.add("\"MIN_ORDER\" -- :min_order");
+        nameList.add("\"STAN_COUNTS\" -- :stan_counts");
+        nameList.add("\"ORDER_UNIT\" -- :order_unit");
+        nameList.add("\"STANDARD_UNITPRICE_FLAG\" -- :standard_unitprice_flag");
+        nameList.add("\"TIME_STAMP_CREATE\" -- :time_stamp_create");
+        nameList.add("\"TIME_STAMP_CHANGE\" -- :time_stamp_change");
+        nameList.add("\"USER_ID_CREATE\" -- :user_id_create");
+        nameList.add("\"USER_ID_CHANGE\" -- :user_id_change");
+        nameList.add("\"DELETE_FLAG\" -- :delete_flag");
+        nameList.add("\"GAIKA_KB\" -- :gaika_kb");
+        nameList.add("\"GAIKA_TK\" -- :gaika_tk");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO MST_SUP_UNITPRICE_DETAIL(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -466,17 +466,17 @@ public class MstSupUnitpriceDetail implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("hinban = :hinban");
-        setList.add("sup_code = :sup_code");
-        setList.add("min_order = :min_order");
-        setList.add("stan_counts = :stan_counts");
-        setList.add("order_unit = :order_unit");
-        setList.add("standard_unitprice_flag = :standard_unitprice_flag");
-        setList.add("time_stamp_change = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("user_id_change = :user_id_change");
-        setList.add("delete_flag = :delete_flag");
-        setList.add("gaika_kb = :gaika_kb");
-        setList.add("gaika_tk = :gaika_tk");
+        setList.add("\"HINBAN\" = :hinban");
+        setList.add("\"SUP_CODE\" = :sup_code");
+        setList.add("\"MIN_ORDER\" = :min_order");
+        setList.add("\"STAN_COUNTS\" = :stan_counts");
+        setList.add("\"ORDER_UNIT\" = :order_unit");
+        setList.add("\"STANDARD_UNITPRICE_FLAG\" = :standard_unitprice_flag");
+        setList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"USER_ID_CHANGE\" = :user_id_change");
+        setList.add("\"DELETE_FLAG\" = :delete_flag");
+        setList.add("\"GAIKA_KB\" = :gaika_kb");
+        setList.add("\"GAIKA_TK\" = :gaika_tk");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -512,24 +512,24 @@ public class MstSupUnitpriceDetail implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (hinban) = TRIM (:hinban)");
-        whereList.add("TRIM (sup_code) = TRIM (:sup_code)");
-        whereList.add("min_order = :min_order");
-        whereList.add("time_stamp_change = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        whereList.add("TRIM (\"HINBAN\") = TRIM (:hinban)");
+        whereList.add("TRIM (\"SUP_CODE\") = TRIM (:sup_code)");
+        whereList.add("\"MIN_ORDER\" = :min_order");
+        whereList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("HINBAN", this.hinban);
-        params.put("SUP_CODE", this.supCode);
-        params.put("MIN_ORDER", this.minOrder);
-        params.put("STAN_COUNTS", this.stanCounts);
-        params.put("ORDER_UNIT", this.orderUnit);
-        params.put("STANDARD_UNITPRICE_FLAG", this.standardUnitpriceFlag);
-        params.put("DELETE_FLAG", this.deleteFlag);
-        params.put("GAIKA_KB", this.gaikaKb);
-        params.put("GAIKA_TK", this.gaikaTk);
+        params.put("hinban", this.hinban);
+        params.put("sup_code", this.supCode);
+        params.put("min_order", this.minOrder);
+        params.put("stan_counts", this.stanCounts);
+        params.put("order_unit", this.orderUnit);
+        params.put("standard_unitprice_flag", this.standardUnitpriceFlag);
+        params.put("delete_flag", this.deleteFlag);
+        params.put("gaika_kb", this.gaikaKb);
+        params.put("gaika_tk", this.gaikaTk);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

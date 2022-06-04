@@ -325,17 +325,17 @@ public class InvPeriod implements IEntity {
 
         // INV_PERIODの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("stock_management_section -- :stock_management_section");
-        nameList.add("inv_phase -- :inv_phase");
-        nameList.add("inv_phase_month -- :inv_phase_month");
-        nameList.add("sub_inv_code -- :sub_inv_code");
-        nameList.add("inv_date_from -- :inv_date_from");
-        nameList.add("inv_date_to -- :inv_date_to");
-        nameList.add("inv_status -- :inv_status");
-        nameList.add("time_stamp_create -- :time_stamp_create");
-        nameList.add("time_stamp_change -- :time_stamp_change");
-        nameList.add("user_id_create -- :user_id_create");
-        nameList.add("user_id_change -- :user_id_change");
+        nameList.add("\"STOCK_MANAGEMENT_SECTION\" -- :stock_management_section");
+        nameList.add("\"INV_PHASE\" -- :inv_phase");
+        nameList.add("\"INV_PHASE_MONTH\" -- :inv_phase_month");
+        nameList.add("\"SUB_INV_CODE\" -- :sub_inv_code");
+        nameList.add("\"INV_DATE_FROM\" -- :inv_date_from");
+        nameList.add("\"INV_DATE_TO\" -- :inv_date_to");
+        nameList.add("\"INV_STATUS\" -- :inv_status");
+        nameList.add("\"TIME_STAMP_CREATE\" -- :time_stamp_create");
+        nameList.add("\"TIME_STAMP_CHANGE\" -- :time_stamp_change");
+        nameList.add("\"USER_ID_CREATE\" -- :user_id_create");
+        nameList.add("\"USER_ID_CHANGE\" -- :user_id_change");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO INV_PERIOD(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -368,19 +368,19 @@ public class InvPeriod implements IEntity {
             return;
         }
 
-        String sql = "SELECT LPAD (CASE WHEN MAX(e.SUB_INV_CODE) IS NULL THEN 0 ELSE MAX(e.SUB_INV_CODE) * 1 END + 1, 10, '0') AS SUB_INV_CODE FROM INV_PERIOD e WHERE e.SUB_INV_CODE < '9999999999'";
+        String sql = "SELECT LPAD (CASE WHEN MAX(e.\"SUB_INV_CODE\") IS NULL THEN 0 ELSE MAX(e.\"SUB_INV_CODE\") * 1 END + 1, 10, '0') AS \"SUB_INV_CODE\" FROM INV_PERIOD e WHERE e.\"SUB_INV_CODE\" < '9999999999'";
 
         Map<String, Object> params = new HashMap<String, Object>();
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("e.STOCK_MANAGEMENT_SECTION = :stock_management_section");
-        whereList.add("e.INV_PHASE = :inv_phase");
-        whereList.add("e.INV_PHASE_MONTH = :inv_phase_month");
+        whereList.add("e.\"STOCK_MANAGEMENT_SECTION\" = :stock_management_section");
+        whereList.add("e.\"INV_PHASE\" = :inv_phase");
+        whereList.add("e.\"INV_PHASE_MONTH\" = :inv_phase_month");
         sql += " WHERE " + String.join(" AND ", whereList);
 
-        params.put("stockManagementSection", this.stockManagementSection);
-        params.put("invPhase", this.invPhase);
-        params.put("invPhaseMonth", this.invPhaseMonth);
+        params.put("stock_management_section", this.stockManagementSection);
+        params.put("inv_phase", this.invPhase);
+        params.put("inv_phase_month", this.invPhaseMonth);
 
         jp.co.golorp.emarf.util.MapList mapList = Queries.select(sql, params);
         Object o = mapList.get(0).get("SUB_INV_CODE");
@@ -405,15 +405,15 @@ public class InvPeriod implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("stock_management_section = :stock_management_section");
-        setList.add("inv_phase = :inv_phase");
-        setList.add("inv_phase_month = :inv_phase_month");
-        setList.add("sub_inv_code = :sub_inv_code");
-        setList.add("inv_date_from = TO_TIMESTAMP (:inv_date_from, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("inv_date_to = TO_TIMESTAMP (:inv_date_to, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("inv_status = :inv_status");
-        setList.add("time_stamp_change = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("user_id_change = :user_id_change");
+        setList.add("\"STOCK_MANAGEMENT_SECTION\" = :stock_management_section");
+        setList.add("\"INV_PHASE\" = :inv_phase");
+        setList.add("\"INV_PHASE_MONTH\" = :inv_phase_month");
+        setList.add("\"SUB_INV_CODE\" = :sub_inv_code");
+        setList.add("\"INV_DATE_FROM\" = TO_TIMESTAMP (:inv_date_from, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"INV_DATE_TO\" = TO_TIMESTAMP (:inv_date_to, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"INV_STATUS\" = :inv_status");
+        setList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"USER_ID_CHANGE\" = :user_id_change");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -435,23 +435,23 @@ public class InvPeriod implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("stock_management_section = :stock_management_section");
-        whereList.add("inv_phase = :inv_phase");
-        whereList.add("inv_phase_month = :inv_phase_month");
-        whereList.add("TRIM (sub_inv_code) = TRIM (:sub_inv_code)");
-        whereList.add("time_stamp_change = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        whereList.add("\"STOCK_MANAGEMENT_SECTION\" = :stock_management_section");
+        whereList.add("\"INV_PHASE\" = :inv_phase");
+        whereList.add("\"INV_PHASE_MONTH\" = :inv_phase_month");
+        whereList.add("TRIM (\"SUB_INV_CODE\") = TRIM (:sub_inv_code)");
+        whereList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("STOCK_MANAGEMENT_SECTION", this.stockManagementSection);
-        params.put("INV_PHASE", this.invPhase);
-        params.put("INV_PHASE_MONTH", this.invPhaseMonth);
-        params.put("SUB_INV_CODE", this.subInvCode);
-        params.put("INV_DATE_FROM", this.invDateFrom);
-        params.put("INV_DATE_TO", this.invDateTo);
-        params.put("INV_STATUS", this.invStatus);
+        params.put("stock_management_section", this.stockManagementSection);
+        params.put("inv_phase", this.invPhase);
+        params.put("inv_phase_month", this.invPhaseMonth);
+        params.put("sub_inv_code", this.subInvCode);
+        params.put("inv_date_from", this.invDateFrom);
+        params.put("inv_date_to", this.invDateTo);
+        params.put("inv_status", this.invStatus);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

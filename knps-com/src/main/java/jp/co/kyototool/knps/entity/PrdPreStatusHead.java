@@ -241,14 +241,14 @@ public class PrdPreStatusHead implements IEntity {
 
         // PRD_PRE_STATUS_HEADの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("rec_no -- :rec_no");
-        nameList.add("current_year_y -- :current_year_y");
-        nameList.add("current_year_m -- :current_year_m");
-        nameList.add("current_month_m -- :current_month_m");
-        nameList.add("time_stamp_create -- :time_stamp_create");
-        nameList.add("time_stamp_change -- :time_stamp_change");
-        nameList.add("user_id_create -- :user_id_create");
-        nameList.add("user_id_change -- :user_id_change");
+        nameList.add("\"REC_NO\" -- :rec_no");
+        nameList.add("\"CURRENT_YEAR_Y\" -- :current_year_y");
+        nameList.add("\"CURRENT_YEAR_M\" -- :current_year_m");
+        nameList.add("\"CURRENT_MONTH_M\" -- :current_month_m");
+        nameList.add("\"TIME_STAMP_CREATE\" -- :time_stamp_create");
+        nameList.add("\"TIME_STAMP_CHANGE\" -- :time_stamp_change");
+        nameList.add("\"USER_ID_CREATE\" -- :user_id_create");
+        nameList.add("\"USER_ID_CHANGE\" -- :user_id_change");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO PRD_PRE_STATUS_HEAD(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -278,7 +278,7 @@ public class PrdPreStatusHead implements IEntity {
             return;
         }
 
-        String sql = "SELECT LPAD (CASE WHEN MAX(e.REC_NO) IS NULL THEN 0 ELSE MAX(e.REC_NO) * 1 END + 1, 3, '0') AS REC_NO FROM PRD_PRE_STATUS_HEAD e WHERE e.REC_NO < '999'";
+        String sql = "SELECT LPAD (CASE WHEN MAX(e.\"REC_NO\") IS NULL THEN 0 ELSE MAX(e.\"REC_NO\") * 1 END + 1, 3, '0') AS \"REC_NO\" FROM PRD_PRE_STATUS_HEAD e WHERE e.\"REC_NO\" < '999'";
 
         Map<String, Object> params = new HashMap<String, Object>();
 
@@ -315,12 +315,12 @@ public class PrdPreStatusHead implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("rec_no = :rec_no");
-        setList.add("current_year_y = :current_year_y");
-        setList.add("current_year_m = :current_year_m");
-        setList.add("current_month_m = :current_month_m");
-        setList.add("time_stamp_change = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("user_id_change = :user_id_change");
+        setList.add("\"REC_NO\" = :rec_no");
+        setList.add("\"CURRENT_YEAR_Y\" = :current_year_y");
+        setList.add("\"CURRENT_YEAR_M\" = :current_year_m");
+        setList.add("\"CURRENT_MONTH_M\" = :current_month_m");
+        setList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"USER_ID_CHANGE\" = :user_id_change");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -347,17 +347,17 @@ public class PrdPreStatusHead implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (rec_no) = TRIM (:rec_no)");
-        whereList.add("time_stamp_change = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        whereList.add("TRIM (\"REC_NO\") = TRIM (:rec_no)");
+        whereList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("REC_NO", this.recNo);
-        params.put("CURRENT_YEAR_Y", this.currentYearY);
-        params.put("CURRENT_YEAR_M", this.currentYearM);
-        params.put("CURRENT_MONTH_M", this.currentMonthM);
+        params.put("rec_no", this.recNo);
+        params.put("current_year_y", this.currentYearY);
+        params.put("current_year_m", this.currentYearM);
+        params.put("current_month_m", this.currentMonthM);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

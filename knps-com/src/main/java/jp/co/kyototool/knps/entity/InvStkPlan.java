@@ -630,31 +630,31 @@ public class InvStkPlan implements IEntity {
 
         // INV_STK_PLANの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("pro_hinban -- :pro_hinban");
-        nameList.add("yyyy -- :yyyy");
-        nameList.add("mm -- :mm");
-        nameList.add("pap_kan_amt_sch -- :pap_kan_amt_sch");
-        nameList.add("pap_kan_amt_sch_fst -- :pap_kan_amt_sch_fst");
-        nameList.add("pap_kan_amt_sch_mid -- :pap_kan_amt_sch_mid");
-        nameList.add("pap_kan_amt_sch_lst -- :pap_kan_amt_sch_lst");
-        nameList.add("pap_kan_amt_act_fst -- :pap_kan_amt_act_fst");
-        nameList.add("pap_kan_amt_act_mid -- :pap_kan_amt_act_mid");
-        nameList.add("pap_kan_amt_act_lst -- :pap_kan_amt_act_lst");
-        nameList.add("pap_kan_amt_act -- :pap_kan_amt_act");
-        nameList.add("req_counts -- :req_counts");
-        nameList.add("req_nes_counts -- :req_nes_counts");
-        nameList.add("req_pap_kan_amt_sch -- :req_pap_kan_amt_sch");
-        nameList.add("req_pap_kan_amt_sch_fst -- :req_pap_kan_amt_sch_fst");
-        nameList.add("req_pap_kan_amt_sch_mid -- :req_pap_kan_amt_sch_mid");
-        nameList.add("req_pap_kan_amt_sch_lst -- :req_pap_kan_amt_sch_lst");
-        nameList.add("req_pap_kan_amt_act_fst -- :req_pap_kan_amt_act_fst");
-        nameList.add("req_pap_kan_amt_act_mid -- :req_pap_kan_amt_act_mid");
-        nameList.add("req_pap_kan_amt_act_lst -- :req_pap_kan_amt_act_lst");
-        nameList.add("req_pap_kan_amt_act -- :req_pap_kan_amt_act");
-        nameList.add("time_stamp_create -- :time_stamp_create");
-        nameList.add("time_stamp_change -- :time_stamp_change");
-        nameList.add("user_id_create -- :user_id_create");
-        nameList.add("user_id_change -- :user_id_change");
+        nameList.add("\"PRO_HINBAN\" -- :pro_hinban");
+        nameList.add("\"YYYY\" -- :yyyy");
+        nameList.add("\"MM\" -- :mm");
+        nameList.add("\"PAP_KAN_AMT_SCH\" -- :pap_kan_amt_sch");
+        nameList.add("\"PAP_KAN_AMT_SCH_FST\" -- :pap_kan_amt_sch_fst");
+        nameList.add("\"PAP_KAN_AMT_SCH_MID\" -- :pap_kan_amt_sch_mid");
+        nameList.add("\"PAP_KAN_AMT_SCH_LST\" -- :pap_kan_amt_sch_lst");
+        nameList.add("\"PAP_KAN_AMT_ACT_FST\" -- :pap_kan_amt_act_fst");
+        nameList.add("\"PAP_KAN_AMT_ACT_MID\" -- :pap_kan_amt_act_mid");
+        nameList.add("\"PAP_KAN_AMT_ACT_LST\" -- :pap_kan_amt_act_lst");
+        nameList.add("\"PAP_KAN_AMT_ACT\" -- :pap_kan_amt_act");
+        nameList.add("\"REQ_COUNTS\" -- :req_counts");
+        nameList.add("\"REQ_NES_COUNTS\" -- :req_nes_counts");
+        nameList.add("\"REQ_PAP_KAN_AMT_SCH\" -- :req_pap_kan_amt_sch");
+        nameList.add("\"REQ_PAP_KAN_AMT_SCH_FST\" -- :req_pap_kan_amt_sch_fst");
+        nameList.add("\"REQ_PAP_KAN_AMT_SCH_MID\" -- :req_pap_kan_amt_sch_mid");
+        nameList.add("\"REQ_PAP_KAN_AMT_SCH_LST\" -- :req_pap_kan_amt_sch_lst");
+        nameList.add("\"REQ_PAP_KAN_AMT_ACT_FST\" -- :req_pap_kan_amt_act_fst");
+        nameList.add("\"REQ_PAP_KAN_AMT_ACT_MID\" -- :req_pap_kan_amt_act_mid");
+        nameList.add("\"REQ_PAP_KAN_AMT_ACT_LST\" -- :req_pap_kan_amt_act_lst");
+        nameList.add("\"REQ_PAP_KAN_AMT_ACT\" -- :req_pap_kan_amt_act");
+        nameList.add("\"TIME_STAMP_CREATE\" -- :time_stamp_create");
+        nameList.add("\"TIME_STAMP_CHANGE\" -- :time_stamp_change");
+        nameList.add("\"USER_ID_CREATE\" -- :user_id_create");
+        nameList.add("\"USER_ID_CHANGE\" -- :user_id_change");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO INV_STK_PLAN(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -701,16 +701,16 @@ public class InvStkPlan implements IEntity {
             return;
         }
 
-        String sql = "SELECT LPAD (CASE WHEN MAX(e.MM) IS NULL THEN 0 ELSE MAX(e.MM) * 1 END + 1, 2, '0') AS MM FROM INV_STK_PLAN e WHERE e.MM < '99'";
+        String sql = "SELECT LPAD (CASE WHEN MAX(e.\"MM\") IS NULL THEN 0 ELSE MAX(e.\"MM\") * 1 END + 1, 2, '0') AS \"MM\" FROM INV_STK_PLAN e WHERE e.\"MM\" < '99'";
 
         Map<String, Object> params = new HashMap<String, Object>();
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("e.PRO_HINBAN = :pro_hinban");
-        whereList.add("e.YYYY = :yyyy");
+        whereList.add("e.\"PRO_HINBAN\" = :pro_hinban");
+        whereList.add("e.\"YYYY\" = :yyyy");
         sql += " WHERE " + String.join(" AND ", whereList);
 
-        params.put("proHinban", this.proHinban);
+        params.put("pro_hinban", this.proHinban);
         params.put("yyyy", this.yyyy);
 
         jp.co.golorp.emarf.util.MapList mapList = Queries.select(sql, params);
@@ -784,29 +784,29 @@ public class InvStkPlan implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("pro_hinban = :pro_hinban");
-        setList.add("yyyy = :yyyy");
-        setList.add("mm = :mm");
-        setList.add("pap_kan_amt_sch = :pap_kan_amt_sch");
-        setList.add("pap_kan_amt_sch_fst = :pap_kan_amt_sch_fst");
-        setList.add("pap_kan_amt_sch_mid = :pap_kan_amt_sch_mid");
-        setList.add("pap_kan_amt_sch_lst = :pap_kan_amt_sch_lst");
-        setList.add("pap_kan_amt_act_fst = :pap_kan_amt_act_fst");
-        setList.add("pap_kan_amt_act_mid = :pap_kan_amt_act_mid");
-        setList.add("pap_kan_amt_act_lst = :pap_kan_amt_act_lst");
-        setList.add("pap_kan_amt_act = :pap_kan_amt_act");
-        setList.add("req_counts = :req_counts");
-        setList.add("req_nes_counts = :req_nes_counts");
-        setList.add("req_pap_kan_amt_sch = :req_pap_kan_amt_sch");
-        setList.add("req_pap_kan_amt_sch_fst = :req_pap_kan_amt_sch_fst");
-        setList.add("req_pap_kan_amt_sch_mid = :req_pap_kan_amt_sch_mid");
-        setList.add("req_pap_kan_amt_sch_lst = :req_pap_kan_amt_sch_lst");
-        setList.add("req_pap_kan_amt_act_fst = :req_pap_kan_amt_act_fst");
-        setList.add("req_pap_kan_amt_act_mid = :req_pap_kan_amt_act_mid");
-        setList.add("req_pap_kan_amt_act_lst = :req_pap_kan_amt_act_lst");
-        setList.add("req_pap_kan_amt_act = :req_pap_kan_amt_act");
-        setList.add("time_stamp_change = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("user_id_change = :user_id_change");
+        setList.add("\"PRO_HINBAN\" = :pro_hinban");
+        setList.add("\"YYYY\" = :yyyy");
+        setList.add("\"MM\" = :mm");
+        setList.add("\"PAP_KAN_AMT_SCH\" = :pap_kan_amt_sch");
+        setList.add("\"PAP_KAN_AMT_SCH_FST\" = :pap_kan_amt_sch_fst");
+        setList.add("\"PAP_KAN_AMT_SCH_MID\" = :pap_kan_amt_sch_mid");
+        setList.add("\"PAP_KAN_AMT_SCH_LST\" = :pap_kan_amt_sch_lst");
+        setList.add("\"PAP_KAN_AMT_ACT_FST\" = :pap_kan_amt_act_fst");
+        setList.add("\"PAP_KAN_AMT_ACT_MID\" = :pap_kan_amt_act_mid");
+        setList.add("\"PAP_KAN_AMT_ACT_LST\" = :pap_kan_amt_act_lst");
+        setList.add("\"PAP_KAN_AMT_ACT\" = :pap_kan_amt_act");
+        setList.add("\"REQ_COUNTS\" = :req_counts");
+        setList.add("\"REQ_NES_COUNTS\" = :req_nes_counts");
+        setList.add("\"REQ_PAP_KAN_AMT_SCH\" = :req_pap_kan_amt_sch");
+        setList.add("\"REQ_PAP_KAN_AMT_SCH_FST\" = :req_pap_kan_amt_sch_fst");
+        setList.add("\"REQ_PAP_KAN_AMT_SCH_MID\" = :req_pap_kan_amt_sch_mid");
+        setList.add("\"REQ_PAP_KAN_AMT_SCH_LST\" = :req_pap_kan_amt_sch_lst");
+        setList.add("\"REQ_PAP_KAN_AMT_ACT_FST\" = :req_pap_kan_amt_act_fst");
+        setList.add("\"REQ_PAP_KAN_AMT_ACT_MID\" = :req_pap_kan_amt_act_mid");
+        setList.add("\"REQ_PAP_KAN_AMT_ACT_LST\" = :req_pap_kan_amt_act_lst");
+        setList.add("\"REQ_PAP_KAN_AMT_ACT\" = :req_pap_kan_amt_act");
+        setList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"USER_ID_CHANGE\" = :user_id_change");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -848,36 +848,36 @@ public class InvStkPlan implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (pro_hinban) = TRIM (:pro_hinban)");
-        whereList.add("TRIM (yyyy) = TRIM (:yyyy)");
-        whereList.add("TRIM (mm) = TRIM (:mm)");
-        whereList.add("time_stamp_change = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        whereList.add("TRIM (\"PRO_HINBAN\") = TRIM (:pro_hinban)");
+        whereList.add("TRIM (\"YYYY\") = TRIM (:yyyy)");
+        whereList.add("TRIM (\"MM\") = TRIM (:mm)");
+        whereList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("PRO_HINBAN", this.proHinban);
-        params.put("YYYY", this.yyyy);
-        params.put("MM", this.mm);
-        params.put("PAP_KAN_AMT_SCH", this.papKanAmtSch);
-        params.put("PAP_KAN_AMT_SCH_FST", this.papKanAmtSchFst);
-        params.put("PAP_KAN_AMT_SCH_MID", this.papKanAmtSchMid);
-        params.put("PAP_KAN_AMT_SCH_LST", this.papKanAmtSchLst);
-        params.put("PAP_KAN_AMT_ACT_FST", this.papKanAmtActFst);
-        params.put("PAP_KAN_AMT_ACT_MID", this.papKanAmtActMid);
-        params.put("PAP_KAN_AMT_ACT_LST", this.papKanAmtActLst);
-        params.put("PAP_KAN_AMT_ACT", this.papKanAmtAct);
-        params.put("REQ_COUNTS", this.reqCounts);
-        params.put("REQ_NES_COUNTS", this.reqNesCounts);
-        params.put("REQ_PAP_KAN_AMT_SCH", this.reqPapKanAmtSch);
-        params.put("REQ_PAP_KAN_AMT_SCH_FST", this.reqPapKanAmtSchFst);
-        params.put("REQ_PAP_KAN_AMT_SCH_MID", this.reqPapKanAmtSchMid);
-        params.put("REQ_PAP_KAN_AMT_SCH_LST", this.reqPapKanAmtSchLst);
-        params.put("REQ_PAP_KAN_AMT_ACT_FST", this.reqPapKanAmtActFst);
-        params.put("REQ_PAP_KAN_AMT_ACT_MID", this.reqPapKanAmtActMid);
-        params.put("REQ_PAP_KAN_AMT_ACT_LST", this.reqPapKanAmtActLst);
-        params.put("REQ_PAP_KAN_AMT_ACT", this.reqPapKanAmtAct);
+        params.put("pro_hinban", this.proHinban);
+        params.put("yyyy", this.yyyy);
+        params.put("mm", this.mm);
+        params.put("pap_kan_amt_sch", this.papKanAmtSch);
+        params.put("pap_kan_amt_sch_fst", this.papKanAmtSchFst);
+        params.put("pap_kan_amt_sch_mid", this.papKanAmtSchMid);
+        params.put("pap_kan_amt_sch_lst", this.papKanAmtSchLst);
+        params.put("pap_kan_amt_act_fst", this.papKanAmtActFst);
+        params.put("pap_kan_amt_act_mid", this.papKanAmtActMid);
+        params.put("pap_kan_amt_act_lst", this.papKanAmtActLst);
+        params.put("pap_kan_amt_act", this.papKanAmtAct);
+        params.put("req_counts", this.reqCounts);
+        params.put("req_nes_counts", this.reqNesCounts);
+        params.put("req_pap_kan_amt_sch", this.reqPapKanAmtSch);
+        params.put("req_pap_kan_amt_sch_fst", this.reqPapKanAmtSchFst);
+        params.put("req_pap_kan_amt_sch_mid", this.reqPapKanAmtSchMid);
+        params.put("req_pap_kan_amt_sch_lst", this.reqPapKanAmtSchLst);
+        params.put("req_pap_kan_amt_act_fst", this.reqPapKanAmtActFst);
+        params.put("req_pap_kan_amt_act_mid", this.reqPapKanAmtActMid);
+        params.put("req_pap_kan_amt_act_lst", this.reqPapKanAmtActLst);
+        params.put("req_pap_kan_amt_act", this.reqPapKanAmtAct);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

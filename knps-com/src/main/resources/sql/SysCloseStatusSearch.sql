@@ -35,7 +35,7 @@ WHERE
     AND a."ANNUAL_SETTLE_DATE" >= :annual_settle_date_1 
     AND a."ANNUAL_SETTLE_DATE" <= :annual_settle_date_2 
     AND a."ANNUAL_SETTLE_COST_FIXED" = :annual_settle_cost_fixed 
-    AND CASE WHEN a."MASTER_COPY_FLAG" IS NULL THEN '0' ELSE TO_CHAR (a.MASTER_COPY_FLAG) END IN (:master_copy_flag) 
+    AND CASE WHEN a."MASTER_COPY_FLAG" IS NULL THEN '0' ELSE TO_CHAR (a."MASTER_COPY_FLAG") END IN (:master_copy_flag) 
     AND a."MASTER_COPY_DATE" = :master_copy_date 
     AND a."MASTER_COPY_DATE" >= :master_copy_date_1 
     AND a."MASTER_COPY_DATE" <= :master_copy_date_2 

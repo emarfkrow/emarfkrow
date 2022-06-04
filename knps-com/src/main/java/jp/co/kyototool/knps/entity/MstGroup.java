@@ -277,16 +277,16 @@ public class MstGroup implements IEntity {
 
         // MST_GROUPの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("group_code -- :group_code");
-        nameList.add("group_name -- :group_name");
-        nameList.add("admin_code -- :admin_code");
-        nameList.add("division_code -- :division_code");
-        nameList.add("individual_counts -- :individual_counts");
-        nameList.add("time_stamp_create -- :time_stamp_create");
-        nameList.add("time_stamp_change -- :time_stamp_change");
-        nameList.add("user_id_create -- :user_id_create");
-        nameList.add("user_id_change -- :user_id_change");
-        nameList.add("delete_flag -- :delete_flag");
+        nameList.add("\"GROUP_CODE\" -- :group_code");
+        nameList.add("\"GROUP_NAME\" -- :group_name");
+        nameList.add("\"ADMIN_CODE\" -- :admin_code");
+        nameList.add("\"DIVISION_CODE\" -- :division_code");
+        nameList.add("\"INDIVIDUAL_COUNTS\" -- :individual_counts");
+        nameList.add("\"TIME_STAMP_CREATE\" -- :time_stamp_create");
+        nameList.add("\"TIME_STAMP_CHANGE\" -- :time_stamp_change");
+        nameList.add("\"USER_ID_CREATE\" -- :user_id_create");
+        nameList.add("\"USER_ID_CHANGE\" -- :user_id_change");
+        nameList.add("\"DELETE_FLAG\" -- :delete_flag");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO MST_GROUP(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -318,7 +318,7 @@ public class MstGroup implements IEntity {
             return;
         }
 
-        String sql = "SELECT LPAD (CASE WHEN MAX(e.GROUP_CODE) IS NULL THEN 0 ELSE MAX(e.GROUP_CODE) * 1 END + 1, 10, '0') AS GROUP_CODE FROM MST_GROUP e WHERE e.GROUP_CODE < '9999999999'";
+        String sql = "SELECT LPAD (CASE WHEN MAX(e.\"GROUP_CODE\") IS NULL THEN 0 ELSE MAX(e.\"GROUP_CODE\") * 1 END + 1, 10, '0') AS \"GROUP_CODE\" FROM MST_GROUP e WHERE e.\"GROUP_CODE\" < '9999999999'";
 
         Map<String, Object> params = new HashMap<String, Object>();
 
@@ -345,14 +345,14 @@ public class MstGroup implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("group_code = :group_code");
-        setList.add("group_name = :group_name");
-        setList.add("admin_code = :admin_code");
-        setList.add("division_code = :division_code");
-        setList.add("individual_counts = :individual_counts");
-        setList.add("time_stamp_change = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("user_id_change = :user_id_change");
-        setList.add("delete_flag = :delete_flag");
+        setList.add("\"GROUP_CODE\" = :group_code");
+        setList.add("\"GROUP_NAME\" = :group_name");
+        setList.add("\"ADMIN_CODE\" = :admin_code");
+        setList.add("\"DIVISION_CODE\" = :division_code");
+        setList.add("\"INDIVIDUAL_COUNTS\" = :individual_counts");
+        setList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"USER_ID_CHANGE\" = :user_id_change");
+        setList.add("\"DELETE_FLAG\" = :delete_flag");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -374,19 +374,19 @@ public class MstGroup implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (group_code) = TRIM (:group_code)");
-        whereList.add("time_stamp_change = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        whereList.add("TRIM (\"GROUP_CODE\") = TRIM (:group_code)");
+        whereList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("GROUP_CODE", this.groupCode);
-        params.put("GROUP_NAME", this.groupName);
-        params.put("ADMIN_CODE", this.adminCode);
-        params.put("DIVISION_CODE", this.divisionCode);
-        params.put("INDIVIDUAL_COUNTS", this.individualCounts);
-        params.put("DELETE_FLAG", this.deleteFlag);
+        params.put("group_code", this.groupCode);
+        params.put("group_name", this.groupName);
+        params.put("admin_code", this.adminCode);
+        params.put("division_code", this.divisionCode);
+        params.put("individual_counts", this.individualCounts);
+        params.put("delete_flag", this.deleteFlag);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

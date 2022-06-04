@@ -187,12 +187,12 @@ public class MGhinmok implements IEntity {
 
         // 原価用品目マスタの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("hinban -- :hinban");
-        nameList.add("hincd -- :hincd");
-        nameList.add("hingenka -- :hingenka");
-        nameList.add("renkeibi -- :renkeibi");
-        nameList.add("shoriflg -- :shoriflg");
-        nameList.add("filler -- :filler");
+        nameList.add("\"HINBAN\" -- :hinban");
+        nameList.add("\"HINCD\" -- :hincd");
+        nameList.add("\"HINGENKA\" -- :hingenka");
+        nameList.add("\"RENKEIBI\" -- :renkeibi");
+        nameList.add("\"SHORIFLG\" -- :shoriflg");
+        nameList.add("\"FILLER\" -- :filler");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO M_GHINMOK(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -220,7 +220,7 @@ public class MGhinmok implements IEntity {
             return;
         }
 
-        String sql = "SELECT LPAD (CASE WHEN MAX(e.HINBAN) IS NULL THEN 0 ELSE MAX(e.HINBAN) * 1 END + 1, 25, '0') AS HINBAN FROM M_GHINMOK e WHERE e.HINBAN < '9999999999999999999999999'";
+        String sql = "SELECT LPAD (CASE WHEN MAX(e.\"HINBAN\") IS NULL THEN 0 ELSE MAX(e.\"HINBAN\") * 1 END + 1, 25, '0') AS \"HINBAN\" FROM M_GHINMOK e WHERE e.\"HINBAN\" < '9999999999999999999999999'";
 
         Map<String, Object> params = new HashMap<String, Object>();
 
@@ -267,12 +267,12 @@ public class MGhinmok implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("hinban = :hinban");
-        setList.add("hincd = :hincd");
-        setList.add("hingenka = :hingenka");
-        setList.add("renkeibi = :renkeibi");
-        setList.add("shoriflg = :shoriflg");
-        setList.add("filler = :filler");
+        setList.add("\"HINBAN\" = :hinban");
+        setList.add("\"HINCD\" = :hincd");
+        setList.add("\"HINGENKA\" = :hingenka");
+        setList.add("\"RENKEIBI\" = :renkeibi");
+        setList.add("\"SHORIFLG\" = :shoriflg");
+        setList.add("\"FILLER\" = :filler");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -304,18 +304,18 @@ public class MGhinmok implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (hinban) = TRIM (:hinban)");
+        whereList.add("TRIM (\"HINBAN\") = TRIM (:hinban)");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("HINBAN", this.hinban);
-        params.put("HINCD", this.hincd);
-        params.put("HINGENKA", this.hingenka);
-        params.put("RENKEIBI", this.renkeibi);
-        params.put("SHORIFLG", this.shoriflg);
-        params.put("FILLER", this.filler);
+        params.put("hinban", this.hinban);
+        params.put("hincd", this.hincd);
+        params.put("hingenka", this.hingenka);
+        params.put("renkeibi", this.renkeibi);
+        params.put("shoriflg", this.shoriflg);
+        params.put("filler", this.filler);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

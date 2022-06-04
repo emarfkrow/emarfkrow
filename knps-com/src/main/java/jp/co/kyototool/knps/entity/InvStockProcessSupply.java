@@ -214,13 +214,13 @@ public class InvStockProcessSupply implements IEntity {
 
         // INV_STOCK_PROCESS_SUPPLYの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("sup_code -- :sup_code");
-        nameList.add("hinban -- :hinban");
-        nameList.add("shikyu_qt -- :shikyu_qt");
-        nameList.add("time_stamp_create -- :time_stamp_create");
-        nameList.add("time_stamp_change -- :time_stamp_change");
-        nameList.add("user_id_create -- :user_id_create");
-        nameList.add("user_id_change -- :user_id_change");
+        nameList.add("\"SUP_CODE\" -- :sup_code");
+        nameList.add("\"HINBAN\" -- :hinban");
+        nameList.add("\"SHIKYU_QT\" -- :shikyu_qt");
+        nameList.add("\"TIME_STAMP_CREATE\" -- :time_stamp_create");
+        nameList.add("\"TIME_STAMP_CHANGE\" -- :time_stamp_change");
+        nameList.add("\"USER_ID_CREATE\" -- :user_id_create");
+        nameList.add("\"USER_ID_CHANGE\" -- :user_id_change");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO INV_STOCK_PROCESS_SUPPLY(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -259,11 +259,11 @@ public class InvStockProcessSupply implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("sup_code = :sup_code");
-        setList.add("hinban = :hinban");
-        setList.add("shikyu_qt = :shikyu_qt");
-        setList.add("time_stamp_change = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("user_id_change = :user_id_change");
+        setList.add("\"SUP_CODE\" = :sup_code");
+        setList.add("\"HINBAN\" = :hinban");
+        setList.add("\"SHIKYU_QT\" = :shikyu_qt");
+        setList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"USER_ID_CHANGE\" = :user_id_change");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -285,17 +285,17 @@ public class InvStockProcessSupply implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("sup_code = :sup_code");
-        whereList.add("hinban = :hinban");
-        whereList.add("time_stamp_change = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        whereList.add("\"SUP_CODE\" = :sup_code");
+        whereList.add("\"HINBAN\" = :hinban");
+        whereList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("SUP_CODE", this.supCode);
-        params.put("HINBAN", this.hinban);
-        params.put("SHIKYU_QT", this.shikyuQt);
+        params.put("sup_code", this.supCode);
+        params.put("hinban", this.hinban);
+        params.put("shikyu_qt", this.shikyuQt);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

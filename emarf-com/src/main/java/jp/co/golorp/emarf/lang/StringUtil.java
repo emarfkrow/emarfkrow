@@ -166,7 +166,7 @@ public final class StringUtil {
      */
     public static boolean endsWith(final String[] suffixs, final String s) {
         for (String suffix : suffixs) {
-            if (s.toLowerCase().endsWith(suffix.toLowerCase())) {
+            if (endWithIgnoreCase(suffix, s)) {
                 return true;
             }
         }
@@ -180,11 +180,20 @@ public final class StringUtil {
      */
     public static boolean endsWith(final Map<String, String> suffixs, final String s) {
         for (String suffix : suffixs.keySet()) {
-            if (s.toLowerCase().endsWith(suffix.toLowerCase())) {
+            if (endWithIgnoreCase(suffix, s)) {
                 return true;
             }
         }
         return false;
+    }
+
+    /**
+     * @param suffix
+     * @param s
+     * @return boolean
+     */
+    public static boolean endWithIgnoreCase(final String suffix, final String s) {
+        return s.matches("(?i).+" + suffix + "$");
     }
 
     /**

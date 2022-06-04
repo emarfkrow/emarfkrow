@@ -353,18 +353,18 @@ public class PchTempOrder implements IEntity {
 
         // PCH_TEMP_ORDERの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("temp_order_no -- :temp_order_no");
-        nameList.add("irai_dt -- :irai_dt");
-        nameList.add("irai_emp_code -- :irai_emp_code");
-        nameList.add("sup_code -- :sup_code");
-        nameList.add("temp_sup_code -- :temp_sup_code");
-        nameList.add("memo -- :memo");
-        nameList.add("pay_irai_dt -- :pay_irai_dt");
-        nameList.add("pay_irai_emp_code -- :pay_irai_emp_code");
-        nameList.add("time_stamp_create -- :time_stamp_create");
-        nameList.add("time_stamp_change -- :time_stamp_change");
-        nameList.add("user_id_create -- :user_id_create");
-        nameList.add("user_id_change -- :user_id_change");
+        nameList.add("\"TEMP_ORDER_NO\" -- :temp_order_no");
+        nameList.add("\"IRAI_DT\" -- :irai_dt");
+        nameList.add("\"IRAI_EMP_CODE\" -- :irai_emp_code");
+        nameList.add("\"SUP_CODE\" -- :sup_code");
+        nameList.add("\"TEMP_SUP_CODE\" -- :temp_sup_code");
+        nameList.add("\"MEMO\" -- :memo");
+        nameList.add("\"PAY_IRAI_DT\" -- :pay_irai_dt");
+        nameList.add("\"PAY_IRAI_EMP_CODE\" -- :pay_irai_emp_code");
+        nameList.add("\"TIME_STAMP_CREATE\" -- :time_stamp_create");
+        nameList.add("\"TIME_STAMP_CHANGE\" -- :time_stamp_change");
+        nameList.add("\"USER_ID_CREATE\" -- :user_id_create");
+        nameList.add("\"USER_ID_CHANGE\" -- :user_id_change");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO PCH_TEMP_ORDER(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -398,7 +398,7 @@ public class PchTempOrder implements IEntity {
             return;
         }
 
-        String sql = "SELECT LPAD (CASE WHEN MAX(e.TEMP_ORDER_NO) IS NULL THEN 0 ELSE MAX(e.TEMP_ORDER_NO) * 1 END + 1, 10, '0') AS TEMP_ORDER_NO FROM PCH_TEMP_ORDER e WHERE e.TEMP_ORDER_NO < '9999999999'";
+        String sql = "SELECT LPAD (CASE WHEN MAX(e.\"TEMP_ORDER_NO\") IS NULL THEN 0 ELSE MAX(e.\"TEMP_ORDER_NO\") * 1 END + 1, 10, '0') AS \"TEMP_ORDER_NO\" FROM PCH_TEMP_ORDER e WHERE e.\"TEMP_ORDER_NO\" < '9999999999'";
 
         Map<String, Object> params = new HashMap<String, Object>();
 
@@ -467,16 +467,16 @@ public class PchTempOrder implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("temp_order_no = :temp_order_no");
-        setList.add("irai_dt = TO_TIMESTAMP (:irai_dt, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("irai_emp_code = :irai_emp_code");
-        setList.add("sup_code = :sup_code");
-        setList.add("temp_sup_code = :temp_sup_code");
-        setList.add("memo = :memo");
-        setList.add("pay_irai_dt = TO_TIMESTAMP (:pay_irai_dt, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("pay_irai_emp_code = :pay_irai_emp_code");
-        setList.add("time_stamp_change = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("user_id_change = :user_id_change");
+        setList.add("\"TEMP_ORDER_NO\" = :temp_order_no");
+        setList.add("\"IRAI_DT\" = TO_TIMESTAMP (:irai_dt, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"IRAI_EMP_CODE\" = :irai_emp_code");
+        setList.add("\"SUP_CODE\" = :sup_code");
+        setList.add("\"TEMP_SUP_CODE\" = :temp_sup_code");
+        setList.add("\"MEMO\" = :memo");
+        setList.add("\"PAY_IRAI_DT\" = TO_TIMESTAMP (:pay_irai_dt, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"PAY_IRAI_EMP_CODE\" = :pay_irai_emp_code");
+        setList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"USER_ID_CHANGE\" = :user_id_change");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -512,21 +512,21 @@ public class PchTempOrder implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (temp_order_no) = TRIM (:temp_order_no)");
-        whereList.add("time_stamp_change = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        whereList.add("TRIM (\"TEMP_ORDER_NO\") = TRIM (:temp_order_no)");
+        whereList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("TEMP_ORDER_NO", this.tempOrderNo);
-        params.put("IRAI_DT", this.iraiDt);
-        params.put("IRAI_EMP_CODE", this.iraiEmpCode);
-        params.put("SUP_CODE", this.supCode);
-        params.put("TEMP_SUP_CODE", this.tempSupCode);
-        params.put("MEMO", this.memo);
-        params.put("PAY_IRAI_DT", this.payIraiDt);
-        params.put("PAY_IRAI_EMP_CODE", this.payIraiEmpCode);
+        params.put("temp_order_no", this.tempOrderNo);
+        params.put("irai_dt", this.iraiDt);
+        params.put("irai_emp_code", this.iraiEmpCode);
+        params.put("sup_code", this.supCode);
+        params.put("temp_sup_code", this.tempSupCode);
+        params.put("memo", this.memo);
+        params.put("pay_irai_dt", this.payIraiDt);
+        params.put("pay_irai_emp_code", this.payIraiEmpCode);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

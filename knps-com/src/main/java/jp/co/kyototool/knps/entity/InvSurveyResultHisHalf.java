@@ -418,22 +418,22 @@ public class InvSurveyResultHisHalf implements IEntity {
 
         // INV_SURVEY_RESULT_HIS_HALFの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("discrimination_id -- :discrimination_id");
-        nameList.add("yyyy -- :yyyy");
-        nameList.add("mm -- :mm");
-        nameList.add("hinban -- :hinban");
-        nameList.add("stock -- :stock");
-        nameList.add("decision_kbn -- :decision_kbn");
-        nameList.add("pro_group_no -- :pro_group_no");
-        nameList.add("routing -- :routing");
-        nameList.add("wc_code -- :wc_code");
-        nameList.add("entry_date -- :entry_date");
-        nameList.add("registrant -- :registrant");
-        nameList.add("time_stamp_create -- :time_stamp_create");
-        nameList.add("time_stamp_change -- :time_stamp_change");
-        nameList.add("user_id_create -- :user_id_create");
-        nameList.add("user_id_change -- :user_id_change");
-        nameList.add("shukei_tani_mei -- :shukei_tani_mei");
+        nameList.add("\"DISCRIMINATION_ID\" -- :discrimination_id");
+        nameList.add("\"YYYY\" -- :yyyy");
+        nameList.add("\"MM\" -- :mm");
+        nameList.add("\"HINBAN\" -- :hinban");
+        nameList.add("\"STOCK\" -- :stock");
+        nameList.add("\"DECISION_KBN\" -- :decision_kbn");
+        nameList.add("\"PRO_GROUP_NO\" -- :pro_group_no");
+        nameList.add("\"ROUTING\" -- :routing");
+        nameList.add("\"WC_CODE\" -- :wc_code");
+        nameList.add("\"ENTRY_DATE\" -- :entry_date");
+        nameList.add("\"REGISTRANT\" -- :registrant");
+        nameList.add("\"TIME_STAMP_CREATE\" -- :time_stamp_create");
+        nameList.add("\"TIME_STAMP_CHANGE\" -- :time_stamp_change");
+        nameList.add("\"USER_ID_CREATE\" -- :user_id_create");
+        nameList.add("\"USER_ID_CHANGE\" -- :user_id_change");
+        nameList.add("\"SHUKEI_TANI_MEI\" -- :shukei_tani_mei");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO INV_SURVEY_RESULT_HIS_HALF(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -471,16 +471,16 @@ public class InvSurveyResultHisHalf implements IEntity {
             return;
         }
 
-        String sql = "SELECT LPAD (CASE WHEN MAX(e.MM) IS NULL THEN 0 ELSE MAX(e.MM) * 1 END + 1, 2, '0') AS MM FROM INV_SURVEY_RESULT_HIS_HALF e WHERE e.MM < '99'";
+        String sql = "SELECT LPAD (CASE WHEN MAX(e.\"MM\") IS NULL THEN 0 ELSE MAX(e.\"MM\") * 1 END + 1, 2, '0') AS \"MM\" FROM INV_SURVEY_RESULT_HIS_HALF e WHERE e.\"MM\" < '99'";
 
         Map<String, Object> params = new HashMap<String, Object>();
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("e.DISCRIMINATION_ID = :discrimination_id");
-        whereList.add("e.YYYY = :yyyy");
+        whereList.add("e.\"DISCRIMINATION_ID\" = :discrimination_id");
+        whereList.add("e.\"YYYY\" = :yyyy");
         sql += " WHERE " + String.join(" AND ", whereList);
 
-        params.put("discriminationId", this.discriminationId);
+        params.put("discrimination_id", this.discriminationId);
         params.put("yyyy", this.yyyy);
 
         jp.co.golorp.emarf.util.MapList mapList = Queries.select(sql, params);
@@ -506,20 +506,20 @@ public class InvSurveyResultHisHalf implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("discrimination_id = :discrimination_id");
-        setList.add("yyyy = :yyyy");
-        setList.add("mm = :mm");
-        setList.add("hinban = :hinban");
-        setList.add("stock = :stock");
-        setList.add("decision_kbn = :decision_kbn");
-        setList.add("pro_group_no = :pro_group_no");
-        setList.add("routing = :routing");
-        setList.add("wc_code = :wc_code");
-        setList.add("entry_date = TO_TIMESTAMP (:entry_date, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("registrant = :registrant");
-        setList.add("time_stamp_change = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("user_id_change = :user_id_change");
-        setList.add("shukei_tani_mei = :shukei_tani_mei");
+        setList.add("\"DISCRIMINATION_ID\" = :discrimination_id");
+        setList.add("\"YYYY\" = :yyyy");
+        setList.add("\"MM\" = :mm");
+        setList.add("\"HINBAN\" = :hinban");
+        setList.add("\"STOCK\" = :stock");
+        setList.add("\"DECISION_KBN\" = :decision_kbn");
+        setList.add("\"PRO_GROUP_NO\" = :pro_group_no");
+        setList.add("\"ROUTING\" = :routing");
+        setList.add("\"WC_CODE\" = :wc_code");
+        setList.add("\"ENTRY_DATE\" = TO_TIMESTAMP (:entry_date, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"REGISTRANT\" = :registrant");
+        setList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"USER_ID_CHANGE\" = :user_id_change");
+        setList.add("\"SHUKEI_TANI_MEI\" = :shukei_tani_mei");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -541,27 +541,27 @@ public class InvSurveyResultHisHalf implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (discrimination_id) = TRIM (:discrimination_id)");
-        whereList.add("TRIM (yyyy) = TRIM (:yyyy)");
-        whereList.add("TRIM (mm) = TRIM (:mm)");
-        whereList.add("time_stamp_change = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        whereList.add("TRIM (\"DISCRIMINATION_ID\") = TRIM (:discrimination_id)");
+        whereList.add("TRIM (\"YYYY\") = TRIM (:yyyy)");
+        whereList.add("TRIM (\"MM\") = TRIM (:mm)");
+        whereList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("DISCRIMINATION_ID", this.discriminationId);
-        params.put("YYYY", this.yyyy);
-        params.put("MM", this.mm);
-        params.put("HINBAN", this.hinban);
-        params.put("STOCK", this.stock);
-        params.put("DECISION_KBN", this.decisionKbn);
-        params.put("PRO_GROUP_NO", this.proGroupNo);
-        params.put("ROUTING", this.routing);
-        params.put("WC_CODE", this.wcCode);
-        params.put("ENTRY_DATE", this.entryDate);
-        params.put("REGISTRANT", this.registrant);
-        params.put("SHUKEI_TANI_MEI", this.shukeiTaniMei);
+        params.put("discrimination_id", this.discriminationId);
+        params.put("yyyy", this.yyyy);
+        params.put("mm", this.mm);
+        params.put("hinban", this.hinban);
+        params.put("stock", this.stock);
+        params.put("decision_kbn", this.decisionKbn);
+        params.put("pro_group_no", this.proGroupNo);
+        params.put("routing", this.routing);
+        params.put("wc_code", this.wcCode);
+        params.put("entry_date", this.entryDate);
+        params.put("registrant", this.registrant);
+        params.put("shukei_tani_mei", this.shukeiTaniMei);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

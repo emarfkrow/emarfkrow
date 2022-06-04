@@ -346,19 +346,19 @@ public class PchProdUnitCost implements IEntity {
 
         // PCH_PROD_UNIT_COSTの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("close_date -- :close_date");
-        nameList.add("pro_group_no -- :pro_group_no");
-        nameList.add("hinban -- :hinban");
-        nameList.add("routing -- :routing");
-        nameList.add("wc_code -- :wc_code");
-        nameList.add("ope_detail -- :ope_detail");
-        nameList.add("proprietary_total_counts -- :proprietary_total_counts");
-        nameList.add("proprietary_total_cost -- :proprietary_total_cost");
-        nameList.add("last_prch_unit_cost -- :last_prch_unit_cost");
-        nameList.add("time_stamp_create -- :time_stamp_create");
-        nameList.add("time_stamp_change -- :time_stamp_change");
-        nameList.add("user_id_create -- :user_id_create");
-        nameList.add("user_id_change -- :user_id_change");
+        nameList.add("\"CLOSE_DATE\" -- :close_date");
+        nameList.add("\"PRO_GROUP_NO\" -- :pro_group_no");
+        nameList.add("\"HINBAN\" -- :hinban");
+        nameList.add("\"ROUTING\" -- :routing");
+        nameList.add("\"WC_CODE\" -- :wc_code");
+        nameList.add("\"OPE_DETAIL\" -- :ope_detail");
+        nameList.add("\"PROPRIETARY_TOTAL_COUNTS\" -- :proprietary_total_counts");
+        nameList.add("\"PROPRIETARY_TOTAL_COST\" -- :proprietary_total_cost");
+        nameList.add("\"LAST_PRCH_UNIT_COST\" -- :last_prch_unit_cost");
+        nameList.add("\"TIME_STAMP_CREATE\" -- :time_stamp_create");
+        nameList.add("\"TIME_STAMP_CHANGE\" -- :time_stamp_change");
+        nameList.add("\"USER_ID_CREATE\" -- :user_id_create");
+        nameList.add("\"USER_ID_CHANGE\" -- :user_id_change");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO PCH_PROD_UNIT_COST(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -403,17 +403,17 @@ public class PchProdUnitCost implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("close_date = :close_date");
-        setList.add("pro_group_no = :pro_group_no");
-        setList.add("hinban = :hinban");
-        setList.add("routing = :routing");
-        setList.add("wc_code = :wc_code");
-        setList.add("ope_detail = :ope_detail");
-        setList.add("proprietary_total_counts = :proprietary_total_counts");
-        setList.add("proprietary_total_cost = :proprietary_total_cost");
-        setList.add("last_prch_unit_cost = :last_prch_unit_cost");
-        setList.add("time_stamp_change = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("user_id_change = :user_id_change");
+        setList.add("\"CLOSE_DATE\" = :close_date");
+        setList.add("\"PRO_GROUP_NO\" = :pro_group_no");
+        setList.add("\"HINBAN\" = :hinban");
+        setList.add("\"ROUTING\" = :routing");
+        setList.add("\"WC_CODE\" = :wc_code");
+        setList.add("\"OPE_DETAIL\" = :ope_detail");
+        setList.add("\"PROPRIETARY_TOTAL_COUNTS\" = :proprietary_total_counts");
+        setList.add("\"PROPRIETARY_TOTAL_COST\" = :proprietary_total_cost");
+        setList.add("\"LAST_PRCH_UNIT_COST\" = :last_prch_unit_cost");
+        setList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"USER_ID_CHANGE\" = :user_id_change");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -435,25 +435,25 @@ public class PchProdUnitCost implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (close_date) = TRIM (:close_date)");
-        whereList.add("pro_group_no = :pro_group_no");
-        whereList.add("TRIM (hinban) = TRIM (:hinban)");
-        whereList.add("routing = :routing");
-        whereList.add("time_stamp_change = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        whereList.add("TRIM (\"CLOSE_DATE\") = TRIM (:close_date)");
+        whereList.add("\"PRO_GROUP_NO\" = :pro_group_no");
+        whereList.add("TRIM (\"HINBAN\") = TRIM (:hinban)");
+        whereList.add("\"ROUTING\" = :routing");
+        whereList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("CLOSE_DATE", this.closeDate);
-        params.put("PRO_GROUP_NO", this.proGroupNo);
-        params.put("HINBAN", this.hinban);
-        params.put("ROUTING", this.routing);
-        params.put("WC_CODE", this.wcCode);
-        params.put("OPE_DETAIL", this.opeDetail);
-        params.put("PROPRIETARY_TOTAL_COUNTS", this.proprietaryTotalCounts);
-        params.put("PROPRIETARY_TOTAL_COST", this.proprietaryTotalCost);
-        params.put("LAST_PRCH_UNIT_COST", this.lastPrchUnitCost);
+        params.put("close_date", this.closeDate);
+        params.put("pro_group_no", this.proGroupNo);
+        params.put("hinban", this.hinban);
+        params.put("routing", this.routing);
+        params.put("wc_code", this.wcCode);
+        params.put("ope_detail", this.opeDetail);
+        params.put("proprietary_total_counts", this.proprietaryTotalCounts);
+        params.put("proprietary_total_cost", this.proprietaryTotalCost);
+        params.put("last_prch_unit_cost", this.lastPrchUnitCost);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

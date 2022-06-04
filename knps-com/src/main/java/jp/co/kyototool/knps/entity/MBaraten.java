@@ -325,19 +325,19 @@ public class MBaraten implements IEntity {
 
         // バラ展開マスタの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("oya_hinban -- :oya_hinban");
-        nameList.add("ko_hinban -- :ko_hinban");
-        nameList.add("oya_hinc -- :oya_hinc");
-        nameList.add("ko_hinc -- :ko_hinc");
-        nameList.add("inzu -- :inzu");
-        nameList.add("oya_baika -- :oya_baika");
-        nameList.add("oya_genka -- :oya_genka");
-        nameList.add("ko_tanka -- :ko_tanka");
-        nameList.add("ko_genka -- :ko_genka");
-        nameList.add("ko_tanritu -- :ko_tanritu");
-        nameList.add("kensakum -- :kensakum");
-        nameList.add("casekbn -- :casekbn");
-        nameList.add("filler -- :filler");
+        nameList.add("\"OYA-HINBAN\" -- :oya_hinban");
+        nameList.add("\"KO-HINBAN\" -- :ko_hinban");
+        nameList.add("\"OYA-HINC\" -- :oya_hinc");
+        nameList.add("\"KO-HINC\" -- :ko_hinc");
+        nameList.add("\"INZU\" -- :inzu");
+        nameList.add("\"OYA-BAIKA\" -- :oya_baika");
+        nameList.add("\"OYA-GENKA\" -- :oya_genka");
+        nameList.add("\"KO-TANKA\" -- :ko_tanka");
+        nameList.add("\"KO-GENKA\" -- :ko_genka");
+        nameList.add("\"KO-TANRITU\" -- :ko_tanritu");
+        nameList.add("\"KENSAKUM\" -- :kensakum");
+        nameList.add("\"CASEKBN\" -- :casekbn");
+        nameList.add("\"FILLER\" -- :filler");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO M_BARATEN(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -372,15 +372,15 @@ public class MBaraten implements IEntity {
             return;
         }
 
-        String sql = "SELECT LPAD (CASE WHEN MAX(e.KO-HINBAN) IS NULL THEN 0 ELSE MAX(e.KO-HINBAN) * 1 END + 1, 20, '0') AS KO-HINBAN FROM M_BARATEN e WHERE e.KO-HINBAN < '99999999999999999999'";
+        String sql = "SELECT LPAD (CASE WHEN MAX(e.\"KO-HINBAN\") IS NULL THEN 0 ELSE MAX(e.\"KO-HINBAN\") * 1 END + 1, 20, '0') AS \"KO-HINBAN\" FROM M_BARATEN e WHERE e.\"KO-HINBAN\" < '99999999999999999999'";
 
         Map<String, Object> params = new HashMap<String, Object>();
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("e.OYA-HINBAN = :oya-hinban");
+        whereList.add("e.\"OYA-HINBAN\" = :oya_hinban");
         sql += " WHERE " + String.join(" AND ", whereList);
 
-        params.put("oyaHinban", this.oyaHinban);
+        params.put("oya_hinban", this.oyaHinban);
 
         jp.co.golorp.emarf.util.MapList mapList = Queries.select(sql, params);
         Object o = mapList.get(0).get("KO-HINBAN");
@@ -405,19 +405,19 @@ public class MBaraten implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("oya-hinban = :oya-hinban");
-        setList.add("ko-hinban = :ko-hinban");
-        setList.add("oya-hinc = :oya-hinc");
-        setList.add("ko-hinc = :ko-hinc");
-        setList.add("inzu = :inzu");
-        setList.add("oya-baika = :oya-baika");
-        setList.add("oya-genka = :oya-genka");
-        setList.add("ko-tanka = :ko-tanka");
-        setList.add("ko-genka = :ko-genka");
-        setList.add("ko-tanritu = :ko-tanritu");
-        setList.add("kensakum = :kensakum");
-        setList.add("casekbn = :casekbn");
-        setList.add("filler = :filler");
+        setList.add("\"OYA-HINBAN\" = :oya_hinban");
+        setList.add("\"KO-HINBAN\" = :ko_hinban");
+        setList.add("\"OYA-HINC\" = :oya_hinc");
+        setList.add("\"KO-HINC\" = :ko_hinc");
+        setList.add("\"INZU\" = :inzu");
+        setList.add("\"OYA-BAIKA\" = :oya_baika");
+        setList.add("\"OYA-GENKA\" = :oya_genka");
+        setList.add("\"KO-TANKA\" = :ko_tanka");
+        setList.add("\"KO-GENKA\" = :ko_genka");
+        setList.add("\"KO-TANRITU\" = :ko_tanritu");
+        setList.add("\"KENSAKUM\" = :kensakum");
+        setList.add("\"CASEKBN\" = :casekbn");
+        setList.add("\"FILLER\" = :filler");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -439,26 +439,26 @@ public class MBaraten implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (oya-hinban) = TRIM (:oya-hinban)");
-        whereList.add("TRIM (ko-hinban) = TRIM (:ko-hinban)");
+        whereList.add("TRIM (\"OYA-HINBAN\") = TRIM (:oya_hinban)");
+        whereList.add("TRIM (\"KO-HINBAN\") = TRIM (:ko_hinban)");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("OYA-HINBAN", this.oyaHinban);
-        params.put("KO-HINBAN", this.koHinban);
-        params.put("OYA-HINC", this.oyaHinc);
-        params.put("KO-HINC", this.koHinc);
-        params.put("INZU", this.inzu);
-        params.put("OYA-BAIKA", this.oyaBaika);
-        params.put("OYA-GENKA", this.oyaGenka);
-        params.put("KO-TANKA", this.koTanka);
-        params.put("KO-GENKA", this.koGenka);
-        params.put("KO-TANRITU", this.koTanritu);
-        params.put("KENSAKUM", this.kensakum);
-        params.put("CASEKBN", this.casekbn);
-        params.put("FILLER", this.filler);
+        params.put("oya_hinban", this.oyaHinban);
+        params.put("ko_hinban", this.koHinban);
+        params.put("oya_hinc", this.oyaHinc);
+        params.put("ko_hinc", this.koHinc);
+        params.put("inzu", this.inzu);
+        params.put("oya_baika", this.oyaBaika);
+        params.put("oya_genka", this.oyaGenka);
+        params.put("ko_tanka", this.koTanka);
+        params.put("ko_genka", this.koGenka);
+        params.put("ko_tanritu", this.koTanritu);
+        params.put("kensakum", this.kensakum);
+        params.put("casekbn", this.casekbn);
+        params.put("filler", this.filler);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

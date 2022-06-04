@@ -37,6 +37,6 @@ WHERE
     AND a."TIME_STAMP_CHANGE" = :time_stamp_change 
     AND TRIM (a."USER_ID_CREATE") = TRIM (:user_id_create) 
     AND TRIM (a."USER_ID_CHANGE") = TRIM (:user_id_change) 
-    AND CASE WHEN a."ISSHIKI_UNIT_F" IS NULL THEN '0' ELSE TO_CHAR (a.ISSHIKI_UNIT_F) END IN (:isshiki_unit_f) 
+    AND CASE WHEN a."ISSHIKI_UNIT_F" IS NULL THEN '0' ELSE TO_CHAR (a."ISSHIKI_UNIT_F") END IN (:isshiki_unit_f) 
 ORDER BY
     a."ORDER_NO", a."TARGET_DATE", a."SUP_CODE"

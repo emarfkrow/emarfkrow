@@ -320,17 +320,17 @@ public class InvYStkProdAmountProd implements IEntity {
 
         // INV_Y_STK_PROD_AMOUNT_PRODの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("pro_hinban -- :pro_hinban");
-        nameList.add("yyyy -- :yyyy");
-        nameList.add("mm -- :mm");
-        nameList.add("nes_counts -- :nes_counts");
-        nameList.add("stan_costs -- :stan_costs");
-        nameList.add("shikake_kbn -- :shikake_kbn");
-        nameList.add("pro_lt -- :pro_lt");
-        nameList.add("time_stamp_create -- :time_stamp_create");
-        nameList.add("time_stamp_change -- :time_stamp_change");
-        nameList.add("user_id_create -- :user_id_create");
-        nameList.add("user_id_change -- :user_id_change");
+        nameList.add("\"PRO_HINBAN\" -- :pro_hinban");
+        nameList.add("\"YYYY\" -- :yyyy");
+        nameList.add("\"MM\" -- :mm");
+        nameList.add("\"NES_COUNTS\" -- :nes_counts");
+        nameList.add("\"STAN_COSTS\" -- :stan_costs");
+        nameList.add("\"SHIKAKE_KBN\" -- :shikake_kbn");
+        nameList.add("\"PRO_LT\" -- :pro_lt");
+        nameList.add("\"TIME_STAMP_CREATE\" -- :time_stamp_create");
+        nameList.add("\"TIME_STAMP_CHANGE\" -- :time_stamp_change");
+        nameList.add("\"USER_ID_CREATE\" -- :user_id_create");
+        nameList.add("\"USER_ID_CHANGE\" -- :user_id_change");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO INV_Y_STK_PROD_AMOUNT_PROD(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -363,16 +363,16 @@ public class InvYStkProdAmountProd implements IEntity {
             return;
         }
 
-        String sql = "SELECT LPAD (CASE WHEN MAX(e.MM) IS NULL THEN 0 ELSE MAX(e.MM) * 1 END + 1, 2, '0') AS MM FROM INV_Y_STK_PROD_AMOUNT_PROD e WHERE e.MM < '99'";
+        String sql = "SELECT LPAD (CASE WHEN MAX(e.\"MM\") IS NULL THEN 0 ELSE MAX(e.\"MM\") * 1 END + 1, 2, '0') AS \"MM\" FROM INV_Y_STK_PROD_AMOUNT_PROD e WHERE e.\"MM\" < '99'";
 
         Map<String, Object> params = new HashMap<String, Object>();
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("e.PRO_HINBAN = :pro_hinban");
-        whereList.add("e.YYYY = :yyyy");
+        whereList.add("e.\"PRO_HINBAN\" = :pro_hinban");
+        whereList.add("e.\"YYYY\" = :yyyy");
         sql += " WHERE " + String.join(" AND ", whereList);
 
-        params.put("proHinban", this.proHinban);
+        params.put("pro_hinban", this.proHinban);
         params.put("yyyy", this.yyyy);
 
         jp.co.golorp.emarf.util.MapList mapList = Queries.select(sql, params);
@@ -422,15 +422,15 @@ public class InvYStkProdAmountProd implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("pro_hinban = :pro_hinban");
-        setList.add("yyyy = :yyyy");
-        setList.add("mm = :mm");
-        setList.add("nes_counts = :nes_counts");
-        setList.add("stan_costs = :stan_costs");
-        setList.add("shikake_kbn = :shikake_kbn");
-        setList.add("pro_lt = :pro_lt");
-        setList.add("time_stamp_change = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("user_id_change = :user_id_change");
+        setList.add("\"PRO_HINBAN\" = :pro_hinban");
+        setList.add("\"YYYY\" = :yyyy");
+        setList.add("\"MM\" = :mm");
+        setList.add("\"NES_COUNTS\" = :nes_counts");
+        setList.add("\"STAN_COSTS\" = :stan_costs");
+        setList.add("\"SHIKAKE_KBN\" = :shikake_kbn");
+        setList.add("\"PRO_LT\" = :pro_lt");
+        setList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"USER_ID_CHANGE\" = :user_id_change");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -462,22 +462,22 @@ public class InvYStkProdAmountProd implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (pro_hinban) = TRIM (:pro_hinban)");
-        whereList.add("TRIM (yyyy) = TRIM (:yyyy)");
-        whereList.add("TRIM (mm) = TRIM (:mm)");
-        whereList.add("time_stamp_change = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        whereList.add("TRIM (\"PRO_HINBAN\") = TRIM (:pro_hinban)");
+        whereList.add("TRIM (\"YYYY\") = TRIM (:yyyy)");
+        whereList.add("TRIM (\"MM\") = TRIM (:mm)");
+        whereList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("PRO_HINBAN", this.proHinban);
-        params.put("YYYY", this.yyyy);
-        params.put("MM", this.mm);
-        params.put("NES_COUNTS", this.nesCounts);
-        params.put("STAN_COSTS", this.stanCosts);
-        params.put("SHIKAKE_KBN", this.shikakeKbn);
-        params.put("PRO_LT", this.proLt);
+        params.put("pro_hinban", this.proHinban);
+        params.put("yyyy", this.yyyy);
+        params.put("mm", this.mm);
+        params.put("nes_counts", this.nesCounts);
+        params.put("stan_costs", this.stanCosts);
+        params.put("shikake_kbn", this.shikakeKbn);
+        params.put("pro_lt", this.proLt);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

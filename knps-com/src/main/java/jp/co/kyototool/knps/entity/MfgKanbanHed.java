@@ -308,16 +308,16 @@ public class MfgKanbanHed implements IEntity {
 
         // MFG_KANBAN_HEDの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("routing_group -- :routing_group");
-        nameList.add("man_hinban -- :man_hinban");
-        nameList.add("routing -- :routing");
-        nameList.add("kanban_id_current -- :kanban_id_current");
-        nameList.add("kanban_id_next -- :kanban_id_next");
-        nameList.add("time_stamp_create -- :time_stamp_create");
-        nameList.add("time_stamp_change -- :time_stamp_change");
-        nameList.add("user_id_create -- :user_id_create");
-        nameList.add("user_id_change -- :user_id_change");
-        nameList.add("for_routing -- :for_routing");
+        nameList.add("\"ROUTING_GROUP\" -- :routing_group");
+        nameList.add("\"MAN_HINBAN\" -- :man_hinban");
+        nameList.add("\"ROUTING\" -- :routing");
+        nameList.add("\"KANBAN_ID_CURRENT\" -- :kanban_id_current");
+        nameList.add("\"KANBAN_ID_NEXT\" -- :kanban_id_next");
+        nameList.add("\"TIME_STAMP_CREATE\" -- :time_stamp_create");
+        nameList.add("\"TIME_STAMP_CHANGE\" -- :time_stamp_change");
+        nameList.add("\"USER_ID_CREATE\" -- :user_id_create");
+        nameList.add("\"USER_ID_CHANGE\" -- :user_id_change");
+        nameList.add("\"FOR_ROUTING\" -- :for_routing");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO MFG_KANBAN_HED(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -417,14 +417,14 @@ public class MfgKanbanHed implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("routing_group = :routing_group");
-        setList.add("man_hinban = :man_hinban");
-        setList.add("routing = :routing");
-        setList.add("kanban_id_current = :kanban_id_current");
-        setList.add("kanban_id_next = :kanban_id_next");
-        setList.add("time_stamp_change = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("user_id_change = :user_id_change");
-        setList.add("for_routing = :for_routing");
+        setList.add("\"ROUTING_GROUP\" = :routing_group");
+        setList.add("\"MAN_HINBAN\" = :man_hinban");
+        setList.add("\"ROUTING\" = :routing");
+        setList.add("\"KANBAN_ID_CURRENT\" = :kanban_id_current");
+        setList.add("\"KANBAN_ID_NEXT\" = :kanban_id_next");
+        setList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"USER_ID_CHANGE\" = :user_id_change");
+        setList.add("\"FOR_ROUTING\" = :for_routing");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -465,21 +465,21 @@ public class MfgKanbanHed implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (man_hinban) = TRIM (:man_hinban)");
-        whereList.add("routing_group = :routing_group");
-        whereList.add("routing = :routing");
-        whereList.add("time_stamp_change = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        whereList.add("TRIM (\"MAN_HINBAN\") = TRIM (:man_hinban)");
+        whereList.add("\"ROUTING_GROUP\" = :routing_group");
+        whereList.add("\"ROUTING\" = :routing");
+        whereList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("ROUTING_GROUP", this.routingGroup);
-        params.put("MAN_HINBAN", this.manHinban);
-        params.put("ROUTING", this.routing);
-        params.put("KANBAN_ID_CURRENT", this.kanbanIdCurrent);
-        params.put("KANBAN_ID_NEXT", this.kanbanIdNext);
-        params.put("FOR_ROUTING", this.forRouting);
+        params.put("routing_group", this.routingGroup);
+        params.put("man_hinban", this.manHinban);
+        params.put("routing", this.routing);
+        params.put("kanban_id_current", this.kanbanIdCurrent);
+        params.put("kanban_id_next", this.kanbanIdNext);
+        params.put("for_routing", this.forRouting);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

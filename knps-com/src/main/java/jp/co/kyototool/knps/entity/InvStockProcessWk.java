@@ -448,24 +448,24 @@ public class InvStockProcessWk implements IEntity {
 
         // INV_STOCK_PROCESS_WKの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("hinban -- :hinban");
-        nameList.add("item -- :item");
-        nameList.add("item_kbn -- :item_kbn");
-        nameList.add("hinban_ope_code -- :hinban_ope_code");
-        nameList.add("routing_group -- :routing_group");
-        nameList.add("wc_code -- :wc_code");
-        nameList.add("wc_name -- :wc_name");
-        nameList.add("ope_detail -- :ope_detail");
-        nameList.add("last_in_out_date -- :last_in_out_date");
-        nameList.add("stock -- :stock");
-        nameList.add("pro_no -- :pro_no");
-        nameList.add("next_routing -- :next_routing");
-        nameList.add("next_wc -- :next_wc");
-        nameList.add("next_detail -- :next_detail");
-        nameList.add("time_stamp_create -- :time_stamp_create");
-        nameList.add("time_stamp_change -- :time_stamp_change");
-        nameList.add("user_id_create -- :user_id_create");
-        nameList.add("user_id_change -- :user_id_change");
+        nameList.add("\"HINBAN\" -- :hinban");
+        nameList.add("\"ITEM\" -- :item");
+        nameList.add("\"ITEM_KBN\" -- :item_kbn");
+        nameList.add("\"HINBAN_OPE_CODE\" -- :hinban_ope_code");
+        nameList.add("\"ROUTING_GROUP\" -- :routing_group");
+        nameList.add("\"WC_CODE\" -- :wc_code");
+        nameList.add("\"WC_NAME\" -- :wc_name");
+        nameList.add("\"OPE_DETAIL\" -- :ope_detail");
+        nameList.add("\"LAST_IN_OUT_DATE\" -- :last_in_out_date");
+        nameList.add("\"STOCK\" -- :stock");
+        nameList.add("\"PRO_NO\" -- :pro_no");
+        nameList.add("\"NEXT_ROUTING\" -- :next_routing");
+        nameList.add("\"NEXT_WC\" -- :next_wc");
+        nameList.add("\"NEXT_DETAIL\" -- :next_detail");
+        nameList.add("\"TIME_STAMP_CREATE\" -- :time_stamp_create");
+        nameList.add("\"TIME_STAMP_CHANGE\" -- :time_stamp_change");
+        nameList.add("\"USER_ID_CREATE\" -- :user_id_create");
+        nameList.add("\"USER_ID_CHANGE\" -- :user_id_change");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO INV_STOCK_PROCESS_WK(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -515,22 +515,22 @@ public class InvStockProcessWk implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("hinban = :hinban");
-        setList.add("item = :item");
-        setList.add("item_kbn = :item_kbn");
-        setList.add("hinban_ope_code = :hinban_ope_code");
-        setList.add("routing_group = :routing_group");
-        setList.add("wc_code = :wc_code");
-        setList.add("wc_name = :wc_name");
-        setList.add("ope_detail = :ope_detail");
-        setList.add("last_in_out_date = TO_TIMESTAMP (:last_in_out_date, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("stock = :stock");
-        setList.add("pro_no = :pro_no");
-        setList.add("next_routing = :next_routing");
-        setList.add("next_wc = :next_wc");
-        setList.add("next_detail = :next_detail");
-        setList.add("time_stamp_change = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("user_id_change = :user_id_change");
+        setList.add("\"HINBAN\" = :hinban");
+        setList.add("\"ITEM\" = :item");
+        setList.add("\"ITEM_KBN\" = :item_kbn");
+        setList.add("\"HINBAN_OPE_CODE\" = :hinban_ope_code");
+        setList.add("\"ROUTING_GROUP\" = :routing_group");
+        setList.add("\"WC_CODE\" = :wc_code");
+        setList.add("\"WC_NAME\" = :wc_name");
+        setList.add("\"OPE_DETAIL\" = :ope_detail");
+        setList.add("\"LAST_IN_OUT_DATE\" = TO_TIMESTAMP (:last_in_out_date, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"STOCK\" = :stock");
+        setList.add("\"PRO_NO\" = :pro_no");
+        setList.add("\"NEXT_ROUTING\" = :next_routing");
+        setList.add("\"NEXT_WC\" = :next_wc");
+        setList.add("\"NEXT_DETAIL\" = :next_detail");
+        setList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"USER_ID_CHANGE\" = :user_id_change");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -552,26 +552,26 @@ public class InvStockProcessWk implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("time_stamp_change = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        whereList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("HINBAN", this.hinban);
-        params.put("ITEM", this.item);
-        params.put("ITEM_KBN", this.itemKbn);
-        params.put("HINBAN_OPE_CODE", this.hinbanOpeCode);
-        params.put("ROUTING_GROUP", this.routingGroup);
-        params.put("WC_CODE", this.wcCode);
-        params.put("WC_NAME", this.wcName);
-        params.put("OPE_DETAIL", this.opeDetail);
-        params.put("LAST_IN_OUT_DATE", this.lastInOutDate);
-        params.put("STOCK", this.stock);
-        params.put("PRO_NO", this.proNo);
-        params.put("NEXT_ROUTING", this.nextRouting);
-        params.put("NEXT_WC", this.nextWc);
-        params.put("NEXT_DETAIL", this.nextDetail);
+        params.put("hinban", this.hinban);
+        params.put("item", this.item);
+        params.put("item_kbn", this.itemKbn);
+        params.put("hinban_ope_code", this.hinbanOpeCode);
+        params.put("routing_group", this.routingGroup);
+        params.put("wc_code", this.wcCode);
+        params.put("wc_name", this.wcName);
+        params.put("ope_detail", this.opeDetail);
+        params.put("last_in_out_date", this.lastInOutDate);
+        params.put("stock", this.stock);
+        params.put("pro_no", this.proNo);
+        params.put("next_routing", this.nextRouting);
+        params.put("next_wc", this.nextWc);
+        params.put("next_detail", this.nextDetail);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

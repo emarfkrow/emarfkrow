@@ -201,12 +201,12 @@ public class PrdStoreMainteGyoHed implements IEntity {
 
         // PRD_STORE_MAINTE_GYO_HEDの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("gyo_no -- :gyo_no");
-        nameList.add("gyo_name -- :gyo_name");
-        nameList.add("time_stamp_create -- :time_stamp_create");
-        nameList.add("time_stamp_change -- :time_stamp_change");
-        nameList.add("user_id_create -- :user_id_create");
-        nameList.add("user_id_change -- :user_id_change");
+        nameList.add("\"GYO_NO\" -- :gyo_no");
+        nameList.add("\"GYO_NAME\" -- :gyo_name");
+        nameList.add("\"TIME_STAMP_CREATE\" -- :time_stamp_create");
+        nameList.add("\"TIME_STAMP_CHANGE\" -- :time_stamp_change");
+        nameList.add("\"USER_ID_CREATE\" -- :user_id_create");
+        nameList.add("\"USER_ID_CHANGE\" -- :user_id_change");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO PRD_STORE_MAINTE_GYO_HED(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -234,7 +234,7 @@ public class PrdStoreMainteGyoHed implements IEntity {
             return;
         }
 
-        String sql = "SELECT LPAD (CASE WHEN MAX(e.GYO_NO) IS NULL THEN 0 ELSE MAX(e.GYO_NO) * 1 END + 1, 3, '0') AS GYO_NO FROM PRD_STORE_MAINTE_GYO_HED e WHERE e.GYO_NO < '999'";
+        String sql = "SELECT LPAD (CASE WHEN MAX(e.\"GYO_NO\") IS NULL THEN 0 ELSE MAX(e.\"GYO_NO\") * 1 END + 1, 3, '0') AS \"GYO_NO\" FROM PRD_STORE_MAINTE_GYO_HED e WHERE e.\"GYO_NO\" < '999'";
 
         Map<String, Object> params = new HashMap<String, Object>();
 
@@ -282,10 +282,10 @@ public class PrdStoreMainteGyoHed implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("gyo_no = :gyo_no");
-        setList.add("gyo_name = :gyo_name");
-        setList.add("time_stamp_change = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("user_id_change = :user_id_change");
+        setList.add("\"GYO_NO\" = :gyo_no");
+        setList.add("\"GYO_NAME\" = :gyo_name");
+        setList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"USER_ID_CHANGE\" = :user_id_change");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -314,15 +314,15 @@ public class PrdStoreMainteGyoHed implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (gyo_no) = TRIM (:gyo_no)");
-        whereList.add("time_stamp_change = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        whereList.add("TRIM (\"GYO_NO\") = TRIM (:gyo_no)");
+        whereList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("GYO_NO", this.gyoNo);
-        params.put("GYO_NAME", this.gyoName);
+        params.put("gyo_no", this.gyoNo);
+        params.put("gyo_name", this.gyoName);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

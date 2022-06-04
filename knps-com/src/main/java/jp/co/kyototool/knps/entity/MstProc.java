@@ -256,15 +256,15 @@ public class MstProc implements IEntity {
 
         // MST_PROCの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("routing_code -- :routing_code");
-        nameList.add("routing_name -- :routing_name");
-        nameList.add("routing_name_sht -- :routing_name_sht");
-        nameList.add("time_stamp_create -- :time_stamp_create");
-        nameList.add("time_stamp_change -- :time_stamp_change");
-        nameList.add("user_id_create -- :user_id_create");
-        nameList.add("user_id_change -- :user_id_change");
-        nameList.add("delete_flag -- :delete_flag");
-        nameList.add("excel_color_index -- :excel_color_index");
+        nameList.add("\"ROUTING_CODE\" -- :routing_code");
+        nameList.add("\"ROUTING_NAME\" -- :routing_name");
+        nameList.add("\"ROUTING_NAME_SHT\" -- :routing_name_sht");
+        nameList.add("\"TIME_STAMP_CREATE\" -- :time_stamp_create");
+        nameList.add("\"TIME_STAMP_CHANGE\" -- :time_stamp_change");
+        nameList.add("\"USER_ID_CREATE\" -- :user_id_create");
+        nameList.add("\"USER_ID_CHANGE\" -- :user_id_change");
+        nameList.add("\"DELETE_FLAG\" -- :delete_flag");
+        nameList.add("\"EXCEL_COLOR_INDEX\" -- :excel_color_index");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO MST_PROC(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -295,7 +295,7 @@ public class MstProc implements IEntity {
             return;
         }
 
-        String sql = "SELECT LPAD (CASE WHEN MAX(e.ROUTING_CODE) IS NULL THEN 0 ELSE MAX(e.ROUTING_CODE) * 1 END + 1, 10, '0') AS ROUTING_CODE FROM MST_PROC e WHERE e.ROUTING_CODE < '9999999999'";
+        String sql = "SELECT LPAD (CASE WHEN MAX(e.\"ROUTING_CODE\") IS NULL THEN 0 ELSE MAX(e.\"ROUTING_CODE\") * 1 END + 1, 10, '0') AS \"ROUTING_CODE\" FROM MST_PROC e WHERE e.\"ROUTING_CODE\" < '9999999999'";
 
         Map<String, Object> params = new HashMap<String, Object>();
 
@@ -322,13 +322,13 @@ public class MstProc implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("routing_code = :routing_code");
-        setList.add("routing_name = :routing_name");
-        setList.add("routing_name_sht = :routing_name_sht");
-        setList.add("time_stamp_change = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("user_id_change = :user_id_change");
-        setList.add("delete_flag = :delete_flag");
-        setList.add("excel_color_index = :excel_color_index");
+        setList.add("\"ROUTING_CODE\" = :routing_code");
+        setList.add("\"ROUTING_NAME\" = :routing_name");
+        setList.add("\"ROUTING_NAME_SHT\" = :routing_name_sht");
+        setList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"USER_ID_CHANGE\" = :user_id_change");
+        setList.add("\"DELETE_FLAG\" = :delete_flag");
+        setList.add("\"EXCEL_COLOR_INDEX\" = :excel_color_index");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -350,18 +350,18 @@ public class MstProc implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (routing_code) = TRIM (:routing_code)");
-        whereList.add("time_stamp_change = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        whereList.add("TRIM (\"ROUTING_CODE\") = TRIM (:routing_code)");
+        whereList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("ROUTING_CODE", this.routingCode);
-        params.put("ROUTING_NAME", this.routingName);
-        params.put("ROUTING_NAME_SHT", this.routingNameSht);
-        params.put("DELETE_FLAG", this.deleteFlag);
-        params.put("EXCEL_COLOR_INDEX", this.excelColorIndex);
+        params.put("routing_code", this.routingCode);
+        params.put("routing_name", this.routingName);
+        params.put("routing_name_sht", this.routingNameSht);
+        params.put("delete_flag", this.deleteFlag);
+        params.put("excel_color_index", this.excelColorIndex);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

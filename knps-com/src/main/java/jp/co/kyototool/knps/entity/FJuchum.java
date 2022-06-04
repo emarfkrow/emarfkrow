@@ -288,16 +288,16 @@ public class FJuchum implements IEntity {
 
         // F_JUCHUMの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("tokucd -- :tokucd");
-        nameList.add("chokucd -- :chokucd");
-        nameList.add("hhinban -- :hhinban");
-        nameList.add("chuban -- :chuban");
-        nameList.add("juchusu -- :juchusu");
-        nameList.add("juchuno -- :juchuno");
-        nameList.add("time_stamp_create -- :time_stamp_create");
-        nameList.add("time_stamp_change -- :time_stamp_change");
-        nameList.add("user_id_create -- :user_id_create");
-        nameList.add("user_id_change -- :user_id_change");
+        nameList.add("\"TOKUCD\" -- :tokucd");
+        nameList.add("\"CHOKUCD\" -- :chokucd");
+        nameList.add("\"HHINBAN\" -- :hhinban");
+        nameList.add("\"CHUBAN\" -- :chuban");
+        nameList.add("\"JUCHUSU\" -- :juchusu");
+        nameList.add("\"JUCHUNO\" -- :juchuno");
+        nameList.add("\"TIME_STAMP_CREATE\" -- :time_stamp_create");
+        nameList.add("\"TIME_STAMP_CHANGE\" -- :time_stamp_change");
+        nameList.add("\"USER_ID_CREATE\" -- :user_id_create");
+        nameList.add("\"USER_ID_CHANGE\" -- :user_id_change");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO F_JUCHUM(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -351,14 +351,14 @@ public class FJuchum implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("tokucd = :tokucd");
-        setList.add("chokucd = :chokucd");
-        setList.add("hhinban = :hhinban");
-        setList.add("chuban = :chuban");
-        setList.add("juchusu = :juchusu");
-        setList.add("juchuno = :juchuno");
-        setList.add("time_stamp_change = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("user_id_change = :user_id_change");
+        setList.add("\"TOKUCD\" = :tokucd");
+        setList.add("\"CHOKUCD\" = :chokucd");
+        setList.add("\"HHINBAN\" = :hhinban");
+        setList.add("\"CHUBAN\" = :chuban");
+        setList.add("\"JUCHUSU\" = :juchusu");
+        setList.add("\"JUCHUNO\" = :juchuno");
+        setList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"USER_ID_CHANGE\" = :user_id_change");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -385,21 +385,21 @@ public class FJuchum implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("tokucd = :tokucd");
-        whereList.add("hhinban = :hhinban");
-        whereList.add("juchuno = :juchuno");
-        whereList.add("time_stamp_change = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        whereList.add("\"TOKUCD\" = :tokucd");
+        whereList.add("\"HHINBAN\" = :hhinban");
+        whereList.add("\"JUCHUNO\" = :juchuno");
+        whereList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("TOKUCD", this.tokucd);
-        params.put("CHOKUCD", this.chokucd);
-        params.put("HHINBAN", this.hhinban);
-        params.put("CHUBAN", this.chuban);
-        params.put("JUCHUSU", this.juchusu);
-        params.put("JUCHUNO", this.juchuno);
+        params.put("tokucd", this.tokucd);
+        params.put("chokucd", this.chokucd);
+        params.put("hhinban", this.hhinban);
+        params.put("chuban", this.chuban);
+        params.put("juchusu", this.juchusu);
+        params.put("juchuno", this.juchuno);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

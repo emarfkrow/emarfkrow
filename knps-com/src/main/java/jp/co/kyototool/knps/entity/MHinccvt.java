@@ -136,10 +136,10 @@ public class MHinccvt implements IEntity {
 
         // 品番変換マスタの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("cvthinban -- :cvthinban");
-        nameList.add("hhinban -- :hhinban");
-        nameList.add("chokuhinkbn -- :chokuhinkbn");
-        nameList.add("filler -- :filler");
+        nameList.add("\"CVTHINBAN\" -- :cvthinban");
+        nameList.add("\"HHINBAN\" -- :hhinban");
+        nameList.add("\"CHOKUHINKBN\" -- :chokuhinkbn");
+        nameList.add("\"FILLER\" -- :filler");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO M_HINCCVT(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -165,12 +165,12 @@ public class MHinccvt implements IEntity {
             return;
         }
 
-        String sql = "SELECT LPAD (CASE WHEN MAX(e.CHOKUHINKBN) IS NULL THEN 0 ELSE MAX(e.CHOKUHINKBN) * 1 END + 1, 1, '0') AS CHOKUHINKBN FROM M_HINCCVT e WHERE e.CHOKUHINKBN < '9'";
+        String sql = "SELECT LPAD (CASE WHEN MAX(e.\"CHOKUHINKBN\") IS NULL THEN 0 ELSE MAX(e.\"CHOKUHINKBN\") * 1 END + 1, 1, '0') AS \"CHOKUHINKBN\" FROM M_HINCCVT e WHERE e.\"CHOKUHINKBN\" < '9'";
 
         Map<String, Object> params = new HashMap<String, Object>();
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("e.CVTHINBAN = :cvthinban");
+        whereList.add("e.\"CVTHINBAN\" = :cvthinban");
         sql += " WHERE " + String.join(" AND ", whereList);
 
         params.put("cvthinban", this.cvthinban);
@@ -198,10 +198,10 @@ public class MHinccvt implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("cvthinban = :cvthinban");
-        setList.add("hhinban = :hhinban");
-        setList.add("chokuhinkbn = :chokuhinkbn");
-        setList.add("filler = :filler");
+        setList.add("\"CVTHINBAN\" = :cvthinban");
+        setList.add("\"HHINBAN\" = :hhinban");
+        setList.add("\"CHOKUHINKBN\" = :chokuhinkbn");
+        setList.add("\"FILLER\" = :filler");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -223,17 +223,17 @@ public class MHinccvt implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (cvthinban) = TRIM (:cvthinban)");
-        whereList.add("TRIM (chokuhinkbn) = TRIM (:chokuhinkbn)");
+        whereList.add("TRIM (\"CVTHINBAN\") = TRIM (:cvthinban)");
+        whereList.add("TRIM (\"CHOKUHINKBN\") = TRIM (:chokuhinkbn)");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("CVTHINBAN", this.cvthinban);
-        params.put("HHINBAN", this.hhinban);
-        params.put("CHOKUHINKBN", this.chokuhinkbn);
-        params.put("FILLER", this.filler);
+        params.put("cvthinban", this.cvthinban);
+        params.put("hhinban", this.hhinban);
+        params.put("chokuhinkbn", this.chokuhinkbn);
+        params.put("filler", this.filler);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

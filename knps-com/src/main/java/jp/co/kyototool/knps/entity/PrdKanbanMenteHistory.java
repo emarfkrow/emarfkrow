@@ -439,22 +439,22 @@ public class PrdKanbanMenteHistory implements IEntity {
 
         // PRD_KANBAN_MENTE_HISTORYの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("kanban_id -- :kanban_id");
-        nameList.add("serial_no -- :serial_no");
-        nameList.add("print_out_date -- :print_out_date");
-        nameList.add("print_out_operator -- :print_out_operator");
-        nameList.add("scrap_date -- :scrap_date");
-        nameList.add("scrap_operator -- :scrap_operator");
-        nameList.add("lost_date -- :lost_date");
-        nameList.add("lost_operator -- :lost_operator");
-        nameList.add("lost_req -- :lost_req");
-        nameList.add("lost_reason -- :lost_reason");
-        nameList.add("loss_scrap_date -- :loss_scrap_date");
-        nameList.add("loss_scrap_operator -- :loss_scrap_operator");
-        nameList.add("time_stamp_create -- :time_stamp_create");
-        nameList.add("time_stamp_change -- :time_stamp_change");
-        nameList.add("user_id_create -- :user_id_create");
-        nameList.add("user_id_change -- :user_id_change");
+        nameList.add("\"KANBAN_ID\" -- :kanban_id");
+        nameList.add("\"SERIAL_NO\" -- :serial_no");
+        nameList.add("\"PRINT_OUT_DATE\" -- :print_out_date");
+        nameList.add("\"PRINT_OUT_OPERATOR\" -- :print_out_operator");
+        nameList.add("\"SCRAP_DATE\" -- :scrap_date");
+        nameList.add("\"SCRAP_OPERATOR\" -- :scrap_operator");
+        nameList.add("\"LOST_DATE\" -- :lost_date");
+        nameList.add("\"LOST_OPERATOR\" -- :lost_operator");
+        nameList.add("\"LOST_REQ\" -- :lost_req");
+        nameList.add("\"LOST_REASON\" -- :lost_reason");
+        nameList.add("\"LOSS_SCRAP_DATE\" -- :loss_scrap_date");
+        nameList.add("\"LOSS_SCRAP_OPERATOR\" -- :loss_scrap_operator");
+        nameList.add("\"TIME_STAMP_CREATE\" -- :time_stamp_create");
+        nameList.add("\"TIME_STAMP_CHANGE\" -- :time_stamp_change");
+        nameList.add("\"USER_ID_CREATE\" -- :user_id_create");
+        nameList.add("\"USER_ID_CHANGE\" -- :user_id_change");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO PRD_KANBAN_MENTE_HISTORY(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -502,20 +502,20 @@ public class PrdKanbanMenteHistory implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("kanban_id = :kanban_id");
-        setList.add("serial_no = :serial_no");
-        setList.add("print_out_date = TO_TIMESTAMP (:print_out_date, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("print_out_operator = :print_out_operator");
-        setList.add("scrap_date = TO_TIMESTAMP (:scrap_date, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("scrap_operator = :scrap_operator");
-        setList.add("lost_date = TO_TIMESTAMP (:lost_date, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("lost_operator = :lost_operator");
-        setList.add("lost_req = :lost_req");
-        setList.add("lost_reason = :lost_reason");
-        setList.add("loss_scrap_date = TO_TIMESTAMP (:loss_scrap_date, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("loss_scrap_operator = :loss_scrap_operator");
-        setList.add("time_stamp_change = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("user_id_change = :user_id_change");
+        setList.add("\"KANBAN_ID\" = :kanban_id");
+        setList.add("\"SERIAL_NO\" = :serial_no");
+        setList.add("\"PRINT_OUT_DATE\" = TO_TIMESTAMP (:print_out_date, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"PRINT_OUT_OPERATOR\" = :print_out_operator");
+        setList.add("\"SCRAP_DATE\" = TO_TIMESTAMP (:scrap_date, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"SCRAP_OPERATOR\" = :scrap_operator");
+        setList.add("\"LOST_DATE\" = TO_TIMESTAMP (:lost_date, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"LOST_OPERATOR\" = :lost_operator");
+        setList.add("\"LOST_REQ\" = :lost_req");
+        setList.add("\"LOST_REASON\" = :lost_reason");
+        setList.add("\"LOSS_SCRAP_DATE\" = TO_TIMESTAMP (:loss_scrap_date, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"LOSS_SCRAP_OPERATOR\" = :loss_scrap_operator");
+        setList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"USER_ID_CHANGE\" = :user_id_change");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -537,26 +537,26 @@ public class PrdKanbanMenteHistory implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (kanban_id) = TRIM (:kanban_id)");
-        whereList.add("serial_no = :serial_no");
-        whereList.add("time_stamp_change = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        whereList.add("TRIM (\"KANBAN_ID\") = TRIM (:kanban_id)");
+        whereList.add("\"SERIAL_NO\" = :serial_no");
+        whereList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("KANBAN_ID", this.kanbanId);
-        params.put("SERIAL_NO", this.serialNo);
-        params.put("PRINT_OUT_DATE", this.printOutDate);
-        params.put("PRINT_OUT_OPERATOR", this.printOutOperator);
-        params.put("SCRAP_DATE", this.scrapDate);
-        params.put("SCRAP_OPERATOR", this.scrapOperator);
-        params.put("LOST_DATE", this.lostDate);
-        params.put("LOST_OPERATOR", this.lostOperator);
-        params.put("LOST_REQ", this.lostReq);
-        params.put("LOST_REASON", this.lostReason);
-        params.put("LOSS_SCRAP_DATE", this.lossScrapDate);
-        params.put("LOSS_SCRAP_OPERATOR", this.lossScrapOperator);
+        params.put("kanban_id", this.kanbanId);
+        params.put("serial_no", this.serialNo);
+        params.put("print_out_date", this.printOutDate);
+        params.put("print_out_operator", this.printOutOperator);
+        params.put("scrap_date", this.scrapDate);
+        params.put("scrap_operator", this.scrapOperator);
+        params.put("lost_date", this.lostDate);
+        params.put("lost_operator", this.lostOperator);
+        params.put("lost_req", this.lostReq);
+        params.put("lost_reason", this.lostReason);
+        params.put("loss_scrap_date", this.lossScrapDate);
+        params.put("loss_scrap_operator", this.lossScrapOperator);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

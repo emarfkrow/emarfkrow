@@ -211,13 +211,13 @@ public class MstId implements IEntity {
 
         // MST_IDの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("id_type -- :id_type");
-        nameList.add("id -- :id");
-        nameList.add("id_max -- :id_max");
-        nameList.add("id_min -- :id_min");
-        nameList.add("id_comment -- :id_comment");
-        nameList.add("time_stamp_create -- :time_stamp_create");
-        nameList.add("time_stamp_change -- :time_stamp_change");
+        nameList.add("\"ID_TYPE\" -- :id_type");
+        nameList.add("\"ID\" -- :id");
+        nameList.add("\"ID_MAX\" -- :id_max");
+        nameList.add("\"ID_MIN\" -- :id_min");
+        nameList.add("\"ID_COMMENT\" -- :id_comment");
+        nameList.add("\"TIME_STAMP_CREATE\" -- :time_stamp_create");
+        nameList.add("\"TIME_STAMP_CHANGE\" -- :time_stamp_change");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO MST_ID(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -256,12 +256,12 @@ public class MstId implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("id_type = :id_type");
-        setList.add("id = :id");
-        setList.add("id_max = :id_max");
-        setList.add("id_min = :id_min");
-        setList.add("id_comment = :id_comment");
-        setList.add("time_stamp_change = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"ID_TYPE\" = :id_type");
+        setList.add("\"ID\" = :id");
+        setList.add("\"ID_MAX\" = :id_max");
+        setList.add("\"ID_MIN\" = :id_min");
+        setList.add("\"ID_COMMENT\" = :id_comment");
+        setList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -283,18 +283,18 @@ public class MstId implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("id_type = :id_type");
-        whereList.add("time_stamp_change = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        whereList.add("\"ID_TYPE\" = :id_type");
+        whereList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("ID_TYPE", this.idType);
-        params.put("ID", this.id);
-        params.put("ID_MAX", this.idMax);
-        params.put("ID_MIN", this.idMin);
-        params.put("ID_COMMENT", this.idComment);
+        params.put("id_type", this.idType);
+        params.put("id", this.id);
+        params.put("id_max", this.idMax);
+        params.put("id_min", this.idMin);
+        params.put("id_comment", this.idComment);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

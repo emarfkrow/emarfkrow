@@ -214,13 +214,13 @@ public class MstMaterial implements IEntity {
 
         // MST_MATERIALの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("material -- :material");
-        nameList.add("material_name -- :material_name");
-        nameList.add("time_stamp_create -- :time_stamp_create");
-        nameList.add("time_stamp_change -- :time_stamp_change");
-        nameList.add("user_id_create -- :user_id_create");
-        nameList.add("user_id_change -- :user_id_change");
-        nameList.add("delete_flag -- :delete_flag");
+        nameList.add("\"MATERIAL\" -- :material");
+        nameList.add("\"MATERIAL_NAME\" -- :material_name");
+        nameList.add("\"TIME_STAMP_CREATE\" -- :time_stamp_create");
+        nameList.add("\"TIME_STAMP_CHANGE\" -- :time_stamp_change");
+        nameList.add("\"USER_ID_CREATE\" -- :user_id_create");
+        nameList.add("\"USER_ID_CHANGE\" -- :user_id_change");
+        nameList.add("\"DELETE_FLAG\" -- :delete_flag");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO MST_MATERIAL(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -249,7 +249,7 @@ public class MstMaterial implements IEntity {
             return;
         }
 
-        String sql = "SELECT LPAD (CASE WHEN MAX(e.MATERIAL) IS NULL THEN 0 ELSE MAX(e.MATERIAL) * 1 END + 1, 5, '0') AS MATERIAL FROM MST_MATERIAL e WHERE e.MATERIAL < '99999'";
+        String sql = "SELECT LPAD (CASE WHEN MAX(e.\"MATERIAL\") IS NULL THEN 0 ELSE MAX(e.\"MATERIAL\") * 1 END + 1, 5, '0') AS \"MATERIAL\" FROM MST_MATERIAL e WHERE e.\"MATERIAL\" < '99999'";
 
         Map<String, Object> params = new HashMap<String, Object>();
 
@@ -276,11 +276,11 @@ public class MstMaterial implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("material = :material");
-        setList.add("material_name = :material_name");
-        setList.add("time_stamp_change = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("user_id_change = :user_id_change");
-        setList.add("delete_flag = :delete_flag");
+        setList.add("\"MATERIAL\" = :material");
+        setList.add("\"MATERIAL_NAME\" = :material_name");
+        setList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"USER_ID_CHANGE\" = :user_id_change");
+        setList.add("\"DELETE_FLAG\" = :delete_flag");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -302,16 +302,16 @@ public class MstMaterial implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (material) = TRIM (:material)");
-        whereList.add("time_stamp_change = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        whereList.add("TRIM (\"MATERIAL\") = TRIM (:material)");
+        whereList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("MATERIAL", this.material);
-        params.put("MATERIAL_NAME", this.materialName);
-        params.put("DELETE_FLAG", this.deleteFlag);
+        params.put("material", this.material);
+        params.put("material_name", this.materialName);
+        params.put("delete_flag", this.deleteFlag);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

@@ -109,9 +109,9 @@ public class MWseigyo implements IEntity {
 
         // WEB制御マスタの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("web_datakbn -- :web_datakbn");
-        nameList.add("web_juchuno1 -- :web_juchuno1");
-        nameList.add("filler -- :filler");
+        nameList.add("\"WEB-DATAKBN\" -- :web_datakbn");
+        nameList.add("\"WEB-JUCHUNO1\" -- :web_juchuno1");
+        nameList.add("\"FILLER\" -- :filler");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO M_WSEIGYO(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -146,9 +146,9 @@ public class MWseigyo implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("web-datakbn = :web-datakbn");
-        setList.add("web-juchuno1 = :web-juchuno1");
-        setList.add("filler = :filler");
+        setList.add("\"WEB-DATAKBN\" = :web_datakbn");
+        setList.add("\"WEB-JUCHUNO1\" = :web_juchuno1");
+        setList.add("\"FILLER\" = :filler");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -170,15 +170,15 @@ public class MWseigyo implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("web-datakbn = :web-datakbn");
+        whereList.add("\"WEB-DATAKBN\" = :web_datakbn");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("WEB-DATAKBN", this.webDatakbn);
-        params.put("WEB-JUCHUNO1", this.webJuchuno1);
-        params.put("FILLER", this.filler);
+        params.put("web_datakbn", this.webDatakbn);
+        params.put("web_juchuno1", this.webJuchuno1);
+        params.put("filler", this.filler);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

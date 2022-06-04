@@ -220,14 +220,14 @@ public class MHcalend implements IEntity {
 
         // 販売カレンダーの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("yymm -- :yymm");
-        nameList.add("calendkbn -- :calendkbn");
-        nameList.add("kadonitusu -- :kadonitusu");
-        nameList.add("dd -- :dd");
-        nameList.add("youbi -- :youbi");
-        nameList.add("kadoukbn -- :kadoukbn");
-        nameList.add("kadourui -- :kadourui");
-        nameList.add("filler -- :filler");
+        nameList.add("\"YYMM\" -- :yymm");
+        nameList.add("\"CALENDKBN\" -- :calendkbn");
+        nameList.add("\"KADONITUSU\" -- :kadonitusu");
+        nameList.add("\"DD\" -- :dd");
+        nameList.add("\"YOUBI\" -- :youbi");
+        nameList.add("\"KADOUKBN\" -- :kadoukbn");
+        nameList.add("\"KADOURUI\" -- :kadourui");
+        nameList.add("\"FILLER\" -- :filler");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO M_HCALEND(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -257,12 +257,12 @@ public class MHcalend implements IEntity {
             return;
         }
 
-        String sql = "SELECT LPAD (CASE WHEN MAX(e.CALENDKBN) IS NULL THEN 0 ELSE MAX(e.CALENDKBN) * 1 END + 1, 1, '0') AS CALENDKBN FROM M_HCALEND e WHERE e.CALENDKBN < '9'";
+        String sql = "SELECT LPAD (CASE WHEN MAX(e.\"CALENDKBN\") IS NULL THEN 0 ELSE MAX(e.\"CALENDKBN\") * 1 END + 1, 1, '0') AS \"CALENDKBN\" FROM M_HCALEND e WHERE e.\"CALENDKBN\" < '9'";
 
         Map<String, Object> params = new HashMap<String, Object>();
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("e.YYMM = :yymm");
+        whereList.add("e.\"YYMM\" = :yymm");
         sql += " WHERE " + String.join(" AND ", whereList);
 
         params.put("yymm", this.yymm);
@@ -290,14 +290,14 @@ public class MHcalend implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("yymm = :yymm");
-        setList.add("calendkbn = :calendkbn");
-        setList.add("kadonitusu = :kadonitusu");
-        setList.add("dd = :dd");
-        setList.add("youbi = :youbi");
-        setList.add("kadoukbn = :kadoukbn");
-        setList.add("kadourui = :kadourui");
-        setList.add("filler = :filler");
+        setList.add("\"YYMM\" = :yymm");
+        setList.add("\"CALENDKBN\" = :calendkbn");
+        setList.add("\"KADONITUSU\" = :kadonitusu");
+        setList.add("\"DD\" = :dd");
+        setList.add("\"YOUBI\" = :youbi");
+        setList.add("\"KADOUKBN\" = :kadoukbn");
+        setList.add("\"KADOURUI\" = :kadourui");
+        setList.add("\"FILLER\" = :filler");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -319,21 +319,21 @@ public class MHcalend implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("yymm = :yymm");
-        whereList.add("TRIM (calendkbn) = TRIM (:calendkbn)");
+        whereList.add("\"YYMM\" = :yymm");
+        whereList.add("TRIM (\"CALENDKBN\") = TRIM (:calendkbn)");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("YYMM", this.yymm);
-        params.put("CALENDKBN", this.calendkbn);
-        params.put("KADONITUSU", this.kadonitusu);
-        params.put("DD", this.dd);
-        params.put("YOUBI", this.youbi);
-        params.put("KADOUKBN", this.kadoukbn);
-        params.put("KADOURUI", this.kadourui);
-        params.put("FILLER", this.filler);
+        params.put("yymm", this.yymm);
+        params.put("calendkbn", this.calendkbn);
+        params.put("kadonitusu", this.kadonitusu);
+        params.put("dd", this.dd);
+        params.put("youbi", this.youbi);
+        params.put("kadoukbn", this.kadoukbn);
+        params.put("kadourui", this.kadourui);
+        params.put("filler", this.filler);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

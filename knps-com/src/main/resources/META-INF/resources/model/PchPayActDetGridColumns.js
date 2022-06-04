@@ -9,7 +9,7 @@ let PchPayActDetGridColumns = [
     Column.text('UNIT_PRICE', Messages['PchPayActDetGrid.unitPrice'], 90, '', null),
     Column.text('AMOUNT', Messages['PchPayActDetGrid.amount'], 110, '', null),
     Column.text('TAX_AMOUNT', Messages['PchPayActDetGrid.taxAmount'], 110, '', null),
-    Column.longText('MEMO', Messages['PchPayActDetGrid.memo'], 300, '', null),
+    Column.text('MEMO', Messages['PchPayActDetGrid.memo'], 300, '', null),
     Column.date('CLOSE_DATE', Messages['PchPayActDetGrid.closeDate'], 70, '', Slick.Formatters.Extends.DateTime),
     Column.cell('TIME_STAMP_CREATE', Messages['PchPayActDetGrid.timeStampCreate'], 70, 'metaInfo', Slick.Formatters.Extends.DateTime),
     Column.cell('TIME_STAMP_CHANGE', Messages['PchPayActDetGrid.timeStampChange'], 70, 'metaInfo', Slick.Formatters.Extends.DateTime),

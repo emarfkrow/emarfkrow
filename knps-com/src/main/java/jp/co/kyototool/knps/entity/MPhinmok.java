@@ -385,22 +385,22 @@ public class MPhinmok implements IEntity {
 
         // 部品マスタの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("phinban -- :phinban");
-        nameList.add("phinmei -- :phinmei");
-        nameList.add("phinmeik -- :phinmeik");
-        nameList.add("hinban -- :hinban");
-        nameList.add("p_kakaku -- :p_kakaku");
-        nameList.add("p_genka -- :p_genka");
-        nameList.add("p_kbn -- :p_kbn");
-        nameList.add("kishuzan -- :kishuzan");
-        nameList.add("kijyunzaiko -- :kijyunzaiko");
-        nameList.add("hachuten -- :hachuten");
-        nameList.add("tourokukbn -- :tourokukbn");
-        nameList.add("denpyotkbn -- :denpyotkbn");
-        nameList.add("jukinkbn -- :jukinkbn");
-        nameList.add("dltflg -- :dltflg");
-        nameList.add("upddate -- :upddate");
-        nameList.add("filler -- :filler");
+        nameList.add("\"PHINBAN\" -- :phinban");
+        nameList.add("\"PHINMEI\" -- :phinmei");
+        nameList.add("\"PHINMEIK\" -- :phinmeik");
+        nameList.add("\"HINBAN\" -- :hinban");
+        nameList.add("\"P-KAKAKU\" -- :p_kakaku");
+        nameList.add("\"P-GENKA\" -- :p_genka");
+        nameList.add("\"P-KBN\" -- :p_kbn");
+        nameList.add("\"KISHUZAN\" -- :kishuzan");
+        nameList.add("\"KIJYUNZAIKO\" -- :kijyunzaiko");
+        nameList.add("\"HACHUTEN\" -- :hachuten");
+        nameList.add("\"TOUROKUKBN\" -- :tourokukbn");
+        nameList.add("\"DENPYOTKBN\" -- :denpyotkbn");
+        nameList.add("\"JUKINKBN\" -- :jukinkbn");
+        nameList.add("\"DLTFLG\" -- :dltflg");
+        nameList.add("\"UPDDATE\" -- :upddate");
+        nameList.add("\"FILLER\" -- :filler");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO M_PHINMOK(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -438,7 +438,7 @@ public class MPhinmok implements IEntity {
             return;
         }
 
-        String sql = "SELECT LPAD (CASE WHEN MAX(e.PHINBAN) IS NULL THEN 0 ELSE MAX(e.PHINBAN) * 1 END + 1, 20, '0') AS PHINBAN FROM M_PHINMOK e WHERE e.PHINBAN < '99999999999999999999'";
+        String sql = "SELECT LPAD (CASE WHEN MAX(e.\"PHINBAN\") IS NULL THEN 0 ELSE MAX(e.\"PHINBAN\") * 1 END + 1, 20, '0') AS \"PHINBAN\" FROM M_PHINMOK e WHERE e.\"PHINBAN\" < '99999999999999999999'";
 
         Map<String, Object> params = new HashMap<String, Object>();
 
@@ -465,22 +465,22 @@ public class MPhinmok implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("phinban = :phinban");
-        setList.add("phinmei = :phinmei");
-        setList.add("phinmeik = :phinmeik");
-        setList.add("hinban = :hinban");
-        setList.add("p-kakaku = :p-kakaku");
-        setList.add("p-genka = :p-genka");
-        setList.add("p-kbn = :p-kbn");
-        setList.add("kishuzan = :kishuzan");
-        setList.add("kijyunzaiko = :kijyunzaiko");
-        setList.add("hachuten = :hachuten");
-        setList.add("tourokukbn = :tourokukbn");
-        setList.add("denpyotkbn = :denpyotkbn");
-        setList.add("jukinkbn = :jukinkbn");
-        setList.add("dltflg = :dltflg");
-        setList.add("upddate = :upddate");
-        setList.add("filler = :filler");
+        setList.add("\"PHINBAN\" = :phinban");
+        setList.add("\"PHINMEI\" = :phinmei");
+        setList.add("\"PHINMEIK\" = :phinmeik");
+        setList.add("\"HINBAN\" = :hinban");
+        setList.add("\"P-KAKAKU\" = :p_kakaku");
+        setList.add("\"P-GENKA\" = :p_genka");
+        setList.add("\"P-KBN\" = :p_kbn");
+        setList.add("\"KISHUZAN\" = :kishuzan");
+        setList.add("\"KIJYUNZAIKO\" = :kijyunzaiko");
+        setList.add("\"HACHUTEN\" = :hachuten");
+        setList.add("\"TOUROKUKBN\" = :tourokukbn");
+        setList.add("\"DENPYOTKBN\" = :denpyotkbn");
+        setList.add("\"JUKINKBN\" = :jukinkbn");
+        setList.add("\"DLTFLG\" = :dltflg");
+        setList.add("\"UPDDATE\" = :upddate");
+        setList.add("\"FILLER\" = :filler");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -502,28 +502,28 @@ public class MPhinmok implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (phinban) = TRIM (:phinban)");
+        whereList.add("TRIM (\"PHINBAN\") = TRIM (:phinban)");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("PHINBAN", this.phinban);
-        params.put("PHINMEI", this.phinmei);
-        params.put("PHINMEIK", this.phinmeik);
-        params.put("HINBAN", this.hinban);
-        params.put("P-KAKAKU", this.pKakaku);
-        params.put("P-GENKA", this.pGenka);
-        params.put("P-KBN", this.pKbn);
-        params.put("KISHUZAN", this.kishuzan);
-        params.put("KIJYUNZAIKO", this.kijyunzaiko);
-        params.put("HACHUTEN", this.hachuten);
-        params.put("TOUROKUKBN", this.tourokukbn);
-        params.put("DENPYOTKBN", this.denpyotkbn);
-        params.put("JUKINKBN", this.jukinkbn);
-        params.put("DLTFLG", this.dltflg);
-        params.put("UPDDATE", this.upddate);
-        params.put("FILLER", this.filler);
+        params.put("phinban", this.phinban);
+        params.put("phinmei", this.phinmei);
+        params.put("phinmeik", this.phinmeik);
+        params.put("hinban", this.hinban);
+        params.put("p_kakaku", this.pKakaku);
+        params.put("p_genka", this.pGenka);
+        params.put("p_kbn", this.pKbn);
+        params.put("kishuzan", this.kishuzan);
+        params.put("kijyunzaiko", this.kijyunzaiko);
+        params.put("hachuten", this.hachuten);
+        params.put("tourokukbn", this.tourokukbn);
+        params.put("denpyotkbn", this.denpyotkbn);
+        params.put("jukinkbn", this.jukinkbn);
+        params.put("dltflg", this.dltflg);
+        params.put("upddate", this.upddate);
+        params.put("filler", this.filler);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

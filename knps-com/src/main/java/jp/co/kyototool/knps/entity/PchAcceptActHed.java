@@ -391,21 +391,21 @@ public class PchAcceptActHed implements IEntity {
 
         // PCH_ACCEPT_ACT_HEDの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("act_no -- :act_no");
-        nameList.add("sup_code -- :sup_code");
-        nameList.add("order_no -- :order_no");
-        nameList.add("hinban -- :hinban");
-        nameList.add("item -- :item");
-        nameList.add("accept_date -- :accept_date");
-        nameList.add("unit_code -- :unit_code");
-        nameList.add("tax_code -- :tax_code");
-        nameList.add("tax_cal_code -- :tax_cal_code");
-        nameList.add("subinv_code -- :subinv_code");
-        nameList.add("account_code -- :account_code");
-        nameList.add("time_stamp_create -- :time_stamp_create");
-        nameList.add("time_stamp_change -- :time_stamp_change");
-        nameList.add("user_id_create -- :user_id_create");
-        nameList.add("user_id_change -- :user_id_change");
+        nameList.add("\"ACT_NO\" -- :act_no");
+        nameList.add("\"SUP_CODE\" -- :sup_code");
+        nameList.add("\"ORDER_NO\" -- :order_no");
+        nameList.add("\"HINBAN\" -- :hinban");
+        nameList.add("\"ITEM\" -- :item");
+        nameList.add("\"ACCEPT_DATE\" -- :accept_date");
+        nameList.add("\"UNIT_CODE\" -- :unit_code");
+        nameList.add("\"TAX_CODE\" -- :tax_code");
+        nameList.add("\"TAX_CAL_CODE\" -- :tax_cal_code");
+        nameList.add("\"SUBINV_CODE\" -- :subinv_code");
+        nameList.add("\"ACCOUNT_CODE\" -- :account_code");
+        nameList.add("\"TIME_STAMP_CREATE\" -- :time_stamp_create");
+        nameList.add("\"TIME_STAMP_CHANGE\" -- :time_stamp_change");
+        nameList.add("\"USER_ID_CREATE\" -- :user_id_create");
+        nameList.add("\"USER_ID_CHANGE\" -- :user_id_change");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO PCH_ACCEPT_ACT_HED(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -442,7 +442,7 @@ public class PchAcceptActHed implements IEntity {
             return;
         }
 
-        String sql = "SELECT LPAD (CASE WHEN MAX(e.ACT_NO) IS NULL THEN 0 ELSE MAX(e.ACT_NO) * 1 END + 1, 10, '0') AS ACT_NO FROM PCH_ACCEPT_ACT_HED e WHERE e.ACT_NO < '9999999999'";
+        String sql = "SELECT LPAD (CASE WHEN MAX(e.\"ACT_NO\") IS NULL THEN 0 ELSE MAX(e.\"ACT_NO\") * 1 END + 1, 10, '0') AS \"ACT_NO\" FROM PCH_ACCEPT_ACT_HED e WHERE e.\"ACT_NO\" < '9999999999'";
 
         Map<String, Object> params = new HashMap<String, Object>();
 
@@ -469,19 +469,19 @@ public class PchAcceptActHed implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("act_no = :act_no");
-        setList.add("sup_code = :sup_code");
-        setList.add("order_no = :order_no");
-        setList.add("hinban = :hinban");
-        setList.add("item = :item");
-        setList.add("accept_date = TO_TIMESTAMP (:accept_date, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("unit_code = :unit_code");
-        setList.add("tax_code = :tax_code");
-        setList.add("tax_cal_code = :tax_cal_code");
-        setList.add("subinv_code = :subinv_code");
-        setList.add("account_code = :account_code");
-        setList.add("time_stamp_change = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("user_id_change = :user_id_change");
+        setList.add("\"ACT_NO\" = :act_no");
+        setList.add("\"SUP_CODE\" = :sup_code");
+        setList.add("\"ORDER_NO\" = :order_no");
+        setList.add("\"HINBAN\" = :hinban");
+        setList.add("\"ITEM\" = :item");
+        setList.add("\"ACCEPT_DATE\" = TO_TIMESTAMP (:accept_date, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"UNIT_CODE\" = :unit_code");
+        setList.add("\"TAX_CODE\" = :tax_code");
+        setList.add("\"TAX_CAL_CODE\" = :tax_cal_code");
+        setList.add("\"SUBINV_CODE\" = :subinv_code");
+        setList.add("\"ACCOUNT_CODE\" = :account_code");
+        setList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"USER_ID_CHANGE\" = :user_id_change");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -503,24 +503,24 @@ public class PchAcceptActHed implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (act_no) = TRIM (:act_no)");
-        whereList.add("time_stamp_change = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        whereList.add("TRIM (\"ACT_NO\") = TRIM (:act_no)");
+        whereList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("ACT_NO", this.actNo);
-        params.put("SUP_CODE", this.supCode);
-        params.put("ORDER_NO", this.orderNo);
-        params.put("HINBAN", this.hinban);
-        params.put("ITEM", this.item);
-        params.put("ACCEPT_DATE", this.acceptDate);
-        params.put("UNIT_CODE", this.unitCode);
-        params.put("TAX_CODE", this.taxCode);
-        params.put("TAX_CAL_CODE", this.taxCalCode);
-        params.put("SUBINV_CODE", this.subinvCode);
-        params.put("ACCOUNT_CODE", this.accountCode);
+        params.put("act_no", this.actNo);
+        params.put("sup_code", this.supCode);
+        params.put("order_no", this.orderNo);
+        params.put("hinban", this.hinban);
+        params.put("item", this.item);
+        params.put("accept_date", this.acceptDate);
+        params.put("unit_code", this.unitCode);
+        params.put("tax_code", this.taxCode);
+        params.put("tax_cal_code", this.taxCalCode);
+        params.put("subinv_code", this.subinvCode);
+        params.put("account_code", this.accountCode);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

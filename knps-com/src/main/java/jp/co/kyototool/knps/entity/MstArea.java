@@ -232,14 +232,14 @@ public class MstArea implements IEntity {
 
         // MST_AREAの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("area_cd -- :area_cd");
-        nameList.add("area_mei -- :area_mei");
-        nameList.add("sub_inv_code -- :sub_inv_code");
-        nameList.add("delete_f -- :delete_f");
-        nameList.add("time_stamp_create -- :time_stamp_create");
-        nameList.add("time_stamp_change -- :time_stamp_change");
-        nameList.add("user_id_create -- :user_id_create");
-        nameList.add("user_id_change -- :user_id_change");
+        nameList.add("\"AREA_CD\" -- :area_cd");
+        nameList.add("\"AREA_MEI\" -- :area_mei");
+        nameList.add("\"SUB_INV_CODE\" -- :sub_inv_code");
+        nameList.add("\"DELETE_F\" -- :delete_f");
+        nameList.add("\"TIME_STAMP_CREATE\" -- :time_stamp_create");
+        nameList.add("\"TIME_STAMP_CHANGE\" -- :time_stamp_change");
+        nameList.add("\"USER_ID_CREATE\" -- :user_id_create");
+        nameList.add("\"USER_ID_CHANGE\" -- :user_id_change");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO MST_AREA(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -279,12 +279,12 @@ public class MstArea implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("area_cd = :area_cd");
-        setList.add("area_mei = :area_mei");
-        setList.add("sub_inv_code = :sub_inv_code");
-        setList.add("delete_f = :delete_f");
-        setList.add("time_stamp_change = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("user_id_change = :user_id_change");
+        setList.add("\"AREA_CD\" = :area_cd");
+        setList.add("\"AREA_MEI\" = :area_mei");
+        setList.add("\"SUB_INV_CODE\" = :sub_inv_code");
+        setList.add("\"DELETE_F\" = :delete_f");
+        setList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"USER_ID_CHANGE\" = :user_id_change");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -306,17 +306,17 @@ public class MstArea implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("area_cd = :area_cd");
-        whereList.add("time_stamp_change = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        whereList.add("\"AREA_CD\" = :area_cd");
+        whereList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("AREA_CD", this.areaCd);
-        params.put("AREA_MEI", this.areaMei);
-        params.put("SUB_INV_CODE", this.subInvCode);
-        params.put("DELETE_F", this.deleteF);
+        params.put("area_cd", this.areaCd);
+        params.put("area_mei", this.areaMei);
+        params.put("sub_inv_code", this.subInvCode);
+        params.put("delete_f", this.deleteF);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

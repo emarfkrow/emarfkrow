@@ -418,23 +418,23 @@ public class PrdMWsManLoadPlanBk implements IEntity {
 
         // PRD_M_WS_MAN_LOAD_PLAN_BKの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("yyyy -- :yyyy");
-        nameList.add("mm -- :mm");
-        nameList.add("man_hinban -- :man_hinban");
-        nameList.add("ws_code -- :ws_code");
-        nameList.add("pro_nes_counts -- :pro_nes_counts");
-        nameList.add("hum_pre_time -- :hum_pre_time");
-        nameList.add("hum_act_time -- :hum_act_time");
-        nameList.add("mac_pre_time_in -- :mac_pre_time_in");
-        nameList.add("mac_act_time_in -- :mac_act_time_in");
-        nameList.add("mac_pre_time_out -- :mac_pre_time_out");
-        nameList.add("mac_act_time_out -- :mac_act_time_out");
-        nameList.add("mac_pre_time_kanban -- :mac_pre_time_kanban");
-        nameList.add("mac_act_time_kanban -- :mac_act_time_kanban");
-        nameList.add("time_stamp_create -- :time_stamp_create");
-        nameList.add("time_stamp_change -- :time_stamp_change");
-        nameList.add("user_id_create -- :user_id_create");
-        nameList.add("user_id_change -- :user_id_change");
+        nameList.add("\"YYYY\" -- :yyyy");
+        nameList.add("\"MM\" -- :mm");
+        nameList.add("\"MAN_HINBAN\" -- :man_hinban");
+        nameList.add("\"WS_CODE\" -- :ws_code");
+        nameList.add("\"PRO_NES_COUNTS\" -- :pro_nes_counts");
+        nameList.add("\"HUM_PRE_TIME\" -- :hum_pre_time");
+        nameList.add("\"HUM_ACT_TIME\" -- :hum_act_time");
+        nameList.add("\"MAC_PRE_TIME_IN\" -- :mac_pre_time_in");
+        nameList.add("\"MAC_ACT_TIME_IN\" -- :mac_act_time_in");
+        nameList.add("\"MAC_PRE_TIME_OUT\" -- :mac_pre_time_out");
+        nameList.add("\"MAC_ACT_TIME_OUT\" -- :mac_act_time_out");
+        nameList.add("\"MAC_PRE_TIME_KANBAN\" -- :mac_pre_time_kanban");
+        nameList.add("\"MAC_ACT_TIME_KANBAN\" -- :mac_act_time_kanban");
+        nameList.add("\"TIME_STAMP_CREATE\" -- :time_stamp_create");
+        nameList.add("\"TIME_STAMP_CHANGE\" -- :time_stamp_change");
+        nameList.add("\"USER_ID_CREATE\" -- :user_id_create");
+        nameList.add("\"USER_ID_CHANGE\" -- :user_id_change");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO PRD_M_WS_MAN_LOAD_PLAN_BK(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -483,21 +483,21 @@ public class PrdMWsManLoadPlanBk implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("yyyy = :yyyy");
-        setList.add("mm = :mm");
-        setList.add("man_hinban = :man_hinban");
-        setList.add("ws_code = :ws_code");
-        setList.add("pro_nes_counts = :pro_nes_counts");
-        setList.add("hum_pre_time = :hum_pre_time");
-        setList.add("hum_act_time = :hum_act_time");
-        setList.add("mac_pre_time_in = :mac_pre_time_in");
-        setList.add("mac_act_time_in = :mac_act_time_in");
-        setList.add("mac_pre_time_out = :mac_pre_time_out");
-        setList.add("mac_act_time_out = :mac_act_time_out");
-        setList.add("mac_pre_time_kanban = :mac_pre_time_kanban");
-        setList.add("mac_act_time_kanban = :mac_act_time_kanban");
-        setList.add("time_stamp_change = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("user_id_change = :user_id_change");
+        setList.add("\"YYYY\" = :yyyy");
+        setList.add("\"MM\" = :mm");
+        setList.add("\"MAN_HINBAN\" = :man_hinban");
+        setList.add("\"WS_CODE\" = :ws_code");
+        setList.add("\"PRO_NES_COUNTS\" = :pro_nes_counts");
+        setList.add("\"HUM_PRE_TIME\" = :hum_pre_time");
+        setList.add("\"HUM_ACT_TIME\" = :hum_act_time");
+        setList.add("\"MAC_PRE_TIME_IN\" = :mac_pre_time_in");
+        setList.add("\"MAC_ACT_TIME_IN\" = :mac_act_time_in");
+        setList.add("\"MAC_PRE_TIME_OUT\" = :mac_pre_time_out");
+        setList.add("\"MAC_ACT_TIME_OUT\" = :mac_act_time_out");
+        setList.add("\"MAC_PRE_TIME_KANBAN\" = :mac_pre_time_kanban");
+        setList.add("\"MAC_ACT_TIME_KANBAN\" = :mac_act_time_kanban");
+        setList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"USER_ID_CHANGE\" = :user_id_change");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -519,25 +519,25 @@ public class PrdMWsManLoadPlanBk implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("time_stamp_change = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        whereList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("YYYY", this.yyyy);
-        params.put("MM", this.mm);
-        params.put("MAN_HINBAN", this.manHinban);
-        params.put("WS_CODE", this.wsCode);
-        params.put("PRO_NES_COUNTS", this.proNesCounts);
-        params.put("HUM_PRE_TIME", this.humPreTime);
-        params.put("HUM_ACT_TIME", this.humActTime);
-        params.put("MAC_PRE_TIME_IN", this.macPreTimeIn);
-        params.put("MAC_ACT_TIME_IN", this.macActTimeIn);
-        params.put("MAC_PRE_TIME_OUT", this.macPreTimeOut);
-        params.put("MAC_ACT_TIME_OUT", this.macActTimeOut);
-        params.put("MAC_PRE_TIME_KANBAN", this.macPreTimeKanban);
-        params.put("MAC_ACT_TIME_KANBAN", this.macActTimeKanban);
+        params.put("yyyy", this.yyyy);
+        params.put("mm", this.mm);
+        params.put("man_hinban", this.manHinban);
+        params.put("ws_code", this.wsCode);
+        params.put("pro_nes_counts", this.proNesCounts);
+        params.put("hum_pre_time", this.humPreTime);
+        params.put("hum_act_time", this.humActTime);
+        params.put("mac_pre_time_in", this.macPreTimeIn);
+        params.put("mac_act_time_in", this.macActTimeIn);
+        params.put("mac_pre_time_out", this.macPreTimeOut);
+        params.put("mac_act_time_out", this.macActTimeOut);
+        params.put("mac_pre_time_kanban", this.macPreTimeKanban);
+        params.put("mac_act_time_kanban", this.macActTimeKanban);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

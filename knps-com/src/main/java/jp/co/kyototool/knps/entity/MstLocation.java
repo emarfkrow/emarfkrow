@@ -340,19 +340,19 @@ public class MstLocation implements IEntity {
 
         // MST_LOCATIONの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("location_code -- :location_code");
-        nameList.add("location_name -- :location_name");
-        nameList.add("loc_kbn -- :loc_kbn");
-        nameList.add("loc_status -- :loc_status");
-        nameList.add("loc_enable -- :loc_enable");
-        nameList.add("sub_inv_code -- :sub_inv_code");
-        nameList.add("time_stamp_create -- :time_stamp_create");
-        nameList.add("time_stamp_change -- :time_stamp_change");
-        nameList.add("user_id_create -- :user_id_create");
-        nameList.add("user_id_change -- :user_id_change");
-        nameList.add("delete_flag -- :delete_flag");
-        nameList.add("area_cd -- :area_cd");
-        nameList.add("store_man_id -- :store_man_id");
+        nameList.add("\"LOCATION_CODE\" -- :location_code");
+        nameList.add("\"LOCATION_NAME\" -- :location_name");
+        nameList.add("\"LOC_KBN\" -- :loc_kbn");
+        nameList.add("\"LOC_STATUS\" -- :loc_status");
+        nameList.add("\"LOC_ENABLE\" -- :loc_enable");
+        nameList.add("\"SUB_INV_CODE\" -- :sub_inv_code");
+        nameList.add("\"TIME_STAMP_CREATE\" -- :time_stamp_create");
+        nameList.add("\"TIME_STAMP_CHANGE\" -- :time_stamp_change");
+        nameList.add("\"USER_ID_CREATE\" -- :user_id_create");
+        nameList.add("\"USER_ID_CHANGE\" -- :user_id_change");
+        nameList.add("\"DELETE_FLAG\" -- :delete_flag");
+        nameList.add("\"AREA_CD\" -- :area_cd");
+        nameList.add("\"STORE_MAN_ID\" -- :store_man_id");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO MST_LOCATION(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -387,7 +387,7 @@ public class MstLocation implements IEntity {
             return;
         }
 
-        String sql = "SELECT LPAD (CASE WHEN MAX(e.LOCATION_CODE) IS NULL THEN 0 ELSE MAX(e.LOCATION_CODE) * 1 END + 1, 10, '0') AS LOCATION_CODE FROM MST_LOCATION e WHERE e.LOCATION_CODE < '9999999999'";
+        String sql = "SELECT LPAD (CASE WHEN MAX(e.\"LOCATION_CODE\") IS NULL THEN 0 ELSE MAX(e.\"LOCATION_CODE\") * 1 END + 1, 10, '0') AS \"LOCATION_CODE\" FROM MST_LOCATION e WHERE e.\"LOCATION_CODE\" < '9999999999'";
 
         Map<String, Object> params = new HashMap<String, Object>();
 
@@ -414,17 +414,17 @@ public class MstLocation implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("location_code = :location_code");
-        setList.add("location_name = :location_name");
-        setList.add("loc_kbn = :loc_kbn");
-        setList.add("loc_status = :loc_status");
-        setList.add("loc_enable = :loc_enable");
-        setList.add("sub_inv_code = :sub_inv_code");
-        setList.add("time_stamp_change = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("user_id_change = :user_id_change");
-        setList.add("delete_flag = :delete_flag");
-        setList.add("area_cd = :area_cd");
-        setList.add("store_man_id = :store_man_id");
+        setList.add("\"LOCATION_CODE\" = :location_code");
+        setList.add("\"LOCATION_NAME\" = :location_name");
+        setList.add("\"LOC_KBN\" = :loc_kbn");
+        setList.add("\"LOC_STATUS\" = :loc_status");
+        setList.add("\"LOC_ENABLE\" = :loc_enable");
+        setList.add("\"SUB_INV_CODE\" = :sub_inv_code");
+        setList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"USER_ID_CHANGE\" = :user_id_change");
+        setList.add("\"DELETE_FLAG\" = :delete_flag");
+        setList.add("\"AREA_CD\" = :area_cd");
+        setList.add("\"STORE_MAN_ID\" = :store_man_id");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -446,22 +446,22 @@ public class MstLocation implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (location_code) = TRIM (:location_code)");
-        whereList.add("time_stamp_change = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        whereList.add("TRIM (\"LOCATION_CODE\") = TRIM (:location_code)");
+        whereList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("LOCATION_CODE", this.locationCode);
-        params.put("LOCATION_NAME", this.locationName);
-        params.put("LOC_KBN", this.locKbn);
-        params.put("LOC_STATUS", this.locStatus);
-        params.put("LOC_ENABLE", this.locEnable);
-        params.put("SUB_INV_CODE", this.subInvCode);
-        params.put("DELETE_FLAG", this.deleteFlag);
-        params.put("AREA_CD", this.areaCd);
-        params.put("STORE_MAN_ID", this.storeManId);
+        params.put("location_code", this.locationCode);
+        params.put("location_name", this.locationName);
+        params.put("loc_kbn", this.locKbn);
+        params.put("loc_status", this.locStatus);
+        params.put("loc_enable", this.locEnable);
+        params.put("sub_inv_code", this.subInvCode);
+        params.put("delete_flag", this.deleteFlag);
+        params.put("area_cd", this.areaCd);
+        params.put("store_man_id", this.storeManId);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

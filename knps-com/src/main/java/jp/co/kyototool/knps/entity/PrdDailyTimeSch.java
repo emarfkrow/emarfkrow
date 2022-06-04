@@ -247,14 +247,14 @@ public class PrdDailyTimeSch implements IEntity {
 
         // PRD_DAILY_TIME_SCHの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("layout_date -- :layout_date");
-        nameList.add("wc_code -- :wc_code");
-        nameList.add("layout_in_time -- :layout_in_time");
-        nameList.add("change_stat -- :change_stat");
-        nameList.add("time_stamp_create -- :time_stamp_create");
-        nameList.add("time_stamp_change -- :time_stamp_change");
-        nameList.add("user_id_create -- :user_id_create");
-        nameList.add("user_id_change -- :user_id_change");
+        nameList.add("\"LAYOUT_DATE\" -- :layout_date");
+        nameList.add("\"WC_CODE\" -- :wc_code");
+        nameList.add("\"LAYOUT_IN_TIME\" -- :layout_in_time");
+        nameList.add("\"CHANGE_STAT\" -- :change_stat");
+        nameList.add("\"TIME_STAMP_CREATE\" -- :time_stamp_create");
+        nameList.add("\"TIME_STAMP_CHANGE\" -- :time_stamp_change");
+        nameList.add("\"USER_ID_CREATE\" -- :user_id_create");
+        nameList.add("\"USER_ID_CHANGE\" -- :user_id_change");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO PRD_DAILY_TIME_SCH(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -284,15 +284,15 @@ public class PrdDailyTimeSch implements IEntity {
             return;
         }
 
-        String sql = "SELECT LPAD (CASE WHEN MAX(e.WC_CODE) IS NULL THEN 0 ELSE MAX(e.WC_CODE) * 1 END + 1, 3, '0') AS WC_CODE FROM PRD_DAILY_TIME_SCH e WHERE e.WC_CODE < '999'";
+        String sql = "SELECT LPAD (CASE WHEN MAX(e.\"WC_CODE\") IS NULL THEN 0 ELSE MAX(e.\"WC_CODE\") * 1 END + 1, 3, '0') AS \"WC_CODE\" FROM PRD_DAILY_TIME_SCH e WHERE e.\"WC_CODE\" < '999'";
 
         Map<String, Object> params = new HashMap<String, Object>();
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("e.LAYOUT_DATE = :layout_date");
+        whereList.add("e.\"LAYOUT_DATE\" = :layout_date");
         sql += " WHERE " + String.join(" AND ", whereList);
 
-        params.put("layoutDate", this.layoutDate);
+        params.put("layout_date", this.layoutDate);
 
         jp.co.golorp.emarf.util.MapList mapList = Queries.select(sql, params);
         Object o = mapList.get(0).get("WC_CODE");
@@ -317,12 +317,12 @@ public class PrdDailyTimeSch implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("layout_date = TO_TIMESTAMP (:layout_date, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("wc_code = :wc_code");
-        setList.add("layout_in_time = :layout_in_time");
-        setList.add("change_stat = :change_stat");
-        setList.add("time_stamp_change = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
-        setList.add("user_id_change = :user_id_change");
+        setList.add("\"LAYOUT_DATE\" = TO_TIMESTAMP (:layout_date, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"WC_CODE\" = :wc_code");
+        setList.add("\"LAYOUT_IN_TIME\" = :layout_in_time");
+        setList.add("\"CHANGE_STAT\" = :change_stat");
+        setList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP (:time_stamp_change, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        setList.add("\"USER_ID_CHANGE\" = :user_id_change");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -344,18 +344,18 @@ public class PrdDailyTimeSch implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("layout_date = :layout_date");
-        whereList.add("TRIM (wc_code) = TRIM (:wc_code)");
-        whereList.add("time_stamp_change = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
+        whereList.add("\"LAYOUT_DATE\" = :layout_date");
+        whereList.add("TRIM (\"WC_CODE\") = TRIM (:wc_code)");
+        whereList.add("\"TIME_STAMP_CHANGE\" = TO_TIMESTAMP ('" + this.timeStampChange + "', 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3')");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("LAYOUT_DATE", this.layoutDate);
-        params.put("WC_CODE", this.wcCode);
-        params.put("LAYOUT_IN_TIME", this.layoutInTime);
-        params.put("CHANGE_STAT", this.changeStat);
+        params.put("layout_date", this.layoutDate);
+        params.put("wc_code", this.wcCode);
+        params.put("layout_in_time", this.layoutInTime);
+        params.put("change_stat", this.changeStat);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

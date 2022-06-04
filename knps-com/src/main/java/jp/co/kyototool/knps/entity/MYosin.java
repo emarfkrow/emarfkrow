@@ -319,19 +319,19 @@ public class MYosin implements IEntity {
 
         // 与信管理マスタの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("shukincd -- :shukincd");
-        nameList.add("honshacd -- :honshacd");
-        nameList.add("rtokumei -- :rtokumei");
-        nameList.add("sinyo_rank -- :sinyo_rank");
-        nameList.add("sinyo_hoken -- :sinyo_hoken");
-        nameList.add("eigyo_hosyokin -- :eigyo_hosyokin");
-        nameList.add("tanpo_kabusu -- :tanpo_kabusu");
-        nameList.add("shushigaku -- :shushigaku");
-        nameList.add("kasidaore_hikiate -- :kasidaore_hikiate");
-        nameList.add("shuka_gendo -- :shuka_gendo");
-        nameList.add("tourokubi -- :tourokubi");
-        nameList.add("upddate -- :upddate");
-        nameList.add("filler -- :filler");
+        nameList.add("\"SHUKINCD\" -- :shukincd");
+        nameList.add("\"HONSHACD\" -- :honshacd");
+        nameList.add("\"RTOKUMEI\" -- :rtokumei");
+        nameList.add("\"SINYO-RANK\" -- :sinyo_rank");
+        nameList.add("\"SINYO-HOKEN\" -- :sinyo_hoken");
+        nameList.add("\"EIGYO-HOSYOKIN\" -- :eigyo_hosyokin");
+        nameList.add("\"TANPO-KABUSU\" -- :tanpo_kabusu");
+        nameList.add("\"SHUSHIGAKU\" -- :shushigaku");
+        nameList.add("\"KASIDAORE-HIKIATE\" -- :kasidaore_hikiate");
+        nameList.add("\"SHUKA-GENDO\" -- :shuka_gendo");
+        nameList.add("\"TOUROKUBI\" -- :tourokubi");
+        nameList.add("\"UPDDATE\" -- :upddate");
+        nameList.add("\"FILLER\" -- :filler");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO M_YOSIN(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -376,19 +376,19 @@ public class MYosin implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("shukincd = :shukincd");
-        setList.add("honshacd = :honshacd");
-        setList.add("rtokumei = :rtokumei");
-        setList.add("sinyo-rank = :sinyo-rank");
-        setList.add("sinyo-hoken = :sinyo-hoken");
-        setList.add("eigyo-hosyokin = :eigyo-hosyokin");
-        setList.add("tanpo-kabusu = :tanpo-kabusu");
-        setList.add("shushigaku = :shushigaku");
-        setList.add("kasidaore-hikiate = :kasidaore-hikiate");
-        setList.add("shuka-gendo = :shuka-gendo");
-        setList.add("tourokubi = :tourokubi");
-        setList.add("upddate = :upddate");
-        setList.add("filler = :filler");
+        setList.add("\"SHUKINCD\" = :shukincd");
+        setList.add("\"HONSHACD\" = :honshacd");
+        setList.add("\"RTOKUMEI\" = :rtokumei");
+        setList.add("\"SINYO-RANK\" = :sinyo_rank");
+        setList.add("\"SINYO-HOKEN\" = :sinyo_hoken");
+        setList.add("\"EIGYO-HOSYOKIN\" = :eigyo_hosyokin");
+        setList.add("\"TANPO-KABUSU\" = :tanpo_kabusu");
+        setList.add("\"SHUSHIGAKU\" = :shushigaku");
+        setList.add("\"KASIDAORE-HIKIATE\" = :kasidaore_hikiate");
+        setList.add("\"SHUKA-GENDO\" = :shuka_gendo");
+        setList.add("\"TOUROKUBI\" = :tourokubi");
+        setList.add("\"UPDDATE\" = :upddate");
+        setList.add("\"FILLER\" = :filler");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -410,25 +410,25 @@ public class MYosin implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("shukincd = :shukincd");
+        whereList.add("\"SHUKINCD\" = :shukincd");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("SHUKINCD", this.shukincd);
-        params.put("HONSHACD", this.honshacd);
-        params.put("RTOKUMEI", this.rtokumei);
-        params.put("SINYO-RANK", this.sinyoRank);
-        params.put("SINYO-HOKEN", this.sinyoHoken);
-        params.put("EIGYO-HOSYOKIN", this.eigyoHosyokin);
-        params.put("TANPO-KABUSU", this.tanpoKabusu);
-        params.put("SHUSHIGAKU", this.shushigaku);
-        params.put("KASIDAORE-HIKIATE", this.kasidaoreHikiate);
-        params.put("SHUKA-GENDO", this.shukaGendo);
-        params.put("TOUROKUBI", this.tourokubi);
-        params.put("UPDDATE", this.upddate);
-        params.put("FILLER", this.filler);
+        params.put("shukincd", this.shukincd);
+        params.put("honshacd", this.honshacd);
+        params.put("rtokumei", this.rtokumei);
+        params.put("sinyo_rank", this.sinyoRank);
+        params.put("sinyo_hoken", this.sinyoHoken);
+        params.put("eigyo_hosyokin", this.eigyoHosyokin);
+        params.put("tanpo_kabusu", this.tanpoKabusu);
+        params.put("shushigaku", this.shushigaku);
+        params.put("kasidaore_hikiate", this.kasidaoreHikiate);
+        params.put("shuka_gendo", this.shukaGendo);
+        params.put("tourokubi", this.tourokubi);
+        params.put("upddate", this.upddate);
+        params.put("filler", this.filler);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);
