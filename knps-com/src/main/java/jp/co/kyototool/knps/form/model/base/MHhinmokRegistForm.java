@@ -20,6 +20,7 @@ public class MHhinmokRegistForm implements IForm {
     private static final Logger LOG = LoggerFactory.getLogger(MHhinmokRegistForm.class);
 
     /** 販売品番 */
+    @jakarta.validation.constraints.NotBlank
     @jakarta.validation.constraints.Size(max = 20)
     private String hhinban;
 
@@ -91,19 +92,19 @@ public class MHhinmokRegistForm implements IForm {
         this.hincd = p;
     }
 
-    /** 品　名 */
+    /** 品名 */
     @jakarta.validation.constraints.Size(max = 10)
     private String hinmei;
 
     /**
-     * @return 品　名
+     * @return 品名
      */
     public String getHinmei() {
         return hinmei;
     }
 
     /**
-     * @param p 品　名
+     * @param p 品名
      */
     public void setHinmei(final String p) {
         this.hinmei = p;

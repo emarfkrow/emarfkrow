@@ -22,6 +22,7 @@ public class MstLocation implements IEntity {
     /**
      * @return LOCATION_CODE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("LOCATION_CODE")
     public String getLocationCode() {
         return this.locationCode;
     }
@@ -43,6 +44,7 @@ public class MstLocation implements IEntity {
     /**
      * @return LOCATION_NAME
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("LOCATION_NAME")
     public String getLocationName() {
         return this.locationName;
     }
@@ -64,6 +66,7 @@ public class MstLocation implements IEntity {
     /**
      * @return LOC_KBN
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("LOC_KBN")
     public java.math.BigDecimal getLocKbn() {
         return this.locKbn;
     }
@@ -85,6 +88,7 @@ public class MstLocation implements IEntity {
     /**
      * @return LOC_STATUS
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("LOC_STATUS")
     public java.math.BigDecimal getLocStatus() {
         return this.locStatus;
     }
@@ -106,6 +110,7 @@ public class MstLocation implements IEntity {
     /**
      * @return LOC_ENABLE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("LOC_ENABLE")
     public java.math.BigDecimal getLocEnable() {
         return this.locEnable;
     }
@@ -127,6 +132,7 @@ public class MstLocation implements IEntity {
     /**
      * @return SUB_INV_CODE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SUB_INV_CODE")
     public String getSubInvCode() {
         return this.subInvCode;
     }
@@ -151,6 +157,7 @@ public class MstLocation implements IEntity {
     /**
      * @return TIME_STAMP_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CREATE")
     public java.time.LocalDateTime getTimeStampCreate() {
         return this.timeStampCreate;
     }
@@ -181,6 +188,7 @@ public class MstLocation implements IEntity {
     /**
      * @return TIME_STAMP_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CHANGE")
     public java.time.LocalDateTime getTimeStampChange() {
         return this.timeStampChange;
     }
@@ -208,6 +216,7 @@ public class MstLocation implements IEntity {
     /**
      * @return USER_ID_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CREATE")
     public String getUserIdCreate() {
         return this.userIdCreate;
     }
@@ -229,6 +238,7 @@ public class MstLocation implements IEntity {
     /**
      * @return USER_ID_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CHANGE")
     public String getUserIdChange() {
         return this.userIdChange;
     }
@@ -250,6 +260,7 @@ public class MstLocation implements IEntity {
     /**
      * @return DELETE_FLAG
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("DELETE_FLAG")
     public java.math.BigDecimal getDeleteFlag() {
         return this.deleteFlag;
     }
@@ -271,6 +282,7 @@ public class MstLocation implements IEntity {
     /**
      * @return AREA_CD
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("AREA_CD")
     public String getAreaCd() {
         return this.areaCd;
     }
@@ -292,6 +304,7 @@ public class MstLocation implements IEntity {
     /**
      * @return STORE_MAN_ID
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("STORE_MAN_ID")
     public java.math.BigDecimal getStoreManId() {
         return this.storeManId;
     }

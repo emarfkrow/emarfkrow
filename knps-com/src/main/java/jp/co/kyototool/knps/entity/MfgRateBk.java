@@ -22,6 +22,7 @@ public class MfgRateBk implements IEntity {
     /**
      * @return YY
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("YY")
     public String getYy() {
         return this.yy;
     }
@@ -43,6 +44,7 @@ public class MfgRateBk implements IEntity {
     /**
      * @return RATE_CODE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("RATE_CODE")
     public String getRateCode() {
         return this.rateCode;
     }
@@ -64,6 +66,7 @@ public class MfgRateBk implements IEntity {
     /**
      * @return IN_OUT_KBN
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("IN_OUT_KBN")
     public java.math.BigDecimal getInOutKbn() {
         return this.inOutKbn;
     }
@@ -85,6 +88,7 @@ public class MfgRateBk implements IEntity {
     /**
      * @return RATE_KBN
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("RATE_KBN")
     public java.math.BigDecimal getRateKbn() {
         return this.rateKbn;
     }
@@ -106,6 +110,7 @@ public class MfgRateBk implements IEntity {
     /**
      * @return HUM_LABOR_COST_FIRST
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("HUM_LABOR_COST_FIRST")
     public java.math.BigDecimal getHumLaborCostFirst() {
         return this.humLaborCostFirst;
     }
@@ -127,6 +132,7 @@ public class MfgRateBk implements IEntity {
     /**
      * @return HUM_EXPENSES_FIRST
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("HUM_EXPENSES_FIRST")
     public java.math.BigDecimal getHumExpensesFirst() {
         return this.humExpensesFirst;
     }
@@ -148,6 +154,7 @@ public class MfgRateBk implements IEntity {
     /**
      * @return HUM_LABOR_COST_SECOND
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("HUM_LABOR_COST_SECOND")
     public java.math.BigDecimal getHumLaborCostSecond() {
         return this.humLaborCostSecond;
     }
@@ -169,6 +176,7 @@ public class MfgRateBk implements IEntity {
     /**
      * @return HUM_EXPENSES_SECOND
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("HUM_EXPENSES_SECOND")
     public java.math.BigDecimal getHumExpensesSecond() {
         return this.humExpensesSecond;
     }
@@ -190,6 +198,7 @@ public class MfgRateBk implements IEntity {
     /**
      * @return MAC_LABOR_COST_FIRST
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("MAC_LABOR_COST_FIRST")
     public java.math.BigDecimal getMacLaborCostFirst() {
         return this.macLaborCostFirst;
     }
@@ -211,6 +220,7 @@ public class MfgRateBk implements IEntity {
     /**
      * @return MAC_EXPENSES_FIRST
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("MAC_EXPENSES_FIRST")
     public java.math.BigDecimal getMacExpensesFirst() {
         return this.macExpensesFirst;
     }
@@ -232,6 +242,7 @@ public class MfgRateBk implements IEntity {
     /**
      * @return MAC_LABOR_COST_SECOND
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("MAC_LABOR_COST_SECOND")
     public java.math.BigDecimal getMacLaborCostSecond() {
         return this.macLaborCostSecond;
     }
@@ -253,6 +264,7 @@ public class MfgRateBk implements IEntity {
     /**
      * @return MAC_EXPENSES_SECOND
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("MAC_EXPENSES_SECOND")
     public java.math.BigDecimal getMacExpensesSecond() {
         return this.macExpensesSecond;
     }
@@ -274,6 +286,7 @@ public class MfgRateBk implements IEntity {
     /**
      * @return OUT_COST_SECOND
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("OUT_COST_SECOND")
     public java.math.BigDecimal getOutCostSecond() {
         return this.outCostSecond;
     }
@@ -298,6 +311,7 @@ public class MfgRateBk implements IEntity {
     /**
      * @return TIME_STAMP_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CREATE")
     public java.time.LocalDateTime getTimeStampCreate() {
         return this.timeStampCreate;
     }
@@ -328,6 +342,7 @@ public class MfgRateBk implements IEntity {
     /**
      * @return TIME_STAMP_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CHANGE")
     public java.time.LocalDateTime getTimeStampChange() {
         return this.timeStampChange;
     }
@@ -355,6 +370,7 @@ public class MfgRateBk implements IEntity {
     /**
      * @return USER_ID_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CREATE")
     public String getUserIdCreate() {
         return this.userIdCreate;
     }
@@ -376,6 +392,7 @@ public class MfgRateBk implements IEntity {
     /**
      * @return USER_ID_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CHANGE")
     public String getUserIdChange() {
         return this.userIdChange;
     }

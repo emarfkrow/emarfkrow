@@ -10,7 +10,9 @@
 </script>
 <script th:src="@{/model/MHhinmokGridColumns.js}"></script>
 <script th:src="@{/model/MHososetGridColumns.js}"></script>
+<script th:src="@{/model/MHosozaiGridColumns.js}"></script>
 <script th:src="@{/model/MPkoseGridColumns.js}"></script>
+<script th:src="@{/model/MPhinmokGridColumns.js}"></script>
 </head>
 <body>
   <div layout:fragment="article">
@@ -31,7 +33,7 @@
           <label for="MHhinmok.hincd" th:text="#{MHhinmok.hincd}">品目コード</label><input type="text" id="MHhinmok.hincd" name="MHhinmok.hincd" maxlength="20" />
         </div>
         <div id="hinmei">
-          <label for="MHhinmok.hinmei" th:text="#{MHhinmok.hinmei}">品　名</label><input type="text" id="MHhinmok.hinmei" name="MHhinmok.hinmei" maxlength="10" />
+          <label for="MHhinmok.hinmei" th:text="#{MHhinmok.hinmei}">品名</label><input type="text" id="MHhinmok.hinmei" name="MHhinmok.hinmei" maxlength="10" />
         </div>
         <div id="setkbn">
           <label for="MHhinmok.setkbn" th:text="#{MHhinmok.setkbn}">セット区分</label><input type="text" id="MHhinmok.setkbn" name="MHhinmok.setkbn" maxlength="1" />
@@ -308,7 +310,7 @@
     </form>
     <form name="MHhinmokSRegistForm" action="MHhinmokSRegist.ajax" class="regist">
       <h3 th:text="#{MHhinmok.h3}">h3</h3>
-      <div id="MHhinmokGrid" data-selectionMode="checkbox" data-addRow="true" data-frozenColumn="0" th:data-href="@{/model/MHhinmok.html}"></div>
+      <div id="MHhinmokGrid" data-selectionMode="checkbox" data-frozenColumn="0" th:data-href="@{/model/MHhinmok.html}"></div>
       <div id="MHhinmokPager"></div>
       <div class="buttons">
         <button type="button" th:text="#{common.reset}" onClick="$('[id=&quot;SearchMHhinmok&quot;]').click();">reset</button>

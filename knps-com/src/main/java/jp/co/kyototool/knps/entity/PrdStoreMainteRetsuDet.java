@@ -22,6 +22,7 @@ public class PrdStoreMainteRetsuDet implements IEntity {
     /**
      * @return RETSU_NO
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("RETSU_NO")
     public String getRetsuNo() {
         return this.retsuNo;
     }
@@ -43,6 +44,7 @@ public class PrdStoreMainteRetsuDet implements IEntity {
     /**
      * @return RETSU_POS
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("RETSU_POS")
     public java.math.BigDecimal getRetsuPos() {
         return this.retsuPos;
     }
@@ -64,6 +66,7 @@ public class PrdStoreMainteRetsuDet implements IEntity {
     /**
      * @return WC_CODE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("WC_CODE")
     public String getWcCode() {
         return this.wcCode;
     }
@@ -85,6 +88,7 @@ public class PrdStoreMainteRetsuDet implements IEntity {
     /**
      * @return OPE_DETAIL
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("OPE_DETAIL")
     public String getOpeDetail() {
         return this.opeDetail;
     }
@@ -109,6 +113,7 @@ public class PrdStoreMainteRetsuDet implements IEntity {
     /**
      * @return TIME_STAMP_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CREATE")
     public java.time.LocalDateTime getTimeStampCreate() {
         return this.timeStampCreate;
     }
@@ -139,6 +144,7 @@ public class PrdStoreMainteRetsuDet implements IEntity {
     /**
      * @return TIME_STAMP_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CHANGE")
     public java.time.LocalDateTime getTimeStampChange() {
         return this.timeStampChange;
     }
@@ -166,6 +172,7 @@ public class PrdStoreMainteRetsuDet implements IEntity {
     /**
      * @return USER_ID_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CREATE")
     public String getUserIdCreate() {
         return this.userIdCreate;
     }
@@ -187,6 +194,7 @@ public class PrdStoreMainteRetsuDet implements IEntity {
     /**
      * @return USER_ID_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CHANGE")
     public String getUserIdChange() {
         return this.userIdChange;
     }

@@ -22,6 +22,7 @@ public class MWebkan implements IEntity {
     /**
      * @return 販売品番
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("HHINBAN")
     public String getHhinban() {
         return this.hhinban;
     }
@@ -43,6 +44,7 @@ public class MWebkan implements IEntity {
     /**
      * @return 規格
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("KIKAKU")
     public String getKikaku() {
         return this.kikaku;
     }
@@ -64,6 +66,7 @@ public class MWebkan implements IEntity {
     /**
      * @return 大分類コード
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("DAICD")
     public String getDaicd() {
         return this.daicd;
     }
@@ -85,6 +88,7 @@ public class MWebkan implements IEntity {
     /**
      * @return 中分類コード
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("CHUCD")
     public String getChucd() {
         return this.chucd;
     }
@@ -106,6 +110,7 @@ public class MWebkan implements IEntity {
     /**
      * @return 小分類コード
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SHOCD")
     public String getShocd() {
         return this.shocd;
     }
@@ -127,6 +132,7 @@ public class MWebkan implements IEntity {
     /**
      * @return 分類Ａコード
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ABUNCD")
     public String getAbuncd() {
         return this.abuncd;
     }
@@ -148,6 +154,7 @@ public class MWebkan implements IEntity {
     /**
      * @return 分類Ｂコード
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("BBUNCD")
     public String getBbuncd() {
         return this.bbuncd;
     }
@@ -169,6 +176,7 @@ public class MWebkan implements IEntity {
     /**
      * @return WEB表示区分
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("WHYOJIKBN")
     public String getWhyojikbn() {
         return this.whyojikbn;
     }
@@ -190,6 +198,7 @@ public class MWebkan implements IEntity {
     /**
      * @return 入数
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("IRISU")
     public java.math.BigDecimal getIrisu() {
         return this.irisu;
     }
@@ -211,6 +220,7 @@ public class MWebkan implements IEntity {
     /**
      * @return 最低在庫閾値
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ZAISIKII")
     public java.math.BigDecimal getZaisikii() {
         return this.zaisikii;
     }
@@ -232,6 +242,7 @@ public class MWebkan implements IEntity {
     /**
      * @return 入庫予定数閾値
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("NYUYOTEISIKII")
     public java.math.BigDecimal getNyuyoteisikii() {
         return this.nyuyoteisikii;
     }
@@ -253,6 +264,7 @@ public class MWebkan implements IEntity {
     /**
      * @return 汎用文字１
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("HANYOU1")
     public String getHanyou1() {
         return this.hanyou1;
     }
@@ -274,6 +286,7 @@ public class MWebkan implements IEntity {
     /**
      * @return 汎用文字２
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("HANYOU2")
     public String getHanyou2() {
         return this.hanyou2;
     }
@@ -295,6 +308,7 @@ public class MWebkan implements IEntity {
     /**
      * @return 汎用文字３
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("HANYOU3")
     public String getHanyou3() {
         return this.hanyou3;
     }
@@ -316,6 +330,7 @@ public class MWebkan implements IEntity {
     /**
      * @return 在庫表示変更区分
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ZAIHENKBN")
     public String getZaihenkbn() {
         return this.zaihenkbn;
     }
@@ -337,6 +352,7 @@ public class MWebkan implements IEntity {
     /**
      * @return 定価表示制御区分
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TEIDSPKBN")
     public String getTeidspkbn() {
         return this.teidspkbn;
     }
@@ -358,6 +374,7 @@ public class MWebkan implements IEntity {
     /**
      * @return 閾値更新対象区分
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("UPDEXCDKBN")
     public String getUpdexcdkbn() {
         return this.updexcdkbn;
     }
@@ -379,6 +396,7 @@ public class MWebkan implements IEntity {
     /**
      * @return 作成日
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TOUROKUBI")
     public java.math.BigDecimal getTourokubi() {
         return this.tourokubi;
     }
@@ -400,6 +418,7 @@ public class MWebkan implements IEntity {
     /**
      * @return 更新日
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SHUSEIBI")
     public java.math.BigDecimal getShuseibi() {
         return this.shuseibi;
     }
@@ -421,6 +440,7 @@ public class MWebkan implements IEntity {
     /**
      * @return 予備領域
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("FILLER")
     public String getFiller() {
         return this.filler;
     }

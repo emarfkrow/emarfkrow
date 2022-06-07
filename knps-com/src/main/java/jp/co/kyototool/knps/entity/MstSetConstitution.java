@@ -22,6 +22,7 @@ public class MstSetConstitution implements IEntity {
     /**
      * @return SET_HINBAN
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SET_HINBAN")
     public String getSetHinban() {
         return this.setHinban;
     }
@@ -43,6 +44,7 @@ public class MstSetConstitution implements IEntity {
     /**
      * @return SET_CHILD_HINBAN
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SET_CHILD_HINBAN")
     public String getSetChildHinban() {
         return this.setChildHinban;
     }
@@ -64,6 +66,7 @@ public class MstSetConstitution implements IEntity {
     /**
      * @return DELETE_FLAG
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("DELETE_FLAG")
     public java.math.BigDecimal getDeleteFlag() {
         return this.deleteFlag;
     }
@@ -85,6 +88,7 @@ public class MstSetConstitution implements IEntity {
     /**
      * @return BOTTOM_FLAG
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("BOTTOM_FLAG")
     public String getBottomFlag() {
         return this.bottomFlag;
     }
@@ -106,6 +110,7 @@ public class MstSetConstitution implements IEntity {
     /**
      * @return SET_COUNT
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SET_COUNT")
     public java.math.BigDecimal getSetCount() {
         return this.setCount;
     }
@@ -127,6 +132,7 @@ public class MstSetConstitution implements IEntity {
     /**
      * @return GRATIS_SUPPLY_KBN
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("GRATIS_SUPPLY_KBN")
     public String getGratisSupplyKbn() {
         return this.gratisSupplyKbn;
     }

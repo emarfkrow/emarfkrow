@@ -22,6 +22,7 @@ public class MNetinc implements IEntity {
     /**
      * @return 本社コード
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("HONSHACD")
     public java.math.BigDecimal getHonshacd() {
         return this.honshacd;
     }
@@ -43,6 +44,7 @@ public class MNetinc implements IEntity {
     /**
      * @return 得意先コード
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TOKUCD")
     public java.math.BigDecimal getTokucd() {
         return this.tokucd;
     }
@@ -64,6 +66,7 @@ public class MNetinc implements IEntity {
     /**
      * @return 略得意先名
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("RTOKUMEI")
     public String getRtokumei() {
         return this.rtokumei;
     }
@@ -85,6 +88,7 @@ public class MNetinc implements IEntity {
     /**
      * @return 値引率
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("NEBIKIRITU")
     public java.math.BigDecimal getNebikiritu() {
         return this.nebikiritu;
     }
@@ -106,6 +110,7 @@ public class MNetinc implements IEntity {
     /**
      * @return 更新日付
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("UPDDATE")
     public java.math.BigDecimal getUpddate() {
         return this.upddate;
     }
@@ -127,6 +132,7 @@ public class MNetinc implements IEntity {
     /**
      * @return 予備領域
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("FILLER")
     public String getFiller() {
         return this.filler;
     }

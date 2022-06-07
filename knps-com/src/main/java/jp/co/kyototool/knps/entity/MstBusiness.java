@@ -22,6 +22,7 @@ public class MstBusiness implements IEntity {
     /**
      * @return BUSINESS_ID
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("BUSINESS_ID")
     public java.math.BigDecimal getBusinessId() {
         return this.businessId;
     }
@@ -43,6 +44,7 @@ public class MstBusiness implements IEntity {
     /**
      * @return BUSINESS_NAME
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("BUSINESS_NAME")
     public String getBusinessName() {
         return this.businessName;
     }
@@ -67,6 +69,7 @@ public class MstBusiness implements IEntity {
     /**
      * @return TIME_STAMP_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CREATE")
     public java.time.LocalDateTime getTimeStampCreate() {
         return this.timeStampCreate;
     }
@@ -97,6 +100,7 @@ public class MstBusiness implements IEntity {
     /**
      * @return TIME_STAMP_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CHANGE")
     public java.time.LocalDateTime getTimeStampChange() {
         return this.timeStampChange;
     }
@@ -124,6 +128,7 @@ public class MstBusiness implements IEntity {
     /**
      * @return USER_ID_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CREATE")
     public String getUserIdCreate() {
         return this.userIdCreate;
     }
@@ -145,6 +150,7 @@ public class MstBusiness implements IEntity {
     /**
      * @return USER_ID_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CHANGE")
     public String getUserIdChange() {
         return this.userIdChange;
     }
@@ -166,6 +172,7 @@ public class MstBusiness implements IEntity {
     /**
      * @return DELETE_FLAG
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("DELETE_FLAG")
     public java.math.BigDecimal getDeleteFlag() {
         return this.deleteFlag;
     }

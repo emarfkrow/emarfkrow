@@ -22,6 +22,7 @@ public class MfgModActHed implements IEntity {
     /**
      * @return MOD_ACT_NO
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("MOD_ACT_NO")
     public String getModActNo() {
         return this.modActNo;
     }
@@ -43,6 +44,7 @@ public class MfgModActHed implements IEntity {
     /**
      * @return WC_CODE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("WC_CODE")
     public String getWcCode() {
         return this.wcCode;
     }
@@ -64,6 +66,7 @@ public class MfgModActHed implements IEntity {
     /**
      * @return MOD_KIND
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("MOD_KIND")
     public java.math.BigDecimal getModKind() {
         return this.modKind;
     }
@@ -85,6 +88,7 @@ public class MfgModActHed implements IEntity {
     /**
      * @return AMOUNT_TIME
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("AMOUNT_TIME")
     public java.math.BigDecimal getAmountTime() {
         return this.amountTime;
     }
@@ -106,6 +110,7 @@ public class MfgModActHed implements IEntity {
     /**
      * @return ACT_MOD_TIME
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ACT_MOD_TIME")
     public java.math.BigDecimal getActModTime() {
         return this.actModTime;
     }
@@ -127,6 +132,7 @@ public class MfgModActHed implements IEntity {
     /**
      * @return EXP_TIME
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("EXP_TIME")
     public java.math.BigDecimal getExpTime() {
         return this.expTime;
     }
@@ -148,6 +154,7 @@ public class MfgModActHed implements IEntity {
     /**
      * @return MOD_COUNTS
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("MOD_COUNTS")
     public java.math.BigDecimal getModCounts() {
         return this.modCounts;
     }
@@ -169,6 +176,7 @@ public class MfgModActHed implements IEntity {
     /**
      * @return ACT_MOD_COUNTS
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ACT_MOD_COUNTS")
     public java.math.BigDecimal getActModCounts() {
         return this.actModCounts;
     }
@@ -190,6 +198,7 @@ public class MfgModActHed implements IEntity {
     /**
      * @return MEMO
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("MEMO")
     public String getMemo() {
         return this.memo;
     }
@@ -211,6 +220,7 @@ public class MfgModActHed implements IEntity {
     /**
      * @return MOD_STATUS
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("MOD_STATUS")
     public java.math.BigDecimal getModStatus() {
         return this.modStatus;
     }
@@ -232,6 +242,7 @@ public class MfgModActHed implements IEntity {
     /**
      * @return EXP_FLAG
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("EXP_FLAG")
     public java.math.BigDecimal getExpFlag() {
         return this.expFlag;
     }
@@ -256,6 +267,7 @@ public class MfgModActHed implements IEntity {
     /**
      * @return BEG_DATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("BEG_DATE")
     public java.time.LocalDateTime getBegDate() {
         return this.begDate;
     }
@@ -286,6 +298,7 @@ public class MfgModActHed implements IEntity {
     /**
      * @return END_DATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("END_DATE")
     public java.time.LocalDateTime getEndDate() {
         return this.endDate;
     }
@@ -316,6 +329,7 @@ public class MfgModActHed implements IEntity {
     /**
      * @return TIME_STAMP_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CREATE")
     public java.time.LocalDateTime getTimeStampCreate() {
         return this.timeStampCreate;
     }
@@ -346,6 +360,7 @@ public class MfgModActHed implements IEntity {
     /**
      * @return TIME_STAMP_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CHANGE")
     public java.time.LocalDateTime getTimeStampChange() {
         return this.timeStampChange;
     }
@@ -373,6 +388,7 @@ public class MfgModActHed implements IEntity {
     /**
      * @return USER_ID_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CREATE")
     public String getUserIdCreate() {
         return this.userIdCreate;
     }
@@ -394,6 +410,7 @@ public class MfgModActHed implements IEntity {
     /**
      * @return USER_ID_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CHANGE")
     public String getUserIdChange() {
         return this.userIdChange;
     }

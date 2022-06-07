@@ -22,6 +22,7 @@ public class PchTempOrderDet implements IEntity {
     /**
      * @return TEMP_ORDER_NO
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TEMP_ORDER_NO")
     public String getTempOrderNo() {
         return this.tempOrderNo;
     }
@@ -43,6 +44,7 @@ public class PchTempOrderDet implements IEntity {
     /**
      * @return TEMP_ORDER_SEQ
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TEMP_ORDER_SEQ")
     public java.math.BigDecimal getTempOrderSeq() {
         return this.tempOrderSeq;
     }
@@ -64,6 +66,7 @@ public class PchTempOrderDet implements IEntity {
     /**
      * @return ORDER_NO
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ORDER_NO")
     public String getOrderNo() {
         return this.orderNo;
     }
@@ -85,6 +88,7 @@ public class PchTempOrderDet implements IEntity {
     /**
      * @return KBN2
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("KBN2")
     public String getKbn2() {
         return this.kbn2;
     }
@@ -106,6 +110,7 @@ public class PchTempOrderDet implements IEntity {
     /**
      * @return ITEM
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ITEM")
     public String getItem() {
         return this.item;
     }
@@ -127,6 +132,7 @@ public class PchTempOrderDet implements IEntity {
     /**
      * @return MATERIAL
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("MATERIAL")
     public String getMaterial() {
         return this.material;
     }
@@ -148,6 +154,7 @@ public class PchTempOrderDet implements IEntity {
     /**
      * @return ORDER_COUNTS_1
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ORDER_COUNTS_1")
     public java.math.BigDecimal getOrderCounts1() {
         return this.orderCounts1;
     }
@@ -169,6 +176,7 @@ public class PchTempOrderDet implements IEntity {
     /**
      * @return UNIT_NAME
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("UNIT_NAME")
     public String getUnitName() {
         return this.unitName;
     }
@@ -190,6 +198,7 @@ public class PchTempOrderDet implements IEntity {
     /**
      * @return ORDER_COUNTS_2
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ORDER_COUNTS_2")
     public java.math.BigDecimal getOrderCounts2() {
         return this.orderCounts2;
     }
@@ -211,6 +220,7 @@ public class PchTempOrderDet implements IEntity {
     /**
      * @return UNIT_NAME_2
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("UNIT_NAME_2")
     public String getUnitName2() {
         return this.unitName2;
     }
@@ -232,6 +242,7 @@ public class PchTempOrderDet implements IEntity {
     /**
      * @return ISSHIKI_F
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ISSHIKI_F")
     public String getIsshikiF() {
         return this.isshikiF;
     }
@@ -253,6 +264,7 @@ public class PchTempOrderDet implements IEntity {
     /**
      * @return FUTAI_F
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("FUTAI_F")
     public String getFutaiF() {
         return this.futaiF;
     }
@@ -274,6 +286,7 @@ public class PchTempOrderDet implements IEntity {
     /**
      * @return IKKATSU_ORDER_NO
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("IKKATSU_ORDER_NO")
     public String getIkkatsuOrderNo() {
         return this.ikkatsuOrderNo;
     }
@@ -298,6 +311,7 @@ public class PchTempOrderDet implements IEntity {
     /**
      * @return TIME_STAMP_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CREATE")
     public java.time.LocalDateTime getTimeStampCreate() {
         return this.timeStampCreate;
     }
@@ -328,6 +342,7 @@ public class PchTempOrderDet implements IEntity {
     /**
      * @return TIME_STAMP_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CHANGE")
     public java.time.LocalDateTime getTimeStampChange() {
         return this.timeStampChange;
     }
@@ -355,6 +370,7 @@ public class PchTempOrderDet implements IEntity {
     /**
      * @return USER_ID_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CREATE")
     public String getUserIdCreate() {
         return this.userIdCreate;
     }
@@ -376,6 +392,7 @@ public class PchTempOrderDet implements IEntity {
     /**
      * @return USER_ID_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CHANGE")
     public String getUserIdChange() {
         return this.userIdChange;
     }

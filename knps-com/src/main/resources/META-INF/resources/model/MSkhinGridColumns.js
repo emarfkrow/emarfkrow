@@ -3,6 +3,6 @@
  */
 
 let MSkhinGridColumns = [
-    Column.cell('HHINBAN', Messages['MSkhinGrid.hhinban'], 200, 'primaryKey', null),
+    Column.refer('HHINBAN', Messages['MSkhinGrid.hhinban'], 200, 'primaryKey', 'HHINMEI'),
     Column.text('SKKBN', Messages['MSkhinGrid.skkbn'], 10, '', null),
 ];

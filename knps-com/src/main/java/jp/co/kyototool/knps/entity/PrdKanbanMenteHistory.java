@@ -22,6 +22,7 @@ public class PrdKanbanMenteHistory implements IEntity {
     /**
      * @return KANBAN_ID
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("KANBAN_ID")
     public String getKanbanId() {
         return this.kanbanId;
     }
@@ -43,6 +44,7 @@ public class PrdKanbanMenteHistory implements IEntity {
     /**
      * @return SERIAL_NO
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SERIAL_NO")
     public java.math.BigDecimal getSerialNo() {
         return this.serialNo;
     }
@@ -67,6 +69,7 @@ public class PrdKanbanMenteHistory implements IEntity {
     /**
      * @return PRINT_OUT_DATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("PRINT_OUT_DATE")
     public java.time.LocalDateTime getPrintOutDate() {
         return this.printOutDate;
     }
@@ -94,6 +97,7 @@ public class PrdKanbanMenteHistory implements IEntity {
     /**
      * @return PRINT_OUT_OPERATOR
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("PRINT_OUT_OPERATOR")
     public String getPrintOutOperator() {
         return this.printOutOperator;
     }
@@ -118,6 +122,7 @@ public class PrdKanbanMenteHistory implements IEntity {
     /**
      * @return SCRAP_DATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SCRAP_DATE")
     public java.time.LocalDateTime getScrapDate() {
         return this.scrapDate;
     }
@@ -145,6 +150,7 @@ public class PrdKanbanMenteHistory implements IEntity {
     /**
      * @return SCRAP_OPERATOR
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SCRAP_OPERATOR")
     public String getScrapOperator() {
         return this.scrapOperator;
     }
@@ -169,6 +175,7 @@ public class PrdKanbanMenteHistory implements IEntity {
     /**
      * @return LOST_DATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("LOST_DATE")
     public java.time.LocalDateTime getLostDate() {
         return this.lostDate;
     }
@@ -196,6 +203,7 @@ public class PrdKanbanMenteHistory implements IEntity {
     /**
      * @return LOST_OPERATOR
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("LOST_OPERATOR")
     public String getLostOperator() {
         return this.lostOperator;
     }
@@ -217,6 +225,7 @@ public class PrdKanbanMenteHistory implements IEntity {
     /**
      * @return LOST_REQ
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("LOST_REQ")
     public String getLostReq() {
         return this.lostReq;
     }
@@ -238,6 +247,7 @@ public class PrdKanbanMenteHistory implements IEntity {
     /**
      * @return LOST_REASON
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("LOST_REASON")
     public String getLostReason() {
         return this.lostReason;
     }
@@ -262,6 +272,7 @@ public class PrdKanbanMenteHistory implements IEntity {
     /**
      * @return LOSS_SCRAP_DATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("LOSS_SCRAP_DATE")
     public java.time.LocalDateTime getLossScrapDate() {
         return this.lossScrapDate;
     }
@@ -289,6 +300,7 @@ public class PrdKanbanMenteHistory implements IEntity {
     /**
      * @return LOSS_SCRAP_OPERATOR
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("LOSS_SCRAP_OPERATOR")
     public String getLossScrapOperator() {
         return this.lossScrapOperator;
     }
@@ -313,6 +325,7 @@ public class PrdKanbanMenteHistory implements IEntity {
     /**
      * @return TIME_STAMP_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CREATE")
     public java.time.LocalDateTime getTimeStampCreate() {
         return this.timeStampCreate;
     }
@@ -343,6 +356,7 @@ public class PrdKanbanMenteHistory implements IEntity {
     /**
      * @return TIME_STAMP_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CHANGE")
     public java.time.LocalDateTime getTimeStampChange() {
         return this.timeStampChange;
     }
@@ -370,6 +384,7 @@ public class PrdKanbanMenteHistory implements IEntity {
     /**
      * @return USER_ID_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CREATE")
     public String getUserIdCreate() {
         return this.userIdCreate;
     }
@@ -391,6 +406,7 @@ public class PrdKanbanMenteHistory implements IEntity {
     /**
      * @return USER_ID_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CHANGE")
     public String getUserIdChange() {
         return this.userIdChange;
     }

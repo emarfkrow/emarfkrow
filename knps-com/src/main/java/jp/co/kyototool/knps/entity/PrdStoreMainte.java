@@ -22,6 +22,7 @@ public class PrdStoreMainte implements IEntity {
     /**
      * @return YYYY
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("YYYY")
     public String getYyyy() {
         return this.yyyy;
     }
@@ -43,6 +44,7 @@ public class PrdStoreMainte implements IEntity {
     /**
      * @return MM
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("MM")
     public String getMm() {
         return this.mm;
     }
@@ -64,6 +66,7 @@ public class PrdStoreMainte implements IEntity {
     /**
      * @return HINBAN
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("HINBAN")
     public String getHinban() {
         return this.hinban;
     }
@@ -85,6 +88,7 @@ public class PrdStoreMainte implements IEntity {
     /**
      * @return ROUTING
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ROUTING")
     public java.math.BigDecimal getRouting() {
         return this.routing;
     }
@@ -106,6 +110,7 @@ public class PrdStoreMainte implements IEntity {
     /**
      * @return WC_CODE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("WC_CODE")
     public String getWcCode() {
         return this.wcCode;
     }
@@ -127,6 +132,7 @@ public class PrdStoreMainte implements IEntity {
     /**
      * @return LOCATION_CODE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("LOCATION_CODE")
     public String getLocationCode() {
         return this.locationCode;
     }
@@ -148,6 +154,7 @@ public class PrdStoreMainte implements IEntity {
     /**
      * @return LOT_SIZE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("LOT_SIZE")
     public java.math.BigDecimal getLotSize() {
         return this.lotSize;
     }
@@ -169,6 +176,7 @@ public class PrdStoreMainte implements IEntity {
     /**
      * @return KANBAN_ACC_COUNTS
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("KANBAN_ACC_COUNTS")
     public java.math.BigDecimal getKanbanAccCounts() {
         return this.kanbanAccCounts;
     }
@@ -190,6 +198,7 @@ public class PrdStoreMainte implements IEntity {
     /**
      * @return PL_COUNTS
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("PL_COUNTS")
     public java.math.BigDecimal getPlCounts() {
         return this.plCounts;
     }
@@ -211,6 +220,7 @@ public class PrdStoreMainte implements IEntity {
     /**
      * @return KANBAN_COUNTS
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("KANBAN_COUNTS")
     public java.math.BigDecimal getKanbanCounts() {
         return this.kanbanCounts;
     }
@@ -232,6 +242,7 @@ public class PrdStoreMainte implements IEntity {
     /**
      * @return FIT_POS
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("FIT_POS")
     public java.math.BigDecimal getFitPos() {
         return this.fitPos;
     }
@@ -253,6 +264,7 @@ public class PrdStoreMainte implements IEntity {
     /**
      * @return KANBAN_ID
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("KANBAN_ID")
     public String getKanbanId() {
         return this.kanbanId;
     }
@@ -277,6 +289,7 @@ public class PrdStoreMainte implements IEntity {
     /**
      * @return TIME_STAMP_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CREATE")
     public java.time.LocalDateTime getTimeStampCreate() {
         return this.timeStampCreate;
     }
@@ -307,6 +320,7 @@ public class PrdStoreMainte implements IEntity {
     /**
      * @return TIME_STAMP_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CHANGE")
     public java.time.LocalDateTime getTimeStampChange() {
         return this.timeStampChange;
     }
@@ -334,6 +348,7 @@ public class PrdStoreMainte implements IEntity {
     /**
      * @return USER_ID_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CREATE")
     public String getUserIdCreate() {
         return this.userIdCreate;
     }
@@ -355,6 +370,7 @@ public class PrdStoreMainte implements IEntity {
     /**
      * @return USER_ID_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CHANGE")
     public String getUserIdChange() {
         return this.userIdChange;
     }

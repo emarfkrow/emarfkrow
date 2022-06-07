@@ -4,7 +4,7 @@ FROM
     M_HOSOZAI a 
 WHERE
     1 = 1 
-    AND TRIM (a."HOSO-HINBAN") = TRIM (:hoso_hinban) 
+    AND a."HOSO-HINBAN" = :hoso_hinban 
     AND TRIM (a."HOSO-HINMEI") = TRIM (:hoso_hinmei) 
     AND TRIM (a."HOSO-HINMEI-RYAKU") = TRIM (:hoso_hinmei_ryaku) 
     AND TRIM (a."HOSO-SIZE") = TRIM (:hoso_size) 

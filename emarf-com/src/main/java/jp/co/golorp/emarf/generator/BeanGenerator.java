@@ -250,6 +250,7 @@ public final class BeanGenerator {
                 s.add("    /**");
                 s.add("     * @return " + mei);
                 s.add("     */");
+                s.add("    @com.fasterxml.jackson.annotation.JsonProperty(\"" + columnName + "\")");
                 s.add("    public " + dataType + " get" + pascal + "() {");
                 s.add("        return this." + camel + ";");
                 s.add("    }");

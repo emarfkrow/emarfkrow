@@ -22,6 +22,7 @@ public class PrdYWsManLoadPlan implements IEntity {
     /**
      * @return YYYY
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("YYYY")
     public String getYyyy() {
         return this.yyyy;
     }
@@ -43,6 +44,7 @@ public class PrdYWsManLoadPlan implements IEntity {
     /**
      * @return MM
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("MM")
     public String getMm() {
         return this.mm;
     }
@@ -64,6 +66,7 @@ public class PrdYWsManLoadPlan implements IEntity {
     /**
      * @return MAN_HINBAN
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("MAN_HINBAN")
     public String getManHinban() {
         return this.manHinban;
     }
@@ -85,6 +88,7 @@ public class PrdYWsManLoadPlan implements IEntity {
     /**
      * @return WS_CODE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("WS_CODE")
     public String getWsCode() {
         return this.wsCode;
     }
@@ -106,6 +110,7 @@ public class PrdYWsManLoadPlan implements IEntity {
     /**
      * @return PRO_NES_COUNTS
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("PRO_NES_COUNTS")
     public java.math.BigDecimal getProNesCounts() {
         return this.proNesCounts;
     }
@@ -127,6 +132,7 @@ public class PrdYWsManLoadPlan implements IEntity {
     /**
      * @return HUM_PRE_TIME
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("HUM_PRE_TIME")
     public java.math.BigDecimal getHumPreTime() {
         return this.humPreTime;
     }
@@ -148,6 +154,7 @@ public class PrdYWsManLoadPlan implements IEntity {
     /**
      * @return HUM_ACT_TIME
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("HUM_ACT_TIME")
     public java.math.BigDecimal getHumActTime() {
         return this.humActTime;
     }
@@ -169,6 +176,7 @@ public class PrdYWsManLoadPlan implements IEntity {
     /**
      * @return MAC_PRE_TIME_IN
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("MAC_PRE_TIME_IN")
     public java.math.BigDecimal getMacPreTimeIn() {
         return this.macPreTimeIn;
     }
@@ -190,6 +198,7 @@ public class PrdYWsManLoadPlan implements IEntity {
     /**
      * @return MAC_ACT_TIME_IN
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("MAC_ACT_TIME_IN")
     public java.math.BigDecimal getMacActTimeIn() {
         return this.macActTimeIn;
     }
@@ -211,6 +220,7 @@ public class PrdYWsManLoadPlan implements IEntity {
     /**
      * @return MAC_PRE_TIME_OUT
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("MAC_PRE_TIME_OUT")
     public java.math.BigDecimal getMacPreTimeOut() {
         return this.macPreTimeOut;
     }
@@ -232,6 +242,7 @@ public class PrdYWsManLoadPlan implements IEntity {
     /**
      * @return MAC_ACT_TIME_OUT
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("MAC_ACT_TIME_OUT")
     public java.math.BigDecimal getMacActTimeOut() {
         return this.macActTimeOut;
     }
@@ -253,6 +264,7 @@ public class PrdYWsManLoadPlan implements IEntity {
     /**
      * @return MAC_PRE_TIME_KANBAN
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("MAC_PRE_TIME_KANBAN")
     public java.math.BigDecimal getMacPreTimeKanban() {
         return this.macPreTimeKanban;
     }
@@ -274,6 +286,7 @@ public class PrdYWsManLoadPlan implements IEntity {
     /**
      * @return MAC_ACT_TIME_KANBAN
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("MAC_ACT_TIME_KANBAN")
     public java.math.BigDecimal getMacActTimeKanban() {
         return this.macActTimeKanban;
     }
@@ -298,6 +311,7 @@ public class PrdYWsManLoadPlan implements IEntity {
     /**
      * @return TIME_STAMP_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CREATE")
     public java.time.LocalDateTime getTimeStampCreate() {
         return this.timeStampCreate;
     }
@@ -328,6 +342,7 @@ public class PrdYWsManLoadPlan implements IEntity {
     /**
      * @return TIME_STAMP_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CHANGE")
     public java.time.LocalDateTime getTimeStampChange() {
         return this.timeStampChange;
     }
@@ -355,6 +370,7 @@ public class PrdYWsManLoadPlan implements IEntity {
     /**
      * @return USER_ID_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CREATE")
     public String getUserIdCreate() {
         return this.userIdCreate;
     }
@@ -376,6 +392,7 @@ public class PrdYWsManLoadPlan implements IEntity {
     /**
      * @return USER_ID_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CHANGE")
     public String getUserIdChange() {
         return this.userIdChange;
     }

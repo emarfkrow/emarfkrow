@@ -22,6 +22,7 @@ public class MfgProActDet implements IEntity {
     /**
      * @return PRO_NO
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("PRO_NO")
     public String getProNo() {
         return this.proNo;
     }
@@ -43,6 +44,7 @@ public class MfgProActDet implements IEntity {
     /**
      * @return PRO_ROUTING_BRANCH
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("PRO_ROUTING_BRANCH")
     public java.math.BigDecimal getProRoutingBranch() {
         return this.proRoutingBranch;
     }
@@ -64,6 +66,7 @@ public class MfgProActDet implements IEntity {
     /**
      * @return PRO_ACT_BRANCH_NO
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("PRO_ACT_BRANCH_NO")
     public java.math.BigDecimal getProActBranchNo() {
         return this.proActBranchNo;
     }
@@ -85,6 +88,7 @@ public class MfgProActDet implements IEntity {
     /**
      * @return ACT_ITEM
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ACT_ITEM")
     public java.math.BigDecimal getActItem() {
         return this.actItem;
     }
@@ -109,6 +113,7 @@ public class MfgProActDet implements IEntity {
     /**
      * @return ACT_DATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ACT_DATE")
     public java.time.LocalDateTime getActDate() {
         return this.actDate;
     }
@@ -136,6 +141,7 @@ public class MfgProActDet implements IEntity {
     /**
      * @return CAUSE_CODE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("CAUSE_CODE")
     public String getCauseCode() {
         return this.causeCode;
     }
@@ -157,6 +163,7 @@ public class MfgProActDet implements IEntity {
     /**
      * @return OPERATOR
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("OPERATOR")
     public String getOperator() {
         return this.operator;
     }
@@ -178,6 +185,7 @@ public class MfgProActDet implements IEntity {
     /**
      * @return LAST_ROUTING
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("LAST_ROUTING")
     public java.math.BigDecimal getLastRouting() {
         return this.lastRouting;
     }
@@ -202,6 +210,7 @@ public class MfgProActDet implements IEntity {
     /**
      * @return TIME_STAMP_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CREATE")
     public java.time.LocalDateTime getTimeStampCreate() {
         return this.timeStampCreate;
     }
@@ -232,6 +241,7 @@ public class MfgProActDet implements IEntity {
     /**
      * @return TIME_STAMP_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CHANGE")
     public java.time.LocalDateTime getTimeStampChange() {
         return this.timeStampChange;
     }
@@ -259,6 +269,7 @@ public class MfgProActDet implements IEntity {
     /**
      * @return USER_ID_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CREATE")
     public String getUserIdCreate() {
         return this.userIdCreate;
     }
@@ -280,6 +291,7 @@ public class MfgProActDet implements IEntity {
     /**
      * @return USER_ID_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CHANGE")
     public String getUserIdChange() {
         return this.userIdChange;
     }

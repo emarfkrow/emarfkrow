@@ -25,6 +25,7 @@ public class MstSalesTax implements IEntity {
     /**
      * @return START_DATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("START_DATE")
     public java.time.LocalDateTime getStartDate() {
         return this.startDate;
     }
@@ -52,6 +53,7 @@ public class MstSalesTax implements IEntity {
     /**
      * @return SALSE_TAX
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SALSE_TAX")
     public java.math.BigDecimal getSalseTax() {
         return this.salseTax;
     }

@@ -22,6 +22,7 @@ public class MstSupEmp implements IEntity {
     /**
      * @return SUPPLIER_OPE_CODE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SUPPLIER_OPE_CODE")
     public String getSupplierOpeCode() {
         return this.supplierOpeCode;
     }
@@ -43,6 +44,7 @@ public class MstSupEmp implements IEntity {
     /**
      * @return SUPPLIER_OPE_NAME
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SUPPLIER_OPE_NAME")
     public String getSupplierOpeName() {
         return this.supplierOpeName;
     }
@@ -64,6 +66,7 @@ public class MstSupEmp implements IEntity {
     /**
      * @return EMP_CODE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("EMP_CODE")
     public String getEmpCode() {
         return this.empCode;
     }
@@ -88,6 +91,7 @@ public class MstSupEmp implements IEntity {
     /**
      * @return TIME_STAMP_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CREATE")
     public java.time.LocalDateTime getTimeStampCreate() {
         return this.timeStampCreate;
     }
@@ -118,6 +122,7 @@ public class MstSupEmp implements IEntity {
     /**
      * @return TIME_STAMP_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CHANGE")
     public java.time.LocalDateTime getTimeStampChange() {
         return this.timeStampChange;
     }
@@ -145,6 +150,7 @@ public class MstSupEmp implements IEntity {
     /**
      * @return USER_ID_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CREATE")
     public String getUserIdCreate() {
         return this.userIdCreate;
     }
@@ -166,6 +172,7 @@ public class MstSupEmp implements IEntity {
     /**
      * @return USER_ID_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CHANGE")
     public String getUserIdChange() {
         return this.userIdChange;
     }
@@ -187,6 +194,7 @@ public class MstSupEmp implements IEntity {
     /**
      * @return DELETE_FLAG
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("DELETE_FLAG")
     public java.math.BigDecimal getDeleteFlag() {
         return this.deleteFlag;
     }

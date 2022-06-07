@@ -22,6 +22,7 @@ public class MTokuyak implements IEntity {
     /**
      * @return 特約店コード
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TOKUYAKUCD")
     public java.math.BigDecimal getTokuyakucd() {
         return this.tokuyakucd;
     }
@@ -43,6 +44,7 @@ public class MTokuyak implements IEntity {
     /**
      * @return 得意先コード
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TOKUCD")
     public java.math.BigDecimal getTokucd() {
         return this.tokucd;
     }
@@ -64,6 +66,7 @@ public class MTokuyak implements IEntity {
     /**
      * @return 本社特約店コード
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("HTOKUYAKUCD")
     public String getHtokuyakucd() {
         return this.htokuyakucd;
     }
@@ -85,6 +88,7 @@ public class MTokuyak implements IEntity {
     /**
      * @return 営業区分
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("EIGYOKBN")
     public String getEigyokbn() {
         return this.eigyokbn;
     }
@@ -106,6 +110,7 @@ public class MTokuyak implements IEntity {
     /**
      * @return 有力店資格区分
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("YURYOKUKBN")
     public String getYuryokukbn() {
         return this.yuryokukbn;
     }
@@ -127,6 +132,7 @@ public class MTokuyak implements IEntity {
     /**
      * @return 業種区分
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("GYOSHU-KBN")
     public String getGyoshuKbn() {
         return this.gyoshuKbn;
     }
@@ -148,6 +154,7 @@ public class MTokuyak implements IEntity {
     /**
      * @return 略特約店名
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("RTOKUYAKUMEI")
     public String getRtokuyakumei() {
         return this.rtokuyakumei;
     }
@@ -169,6 +176,7 @@ public class MTokuyak implements IEntity {
     /**
      * @return 特約店名１
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TOKUYAKUMEI1")
     public String getTokuyakumei1() {
         return this.tokuyakumei1;
     }
@@ -190,6 +198,7 @@ public class MTokuyak implements IEntity {
     /**
      * @return 特約店名２
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TOKUYAKUMEI2")
     public String getTokuyakumei2() {
         return this.tokuyakumei2;
     }
@@ -211,6 +220,7 @@ public class MTokuyak implements IEntity {
     /**
      * @return 特約店住所１
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TOKUYAKU_JUSHO1")
     public String getTokuyakuJusho1() {
         return this.tokuyakuJusho1;
     }
@@ -232,6 +242,7 @@ public class MTokuyak implements IEntity {
     /**
      * @return 特約店住所２
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TOKUYAKU_JUSHO2")
     public String getTokuyakuJusho2() {
         return this.tokuyakuJusho2;
     }
@@ -253,6 +264,7 @@ public class MTokuyak implements IEntity {
     /**
      * @return カナ特約店名
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("KTOKUYAKUMEI")
     public String getKtokuyakumei() {
         return this.ktokuyakumei;
     }
@@ -274,6 +286,7 @@ public class MTokuyak implements IEntity {
     /**
      * @return 郵便番号
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("UBINNO")
     public String getUbinno() {
         return this.ubinno;
     }
@@ -295,6 +308,7 @@ public class MTokuyak implements IEntity {
     /**
      * @return 電話番号
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TELNO")
     public String getTelno() {
         return this.telno;
     }
@@ -316,6 +330,7 @@ public class MTokuyak implements IEntity {
     /**
      * @return ＦＡＸ番号
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("FAXNO")
     public String getFaxno() {
         return this.faxno;
     }
@@ -337,6 +352,7 @@ public class MTokuyak implements IEntity {
     /**
      * @return マスター登録日
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TOUROKUBI")
     public java.math.BigDecimal getTourokubi() {
         return this.tourokubi;
     }
@@ -358,6 +374,7 @@ public class MTokuyak implements IEntity {
     /**
      * @return 取引停止区分
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TORIHIKI-KBN")
     public String getTorihikiKbn() {
         return this.torihikiKbn;
     }
@@ -379,6 +396,7 @@ public class MTokuyak implements IEntity {
     /**
      * @return ネプロス今期受注金額
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("KON_NPJUCHUKIN")
     public java.math.BigDecimal getKonNpjuchukin() {
         return this.konNpjuchukin;
     }
@@ -400,6 +418,7 @@ public class MTokuyak implements IEntity {
     /**
      * @return ネプロス今期出荷金額
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("KON_NPSHUKKA")
     public java.math.BigDecimal getKonNpshukka() {
         return this.konNpshukka;
     }
@@ -421,6 +440,7 @@ public class MTokuyak implements IEntity {
     /**
      * @return ネプロス前期受注金額
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ZEN_NPJUCHUKIN")
     public java.math.BigDecimal getZenNpjuchukin() {
         return this.zenNpjuchukin;
     }
@@ -442,6 +462,7 @@ public class MTokuyak implements IEntity {
     /**
      * @return ネプロス前期出荷金額
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ZEN_NPSHUKKA")
     public java.math.BigDecimal getZenNpshukka() {
         return this.zenNpshukka;
     }
@@ -463,6 +484,7 @@ public class MTokuyak implements IEntity {
     /**
      * @return 市町村コード
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SICHOCD")
     public String getSichocd() {
         return this.sichocd;
     }
@@ -484,6 +506,7 @@ public class MTokuyak implements IEntity {
     /**
      * @return ＦＡＸ区分
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("FAXKBN")
     public String getFaxkbn() {
         return this.faxkbn;
     }
@@ -505,6 +528,7 @@ public class MTokuyak implements IEntity {
     /**
      * @return 運送会社コード
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("UNSOCD")
     public String getUnsocd() {
         return this.unsocd;
     }
@@ -526,6 +550,7 @@ public class MTokuyak implements IEntity {
     /**
      * @return 地区コード
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIKUCD")
     public String getTikucd() {
         return this.tikucd;
     }
@@ -547,6 +572,7 @@ public class MTokuyak implements IEntity {
     /**
      * @return 都道府県コード
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TODOFUKENCD")
     public String getTodofukencd() {
         return this.todofukencd;
     }
@@ -568,6 +594,7 @@ public class MTokuyak implements IEntity {
     /**
      * @return 予備領域
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("FILLER")
     public String getFiller() {
         return this.filler;
     }

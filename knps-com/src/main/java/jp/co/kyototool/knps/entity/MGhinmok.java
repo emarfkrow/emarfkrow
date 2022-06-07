@@ -22,6 +22,7 @@ public class MGhinmok implements IEntity {
     /**
      * @return 品番
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("HINBAN")
     public String getHinban() {
         return this.hinban;
     }
@@ -43,6 +44,7 @@ public class MGhinmok implements IEntity {
     /**
      * @return 品目コード
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("HINCD")
     public String getHincd() {
         return this.hincd;
     }
@@ -64,6 +66,7 @@ public class MGhinmok implements IEntity {
     /**
      * @return 品目合計単価
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("HINGENKA")
     public java.math.BigDecimal getHingenka() {
         return this.hingenka;
     }
@@ -85,6 +88,7 @@ public class MGhinmok implements IEntity {
     /**
      * @return データ連携日
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("RENKEIBI")
     public String getRenkeibi() {
         return this.renkeibi;
     }
@@ -106,6 +110,7 @@ public class MGhinmok implements IEntity {
     /**
      * @return 処理済フラグ
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SHORIFLG")
     public String getShoriflg() {
         return this.shoriflg;
     }
@@ -127,6 +132,7 @@ public class MGhinmok implements IEntity {
     /**
      * @return 予備領域
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("FILLER")
     public String getFiller() {
         return this.filler;
     }

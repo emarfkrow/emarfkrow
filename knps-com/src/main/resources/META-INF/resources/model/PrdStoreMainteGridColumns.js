@@ -8,7 +8,7 @@ let PrdStoreMainteGridColumns = [
     Column.cell('HINBAN', Messages['PrdStoreMainteGrid.hinban'], 250, 'primaryKey', null),
     Column.cell('ROUTING', Messages['PrdStoreMainteGrid.routing'], 20, 'primaryKey', null),
     Column.refer('WC_CODE', Messages['PrdStoreMainteGrid.wcCode'], 30, '', 'WC_NAME'),
-    Column.refer('LOCATION_CODE', Messages['PrdStoreMainteGrid.locationCode'], 100, '', 'LOCATION_NAME'),
+    Column.select('LOCATION_CODE', Messages['PrdStoreMainteGrid.locationCode'], 100, '', { json: 'MstCodeValueSearch.json', paramkey: 'code_nm', value: 'CODE_VALUE', label: 'CODE_VALUE_MEI' }),
     Column.text('LOT_SIZE', Messages['PrdStoreMainteGrid.lotSize'], 60, '', null),
     Column.text('KANBAN_ACC_COUNTS', Messages['PrdStoreMainteGrid.kanbanAccCounts'], 60, '', null),
     Column.text('PL_COUNTS', Messages['PrdStoreMainteGrid.plCounts'], 60, '', null),

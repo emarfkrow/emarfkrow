@@ -3,7 +3,7 @@
  */
 
 let InvSurveyResultHisOtherGridColumns = [
-    Column.refer('LOCATION_CODE', Messages['InvSurveyResultHisOtherGrid.locationCode'], 100, 'primaryKey', 'LOCATION_NAME'),
+    Column.cell('LOCATION_CODE', Messages['InvSurveyResultHisOtherGrid.locationCode'], 100, 'primaryKey', null),
     Column.cell('RESULT_BRANCH_NO', Messages['InvSurveyResultHisOtherGrid.resultBranchNo'], 20, 'primaryKey', null),
     Column.cell('YYYY', Messages['InvSurveyResultHisOtherGrid.yyyy'], 40, 'primaryKey', null),
     Column.cell('MM', Messages['InvSurveyResultHisOtherGrid.mm'], 20, 'primaryKey', null),

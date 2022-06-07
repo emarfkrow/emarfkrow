@@ -157,25 +157,25 @@ public final class FormValidator {
      */
     public static <T> T toBean(final String className, final Map<String, Object> postJson, final boolean isGrid) {
 
+        // クラスを取得
         Class<?> clazz = null;
         try {
-            // 一旦、指定通りに取得してみる
             clazz = Class.forName(className);
         } catch (ClassNotFoundException e) {
             LOG.trace(e.toString());
-            try { // フォームクラスでmodelパッケージならbaseパッケージまで掘って取得してみる
+            try { // modelパッケージのフォームクラスなら、baseパッケージまで掘ってみる
                 clazz = Class.forName(className.replaceFirst("\\.model\\.", ".model.base."));
             } catch (ClassNotFoundException e1) {
                 LOG.trace(e1.toString());
-                try { // ***GridFormを***RegistFormにして探してみる
+                try { // ***GridFormなら、***RegistFormにしてみる
                     clazz = Class.forName(className.replaceFirst("Grid", "Regist"));
                 } catch (ClassNotFoundException e2) {
                     LOG.trace(e2.toString());
-                    try { // ***Gridを***RegistFormにして探してみる
+                    try { // ***Gridなら、***RegistFormにしてみる
                         clazz = Class.forName(className.replaceFirst("Grid", "RegistForm"));
                     } catch (ClassNotFoundException e3) {
                         LOG.trace(e3.toString());
-                        try { // ***sを***にして探してみる（エンティティ用）
+                        try { // ***sなら、***にしてみる（カスタムフォームのグリッド本体用）
                             clazz = Class.forName(className.replaceFirst("s$", ""));
                         } catch (ClassNotFoundException e4) {
                             LOG.trace(e4.toString());
@@ -184,7 +184,6 @@ public final class FormValidator {
                 }
             }
         }
-
         if (clazz == null) {
             return null;
         }
@@ -197,18 +196,12 @@ public final class FormValidator {
             throw new SysError(e);
         }
 
-        String entityName = clazz.getSimpleName().replaceAll("RegistForm$", "");
-
-        //        boolean isValued = false;
-
         // Formインスタンスのプロパティでループ
         Method[] methods = clazz.getMethods();
         for (Method method : methods) {
 
-            // プロパティ名を取得
-            String methodName = method.getName();
-
             // セッターでなければスキップ
+            String methodName = method.getName();
             if (!methodName.startsWith("set")) {
                 continue;
             }
@@ -232,23 +225,28 @@ public final class FormValidator {
                 value = postJson.get(fieldName);
 
                 if (value == null) { // entityName付きでも取得してみる
+                    String entityName = clazz.getSimpleName().replaceAll("RegistForm$", "");
                     value = postJson.get(entityName + "." + fieldName);
                 }
-                if (value == null) { // パスカルでも取得してみる（グリッド用）
+                if (value == null) { // パスカルでも取得してみる（グリッド本体用）
                     value = postJson.get(StringUtil.toPascalCase(fieldName));
+                }
+                if (value == null) { // 最後の「s」を「Grid」にしたパスカルでも取得してみる（カスタムフォームのグリッド本体用）
+                    value = postJson.get(StringUtil.toPascalCase(fieldName).replaceAll("s$", "Grid"));
                 }
                 if (value == null) { // アッパーでも取得してみる（グリッド行用）
                     value = postJson.get(StringUtil.toUpperCase(fieldName));
                 }
-                if (value == null) { // 最後の「s」を「Grid」にしたパスカルでも取得してみる（エンティティ用）
-                    value = postJson.get(StringUtil.toPascalCase(fieldName).replaceAll("s$", "Grid"));
+                if (value == null) { // ケバブでも取得してみる（グリッド行用）
+                    value = postJson.get(StringUtil.toKebabCase(fieldName));
+                }
+                if (value == null) { // アッパーケバブでも取得してみる（グリッド行用）
+                    value = postJson.get(StringUtil.toUpperKebabCase(fieldName));
                 }
             }
 
             if (value != null) {
                 // 送信値がある場合
-
-                //                isValued = true;
 
                 if (value instanceof List) {
                     // 送信値がListの場合
@@ -295,14 +293,8 @@ public final class FormValidator {
             }
         }
 
-        //        // 一つも値がなかった場合はnullを返す
-        //        if (!isValued) {
-        //            return null;
-        //        }
-
         @SuppressWarnings("unchecked")
         T t = (T) o;
-
         return t;
     }
 

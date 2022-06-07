@@ -22,6 +22,7 @@ public class SysReqLockStatus implements IEntity {
     /**
      * @return GAMEN_ID
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("GAMEN_ID")
     public String getGamenId() {
         return this.gamenId;
     }
@@ -43,6 +44,7 @@ public class SysReqLockStatus implements IEntity {
     /**
      * @return USER_ID
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID")
     public String getUserId() {
         return this.userId;
     }
@@ -67,6 +69,7 @@ public class SysReqLockStatus implements IEntity {
     /**
      * @return LOCK_DATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("LOCK_DATE")
     public java.time.LocalDateTime getLockDate() {
         return this.lockDate;
     }

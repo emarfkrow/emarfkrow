@@ -25,6 +25,7 @@ public class InvInoutHistory implements IEntity {
     /**
      * @return ACTION_DATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ACTION_DATE")
     public java.time.LocalDateTime getActionDate() {
         return this.actionDate;
     }
@@ -52,6 +53,7 @@ public class InvInoutHistory implements IEntity {
     /**
      * @return HINBAN
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("HINBAN")
     public String getHinban() {
         return this.hinban;
     }
@@ -73,6 +75,7 @@ public class InvInoutHistory implements IEntity {
     /**
      * @return IN_OUT_COUNTS
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("IN_OUT_COUNTS")
     public java.math.BigDecimal getInOutCounts() {
         return this.inOutCounts;
     }
@@ -94,6 +97,7 @@ public class InvInoutHistory implements IEntity {
     /**
      * @return IN_OUT_KBN
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("IN_OUT_KBN")
     public java.math.BigDecimal getInOutKbn() {
         return this.inOutKbn;
     }
@@ -115,6 +119,7 @@ public class InvInoutHistory implements IEntity {
     /**
      * @return FROM_PAY
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("FROM_PAY")
     public String getFromPay() {
         return this.fromPay;
     }
@@ -136,6 +141,7 @@ public class InvInoutHistory implements IEntity {
     /**
      * @return TO_PAY
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TO_PAY")
     public String getToPay() {
         return this.toPay;
     }
@@ -157,6 +163,7 @@ public class InvInoutHistory implements IEntity {
     /**
      * @return REQ_NAME
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("REQ_NAME")
     public String getReqName() {
         return this.reqName;
     }
@@ -181,6 +188,7 @@ public class InvInoutHistory implements IEntity {
     /**
      * @return TIME_STAMP_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CREATE")
     public java.time.LocalDateTime getTimeStampCreate() {
         return this.timeStampCreate;
     }
@@ -211,6 +219,7 @@ public class InvInoutHistory implements IEntity {
     /**
      * @return TIME_STAMP_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CHANGE")
     public java.time.LocalDateTime getTimeStampChange() {
         return this.timeStampChange;
     }
@@ -238,6 +247,7 @@ public class InvInoutHistory implements IEntity {
     /**
      * @return USER_ID_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CREATE")
     public String getUserIdCreate() {
         return this.userIdCreate;
     }
@@ -259,6 +269,7 @@ public class InvInoutHistory implements IEntity {
     /**
      * @return USER_ID_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CHANGE")
     public String getUserIdChange() {
         return this.userIdChange;
     }

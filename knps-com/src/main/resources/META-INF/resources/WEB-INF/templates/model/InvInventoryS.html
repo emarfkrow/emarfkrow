@@ -9,13 +9,6 @@
 
 </script>
 <script th:src="@{/model/InvInventoryGridColumns.js}"></script>
-<script th:src="@{/model/MstLocationGridColumns.js}"></script>
-<script th:src="@{/model/MstSubinvGridColumns.js}"></script>
-<script th:src="@{/model/MstSupplierGridColumns.js}"></script>
-<script th:src="@{/model/InvStockProcessSupplyGridColumns.js}"></script>
-<script th:src="@{/model/MstSupplierBkGridColumns.js}"></script>
-<script th:src="@{/model/MstTaxGridColumns.js}"></script>
-<script th:src="@{/model/MstStoreManGridColumns.js}"></script>
 <script th:src="@{/model/MstReasonGridColumns.js}"></script>
 </head>
 <body>
@@ -25,7 +18,9 @@
       <fieldset>
         <legend th:text="#{InvInventoryS.legend}">legend</legend>
         <div id="locationCode">
-          <label for="InvInventory.locationCode" th:text="#{InvInventory.locationCode}">LOCATION_CODE</label><input type="text" id="InvInventory.locationCode" name="InvInventory.locationCode" maxlength="10" data-json="MstLocationSearch.json" data-srcDef="LOCATION_CODE:InvInventory.locationCode" data-destDef="InvInventory.locationName:LOCATION_NAME" /><a id="InvInventory.locationCode" th:href="@{/model/MstLocationS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="InvInventory.locationName" class="refer" data-json="MstLocationSearch.json" data-srcDef="LOCATION_CODE:InvInventory.locationCode" data-destDef="InvInventory.locationName:LOCATION_NAME"></span>
+          <fieldset id="InvInventory.locationCodeList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:location_code" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{InvInventory.locationCode}">LOCATION_CODE</legend>
+          </fieldset>
         </div>
         <div id="hinban">
           <label for="InvInventory.hinban" th:text="#{InvInventory.hinban}">HINBAN</label><input type="text" id="InvInventory.hinban" name="InvInventory.hinban" maxlength="25" />
@@ -56,7 +51,6 @@
       </fieldset>
       <div class="buttons">
         <button type="reset" th:text="#{common.reset}">reset</button>
-        <a th:href="@{/model/InvInventory.html}" id="InvInventory" target="dialog" th:text="#{InvInventory.add}" tabindex="-1">INV_INVENTORY</a>
       </div>
       <div class="submits">
         <button id="SearchInvInventory" class="search" data-gridId="InvInventoryGrid" th:text="#{common.search}">submit</button>

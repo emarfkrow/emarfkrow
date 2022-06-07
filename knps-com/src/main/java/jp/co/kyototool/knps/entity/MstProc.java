@@ -22,6 +22,7 @@ public class MstProc implements IEntity {
     /**
      * @return ROUTING_CODE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ROUTING_CODE")
     public String getRoutingCode() {
         return this.routingCode;
     }
@@ -43,6 +44,7 @@ public class MstProc implements IEntity {
     /**
      * @return ROUTING_NAME
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ROUTING_NAME")
     public String getRoutingName() {
         return this.routingName;
     }
@@ -64,6 +66,7 @@ public class MstProc implements IEntity {
     /**
      * @return ROUTING_NAME_SHT
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ROUTING_NAME_SHT")
     public String getRoutingNameSht() {
         return this.routingNameSht;
     }
@@ -88,6 +91,7 @@ public class MstProc implements IEntity {
     /**
      * @return TIME_STAMP_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CREATE")
     public java.time.LocalDateTime getTimeStampCreate() {
         return this.timeStampCreate;
     }
@@ -118,6 +122,7 @@ public class MstProc implements IEntity {
     /**
      * @return TIME_STAMP_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CHANGE")
     public java.time.LocalDateTime getTimeStampChange() {
         return this.timeStampChange;
     }
@@ -145,6 +150,7 @@ public class MstProc implements IEntity {
     /**
      * @return USER_ID_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CREATE")
     public String getUserIdCreate() {
         return this.userIdCreate;
     }
@@ -166,6 +172,7 @@ public class MstProc implements IEntity {
     /**
      * @return USER_ID_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CHANGE")
     public String getUserIdChange() {
         return this.userIdChange;
     }
@@ -187,6 +194,7 @@ public class MstProc implements IEntity {
     /**
      * @return DELETE_FLAG
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("DELETE_FLAG")
     public java.math.BigDecimal getDeleteFlag() {
         return this.deleteFlag;
     }
@@ -208,6 +216,7 @@ public class MstProc implements IEntity {
     /**
      * @return EXCEL_COLOR_INDEX
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("EXCEL_COLOR_INDEX")
     public java.math.BigDecimal getExcelColorIndex() {
         return this.excelColorIndex;
     }

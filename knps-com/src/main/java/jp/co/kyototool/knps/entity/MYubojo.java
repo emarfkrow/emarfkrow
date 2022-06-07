@@ -22,6 +22,7 @@ public class MYubojo implements IEntity {
     /**
      * @return 有力店資格区分
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("YURYOKUKBN")
     public String getYuryokukbn() {
         return this.yuryokukbn;
     }
@@ -43,6 +44,7 @@ public class MYubojo implements IEntity {
     /**
      * @return 有力店コード
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("YURYOCD")
     public java.math.BigDecimal getYuryocd() {
         return this.yuryocd;
     }
@@ -64,6 +66,7 @@ public class MYubojo implements IEntity {
     /**
      * @return 略有力店名
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("RYURYOKUMEI")
     public String getRyuryokumei() {
         return this.ryuryokumei;
     }
@@ -85,6 +88,7 @@ public class MYubojo implements IEntity {
     /**
      * @return 下限購入額
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("KONYU-MIN")
     public java.math.BigDecimal getKonyuMin() {
         return this.konyuMin;
     }
@@ -106,6 +110,7 @@ public class MYubojo implements IEntity {
     /**
      * @return 上限購入額
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("KONYU-MAX")
     public java.math.BigDecimal getKonyuMax() {
         return this.konyuMax;
     }
@@ -127,6 +132,7 @@ public class MYubojo implements IEntity {
     /**
      * @return 有ボ支払率
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("YUBORITU")
     public java.math.BigDecimal getYuboritu() {
         return this.yuboritu;
     }
@@ -148,6 +154,7 @@ public class MYubojo implements IEntity {
     /**
      * @return 更新日付
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("UPDDATE")
     public java.math.BigDecimal getUpddate() {
         return this.upddate;
     }
@@ -169,6 +176,7 @@ public class MYubojo implements IEntity {
     /**
      * @return 予備領域
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("FILLER")
     public String getFiller() {
         return this.filler;
     }

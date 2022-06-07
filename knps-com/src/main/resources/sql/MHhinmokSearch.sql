@@ -4,7 +4,7 @@ FROM
     M_HHINMOK a 
 WHERE
     1 = 1 
-    AND TRIM (a."HHINBAN") = TRIM (:hhinban) 
+    AND a."HHINBAN" = :hhinban 
     AND a."LVCD" = :lvcd 
     AND a."DLTFLG" = :dltflg 
     AND TRIM (a."HINCD") = TRIM (:hincd) 

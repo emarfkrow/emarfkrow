@@ -22,6 +22,7 @@ public class MstRoutingDefBk implements IEntity {
     /**
      * @return YY
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("YY")
     public String getYy() {
         return this.yy;
     }
@@ -43,6 +44,7 @@ public class MstRoutingDefBk implements IEntity {
     /**
      * @return MAN_HINBAN
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("MAN_HINBAN")
     public String getManHinban() {
         return this.manHinban;
     }
@@ -64,6 +66,7 @@ public class MstRoutingDefBk implements IEntity {
     /**
      * @return ROUTING_GROUP
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ROUTING_GROUP")
     public java.math.BigDecimal getRoutingGroup() {
         return this.routingGroup;
     }
@@ -85,6 +88,7 @@ public class MstRoutingDefBk implements IEntity {
     /**
      * @return PERMISSION_FLAG
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("PERMISSION_FLAG")
     public java.math.BigDecimal getPermissionFlag() {
         return this.permissionFlag;
     }
@@ -106,6 +110,7 @@ public class MstRoutingDefBk implements IEntity {
     /**
      * @return USABLE_FLAG
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USABLE_FLAG")
     public java.math.BigDecimal getUsableFlag() {
         return this.usableFlag;
     }
@@ -127,6 +132,7 @@ public class MstRoutingDefBk implements IEntity {
     /**
      * @return MAX_ROUTING
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("MAX_ROUTING")
     public java.math.BigDecimal getMaxRouting() {
         return this.maxRouting;
     }
@@ -148,6 +154,7 @@ public class MstRoutingDefBk implements IEntity {
     /**
      * @return COPY_SOURCE_GROUP
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("COPY_SOURCE_GROUP")
     public java.math.BigDecimal getCopySourceGroup() {
         return this.copySourceGroup;
     }
@@ -172,6 +179,7 @@ public class MstRoutingDefBk implements IEntity {
     /**
      * @return TIME_STAMP_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CREATE")
     public java.time.LocalDateTime getTimeStampCreate() {
         return this.timeStampCreate;
     }
@@ -202,6 +210,7 @@ public class MstRoutingDefBk implements IEntity {
     /**
      * @return TIME_STAMP_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CHANGE")
     public java.time.LocalDateTime getTimeStampChange() {
         return this.timeStampChange;
     }
@@ -229,6 +238,7 @@ public class MstRoutingDefBk implements IEntity {
     /**
      * @return USER_ID_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CREATE")
     public String getUserIdCreate() {
         return this.userIdCreate;
     }
@@ -250,6 +260,7 @@ public class MstRoutingDefBk implements IEntity {
     /**
      * @return USER_ID_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CHANGE")
     public String getUserIdChange() {
         return this.userIdChange;
     }

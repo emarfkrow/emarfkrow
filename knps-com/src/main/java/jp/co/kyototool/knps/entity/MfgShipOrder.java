@@ -22,6 +22,7 @@ public class MfgShipOrder implements IEntity {
     /**
      * @return SHIP_ORDER_NO
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SHIP_ORDER_NO")
     public String getShipOrderNo() {
         return this.shipOrderNo;
     }
@@ -43,6 +44,7 @@ public class MfgShipOrder implements IEntity {
     /**
      * @return CHILD_PLAN_NO
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("CHILD_PLAN_NO")
     public String getChildPlanNo() {
         return this.childPlanNo;
     }
@@ -64,6 +66,7 @@ public class MfgShipOrder implements IEntity {
     /**
      * @return HINBAN
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("HINBAN")
     public String getHinban() {
         return this.hinban;
     }
@@ -85,6 +88,7 @@ public class MfgShipOrder implements IEntity {
     /**
      * @return SHIP_DIRECT_COUNTS
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SHIP_DIRECT_COUNTS")
     public java.math.BigDecimal getShipDirectCounts() {
         return this.shipDirectCounts;
     }
@@ -106,6 +110,7 @@ public class MfgShipOrder implements IEntity {
     /**
      * @return SHIP_STATUS
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SHIP_STATUS")
     public java.math.BigDecimal getShipStatus() {
         return this.shipStatus;
     }
@@ -127,6 +132,7 @@ public class MfgShipOrder implements IEntity {
     /**
      * @return SHIP_COUNTS
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SHIP_COUNTS")
     public java.math.BigDecimal getShipCounts() {
         return this.shipCounts;
     }
@@ -151,6 +157,7 @@ public class MfgShipOrder implements IEntity {
     /**
      * @return SHIP_DATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SHIP_DATE")
     public java.time.LocalDateTime getShipDate() {
         return this.shipDate;
     }
@@ -181,6 +188,7 @@ public class MfgShipOrder implements IEntity {
     /**
      * @return TIME_STAMP_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CREATE")
     public java.time.LocalDateTime getTimeStampCreate() {
         return this.timeStampCreate;
     }
@@ -211,6 +219,7 @@ public class MfgShipOrder implements IEntity {
     /**
      * @return TIME_STAMP_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CHANGE")
     public java.time.LocalDateTime getTimeStampChange() {
         return this.timeStampChange;
     }
@@ -238,6 +247,7 @@ public class MfgShipOrder implements IEntity {
     /**
      * @return USER_ID_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CREATE")
     public String getUserIdCreate() {
         return this.userIdCreate;
     }
@@ -259,6 +269,7 @@ public class MfgShipOrder implements IEntity {
     /**
      * @return USER_ID_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CHANGE")
     public String getUserIdChange() {
         return this.userIdChange;
     }

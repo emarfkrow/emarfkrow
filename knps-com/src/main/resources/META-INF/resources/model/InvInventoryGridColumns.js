@@ -3,7 +3,7 @@
  */
 
 let InvInventoryGridColumns = [
-    Column.refer('LOCATION_CODE', Messages['InvInventoryGrid.locationCode'], 100, 'primaryKey', 'LOCATION_NAME'),
+    Column.cell('LOCATION_CODE', Messages['InvInventoryGrid.locationCode'], 100, 'primaryKey', null),
     Column.cell('HINBAN', Messages['InvInventoryGrid.hinban'], 250, 'primaryKey', null),
     Column.text('GOOD_STOCK', Messages['InvInventoryGrid.goodStock'], 120, '', null),
     Column.text('BAD_STOCK', Messages['InvInventoryGrid.badStock'], 120, '', null),

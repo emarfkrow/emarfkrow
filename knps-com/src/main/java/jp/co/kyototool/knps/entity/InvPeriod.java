@@ -22,6 +22,7 @@ public class InvPeriod implements IEntity {
     /**
      * @return STOCK_MANAGEMENT_SECTION
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("STOCK_MANAGEMENT_SECTION")
     public java.math.BigDecimal getStockManagementSection() {
         return this.stockManagementSection;
     }
@@ -43,6 +44,7 @@ public class InvPeriod implements IEntity {
     /**
      * @return INV_PHASE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("INV_PHASE")
     public java.math.BigDecimal getInvPhase() {
         return this.invPhase;
     }
@@ -64,6 +66,7 @@ public class InvPeriod implements IEntity {
     /**
      * @return INV_PHASE_MONTH
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("INV_PHASE_MONTH")
     public java.math.BigDecimal getInvPhaseMonth() {
         return this.invPhaseMonth;
     }
@@ -85,6 +88,7 @@ public class InvPeriod implements IEntity {
     /**
      * @return SUB_INV_CODE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SUB_INV_CODE")
     public String getSubInvCode() {
         return this.subInvCode;
     }
@@ -109,6 +113,7 @@ public class InvPeriod implements IEntity {
     /**
      * @return INV_DATE_FROM
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("INV_DATE_FROM")
     public java.time.LocalDateTime getInvDateFrom() {
         return this.invDateFrom;
     }
@@ -139,6 +144,7 @@ public class InvPeriod implements IEntity {
     /**
      * @return INV_DATE_TO
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("INV_DATE_TO")
     public java.time.LocalDateTime getInvDateTo() {
         return this.invDateTo;
     }
@@ -166,6 +172,7 @@ public class InvPeriod implements IEntity {
     /**
      * @return INV_STATUS
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("INV_STATUS")
     public java.math.BigDecimal getInvStatus() {
         return this.invStatus;
     }
@@ -190,6 +197,7 @@ public class InvPeriod implements IEntity {
     /**
      * @return TIME_STAMP_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CREATE")
     public java.time.LocalDateTime getTimeStampCreate() {
         return this.timeStampCreate;
     }
@@ -220,6 +228,7 @@ public class InvPeriod implements IEntity {
     /**
      * @return TIME_STAMP_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CHANGE")
     public java.time.LocalDateTime getTimeStampChange() {
         return this.timeStampChange;
     }
@@ -247,6 +256,7 @@ public class InvPeriod implements IEntity {
     /**
      * @return USER_ID_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CREATE")
     public String getUserIdCreate() {
         return this.userIdCreate;
     }
@@ -268,6 +278,7 @@ public class InvPeriod implements IEntity {
     /**
      * @return USER_ID_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CHANGE")
     public String getUserIdChange() {
         return this.userIdChange;
     }

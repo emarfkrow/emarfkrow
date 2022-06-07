@@ -22,6 +22,7 @@ public class MSimuke implements IEntity {
     /**
      * @return 仕向けコード
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SIMUKECD")
     public String getSimukecd() {
         return this.simukecd;
     }
@@ -43,6 +44,7 @@ public class MSimuke implements IEntity {
     /**
      * @return 仕向け先名
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SIMUKEMEI")
     public String getSimukemei() {
         return this.simukemei;
     }
@@ -64,6 +66,7 @@ public class MSimuke implements IEntity {
     /**
      * @return 予備領域
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("FILLER")
     public String getFiller() {
         return this.filler;
     }

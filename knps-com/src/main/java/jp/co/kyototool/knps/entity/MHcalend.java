@@ -22,6 +22,7 @@ public class MHcalend implements IEntity {
     /**
      * @return 年月
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("YYMM")
     public java.math.BigDecimal getYymm() {
         return this.yymm;
     }
@@ -43,6 +44,7 @@ public class MHcalend implements IEntity {
     /**
      * @return カレンダ区分
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("CALENDKBN")
     public String getCalendkbn() {
         return this.calendkbn;
     }
@@ -64,6 +66,7 @@ public class MHcalend implements IEntity {
     /**
      * @return 稼働日数
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("KADONITUSU")
     public java.math.BigDecimal getKadonitusu() {
         return this.kadonitusu;
     }
@@ -85,6 +88,7 @@ public class MHcalend implements IEntity {
     /**
      * @return 日
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("DD")
     public java.math.BigDecimal getDd() {
         return this.dd;
     }
@@ -106,6 +110,7 @@ public class MHcalend implements IEntity {
     /**
      * @return 曜日
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("YOUBI")
     public String getYoubi() {
         return this.youbi;
     }
@@ -127,6 +132,7 @@ public class MHcalend implements IEntity {
     /**
      * @return 稼働区分
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("KADOUKBN")
     public String getKadoukbn() {
         return this.kadoukbn;
     }
@@ -148,6 +154,7 @@ public class MHcalend implements IEntity {
     /**
      * @return 稼働日累計
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("KADOURUI")
     public java.math.BigDecimal getKadourui() {
         return this.kadourui;
     }
@@ -169,6 +176,7 @@ public class MHcalend implements IEntity {
     /**
      * @return 予備領域
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("FILLER")
     public String getFiller() {
         return this.filler;
     }

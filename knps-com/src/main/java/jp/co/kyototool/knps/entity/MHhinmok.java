@@ -22,6 +22,7 @@ public class MHhinmok implements IEntity {
     /**
      * @return 販売品番
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("HHINBAN")
     public String getHhinban() {
         return this.hhinban;
     }
@@ -43,6 +44,7 @@ public class MHhinmok implements IEntity {
     /**
      * @return ローレベルコード
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("LVCD")
     public java.math.BigDecimal getLvcd() {
         return this.lvcd;
     }
@@ -64,6 +66,7 @@ public class MHhinmok implements IEntity {
     /**
      * @return 削除フラグ
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("DLTFLG")
     public java.math.BigDecimal getDltflg() {
         return this.dltflg;
     }
@@ -85,6 +88,7 @@ public class MHhinmok implements IEntity {
     /**
      * @return 品目コード
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("HINCD")
     public String getHincd() {
         return this.hincd;
     }
@@ -100,18 +104,19 @@ public class MHhinmok implements IEntity {
         }
     }
 
-    /** 品　名 */
+    /** 品名 */
     private String hinmei;
 
     /**
-     * @return 品　名
+     * @return 品名
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("HINMEI")
     public String getHinmei() {
         return this.hinmei;
     }
 
     /**
-     * @param o 品　名
+     * @param o 品名
      */
     public void setHinmei(final Object o) {
         if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {
@@ -127,6 +132,7 @@ public class MHhinmok implements IEntity {
     /**
      * @return セット区分
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SETKBN")
     public String getSetkbn() {
         return this.setkbn;
     }
@@ -148,6 +154,7 @@ public class MHhinmok implements IEntity {
     /**
      * @return 戦略商品区分
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SSHINKBN")
     public String getSshinkbn() {
         return this.sshinkbn;
     }
@@ -169,6 +176,7 @@ public class MHhinmok implements IEntity {
     /**
      * @return 受注禁止区分
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("JUKINKBN")
     public String getJukinkbn() {
         return this.jukinkbn;
     }
@@ -190,6 +198,7 @@ public class MHhinmok implements IEntity {
     /**
      * @return 転売禁止区分
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TENKINKBN")
     public String getTenkinkbn() {
         return this.tenkinkbn;
     }
@@ -211,6 +220,7 @@ public class MHhinmok implements IEntity {
     /**
      * @return 入庫禁止区分
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("NYUKOKINKBN")
     public String getNyukokinkbn() {
         return this.nyukokinkbn;
     }
@@ -232,6 +242,7 @@ public class MHhinmok implements IEntity {
     /**
      * @return 製品区分
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SEIHINKBN")
     public String getSeihinkbn() {
         return this.seihinkbn;
     }
@@ -253,6 +264,7 @@ public class MHhinmok implements IEntity {
     /**
      * @return 出荷指示区分
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SIJIKBN")
     public String getSijikbn() {
         return this.sijikbn;
     }
@@ -274,6 +286,7 @@ public class MHhinmok implements IEntity {
     /**
      * @return 商品分類
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SHOHIN-BUNRUI")
     public java.math.BigDecimal getShohinBunrui() {
         return this.shohinBunrui;
     }
@@ -295,6 +308,7 @@ public class MHhinmok implements IEntity {
     /**
      * @return 基準在庫
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("KIJUNZAIKO")
     public java.math.BigDecimal getKijunzaiko() {
         return this.kijunzaiko;
     }
@@ -316,6 +330,7 @@ public class MHhinmok implements IEntity {
     /**
      * @return 製品単重
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SEI-TANJU")
     public java.math.BigDecimal getSeiTanju() {
         return this.seiTanju;
     }
@@ -337,6 +352,7 @@ public class MHhinmok implements IEntity {
     /**
      * @return ロケーションＮＯ
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("LOCATIONNO")
     public java.math.BigDecimal getLocationno() {
         return this.locationno;
     }
@@ -358,6 +374,7 @@ public class MHhinmok implements IEntity {
     /**
      * @return 包装コード
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("HOSOCD")
     public java.math.BigDecimal getHosocd() {
         return this.hosocd;
     }
@@ -379,6 +396,7 @@ public class MHhinmok implements IEntity {
     /**
      * @return 包装単位
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("HOSOTANI")
     public java.math.BigDecimal getHosotani() {
         return this.hosotani;
     }
@@ -400,6 +418,7 @@ public class MHhinmok implements IEntity {
     /**
      * @return 包装材欠品区分
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("HOSOKEPIN")
     public String getHosokepin() {
         return this.hosokepin;
     }
@@ -421,6 +440,7 @@ public class MHhinmok implements IEntity {
     /**
      * @return 梱包区分
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("KONPOKBN")
     public String getKonpokbn() {
         return this.konpokbn;
     }
@@ -442,6 +462,7 @@ public class MHhinmok implements IEntity {
     /**
      * @return かんばんロット区分
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("KLKBN")
     public String getKlkbn() {
         return this.klkbn;
     }
@@ -463,6 +484,7 @@ public class MHhinmok implements IEntity {
     /**
      * @return ＪＩＳ区分
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("JISKBN")
     public String getJiskbn() {
         return this.jiskbn;
     }
@@ -484,6 +506,7 @@ public class MHhinmok implements IEntity {
     /**
      * @return セット基準時間
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SETKIJUNH")
     public java.math.BigDecimal getSetkijunh() {
         return this.setkijunh;
     }
@@ -505,6 +528,7 @@ public class MHhinmok implements IEntity {
     /**
      * @return 期末原価
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("KIMATU-GENKA")
     public java.math.BigDecimal getKimatuGenka() {
         return this.kimatuGenka;
     }
@@ -526,6 +550,7 @@ public class MHhinmok implements IEntity {
     /**
      * @return 標準原価
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("HYOJUN-GENKA")
     public java.math.BigDecimal getHyojunGenka() {
         return this.hyojunGenka;
     }
@@ -547,6 +572,7 @@ public class MHhinmok implements IEntity {
     /**
      * @return 二次評価原価
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("NIJI-GENKA")
     public java.math.BigDecimal getNijiGenka() {
         return this.nijiGenka;
     }
@@ -568,6 +594,7 @@ public class MHhinmok implements IEntity {
     /**
      * @return 標準売価
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("HYOJUN-BAIKA")
     public java.math.BigDecimal getHyojunBaika() {
         return this.hyojunBaika;
     }
@@ -589,6 +616,7 @@ public class MHhinmok implements IEntity {
     /**
      * @return マスター登録日
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TOUROKUBI")
     public java.math.BigDecimal getTourokubi() {
         return this.tourokubi;
     }
@@ -610,6 +638,7 @@ public class MHhinmok implements IEntity {
     /**
      * @return 製品発売日
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("HATUBAIBI")
     public java.math.BigDecimal getHatubaibi() {
         return this.hatubaibi;
     }
@@ -631,6 +660,7 @@ public class MHhinmok implements IEntity {
     /**
      * @return 当日出荷対象区分
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TOJITUKBN")
     public String getTojitukbn() {
         return this.tojitukbn;
     }
@@ -652,6 +682,7 @@ public class MHhinmok implements IEntity {
     /**
      * @return 新製品分類
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SIN-SEIHIN-BUNRUI")
     public java.math.BigDecimal getSinSeihinBunrui() {
         return this.sinSeihinBunrui;
     }
@@ -673,6 +704,7 @@ public class MHhinmok implements IEntity {
     /**
      * @return ＤＩＹ定番区分
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("DTEIBANKBN")
     public String getDteibankbn() {
         return this.dteibankbn;
     }
@@ -694,6 +726,7 @@ public class MHhinmok implements IEntity {
     /**
      * @return 在庫受注区分
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ZAIJUCKBN")
     public String getZaijuckbn() {
         return this.zaijuckbn;
     }
@@ -715,6 +748,7 @@ public class MHhinmok implements IEntity {
     /**
      * @return 生産担当者コード
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("STANTOCD")
     public java.math.BigDecimal getStantocd() {
         return this.stantocd;
     }
@@ -736,6 +770,7 @@ public class MHhinmok implements IEntity {
     /**
      * @return 直送取消不可区分
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TORIFUKBN")
     public String getTorifukbn() {
         return this.torifukbn;
     }
@@ -757,6 +792,7 @@ public class MHhinmok implements IEntity {
     /**
      * @return 生産中止区分
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("PRDENDKBN")
     public String getPrdendkbn() {
         return this.prdendkbn;
     }
@@ -778,6 +814,7 @@ public class MHhinmok implements IEntity {
     /**
      * @return 品種分類４
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("BUNRUI4")
     public java.math.BigDecimal getBunrui4() {
         return this.bunrui4;
     }
@@ -799,6 +836,7 @@ public class MHhinmok implements IEntity {
     /**
      * @return 在庫出荷区分
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ZAISHUKBN")
     public String getZaishukbn() {
         return this.zaishukbn;
     }
@@ -820,6 +858,7 @@ public class MHhinmok implements IEntity {
     /**
      * @return バーコード
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("BARCODE")
     public java.math.BigDecimal getBarcode() {
         return this.barcode;
     }
@@ -841,6 +880,7 @@ public class MHhinmok implements IEntity {
     /**
      * @return データ送信区分
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("DATA-FLG")
     public String getDataFlg() {
         return this.dataFlg;
     }
@@ -862,6 +902,7 @@ public class MHhinmok implements IEntity {
     /**
      * @return 予備領域3
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("FILLER3")
     public String getFiller3() {
         return this.filler3;
     }
@@ -883,6 +924,7 @@ public class MHhinmok implements IEntity {
     /**
      * @return ＵＰＣコード
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("UPCCD")
     public String getUpccd() {
         return this.upccd;
     }
@@ -904,6 +946,7 @@ public class MHhinmok implements IEntity {
     /**
      * @return 平１在庫数
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ZAIKOSU-H1")
     public java.math.BigDecimal getZaikosuH1() {
         return this.zaikosuH1;
     }
@@ -925,6 +968,7 @@ public class MHhinmok implements IEntity {
     /**
      * @return 平２在庫数
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ZAIKOSU-H2")
     public java.math.BigDecimal getZaikosuH2() {
         return this.zaikosuH2;
     }
@@ -946,6 +990,7 @@ public class MHhinmok implements IEntity {
     /**
      * @return 平３在庫数
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ZAIKOSU-H3")
     public java.math.BigDecimal getZaikosuH3() {
         return this.zaikosuH3;
     }
@@ -967,6 +1012,7 @@ public class MHhinmok implements IEntity {
     /**
      * @return 平４在庫数
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ZAIKOSU-H4")
     public java.math.BigDecimal getZaikosuH4() {
         return this.zaikosuH4;
     }
@@ -988,6 +1034,7 @@ public class MHhinmok implements IEntity {
     /**
      * @return 平５在庫数
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ZAIKOSU-H5")
     public java.math.BigDecimal getZaikosuH5() {
         return this.zaikosuH5;
     }
@@ -1009,6 +1056,7 @@ public class MHhinmok implements IEntity {
     /**
      * @return 平１指示数
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SIJISU-H1")
     public java.math.BigDecimal getSijisuH1() {
         return this.sijisuH1;
     }
@@ -1030,6 +1078,7 @@ public class MHhinmok implements IEntity {
     /**
      * @return 平２指示数
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SIJISU-H2")
     public java.math.BigDecimal getSijisuH2() {
         return this.sijisuH2;
     }
@@ -1051,6 +1100,7 @@ public class MHhinmok implements IEntity {
     /**
      * @return 平３指示数
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SIJISU-H3")
     public java.math.BigDecimal getSijisuH3() {
         return this.sijisuH3;
     }
@@ -1072,6 +1122,7 @@ public class MHhinmok implements IEntity {
     /**
      * @return 平４指示数
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SIJISU-H4")
     public java.math.BigDecimal getSijisuH4() {
         return this.sijisuH4;
     }
@@ -1093,6 +1144,7 @@ public class MHhinmok implements IEntity {
     /**
      * @return 平１引当数
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("HIKIATE-H1")
     public java.math.BigDecimal getHikiateH1() {
         return this.hikiateH1;
     }
@@ -1114,6 +1166,7 @@ public class MHhinmok implements IEntity {
     /**
      * @return 平２引当数
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("HIKIATE-H2")
     public java.math.BigDecimal getHikiateH2() {
         return this.hikiateH2;
     }
@@ -1135,6 +1188,7 @@ public class MHhinmok implements IEntity {
     /**
      * @return 平３引当数
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("HIKIATE-H3")
     public java.math.BigDecimal getHikiateH3() {
         return this.hikiateH3;
     }
@@ -1156,6 +1210,7 @@ public class MHhinmok implements IEntity {
     /**
      * @return 平４引当数
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("HIKIATE-H4")
     public java.math.BigDecimal getHikiateH4() {
         return this.hikiateH4;
     }
@@ -1177,6 +1232,7 @@ public class MHhinmok implements IEntity {
     /**
      * @return 市販当月注残数
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SCHUZANSU1")
     public java.math.BigDecimal getSchuzansu1() {
         return this.schuzansu1;
     }
@@ -1198,6 +1254,7 @@ public class MHhinmok implements IEntity {
     /**
      * @return 市販翌月注残数
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SCHUZANSU2")
     public java.math.BigDecimal getSchuzansu2() {
         return this.schuzansu2;
     }
@@ -1219,6 +1276,7 @@ public class MHhinmok implements IEntity {
     /**
      * @return 市販翌々月注残数
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SCHUZANSU3")
     public java.math.BigDecimal getSchuzansu3() {
         return this.schuzansu3;
     }
@@ -1240,6 +1298,7 @@ public class MHhinmok implements IEntity {
     /**
      * @return 輸出当月注残数
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("UCHUZANSU1")
     public java.math.BigDecimal getUchuzansu1() {
         return this.uchuzansu1;
     }
@@ -1261,6 +1320,7 @@ public class MHhinmok implements IEntity {
     /**
      * @return 輸出翌月注残数
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("UCHUZANSU2")
     public java.math.BigDecimal getUchuzansu2() {
         return this.uchuzansu2;
     }
@@ -1282,6 +1342,7 @@ public class MHhinmok implements IEntity {
     /**
      * @return 輸出翌々月注残数
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("UCHUZANSU3")
     public java.math.BigDecimal getUchuzansu3() {
         return this.uchuzansu3;
     }
@@ -1303,6 +1364,7 @@ public class MHhinmok implements IEntity {
     /**
      * @return ＤＩＹ当月注残数
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("DCHUZANSU1")
     public java.math.BigDecimal getDchuzansu1() {
         return this.dchuzansu1;
     }
@@ -1324,6 +1386,7 @@ public class MHhinmok implements IEntity {
     /**
      * @return ＤＩＹ翌月注残数
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("DCHUZANSU2")
     public java.math.BigDecimal getDchuzansu2() {
         return this.dchuzansu2;
     }
@@ -1345,6 +1408,7 @@ public class MHhinmok implements IEntity {
     /**
      * @return ＤＩＹ翌々月注残数
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("DCHUZANSU3")
     public java.math.BigDecimal getDchuzansu3() {
         return this.dchuzansu3;
     }
@@ -1366,6 +1430,7 @@ public class MHhinmok implements IEntity {
     /**
      * @return 平１入庫予定数
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("NYUKOYOTE-H1")
     public java.math.BigDecimal getNyukoyoteH1() {
         return this.nyukoyoteH1;
     }
@@ -1387,6 +1452,7 @@ public class MHhinmok implements IEntity {
     /**
      * @return 平２入庫予定数
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("NYUKOYOTE-H2")
     public java.math.BigDecimal getNyukoyoteH2() {
         return this.nyukoyoteH2;
     }
@@ -1408,6 +1474,7 @@ public class MHhinmok implements IEntity {
     /**
      * @return 平３入庫予定数
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("NYUKOYOTE-H3")
     public java.math.BigDecimal getNyukoyoteH3() {
         return this.nyukoyoteH3;
     }
@@ -1429,6 +1496,7 @@ public class MHhinmok implements IEntity {
     /**
      * @return 平４入庫予定数
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("NYUKOYOTE-H4")
     public java.math.BigDecimal getNyukoyoteH4() {
         return this.nyukoyoteH4;
     }
@@ -1450,6 +1518,7 @@ public class MHhinmok implements IEntity {
     /**
      * @return 札幌在庫数
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SAPPOROZAIKO")
     public java.math.BigDecimal getSapporozaiko() {
         return this.sapporozaiko;
     }
@@ -1471,6 +1540,7 @@ public class MHhinmok implements IEntity {
     /**
      * @return 仙台在庫数
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SENDAIZAIKO")
     public java.math.BigDecimal getSendaizaiko() {
         return this.sendaizaiko;
     }
@@ -1492,6 +1562,7 @@ public class MHhinmok implements IEntity {
     /**
      * @return 東京在庫数
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TOKYOZAIKO")
     public java.math.BigDecimal getTokyozaiko() {
         return this.tokyozaiko;
     }
@@ -1513,6 +1584,7 @@ public class MHhinmok implements IEntity {
     /**
      * @return 関東在庫数
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("KANTOZAIKO")
     public java.math.BigDecimal getKantozaiko() {
         return this.kantozaiko;
     }
@@ -1534,6 +1606,7 @@ public class MHhinmok implements IEntity {
     /**
      * @return 金沢在庫数
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("KANAZAWAZAIKO")
     public java.math.BigDecimal getKanazawazaiko() {
         return this.kanazawazaiko;
     }
@@ -1555,6 +1628,7 @@ public class MHhinmok implements IEntity {
     /**
      * @return 名古屋在庫数
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("NAGOYAZAIKO")
     public java.math.BigDecimal getNagoyazaiko() {
         return this.nagoyazaiko;
     }
@@ -1576,6 +1650,7 @@ public class MHhinmok implements IEntity {
     /**
      * @return 近畿在庫数
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("KINKIZAIKO")
     public java.math.BigDecimal getKinkizaiko() {
         return this.kinkizaiko;
     }
@@ -1597,6 +1672,7 @@ public class MHhinmok implements IEntity {
     /**
      * @return 広島在庫数
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("HIROSIMAZAIKO")
     public java.math.BigDecimal getHirosimazaiko() {
         return this.hirosimazaiko;
     }
@@ -1618,6 +1694,7 @@ public class MHhinmok implements IEntity {
     /**
      * @return 福岡在庫数
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("FUKUOKAZAIKO")
     public java.math.BigDecimal getFukuokazaiko() {
         return this.fukuokazaiko;
     }
@@ -1639,6 +1716,7 @@ public class MHhinmok implements IEntity {
     /**
      * @return 業務在庫数
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("GYOMUZAIKO")
     public java.math.BigDecimal getGyomuzaiko() {
         return this.gyomuzaiko;
     }
@@ -1660,6 +1738,7 @@ public class MHhinmok implements IEntity {
     /**
      * @return 貿易在庫数
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("BOEKIZAIKO")
     public java.math.BigDecimal getBoekizaiko() {
         return this.boekizaiko;
     }
@@ -1681,6 +1760,7 @@ public class MHhinmok implements IEntity {
     /**
      * @return ハイテック在庫数
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("HITECZAIKO")
     public java.math.BigDecimal getHiteczaiko() {
         return this.hiteczaiko;
     }
@@ -1702,6 +1782,7 @@ public class MHhinmok implements IEntity {
     /**
      * @return 貿易委託在庫数
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("BOEKIITAKU")
     public java.math.BigDecimal getBoekiitaku() {
         return this.boekiitaku;
     }
@@ -1723,6 +1804,7 @@ public class MHhinmok implements IEntity {
     /**
      * @return 上海ＫＴＣ保税倉庫在庫
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SKTCHSZAIKO")
     public java.math.BigDecimal getSktchszaiko() {
         return this.sktchszaiko;
     }
@@ -1744,6 +1826,7 @@ public class MHhinmok implements IEntity {
     /**
      * @return 包装材在庫数
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("HOSOZAIKO")
     public java.math.BigDecimal getHosozaiko() {
         return this.hosozaiko;
     }
@@ -1765,6 +1848,7 @@ public class MHhinmok implements IEntity {
     /**
      * @return 生産終了予定日
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SENDYOTEIBI")
     public java.math.BigDecimal getSendyoteibi() {
         return this.sendyoteibi;
     }
@@ -1786,6 +1870,7 @@ public class MHhinmok implements IEntity {
     /**
      * @return 生産終了日
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SENDBI")
     public java.math.BigDecimal getSendbi() {
         return this.sendbi;
     }
@@ -1807,6 +1892,7 @@ public class MHhinmok implements IEntity {
     /**
      * @return 代替品番１
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("HINCDALT1")
     public String getHincdalt1() {
         return this.hincdalt1;
     }
@@ -1828,6 +1914,7 @@ public class MHhinmok implements IEntity {
     /**
      * @return 代替品番２
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("HINCDALT2")
     public String getHincdalt2() {
         return this.hincdalt2;
     }
@@ -1849,6 +1936,7 @@ public class MHhinmok implements IEntity {
     /**
      * @return 納期回答不可区分
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("NOUKIFUKAKBN")
     public String getNoukifukakbn() {
         return this.noukifukakbn;
     }
@@ -1870,6 +1958,7 @@ public class MHhinmok implements IEntity {
     /**
      * @return 直送対象品区分
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("CHOKUHINKBN")
     public String getChokuhinkbn() {
         return this.chokuhinkbn;
     }
@@ -1891,6 +1980,7 @@ public class MHhinmok implements IEntity {
     /**
      * @return 国際地域コード
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("KOKUSAICD")
     public String getKokusaicd() {
         return this.kokusaicd;
     }
@@ -1912,6 +2002,7 @@ public class MHhinmok implements IEntity {
     /**
      * @return 国コード
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("KUNICD")
     public String getKunicd() {
         return this.kunicd;
     }
@@ -1933,6 +2024,7 @@ public class MHhinmok implements IEntity {
     /**
      * @return 直送可能区分
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("CHOKUKAKBN")
     public String getChokukakbn() {
         return this.chokukakbn;
     }
@@ -1954,6 +2046,7 @@ public class MHhinmok implements IEntity {
     /**
      * @return 予備領域
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("FILLER")
     public String getFiller() {
         return this.filler;
     }
@@ -1978,7 +2071,7 @@ public class MHhinmok implements IEntity {
     public static MHhinmok get(final Object param1) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (\"HHINBAN\") = TRIM (:hhinban)");
+        whereList.add("\"HHINBAN\" = :hhinban");
 
         String sql = "SELECT * FROM M_HHINMOK WHERE " + String.join(" AND ", whereList);
 
@@ -1996,9 +2089,6 @@ public class MHhinmok implements IEntity {
      * @return 追加件数
      */
     public int insert(final LocalDateTime now, final String id) {
-
-        // 販売品番の採番処理
-        numbering();
 
         // 包装材構成マスタの登録
         if (this.mHososets != null) {
@@ -2258,23 +2348,6 @@ public class MHhinmok implements IEntity {
         valueList.add(":chokukakbn");
         valueList.add(":filler");
         return String.join("\r\n    , ", valueList);
-    }
-
-    /** 販売品番の採番処理 */
-    private void numbering() {
-
-        if (this.hhinban != null) {
-            return;
-        }
-
-        String sql = "SELECT LPAD (CASE WHEN MAX(e.\"HHINBAN\") IS NULL THEN 0 ELSE MAX(e.\"HHINBAN\") * 1 END + 1, 20, '0') AS \"HHINBAN\" FROM M_HHINMOK e WHERE e.\"HHINBAN\" < '99999999999999999999'";
-
-        Map<String, Object> params = new HashMap<String, Object>();
-
-        jp.co.golorp.emarf.util.MapList mapList = Queries.select(sql, params);
-        Object o = mapList.get(0).get("HHINBAN");
-
-        this.setHhinban(o);
     }
 
     /**
@@ -2553,7 +2626,7 @@ public class MHhinmok implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (\"HHINBAN\") = TRIM (:hhinban)");
+        whereList.add("\"HHINBAN\" = :hhinban");
         return String.join(" AND ", whereList);
     }
 

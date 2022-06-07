@@ -3,7 +3,7 @@
  */
 
 let InvStockProcessGridColumns = [
-    Column.refer('LOCATION_CODE', Messages['InvStockProcessGrid.locationCode'], 100, 'primaryKey', 'LOCATION_NAME'),
+    Column.cell('LOCATION_CODE', Messages['InvStockProcessGrid.locationCode'], 100, 'primaryKey', null),
     Column.cell('HINBAN', Messages['InvStockProcessGrid.hinban'], 250, 'primaryKey', null),
     Column.text('STOCK', Messages['InvStockProcessGrid.stock'], 110, '', null),
     Column.date('LAST_IN_OUT_DATE', Messages['InvStockProcessGrid.lastInOutDate'], 70, '', Slick.Formatters.Extends.DateTime),

@@ -22,6 +22,7 @@ public class MstSupplier implements IEntity {
     /**
      * @return SUP_CODE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SUP_CODE")
     public String getSupCode() {
         return this.supCode;
     }
@@ -43,6 +44,7 @@ public class MstSupplier implements IEntity {
     /**
      * @return SUP_KBN
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SUP_KBN")
     public java.math.BigDecimal getSupKbn() {
         return this.supKbn;
     }
@@ -64,6 +66,7 @@ public class MstSupplier implements IEntity {
     /**
      * @return SUP_NAME
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SUP_NAME")
     public String getSupName() {
         return this.supName;
     }
@@ -85,6 +88,7 @@ public class MstSupplier implements IEntity {
     /**
      * @return SUP_RYAKU
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SUP_RYAKU")
     public String getSupRyaku() {
         return this.supRyaku;
     }
@@ -106,6 +110,7 @@ public class MstSupplier implements IEntity {
     /**
      * @return ZIP_CODE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ZIP_CODE")
     public String getZipCode() {
         return this.zipCode;
     }
@@ -127,6 +132,7 @@ public class MstSupplier implements IEntity {
     /**
      * @return ADDRESS1
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ADDRESS1")
     public String getAddress1() {
         return this.address1;
     }
@@ -148,6 +154,7 @@ public class MstSupplier implements IEntity {
     /**
      * @return ADDRESS2
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ADDRESS2")
     public String getAddress2() {
         return this.address2;
     }
@@ -169,6 +176,7 @@ public class MstSupplier implements IEntity {
     /**
      * @return TEL_NO
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TEL_NO")
     public String getTelNo() {
         return this.telNo;
     }
@@ -190,6 +198,7 @@ public class MstSupplier implements IEntity {
     /**
      * @return FAX_NO
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("FAX_NO")
     public String getFaxNo() {
         return this.faxNo;
     }
@@ -211,6 +220,7 @@ public class MstSupplier implements IEntity {
     /**
      * @return DIV_NAME
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("DIV_NAME")
     public String getDivName() {
         return this.divName;
     }
@@ -232,6 +242,7 @@ public class MstSupplier implements IEntity {
     /**
      * @return SUP_OPE_NAME
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SUP_OPE_NAME")
     public String getSupOpeName() {
         return this.supOpeName;
     }
@@ -253,6 +264,7 @@ public class MstSupplier implements IEntity {
     /**
      * @return SUP_OPE_MAIL_ADD
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SUP_OPE_MAIL_ADD")
     public String getSupOpeMailAdd() {
         return this.supOpeMailAdd;
     }
@@ -274,6 +286,7 @@ public class MstSupplier implements IEntity {
     /**
      * @return SUP_PERIOD_DAY
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SUP_PERIOD_DAY")
     public String getSupPeriodDay() {
         return this.supPeriodDay;
     }
@@ -295,6 +308,7 @@ public class MstSupplier implements IEntity {
     /**
      * @return PAY_DAY
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("PAY_DAY")
     public String getPayDay() {
         return this.payDay;
     }
@@ -316,6 +330,7 @@ public class MstSupplier implements IEntity {
     /**
      * @return TAX_CODE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TAX_CODE")
     public String getTaxCode() {
         return this.taxCode;
     }
@@ -337,6 +352,7 @@ public class MstSupplier implements IEntity {
     /**
      * @return TAX_CAL_CODE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TAX_CAL_CODE")
     public java.math.BigDecimal getTaxCalCode() {
         return this.taxCalCode;
     }
@@ -358,6 +374,7 @@ public class MstSupplier implements IEntity {
     /**
      * @return TAX_DISP_CODE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TAX_DISP_CODE")
     public java.math.BigDecimal getTaxDispCode() {
         return this.taxDispCode;
     }
@@ -379,6 +396,7 @@ public class MstSupplier implements IEntity {
     /**
      * @return FRACTION_KBN
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("FRACTION_KBN")
     public java.math.BigDecimal getFractionKbn() {
         return this.fractionKbn;
     }
@@ -400,6 +418,7 @@ public class MstSupplier implements IEntity {
     /**
      * @return YOSHINGENDO
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("YOSHINGENDO")
     public java.math.BigDecimal getYoshingendo() {
         return this.yoshingendo;
     }
@@ -421,6 +440,7 @@ public class MstSupplier implements IEntity {
     /**
      * @return COMPANY_OPE_CODE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("COMPANY_OPE_CODE")
     public String getCompanyOpeCode() {
         return this.companyOpeCode;
     }
@@ -442,6 +462,7 @@ public class MstSupplier implements IEntity {
     /**
      * @return ORDER_ACCEPT_KBN
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ORDER_ACCEPT_KBN")
     public java.math.BigDecimal getOrderAcceptKbn() {
         return this.orderAcceptKbn;
     }
@@ -463,6 +484,7 @@ public class MstSupplier implements IEntity {
     /**
      * @return LIST_OUTPUT_KBN
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("LIST_OUTPUT_KBN")
     public java.math.BigDecimal getListOutputKbn() {
         return this.listOutputKbn;
     }
@@ -484,6 +506,7 @@ public class MstSupplier implements IEntity {
     /**
      * @return PCH_COST_RATE_CODE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("PCH_COST_RATE_CODE")
     public String getPchCostRateCode() {
         return this.pchCostRateCode;
     }
@@ -505,6 +528,7 @@ public class MstSupplier implements IEntity {
     /**
      * @return SEND_SUP_KBN
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SEND_SUP_KBN")
     public java.math.BigDecimal getSendSupKbn() {
         return this.sendSupKbn;
     }
@@ -526,6 +550,7 @@ public class MstSupplier implements IEntity {
     /**
      * @return SEND_SUP_NAME
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SEND_SUP_NAME")
     public String getSendSupName() {
         return this.sendSupName;
     }
@@ -547,6 +572,7 @@ public class MstSupplier implements IEntity {
     /**
      * @return SEND_SUP_RYAKU
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SEND_SUP_RYAKU")
     public String getSendSupRyaku() {
         return this.sendSupRyaku;
     }
@@ -568,6 +594,7 @@ public class MstSupplier implements IEntity {
     /**
      * @return SEND_ZIP_CODE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SEND_ZIP_CODE")
     public String getSendZipCode() {
         return this.sendZipCode;
     }
@@ -589,6 +616,7 @@ public class MstSupplier implements IEntity {
     /**
      * @return SEND_ADDRESS1
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SEND_ADDRESS1")
     public String getSendAddress1() {
         return this.sendAddress1;
     }
@@ -610,6 +638,7 @@ public class MstSupplier implements IEntity {
     /**
      * @return SEND_ADDRESS2
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SEND_ADDRESS2")
     public String getSendAddress2() {
         return this.sendAddress2;
     }
@@ -631,6 +660,7 @@ public class MstSupplier implements IEntity {
     /**
      * @return SEND_TEL_NO
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SEND_TEL_NO")
     public String getSendTelNo() {
         return this.sendTelNo;
     }
@@ -652,6 +682,7 @@ public class MstSupplier implements IEntity {
     /**
      * @return SEND_FAX_NO
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SEND_FAX_NO")
     public String getSendFaxNo() {
         return this.sendFaxNo;
     }
@@ -673,6 +704,7 @@ public class MstSupplier implements IEntity {
     /**
      * @return SEND_INSPECT_LIST
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SEND_INSPECT_LIST")
     public java.math.BigDecimal getSendInspectList() {
         return this.sendInspectList;
     }
@@ -694,6 +726,7 @@ public class MstSupplier implements IEntity {
     /**
      * @return COMPANY_DIV_NAME
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("COMPANY_DIV_NAME")
     public String getCompanyDivName() {
         return this.companyDivName;
     }
@@ -718,6 +751,7 @@ public class MstSupplier implements IEntity {
     /**
      * @return TIME_STAMP_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CREATE")
     public java.time.LocalDateTime getTimeStampCreate() {
         return this.timeStampCreate;
     }
@@ -748,6 +782,7 @@ public class MstSupplier implements IEntity {
     /**
      * @return TIME_STAMP_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CHANGE")
     public java.time.LocalDateTime getTimeStampChange() {
         return this.timeStampChange;
     }
@@ -775,6 +810,7 @@ public class MstSupplier implements IEntity {
     /**
      * @return USER_ID_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CREATE")
     public String getUserIdCreate() {
         return this.userIdCreate;
     }
@@ -796,6 +832,7 @@ public class MstSupplier implements IEntity {
     /**
      * @return USER_ID_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CHANGE")
     public String getUserIdChange() {
         return this.userIdChange;
     }
@@ -817,6 +854,7 @@ public class MstSupplier implements IEntity {
     /**
      * @return DELETE_FLAG
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("DELETE_FLAG")
     public java.math.BigDecimal getDeleteFlag() {
         return this.deleteFlag;
     }
@@ -838,6 +876,7 @@ public class MstSupplier implements IEntity {
     /**
      * @return NOHIN_YOBI_SUN
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("NOHIN_YOBI_SUN")
     public String getNohinYobiSun() {
         return this.nohinYobiSun;
     }
@@ -859,6 +898,7 @@ public class MstSupplier implements IEntity {
     /**
      * @return NOHIN_YOBI_MON
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("NOHIN_YOBI_MON")
     public String getNohinYobiMon() {
         return this.nohinYobiMon;
     }
@@ -880,6 +920,7 @@ public class MstSupplier implements IEntity {
     /**
      * @return NOHIN_YOBI_TUE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("NOHIN_YOBI_TUE")
     public String getNohinYobiTue() {
         return this.nohinYobiTue;
     }
@@ -901,6 +942,7 @@ public class MstSupplier implements IEntity {
     /**
      * @return NOHIN_YOBI_WED
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("NOHIN_YOBI_WED")
     public String getNohinYobiWed() {
         return this.nohinYobiWed;
     }
@@ -922,6 +964,7 @@ public class MstSupplier implements IEntity {
     /**
      * @return NOHIN_YOBI_THU
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("NOHIN_YOBI_THU")
     public String getNohinYobiThu() {
         return this.nohinYobiThu;
     }
@@ -943,6 +986,7 @@ public class MstSupplier implements IEntity {
     /**
      * @return NOHIN_YOBI_FRI
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("NOHIN_YOBI_FRI")
     public String getNohinYobiFri() {
         return this.nohinYobiFri;
     }
@@ -964,6 +1008,7 @@ public class MstSupplier implements IEntity {
     /**
      * @return NOHIN_YOBI_SAT
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("NOHIN_YOBI_SAT")
     public String getNohinYobiSat() {
         return this.nohinYobiSat;
     }
@@ -985,6 +1030,7 @@ public class MstSupplier implements IEntity {
     /**
      * @return NOHIN_SEND_YOHI_KBN
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("NOHIN_SEND_YOHI_KBN")
     public String getNohinSendYohiKbn() {
         return this.nohinSendYohiKbn;
     }
@@ -1006,6 +1052,7 @@ public class MstSupplier implements IEntity {
     /**
      * @return BUNKATSU_MAIL_F
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("BUNKATSU_MAIL_F")
     public String getBunkatsuMailF() {
         return this.bunkatsuMailF;
     }
@@ -1027,6 +1074,7 @@ public class MstSupplier implements IEntity {
     /**
      * @return CHUMON_MAIL_F
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("CHUMON_MAIL_F")
     public String getChumonMailF() {
         return this.chumonMailF;
     }
@@ -1048,6 +1096,7 @@ public class MstSupplier implements IEntity {
     /**
      * @return CHUMON_MAIL_HM
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("CHUMON_MAIL_HM")
     public String getChumonMailHm() {
         return this.chumonMailHm;
     }
@@ -1069,6 +1118,7 @@ public class MstSupplier implements IEntity {
     /**
      * @return KENSHU_MAIL_F
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("KENSHU_MAIL_F")
     public String getKenshuMailF() {
         return this.kenshuMailF;
     }
@@ -1090,6 +1140,7 @@ public class MstSupplier implements IEntity {
     /**
      * @return KENSHU_MAIL_HM
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("KENSHU_MAIL_HM")
     public String getKenshuMailHm() {
         return this.kenshuMailHm;
     }
@@ -1111,6 +1162,7 @@ public class MstSupplier implements IEntity {
     /**
      * @return MAIL_BCC_F
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("MAIL_BCC_F")
     public String getMailBccF() {
         return this.mailBccF;
     }

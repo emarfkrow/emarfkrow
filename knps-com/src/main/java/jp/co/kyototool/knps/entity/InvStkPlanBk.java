@@ -22,6 +22,7 @@ public class InvStkPlanBk implements IEntity {
     /**
      * @return PRO_HINBAN
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("PRO_HINBAN")
     public String getProHinban() {
         return this.proHinban;
     }
@@ -43,6 +44,7 @@ public class InvStkPlanBk implements IEntity {
     /**
      * @return YYYY
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("YYYY")
     public String getYyyy() {
         return this.yyyy;
     }
@@ -64,6 +66,7 @@ public class InvStkPlanBk implements IEntity {
     /**
      * @return MM
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("MM")
     public String getMm() {
         return this.mm;
     }
@@ -85,6 +88,7 @@ public class InvStkPlanBk implements IEntity {
     /**
      * @return PAP_KAN_AMT_SCH
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("PAP_KAN_AMT_SCH")
     public java.math.BigDecimal getPapKanAmtSch() {
         return this.papKanAmtSch;
     }
@@ -106,6 +110,7 @@ public class InvStkPlanBk implements IEntity {
     /**
      * @return PAP_KAN_AMT_SCH_FST
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("PAP_KAN_AMT_SCH_FST")
     public java.math.BigDecimal getPapKanAmtSchFst() {
         return this.papKanAmtSchFst;
     }
@@ -127,6 +132,7 @@ public class InvStkPlanBk implements IEntity {
     /**
      * @return PAP_KAN_AMT_SCH_MID
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("PAP_KAN_AMT_SCH_MID")
     public java.math.BigDecimal getPapKanAmtSchMid() {
         return this.papKanAmtSchMid;
     }
@@ -148,6 +154,7 @@ public class InvStkPlanBk implements IEntity {
     /**
      * @return PAP_KAN_AMT_SCH_LST
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("PAP_KAN_AMT_SCH_LST")
     public java.math.BigDecimal getPapKanAmtSchLst() {
         return this.papKanAmtSchLst;
     }
@@ -169,6 +176,7 @@ public class InvStkPlanBk implements IEntity {
     /**
      * @return PAP_KAN_AMT_ACT_FST
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("PAP_KAN_AMT_ACT_FST")
     public java.math.BigDecimal getPapKanAmtActFst() {
         return this.papKanAmtActFst;
     }
@@ -190,6 +198,7 @@ public class InvStkPlanBk implements IEntity {
     /**
      * @return PAP_KAN_AMT_ACT_MID
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("PAP_KAN_AMT_ACT_MID")
     public java.math.BigDecimal getPapKanAmtActMid() {
         return this.papKanAmtActMid;
     }
@@ -211,6 +220,7 @@ public class InvStkPlanBk implements IEntity {
     /**
      * @return PAP_KAN_AMT_ACT_LST
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("PAP_KAN_AMT_ACT_LST")
     public java.math.BigDecimal getPapKanAmtActLst() {
         return this.papKanAmtActLst;
     }
@@ -232,6 +242,7 @@ public class InvStkPlanBk implements IEntity {
     /**
      * @return PAP_KAN_AMT_ACT
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("PAP_KAN_AMT_ACT")
     public java.math.BigDecimal getPapKanAmtAct() {
         return this.papKanAmtAct;
     }
@@ -253,6 +264,7 @@ public class InvStkPlanBk implements IEntity {
     /**
      * @return REQ_COUNTS
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("REQ_COUNTS")
     public java.math.BigDecimal getReqCounts() {
         return this.reqCounts;
     }
@@ -274,6 +286,7 @@ public class InvStkPlanBk implements IEntity {
     /**
      * @return REQ_NES_COUNTS
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("REQ_NES_COUNTS")
     public java.math.BigDecimal getReqNesCounts() {
         return this.reqNesCounts;
     }
@@ -295,6 +308,7 @@ public class InvStkPlanBk implements IEntity {
     /**
      * @return REQ_PAP_KAN_AMT_SCH
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("REQ_PAP_KAN_AMT_SCH")
     public java.math.BigDecimal getReqPapKanAmtSch() {
         return this.reqPapKanAmtSch;
     }
@@ -316,6 +330,7 @@ public class InvStkPlanBk implements IEntity {
     /**
      * @return REQ_PAP_KAN_AMT_SCH_FST
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("REQ_PAP_KAN_AMT_SCH_FST")
     public java.math.BigDecimal getReqPapKanAmtSchFst() {
         return this.reqPapKanAmtSchFst;
     }
@@ -337,6 +352,7 @@ public class InvStkPlanBk implements IEntity {
     /**
      * @return REQ_PAP_KAN_AMT_SCH_MID
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("REQ_PAP_KAN_AMT_SCH_MID")
     public java.math.BigDecimal getReqPapKanAmtSchMid() {
         return this.reqPapKanAmtSchMid;
     }
@@ -358,6 +374,7 @@ public class InvStkPlanBk implements IEntity {
     /**
      * @return REQ_PAP_KAN_AMT_SCH_LST
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("REQ_PAP_KAN_AMT_SCH_LST")
     public java.math.BigDecimal getReqPapKanAmtSchLst() {
         return this.reqPapKanAmtSchLst;
     }
@@ -379,6 +396,7 @@ public class InvStkPlanBk implements IEntity {
     /**
      * @return REQ_PAP_KAN_AMT_ACT_FST
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("REQ_PAP_KAN_AMT_ACT_FST")
     public java.math.BigDecimal getReqPapKanAmtActFst() {
         return this.reqPapKanAmtActFst;
     }
@@ -400,6 +418,7 @@ public class InvStkPlanBk implements IEntity {
     /**
      * @return REQ_PAP_KAN_AMT_ACT_MID
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("REQ_PAP_KAN_AMT_ACT_MID")
     public java.math.BigDecimal getReqPapKanAmtActMid() {
         return this.reqPapKanAmtActMid;
     }
@@ -421,6 +440,7 @@ public class InvStkPlanBk implements IEntity {
     /**
      * @return REQ_PAP_KAN_AMT_ACT_LST
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("REQ_PAP_KAN_AMT_ACT_LST")
     public java.math.BigDecimal getReqPapKanAmtActLst() {
         return this.reqPapKanAmtActLst;
     }
@@ -442,6 +462,7 @@ public class InvStkPlanBk implements IEntity {
     /**
      * @return REQ_PAP_KAN_AMT_ACT
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("REQ_PAP_KAN_AMT_ACT")
     public java.math.BigDecimal getReqPapKanAmtAct() {
         return this.reqPapKanAmtAct;
     }
@@ -466,6 +487,7 @@ public class InvStkPlanBk implements IEntity {
     /**
      * @return TIME_STAMP_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CREATE")
     public java.time.LocalDateTime getTimeStampCreate() {
         return this.timeStampCreate;
     }
@@ -496,6 +518,7 @@ public class InvStkPlanBk implements IEntity {
     /**
      * @return TIME_STAMP_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CHANGE")
     public java.time.LocalDateTime getTimeStampChange() {
         return this.timeStampChange;
     }
@@ -523,6 +546,7 @@ public class InvStkPlanBk implements IEntity {
     /**
      * @return USER_ID_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CREATE")
     public String getUserIdCreate() {
         return this.userIdCreate;
     }
@@ -544,6 +568,7 @@ public class InvStkPlanBk implements IEntity {
     /**
      * @return USER_ID_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CHANGE")
     public String getUserIdChange() {
         return this.userIdChange;
     }

@@ -22,6 +22,7 @@ public class MHinccvt implements IEntity {
     /**
      * @return 変換品番
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("CVTHINBAN")
     public String getCvthinban() {
         return this.cvthinban;
     }
@@ -43,6 +44,7 @@ public class MHinccvt implements IEntity {
     /**
      * @return 販売品番
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("HHINBAN")
     public String getHhinban() {
         return this.hhinban;
     }
@@ -64,6 +66,7 @@ public class MHinccvt implements IEntity {
     /**
      * @return 直送対象品区分
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("CHOKUHINKBN")
     public String getChokuhinkbn() {
         return this.chokuhinkbn;
     }
@@ -85,6 +88,7 @@ public class MHinccvt implements IEntity {
     /**
      * @return 予備領域
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("FILLER")
     public String getFiller() {
         return this.filler;
     }

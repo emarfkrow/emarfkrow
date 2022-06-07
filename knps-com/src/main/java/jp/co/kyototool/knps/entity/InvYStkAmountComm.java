@@ -22,6 +22,7 @@ public class InvYStkAmountComm implements IEntity {
     /**
      * @return PRO_HINBAN
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("PRO_HINBAN")
     public String getProHinban() {
         return this.proHinban;
     }
@@ -43,6 +44,7 @@ public class InvYStkAmountComm implements IEntity {
     /**
      * @return YYYY
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("YYYY")
     public String getYyyy() {
         return this.yyyy;
     }
@@ -64,6 +66,7 @@ public class InvYStkAmountComm implements IEntity {
     /**
      * @return MM
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("MM")
     public String getMm() {
         return this.mm;
     }
@@ -85,6 +88,7 @@ public class InvYStkAmountComm implements IEntity {
     /**
      * @return NES_COUNTS
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("NES_COUNTS")
     public java.math.BigDecimal getNesCounts() {
         return this.nesCounts;
     }
@@ -106,6 +110,7 @@ public class InvYStkAmountComm implements IEntity {
     /**
      * @return STAN_COSTS
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("STAN_COSTS")
     public java.math.BigDecimal getStanCosts() {
         return this.stanCosts;
     }
@@ -127,6 +132,7 @@ public class InvYStkAmountComm implements IEntity {
     /**
      * @return PROCURE_LT
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("PROCURE_LT")
     public java.math.BigDecimal getProcureLt() {
         return this.procureLt;
     }
@@ -151,6 +157,7 @@ public class InvYStkAmountComm implements IEntity {
     /**
      * @return TIME_STAMP_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CREATE")
     public java.time.LocalDateTime getTimeStampCreate() {
         return this.timeStampCreate;
     }
@@ -181,6 +188,7 @@ public class InvYStkAmountComm implements IEntity {
     /**
      * @return TIME_STAMP_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CHANGE")
     public java.time.LocalDateTime getTimeStampChange() {
         return this.timeStampChange;
     }
@@ -208,6 +216,7 @@ public class InvYStkAmountComm implements IEntity {
     /**
      * @return USER_ID_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CREATE")
     public String getUserIdCreate() {
         return this.userIdCreate;
     }
@@ -229,6 +238,7 @@ public class InvYStkAmountComm implements IEntity {
     /**
      * @return USER_ID_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CHANGE")
     public String getUserIdChange() {
         return this.userIdChange;
     }

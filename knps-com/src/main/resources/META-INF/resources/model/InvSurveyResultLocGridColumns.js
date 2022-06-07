@@ -3,7 +3,7 @@
  */
 
 let InvSurveyResultLocGridColumns = [
-    Column.refer('LOCATION_CODE', Messages['InvSurveyResultLocGrid.locationCode'], 100, 'primaryKey', 'LOCATION_NAME'),
+    Column.cell('LOCATION_CODE', Messages['InvSurveyResultLocGrid.locationCode'], 100, 'primaryKey', null),
     Column.text('YYYY', Messages['InvSurveyResultLocGrid.yyyy'], 40, '', null),
     Column.text('MM', Messages['InvSurveyResultLocGrid.mm'], 20, '', null),
     Column.text('HINBAN', Messages['InvSurveyResultLocGrid.hinban'], 250, '', null),

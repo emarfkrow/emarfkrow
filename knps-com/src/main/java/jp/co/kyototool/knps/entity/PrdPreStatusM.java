@@ -22,6 +22,7 @@ public class PrdPreStatusM implements IEntity {
     /**
      * @return YY
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("YY")
     public String getYy() {
         return this.yy;
     }
@@ -43,6 +44,7 @@ public class PrdPreStatusM implements IEntity {
     /**
      * @return MM
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("MM")
     public String getMm() {
         return this.mm;
     }
@@ -64,6 +66,7 @@ public class PrdPreStatusM implements IEntity {
     /**
      * @return SALES_TARGET_STATUS
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SALES_TARGET_STATUS")
     public java.math.BigDecimal getSalesTargetStatus() {
         return this.salesTargetStatus;
     }
@@ -85,6 +88,7 @@ public class PrdPreStatusM implements IEntity {
     /**
      * @return PRD_PLAN_MAKE_STATUS
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("PRD_PLAN_MAKE_STATUS")
     public java.math.BigDecimal getPrdPlanMakeStatus() {
         return this.prdPlanMakeStatus;
     }
@@ -106,6 +110,7 @@ public class PrdPreStatusM implements IEntity {
     /**
      * @return PRD_PLAN_FIXED_STATUS
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("PRD_PLAN_FIXED_STATUS")
     public java.math.BigDecimal getPrdPlanFixedStatus() {
         return this.prdPlanFixedStatus;
     }
@@ -130,6 +135,7 @@ public class PrdPreStatusM implements IEntity {
     /**
      * @return TIME_STAMP_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CREATE")
     public java.time.LocalDateTime getTimeStampCreate() {
         return this.timeStampCreate;
     }
@@ -160,6 +166,7 @@ public class PrdPreStatusM implements IEntity {
     /**
      * @return TIME_STAMP_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CHANGE")
     public java.time.LocalDateTime getTimeStampChange() {
         return this.timeStampChange;
     }
@@ -187,6 +194,7 @@ public class PrdPreStatusM implements IEntity {
     /**
      * @return USER_ID_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CREATE")
     public String getUserIdCreate() {
         return this.userIdCreate;
     }
@@ -208,6 +216,7 @@ public class PrdPreStatusM implements IEntity {
     /**
      * @return USER_ID_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CHANGE")
     public String getUserIdChange() {
         return this.userIdChange;
     }

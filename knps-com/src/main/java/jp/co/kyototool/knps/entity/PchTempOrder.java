@@ -22,6 +22,7 @@ public class PchTempOrder implements IEntity {
     /**
      * @return TEMP_ORDER_NO
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TEMP_ORDER_NO")
     public String getTempOrderNo() {
         return this.tempOrderNo;
     }
@@ -46,6 +47,7 @@ public class PchTempOrder implements IEntity {
     /**
      * @return IRAI_DT
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("IRAI_DT")
     public java.time.LocalDateTime getIraiDt() {
         return this.iraiDt;
     }
@@ -73,6 +75,7 @@ public class PchTempOrder implements IEntity {
     /**
      * @return IRAI_EMP_CODE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("IRAI_EMP_CODE")
     public String getIraiEmpCode() {
         return this.iraiEmpCode;
     }
@@ -94,6 +97,7 @@ public class PchTempOrder implements IEntity {
     /**
      * @return SUP_CODE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SUP_CODE")
     public String getSupCode() {
         return this.supCode;
     }
@@ -115,6 +119,7 @@ public class PchTempOrder implements IEntity {
     /**
      * @return TEMP_SUP_CODE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TEMP_SUP_CODE")
     public String getTempSupCode() {
         return this.tempSupCode;
     }
@@ -136,6 +141,7 @@ public class PchTempOrder implements IEntity {
     /**
      * @return MEMO
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("MEMO")
     public String getMemo() {
         return this.memo;
     }
@@ -160,6 +166,7 @@ public class PchTempOrder implements IEntity {
     /**
      * @return PAY_IRAI_DT
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("PAY_IRAI_DT")
     public java.time.LocalDateTime getPayIraiDt() {
         return this.payIraiDt;
     }
@@ -187,6 +194,7 @@ public class PchTempOrder implements IEntity {
     /**
      * @return PAY_IRAI_EMP_CODE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("PAY_IRAI_EMP_CODE")
     public String getPayIraiEmpCode() {
         return this.payIraiEmpCode;
     }
@@ -211,6 +219,7 @@ public class PchTempOrder implements IEntity {
     /**
      * @return TIME_STAMP_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CREATE")
     public java.time.LocalDateTime getTimeStampCreate() {
         return this.timeStampCreate;
     }
@@ -241,6 +250,7 @@ public class PchTempOrder implements IEntity {
     /**
      * @return TIME_STAMP_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CHANGE")
     public java.time.LocalDateTime getTimeStampChange() {
         return this.timeStampChange;
     }
@@ -268,6 +278,7 @@ public class PchTempOrder implements IEntity {
     /**
      * @return USER_ID_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CREATE")
     public String getUserIdCreate() {
         return this.userIdCreate;
     }
@@ -289,6 +300,7 @@ public class PchTempOrder implements IEntity {
     /**
      * @return USER_ID_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CHANGE")
     public String getUserIdChange() {
         return this.userIdChange;
     }

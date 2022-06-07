@@ -22,6 +22,7 @@ public class MstComponentSales implements IEntity {
     /**
      * @return COMP_HINBAN_PARENT
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("COMP_HINBAN_PARENT")
     public String getCompHinbanParent() {
         return this.compHinbanParent;
     }
@@ -43,6 +44,7 @@ public class MstComponentSales implements IEntity {
     /**
      * @return COMP_HINBAN_CHILD
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("COMP_HINBAN_CHILD")
     public String getCompHinbanChild() {
         return this.compHinbanChild;
     }
@@ -64,6 +66,7 @@ public class MstComponentSales implements IEntity {
     /**
      * @return SET_NUMBER
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SET_NUMBER")
     public java.math.BigDecimal getSetNumber() {
         return this.setNumber;
     }
@@ -85,6 +88,7 @@ public class MstComponentSales implements IEntity {
     /**
      * @return BOTTOM_FLAG
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("BOTTOM_FLAG")
     public java.math.BigDecimal getBottomFlag() {
         return this.bottomFlag;
     }
@@ -106,6 +110,7 @@ public class MstComponentSales implements IEntity {
     /**
      * @return PROVISIONS_KBN
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("PROVISIONS_KBN")
     public java.math.BigDecimal getProvisionsKbn() {
         return this.provisionsKbn;
     }
@@ -130,6 +135,7 @@ public class MstComponentSales implements IEntity {
     /**
      * @return TIME_STAMP_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CREATE")
     public java.time.LocalDateTime getTimeStampCreate() {
         return this.timeStampCreate;
     }
@@ -160,6 +166,7 @@ public class MstComponentSales implements IEntity {
     /**
      * @return TIME_STAMP_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CHANGE")
     public java.time.LocalDateTime getTimeStampChange() {
         return this.timeStampChange;
     }
@@ -187,6 +194,7 @@ public class MstComponentSales implements IEntity {
     /**
      * @return USER_ID_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CREATE")
     public String getUserIdCreate() {
         return this.userIdCreate;
     }
@@ -208,6 +216,7 @@ public class MstComponentSales implements IEntity {
     /**
      * @return USER_ID_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CHANGE")
     public String getUserIdChange() {
         return this.userIdChange;
     }
@@ -229,6 +238,7 @@ public class MstComponentSales implements IEntity {
     /**
      * @return DELETE_FLAG
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("DELETE_FLAG")
     public java.math.BigDecimal getDeleteFlag() {
         return this.deleteFlag;
     }

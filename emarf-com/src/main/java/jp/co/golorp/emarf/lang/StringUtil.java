@@ -112,6 +112,34 @@ public final class StringUtil {
         return camelCase.substring(0, 1).toUpperCase() + camelCase.substring(1);
     }
 
+    /**
+     * @param s
+     * @return kebab-case
+     */
+    public static String toKebabCase(final String s) {
+
+        if (s == null) {
+            return null;
+        }
+
+        String forceSnake = toSnakeCase(s);
+        return forceSnake.replaceAll("_", "-");
+    }
+
+    /**
+     * @param s
+     * @return KEBAB-CASE
+     */
+    public static String toUpperKebabCase(final String s) {
+
+        if (s == null) {
+            return null;
+        }
+
+        String kebab = toKebabCase(s);
+        return kebab.toUpperCase();
+    }
+
     // /**
     // * @param cs
     // * @param list

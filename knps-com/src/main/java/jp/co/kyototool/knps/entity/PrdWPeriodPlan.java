@@ -22,6 +22,7 @@ public class PrdWPeriodPlan implements IEntity {
     /**
      * @return W_PLAN_ID
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("W_PLAN_ID")
     public java.math.BigDecimal getWPlanId() {
         return this.wPlanId;
     }
@@ -46,6 +47,7 @@ public class PrdWPeriodPlan implements IEntity {
     /**
      * @return DATE_OF_PROC
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("DATE_OF_PROC")
     public java.time.LocalDateTime getDateOfProc() {
         return this.dateOfProc;
     }
@@ -76,6 +78,7 @@ public class PrdWPeriodPlan implements IEntity {
     /**
      * @return BEG_DATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("BEG_DATE")
     public java.time.LocalDateTime getBegDate() {
         return this.begDate;
     }
@@ -106,6 +109,7 @@ public class PrdWPeriodPlan implements IEntity {
     /**
      * @return END_DATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("END_DATE")
     public java.time.LocalDateTime getEndDate() {
         return this.endDate;
     }
@@ -133,6 +137,7 @@ public class PrdWPeriodPlan implements IEntity {
     /**
      * @return PROC_STATUS
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("PROC_STATUS")
     public java.math.BigDecimal getProcStatus() {
         return this.procStatus;
     }
@@ -154,6 +159,7 @@ public class PrdWPeriodPlan implements IEntity {
     /**
      * @return RESULT_PROC_STATUS
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("RESULT_PROC_STATUS")
     public java.math.BigDecimal getResultProcStatus() {
         return this.resultProcStatus;
     }
@@ -175,6 +181,7 @@ public class PrdWPeriodPlan implements IEntity {
     /**
      * @return PLAN_COMMENT
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("PLAN_COMMENT")
     public String getPlanComment() {
         return this.planComment;
     }
@@ -199,6 +206,7 @@ public class PrdWPeriodPlan implements IEntity {
     /**
      * @return TIME_STAMP_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CREATE")
     public java.time.LocalDateTime getTimeStampCreate() {
         return this.timeStampCreate;
     }
@@ -229,6 +237,7 @@ public class PrdWPeriodPlan implements IEntity {
     /**
      * @return TIME_STAMP_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CHANGE")
     public java.time.LocalDateTime getTimeStampChange() {
         return this.timeStampChange;
     }
@@ -256,6 +265,7 @@ public class PrdWPeriodPlan implements IEntity {
     /**
      * @return USER_ID_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CREATE")
     public String getUserIdCreate() {
         return this.userIdCreate;
     }
@@ -277,6 +287,7 @@ public class PrdWPeriodPlan implements IEntity {
     /**
      * @return USER_ID_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CHANGE")
     public String getUserIdChange() {
         return this.userIdChange;
     }

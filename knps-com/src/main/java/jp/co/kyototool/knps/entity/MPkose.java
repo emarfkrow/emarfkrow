@@ -22,6 +22,7 @@ public class MPkose implements IEntity {
     /**
      * @return 販売品番
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("HHINBAN")
     public String getHhinban() {
         return this.hhinban;
     }
@@ -43,6 +44,7 @@ public class MPkose implements IEntity {
     /**
      * @return 販売品名
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("HINMEI")
     public String getHinmei() {
         return this.hinmei;
     }
@@ -64,6 +66,7 @@ public class MPkose implements IEntity {
     /**
      * @return 部品品番
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("PHINBAN")
     public String getPhinban() {
         return this.phinban;
     }
@@ -85,6 +88,7 @@ public class MPkose implements IEntity {
     /**
      * @return 部品名
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("PHINMEI")
     public String getPhinmei() {
         return this.phinmei;
     }
@@ -106,6 +110,7 @@ public class MPkose implements IEntity {
     /**
      * @return 登録日
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TOUROKUBI")
     public java.math.BigDecimal getTourokubi() {
         return this.tourokubi;
     }
@@ -127,6 +132,7 @@ public class MPkose implements IEntity {
     /**
      * @return 予備領域
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("FILLER")
     public String getFiller() {
         return this.filler;
     }

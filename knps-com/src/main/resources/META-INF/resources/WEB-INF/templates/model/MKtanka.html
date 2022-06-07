@@ -9,6 +9,11 @@
 
 </script>
 <script th:src="@{/model/MKtankaGridColumns.js}"></script>
+<script th:src="@{/model/MHhinmokGridColumns.js}"></script>
+<script th:src="@{/model/MHososetGridColumns.js}"></script>
+<script th:src="@{/model/MHosozaiGridColumns.js}"></script>
+<script th:src="@{/model/MPkoseGridColumns.js}"></script>
+<script th:src="@{/model/MPhinmokGridColumns.js}"></script>
 </head>
 <body>
   <div layout:fragment="article">
@@ -29,7 +34,7 @@
           <label for="MKtanka.kshuryobi" th:text="#{MKtanka.kshuryobi}">契約単価終了日</label><input type="text" id="MKtanka.kshuryobi" name="MKtanka.kshuryobi" maxlength="8" />
         </div>
         <div id="hhinban">
-          <label for="MKtanka.hhinban" th:text="#{MKtanka.hhinban}">販売品番</label><input type="text" id="MKtanka.hhinban" name="MKtanka.hhinban" maxlength="20" />
+          <label for="MKtanka.hhinban" th:text="#{MKtanka.hhinban}">販売品番</label><input type="text" id="MKtanka.hhinban" name="MKtanka.hhinban" maxlength="20" data-json="MHhinmokSearch.json" data-srcDef="HHINBAN:MKtanka.hhinban" data-destDef="MKtanka.hhinmei:HINMEI" /><a id="MKtanka.hhinban" th:href="@{/model/MHhinmokS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MKtanka.hhinmei" class="refer" data-json="MHhinmokSearch.json" data-srcDef="HHINBAN:MKtanka.hhinban" data-destDef="MKtanka.hhinmei:HINMEI"></span>
         </div>
         <div id="keiyakuTanka">
           <label for="MKtanka.keiyakuTanka" th:text="#{MKtanka.keiyakuTanka}">契約単価</label><input type="text" id="MKtanka.keiyakuTanka" name="MKtanka.keiyakuTanka" maxlength="7" />

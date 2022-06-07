@@ -22,6 +22,7 @@ public class PchProdUnitCost implements IEntity {
     /**
      * @return CLOSE_DATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("CLOSE_DATE")
     public String getCloseDate() {
         return this.closeDate;
     }
@@ -43,6 +44,7 @@ public class PchProdUnitCost implements IEntity {
     /**
      * @return PRO_GROUP_NO
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("PRO_GROUP_NO")
     public java.math.BigDecimal getProGroupNo() {
         return this.proGroupNo;
     }
@@ -64,6 +66,7 @@ public class PchProdUnitCost implements IEntity {
     /**
      * @return HINBAN
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("HINBAN")
     public String getHinban() {
         return this.hinban;
     }
@@ -85,6 +88,7 @@ public class PchProdUnitCost implements IEntity {
     /**
      * @return ROUTING
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ROUTING")
     public java.math.BigDecimal getRouting() {
         return this.routing;
     }
@@ -106,6 +110,7 @@ public class PchProdUnitCost implements IEntity {
     /**
      * @return WC_CODE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("WC_CODE")
     public String getWcCode() {
         return this.wcCode;
     }
@@ -127,6 +132,7 @@ public class PchProdUnitCost implements IEntity {
     /**
      * @return OPE_DETAIL
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("OPE_DETAIL")
     public String getOpeDetail() {
         return this.opeDetail;
     }
@@ -148,6 +154,7 @@ public class PchProdUnitCost implements IEntity {
     /**
      * @return PROPRIETARY_TOTAL_COUNTS
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("PROPRIETARY_TOTAL_COUNTS")
     public java.math.BigDecimal getProprietaryTotalCounts() {
         return this.proprietaryTotalCounts;
     }
@@ -169,6 +176,7 @@ public class PchProdUnitCost implements IEntity {
     /**
      * @return PROPRIETARY_TOTAL_COST
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("PROPRIETARY_TOTAL_COST")
     public java.math.BigDecimal getProprietaryTotalCost() {
         return this.proprietaryTotalCost;
     }
@@ -190,6 +198,7 @@ public class PchProdUnitCost implements IEntity {
     /**
      * @return LAST_PRCH_UNIT_COST
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("LAST_PRCH_UNIT_COST")
     public java.math.BigDecimal getLastPrchUnitCost() {
         return this.lastPrchUnitCost;
     }
@@ -214,6 +223,7 @@ public class PchProdUnitCost implements IEntity {
     /**
      * @return TIME_STAMP_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CREATE")
     public java.time.LocalDateTime getTimeStampCreate() {
         return this.timeStampCreate;
     }
@@ -244,6 +254,7 @@ public class PchProdUnitCost implements IEntity {
     /**
      * @return TIME_STAMP_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CHANGE")
     public java.time.LocalDateTime getTimeStampChange() {
         return this.timeStampChange;
     }
@@ -271,6 +282,7 @@ public class PchProdUnitCost implements IEntity {
     /**
      * @return USER_ID_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CREATE")
     public String getUserIdCreate() {
         return this.userIdCreate;
     }
@@ -292,6 +304,7 @@ public class PchProdUnitCost implements IEntity {
     /**
      * @return USER_ID_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CHANGE")
     public String getUserIdChange() {
         return this.userIdChange;
     }

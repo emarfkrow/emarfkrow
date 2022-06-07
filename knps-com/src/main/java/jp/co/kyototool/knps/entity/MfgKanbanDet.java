@@ -22,6 +22,7 @@ public class MfgKanbanDet implements IEntity {
     /**
      * @return KANBAN_ID
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("KANBAN_ID")
     public String getKanbanId() {
         return this.kanbanId;
     }
@@ -43,6 +44,7 @@ public class MfgKanbanDet implements IEntity {
     /**
      * @return HINBAN
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("HINBAN")
     public String getHinban() {
         return this.hinban;
     }
@@ -64,6 +66,7 @@ public class MfgKanbanDet implements IEntity {
     /**
      * @return NECK_ROUTING_CODE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("NECK_ROUTING_CODE")
     public String getNeckRoutingCode() {
         return this.neckRoutingCode;
     }
@@ -85,6 +88,7 @@ public class MfgKanbanDet implements IEntity {
     /**
      * @return FOR_PRO_CODE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("FOR_PRO_CODE")
     public String getForProCode() {
         return this.forProCode;
     }
@@ -106,6 +110,7 @@ public class MfgKanbanDet implements IEntity {
     /**
      * @return FOR_PRO_LOCATION_CODE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("FOR_PRO_LOCATION_CODE")
     public String getForProLocationCode() {
         return this.forProLocationCode;
     }
@@ -127,6 +132,7 @@ public class MfgKanbanDet implements IEntity {
     /**
      * @return PRO_CODE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("PRO_CODE")
     public String getProCode() {
         return this.proCode;
     }
@@ -148,6 +154,7 @@ public class MfgKanbanDet implements IEntity {
     /**
      * @return PRO_LOCATION_CODE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("PRO_LOCATION_CODE")
     public String getProLocationCode() {
         return this.proLocationCode;
     }
@@ -169,6 +176,7 @@ public class MfgKanbanDet implements IEntity {
     /**
      * @return COMMENT1
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("COMMENT1")
     public String getComment1() {
         return this.comment1;
     }
@@ -190,6 +198,7 @@ public class MfgKanbanDet implements IEntity {
     /**
      * @return COMMENT2
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("COMMENT2")
     public String getComment2() {
         return this.comment2;
     }
@@ -211,6 +220,7 @@ public class MfgKanbanDet implements IEntity {
     /**
      * @return ROUTING1
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ROUTING1")
     public java.math.BigDecimal getRouting1() {
         return this.routing1;
     }
@@ -232,6 +242,7 @@ public class MfgKanbanDet implements IEntity {
     /**
      * @return TUNNEL_PRO_CODE1
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TUNNEL_PRO_CODE1")
     public String getTunnelProCode1() {
         return this.tunnelProCode1;
     }
@@ -253,6 +264,7 @@ public class MfgKanbanDet implements IEntity {
     /**
      * @return ROUTING2
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ROUTING2")
     public java.math.BigDecimal getRouting2() {
         return this.routing2;
     }
@@ -274,6 +286,7 @@ public class MfgKanbanDet implements IEntity {
     /**
      * @return TUNNEL_PRO_CODE2
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TUNNEL_PRO_CODE2")
     public String getTunnelProCode2() {
         return this.tunnelProCode2;
     }
@@ -295,6 +308,7 @@ public class MfgKanbanDet implements IEntity {
     /**
      * @return ROUTING3
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ROUTING3")
     public java.math.BigDecimal getRouting3() {
         return this.routing3;
     }
@@ -316,6 +330,7 @@ public class MfgKanbanDet implements IEntity {
     /**
      * @return TUNNEL_PRO_CODE3
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TUNNEL_PRO_CODE3")
     public String getTunnelProCode3() {
         return this.tunnelProCode3;
     }
@@ -337,6 +352,7 @@ public class MfgKanbanDet implements IEntity {
     /**
      * @return ROUTING4
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ROUTING4")
     public java.math.BigDecimal getRouting4() {
         return this.routing4;
     }
@@ -358,6 +374,7 @@ public class MfgKanbanDet implements IEntity {
     /**
      * @return TUNNEL_PRO_CODE4
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TUNNEL_PRO_CODE4")
     public String getTunnelProCode4() {
         return this.tunnelProCode4;
     }
@@ -379,6 +396,7 @@ public class MfgKanbanDet implements IEntity {
     /**
      * @return ROUTING5
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ROUTING5")
     public java.math.BigDecimal getRouting5() {
         return this.routing5;
     }
@@ -400,6 +418,7 @@ public class MfgKanbanDet implements IEntity {
     /**
      * @return TUNNEL_PRO_CODE5
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TUNNEL_PRO_CODE5")
     public String getTunnelProCode5() {
         return this.tunnelProCode5;
     }
@@ -421,6 +440,7 @@ public class MfgKanbanDet implements IEntity {
     /**
      * @return KANBAN_ACC_COUNTS
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("KANBAN_ACC_COUNTS")
     public java.math.BigDecimal getKanbanAccCounts() {
         return this.kanbanAccCounts;
     }
@@ -442,6 +462,7 @@ public class MfgKanbanDet implements IEntity {
     /**
      * @return LOT_SIZE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("LOT_SIZE")
     public java.math.BigDecimal getLotSize() {
         return this.lotSize;
     }
@@ -466,6 +487,7 @@ public class MfgKanbanDet implements IEntity {
     /**
      * @return TIME_STAMP_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CREATE")
     public java.time.LocalDateTime getTimeStampCreate() {
         return this.timeStampCreate;
     }
@@ -496,6 +518,7 @@ public class MfgKanbanDet implements IEntity {
     /**
      * @return TIME_STAMP_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CHANGE")
     public java.time.LocalDateTime getTimeStampChange() {
         return this.timeStampChange;
     }
@@ -523,6 +546,7 @@ public class MfgKanbanDet implements IEntity {
     /**
      * @return USER_ID_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CREATE")
     public String getUserIdCreate() {
         return this.userIdCreate;
     }
@@ -544,6 +568,7 @@ public class MfgKanbanDet implements IEntity {
     /**
      * @return USER_ID_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CHANGE")
     public String getUserIdChange() {
         return this.userIdChange;
     }

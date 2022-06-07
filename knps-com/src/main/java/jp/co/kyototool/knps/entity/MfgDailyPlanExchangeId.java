@@ -22,6 +22,7 @@ public class MfgDailyPlanExchangeId implements IEntity {
     /**
      * @return EXCHANGE_ID
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("EXCHANGE_ID")
     public String getExchangeId() {
         return this.exchangeId;
     }
@@ -43,6 +44,7 @@ public class MfgDailyPlanExchangeId implements IEntity {
     /**
      * @return PRO_NO
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("PRO_NO")
     public String getProNo() {
         return this.proNo;
     }
@@ -64,6 +66,7 @@ public class MfgDailyPlanExchangeId implements IEntity {
     /**
      * @return ID_TYPE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ID_TYPE")
     public String getIdType() {
         return this.idType;
     }

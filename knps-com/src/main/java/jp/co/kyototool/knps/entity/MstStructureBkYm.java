@@ -22,6 +22,7 @@ public class MstStructureBkYm implements IEntity {
     /**
      * @return YY
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("YY")
     public String getYy() {
         return this.yy;
     }
@@ -43,6 +44,7 @@ public class MstStructureBkYm implements IEntity {
     /**
      * @return MM
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("MM")
     public String getMm() {
         return this.mm;
     }
@@ -64,6 +66,7 @@ public class MstStructureBkYm implements IEntity {
     /**
      * @return MAN_HINBAN
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("MAN_HINBAN")
     public String getManHinban() {
         return this.manHinban;
     }
@@ -85,6 +88,7 @@ public class MstStructureBkYm implements IEntity {
     /**
      * @return HINBAN
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("HINBAN")
     public String getHinban() {
         return this.hinban;
     }
@@ -106,6 +110,7 @@ public class MstStructureBkYm implements IEntity {
     /**
      * @return COUNTS
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("COUNTS")
     public java.math.BigDecimal getCounts() {
         return this.counts;
     }
@@ -130,6 +135,7 @@ public class MstStructureBkYm implements IEntity {
     /**
      * @return TIME_STAMP_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CREATE")
     public java.time.LocalDateTime getTimeStampCreate() {
         return this.timeStampCreate;
     }
@@ -160,6 +166,7 @@ public class MstStructureBkYm implements IEntity {
     /**
      * @return TIME_STAMP_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CHANGE")
     public java.time.LocalDateTime getTimeStampChange() {
         return this.timeStampChange;
     }
@@ -187,6 +194,7 @@ public class MstStructureBkYm implements IEntity {
     /**
      * @return USER_ID_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CREATE")
     public String getUserIdCreate() {
         return this.userIdCreate;
     }
@@ -208,6 +216,7 @@ public class MstStructureBkYm implements IEntity {
     /**
      * @return USER_ID_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CHANGE")
     public String getUserIdChange() {
         return this.userIdChange;
     }
@@ -229,6 +238,7 @@ public class MstStructureBkYm implements IEntity {
     /**
      * @return DELETE_FLAG
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("DELETE_FLAG")
     public java.math.BigDecimal getDeleteFlag() {
         return this.deleteFlag;
     }

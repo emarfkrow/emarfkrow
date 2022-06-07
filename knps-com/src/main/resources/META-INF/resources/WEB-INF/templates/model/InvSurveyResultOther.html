@@ -9,13 +9,6 @@
 
 </script>
 <script th:src="@{/model/InvSurveyResultOtherGridColumns.js}"></script>
-<script th:src="@{/model/MstLocationGridColumns.js}"></script>
-<script th:src="@{/model/MstSubinvGridColumns.js}"></script>
-<script th:src="@{/model/MstSupplierGridColumns.js}"></script>
-<script th:src="@{/model/InvStockProcessSupplyGridColumns.js}"></script>
-<script th:src="@{/model/MstSupplierBkGridColumns.js}"></script>
-<script th:src="@{/model/MstTaxGridColumns.js}"></script>
-<script th:src="@{/model/MstStoreManGridColumns.js}"></script>
 </head>
 <body>
   <div layout:fragment="article">
@@ -24,7 +17,7 @@
       <fieldset>
         <legend th:text="#{InvSurveyResultOther.legend}">legend</legend>
         <div id="locationCode">
-          <label for="InvSurveyResultOther.locationCode" th:text="#{InvSurveyResultOther.locationCode}">LOCATION_CODE</label><span id="InvSurveyResultOther.locationCode"></span><input type="hidden" id="InvSurveyResultOther.locationCode" name="InvSurveyResultOther.locationCode" class="primaryKey" /><a id="InvSurveyResultOther.locationCode" th:href="@{/model/MstLocationS.html}" target="dialog" class="primaryKey refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="InvSurveyResultOther.locationName" class="refer" data-json="MstLocationSearch.json" data-srcDef="LOCATION_CODE:InvSurveyResultOther.locationCode" data-destDef="InvSurveyResultOther.locationName:LOCATION_NAME"></span>
+          <label for="InvSurveyResultOther.locationCode" th:text="#{InvSurveyResultOther.locationCode}">LOCATION_CODE</label><span id="InvSurveyResultOther.locationCode"></span><input type="hidden" id="InvSurveyResultOther.locationCode" name="InvSurveyResultOther.locationCode" class="primaryKey" />
         </div>
         <div id="resultBranchNo">
           <label for="InvSurveyResultOther.resultBranchNo" th:text="#{InvSurveyResultOther.resultBranchNo}">RESULT_BRANCH_NO</label><input type="text" id="InvSurveyResultOther.resultBranchNo" name="InvSurveyResultOther.resultBranchNo" maxlength="2" class="primaryKey" />

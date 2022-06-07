@@ -22,6 +22,7 @@ public class InvStockProcessSupply implements IEntity {
     /**
      * @return SUP_CODE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SUP_CODE")
     public String getSupCode() {
         return this.supCode;
     }
@@ -43,6 +44,7 @@ public class InvStockProcessSupply implements IEntity {
     /**
      * @return HINBAN
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("HINBAN")
     public String getHinban() {
         return this.hinban;
     }
@@ -64,6 +66,7 @@ public class InvStockProcessSupply implements IEntity {
     /**
      * @return SHIKYU_QT
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SHIKYU_QT")
     public java.math.BigDecimal getShikyuQt() {
         return this.shikyuQt;
     }
@@ -88,6 +91,7 @@ public class InvStockProcessSupply implements IEntity {
     /**
      * @return TIME_STAMP_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CREATE")
     public java.time.LocalDateTime getTimeStampCreate() {
         return this.timeStampCreate;
     }
@@ -118,6 +122,7 @@ public class InvStockProcessSupply implements IEntity {
     /**
      * @return TIME_STAMP_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CHANGE")
     public java.time.LocalDateTime getTimeStampChange() {
         return this.timeStampChange;
     }
@@ -145,6 +150,7 @@ public class InvStockProcessSupply implements IEntity {
     /**
      * @return USER_ID_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CREATE")
     public String getUserIdCreate() {
         return this.userIdCreate;
     }
@@ -166,6 +172,7 @@ public class InvStockProcessSupply implements IEntity {
     /**
      * @return USER_ID_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CHANGE")
     public String getUserIdChange() {
         return this.userIdChange;
     }

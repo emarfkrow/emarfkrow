@@ -22,6 +22,7 @@ public class MBaraten implements IEntity {
     /**
      * @return 親品番
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("OYA-HINBAN")
     public String getOyaHinban() {
         return this.oyaHinban;
     }
@@ -43,6 +44,7 @@ public class MBaraten implements IEntity {
     /**
      * @return 子品番
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("KO-HINBAN")
     public String getKoHinban() {
         return this.koHinban;
     }
@@ -64,6 +66,7 @@ public class MBaraten implements IEntity {
     /**
      * @return 親品目コード
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("OYA-HINC")
     public String getOyaHinc() {
         return this.oyaHinc;
     }
@@ -85,6 +88,7 @@ public class MBaraten implements IEntity {
     /**
      * @return 子品目コード
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("KO-HINC")
     public String getKoHinc() {
         return this.koHinc;
     }
@@ -106,6 +110,7 @@ public class MBaraten implements IEntity {
     /**
      * @return 員数
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("INZU")
     public java.math.BigDecimal getInzu() {
         return this.inzu;
     }
@@ -127,6 +132,7 @@ public class MBaraten implements IEntity {
     /**
      * @return 親売価
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("OYA-BAIKA")
     public java.math.BigDecimal getOyaBaika() {
         return this.oyaBaika;
     }
@@ -148,6 +154,7 @@ public class MBaraten implements IEntity {
     /**
      * @return 親原価
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("OYA-GENKA")
     public java.math.BigDecimal getOyaGenka() {
         return this.oyaGenka;
     }
@@ -169,6 +176,7 @@ public class MBaraten implements IEntity {
     /**
      * @return 子単価
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("KO-TANKA")
     public java.math.BigDecimal getKoTanka() {
         return this.koTanka;
     }
@@ -190,6 +198,7 @@ public class MBaraten implements IEntity {
     /**
      * @return 子原価
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("KO-GENKA")
     public java.math.BigDecimal getKoGenka() {
         return this.koGenka;
     }
@@ -211,6 +220,7 @@ public class MBaraten implements IEntity {
     /**
      * @return 子単価率
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("KO-TANRITU")
     public java.math.BigDecimal getKoTanritu() {
         return this.koTanritu;
     }
@@ -232,6 +242,7 @@ public class MBaraten implements IEntity {
     /**
      * @return 検索マスター
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("KENSAKUM")
     public String getKensakum() {
         return this.kensakum;
     }
@@ -253,6 +264,7 @@ public class MBaraten implements IEntity {
     /**
      * @return ケース区分
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("CASEKBN")
     public String getCasekbn() {
         return this.casekbn;
     }
@@ -274,6 +286,7 @@ public class MBaraten implements IEntity {
     /**
      * @return 予備領域
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("FILLER")
     public String getFiller() {
         return this.filler;
     }

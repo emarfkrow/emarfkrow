@@ -215,7 +215,8 @@ let Jsonate = {
 						let child = childList[i];
 						let gridRow = {};
 						for (let fieldName in child) {
-							gridRow[Casing.toUpper(fieldName)] = child[fieldName];
+							//gridRow[Casing.toUpper(fieldName)] = child[fieldName];
+							gridRow[fieldName] = child[fieldName];
 						}
 						gridData.push(gridRow);
 					}

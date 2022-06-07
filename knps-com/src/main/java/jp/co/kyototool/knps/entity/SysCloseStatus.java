@@ -22,6 +22,7 @@ public class SysCloseStatus implements IEntity {
     /**
      * @return REC_NO
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("REC_NO")
     public String getRecNo() {
         return this.recNo;
     }
@@ -43,6 +44,7 @@ public class SysCloseStatus implements IEntity {
     /**
      * @return DAIRY_CLOSE_TARGET_DATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("DAIRY_CLOSE_TARGET_DATE")
     public String getDairyCloseTargetDate() {
         return this.dairyCloseTargetDate;
     }
@@ -64,6 +66,7 @@ public class SysCloseStatus implements IEntity {
     /**
      * @return DAIRY_CLOSE_STATUS
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("DAIRY_CLOSE_STATUS")
     public java.math.BigDecimal getDairyCloseStatus() {
         return this.dairyCloseStatus;
     }
@@ -88,6 +91,7 @@ public class SysCloseStatus implements IEntity {
     /**
      * @return DAIRY_CLOSE_DATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("DAIRY_CLOSE_DATE")
     public java.time.LocalDateTime getDairyCloseDate() {
         return this.dairyCloseDate;
     }
@@ -115,6 +119,7 @@ public class SysCloseStatus implements IEntity {
     /**
      * @return MONTHRY_CLOSE_TARGET_DATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("MONTHRY_CLOSE_TARGET_DATE")
     public String getMonthryCloseTargetDate() {
         return this.monthryCloseTargetDate;
     }
@@ -136,6 +141,7 @@ public class SysCloseStatus implements IEntity {
     /**
      * @return MONTHRY_CLOSE_STATUS
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("MONTHRY_CLOSE_STATUS")
     public java.math.BigDecimal getMonthryCloseStatus() {
         return this.monthryCloseStatus;
     }
@@ -160,6 +166,7 @@ public class SysCloseStatus implements IEntity {
     /**
      * @return MONTHRY_CLOSE_DATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("MONTHRY_CLOSE_DATE")
     public java.time.LocalDateTime getMonthryCloseDate() {
         return this.monthryCloseDate;
     }
@@ -187,6 +194,7 @@ public class SysCloseStatus implements IEntity {
     /**
      * @return MONTHRY_SETTLE_TARGET_DATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("MONTHRY_SETTLE_TARGET_DATE")
     public String getMonthrySettleTargetDate() {
         return this.monthrySettleTargetDate;
     }
@@ -208,6 +216,7 @@ public class SysCloseStatus implements IEntity {
     /**
      * @return MONTHRY_SETTLE_STATUS
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("MONTHRY_SETTLE_STATUS")
     public java.math.BigDecimal getMonthrySettleStatus() {
         return this.monthrySettleStatus;
     }
@@ -232,6 +241,7 @@ public class SysCloseStatus implements IEntity {
     /**
      * @return MONTHRY_SETTLE_DATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("MONTHRY_SETTLE_DATE")
     public java.time.LocalDateTime getMonthrySettleDate() {
         return this.monthrySettleDate;
     }
@@ -259,6 +269,7 @@ public class SysCloseStatus implements IEntity {
     /**
      * @return MONTHRY_SETTLE_COST_FIXED
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("MONTHRY_SETTLE_COST_FIXED")
     public java.math.BigDecimal getMonthrySettleCostFixed() {
         return this.monthrySettleCostFixed;
     }
@@ -280,6 +291,7 @@ public class SysCloseStatus implements IEntity {
     /**
      * @return ANNUAL_SETTLE_TARGET_DATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ANNUAL_SETTLE_TARGET_DATE")
     public String getAnnualSettleTargetDate() {
         return this.annualSettleTargetDate;
     }
@@ -301,6 +313,7 @@ public class SysCloseStatus implements IEntity {
     /**
      * @return ANNUAL_SETTLE_STATUS
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ANNUAL_SETTLE_STATUS")
     public java.math.BigDecimal getAnnualSettleStatus() {
         return this.annualSettleStatus;
     }
@@ -325,6 +338,7 @@ public class SysCloseStatus implements IEntity {
     /**
      * @return ANNUAL_SETTLE_DATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ANNUAL_SETTLE_DATE")
     public java.time.LocalDateTime getAnnualSettleDate() {
         return this.annualSettleDate;
     }
@@ -352,6 +366,7 @@ public class SysCloseStatus implements IEntity {
     /**
      * @return ANNUAL_SETTLE_COST_FIXED
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ANNUAL_SETTLE_COST_FIXED")
     public java.math.BigDecimal getAnnualSettleCostFixed() {
         return this.annualSettleCostFixed;
     }
@@ -373,6 +388,7 @@ public class SysCloseStatus implements IEntity {
     /**
      * @return MASTER_COPY_FLAG
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("MASTER_COPY_FLAG")
     public java.math.BigDecimal getMasterCopyFlag() {
         return this.masterCopyFlag;
     }
@@ -397,6 +413,7 @@ public class SysCloseStatus implements IEntity {
     /**
      * @return MASTER_COPY_DATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("MASTER_COPY_DATE")
     public java.time.LocalDateTime getMasterCopyDate() {
         return this.masterCopyDate;
     }
@@ -427,6 +444,7 @@ public class SysCloseStatus implements IEntity {
     /**
      * @return TIME_STAMP_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CREATE")
     public java.time.LocalDateTime getTimeStampCreate() {
         return this.timeStampCreate;
     }
@@ -457,6 +475,7 @@ public class SysCloseStatus implements IEntity {
     /**
      * @return TIME_STAMP_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CHANGE")
     public java.time.LocalDateTime getTimeStampChange() {
         return this.timeStampChange;
     }
@@ -484,6 +503,7 @@ public class SysCloseStatus implements IEntity {
     /**
      * @return USER_ID_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CREATE")
     public String getUserIdCreate() {
         return this.userIdCreate;
     }
@@ -505,6 +525,7 @@ public class SysCloseStatus implements IEntity {
     /**
      * @return USER_ID_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CHANGE")
     public String getUserIdChange() {
         return this.userIdChange;
     }
@@ -526,6 +547,7 @@ public class SysCloseStatus implements IEntity {
     /**
      * @return QUARTER_SETTLE_TARGET_DATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("QUARTER_SETTLE_TARGET_DATE")
     public String getQuarterSettleTargetDate() {
         return this.quarterSettleTargetDate;
     }
@@ -547,6 +569,7 @@ public class SysCloseStatus implements IEntity {
     /**
      * @return QUARTER_SETTLE_STATUS
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("QUARTER_SETTLE_STATUS")
     public java.math.BigDecimal getQuarterSettleStatus() {
         return this.quarterSettleStatus;
     }
@@ -571,6 +594,7 @@ public class SysCloseStatus implements IEntity {
     /**
      * @return QUARTER_SETTLE_DATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("QUARTER_SETTLE_DATE")
     public java.time.LocalDateTime getQuarterSettleDate() {
         return this.quarterSettleDate;
     }
@@ -598,6 +622,7 @@ public class SysCloseStatus implements IEntity {
     /**
      * @return QUARTER_SETTLE_COST_FIXED
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("QUARTER_SETTLE_COST_FIXED")
     public java.math.BigDecimal getQuarterSettleCostFixed() {
         return this.quarterSettleCostFixed;
     }

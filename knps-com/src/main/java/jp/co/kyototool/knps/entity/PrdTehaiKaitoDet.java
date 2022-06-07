@@ -22,6 +22,7 @@ public class PrdTehaiKaitoDet implements IEntity {
     /**
      * @return PRD_TEHAI_NO
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("PRD_TEHAI_NO")
     public String getPrdTehaiNo() {
         return this.prdTehaiNo;
     }
@@ -43,6 +44,7 @@ public class PrdTehaiKaitoDet implements IEntity {
     /**
      * @return KAITO_DET_SEQ
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("KAITO_DET_SEQ")
     public java.math.BigDecimal getKaitoDetSeq() {
         return this.kaitoDetSeq;
     }
@@ -64,6 +66,7 @@ public class PrdTehaiKaitoDet implements IEntity {
     /**
      * @return IRAI_DET_SEQ
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("IRAI_DET_SEQ")
     public java.math.BigDecimal getIraiDetSeq() {
         return this.iraiDetSeq;
     }
@@ -85,6 +88,7 @@ public class PrdTehaiKaitoDet implements IEntity {
     /**
      * @return ID
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ID")
     public java.math.BigDecimal getId() {
         return this.id;
     }
@@ -106,6 +110,7 @@ public class PrdTehaiKaitoDet implements IEntity {
     /**
      * @return PARENT_ID
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("PARENT_ID")
     public java.math.BigDecimal getParentId() {
         return this.parentId;
     }
@@ -127,6 +132,7 @@ public class PrdTehaiKaitoDet implements IEntity {
     /**
      * @return KAITO_HINBAN
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("KAITO_HINBAN")
     public String getKaitoHinban() {
         return this.kaitoHinban;
     }
@@ -148,6 +154,7 @@ public class PrdTehaiKaitoDet implements IEntity {
     /**
      * @return KAITO_QT
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("KAITO_QT")
     public java.math.BigDecimal getKaitoQt() {
         return this.kaitoQt;
     }
@@ -169,6 +176,7 @@ public class PrdTehaiKaitoDet implements IEntity {
     /**
      * @return FUMEIHIN_F
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("FUMEIHIN_F")
     public String getFumeihinF() {
         return this.fumeihinF;
     }
@@ -190,6 +198,7 @@ public class PrdTehaiKaitoDet implements IEntity {
     /**
      * @return SETHIN_F
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SETHIN_F")
     public String getSethinF() {
         return this.sethinF;
     }
@@ -211,6 +220,7 @@ public class PrdTehaiKaitoDet implements IEntity {
     /**
      * @return KIBO_NOKI_YMD
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("KIBO_NOKI_YMD")
     public String getKiboNokiYmd() {
         return this.kiboNokiYmd;
     }
@@ -232,6 +242,7 @@ public class PrdTehaiKaitoDet implements IEntity {
     /**
      * @return HINBAN_TANTOSHA_CD
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("HINBAN_TANTOSHA_CD")
     public String getHinbanTantoshaCd() {
         return this.hinbanTantoshaCd;
     }
@@ -253,6 +264,7 @@ public class PrdTehaiKaitoDet implements IEntity {
     /**
      * @return SET_NOKI_TUCHI_F
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SET_NOKI_TUCHI_F")
     public String getSetNokiTuchiF() {
         return this.setNokiTuchiF;
     }
@@ -274,6 +286,7 @@ public class PrdTehaiKaitoDet implements IEntity {
     /**
      * @return KAITO_NOKI_YMD
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("KAITO_NOKI_YMD")
     public String getKaitoNokiYmd() {
         return this.kaitoNokiYmd;
     }
@@ -295,6 +308,7 @@ public class PrdTehaiKaitoDet implements IEntity {
     /**
      * @return KAITO_NOKI_CMT
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("KAITO_NOKI_CMT")
     public String getKaitoNokiCmt() {
         return this.kaitoNokiCmt;
     }
@@ -316,6 +330,7 @@ public class PrdTehaiKaitoDet implements IEntity {
     /**
      * @return NOKI_KAITOSHA_CD
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("NOKI_KAITOSHA_CD")
     public String getNokiKaitoshaCd() {
         return this.nokiKaitoshaCd;
     }
@@ -340,6 +355,7 @@ public class PrdTehaiKaitoDet implements IEntity {
     /**
      * @return NOKI_KAITO_DT
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("NOKI_KAITO_DT")
     public java.time.LocalDateTime getNokiKaitoDt() {
         return this.nokiKaitoDt;
     }
@@ -367,6 +383,7 @@ public class PrdTehaiKaitoDet implements IEntity {
     /**
      * @return KAITO_NOKI_HININ_F
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("KAITO_NOKI_HININ_F")
     public String getKaitoNokiHininF() {
         return this.kaitoNokiHininF;
     }
@@ -391,6 +408,7 @@ public class PrdTehaiKaitoDet implements IEntity {
     /**
      * @return TIME_STAMP_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CREATE")
     public java.time.LocalDateTime getTimeStampCreate() {
         return this.timeStampCreate;
     }
@@ -421,6 +439,7 @@ public class PrdTehaiKaitoDet implements IEntity {
     /**
      * @return TIME_STAMP_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CHANGE")
     public java.time.LocalDateTime getTimeStampChange() {
         return this.timeStampChange;
     }
@@ -448,6 +467,7 @@ public class PrdTehaiKaitoDet implements IEntity {
     /**
      * @return USER_ID_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CREATE")
     public String getUserIdCreate() {
         return this.userIdCreate;
     }
@@ -469,6 +489,7 @@ public class PrdTehaiKaitoDet implements IEntity {
     /**
      * @return USER_ID_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CHANGE")
     public String getUserIdChange() {
         return this.userIdChange;
     }

@@ -22,6 +22,7 @@ public class MWseigyo implements IEntity {
     /**
      * @return ＷＥＢデータ区分
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("WEB-DATAKBN")
     public java.math.BigDecimal getWebDatakbn() {
         return this.webDatakbn;
     }
@@ -43,6 +44,7 @@ public class MWseigyo implements IEntity {
     /**
      * @return ＷＥＢ受注番号１
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("WEB-JUCHUNO1")
     public java.math.BigDecimal getWebJuchuno1() {
         return this.webJuchuno1;
     }
@@ -64,6 +66,7 @@ public class MWseigyo implements IEntity {
     /**
      * @return 予備領域
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("FILLER")
     public String getFiller() {
         return this.filler;
     }

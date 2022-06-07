@@ -22,6 +22,7 @@ public class MYuryoku implements IEntity {
     /**
      * @return 有力店コード
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("YURYOCD")
     public java.math.BigDecimal getYuryocd() {
         return this.yuryocd;
     }
@@ -43,6 +44,7 @@ public class MYuryoku implements IEntity {
     /**
      * @return 略有力店名
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("RYURYOKUMEI")
     public String getRyuryokumei() {
         return this.ryuryokumei;
     }
@@ -64,6 +66,7 @@ public class MYuryoku implements IEntity {
     /**
      * @return 有力店名１
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("YURYOMEI1")
     public String getYuryomei1() {
         return this.yuryomei1;
     }
@@ -85,6 +88,7 @@ public class MYuryoku implements IEntity {
     /**
      * @return 有力店名２
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("YURYOMEI2")
     public String getYuryomei2() {
         return this.yuryomei2;
     }
@@ -106,6 +110,7 @@ public class MYuryoku implements IEntity {
     /**
      * @return 有力店住所１
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("YURYOKU-JUSHO1")
     public String getYuryokuJusho1() {
         return this.yuryokuJusho1;
     }
@@ -127,6 +132,7 @@ public class MYuryoku implements IEntity {
     /**
      * @return 有力店住所２
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("YURYOKU-JUSHO2")
     public String getYuryokuJusho2() {
         return this.yuryokuJusho2;
     }
@@ -148,6 +154,7 @@ public class MYuryoku implements IEntity {
     /**
      * @return 郵便番号
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("UBINNO")
     public String getUbinno() {
         return this.ubinno;
     }
@@ -169,6 +176,7 @@ public class MYuryoku implements IEntity {
     /**
      * @return 電話番号
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TELNO")
     public String getTelno() {
         return this.telno;
     }
@@ -190,6 +198,7 @@ public class MYuryoku implements IEntity {
     /**
      * @return ＦＡＸ番号
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("FAXNO")
     public String getFaxno() {
         return this.faxno;
     }
@@ -211,6 +220,7 @@ public class MYuryoku implements IEntity {
     /**
      * @return 有力店資格区分
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("YURYOKUKBN")
     public String getYuryokukbn() {
         return this.yuryokukbn;
     }
@@ -232,6 +242,7 @@ public class MYuryoku implements IEntity {
     /**
      * @return マスター登録日
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TOUROKUBI")
     public java.math.BigDecimal getTourokubi() {
         return this.tourokubi;
     }
@@ -253,6 +264,7 @@ public class MYuryoku implements IEntity {
     /**
      * @return カナ有力店名
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("KYURYOKUMEI")
     public String getKyuryokumei() {
         return this.kyuryokumei;
     }
@@ -274,6 +286,7 @@ public class MYuryoku implements IEntity {
     /**
      * @return 期
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("KI")
     public java.math.BigDecimal getKi() {
         return this.ki;
     }
@@ -295,6 +308,7 @@ public class MYuryoku implements IEntity {
     /**
      * @return 上期購入額
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("KAMI-KONYU")
     public java.math.BigDecimal getKamiKonyu() {
         return this.kamiKonyu;
     }
@@ -316,6 +330,7 @@ public class MYuryoku implements IEntity {
     /**
      * @return 上期支払対象額
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("KAMI-SIHARAI")
     public java.math.BigDecimal getKamiSiharai() {
         return this.kamiSiharai;
     }
@@ -337,6 +352,7 @@ public class MYuryoku implements IEntity {
     /**
      * @return 上期有ボ支払率
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("KAMI-YUBORITU")
     public java.math.BigDecimal getKamiYuboritu() {
         return this.kamiYuboritu;
     }
@@ -358,6 +374,7 @@ public class MYuryoku implements IEntity {
     /**
      * @return 上期達成区分
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("KAMI-TASSEIKBN")
     public String getKamiTasseikbn() {
         return this.kamiTasseikbn;
     }
@@ -379,6 +396,7 @@ public class MYuryoku implements IEntity {
     /**
      * @return 下期購入額
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SIMO-KONYU")
     public java.math.BigDecimal getSimoKonyu() {
         return this.simoKonyu;
     }
@@ -400,6 +418,7 @@ public class MYuryoku implements IEntity {
     /**
      * @return 下期支払対象額
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SIMO-SIHARAI")
     public java.math.BigDecimal getSimoSiharai() {
         return this.simoSiharai;
     }
@@ -421,6 +440,7 @@ public class MYuryoku implements IEntity {
     /**
      * @return 下期有ボ支払率
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SIMO-YUBORITU")
     public java.math.BigDecimal getSimoYuboritu() {
         return this.simoYuboritu;
     }
@@ -442,6 +462,7 @@ public class MYuryoku implements IEntity {
     /**
      * @return 下期達成区分
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SIMO-TASSEIKBN")
     public String getSimoTasseikbn() {
         return this.simoTasseikbn;
     }
@@ -463,6 +484,7 @@ public class MYuryoku implements IEntity {
     /**
      * @return 有力店会区分
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("YUTENKAIKBN")
     public String getYutenkaikbn() {
         return this.yutenkaikbn;
     }
@@ -484,6 +506,7 @@ public class MYuryoku implements IEntity {
     /**
      * @return 取引停止区分
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TORIHIKI-KBN")
     public String getTorihikiKbn() {
         return this.torihikiKbn;
     }
@@ -505,6 +528,7 @@ public class MYuryoku implements IEntity {
     /**
      * @return 業種区分
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("GYOSHU-KBN")
     public String getGyoshuKbn() {
         return this.gyoshuKbn;
     }
@@ -526,6 +550,7 @@ public class MYuryoku implements IEntity {
     /**
      * @return 市町村コード
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SICHOCD")
     public String getSichocd() {
         return this.sichocd;
     }
@@ -547,6 +572,7 @@ public class MYuryoku implements IEntity {
     /**
      * @return ＦＡＸ区分
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("FAXKBN")
     public java.math.BigDecimal getFaxkbn() {
         return this.faxkbn;
     }
@@ -568,6 +594,7 @@ public class MYuryoku implements IEntity {
     /**
      * @return 有ボ率区分
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("RITUKBN")
     public String getRitukbn() {
         return this.ritukbn;
     }
@@ -589,6 +616,7 @@ public class MYuryoku implements IEntity {
     /**
      * @return 運送会社コード
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("UNSOCD")
     public String getUnsocd() {
         return this.unsocd;
     }
@@ -610,6 +638,7 @@ public class MYuryoku implements IEntity {
     /**
      * @return 地区コード
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIKUCD")
     public String getTikucd() {
         return this.tikucd;
     }
@@ -631,6 +660,7 @@ public class MYuryoku implements IEntity {
     /**
      * @return 都道府県コード
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TODOFUKENCD")
     public String getTodofukencd() {
         return this.todofukencd;
     }
@@ -652,6 +682,7 @@ public class MYuryoku implements IEntity {
     /**
      * @return 営業所区分
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("EIGYOKBN")
     public String getEigyokbn() {
         return this.eigyokbn;
     }
@@ -673,6 +704,7 @@ public class MYuryoku implements IEntity {
     /**
      * @return 有力店ランク
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("YURYOKU-RANK")
     public String getYuryokuRank() {
         return this.yuryokuRank;
     }
@@ -694,6 +726,7 @@ public class MYuryoku implements IEntity {
     /**
      * @return 戦略店区分
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("STKBN")
     public String getStkbn() {
         return this.stkbn;
     }
@@ -715,6 +748,7 @@ public class MYuryoku implements IEntity {
     /**
      * @return 予備領域
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("FILLER")
     public String getFiller() {
         return this.filler;
     }

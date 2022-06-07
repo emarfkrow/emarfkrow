@@ -22,6 +22,7 @@ public class MstRoutingBk implements IEntity {
     /**
      * @return YY
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("YY")
     public String getYy() {
         return this.yy;
     }
@@ -43,6 +44,7 @@ public class MstRoutingBk implements IEntity {
     /**
      * @return MAN_HINBAN
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("MAN_HINBAN")
     public String getManHinban() {
         return this.manHinban;
     }
@@ -64,6 +66,7 @@ public class MstRoutingBk implements IEntity {
     /**
      * @return ROUTING_GROUP
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ROUTING_GROUP")
     public java.math.BigDecimal getRoutingGroup() {
         return this.routingGroup;
     }
@@ -85,6 +88,7 @@ public class MstRoutingBk implements IEntity {
     /**
      * @return ROUTING
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ROUTING")
     public java.math.BigDecimal getRouting() {
         return this.routing;
     }
@@ -106,6 +110,7 @@ public class MstRoutingBk implements IEntity {
     /**
      * @return NECK_ROUTING
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("NECK_ROUTING")
     public java.math.BigDecimal getNeckRouting() {
         return this.neckRouting;
     }
@@ -127,6 +132,7 @@ public class MstRoutingBk implements IEntity {
     /**
      * @return OPE_DETAIL
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("OPE_DETAIL")
     public String getOpeDetail() {
         return this.opeDetail;
     }
@@ -148,6 +154,7 @@ public class MstRoutingBk implements IEntity {
     /**
      * @return WC_CODE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("WC_CODE")
     public String getWcCode() {
         return this.wcCode;
     }
@@ -169,6 +176,7 @@ public class MstRoutingBk implements IEntity {
     /**
      * @return HUM_PRE_TIME
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("HUM_PRE_TIME")
     public java.math.BigDecimal getHumPreTime() {
         return this.humPreTime;
     }
@@ -190,6 +198,7 @@ public class MstRoutingBk implements IEntity {
     /**
      * @return HUM_ACT_TIME
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("HUM_ACT_TIME")
     public java.math.BigDecimal getHumActTime() {
         return this.humActTime;
     }
@@ -211,6 +220,7 @@ public class MstRoutingBk implements IEntity {
     /**
      * @return MAC_PRE_TIME
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("MAC_PRE_TIME")
     public java.math.BigDecimal getMacPreTime() {
         return this.macPreTime;
     }
@@ -232,6 +242,7 @@ public class MstRoutingBk implements IEntity {
     /**
      * @return MAC_ACT_TIME
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("MAC_ACT_TIME")
     public java.math.BigDecimal getMacActTime() {
         return this.macActTime;
     }
@@ -253,6 +264,7 @@ public class MstRoutingBk implements IEntity {
     /**
      * @return COMMENT1
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("COMMENT1")
     public String getComment1() {
         return this.comment1;
     }
@@ -274,6 +286,7 @@ public class MstRoutingBk implements IEntity {
     /**
      * @return COMMENT2
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("COMMENT2")
     public String getComment2() {
         return this.comment2;
     }
@@ -295,6 +308,7 @@ public class MstRoutingBk implements IEntity {
     /**
      * @return LOT_SIZE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("LOT_SIZE")
     public java.math.BigDecimal getLotSize() {
         return this.lotSize;
     }
@@ -316,6 +330,7 @@ public class MstRoutingBk implements IEntity {
     /**
      * @return ACC_COUNTS
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ACC_COUNTS")
     public java.math.BigDecimal getAccCounts() {
         return this.accCounts;
     }
@@ -337,6 +352,7 @@ public class MstRoutingBk implements IEntity {
     /**
      * @return UNIT_WEIGHT
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("UNIT_WEIGHT")
     public java.math.BigDecimal getUnitWeight() {
         return this.unitWeight;
     }
@@ -358,6 +374,7 @@ public class MstRoutingBk implements IEntity {
     /**
      * @return STORE_KBN
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("STORE_KBN")
     public java.math.BigDecimal getStoreKbn() {
         return this.storeKbn;
     }
@@ -379,6 +396,7 @@ public class MstRoutingBk implements IEntity {
     /**
      * @return STORE_NO
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("STORE_NO")
     public String getStoreNo() {
         return this.storeNo;
     }
@@ -400,6 +418,7 @@ public class MstRoutingBk implements IEntity {
     /**
      * @return INSPECT_LANE_KBN
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("INSPECT_LANE_KBN")
     public java.math.BigDecimal getInspectLaneKbn() {
         return this.inspectLaneKbn;
     }
@@ -421,6 +440,7 @@ public class MstRoutingBk implements IEntity {
     /**
      * @return INSPECT_KBN
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("INSPECT_KBN")
     public java.math.BigDecimal getInspectKbn() {
         return this.inspectKbn;
     }
@@ -442,6 +462,7 @@ public class MstRoutingBk implements IEntity {
     /**
      * @return SUBINV_CODE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SUBINV_CODE")
     public String getSubinvCode() {
         return this.subinvCode;
     }
@@ -463,6 +484,7 @@ public class MstRoutingBk implements IEntity {
     /**
      * @return HUM_PRE_TIME_KBN
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("HUM_PRE_TIME_KBN")
     public java.math.BigDecimal getHumPreTimeKbn() {
         return this.humPreTimeKbn;
     }
@@ -484,6 +506,7 @@ public class MstRoutingBk implements IEntity {
     /**
      * @return HUM_ACT_TIME_KBN
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("HUM_ACT_TIME_KBN")
     public java.math.BigDecimal getHumActTimeKbn() {
         return this.humActTimeKbn;
     }
@@ -505,6 +528,7 @@ public class MstRoutingBk implements IEntity {
     /**
      * @return MAC_PRE_TIME_KBN
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("MAC_PRE_TIME_KBN")
     public java.math.BigDecimal getMacPreTimeKbn() {
         return this.macPreTimeKbn;
     }
@@ -526,6 +550,7 @@ public class MstRoutingBk implements IEntity {
     /**
      * @return MAC_ACT_TIME_KBN
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("MAC_ACT_TIME_KBN")
     public java.math.BigDecimal getMacActTimeKbn() {
         return this.macActTimeKbn;
     }
@@ -547,6 +572,7 @@ public class MstRoutingBk implements IEntity {
     /**
      * @return SUPPLY_FLAG
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SUPPLY_FLAG")
     public java.math.BigDecimal getSupplyFlag() {
         return this.supplyFlag;
     }
@@ -571,6 +597,7 @@ public class MstRoutingBk implements IEntity {
     /**
      * @return TIME_STAMP_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CREATE")
     public java.time.LocalDateTime getTimeStampCreate() {
         return this.timeStampCreate;
     }
@@ -601,6 +628,7 @@ public class MstRoutingBk implements IEntity {
     /**
      * @return TIME_STAMP_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CHANGE")
     public java.time.LocalDateTime getTimeStampChange() {
         return this.timeStampChange;
     }
@@ -628,6 +656,7 @@ public class MstRoutingBk implements IEntity {
     /**
      * @return USER_ID_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CREATE")
     public String getUserIdCreate() {
         return this.userIdCreate;
     }
@@ -649,6 +678,7 @@ public class MstRoutingBk implements IEntity {
     /**
      * @return USER_ID_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CHANGE")
     public String getUserIdChange() {
         return this.userIdChange;
     }
@@ -670,6 +700,7 @@ public class MstRoutingBk implements IEntity {
     /**
      * @return MUSHO_HACCHU_F
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("MUSHO_HACCHU_F")
     public String getMushoHacchuF() {
         return this.mushoHacchuF;
     }

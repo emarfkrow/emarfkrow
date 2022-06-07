@@ -22,6 +22,7 @@ public class HktcPrdDailyProPlanArr implements IEntity {
     /**
      * @return PRO_NO
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("PRO_NO")
     public String getProNo() {
         return this.proNo;
     }
@@ -43,6 +44,7 @@ public class HktcPrdDailyProPlanArr implements IEntity {
     /**
      * @return CHILD_PLAN_NO
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("CHILD_PLAN_NO")
     public String getChildPlanNo() {
         return this.childPlanNo;
     }
@@ -64,6 +66,7 @@ public class HktcPrdDailyProPlanArr implements IEntity {
     /**
      * @return ROUTING
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ROUTING")
     public java.math.BigDecimal getRouting() {
         return this.routing;
     }
@@ -85,6 +88,7 @@ public class HktcPrdDailyProPlanArr implements IEntity {
     /**
      * @return WC_CODE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("WC_CODE")
     public String getWcCode() {
         return this.wcCode;
     }
@@ -106,6 +110,7 @@ public class HktcPrdDailyProPlanArr implements IEntity {
     /**
      * @return OPE_DETAIL
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("OPE_DETAIL")
     public String getOpeDetail() {
         return this.opeDetail;
     }
@@ -127,6 +132,7 @@ public class HktcPrdDailyProPlanArr implements IEntity {
     /**
      * @return MAC_LOAD_KBN
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("MAC_LOAD_KBN")
     public java.math.BigDecimal getMacLoadKbn() {
         return this.macLoadKbn;
     }
@@ -148,6 +154,7 @@ public class HktcPrdDailyProPlanArr implements IEntity {
     /**
      * @return HUM_PRE_TIME
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("HUM_PRE_TIME")
     public java.math.BigDecimal getHumPreTime() {
         return this.humPreTime;
     }
@@ -169,6 +176,7 @@ public class HktcPrdDailyProPlanArr implements IEntity {
     /**
      * @return HUM_ACT_TIME
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("HUM_ACT_TIME")
     public java.math.BigDecimal getHumActTime() {
         return this.humActTime;
     }
@@ -190,6 +198,7 @@ public class HktcPrdDailyProPlanArr implements IEntity {
     /**
      * @return MAC_PRE_TIME
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("MAC_PRE_TIME")
     public java.math.BigDecimal getMacPreTime() {
         return this.macPreTime;
     }
@@ -211,6 +220,7 @@ public class HktcPrdDailyProPlanArr implements IEntity {
     /**
      * @return MAC_ACT_TIME
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("MAC_ACT_TIME")
     public java.math.BigDecimal getMacActTime() {
         return this.macActTime;
     }
@@ -232,6 +242,7 @@ public class HktcPrdDailyProPlanArr implements IEntity {
     /**
      * @return COMMENT1
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("COMMENT1")
     public String getComment1() {
         return this.comment1;
     }
@@ -253,6 +264,7 @@ public class HktcPrdDailyProPlanArr implements IEntity {
     /**
      * @return COMMENT2
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("COMMENT2")
     public String getComment2() {
         return this.comment2;
     }
@@ -274,6 +286,7 @@ public class HktcPrdDailyProPlanArr implements IEntity {
     /**
      * @return UNIT_WEIGHT
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("UNIT_WEIGHT")
     public java.math.BigDecimal getUnitWeight() {
         return this.unitWeight;
     }
@@ -295,6 +308,7 @@ public class HktcPrdDailyProPlanArr implements IEntity {
     /**
      * @return NECK_FLAG
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("NECK_FLAG")
     public java.math.BigDecimal getNeckFlag() {
         return this.neckFlag;
     }
@@ -316,6 +330,7 @@ public class HktcPrdDailyProPlanArr implements IEntity {
     /**
      * @return NEXT_ROUT_PRO_NO
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("NEXT_ROUT_PRO_NO")
     public String getNextRoutProNo() {
         return this.nextRoutProNo;
     }
@@ -340,6 +355,7 @@ public class HktcPrdDailyProPlanArr implements IEntity {
     /**
      * @return INITIAL_BEG_DATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("INITIAL_BEG_DATE")
     public java.time.LocalDateTime getInitialBegDate() {
         return this.initialBegDate;
     }
@@ -370,6 +386,7 @@ public class HktcPrdDailyProPlanArr implements IEntity {
     /**
      * @return INITIAL_END_DATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("INITIAL_END_DATE")
     public java.time.LocalDateTime getInitialEndDate() {
         return this.initialEndDate;
     }
@@ -400,6 +417,7 @@ public class HktcPrdDailyProPlanArr implements IEntity {
     /**
      * @return BEG_DATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("BEG_DATE")
     public java.time.LocalDateTime getBegDate() {
         return this.begDate;
     }
@@ -430,6 +448,7 @@ public class HktcPrdDailyProPlanArr implements IEntity {
     /**
      * @return END_DATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("END_DATE")
     public java.time.LocalDateTime getEndDate() {
         return this.endDate;
     }
@@ -460,6 +479,7 @@ public class HktcPrdDailyProPlanArr implements IEntity {
     /**
      * @return START_DATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("START_DATE")
     public java.time.LocalDateTime getStartDate() {
         return this.startDate;
     }
@@ -490,6 +510,7 @@ public class HktcPrdDailyProPlanArr implements IEntity {
     /**
      * @return COMP_DATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("COMP_DATE")
     public java.time.LocalDateTime getCompDate() {
         return this.compDate;
     }
@@ -517,6 +538,7 @@ public class HktcPrdDailyProPlanArr implements IEntity {
     /**
      * @return OPE_WC_CODE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("OPE_WC_CODE")
     public String getOpeWcCode() {
         return this.opeWcCode;
     }
@@ -538,6 +560,7 @@ public class HktcPrdDailyProPlanArr implements IEntity {
     /**
      * @return PRO_STATUS
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("PRO_STATUS")
     public java.math.BigDecimal getProStatus() {
         return this.proStatus;
     }
@@ -562,6 +585,7 @@ public class HktcPrdDailyProPlanArr implements IEntity {
     /**
      * @return DEL_CAN_DATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("DEL_CAN_DATE")
     public java.time.LocalDateTime getDelCanDate() {
         return this.delCanDate;
     }
@@ -589,6 +613,7 @@ public class HktcPrdDailyProPlanArr implements IEntity {
     /**
      * @return EXP_FLAG
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("EXP_FLAG")
     public java.math.BigDecimal getExpFlag() {
         return this.expFlag;
     }
@@ -610,6 +635,7 @@ public class HktcPrdDailyProPlanArr implements IEntity {
     /**
      * @return VISIBLE_FLAG
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("VISIBLE_FLAG")
     public java.math.BigDecimal getVisibleFlag() {
         return this.visibleFlag;
     }
@@ -631,6 +657,7 @@ public class HktcPrdDailyProPlanArr implements IEntity {
     /**
      * @return SUP_FLAG
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SUP_FLAG")
     public java.math.BigDecimal getSupFlag() {
         return this.supFlag;
     }
@@ -652,6 +679,7 @@ public class HktcPrdDailyProPlanArr implements IEntity {
     /**
      * @return SHORT_NO
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SHORT_NO")
     public java.math.BigDecimal getShortNo() {
         return this.shortNo;
     }
@@ -676,6 +704,7 @@ public class HktcPrdDailyProPlanArr implements IEntity {
     /**
      * @return TIME_STAMP_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CREATE")
     public java.time.LocalDateTime getTimeStampCreate() {
         return this.timeStampCreate;
     }
@@ -706,6 +735,7 @@ public class HktcPrdDailyProPlanArr implements IEntity {
     /**
      * @return TIME_STAMP_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CHANGE")
     public java.time.LocalDateTime getTimeStampChange() {
         return this.timeStampChange;
     }
@@ -733,6 +763,7 @@ public class HktcPrdDailyProPlanArr implements IEntity {
     /**
      * @return USER_ID_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CREATE")
     public String getUserIdCreate() {
         return this.userIdCreate;
     }
@@ -754,6 +785,7 @@ public class HktcPrdDailyProPlanArr implements IEntity {
     /**
      * @return USER_ID_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CHANGE")
     public String getUserIdChange() {
         return this.userIdChange;
     }
@@ -775,6 +807,7 @@ public class HktcPrdDailyProPlanArr implements IEntity {
     /**
      * @return DELETE_FLAG
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("DELETE_FLAG")
     public java.math.BigDecimal getDeleteFlag() {
         return this.deleteFlag;
     }
@@ -796,6 +829,7 @@ public class HktcPrdDailyProPlanArr implements IEntity {
     /**
      * @return NYUKO_FLAG
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("NYUKO_FLAG")
     public java.math.BigDecimal getNyukoFlag() {
         return this.nyukoFlag;
     }
@@ -817,6 +851,7 @@ public class HktcPrdDailyProPlanArr implements IEntity {
     /**
      * @return GOOD_COUNTS
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("GOOD_COUNTS")
     public java.math.BigDecimal getGoodCounts() {
         return this.goodCounts;
     }

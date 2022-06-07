@@ -9,6 +9,11 @@
 
 </script>
 <script th:src="@{/model/MSkhinGridColumns.js}"></script>
+<script th:src="@{/model/MHhinmokGridColumns.js}"></script>
+<script th:src="@{/model/MHososetGridColumns.js}"></script>
+<script th:src="@{/model/MHosozaiGridColumns.js}"></script>
+<script th:src="@{/model/MPkoseGridColumns.js}"></script>
+<script th:src="@{/model/MPhinmokGridColumns.js}"></script>
 </head>
 <body>
   <div layout:fragment="article">
@@ -17,7 +22,7 @@
       <fieldset>
         <legend th:text="#{MSkhinS.legend}">legend</legend>
         <div id="hhinban">
-          <label for="MSkhin.hhinban" th:text="#{MSkhin.hhinban}">販売品番</label><input type="text" id="MSkhin.hhinban" name="MSkhin.hhinban" maxlength="20" />
+          <label for="MSkhin.hhinban" th:text="#{MSkhin.hhinban}">販売品番</label><input type="text" id="MSkhin.hhinban" name="MSkhin.hhinban" maxlength="20" data-json="MHhinmokSearch.json" data-srcDef="HHINBAN:MSkhin.hhinban" data-destDef="MSkhin.hhinmei:HINMEI" /><a id="MSkhin.hhinban" th:href="@{/model/MHhinmokS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MSkhin.hhinmei" class="refer" data-json="MHhinmokSearch.json" data-srcDef="HHINBAN:MSkhin.hhinban" data-destDef="MSkhin.hhinmei:HINMEI"></span>
         </div>
         <div id="skkbn">
           <label for="MSkhin.skkbn" th:text="#{MSkhin.skkbn}">ＳＫ区分</label><input type="text" id="MSkhin.skkbn" name="MSkhin.skkbn" maxlength="1" />

@@ -22,6 +22,7 @@ public class MstTax implements IEntity {
     /**
      * @return TAX_CODE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TAX_CODE")
     public String getTaxCode() {
         return this.taxCode;
     }
@@ -43,6 +44,7 @@ public class MstTax implements IEntity {
     /**
      * @return TAX_NAME
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TAX_NAME")
     public String getTaxName() {
         return this.taxName;
     }
@@ -64,6 +66,7 @@ public class MstTax implements IEntity {
     /**
      * @return TAX_RATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TAX_RATE")
     public java.math.BigDecimal getTaxRate() {
         return this.taxRate;
     }
@@ -88,6 +91,7 @@ public class MstTax implements IEntity {
     /**
      * @return TIME_STAMP_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CREATE")
     public java.time.LocalDateTime getTimeStampCreate() {
         return this.timeStampCreate;
     }
@@ -118,6 +122,7 @@ public class MstTax implements IEntity {
     /**
      * @return TIME_STAMP_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CHANGE")
     public java.time.LocalDateTime getTimeStampChange() {
         return this.timeStampChange;
     }
@@ -145,6 +150,7 @@ public class MstTax implements IEntity {
     /**
      * @return USER_ID_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CREATE")
     public String getUserIdCreate() {
         return this.userIdCreate;
     }
@@ -166,6 +172,7 @@ public class MstTax implements IEntity {
     /**
      * @return USER_ID_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CHANGE")
     public String getUserIdChange() {
         return this.userIdChange;
     }
@@ -187,6 +194,7 @@ public class MstTax implements IEntity {
     /**
      * @return DELETE_FLAG
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("DELETE_FLAG")
     public java.math.BigDecimal getDeleteFlag() {
         return this.deleteFlag;
     }

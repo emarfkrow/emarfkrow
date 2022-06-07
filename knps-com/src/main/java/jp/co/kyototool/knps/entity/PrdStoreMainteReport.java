@@ -22,6 +22,7 @@ public class PrdStoreMainteReport implements IEntity {
     /**
      * @return REP_GROUP_CODE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("REP_GROUP_CODE")
     public String getRepGroupCode() {
         return this.repGroupCode;
     }
@@ -43,6 +44,7 @@ public class PrdStoreMainteReport implements IEntity {
     /**
      * @return GROUP_NAME
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("GROUP_NAME")
     public String getGroupName() {
         return this.groupName;
     }
@@ -64,6 +66,7 @@ public class PrdStoreMainteReport implements IEntity {
     /**
      * @return RETSU_NO
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("RETSU_NO")
     public String getRetsuNo() {
         return this.retsuNo;
     }
@@ -85,6 +88,7 @@ public class PrdStoreMainteReport implements IEntity {
     /**
      * @return GYO_NO
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("GYO_NO")
     public String getGyoNo() {
         return this.gyoNo;
     }
@@ -109,6 +113,7 @@ public class PrdStoreMainteReport implements IEntity {
     /**
      * @return TIME_STAMP_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CREATE")
     public java.time.LocalDateTime getTimeStampCreate() {
         return this.timeStampCreate;
     }
@@ -139,6 +144,7 @@ public class PrdStoreMainteReport implements IEntity {
     /**
      * @return TIME_STAMP_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CHANGE")
     public java.time.LocalDateTime getTimeStampChange() {
         return this.timeStampChange;
     }
@@ -166,6 +172,7 @@ public class PrdStoreMainteReport implements IEntity {
     /**
      * @return USER_ID_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CREATE")
     public String getUserIdCreate() {
         return this.userIdCreate;
     }
@@ -187,6 +194,7 @@ public class PrdStoreMainteReport implements IEntity {
     /**
      * @return USER_ID_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CHANGE")
     public String getUserIdChange() {
         return this.userIdChange;
     }

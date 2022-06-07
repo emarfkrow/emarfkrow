@@ -22,6 +22,7 @@ public class MBarindx implements IEntity {
     /**
      * @return キーコード
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("KEYCD")
     public java.math.BigDecimal getKeycd() {
         return this.keycd;
     }
@@ -43,6 +44,7 @@ public class MBarindx implements IEntity {
     /**
      * @return バー分類追番１
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("BAR-OIBAN1")
     public java.math.BigDecimal getBarOiban1() {
         return this.barOiban1;
     }
@@ -64,6 +66,7 @@ public class MBarindx implements IEntity {
     /**
      * @return バー分類追番２
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("BAR-OIBAN2")
     public java.math.BigDecimal getBarOiban2() {
         return this.barOiban2;
     }
@@ -85,6 +88,7 @@ public class MBarindx implements IEntity {
     /**
      * @return バー分類追番３
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("BAR-OIBAN3")
     public java.math.BigDecimal getBarOiban3() {
         return this.barOiban3;
     }
@@ -106,6 +110,7 @@ public class MBarindx implements IEntity {
     /**
      * @return バー分類追番４
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("BAR-OIBAN4")
     public java.math.BigDecimal getBarOiban4() {
         return this.barOiban4;
     }
@@ -127,6 +132,7 @@ public class MBarindx implements IEntity {
     /**
      * @return バー分類追番５
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("BAR-OIBAN5")
     public java.math.BigDecimal getBarOiban5() {
         return this.barOiban5;
     }
@@ -148,6 +154,7 @@ public class MBarindx implements IEntity {
     /**
      * @return バー分類追番６
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("BAR-OIBAN6")
     public java.math.BigDecimal getBarOiban6() {
         return this.barOiban6;
     }
@@ -169,6 +176,7 @@ public class MBarindx implements IEntity {
     /**
      * @return バー分類追番７
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("BAR-OIBAN7")
     public java.math.BigDecimal getBarOiban7() {
         return this.barOiban7;
     }
@@ -190,6 +198,7 @@ public class MBarindx implements IEntity {
     /**
      * @return バー分類追番８
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("BAR-OIBAN8")
     public java.math.BigDecimal getBarOiban8() {
         return this.barOiban8;
     }
@@ -211,6 +220,7 @@ public class MBarindx implements IEntity {
     /**
      * @return バー分類追番９
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("BAR-OIBAN9")
     public java.math.BigDecimal getBarOiban9() {
         return this.barOiban9;
     }

@@ -85,7 +85,9 @@
           <label for="PrdStoreMainte.wcCode" th:text="#{PrdStoreMainte.wcCode}">WC_CODE</label><input type="text" id="PrdStoreMainte.wcCode" name="PrdStoreMainte.wcCode" maxlength="3" data-json="MstWcSearch.json" data-srcDef="WC_CODE:PrdStoreMainte.wcCode" data-destDef="PrdStoreMainte.wcName:WC_NAME" /><a id="PrdStoreMainte.wcCode" th:href="@{/model/MstWcS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="PrdStoreMainte.wcName" class="refer" data-json="MstWcSearch.json" data-srcDef="WC_CODE:PrdStoreMainte.wcCode" data-destDef="PrdStoreMainte.wcName:WC_NAME"></span>
         </div>
         <div id="locationCode">
-          <label for="PrdStoreMainte.locationCode" th:text="#{PrdStoreMainte.locationCode}">LOCATION_CODE</label><input type="text" id="PrdStoreMainte.locationCode" name="PrdStoreMainte.locationCode" maxlength="10" data-json="MstLocationSearch.json" data-srcDef="LOCATION_CODE:PrdStoreMainte.locationCode" data-destDef="PrdStoreMainte.locationName:LOCATION_NAME" /><a id="PrdStoreMainte.locationCode" th:href="@{/model/MstLocationS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="PrdStoreMainte.locationName" class="refer" data-json="MstLocationSearch.json" data-srcDef="LOCATION_CODE:PrdStoreMainte.locationCode" data-destDef="PrdStoreMainte.locationName:LOCATION_NAME"></span>
+          <fieldset id="PrdStoreMainte.locationCodeList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:location_code" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{PrdStoreMainte.locationCode}">LOCATION_CODE</legend>
+          </fieldset>
         </div>
         <div id="lotSize">
           <label for="PrdStoreMainte.lotSize" th:text="#{PrdStoreMainte.lotSize}">LOT_SIZE</label><input type="text" id="PrdStoreMainte.lotSize" name="PrdStoreMainte.lotSize" maxlength="6" />

@@ -22,6 +22,7 @@ public class PchInspectionList implements IEntity {
     /**
      * @return TARGET_DATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TARGET_DATE")
     public String getTargetDate() {
         return this.targetDate;
     }
@@ -43,6 +44,7 @@ public class PchInspectionList implements IEntity {
     /**
      * @return SUP_CODE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SUP_CODE")
     public String getSupCode() {
         return this.supCode;
     }
@@ -64,6 +66,7 @@ public class PchInspectionList implements IEntity {
     /**
      * @return SUP_NAME
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SUP_NAME")
     public String getSupName() {
         return this.supName;
     }
@@ -85,6 +88,7 @@ public class PchInspectionList implements IEntity {
     /**
      * @return ORDER_NO
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ORDER_NO")
     public String getOrderNo() {
         return this.orderNo;
     }
@@ -106,6 +110,7 @@ public class PchInspectionList implements IEntity {
     /**
      * @return HINBAN
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("HINBAN")
     public String getHinban() {
         return this.hinban;
     }
@@ -127,6 +132,7 @@ public class PchInspectionList implements IEntity {
     /**
      * @return ITEM
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ITEM")
     public String getItem() {
         return this.item;
     }
@@ -148,6 +154,7 @@ public class PchInspectionList implements IEntity {
     /**
      * @return OPE_DETAIL
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("OPE_DETAIL")
     public String getOpeDetail() {
         return this.opeDetail;
     }
@@ -169,6 +176,7 @@ public class PchInspectionList implements IEntity {
     /**
      * @return MEMO
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("MEMO")
     public String getMemo() {
         return this.memo;
     }
@@ -190,6 +198,7 @@ public class PchInspectionList implements IEntity {
     /**
      * @return SUM_INSPECT_COUNTS
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SUM_INSPECT_COUNTS")
     public java.math.BigDecimal getSumInspectCounts() {
         return this.sumInspectCounts;
     }
@@ -211,6 +220,7 @@ public class PchInspectionList implements IEntity {
     /**
      * @return INSPECT_UNIT
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("INSPECT_UNIT")
     public java.math.BigDecimal getInspectUnit() {
         return this.inspectUnit;
     }
@@ -235,6 +245,7 @@ public class PchInspectionList implements IEntity {
     /**
      * @return ACCEPT_DATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ACCEPT_DATE")
     public java.time.LocalDateTime getAcceptDate() {
         return this.acceptDate;
     }
@@ -262,6 +273,7 @@ public class PchInspectionList implements IEntity {
     /**
      * @return SUM_INSPECT_AMOUNT
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SUM_INSPECT_AMOUNT")
     public java.math.BigDecimal getSumInspectAmount() {
         return this.sumInspectAmount;
     }
@@ -283,6 +295,7 @@ public class PchInspectionList implements IEntity {
     /**
      * @return SUM_TAX_AMOUNT
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SUM_TAX_AMOUNT")
     public java.math.BigDecimal getSumTaxAmount() {
         return this.sumTaxAmount;
     }
@@ -304,6 +317,7 @@ public class PchInspectionList implements IEntity {
     /**
      * @return SUM_AMOUNT
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SUM_AMOUNT")
     public java.math.BigDecimal getSumAmount() {
         return this.sumAmount;
     }
@@ -325,6 +339,7 @@ public class PchInspectionList implements IEntity {
     /**
      * @return SEND_INSPECT_LIST
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SEND_INSPECT_LIST")
     public java.math.BigDecimal getSendInspectList() {
         return this.sendInspectList;
     }
@@ -349,6 +364,7 @@ public class PchInspectionList implements IEntity {
     /**
      * @return TIME_STAMP_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CREATE")
     public java.time.LocalDateTime getTimeStampCreate() {
         return this.timeStampCreate;
     }
@@ -379,6 +395,7 @@ public class PchInspectionList implements IEntity {
     /**
      * @return TIME_STAMP_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CHANGE")
     public java.time.LocalDateTime getTimeStampChange() {
         return this.timeStampChange;
     }
@@ -406,6 +423,7 @@ public class PchInspectionList implements IEntity {
     /**
      * @return USER_ID_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CREATE")
     public String getUserIdCreate() {
         return this.userIdCreate;
     }
@@ -427,6 +445,7 @@ public class PchInspectionList implements IEntity {
     /**
      * @return USER_ID_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CHANGE")
     public String getUserIdChange() {
         return this.userIdChange;
     }
@@ -448,6 +467,7 @@ public class PchInspectionList implements IEntity {
     /**
      * @return ISSHIKI_UNIT_F
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ISSHIKI_UNIT_F")
     public String getIsshikiUnitF() {
         return this.isshikiUnitF;
     }

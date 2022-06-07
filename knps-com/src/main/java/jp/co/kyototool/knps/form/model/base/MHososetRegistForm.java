@@ -19,6 +19,7 @@ public class MHososetRegistForm implements IForm {
     private static final Logger LOG = LoggerFactory.getLogger(MHososetRegistForm.class);
 
     /** 販売品番 */
+    @jakarta.validation.constraints.NotBlank
     @jakarta.validation.constraints.Size(max = 20)
     private String hhinban;
 
@@ -37,6 +38,7 @@ public class MHososetRegistForm implements IForm {
     }
 
     /** 包装品番 */
+    @jakarta.validation.constraints.NotBlank
     @jakarta.validation.constraints.Size(max = 25)
     private String hosoHinban;
 

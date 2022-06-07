@@ -22,6 +22,7 @@ public class PchAcceptActHed implements IEntity {
     /**
      * @return ACT_NO
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ACT_NO")
     public String getActNo() {
         return this.actNo;
     }
@@ -43,6 +44,7 @@ public class PchAcceptActHed implements IEntity {
     /**
      * @return SUP_CODE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SUP_CODE")
     public String getSupCode() {
         return this.supCode;
     }
@@ -64,6 +66,7 @@ public class PchAcceptActHed implements IEntity {
     /**
      * @return ORDER_NO
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ORDER_NO")
     public String getOrderNo() {
         return this.orderNo;
     }
@@ -85,6 +88,7 @@ public class PchAcceptActHed implements IEntity {
     /**
      * @return HINBAN
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("HINBAN")
     public String getHinban() {
         return this.hinban;
     }
@@ -106,6 +110,7 @@ public class PchAcceptActHed implements IEntity {
     /**
      * @return ITEM
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ITEM")
     public String getItem() {
         return this.item;
     }
@@ -130,6 +135,7 @@ public class PchAcceptActHed implements IEntity {
     /**
      * @return ACCEPT_DATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ACCEPT_DATE")
     public java.time.LocalDateTime getAcceptDate() {
         return this.acceptDate;
     }
@@ -157,6 +163,7 @@ public class PchAcceptActHed implements IEntity {
     /**
      * @return UNIT_CODE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("UNIT_CODE")
     public String getUnitCode() {
         return this.unitCode;
     }
@@ -178,6 +185,7 @@ public class PchAcceptActHed implements IEntity {
     /**
      * @return TAX_CODE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TAX_CODE")
     public String getTaxCode() {
         return this.taxCode;
     }
@@ -199,6 +207,7 @@ public class PchAcceptActHed implements IEntity {
     /**
      * @return TAX_CAL_CODE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TAX_CAL_CODE")
     public java.math.BigDecimal getTaxCalCode() {
         return this.taxCalCode;
     }
@@ -220,6 +229,7 @@ public class PchAcceptActHed implements IEntity {
     /**
      * @return SUBINV_CODE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SUBINV_CODE")
     public String getSubinvCode() {
         return this.subinvCode;
     }
@@ -241,6 +251,7 @@ public class PchAcceptActHed implements IEntity {
     /**
      * @return ACCOUNT_CODE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ACCOUNT_CODE")
     public String getAccountCode() {
         return this.accountCode;
     }
@@ -265,6 +276,7 @@ public class PchAcceptActHed implements IEntity {
     /**
      * @return TIME_STAMP_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CREATE")
     public java.time.LocalDateTime getTimeStampCreate() {
         return this.timeStampCreate;
     }
@@ -295,6 +307,7 @@ public class PchAcceptActHed implements IEntity {
     /**
      * @return TIME_STAMP_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CHANGE")
     public java.time.LocalDateTime getTimeStampChange() {
         return this.timeStampChange;
     }
@@ -322,6 +335,7 @@ public class PchAcceptActHed implements IEntity {
     /**
      * @return USER_ID_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CREATE")
     public String getUserIdCreate() {
         return this.userIdCreate;
     }
@@ -343,6 +357,7 @@ public class PchAcceptActHed implements IEntity {
     /**
      * @return USER_ID_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CHANGE")
     public String getUserIdChange() {
         return this.userIdChange;
     }

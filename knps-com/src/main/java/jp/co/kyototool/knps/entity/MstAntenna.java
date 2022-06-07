@@ -22,6 +22,7 @@ public class MstAntenna implements IEntity {
     /**
      * @return READER_NO
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("READER_NO")
     public java.math.BigDecimal getReaderNo() {
         return this.readerNo;
     }
@@ -43,6 +44,7 @@ public class MstAntenna implements IEntity {
     /**
      * @return ANTENNA_NO
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ANTENNA_NO")
     public java.math.BigDecimal getAntennaNo() {
         return this.antennaNo;
     }
@@ -64,6 +66,7 @@ public class MstAntenna implements IEntity {
     /**
      * @return STORE_MAN_ID
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("STORE_MAN_ID")
     public java.math.BigDecimal getStoreManId() {
         return this.storeManId;
     }
@@ -88,6 +91,7 @@ public class MstAntenna implements IEntity {
     /**
      * @return TIME_STAMP_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CREATE")
     public java.time.LocalDateTime getTimeStampCreate() {
         return this.timeStampCreate;
     }
@@ -118,6 +122,7 @@ public class MstAntenna implements IEntity {
     /**
      * @return TIME_STAMP_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CHANGE")
     public java.time.LocalDateTime getTimeStampChange() {
         return this.timeStampChange;
     }
@@ -145,6 +150,7 @@ public class MstAntenna implements IEntity {
     /**
      * @return USER_ID_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CREATE")
     public String getUserIdCreate() {
         return this.userIdCreate;
     }
@@ -166,6 +172,7 @@ public class MstAntenna implements IEntity {
     /**
      * @return USER_ID_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CHANGE")
     public String getUserIdChange() {
         return this.userIdChange;
     }

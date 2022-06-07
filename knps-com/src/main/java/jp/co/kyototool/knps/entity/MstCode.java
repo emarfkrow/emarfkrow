@@ -22,6 +22,7 @@ public class MstCode implements IEntity {
     /**
      * @return CODE_NM
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("CODE_NM")
     public String getCodeNm() {
         return this.codeNm;
     }
@@ -43,6 +44,7 @@ public class MstCode implements IEntity {
     /**
      * @return CODE_MEI
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("CODE_MEI")
     public String getCodeMei() {
         return this.codeMei;
     }
@@ -67,6 +69,7 @@ public class MstCode implements IEntity {
     /**
      * @return TIME_STAMP_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CREATE")
     public java.time.LocalDateTime getTimeStampCreate() {
         return this.timeStampCreate;
     }
@@ -97,6 +100,7 @@ public class MstCode implements IEntity {
     /**
      * @return TIME_STAMP_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CHANGE")
     public java.time.LocalDateTime getTimeStampChange() {
         return this.timeStampChange;
     }
@@ -124,6 +128,7 @@ public class MstCode implements IEntity {
     /**
      * @return USER_ID_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CREATE")
     public String getUserIdCreate() {
         return this.userIdCreate;
     }
@@ -145,6 +150,7 @@ public class MstCode implements IEntity {
     /**
      * @return USER_ID_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CHANGE")
     public String getUserIdChange() {
         return this.userIdChange;
     }

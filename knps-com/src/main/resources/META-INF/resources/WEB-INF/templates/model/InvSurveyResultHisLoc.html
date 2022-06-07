@@ -9,13 +9,6 @@
 
 </script>
 <script th:src="@{/model/InvSurveyResultHisLocGridColumns.js}"></script>
-<script th:src="@{/model/MstLocationGridColumns.js}"></script>
-<script th:src="@{/model/MstSubinvGridColumns.js}"></script>
-<script th:src="@{/model/MstSupplierGridColumns.js}"></script>
-<script th:src="@{/model/InvStockProcessSupplyGridColumns.js}"></script>
-<script th:src="@{/model/MstSupplierBkGridColumns.js}"></script>
-<script th:src="@{/model/MstTaxGridColumns.js}"></script>
-<script th:src="@{/model/MstStoreManGridColumns.js}"></script>
 </head>
 <body>
   <div layout:fragment="article">
@@ -24,7 +17,7 @@
       <fieldset>
         <legend th:text="#{InvSurveyResultHisLoc.legend}">legend</legend>
         <div id="locationCode">
-          <label for="InvSurveyResultHisLoc.locationCode" th:text="#{InvSurveyResultHisLoc.locationCode}">LOCATION_CODE</label><span id="InvSurveyResultHisLoc.locationCode"></span><input type="hidden" id="InvSurveyResultHisLoc.locationCode" name="InvSurveyResultHisLoc.locationCode" class="primaryKey" /><a id="InvSurveyResultHisLoc.locationCode" th:href="@{/model/MstLocationS.html}" target="dialog" class="primaryKey refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="InvSurveyResultHisLoc.locationName" class="refer" data-json="MstLocationSearch.json" data-srcDef="LOCATION_CODE:InvSurveyResultHisLoc.locationCode" data-destDef="InvSurveyResultHisLoc.locationName:LOCATION_NAME"></span>
+          <label for="InvSurveyResultHisLoc.locationCode" th:text="#{InvSurveyResultHisLoc.locationCode}">LOCATION_CODE</label><span id="InvSurveyResultHisLoc.locationCode"></span><input type="hidden" id="InvSurveyResultHisLoc.locationCode" name="InvSurveyResultHisLoc.locationCode" class="primaryKey" />
         </div>
         <div id="yyyy">
           <label for="InvSurveyResultHisLoc.yyyy" th:text="#{InvSurveyResultHisLoc.yyyy}">YYYY</label><span id="InvSurveyResultHisLoc.yyyy"></span><input type="hidden" id="InvSurveyResultHisLoc.yyyy" name="InvSurveyResultHisLoc.yyyy" class="primaryKey" />

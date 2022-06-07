@@ -22,6 +22,7 @@ public class MfgKanbanFormDet implements IEntity {
     /**
      * @return KANBAN_FORM_DEF_NAME
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("KANBAN_FORM_DEF_NAME")
     public String getKanbanFormDefName() {
         return this.kanbanFormDefName;
     }
@@ -43,6 +44,7 @@ public class MfgKanbanFormDet implements IEntity {
     /**
      * @return EXCEL_CELL_NAME
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("EXCEL_CELL_NAME")
     public String getExcelCellName() {
         return this.excelCellName;
     }
@@ -64,6 +66,7 @@ public class MfgKanbanFormDet implements IEntity {
     /**
      * @return BASIC_OR_TUNNNEL_FLG
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("BASIC_OR_TUNNNEL_FLG")
     public String getBasicOrTunnnelFlg() {
         return this.basicOrTunnnelFlg;
     }
@@ -85,6 +88,7 @@ public class MfgKanbanFormDet implements IEntity {
     /**
      * @return DISP_ORDER
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("DISP_ORDER")
     public java.math.BigDecimal getDispOrder() {
         return this.dispOrder;
     }
@@ -106,6 +110,7 @@ public class MfgKanbanFormDet implements IEntity {
     /**
      * @return ITEM_CODE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ITEM_CODE")
     public String getItemCode() {
         return this.itemCode;
     }
@@ -127,6 +132,7 @@ public class MfgKanbanFormDet implements IEntity {
     /**
      * @return VALID_FLG
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("VALID_FLG")
     public String getValidFlg() {
         return this.validFlg;
     }
@@ -151,6 +157,7 @@ public class MfgKanbanFormDet implements IEntity {
     /**
      * @return TIME_STAMP_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CREATE")
     public java.time.LocalDateTime getTimeStampCreate() {
         return this.timeStampCreate;
     }
@@ -181,6 +188,7 @@ public class MfgKanbanFormDet implements IEntity {
     /**
      * @return TIME_STAMP_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CHANGE")
     public java.time.LocalDateTime getTimeStampChange() {
         return this.timeStampChange;
     }
@@ -208,6 +216,7 @@ public class MfgKanbanFormDet implements IEntity {
     /**
      * @return USER_ID_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CREATE")
     public String getUserIdCreate() {
         return this.userIdCreate;
     }
@@ -229,6 +238,7 @@ public class MfgKanbanFormDet implements IEntity {
     /**
      * @return USER_ID_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CHANGE")
     public String getUserIdChange() {
         return this.userIdChange;
     }

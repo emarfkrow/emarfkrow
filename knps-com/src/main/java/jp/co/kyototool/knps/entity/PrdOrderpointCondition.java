@@ -22,6 +22,7 @@ public class PrdOrderpointCondition implements IEntity {
     /**
      * @return REC_NO
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("REC_NO")
     public String getRecNo() {
         return this.recNo;
     }
@@ -43,6 +44,7 @@ public class PrdOrderpointCondition implements IEntity {
     /**
      * @return YYYY
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("YYYY")
     public String getYyyy() {
         return this.yyyy;
     }
@@ -64,6 +66,7 @@ public class PrdOrderpointCondition implements IEntity {
     /**
      * @return MM
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("MM")
     public String getMm() {
         return this.mm;
     }
@@ -85,6 +88,7 @@ public class PrdOrderpointCondition implements IEntity {
     /**
      * @return OPE_DAYS
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("OPE_DAYS")
     public java.math.BigDecimal getOpeDays() {
         return this.opeDays;
     }
@@ -109,6 +113,7 @@ public class PrdOrderpointCondition implements IEntity {
     /**
      * @return LAST_PROCESS_DATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("LAST_PROCESS_DATE")
     public java.time.LocalDateTime getLastProcessDate() {
         return this.lastProcessDate;
     }
@@ -139,6 +144,7 @@ public class PrdOrderpointCondition implements IEntity {
     /**
      * @return TIME_STAMP_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CREATE")
     public java.time.LocalDateTime getTimeStampCreate() {
         return this.timeStampCreate;
     }
@@ -169,6 +175,7 @@ public class PrdOrderpointCondition implements IEntity {
     /**
      * @return TIME_STAMP_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CHANGE")
     public java.time.LocalDateTime getTimeStampChange() {
         return this.timeStampChange;
     }
@@ -196,6 +203,7 @@ public class PrdOrderpointCondition implements IEntity {
     /**
      * @return USER_ID_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CREATE")
     public String getUserIdCreate() {
         return this.userIdCreate;
     }
@@ -217,6 +225,7 @@ public class PrdOrderpointCondition implements IEntity {
     /**
      * @return USER_ID_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CHANGE")
     public String getUserIdChange() {
         return this.userIdChange;
     }

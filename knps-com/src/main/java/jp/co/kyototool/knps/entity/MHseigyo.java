@@ -22,6 +22,7 @@ public class MHseigyo implements IEntity {
     /**
      * @return キーコード
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("KEYCD")
     public java.math.BigDecimal getKeycd() {
         return this.keycd;
     }
@@ -43,6 +44,7 @@ public class MHseigyo implements IEntity {
     /**
      * @return 開始日付
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("KAISIBI")
     public java.math.BigDecimal getKaisibi() {
         return this.kaisibi;
     }
@@ -64,6 +66,7 @@ public class MHseigyo implements IEntity {
     /**
      * @return 終了日付
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SHURYOBI")
     public java.math.BigDecimal getShuryobi() {
         return this.shuryobi;
     }
@@ -85,6 +88,7 @@ public class MHseigyo implements IEntity {
     /**
      * @return 消費税率
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ZEIRITU")
     public java.math.BigDecimal getZeiritu() {
         return this.zeiritu;
     }
@@ -106,6 +110,7 @@ public class MHseigyo implements IEntity {
     /**
      * @return 有ボ入力区分
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("YUBOENT")
     public java.math.BigDecimal getYuboent() {
         return this.yuboent;
     }
@@ -127,6 +132,7 @@ public class MHseigyo implements IEntity {
     /**
      * @return 出荷指示番号１
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SHUSIJINO1")
     public java.math.BigDecimal getShusijino1() {
         return this.shusijino1;
     }
@@ -148,6 +154,7 @@ public class MHseigyo implements IEntity {
     /**
      * @return 納品書番号
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("NOHINSHONO")
     public java.math.BigDecimal getNohinshono() {
         return this.nohinshono;
     }
@@ -169,6 +176,7 @@ public class MHseigyo implements IEntity {
     /**
      * @return セット計画番号
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SETKEINO")
     public java.math.BigDecimal getSetkeino() {
         return this.setkeino;
     }
@@ -190,6 +198,7 @@ public class MHseigyo implements IEntity {
     /**
      * @return 月次年月
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("GETUJI-YYMM")
     public java.math.BigDecimal getGetujiYymm() {
         return this.getujiYymm;
     }
@@ -211,6 +220,7 @@ public class MHseigyo implements IEntity {
     /**
      * @return 当日受注件数
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("T-JUCCNT")
     public java.math.BigDecimal getTJuccnt() {
         return this.tJuccnt;
     }
@@ -232,6 +242,7 @@ public class MHseigyo implements IEntity {
     /**
      * @return 当日受注最大件数
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("T-MAXCNT")
     public java.math.BigDecimal getTMaxcnt() {
         return this.tMaxcnt;
     }
@@ -253,6 +264,7 @@ public class MHseigyo implements IEntity {
     /**
      * @return 直送先カウント
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("CHOKUCNT")
     public java.math.BigDecimal getChokucnt() {
         return this.chokucnt;
     }
@@ -274,6 +286,7 @@ public class MHseigyo implements IEntity {
     /**
      * @return 評価単価
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("HYOTANKA")
     public java.math.BigDecimal getHyotanka() {
         return this.hyotanka;
     }
@@ -295,6 +308,7 @@ public class MHseigyo implements IEntity {
     /**
      * @return 予備領域
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("FILLER")
     public String getFiller() {
         return this.filler;
     }

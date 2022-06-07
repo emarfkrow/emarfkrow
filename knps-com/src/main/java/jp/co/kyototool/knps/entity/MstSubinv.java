@@ -22,6 +22,7 @@ public class MstSubinv implements IEntity {
     /**
      * @return SUB_INV_CODE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SUB_INV_CODE")
     public String getSubInvCode() {
         return this.subInvCode;
     }
@@ -43,6 +44,7 @@ public class MstSubinv implements IEntity {
     /**
      * @return SUB_INV_NAME
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SUB_INV_NAME")
     public String getSubInvName() {
         return this.subInvName;
     }
@@ -64,6 +66,7 @@ public class MstSubinv implements IEntity {
     /**
      * @return MANAGE_KBN
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("MANAGE_KBN")
     public java.math.BigDecimal getManageKbn() {
         return this.manageKbn;
     }
@@ -85,6 +88,7 @@ public class MstSubinv implements IEntity {
     /**
      * @return IN_OUT_KBN
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("IN_OUT_KBN")
     public java.math.BigDecimal getInOutKbn() {
         return this.inOutKbn;
     }
@@ -106,6 +110,7 @@ public class MstSubinv implements IEntity {
     /**
      * @return SUP_CODE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SUP_CODE")
     public String getSupCode() {
         return this.supCode;
     }
@@ -130,6 +135,7 @@ public class MstSubinv implements IEntity {
     /**
      * @return TIME_STAMP_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CREATE")
     public java.time.LocalDateTime getTimeStampCreate() {
         return this.timeStampCreate;
     }
@@ -160,6 +166,7 @@ public class MstSubinv implements IEntity {
     /**
      * @return TIME_STAMP_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CHANGE")
     public java.time.LocalDateTime getTimeStampChange() {
         return this.timeStampChange;
     }
@@ -187,6 +194,7 @@ public class MstSubinv implements IEntity {
     /**
      * @return USER_ID_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CREATE")
     public String getUserIdCreate() {
         return this.userIdCreate;
     }
@@ -208,6 +216,7 @@ public class MstSubinv implements IEntity {
     /**
      * @return USER_ID_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CHANGE")
     public String getUserIdChange() {
         return this.userIdChange;
     }
@@ -229,6 +238,7 @@ public class MstSubinv implements IEntity {
     /**
      * @return DELETE_FLAG
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("DELETE_FLAG")
     public java.math.BigDecimal getDeleteFlag() {
         return this.deleteFlag;
     }

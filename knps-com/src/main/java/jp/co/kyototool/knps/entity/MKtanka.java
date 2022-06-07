@@ -22,6 +22,7 @@ public class MKtanka implements IEntity {
     /**
      * @return 本社コード
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("HONSHACD")
     public java.math.BigDecimal getHonshacd() {
         return this.honshacd;
     }
@@ -43,6 +44,7 @@ public class MKtanka implements IEntity {
     /**
      * @return 社外品番
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SHAGAI-HINBAN")
     public String getShagaiHinban() {
         return this.shagaiHinban;
     }
@@ -64,6 +66,7 @@ public class MKtanka implements IEntity {
     /**
      * @return 契約単価開始日
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("KKAISIBI")
     public java.math.BigDecimal getKkaisibi() {
         return this.kkaisibi;
     }
@@ -85,6 +88,7 @@ public class MKtanka implements IEntity {
     /**
      * @return 契約単価終了日
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("KSHURYOBI")
     public java.math.BigDecimal getKshuryobi() {
         return this.kshuryobi;
     }
@@ -106,6 +110,7 @@ public class MKtanka implements IEntity {
     /**
      * @return 販売品番
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("HHINBAN")
     public String getHhinban() {
         return this.hhinban;
     }
@@ -127,6 +132,7 @@ public class MKtanka implements IEntity {
     /**
      * @return 契約単価
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("KEIYAKU-TANKA")
     public java.math.BigDecimal getKeiyakuTanka() {
         return this.keiyakuTanka;
     }
@@ -148,6 +154,7 @@ public class MKtanka implements IEntity {
     /**
      * @return 商品区分
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SHOHINKBN")
     public String getShohinkbn() {
         return this.shohinkbn;
     }
@@ -169,6 +176,7 @@ public class MKtanka implements IEntity {
     /**
      * @return 価格体系区分
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("KAKAKUKBN")
     public String getKakakukbn() {
         return this.kakakukbn;
     }
@@ -190,6 +198,7 @@ public class MKtanka implements IEntity {
     /**
      * @return 予備領域
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("FILLER")
     public String getFiller() {
         return this.filler;
     }

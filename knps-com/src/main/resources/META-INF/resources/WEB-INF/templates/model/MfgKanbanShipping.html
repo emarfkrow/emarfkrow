@@ -9,13 +9,6 @@
 
 </script>
 <script th:src="@{/model/MfgKanbanShippingGridColumns.js}"></script>
-<script th:src="@{/model/MstLocationGridColumns.js}"></script>
-<script th:src="@{/model/MstSubinvGridColumns.js}"></script>
-<script th:src="@{/model/MstSupplierGridColumns.js}"></script>
-<script th:src="@{/model/InvStockProcessSupplyGridColumns.js}"></script>
-<script th:src="@{/model/MstSupplierBkGridColumns.js}"></script>
-<script th:src="@{/model/MstTaxGridColumns.js}"></script>
-<script th:src="@{/model/MstStoreManGridColumns.js}"></script>
 </head>
 <body>
   <div layout:fragment="article">
@@ -35,7 +28,9 @@
           </fieldset>
         </div>
         <div id="forProLocationCode">
-          <label for="MfgKanbanShipping.forProLocationCode" th:text="#{MfgKanbanShipping.forProLocationCode}">FOR_PRO_LOCATION_CODE</label><input type="text" id="MfgKanbanShipping.forProLocationCode" name="MfgKanbanShipping.forProLocationCode" maxlength="10" data-json="MstLocationSearch.json" data-srcDef="LOCATION_CODE:MfgKanbanShipping.forProLocationCode" data-destDef="MfgKanbanShipping.forProLocationName:LOCATION_NAME" /><a id="MfgKanbanShipping.forProLocationCode" th:href="@{/model/MstLocationS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MfgKanbanShipping.forProLocationName" class="refer" data-json="MstLocationSearch.json" data-srcDef="LOCATION_CODE:MfgKanbanShipping.forProLocationCode" data-destDef="MfgKanbanShipping.forProLocationName:LOCATION_NAME"></span>
+          <fieldset id="MfgKanbanShipping.forProLocationCodeList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:for_pro_location_code" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MfgKanbanShipping.forProLocationCode}">FOR_PRO_LOCATION_CODE</legend>
+          </fieldset>
         </div>
         <div id="kanbanAccCounts">
           <label for="MfgKanbanShipping.kanbanAccCounts" th:text="#{MfgKanbanShipping.kanbanAccCounts}">KANBAN_ACC_COUNTS</label><input type="text" id="MfgKanbanShipping.kanbanAccCounts" name="MfgKanbanShipping.kanbanAccCounts" maxlength="6" />

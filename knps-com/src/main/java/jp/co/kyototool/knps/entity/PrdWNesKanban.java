@@ -22,6 +22,7 @@ public class PrdWNesKanban implements IEntity {
     /**
      * @return PRO_HINBAN
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("PRO_HINBAN")
     public String getProHinban() {
         return this.proHinban;
     }
@@ -43,6 +44,7 @@ public class PrdWNesKanban implements IEntity {
     /**
      * @return STORE_WC
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("STORE_WC")
     public String getStoreWc() {
         return this.storeWc;
     }
@@ -64,6 +66,7 @@ public class PrdWNesKanban implements IEntity {
     /**
      * @return ROUTING
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ROUTING")
     public java.math.BigDecimal getRouting() {
         return this.routing;
     }
@@ -85,6 +88,7 @@ public class PrdWNesKanban implements IEntity {
     /**
      * @return ROUTING_DEF_GROUP
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ROUTING_DEF_GROUP")
     public java.math.BigDecimal getRoutingDefGroup() {
         return this.routingDefGroup;
     }
@@ -106,6 +110,7 @@ public class PrdWNesKanban implements IEntity {
     /**
      * @return STORE_OPE_DETAIL
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("STORE_OPE_DETAIL")
     public String getStoreOpeDetail() {
         return this.storeOpeDetail;
     }
@@ -127,6 +132,7 @@ public class PrdWNesKanban implements IEntity {
     /**
      * @return PRO_NES_COUNTS
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("PRO_NES_COUNTS")
     public java.math.BigDecimal getProNesCounts() {
         return this.proNesCounts;
     }
@@ -151,6 +157,7 @@ public class PrdWNesKanban implements IEntity {
     /**
      * @return TIME_STAMP_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CREATE")
     public java.time.LocalDateTime getTimeStampCreate() {
         return this.timeStampCreate;
     }
@@ -181,6 +188,7 @@ public class PrdWNesKanban implements IEntity {
     /**
      * @return TIME_STAMP_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CHANGE")
     public java.time.LocalDateTime getTimeStampChange() {
         return this.timeStampChange;
     }
@@ -208,6 +216,7 @@ public class PrdWNesKanban implements IEntity {
     /**
      * @return USER_ID_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CREATE")
     public String getUserIdCreate() {
         return this.userIdCreate;
     }
@@ -229,6 +238,7 @@ public class PrdWNesKanban implements IEntity {
     /**
      * @return USER_ID_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CHANGE")
     public String getUserIdChange() {
         return this.userIdChange;
     }
@@ -250,6 +260,7 @@ public class PrdWNesKanban implements IEntity {
     /**
      * @return LOT_SIZE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("LOT_SIZE")
     public java.math.BigDecimal getLotSize() {
         return this.lotSize;
     }
@@ -271,6 +282,7 @@ public class PrdWNesKanban implements IEntity {
     /**
      * @return ACC_COUNTS
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ACC_COUNTS")
     public java.math.BigDecimal getAccCounts() {
         return this.accCounts;
     }
@@ -292,6 +304,7 @@ public class PrdWNesKanban implements IEntity {
     /**
      * @return COUNTS
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("COUNTS")
     public java.math.BigDecimal getCounts() {
         return this.counts;
     }

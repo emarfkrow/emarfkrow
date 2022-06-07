@@ -22,6 +22,7 @@ public class InvInventory implements IEntity {
     /**
      * @return LOCATION_CODE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("LOCATION_CODE")
     public String getLocationCode() {
         return this.locationCode;
     }
@@ -43,6 +44,7 @@ public class InvInventory implements IEntity {
     /**
      * @return HINBAN
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("HINBAN")
     public String getHinban() {
         return this.hinban;
     }
@@ -64,6 +66,7 @@ public class InvInventory implements IEntity {
     /**
      * @return GOOD_STOCK
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("GOOD_STOCK")
     public java.math.BigDecimal getGoodStock() {
         return this.goodStock;
     }
@@ -85,6 +88,7 @@ public class InvInventory implements IEntity {
     /**
      * @return BAD_STOCK
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("BAD_STOCK")
     public java.math.BigDecimal getBadStock() {
         return this.badStock;
     }
@@ -109,6 +113,7 @@ public class InvInventory implements IEntity {
     /**
      * @return LATEST_IN_DATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("LATEST_IN_DATE")
     public java.time.LocalDateTime getLatestInDate() {
         return this.latestInDate;
     }
@@ -139,6 +144,7 @@ public class InvInventory implements IEntity {
     /**
      * @return LATEST_OUT_DATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("LATEST_OUT_DATE")
     public java.time.LocalDateTime getLatestOutDate() {
         return this.latestOutDate;
     }
@@ -166,6 +172,7 @@ public class InvInventory implements IEntity {
     /**
      * @return REMAINS_KBN
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("REMAINS_KBN")
     public java.math.BigDecimal getRemainsKbn() {
         return this.remainsKbn;
     }
@@ -187,6 +194,7 @@ public class InvInventory implements IEntity {
     /**
      * @return REASON_CODE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("REASON_CODE")
     public String getReasonCode() {
         return this.reasonCode;
     }
@@ -208,6 +216,7 @@ public class InvInventory implements IEntity {
     /**
      * @return NOTE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("NOTE")
     public String getNote() {
         return this.note;
     }
@@ -232,6 +241,7 @@ public class InvInventory implements IEntity {
     /**
      * @return TIME_STAMP_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CREATE")
     public java.time.LocalDateTime getTimeStampCreate() {
         return this.timeStampCreate;
     }
@@ -262,6 +272,7 @@ public class InvInventory implements IEntity {
     /**
      * @return TIME_STAMP_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CHANGE")
     public java.time.LocalDateTime getTimeStampChange() {
         return this.timeStampChange;
     }
@@ -289,6 +300,7 @@ public class InvInventory implements IEntity {
     /**
      * @return USER_ID_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CREATE")
     public String getUserIdCreate() {
         return this.userIdCreate;
     }
@@ -310,6 +322,7 @@ public class InvInventory implements IEntity {
     /**
      * @return USER_ID_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CHANGE")
     public String getUserIdChange() {
         return this.userIdChange;
     }

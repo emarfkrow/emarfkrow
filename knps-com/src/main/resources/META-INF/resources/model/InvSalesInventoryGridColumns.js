@@ -6,7 +6,7 @@ let InvSalesInventoryGridColumns = [
     Column.cell('SALES_HINBAN', Messages['InvSalesInventoryGrid.salesHinban'], 200, 'primaryKey', null),
     Column.cell('HINBAN', Messages['InvSalesInventoryGrid.hinban'], 250, 'primaryKey', null),
     Column.text('INVENTORY', Messages['InvSalesInventoryGrid.inventory'], 110, '', null),
-    Column.refer('LOCATION_CODE', Messages['InvSalesInventoryGrid.locationCode'], 100, '', 'LOCATION_NAME'),
+    Column.select('LOCATION_CODE', Messages['InvSalesInventoryGrid.locationCode'], 100, '', { json: 'MstCodeValueSearch.json', paramkey: 'code_nm', value: 'CODE_VALUE', label: 'CODE_VALUE_MEI' }),
     Column.date('LAST_DOWNLOAD_DATE', Messages['InvSalesInventoryGrid.lastDownloadDate'], 70, '', Slick.Formatters.Extends.DateTime),
     Column.cell('TIME_STAMP_CREATE', Messages['InvSalesInventoryGrid.timeStampCreate'], 70, 'metaInfo', Slick.Formatters.Extends.DateTime),
     Column.cell('TIME_STAMP_CHANGE', Messages['InvSalesInventoryGrid.timeStampChange'], 70, 'metaInfo', Slick.Formatters.Extends.DateTime),

@@ -22,6 +22,7 @@ public class MfgModActDet implements IEntity {
     /**
      * @return MOD_ACT_NO
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("MOD_ACT_NO")
     public String getModActNo() {
         return this.modActNo;
     }
@@ -43,6 +44,7 @@ public class MfgModActDet implements IEntity {
     /**
      * @return MOD_ACT_BRANCH_NO
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("MOD_ACT_BRANCH_NO")
     public java.math.BigDecimal getModActBranchNo() {
         return this.modActBranchNo;
     }
@@ -64,6 +66,7 @@ public class MfgModActDet implements IEntity {
     /**
      * @return MOD_ACT_ITEM
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("MOD_ACT_ITEM")
     public java.math.BigDecimal getModActItem() {
         return this.modActItem;
     }
@@ -88,6 +91,7 @@ public class MfgModActDet implements IEntity {
     /**
      * @return ACT_DATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ACT_DATE")
     public java.time.LocalDateTime getActDate() {
         return this.actDate;
     }
@@ -115,6 +119,7 @@ public class MfgModActDet implements IEntity {
     /**
      * @return OPERATOR
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("OPERATOR")
     public String getOperator() {
         return this.operator;
     }
@@ -139,6 +144,7 @@ public class MfgModActDet implements IEntity {
     /**
      * @return TIME_STAMP_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CREATE")
     public java.time.LocalDateTime getTimeStampCreate() {
         return this.timeStampCreate;
     }
@@ -169,6 +175,7 @@ public class MfgModActDet implements IEntity {
     /**
      * @return TIME_STAMP_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CHANGE")
     public java.time.LocalDateTime getTimeStampChange() {
         return this.timeStampChange;
     }
@@ -196,6 +203,7 @@ public class MfgModActDet implements IEntity {
     /**
      * @return USER_ID_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CREATE")
     public String getUserIdCreate() {
         return this.userIdCreate;
     }
@@ -217,6 +225,7 @@ public class MfgModActDet implements IEntity {
     /**
      * @return USER_ID_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CHANGE")
     public String getUserIdChange() {
         return this.userIdChange;
     }

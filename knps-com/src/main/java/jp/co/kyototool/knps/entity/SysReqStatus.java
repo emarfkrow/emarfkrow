@@ -22,6 +22,7 @@ public class SysReqStatus implements IEntity {
     /**
      * @return REQ_ID
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("REQ_ID")
     public String getReqId() {
         return this.reqId;
     }
@@ -43,6 +44,7 @@ public class SysReqStatus implements IEntity {
     /**
      * @return REQ_PRG_NAME
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("REQ_PRG_NAME")
     public String getReqPrgName() {
         return this.reqPrgName;
     }
@@ -64,6 +66,7 @@ public class SysReqStatus implements IEntity {
     /**
      * @return REQ_EMP_CODE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("REQ_EMP_CODE")
     public String getReqEmpCode() {
         return this.reqEmpCode;
     }
@@ -88,6 +91,7 @@ public class SysReqStatus implements IEntity {
     /**
      * @return REQ_DATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("REQ_DATE")
     public java.time.LocalDateTime getReqDate() {
         return this.reqDate;
     }
@@ -118,6 +122,7 @@ public class SysReqStatus implements IEntity {
     /**
      * @return REQ_EXEC_DATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("REQ_EXEC_DATE")
     public java.time.LocalDateTime getReqExecDate() {
         return this.reqExecDate;
     }
@@ -148,6 +153,7 @@ public class SysReqStatus implements IEntity {
     /**
      * @return REQ_COMP_DATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("REQ_COMP_DATE")
     public java.time.LocalDateTime getReqCompDate() {
         return this.reqCompDate;
     }
@@ -175,6 +181,7 @@ public class SysReqStatus implements IEntity {
     /**
      * @return EXEC_PHASE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("EXEC_PHASE")
     public java.math.BigDecimal getExecPhase() {
         return this.execPhase;
     }
@@ -196,6 +203,7 @@ public class SysReqStatus implements IEntity {
     /**
      * @return EXEC_STATUS
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("EXEC_STATUS")
     public java.math.BigDecimal getExecStatus() {
         return this.execStatus;
     }
@@ -220,6 +228,7 @@ public class SysReqStatus implements IEntity {
     /**
      * @return TIME_STAMP_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CREATE")
     public java.time.LocalDateTime getTimeStampCreate() {
         return this.timeStampCreate;
     }
@@ -250,6 +259,7 @@ public class SysReqStatus implements IEntity {
     /**
      * @return TIME_STAMP_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CHANGE")
     public java.time.LocalDateTime getTimeStampChange() {
         return this.timeStampChange;
     }
@@ -277,6 +287,7 @@ public class SysReqStatus implements IEntity {
     /**
      * @return USER_ID_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CREATE")
     public String getUserIdCreate() {
         return this.userIdCreate;
     }
@@ -298,6 +309,7 @@ public class SysReqStatus implements IEntity {
     /**
      * @return USER_ID_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CHANGE")
     public String getUserIdChange() {
         return this.userIdChange;
     }
@@ -319,6 +331,7 @@ public class SysReqStatus implements IEntity {
     /**
      * @return PARAMS
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("PARAMS")
     public String getParams() {
         return this.params;
     }

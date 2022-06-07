@@ -603,15 +603,18 @@ public final class DataSources {
         while (srcIterator.hasNext()) {
             TableInfo srcTableInfo = srcIterator.next();
 
+            // 他のテーブルの弟ならスキップ
+            if (srcTableInfo.isBrother()) {
+                continue;
+            }
+
             // 複合キーならスキップ
             if (srcTableInfo.getPrimaryKeys().size() != 1) {
                 continue;
             }
 
-            // ユニークキーを取得
+            // ユニークキーが参照IDに合致しなければスキップ
             String srcPrimaryKey = srcTableInfo.getPrimaryKeys().get(0);
-
-            // ユニークキーが参照IDでなければスキップ
             if (!StringUtil.endsWith(referPairs, srcPrimaryKey)) {
                 continue;
             }

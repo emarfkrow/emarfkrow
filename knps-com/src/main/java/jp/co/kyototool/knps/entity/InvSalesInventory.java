@@ -22,6 +22,7 @@ public class InvSalesInventory implements IEntity {
     /**
      * @return SALES_HINBAN
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SALES_HINBAN")
     public String getSalesHinban() {
         return this.salesHinban;
     }
@@ -43,6 +44,7 @@ public class InvSalesInventory implements IEntity {
     /**
      * @return HINBAN
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("HINBAN")
     public String getHinban() {
         return this.hinban;
     }
@@ -64,6 +66,7 @@ public class InvSalesInventory implements IEntity {
     /**
      * @return INVENTORY
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("INVENTORY")
     public java.math.BigDecimal getInventory() {
         return this.inventory;
     }
@@ -85,6 +88,7 @@ public class InvSalesInventory implements IEntity {
     /**
      * @return LOCATION_CODE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("LOCATION_CODE")
     public String getLocationCode() {
         return this.locationCode;
     }
@@ -109,6 +113,7 @@ public class InvSalesInventory implements IEntity {
     /**
      * @return LAST_DOWNLOAD_DATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("LAST_DOWNLOAD_DATE")
     public java.time.LocalDateTime getLastDownloadDate() {
         return this.lastDownloadDate;
     }
@@ -139,6 +144,7 @@ public class InvSalesInventory implements IEntity {
     /**
      * @return TIME_STAMP_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CREATE")
     public java.time.LocalDateTime getTimeStampCreate() {
         return this.timeStampCreate;
     }
@@ -169,6 +175,7 @@ public class InvSalesInventory implements IEntity {
     /**
      * @return TIME_STAMP_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CHANGE")
     public java.time.LocalDateTime getTimeStampChange() {
         return this.timeStampChange;
     }
@@ -196,6 +203,7 @@ public class InvSalesInventory implements IEntity {
     /**
      * @return USER_ID_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CREATE")
     public String getUserIdCreate() {
         return this.userIdCreate;
     }
@@ -217,6 +225,7 @@ public class InvSalesInventory implements IEntity {
     /**
      * @return USER_ID_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CHANGE")
     public String getUserIdChange() {
         return this.userIdChange;
     }

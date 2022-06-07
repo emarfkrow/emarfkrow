@@ -10,13 +10,6 @@
 </script>
 <script th:src="@{/model/InvSurveyResultLocGridColumns.js}"></script>
 <script th:src="@{/model/InvInventoryGridColumns.js}"></script>
-<script th:src="@{/model/MstLocationGridColumns.js}"></script>
-<script th:src="@{/model/MstSubinvGridColumns.js}"></script>
-<script th:src="@{/model/MstSupplierGridColumns.js}"></script>
-<script th:src="@{/model/InvStockProcessSupplyGridColumns.js}"></script>
-<script th:src="@{/model/MstSupplierBkGridColumns.js}"></script>
-<script th:src="@{/model/MstTaxGridColumns.js}"></script>
-<script th:src="@{/model/MstStoreManGridColumns.js}"></script>
 <script th:src="@{/model/MstReasonGridColumns.js}"></script>
 <script th:src="@{/model/InvSurveyResultOtherGridColumns.js}"></script>
 </head>
@@ -27,7 +20,9 @@
       <fieldset>
         <legend th:text="#{InvSurveyResultLocS.legend}">legend</legend>
         <div id="locationCode">
-          <label for="InvSurveyResultLoc.locationCode" th:text="#{InvSurveyResultLoc.locationCode}">LOCATION_CODE</label><input type="text" id="InvSurveyResultLoc.locationCode" name="InvSurveyResultLoc.locationCode" maxlength="10" data-json="MstLocationSearch.json" data-srcDef="LOCATION_CODE:InvSurveyResultLoc.locationCode" data-destDef="InvSurveyResultLoc.locationName:LOCATION_NAME" /><a id="InvSurveyResultLoc.locationCode" th:href="@{/model/MstLocationS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="InvSurveyResultLoc.locationName" class="refer" data-json="MstLocationSearch.json" data-srcDef="LOCATION_CODE:InvSurveyResultLoc.locationCode" data-destDef="InvSurveyResultLoc.locationName:LOCATION_NAME"></span>
+          <fieldset id="InvSurveyResultLoc.locationCodeList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:location_code" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{InvSurveyResultLoc.locationCode}">LOCATION_CODE</legend>
+          </fieldset>
         </div>
         <div id="yyyy">
           <label for="InvSurveyResultLoc.yyyy" th:text="#{InvSurveyResultLoc.yyyy}">YYYY</label><input type="text" id="InvSurveyResultLoc.yyyy" name="InvSurveyResultLoc.yyyy" maxlength="4" />

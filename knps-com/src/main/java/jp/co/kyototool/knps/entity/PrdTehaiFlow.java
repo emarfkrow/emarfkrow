@@ -22,6 +22,7 @@ public class PrdTehaiFlow implements IEntity {
     /**
      * @return PRD_TEHAI_NO
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("PRD_TEHAI_NO")
     public String getPrdTehaiNo() {
         return this.prdTehaiNo;
     }
@@ -43,6 +44,7 @@ public class PrdTehaiFlow implements IEntity {
     /**
      * @return TEHAI_FLOW_SEQ
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TEHAI_FLOW_SEQ")
     public java.math.BigDecimal getTehaiFlowSeq() {
         return this.tehaiFlowSeq;
     }
@@ -64,6 +66,7 @@ public class PrdTehaiFlow implements IEntity {
     /**
      * @return TEHAI_JOKYO_KB
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TEHAI_JOKYO_KB")
     public String getTehaiJokyoKb() {
         return this.tehaiJokyoKb;
     }
@@ -85,6 +88,7 @@ public class PrdTehaiFlow implements IEntity {
     /**
      * @return KAITEI_JOKYO_KB
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("KAITEI_JOKYO_KB")
     public String getKaiteiJokyoKb() {
         return this.kaiteiJokyoKb;
     }
@@ -106,6 +110,7 @@ public class PrdTehaiFlow implements IEntity {
     /**
      * @return SHORISHA_CD
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SHORISHA_CD")
     public String getShorishaCd() {
         return this.shorishaCd;
     }
@@ -130,6 +135,7 @@ public class PrdTehaiFlow implements IEntity {
     /**
      * @return SHORI_DT
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SHORI_DT")
     public java.time.LocalDateTime getShoriDt() {
         return this.shoriDt;
     }
@@ -157,6 +163,7 @@ public class PrdTehaiFlow implements IEntity {
     /**
      * @return SHORI_CMT
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SHORI_CMT")
     public String getShoriCmt() {
         return this.shoriCmt;
     }
@@ -178,6 +185,7 @@ public class PrdTehaiFlow implements IEntity {
     /**
      * @return AITESAKI_CD
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("AITESAKI_CD")
     public String getAitesakiCd() {
         return this.aitesakiCd;
     }
@@ -202,6 +210,7 @@ public class PrdTehaiFlow implements IEntity {
     /**
      * @return TIME_STAMP_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CREATE")
     public java.time.LocalDateTime getTimeStampCreate() {
         return this.timeStampCreate;
     }
@@ -232,6 +241,7 @@ public class PrdTehaiFlow implements IEntity {
     /**
      * @return TIME_STAMP_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CHANGE")
     public java.time.LocalDateTime getTimeStampChange() {
         return this.timeStampChange;
     }
@@ -259,6 +269,7 @@ public class PrdTehaiFlow implements IEntity {
     /**
      * @return USER_ID_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CREATE")
     public String getUserIdCreate() {
         return this.userIdCreate;
     }
@@ -280,6 +291,7 @@ public class PrdTehaiFlow implements IEntity {
     /**
      * @return USER_ID_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CHANGE")
     public String getUserIdChange() {
         return this.userIdChange;
     }

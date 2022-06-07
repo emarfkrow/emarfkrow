@@ -22,6 +22,7 @@ public class MstHinbanBk implements IEntity {
     /**
      * @return YY
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("YY")
     public String getYy() {
         return this.yy;
     }
@@ -43,6 +44,7 @@ public class MstHinbanBk implements IEntity {
     /**
      * @return HINBAN
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("HINBAN")
     public String getHinban() {
         return this.hinban;
     }
@@ -64,6 +66,7 @@ public class MstHinbanBk implements IEntity {
     /**
      * @return HINBAN_CODE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("HINBAN_CODE")
     public String getHinbanCode() {
         return this.hinbanCode;
     }
@@ -85,6 +88,7 @@ public class MstHinbanBk implements IEntity {
     /**
      * @return ITEM
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ITEM")
     public String getItem() {
         return this.item;
     }
@@ -106,6 +110,7 @@ public class MstHinbanBk implements IEntity {
     /**
      * @return ITEM_KBN
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ITEM_KBN")
     public java.math.BigDecimal getItemKbn() {
         return this.itemKbn;
     }
@@ -127,6 +132,7 @@ public class MstHinbanBk implements IEntity {
     /**
      * @return SHIKAKE_KBN
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SHIKAKE_KBN")
     public String getShikakeKbn() {
         return this.shikakeKbn;
     }
@@ -148,6 +154,7 @@ public class MstHinbanBk implements IEntity {
     /**
      * @return LOT_SIZE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("LOT_SIZE")
     public java.math.BigDecimal getLotSize() {
         return this.lotSize;
     }
@@ -169,6 +176,7 @@ public class MstHinbanBk implements IEntity {
     /**
      * @return COUNTS
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("COUNTS")
     public java.math.BigDecimal getCounts() {
         return this.counts;
     }
@@ -190,6 +198,7 @@ public class MstHinbanBk implements IEntity {
     /**
      * @return UNIT_CODE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("UNIT_CODE")
     public String getUnitCode() {
         return this.unitCode;
     }
@@ -211,6 +220,7 @@ public class MstHinbanBk implements IEntity {
     /**
      * @return ACCOUNT_CODE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ACCOUNT_CODE")
     public String getAccountCode() {
         return this.accountCode;
     }
@@ -232,6 +242,7 @@ public class MstHinbanBk implements IEntity {
     /**
      * @return SUPPLY_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SUPPLY_CHANGE")
     public java.math.BigDecimal getSupplyChange() {
         return this.supplyChange;
     }
@@ -253,6 +264,7 @@ public class MstHinbanBk implements IEntity {
     /**
      * @return SUPPLY_PERMISSION
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SUPPLY_PERMISSION")
     public java.math.BigDecimal getSupplyPermission() {
         return this.supplyPermission;
     }
@@ -274,6 +286,7 @@ public class MstHinbanBk implements IEntity {
     /**
      * @return OFF_POST_NO
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("OFF_POST_NO")
     public String getOffPostNo() {
         return this.offPostNo;
     }
@@ -295,6 +308,7 @@ public class MstHinbanBk implements IEntity {
     /**
      * @return ISUUE_POST_NO
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ISUUE_POST_NO")
     public String getIsuuePostNo() {
         return this.isuuePostNo;
     }
@@ -316,6 +330,7 @@ public class MstHinbanBk implements IEntity {
     /**
      * @return STORE_NO
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("STORE_NO")
     public String getStoreNo() {
         return this.storeNo;
     }
@@ -337,6 +352,7 @@ public class MstHinbanBk implements IEntity {
     /**
      * @return STOCKS_KIND_KBN
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("STOCKS_KIND_KBN")
     public java.math.BigDecimal getStocksKindKbn() {
         return this.stocksKindKbn;
     }
@@ -358,6 +374,7 @@ public class MstHinbanBk implements IEntity {
     /**
      * @return HINGUN_KBN
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("HINGUN_KBN")
     public java.math.BigDecimal getHingunKbn() {
         return this.hingunKbn;
     }
@@ -379,6 +396,7 @@ public class MstHinbanBk implements IEntity {
     /**
      * @return ELEC_INV_CONTROL
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ELEC_INV_CONTROL")
     public java.math.BigDecimal getElecInvControl() {
         return this.elecInvControl;
     }
@@ -400,6 +418,7 @@ public class MstHinbanBk implements IEntity {
     /**
      * @return REST_ARTICLE_KBN
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("REST_ARTICLE_KBN")
     public java.math.BigDecimal getRestArticleKbn() {
         return this.restArticleKbn;
     }
@@ -421,6 +440,7 @@ public class MstHinbanBk implements IEntity {
     /**
      * @return REST_ARTICLE_MAX
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("REST_ARTICLE_MAX")
     public java.math.BigDecimal getRestArticleMax() {
         return this.restArticleMax;
     }
@@ -442,6 +462,7 @@ public class MstHinbanBk implements IEntity {
     /**
      * @return COST_AMOUNT_KBN
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("COST_AMOUNT_KBN")
     public java.math.BigDecimal getCostAmountKbn() {
         return this.costAmountKbn;
     }
@@ -463,6 +484,7 @@ public class MstHinbanBk implements IEntity {
     /**
      * @return F_COST_AMOUNT_KBN
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("F_COST_AMOUNT_KBN")
     public java.math.BigDecimal getFCostAmountKbn() {
         return this.fCostAmountKbn;
     }
@@ -484,6 +506,7 @@ public class MstHinbanBk implements IEntity {
     /**
      * @return S_COST_AMOUNT_KBN
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("S_COST_AMOUNT_KBN")
     public java.math.BigDecimal getSCostAmountKbn() {
         return this.sCostAmountKbn;
     }
@@ -505,6 +528,7 @@ public class MstHinbanBk implements IEntity {
     /**
      * @return HINBAN_OPE_CODE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("HINBAN_OPE_CODE")
     public String getHinbanOpeCode() {
         return this.hinbanOpeCode;
     }
@@ -526,6 +550,7 @@ public class MstHinbanBk implements IEntity {
     /**
      * @return PERMISSION_FLAG
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("PERMISSION_FLAG")
     public java.math.BigDecimal getPermissionFlag() {
         return this.permissionFlag;
     }
@@ -547,6 +572,7 @@ public class MstHinbanBk implements IEntity {
     /**
      * @return VERSION
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("VERSION")
     public String getVersion() {
         return this.version;
     }
@@ -568,6 +594,7 @@ public class MstHinbanBk implements IEntity {
     /**
      * @return PLAN_CODE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("PLAN_CODE")
     public String getPlanCode() {
         return this.planCode;
     }
@@ -589,6 +616,7 @@ public class MstHinbanBk implements IEntity {
     /**
      * @return POISON_KBN
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("POISON_KBN")
     public java.math.BigDecimal getPoisonKbn() {
         return this.poisonKbn;
     }
@@ -610,6 +638,7 @@ public class MstHinbanBk implements IEntity {
     /**
      * @return MATERIAL
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("MATERIAL")
     public String getMaterial() {
         return this.material;
     }
@@ -631,6 +660,7 @@ public class MstHinbanBk implements IEntity {
     /**
      * @return MATERIAL_SIZE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("MATERIAL_SIZE")
     public String getMaterialSize() {
         return this.materialSize;
     }
@@ -652,6 +682,7 @@ public class MstHinbanBk implements IEntity {
     /**
      * @return MAKER
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("MAKER")
     public String getMaker() {
         return this.maker;
     }
@@ -673,6 +704,7 @@ public class MstHinbanBk implements IEntity {
     /**
      * @return MATERIAL_RECYCLE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("MATERIAL_RECYCLE")
     public String getMaterialRecycle() {
         return this.materialRecycle;
     }
@@ -694,6 +726,7 @@ public class MstHinbanBk implements IEntity {
     /**
      * @return MAKER_SIMUKE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("MAKER_SIMUKE")
     public java.math.BigDecimal getMakerSimuke() {
         return this.makerSimuke;
     }
@@ -715,6 +748,7 @@ public class MstHinbanBk implements IEntity {
     /**
      * @return MAKER_WEIGHT
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("MAKER_WEIGHT")
     public java.math.BigDecimal getMakerWeight() {
         return this.makerWeight;
     }
@@ -736,6 +770,7 @@ public class MstHinbanBk implements IEntity {
     /**
      * @return ACT_INV_FIRST
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ACT_INV_FIRST")
     public java.math.BigDecimal getActInvFirst() {
         return this.actInvFirst;
     }
@@ -757,6 +792,7 @@ public class MstHinbanBk implements IEntity {
     /**
      * @return ACT_INV_LAST
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ACT_INV_LAST")
     public java.math.BigDecimal getActInvLast() {
         return this.actInvLast;
     }
@@ -778,6 +814,7 @@ public class MstHinbanBk implements IEntity {
     /**
      * @return SUP_UNIT
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SUP_UNIT")
     public java.math.BigDecimal getSupUnit() {
         return this.supUnit;
     }
@@ -799,6 +836,7 @@ public class MstHinbanBk implements IEntity {
     /**
      * @return ROUTING_DEF_GROUP
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ROUTING_DEF_GROUP")
     public java.math.BigDecimal getRoutingDefGroup() {
         return this.routingDefGroup;
     }
@@ -820,6 +858,7 @@ public class MstHinbanBk implements IEntity {
     /**
      * @return COST_CALCULATE_GROUP
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("COST_CALCULATE_GROUP")
     public java.math.BigDecimal getCostCalculateGroup() {
         return this.costCalculateGroup;
     }
@@ -841,6 +880,7 @@ public class MstHinbanBk implements IEntity {
     /**
      * @return KBN1
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("KBN1")
     public String getKbn1() {
         return this.kbn1;
     }
@@ -862,6 +902,7 @@ public class MstHinbanBk implements IEntity {
     /**
      * @return KBN2
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("KBN2")
     public String getKbn2() {
         return this.kbn2;
     }
@@ -883,6 +924,7 @@ public class MstHinbanBk implements IEntity {
     /**
      * @return KBN3
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("KBN3")
     public String getKbn3() {
         return this.kbn3;
     }
@@ -904,6 +946,7 @@ public class MstHinbanBk implements IEntity {
     /**
      * @return STOCK_STATUS
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("STOCK_STATUS")
     public String getStockStatus() {
         return this.stockStatus;
     }
@@ -925,6 +968,7 @@ public class MstHinbanBk implements IEntity {
     /**
      * @return STOCK_STATUS_DATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("STOCK_STATUS_DATE")
     public String getStockStatusDate() {
         return this.stockStatusDate;
     }
@@ -946,6 +990,7 @@ public class MstHinbanBk implements IEntity {
     /**
      * @return PRINT_STRUCTURE_FLG
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("PRINT_STRUCTURE_FLG")
     public java.math.BigDecimal getPrintStructureFlg() {
         return this.printStructureFlg;
     }
@@ -967,6 +1012,7 @@ public class MstHinbanBk implements IEntity {
     /**
      * @return PRINT_WORK_FLOW_FLG
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("PRINT_WORK_FLOW_FLG")
     public java.math.BigDecimal getPrintWorkFlowFlg() {
         return this.printWorkFlowFlg;
     }
@@ -988,6 +1034,7 @@ public class MstHinbanBk implements IEntity {
     /**
      * @return PRINT_WORK_RESULT_FLG
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("PRINT_WORK_RESULT_FLG")
     public java.math.BigDecimal getPrintWorkResultFlg() {
         return this.printWorkResultFlg;
     }
@@ -1009,6 +1056,7 @@ public class MstHinbanBk implements IEntity {
     /**
      * @return PRINT_SHIP_SHEET_FLG
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("PRINT_SHIP_SHEET_FLG")
     public java.math.BigDecimal getPrintShipSheetFlg() {
         return this.printShipSheetFlg;
     }
@@ -1030,6 +1078,7 @@ public class MstHinbanBk implements IEntity {
     /**
      * @return PRINT_INSPECT_FLG
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("PRINT_INSPECT_FLG")
     public java.math.BigDecimal getPrintInspectFlg() {
         return this.printInspectFlg;
     }
@@ -1051,6 +1100,7 @@ public class MstHinbanBk implements IEntity {
     /**
      * @return PRINT_PRODUCT_BOX_FLG
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("PRINT_PRODUCT_BOX_FLG")
     public java.math.BigDecimal getPrintProductBoxFlg() {
         return this.printProductBoxFlg;
     }
@@ -1072,6 +1122,7 @@ public class MstHinbanBk implements IEntity {
     /**
      * @return PRINT_HINBAN_STRUCT_FLG
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("PRINT_HINBAN_STRUCT_FLG")
     public java.math.BigDecimal getPrintHinbanStructFlg() {
         return this.printHinbanStructFlg;
     }
@@ -1093,6 +1144,7 @@ public class MstHinbanBk implements IEntity {
     /**
      * @return SEMI_PRODUCT_FLG
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SEMI_PRODUCT_FLG")
     public java.math.BigDecimal getSemiProductFlg() {
         return this.semiProductFlg;
     }
@@ -1114,6 +1166,7 @@ public class MstHinbanBk implements IEntity {
     /**
      * @return STOCK_MANAGEMENT_SECTION
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("STOCK_MANAGEMENT_SECTION")
     public java.math.BigDecimal getStockManagementSection() {
         return this.stockManagementSection;
     }
@@ -1138,6 +1191,7 @@ public class MstHinbanBk implements IEntity {
     /**
      * @return TIME_STAMP_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CREATE")
     public java.time.LocalDateTime getTimeStampCreate() {
         return this.timeStampCreate;
     }
@@ -1168,6 +1222,7 @@ public class MstHinbanBk implements IEntity {
     /**
      * @return TIME_STAMP_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CHANGE")
     public java.time.LocalDateTime getTimeStampChange() {
         return this.timeStampChange;
     }
@@ -1195,6 +1250,7 @@ public class MstHinbanBk implements IEntity {
     /**
      * @return USER_ID_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CREATE")
     public String getUserIdCreate() {
         return this.userIdCreate;
     }
@@ -1216,6 +1272,7 @@ public class MstHinbanBk implements IEntity {
     /**
      * @return USER_ID_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CHANGE")
     public String getUserIdChange() {
         return this.userIdChange;
     }
@@ -1237,6 +1294,7 @@ public class MstHinbanBk implements IEntity {
     /**
      * @return TOTAL_LT
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TOTAL_LT")
     public java.math.BigDecimal getTotalLt() {
         return this.totalLt;
     }
@@ -1258,6 +1316,7 @@ public class MstHinbanBk implements IEntity {
     /**
      * @return COMPANY_DIV_CODE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("COMPANY_DIV_CODE")
     public String getCompanyDivCode() {
         return this.companyDivCode;
     }
@@ -1279,6 +1338,7 @@ public class MstHinbanBk implements IEntity {
     /**
      * @return KBN4
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("KBN4")
     public String getKbn4() {
         return this.kbn4;
     }
@@ -1300,6 +1360,7 @@ public class MstHinbanBk implements IEntity {
     /**
      * @return KBN5
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("KBN5")
     public String getKbn5() {
         return this.kbn5;
     }
@@ -1321,6 +1382,7 @@ public class MstHinbanBk implements IEntity {
     /**
      * @return KBN6
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("KBN6")
     public String getKbn6() {
         return this.kbn6;
     }
@@ -1342,6 +1404,7 @@ public class MstHinbanBk implements IEntity {
     /**
      * @return ROHS
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ROHS")
     public java.math.BigDecimal getRohs() {
         return this.rohs;
     }
@@ -1363,6 +1426,7 @@ public class MstHinbanBk implements IEntity {
     /**
      * @return TANTAI_LT
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TANTAI_LT")
     public java.math.BigDecimal getTantaiLt() {
         return this.tantaiLt;
     }
@@ -1384,6 +1448,7 @@ public class MstHinbanBk implements IEntity {
     /**
      * @return TSUKESU
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TSUKESU")
     public java.math.BigDecimal getTsukesu() {
         return this.tsukesu;
     }
@@ -1405,6 +1470,7 @@ public class MstHinbanBk implements IEntity {
     /**
      * @return EX_TAX_RATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("EX_TAX_RATE")
     public java.math.BigDecimal getExTaxRate() {
         return this.exTaxRate;
     }
@@ -1426,6 +1492,7 @@ public class MstHinbanBk implements IEntity {
     /**
      * @return MEMO
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("MEMO")
     public String getMemo() {
         return this.memo;
     }
@@ -1447,6 +1514,7 @@ public class MstHinbanBk implements IEntity {
     /**
      * @return HAIBAN_KBN
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("HAIBAN_KBN")
     public String getHaibanKbn() {
         return this.haibanKbn;
     }
@@ -1468,6 +1536,7 @@ public class MstHinbanBk implements IEntity {
     /**
      * @return HAIBAN_YM
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("HAIBAN_YM")
     public String getHaibanYm() {
         return this.haibanYm;
     }

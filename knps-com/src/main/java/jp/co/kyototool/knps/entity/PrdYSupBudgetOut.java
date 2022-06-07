@@ -22,6 +22,7 @@ public class PrdYSupBudgetOut implements IEntity {
     /**
      * @return YYYY
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("YYYY")
     public String getYyyy() {
         return this.yyyy;
     }
@@ -43,6 +44,7 @@ public class PrdYSupBudgetOut implements IEntity {
     /**
      * @return MM
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("MM")
     public String getMm() {
         return this.mm;
     }
@@ -64,6 +66,7 @@ public class PrdYSupBudgetOut implements IEntity {
     /**
      * @return HINBAN
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("HINBAN")
     public String getHinban() {
         return this.hinban;
     }
@@ -85,6 +88,7 @@ public class PrdYSupBudgetOut implements IEntity {
     /**
      * @return ROUTING
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ROUTING")
     public java.math.BigDecimal getRouting() {
         return this.routing;
     }
@@ -106,6 +110,7 @@ public class PrdYSupBudgetOut implements IEntity {
     /**
      * @return WC_CODE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("WC_CODE")
     public String getWcCode() {
         return this.wcCode;
     }
@@ -127,6 +132,7 @@ public class PrdYSupBudgetOut implements IEntity {
     /**
      * @return OPE_DETAIL
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("OPE_DETAIL")
     public String getOpeDetail() {
         return this.opeDetail;
     }
@@ -148,6 +154,7 @@ public class PrdYSupBudgetOut implements IEntity {
     /**
      * @return SUP_CODE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SUP_CODE")
     public String getSupCode() {
         return this.supCode;
     }
@@ -169,6 +176,7 @@ public class PrdYSupBudgetOut implements IEntity {
     /**
      * @return ORDER_COUNTS
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ORDER_COUNTS")
     public java.math.BigDecimal getOrderCounts() {
         return this.orderCounts;
     }
@@ -190,6 +198,7 @@ public class PrdYSupBudgetOut implements IEntity {
     /**
      * @return ORDER_UNIT
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ORDER_UNIT")
     public java.math.BigDecimal getOrderUnit() {
         return this.orderUnit;
     }
@@ -211,6 +220,7 @@ public class PrdYSupBudgetOut implements IEntity {
     /**
      * @return ORDER_AMOUNT
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ORDER_AMOUNT")
     public java.math.BigDecimal getOrderAmount() {
         return this.orderAmount;
     }
@@ -232,6 +242,7 @@ public class PrdYSupBudgetOut implements IEntity {
     /**
      * @return ITEM_KBN
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ITEM_KBN")
     public java.math.BigDecimal getItemKbn() {
         return this.itemKbn;
     }
@@ -256,6 +267,7 @@ public class PrdYSupBudgetOut implements IEntity {
     /**
      * @return TIME_STAMP_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CREATE")
     public java.time.LocalDateTime getTimeStampCreate() {
         return this.timeStampCreate;
     }
@@ -286,6 +298,7 @@ public class PrdYSupBudgetOut implements IEntity {
     /**
      * @return TIME_STAMP_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CHANGE")
     public java.time.LocalDateTime getTimeStampChange() {
         return this.timeStampChange;
     }
@@ -313,6 +326,7 @@ public class PrdYSupBudgetOut implements IEntity {
     /**
      * @return USER_ID_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CREATE")
     public String getUserIdCreate() {
         return this.userIdCreate;
     }
@@ -334,6 +348,7 @@ public class PrdYSupBudgetOut implements IEntity {
     /**
      * @return USER_ID_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CHANGE")
     public String getUserIdChange() {
         return this.userIdChange;
     }

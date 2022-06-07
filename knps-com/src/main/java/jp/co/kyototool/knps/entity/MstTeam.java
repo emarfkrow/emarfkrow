@@ -22,6 +22,7 @@ public class MstTeam implements IEntity {
     /**
      * @return TEAM_CODE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TEAM_CODE")
     public String getTeamCode() {
         return this.teamCode;
     }
@@ -43,6 +44,7 @@ public class MstTeam implements IEntity {
     /**
      * @return TEAM_NAME
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TEAM_NAME")
     public String getTeamName() {
         return this.teamName;
     }
@@ -64,6 +66,7 @@ public class MstTeam implements IEntity {
     /**
      * @return ADMIN_CODE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ADMIN_CODE")
     public String getAdminCode() {
         return this.adminCode;
     }
@@ -85,6 +88,7 @@ public class MstTeam implements IEntity {
     /**
      * @return GROUP_CODE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("GROUP_CODE")
     public String getGroupCode() {
         return this.groupCode;
     }
@@ -106,6 +110,7 @@ public class MstTeam implements IEntity {
     /**
      * @return INDIVIDUAL_COUNTS
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("INDIVIDUAL_COUNTS")
     public java.math.BigDecimal getIndividualCounts() {
         return this.individualCounts;
     }
@@ -130,6 +135,7 @@ public class MstTeam implements IEntity {
     /**
      * @return TIME_STAMP_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CREATE")
     public java.time.LocalDateTime getTimeStampCreate() {
         return this.timeStampCreate;
     }
@@ -160,6 +166,7 @@ public class MstTeam implements IEntity {
     /**
      * @return TIME_STAMP_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CHANGE")
     public java.time.LocalDateTime getTimeStampChange() {
         return this.timeStampChange;
     }
@@ -187,6 +194,7 @@ public class MstTeam implements IEntity {
     /**
      * @return USER_ID_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CREATE")
     public String getUserIdCreate() {
         return this.userIdCreate;
     }
@@ -208,6 +216,7 @@ public class MstTeam implements IEntity {
     /**
      * @return USER_ID_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CHANGE")
     public String getUserIdChange() {
         return this.userIdChange;
     }
@@ -229,6 +238,7 @@ public class MstTeam implements IEntity {
     /**
      * @return DELETE_FLAG
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("DELETE_FLAG")
     public java.math.BigDecimal getDeleteFlag() {
         return this.deleteFlag;
     }

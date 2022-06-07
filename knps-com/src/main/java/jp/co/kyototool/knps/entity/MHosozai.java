@@ -22,6 +22,7 @@ public class MHosozai implements IEntity {
     /**
      * @return 包装品番
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("HOSO-HINBAN")
     public String getHosoHinban() {
         return this.hosoHinban;
     }
@@ -43,6 +44,7 @@ public class MHosozai implements IEntity {
     /**
      * @return 包装品名
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("HOSO-HINMEI")
     public String getHosoHinmei() {
         return this.hosoHinmei;
     }
@@ -64,6 +66,7 @@ public class MHosozai implements IEntity {
     /**
      * @return 包装品名略称
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("HOSO-HINMEI-RYAKU")
     public String getHosoHinmeiRyaku() {
         return this.hosoHinmeiRyaku;
     }
@@ -85,6 +88,7 @@ public class MHosozai implements IEntity {
     /**
      * @return 包装サイズ
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("HOSO-SIZE")
     public String getHosoSize() {
         return this.hosoSize;
     }
@@ -106,6 +110,7 @@ public class MHosozai implements IEntity {
     /**
      * @return 包装単価
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("HOSO-TANKA")
     public java.math.BigDecimal getHosoTanka() {
         return this.hosoTanka;
     }
@@ -127,6 +132,7 @@ public class MHosozai implements IEntity {
     /**
      * @return 包装材質コード
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("HOSO-ZAICODE")
     public String getHosoZaicode() {
         return this.hosoZaicode;
     }
@@ -148,6 +154,7 @@ public class MHosozai implements IEntity {
     /**
      * @return 包装重量
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("HOSO-WEIGHT")
     public java.math.BigDecimal getHosoWeight() {
         return this.hosoWeight;
     }
@@ -169,6 +176,7 @@ public class MHosozai implements IEntity {
     /**
      * @return 作成日付
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("MAKEDATE")
     public java.math.BigDecimal getMakedate() {
         return this.makedate;
     }
@@ -190,6 +198,7 @@ public class MHosozai implements IEntity {
     /**
      * @return 更新日付
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("UPDDATE")
     public java.math.BigDecimal getUpddate() {
         return this.upddate;
     }
@@ -211,6 +220,7 @@ public class MHosozai implements IEntity {
     /**
      * @return 予備領域
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("FILLER")
     public String getFiller() {
         return this.filler;
     }
@@ -235,7 +245,7 @@ public class MHosozai implements IEntity {
     public static MHosozai get(final Object param1) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (\"HOSO-HINBAN\") = TRIM (:hoso_hinban)");
+        whereList.add("\"HOSO-HINBAN\" = :hoso_hinban");
 
         String sql = "SELECT * FROM M_HOSOZAI WHERE " + String.join(" AND ", whereList);
 
@@ -253,9 +263,6 @@ public class MHosozai implements IEntity {
      * @return 追加件数
      */
     public int insert(final LocalDateTime now, final String id) {
-
-        // 包装品番の採番処理
-        numbering();
 
         // 包装材マスタの登録
         List<String> nameList = new ArrayList<String>();
@@ -291,23 +298,6 @@ public class MHosozai implements IEntity {
         valueList.add(":upddate");
         valueList.add(":filler");
         return String.join("\r\n    , ", valueList);
-    }
-
-    /** 包装品番の採番処理 */
-    private void numbering() {
-
-        if (this.hosoHinban != null) {
-            return;
-        }
-
-        String sql = "SELECT LPAD (CASE WHEN MAX(e.\"HOSO-HINBAN\") IS NULL THEN 0 ELSE MAX(e.\"HOSO-HINBAN\") * 1 END + 1, 25, '0') AS \"HOSO-HINBAN\" FROM M_HOSOZAI e WHERE e.\"HOSO-HINBAN\" < '9999999999999999999999999'";
-
-        Map<String, Object> params = new HashMap<String, Object>();
-
-        jp.co.golorp.emarf.util.MapList mapList = Queries.select(sql, params);
-        Object o = mapList.get(0).get("HOSO-HINBAN");
-
-        this.setHosoHinban(o);
     }
 
     /**
@@ -358,7 +348,7 @@ public class MHosozai implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (\"HOSO-HINBAN\") = TRIM (:hoso_hinban)");
+        whereList.add("\"HOSO-HINBAN\" = :hoso_hinban");
         return String.join(" AND ", whereList);
     }
 

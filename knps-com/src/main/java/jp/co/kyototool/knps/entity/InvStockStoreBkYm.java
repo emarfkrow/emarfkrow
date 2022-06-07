@@ -22,6 +22,7 @@ public class InvStockStoreBkYm implements IEntity {
     /**
      * @return YY
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("YY")
     public String getYy() {
         return this.yy;
     }
@@ -43,6 +44,7 @@ public class InvStockStoreBkYm implements IEntity {
     /**
      * @return MM
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("MM")
     public String getMm() {
         return this.mm;
     }
@@ -64,6 +66,7 @@ public class InvStockStoreBkYm implements IEntity {
     /**
      * @return HINBAN
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("HINBAN")
     public String getHinban() {
         return this.hinban;
     }
@@ -85,6 +88,7 @@ public class InvStockStoreBkYm implements IEntity {
     /**
      * @return STORE_NO
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("STORE_NO")
     public String getStoreNo() {
         return this.storeNo;
     }
@@ -106,6 +110,7 @@ public class InvStockStoreBkYm implements IEntity {
     /**
      * @return COUNTS
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("COUNTS")
     public java.math.BigDecimal getCounts() {
         return this.counts;
     }
@@ -127,6 +132,7 @@ public class InvStockStoreBkYm implements IEntity {
     /**
      * @return HAKO_SU
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("HAKO_SU")
     public java.math.BigDecimal getHakoSu() {
         return this.hakoSu;
     }
@@ -148,6 +154,7 @@ public class InvStockStoreBkYm implements IEntity {
     /**
      * @return STOCK
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("STOCK")
     public java.math.BigDecimal getStock() {
         return this.stock;
     }
@@ -169,6 +176,7 @@ public class InvStockStoreBkYm implements IEntity {
     /**
      * @return TOTAL_SUM_COST
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TOTAL_SUM_COST")
     public java.math.BigDecimal getTotalSumCost() {
         return this.totalSumCost;
     }
@@ -190,6 +198,7 @@ public class InvStockStoreBkYm implements IEntity {
     /**
      * @return AMOUNT
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("AMOUNT")
     public java.math.BigDecimal getAmount() {
         return this.amount;
     }
@@ -214,6 +223,7 @@ public class InvStockStoreBkYm implements IEntity {
     /**
      * @return TIME_STAMP_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CREATE")
     public java.time.LocalDateTime getTimeStampCreate() {
         return this.timeStampCreate;
     }
@@ -244,6 +254,7 @@ public class InvStockStoreBkYm implements IEntity {
     /**
      * @return TIME_STAMP_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CHANGE")
     public java.time.LocalDateTime getTimeStampChange() {
         return this.timeStampChange;
     }
@@ -271,6 +282,7 @@ public class InvStockStoreBkYm implements IEntity {
     /**
      * @return USER_ID_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CREATE")
     public String getUserIdCreate() {
         return this.userIdCreate;
     }
@@ -292,6 +304,7 @@ public class InvStockStoreBkYm implements IEntity {
     /**
      * @return USER_ID_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CHANGE")
     public String getUserIdChange() {
         return this.userIdChange;
     }

@@ -22,6 +22,7 @@ public class MstWs implements IEntity {
     /**
      * @return WS_CODE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("WS_CODE")
     public String getWsCode() {
         return this.wsCode;
     }
@@ -43,6 +44,7 @@ public class MstWs implements IEntity {
     /**
      * @return WS_NAME
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("WS_NAME")
     public String getWsName() {
         return this.wsName;
     }
@@ -64,6 +66,7 @@ public class MstWs implements IEntity {
     /**
      * @return IN_OUT_KBN
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("IN_OUT_KBN")
     public java.math.BigDecimal getInOutKbn() {
         return this.inOutKbn;
     }
@@ -85,6 +88,7 @@ public class MstWs implements IEntity {
     /**
      * @return HUM_NORM_ABILITY
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("HUM_NORM_ABILITY")
     public java.math.BigDecimal getHumNormAbility() {
         return this.humNormAbility;
     }
@@ -106,6 +110,7 @@ public class MstWs implements IEntity {
     /**
      * @return HUM_MAX_ABILITY
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("HUM_MAX_ABILITY")
     public java.math.BigDecimal getHumMaxAbility() {
         return this.humMaxAbility;
     }
@@ -127,6 +132,7 @@ public class MstWs implements IEntity {
     /**
      * @return NORM_MEMBER
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("NORM_MEMBER")
     public java.math.BigDecimal getNormMember() {
         return this.normMember;
     }
@@ -148,6 +154,7 @@ public class MstWs implements IEntity {
     /**
      * @return ADMIN_CODE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ADMIN_CODE")
     public String getAdminCode() {
         return this.adminCode;
     }
@@ -169,6 +176,7 @@ public class MstWs implements IEntity {
     /**
      * @return TEAM_CODE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TEAM_CODE")
     public String getTeamCode() {
         return this.teamCode;
     }
@@ -190,6 +198,7 @@ public class MstWs implements IEntity {
     /**
      * @return SUP_CODE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SUP_CODE")
     public String getSupCode() {
         return this.supCode;
     }
@@ -214,6 +223,7 @@ public class MstWs implements IEntity {
     /**
      * @return TIME_STAMP_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CREATE")
     public java.time.LocalDateTime getTimeStampCreate() {
         return this.timeStampCreate;
     }
@@ -244,6 +254,7 @@ public class MstWs implements IEntity {
     /**
      * @return TIME_STAMP_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CHANGE")
     public java.time.LocalDateTime getTimeStampChange() {
         return this.timeStampChange;
     }
@@ -271,6 +282,7 @@ public class MstWs implements IEntity {
     /**
      * @return USER_ID_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CREATE")
     public String getUserIdCreate() {
         return this.userIdCreate;
     }
@@ -292,6 +304,7 @@ public class MstWs implements IEntity {
     /**
      * @return USER_ID_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CHANGE")
     public String getUserIdChange() {
         return this.userIdChange;
     }
@@ -313,6 +326,7 @@ public class MstWs implements IEntity {
     /**
      * @return DELETE_FLAG
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("DELETE_FLAG")
     public java.math.BigDecimal getDeleteFlag() {
         return this.deleteFlag;
     }

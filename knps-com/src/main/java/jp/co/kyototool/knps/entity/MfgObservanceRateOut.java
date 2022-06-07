@@ -22,6 +22,7 @@ public class MfgObservanceRateOut implements IEntity {
     /**
      * @return YYYY
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("YYYY")
     public String getYyyy() {
         return this.yyyy;
     }
@@ -43,6 +44,7 @@ public class MfgObservanceRateOut implements IEntity {
     /**
      * @return MM
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("MM")
     public String getMm() {
         return this.mm;
     }
@@ -64,6 +66,7 @@ public class MfgObservanceRateOut implements IEntity {
     /**
      * @return WC_CODE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("WC_CODE")
     public String getWcCode() {
         return this.wcCode;
     }
@@ -85,6 +88,7 @@ public class MfgObservanceRateOut implements IEntity {
     /**
      * @return OBSERVANCE_RATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("OBSERVANCE_RATE")
     public java.math.BigDecimal getObservanceRate() {
         return this.observanceRate;
     }
@@ -106,6 +110,7 @@ public class MfgObservanceRateOut implements IEntity {
     /**
      * @return LATE_M5OVER
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("LATE_M5OVER")
     public java.math.BigDecimal getLateM5Over() {
         return this.lateM5Over;
     }
@@ -127,6 +132,7 @@ public class MfgObservanceRateOut implements IEntity {
     /**
      * @return LATE_M5
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("LATE_M5")
     public java.math.BigDecimal getLateM5() {
         return this.lateM5;
     }
@@ -148,6 +154,7 @@ public class MfgObservanceRateOut implements IEntity {
     /**
      * @return LATE_M4
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("LATE_M4")
     public java.math.BigDecimal getLateM4() {
         return this.lateM4;
     }
@@ -169,6 +176,7 @@ public class MfgObservanceRateOut implements IEntity {
     /**
      * @return LATE_M3
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("LATE_M3")
     public java.math.BigDecimal getLateM3() {
         return this.lateM3;
     }
@@ -190,6 +198,7 @@ public class MfgObservanceRateOut implements IEntity {
     /**
      * @return LATE_M2
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("LATE_M2")
     public java.math.BigDecimal getLateM2() {
         return this.lateM2;
     }
@@ -211,6 +220,7 @@ public class MfgObservanceRateOut implements IEntity {
     /**
      * @return LATE_M1
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("LATE_M1")
     public java.math.BigDecimal getLateM1() {
         return this.lateM1;
     }
@@ -232,6 +242,7 @@ public class MfgObservanceRateOut implements IEntity {
     /**
      * @return LATE_0
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("LATE_0")
     public java.math.BigDecimal getLate0() {
         return this.late0;
     }
@@ -253,6 +264,7 @@ public class MfgObservanceRateOut implements IEntity {
     /**
      * @return LATE_P1
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("LATE_P1")
     public java.math.BigDecimal getLateP1() {
         return this.lateP1;
     }
@@ -274,6 +286,7 @@ public class MfgObservanceRateOut implements IEntity {
     /**
      * @return LATE_P2
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("LATE_P2")
     public java.math.BigDecimal getLateP2() {
         return this.lateP2;
     }
@@ -295,6 +308,7 @@ public class MfgObservanceRateOut implements IEntity {
     /**
      * @return LATE_P3
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("LATE_P3")
     public java.math.BigDecimal getLateP3() {
         return this.lateP3;
     }
@@ -316,6 +330,7 @@ public class MfgObservanceRateOut implements IEntity {
     /**
      * @return LATE_P4
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("LATE_P4")
     public java.math.BigDecimal getLateP4() {
         return this.lateP4;
     }
@@ -337,6 +352,7 @@ public class MfgObservanceRateOut implements IEntity {
     /**
      * @return LATE_P5
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("LATE_P5")
     public java.math.BigDecimal getLateP5() {
         return this.lateP5;
     }
@@ -358,6 +374,7 @@ public class MfgObservanceRateOut implements IEntity {
     /**
      * @return LATE_P6
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("LATE_P6")
     public java.math.BigDecimal getLateP6() {
         return this.lateP6;
     }
@@ -379,6 +396,7 @@ public class MfgObservanceRateOut implements IEntity {
     /**
      * @return LATE_P7
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("LATE_P7")
     public java.math.BigDecimal getLateP7() {
         return this.lateP7;
     }
@@ -400,6 +418,7 @@ public class MfgObservanceRateOut implements IEntity {
     /**
      * @return LATE_P8
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("LATE_P8")
     public java.math.BigDecimal getLateP8() {
         return this.lateP8;
     }
@@ -421,6 +440,7 @@ public class MfgObservanceRateOut implements IEntity {
     /**
      * @return LATE_P9
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("LATE_P9")
     public java.math.BigDecimal getLateP9() {
         return this.lateP9;
     }
@@ -442,6 +462,7 @@ public class MfgObservanceRateOut implements IEntity {
     /**
      * @return LATE_P10
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("LATE_P10")
     public java.math.BigDecimal getLateP10() {
         return this.lateP10;
     }
@@ -463,6 +484,7 @@ public class MfgObservanceRateOut implements IEntity {
     /**
      * @return LATE_P11
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("LATE_P11")
     public java.math.BigDecimal getLateP11() {
         return this.lateP11;
     }
@@ -484,6 +506,7 @@ public class MfgObservanceRateOut implements IEntity {
     /**
      * @return LATE_P12
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("LATE_P12")
     public java.math.BigDecimal getLateP12() {
         return this.lateP12;
     }
@@ -505,6 +528,7 @@ public class MfgObservanceRateOut implements IEntity {
     /**
      * @return LATE_P13
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("LATE_P13")
     public java.math.BigDecimal getLateP13() {
         return this.lateP13;
     }
@@ -526,6 +550,7 @@ public class MfgObservanceRateOut implements IEntity {
     /**
      * @return LATE_P14
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("LATE_P14")
     public java.math.BigDecimal getLateP14() {
         return this.lateP14;
     }
@@ -547,6 +572,7 @@ public class MfgObservanceRateOut implements IEntity {
     /**
      * @return LATE_P15
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("LATE_P15")
     public java.math.BigDecimal getLateP15() {
         return this.lateP15;
     }
@@ -568,6 +594,7 @@ public class MfgObservanceRateOut implements IEntity {
     /**
      * @return LATE_P16
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("LATE_P16")
     public java.math.BigDecimal getLateP16() {
         return this.lateP16;
     }
@@ -589,6 +616,7 @@ public class MfgObservanceRateOut implements IEntity {
     /**
      * @return LATE_P17
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("LATE_P17")
     public java.math.BigDecimal getLateP17() {
         return this.lateP17;
     }
@@ -610,6 +638,7 @@ public class MfgObservanceRateOut implements IEntity {
     /**
      * @return LATE_P18
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("LATE_P18")
     public java.math.BigDecimal getLateP18() {
         return this.lateP18;
     }
@@ -631,6 +660,7 @@ public class MfgObservanceRateOut implements IEntity {
     /**
      * @return LATE_P19
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("LATE_P19")
     public java.math.BigDecimal getLateP19() {
         return this.lateP19;
     }
@@ -652,6 +682,7 @@ public class MfgObservanceRateOut implements IEntity {
     /**
      * @return LATE_P20
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("LATE_P20")
     public java.math.BigDecimal getLateP20() {
         return this.lateP20;
     }
@@ -673,6 +704,7 @@ public class MfgObservanceRateOut implements IEntity {
     /**
      * @return LATE_P20OVER
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("LATE_P20OVER")
     public java.math.BigDecimal getLateP20Over() {
         return this.lateP20Over;
     }
@@ -697,6 +729,7 @@ public class MfgObservanceRateOut implements IEntity {
     /**
      * @return TIME_STAMP_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CREATE")
     public java.time.LocalDateTime getTimeStampCreate() {
         return this.timeStampCreate;
     }
@@ -727,6 +760,7 @@ public class MfgObservanceRateOut implements IEntity {
     /**
      * @return TIME_STAMP_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CHANGE")
     public java.time.LocalDateTime getTimeStampChange() {
         return this.timeStampChange;
     }
@@ -754,6 +788,7 @@ public class MfgObservanceRateOut implements IEntity {
     /**
      * @return USER_ID_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CREATE")
     public String getUserIdCreate() {
         return this.userIdCreate;
     }
@@ -775,6 +810,7 @@ public class MfgObservanceRateOut implements IEntity {
     /**
      * @return USER_ID_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CHANGE")
     public String getUserIdChange() {
         return this.userIdChange;
     }

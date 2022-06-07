@@ -22,6 +22,7 @@ public class MSkhin implements IEntity {
     /**
      * @return 販売品番
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("HHINBAN")
     public String getHhinban() {
         return this.hhinban;
     }
@@ -43,6 +44,7 @@ public class MSkhin implements IEntity {
     /**
      * @return ＳＫ区分
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SKKBN")
     public String getSkkbn() {
         return this.skkbn;
     }

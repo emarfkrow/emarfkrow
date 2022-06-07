@@ -22,6 +22,7 @@ public class MfgTotalCostRegLineI implements IEntity {
     /**
      * @return YY
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("YY")
     public String getYy() {
         return this.yy;
     }
@@ -43,6 +44,7 @@ public class MfgTotalCostRegLineI implements IEntity {
     /**
      * @return MM
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("MM")
     public String getMm() {
         return this.mm;
     }
@@ -64,6 +66,7 @@ public class MfgTotalCostRegLineI implements IEntity {
     /**
      * @return PRO_GROUP_NO
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("PRO_GROUP_NO")
     public java.math.BigDecimal getProGroupNo() {
         return this.proGroupNo;
     }
@@ -85,6 +88,7 @@ public class MfgTotalCostRegLineI implements IEntity {
     /**
      * @return HINBAN
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("HINBAN")
     public String getHinban() {
         return this.hinban;
     }
@@ -106,6 +110,7 @@ public class MfgTotalCostRegLineI implements IEntity {
     /**
      * @return ROUTING
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ROUTING")
     public java.math.BigDecimal getRouting() {
         return this.routing;
     }
@@ -127,6 +132,7 @@ public class MfgTotalCostRegLineI implements IEntity {
     /**
      * @return WC_CODE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("WC_CODE")
     public String getWcCode() {
         return this.wcCode;
     }
@@ -148,6 +154,7 @@ public class MfgTotalCostRegLineI implements IEntity {
     /**
      * @return SUP_CODE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SUP_CODE")
     public String getSupCode() {
         return this.supCode;
     }
@@ -169,6 +176,7 @@ public class MfgTotalCostRegLineI implements IEntity {
     /**
      * @return OPE_DETAIL
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("OPE_DETAIL")
     public String getOpeDetail() {
         return this.opeDetail;
     }
@@ -190,6 +198,7 @@ public class MfgTotalCostRegLineI implements IEntity {
     /**
      * @return LAST_ROUTING_KBN
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("LAST_ROUTING_KBN")
     public java.math.BigDecimal getLastRoutingKbn() {
         return this.lastRoutingKbn;
     }
@@ -211,6 +220,7 @@ public class MfgTotalCostRegLineI implements IEntity {
     /**
      * @return TOTAL_COST_TARGET_FLAG
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TOTAL_COST_TARGET_FLAG")
     public java.math.BigDecimal getTotalCostTargetFlag() {
         return this.totalCostTargetFlag;
     }
@@ -232,6 +242,7 @@ public class MfgTotalCostRegLineI implements IEntity {
     /**
      * @return COST_RATE_KBN
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("COST_RATE_KBN")
     public java.math.BigDecimal getCostRateKbn() {
         return this.costRateKbn;
     }
@@ -253,6 +264,7 @@ public class MfgTotalCostRegLineI implements IEntity {
     /**
      * @return UNIT_COST_FIRST
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("UNIT_COST_FIRST")
     public java.math.BigDecimal getUnitCostFirst() {
         return this.unitCostFirst;
     }
@@ -274,6 +286,7 @@ public class MfgTotalCostRegLineI implements IEntity {
     /**
      * @return UNIT_COST_SECOND
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("UNIT_COST_SECOND")
     public java.math.BigDecimal getUnitCostSecond() {
         return this.unitCostSecond;
     }
@@ -295,6 +308,7 @@ public class MfgTotalCostRegLineI implements IEntity {
     /**
      * @return TOTAL_UNIT_COST
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TOTAL_UNIT_COST")
     public java.math.BigDecimal getTotalUnitCost() {
         return this.totalUnitCost;
     }
@@ -316,6 +330,7 @@ public class MfgTotalCostRegLineI implements IEntity {
     /**
      * @return SUM_COST_FIRST
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SUM_COST_FIRST")
     public java.math.BigDecimal getSumCostFirst() {
         return this.sumCostFirst;
     }
@@ -337,6 +352,7 @@ public class MfgTotalCostRegLineI implements IEntity {
     /**
      * @return SUM_COST_SECOND
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SUM_COST_SECOND")
     public java.math.BigDecimal getSumCostSecond() {
         return this.sumCostSecond;
     }
@@ -358,6 +374,7 @@ public class MfgTotalCostRegLineI implements IEntity {
     /**
      * @return TOTAL_SUM_COST
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TOTAL_SUM_COST")
     public java.math.BigDecimal getTotalSumCost() {
         return this.totalSumCost;
     }
@@ -379,6 +396,7 @@ public class MfgTotalCostRegLineI implements IEntity {
     /**
      * @return OPE_COUNTS
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("OPE_COUNTS")
     public java.math.BigDecimal getOpeCounts() {
         return this.opeCounts;
     }
@@ -400,6 +418,7 @@ public class MfgTotalCostRegLineI implements IEntity {
     /**
      * @return OPE_AMOUNTS
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("OPE_AMOUNTS")
     public java.math.BigDecimal getOpeAmounts() {
         return this.opeAmounts;
     }
@@ -421,6 +440,7 @@ public class MfgTotalCostRegLineI implements IEntity {
     /**
      * @return UNIT_WEIGHT
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("UNIT_WEIGHT")
     public java.math.BigDecimal getUnitWeight() {
         return this.unitWeight;
     }
@@ -442,6 +462,7 @@ public class MfgTotalCostRegLineI implements IEntity {
     /**
      * @return OPE_TIME
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("OPE_TIME")
     public java.math.BigDecimal getOpeTime() {
         return this.opeTime;
     }
@@ -463,6 +484,7 @@ public class MfgTotalCostRegLineI implements IEntity {
     /**
      * @return HUM_PRE_TIME
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("HUM_PRE_TIME")
     public java.math.BigDecimal getHumPreTime() {
         return this.humPreTime;
     }
@@ -484,6 +506,7 @@ public class MfgTotalCostRegLineI implements IEntity {
     /**
      * @return HUM_ACT_TIME
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("HUM_ACT_TIME")
     public java.math.BigDecimal getHumActTime() {
         return this.humActTime;
     }
@@ -505,6 +528,7 @@ public class MfgTotalCostRegLineI implements IEntity {
     /**
      * @return MAC_PRE_TIME
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("MAC_PRE_TIME")
     public java.math.BigDecimal getMacPreTime() {
         return this.macPreTime;
     }
@@ -526,6 +550,7 @@ public class MfgTotalCostRegLineI implements IEntity {
     /**
      * @return MAC_ACT_TIME
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("MAC_ACT_TIME")
     public java.math.BigDecimal getMacActTime() {
         return this.macActTime;
     }
@@ -547,6 +572,7 @@ public class MfgTotalCostRegLineI implements IEntity {
     /**
      * @return SUM_UNIT_SUPPLY
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SUM_UNIT_SUPPLY")
     public java.math.BigDecimal getSumUnitSupply() {
         return this.sumUnitSupply;
     }
@@ -568,6 +594,7 @@ public class MfgTotalCostRegLineI implements IEntity {
     /**
      * @return MATERIALS_COST
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("MATERIALS_COST")
     public java.math.BigDecimal getMaterialsCost() {
         return this.materialsCost;
     }
@@ -589,6 +616,7 @@ public class MfgTotalCostRegLineI implements IEntity {
     /**
      * @return HUM_LABOR_COST_FIRST
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("HUM_LABOR_COST_FIRST")
     public java.math.BigDecimal getHumLaborCostFirst() {
         return this.humLaborCostFirst;
     }
@@ -610,6 +638,7 @@ public class MfgTotalCostRegLineI implements IEntity {
     /**
      * @return HUM_EXPENSES_FIRST
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("HUM_EXPENSES_FIRST")
     public java.math.BigDecimal getHumExpensesFirst() {
         return this.humExpensesFirst;
     }
@@ -631,6 +660,7 @@ public class MfgTotalCostRegLineI implements IEntity {
     /**
      * @return HUM_LABOR_COST_SECOND
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("HUM_LABOR_COST_SECOND")
     public java.math.BigDecimal getHumLaborCostSecond() {
         return this.humLaborCostSecond;
     }
@@ -652,6 +682,7 @@ public class MfgTotalCostRegLineI implements IEntity {
     /**
      * @return HUM_EXPENSES_SECOND
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("HUM_EXPENSES_SECOND")
     public java.math.BigDecimal getHumExpensesSecond() {
         return this.humExpensesSecond;
     }
@@ -673,6 +704,7 @@ public class MfgTotalCostRegLineI implements IEntity {
     /**
      * @return MAC_LABOR_COST_FIRST
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("MAC_LABOR_COST_FIRST")
     public java.math.BigDecimal getMacLaborCostFirst() {
         return this.macLaborCostFirst;
     }
@@ -694,6 +726,7 @@ public class MfgTotalCostRegLineI implements IEntity {
     /**
      * @return MAC_EXPENSES_FIRST
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("MAC_EXPENSES_FIRST")
     public java.math.BigDecimal getMacExpensesFirst() {
         return this.macExpensesFirst;
     }
@@ -715,6 +748,7 @@ public class MfgTotalCostRegLineI implements IEntity {
     /**
      * @return MAC_LABOR_COST_SECOND
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("MAC_LABOR_COST_SECOND")
     public java.math.BigDecimal getMacLaborCostSecond() {
         return this.macLaborCostSecond;
     }
@@ -736,6 +770,7 @@ public class MfgTotalCostRegLineI implements IEntity {
     /**
      * @return MAC_EXPENSES_SECOND
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("MAC_EXPENSES_SECOND")
     public java.math.BigDecimal getMacExpensesSecond() {
         return this.macExpensesSecond;
     }
@@ -757,6 +792,7 @@ public class MfgTotalCostRegLineI implements IEntity {
     /**
      * @return DATA_SOURCE_KBN
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("DATA_SOURCE_KBN")
     public java.math.BigDecimal getDataSourceKbn() {
         return this.dataSourceKbn;
     }
@@ -781,6 +817,7 @@ public class MfgTotalCostRegLineI implements IEntity {
     /**
      * @return TIME_STAMP_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CREATE")
     public java.time.LocalDateTime getTimeStampCreate() {
         return this.timeStampCreate;
     }
@@ -811,6 +848,7 @@ public class MfgTotalCostRegLineI implements IEntity {
     /**
      * @return TIME_STAMP_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CHANGE")
     public java.time.LocalDateTime getTimeStampChange() {
         return this.timeStampChange;
     }
@@ -838,6 +876,7 @@ public class MfgTotalCostRegLineI implements IEntity {
     /**
      * @return USER_ID_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CREATE")
     public String getUserIdCreate() {
         return this.userIdCreate;
     }
@@ -859,6 +898,7 @@ public class MfgTotalCostRegLineI implements IEntity {
     /**
      * @return USER_ID_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CHANGE")
     public String getUserIdChange() {
         return this.userIdChange;
     }
@@ -880,6 +920,7 @@ public class MfgTotalCostRegLineI implements IEntity {
     /**
      * @return GROSS_SUM_COST_FIRST
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("GROSS_SUM_COST_FIRST")
     public java.math.BigDecimal getGrossSumCostFirst() {
         return this.grossSumCostFirst;
     }
@@ -901,6 +942,7 @@ public class MfgTotalCostRegLineI implements IEntity {
     /**
      * @return GROSS_SUM_COST_SECOND
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("GROSS_SUM_COST_SECOND")
     public java.math.BigDecimal getGrossSumCostSecond() {
         return this.grossSumCostSecond;
     }
@@ -922,6 +964,7 @@ public class MfgTotalCostRegLineI implements IEntity {
     /**
      * @return TOTAL_GROSS_SUM_COST
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TOTAL_GROSS_SUM_COST")
     public java.math.BigDecimal getTotalGrossSumCost() {
         return this.totalGrossSumCost;
     }
@@ -943,6 +986,7 @@ public class MfgTotalCostRegLineI implements IEntity {
     /**
      * @return GROSS_SUM_UNIT_SUPPLY
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("GROSS_SUM_UNIT_SUPPLY")
     public java.math.BigDecimal getGrossSumUnitSupply() {
         return this.grossSumUnitSupply;
     }

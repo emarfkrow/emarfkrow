@@ -22,6 +22,7 @@ public class MfgKanbanFormHed implements IEntity {
     /**
      * @return KANBAN_FORM_DEF_NAME
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("KANBAN_FORM_DEF_NAME")
     public String getKanbanFormDefName() {
         return this.kanbanFormDefName;
     }
@@ -43,6 +44,7 @@ public class MfgKanbanFormHed implements IEntity {
     /**
      * @return KANBAN_TEMPLATE_NAME
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("KANBAN_TEMPLATE_NAME")
     public String getKanbanTemplateName() {
         return this.kanbanTemplateName;
     }
@@ -64,6 +66,7 @@ public class MfgKanbanFormHed implements IEntity {
     /**
      * @return SELF_PROC_AFTER_TUNNEL_FLG
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SELF_PROC_AFTER_TUNNEL_FLG")
     public String getSelfProcAfterTunnelFlg() {
         return this.selfProcAfterTunnelFlg;
     }
@@ -85,6 +88,7 @@ public class MfgKanbanFormHed implements IEntity {
     /**
      * @return OUTPUT_PER_PAGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("OUTPUT_PER_PAGE")
     public java.math.BigDecimal getOutputPerPage() {
         return this.outputPerPage;
     }
@@ -106,6 +110,7 @@ public class MfgKanbanFormHed implements IEntity {
     /**
      * @return AUTO_SHAPE_FLG
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("AUTO_SHAPE_FLG")
     public String getAutoShapeFlg() {
         return this.autoShapeFlg;
     }
@@ -130,6 +135,7 @@ public class MfgKanbanFormHed implements IEntity {
     /**
      * @return TIME_STAMP_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CREATE")
     public java.time.LocalDateTime getTimeStampCreate() {
         return this.timeStampCreate;
     }
@@ -160,6 +166,7 @@ public class MfgKanbanFormHed implements IEntity {
     /**
      * @return TIME_STAMP_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CHANGE")
     public java.time.LocalDateTime getTimeStampChange() {
         return this.timeStampChange;
     }
@@ -187,6 +194,7 @@ public class MfgKanbanFormHed implements IEntity {
     /**
      * @return USER_ID_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CREATE")
     public String getUserIdCreate() {
         return this.userIdCreate;
     }
@@ -208,6 +216,7 @@ public class MfgKanbanFormHed implements IEntity {
     /**
      * @return USER_ID_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CHANGE")
     public String getUserIdChange() {
         return this.userIdChange;
     }

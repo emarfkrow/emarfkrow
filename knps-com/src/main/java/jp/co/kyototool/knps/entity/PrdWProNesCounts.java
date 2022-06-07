@@ -22,6 +22,7 @@ public class PrdWProNesCounts implements IEntity {
     /**
      * @return PRD_W_PRO_NES_COUNTS_KEY
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("PRD_W_PRO_NES_COUNTS_KEY")
     public java.math.BigDecimal getPrdWProNesCountsKey() {
         return this.prdWProNesCountsKey;
     }
@@ -43,6 +44,7 @@ public class PrdWProNesCounts implements IEntity {
     /**
      * @return PRO_HINBAN
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("PRO_HINBAN")
     public String getProHinban() {
         return this.proHinban;
     }
@@ -67,6 +69,7 @@ public class PrdWProNesCounts implements IEntity {
     /**
      * @return SCHEDULED_DATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SCHEDULED_DATE")
     public java.time.LocalDateTime getScheduledDate() {
         return this.scheduledDate;
     }
@@ -94,6 +97,7 @@ public class PrdWProNesCounts implements IEntity {
     /**
      * @return PRO_NES_COUNTS
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("PRO_NES_COUNTS")
     public java.math.BigDecimal getProNesCounts() {
         return this.proNesCounts;
     }
@@ -115,6 +119,7 @@ public class PrdWProNesCounts implements IEntity {
     /**
      * @return PRO_NES_COMMENT
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("PRO_NES_COMMENT")
     public String getProNesComment() {
         return this.proNesComment;
     }
@@ -136,6 +141,7 @@ public class PrdWProNesCounts implements IEntity {
     /**
      * @return DELETE_FLAG
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("DELETE_FLAG")
     public java.math.BigDecimal getDeleteFlag() {
         return this.deleteFlag;
     }
@@ -160,6 +166,7 @@ public class PrdWProNesCounts implements IEntity {
     /**
      * @return TIME_STAMP_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CREATE")
     public java.time.LocalDateTime getTimeStampCreate() {
         return this.timeStampCreate;
     }
@@ -190,6 +197,7 @@ public class PrdWProNesCounts implements IEntity {
     /**
      * @return TIME_STAMP_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CHANGE")
     public java.time.LocalDateTime getTimeStampChange() {
         return this.timeStampChange;
     }
@@ -217,6 +225,7 @@ public class PrdWProNesCounts implements IEntity {
     /**
      * @return USER_ID_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CREATE")
     public String getUserIdCreate() {
         return this.userIdCreate;
     }
@@ -238,6 +247,7 @@ public class PrdWProNesCounts implements IEntity {
     /**
      * @return USER_ID_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CHANGE")
     public String getUserIdChange() {
         return this.userIdChange;
     }
@@ -259,6 +269,7 @@ public class PrdWProNesCounts implements IEntity {
     /**
      * @return EMP_CODE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("EMP_CODE")
     public String getEmpCode() {
         return this.empCode;
     }

@@ -22,6 +22,7 @@ public class FJuchum implements IEntity {
     /**
      * @return TOKUCD
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TOKUCD")
     public String getTokucd() {
         return this.tokucd;
     }
@@ -43,6 +44,7 @@ public class FJuchum implements IEntity {
     /**
      * @return CHOKUCD
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("CHOKUCD")
     public String getChokucd() {
         return this.chokucd;
     }
@@ -64,6 +66,7 @@ public class FJuchum implements IEntity {
     /**
      * @return HHINBAN
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("HHINBAN")
     public String getHhinban() {
         return this.hhinban;
     }
@@ -85,6 +88,7 @@ public class FJuchum implements IEntity {
     /**
      * @return CHUBAN
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("CHUBAN")
     public String getChuban() {
         return this.chuban;
     }
@@ -106,6 +110,7 @@ public class FJuchum implements IEntity {
     /**
      * @return JUCHUSU
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("JUCHUSU")
     public java.math.BigDecimal getJuchusu() {
         return this.juchusu;
     }
@@ -127,6 +132,7 @@ public class FJuchum implements IEntity {
     /**
      * @return JUCHUNO
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("JUCHUNO")
     public String getJuchuno() {
         return this.juchuno;
     }
@@ -151,6 +157,7 @@ public class FJuchum implements IEntity {
     /**
      * @return TIME_STAMP_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CREATE")
     public java.time.LocalDateTime getTimeStampCreate() {
         return this.timeStampCreate;
     }
@@ -181,6 +188,7 @@ public class FJuchum implements IEntity {
     /**
      * @return TIME_STAMP_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CHANGE")
     public java.time.LocalDateTime getTimeStampChange() {
         return this.timeStampChange;
     }
@@ -208,6 +216,7 @@ public class FJuchum implements IEntity {
     /**
      * @return USER_ID_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CREATE")
     public String getUserIdCreate() {
         return this.userIdCreate;
     }
@@ -229,6 +238,7 @@ public class FJuchum implements IEntity {
     /**
      * @return USER_ID_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CHANGE")
     public String getUserIdChange() {
         return this.userIdChange;
     }

@@ -25,6 +25,7 @@ public class MstCalendar implements IEntity {
     /**
      * @return SERIAL_DAY
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SERIAL_DAY")
     public java.time.LocalDateTime getSerialDay() {
         return this.serialDay;
     }
@@ -52,6 +53,7 @@ public class MstCalendar implements IEntity {
     /**
      * @return WORKING_FLAG
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("WORKING_FLAG")
     public java.math.BigDecimal getWorkingFlag() {
         return this.workingFlag;
     }
@@ -73,6 +75,7 @@ public class MstCalendar implements IEntity {
     /**
      * @return DAY_OF_WEEK
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("DAY_OF_WEEK")
     public java.math.BigDecimal getDayOfWeek() {
         return this.dayOfWeek;
     }
@@ -97,6 +100,7 @@ public class MstCalendar implements IEntity {
     /**
      * @return TIME_STAMP_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CREATE")
     public java.time.LocalDateTime getTimeStampCreate() {
         return this.timeStampCreate;
     }
@@ -127,6 +131,7 @@ public class MstCalendar implements IEntity {
     /**
      * @return TIME_STAMP_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CHANGE")
     public java.time.LocalDateTime getTimeStampChange() {
         return this.timeStampChange;
     }
@@ -154,6 +159,7 @@ public class MstCalendar implements IEntity {
     /**
      * @return USER_ID_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CREATE")
     public String getUserIdCreate() {
         return this.userIdCreate;
     }
@@ -175,6 +181,7 @@ public class MstCalendar implements IEntity {
     /**
      * @return USER_ID_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CHANGE")
     public String getUserIdChange() {
         return this.userIdChange;
     }
@@ -196,6 +203,7 @@ public class MstCalendar implements IEntity {
     /**
      * @return DELETE_FLAG
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("DELETE_FLAG")
     public java.math.BigDecimal getDeleteFlag() {
         return this.deleteFlag;
     }
@@ -217,6 +225,7 @@ public class MstCalendar implements IEntity {
     /**
      * @return N_WORKING
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("N_WORKING")
     public java.math.BigDecimal getNWorking() {
         return this.nWorking;
     }

@@ -22,6 +22,7 @@ public class MstSupplyList implements IEntity {
     /**
      * @return ROUTING_GROUP
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ROUTING_GROUP")
     public java.math.BigDecimal getRoutingGroup() {
         return this.routingGroup;
     }
@@ -43,6 +44,7 @@ public class MstSupplyList implements IEntity {
     /**
      * @return MAN_HINBAN
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("MAN_HINBAN")
     public String getManHinban() {
         return this.manHinban;
     }
@@ -64,6 +66,7 @@ public class MstSupplyList implements IEntity {
     /**
      * @return ROUTING
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ROUTING")
     public java.math.BigDecimal getRouting() {
         return this.routing;
     }
@@ -85,6 +88,7 @@ public class MstSupplyList implements IEntity {
     /**
      * @return SUPPLY_HINBAN
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SUPPLY_HINBAN")
     public String getSupplyHinban() {
         return this.supplyHinban;
     }
@@ -106,6 +110,7 @@ public class MstSupplyList implements IEntity {
     /**
      * @return COUNTS
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("COUNTS")
     public java.math.BigDecimal getCounts() {
         return this.counts;
     }
@@ -127,6 +132,7 @@ public class MstSupplyList implements IEntity {
     /**
      * @return SUPPLY_KBN
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SUPPLY_KBN")
     public java.math.BigDecimal getSupplyKbn() {
         return this.supplyKbn;
     }
@@ -148,6 +154,7 @@ public class MstSupplyList implements IEntity {
     /**
      * @return STAN_COUNTS
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("STAN_COUNTS")
     public java.math.BigDecimal getStanCounts() {
         return this.stanCounts;
     }
@@ -169,6 +176,7 @@ public class MstSupplyList implements IEntity {
     /**
      * @return UNIT_SUPPLY
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("UNIT_SUPPLY")
     public java.math.BigDecimal getUnitSupply() {
         return this.unitSupply;
     }
@@ -193,6 +201,7 @@ public class MstSupplyList implements IEntity {
     /**
      * @return TIME_STAMP_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CREATE")
     public java.time.LocalDateTime getTimeStampCreate() {
         return this.timeStampCreate;
     }
@@ -223,6 +232,7 @@ public class MstSupplyList implements IEntity {
     /**
      * @return TIME_STAMP_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CHANGE")
     public java.time.LocalDateTime getTimeStampChange() {
         return this.timeStampChange;
     }
@@ -250,6 +260,7 @@ public class MstSupplyList implements IEntity {
     /**
      * @return USER_ID_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CREATE")
     public String getUserIdCreate() {
         return this.userIdCreate;
     }
@@ -271,6 +282,7 @@ public class MstSupplyList implements IEntity {
     /**
      * @return USER_ID_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CHANGE")
     public String getUserIdChange() {
         return this.userIdChange;
     }
@@ -292,6 +304,7 @@ public class MstSupplyList implements IEntity {
     /**
      * @return DELETE_FLAG
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("DELETE_FLAG")
     public java.math.BigDecimal getDeleteFlag() {
         return this.deleteFlag;
     }

@@ -22,6 +22,7 @@ public class MstPhase implements IEntity {
     /**
      * @return PHASE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("PHASE")
     public java.math.BigDecimal getPhase() {
         return this.phase;
     }
@@ -43,6 +44,7 @@ public class MstPhase implements IEntity {
     /**
      * @return YY
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("YY")
     public java.math.BigDecimal getYy() {
         return this.yy;
     }
@@ -67,6 +69,7 @@ public class MstPhase implements IEntity {
     /**
      * @return PHASE_FROM
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("PHASE_FROM")
     public java.time.LocalDateTime getPhaseFrom() {
         return this.phaseFrom;
     }
@@ -97,6 +100,7 @@ public class MstPhase implements IEntity {
     /**
      * @return PHASE_TO
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("PHASE_TO")
     public java.time.LocalDateTime getPhaseTo() {
         return this.phaseTo;
     }

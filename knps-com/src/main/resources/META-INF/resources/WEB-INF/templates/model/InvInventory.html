@@ -9,13 +9,6 @@
 
 </script>
 <script th:src="@{/model/InvInventoryGridColumns.js}"></script>
-<script th:src="@{/model/MstLocationGridColumns.js}"></script>
-<script th:src="@{/model/MstSubinvGridColumns.js}"></script>
-<script th:src="@{/model/MstSupplierGridColumns.js}"></script>
-<script th:src="@{/model/InvStockProcessSupplyGridColumns.js}"></script>
-<script th:src="@{/model/MstSupplierBkGridColumns.js}"></script>
-<script th:src="@{/model/MstTaxGridColumns.js}"></script>
-<script th:src="@{/model/MstStoreManGridColumns.js}"></script>
 <script th:src="@{/model/MstReasonGridColumns.js}"></script>
 </head>
 <body>
@@ -25,7 +18,7 @@
       <fieldset>
         <legend th:text="#{InvInventory.legend}">legend</legend>
         <div id="locationCode">
-          <label for="InvInventory.locationCode" th:text="#{InvInventory.locationCode}">LOCATION_CODE</label><span id="InvInventory.locationCode"></span><input type="hidden" id="InvInventory.locationCode" name="InvInventory.locationCode" class="primaryKey" /><a id="InvInventory.locationCode" th:href="@{/model/MstLocationS.html}" target="dialog" class="primaryKey refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="InvInventory.locationName" class="refer" data-json="MstLocationSearch.json" data-srcDef="LOCATION_CODE:InvInventory.locationCode" data-destDef="InvInventory.locationName:LOCATION_NAME"></span>
+          <label for="InvInventory.locationCode" th:text="#{InvInventory.locationCode}">LOCATION_CODE</label><span id="InvInventory.locationCode"></span><input type="hidden" id="InvInventory.locationCode" name="InvInventory.locationCode" class="primaryKey" />
         </div>
         <div id="hinban">
           <label for="InvInventory.hinban" th:text="#{InvInventory.hinban}">HINBAN</label><span id="InvInventory.hinban"></span><input type="hidden" id="InvInventory.hinban" name="InvInventory.hinban" class="primaryKey" />

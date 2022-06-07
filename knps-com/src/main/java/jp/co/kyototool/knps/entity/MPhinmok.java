@@ -22,6 +22,7 @@ public class MPhinmok implements IEntity {
     /**
      * @return 部品品番
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("PHINBAN")
     public String getPhinban() {
         return this.phinban;
     }
@@ -43,6 +44,7 @@ public class MPhinmok implements IEntity {
     /**
      * @return 部品名
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("PHINMEI")
     public String getPhinmei() {
         return this.phinmei;
     }
@@ -64,6 +66,7 @@ public class MPhinmok implements IEntity {
     /**
      * @return 部品名カナ
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("PHINMEIK")
     public String getPhinmeik() {
         return this.phinmeik;
     }
@@ -85,6 +88,7 @@ public class MPhinmok implements IEntity {
     /**
      * @return 生産品番
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("HINBAN")
     public String getHinban() {
         return this.hinban;
     }
@@ -106,6 +110,7 @@ public class MPhinmok implements IEntity {
     /**
      * @return 部品価格
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("P-KAKAKU")
     public java.math.BigDecimal getPKakaku() {
         return this.pKakaku;
     }
@@ -127,6 +132,7 @@ public class MPhinmok implements IEntity {
     /**
      * @return 部品原価
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("P-GENKA")
     public java.math.BigDecimal getPGenka() {
         return this.pGenka;
     }
@@ -148,6 +154,7 @@ public class MPhinmok implements IEntity {
     /**
      * @return 部品区分
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("P-KBN")
     public String getPKbn() {
         return this.pKbn;
     }
@@ -169,6 +176,7 @@ public class MPhinmok implements IEntity {
     /**
      * @return 期首残高
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("KISHUZAN")
     public java.math.BigDecimal getKishuzan() {
         return this.kishuzan;
     }
@@ -190,6 +198,7 @@ public class MPhinmok implements IEntity {
     /**
      * @return 基準在庫
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("KIJYUNZAIKO")
     public java.math.BigDecimal getKijyunzaiko() {
         return this.kijyunzaiko;
     }
@@ -211,6 +220,7 @@ public class MPhinmok implements IEntity {
     /**
      * @return 発注点
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("HACHUTEN")
     public java.math.BigDecimal getHachuten() {
         return this.hachuten;
     }
@@ -232,6 +242,7 @@ public class MPhinmok implements IEntity {
     /**
      * @return 登録区分
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TOUROKUKBN")
     public String getTourokukbn() {
         return this.tourokukbn;
     }
@@ -253,6 +264,7 @@ public class MPhinmok implements IEntity {
     /**
      * @return 伝票提出区分
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("DENPYOTKBN")
     public String getDenpyotkbn() {
         return this.denpyotkbn;
     }
@@ -274,6 +286,7 @@ public class MPhinmok implements IEntity {
     /**
      * @return 受注禁止区分
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("JUKINKBN")
     public String getJukinkbn() {
         return this.jukinkbn;
     }
@@ -295,6 +308,7 @@ public class MPhinmok implements IEntity {
     /**
      * @return 削除区分
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("DLTFLG")
     public java.math.BigDecimal getDltflg() {
         return this.dltflg;
     }
@@ -316,6 +330,7 @@ public class MPhinmok implements IEntity {
     /**
      * @return 更新日
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("UPDDATE")
     public java.math.BigDecimal getUpddate() {
         return this.upddate;
     }
@@ -337,6 +352,7 @@ public class MPhinmok implements IEntity {
     /**
      * @return 予備領域
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("FILLER")
     public String getFiller() {
         return this.filler;
     }

@@ -22,6 +22,7 @@ public class MSalehin implements IEntity {
     /**
      * @return セール区分
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SALEKBN")
     public String getSalekbn() {
         return this.salekbn;
     }
@@ -43,6 +44,7 @@ public class MSalehin implements IEntity {
     /**
      * @return セール名
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SALEMEI")
     public String getSalemei() {
         return this.salemei;
     }
@@ -64,6 +66,7 @@ public class MSalehin implements IEntity {
     /**
      * @return 販売品番
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("HHINBAN")
     public String getHhinban() {
         return this.hhinban;
     }
@@ -85,6 +88,7 @@ public class MSalehin implements IEntity {
     /**
      * @return 開始年
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("KAISI-YY")
     public java.math.BigDecimal getKaisiYy() {
         return this.kaisiYy;
     }
@@ -106,6 +110,7 @@ public class MSalehin implements IEntity {
     /**
      * @return 開始月
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("KAISI-MM")
     public java.math.BigDecimal getKaisiMm() {
         return this.kaisiMm;
     }
@@ -127,6 +132,7 @@ public class MSalehin implements IEntity {
     /**
      * @return 開始日
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("KAISI-DD")
     public java.math.BigDecimal getKaisiDd() {
         return this.kaisiDd;
     }
@@ -148,6 +154,7 @@ public class MSalehin implements IEntity {
     /**
      * @return 終了年
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SHURYO-YY")
     public java.math.BigDecimal getShuryoYy() {
         return this.shuryoYy;
     }
@@ -169,6 +176,7 @@ public class MSalehin implements IEntity {
     /**
      * @return 終了月
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SHURYO-MM")
     public java.math.BigDecimal getShuryoMm() {
         return this.shuryoMm;
     }
@@ -190,6 +198,7 @@ public class MSalehin implements IEntity {
     /**
      * @return 終了日
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SHURYO-DD")
     public java.math.BigDecimal getShuryoDd() {
         return this.shuryoDd;
     }
@@ -211,6 +220,7 @@ public class MSalehin implements IEntity {
     /**
      * @return 予備領域
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("FILLER")
     public String getFiller() {
         return this.filler;
     }

@@ -22,6 +22,7 @@ public class PrdStoreMainteTeamHed implements IEntity {
     /**
      * @return MFG_TEAM_CODE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("MFG_TEAM_CODE")
     public String getMfgTeamCode() {
         return this.mfgTeamCode;
     }
@@ -43,6 +44,7 @@ public class PrdStoreMainteTeamHed implements IEntity {
     /**
      * @return MFG_TEAM_NAME
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("MFG_TEAM_NAME")
     public String getMfgTeamName() {
         return this.mfgTeamName;
     }
@@ -67,6 +69,7 @@ public class PrdStoreMainteTeamHed implements IEntity {
     /**
      * @return TIME_STAMP_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CREATE")
     public java.time.LocalDateTime getTimeStampCreate() {
         return this.timeStampCreate;
     }
@@ -97,6 +100,7 @@ public class PrdStoreMainteTeamHed implements IEntity {
     /**
      * @return TIME_STAMP_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CHANGE")
     public java.time.LocalDateTime getTimeStampChange() {
         return this.timeStampChange;
     }
@@ -124,6 +128,7 @@ public class PrdStoreMainteTeamHed implements IEntity {
     /**
      * @return USER_ID_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CREATE")
     public String getUserIdCreate() {
         return this.userIdCreate;
     }
@@ -145,6 +150,7 @@ public class PrdStoreMainteTeamHed implements IEntity {
     /**
      * @return USER_ID_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CHANGE")
     public String getUserIdChange() {
         return this.userIdChange;
     }

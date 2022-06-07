@@ -22,6 +22,7 @@ public class MYosin implements IEntity {
     /**
      * @return 集金先コード
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SHUKINCD")
     public java.math.BigDecimal getShukincd() {
         return this.shukincd;
     }
@@ -43,6 +44,7 @@ public class MYosin implements IEntity {
     /**
      * @return 本社コード
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("HONSHACD")
     public java.math.BigDecimal getHonshacd() {
         return this.honshacd;
     }
@@ -64,6 +66,7 @@ public class MYosin implements IEntity {
     /**
      * @return 略得意先名
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("RTOKUMEI")
     public String getRtokumei() {
         return this.rtokumei;
     }
@@ -85,6 +88,7 @@ public class MYosin implements IEntity {
     /**
      * @return 信用ランク
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SINYO-RANK")
     public String getSinyoRank() {
         return this.sinyoRank;
     }
@@ -106,6 +110,7 @@ public class MYosin implements IEntity {
     /**
      * @return 取引信用保険額
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SINYO-HOKEN")
     public java.math.BigDecimal getSinyoHoken() {
         return this.sinyoHoken;
     }
@@ -127,6 +132,7 @@ public class MYosin implements IEntity {
     /**
      * @return 営業保証金
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("EIGYO-HOSYOKIN")
     public java.math.BigDecimal getEigyoHosyokin() {
         return this.eigyoHosyokin;
     }
@@ -148,6 +154,7 @@ public class MYosin implements IEntity {
     /**
      * @return 担保株式数
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TANPO-KABUSU")
     public java.math.BigDecimal getTanpoKabusu() {
         return this.tanpoKabusu;
     }
@@ -169,6 +176,7 @@ public class MYosin implements IEntity {
     /**
      * @return 出資額
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SHUSHIGAKU")
     public java.math.BigDecimal getShushigaku() {
         return this.shushigaku;
     }
@@ -190,6 +198,7 @@ public class MYosin implements IEntity {
     /**
      * @return 貸倒懸念先引当金
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("KASIDAORE-HIKIATE")
     public java.math.BigDecimal getKasidaoreHikiate() {
         return this.kasidaoreHikiate;
     }
@@ -211,6 +220,7 @@ public class MYosin implements IEntity {
     /**
      * @return 出荷限度額
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SHUKA-GENDO")
     public java.math.BigDecimal getShukaGendo() {
         return this.shukaGendo;
     }
@@ -232,6 +242,7 @@ public class MYosin implements IEntity {
     /**
      * @return マスター登録日
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TOUROKUBI")
     public java.math.BigDecimal getTourokubi() {
         return this.tourokubi;
     }
@@ -253,6 +264,7 @@ public class MYosin implements IEntity {
     /**
      * @return 更新日付
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("UPDDATE")
     public java.math.BigDecimal getUpddate() {
         return this.upddate;
     }
@@ -274,6 +286,7 @@ public class MYosin implements IEntity {
     /**
      * @return 予備領域
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("FILLER")
     public String getFiller() {
         return this.filler;
     }

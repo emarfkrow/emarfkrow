@@ -22,6 +22,7 @@ public class InvWorkMnthStock implements IEntity {
     /**
      * @return DATA_ID
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("DATA_ID")
     public String getDataId() {
         return this.dataId;
     }
@@ -43,6 +44,7 @@ public class InvWorkMnthStock implements IEntity {
     /**
      * @return HINBAN
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("HINBAN")
     public String getHinban() {
         return this.hinban;
     }
@@ -64,6 +66,7 @@ public class InvWorkMnthStock implements IEntity {
     /**
      * @return ROUTING_GROUP
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ROUTING_GROUP")
     public java.math.BigDecimal getRoutingGroup() {
         return this.routingGroup;
     }
@@ -85,6 +88,7 @@ public class InvWorkMnthStock implements IEntity {
     /**
      * @return ROUTING
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ROUTING")
     public java.math.BigDecimal getRouting() {
         return this.routing;
     }
@@ -106,6 +110,7 @@ public class InvWorkMnthStock implements IEntity {
     /**
      * @return SUM_LOT_SIZE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SUM_LOT_SIZE")
     public java.math.BigDecimal getSumLotSize() {
         return this.sumLotSize;
     }

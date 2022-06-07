@@ -9,13 +9,6 @@
 
 </script>
 <script th:src="@{/model/InvSurveyResultHisOtherGridColumns.js}"></script>
-<script th:src="@{/model/MstLocationGridColumns.js}"></script>
-<script th:src="@{/model/MstSubinvGridColumns.js}"></script>
-<script th:src="@{/model/MstSupplierGridColumns.js}"></script>
-<script th:src="@{/model/InvStockProcessSupplyGridColumns.js}"></script>
-<script th:src="@{/model/MstSupplierBkGridColumns.js}"></script>
-<script th:src="@{/model/MstTaxGridColumns.js}"></script>
-<script th:src="@{/model/MstStoreManGridColumns.js}"></script>
 </head>
 <body>
   <div layout:fragment="article">
@@ -24,7 +17,9 @@
       <fieldset>
         <legend th:text="#{InvSurveyResultHisOtherS.legend}">legend</legend>
         <div id="locationCode">
-          <label for="InvSurveyResultHisOther.locationCode" th:text="#{InvSurveyResultHisOther.locationCode}">LOCATION_CODE</label><input type="text" id="InvSurveyResultHisOther.locationCode" name="InvSurveyResultHisOther.locationCode" maxlength="10" data-json="MstLocationSearch.json" data-srcDef="LOCATION_CODE:InvSurveyResultHisOther.locationCode" data-destDef="InvSurveyResultHisOther.locationName:LOCATION_NAME" /><a id="InvSurveyResultHisOther.locationCode" th:href="@{/model/MstLocationS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="InvSurveyResultHisOther.locationName" class="refer" data-json="MstLocationSearch.json" data-srcDef="LOCATION_CODE:InvSurveyResultHisOther.locationCode" data-destDef="InvSurveyResultHisOther.locationName:LOCATION_NAME"></span>
+          <fieldset id="InvSurveyResultHisOther.locationCodeList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:location_code" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{InvSurveyResultHisOther.locationCode}">LOCATION_CODE</legend>
+          </fieldset>
         </div>
         <div id="resultBranchNo">
           <label for="InvSurveyResultHisOther.resultBranchNo" th:text="#{InvSurveyResultHisOther.resultBranchNo}">RESULT_BRANCH_NO</label><input type="text" id="InvSurveyResultHisOther.resultBranchNo" name="InvSurveyResultHisOther.resultBranchNo" maxlength="2" />

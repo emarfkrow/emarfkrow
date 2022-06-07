@@ -22,6 +22,7 @@ public class MstId implements IEntity {
     /**
      * @return ID_TYPE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ID_TYPE")
     public java.math.BigDecimal getIdType() {
         return this.idType;
     }
@@ -43,6 +44,7 @@ public class MstId implements IEntity {
     /**
      * @return ID
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ID")
     public java.math.BigDecimal getId() {
         return this.id;
     }
@@ -64,6 +66,7 @@ public class MstId implements IEntity {
     /**
      * @return ID_MAX
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ID_MAX")
     public java.math.BigDecimal getIdMax() {
         return this.idMax;
     }
@@ -85,6 +88,7 @@ public class MstId implements IEntity {
     /**
      * @return ID_MIN
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ID_MIN")
     public java.math.BigDecimal getIdMin() {
         return this.idMin;
     }
@@ -106,6 +110,7 @@ public class MstId implements IEntity {
     /**
      * @return ID_COMMENT
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ID_COMMENT")
     public String getIdComment() {
         return this.idComment;
     }
@@ -130,6 +135,7 @@ public class MstId implements IEntity {
     /**
      * @return TIME_STAMP_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CREATE")
     public java.time.LocalDateTime getTimeStampCreate() {
         return this.timeStampCreate;
     }
@@ -160,6 +166,7 @@ public class MstId implements IEntity {
     /**
      * @return TIME_STAMP_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CHANGE")
     public java.time.LocalDateTime getTimeStampChange() {
         return this.timeStampChange;
     }

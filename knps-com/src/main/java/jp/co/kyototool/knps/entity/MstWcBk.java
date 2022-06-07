@@ -22,6 +22,7 @@ public class MstWcBk implements IEntity {
     /**
      * @return YY
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("YY")
     public String getYy() {
         return this.yy;
     }
@@ -43,6 +44,7 @@ public class MstWcBk implements IEntity {
     /**
      * @return WC_CODE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("WC_CODE")
     public String getWcCode() {
         return this.wcCode;
     }
@@ -64,6 +66,7 @@ public class MstWcBk implements IEntity {
     /**
      * @return WC_NAME
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("WC_NAME")
     public String getWcName() {
         return this.wcName;
     }
@@ -85,6 +88,7 @@ public class MstWcBk implements IEntity {
     /**
      * @return NORM_LT
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("NORM_LT")
     public java.math.BigDecimal getNormLt() {
         return this.normLt;
     }
@@ -106,6 +110,7 @@ public class MstWcBk implements IEntity {
     /**
      * @return MAC_NORM_ABILITY
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("MAC_NORM_ABILITY")
     public java.math.BigDecimal getMacNormAbility() {
         return this.macNormAbility;
     }
@@ -127,6 +132,7 @@ public class MstWcBk implements IEntity {
     /**
      * @return MAC_MAX_ABILITY
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("MAC_MAX_ABILITY")
     public java.math.BigDecimal getMacMaxAbility() {
         return this.macMaxAbility;
     }
@@ -148,6 +154,7 @@ public class MstWcBk implements IEntity {
     /**
      * @return MAC_COUNTS
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("MAC_COUNTS")
     public java.math.BigDecimal getMacCounts() {
         return this.macCounts;
     }
@@ -169,6 +176,7 @@ public class MstWcBk implements IEntity {
     /**
      * @return ACT_GATHER_PAT_NO
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ACT_GATHER_PAT_NO")
     public String getActGatherPatNo() {
         return this.actGatherPatNo;
     }
@@ -190,6 +198,7 @@ public class MstWcBk implements IEntity {
     /**
      * @return OPE_FORM_PAT_NO
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("OPE_FORM_PAT_NO")
     public String getOpeFormPatNo() {
         return this.opeFormPatNo;
     }
@@ -211,6 +220,7 @@ public class MstWcBk implements IEntity {
     /**
      * @return DELAY_ALERT_DAYS
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("DELAY_ALERT_DAYS")
     public java.math.BigDecimal getDelayAlertDays() {
         return this.delayAlertDays;
     }
@@ -232,6 +242,7 @@ public class MstWcBk implements IEntity {
     /**
      * @return ATO_CONTROL
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ATO_CONTROL")
     public String getAtoControl() {
         return this.atoControl;
     }
@@ -253,6 +264,7 @@ public class MstWcBk implements IEntity {
     /**
      * @return ROUTING_CODE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ROUTING_CODE")
     public String getRoutingCode() {
         return this.routingCode;
     }
@@ -274,6 +286,7 @@ public class MstWcBk implements IEntity {
     /**
      * @return IN_OUT_KBN
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("IN_OUT_KBN")
     public java.math.BigDecimal getInOutKbn() {
         return this.inOutKbn;
     }
@@ -295,6 +308,7 @@ public class MstWcBk implements IEntity {
     /**
      * @return WS_CODE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("WS_CODE")
     public String getWsCode() {
         return this.wsCode;
     }
@@ -316,6 +330,7 @@ public class MstWcBk implements IEntity {
     /**
      * @return COST_CENTER_CODE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("COST_CENTER_CODE")
     public String getCostCenterCode() {
         return this.costCenterCode;
     }
@@ -337,6 +352,7 @@ public class MstWcBk implements IEntity {
     /**
      * @return NECK_KBN
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("NECK_KBN")
     public java.math.BigDecimal getNeckKbn() {
         return this.neckKbn;
     }
@@ -358,6 +374,7 @@ public class MstWcBk implements IEntity {
     /**
      * @return SUB_INV_CODE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SUB_INV_CODE")
     public String getSubInvCode() {
         return this.subInvCode;
     }
@@ -379,6 +396,7 @@ public class MstWcBk implements IEntity {
     /**
      * @return STOCK_CONTROL
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("STOCK_CONTROL")
     public java.math.BigDecimal getStockControl() {
         return this.stockControl;
     }
@@ -403,6 +421,7 @@ public class MstWcBk implements IEntity {
     /**
      * @return TIME_STAMP_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CREATE")
     public java.time.LocalDateTime getTimeStampCreate() {
         return this.timeStampCreate;
     }
@@ -433,6 +452,7 @@ public class MstWcBk implements IEntity {
     /**
      * @return TIME_STAMP_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CHANGE")
     public java.time.LocalDateTime getTimeStampChange() {
         return this.timeStampChange;
     }
@@ -460,6 +480,7 @@ public class MstWcBk implements IEntity {
     /**
      * @return USER_ID_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CREATE")
     public String getUserIdCreate() {
         return this.userIdCreate;
     }
@@ -481,6 +502,7 @@ public class MstWcBk implements IEntity {
     /**
      * @return USER_ID_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CHANGE")
     public String getUserIdChange() {
         return this.userIdChange;
     }
@@ -502,6 +524,7 @@ public class MstWcBk implements IEntity {
     /**
      * @return DELETE_FLAG
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("DELETE_FLAG")
     public java.math.BigDecimal getDeleteFlag() {
         return this.deleteFlag;
     }
@@ -523,6 +546,7 @@ public class MstWcBk implements IEntity {
     /**
      * @return ST_ALERT_RATIO
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ST_ALERT_RATIO")
     public java.math.BigDecimal getStAlertRatio() {
         return this.stAlertRatio;
     }
@@ -544,6 +568,7 @@ public class MstWcBk implements IEntity {
     /**
      * @return ACT_INPUT_TYPE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ACT_INPUT_TYPE")
     public java.math.BigDecimal getActInputType() {
         return this.actInputType;
     }
@@ -565,6 +590,7 @@ public class MstWcBk implements IEntity {
     /**
      * @return NICHIJI_SHIME_F
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("NICHIJI_SHIME_F")
     public String getNichijiShimeF() {
         return this.nichijiShimeF;
     }

@@ -3,7 +3,7 @@
  */
 
 let InvStockProcessDetGridColumns = [
-    Column.refer('LOCATION_CODE', Messages['InvStockProcessDetGrid.locationCode'], 100, 'primaryKey', 'LOCATION_NAME'),
+    Column.cell('LOCATION_CODE', Messages['InvStockProcessDetGrid.locationCode'], 100, 'primaryKey', null),
     Column.cell('HINBAN', Messages['InvStockProcessDetGrid.hinban'], 250, 'primaryKey', null),
     Column.cell('IN_OUT_YMD', Messages['InvStockProcessDetGrid.inOutYmd'], 100, 'primaryKey', null),
     Column.cell('IN_OUT_SEQ', Messages['InvStockProcessDetGrid.inOutSeq'], 100, 'primaryKey', null),

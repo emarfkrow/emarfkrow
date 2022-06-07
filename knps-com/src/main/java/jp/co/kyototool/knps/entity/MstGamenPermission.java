@@ -22,6 +22,7 @@ public class MstGamenPermission implements IEntity {
     /**
      * @return COMP_CODE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("COMP_CODE")
     public java.math.BigDecimal getCompCode() {
         return this.compCode;
     }
@@ -43,6 +44,7 @@ public class MstGamenPermission implements IEntity {
     /**
      * @return BUSINESS_NO
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("BUSINESS_NO")
     public java.math.BigDecimal getBusinessNo() {
         return this.businessNo;
     }
@@ -64,6 +66,7 @@ public class MstGamenPermission implements IEntity {
     /**
      * @return GAMEN_ID
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("GAMEN_ID")
     public String getGamenId() {
         return this.gamenId;
     }
@@ -85,6 +88,7 @@ public class MstGamenPermission implements IEntity {
     /**
      * @return PERMISSION
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("PERMISSION")
     public java.math.BigDecimal getPermission() {
         return this.permission;
     }
@@ -109,6 +113,7 @@ public class MstGamenPermission implements IEntity {
     /**
      * @return TIME_STAMP_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CREATE")
     public java.time.LocalDateTime getTimeStampCreate() {
         return this.timeStampCreate;
     }
@@ -139,6 +144,7 @@ public class MstGamenPermission implements IEntity {
     /**
      * @return TIME_STAMP_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CHANGE")
     public java.time.LocalDateTime getTimeStampChange() {
         return this.timeStampChange;
     }
@@ -166,6 +172,7 @@ public class MstGamenPermission implements IEntity {
     /**
      * @return USER_ID_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CREATE")
     public String getUserIdCreate() {
         return this.userIdCreate;
     }
@@ -187,6 +194,7 @@ public class MstGamenPermission implements IEntity {
     /**
      * @return USER_ID_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CHANGE")
     public String getUserIdChange() {
         return this.userIdChange;
     }
@@ -208,6 +216,7 @@ public class MstGamenPermission implements IEntity {
     /**
      * @return DELETE_FLAG
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("DELETE_FLAG")
     public java.math.BigDecimal getDeleteFlag() {
         return this.deleteFlag;
     }

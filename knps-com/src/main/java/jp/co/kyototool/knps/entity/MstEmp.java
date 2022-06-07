@@ -22,6 +22,7 @@ public class MstEmp implements IEntity {
     /**
      * @return EMP_CODE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("EMP_CODE")
     public String getEmpCode() {
         return this.empCode;
     }
@@ -43,6 +44,7 @@ public class MstEmp implements IEntity {
     /**
      * @return EMP_NAME
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("EMP_NAME")
     public String getEmpName() {
         return this.empName;
     }
@@ -64,6 +66,7 @@ public class MstEmp implements IEntity {
     /**
      * @return POSITION
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("POSITION")
     public java.math.BigDecimal getPosition() {
         return this.position;
     }
@@ -85,6 +88,7 @@ public class MstEmp implements IEntity {
     /**
      * @return COMP_CODE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("COMP_CODE")
     public java.math.BigDecimal getCompCode() {
         return this.compCode;
     }
@@ -106,6 +110,7 @@ public class MstEmp implements IEntity {
     /**
      * @return PASSWORD
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("PASSWORD")
     public String getPassword() {
         return this.password;
     }
@@ -127,6 +132,7 @@ public class MstEmp implements IEntity {
     /**
      * @return TEL_NO
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TEL_NO")
     public String getTelNo() {
         return this.telNo;
     }
@@ -151,6 +157,7 @@ public class MstEmp implements IEntity {
     /**
      * @return TIME_STAMP_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CREATE")
     public java.time.LocalDateTime getTimeStampCreate() {
         return this.timeStampCreate;
     }
@@ -181,6 +188,7 @@ public class MstEmp implements IEntity {
     /**
      * @return TIME_STAMP_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CHANGE")
     public java.time.LocalDateTime getTimeStampChange() {
         return this.timeStampChange;
     }
@@ -208,6 +216,7 @@ public class MstEmp implements IEntity {
     /**
      * @return USER_ID_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CREATE")
     public String getUserIdCreate() {
         return this.userIdCreate;
     }
@@ -229,6 +238,7 @@ public class MstEmp implements IEntity {
     /**
      * @return USER_ID_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CHANGE")
     public String getUserIdChange() {
         return this.userIdChange;
     }
@@ -250,6 +260,7 @@ public class MstEmp implements IEntity {
     /**
      * @return DELETE_FLAG
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("DELETE_FLAG")
     public java.math.BigDecimal getDeleteFlag() {
         return this.deleteFlag;
     }
@@ -271,6 +282,7 @@ public class MstEmp implements IEntity {
     /**
      * @return MAIL_ADDRESS
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("MAIL_ADDRESS")
     public String getMailAddress() {
         return this.mailAddress;
     }
@@ -292,6 +304,7 @@ public class MstEmp implements IEntity {
     /**
      * @return DIVISION_CODE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("DIVISION_CODE")
     public String getDivisionCode() {
         return this.divisionCode;
     }

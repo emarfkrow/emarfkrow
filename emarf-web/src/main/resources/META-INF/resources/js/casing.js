@@ -12,14 +12,25 @@ let Casing = {
 			return null;
 		}
 
-		// 一旦、数字か小文字の直後の大文字の前に「_」を挿入
-		// password→password、EMAIL→EMAIL、sampleY_1→sample_Y_1、MUser→MUser）
+		// パスカルケース対応
+		// 数字・小文字直後の大文字の前に「_」を挿入
+		// password→password、EMAIL→EMAIL、sampleY_1→sample_Y_1、MUser→MUser、HOSO-HINBAN→HOSO-HINBAN）
 		let snake = s.replace(/([0-9a-z])([A-Z])/g, "$1_$2");
 
+		// キャメルケース・パスカルケース対応
 		// 大文字の次に小文字がある場合は大文字の前に「_」を挿入
-		// password→password、EMAIL→EMAIL、sampleY_1→sample_Y_1、MUser→M_User）
+		// password→password、EMAIL→EMAIL、sampleY_1→sample_Y_1、MUser→M_User、HOSO-HINBAN→HOSO-HINBAN）
 		snake = snake.replace(/([A-Z][a-z])/g, "_$1");
+
+		// ケバブケース対応
+		// 「-」を「_」に置換
+		// password→password、EMAIL→EMAIL、sampleY_1→sample_Y_1、MUser→M_User、HOSO-HINBAN→HOSO_HINBAN）
+		snake = snake.replace(/\-/g, "_");
+
+		// 先頭の「_」を除去
 		snake = snake.replace(/^_/g, "");
+
+		// 重複する「_」を除去
 		snake = snake.replace(/__/g, "_");
 
 		return snake.toLowerCase();

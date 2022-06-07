@@ -51,7 +51,6 @@ exam-job
 
 
 
-
 アプリケーションエラー		AppError
 システムエラー				SysError
 i18n						MessageResolver
@@ -82,3 +81,9 @@ Json取得					JsonServlet
 【exam-com】Entity
 【exam-job】バッチクラス
 【exam-web】アクションクラス・フォームクラス
+
+■主キー
+	・数値：自動採番
+	・固定長：自動採番・「0」埋め
+	・可変長：必須入力
+	※外部キーなら参照モデル

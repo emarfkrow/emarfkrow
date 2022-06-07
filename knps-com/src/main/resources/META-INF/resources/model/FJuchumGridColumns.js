@@ -5,7 +5,7 @@
 let FJuchumGridColumns = [
     Column.cell('TOKUCD', Messages['FJuchumGrid.tokucd'], 80, 'primaryKey', null),
     Column.text('CHOKUCD', Messages['FJuchumGrid.chokucd'], 80, '', null),
-    Column.cell('HHINBAN', Messages['FJuchumGrid.hhinban'], 200, 'primaryKey', null),
+    Column.refer('HHINBAN', Messages['FJuchumGrid.hhinban'], 200, 'primaryKey', 'HHINMEI'),
     Column.text('CHUBAN', Messages['FJuchumGrid.chuban'], 100, '', null),
     Column.text('JUCHUSU', Messages['FJuchumGrid.juchusu'], 70, '', null),
     Column.cell('JUCHUNO', Messages['FJuchumGrid.juchuno'], 160, 'primaryKey', null),

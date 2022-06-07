@@ -22,6 +22,7 @@ public class InvStockManagementInv implements IEntity {
     /**
      * @return INV_PHASE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("INV_PHASE")
     public java.math.BigDecimal getInvPhase() {
         return this.invPhase;
     }
@@ -43,6 +44,7 @@ public class InvStockManagementInv implements IEntity {
     /**
      * @return INV_PHASE_MONTH
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("INV_PHASE_MONTH")
     public java.math.BigDecimal getInvPhaseMonth() {
         return this.invPhaseMonth;
     }
@@ -64,6 +66,7 @@ public class InvStockManagementInv implements IEntity {
     /**
      * @return STOCK_MANAGEMENT_SECTION
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("STOCK_MANAGEMENT_SECTION")
     public java.math.BigDecimal getStockManagementSection() {
         return this.stockManagementSection;
     }
@@ -85,6 +88,7 @@ public class InvStockManagementInv implements IEntity {
     /**
      * @return HINBAN
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("HINBAN")
     public String getHinban() {
         return this.hinban;
     }
@@ -106,6 +110,7 @@ public class InvStockManagementInv implements IEntity {
     /**
      * @return SUB_INV_CODE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SUB_INV_CODE")
     public String getSubInvCode() {
         return this.subInvCode;
     }
@@ -127,6 +132,7 @@ public class InvStockManagementInv implements IEntity {
     /**
      * @return INV_STOCK
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("INV_STOCK")
     public java.math.BigDecimal getInvStock() {
         return this.invStock;
     }
@@ -148,6 +154,7 @@ public class InvStockManagementInv implements IEntity {
     /**
      * @return STOCK
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("STOCK")
     public java.math.BigDecimal getStock() {
         return this.stock;
     }
@@ -169,6 +176,7 @@ public class InvStockManagementInv implements IEntity {
     /**
      * @return UNIT_COST
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("UNIT_COST")
     public java.math.BigDecimal getUnitCost() {
         return this.unitCost;
     }
@@ -193,6 +201,7 @@ public class InvStockManagementInv implements IEntity {
     /**
      * @return LAST_IN_OUT_DATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("LAST_IN_OUT_DATE")
     public java.time.LocalDateTime getLastInOutDate() {
         return this.lastInOutDate;
     }
@@ -223,6 +232,7 @@ public class InvStockManagementInv implements IEntity {
     /**
      * @return TIME_STAMP_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CREATE")
     public java.time.LocalDateTime getTimeStampCreate() {
         return this.timeStampCreate;
     }
@@ -253,6 +263,7 @@ public class InvStockManagementInv implements IEntity {
     /**
      * @return TIME_STAMP_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CHANGE")
     public java.time.LocalDateTime getTimeStampChange() {
         return this.timeStampChange;
     }
@@ -280,6 +291,7 @@ public class InvStockManagementInv implements IEntity {
     /**
      * @return USER_ID_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CREATE")
     public String getUserIdCreate() {
         return this.userIdCreate;
     }
@@ -301,6 +313,7 @@ public class InvStockManagementInv implements IEntity {
     /**
      * @return USER_ID_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CHANGE")
     public String getUserIdChange() {
         return this.userIdChange;
     }
@@ -322,6 +335,7 @@ public class InvStockManagementInv implements IEntity {
     /**
      * @return DELETE_FLAG
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("DELETE_FLAG")
     public java.math.BigDecimal getDeleteFlag() {
         return this.deleteFlag;
     }
@@ -343,6 +357,7 @@ public class InvStockManagementInv implements IEntity {
     /**
      * @return STORE_NO
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("STORE_NO")
     public String getStoreNo() {
         return this.storeNo;
     }

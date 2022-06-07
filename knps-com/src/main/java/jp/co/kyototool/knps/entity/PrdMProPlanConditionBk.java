@@ -22,6 +22,7 @@ public class PrdMProPlanConditionBk implements IEntity {
     /**
      * @return YYYY
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("YYYY")
     public String getYyyy() {
         return this.yyyy;
     }
@@ -43,6 +44,7 @@ public class PrdMProPlanConditionBk implements IEntity {
     /**
      * @return MM
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("MM")
     public String getMm() {
         return this.mm;
     }
@@ -64,6 +66,7 @@ public class PrdMProPlanConditionBk implements IEntity {
     /**
      * @return OPE_DAYS
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("OPE_DAYS")
     public java.math.BigDecimal getOpeDays() {
         return this.opeDays;
     }
@@ -85,6 +88,7 @@ public class PrdMProPlanConditionBk implements IEntity {
     /**
      * @return FIXED_STATUS
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("FIXED_STATUS")
     public java.math.BigDecimal getFixedStatus() {
         return this.fixedStatus;
     }
@@ -109,6 +113,7 @@ public class PrdMProPlanConditionBk implements IEntity {
     /**
      * @return TIME_STAMP_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CREATE")
     public java.time.LocalDateTime getTimeStampCreate() {
         return this.timeStampCreate;
     }
@@ -139,6 +144,7 @@ public class PrdMProPlanConditionBk implements IEntity {
     /**
      * @return TIME_STAMP_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CHANGE")
     public java.time.LocalDateTime getTimeStampChange() {
         return this.timeStampChange;
     }
@@ -166,6 +172,7 @@ public class PrdMProPlanConditionBk implements IEntity {
     /**
      * @return USER_ID_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CREATE")
     public String getUserIdCreate() {
         return this.userIdCreate;
     }
@@ -187,6 +194,7 @@ public class PrdMProPlanConditionBk implements IEntity {
     /**
      * @return USER_ID_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CHANGE")
     public String getUserIdChange() {
         return this.userIdChange;
     }

@@ -22,6 +22,7 @@ public class MRate implements IEntity {
     /**
      * @return 年
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("YY")
     public java.math.BigDecimal getYy() {
         return this.yy;
     }
@@ -43,6 +44,7 @@ public class MRate implements IEntity {
     /**
      * @return 月
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("MM")
     public java.math.BigDecimal getMm() {
         return this.mm;
     }
@@ -64,6 +66,7 @@ public class MRate implements IEntity {
     /**
      * @return 日
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("DD")
     public java.math.BigDecimal getDd() {
         return this.dd;
     }
@@ -85,6 +88,7 @@ public class MRate implements IEntity {
     /**
      * @return 通貨
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TUUKA")
     public String getTuuka() {
         return this.tuuka;
     }
@@ -106,6 +110,7 @@ public class MRate implements IEntity {
     /**
      * @return 中値
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TTM")
     public java.math.BigDecimal getTtm() {
         return this.ttm;
     }
@@ -127,6 +132,7 @@ public class MRate implements IEntity {
     /**
      * @return 売相場
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TTS")
     public java.math.BigDecimal getTts() {
         return this.tts;
     }
@@ -148,6 +154,7 @@ public class MRate implements IEntity {
     /**
      * @return 買相場
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TTB")
     public java.math.BigDecimal getTtb() {
         return this.ttb;
     }
@@ -169,6 +176,7 @@ public class MRate implements IEntity {
     /**
      * @return 売相場－公表レート
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TTS-ORG")
     public java.math.BigDecimal getTtsOrg() {
         return this.ttsOrg;
     }
@@ -190,6 +198,7 @@ public class MRate implements IEntity {
     /**
      * @return 買相場－公表レート
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TTB-ORG")
     public java.math.BigDecimal getTtbOrg() {
         return this.ttbOrg;
     }
@@ -211,6 +220,7 @@ public class MRate implements IEntity {
     /**
      * @return 最終更新日
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("LSTYMD")
     public java.math.BigDecimal getLstymd() {
         return this.lstymd;
     }
@@ -232,6 +242,7 @@ public class MRate implements IEntity {
     /**
      * @return 最終更新時間
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("LSTHM")
     public java.math.BigDecimal getLsthm() {
         return this.lsthm;
     }
@@ -253,6 +264,7 @@ public class MRate implements IEntity {
     /**
      * @return 更新日
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("UPDDATE")
     public java.math.BigDecimal getUpddate() {
         return this.upddate;
     }

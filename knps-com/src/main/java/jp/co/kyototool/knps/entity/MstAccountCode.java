@@ -22,6 +22,7 @@ public class MstAccountCode implements IEntity {
     /**
      * @return ACCOUNT_CODE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ACCOUNT_CODE")
     public String getAccountCode() {
         return this.accountCode;
     }
@@ -43,6 +44,7 @@ public class MstAccountCode implements IEntity {
     /**
      * @return ACCOUNT_NAME
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ACCOUNT_NAME")
     public String getAccountName() {
         return this.accountName;
     }
@@ -64,6 +66,7 @@ public class MstAccountCode implements IEntity {
     /**
      * @return EXPENSE_KBN1
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("EXPENSE_KBN1")
     public java.math.BigDecimal getExpenseKbn1() {
         return this.expenseKbn1;
     }
@@ -85,6 +88,7 @@ public class MstAccountCode implements IEntity {
     /**
      * @return EXPENSE_KBN2
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("EXPENSE_KBN2")
     public java.math.BigDecimal getExpenseKbn2() {
         return this.expenseKbn2;
     }
@@ -106,6 +110,7 @@ public class MstAccountCode implements IEntity {
     /**
      * @return EXPENSE_KBN3
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("EXPENSE_KBN3")
     public java.math.BigDecimal getExpenseKbn3() {
         return this.expenseKbn3;
     }
@@ -130,6 +135,7 @@ public class MstAccountCode implements IEntity {
     /**
      * @return TIME_STAMP_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CREATE")
     public java.time.LocalDateTime getTimeStampCreate() {
         return this.timeStampCreate;
     }
@@ -160,6 +166,7 @@ public class MstAccountCode implements IEntity {
     /**
      * @return TIME_STAMP_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CHANGE")
     public java.time.LocalDateTime getTimeStampChange() {
         return this.timeStampChange;
     }
@@ -187,6 +194,7 @@ public class MstAccountCode implements IEntity {
     /**
      * @return USER_ID_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CREATE")
     public String getUserIdCreate() {
         return this.userIdCreate;
     }
@@ -208,6 +216,7 @@ public class MstAccountCode implements IEntity {
     /**
      * @return USER_ID_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CHANGE")
     public String getUserIdChange() {
         return this.userIdChange;
     }
@@ -229,6 +238,7 @@ public class MstAccountCode implements IEntity {
     /**
      * @return DELETE_FLAG
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("DELETE_FLAG")
     public java.math.BigDecimal getDeleteFlag() {
         return this.deleteFlag;
     }

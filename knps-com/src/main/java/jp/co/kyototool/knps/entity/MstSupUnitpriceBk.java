@@ -22,6 +22,7 @@ public class MstSupUnitpriceBk implements IEntity {
     /**
      * @return YY
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("YY")
     public String getYy() {
         return this.yy;
     }
@@ -43,6 +44,7 @@ public class MstSupUnitpriceBk implements IEntity {
     /**
      * @return HINBAN
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("HINBAN")
     public String getHinban() {
         return this.hinban;
     }
@@ -64,6 +66,7 @@ public class MstSupUnitpriceBk implements IEntity {
     /**
      * @return SUP_CODE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SUP_CODE")
     public String getSupCode() {
         return this.supCode;
     }
@@ -85,6 +88,7 @@ public class MstSupUnitpriceBk implements IEntity {
     /**
      * @return SUBINV_CODE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SUBINV_CODE")
     public String getSubinvCode() {
         return this.subinvCode;
     }
@@ -106,6 +110,7 @@ public class MstSupUnitpriceBk implements IEntity {
     /**
      * @return PROCURE_LT
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("PROCURE_LT")
     public java.math.BigDecimal getProcureLt() {
         return this.procureLt;
     }
@@ -130,6 +135,7 @@ public class MstSupUnitpriceBk implements IEntity {
     /**
      * @return TIME_STAMP_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CREATE")
     public java.time.LocalDateTime getTimeStampCreate() {
         return this.timeStampCreate;
     }
@@ -160,6 +166,7 @@ public class MstSupUnitpriceBk implements IEntity {
     /**
      * @return TIME_STAMP_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CHANGE")
     public java.time.LocalDateTime getTimeStampChange() {
         return this.timeStampChange;
     }
@@ -187,6 +194,7 @@ public class MstSupUnitpriceBk implements IEntity {
     /**
      * @return USER_ID_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CREATE")
     public String getUserIdCreate() {
         return this.userIdCreate;
     }
@@ -208,6 +216,7 @@ public class MstSupUnitpriceBk implements IEntity {
     /**
      * @return USER_ID_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CHANGE")
     public String getUserIdChange() {
         return this.userIdChange;
     }
@@ -229,6 +238,7 @@ public class MstSupUnitpriceBk implements IEntity {
     /**
      * @return DELETE_FLAG
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("DELETE_FLAG")
     public java.math.BigDecimal getDeleteFlag() {
         return this.deleteFlag;
     }
@@ -250,6 +260,7 @@ public class MstSupUnitpriceBk implements IEntity {
     /**
      * @return MUSHO_HACCHU_F
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("MUSHO_HACCHU_F")
     public String getMushoHacchuF() {
         return this.mushoHacchuF;
     }

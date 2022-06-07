@@ -9,13 +9,6 @@
 
 </script>
 <script th:src="@{/model/InvSalesInventoryGridColumns.js}"></script>
-<script th:src="@{/model/MstLocationGridColumns.js}"></script>
-<script th:src="@{/model/MstSubinvGridColumns.js}"></script>
-<script th:src="@{/model/MstSupplierGridColumns.js}"></script>
-<script th:src="@{/model/InvStockProcessSupplyGridColumns.js}"></script>
-<script th:src="@{/model/MstSupplierBkGridColumns.js}"></script>
-<script th:src="@{/model/MstTaxGridColumns.js}"></script>
-<script th:src="@{/model/MstStoreManGridColumns.js}"></script>
 </head>
 <body>
   <div layout:fragment="article">
@@ -33,7 +26,9 @@
           <label for="InvSalesInventory.inventory" th:text="#{InvSalesInventory.inventory}">INVENTORY</label><input type="text" id="InvSalesInventory.inventory" name="InvSalesInventory.inventory" maxlength="11" />
         </div>
         <div id="locationCode">
-          <label for="InvSalesInventory.locationCode" th:text="#{InvSalesInventory.locationCode}">LOCATION_CODE</label><input type="text" id="InvSalesInventory.locationCode" name="InvSalesInventory.locationCode" maxlength="10" data-json="MstLocationSearch.json" data-srcDef="LOCATION_CODE:InvSalesInventory.locationCode" data-destDef="InvSalesInventory.locationName:LOCATION_NAME" /><a id="InvSalesInventory.locationCode" th:href="@{/model/MstLocationS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="InvSalesInventory.locationName" class="refer" data-json="MstLocationSearch.json" data-srcDef="LOCATION_CODE:InvSalesInventory.locationCode" data-destDef="InvSalesInventory.locationName:LOCATION_NAME"></span>
+          <fieldset id="InvSalesInventory.locationCodeList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:location_code" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{InvSalesInventory.locationCode}">LOCATION_CODE</legend>
+          </fieldset>
         </div>
         <div id="lastDownloadDate">
           <label for="InvSalesInventory.lastDownloadDate_1" th:text="#{InvSalesInventory.lastDownloadDate}">LAST_DOWNLOAD_DATE</label><input type="date" id="InvSalesInventory.lastDownloadDate_1" name="InvSalesInventory.lastDownloadDate_1" maxlength="7" />～<input type="date" id="InvSalesInventory.lastDownloadDate_2" name="InvSalesInventory.lastDownloadDate_2" maxlength="7" />

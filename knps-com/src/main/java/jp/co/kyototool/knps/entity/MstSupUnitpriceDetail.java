@@ -22,6 +22,7 @@ public class MstSupUnitpriceDetail implements IEntity {
     /**
      * @return HINBAN
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("HINBAN")
     public String getHinban() {
         return this.hinban;
     }
@@ -43,6 +44,7 @@ public class MstSupUnitpriceDetail implements IEntity {
     /**
      * @return SUP_CODE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SUP_CODE")
     public String getSupCode() {
         return this.supCode;
     }
@@ -64,6 +66,7 @@ public class MstSupUnitpriceDetail implements IEntity {
     /**
      * @return MIN_ORDER
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("MIN_ORDER")
     public java.math.BigDecimal getMinOrder() {
         return this.minOrder;
     }
@@ -85,6 +88,7 @@ public class MstSupUnitpriceDetail implements IEntity {
     /**
      * @return STAN_COUNTS
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("STAN_COUNTS")
     public java.math.BigDecimal getStanCounts() {
         return this.stanCounts;
     }
@@ -106,6 +110,7 @@ public class MstSupUnitpriceDetail implements IEntity {
     /**
      * @return ORDER_UNIT
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ORDER_UNIT")
     public java.math.BigDecimal getOrderUnit() {
         return this.orderUnit;
     }
@@ -127,6 +132,7 @@ public class MstSupUnitpriceDetail implements IEntity {
     /**
      * @return STANDARD_UNITPRICE_FLAG
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("STANDARD_UNITPRICE_FLAG")
     public java.math.BigDecimal getStandardUnitpriceFlag() {
         return this.standardUnitpriceFlag;
     }
@@ -151,6 +157,7 @@ public class MstSupUnitpriceDetail implements IEntity {
     /**
      * @return TIME_STAMP_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CREATE")
     public java.time.LocalDateTime getTimeStampCreate() {
         return this.timeStampCreate;
     }
@@ -181,6 +188,7 @@ public class MstSupUnitpriceDetail implements IEntity {
     /**
      * @return TIME_STAMP_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CHANGE")
     public java.time.LocalDateTime getTimeStampChange() {
         return this.timeStampChange;
     }
@@ -208,6 +216,7 @@ public class MstSupUnitpriceDetail implements IEntity {
     /**
      * @return USER_ID_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CREATE")
     public String getUserIdCreate() {
         return this.userIdCreate;
     }
@@ -229,6 +238,7 @@ public class MstSupUnitpriceDetail implements IEntity {
     /**
      * @return USER_ID_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CHANGE")
     public String getUserIdChange() {
         return this.userIdChange;
     }
@@ -250,6 +260,7 @@ public class MstSupUnitpriceDetail implements IEntity {
     /**
      * @return DELETE_FLAG
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("DELETE_FLAG")
     public java.math.BigDecimal getDeleteFlag() {
         return this.deleteFlag;
     }
@@ -271,6 +282,7 @@ public class MstSupUnitpriceDetail implements IEntity {
     /**
      * @return GAIKA_KB
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("GAIKA_KB")
     public String getGaikaKb() {
         return this.gaikaKb;
     }
@@ -292,6 +304,7 @@ public class MstSupUnitpriceDetail implements IEntity {
     /**
      * @return GAIKA_TK
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("GAIKA_TK")
     public java.math.BigDecimal getGaikaTk() {
         return this.gaikaTk;
     }

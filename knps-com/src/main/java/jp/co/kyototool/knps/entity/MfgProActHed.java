@@ -22,6 +22,7 @@ public class MfgProActHed implements IEntity {
     /**
      * @return PRO_NO
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("PRO_NO")
     public String getProNo() {
         return this.proNo;
     }
@@ -43,6 +44,7 @@ public class MfgProActHed implements IEntity {
     /**
      * @return PRO_ROUTING_BRANCH
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("PRO_ROUTING_BRANCH")
     public java.math.BigDecimal getProRoutingBranch() {
         return this.proRoutingBranch;
     }
@@ -64,6 +66,7 @@ public class MfgProActHed implements IEntity {
     /**
      * @return WC_CODE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("WC_CODE")
     public String getWcCode() {
         return this.wcCode;
     }
@@ -85,6 +88,7 @@ public class MfgProActHed implements IEntity {
     /**
      * @return CHARGE_NO
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("CHARGE_NO")
     public java.math.BigDecimal getChargeNo() {
         return this.chargeNo;
     }
@@ -106,6 +110,7 @@ public class MfgProActHed implements IEntity {
     /**
      * @return MAC_CODE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("MAC_CODE")
     public String getMacCode() {
         return this.macCode;
     }
@@ -127,6 +132,7 @@ public class MfgProActHed implements IEntity {
     /**
      * @return HUM_PRE_TIME
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("HUM_PRE_TIME")
     public java.math.BigDecimal getHumPreTime() {
         return this.humPreTime;
     }
@@ -148,6 +154,7 @@ public class MfgProActHed implements IEntity {
     /**
      * @return HUM_ACT_TIME
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("HUM_ACT_TIME")
     public java.math.BigDecimal getHumActTime() {
         return this.humActTime;
     }
@@ -169,6 +176,7 @@ public class MfgProActHed implements IEntity {
     /**
      * @return MAC_PRE_TIME
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("MAC_PRE_TIME")
     public java.math.BigDecimal getMacPreTime() {
         return this.macPreTime;
     }
@@ -190,6 +198,7 @@ public class MfgProActHed implements IEntity {
     /**
      * @return MAC_ACT_TIME
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("MAC_ACT_TIME")
     public java.math.BigDecimal getMacActTime() {
         return this.macActTime;
     }
@@ -211,6 +220,7 @@ public class MfgProActHed implements IEntity {
     /**
      * @return GOOD_COUNTS
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("GOOD_COUNTS")
     public java.math.BigDecimal getGoodCounts() {
         return this.goodCounts;
     }
@@ -232,6 +242,7 @@ public class MfgProActHed implements IEntity {
     /**
      * @return REJECT_COUNTS
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("REJECT_COUNTS")
     public java.math.BigDecimal getRejectCounts() {
         return this.rejectCounts;
     }
@@ -253,6 +264,7 @@ public class MfgProActHed implements IEntity {
     /**
      * @return UNIT_CODE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("UNIT_CODE")
     public String getUnitCode() {
         return this.unitCode;
     }
@@ -274,6 +286,7 @@ public class MfgProActHed implements IEntity {
     /**
      * @return ACT_LT
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ACT_LT")
     public java.math.BigDecimal getActLt() {
         return this.actLt;
     }
@@ -295,6 +308,7 @@ public class MfgProActHed implements IEntity {
     /**
      * @return ACT_WAIT_TIME
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ACT_WAIT_TIME")
     public java.math.BigDecimal getActWaitTime() {
         return this.actWaitTime;
     }
@@ -316,6 +330,7 @@ public class MfgProActHed implements IEntity {
     /**
      * @return EXP_WAIT_TIME
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("EXP_WAIT_TIME")
     public java.math.BigDecimal getExpWaitTime() {
         return this.expWaitTime;
     }
@@ -337,6 +352,7 @@ public class MfgProActHed implements IEntity {
     /**
      * @return EXP_PRE_TIME
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("EXP_PRE_TIME")
     public java.math.BigDecimal getExpPreTime() {
         return this.expPreTime;
     }
@@ -358,6 +374,7 @@ public class MfgProActHed implements IEntity {
     /**
      * @return EXP_PRO_TIME
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("EXP_PRO_TIME")
     public java.math.BigDecimal getExpProTime() {
         return this.expProTime;
     }
@@ -379,6 +396,7 @@ public class MfgProActHed implements IEntity {
     /**
      * @return EXP_REST_TIME
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("EXP_REST_TIME")
     public java.math.BigDecimal getExpRestTime() {
         return this.expRestTime;
     }
@@ -400,6 +418,7 @@ public class MfgProActHed implements IEntity {
     /**
      * @return EXP_CHOKO_TIME
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("EXP_CHOKO_TIME")
     public java.math.BigDecimal getExpChokoTime() {
         return this.expChokoTime;
     }
@@ -421,6 +440,7 @@ public class MfgProActHed implements IEntity {
     /**
      * @return EXP_TROUB_TIME
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("EXP_TROUB_TIME")
     public java.math.BigDecimal getExpTroubTime() {
         return this.expTroubTime;
     }
@@ -442,6 +462,7 @@ public class MfgProActHed implements IEntity {
     /**
      * @return EXP_SELF_MOD_TIME
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("EXP_SELF_MOD_TIME")
     public java.math.BigDecimal getExpSelfModTime() {
         return this.expSelfModTime;
     }
@@ -463,6 +484,7 @@ public class MfgProActHed implements IEntity {
     /**
      * @return EXP_OTHR_MOD_TIME
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("EXP_OTHR_MOD_TIME")
     public java.math.BigDecimal getExpOthrModTime() {
         return this.expOthrModTime;
     }
@@ -484,6 +506,7 @@ public class MfgProActHed implements IEntity {
     /**
      * @return EXP_ETC_TIME
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("EXP_ETC_TIME")
     public java.math.BigDecimal getExpEtcTime() {
         return this.expEtcTime;
     }
@@ -505,6 +528,7 @@ public class MfgProActHed implements IEntity {
     /**
      * @return SET_STOCK_NOTICE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SET_STOCK_NOTICE")
     public java.math.BigDecimal getSetStockNotice() {
         return this.setStockNotice;
     }
@@ -526,6 +550,7 @@ public class MfgProActHed implements IEntity {
     /**
      * @return PRO_STOCK_NOTICE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("PRO_STOCK_NOTICE")
     public java.math.BigDecimal getProStockNotice() {
         return this.proStockNotice;
     }
@@ -547,6 +572,7 @@ public class MfgProActHed implements IEntity {
     /**
      * @return VOLUME_WEIGHT
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("VOLUME_WEIGHT")
     public java.math.BigDecimal getVolumeWeight() {
         return this.volumeWeight;
     }
@@ -571,6 +597,7 @@ public class MfgProActHed implements IEntity {
     /**
      * @return BEG_DATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("BEG_DATE")
     public java.time.LocalDateTime getBegDate() {
         return this.begDate;
     }
@@ -601,6 +628,7 @@ public class MfgProActHed implements IEntity {
     /**
      * @return END_DATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("END_DATE")
     public java.time.LocalDateTime getEndDate() {
         return this.endDate;
     }
@@ -628,6 +656,7 @@ public class MfgProActHed implements IEntity {
     /**
      * @return END_MATERIAL_WEIGHT
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("END_MATERIAL_WEIGHT")
     public java.math.BigDecimal getEndMaterialWeight() {
         return this.endMaterialWeight;
     }
@@ -652,6 +681,7 @@ public class MfgProActHed implements IEntity {
     /**
      * @return TIME_STAMP_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CREATE")
     public java.time.LocalDateTime getTimeStampCreate() {
         return this.timeStampCreate;
     }
@@ -682,6 +712,7 @@ public class MfgProActHed implements IEntity {
     /**
      * @return TIME_STAMP_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CHANGE")
     public java.time.LocalDateTime getTimeStampChange() {
         return this.timeStampChange;
     }
@@ -709,6 +740,7 @@ public class MfgProActHed implements IEntity {
     /**
      * @return USER_ID_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CREATE")
     public String getUserIdCreate() {
         return this.userIdCreate;
     }
@@ -730,6 +762,7 @@ public class MfgProActHed implements IEntity {
     /**
      * @return USER_ID_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CHANGE")
     public String getUserIdChange() {
         return this.userIdChange;
     }

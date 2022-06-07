@@ -22,6 +22,7 @@ public class MfgProActStatus implements IEntity {
     /**
      * @return CHILD_PLAN_NO
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("CHILD_PLAN_NO")
     public String getChildPlanNo() {
         return this.childPlanNo;
     }
@@ -43,6 +44,7 @@ public class MfgProActStatus implements IEntity {
     /**
      * @return PRO_NO
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("PRO_NO")
     public String getProNo() {
         return this.proNo;
     }
@@ -64,6 +66,7 @@ public class MfgProActStatus implements IEntity {
     /**
      * @return ACT_STATUS
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ACT_STATUS")
     public java.math.BigDecimal getActStatus() {
         return this.actStatus;
     }
@@ -85,6 +88,7 @@ public class MfgProActStatus implements IEntity {
     /**
      * @return USER_ID
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID")
     public String getUserId() {
         return this.userId;
     }
@@ -109,6 +113,7 @@ public class MfgProActStatus implements IEntity {
     /**
      * @return TIME_STAMP_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CREATE")
     public java.time.LocalDateTime getTimeStampCreate() {
         return this.timeStampCreate;
     }

@@ -22,6 +22,7 @@ public class MfgKanbanShipping implements IEntity {
     /**
      * @return KANBAN_ID
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("KANBAN_ID")
     public String getKanbanId() {
         return this.kanbanId;
     }
@@ -43,6 +44,7 @@ public class MfgKanbanShipping implements IEntity {
     /**
      * @return HINBAN
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("HINBAN")
     public String getHinban() {
         return this.hinban;
     }
@@ -64,6 +66,7 @@ public class MfgKanbanShipping implements IEntity {
     /**
      * @return FOR_PRO_CODE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("FOR_PRO_CODE")
     public String getForProCode() {
         return this.forProCode;
     }
@@ -85,6 +88,7 @@ public class MfgKanbanShipping implements IEntity {
     /**
      * @return FOR_PRO_LOCATION_CODE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("FOR_PRO_LOCATION_CODE")
     public String getForProLocationCode() {
         return this.forProLocationCode;
     }
@@ -106,6 +110,7 @@ public class MfgKanbanShipping implements IEntity {
     /**
      * @return KANBAN_ACC_COUNTS
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("KANBAN_ACC_COUNTS")
     public java.math.BigDecimal getKanbanAccCounts() {
         return this.kanbanAccCounts;
     }
@@ -127,6 +132,7 @@ public class MfgKanbanShipping implements IEntity {
     /**
      * @return COUNTS
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("COUNTS")
     public java.math.BigDecimal getCounts() {
         return this.counts;
     }

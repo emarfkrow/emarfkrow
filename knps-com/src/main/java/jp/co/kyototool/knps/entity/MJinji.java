@@ -22,6 +22,7 @@ public class MJinji implements IEntity {
     /**
      * @return 社員番号
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SHAIN-NO")
     public java.math.BigDecimal getShainNo() {
         return this.shainNo;
     }
@@ -43,6 +44,7 @@ public class MJinji implements IEntity {
     /**
      * @return 社員名
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SHAIN-MEI")
     public String getShainMei() {
         return this.shainMei;
     }
@@ -64,6 +66,7 @@ public class MJinji implements IEntity {
     /**
      * @return 人事所属コード
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("JINJI-SHOZOKUCD")
     public java.math.BigDecimal getJinjiShozokucd() {
         return this.jinjiShozokucd;
     }
@@ -85,6 +88,7 @@ public class MJinji implements IEntity {
     /**
      * @return 予備領域
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("FILLER")
     public String getFiller() {
         return this.filler;
     }

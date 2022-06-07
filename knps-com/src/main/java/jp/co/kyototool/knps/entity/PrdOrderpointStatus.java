@@ -22,6 +22,7 @@ public class PrdOrderpointStatus implements IEntity {
     /**
      * @return HINBAN
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("HINBAN")
     public String getHinban() {
         return this.hinban;
     }
@@ -43,6 +44,7 @@ public class PrdOrderpointStatus implements IEntity {
     /**
      * @return PUBLISHED_COUNTS
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("PUBLISHED_COUNTS")
     public java.math.BigDecimal getPublishedCounts() {
         return this.publishedCounts;
     }
@@ -67,6 +69,7 @@ public class PrdOrderpointStatus implements IEntity {
     /**
      * @return TIME_STAMP_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CREATE")
     public java.time.LocalDateTime getTimeStampCreate() {
         return this.timeStampCreate;
     }
@@ -97,6 +100,7 @@ public class PrdOrderpointStatus implements IEntity {
     /**
      * @return TIME_STAMP_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CHANGE")
     public java.time.LocalDateTime getTimeStampChange() {
         return this.timeStampChange;
     }
@@ -124,6 +128,7 @@ public class PrdOrderpointStatus implements IEntity {
     /**
      * @return USER_ID_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CREATE")
     public String getUserIdCreate() {
         return this.userIdCreate;
     }
@@ -145,6 +150,7 @@ public class PrdOrderpointStatus implements IEntity {
     /**
      * @return USER_ID_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CHANGE")
     public String getUserIdChange() {
         return this.userIdChange;
     }

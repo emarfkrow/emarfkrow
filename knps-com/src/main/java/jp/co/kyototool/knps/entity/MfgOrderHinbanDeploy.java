@@ -22,6 +22,7 @@ public class MfgOrderHinbanDeploy implements IEntity {
     /**
      * @return REQID
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("REQID")
     public String getReqid() {
         return this.reqid;
     }
@@ -43,6 +44,7 @@ public class MfgOrderHinbanDeploy implements IEntity {
     /**
      * @return HINBAN
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("HINBAN")
     public String getHinban() {
         return this.hinban;
     }
@@ -64,6 +66,7 @@ public class MfgOrderHinbanDeploy implements IEntity {
     /**
      * @return DELIVERY_DATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("DELIVERY_DATE")
     public String getDeliveryDate() {
         return this.deliveryDate;
     }
@@ -85,6 +88,7 @@ public class MfgOrderHinbanDeploy implements IEntity {
     /**
      * @return UNIT_CODE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("UNIT_CODE")
     public String getUnitCode() {
         return this.unitCode;
     }
@@ -106,6 +110,7 @@ public class MfgOrderHinbanDeploy implements IEntity {
     /**
      * @return COUNTS
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("COUNTS")
     public java.math.BigDecimal getCounts() {
         return this.counts;
     }
@@ -130,6 +135,7 @@ public class MfgOrderHinbanDeploy implements IEntity {
     /**
      * @return TIME_STAMP_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CREATE")
     public java.time.LocalDateTime getTimeStampCreate() {
         return this.timeStampCreate;
     }
@@ -160,6 +166,7 @@ public class MfgOrderHinbanDeploy implements IEntity {
     /**
      * @return TIME_STAMP_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CHANGE")
     public java.time.LocalDateTime getTimeStampChange() {
         return this.timeStampChange;
     }
@@ -187,6 +194,7 @@ public class MfgOrderHinbanDeploy implements IEntity {
     /**
      * @return USER_ID_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CREATE")
     public String getUserIdCreate() {
         return this.userIdCreate;
     }
@@ -208,6 +216,7 @@ public class MfgOrderHinbanDeploy implements IEntity {
     /**
      * @return USER_ID_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CHANGE")
     public String getUserIdChange() {
         return this.userIdChange;
     }

@@ -9,6 +9,10 @@
 
 </script>
 <script th:src="@{/model/MHososetGridColumns.js}"></script>
+<script th:src="@{/model/MHhinmokGridColumns.js}"></script>
+<script th:src="@{/model/MPkoseGridColumns.js}"></script>
+<script th:src="@{/model/MPhinmokGridColumns.js}"></script>
+<script th:src="@{/model/MHosozaiGridColumns.js}"></script>
 </head>
 <body>
   <div layout:fragment="article">
@@ -17,10 +21,10 @@
       <fieldset>
         <legend th:text="#{MHososetS.legend}">legend</legend>
         <div id="hhinban">
-          <label for="MHososet.hhinban" th:text="#{MHososet.hhinban}">販売品番</label><input type="text" id="MHososet.hhinban" name="MHososet.hhinban" maxlength="20" />
+          <label for="MHososet.hhinban" th:text="#{MHososet.hhinban}">販売品番</label><input type="text" id="MHososet.hhinban" name="MHososet.hhinban" maxlength="20" data-json="MHhinmokSearch.json" data-srcDef="HHINBAN:MHososet.hhinban" data-destDef="MHososet.hhinmei:HINMEI" /><a id="MHososet.hhinban" th:href="@{/model/MHhinmokS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MHososet.hhinmei" class="refer" data-json="MHhinmokSearch.json" data-srcDef="HHINBAN:MHososet.hhinban" data-destDef="MHososet.hhinmei:HINMEI"></span>
         </div>
         <div id="hosoHinban">
-          <label for="MHososet.hosoHinban" th:text="#{MHososet.hosoHinban}">包装品番</label><input type="text" id="MHososet.hosoHinban" name="MHososet.hosoHinban" maxlength="25" />
+          <label for="MHososet.hosoHinban" th:text="#{MHososet.hosoHinban}">包装品番</label><input type="text" id="MHososet.hosoHinban" name="MHososet.hosoHinban" maxlength="25" data-json="MHosozaiSearch.json" data-srcDef="HOSO-HINBAN:MHososet.hosoHinban" data-destDef="MHososet.hosoHinmei:null" /><a id="MHososet.hosoHinban" th:href="@{/model/MHosozaiS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MHososet.hosoHinmei" class="refer" data-json="MHosozaiSearch.json" data-srcDef="HOSO-HINBAN:MHososet.hosoHinban" data-destDef="MHososet.hosoHinmei:null"></span>
         </div>
         <div id="inzu">
           <label for="MHososet.inzu" th:text="#{MHososet.inzu}">員数</label><input type="text" id="MHososet.inzu" name="MHososet.inzu" maxlength="3" />
@@ -31,6 +35,7 @@
       </fieldset>
       <div class="buttons">
         <button type="reset" th:text="#{common.reset}">reset</button>
+        <a th:href="@{/model/MHososet.html}" id="MHososet" target="dialog" th:text="#{MHososet.add}" tabindex="-1">包装材構成マスタ</a>
       </div>
       <div class="submits">
         <button id="SearchMHososet" class="search" data-gridId="MHososetGrid" th:text="#{common.search}">submit</button>

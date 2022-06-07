@@ -22,6 +22,7 @@ public class InvPrintWarehousingslip implements IEntity {
     /**
      * @return EMP_CODE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("EMP_CODE")
     public String getEmpCode() {
         return this.empCode;
     }
@@ -43,6 +44,7 @@ public class InvPrintWarehousingslip implements IEntity {
     /**
      * @return HINBAN
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("HINBAN")
     public String getHinban() {
         return this.hinban;
     }
@@ -64,6 +66,7 @@ public class InvPrintWarehousingslip implements IEntity {
     /**
      * @return KANBAN_ACC_COUNTS
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("KANBAN_ACC_COUNTS")
     public java.math.BigDecimal getKanbanAccCounts() {
         return this.kanbanAccCounts;
     }
@@ -85,6 +88,7 @@ public class InvPrintWarehousingslip implements IEntity {
     /**
      * @return KANBAN_COUNTS
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("KANBAN_COUNTS")
     public java.math.BigDecimal getKanbanCounts() {
         return this.kanbanCounts;
     }
@@ -106,6 +110,7 @@ public class InvPrintWarehousingslip implements IEntity {
     /**
      * @return HOST_N_KBN
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("HOST_N_KBN")
     public java.math.BigDecimal getHostNKbn() {
         return this.hostNKbn;
     }
@@ -127,6 +132,7 @@ public class InvPrintWarehousingslip implements IEntity {
     /**
      * @return PRINT_KBN
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("PRINT_KBN")
     public java.math.BigDecimal getPrintKbn() {
         return this.printKbn;
     }
@@ -148,6 +154,7 @@ public class InvPrintWarehousingslip implements IEntity {
     /**
      * @return REQ_ID
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("REQ_ID")
     public String getReqId() {
         return this.reqId;
     }
@@ -172,6 +179,7 @@ public class InvPrintWarehousingslip implements IEntity {
     /**
      * @return TIME_STAMP_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CREATE")
     public java.time.LocalDateTime getTimeStampCreate() {
         return this.timeStampCreate;
     }
@@ -202,6 +210,7 @@ public class InvPrintWarehousingslip implements IEntity {
     /**
      * @return TIME_STAMP_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CHANGE")
     public java.time.LocalDateTime getTimeStampChange() {
         return this.timeStampChange;
     }
@@ -229,6 +238,7 @@ public class InvPrintWarehousingslip implements IEntity {
     /**
      * @return USER_ID_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CREATE")
     public String getUserIdCreate() {
         return this.userIdCreate;
     }
@@ -250,6 +260,7 @@ public class InvPrintWarehousingslip implements IEntity {
     /**
      * @return USER_ID_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CHANGE")
     public String getUserIdChange() {
         return this.userIdChange;
     }

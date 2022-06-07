@@ -594,18 +594,10 @@ public final class HtmlGenerator {
 
         //エンティティ名を取得
         String tableName = tableInfo.getTableName();
-        String entityName = StringUtil.toPascalCase(tableName);
+        String pascalTable = StringUtil.toPascalCase(tableName);
 
         // カラム情報でループ
         for (ColumnInfo columnInfo : tableInfo.getColumnInfos().values()) {
-            String columnName = columnInfo.getColumnName();
-            String remarks = columnInfo.getRemarks();
-
-            String lower = columnName.toLowerCase();
-            String camel = StringUtil.toCamelCase(columnName);
-            String id = entityName + "." + camel;
-
-            boolean isInputFile = StringUtil.endsWith(inputFileSuffixs, lower);
 
             // 兄弟モデルの主キーは出力しない
             if (isBrother && columnInfo.isPk()) {
@@ -613,59 +605,64 @@ public final class HtmlGenerator {
             }
 
             // 検索条件にはファイル項目を出力しない
+            String columnName = columnInfo.getColumnName();
+            String lower = columnName.toLowerCase();
+            boolean isInputFile = StringUtil.endsWith(inputFileSuffixs, lower);
             if (!isDetail && isInputFile) {
                 continue;
             }
 
+            String remarks = columnInfo.getRemarks();
+            String camelColumn = StringUtil.toCamelCase(columnName);
+            String fieldId = pascalTable + "." + camelColumn;
+
+            // メタ情報の場合
             boolean isInsertDt = columnName.matches("(?i)^" + insertDt + "$");
             boolean isUpdateDt = columnName.matches("(?i)^" + updateDt + "$");
             boolean isInsertBy = columnName.matches("(?i)^" + insertBy + "$");
             boolean isUpdateBy = columnName.matches("(?i)^" + updateBy + "$");
-
             if (isInsertDt || isInsertBy || isUpdateDt || isUpdateBy) {
-                // メタ情報の場合
 
-                // 検索画面の場合はスキップ（検索条件にはしない）
                 if (!isDetail) {
+                    // 検索画面の場合はスキップ（検索条件にはしない）
                     continue;
-                }
-
-                // 詳細画面の兄弟モデルは更新日時のみhiddenで出力
-                if (isBrother) {
+                } else if (isBrother) {
+                    // 詳細画面の兄弟モデルは更新日時のみhiddenで出力
                     if (isUpdateDt) {
-                        s.add("        <input type=\"hidden\" name=\"" + id + "\" />");
+                        s.add("        <input type=\"hidden\" name=\"" + fieldId + "\" />");
                     }
                     continue;
                 }
             }
 
-            s.add("        <div id=\"" + camel + "\">");
+            s.add("        <div id=\"" + camelColumn + "\">");
+
             if (isInsertDt || isInsertBy || isUpdateDt || isUpdateBy) {
                 // メタ情報の場合は表示項目（編集画面の自モデルのみここに到達する）
 
-                htmlFieldsMeta(s, id, remarks);
+                htmlFieldsMeta(s, fieldId, remarks);
 
             } else if (isDetail && columnInfo.isNumbering()) {
                 // 編集画面の採番キーは表示項目
 
                 String tag = "          ";
-                tag += "<label for=\"" + id + "\" th:text=\"#{" + id + "}\">" + remarks + "</label>";
-                tag += "<span id=\"" + id + "\"></span>";
-                tag += "<input type=\"hidden\" id=\"" + id + "\" name=\"" + id + "\" class=\"primaryKey\" />";
+                tag += "<label for=\"" + fieldId + "\" th:text=\"#{" + fieldId + "}\">" + remarks + "</label>";
+                tag += "<span id=\"" + fieldId + "\"></span>";
+                tag += "<input type=\"hidden\" id=\"" + fieldId + "\" name=\"" + fieldId + "\" class=\"primaryKey\" />";
 
                 // 参照モデルの場合は参照リンクを出力（参照リンクは照会画面ではjsで非表示にする）
                 if (columnInfo.getReferInfo() != null) {
 
                     TableInfo referInfo = columnInfo.getReferInfo();
                     String referName = StringUtil.toPascalCase(referInfo.getTableName());
-                    tag += "<a id=\"" + id + "\" th:href=\"@{/model/" + referName
+                    tag += "<a id=\"" + fieldId + "\" th:href=\"@{/model/" + referName
                             + "S.html}\" target=\"dialog\" class=\"primaryKey refer\" th:text=\"#{common.refer}\" tabindex=\"-1\">...</a>";
 
                     // 名称項目がなければspanも出力
                     String meiColumnName = getMeiColumnName(columnName);
                     if (!tableInfo.getColumnInfos().containsKey(meiColumnName)) {
-                        String meiId = entityName + "." + StringUtil.toCamelCase(meiColumnName);
-                        String referDef = getReferDef(entityName, columnName, referInfo);
+                        String meiId = pascalTable + "." + StringUtil.toCamelCase(meiColumnName);
+                        String referDef = getReferDef(pascalTable, columnName, referInfo);
                         tag += "<span id=\"" + meiId + "\" class=\"refer\"" + referDef + "></span>";
                     }
                 }
@@ -675,12 +672,12 @@ public final class HtmlGenerator {
             } else if (StringUtil.endsWith(optionsSuffixs, lower) && columnInfo.getReferInfo() == null) {
                 // 選択項目の場合（サフィックスが合致しても参照モデルなら除外）
 
-                htmlFieldsOptions(s, id, lower, remarks);
+                htmlFieldsOptions(s, fieldId, lower, remarks);
 
             } else if (isDetail && StringUtil.endsWith(textareaSuffixs, lower)) {
                 // テキストエリア項目の場合
 
-                htmlFieldsTextarea(s, id, remarks);
+                htmlFieldsTextarea(s, fieldId, remarks);
 
             } else {
                 // 上記以外の場合
@@ -708,31 +705,34 @@ public final class HtmlGenerator {
                 if (!isDetail && StringUtil.endsWith(inputRangeSuffixs, lower)) {
                     // 検索画面の範囲指定項目の場合
 
-                    htmlFieldsInputRange(s, id, remarks, type, max);
+                    htmlFieldsInputRange(s, fieldId, remarks, type, max);
 
                 } else if (columnInfo.getReferInfo() != null) {
                     // 参照モデルの場合
 
                     String tag = "          ";
+                    tag += "<label for=\"" + fieldId + "\" th:text=\"#{" + fieldId + "}\">" + remarks + "</label>";
+
                     TableInfo referInfo = columnInfo.getReferInfo();
                     String referName = StringUtil.toPascalCase(referInfo.getTableName());
-                    String referDef = getReferDef(entityName, columnName, referInfo);
-                    tag += "<label for=\"" + id + "\" th:text=\"#{" + id + "}\">" + remarks + "</label>";
-                    tag += "<input type=\"" + type + "\" id=\"" + id + "\" name=\"" + id + "\" maxlength=\"" + max
-                            + "\"" + css + referDef + "" + " />";
-                    tag += "<a id=\"" + id + "\" th:href=\"@{/model/" + referName
+                    String referDef = getReferDef(pascalTable, columnName, referInfo);
+                    tag += "<input type=\"" + type + "\" id=\"" + fieldId + "\" name=\"" + fieldId + "\" maxlength=\""
+                            + max + "\"" + css + referDef + "" + " />";
+
+                    tag += "<a id=\"" + fieldId + "\" th:href=\"@{/model/" + referName
                             + "S.html}\" target=\"dialog\" class=\"refer\" th:text=\"#{common.refer}\" tabindex=\"-1\">...</a>";
 
                     String meiColumnName = getMeiColumnName(columnName);
                     if (!tableInfo.getColumnInfos().containsKey(meiColumnName)) {
-                        String meiId = entityName + "." + StringUtil.toCamelCase(meiColumnName);
+                        String meiId = pascalTable + "." + StringUtil.toCamelCase(meiColumnName);
                         tag += "<span id=\"" + meiId + "\" class=\"refer\"" + referDef + "></span>";
                     }
+
                     s.add(tag);
 
                 } else {
 
-                    htmlFieldsInput(s, id, remarks, type, max, css);
+                    htmlFieldsInput(s, fieldId, remarks, type, max, css);
                 }
             }
 

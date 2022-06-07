@@ -22,6 +22,7 @@ public class PrdDailyNeckLoad implements IEntity {
     /**
      * @return PRO_NO
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("PRO_NO")
     public String getProNo() {
         return this.proNo;
     }
@@ -43,6 +44,7 @@ public class PrdDailyNeckLoad implements IEntity {
     /**
      * @return BRANCH_NO
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("BRANCH_NO")
     public java.math.BigDecimal getBranchNo() {
         return this.branchNo;
     }
@@ -67,6 +69,7 @@ public class PrdDailyNeckLoad implements IEntity {
     /**
      * @return LOAD_DATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("LOAD_DATE")
     public java.time.LocalDateTime getLoadDate() {
         return this.loadDate;
     }
@@ -94,6 +97,7 @@ public class PrdDailyNeckLoad implements IEntity {
     /**
      * @return LOAD_TIME
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("LOAD_TIME")
     public java.math.BigDecimal getLoadTime() {
         return this.loadTime;
     }
@@ -115,6 +119,7 @@ public class PrdDailyNeckLoad implements IEntity {
     /**
      * @return LOAD_OVER_TIME
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("LOAD_OVER_TIME")
     public java.math.BigDecimal getLoadOverTime() {
         return this.loadOverTime;
     }
@@ -139,6 +144,7 @@ public class PrdDailyNeckLoad implements IEntity {
     /**
      * @return TIME_STAMP_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CREATE")
     public java.time.LocalDateTime getTimeStampCreate() {
         return this.timeStampCreate;
     }
@@ -169,6 +175,7 @@ public class PrdDailyNeckLoad implements IEntity {
     /**
      * @return TIME_STAMP_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CHANGE")
     public java.time.LocalDateTime getTimeStampChange() {
         return this.timeStampChange;
     }
@@ -196,6 +203,7 @@ public class PrdDailyNeckLoad implements IEntity {
     /**
      * @return USER_ID_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CREATE")
     public String getUserIdCreate() {
         return this.userIdCreate;
     }
@@ -217,6 +225,7 @@ public class PrdDailyNeckLoad implements IEntity {
     /**
      * @return USER_ID_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CHANGE")
     public String getUserIdChange() {
         return this.userIdChange;
     }
@@ -238,6 +247,7 @@ public class PrdDailyNeckLoad implements IEntity {
     /**
      * @return WC_CODE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("WC_CODE")
     public String getWcCode() {
         return this.wcCode;
     }

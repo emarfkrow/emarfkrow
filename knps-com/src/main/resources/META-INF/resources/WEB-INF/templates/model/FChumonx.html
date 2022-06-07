@@ -9,6 +9,11 @@
 
 </script>
 <script th:src="@{/model/FChumonxGridColumns.js}"></script>
+<script th:src="@{/model/MHhinmokGridColumns.js}"></script>
+<script th:src="@{/model/MHososetGridColumns.js}"></script>
+<script th:src="@{/model/MHosozaiGridColumns.js}"></script>
+<script th:src="@{/model/MPkoseGridColumns.js}"></script>
+<script th:src="@{/model/MPhinmokGridColumns.js}"></script>
 </head>
 <body>
   <div layout:fragment="article">
@@ -20,7 +25,7 @@
           <label for="FChumonx.tokucd" th:text="#{FChumonx.tokucd}">TOKUCD</label><input type="text" id="FChumonx.tokucd" name="FChumonx.tokucd" maxlength="8" class="primaryKey" />
         </div>
         <div id="hhinban">
-          <label for="FChumonx.hhinban" th:text="#{FChumonx.hhinban}">HHINBAN</label><input type="text" id="FChumonx.hhinban" name="FChumonx.hhinban" maxlength="20" class="primaryKey" />
+          <label for="FChumonx.hhinban" th:text="#{FChumonx.hhinban}">HHINBAN</label><input type="text" id="FChumonx.hhinban" name="FChumonx.hhinban" maxlength="20" class="primaryKey" data-json="MHhinmokSearch.json" data-srcDef="HHINBAN:FChumonx.hhinban" data-destDef="FChumonx.hhinmei:HINMEI" /><a id="FChumonx.hhinban" th:href="@{/model/MHhinmokS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="FChumonx.hhinmei" class="refer" data-json="MHhinmokSearch.json" data-srcDef="HHINBAN:FChumonx.hhinban" data-destDef="FChumonx.hhinmei:HINMEI"></span>
         </div>
         <div id="shukkasuRui">
           <label for="FChumonx.shukkasuRui" th:text="#{FChumonx.shukkasuRui}">SHUKKASU-RUI</label><input type="text" id="FChumonx.shukkasuRui" name="FChumonx.shukkasuRui" maxlength="7" />

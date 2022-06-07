@@ -22,6 +22,7 @@ public class MstCodeValue implements IEntity {
     /**
      * @return CODE_NM
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("CODE_NM")
     public String getCodeNm() {
         return this.codeNm;
     }
@@ -43,6 +44,7 @@ public class MstCodeValue implements IEntity {
     /**
      * @return CODE_VALUE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("CODE_VALUE")
     public String getCodeValue() {
         return this.codeValue;
     }
@@ -64,6 +66,7 @@ public class MstCodeValue implements IEntity {
     /**
      * @return CODE_VALUE_MEI
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("CODE_VALUE_MEI")
     public String getCodeValueMei() {
         return this.codeValueMei;
     }
@@ -85,6 +88,7 @@ public class MstCodeValue implements IEntity {
     /**
      * @return HYOJI_JUN
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("HYOJI_JUN")
     public java.math.BigDecimal getHyojiJun() {
         return this.hyojiJun;
     }
@@ -106,6 +110,7 @@ public class MstCodeValue implements IEntity {
     /**
      * @return CRITERIA
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("CRITERIA")
     public String getCriteria() {
         return this.criteria;
     }
@@ -130,6 +135,7 @@ public class MstCodeValue implements IEntity {
     /**
      * @return TIME_STAMP_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CREATE")
     public java.time.LocalDateTime getTimeStampCreate() {
         return this.timeStampCreate;
     }
@@ -160,6 +166,7 @@ public class MstCodeValue implements IEntity {
     /**
      * @return TIME_STAMP_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CHANGE")
     public java.time.LocalDateTime getTimeStampChange() {
         return this.timeStampChange;
     }
@@ -187,6 +194,7 @@ public class MstCodeValue implements IEntity {
     /**
      * @return USER_ID_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CREATE")
     public String getUserIdCreate() {
         return this.userIdCreate;
     }
@@ -208,6 +216,7 @@ public class MstCodeValue implements IEntity {
     /**
      * @return USER_ID_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CHANGE")
     public String getUserIdChange() {
         return this.userIdChange;
     }

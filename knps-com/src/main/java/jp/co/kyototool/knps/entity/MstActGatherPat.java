@@ -22,6 +22,7 @@ public class MstActGatherPat implements IEntity {
     /**
      * @return ACT_GATHER_PAT_NO
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ACT_GATHER_PAT_NO")
     public String getActGatherPatNo() {
         return this.actGatherPatNo;
     }
@@ -43,6 +44,7 @@ public class MstActGatherPat implements IEntity {
     /**
      * @return IN_PRE_START
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("IN_PRE_START")
     public java.math.BigDecimal getInPreStart() {
         return this.inPreStart;
     }
@@ -64,6 +66,7 @@ public class MstActGatherPat implements IEntity {
     /**
      * @return IN_PRE_END
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("IN_PRE_END")
     public java.math.BigDecimal getInPreEnd() {
         return this.inPreEnd;
     }
@@ -85,6 +88,7 @@ public class MstActGatherPat implements IEntity {
     /**
      * @return PROC_END
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("PROC_END")
     public java.math.BigDecimal getProcEnd() {
         return this.procEnd;
     }
@@ -106,6 +110,7 @@ public class MstActGatherPat implements IEntity {
     /**
      * @return PROC_STOP
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("PROC_STOP")
     public java.math.BigDecimal getProcStop() {
         return this.procStop;
     }
@@ -127,6 +132,7 @@ public class MstActGatherPat implements IEntity {
     /**
      * @return PROC_CANCEL
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("PROC_CANCEL")
     public java.math.BigDecimal getProcCancel() {
         return this.procCancel;
     }
@@ -151,6 +157,7 @@ public class MstActGatherPat implements IEntity {
     /**
      * @return TIME_STAMP_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CREATE")
     public java.time.LocalDateTime getTimeStampCreate() {
         return this.timeStampCreate;
     }
@@ -181,6 +188,7 @@ public class MstActGatherPat implements IEntity {
     /**
      * @return TIME_STAMP_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CHANGE")
     public java.time.LocalDateTime getTimeStampChange() {
         return this.timeStampChange;
     }
@@ -208,6 +216,7 @@ public class MstActGatherPat implements IEntity {
     /**
      * @return USER_ID_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CREATE")
     public String getUserIdCreate() {
         return this.userIdCreate;
     }
@@ -229,6 +238,7 @@ public class MstActGatherPat implements IEntity {
     /**
      * @return USER_ID_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CHANGE")
     public String getUserIdChange() {
         return this.userIdChange;
     }
@@ -250,6 +260,7 @@ public class MstActGatherPat implements IEntity {
     /**
      * @return DELETE_FLAG
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("DELETE_FLAG")
     public java.math.BigDecimal getDeleteFlag() {
         return this.deleteFlag;
     }

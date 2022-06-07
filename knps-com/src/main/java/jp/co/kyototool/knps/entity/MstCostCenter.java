@@ -22,6 +22,7 @@ public class MstCostCenter implements IEntity {
     /**
      * @return COST_CENTER_CODE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("COST_CENTER_CODE")
     public String getCostCenterCode() {
         return this.costCenterCode;
     }
@@ -43,6 +44,7 @@ public class MstCostCenter implements IEntity {
     /**
      * @return COST_CENTER_NAME
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("COST_CENTER_NAME")
     public String getCostCenterName() {
         return this.costCenterName;
     }
@@ -64,6 +66,7 @@ public class MstCostCenter implements IEntity {
     /**
      * @return IN_OUT_KBN
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("IN_OUT_KBN")
     public java.math.BigDecimal getInOutKbn() {
         return this.inOutKbn;
     }
@@ -85,6 +88,7 @@ public class MstCostCenter implements IEntity {
     /**
      * @return SUP_CODE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SUP_CODE")
     public String getSupCode() {
         return this.supCode;
     }
@@ -106,6 +110,7 @@ public class MstCostCenter implements IEntity {
     /**
      * @return COST_RATE_KBN
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("COST_RATE_KBN")
     public java.math.BigDecimal getCostRateKbn() {
         return this.costRateKbn;
     }
@@ -127,6 +132,7 @@ public class MstCostCenter implements IEntity {
     /**
      * @return COST_RATE_CODE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("COST_RATE_CODE")
     public String getCostRateCode() {
         return this.costRateCode;
     }
@@ -148,6 +154,7 @@ public class MstCostCenter implements IEntity {
     /**
      * @return COST_COLLECT
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("COST_COLLECT")
     public java.math.BigDecimal getCostCollect() {
         return this.costCollect;
     }
@@ -172,6 +179,7 @@ public class MstCostCenter implements IEntity {
     /**
      * @return TIME_STAMP_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CREATE")
     public java.time.LocalDateTime getTimeStampCreate() {
         return this.timeStampCreate;
     }
@@ -202,6 +210,7 @@ public class MstCostCenter implements IEntity {
     /**
      * @return TIME_STAMP_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CHANGE")
     public java.time.LocalDateTime getTimeStampChange() {
         return this.timeStampChange;
     }
@@ -229,6 +238,7 @@ public class MstCostCenter implements IEntity {
     /**
      * @return USER_ID_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CREATE")
     public String getUserIdCreate() {
         return this.userIdCreate;
     }
@@ -250,6 +260,7 @@ public class MstCostCenter implements IEntity {
     /**
      * @return USER_ID_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CHANGE")
     public String getUserIdChange() {
         return this.userIdChange;
     }
@@ -271,6 +282,7 @@ public class MstCostCenter implements IEntity {
     /**
      * @return DELETE_FLAG
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("DELETE_FLAG")
     public java.math.BigDecimal getDeleteFlag() {
         return this.deleteFlag;
     }

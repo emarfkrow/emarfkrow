@@ -9,6 +9,11 @@
 
 </script>
 <script th:src="@{/model/MGenkaGridColumns.js}"></script>
+<script th:src="@{/model/MHhinmokGridColumns.js}"></script>
+<script th:src="@{/model/MHososetGridColumns.js}"></script>
+<script th:src="@{/model/MHosozaiGridColumns.js}"></script>
+<script th:src="@{/model/MPkoseGridColumns.js}"></script>
+<script th:src="@{/model/MPhinmokGridColumns.js}"></script>
 </head>
 <body>
   <div layout:fragment="article">
@@ -17,7 +22,7 @@
       <fieldset>
         <legend th:text="#{MGenka.legend}">legend</legend>
         <div id="hhinban">
-          <label for="MGenka.hhinban" th:text="#{MGenka.hhinban}">販売品番</label><span id="MGenka.hhinban"></span><input type="hidden" id="MGenka.hhinban" name="MGenka.hhinban" class="primaryKey" />
+          <label for="MGenka.hhinban" th:text="#{MGenka.hhinban}">販売品番</label><span id="MGenka.hhinban"></span><input type="hidden" id="MGenka.hhinban" name="MGenka.hhinban" class="primaryKey" /><a id="MGenka.hhinban" th:href="@{/model/MHhinmokS.html}" target="dialog" class="primaryKey refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MGenka.hhinmei" class="refer" data-json="MHhinmokSearch.json" data-srcDef="HHINBAN:MGenka.hhinban" data-destDef="MGenka.hhinmei:HINMEI"></span>
         </div>
         <div id="hincd">
           <label for="MGenka.hincd" th:text="#{MGenka.hincd}">品目コード</label><input type="text" id="MGenka.hincd" name="MGenka.hincd" maxlength="20" />

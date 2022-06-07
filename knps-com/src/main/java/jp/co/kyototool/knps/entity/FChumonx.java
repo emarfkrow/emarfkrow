@@ -22,6 +22,7 @@ public class FChumonx implements IEntity {
     /**
      * @return TOKUCD
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TOKUCD")
     public String getTokucd() {
         return this.tokucd;
     }
@@ -43,6 +44,7 @@ public class FChumonx implements IEntity {
     /**
      * @return HHINBAN
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("HHINBAN")
     public String getHhinban() {
         return this.hhinban;
     }
@@ -64,6 +66,7 @@ public class FChumonx implements IEntity {
     /**
      * @return SHUKKASU-RUI
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SHUKKASU-RUI")
     public java.math.BigDecimal getShukkasuRui() {
         return this.shukkasuRui;
     }
@@ -85,6 +88,7 @@ public class FChumonx implements IEntity {
     /**
      * @return JUCHUNO
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("JUCHUNO")
     public String getJuchuno() {
         return this.juchuno;
     }
@@ -109,6 +113,7 @@ public class FChumonx implements IEntity {
     /**
      * @return TIME_STAMP_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CREATE")
     public java.time.LocalDateTime getTimeStampCreate() {
         return this.timeStampCreate;
     }
@@ -139,6 +144,7 @@ public class FChumonx implements IEntity {
     /**
      * @return TIME_STAMP_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CHANGE")
     public java.time.LocalDateTime getTimeStampChange() {
         return this.timeStampChange;
     }
@@ -166,6 +172,7 @@ public class FChumonx implements IEntity {
     /**
      * @return USER_ID_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CREATE")
     public String getUserIdCreate() {
         return this.userIdCreate;
     }
@@ -187,6 +194,7 @@ public class FChumonx implements IEntity {
     /**
      * @return USER_ID_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CHANGE")
     public String getUserIdChange() {
         return this.userIdChange;
     }

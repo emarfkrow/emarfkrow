@@ -22,6 +22,7 @@ public class MstOpeForm implements IEntity {
     /**
      * @return PATTERN_NO
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("PATTERN_NO")
     public String getPatternNo() {
         return this.patternNo;
     }
@@ -43,6 +44,7 @@ public class MstOpeForm implements IEntity {
     /**
      * @return F_CHOKU_START
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("F_CHOKU_START")
     public String getFChokuStart() {
         return this.fChokuStart;
     }
@@ -64,6 +66,7 @@ public class MstOpeForm implements IEntity {
     /**
      * @return F_CHOKU_END
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("F_CHOKU_END")
     public String getFChokuEnd() {
         return this.fChokuEnd;
     }
@@ -85,6 +88,7 @@ public class MstOpeForm implements IEntity {
     /**
      * @return F_CHOKU_START_DED
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("F_CHOKU_START_DED")
     public String getFChokuStartDed() {
         return this.fChokuStartDed;
     }
@@ -106,6 +110,7 @@ public class MstOpeForm implements IEntity {
     /**
      * @return F_CHOKU_END_DED
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("F_CHOKU_END_DED")
     public String getFChokuEndDed() {
         return this.fChokuEndDed;
     }
@@ -127,6 +132,7 @@ public class MstOpeForm implements IEntity {
     /**
      * @return S_CHOKU_START_DED
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("S_CHOKU_START_DED")
     public String getSChokuStartDed() {
         return this.sChokuStartDed;
     }
@@ -148,6 +154,7 @@ public class MstOpeForm implements IEntity {
     /**
      * @return S_CHOKU_END_DED
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("S_CHOKU_END_DED")
     public String getSChokuEndDed() {
         return this.sChokuEndDed;
     }
@@ -169,6 +176,7 @@ public class MstOpeForm implements IEntity {
     /**
      * @return T_CHOKU_START_DED
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("T_CHOKU_START_DED")
     public String getTChokuStartDed() {
         return this.tChokuStartDed;
     }
@@ -190,6 +198,7 @@ public class MstOpeForm implements IEntity {
     /**
      * @return T_CHOKU_END_DED
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("T_CHOKU_END_DED")
     public String getTChokuEndDed() {
         return this.tChokuEndDed;
     }
@@ -214,6 +223,7 @@ public class MstOpeForm implements IEntity {
     /**
      * @return TIME_STAMP_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CREATE")
     public java.time.LocalDateTime getTimeStampCreate() {
         return this.timeStampCreate;
     }
@@ -244,6 +254,7 @@ public class MstOpeForm implements IEntity {
     /**
      * @return TIME_STAMP_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CHANGE")
     public java.time.LocalDateTime getTimeStampChange() {
         return this.timeStampChange;
     }
@@ -271,6 +282,7 @@ public class MstOpeForm implements IEntity {
     /**
      * @return USER_ID_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CREATE")
     public String getUserIdCreate() {
         return this.userIdCreate;
     }
@@ -292,6 +304,7 @@ public class MstOpeForm implements IEntity {
     /**
      * @return USER_ID_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CHANGE")
     public String getUserIdChange() {
         return this.userIdChange;
     }
@@ -313,6 +326,7 @@ public class MstOpeForm implements IEntity {
     /**
      * @return DELETE_FLAG
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("DELETE_FLAG")
     public java.math.BigDecimal getDeleteFlag() {
         return this.deleteFlag;
     }

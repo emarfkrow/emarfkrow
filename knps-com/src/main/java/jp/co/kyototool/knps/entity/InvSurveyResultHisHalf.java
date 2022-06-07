@@ -22,6 +22,7 @@ public class InvSurveyResultHisHalf implements IEntity {
     /**
      * @return DISCRIMINATION_ID
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("DISCRIMINATION_ID")
     public String getDiscriminationId() {
         return this.discriminationId;
     }
@@ -43,6 +44,7 @@ public class InvSurveyResultHisHalf implements IEntity {
     /**
      * @return YYYY
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("YYYY")
     public String getYyyy() {
         return this.yyyy;
     }
@@ -64,6 +66,7 @@ public class InvSurveyResultHisHalf implements IEntity {
     /**
      * @return MM
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("MM")
     public String getMm() {
         return this.mm;
     }
@@ -85,6 +88,7 @@ public class InvSurveyResultHisHalf implements IEntity {
     /**
      * @return HINBAN
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("HINBAN")
     public String getHinban() {
         return this.hinban;
     }
@@ -106,6 +110,7 @@ public class InvSurveyResultHisHalf implements IEntity {
     /**
      * @return STOCK
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("STOCK")
     public java.math.BigDecimal getStock() {
         return this.stock;
     }
@@ -127,6 +132,7 @@ public class InvSurveyResultHisHalf implements IEntity {
     /**
      * @return DECISION_KBN
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("DECISION_KBN")
     public java.math.BigDecimal getDecisionKbn() {
         return this.decisionKbn;
     }
@@ -148,6 +154,7 @@ public class InvSurveyResultHisHalf implements IEntity {
     /**
      * @return PRO_GROUP_NO
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("PRO_GROUP_NO")
     public java.math.BigDecimal getProGroupNo() {
         return this.proGroupNo;
     }
@@ -169,6 +176,7 @@ public class InvSurveyResultHisHalf implements IEntity {
     /**
      * @return ROUTING
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ROUTING")
     public java.math.BigDecimal getRouting() {
         return this.routing;
     }
@@ -190,6 +198,7 @@ public class InvSurveyResultHisHalf implements IEntity {
     /**
      * @return WC_CODE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("WC_CODE")
     public String getWcCode() {
         return this.wcCode;
     }
@@ -214,6 +223,7 @@ public class InvSurveyResultHisHalf implements IEntity {
     /**
      * @return ENTRY_DATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ENTRY_DATE")
     public java.time.LocalDateTime getEntryDate() {
         return this.entryDate;
     }
@@ -241,6 +251,7 @@ public class InvSurveyResultHisHalf implements IEntity {
     /**
      * @return REGISTRANT
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("REGISTRANT")
     public String getRegistrant() {
         return this.registrant;
     }
@@ -265,6 +276,7 @@ public class InvSurveyResultHisHalf implements IEntity {
     /**
      * @return TIME_STAMP_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CREATE")
     public java.time.LocalDateTime getTimeStampCreate() {
         return this.timeStampCreate;
     }
@@ -295,6 +307,7 @@ public class InvSurveyResultHisHalf implements IEntity {
     /**
      * @return TIME_STAMP_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CHANGE")
     public java.time.LocalDateTime getTimeStampChange() {
         return this.timeStampChange;
     }
@@ -322,6 +335,7 @@ public class InvSurveyResultHisHalf implements IEntity {
     /**
      * @return USER_ID_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CREATE")
     public String getUserIdCreate() {
         return this.userIdCreate;
     }
@@ -343,6 +357,7 @@ public class InvSurveyResultHisHalf implements IEntity {
     /**
      * @return USER_ID_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CHANGE")
     public String getUserIdChange() {
         return this.userIdChange;
     }
@@ -364,6 +379,7 @@ public class InvSurveyResultHisHalf implements IEntity {
     /**
      * @return SHUKEI_TANI_MEI
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SHUKEI_TANI_MEI")
     public String getShukeiTaniMei() {
         return this.shukeiTaniMei;
     }

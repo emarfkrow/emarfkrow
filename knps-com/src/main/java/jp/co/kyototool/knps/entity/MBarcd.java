@@ -22,6 +22,7 @@ public class MBarcd implements IEntity {
     /**
      * @return 販売品番
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("HHINBAN")
     public String getHhinban() {
         return this.hhinban;
     }
@@ -43,6 +44,7 @@ public class MBarcd implements IEntity {
     /**
      * @return 品名
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("HINMEI")
     public String getHinmei() {
         return this.hinmei;
     }
@@ -64,6 +66,7 @@ public class MBarcd implements IEntity {
     /**
      * @return バーコード
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("BARCODE")
     public java.math.BigDecimal getBarcode() {
         return this.barcode;
     }
@@ -85,6 +88,7 @@ public class MBarcd implements IEntity {
     /**
      * @return 自由項目１
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("FREE1")
     public String getFree1() {
         return this.free1;
     }
@@ -106,6 +110,7 @@ public class MBarcd implements IEntity {
     /**
      * @return 自由項目２
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("FREE2")
     public String getFree2() {
         return this.free2;
     }
@@ -127,6 +132,7 @@ public class MBarcd implements IEntity {
     /**
      * @return 自由項目３
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("FREE3")
     public String getFree3() {
         return this.free3;
     }
@@ -148,6 +154,7 @@ public class MBarcd implements IEntity {
     /**
      * @return 予備領域
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("FLLER")
     public String getFller() {
         return this.fller;
     }

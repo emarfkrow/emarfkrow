@@ -22,6 +22,7 @@ public class InvSurveyResultHisLoc implements IEntity {
     /**
      * @return LOCATION_CODE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("LOCATION_CODE")
     public String getLocationCode() {
         return this.locationCode;
     }
@@ -43,6 +44,7 @@ public class InvSurveyResultHisLoc implements IEntity {
     /**
      * @return YYYY
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("YYYY")
     public String getYyyy() {
         return this.yyyy;
     }
@@ -64,6 +66,7 @@ public class InvSurveyResultHisLoc implements IEntity {
     /**
      * @return MM
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("MM")
     public String getMm() {
         return this.mm;
     }
@@ -85,6 +88,7 @@ public class InvSurveyResultHisLoc implements IEntity {
     /**
      * @return HINBAN
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("HINBAN")
     public String getHinban() {
         return this.hinban;
     }
@@ -106,6 +110,7 @@ public class InvSurveyResultHisLoc implements IEntity {
     /**
      * @return STOCK
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("STOCK")
     public java.math.BigDecimal getStock() {
         return this.stock;
     }
@@ -127,6 +132,7 @@ public class InvSurveyResultHisLoc implements IEntity {
     /**
      * @return DECISION_KBN
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("DECISION_KBN")
     public java.math.BigDecimal getDecisionKbn() {
         return this.decisionKbn;
     }
@@ -151,6 +157,7 @@ public class InvSurveyResultHisLoc implements IEntity {
     /**
      * @return ENTRY_DATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ENTRY_DATE")
     public java.time.LocalDateTime getEntryDate() {
         return this.entryDate;
     }
@@ -178,6 +185,7 @@ public class InvSurveyResultHisLoc implements IEntity {
     /**
      * @return REGISTRANT
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("REGISTRANT")
     public String getRegistrant() {
         return this.registrant;
     }
@@ -202,6 +210,7 @@ public class InvSurveyResultHisLoc implements IEntity {
     /**
      * @return TIME_STAMP_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CREATE")
     public java.time.LocalDateTime getTimeStampCreate() {
         return this.timeStampCreate;
     }
@@ -232,6 +241,7 @@ public class InvSurveyResultHisLoc implements IEntity {
     /**
      * @return TIME_STAMP_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CHANGE")
     public java.time.LocalDateTime getTimeStampChange() {
         return this.timeStampChange;
     }
@@ -259,6 +269,7 @@ public class InvSurveyResultHisLoc implements IEntity {
     /**
      * @return USER_ID_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CREATE")
     public String getUserIdCreate() {
         return this.userIdCreate;
     }
@@ -280,6 +291,7 @@ public class InvSurveyResultHisLoc implements IEntity {
     /**
      * @return USER_ID_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CHANGE")
     public String getUserIdChange() {
         return this.userIdChange;
     }
@@ -301,6 +313,7 @@ public class InvSurveyResultHisLoc implements IEntity {
     /**
      * @return SHUKEI_TANI_MEI
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SHUKEI_TANI_MEI")
     public String getShukeiTaniMei() {
         return this.shukeiTaniMei;
     }

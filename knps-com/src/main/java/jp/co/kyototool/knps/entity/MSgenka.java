@@ -22,6 +22,7 @@ public class MSgenka implements IEntity {
     /**
      * @return 販売品番
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("HHINBAN")
     public String getHhinban() {
         return this.hhinban;
     }
@@ -43,6 +44,7 @@ public class MSgenka implements IEntity {
     /**
      * @return 品目コード
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("HINCD")
     public String getHincd() {
         return this.hincd;
     }
@@ -64,6 +66,7 @@ public class MSgenka implements IEntity {
     /**
      * @return セット区分
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SETKBN")
     public String getSetkbn() {
         return this.setkbn;
     }
@@ -85,6 +88,7 @@ public class MSgenka implements IEntity {
     /**
      * @return 原価
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("GENKA")
     public java.math.BigDecimal getGenka() {
         return this.genka;
     }
@@ -106,6 +110,7 @@ public class MSgenka implements IEntity {
     /**
      * @return 製品原価
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SEIHIN-GENKA")
     public java.math.BigDecimal getSeihinGenka() {
         return this.seihinGenka;
     }
@@ -127,6 +132,7 @@ public class MSgenka implements IEntity {
     /**
      * @return 商品原価
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SHOHIN-GENKA")
     public java.math.BigDecimal getShohinGenka() {
         return this.shohinGenka;
     }
@@ -148,6 +154,7 @@ public class MSgenka implements IEntity {
     /**
      * @return 売価
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("BAIKA")
     public java.math.BigDecimal getBaika() {
         return this.baika;
     }
@@ -169,6 +176,7 @@ public class MSgenka implements IEntity {
     /**
      * @return 製品売価
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SEIHIN-BAIKA")
     public java.math.BigDecimal getSeihinBaika() {
         return this.seihinBaika;
     }
@@ -190,6 +198,7 @@ public class MSgenka implements IEntity {
     /**
      * @return 商品売価
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SHOHIN-BAIKA")
     public java.math.BigDecimal getShohinBaika() {
         return this.shohinBaika;
     }
@@ -211,6 +220,7 @@ public class MSgenka implements IEntity {
     /**
      * @return 予備領域
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("FILLER")
     public String getFiller() {
         return this.filler;
     }

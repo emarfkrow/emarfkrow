@@ -22,6 +22,7 @@ public class InvStockProcessWk implements IEntity {
     /**
      * @return HINBAN
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("HINBAN")
     public String getHinban() {
         return this.hinban;
     }
@@ -43,6 +44,7 @@ public class InvStockProcessWk implements IEntity {
     /**
      * @return ITEM
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ITEM")
     public String getItem() {
         return this.item;
     }
@@ -64,6 +66,7 @@ public class InvStockProcessWk implements IEntity {
     /**
      * @return ITEM_KBN
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ITEM_KBN")
     public java.math.BigDecimal getItemKbn() {
         return this.itemKbn;
     }
@@ -85,6 +88,7 @@ public class InvStockProcessWk implements IEntity {
     /**
      * @return HINBAN_OPE_CODE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("HINBAN_OPE_CODE")
     public String getHinbanOpeCode() {
         return this.hinbanOpeCode;
     }
@@ -106,6 +110,7 @@ public class InvStockProcessWk implements IEntity {
     /**
      * @return ROUTING_GROUP
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ROUTING_GROUP")
     public java.math.BigDecimal getRoutingGroup() {
         return this.routingGroup;
     }
@@ -127,6 +132,7 @@ public class InvStockProcessWk implements IEntity {
     /**
      * @return WC_CODE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("WC_CODE")
     public String getWcCode() {
         return this.wcCode;
     }
@@ -148,6 +154,7 @@ public class InvStockProcessWk implements IEntity {
     /**
      * @return WC_NAME
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("WC_NAME")
     public String getWcName() {
         return this.wcName;
     }
@@ -169,6 +176,7 @@ public class InvStockProcessWk implements IEntity {
     /**
      * @return OPE_DETAIL
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("OPE_DETAIL")
     public String getOpeDetail() {
         return this.opeDetail;
     }
@@ -193,6 +201,7 @@ public class InvStockProcessWk implements IEntity {
     /**
      * @return LAST_IN_OUT_DATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("LAST_IN_OUT_DATE")
     public java.time.LocalDateTime getLastInOutDate() {
         return this.lastInOutDate;
     }
@@ -220,6 +229,7 @@ public class InvStockProcessWk implements IEntity {
     /**
      * @return STOCK
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("STOCK")
     public java.math.BigDecimal getStock() {
         return this.stock;
     }
@@ -241,6 +251,7 @@ public class InvStockProcessWk implements IEntity {
     /**
      * @return PRO_NO
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("PRO_NO")
     public String getProNo() {
         return this.proNo;
     }
@@ -262,6 +273,7 @@ public class InvStockProcessWk implements IEntity {
     /**
      * @return NEXT_ROUTING
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("NEXT_ROUTING")
     public String getNextRouting() {
         return this.nextRouting;
     }
@@ -283,6 +295,7 @@ public class InvStockProcessWk implements IEntity {
     /**
      * @return NEXT_WC
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("NEXT_WC")
     public String getNextWc() {
         return this.nextWc;
     }
@@ -304,6 +317,7 @@ public class InvStockProcessWk implements IEntity {
     /**
      * @return NEXT_DETAIL
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("NEXT_DETAIL")
     public String getNextDetail() {
         return this.nextDetail;
     }
@@ -328,6 +342,7 @@ public class InvStockProcessWk implements IEntity {
     /**
      * @return TIME_STAMP_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CREATE")
     public java.time.LocalDateTime getTimeStampCreate() {
         return this.timeStampCreate;
     }
@@ -358,6 +373,7 @@ public class InvStockProcessWk implements IEntity {
     /**
      * @return TIME_STAMP_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CHANGE")
     public java.time.LocalDateTime getTimeStampChange() {
         return this.timeStampChange;
     }
@@ -385,6 +401,7 @@ public class InvStockProcessWk implements IEntity {
     /**
      * @return USER_ID_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CREATE")
     public String getUserIdCreate() {
         return this.userIdCreate;
     }
@@ -406,6 +423,7 @@ public class InvStockProcessWk implements IEntity {
     /**
      * @return USER_ID_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CHANGE")
     public String getUserIdChange() {
         return this.userIdChange;
     }

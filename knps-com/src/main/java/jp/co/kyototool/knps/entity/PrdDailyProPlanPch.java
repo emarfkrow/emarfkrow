@@ -22,6 +22,7 @@ public class PrdDailyProPlanPch implements IEntity {
     /**
      * @return PCH_ORDER_NO
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("PCH_ORDER_NO")
     public String getPchOrderNo() {
         return this.pchOrderNo;
     }
@@ -43,6 +44,7 @@ public class PrdDailyProPlanPch implements IEntity {
     /**
      * @return CHILD_PLAN_NO
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("CHILD_PLAN_NO")
     public String getChildPlanNo() {
         return this.childPlanNo;
     }
@@ -64,6 +66,7 @@ public class PrdDailyProPlanPch implements IEntity {
     /**
      * @return HINBAN
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("HINBAN")
     public String getHinban() {
         return this.hinban;
     }
@@ -85,6 +88,7 @@ public class PrdDailyProPlanPch implements IEntity {
     /**
      * @return NES_COUNTS
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("NES_COUNTS")
     public java.math.BigDecimal getNesCounts() {
         return this.nesCounts;
     }
@@ -106,6 +110,7 @@ public class PrdDailyProPlanPch implements IEntity {
     /**
      * @return SUP_CODE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SUP_CODE")
     public String getSupCode() {
         return this.supCode;
     }
@@ -127,6 +132,7 @@ public class PrdDailyProPlanPch implements IEntity {
     /**
      * @return ORDER_COUNTS
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ORDER_COUNTS")
     public java.math.BigDecimal getOrderCounts() {
         return this.orderCounts;
     }
@@ -151,6 +157,7 @@ public class PrdDailyProPlanPch implements IEntity {
     /**
      * @return ORDER_LIMIT_DATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ORDER_LIMIT_DATE")
     public java.time.LocalDateTime getOrderLimitDate() {
         return this.orderLimitDate;
     }
@@ -181,6 +188,7 @@ public class PrdDailyProPlanPch implements IEntity {
     /**
      * @return PERIOD
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("PERIOD")
     public java.time.LocalDateTime getPeriod() {
         return this.period;
     }
@@ -208,6 +216,7 @@ public class PrdDailyProPlanPch implements IEntity {
     /**
      * @return PCH_ORDER_STATUS
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("PCH_ORDER_STATUS")
     public java.math.BigDecimal getPchOrderStatus() {
         return this.pchOrderStatus;
     }
@@ -232,6 +241,7 @@ public class PrdDailyProPlanPch implements IEntity {
     /**
      * @return TIME_STAMP_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CREATE")
     public java.time.LocalDateTime getTimeStampCreate() {
         return this.timeStampCreate;
     }
@@ -262,6 +272,7 @@ public class PrdDailyProPlanPch implements IEntity {
     /**
      * @return TIME_STAMP_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CHANGE")
     public java.time.LocalDateTime getTimeStampChange() {
         return this.timeStampChange;
     }
@@ -289,6 +300,7 @@ public class PrdDailyProPlanPch implements IEntity {
     /**
      * @return USER_ID_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CREATE")
     public String getUserIdCreate() {
         return this.userIdCreate;
     }
@@ -310,6 +322,7 @@ public class PrdDailyProPlanPch implements IEntity {
     /**
      * @return USER_ID_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CHANGE")
     public String getUserIdChange() {
         return this.userIdChange;
     }

@@ -10,13 +10,6 @@
 </script>
 <script th:src="@{/model/MfgKanbanDetGridColumns.js}"></script>
 <script th:src="@{/model/MfgKanbanShippingGridColumns.js}"></script>
-<script th:src="@{/model/MstLocationGridColumns.js}"></script>
-<script th:src="@{/model/MstSubinvGridColumns.js}"></script>
-<script th:src="@{/model/MstSupplierGridColumns.js}"></script>
-<script th:src="@{/model/InvStockProcessSupplyGridColumns.js}"></script>
-<script th:src="@{/model/MstSupplierBkGridColumns.js}"></script>
-<script th:src="@{/model/MstTaxGridColumns.js}"></script>
-<script th:src="@{/model/MstStoreManGridColumns.js}"></script>
 <script th:src="@{/model/MfgKanbanStatusGridColumns.js}"></script>
 <script th:src="@{/model/MstProcGridColumns.js}"></script>
 </head>
@@ -41,7 +34,9 @@
           </fieldset>
         </div>
         <div id="forProLocationCode">
-          <label for="MfgKanbanDet.forProLocationCode" th:text="#{MfgKanbanDet.forProLocationCode}">FOR_PRO_LOCATION_CODE</label><input type="text" id="MfgKanbanDet.forProLocationCode" name="MfgKanbanDet.forProLocationCode" maxlength="10" data-json="MstLocationSearch.json" data-srcDef="LOCATION_CODE:MfgKanbanDet.forProLocationCode" data-destDef="MfgKanbanDet.forProLocationName:LOCATION_NAME" /><a id="MfgKanbanDet.forProLocationCode" th:href="@{/model/MstLocationS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MfgKanbanDet.forProLocationName" class="refer" data-json="MstLocationSearch.json" data-srcDef="LOCATION_CODE:MfgKanbanDet.forProLocationCode" data-destDef="MfgKanbanDet.forProLocationName:LOCATION_NAME"></span>
+          <fieldset id="MfgKanbanDet.forProLocationCodeList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:for_pro_location_code" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MfgKanbanDet.forProLocationCode}">FOR_PRO_LOCATION_CODE</legend>
+          </fieldset>
         </div>
         <div id="proCode">
           <fieldset id="MfgKanbanDet.proCodeList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:pro_code" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
@@ -49,7 +44,9 @@
           </fieldset>
         </div>
         <div id="proLocationCode">
-          <label for="MfgKanbanDet.proLocationCode" th:text="#{MfgKanbanDet.proLocationCode}">PRO_LOCATION_CODE</label><input type="text" id="MfgKanbanDet.proLocationCode" name="MfgKanbanDet.proLocationCode" maxlength="10" data-json="MstLocationSearch.json" data-srcDef="LOCATION_CODE:MfgKanbanDet.proLocationCode" data-destDef="MfgKanbanDet.proLocationName:LOCATION_NAME" /><a id="MfgKanbanDet.proLocationCode" th:href="@{/model/MstLocationS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MfgKanbanDet.proLocationName" class="refer" data-json="MstLocationSearch.json" data-srcDef="LOCATION_CODE:MfgKanbanDet.proLocationCode" data-destDef="MfgKanbanDet.proLocationName:LOCATION_NAME"></span>
+          <fieldset id="MfgKanbanDet.proLocationCodeList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:pro_location_code" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MfgKanbanDet.proLocationCode}">PRO_LOCATION_CODE</legend>
+          </fieldset>
         </div>
         <div id="comment1">
           <label for="MfgKanbanDet.comment1" th:text="#{MfgKanbanDet.comment1}">COMMENT1</label><input type="text" id="MfgKanbanDet.comment1" name="MfgKanbanDet.comment1" maxlength="50" />

@@ -22,6 +22,7 @@ public class MKunimei implements IEntity {
     /**
      * @return 国際地域コード
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("KOKUSAICD")
     public String getKokusaicd() {
         return this.kokusaicd;
     }
@@ -43,6 +44,7 @@ public class MKunimei implements IEntity {
     /**
      * @return 国コード
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("KUNICD")
     public String getKunicd() {
         return this.kunicd;
     }
@@ -64,6 +66,7 @@ public class MKunimei implements IEntity {
     /**
      * @return 原産国表示名
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("GENSANKOKU")
     public String getGensankoku() {
         return this.gensankoku;
     }
@@ -85,6 +88,7 @@ public class MKunimei implements IEntity {
     /**
      * @return 国名
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("KUNIMEI")
     public String getKunimei() {
         return this.kunimei;
     }
@@ -106,6 +110,7 @@ public class MKunimei implements IEntity {
     /**
      * @return 予備領域
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("FILLER")
     public String getFiller() {
         return this.filler;
     }

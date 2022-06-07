@@ -22,6 +22,7 @@ public class MSetkose implements IEntity {
     /**
      * @return セット品番
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SET-HINBAN")
     public String getSetHinban() {
         return this.setHinban;
     }
@@ -43,6 +44,7 @@ public class MSetkose implements IEntity {
     /**
      * @return セット子品番
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SET-KHINBAN")
     public String getSetKhinban() {
         return this.setKhinban;
     }
@@ -64,6 +66,7 @@ public class MSetkose implements IEntity {
     /**
      * @return 削除フラグ
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("DLTFLG")
     public java.math.BigDecimal getDltflg() {
         return this.dltflg;
     }
@@ -85,6 +88,7 @@ public class MSetkose implements IEntity {
     /**
      * @return ボトムフラグ
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("BOTM")
     public String getBotm() {
         return this.botm;
     }
@@ -106,6 +110,7 @@ public class MSetkose implements IEntity {
     /**
      * @return セット員数
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SETINZU")
     public java.math.BigDecimal getSetinzu() {
         return this.setinzu;
     }
@@ -127,6 +132,7 @@ public class MSetkose implements IEntity {
     /**
      * @return 無償支給区分
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("MUSHOKBN")
     public String getMushokbn() {
         return this.mushokbn;
     }
@@ -148,6 +154,7 @@ public class MSetkose implements IEntity {
     /**
      * @return 予備領域
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("FILLER")
     public String getFiller() {
         return this.filler;
     }

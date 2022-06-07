@@ -9,13 +9,6 @@
 
 </script>
 <script th:src="@{/model/InvStockProcessDetGridColumns.js}"></script>
-<script th:src="@{/model/MstLocationGridColumns.js}"></script>
-<script th:src="@{/model/MstSubinvGridColumns.js}"></script>
-<script th:src="@{/model/MstSupplierGridColumns.js}"></script>
-<script th:src="@{/model/InvStockProcessSupplyGridColumns.js}"></script>
-<script th:src="@{/model/MstSupplierBkGridColumns.js}"></script>
-<script th:src="@{/model/MstTaxGridColumns.js}"></script>
-<script th:src="@{/model/MstStoreManGridColumns.js}"></script>
 </head>
 <body>
   <div layout:fragment="article">
@@ -24,7 +17,9 @@
       <fieldset>
         <legend th:text="#{InvStockProcessDet.legend}">legend</legend>
         <div id="locationCode">
-          <label for="InvStockProcessDet.locationCode" th:text="#{InvStockProcessDet.locationCode}">LOCATION_CODE</label><input type="text" id="InvStockProcessDet.locationCode" name="InvStockProcessDet.locationCode" maxlength="10" class="primaryKey" data-json="MstLocationSearch.json" data-srcDef="LOCATION_CODE:InvStockProcessDet.locationCode" data-destDef="InvStockProcessDet.locationName:LOCATION_NAME" /><a id="InvStockProcessDet.locationCode" th:href="@{/model/MstLocationS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="InvStockProcessDet.locationName" class="refer" data-json="MstLocationSearch.json" data-srcDef="LOCATION_CODE:InvStockProcessDet.locationCode" data-destDef="InvStockProcessDet.locationName:LOCATION_NAME"></span>
+          <fieldset id="InvStockProcessDet.locationCodeList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:location_code" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{InvStockProcessDet.locationCode}">LOCATION_CODE</legend>
+          </fieldset>
         </div>
         <div id="hinban">
           <label for="InvStockProcessDet.hinban" th:text="#{InvStockProcessDet.hinban}">HINBAN</label><input type="text" id="InvStockProcessDet.hinban" name="InvStockProcessDet.hinban" maxlength="25" class="primaryKey" />

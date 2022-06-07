@@ -10,7 +10,9 @@
 </script>
 <script th:src="@{/model/MHhinmokGridColumns.js}"></script>
 <script th:src="@{/model/MHososetGridColumns.js}"></script>
+<script th:src="@{/model/MHosozaiGridColumns.js}"></script>
 <script th:src="@{/model/MPkoseGridColumns.js}"></script>
+<script th:src="@{/model/MPhinmokGridColumns.js}"></script>
 </head>
 <body>
   <div layout:fragment="article">
@@ -19,7 +21,7 @@
       <fieldset>
         <legend th:text="#{MHhinmok.legend}">legend</legend>
         <div id="hhinban">
-          <label for="MHhinmok.hhinban" th:text="#{MHhinmok.hhinban}">販売品番</label><span id="MHhinmok.hhinban"></span><input type="hidden" id="MHhinmok.hhinban" name="MHhinmok.hhinban" class="primaryKey" />
+          <label for="MHhinmok.hhinban" th:text="#{MHhinmok.hhinban}">販売品番</label><input type="text" id="MHhinmok.hhinban" name="MHhinmok.hhinban" maxlength="20" class="primaryKey" />
         </div>
         <div id="lvcd">
           <label for="MHhinmok.lvcd" th:text="#{MHhinmok.lvcd}">ローレベルコード</label><input type="text" id="MHhinmok.lvcd" name="MHhinmok.lvcd" maxlength="2" />
@@ -31,7 +33,7 @@
           <label for="MHhinmok.hincd" th:text="#{MHhinmok.hincd}">品目コード</label><input type="text" id="MHhinmok.hincd" name="MHhinmok.hincd" maxlength="20" />
         </div>
         <div id="hinmei">
-          <label for="MHhinmok.hinmei" th:text="#{MHhinmok.hinmei}">品　名</label><input type="text" id="MHhinmok.hinmei" name="MHhinmok.hinmei" maxlength="10" />
+          <label for="MHhinmok.hinmei" th:text="#{MHhinmok.hinmei}">品名</label><input type="text" id="MHhinmok.hinmei" name="MHhinmok.hinmei" maxlength="10" />
         </div>
         <div id="setkbn">
           <label for="MHhinmok.setkbn" th:text="#{MHhinmok.setkbn}">セット区分</label><input type="text" id="MHhinmok.setkbn" name="MHhinmok.setkbn" maxlength="1" />

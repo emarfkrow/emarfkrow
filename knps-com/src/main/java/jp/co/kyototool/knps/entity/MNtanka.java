@@ -22,6 +22,7 @@ public class MNtanka implements IEntity {
     /**
      * @return 販売品番
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("HHINBAN")
     public String getHhinban() {
         return this.hhinban;
     }
@@ -43,6 +44,7 @@ public class MNtanka implements IEntity {
     /**
      * @return 日産品番
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("NISSAN-HINBAN")
     public String getNissanHinban() {
         return this.nissanHinban;
     }
@@ -64,6 +66,7 @@ public class MNtanka implements IEntity {
     /**
      * @return 日産単価
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("NISSAN-TANKA")
     public java.math.BigDecimal getNissanTanka() {
         return this.nissanTanka;
     }
@@ -85,6 +88,7 @@ public class MNtanka implements IEntity {
     /**
      * @return 希望小売価格
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("KOURI-KAKAKU")
     public java.math.BigDecimal getKouriKakaku() {
         return this.kouriKakaku;
     }
@@ -106,6 +110,7 @@ public class MNtanka implements IEntity {
     /**
      * @return 商品区分
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SHOHINKBN")
     public String getShohinkbn() {
         return this.shohinkbn;
     }
@@ -127,6 +132,7 @@ public class MNtanka implements IEntity {
     /**
      * @return パーソナル区分
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("PERSOKBN")
     public String getPersokbn() {
         return this.persokbn;
     }
@@ -148,6 +154,7 @@ public class MNtanka implements IEntity {
     /**
      * @return 価格体系区分
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("KAKAKUKBN")
     public String getKakakukbn() {
         return this.kakakukbn;
     }
@@ -169,6 +176,7 @@ public class MNtanka implements IEntity {
     /**
      * @return 予備領域
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("FILLER")
     public String getFiller() {
         return this.filler;
     }

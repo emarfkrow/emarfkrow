@@ -22,6 +22,7 @@ public class PchOrderInf implements IEntity {
     /**
      * @return ORDER_NO
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ORDER_NO")
     public String getOrderNo() {
         return this.orderNo;
     }
@@ -43,6 +44,7 @@ public class PchOrderInf implements IEntity {
     /**
      * @return ORDER_KBN
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ORDER_KBN")
     public java.math.BigDecimal getOrderKbn() {
         return this.orderKbn;
     }
@@ -64,6 +66,7 @@ public class PchOrderInf implements IEntity {
     /**
      * @return ORDER_ID
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ORDER_ID")
     public String getOrderId() {
         return this.orderId;
     }
@@ -85,6 +88,7 @@ public class PchOrderInf implements IEntity {
     /**
      * @return ARRANGE_KBN
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ARRANGE_KBN")
     public String getArrangeKbn() {
         return this.arrangeKbn;
     }
@@ -106,6 +110,7 @@ public class PchOrderInf implements IEntity {
     /**
      * @return KANBAN_ID
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("KANBAN_ID")
     public String getKanbanId() {
         return this.kanbanId;
     }
@@ -127,6 +132,7 @@ public class PchOrderInf implements IEntity {
     /**
      * @return SERIAL_NO
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SERIAL_NO")
     public java.math.BigDecimal getSerialNo() {
         return this.serialNo;
     }
@@ -148,6 +154,7 @@ public class PchOrderInf implements IEntity {
     /**
      * @return ROUTING
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ROUTING")
     public java.math.BigDecimal getRouting() {
         return this.routing;
     }
@@ -169,6 +176,7 @@ public class PchOrderInf implements IEntity {
     /**
      * @return WC_CODE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("WC_CODE")
     public String getWcCode() {
         return this.wcCode;
     }
@@ -190,6 +198,7 @@ public class PchOrderInf implements IEntity {
     /**
      * @return OPE_DETAIL
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("OPE_DETAIL")
     public String getOpeDetail() {
         return this.opeDetail;
     }
@@ -211,6 +220,7 @@ public class PchOrderInf implements IEntity {
     /**
      * @return COMMENT1
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("COMMENT1")
     public String getComment1() {
         return this.comment1;
     }
@@ -232,6 +242,7 @@ public class PchOrderInf implements IEntity {
     /**
      * @return COMMENT2
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("COMMENT2")
     public String getComment2() {
         return this.comment2;
     }
@@ -253,6 +264,7 @@ public class PchOrderInf implements IEntity {
     /**
      * @return HINBAN
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("HINBAN")
     public String getHinban() {
         return this.hinban;
     }
@@ -274,6 +286,7 @@ public class PchOrderInf implements IEntity {
     /**
      * @return ORDER_COUNTS
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ORDER_COUNTS")
     public java.math.BigDecimal getOrderCounts() {
         return this.orderCounts;
     }
@@ -295,6 +308,7 @@ public class PchOrderInf implements IEntity {
     /**
      * @return UNIT_CODE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("UNIT_CODE")
     public String getUnitCode() {
         return this.unitCode;
     }
@@ -316,6 +330,7 @@ public class PchOrderInf implements IEntity {
     /**
      * @return MEMO
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("MEMO")
     public String getMemo() {
         return this.memo;
     }
@@ -340,6 +355,7 @@ public class PchOrderInf implements IEntity {
     /**
      * @return PERIOD
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("PERIOD")
     public java.time.LocalDateTime getPeriod() {
         return this.period;
     }
@@ -370,6 +386,7 @@ public class PchOrderInf implements IEntity {
     /**
      * @return PERIOD_CHG
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("PERIOD_CHG")
     public java.time.LocalDateTime getPeriodChg() {
         return this.periodChg;
     }
@@ -397,6 +414,7 @@ public class PchOrderInf implements IEntity {
     /**
      * @return ORDER_LT
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ORDER_LT")
     public java.math.BigDecimal getOrderLt() {
         return this.orderLt;
     }
@@ -418,6 +436,7 @@ public class PchOrderInf implements IEntity {
     /**
      * @return SUP_CODE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SUP_CODE")
     public String getSupCode() {
         return this.supCode;
     }
@@ -439,6 +458,7 @@ public class PchOrderInf implements IEntity {
     /**
      * @return SUBINV_CODE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SUBINV_CODE")
     public String getSubinvCode() {
         return this.subinvCode;
     }
@@ -460,6 +480,7 @@ public class PchOrderInf implements IEntity {
     /**
      * @return SHIP_CODE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SHIP_CODE")
     public String getShipCode() {
         return this.shipCode;
     }
@@ -481,6 +502,7 @@ public class PchOrderInf implements IEntity {
     /**
      * @return ORDER_UNIT
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ORDER_UNIT")
     public java.math.BigDecimal getOrderUnit() {
         return this.orderUnit;
     }
@@ -502,6 +524,7 @@ public class PchOrderInf implements IEntity {
     /**
      * @return ACCEPT_KBN
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ACCEPT_KBN")
     public java.math.BigDecimal getAcceptKbn() {
         return this.acceptKbn;
     }
@@ -523,6 +546,7 @@ public class PchOrderInf implements IEntity {
     /**
      * @return INSPECT_LANE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("INSPECT_LANE")
     public java.math.BigDecimal getInspectLane() {
         return this.inspectLane;
     }
@@ -544,6 +568,7 @@ public class PchOrderInf implements IEntity {
     /**
      * @return INSPECT_KBN
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("INSPECT_KBN")
     public java.math.BigDecimal getInspectKbn() {
         return this.inspectKbn;
     }
@@ -565,6 +590,7 @@ public class PchOrderInf implements IEntity {
     /**
      * @return REQUEST_REGIST
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("REQUEST_REGIST")
     public String getRequestRegist() {
         return this.requestRegist;
     }
@@ -589,6 +615,7 @@ public class PchOrderInf implements IEntity {
     /**
      * @return REQUEST_DATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("REQUEST_DATE")
     public java.time.LocalDateTime getRequestDate() {
         return this.requestDate;
     }
@@ -616,6 +643,7 @@ public class PchOrderInf implements IEntity {
     /**
      * @return ORDER_REGIST
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ORDER_REGIST")
     public String getOrderRegist() {
         return this.orderRegist;
     }
@@ -640,6 +668,7 @@ public class PchOrderInf implements IEntity {
     /**
      * @return ORDER_DATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ORDER_DATE")
     public java.time.LocalDateTime getOrderDate() {
         return this.orderDate;
     }
@@ -667,6 +696,7 @@ public class PchOrderInf implements IEntity {
     /**
      * @return ORDER_STATUS
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ORDER_STATUS")
     public java.math.BigDecimal getOrderStatus() {
         return this.orderStatus;
     }
@@ -691,6 +721,7 @@ public class PchOrderInf implements IEntity {
     /**
      * @return ACCEPT_DATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ACCEPT_DATE")
     public java.time.LocalDateTime getAcceptDate() {
         return this.acceptDate;
     }
@@ -718,6 +749,7 @@ public class PchOrderInf implements IEntity {
     /**
      * @return ACCEPT_REGIST
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ACCEPT_REGIST")
     public String getAcceptRegist() {
         return this.acceptRegist;
     }
@@ -739,6 +771,7 @@ public class PchOrderInf implements IEntity {
     /**
      * @return ACCEPT_COUNTS
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ACCEPT_COUNTS")
     public java.math.BigDecimal getAcceptCounts() {
         return this.acceptCounts;
     }
@@ -763,6 +796,7 @@ public class PchOrderInf implements IEntity {
     /**
      * @return INSPECT_DATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("INSPECT_DATE")
     public java.time.LocalDateTime getInspectDate() {
         return this.inspectDate;
     }
@@ -790,6 +824,7 @@ public class PchOrderInf implements IEntity {
     /**
      * @return INSPECT_REGIST
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("INSPECT_REGIST")
     public String getInspectRegist() {
         return this.inspectRegist;
     }
@@ -811,6 +846,7 @@ public class PchOrderInf implements IEntity {
     /**
      * @return INSPECT_COUNTS
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("INSPECT_COUNTS")
     public java.math.BigDecimal getInspectCounts() {
         return this.inspectCounts;
     }
@@ -832,6 +868,7 @@ public class PchOrderInf implements IEntity {
     /**
      * @return GOOD_COUNTS
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("GOOD_COUNTS")
     public java.math.BigDecimal getGoodCounts() {
         return this.goodCounts;
     }
@@ -853,6 +890,7 @@ public class PchOrderInf implements IEntity {
     /**
      * @return REJECT_COUNTS
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("REJECT_COUNTS")
     public java.math.BigDecimal getRejectCounts() {
         return this.rejectCounts;
     }
@@ -874,6 +912,7 @@ public class PchOrderInf implements IEntity {
     /**
      * @return INSPECT_UNIT
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("INSPECT_UNIT")
     public java.math.BigDecimal getInspectUnit() {
         return this.inspectUnit;
     }
@@ -895,6 +934,7 @@ public class PchOrderInf implements IEntity {
     /**
      * @return REJECT_REASON
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("REJECT_REASON")
     public String getRejectReason() {
         return this.rejectReason;
     }
@@ -916,6 +956,7 @@ public class PchOrderInf implements IEntity {
     /**
      * @return RETURN_REASON
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("RETURN_REASON")
     public String getReturnReason() {
         return this.returnReason;
     }
@@ -937,6 +978,7 @@ public class PchOrderInf implements IEntity {
     /**
      * @return PERIOD_CHG_COUNTS
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("PERIOD_CHG_COUNTS")
     public java.math.BigDecimal getPeriodChgCounts() {
         return this.periodChgCounts;
     }
@@ -958,6 +1000,7 @@ public class PchOrderInf implements IEntity {
     /**
      * @return OUTPUT_STATUS
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("OUTPUT_STATUS")
     public java.math.BigDecimal getOutputStatus() {
         return this.outputStatus;
     }
@@ -979,6 +1022,7 @@ public class PchOrderInf implements IEntity {
     /**
      * @return SHORT_NO
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SHORT_NO")
     public java.math.BigDecimal getShortNo() {
         return this.shortNo;
     }
@@ -1003,6 +1047,7 @@ public class PchOrderInf implements IEntity {
     /**
      * @return TIME_STAMP_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CREATE")
     public java.time.LocalDateTime getTimeStampCreate() {
         return this.timeStampCreate;
     }
@@ -1033,6 +1078,7 @@ public class PchOrderInf implements IEntity {
     /**
      * @return TIME_STAMP_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CHANGE")
     public java.time.LocalDateTime getTimeStampChange() {
         return this.timeStampChange;
     }
@@ -1060,6 +1106,7 @@ public class PchOrderInf implements IEntity {
     /**
      * @return USER_ID_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CREATE")
     public String getUserIdCreate() {
         return this.userIdCreate;
     }
@@ -1081,6 +1128,7 @@ public class PchOrderInf implements IEntity {
     /**
      * @return USER_ID_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CHANGE")
     public String getUserIdChange() {
         return this.userIdChange;
     }
@@ -1102,6 +1150,7 @@ public class PchOrderInf implements IEntity {
     /**
      * @return ORG_ORDER_UNIT
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ORG_ORDER_UNIT")
     public java.math.BigDecimal getOrgOrderUnit() {
         return this.orgOrderUnit;
     }
@@ -1123,6 +1172,7 @@ public class PchOrderInf implements IEntity {
     /**
      * @return MUSHO_HACCHU_F
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("MUSHO_HACCHU_F")
     public String getMushoHacchuF() {
         return this.mushoHacchuF;
     }
@@ -1144,6 +1194,7 @@ public class PchOrderInf implements IEntity {
     /**
      * @return SUP_MEMO
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SUP_MEMO")
     public String getSupMemo() {
         return this.supMemo;
     }
@@ -1165,6 +1216,7 @@ public class PchOrderInf implements IEntity {
     /**
      * @return SHIHARAI_HOHO_KBN
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SHIHARAI_HOHO_KBN")
     public String getShiharaiHohoKbn() {
         return this.shiharaiHohoKbn;
     }
@@ -1186,6 +1238,7 @@ public class PchOrderInf implements IEntity {
     /**
      * @return ORDER_ISSHIKI_UNIT_F
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ORDER_ISSHIKI_UNIT_F")
     public String getOrderIsshikiUnitF() {
         return this.orderIsshikiUnitF;
     }
@@ -1207,6 +1260,7 @@ public class PchOrderInf implements IEntity {
     /**
      * @return ORDER_ISSHIKI_COUNTS
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ORDER_ISSHIKI_COUNTS")
     public java.math.BigDecimal getOrderIsshikiCounts() {
         return this.orderIsshikiCounts;
     }
@@ -1228,6 +1282,7 @@ public class PchOrderInf implements IEntity {
     /**
      * @return ORDER_ISSHIKI_UNIT
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ORDER_ISSHIKI_UNIT")
     public java.math.BigDecimal getOrderIsshikiUnit() {
         return this.orderIsshikiUnit;
     }
@@ -1249,6 +1304,7 @@ public class PchOrderInf implements IEntity {
     /**
      * @return INSPECT_ISSHIKI_UNIT_F
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("INSPECT_ISSHIKI_UNIT_F")
     public String getInspectIsshikiUnitF() {
         return this.inspectIsshikiUnitF;
     }
@@ -1270,6 +1326,7 @@ public class PchOrderInf implements IEntity {
     /**
      * @return INSPECT_ISSHIKI_COUNTS
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("INSPECT_ISSHIKI_COUNTS")
     public java.math.BigDecimal getInspectIsshikiCounts() {
         return this.inspectIsshikiCounts;
     }
@@ -1291,6 +1348,7 @@ public class PchOrderInf implements IEntity {
     /**
      * @return INSPECT_ISSHIKI_UNIT
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("INSPECT_ISSHIKI_UNIT")
     public java.math.BigDecimal getInspectIsshikiUnit() {
         return this.inspectIsshikiUnit;
     }
@@ -1312,6 +1370,7 @@ public class PchOrderInf implements IEntity {
     /**
      * @return ORG_BASE_ORDER_UNIT
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ORG_BASE_ORDER_UNIT")
     public java.math.BigDecimal getOrgBaseOrderUnit() {
         return this.orgBaseOrderUnit;
     }
@@ -1333,6 +1392,7 @@ public class PchOrderInf implements IEntity {
     /**
      * @return ORG_MIN_ORDER_AMOUNT
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ORG_MIN_ORDER_AMOUNT")
     public java.math.BigDecimal getOrgMinOrderAmount() {
         return this.orgMinOrderAmount;
     }

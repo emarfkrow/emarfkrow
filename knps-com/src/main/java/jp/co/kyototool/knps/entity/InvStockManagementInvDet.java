@@ -22,6 +22,7 @@ public class InvStockManagementInvDet implements IEntity {
     /**
      * @return INV_PHASE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("INV_PHASE")
     public java.math.BigDecimal getInvPhase() {
         return this.invPhase;
     }
@@ -43,6 +44,7 @@ public class InvStockManagementInvDet implements IEntity {
     /**
      * @return INV_PHASE_MONTH
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("INV_PHASE_MONTH")
     public java.math.BigDecimal getInvPhaseMonth() {
         return this.invPhaseMonth;
     }
@@ -64,6 +66,7 @@ public class InvStockManagementInvDet implements IEntity {
     /**
      * @return STOCK_MANAGEMENT_SECTION
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("STOCK_MANAGEMENT_SECTION")
     public java.math.BigDecimal getStockManagementSection() {
         return this.stockManagementSection;
     }
@@ -85,6 +88,7 @@ public class InvStockManagementInvDet implements IEntity {
     /**
      * @return HINBAN
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("HINBAN")
     public String getHinban() {
         return this.hinban;
     }
@@ -106,6 +110,7 @@ public class InvStockManagementInvDet implements IEntity {
     /**
      * @return SUB_INV_CODE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SUB_INV_CODE")
     public String getSubInvCode() {
         return this.subInvCode;
     }
@@ -127,6 +132,7 @@ public class InvStockManagementInvDet implements IEntity {
     /**
      * @return INV_BRANCH_NO
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("INV_BRANCH_NO")
     public java.math.BigDecimal getInvBranchNo() {
         return this.invBranchNo;
     }
@@ -148,6 +154,7 @@ public class InvStockManagementInvDet implements IEntity {
     /**
      * @return SLIP_NO
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SLIP_NO")
     public java.math.BigDecimal getSlipNo() {
         return this.slipNo;
     }
@@ -169,6 +176,7 @@ public class InvStockManagementInvDet implements IEntity {
     /**
      * @return STOCK_CODE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("STOCK_CODE")
     public String getStockCode() {
         return this.stockCode;
     }
@@ -190,6 +198,7 @@ public class InvStockManagementInvDet implements IEntity {
     /**
      * @return INV_STOCK
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("INV_STOCK")
     public java.math.BigDecimal getInvStock() {
         return this.invStock;
     }
@@ -214,6 +223,7 @@ public class InvStockManagementInvDet implements IEntity {
     /**
      * @return TIME_STAMP_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CREATE")
     public java.time.LocalDateTime getTimeStampCreate() {
         return this.timeStampCreate;
     }
@@ -244,6 +254,7 @@ public class InvStockManagementInvDet implements IEntity {
     /**
      * @return TIME_STAMP_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CHANGE")
     public java.time.LocalDateTime getTimeStampChange() {
         return this.timeStampChange;
     }
@@ -271,6 +282,7 @@ public class InvStockManagementInvDet implements IEntity {
     /**
      * @return USER_ID_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CREATE")
     public String getUserIdCreate() {
         return this.userIdCreate;
     }
@@ -292,6 +304,7 @@ public class InvStockManagementInvDet implements IEntity {
     /**
      * @return USER_ID_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CHANGE")
     public String getUserIdChange() {
         return this.userIdChange;
     }
@@ -313,6 +326,7 @@ public class InvStockManagementInvDet implements IEntity {
     /**
      * @return DELETE_FLAG
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("DELETE_FLAG")
     public java.math.BigDecimal getDeleteFlag() {
         return this.deleteFlag;
     }

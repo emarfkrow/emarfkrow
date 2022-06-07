@@ -22,6 +22,7 @@ public class MTanka implements IEntity {
     /**
      * @return 販売品番
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("HHINBAN")
     public String getHhinban() {
         return this.hhinban;
     }
@@ -43,6 +44,7 @@ public class MTanka implements IEntity {
     /**
      * @return 代理店単価
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("DAIRI-TANKA")
     public java.math.BigDecimal getDairiTanka() {
         return this.dairiTanka;
     }
@@ -64,6 +66,7 @@ public class MTanka implements IEntity {
     /**
      * @return Ｃ代行店単価
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("CDAIKO-TANKA")
     public java.math.BigDecimal getCdaikoTanka() {
         return this.cdaikoTanka;
     }
@@ -85,6 +88,7 @@ public class MTanka implements IEntity {
     /**
      * @return 準代行店単価
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("JDAIKO-TANKA")
     public java.math.BigDecimal getJdaikoTanka() {
         return this.jdaikoTanka;
     }
@@ -106,6 +110,7 @@ public class MTanka implements IEntity {
     /**
      * @return 卸単価
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("OROSI-TANKA")
     public java.math.BigDecimal getOrosiTanka() {
         return this.orosiTanka;
     }
@@ -127,6 +132,7 @@ public class MTanka implements IEntity {
     /**
      * @return 希望小売価格
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("KOURI-KAKAKU")
     public java.math.BigDecimal getKouriKakaku() {
         return this.kouriKakaku;
     }
@@ -148,6 +154,7 @@ public class MTanka implements IEntity {
     /**
      * @return ＤＩＹ価格
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("DIY-KAKAKU")
     public java.math.BigDecimal getDiyKakaku() {
         return this.diyKakaku;
     }
@@ -169,6 +176,7 @@ public class MTanka implements IEntity {
     /**
      * @return 輸出価格１
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("YUSHUTU1-KAKAKU")
     public java.math.BigDecimal getYushutu1Kakaku() {
         return this.yushutu1Kakaku;
     }
@@ -190,6 +198,7 @@ public class MTanka implements IEntity {
     /**
      * @return 輸出価格２
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("YUSHUTU2-KAKAKU")
     public java.math.BigDecimal getYushutu2Kakaku() {
         return this.yushutu2Kakaku;
     }
@@ -211,6 +220,7 @@ public class MTanka implements IEntity {
     /**
      * @return 輸出価格３
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("YUSHUTU3-KAKAKU")
     public java.math.BigDecimal getYushutu3Kakaku() {
         return this.yushutu3Kakaku;
     }
@@ -232,6 +242,7 @@ public class MTanka implements IEntity {
     /**
      * @return 価格１
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("KAKAKU1")
     public java.math.BigDecimal getKakaku1() {
         return this.kakaku1;
     }
@@ -253,6 +264,7 @@ public class MTanka implements IEntity {
     /**
      * @return 価格２
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("KAKAKU2")
     public java.math.BigDecimal getKakaku2() {
         return this.kakaku2;
     }
@@ -274,6 +286,7 @@ public class MTanka implements IEntity {
     /**
      * @return 価格３
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("KAKAKU3")
     public java.math.BigDecimal getKakaku3() {
         return this.kakaku3;
     }
@@ -295,6 +308,7 @@ public class MTanka implements IEntity {
     /**
      * @return 価格４
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("KAKAKU4")
     public java.math.BigDecimal getKakaku4() {
         return this.kakaku4;
     }
@@ -316,6 +330,7 @@ public class MTanka implements IEntity {
     /**
      * @return 価格５
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("KAKAKU5")
     public java.math.BigDecimal getKakaku5() {
         return this.kakaku5;
     }
@@ -337,6 +352,7 @@ public class MTanka implements IEntity {
     /**
      * @return 価格６
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("KAKAKU6")
     public java.math.BigDecimal getKakaku6() {
         return this.kakaku6;
     }
@@ -358,6 +374,7 @@ public class MTanka implements IEntity {
     /**
      * @return 商品区分
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SHOHINKBN")
     public String getShohinkbn() {
         return this.shohinkbn;
     }
@@ -379,6 +396,7 @@ public class MTanka implements IEntity {
     /**
      * @return 価格体系区分
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("KAKAKUKBN")
     public String getKakakukbn() {
         return this.kakakukbn;
     }
@@ -400,6 +418,7 @@ public class MTanka implements IEntity {
     /**
      * @return 予備領域
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("FILLER")
     public String getFiller() {
         return this.filler;
     }

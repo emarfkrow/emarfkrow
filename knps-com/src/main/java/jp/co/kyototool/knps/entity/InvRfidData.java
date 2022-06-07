@@ -22,6 +22,7 @@ public class InvRfidData implements IEntity {
     /**
      * @return TARGET_KBN
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TARGET_KBN")
     public String getTargetKbn() {
         return this.targetKbn;
     }
@@ -43,6 +44,7 @@ public class InvRfidData implements IEntity {
     /**
      * @return TID
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TID")
     public String getTid() {
         return this.tid;
     }
@@ -64,6 +66,7 @@ public class InvRfidData implements IEntity {
     /**
      * @return TAG_DATA
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TAG_DATA")
     public String getTagData() {
         return this.tagData;
     }
@@ -85,6 +88,7 @@ public class InvRfidData implements IEntity {
     /**
      * @return READER_NO
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("READER_NO")
     public java.math.BigDecimal getReaderNo() {
         return this.readerNo;
     }
@@ -106,6 +110,7 @@ public class InvRfidData implements IEntity {
     /**
      * @return ANTENNA_NO
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ANTENNA_NO")
     public java.math.BigDecimal getAntennaNo() {
         return this.antennaNo;
     }
@@ -127,6 +132,7 @@ public class InvRfidData implements IEntity {
     /**
      * @return SPOT_KBN
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SPOT_KBN")
     public String getSpotKbn() {
         return this.spotKbn;
     }
@@ -148,6 +154,7 @@ public class InvRfidData implements IEntity {
     /**
      * @return RECIVE_TIME
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("RECIVE_TIME")
     public String getReciveTime() {
         return this.reciveTime;
     }
@@ -172,6 +179,7 @@ public class InvRfidData implements IEntity {
     /**
      * @return TIME_STAMP_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CREATE")
     public java.time.LocalDateTime getTimeStampCreate() {
         return this.timeStampCreate;
     }
@@ -202,6 +210,7 @@ public class InvRfidData implements IEntity {
     /**
      * @return TIME_STAMP_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CHANGE")
     public java.time.LocalDateTime getTimeStampChange() {
         return this.timeStampChange;
     }
@@ -229,6 +238,7 @@ public class InvRfidData implements IEntity {
     /**
      * @return USER_ID_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CREATE")
     public String getUserIdCreate() {
         return this.userIdCreate;
     }
@@ -250,6 +260,7 @@ public class InvRfidData implements IEntity {
     /**
      * @return USER_ID_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CHANGE")
     public String getUserIdChange() {
         return this.userIdChange;
     }

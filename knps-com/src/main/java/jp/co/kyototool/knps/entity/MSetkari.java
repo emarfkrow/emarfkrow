@@ -22,6 +22,7 @@ public class MSetkari implements IEntity {
     /**
      * @return セット品番
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SET-HINBAN")
     public String getSetHinban() {
         return this.setHinban;
     }
@@ -43,6 +44,7 @@ public class MSetkari implements IEntity {
     /**
      * @return セット子品番
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SET-KHINBAN")
     public String getSetKhinban() {
         return this.setKhinban;
     }
@@ -64,6 +66,7 @@ public class MSetkari implements IEntity {
     /**
      * @return 得意先コード
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TOKUCD")
     public java.math.BigDecimal getTokucd() {
         return this.tokucd;
     }
@@ -85,6 +88,7 @@ public class MSetkari implements IEntity {
     /**
      * @return 品名
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("HINMEI")
     public String getHinmei() {
         return this.hinmei;
     }
@@ -106,6 +110,7 @@ public class MSetkari implements IEntity {
     /**
      * @return 子品名
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("KO-HINMEI")
     public String getKoHinmei() {
         return this.koHinmei;
     }
@@ -127,6 +132,7 @@ public class MSetkari implements IEntity {
     /**
      * @return セット区分
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SETKBN")
     public String getSetkbn() {
         return this.setkbn;
     }
@@ -148,6 +154,7 @@ public class MSetkari implements IEntity {
     /**
      * @return セット員数
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SETINZU")
     public java.math.BigDecimal getSetinzu() {
         return this.setinzu;
     }
@@ -169,6 +176,7 @@ public class MSetkari implements IEntity {
     /**
      * @return 子単価
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("KO-TANKA")
     public java.math.BigDecimal getKoTanka() {
         return this.koTanka;
     }
@@ -190,6 +198,7 @@ public class MSetkari implements IEntity {
     /**
      * @return 無償支給区分
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("MUSHOKBN")
     public String getMushokbn() {
         return this.mushokbn;
     }
@@ -211,6 +220,7 @@ public class MSetkari implements IEntity {
     /**
      * @return 略得意先名
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("RTOKUMEI")
     public String getRtokumei() {
         return this.rtokumei;
     }

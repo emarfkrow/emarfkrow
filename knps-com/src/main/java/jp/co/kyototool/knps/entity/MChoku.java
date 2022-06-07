@@ -22,6 +22,7 @@ public class MChoku implements IEntity {
     /**
      * @return 直送先コード
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("CHOKUCD")
     public java.math.BigDecimal getChokucd() {
         return this.chokucd;
     }
@@ -43,6 +44,7 @@ public class MChoku implements IEntity {
     /**
      * @return 直送先名１
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("CHOKUMEI1")
     public String getChokumei1() {
         return this.chokumei1;
     }
@@ -64,6 +66,7 @@ public class MChoku implements IEntity {
     /**
      * @return 直送先名２
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("CHOKUMEI2")
     public String getChokumei2() {
         return this.chokumei2;
     }
@@ -85,6 +88,7 @@ public class MChoku implements IEntity {
     /**
      * @return 略直送先名
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("RCHOKUMEI")
     public String getRchokumei() {
         return this.rchokumei;
     }
@@ -106,6 +110,7 @@ public class MChoku implements IEntity {
     /**
      * @return 直送先住所１
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("CHOKU-JUSHO1")
     public String getChokuJusho1() {
         return this.chokuJusho1;
     }
@@ -127,6 +132,7 @@ public class MChoku implements IEntity {
     /**
      * @return 直送先住所２
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("CHOKU-JUSHO2")
     public String getChokuJusho2() {
         return this.chokuJusho2;
     }
@@ -148,6 +154,7 @@ public class MChoku implements IEntity {
     /**
      * @return 郵便番号
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("UBINNO")
     public String getUbinno() {
         return this.ubinno;
     }
@@ -169,6 +176,7 @@ public class MChoku implements IEntity {
     /**
      * @return 電話番号
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TELNO")
     public String getTelno() {
         return this.telno;
     }
@@ -190,6 +198,7 @@ public class MChoku implements IEntity {
     /**
      * @return マスター登録日
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TOUROKUBI")
     public java.math.BigDecimal getTourokubi() {
         return this.tourokubi;
     }
@@ -211,6 +220,7 @@ public class MChoku implements IEntity {
     /**
      * @return カナ直送先名
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("KCHOKUMEI")
     public String getKchokumei() {
         return this.kchokumei;
     }
@@ -232,6 +242,7 @@ public class MChoku implements IEntity {
     /**
      * @return 市町村コード
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SICHOCD")
     public String getSichocd() {
         return this.sichocd;
     }
@@ -253,6 +264,7 @@ public class MChoku implements IEntity {
     /**
      * @return ＦＡＸ番号
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("FAXNO")
     public String getFaxno() {
         return this.faxno;
     }
@@ -274,6 +286,7 @@ public class MChoku implements IEntity {
     /**
      * @return 注文自動取消区分
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TORIKESI-KBN")
     public String getTorikesiKbn() {
         return this.torikesiKbn;
     }
@@ -295,6 +308,7 @@ public class MChoku implements IEntity {
     /**
      * @return 運送会社コード
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("UNSOCD")
     public String getUnsocd() {
         return this.unsocd;
     }
@@ -316,6 +330,7 @@ public class MChoku implements IEntity {
     /**
      * @return 地区コード
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIKUCD")
     public String getTikucd() {
         return this.tikucd;
     }
@@ -337,6 +352,7 @@ public class MChoku implements IEntity {
     /**
      * @return 都道府県コード
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TODOFUKENCD")
     public String getTodofukencd() {
         return this.todofukencd;
     }
@@ -358,6 +374,7 @@ public class MChoku implements IEntity {
     /**
      * @return 更新禁止区分
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("UPDNKINKBN")
     public String getUpdnkinkbn() {
         return this.updnkinkbn;
     }
@@ -379,6 +396,7 @@ public class MChoku implements IEntity {
     /**
      * @return 予備領域
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("FILLER")
     public String getFiller() {
         return this.filler;
     }

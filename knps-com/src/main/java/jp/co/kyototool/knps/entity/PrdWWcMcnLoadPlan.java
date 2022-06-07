@@ -22,6 +22,7 @@ public class PrdWWcMcnLoadPlan implements IEntity {
     /**
      * @return W_PLAN_ID
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("W_PLAN_ID")
     public java.math.BigDecimal getWPlanId() {
         return this.wPlanId;
     }
@@ -43,6 +44,7 @@ public class PrdWWcMcnLoadPlan implements IEntity {
     /**
      * @return MAN_HINBAN
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("MAN_HINBAN")
     public String getManHinban() {
         return this.manHinban;
     }
@@ -64,6 +66,7 @@ public class PrdWWcMcnLoadPlan implements IEntity {
     /**
      * @return WC_CODE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("WC_CODE")
     public String getWcCode() {
         return this.wcCode;
     }
@@ -85,6 +88,7 @@ public class PrdWWcMcnLoadPlan implements IEntity {
     /**
      * @return WC_NAME
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("WC_NAME")
     public String getWcName() {
         return this.wcName;
     }
@@ -106,6 +110,7 @@ public class PrdWWcMcnLoadPlan implements IEntity {
     /**
      * @return WS_CODE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("WS_CODE")
     public String getWsCode() {
         return this.wsCode;
     }
@@ -127,6 +132,7 @@ public class PrdWWcMcnLoadPlan implements IEntity {
     /**
      * @return WS_NAME
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("WS_NAME")
     public String getWsName() {
         return this.wsName;
     }
@@ -148,6 +154,7 @@ public class PrdWWcMcnLoadPlan implements IEntity {
     /**
      * @return OPE_DETAIL
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("OPE_DETAIL")
     public String getOpeDetail() {
         return this.opeDetail;
     }
@@ -169,6 +176,7 @@ public class PrdWWcMcnLoadPlan implements IEntity {
     /**
      * @return HUM_PRE_TIME
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("HUM_PRE_TIME")
     public java.math.BigDecimal getHumPreTime() {
         return this.humPreTime;
     }
@@ -190,6 +198,7 @@ public class PrdWWcMcnLoadPlan implements IEntity {
     /**
      * @return HUM_ACT_TIME
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("HUM_ACT_TIME")
     public java.math.BigDecimal getHumActTime() {
         return this.humActTime;
     }
@@ -211,6 +220,7 @@ public class PrdWWcMcnLoadPlan implements IEntity {
     /**
      * @return HUM_TOTAL_TIME
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("HUM_TOTAL_TIME")
     public java.math.BigDecimal getHumTotalTime() {
         return this.humTotalTime;
     }
@@ -232,6 +242,7 @@ public class PrdWWcMcnLoadPlan implements IEntity {
     /**
      * @return MAC_PRE_TIME
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("MAC_PRE_TIME")
     public java.math.BigDecimal getMacPreTime() {
         return this.macPreTime;
     }
@@ -253,6 +264,7 @@ public class PrdWWcMcnLoadPlan implements IEntity {
     /**
      * @return MAC_ACT_TIME
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("MAC_ACT_TIME")
     public java.math.BigDecimal getMacActTime() {
         return this.macActTime;
     }
@@ -274,6 +286,7 @@ public class PrdWWcMcnLoadPlan implements IEntity {
     /**
      * @return MAC_TOTAL_TIME
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("MAC_TOTAL_TIME")
     public java.math.BigDecimal getMacTotalTime() {
         return this.macTotalTime;
     }
@@ -295,6 +308,7 @@ public class PrdWWcMcnLoadPlan implements IEntity {
     /**
      * @return PRO_NES_COUNTS
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("PRO_NES_COUNTS")
     public java.math.BigDecimal getProNesCounts() {
         return this.proNesCounts;
     }
@@ -316,6 +330,7 @@ public class PrdWWcMcnLoadPlan implements IEntity {
     /**
      * @return PRO_NES_WEIGHT
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("PRO_NES_WEIGHT")
     public java.math.BigDecimal getProNesWeight() {
         return this.proNesWeight;
     }
@@ -337,6 +352,7 @@ public class PrdWWcMcnLoadPlan implements IEntity {
     /**
      * @return DATA_SOURCE_KBN
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("DATA_SOURCE_KBN")
     public java.math.BigDecimal getDataSourceKbn() {
         return this.dataSourceKbn;
     }
@@ -358,6 +374,7 @@ public class PrdWWcMcnLoadPlan implements IEntity {
     /**
      * @return PERIOD
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("PERIOD")
     public java.math.BigDecimal getPeriod() {
         return this.period;
     }
@@ -379,6 +396,7 @@ public class PrdWWcMcnLoadPlan implements IEntity {
     /**
      * @return PLAN_NO
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("PLAN_NO")
     public String getPlanNo() {
         return this.planNo;
     }
@@ -403,6 +421,7 @@ public class PrdWWcMcnLoadPlan implements IEntity {
     /**
      * @return BEG_DATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("BEG_DATE")
     public java.time.LocalDateTime getBegDate() {
         return this.begDate;
     }
@@ -433,6 +452,7 @@ public class PrdWWcMcnLoadPlan implements IEntity {
     /**
      * @return END_DATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("END_DATE")
     public java.time.LocalDateTime getEndDate() {
         return this.endDate;
     }
@@ -463,6 +483,7 @@ public class PrdWWcMcnLoadPlan implements IEntity {
     /**
      * @return TIME_STAMP_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CREATE")
     public java.time.LocalDateTime getTimeStampCreate() {
         return this.timeStampCreate;
     }
@@ -493,6 +514,7 @@ public class PrdWWcMcnLoadPlan implements IEntity {
     /**
      * @return TIME_STAMP_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CHANGE")
     public java.time.LocalDateTime getTimeStampChange() {
         return this.timeStampChange;
     }
@@ -520,6 +542,7 @@ public class PrdWWcMcnLoadPlan implements IEntity {
     /**
      * @return USER_ID_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CREATE")
     public String getUserIdCreate() {
         return this.userIdCreate;
     }
@@ -541,6 +564,7 @@ public class PrdWWcMcnLoadPlan implements IEntity {
     /**
      * @return USER_ID_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CHANGE")
     public String getUserIdChange() {
         return this.userIdChange;
     }

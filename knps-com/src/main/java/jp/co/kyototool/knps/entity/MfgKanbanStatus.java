@@ -22,6 +22,7 @@ public class MfgKanbanStatus implements IEntity {
     /**
      * @return KANBAN_ID
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("KANBAN_ID")
     public String getKanbanId() {
         return this.kanbanId;
     }
@@ -43,6 +44,7 @@ public class MfgKanbanStatus implements IEntity {
     /**
      * @return SERIAL_NO
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SERIAL_NO")
     public java.math.BigDecimal getSerialNo() {
         return this.serialNo;
     }
@@ -64,6 +66,7 @@ public class MfgKanbanStatus implements IEntity {
     /**
      * @return KANBAN_PRINT_STATUS
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("KANBAN_PRINT_STATUS")
     public java.math.BigDecimal getKanbanPrintStatus() {
         return this.kanbanPrintStatus;
     }
@@ -85,6 +88,7 @@ public class MfgKanbanStatus implements IEntity {
     /**
      * @return KANBAN_STATUS
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("KANBAN_STATUS")
     public java.math.BigDecimal getKanbanStatus() {
         return this.kanbanStatus;
     }
@@ -106,6 +110,7 @@ public class MfgKanbanStatus implements IEntity {
     /**
      * @return RE_ISSUE_COUNTS
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("RE_ISSUE_COUNTS")
     public java.math.BigDecimal getReIssueCounts() {
         return this.reIssueCounts;
     }
@@ -130,6 +135,7 @@ public class MfgKanbanStatus implements IEntity {
     /**
      * @return TIME_STAMP_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CREATE")
     public java.time.LocalDateTime getTimeStampCreate() {
         return this.timeStampCreate;
     }
@@ -160,6 +166,7 @@ public class MfgKanbanStatus implements IEntity {
     /**
      * @return TIME_STAMP_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CHANGE")
     public java.time.LocalDateTime getTimeStampChange() {
         return this.timeStampChange;
     }
@@ -187,6 +194,7 @@ public class MfgKanbanStatus implements IEntity {
     /**
      * @return USER_ID_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CREATE")
     public String getUserIdCreate() {
         return this.userIdCreate;
     }
@@ -208,6 +216,7 @@ public class MfgKanbanStatus implements IEntity {
     /**
      * @return USER_ID_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CHANGE")
     public String getUserIdChange() {
         return this.userIdChange;
     }

@@ -22,6 +22,7 @@ public class PchSupplySch implements IEntity {
     /**
      * @return SUPPLY_NO
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SUPPLY_NO")
     public String getSupplyNo() {
         return this.supplyNo;
     }
@@ -43,6 +44,7 @@ public class PchSupplySch implements IEntity {
     /**
      * @return SUPPLY_ORDER_NO
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SUPPLY_ORDER_NO")
     public String getSupplyOrderNo() {
         return this.supplyOrderNo;
     }
@@ -64,6 +66,7 @@ public class PchSupplySch implements IEntity {
     /**
      * @return HINBAN
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("HINBAN")
     public String getHinban() {
         return this.hinban;
     }
@@ -85,6 +88,7 @@ public class PchSupplySch implements IEntity {
     /**
      * @return SUPPLY_KBN
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SUPPLY_KBN")
     public java.math.BigDecimal getSupplyKbn() {
         return this.supplyKbn;
     }
@@ -106,6 +110,7 @@ public class PchSupplySch implements IEntity {
     /**
      * @return SUPPLY_UNIT
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SUPPLY_UNIT")
     public java.math.BigDecimal getSupplyUnit() {
         return this.supplyUnit;
     }
@@ -127,6 +132,7 @@ public class PchSupplySch implements IEntity {
     /**
      * @return SUPPLY_COUNTS
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SUPPLY_COUNTS")
     public java.math.BigDecimal getSupplyCounts() {
         return this.supplyCounts;
     }
@@ -148,6 +154,7 @@ public class PchSupplySch implements IEntity {
     /**
      * @return ACT_SUPPLY_COUNTS
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ACT_SUPPLY_COUNTS")
     public java.math.BigDecimal getActSupplyCounts() {
         return this.actSupplyCounts;
     }
@@ -169,6 +176,7 @@ public class PchSupplySch implements IEntity {
     /**
      * @return SUP_CODE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SUP_CODE")
     public String getSupCode() {
         return this.supCode;
     }
@@ -193,6 +201,7 @@ public class PchSupplySch implements IEntity {
     /**
      * @return SUPPLY_DATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SUPPLY_DATE")
     public java.time.LocalDateTime getSupplyDate() {
         return this.supplyDate;
     }
@@ -220,6 +229,7 @@ public class PchSupplySch implements IEntity {
     /**
      * @return SUPPLY_VERIFY_STAT
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SUPPLY_VERIFY_STAT")
     public java.math.BigDecimal getSupplyVerifyStat() {
         return this.supplyVerifyStat;
     }
@@ -241,6 +251,7 @@ public class PchSupplySch implements IEntity {
     /**
      * @return USER_ID_VERIFY
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_VERIFY")
     public String getUserIdVerify() {
         return this.userIdVerify;
     }
@@ -262,6 +273,7 @@ public class PchSupplySch implements IEntity {
     /**
      * @return SUPPLY_ISSUE_STAT
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SUPPLY_ISSUE_STAT")
     public java.math.BigDecimal getSupplyIssueStat() {
         return this.supplyIssueStat;
     }
@@ -286,6 +298,7 @@ public class PchSupplySch implements IEntity {
     /**
      * @return TIME_STAMP_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CREATE")
     public java.time.LocalDateTime getTimeStampCreate() {
         return this.timeStampCreate;
     }
@@ -316,6 +329,7 @@ public class PchSupplySch implements IEntity {
     /**
      * @return TIME_STAMP_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TIME_STAMP_CHANGE")
     public java.time.LocalDateTime getTimeStampChange() {
         return this.timeStampChange;
     }
@@ -343,6 +357,7 @@ public class PchSupplySch implements IEntity {
     /**
      * @return USER_ID_CREATE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CREATE")
     public String getUserIdCreate() {
         return this.userIdCreate;
     }
@@ -364,6 +379,7 @@ public class PchSupplySch implements IEntity {
     /**
      * @return USER_ID_CHANGE
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID_CHANGE")
     public String getUserIdChange() {
         return this.userIdChange;
     }

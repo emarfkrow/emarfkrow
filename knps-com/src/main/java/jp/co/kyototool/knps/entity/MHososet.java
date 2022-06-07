@@ -22,6 +22,7 @@ public class MHososet implements IEntity {
     /**
      * @return 販売品番
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("HHINBAN")
     public String getHhinban() {
         return this.hhinban;
     }
@@ -43,6 +44,7 @@ public class MHososet implements IEntity {
     /**
      * @return 包装品番
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("HOSO-HINBAN")
     public String getHosoHinban() {
         return this.hosoHinban;
     }
@@ -64,6 +66,7 @@ public class MHososet implements IEntity {
     /**
      * @return 員数
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("INZU")
     public java.math.BigDecimal getInzu() {
         return this.inzu;
     }
@@ -85,6 +88,7 @@ public class MHososet implements IEntity {
     /**
      * @return 予備領域
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("FILLER")
     public String getFiller() {
         return this.filler;
     }
@@ -110,8 +114,8 @@ public class MHososet implements IEntity {
     public static MHososet get(final Object param1, final Object param2) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (\"HHINBAN\") = TRIM (:hhinban)");
-        whereList.add("TRIM (\"HOSO-HINBAN\") = TRIM (:hoso_hinban)");
+        whereList.add("\"HHINBAN\" = :hhinban");
+        whereList.add("\"HOSO-HINBAN\" = :hoso_hinban");
 
         String sql = "SELECT * FROM M_HOSOSET WHERE " + String.join(" AND ", whereList);
 
@@ -130,9 +134,6 @@ public class MHososet implements IEntity {
      * @return 追加件数
      */
     public int insert(final LocalDateTime now, final String id) {
-
-        // 包装品番の採番処理
-        numbering();
 
         // 包装材構成マスタの登録
         List<String> nameList = new ArrayList<String>();
@@ -156,29 +157,6 @@ public class MHososet implements IEntity {
         valueList.add(":inzu");
         valueList.add(":filler");
         return String.join("\r\n    , ", valueList);
-    }
-
-    /** 包装品番の採番処理 */
-    private void numbering() {
-
-        if (this.hosoHinban != null) {
-            return;
-        }
-
-        String sql = "SELECT LPAD (CASE WHEN MAX(e.\"HOSO-HINBAN\") IS NULL THEN 0 ELSE MAX(e.\"HOSO-HINBAN\") * 1 END + 1, 25, '0') AS \"HOSO-HINBAN\" FROM M_HOSOSET e WHERE e.\"HOSO-HINBAN\" < '9999999999999999999999999'";
-
-        Map<String, Object> params = new HashMap<String, Object>();
-
-        List<String> whereList = new ArrayList<String>();
-        whereList.add("e.\"HHINBAN\" = :hhinban");
-        sql += " WHERE " + String.join(" AND ", whereList);
-
-        params.put("hhinban", this.hhinban);
-
-        jp.co.golorp.emarf.util.MapList mapList = Queries.select(sql, params);
-        Object o = mapList.get(0).get("HOSO-HINBAN");
-
-        this.setHosoHinban(o);
     }
 
     /**
@@ -223,8 +201,8 @@ public class MHososet implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (\"HHINBAN\") = TRIM (:hhinban)");
-        whereList.add("TRIM (\"HOSO-HINBAN\") = TRIM (:hoso_hinban)");
+        whereList.add("\"HHINBAN\" = :hhinban");
+        whereList.add("\"HOSO-HINBAN\" = :hoso_hinban");
         return String.join(" AND ", whereList);
     }
 
