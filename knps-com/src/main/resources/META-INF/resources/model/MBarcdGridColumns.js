@@ -3,7 +3,7 @@
  */
 
 let MBarcdGridColumns = [
-    Column.refer('HHINBAN', Messages['MBarcdGrid.hhinban'], 200, 'primaryKey', 'HITEM'),
+    Column.refer('HHINBAN', Messages['MBarcdGrid.hhinban'], 200, 'primaryKey', 'HHINMEI'),
     Column.text('HINMEI', Messages['MBarcdGrid.hinmei'], 100, '', null),
     Column.text('BARCODE', Messages['MBarcdGrid.barcode'], 130, '', null),
     Column.text('FREE1', Messages['MBarcdGrid.free1'], 150, '', null),

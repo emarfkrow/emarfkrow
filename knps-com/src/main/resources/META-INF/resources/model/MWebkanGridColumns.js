@@ -3,7 +3,7 @@
  */
 
 let MWebkanGridColumns = [
-    Column.refer('HHINBAN', Messages['MWebkanGrid.hhinban'], 200, 'primaryKey', 'HITEM'),
+    Column.refer('HHINBAN', Messages['MWebkanGrid.hhinban'], 200, 'primaryKey', 'HHINMEI'),
     Column.text('KIKAKU', Messages['MWebkanGrid.kikaku'], 300, '', null),
     Column.text('DAICD', Messages['MWebkanGrid.daicd'], 10, '', null),
     Column.text('CHUCD', Messages['MWebkanGrid.chucd'], 20, '', null),

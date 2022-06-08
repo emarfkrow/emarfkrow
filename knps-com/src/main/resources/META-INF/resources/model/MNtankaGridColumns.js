@@ -3,7 +3,7 @@
  */
 
 let MNtankaGridColumns = [
-    Column.refer('HHINBAN', Messages['MNtankaGrid.hhinban'], 200, 'primaryKey', 'HITEM'),
+    Column.refer('HHINBAN', Messages['MNtankaGrid.hhinban'], 200, 'primaryKey', 'HHINMEI'),
     Column.text('NISSAN-HINBAN', Messages['MNtankaGrid.nissanHinban'], 200, '', null),
     Column.text('NISSAN-TANKA', Messages['MNtankaGrid.nissanTanka'], 70, '', null),
     Column.text('KOURI-KAKAKU', Messages['MNtankaGrid.kouriKakaku'], 70, '', null),
