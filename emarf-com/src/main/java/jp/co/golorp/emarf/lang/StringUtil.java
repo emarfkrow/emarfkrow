@@ -5,6 +5,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.codec.binary.Hex;
 
@@ -209,6 +210,20 @@ public final class StringUtil {
     public static boolean endsWith(final Map<String, String> suffixs, final String s) {
         for (String suffix : suffixs.keySet()) {
             if (endWithIgnoreCase(suffix, s)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * @param suffixs
+     * @param s
+     * @return boolean
+     */
+    public static boolean endsWith(final Set<String[]> suffixs, final String s) {
+        for (String[] suffix : suffixs) {
+            if (endWithIgnoreCase(suffix[0], s)) {
                 return true;
             }
         }

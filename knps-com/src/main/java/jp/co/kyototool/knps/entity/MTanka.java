@@ -443,7 +443,7 @@ public class MTanka implements IEntity {
     public static MTanka get(final Object param1) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (\"HHINBAN\") = TRIM (:hhinban)");
+        whereList.add("\"HHINBAN\" = :hhinban");
 
         String sql = "SELECT * FROM M_TANKA WHERE " + String.join(" AND ", whereList);
 
@@ -461,9 +461,6 @@ public class MTanka implements IEntity {
      * @return 追加件数
      */
     public int insert(final LocalDateTime now, final String id) {
-
-        // 販売品番の採番処理
-        numbering();
 
         // 単価マスタの登録
         List<String> nameList = new ArrayList<String>();
@@ -517,23 +514,6 @@ public class MTanka implements IEntity {
         valueList.add(":kakakukbn");
         valueList.add(":filler");
         return String.join("\r\n    , ", valueList);
-    }
-
-    /** 販売品番の採番処理 */
-    private void numbering() {
-
-        if (this.hhinban != null) {
-            return;
-        }
-
-        String sql = "SELECT LPAD (CASE WHEN MAX(e.\"HHINBAN\") IS NULL THEN 0 ELSE MAX(e.\"HHINBAN\") * 1 END + 1, 20, '0') AS \"HHINBAN\" FROM M_TANKA e WHERE e.\"HHINBAN\" < '99999999999999999999'";
-
-        Map<String, Object> params = new HashMap<String, Object>();
-
-        jp.co.golorp.emarf.util.MapList mapList = Queries.select(sql, params);
-        Object o = mapList.get(0).get("HHINBAN");
-
-        this.setHhinban(o);
     }
 
     /**
@@ -593,7 +573,7 @@ public class MTanka implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (\"HHINBAN\") = TRIM (:hhinban)");
+        whereList.add("\"HHINBAN\" = :hhinban");
         return String.join(" AND ", whereList);
     }
 

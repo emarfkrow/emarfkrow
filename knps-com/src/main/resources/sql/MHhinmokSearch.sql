@@ -89,8 +89,8 @@ WHERE
     AND a."HOSOZAIKO" = :hosozaiko 
     AND a."SENDYOTEIBI" = :sendyoteibi 
     AND a."SENDBI" = :sendbi 
-    AND TRIM (a."HINCDALT1") = TRIM (:hincdalt1) 
-    AND TRIM (a."HINCDALT2") = TRIM (:hincdalt2) 
+    AND a."HINCDALT1" = :hincdalt1 
+    AND a."HINCDALT2" = :hincdalt2 
     AND TRIM (a."NOUKIFUKAKBN") = TRIM (:noukifukakbn) 
     AND TRIM (a."CHOKUHINKBN") = TRIM (:chokuhinkbn) 
     AND TRIM (a."KOKUSAICD") = TRIM (:kokusaicd) 

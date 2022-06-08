@@ -246,8 +246,8 @@ public class MSetkari implements IEntity {
     public static MSetkari get(final Object param1, final Object param2) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (\"SET-HINBAN\") = TRIM (:set_hinban)");
-        whereList.add("TRIM (\"SET-KHINBAN\") = TRIM (:set_khinban)");
+        whereList.add("\"SET-HINBAN\" = :set_hinban");
+        whereList.add("\"SET-KHINBAN\" = :set_khinban");
 
         String sql = "SELECT * FROM M_SETKARI WHERE " + String.join(" AND ", whereList);
 
@@ -266,9 +266,6 @@ public class MSetkari implements IEntity {
      * @return 追加件数
      */
     public int insert(final LocalDateTime now, final String id) {
-
-        // セット子品番の採番処理
-        numbering();
 
         // セット構成マスタの登録
         if (this.mSetkose != null) {
@@ -311,29 +308,6 @@ public class MSetkari implements IEntity {
         valueList.add(":mushokbn");
         valueList.add(":rtokumei");
         return String.join("\r\n    , ", valueList);
-    }
-
-    /** セット子品番の採番処理 */
-    private void numbering() {
-
-        if (this.setKhinban != null) {
-            return;
-        }
-
-        String sql = "SELECT LPAD (CASE WHEN MAX(e.\"SET-KHINBAN\") IS NULL THEN 0 ELSE MAX(e.\"SET-KHINBAN\") * 1 END + 1, 20, '0') AS \"SET-KHINBAN\" FROM M_SETKARI e WHERE e.\"SET-KHINBAN\" < '99999999999999999999'";
-
-        Map<String, Object> params = new HashMap<String, Object>();
-
-        List<String> whereList = new ArrayList<String>();
-        whereList.add("e.\"SET-HINBAN\" = :set_hinban");
-        sql += " WHERE " + String.join(" AND ", whereList);
-
-        params.put("set_hinban", this.setHinban);
-
-        jp.co.golorp.emarf.util.MapList mapList = Queries.select(sql, params);
-        Object o = mapList.get(0).get("SET-KHINBAN");
-
-        this.setSetKhinban(o);
     }
 
     /**
@@ -400,8 +374,8 @@ public class MSetkari implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (\"SET-HINBAN\") = TRIM (:set_hinban)");
-        whereList.add("TRIM (\"SET-KHINBAN\") = TRIM (:set_khinban)");
+        whereList.add("\"SET-HINBAN\" = :set_hinban");
+        whereList.add("\"SET-KHINBAN\" = :set_khinban");
         return String.join(" AND ", whereList);
     }
 

@@ -157,7 +157,7 @@ public class MGhinmok implements IEntity {
     public static MGhinmok get(final Object param1) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (\"HINBAN\") = TRIM (:hinban)");
+        whereList.add("\"HINBAN\" = :hinban");
 
         String sql = "SELECT * FROM M_GHINMOK WHERE " + String.join(" AND ", whereList);
 
@@ -175,9 +175,6 @@ public class MGhinmok implements IEntity {
      * @return 追加件数
      */
     public int insert(final LocalDateTime now, final String id) {
-
-        // 品番の採番処理
-        numbering();
 
         // PRD_ORDERPOINT_STATUSの登録
         if (this.prdOrderpointStatus != null) {
@@ -217,23 +214,6 @@ public class MGhinmok implements IEntity {
         valueList.add(":shoriflg");
         valueList.add(":filler");
         return String.join("\r\n    , ", valueList);
-    }
-
-    /** 品番の採番処理 */
-    private void numbering() {
-
-        if (this.hinban != null) {
-            return;
-        }
-
-        String sql = "SELECT LPAD (CASE WHEN MAX(e.\"HINBAN\") IS NULL THEN 0 ELSE MAX(e.\"HINBAN\") * 1 END + 1, 25, '0') AS \"HINBAN\" FROM M_GHINMOK e WHERE e.\"HINBAN\" < '9999999999999999999999999'";
-
-        Map<String, Object> params = new HashMap<String, Object>();
-
-        jp.co.golorp.emarf.util.MapList mapList = Queries.select(sql, params);
-        Object o = mapList.get(0).get("HINBAN");
-
-        this.setHinban(o);
     }
 
     /**
@@ -310,7 +290,7 @@ public class MGhinmok implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (\"HINBAN\") = TRIM (:hinban)");
+        whereList.add("\"HINBAN\" = :hinban");
         return String.join(" AND ", whereList);
     }
 

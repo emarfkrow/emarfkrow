@@ -19,6 +19,7 @@ public class MPhinmokRegistForm implements IForm {
     private static final Logger LOG = LoggerFactory.getLogger(MPhinmokRegistForm.class);
 
     /** 部品品番 */
+    @jakarta.validation.constraints.NotBlank
     @jakarta.validation.constraints.Size(max = 20)
     private String phinban;
 

@@ -7,12 +7,12 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.ResourceBundle;
+import java.util.Set;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -47,7 +47,7 @@ public final class DataSources {
     private static final ResourceBundle BUNDLE = ResourceBundles.getBundle(DataSources.class);
 
     /** 参照列名ペア */
-    private static Map<String, String> referPairs = new LinkedHashMap<String, String>();
+    private static Set<String[]> referPairs = new LinkedHashSet<String[]>();
 
     /** 他のテーブルの兄弟テーブルにしないテーブル名 */
     private static String[] eldests;
@@ -194,7 +194,7 @@ public final class DataSources {
         String[] pairs = bundle.getString("BeanGenerator.refer.pairs").split(",");
         for (String pair : pairs) {
             String[] kv = pair.split(":");
-            referPairs.put(kv[0], kv[1]);
+            referPairs.add(kv);
         }
 
         eldests = bundle.getString("BeanGenerator.eldests").split(",");
@@ -625,9 +625,9 @@ public final class DataSources {
 
             // 参照IDに合致する名称がなければスキップ
             String referMei = null;
-            for (Entry<String, String> entry : referPairs.entrySet()) {
-                String referIdSuffix = entry.getKey();
-                String referMeiSuffix = entry.getValue();
+            for (String[] entry : referPairs) {
+                String referIdSuffix = entry[0];
+                String referMeiSuffix = entry[1];
                 if (srcPrimaryKey.endsWith(referIdSuffix)) {
                     String mei = srcPrimaryKey.replaceAll("(?i)" + referIdSuffix + "$", referMeiSuffix);
                     for (String columnName : srcTableInfo.getColumnInfos().keySet()) {

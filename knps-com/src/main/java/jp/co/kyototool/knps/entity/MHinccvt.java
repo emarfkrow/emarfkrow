@@ -114,7 +114,7 @@ public class MHinccvt implements IEntity {
     public static MHinccvt get(final Object param1, final Object param2) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (\"CVTHINBAN\") = TRIM (:cvthinban)");
+        whereList.add("\"CVTHINBAN\" = :cvthinban");
         whereList.add("TRIM (\"CHOKUHINKBN\") = TRIM (:chokuhinkbn)");
 
         String sql = "SELECT * FROM M_HINCCVT WHERE " + String.join(" AND ", whereList);
@@ -227,7 +227,7 @@ public class MHinccvt implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (\"CVTHINBAN\") = TRIM (:cvthinban)");
+        whereList.add("\"CVTHINBAN\" = :cvthinban");
         whereList.add("TRIM (\"CHOKUHINKBN\") = TRIM (:chokuhinkbn)");
         return String.join(" AND ", whereList);
     }

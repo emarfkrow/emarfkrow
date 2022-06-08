@@ -4,7 +4,7 @@ FROM
     M_GHINMOK a 
 WHERE
     1 = 1 
-    AND TRIM (a."HINBAN") = TRIM (:hinban) 
+    AND a."HINBAN" = :hinban 
     AND TRIM (a."HINCD") = TRIM (:hincd) 
     AND a."HINGENKA" = :hingenka 
     AND TRIM (a."RENKEIBI") = TRIM (:renkeibi) 

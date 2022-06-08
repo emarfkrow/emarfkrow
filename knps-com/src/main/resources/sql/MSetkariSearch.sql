@@ -4,8 +4,8 @@ FROM
     M_SETKARI a 
 WHERE
     1 = 1 
-    AND TRIM (a."SET-HINBAN") = TRIM (:set_hinban) 
-    AND TRIM (a."SET-KHINBAN") = TRIM (:set_khinban) 
+    AND a."SET-HINBAN" = :set_hinban 
+    AND a."SET-KHINBAN" = :set_khinban 
     AND a."TOKUCD" = :tokucd 
     AND TRIM (a."HINMEI") = TRIM (:hinmei) 
     AND TRIM (a."KO-HINMEI") = TRIM (:ko_hinmei) 

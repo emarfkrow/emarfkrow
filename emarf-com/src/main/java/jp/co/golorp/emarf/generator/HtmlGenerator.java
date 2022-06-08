@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -60,12 +61,8 @@ public final class HtmlGenerator {
     /** ファイルサフィックス */
     private static String[] inputFileSuffixs;
 
-    //    /** 参照IDサフィックス */
-    //    private static String[] referIdSuffixs;
-    //    /** 参照名サフィックス */
-    //    private static String referMeiSuffix;
     /** 参照列名ペア */
-    private static Map<String, String> referPairs = new LinkedHashMap<String, String>();
+    private static Set<String[]> referPairs = new LinkedHashSet<String[]>();
 
     private HtmlGenerator() {
     }
@@ -104,7 +101,7 @@ public final class HtmlGenerator {
         String[] pairs = bundle.getString("BeanGenerator.refer.pairs").split(",");
         for (String pair : pairs) {
             String[] kv = pair.split(":");
-            referPairs.put(kv[0], kv[1]);
+            referPairs.add(kv);
         }
 
         // 出力フォルダを再作成
@@ -409,9 +406,9 @@ public final class HtmlGenerator {
             if (referInfo != null) {
                 if (StringUtil.endsWith(referPairs, columnName)) {
                     referMei = columnName;
-                    for (String suffix : referPairs.keySet()) {
-                        if (referMei.matches("(?i).+" + suffix + "$")) {
-                            referMei = referMei.replaceAll("(?i)" + suffix + "$", referPairs.get(suffix));
+                    for (String[] suffix : referPairs) {
+                        if (referMei.matches("(?i).+" + suffix[0] + "$")) {
+                            referMei = referMei.replaceAll("(?i)" + suffix[0] + "$", suffix[1]);
                         }
                     }
                     referMei = StringUtil.toUpperCase(referMei);
@@ -822,9 +819,9 @@ public final class HtmlGenerator {
         // カラム名が参照キーに合致する場合
         if (StringUtil.endsWith(referPairs, columnName)) {
 
-            for (Entry<String, String> e : referPairs.entrySet()) {
-                String idSuffix = e.getKey();
-                String meiSuffix = e.getValue();
+            for (String[] e : referPairs) {
+                String idSuffix = e[0];
+                String meiSuffix = e[1];
 
                 // カラム名が参照キーに合致しなければスキップ
                 if (!columnName.matches("(?i)^.*" + idSuffix + "$")) {
@@ -870,9 +867,9 @@ public final class HtmlGenerator {
         // カラム名が参照キーに合致する場合
         if (StringUtil.endsWith(referPairs, columnName)) {
 
-            for (Entry<String, String> e : referPairs.entrySet()) {
-                String idSuffix = e.getKey();
-                String meiSuffix = e.getValue();
+            for (String[] e : referPairs) {
+                String idSuffix = e[0];
+                String meiSuffix = e[1];
 
                 // カラム名が参照キーに合致しなければスキップ
                 if (!columnName.matches("(?i)^.*" + idSuffix + "$")) {

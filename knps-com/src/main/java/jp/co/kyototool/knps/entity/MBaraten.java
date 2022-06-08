@@ -312,8 +312,8 @@ public class MBaraten implements IEntity {
     public static MBaraten get(final Object param1, final Object param2) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (\"OYA-HINBAN\") = TRIM (:oya_hinban)");
-        whereList.add("TRIM (\"KO-HINBAN\") = TRIM (:ko_hinban)");
+        whereList.add("\"OYA-HINBAN\" = :oya_hinban");
+        whereList.add("\"KO-HINBAN\" = :ko_hinban");
 
         String sql = "SELECT * FROM M_BARATEN WHERE " + String.join(" AND ", whereList);
 
@@ -332,9 +332,6 @@ public class MBaraten implements IEntity {
      * @return 追加件数
      */
     public int insert(final LocalDateTime now, final String id) {
-
-        // 子品番の採番処理
-        numbering();
 
         // バラ展開マスタの登録
         List<String> nameList = new ArrayList<String>();
@@ -376,29 +373,6 @@ public class MBaraten implements IEntity {
         valueList.add(":casekbn");
         valueList.add(":filler");
         return String.join("\r\n    , ", valueList);
-    }
-
-    /** 子品番の採番処理 */
-    private void numbering() {
-
-        if (this.koHinban != null) {
-            return;
-        }
-
-        String sql = "SELECT LPAD (CASE WHEN MAX(e.\"KO-HINBAN\") IS NULL THEN 0 ELSE MAX(e.\"KO-HINBAN\") * 1 END + 1, 20, '0') AS \"KO-HINBAN\" FROM M_BARATEN e WHERE e.\"KO-HINBAN\" < '99999999999999999999'";
-
-        Map<String, Object> params = new HashMap<String, Object>();
-
-        List<String> whereList = new ArrayList<String>();
-        whereList.add("e.\"OYA-HINBAN\" = :oya_hinban");
-        sql += " WHERE " + String.join(" AND ", whereList);
-
-        params.put("oya_hinban", this.oyaHinban);
-
-        jp.co.golorp.emarf.util.MapList mapList = Queries.select(sql, params);
-        Object o = mapList.get(0).get("KO-HINBAN");
-
-        this.setKoHinban(o);
     }
 
     /**
@@ -452,8 +426,8 @@ public class MBaraten implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (\"OYA-HINBAN\") = TRIM (:oya_hinban)");
-        whereList.add("TRIM (\"KO-HINBAN\") = TRIM (:ko_hinban)");
+        whereList.add("\"OYA-HINBAN\" = :oya_hinban");
+        whereList.add("\"KO-HINBAN\" = :ko_hinban");
         return String.join(" AND ", whereList);
     }
 

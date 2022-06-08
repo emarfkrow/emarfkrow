@@ -225,7 +225,7 @@ public class MKtanka implements IEntity {
 
         List<String> whereList = new ArrayList<String>();
         whereList.add("\"HONSHACD\" = :honshacd");
-        whereList.add("TRIM (\"SHAGAI-HINBAN\") = TRIM (:shagai_hinban)");
+        whereList.add("\"SHAGAI-HINBAN\" = :shagai_hinban");
 
         String sql = "SELECT * FROM M_KTANKA WHERE " + String.join(" AND ", whereList);
 
@@ -244,9 +244,6 @@ public class MKtanka implements IEntity {
      * @return 追加件数
      */
     public int insert(final LocalDateTime now, final String id) {
-
-        // 社外品番の採番処理
-        numbering();
 
         // 契約単価マスタの登録
         List<String> nameList = new ArrayList<String>();
@@ -280,29 +277,6 @@ public class MKtanka implements IEntity {
         valueList.add(":kakakukbn");
         valueList.add(":filler");
         return String.join("\r\n    , ", valueList);
-    }
-
-    /** 社外品番の採番処理 */
-    private void numbering() {
-
-        if (this.shagaiHinban != null) {
-            return;
-        }
-
-        String sql = "SELECT LPAD (CASE WHEN MAX(e.\"SHAGAI-HINBAN\") IS NULL THEN 0 ELSE MAX(e.\"SHAGAI-HINBAN\") * 1 END + 1, 20, '0') AS \"SHAGAI-HINBAN\" FROM M_KTANKA e WHERE e.\"SHAGAI-HINBAN\" < '99999999999999999999'";
-
-        Map<String, Object> params = new HashMap<String, Object>();
-
-        List<String> whereList = new ArrayList<String>();
-        whereList.add("e.\"HONSHACD\" = :honshacd");
-        sql += " WHERE " + String.join(" AND ", whereList);
-
-        params.put("honshacd", this.honshacd);
-
-        jp.co.golorp.emarf.util.MapList mapList = Queries.select(sql, params);
-        Object o = mapList.get(0).get("SHAGAI-HINBAN");
-
-        this.setShagaiHinban(o);
     }
 
     /**
@@ -353,7 +327,7 @@ public class MKtanka implements IEntity {
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
         whereList.add("\"HONSHACD\" = :honshacd");
-        whereList.add("TRIM (\"SHAGAI-HINBAN\") = TRIM (:shagai_hinban)");
+        whereList.add("\"SHAGAI-HINBAN\" = :shagai_hinban");
         return String.join(" AND ", whereList);
     }
 

@@ -55,6 +55,7 @@ public class MSalehinRegistForm implements IForm {
     }
 
     /** 販売品番 */
+    @jakarta.validation.constraints.NotBlank
     @jakarta.validation.constraints.Size(max = 20)
     private String hhinban;
 

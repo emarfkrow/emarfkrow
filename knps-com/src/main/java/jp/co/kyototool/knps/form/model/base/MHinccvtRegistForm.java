@@ -19,6 +19,7 @@ public class MHinccvtRegistForm implements IForm {
     private static final Logger LOG = LoggerFactory.getLogger(MHinccvtRegistForm.class);
 
     /** 変換品番 */
+    @jakarta.validation.constraints.NotBlank
     @jakarta.validation.constraints.Size(max = 20)
     private String cvthinban;
 

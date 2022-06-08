@@ -19,6 +19,7 @@ public class MBaratenRegistForm implements IForm {
     private static final Logger LOG = LoggerFactory.getLogger(MBaratenRegistForm.class);
 
     /** 親品番 */
+    @jakarta.validation.constraints.NotBlank
     @jakarta.validation.constraints.Size(max = 20)
     private String oyaHinban;
 
@@ -37,6 +38,7 @@ public class MBaratenRegistForm implements IForm {
     }
 
     /** 子品番 */
+    @jakarta.validation.constraints.NotBlank
     @jakarta.validation.constraints.Size(max = 20)
     private String koHinban;
 

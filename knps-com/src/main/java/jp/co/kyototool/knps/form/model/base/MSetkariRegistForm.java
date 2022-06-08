@@ -19,6 +19,7 @@ public class MSetkariRegistForm implements IForm {
     private static final Logger LOG = LoggerFactory.getLogger(MSetkariRegistForm.class);
 
     /** セット品番 */
+    @jakarta.validation.constraints.NotBlank
     @jakarta.validation.constraints.Size(max = 20)
     private String setHinban;
 
@@ -37,6 +38,7 @@ public class MSetkariRegistForm implements IForm {
     }
 
     /** セット子品番 */
+    @jakarta.validation.constraints.NotBlank
     @jakarta.validation.constraints.Size(max = 20)
     private String setKhinban;
 

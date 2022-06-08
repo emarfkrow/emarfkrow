@@ -12,7 +12,9 @@
 <script th:src="@{/model/MKtankaGridColumns.js}"></script>
 <script th:src="@{/model/MHhinmokGridColumns.js}"></script>
 <script th:src="@{/model/MHososetGridColumns.js}"></script>
+<script th:src="@{/model/MHosozaiGridColumns.js}"></script>
 <script th:src="@{/model/MPkoseGridColumns.js}"></script>
+<script th:src="@{/model/MPhinmokGridColumns.js}"></script>
 </head>
 <body>
   <div layout:fragment="article">
@@ -41,7 +43,7 @@
       </fieldset>
       <h3 th:text="#{MKtanka.h3}">h3</h3>
       <a th:href="@{/model/MKtanka.html}" id="MKtanka" target="dialog" th:text="#{MKtanka.add}" class="addChild" tabindex="-1">契約単価マスタ</a>
-      <div id="MKtankaGrid" data-selectionMode="link" data-addRow="true" data-frozenColumn="1" th:data-href="@{/model/MKtanka.html}"></div>
+      <div id="MKtankaGrid" data-selectionMode="link" data-frozenColumn="1" th:data-href="@{/model/MKtanka.html}"></div>
       <div class="buttons">
         <button type="button" th:text="#{common.reset}" onClick="Dialogate.refresh(event);">reset</button>
         <a th:href="@{MNetincGet.xlsx(baseMei=#{MNetinc.h2})}" id="MNetincGet.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>

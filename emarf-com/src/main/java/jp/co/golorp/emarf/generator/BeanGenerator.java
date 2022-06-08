@@ -3,10 +3,12 @@ package jp.co.golorp.emarf.generator;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.ResourceBundle;
+import java.util.Set;
 
 import javax.tools.JavaCompiler;
 import javax.tools.ToolProvider;
@@ -56,7 +58,7 @@ public final class BeanGenerator {
     private static String[] inputFileSuffixs;
 
     /** 参照列名ペア */
-    private static Map<String, String> referPairs = new LinkedHashMap<String, String>();
+    private static Set<String[]> referPairs = new LinkedHashSet<String[]>();
 
     /** プロジェクトディレクトリ */
     private static String projectDir;
@@ -107,7 +109,7 @@ public final class BeanGenerator {
         String[] pairs = bundle.getString("BeanGenerator.refer.pairs").split(",");
         for (String pair : pairs) {
             String[] kv = pair.split(":");
-            referPairs.put(kv[0], kv[1]);
+            referPairs.add(kv);
         }
 
         javaPath = bundle.getString("BeanGenerator.javaPath");
@@ -1798,9 +1800,9 @@ public final class BeanGenerator {
                 // 合致するID/名のサフィックスを取得
                 String referIdSuffix = null;
                 String referMeiSuffix = null;
-                for (Entry<String, String> e : referPairs.entrySet()) {
-                    String idSuffix = e.getKey();
-                    String meiSuffix = e.getValue();
+                for (String[] e : referPairs) {
+                    String idSuffix = e[0];
+                    String meiSuffix = e[1];
                     if (srcColumnName.matches("(?i).+" + idSuffix + "$")) {
                         referIdSuffix = idSuffix;
                         referMeiSuffix = meiSuffix;
@@ -1814,8 +1816,7 @@ public final class BeanGenerator {
                 if (!tableInfo.getColumnInfos().containsKey(srcColumnMei)) {
 
                     String destColumnName = referInfo.getPrimaryKeys().get(0);
-                    String destColumnMei = destColumnName.replaceAll("(?i)" + referIdSuffix + "$",
-                            referPairs.get(referIdSuffix));
+                    String destColumnMei = destColumnName.replaceAll("(?i)" + referIdSuffix + "$", referMeiSuffix);
 
                     String srcIdQuoted = DataSources.getAssist().quoted(srcColumnName);
                     String srcMeiQuoted = DataSources.getAssist().quoted(srcColumnMei);

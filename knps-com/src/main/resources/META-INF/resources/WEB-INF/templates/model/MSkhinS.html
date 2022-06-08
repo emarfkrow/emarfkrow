@@ -11,7 +11,9 @@
 <script th:src="@{/model/MSkhinGridColumns.js}"></script>
 <script th:src="@{/model/MHhinmokGridColumns.js}"></script>
 <script th:src="@{/model/MHososetGridColumns.js}"></script>
+<script th:src="@{/model/MHosozaiGridColumns.js}"></script>
 <script th:src="@{/model/MPkoseGridColumns.js}"></script>
+<script th:src="@{/model/MPhinmokGridColumns.js}"></script>
 </head>
 <body>
   <div layout:fragment="article">
@@ -36,7 +38,7 @@
     </form>
     <form name="MSkhinSRegistForm" action="MSkhinSRegist.ajax" class="regist">
       <h3 th:text="#{MSkhin.h3}">h3</h3>
-      <div id="MSkhinGrid" data-selectionMode="checkbox" data-addRow="true" data-frozenColumn="0" th:data-href="@{/model/MSkhin.html}"></div>
+      <div id="MSkhinGrid" data-selectionMode="checkbox" data-frozenColumn="0" th:data-href="@{/model/MSkhin.html}"></div>
       <div id="MSkhinPager"></div>
       <div class="buttons">
         <button type="button" th:text="#{common.reset}" onClick="$('[id=&quot;SearchMSkhin&quot;]').click();">reset</button>

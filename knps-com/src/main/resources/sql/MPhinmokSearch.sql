@@ -4,10 +4,10 @@ FROM
     M_PHINMOK a 
 WHERE
     1 = 1 
-    AND TRIM (a."PHINBAN") = TRIM (:phinban) 
+    AND a."PHINBAN" = :phinban 
     AND TRIM (a."PHINMEI") = TRIM (:phinmei) 
     AND TRIM (a."PHINMEIK") = TRIM (:phinmeik) 
-    AND TRIM (a."HINBAN") = TRIM (:hinban) 
+    AND a."HINBAN" = :hinban 
     AND a."P-KAKAKU" = :p_kakaku 
     AND a."P-GENKA" = :p_genka 
     AND TRIM (a."P-KBN") IN (:p_kbn) 

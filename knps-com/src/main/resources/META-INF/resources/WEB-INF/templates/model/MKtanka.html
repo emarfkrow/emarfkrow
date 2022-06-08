@@ -11,7 +11,9 @@
 <script th:src="@{/model/MKtankaGridColumns.js}"></script>
 <script th:src="@{/model/MHhinmokGridColumns.js}"></script>
 <script th:src="@{/model/MHososetGridColumns.js}"></script>
+<script th:src="@{/model/MHosozaiGridColumns.js}"></script>
 <script th:src="@{/model/MPkoseGridColumns.js}"></script>
+<script th:src="@{/model/MPhinmokGridColumns.js}"></script>
 </head>
 <body>
   <div layout:fragment="article">
@@ -23,7 +25,7 @@
           <label for="MKtanka.honshacd" th:text="#{MKtanka.honshacd}">本社コード</label><input type="text" id="MKtanka.honshacd" name="MKtanka.honshacd" maxlength="8" class="primaryKey" />
         </div>
         <div id="shagaiHinban">
-          <label for="MKtanka.shagaiHinban" th:text="#{MKtanka.shagaiHinban}">社外品番</label><span id="MKtanka.shagaiHinban"></span><input type="hidden" id="MKtanka.shagaiHinban" name="MKtanka.shagaiHinban" class="primaryKey" />
+          <label for="MKtanka.shagaiHinban" th:text="#{MKtanka.shagaiHinban}">社外品番</label><input type="text" id="MKtanka.shagaiHinban" name="MKtanka.shagaiHinban" maxlength="20" class="primaryKey" />
         </div>
         <div id="kkaisibi">
           <label for="MKtanka.kkaisibi" th:text="#{MKtanka.kkaisibi}">契約単価開始日</label><input type="text" id="MKtanka.kkaisibi" name="MKtanka.kkaisibi" maxlength="8" />

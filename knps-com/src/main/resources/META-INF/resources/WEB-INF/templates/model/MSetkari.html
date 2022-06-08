@@ -17,10 +17,10 @@
       <fieldset>
         <legend th:text="#{MSetkari.legend}">legend</legend>
         <div id="setHinban">
-          <label for="MSetkari.setHinban" th:text="#{MSetkari.setHinban}">セット品番</label><span id="MSetkari.setHinban"></span><input type="hidden" id="MSetkari.setHinban" name="MSetkari.setHinban" class="primaryKey" />
+          <label for="MSetkari.setHinban" th:text="#{MSetkari.setHinban}">セット品番</label><input type="text" id="MSetkari.setHinban" name="MSetkari.setHinban" maxlength="20" class="primaryKey" />
         </div>
         <div id="setKhinban">
-          <label for="MSetkari.setKhinban" th:text="#{MSetkari.setKhinban}">セット子品番</label><span id="MSetkari.setKhinban"></span><input type="hidden" id="MSetkari.setKhinban" name="MSetkari.setKhinban" class="primaryKey" />
+          <label for="MSetkari.setKhinban" th:text="#{MSetkari.setKhinban}">セット子品番</label><input type="text" id="MSetkari.setKhinban" name="MSetkari.setKhinban" maxlength="20" class="primaryKey" />
         </div>
         <div id="tokucd">
           <label for="MSetkari.tokucd" th:text="#{MSetkari.tokucd}">得意先コード</label><input type="text" id="MSetkari.tokucd" name="MSetkari.tokucd" maxlength="8" />

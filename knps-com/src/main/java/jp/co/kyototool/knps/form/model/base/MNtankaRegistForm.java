@@ -19,6 +19,7 @@ public class MNtankaRegistForm implements IForm {
     private static final Logger LOG = LoggerFactory.getLogger(MNtankaRegistForm.class);
 
     /** 販売品番 */
+    @jakarta.validation.constraints.NotBlank
     @jakarta.validation.constraints.Size(max = 20)
     private String hhinban;
 

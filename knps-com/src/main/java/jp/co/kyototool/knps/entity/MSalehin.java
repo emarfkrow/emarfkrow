@@ -253,7 +253,7 @@ public class MSalehin implements IEntity {
 
         List<String> whereList = new ArrayList<String>();
         whereList.add("TRIM (\"SALEKBN\") = TRIM (:salekbn)");
-        whereList.add("TRIM (\"HHINBAN\") = TRIM (:hhinban)");
+        whereList.add("\"HHINBAN\" = :hhinban");
         whereList.add("\"KAISI-YY\" = :kaisi_yy");
         whereList.add("\"KAISI-MM\" = :kaisi_mm");
         whereList.add("\"KAISI-DD\" = :kaisi_dd");
@@ -370,7 +370,7 @@ public class MSalehin implements IEntity {
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
         whereList.add("TRIM (\"SALEKBN\") = TRIM (:salekbn)");
-        whereList.add("TRIM (\"HHINBAN\") = TRIM (:hhinban)");
+        whereList.add("\"HHINBAN\" = :hhinban");
         whereList.add("\"KAISI-YY\" = :kaisi_yy");
         whereList.add("\"KAISI-MM\" = :kaisi_mm");
         whereList.add("\"KAISI-DD\" = :kaisi_dd");

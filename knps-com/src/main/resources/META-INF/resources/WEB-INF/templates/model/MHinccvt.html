@@ -11,7 +11,9 @@
 <script th:src="@{/model/MHinccvtGridColumns.js}"></script>
 <script th:src="@{/model/MHhinmokGridColumns.js}"></script>
 <script th:src="@{/model/MHososetGridColumns.js}"></script>
+<script th:src="@{/model/MHosozaiGridColumns.js}"></script>
 <script th:src="@{/model/MPkoseGridColumns.js}"></script>
+<script th:src="@{/model/MPhinmokGridColumns.js}"></script>
 </head>
 <body>
   <div layout:fragment="article">
@@ -20,7 +22,7 @@
       <fieldset>
         <legend th:text="#{MHinccvt.legend}">legend</legend>
         <div id="cvthinban">
-          <label for="MHinccvt.cvthinban" th:text="#{MHinccvt.cvthinban}">変換品番</label><span id="MHinccvt.cvthinban"></span><input type="hidden" id="MHinccvt.cvthinban" name="MHinccvt.cvthinban" class="primaryKey" />
+          <label for="MHinccvt.cvthinban" th:text="#{MHinccvt.cvthinban}">変換品番</label><input type="text" id="MHinccvt.cvthinban" name="MHinccvt.cvthinban" maxlength="20" class="primaryKey" />
         </div>
         <div id="hhinban">
           <label for="MHinccvt.hhinban" th:text="#{MHinccvt.hhinban}">販売品番</label><input type="text" id="MHinccvt.hhinban" name="MHinccvt.hhinban" maxlength="20" data-json="MHhinmokSearch.json" data-srcDef="HHINBAN:MHinccvt.hhinban" data-destDef="MHinccvt.hinmei:HINMEI" /><a id="MHinccvt.hhinban" th:href="@{/model/MHhinmokS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MHinccvt.hinmei" class="refer" data-json="MHhinmokSearch.json" data-srcDef="HHINBAN:MHinccvt.hhinban" data-destDef="MHinccvt.hinmei:HINMEI"></span>

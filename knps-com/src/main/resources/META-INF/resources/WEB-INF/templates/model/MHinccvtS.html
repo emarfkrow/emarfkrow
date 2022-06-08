@@ -11,7 +11,9 @@
 <script th:src="@{/model/MHinccvtGridColumns.js}"></script>
 <script th:src="@{/model/MHhinmokGridColumns.js}"></script>
 <script th:src="@{/model/MHososetGridColumns.js}"></script>
+<script th:src="@{/model/MHosozaiGridColumns.js}"></script>
 <script th:src="@{/model/MPkoseGridColumns.js}"></script>
+<script th:src="@{/model/MPhinmokGridColumns.js}"></script>
 </head>
 <body>
   <div layout:fragment="article">
@@ -34,6 +36,7 @@
       </fieldset>
       <div class="buttons">
         <button type="reset" th:text="#{common.reset}">reset</button>
+        <a th:href="@{/model/MHinccvt.html}" id="MHinccvt" target="dialog" th:text="#{MHinccvt.add}" tabindex="-1">品番変換マスタ</a>
       </div>
       <div class="submits">
         <button id="SearchMHinccvt" class="search" data-gridId="MHinccvtGrid" th:text="#{common.search}">submit</button>

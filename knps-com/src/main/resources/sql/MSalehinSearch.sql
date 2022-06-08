@@ -1,13 +1,13 @@
 SELECT
       a.*
-    , (SELECT r1."HITEM" FROM M_HHINMOK r1 WHERE r1."HHINBAN" = a."HHINBAN") AS "HITEM"
+    , (SELECT r1."HHINMEI" FROM M_HHINMOK r1 WHERE r1."HHINBAN" = a."HHINBAN") AS "HHINMEI"
 FROM
     M_SALEHIN a 
 WHERE
     1 = 1 
     AND TRIM (a."SALEKBN") = TRIM (:salekbn) 
     AND TRIM (a."SALEMEI") = TRIM (:salemei) 
-    AND TRIM (a."HHINBAN") = TRIM (:hhinban) 
+    AND a."HHINBAN" = :hhinban 
     AND a."KAISI-YY" = :kaisi_yy 
     AND a."KAISI-MM" = :kaisi_mm 
     AND a."KAISI-DD" = :kaisi_dd 

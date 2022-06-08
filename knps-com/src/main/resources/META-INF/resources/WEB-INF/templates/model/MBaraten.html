@@ -17,10 +17,10 @@
       <fieldset>
         <legend th:text="#{MBaraten.legend}">legend</legend>
         <div id="oyaHinban">
-          <label for="MBaraten.oyaHinban" th:text="#{MBaraten.oyaHinban}">親品番</label><span id="MBaraten.oyaHinban"></span><input type="hidden" id="MBaraten.oyaHinban" name="MBaraten.oyaHinban" class="primaryKey" />
+          <label for="MBaraten.oyaHinban" th:text="#{MBaraten.oyaHinban}">親品番</label><input type="text" id="MBaraten.oyaHinban" name="MBaraten.oyaHinban" maxlength="20" class="primaryKey" />
         </div>
         <div id="koHinban">
-          <label for="MBaraten.koHinban" th:text="#{MBaraten.koHinban}">子品番</label><span id="MBaraten.koHinban"></span><input type="hidden" id="MBaraten.koHinban" name="MBaraten.koHinban" class="primaryKey" />
+          <label for="MBaraten.koHinban" th:text="#{MBaraten.koHinban}">子品番</label><input type="text" id="MBaraten.koHinban" name="MBaraten.koHinban" maxlength="20" class="primaryKey" />
         </div>
         <div id="oyaHinc">
           <label for="MBaraten.oyaHinc" th:text="#{MBaraten.oyaHinc}">親品目コード</label><input type="text" id="MBaraten.oyaHinc" name="MBaraten.oyaHinc" maxlength="20" />

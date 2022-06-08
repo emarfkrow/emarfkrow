@@ -38,6 +38,7 @@ public class MKtankaRegistForm implements IForm {
     }
 
     /** 社外品番 */
+    @jakarta.validation.constraints.NotBlank
     @jakarta.validation.constraints.Size(max = 20)
     private String shagaiHinban;
 

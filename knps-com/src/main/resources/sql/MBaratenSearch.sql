@@ -4,8 +4,8 @@ FROM
     M_BARATEN a 
 WHERE
     1 = 1 
-    AND TRIM (a."OYA-HINBAN") = TRIM (:oya_hinban) 
-    AND TRIM (a."KO-HINBAN") = TRIM (:ko_hinban) 
+    AND a."OYA-HINBAN" = :oya_hinban 
+    AND a."KO-HINBAN" = :ko_hinban 
     AND TRIM (a."OYA-HINC") = TRIM (:oya_hinc) 
     AND TRIM (a."KO-HINC") = TRIM (:ko_hinc) 
     AND a."INZU" = :inzu 

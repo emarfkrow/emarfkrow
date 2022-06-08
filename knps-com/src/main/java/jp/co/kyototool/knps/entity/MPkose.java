@@ -158,8 +158,8 @@ public class MPkose implements IEntity {
     public static MPkose get(final Object param1, final Object param2) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (\"HHINBAN\") = TRIM (:hhinban)");
-        whereList.add("TRIM (\"PHINBAN\") = TRIM (:phinban)");
+        whereList.add("\"HHINBAN\" = :hhinban");
+        whereList.add("\"PHINBAN\" = :phinban");
 
         String sql = "SELECT * FROM M_PKOSE WHERE " + String.join(" AND ", whereList);
 
@@ -178,9 +178,6 @@ public class MPkose implements IEntity {
      * @return 追加件数
      */
     public int insert(final LocalDateTime now, final String id) {
-
-        // 部品品番の採番処理
-        numbering();
 
         // 部品構成マスタの登録
         List<String> nameList = new ArrayList<String>();
@@ -208,29 +205,6 @@ public class MPkose implements IEntity {
         valueList.add(":tourokubi");
         valueList.add(":filler");
         return String.join("\r\n    , ", valueList);
-    }
-
-    /** 部品品番の採番処理 */
-    private void numbering() {
-
-        if (this.phinban != null) {
-            return;
-        }
-
-        String sql = "SELECT LPAD (CASE WHEN MAX(e.\"PHINBAN\") IS NULL THEN 0 ELSE MAX(e.\"PHINBAN\") * 1 END + 1, 20, '0') AS \"PHINBAN\" FROM M_PKOSE e WHERE e.\"PHINBAN\" < '99999999999999999999'";
-
-        Map<String, Object> params = new HashMap<String, Object>();
-
-        List<String> whereList = new ArrayList<String>();
-        whereList.add("e.\"HHINBAN\" = :hhinban");
-        sql += " WHERE " + String.join(" AND ", whereList);
-
-        params.put("hhinban", this.hhinban);
-
-        jp.co.golorp.emarf.util.MapList mapList = Queries.select(sql, params);
-        Object o = mapList.get(0).get("PHINBAN");
-
-        this.setPhinban(o);
     }
 
     /**
@@ -277,8 +251,8 @@ public class MPkose implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (\"HHINBAN\") = TRIM (:hhinban)");
-        whereList.add("TRIM (\"PHINBAN\") = TRIM (:phinban)");
+        whereList.add("\"HHINBAN\" = :hhinban");
+        whereList.add("\"PHINBAN\" = :phinban");
         return String.join(" AND ", whereList);
     }
 

@@ -11,7 +11,9 @@
 <script th:src="@{/model/MBarcdGridColumns.js}"></script>
 <script th:src="@{/model/MHhinmokGridColumns.js}"></script>
 <script th:src="@{/model/MHososetGridColumns.js}"></script>
+<script th:src="@{/model/MHosozaiGridColumns.js}"></script>
 <script th:src="@{/model/MPkoseGridColumns.js}"></script>
+<script th:src="@{/model/MPhinmokGridColumns.js}"></script>
 </head>
 <body>
   <div layout:fragment="article">
@@ -51,7 +53,7 @@
     </form>
     <form name="MBarcdSRegistForm" action="MBarcdSRegist.ajax" class="regist">
       <h3 th:text="#{MBarcd.h3}">h3</h3>
-      <div id="MBarcdGrid" data-selectionMode="checkbox" data-addRow="true" data-frozenColumn="0" th:data-href="@{/model/MBarcd.html}"></div>
+      <div id="MBarcdGrid" data-selectionMode="checkbox" data-frozenColumn="0" th:data-href="@{/model/MBarcd.html}"></div>
       <div id="MBarcdPager"></div>
       <div class="buttons">
         <button type="button" th:text="#{common.reset}" onClick="$('[id=&quot;SearchMBarcd&quot;]').click();">reset</button>
