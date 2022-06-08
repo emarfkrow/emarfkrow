@@ -44,12 +44,12 @@
           <label for="MstRoutingDef.routingGroup" th:text="#{MstRoutingDef.routingGroup}">ROUTING_GROUP</label><input type="text" id="MstRoutingDef.routingGroup" name="MstRoutingDef.routingGroup" maxlength="2" class="primaryKey" />
         </div>
         <div id="permissionFlag">
-          <fieldset id="MstRoutingDef.permissionFlagList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:permission_flag" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+          <fieldset id="MstRoutingDef.permissionFlagList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:PERMISSION_FLAG" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
             <legend th:text="#{MstRoutingDef.permissionFlag}">PERMISSION_FLAG</legend>
           </fieldset>
         </div>
         <div id="usableFlag">
-          <fieldset id="MstRoutingDef.usableFlagList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:usable_flag" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+          <fieldset id="MstRoutingDef.usableFlagList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:USABLE_FLAG" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
             <legend th:text="#{MstRoutingDef.usableFlag}">USABLE_FLAG</legend>
           </fieldset>
         </div>
@@ -74,7 +74,7 @@
       </fieldset>
       <h3 th:text="#{MfgKanbanHed.h3}">h3</h3>
       <a th:href="@{/model/MfgKanbanHed.html}" id="MfgKanbanHed" target="dialog" th:text="#{MfgKanbanHed.add}" class="addChild" tabindex="-1">MFG_KANBAN_HED</a>
-      <div id="MfgKanbanHedGrid" data-selectionMode="link" data-addRow="true" data-frozenColumn="2" th:data-href="@{/model/MfgKanbanHed.html}"></div>
+      <div id="MfgKanbanHedGrid" data-selectionMode="link" data-frozenColumn="2" th:data-href="@{/model/MfgKanbanHed.html}"></div>
       <h3 th:text="#{MstRoutingDefBk.h3}">h3</h3>
       <a th:href="@{/model/MstRoutingDefBk.html}" id="MstRoutingDefBk" target="dialog" th:text="#{MstRoutingDefBk.add}" class="addChild" tabindex="-1">MST_ROUTING_DEF_BK</a>
       <div id="MstRoutingDefBkGrid" data-selectionMode="link" data-addRow="true" data-frozenColumn="2" th:data-href="@{/model/MstRoutingDefBk.html}"></div>

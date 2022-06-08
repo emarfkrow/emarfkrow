@@ -10,9 +10,7 @@
 </script>
 <script th:src="@{/model/MHhinmokGridColumns.js}"></script>
 <script th:src="@{/model/MHososetGridColumns.js}"></script>
-<script th:src="@{/model/MHosozaiGridColumns.js}"></script>
 <script th:src="@{/model/MPkoseGridColumns.js}"></script>
-<script th:src="@{/model/MPhinmokGridColumns.js}"></script>
 </head>
 <body>
   <div layout:fragment="article">
@@ -530,7 +528,7 @@
       </fieldset>
       <h3 th:text="#{MHososet.h3}">h3</h3>
       <a th:href="@{/model/MHososet.html}" id="MHososet" target="dialog" th:text="#{MHososet.add}" class="addChild" tabindex="-1">包装材構成マスタ</a>
-      <div id="MHososetGrid" data-selectionMode="link" data-addRow="true" data-frozenColumn="1" th:data-href="@{/model/MHososet.html}"></div>
+      <div id="MHososetGrid" data-selectionMode="link" data-frozenColumn="1" th:data-href="@{/model/MHososet.html}"></div>
       <h3 th:text="#{MPkose.h3}">h3</h3>
       <a th:href="@{/model/MPkose.html}" id="MPkose" target="dialog" th:text="#{MPkose.add}" class="addChild" tabindex="-1">部品構成マスタ</a>
       <div id="MPkoseGrid" data-selectionMode="link" data-addRow="true" data-frozenColumn="1" th:data-href="@{/model/MPkose.html}"></div>

@@ -18,7 +18,6 @@
 <script th:src="@{/model/InvStockProcessSupplyGridColumns.js}"></script>
 <script th:src="@{/model/MstSupplierBkGridColumns.js}"></script>
 <script th:src="@{/model/MstTaxGridColumns.js}"></script>
-<script th:src="@{/model/MstTempSupplierGridColumns.js}"></script>
 </head>
 <body>
   <div layout:fragment="article">
@@ -39,7 +38,7 @@
           <label for="PchTempOrder.supCode" th:text="#{PchTempOrder.supCode}">SUP_CODE</label><input type="text" id="PchTempOrder.supCode" name="PchTempOrder.supCode" maxlength="6" data-json="MstSupplierSearch.json" data-srcDef="SUP_CODE:PchTempOrder.supCode" data-destDef="PchTempOrder.supName:SUP_NAME" /><a id="PchTempOrder.supCode" th:href="@{/model/MstSupplierS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="PchTempOrder.supName" class="refer" data-json="MstSupplierSearch.json" data-srcDef="SUP_CODE:PchTempOrder.supCode" data-destDef="PchTempOrder.supName:SUP_NAME"></span>
         </div>
         <div id="tempSupCode">
-          <label for="PchTempOrder.tempSupCode" th:text="#{PchTempOrder.tempSupCode}">TEMP_SUP_CODE</label><input type="text" id="PchTempOrder.tempSupCode" name="PchTempOrder.tempSupCode" maxlength="6" data-json="MstTempSupplierSearch.json" data-srcDef="TEMP_SUP_CODE:PchTempOrder.tempSupCode" data-destDef="PchTempOrder.tempSupName:TEMP_SUP_NAME" /><a id="PchTempOrder.tempSupCode" th:href="@{/model/MstTempSupplierS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="PchTempOrder.tempSupName" class="refer" data-json="MstTempSupplierSearch.json" data-srcDef="TEMP_SUP_CODE:PchTempOrder.tempSupCode" data-destDef="PchTempOrder.tempSupName:TEMP_SUP_NAME"></span>
+          <label for="PchTempOrder.tempSupCode" th:text="#{PchTempOrder.tempSupCode}">TEMP_SUP_CODE</label><input type="text" id="PchTempOrder.tempSupCode" name="PchTempOrder.tempSupCode" maxlength="6" data-json="MstSupplierSearch.json" data-srcDef="SUP_CODE:PchTempOrder.tempSupCode" data-destDef="PchTempOrder.tempSupName:SUP_NAME" /><a id="PchTempOrder.tempSupCode" th:href="@{/model/MstSupplierS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="PchTempOrder.tempSupName" class="refer" data-json="MstSupplierSearch.json" data-srcDef="SUP_CODE:PchTempOrder.tempSupCode" data-destDef="PchTempOrder.tempSupName:SUP_NAME"></span>
         </div>
         <div id="memo">
           <label for="PchTempOrder.memo" th:text="#{PchTempOrder.memo}">MEMO</label><input type="text" id="PchTempOrder.memo" name="PchTempOrder.memo" maxlength="500" />

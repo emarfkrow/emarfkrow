@@ -79,7 +79,7 @@
       <div id="PrdMateNesCountsGrid" data-selectionMode="link" data-addRow="true" data-frozenColumn="2" th:data-href="@{/model/PrdMateNesCounts.html}"></div>
       <h3 th:text="#{PrdRackMainte.h3}">h3</h3>
       <a th:href="@{/model/PrdRackMainte.html}" id="PrdRackMainte" target="dialog" th:text="#{PrdRackMainte.add}" class="addChild" tabindex="-1">PRD_RACK_MAINTE</a>
-      <div id="PrdRackMainteGrid" data-selectionMode="link" data-addRow="true" data-frozenColumn="2" th:data-href="@{/model/PrdRackMainte.html}"></div>
+      <div id="PrdRackMainteGrid" data-selectionMode="link" data-frozenColumn="2" th:data-href="@{/model/PrdRackMainte.html}"></div>
       <div class="buttons">
         <button type="button" th:text="#{common.reset}" onClick="Dialogate.refresh(event);">reset</button>
         <a th:href="@{PrdMProPlanConditionGet.xlsx(baseMei=#{PrdMProPlanCondition.h2})}" id="PrdMProPlanConditionGet.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>

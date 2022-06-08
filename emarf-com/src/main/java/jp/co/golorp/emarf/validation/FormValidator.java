@@ -158,32 +158,7 @@ public final class FormValidator {
     public static <T> T toBean(final String className, final Map<String, Object> postJson, final boolean isGrid) {
 
         // クラスを取得
-        Class<?> clazz = null;
-        try {
-            clazz = Class.forName(className);
-        } catch (ClassNotFoundException e) {
-            LOG.trace(e.toString());
-            try { // modelパッケージのフォームクラスなら、baseパッケージまで掘ってみる
-                clazz = Class.forName(className.replaceFirst("\\.model\\.", ".model.base."));
-            } catch (ClassNotFoundException e1) {
-                LOG.trace(e1.toString());
-                try { // ***GridFormなら、***RegistFormにしてみる
-                    clazz = Class.forName(className.replaceFirst("Grid", "Regist"));
-                } catch (ClassNotFoundException e2) {
-                    LOG.trace(e2.toString());
-                    try { // ***Gridなら、***RegistFormにしてみる
-                        clazz = Class.forName(className.replaceFirst("Grid", "RegistForm"));
-                    } catch (ClassNotFoundException e3) {
-                        LOG.trace(e3.toString());
-                        try { // ***sなら、***にしてみる（カスタムフォームのグリッド本体用）
-                            clazz = Class.forName(className.replaceFirst("s$", ""));
-                        } catch (ClassNotFoundException e4) {
-                            LOG.trace(e4.toString());
-                        }
-                    }
-                }
-            }
-        }
+        Class<?> clazz = forNameIf(className);
         if (clazz == null) {
             return null;
         }
@@ -296,6 +271,44 @@ public final class FormValidator {
         @SuppressWarnings("unchecked")
         T t = (T) o;
         return t;
+    }
+
+    private static Class<?> forNameIf(final String className) {
+
+        try {
+            return Class.forName(className);
+        } catch (ClassNotFoundException e) {
+            LOG.trace(e.toString());
+        }
+
+        // modelパッケージのフォームクラスなら、baseパッケージまで掘ってみる
+        try {
+            return Class.forName(className.replaceFirst("\\.model\\.", ".model.base."));
+        } catch (ClassNotFoundException e1) {
+            LOG.trace(e1.toString());
+        }
+
+        // ***GridFormなら、***RegistFormにしてみる
+        try {
+            return Class.forName(className.replaceFirst("Grid", "Regist"));
+        } catch (ClassNotFoundException e2) {
+            LOG.trace(e2.toString());
+        }
+
+        // ***Gridなら、***RegistFormにしてみる
+        try {
+            return Class.forName(className.replaceFirst("Grid", "RegistForm"));
+        } catch (ClassNotFoundException e3) {
+            LOG.trace(e3.toString());
+        }
+
+        try { // ***sなら、***にしてみる（カスタムフォームのグリッド本体用）
+            return Class.forName(className.replaceFirst("s$", ""));
+        } catch (ClassNotFoundException e4) {
+            LOG.trace(e4.toString());
+        }
+
+        return null;
     }
 
 }

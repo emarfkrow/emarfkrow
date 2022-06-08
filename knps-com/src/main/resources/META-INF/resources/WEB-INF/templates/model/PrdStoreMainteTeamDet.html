@@ -9,7 +9,6 @@
 
 </script>
 <script th:src="@{/model/PrdStoreMainteTeamDetGridColumns.js}"></script>
-<script th:src="@{/model/PrdStoreMainteTeamHedGridColumns.js}"></script>
 <script th:src="@{/model/MstTeamGridColumns.js}"></script>
 <script th:src="@{/model/MstGroupGridColumns.js}"></script>
 <script th:src="@{/model/MstDivisionGridColumns.js}"></script>
@@ -27,7 +26,7 @@
       <fieldset>
         <legend th:text="#{PrdStoreMainteTeamDet.legend}">legend</legend>
         <div id="mfgTeamCode">
-          <label for="PrdStoreMainteTeamDet.mfgTeamCode" th:text="#{PrdStoreMainteTeamDet.mfgTeamCode}">MFG_TEAM_CODE</label><span id="PrdStoreMainteTeamDet.mfgTeamCode"></span><input type="hidden" id="PrdStoreMainteTeamDet.mfgTeamCode" name="PrdStoreMainteTeamDet.mfgTeamCode" class="primaryKey" /><a id="PrdStoreMainteTeamDet.mfgTeamCode" th:href="@{/model/PrdStoreMainteTeamHedS.html}" target="dialog" class="primaryKey refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="PrdStoreMainteTeamDet.mfgTeamName" class="refer" data-json="PrdStoreMainteTeamHedSearch.json" data-srcDef="MFG_TEAM_CODE:PrdStoreMainteTeamDet.mfgTeamCode" data-destDef="PrdStoreMainteTeamDet.mfgTeamName:MFG_TEAM_NAME"></span>
+          <label for="PrdStoreMainteTeamDet.mfgTeamCode" th:text="#{PrdStoreMainteTeamDet.mfgTeamCode}">MFG_TEAM_CODE</label><span id="PrdStoreMainteTeamDet.mfgTeamCode"></span><input type="hidden" id="PrdStoreMainteTeamDet.mfgTeamCode" name="PrdStoreMainteTeamDet.mfgTeamCode" class="primaryKey" /><a id="PrdStoreMainteTeamDet.mfgTeamCode" th:href="@{/model/MstTeamS.html}" target="dialog" class="primaryKey refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="PrdStoreMainteTeamDet.mfgTeamName" class="refer" data-json="MstTeamSearch.json" data-srcDef="TEAM_CODE:PrdStoreMainteTeamDet.mfgTeamCode" data-destDef="PrdStoreMainteTeamDet.mfgTeamName:TEAM_NAME"></span>
         </div>
         <div id="wsCode">
           <label for="PrdStoreMainteTeamDet.wsCode" th:text="#{PrdStoreMainteTeamDet.wsCode}">WS_CODE</label><span id="PrdStoreMainteTeamDet.wsCode"></span><input type="hidden" id="PrdStoreMainteTeamDet.wsCode" name="PrdStoreMainteTeamDet.wsCode" class="primaryKey" /><a id="PrdStoreMainteTeamDet.wsCode" th:href="@{/model/MstWsS.html}" target="dialog" class="primaryKey refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="PrdStoreMainteTeamDet.wsName" class="refer" data-json="MstWsSearch.json" data-srcDef="WS_CODE:PrdStoreMainteTeamDet.wsCode" data-destDef="PrdStoreMainteTeamDet.wsName:WS_NAME"></span>

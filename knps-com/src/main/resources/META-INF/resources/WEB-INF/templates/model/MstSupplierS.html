@@ -20,12 +20,12 @@
       <fieldset>
         <legend th:text="#{MstSupplierS.legend}">legend</legend>
         <div id="supCode">
-          <fieldset id="MstSupplier.supCodeList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:sup_code" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+          <fieldset id="MstSupplier.supCodeList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:SUP_CODE" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
             <legend th:text="#{MstSupplier.supCode}">SUP_CODE</legend>
           </fieldset>
         </div>
         <div id="supKbn">
-          <fieldset id="MstSupplier.supKbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:sup_kbn" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+          <fieldset id="MstSupplier.supKbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:SUP_KBN" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
             <legend th:text="#{MstSupplier.supKbn}">SUP_KBN</legend>
           </fieldset>
         </div>
@@ -36,7 +36,7 @@
           <label for="MstSupplier.supRyaku" th:text="#{MstSupplier.supRyaku}">SUP_RYAKU</label><input type="text" id="MstSupplier.supRyaku" name="MstSupplier.supRyaku" maxlength="20" />
         </div>
         <div id="zipCode">
-          <fieldset id="MstSupplier.zipCodeList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:zip_code" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+          <fieldset id="MstSupplier.zipCodeList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:ZIP_CODE" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
             <legend th:text="#{MstSupplier.zipCode}">ZIP_CODE</legend>
           </fieldset>
         </div>
@@ -71,17 +71,17 @@
           <label for="MstSupplier.taxCode" th:text="#{MstSupplier.taxCode}">TAX_CODE</label><input type="text" id="MstSupplier.taxCode" name="MstSupplier.taxCode" maxlength="2" data-json="MstTaxSearch.json" data-srcDef="TAX_CODE:MstSupplier.taxCode" data-destDef="MstSupplier.taxName:TAX_NAME" /><a id="MstSupplier.taxCode" th:href="@{/model/MstTaxS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MstSupplier.taxName" class="refer" data-json="MstTaxSearch.json" data-srcDef="TAX_CODE:MstSupplier.taxCode" data-destDef="MstSupplier.taxName:TAX_NAME"></span>
         </div>
         <div id="taxCalCode">
-          <fieldset id="MstSupplier.taxCalCodeList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:tax_cal_code" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+          <fieldset id="MstSupplier.taxCalCodeList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:TAX_CAL_CODE" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
             <legend th:text="#{MstSupplier.taxCalCode}">TAX_CAL_CODE</legend>
           </fieldset>
         </div>
         <div id="taxDispCode">
-          <fieldset id="MstSupplier.taxDispCodeList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:tax_disp_code" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+          <fieldset id="MstSupplier.taxDispCodeList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:TAX_DISP_CODE" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
             <legend th:text="#{MstSupplier.taxDispCode}">TAX_DISP_CODE</legend>
           </fieldset>
         </div>
         <div id="fractionKbn">
-          <fieldset id="MstSupplier.fractionKbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:fraction_kbn" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+          <fieldset id="MstSupplier.fractionKbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:FRACTION_KBN" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
             <legend th:text="#{MstSupplier.fractionKbn}">FRACTION_KBN</legend>
           </fieldset>
         </div>
@@ -89,27 +89,27 @@
           <label for="MstSupplier.yoshingendo" th:text="#{MstSupplier.yoshingendo}">YOSHINGENDO</label><input type="text" id="MstSupplier.yoshingendo" name="MstSupplier.yoshingendo" maxlength="11" />
         </div>
         <div id="companyOpeCode">
-          <fieldset id="MstSupplier.companyOpeCodeList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:company_ope_code" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+          <fieldset id="MstSupplier.companyOpeCodeList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:COMPANY_OPE_CODE" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
             <legend th:text="#{MstSupplier.companyOpeCode}">COMPANY_OPE_CODE</legend>
           </fieldset>
         </div>
         <div id="orderAcceptKbn">
-          <fieldset id="MstSupplier.orderAcceptKbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:order_accept_kbn" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+          <fieldset id="MstSupplier.orderAcceptKbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:ORDER_ACCEPT_KBN" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
             <legend th:text="#{MstSupplier.orderAcceptKbn}">ORDER_ACCEPT_KBN</legend>
           </fieldset>
         </div>
         <div id="listOutputKbn">
-          <fieldset id="MstSupplier.listOutputKbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:list_output_kbn" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+          <fieldset id="MstSupplier.listOutputKbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:LIST_OUTPUT_KBN" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
             <legend th:text="#{MstSupplier.listOutputKbn}">LIST_OUTPUT_KBN</legend>
           </fieldset>
         </div>
         <div id="pchCostRateCode">
-          <fieldset id="MstSupplier.pchCostRateCodeList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:pch_cost_rate_code" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+          <fieldset id="MstSupplier.pchCostRateCodeList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:PCH_COST_RATE_CODE" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
             <legend th:text="#{MstSupplier.pchCostRateCode}">PCH_COST_RATE_CODE</legend>
           </fieldset>
         </div>
         <div id="sendSupKbn">
-          <fieldset id="MstSupplier.sendSupKbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:send_sup_kbn" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+          <fieldset id="MstSupplier.sendSupKbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:SEND_SUP_KBN" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
             <legend th:text="#{MstSupplier.sendSupKbn}">SEND_SUP_KBN</legend>
           </fieldset>
         </div>
@@ -120,7 +120,7 @@
           <label for="MstSupplier.sendSupRyaku" th:text="#{MstSupplier.sendSupRyaku}">SEND_SUP_RYAKU</label><input type="text" id="MstSupplier.sendSupRyaku" name="MstSupplier.sendSupRyaku" maxlength="20" />
         </div>
         <div id="sendZipCode">
-          <fieldset id="MstSupplier.sendZipCodeList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:send_zip_code" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+          <fieldset id="MstSupplier.sendZipCodeList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:SEND_ZIP_CODE" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
             <legend th:text="#{MstSupplier.sendZipCode}">SEND_ZIP_CODE</legend>
           </fieldset>
         </div>
@@ -143,7 +143,7 @@
           <label for="MstSupplier.companyDivName" th:text="#{MstSupplier.companyDivName}">COMPANY_DIV_NAME</label><input type="text" id="MstSupplier.companyDivName" name="MstSupplier.companyDivName" maxlength="30" />
         </div>
         <div id="deleteFlag">
-          <fieldset id="MstSupplier.deleteFlagList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:delete_flag" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+          <fieldset id="MstSupplier.deleteFlagList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:DELETE_FLAG" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
             <legend th:text="#{MstSupplier.deleteFlag}">DELETE_FLAG</legend>
           </fieldset>
         </div>
@@ -169,17 +169,17 @@
           <label for="MstSupplier.nohinYobiSat" th:text="#{MstSupplier.nohinYobiSat}">NOHIN_YOBI_SAT</label><input type="text" id="MstSupplier.nohinYobiSat" name="MstSupplier.nohinYobiSat" maxlength="1" />
         </div>
         <div id="nohinSendYohiKbn">
-          <fieldset id="MstSupplier.nohinSendYohiKbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:nohin_send_yohi_kbn" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+          <fieldset id="MstSupplier.nohinSendYohiKbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:NOHIN_SEND_YOHI_KBN" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
             <legend th:text="#{MstSupplier.nohinSendYohiKbn}">NOHIN_SEND_YOHI_KBN</legend>
           </fieldset>
         </div>
         <div id="bunkatsuMailF">
-          <fieldset id="MstSupplier.bunkatsuMailFList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:bunkatsu_mail_f" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+          <fieldset id="MstSupplier.bunkatsuMailFList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:BUNKATSU_MAIL_F" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
             <legend th:text="#{MstSupplier.bunkatsuMailF}">BUNKATSU_MAIL_F</legend>
           </fieldset>
         </div>
         <div id="chumonMailF">
-          <fieldset id="MstSupplier.chumonMailFList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:chumon_mail_f" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+          <fieldset id="MstSupplier.chumonMailFList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:CHUMON_MAIL_F" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
             <legend th:text="#{MstSupplier.chumonMailF}">CHUMON_MAIL_F</legend>
           </fieldset>
         </div>
@@ -187,7 +187,7 @@
           <label for="MstSupplier.chumonMailHm_1" th:text="#{MstSupplier.chumonMailHm}">CHUMON_MAIL_HM</label><input type="time" id="MstSupplier.chumonMailHm_1" name="MstSupplier.chumonMailHm_1" maxlength="5" />～<input type="time" id="MstSupplier.chumonMailHm_2" name="MstSupplier.chumonMailHm_2" maxlength="5" />
         </div>
         <div id="kenshuMailF">
-          <fieldset id="MstSupplier.kenshuMailFList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:kenshu_mail_f" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+          <fieldset id="MstSupplier.kenshuMailFList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:KENSHU_MAIL_F" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
             <legend th:text="#{MstSupplier.kenshuMailF}">KENSHU_MAIL_F</legend>
           </fieldset>
         </div>
@@ -195,7 +195,7 @@
           <label for="MstSupplier.kenshuMailHm_1" th:text="#{MstSupplier.kenshuMailHm}">KENSHU_MAIL_HM</label><input type="time" id="MstSupplier.kenshuMailHm_1" name="MstSupplier.kenshuMailHm_1" maxlength="5" />～<input type="time" id="MstSupplier.kenshuMailHm_2" name="MstSupplier.kenshuMailHm_2" maxlength="5" />
         </div>
         <div id="mailBccF">
-          <fieldset id="MstSupplier.mailBccFList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:mail_bcc_f" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+          <fieldset id="MstSupplier.mailBccFList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:MAIL_BCC_F" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
             <legend th:text="#{MstSupplier.mailBccF}">MAIL_BCC_F</legend>
           </fieldset>
         </div>

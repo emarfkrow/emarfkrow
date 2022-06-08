@@ -3,7 +3,7 @@
  */
 
 let MGenkaGridColumns = [
-    Column.refer('HHINBAN', Messages['MGenkaGrid.hhinban'], 200, 'primaryKey', 'HHINMEI'),
+    Column.refer('HHINBAN', Messages['MGenkaGrid.hhinban'], 200, 'primaryKey', 'HITEM'),
     Column.text('HINCD', Messages['MGenkaGrid.hincd'], 200, '', null),
     Column.text('SETKBN', Messages['MGenkaGrid.setkbn'], 10, '', null),
     Column.text('GENKA', Messages['MGenkaGrid.genka'], 70, '', null),

@@ -38,7 +38,7 @@
       </fieldset>
       <h3 th:text="#{MstCodeValue.h3}">h3</h3>
       <a th:href="@{/model/MstCodeValue.html}" id="MstCodeValue" target="dialog" th:text="#{MstCodeValue.add}" class="addChild" tabindex="-1">MST_CODE_VALUE</a>
-      <div id="MstCodeValueGrid" data-selectionMode="link" data-addRow="true" data-frozenColumn="1" th:data-href="@{/model/MstCodeValue.html}"></div>
+      <div id="MstCodeValueGrid" data-selectionMode="link" data-frozenColumn="1" th:data-href="@{/model/MstCodeValue.html}"></div>
       <div class="buttons">
         <button type="button" th:text="#{common.reset}" onClick="Dialogate.refresh(event);">reset</button>
         <a th:href="@{MstCodeGet.xlsx(baseMei=#{MstCode.h2})}" id="MstCodeGet.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>

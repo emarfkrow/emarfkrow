@@ -11,9 +11,7 @@
 <script th:src="@{/model/MSgenkaGridColumns.js}"></script>
 <script th:src="@{/model/MHhinmokGridColumns.js}"></script>
 <script th:src="@{/model/MHososetGridColumns.js}"></script>
-<script th:src="@{/model/MHosozaiGridColumns.js}"></script>
 <script th:src="@{/model/MPkoseGridColumns.js}"></script>
-<script th:src="@{/model/MPhinmokGridColumns.js}"></script>
 </head>
 <body>
   <div layout:fragment="article">
@@ -22,7 +20,7 @@
       <fieldset>
         <legend th:text="#{MSgenkaS.legend}">legend</legend>
         <div id="hhinban">
-          <label for="MSgenka.hhinban" th:text="#{MSgenka.hhinban}">販売品番</label><input type="text" id="MSgenka.hhinban" name="MSgenka.hhinban" maxlength="20" data-json="MHhinmokSearch.json" data-srcDef="HHINBAN:MSgenka.hhinban" data-destDef="MSgenka.hhinmei:HINMEI" /><a id="MSgenka.hhinban" th:href="@{/model/MHhinmokS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MSgenka.hhinmei" class="refer" data-json="MHhinmokSearch.json" data-srcDef="HHINBAN:MSgenka.hhinban" data-destDef="MSgenka.hhinmei:HINMEI"></span>
+          <label for="MSgenka.hhinban" th:text="#{MSgenka.hhinban}">販売品番</label><input type="text" id="MSgenka.hhinban" name="MSgenka.hhinban" maxlength="20" data-json="MHhinmokSearch.json" data-srcDef="HHINBAN:MSgenka.hhinban" data-destDef="MSgenka.hinmei:HINMEI" /><a id="MSgenka.hhinban" th:href="@{/model/MHhinmokS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MSgenka.hinmei" class="refer" data-json="MHhinmokSearch.json" data-srcDef="HHINBAN:MSgenka.hhinban" data-destDef="MSgenka.hinmei:HINMEI"></span>
         </div>
         <div id="hincd">
           <label for="MSgenka.hincd" th:text="#{MSgenka.hincd}">品目コード</label><input type="text" id="MSgenka.hincd" name="MSgenka.hincd" maxlength="20" />

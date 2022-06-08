@@ -36,7 +36,7 @@
           <label for="PchOrderInf.orderNo" th:text="#{PchOrderInf.orderNo}">ORDER_NO</label><input type="text" id="PchOrderInf.orderNo" name="PchOrderInf.orderNo" maxlength="10" />
         </div>
         <div id="orderKbn">
-          <fieldset id="PchOrderInf.orderKbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:order_kbn" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+          <fieldset id="PchOrderInf.orderKbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:ORDER_KBN" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
             <legend th:text="#{PchOrderInf.orderKbn}">ORDER_KBN</legend>
           </fieldset>
         </div>
@@ -44,7 +44,7 @@
           <label for="PchOrderInf.orderId" th:text="#{PchOrderInf.orderId}">ORDER_ID</label><input type="text" id="PchOrderInf.orderId" name="PchOrderInf.orderId" maxlength="14" />
         </div>
         <div id="arrangeKbn">
-          <fieldset id="PchOrderInf.arrangeKbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:arrange_kbn" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+          <fieldset id="PchOrderInf.arrangeKbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:ARRANGE_KBN" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
             <legend th:text="#{PchOrderInf.arrangeKbn}">ARRANGE_KBN</legend>
           </fieldset>
         </div>
@@ -94,12 +94,12 @@
           <label for="PchOrderInf.supCode" th:text="#{PchOrderInf.supCode}">SUP_CODE</label><input type="text" id="PchOrderInf.supCode" name="PchOrderInf.supCode" maxlength="6" data-json="MstSupplierSearch.json" data-srcDef="SUP_CODE:PchOrderInf.supCode" data-destDef="PchOrderInf.supName:SUP_NAME" /><a id="PchOrderInf.supCode" th:href="@{/model/MstSupplierS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="PchOrderInf.supName" class="refer" data-json="MstSupplierSearch.json" data-srcDef="SUP_CODE:PchOrderInf.supCode" data-destDef="PchOrderInf.supName:SUP_NAME"></span>
         </div>
         <div id="subinvCode">
-          <fieldset id="PchOrderInf.subinvCodeList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:subinv_code" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+          <fieldset id="PchOrderInf.subinvCodeList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:SUBINV_CODE" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
             <legend th:text="#{PchOrderInf.subinvCode}">SUBINV_CODE</legend>
           </fieldset>
         </div>
         <div id="shipCode">
-          <fieldset id="PchOrderInf.shipCodeList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:ship_code" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+          <fieldset id="PchOrderInf.shipCodeList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:SHIP_CODE" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
             <legend th:text="#{PchOrderInf.shipCode}">SHIP_CODE</legend>
           </fieldset>
         </div>
@@ -107,7 +107,7 @@
           <label for="PchOrderInf.orderUnit_1" th:text="#{PchOrderInf.orderUnit}">ORDER_UNIT</label><input type="text" id="PchOrderInf.orderUnit_1" name="PchOrderInf.orderUnit_1" maxlength="9" />～<input type="text" id="PchOrderInf.orderUnit_2" name="PchOrderInf.orderUnit_2" maxlength="9" />
         </div>
         <div id="acceptKbn">
-          <fieldset id="PchOrderInf.acceptKbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:accept_kbn" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+          <fieldset id="PchOrderInf.acceptKbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:ACCEPT_KBN" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
             <legend th:text="#{PchOrderInf.acceptKbn}">ACCEPT_KBN</legend>
           </fieldset>
         </div>
@@ -115,7 +115,7 @@
           <label for="PchOrderInf.inspectLane" th:text="#{PchOrderInf.inspectLane}">INSPECT_LANE</label><input type="text" id="PchOrderInf.inspectLane" name="PchOrderInf.inspectLane" maxlength="1" />
         </div>
         <div id="inspectKbn">
-          <fieldset id="PchOrderInf.inspectKbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:inspect_kbn" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+          <fieldset id="PchOrderInf.inspectKbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:INSPECT_KBN" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
             <legend th:text="#{PchOrderInf.inspectKbn}">INSPECT_KBN</legend>
           </fieldset>
         </div>
@@ -180,7 +180,7 @@
           <label for="PchOrderInf.orgOrderUnit_1" th:text="#{PchOrderInf.orgOrderUnit}">ORG_ORDER_UNIT</label><input type="text" id="PchOrderInf.orgOrderUnit_1" name="PchOrderInf.orgOrderUnit_1" maxlength="9" />～<input type="text" id="PchOrderInf.orgOrderUnit_2" name="PchOrderInf.orgOrderUnit_2" maxlength="9" />
         </div>
         <div id="mushoHacchuF">
-          <fieldset id="PchOrderInf.mushoHacchuFList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:musho_hacchu_f" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+          <fieldset id="PchOrderInf.mushoHacchuFList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:MUSHO_HACCHU_F" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
             <legend th:text="#{PchOrderInf.mushoHacchuF}">MUSHO_HACCHU_F</legend>
           </fieldset>
         </div>
@@ -188,12 +188,12 @@
           <label for="PchOrderInf.supMemo" th:text="#{PchOrderInf.supMemo}">SUP_MEMO</label><input type="text" id="PchOrderInf.supMemo" name="PchOrderInf.supMemo" maxlength="30" />
         </div>
         <div id="shiharaiHohoKbn">
-          <fieldset id="PchOrderInf.shiharaiHohoKbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:shiharai_hoho_kbn" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+          <fieldset id="PchOrderInf.shiharaiHohoKbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:SHIHARAI_HOHO_KBN" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
             <legend th:text="#{PchOrderInf.shiharaiHohoKbn}">SHIHARAI_HOHO_KBN</legend>
           </fieldset>
         </div>
         <div id="orderIsshikiUnitF">
-          <fieldset id="PchOrderInf.orderIsshikiUnitFList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:order_isshiki_unit_f" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+          <fieldset id="PchOrderInf.orderIsshikiUnitFList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:ORDER_ISSHIKI_UNIT_F" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
             <legend th:text="#{PchOrderInf.orderIsshikiUnitF}">ORDER_ISSHIKI_UNIT_F</legend>
           </fieldset>
         </div>
@@ -204,7 +204,7 @@
           <label for="PchOrderInf.orderIsshikiUnit_1" th:text="#{PchOrderInf.orderIsshikiUnit}">ORDER_ISSHIKI_UNIT</label><input type="text" id="PchOrderInf.orderIsshikiUnit_1" name="PchOrderInf.orderIsshikiUnit_1" maxlength="9" />～<input type="text" id="PchOrderInf.orderIsshikiUnit_2" name="PchOrderInf.orderIsshikiUnit_2" maxlength="9" />
         </div>
         <div id="inspectIsshikiUnitF">
-          <fieldset id="PchOrderInf.inspectIsshikiUnitFList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:inspect_isshiki_unit_f" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+          <fieldset id="PchOrderInf.inspectIsshikiUnitFList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:INSPECT_ISSHIKI_UNIT_F" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
             <legend th:text="#{PchOrderInf.inspectIsshikiUnitF}">INSPECT_ISSHIKI_UNIT_F</legend>
           </fieldset>
         </div>

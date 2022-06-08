@@ -29,22 +29,22 @@
           <label for="MfgKanbanDet.neckRoutingCode" th:text="#{MfgKanbanDet.neckRoutingCode}">NECK_ROUTING_CODE</label><input type="text" id="MfgKanbanDet.neckRoutingCode" name="MfgKanbanDet.neckRoutingCode" maxlength="10" data-json="MstProcSearch.json" data-srcDef="ROUTING_CODE:MfgKanbanDet.neckRoutingCode" data-destDef="MfgKanbanDet.neckRoutingName:ROUTING_NAME" /><a id="MfgKanbanDet.neckRoutingCode" th:href="@{/model/MstProcS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MfgKanbanDet.neckRoutingName" class="refer" data-json="MstProcSearch.json" data-srcDef="ROUTING_CODE:MfgKanbanDet.neckRoutingCode" data-destDef="MfgKanbanDet.neckRoutingName:ROUTING_NAME"></span>
         </div>
         <div id="forProCode">
-          <fieldset id="MfgKanbanDet.forProCodeList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:for_pro_code" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+          <fieldset id="MfgKanbanDet.forProCodeList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:FOR_PRO_CODE" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
             <legend th:text="#{MfgKanbanDet.forProCode}">FOR_PRO_CODE</legend>
           </fieldset>
         </div>
         <div id="forProLocationCode">
-          <fieldset id="MfgKanbanDet.forProLocationCodeList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:for_pro_location_code" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+          <fieldset id="MfgKanbanDet.forProLocationCodeList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:FOR_PRO_LOCATION_CODE" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
             <legend th:text="#{MfgKanbanDet.forProLocationCode}">FOR_PRO_LOCATION_CODE</legend>
           </fieldset>
         </div>
         <div id="proCode">
-          <fieldset id="MfgKanbanDet.proCodeList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:pro_code" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+          <fieldset id="MfgKanbanDet.proCodeList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:PRO_CODE" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
             <legend th:text="#{MfgKanbanDet.proCode}">PRO_CODE</legend>
           </fieldset>
         </div>
         <div id="proLocationCode">
-          <fieldset id="MfgKanbanDet.proLocationCodeList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:pro_location_code" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+          <fieldset id="MfgKanbanDet.proLocationCodeList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:PRO_LOCATION_CODE" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
             <legend th:text="#{MfgKanbanDet.proLocationCode}">PRO_LOCATION_CODE</legend>
           </fieldset>
         </div>
@@ -108,7 +108,7 @@
       <div id="MfgKanbanShippingGrid" data-selectionMode="link" data-addRow="true" data-frozenColumn="1" th:data-href="@{/model/MfgKanbanShipping.html}"></div>
       <h3 th:text="#{MfgKanbanStatus.h3}">h3</h3>
       <a th:href="@{/model/MfgKanbanStatus.html}" id="MfgKanbanStatus" target="dialog" th:text="#{MfgKanbanStatus.add}" class="addChild" tabindex="-1">MFG_KANBAN_STATUS</a>
-      <div id="MfgKanbanStatusGrid" data-selectionMode="link" data-addRow="true" data-frozenColumn="1" th:data-href="@{/model/MfgKanbanStatus.html}"></div>
+      <div id="MfgKanbanStatusGrid" data-selectionMode="link" data-frozenColumn="1" th:data-href="@{/model/MfgKanbanStatus.html}"></div>
       <div class="buttons">
         <button type="button" th:text="#{common.reset}" onClick="Dialogate.refresh(event);">reset</button>
         <a th:href="@{MfgKanbanDetGet.xlsx(baseMei=#{MfgKanbanDet.h2})}" id="MfgKanbanDetGet.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>

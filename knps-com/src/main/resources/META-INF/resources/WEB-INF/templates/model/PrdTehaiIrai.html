@@ -24,12 +24,12 @@
           <label for="PrdTehaiIrai.prdTehaiNo" th:text="#{PrdTehaiIrai.prdTehaiNo}">PRD_TEHAI_NO</label><span id="PrdTehaiIrai.prdTehaiNo"></span><input type="hidden" id="PrdTehaiIrai.prdTehaiNo" name="PrdTehaiIrai.prdTehaiNo" class="primaryKey" />
         </div>
         <div id="tehaiJokyoKb">
-          <fieldset id="PrdTehaiIrai.tehaiJokyoKbList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:tehai_jokyo_kb" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+          <fieldset id="PrdTehaiIrai.tehaiJokyoKbList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:TEHAI_JOKYO_KB" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
             <legend th:text="#{PrdTehaiIrai.tehaiJokyoKb}">TEHAI_JOKYO_KB</legend>
           </fieldset>
         </div>
         <div id="kaiteiJokyoKb">
-          <fieldset id="PrdTehaiIrai.kaiteiJokyoKbList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:kaitei_jokyo_kb" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+          <fieldset id="PrdTehaiIrai.kaiteiJokyoKbList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:KAITEI_JOKYO_KB" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
             <legend th:text="#{PrdTehaiIrai.kaiteiJokyoKb}">KAITEI_JOKYO_KB</legend>
           </fieldset>
         </div>
@@ -96,13 +96,13 @@
       </fieldset>
       <h3 th:text="#{PrdTehaiFlow.h3}">h3</h3>
       <a th:href="@{/model/PrdTehaiFlow.html}" id="PrdTehaiFlow" target="dialog" th:text="#{PrdTehaiFlow.add}" class="addChild" tabindex="-1">PRD_TEHAI_FLOW</a>
-      <div id="PrdTehaiFlowGrid" data-selectionMode="link" data-addRow="true" data-frozenColumn="1" th:data-href="@{/model/PrdTehaiFlow.html}"></div>
+      <div id="PrdTehaiFlowGrid" data-selectionMode="link" data-frozenColumn="1" th:data-href="@{/model/PrdTehaiFlow.html}"></div>
       <h3 th:text="#{PrdTehaiIraiDet.h3}">h3</h3>
       <a th:href="@{/model/PrdTehaiIraiDet.html}" id="PrdTehaiIraiDet" target="dialog" th:text="#{PrdTehaiIraiDet.add}" class="addChild" tabindex="-1">PRD_TEHAI_IRAI_DET</a>
-      <div id="PrdTehaiIraiDetGrid" data-selectionMode="link" data-addRow="true" data-frozenColumn="1" th:data-href="@{/model/PrdTehaiIraiDet.html}"></div>
+      <div id="PrdTehaiIraiDetGrid" data-selectionMode="link" data-frozenColumn="1" th:data-href="@{/model/PrdTehaiIraiDet.html}"></div>
       <h3 th:text="#{PrdTehaiKaitoDet.h3}">h3</h3>
       <a th:href="@{/model/PrdTehaiKaitoDet.html}" id="PrdTehaiKaitoDet" target="dialog" th:text="#{PrdTehaiKaitoDet.add}" class="addChild" tabindex="-1">PRD_TEHAI_KAITO_DET</a>
-      <div id="PrdTehaiKaitoDetGrid" data-selectionMode="link" data-addRow="true" data-frozenColumn="1" th:data-href="@{/model/PrdTehaiKaitoDet.html}"></div>
+      <div id="PrdTehaiKaitoDetGrid" data-selectionMode="link" data-frozenColumn="1" th:data-href="@{/model/PrdTehaiKaitoDet.html}"></div>
       <div class="buttons">
         <button type="button" th:text="#{common.reset}" onClick="Dialogate.refresh(event);">reset</button>
         <a th:href="@{PrdTehaiIraiGet.xlsx(baseMei=#{PrdTehaiIrai.h2})}" id="PrdTehaiIraiGet.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>

@@ -6,8 +6,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Enumeration;
-import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -47,7 +47,7 @@ public final class DataSources {
     private static final ResourceBundle BUNDLE = ResourceBundles.getBundle(DataSources.class);
 
     /** 参照列名ペア */
-    private static Map<String, String> referPairs = new HashMap<String, String>();
+    private static Map<String, String> referPairs = new LinkedHashMap<String, String>();
 
     /** 他のテーブルの兄弟テーブルにしないテーブル名 */
     private static String[] eldests;
@@ -596,6 +596,10 @@ public final class DataSources {
         }
     }
 
+    /**
+     * 参照先のマスタテーブルから、植え付け先を探す
+     * @param tableInfos
+     */
     private static void addReferTable(final List<TableInfo> tableInfos) {
 
         // テーブル情報でループ（比較元）
@@ -652,7 +656,7 @@ public final class DataSources {
                 for (Entry<String, ColumnInfo> e : destTableInfo.getColumnInfos().entrySet()) {
                     String destColumnName = e.getKey();
                     ColumnInfo destColumnInfo = e.getValue();
-                    if (destColumnName.endsWith(srcPrimaryKey)) {
+                    if (destColumnInfo.getReferInfo() == null && destColumnName.endsWith(srcPrimaryKey)) {
                         destColumnInfo.setReferInfo(srcTableInfo);
                     }
                 }

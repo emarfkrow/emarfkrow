@@ -47,12 +47,12 @@
           <label for="PchAcceptActHed.taxCode" th:text="#{PchAcceptActHed.taxCode}">TAX_CODE</label><input type="text" id="PchAcceptActHed.taxCode" name="PchAcceptActHed.taxCode" maxlength="2" data-json="MstTaxSearch.json" data-srcDef="TAX_CODE:PchAcceptActHed.taxCode" data-destDef="PchAcceptActHed.taxName:TAX_NAME" /><a id="PchAcceptActHed.taxCode" th:href="@{/model/MstTaxS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="PchAcceptActHed.taxName" class="refer" data-json="MstTaxSearch.json" data-srcDef="TAX_CODE:PchAcceptActHed.taxCode" data-destDef="PchAcceptActHed.taxName:TAX_NAME"></span>
         </div>
         <div id="taxCalCode">
-          <fieldset id="PchAcceptActHed.taxCalCodeList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:tax_cal_code" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+          <fieldset id="PchAcceptActHed.taxCalCodeList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:TAX_CAL_CODE" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
             <legend th:text="#{PchAcceptActHed.taxCalCode}">TAX_CAL_CODE</legend>
           </fieldset>
         </div>
         <div id="subinvCode">
-          <fieldset id="PchAcceptActHed.subinvCodeList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:subinv_code" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+          <fieldset id="PchAcceptActHed.subinvCodeList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:SUBINV_CODE" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
             <legend th:text="#{PchAcceptActHed.subinvCode}">SUBINV_CODE</legend>
           </fieldset>
         </div>

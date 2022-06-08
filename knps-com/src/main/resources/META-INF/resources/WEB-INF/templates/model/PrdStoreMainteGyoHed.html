@@ -38,7 +38,7 @@
       </fieldset>
       <h3 th:text="#{PrdStoreMainteGyoDet.h3}">h3</h3>
       <a th:href="@{/model/PrdStoreMainteGyoDet.html}" id="PrdStoreMainteGyoDet" target="dialog" th:text="#{PrdStoreMainteGyoDet.add}" class="addChild" tabindex="-1">PRD_STORE_MAINTE_GYO_DET</a>
-      <div id="PrdStoreMainteGyoDetGrid" data-selectionMode="link" data-addRow="true" data-frozenColumn="1" th:data-href="@{/model/PrdStoreMainteGyoDet.html}"></div>
+      <div id="PrdStoreMainteGyoDetGrid" data-selectionMode="link" data-frozenColumn="1" th:data-href="@{/model/PrdStoreMainteGyoDet.html}"></div>
       <div class="buttons">
         <button type="button" th:text="#{common.reset}" onClick="Dialogate.refresh(event);">reset</button>
         <a th:href="@{PrdStoreMainteGyoHedGet.xlsx(baseMei=#{PrdStoreMainteGyoHed.h2})}" id="PrdStoreMainteGyoHedGet.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>

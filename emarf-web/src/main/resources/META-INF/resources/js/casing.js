@@ -12,18 +12,15 @@ let Casing = {
 			return null;
 		}
 
-		// パスカルケース対応
-		// 数字・小文字直後の大文字の前に「_」を挿入
+		// パスカルケース対応（数字・小文字直後の大文字の前に「_」を挿入）
 		// password→password、EMAIL→EMAIL、sampleY_1→sample_Y_1、MUser→MUser、HOSO-HINBAN→HOSO-HINBAN）
 		let snake = s.replace(/([0-9a-z])([A-Z])/g, "$1_$2");
 
-		// キャメルケース・パスカルケース対応
-		// 大文字の次に小文字がある場合は大文字の前に「_」を挿入
+		// キャメルケース・パスカルケース対応（大文字の次に小文字がある場合は大文字の前に「_」を挿入）
 		// password→password、EMAIL→EMAIL、sampleY_1→sample_Y_1、MUser→M_User、HOSO-HINBAN→HOSO-HINBAN）
 		snake = snake.replace(/([A-Z][a-z])/g, "_$1");
 
-		// ケバブケース対応
-		// 「-」を「_」に置換
+		// ケバブケース対応（「-」を「_」に置換）
 		// password→password、EMAIL→EMAIL、sampleY_1→sample_Y_1、MUser→M_User、HOSO-HINBAN→HOSO_HINBAN）
 		snake = snake.replace(/\-/g, "_");
 
@@ -42,15 +39,11 @@ let Casing = {
 			return null;
 		}
 
-		return Casing.toSnake(s).toUpperCase();
+		let forceSnake = Casing.toSnake(s);
+		return forceSnake.toUpperCase();
 	},
 
 	toCamel: function(s) {
-		//        return snake.toLowerCase().replace(/_./g,
-		//            function(s) {
-		//                return s.charAt(1).toUpperCase();
-		//            }
-		//        );
 
 		if (s == null) {
 			return null;
@@ -84,8 +77,6 @@ let Casing = {
 	},
 
 	toPascal: function(s) {
-		//        var camel = Casing.toCamel(snake);
-		//        return camel.charAt(0).toUpperCase() + camel.slice(1);
 
 		if (s == null) {
 			return null;
@@ -94,4 +85,25 @@ let Casing = {
 		let camelCase = Casing.toCamel(s);
 		return camelCase.substring(0, 1).toUpperCase() + camelCase.substring(1);
 	},
+
+	toKebab: function(s) {
+
+		if (s == null) {
+			return null;
+		}
+
+		let snake = Casing.toSnake(s);
+		return snake.replace(/_/g, '-');
+	},
+
+	toUpperKebab: function(s) {
+
+		if (s == null) {
+			return null;
+		}
+
+		let kebab = Casing.toKebab(s);
+		return kebab.toUpperCase();
+	},
+
 }

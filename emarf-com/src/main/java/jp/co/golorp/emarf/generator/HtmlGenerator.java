@@ -2,7 +2,6 @@ package jp.co.golorp.emarf.generator;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -66,7 +65,7 @@ public final class HtmlGenerator {
     //    /** 参照名サフィックス */
     //    private static String referMeiSuffix;
     /** 参照列名ペア */
-    private static Map<String, String> referPairs = new HashMap<String, String>();
+    private static Map<String, String> referPairs = new LinkedHashMap<String, String>();
 
     private HtmlGenerator() {
     }
@@ -531,6 +530,8 @@ public final class HtmlGenerator {
         s.add("        <legend th:text=\"#{" + entityName + ".legend}\">legend</legend>");
         htmlFields(tableInfo, s, true, false);
         s.add("      </fieldset>");
+
+        // 兄弟モデル
         List<TableInfo> brosInfos = tableInfo.getBrosInfos();
         if (brosInfos != null) {
             for (TableInfo brosInfo : brosInfos) {
@@ -541,15 +542,17 @@ public final class HtmlGenerator {
                 s.add("      </fieldset>");
             }
         }
+
         //子テーブルリスト
         for (TableInfo childInfo : tableInfo.getChildInfos()) {
+
             String childName = childInfo.getTableName();
             String pascal = StringUtil.toPascalCase(childName);
-            String frozen = String.valueOf(tableInfo.getPrimaryKeys().size());
             s.add("      <h3 th:text=\"#{" + pascal + ".h3}\">h3</h3>");
             s.add("      <a th:href=\"@{/model/" + pascal + ".html}\" id=\"" + pascal
                     + "\" target=\"dialog\" th:text=\"#{" + pascal + ".add}\" class=\"addChild\" tabindex=\"-1\">"
                     + childInfo.getRemarks() + "</a>");
+
             // ファイル列がある場合は新規行を取消
             String addRow = " data-addRow=\"true\"";
             for (ColumnInfo columnInfo : childInfo.getColumnInfos().values()) {
@@ -558,10 +561,24 @@ public final class HtmlGenerator {
                     break;
                 }
             }
+
+            // 最終キーが採番キーでなければ新規行を取消
+            int size = childInfo.getPrimaryKeys().size();
+            if (size > 0) {
+                String lastKey = childInfo.getPrimaryKeys().get(size - 1);
+                ColumnInfo lastKeyInfo = childInfo.getColumnInfos().get(lastKey);
+                if (!lastKeyInfo.isNumbering()) {
+                    addRow = "";
+                }
+            }
+
+            String frozen = String.valueOf(tableInfo.getPrimaryKeys().size());
+
             s.add("      <div id=\"" + pascal
                     + "Grid\" data-selectionMode=\"link\"" + addRow + " data-frozenColumn=\"" + frozen
                     + "\" th:data-href=\"@{/model/" + pascal + ".html}\"></div>");
         }
+
         s.add("      <div class=\"buttons\">");
         s.add("        <button type=\"button\" th:text=\"#{common.reset}\" onClick=\"Dialogate.refresh(event);\">reset</button>");
         s.add("        <a th:href=\"@{" + entityName + "Get.xlsx(baseMei=#{" + entityName + ".h2})}\" id=\""
@@ -606,8 +623,7 @@ public final class HtmlGenerator {
 
             // 検索条件にはファイル項目を出力しない
             String columnName = columnInfo.getColumnName();
-            String lower = columnName.toLowerCase();
-            boolean isInputFile = StringUtil.endsWith(inputFileSuffixs, lower);
+            boolean isInputFile = StringUtil.endsWith(inputFileSuffixs, columnName);
             if (!isDetail && isInputFile) {
                 continue;
             }
@@ -617,17 +633,16 @@ public final class HtmlGenerator {
             String fieldId = pascalTable + "." + camelColumn;
 
             // メタ情報の場合
+            // 検索画面の場合はスキップ（検索条件にはしない）
+            // 詳細画面の兄弟モデルは更新日時のみhiddenで出力
             boolean isInsertDt = columnName.matches("(?i)^" + insertDt + "$");
             boolean isUpdateDt = columnName.matches("(?i)^" + updateDt + "$");
             boolean isInsertBy = columnName.matches("(?i)^" + insertBy + "$");
             boolean isUpdateBy = columnName.matches("(?i)^" + updateBy + "$");
             if (isInsertDt || isInsertBy || isUpdateDt || isUpdateBy) {
-
                 if (!isDetail) {
-                    // 検索画面の場合はスキップ（検索条件にはしない）
                     continue;
                 } else if (isBrother) {
-                    // 詳細画面の兄弟モデルは更新日時のみhiddenで出力
                     if (isUpdateDt) {
                         s.add("        <input type=\"hidden\" name=\"" + fieldId + "\" />");
                     }
@@ -659,7 +674,7 @@ public final class HtmlGenerator {
                             + "S.html}\" target=\"dialog\" class=\"primaryKey refer\" th:text=\"#{common.refer}\" tabindex=\"-1\">...</a>";
 
                     // 名称項目がなければspanも出力
-                    String meiColumnName = getMeiColumnName(columnName);
+                    String meiColumnName = getMeiColumnName(columnName, referInfo);
                     if (!tableInfo.getColumnInfos().containsKey(meiColumnName)) {
                         String meiId = pascalTable + "." + StringUtil.toCamelCase(meiColumnName);
                         String referDef = getReferDef(pascalTable, columnName, referInfo);
@@ -669,12 +684,13 @@ public final class HtmlGenerator {
 
                 s.add(tag);
 
-            } else if (StringUtil.endsWith(optionsSuffixs, lower) && columnInfo.getReferInfo() == null) {
+            } else if (StringUtil.endsWith(optionsSuffixs, columnName) && columnInfo.getReferInfo() == null) {
                 // 選択項目の場合（サフィックスが合致しても参照モデルなら除外）
 
-                htmlFieldsOptions(s, fieldId, lower, remarks);
+                boolean isPrimaryKey = isDetail && columnInfo.isPk();
+                htmlFieldsOptions(s, fieldId, columnName, remarks, isPrimaryKey);
 
-            } else if (isDetail && StringUtil.endsWith(textareaSuffixs, lower)) {
+            } else if (isDetail && StringUtil.endsWith(textareaSuffixs, columnName)) {
                 // テキストエリア項目の場合
 
                 htmlFieldsTextarea(s, fieldId, remarks);
@@ -683,13 +699,13 @@ public final class HtmlGenerator {
                 // 上記以外の場合
 
                 String type = "text";
-                if (StringUtil.endsWith(inputDateSuffixs, lower)) { // 日付項目
+                if (StringUtil.endsWith(inputDateSuffixs, columnName)) { // 日付項目
                     type = "date";
-                } else if (StringUtil.endsWith(inputDateTimeSuffixs, lower)) { // 日時項目
+                } else if (StringUtil.endsWith(inputDateTimeSuffixs, columnName)) { // 日時項目
                     type = "datetime-local";
-                } else if (StringUtil.endsWith(inputMonthSuffixs, lower)) { // 年月項目
+                } else if (StringUtil.endsWith(inputMonthSuffixs, columnName)) { // 年月項目
                     type = "month";
-                } else if (StringUtil.endsWith(inputTimeSuffixs, lower)) { // 時刻項目
+                } else if (StringUtil.endsWith(inputTimeSuffixs, columnName)) { // 時刻項目
                     type = "time";
                 } else if (isInputFile) { // ファイル
                     type = "file";
@@ -702,7 +718,7 @@ public final class HtmlGenerator {
                     css = " class=\"primaryKey\"";
                 }
 
-                if (!isDetail && StringUtil.endsWith(inputRangeSuffixs, lower)) {
+                if (!isDetail && StringUtil.endsWith(inputRangeSuffixs, columnName)) {
                     // 検索画面の範囲指定項目の場合
 
                     htmlFieldsInputRange(s, fieldId, remarks, type, max);
@@ -722,7 +738,7 @@ public final class HtmlGenerator {
                     tag += "<a id=\"" + fieldId + "\" th:href=\"@{/model/" + referName
                             + "S.html}\" target=\"dialog\" class=\"refer\" th:text=\"#{common.refer}\" tabindex=\"-1\">...</a>";
 
-                    String meiColumnName = getMeiColumnName(columnName);
+                    String meiColumnName = getMeiColumnName(columnName, referInfo);
                     if (!tableInfo.getColumnInfos().containsKey(meiColumnName)) {
                         String meiId = pascalTable + "." + StringUtil.toCamelCase(meiColumnName);
                         tag += "<span id=\"" + meiId + "\" class=\"refer\"" + referDef + "></span>";
@@ -773,11 +789,15 @@ public final class HtmlGenerator {
         s.add("          <textarea id=\"" + id + "\" name=\"" + id + "\"></textarea>");
     }
 
-    private static void htmlFieldsOptions(final List<String> s, final String id, final String lower,
-            final String remarks) {
+    private static void htmlFieldsOptions(final List<String> s, final String id, final String columnName,
+            final String remarks, final boolean isPrimariKey) {
+        String primaryKey = " class=\"primaryKey\"";
+        if (!isPrimariKey) {
+            primaryKey = "";
+        }
         s.add("          <fieldset id=\"" + id + "List\" data-options=\"" + json + "\" data-optionParams=\""
-                + optionParamKey + ":" + lower + "\" data-optionValue=\"" + optionValue + "\" data-optionLabel=\""
-                + optionLabel + "\">");
+                + optionParamKey + ":" + columnName + "\" data-optionValue=\"" + optionValue + "\" data-optionLabel=\""
+                + optionLabel + "\"" + primaryKey + ">");
         s.add("            <legend th:text=\"#{" + id + "}\">" + remarks + "</legend>");
         s.add("          </fieldset>");
     }
@@ -791,37 +811,98 @@ public final class HtmlGenerator {
         s.add(tag);
     }
 
+    /**
+     * @param entityName 参照元エンティティ名
+     * @param columnName 参照元カラム名
+     * @param referInfo 参照先エンティティ情報
+     * @return 参照HTML文字列
+     */
     private static String getReferDef(final String entityName, final String columnName, final TableInfo referInfo) {
 
+        // カラム名が参照キーに合致する場合
         if (StringUtil.endsWith(referPairs, columnName)) {
-            String meiColumnName = getMeiColumnName(columnName);
-            String srcColumn = null;
-            String destColumn = null;
-            for (String referColumnName : referInfo.getColumnInfos().keySet()) {
-                if (columnName.matches("^.*" + referColumnName + "$")) {
-                    srcColumn = referColumnName;
-                } else if (meiColumnName.matches("^.*" + referColumnName + "$")) {
-                    destColumn = referColumnName;
-                }
-            }
 
-            String referName = StringUtil.toPascalCase(referInfo.getTableName());
-            String id = entityName + "." + StringUtil.toCamelCase(columnName);
-            String meiId = entityName + "." + StringUtil.toCamelCase(meiColumnName);
-            return " data-json=\"" + referName + "Search.json\" data-srcDef=\"" + srcColumn + ":"
-                    + id + "\" data-destDef=\"" + meiId + ":" + destColumn + "\"";
+            for (Entry<String, String> e : referPairs.entrySet()) {
+                String idSuffix = e.getKey();
+                String meiSuffix = e.getValue();
+
+                // カラム名が参照キーに合致しなければスキップ
+                if (!columnName.matches("(?i)^.*" + idSuffix + "$")) {
+                    continue;
+                }
+
+                // カラム名のIDサフィックスを名称サフィックスに置換して名称カラム名を取得
+                String srcIdColumn = columnName;
+                String srcMeiColumn = srcIdColumn.replaceAll("(?i)" + idSuffix + "$", meiSuffix);
+
+                // 参照先テーブルの全カラム名を確認して、末尾が合致するカラム名を、参照先のID・名称カラム名として取得
+                String destIdColumn = null;
+                String destMeiColumn = null;
+                for (String destColumnName : referInfo.getColumnInfos().keySet()) {
+                    if (srcIdColumn.matches("^.*" + destColumnName + "$")) {
+                        destIdColumn = destColumnName;
+                    } else if (srcMeiColumn.matches("^.*" + destColumnName + "$")) {
+                        destMeiColumn = destColumnName;
+                    }
+                }
+
+                if (destIdColumn == null || destMeiColumn == null) {
+                    continue;
+                }
+
+                String referName = StringUtil.toPascalCase(referInfo.getTableName());
+                String srcIdName = entityName + "." + StringUtil.toCamelCase(srcIdColumn);
+                String srcMeiName = entityName + "." + StringUtil.toCamelCase(srcMeiColumn);
+
+                String dataJson = " data-json=\"" + referName + "Search.json\"";
+                String srcDef = " data-srcDef=\"" + destIdColumn + ":" + srcIdName + "\"";
+                String destDef = " data-destDef=\"" + srcMeiName + ":" + destMeiColumn + "\"";
+
+                return dataJson + srcDef + destDef;
+            }
         }
 
         return "";
     }
 
-    private static String getMeiColumnName(final String columnName) {
-        String meiColumnName = columnName;
-        for (String referIdSuffix : referPairs.keySet()) {
-            meiColumnName = meiColumnName.replaceAll("(?i)" + referIdSuffix + "$", referPairs.get(referIdSuffix));
+    private static String getMeiColumnName(final String columnName, final TableInfo referInfo) {
+
+        // カラム名が参照キーに合致する場合
+        if (StringUtil.endsWith(referPairs, columnName)) {
+
+            for (Entry<String, String> e : referPairs.entrySet()) {
+                String idSuffix = e.getKey();
+                String meiSuffix = e.getValue();
+
+                // カラム名が参照キーに合致しなければスキップ
+                if (!columnName.matches("(?i)^.*" + idSuffix + "$")) {
+                    continue;
+                }
+
+                // カラム名のIDサフィックスを名称サフィックスに置換して名称カラム名を取得
+                String srcIdColumn = columnName;
+                String srcMeiColumn = srcIdColumn.replaceAll("(?i)" + idSuffix + "$", meiSuffix);
+
+                // 参照先テーブルの全カラム名を確認して、末尾が合致するカラム名を、参照先のID・名称カラム名として取得
+                String destIdColumn = null;
+                String destMeiColumn = null;
+                for (String destColumnName : referInfo.getColumnInfos().keySet()) {
+                    if (srcIdColumn.matches("^.*" + destColumnName + "$")) {
+                        destIdColumn = destColumnName;
+                    } else if (srcMeiColumn.matches("^.*" + destColumnName + "$")) {
+                        destMeiColumn = destColumnName;
+                    }
+                }
+
+                if (destIdColumn == null || destMeiColumn == null) {
+                    continue;
+                }
+
+                return srcMeiColumn;
+            }
         }
-        meiColumnName = StringUtil.toUpperCase(meiColumnName);
-        return meiColumnName;
+
+        return "";
     }
 
     /**

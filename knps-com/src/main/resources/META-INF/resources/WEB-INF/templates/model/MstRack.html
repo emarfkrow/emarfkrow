@@ -62,14 +62,14 @@
           <label for="MstRack.userIdChange" th:text="#{MstRack.userIdChange}">USER_ID_CHANGE</label><span id="MstRack.userIdChange"></span><input type="hidden" id="MstRack.userIdChange" name="MstRack.userIdChange" />
         </div>
         <div id="deleteFlag">
-          <fieldset id="MstRack.deleteFlagList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:delete_flag" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+          <fieldset id="MstRack.deleteFlagList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:DELETE_FLAG" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
             <legend th:text="#{MstRack.deleteFlag}">DELETE_FLAG</legend>
           </fieldset>
         </div>
       </fieldset>
       <h3 th:text="#{MstRoutingDef.h3}">h3</h3>
       <a th:href="@{/model/MstRoutingDef.html}" id="MstRoutingDef" target="dialog" th:text="#{MstRoutingDef.add}" class="addChild" tabindex="-1">MST_ROUTING_DEF</a>
-      <div id="MstRoutingDefGrid" data-selectionMode="link" data-addRow="true" data-frozenColumn="1" th:data-href="@{/model/MstRoutingDef.html}"></div>
+      <div id="MstRoutingDefGrid" data-selectionMode="link" data-frozenColumn="1" th:data-href="@{/model/MstRoutingDef.html}"></div>
       <h3 th:text="#{MstStructure.h3}">h3</h3>
       <a th:href="@{/model/MstStructure.html}" id="MstStructure" target="dialog" th:text="#{MstStructure.add}" class="addChild" tabindex="-1">MST_STRUCTURE</a>
       <div id="MstStructureGrid" data-selectionMode="link" data-addRow="true" data-frozenColumn="1" th:data-href="@{/model/MstStructure.html}"></div>

@@ -3,7 +3,7 @@
  */
 
 let MSgenkaGridColumns = [
-    Column.refer('HHINBAN', Messages['MSgenkaGrid.hhinban'], 200, 'primaryKey', 'HHINMEI'),
+    Column.refer('HHINBAN', Messages['MSgenkaGrid.hhinban'], 200, 'primaryKey', 'HITEM'),
     Column.text('HINCD', Messages['MSgenkaGrid.hincd'], 200, '', null),
     Column.text('SETKBN', Messages['MSgenkaGrid.setkbn'], 10, '', null),
     Column.text('GENKA', Messages['MSgenkaGrid.genka'], 70, '', null),

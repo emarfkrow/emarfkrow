@@ -55,7 +55,7 @@
           <label for="MstProdUnitprice.orderUnit" th:text="#{MstProdUnitprice.orderUnit}">ORDER_UNIT</label><input type="text" id="MstProdUnitprice.orderUnit" name="MstProdUnitprice.orderUnit" maxlength="9" />
         </div>
         <div id="standardUnitpriceFlag">
-          <fieldset id="MstProdUnitprice.standardUnitpriceFlagList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:standard_unitprice_flag" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+          <fieldset id="MstProdUnitprice.standardUnitpriceFlagList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:STANDARD_UNITPRICE_FLAG" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
             <legend th:text="#{MstProdUnitprice.standardUnitpriceFlag}">STANDARD_UNITPRICE_FLAG</legend>
           </fieldset>
         </div>
@@ -72,12 +72,12 @@
           <label for="MstProdUnitprice.userIdChange" th:text="#{MstProdUnitprice.userIdChange}">USER_ID_CHANGE</label><span id="MstProdUnitprice.userIdChange"></span><input type="hidden" id="MstProdUnitprice.userIdChange" name="MstProdUnitprice.userIdChange" />
         </div>
         <div id="deleteFlag">
-          <fieldset id="MstProdUnitprice.deleteFlagList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:delete_flag" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+          <fieldset id="MstProdUnitprice.deleteFlagList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:DELETE_FLAG" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
             <legend th:text="#{MstProdUnitprice.deleteFlag}">DELETE_FLAG</legend>
           </fieldset>
         </div>
         <div id="gaikaKb">
-          <fieldset id="MstProdUnitprice.gaikaKbList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:gaika_kb" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+          <fieldset id="MstProdUnitprice.gaikaKbList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:GAIKA_KB" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
             <legend th:text="#{MstProdUnitprice.gaikaKb}">GAIKA_KB</legend>
           </fieldset>
         </div>
@@ -85,7 +85,7 @@
           <label for="MstProdUnitprice.gaikaTk" th:text="#{MstProdUnitprice.gaikaTk}">GAIKA_TK</label><input type="text" id="MstProdUnitprice.gaikaTk" name="MstProdUnitprice.gaikaTk" maxlength="10" />
         </div>
         <div id="isshikiUnitF">
-          <fieldset id="MstProdUnitprice.isshikiUnitFList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:isshiki_unit_f" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+          <fieldset id="MstProdUnitprice.isshikiUnitFList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:ISSHIKI_UNIT_F" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
             <legend th:text="#{MstProdUnitprice.isshikiUnitF}">ISSHIKI_UNIT_F</legend>
           </fieldset>
         </div>
@@ -98,7 +98,7 @@
       <div id="MstProdUnitpriceBkGrid" data-selectionMode="link" data-addRow="true" data-frozenColumn="5" th:data-href="@{/model/MstProdUnitpriceBk.html}"></div>
       <h3 th:text="#{MstProdUnitpriceHs.h3}">h3</h3>
       <a th:href="@{/model/MstProdUnitpriceHs.html}" id="MstProdUnitpriceHs" target="dialog" th:text="#{MstProdUnitpriceHs.add}" class="addChild" tabindex="-1">MST_PROD_UNITPRICE_HS</a>
-      <div id="MstProdUnitpriceHsGrid" data-selectionMode="link" data-addRow="true" data-frozenColumn="5" th:data-href="@{/model/MstProdUnitpriceHs.html}"></div>
+      <div id="MstProdUnitpriceHsGrid" data-selectionMode="link" data-frozenColumn="5" th:data-href="@{/model/MstProdUnitpriceHs.html}"></div>
       <div class="buttons">
         <button type="button" th:text="#{common.reset}" onClick="Dialogate.refresh(event);">reset</button>
         <a th:href="@{MstProdUnitpriceGet.xlsx(baseMei=#{MstProdUnitprice.h2})}" id="MstProdUnitpriceGet.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>

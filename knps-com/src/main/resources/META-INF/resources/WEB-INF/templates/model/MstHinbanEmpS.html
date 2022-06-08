@@ -20,7 +20,7 @@
       <fieldset>
         <legend th:text="#{MstHinbanEmpS.legend}">legend</legend>
         <div id="hinbanOpeCode">
-          <fieldset id="MstHinbanEmp.hinbanOpeCodeList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:hinban_ope_code" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+          <fieldset id="MstHinbanEmp.hinbanOpeCodeList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:HINBAN_OPE_CODE" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
             <legend th:text="#{MstHinbanEmp.hinbanOpeCode}">HINBAN_OPE_CODE</legend>
           </fieldset>
         </div>
@@ -31,7 +31,7 @@
           <label for="MstHinbanEmp.empCode" th:text="#{MstHinbanEmp.empCode}">EMP_CODE</label><input type="text" id="MstHinbanEmp.empCode" name="MstHinbanEmp.empCode" maxlength="10" data-json="MstEmpSearch.json" data-srcDef="EMP_CODE:MstHinbanEmp.empCode" data-destDef="MstHinbanEmp.empName:EMP_NAME" /><a id="MstHinbanEmp.empCode" th:href="@{/model/MstEmpS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MstHinbanEmp.empName" class="refer" data-json="MstEmpSearch.json" data-srcDef="EMP_CODE:MstHinbanEmp.empCode" data-destDef="MstHinbanEmp.empName:EMP_NAME"></span>
         </div>
         <div id="deleteFlag">
-          <fieldset id="MstHinbanEmp.deleteFlagList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:delete_flag" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+          <fieldset id="MstHinbanEmp.deleteFlagList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:DELETE_FLAG" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
             <legend th:text="#{MstHinbanEmp.deleteFlag}">DELETE_FLAG</legend>
           </fieldset>
         </div>

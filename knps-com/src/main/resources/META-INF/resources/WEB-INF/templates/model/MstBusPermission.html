@@ -18,7 +18,7 @@
       <fieldset>
         <legend th:text="#{MstBusPermission.legend}">legend</legend>
         <div id="compCode">
-          <fieldset id="MstBusPermission.compCodeList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:comp_code" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+          <fieldset id="MstBusPermission.compCodeList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:COMP_CODE" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI" class="primaryKey">
             <legend th:text="#{MstBusPermission.compCode}">COMP_CODE</legend>
           </fieldset>
         </div>
@@ -41,14 +41,14 @@
           <label for="MstBusPermission.userIdChange" th:text="#{MstBusPermission.userIdChange}">USER_ID_CHANGE</label><span id="MstBusPermission.userIdChange"></span><input type="hidden" id="MstBusPermission.userIdChange" name="MstBusPermission.userIdChange" />
         </div>
         <div id="deleteFlag">
-          <fieldset id="MstBusPermission.deleteFlagList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:delete_flag" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+          <fieldset id="MstBusPermission.deleteFlagList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:DELETE_FLAG" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
             <legend th:text="#{MstBusPermission.deleteFlag}">DELETE_FLAG</legend>
           </fieldset>
         </div>
       </fieldset>
       <h3 th:text="#{MstGamenPermission.h3}">h3</h3>
       <a th:href="@{/model/MstGamenPermission.html}" id="MstGamenPermission" target="dialog" th:text="#{MstGamenPermission.add}" class="addChild" tabindex="-1">MST_GAMEN_PERMISSION</a>
-      <div id="MstGamenPermissionGrid" data-selectionMode="link" data-addRow="true" data-frozenColumn="2" th:data-href="@{/model/MstGamenPermission.html}"></div>
+      <div id="MstGamenPermissionGrid" data-selectionMode="link" data-frozenColumn="2" th:data-href="@{/model/MstGamenPermission.html}"></div>
       <div class="buttons">
         <button type="button" th:text="#{common.reset}" onClick="Dialogate.refresh(event);">reset</button>
         <a th:href="@{MstBusPermissionGet.xlsx(baseMei=#{MstBusPermission.h2})}" id="MstBusPermissionGet.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>

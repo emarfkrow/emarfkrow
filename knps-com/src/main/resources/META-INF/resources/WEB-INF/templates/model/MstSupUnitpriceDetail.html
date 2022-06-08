@@ -38,7 +38,7 @@
           <label for="MstSupUnitpriceDetail.orderUnit" th:text="#{MstSupUnitpriceDetail.orderUnit}">ORDER_UNIT</label><input type="text" id="MstSupUnitpriceDetail.orderUnit" name="MstSupUnitpriceDetail.orderUnit" maxlength="9" />
         </div>
         <div id="standardUnitpriceFlag">
-          <fieldset id="MstSupUnitpriceDetail.standardUnitpriceFlagList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:standard_unitprice_flag" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+          <fieldset id="MstSupUnitpriceDetail.standardUnitpriceFlagList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:STANDARD_UNITPRICE_FLAG" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
             <legend th:text="#{MstSupUnitpriceDetail.standardUnitpriceFlag}">STANDARD_UNITPRICE_FLAG</legend>
           </fieldset>
         </div>
@@ -55,12 +55,12 @@
           <label for="MstSupUnitpriceDetail.userIdChange" th:text="#{MstSupUnitpriceDetail.userIdChange}">USER_ID_CHANGE</label><span id="MstSupUnitpriceDetail.userIdChange"></span><input type="hidden" id="MstSupUnitpriceDetail.userIdChange" name="MstSupUnitpriceDetail.userIdChange" />
         </div>
         <div id="deleteFlag">
-          <fieldset id="MstSupUnitpriceDetail.deleteFlagList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:delete_flag" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+          <fieldset id="MstSupUnitpriceDetail.deleteFlagList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:DELETE_FLAG" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
             <legend th:text="#{MstSupUnitpriceDetail.deleteFlag}">DELETE_FLAG</legend>
           </fieldset>
         </div>
         <div id="gaikaKb">
-          <fieldset id="MstSupUnitpriceDetail.gaikaKbList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:gaika_kb" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+          <fieldset id="MstSupUnitpriceDetail.gaikaKbList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:GAIKA_KB" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
             <legend th:text="#{MstSupUnitpriceDetail.gaikaKb}">GAIKA_KB</legend>
           </fieldset>
         </div>
@@ -73,7 +73,7 @@
       <div id="MstSupUnitpriceDetailBkGrid" data-selectionMode="link" data-addRow="true" data-frozenColumn="3" th:data-href="@{/model/MstSupUnitpriceDetailBk.html}"></div>
       <h3 th:text="#{MstSupUnitpriceDetailHs.h3}">h3</h3>
       <a th:href="@{/model/MstSupUnitpriceDetailHs.html}" id="MstSupUnitpriceDetailHs" target="dialog" th:text="#{MstSupUnitpriceDetailHs.add}" class="addChild" tabindex="-1">MST_SUP_UNITPRICE_DETAIL_HS</a>
-      <div id="MstSupUnitpriceDetailHsGrid" data-selectionMode="link" data-addRow="true" data-frozenColumn="3" th:data-href="@{/model/MstSupUnitpriceDetailHs.html}"></div>
+      <div id="MstSupUnitpriceDetailHsGrid" data-selectionMode="link" data-frozenColumn="3" th:data-href="@{/model/MstSupUnitpriceDetailHs.html}"></div>
       <div class="buttons">
         <button type="button" th:text="#{common.reset}" onClick="Dialogate.refresh(event);">reset</button>
         <a th:href="@{MstSupUnitpriceDetailGet.xlsx(baseMei=#{MstSupUnitpriceDetail.h2})}" id="MstSupUnitpriceDetailGet.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>

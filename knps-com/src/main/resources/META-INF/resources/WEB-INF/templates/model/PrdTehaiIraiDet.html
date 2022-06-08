@@ -36,22 +36,22 @@
           <label for="PrdTehaiIraiDet.iraiQt" th:text="#{PrdTehaiIraiDet.iraiQt}">IRAI_QT</label><input type="text" id="PrdTehaiIraiDet.iraiQt" name="PrdTehaiIraiDet.iraiQt" maxlength="11" />
         </div>
         <div id="shinsetsuhinF">
-          <fieldset id="PrdTehaiIraiDet.shinsetsuhinFList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:shinsetsuhin_f" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+          <fieldset id="PrdTehaiIraiDet.shinsetsuhinFList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:SHINSETSUHIN_F" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
             <legend th:text="#{PrdTehaiIraiDet.shinsetsuhinF}">SHINSETSUHIN_F</legend>
           </fieldset>
         </div>
         <div id="sethinF">
-          <fieldset id="PrdTehaiIraiDet.sethinFList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:sethin_f" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+          <fieldset id="PrdTehaiIraiDet.sethinFList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:SETHIN_F" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
             <legend th:text="#{PrdTehaiIraiDet.sethinF}">SETHIN_F</legend>
           </fieldset>
         </div>
         <div id="hanmokugaiF">
-          <fieldset id="PrdTehaiIraiDet.hanmokugaiFList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:hanmokugai_f" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+          <fieldset id="PrdTehaiIraiDet.hanmokugaiFList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:HANMOKUGAI_F" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
             <legend th:text="#{PrdTehaiIraiDet.hanmokugaiF}">HANMOKUGAI_F</legend>
           </fieldset>
         </div>
         <div id="chumonNyuryokuZumiF">
-          <fieldset id="PrdTehaiIraiDet.chumonNyuryokuZumiFList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:chumon_nyuryoku_zumi_f" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+          <fieldset id="PrdTehaiIraiDet.chumonNyuryokuZumiFList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:CHUMON_NYURYOKU_ZUMI_F" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
             <legend th:text="#{PrdTehaiIraiDet.chumonNyuryokuZumiF}">CHUMON_NYURYOKU_ZUMI_F</legend>
           </fieldset>
         </div>
@@ -59,7 +59,7 @@
           <label for="PrdTehaiIraiDet.kiboNokiYmd" th:text="#{PrdTehaiIraiDet.kiboNokiYmd}">KIBO_NOKI_YMD</label><input type="date" id="PrdTehaiIraiDet.kiboNokiYmd" name="PrdTehaiIraiDet.kiboNokiYmd" maxlength="10" />
         </div>
         <div id="shukkaZumiF">
-          <fieldset id="PrdTehaiIraiDet.shukkaZumiFList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:shukka_zumi_f" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+          <fieldset id="PrdTehaiIraiDet.shukkaZumiFList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:SHUKKA_ZUMI_F" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
             <legend th:text="#{PrdTehaiIraiDet.shukkaZumiF}">SHUKKA_ZUMI_F</legend>
           </fieldset>
         </div>
@@ -81,7 +81,7 @@
       </fieldset>
       <h3 th:text="#{PrdTehaiIraiDetHis.h3}">h3</h3>
       <a th:href="@{/model/PrdTehaiIraiDetHis.html}" id="PrdTehaiIraiDetHis" target="dialog" th:text="#{PrdTehaiIraiDetHis.add}" class="addChild" tabindex="-1">PRD_TEHAI_IRAI_DET_HIS</a>
-      <div id="PrdTehaiIraiDetHisGrid" data-selectionMode="link" data-addRow="true" data-frozenColumn="2" th:data-href="@{/model/PrdTehaiIraiDetHis.html}"></div>
+      <div id="PrdTehaiIraiDetHisGrid" data-selectionMode="link" data-frozenColumn="2" th:data-href="@{/model/PrdTehaiIraiDetHis.html}"></div>
       <div class="buttons">
         <button type="button" th:text="#{common.reset}" onClick="Dialogate.refresh(event);">reset</button>
         <a th:href="@{PrdTehaiIraiDetGet.xlsx(baseMei=#{PrdTehaiIraiDet.h2})}" id="PrdTehaiIraiDetGet.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>

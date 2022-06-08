@@ -22,7 +22,7 @@
       <fieldset>
         <legend th:text="#{MstCostCenterS.legend}">legend</legend>
         <div id="costCenterCode">
-          <fieldset id="MstCostCenter.costCenterCodeList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:cost_center_code" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+          <fieldset id="MstCostCenter.costCenterCodeList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:COST_CENTER_CODE" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
             <legend th:text="#{MstCostCenter.costCenterCode}">COST_CENTER_CODE</legend>
           </fieldset>
         </div>
@@ -30,7 +30,7 @@
           <label for="MstCostCenter.costCenterName" th:text="#{MstCostCenter.costCenterName}">COST_CENTER_NAME</label><input type="text" id="MstCostCenter.costCenterName" name="MstCostCenter.costCenterName" maxlength="60" />
         </div>
         <div id="inOutKbn">
-          <fieldset id="MstCostCenter.inOutKbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:in_out_kbn" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+          <fieldset id="MstCostCenter.inOutKbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:IN_OUT_KBN" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
             <legend th:text="#{MstCostCenter.inOutKbn}">IN_OUT_KBN</legend>
           </fieldset>
         </div>
@@ -38,12 +38,12 @@
           <label for="MstCostCenter.supCode" th:text="#{MstCostCenter.supCode}">SUP_CODE</label><input type="text" id="MstCostCenter.supCode" name="MstCostCenter.supCode" maxlength="6" data-json="MstSupplierSearch.json" data-srcDef="SUP_CODE:MstCostCenter.supCode" data-destDef="MstCostCenter.supName:SUP_NAME" /><a id="MstCostCenter.supCode" th:href="@{/model/MstSupplierS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MstCostCenter.supName" class="refer" data-json="MstSupplierSearch.json" data-srcDef="SUP_CODE:MstCostCenter.supCode" data-destDef="MstCostCenter.supName:SUP_NAME"></span>
         </div>
         <div id="costRateKbn">
-          <fieldset id="MstCostCenter.costRateKbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:cost_rate_kbn" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+          <fieldset id="MstCostCenter.costRateKbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:COST_RATE_KBN" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
             <legend th:text="#{MstCostCenter.costRateKbn}">COST_RATE_KBN</legend>
           </fieldset>
         </div>
         <div id="costRateCode">
-          <fieldset id="MstCostCenter.costRateCodeList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:cost_rate_code" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+          <fieldset id="MstCostCenter.costRateCodeList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:COST_RATE_CODE" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
             <legend th:text="#{MstCostCenter.costRateCode}">COST_RATE_CODE</legend>
           </fieldset>
         </div>
@@ -51,7 +51,7 @@
           <label for="MstCostCenter.costCollect" th:text="#{MstCostCenter.costCollect}">COST_COLLECT</label><input type="text" id="MstCostCenter.costCollect" name="MstCostCenter.costCollect" maxlength="1" />
         </div>
         <div id="deleteFlag">
-          <fieldset id="MstCostCenter.deleteFlagList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:delete_flag" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+          <fieldset id="MstCostCenter.deleteFlagList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:DELETE_FLAG" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
             <legend th:text="#{MstCostCenter.deleteFlag}">DELETE_FLAG</legend>
           </fieldset>
         </div>

@@ -3,7 +3,7 @@
  */
 
 let MTankaGridColumns = [
-    Column.refer('HHINBAN', Messages['MTankaGrid.hhinban'], 200, 'primaryKey', 'HHINMEI'),
+    Column.refer('HHINBAN', Messages['MTankaGrid.hhinban'], 200, 'primaryKey', 'HITEM'),
     Column.text('DAIRI-TANKA', Messages['MTankaGrid.dairiTanka'], 70, '', null),
     Column.text('CDAIKO-TANKA', Messages['MTankaGrid.cdaikoTanka'], 70, '', null),
     Column.text('JDAIKO-TANKA', Messages['MTankaGrid.jdaikoTanka'], 70, '', null),

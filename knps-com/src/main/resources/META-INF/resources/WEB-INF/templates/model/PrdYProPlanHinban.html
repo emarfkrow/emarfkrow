@@ -45,12 +45,12 @@
           <label for="PrdYProPlanHinban.hinban" th:text="#{PrdYProPlanHinban.hinban}">HINBAN</label><span id="PrdYProPlanHinban.hinban"></span><input type="hidden" id="PrdYProPlanHinban.hinban" name="PrdYProPlanHinban.hinban" class="primaryKey" />
         </div>
         <div id="itemKbn">
-          <fieldset id="PrdYProPlanHinban.itemKbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:item_kbn" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+          <fieldset id="PrdYProPlanHinban.itemKbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:ITEM_KBN" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
             <legend th:text="#{PrdYProPlanHinban.itemKbn}">ITEM_KBN</legend>
           </fieldset>
         </div>
         <div id="shikakeKbn">
-          <fieldset id="PrdYProPlanHinban.shikakeKbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:shikake_kbn" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+          <fieldset id="PrdYProPlanHinban.shikakeKbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:SHIKAKE_KBN" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
             <legend th:text="#{PrdYProPlanHinban.shikakeKbn}">SHIKAKE_KBN</legend>
           </fieldset>
         </div>
@@ -78,7 +78,7 @@
       </fieldset>
       <h3 th:text="#{PrdYProPlanRouting.h3}">h3</h3>
       <a th:href="@{/model/PrdYProPlanRouting.html}" id="PrdYProPlanRouting" target="dialog" th:text="#{PrdYProPlanRouting.add}" class="addChild" tabindex="-1">PRD_Y_PRO_PLAN_ROUTING</a>
-      <div id="PrdYProPlanRoutingGrid" data-selectionMode="link" data-addRow="true" data-frozenColumn="4" th:data-href="@{/model/PrdYProPlanRouting.html}"></div>
+      <div id="PrdYProPlanRoutingGrid" data-selectionMode="link" data-frozenColumn="4" th:data-href="@{/model/PrdYProPlanRouting.html}"></div>
       <div class="buttons">
         <button type="button" th:text="#{common.reset}" onClick="Dialogate.refresh(event);">reset</button>
         <a th:href="@{PrdYProPlanHinbanGet.xlsx(baseMei=#{PrdYProPlanHinban.h2})}" id="PrdYProPlanHinbanGet.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>

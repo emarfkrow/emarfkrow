@@ -63,7 +63,7 @@
           <label for="MfgModActHed.modStatus" th:text="#{MfgModActHed.modStatus}">MOD_STATUS</label><input type="text" id="MfgModActHed.modStatus" name="MfgModActHed.modStatus" maxlength="1" />
         </div>
         <div id="expFlag">
-          <fieldset id="MfgModActHed.expFlagList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:exp_flag" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+          <fieldset id="MfgModActHed.expFlagList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:EXP_FLAG" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
             <legend th:text="#{MfgModActHed.expFlag}">EXP_FLAG</legend>
           </fieldset>
         </div>
@@ -88,7 +88,7 @@
       </fieldset>
       <h3 th:text="#{MfgModActDet.h3}">h3</h3>
       <a th:href="@{/model/MfgModActDet.html}" id="MfgModActDet" target="dialog" th:text="#{MfgModActDet.add}" class="addChild" tabindex="-1">MFG_MOD_ACT_DET</a>
-      <div id="MfgModActDetGrid" data-selectionMode="link" data-addRow="true" data-frozenColumn="1" th:data-href="@{/model/MfgModActDet.html}"></div>
+      <div id="MfgModActDetGrid" data-selectionMode="link" data-frozenColumn="1" th:data-href="@{/model/MfgModActDet.html}"></div>
       <div class="buttons">
         <button type="button" th:text="#{common.reset}" onClick="Dialogate.refresh(event);">reset</button>
         <a th:href="@{MfgModActHedGet.xlsx(baseMei=#{MfgModActHed.h2})}" id="MfgModActHedGet.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>

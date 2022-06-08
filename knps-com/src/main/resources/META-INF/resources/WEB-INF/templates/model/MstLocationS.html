@@ -23,7 +23,7 @@
       <fieldset>
         <legend th:text="#{MstLocationS.legend}">legend</legend>
         <div id="locationCode">
-          <fieldset id="MstLocation.locationCodeList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:location_code" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+          <fieldset id="MstLocation.locationCodeList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:LOCATION_CODE" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
             <legend th:text="#{MstLocation.locationCode}">LOCATION_CODE</legend>
           </fieldset>
         </div>
@@ -31,7 +31,7 @@
           <label for="MstLocation.locationName" th:text="#{MstLocation.locationName}">LOCATION_NAME</label><input type="text" id="MstLocation.locationName" name="MstLocation.locationName" maxlength="60" />
         </div>
         <div id="locKbn">
-          <fieldset id="MstLocation.locKbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:loc_kbn" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+          <fieldset id="MstLocation.locKbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:LOC_KBN" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
             <legend th:text="#{MstLocation.locKbn}">LOC_KBN</legend>
           </fieldset>
         </div>
@@ -45,7 +45,7 @@
           <label for="MstLocation.subInvCode" th:text="#{MstLocation.subInvCode}">SUB_INV_CODE</label><input type="text" id="MstLocation.subInvCode" name="MstLocation.subInvCode" maxlength="10" data-json="MstSubinvSearch.json" data-srcDef="SUB_INV_CODE:MstLocation.subInvCode" data-destDef="MstLocation.subInvName:SUB_INV_NAME" /><a id="MstLocation.subInvCode" th:href="@{/model/MstSubinvS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MstLocation.subInvName" class="refer" data-json="MstSubinvSearch.json" data-srcDef="SUB_INV_CODE:MstLocation.subInvCode" data-destDef="MstLocation.subInvName:SUB_INV_NAME"></span>
         </div>
         <div id="deleteFlag">
-          <fieldset id="MstLocation.deleteFlagList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:delete_flag" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+          <fieldset id="MstLocation.deleteFlagList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:DELETE_FLAG" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
             <legend th:text="#{MstLocation.deleteFlag}">DELETE_FLAG</legend>
           </fieldset>
         </div>

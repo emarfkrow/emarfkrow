@@ -53,7 +53,7 @@
       </fieldset>
       <h3 th:text="#{PrdStoreMainteRetsuDet.h3}">h3</h3>
       <a th:href="@{/model/PrdStoreMainteRetsuDet.html}" id="PrdStoreMainteRetsuDet" target="dialog" th:text="#{PrdStoreMainteRetsuDet.add}" class="addChild" tabindex="-1">PRD_STORE_MAINTE_RETSU_DET</a>
-      <div id="PrdStoreMainteRetsuDetGrid" data-selectionMode="link" data-addRow="true" data-frozenColumn="1" th:data-href="@{/model/PrdStoreMainteRetsuDet.html}"></div>
+      <div id="PrdStoreMainteRetsuDetGrid" data-selectionMode="link" data-frozenColumn="1" th:data-href="@{/model/PrdStoreMainteRetsuDet.html}"></div>
       <div class="buttons">
         <button type="button" th:text="#{common.reset}" onClick="Dialogate.refresh(event);">reset</button>
         <a th:href="@{PrdStoreMainteRetsuHedGet.xlsx(baseMei=#{PrdStoreMainteRetsuHed.h2})}" id="PrdStoreMainteRetsuHedGet.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>

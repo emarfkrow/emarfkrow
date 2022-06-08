@@ -32,7 +32,7 @@
           <label for="MstSupUnitprice.supCode" th:text="#{MstSupUnitprice.supCode}">SUP_CODE</label><span id="MstSupUnitprice.supCode"></span><input type="hidden" id="MstSupUnitprice.supCode" name="MstSupUnitprice.supCode" class="primaryKey" /><a id="MstSupUnitprice.supCode" th:href="@{/model/MstSupplierS.html}" target="dialog" class="primaryKey refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MstSupUnitprice.supName" class="refer" data-json="MstSupplierSearch.json" data-srcDef="SUP_CODE:MstSupUnitprice.supCode" data-destDef="MstSupUnitprice.supName:SUP_NAME"></span>
         </div>
         <div id="subinvCode">
-          <fieldset id="MstSupUnitprice.subinvCodeList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:subinv_code" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+          <fieldset id="MstSupUnitprice.subinvCodeList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:SUBINV_CODE" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
             <legend th:text="#{MstSupUnitprice.subinvCode}">SUBINV_CODE</legend>
           </fieldset>
         </div>
@@ -52,12 +52,12 @@
           <label for="MstSupUnitprice.userIdChange" th:text="#{MstSupUnitprice.userIdChange}">USER_ID_CHANGE</label><span id="MstSupUnitprice.userIdChange"></span><input type="hidden" id="MstSupUnitprice.userIdChange" name="MstSupUnitprice.userIdChange" />
         </div>
         <div id="deleteFlag">
-          <fieldset id="MstSupUnitprice.deleteFlagList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:delete_flag" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+          <fieldset id="MstSupUnitprice.deleteFlagList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:DELETE_FLAG" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
             <legend th:text="#{MstSupUnitprice.deleteFlag}">DELETE_FLAG</legend>
           </fieldset>
         </div>
         <div id="mushoHacchuF">
-          <fieldset id="MstSupUnitprice.mushoHacchuFList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:musho_hacchu_f" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+          <fieldset id="MstSupUnitprice.mushoHacchuFList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:MUSHO_HACCHU_F" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
             <legend th:text="#{MstSupUnitprice.mushoHacchuF}">MUSHO_HACCHU_F</legend>
           </fieldset>
         </div>
@@ -67,10 +67,10 @@
       <div id="MstSupUnitpriceBkGrid" data-selectionMode="link" data-addRow="true" data-frozenColumn="2" th:data-href="@{/model/MstSupUnitpriceBk.html}"></div>
       <h3 th:text="#{MstSupUnitpriceDetail.h3}">h3</h3>
       <a th:href="@{/model/MstSupUnitpriceDetail.html}" id="MstSupUnitpriceDetail" target="dialog" th:text="#{MstSupUnitpriceDetail.add}" class="addChild" tabindex="-1">MST_SUP_UNITPRICE_DETAIL</a>
-      <div id="MstSupUnitpriceDetailGrid" data-selectionMode="link" data-addRow="true" data-frozenColumn="2" th:data-href="@{/model/MstSupUnitpriceDetail.html}"></div>
+      <div id="MstSupUnitpriceDetailGrid" data-selectionMode="link" data-frozenColumn="2" th:data-href="@{/model/MstSupUnitpriceDetail.html}"></div>
       <h3 th:text="#{MstSupUnitpriceHs.h3}">h3</h3>
       <a th:href="@{/model/MstSupUnitpriceHs.html}" id="MstSupUnitpriceHs" target="dialog" th:text="#{MstSupUnitpriceHs.add}" class="addChild" tabindex="-1">MST_SUP_UNITPRICE_HS</a>
-      <div id="MstSupUnitpriceHsGrid" data-selectionMode="link" data-addRow="true" data-frozenColumn="2" th:data-href="@{/model/MstSupUnitpriceHs.html}"></div>
+      <div id="MstSupUnitpriceHsGrid" data-selectionMode="link" data-frozenColumn="2" th:data-href="@{/model/MstSupUnitpriceHs.html}"></div>
       <div class="buttons">
         <button type="button" th:text="#{common.reset}" onClick="Dialogate.refresh(event);">reset</button>
         <a th:href="@{MstSupUnitpriceGet.xlsx(baseMei=#{MstSupUnitprice.h2})}" id="MstSupUnitpriceGet.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>

@@ -30,7 +30,7 @@
           <label for="PchPayActHed.item" th:text="#{PchPayActHed.item}">ITEM</label><input type="text" id="PchPayActHed.item" name="PchPayActHed.item" maxlength="60" />
         </div>
         <div id="supplyKbn">
-          <fieldset id="PchPayActHed.supplyKbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:supply_kbn" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+          <fieldset id="PchPayActHed.supplyKbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:SUPPLY_KBN" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
             <legend th:text="#{PchPayActHed.supplyKbn}">SUPPLY_KBN</legend>
           </fieldset>
         </div>
@@ -47,7 +47,7 @@
           <label for="PchPayActHed.taxCode" th:text="#{PchPayActHed.taxCode}">TAX_CODE</label><input type="text" id="PchPayActHed.taxCode" name="PchPayActHed.taxCode" maxlength="2" data-json="MstTaxSearch.json" data-srcDef="TAX_CODE:PchPayActHed.taxCode" data-destDef="PchPayActHed.taxName:TAX_NAME" /><a id="PchPayActHed.taxCode" th:href="@{/model/MstTaxS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="PchPayActHed.taxName" class="refer" data-json="MstTaxSearch.json" data-srcDef="TAX_CODE:PchPayActHed.taxCode" data-destDef="PchPayActHed.taxName:TAX_NAME"></span>
         </div>
         <div id="taxCalCode">
-          <fieldset id="PchPayActHed.taxCalCodeList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:tax_cal_code" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+          <fieldset id="PchPayActHed.taxCalCodeList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:TAX_CAL_CODE" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
             <legend th:text="#{PchPayActHed.taxCalCode}">TAX_CAL_CODE</legend>
           </fieldset>
         </div>
@@ -78,7 +78,7 @@
       </fieldset>
       <h3 th:text="#{PchPayActDet.h3}">h3</h3>
       <a th:href="@{/model/PchPayActDet.html}" id="PchPayActDet" target="dialog" th:text="#{PchPayActDet.add}" class="addChild" tabindex="-1">PCH_PAY_ACT_DET</a>
-      <div id="PchPayActDetGrid" data-selectionMode="link" data-addRow="true" data-frozenColumn="1" th:data-href="@{/model/PchPayActDet.html}"></div>
+      <div id="PchPayActDetGrid" data-selectionMode="link" data-frozenColumn="1" th:data-href="@{/model/PchPayActDet.html}"></div>
       <div class="buttons">
         <button type="button" th:text="#{common.reset}" onClick="Dialogate.refresh(event);">reset</button>
         <a th:href="@{PchPayActHedGet.xlsx(baseMei=#{PchPayActHed.h2})}" id="PchPayActHedGet.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>

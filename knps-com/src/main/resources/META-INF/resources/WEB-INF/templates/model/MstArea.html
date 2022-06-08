@@ -31,7 +31,7 @@
           <label for="MstArea.subInvCode" th:text="#{MstArea.subInvCode}">SUB_INV_CODE</label><input type="text" id="MstArea.subInvCode" name="MstArea.subInvCode" maxlength="10" data-json="MstSubinvSearch.json" data-srcDef="SUB_INV_CODE:MstArea.subInvCode" data-destDef="MstArea.subInvName:SUB_INV_NAME" /><a id="MstArea.subInvCode" th:href="@{/model/MstSubinvS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MstArea.subInvName" class="refer" data-json="MstSubinvSearch.json" data-srcDef="SUB_INV_CODE:MstArea.subInvCode" data-destDef="MstArea.subInvName:SUB_INV_NAME"></span>
         </div>
         <div id="deleteF">
-          <fieldset id="MstArea.deleteFList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:delete_f" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+          <fieldset id="MstArea.deleteFList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:DELETE_F" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
             <legend th:text="#{MstArea.deleteF}">DELETE_F</legend>
           </fieldset>
         </div>

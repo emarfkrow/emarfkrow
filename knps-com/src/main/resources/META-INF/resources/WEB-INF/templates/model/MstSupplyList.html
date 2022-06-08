@@ -34,7 +34,7 @@
           <label for="MstSupplyList.counts" th:text="#{MstSupplyList.counts}">COUNTS</label><input type="text" id="MstSupplyList.counts" name="MstSupplyList.counts" maxlength="11" />
         </div>
         <div id="supplyKbn">
-          <fieldset id="MstSupplyList.supplyKbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:supply_kbn" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+          <fieldset id="MstSupplyList.supplyKbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:SUPPLY_KBN" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
             <legend th:text="#{MstSupplyList.supplyKbn}">SUPPLY_KBN</legend>
           </fieldset>
         </div>
@@ -57,7 +57,7 @@
           <label for="MstSupplyList.userIdChange" th:text="#{MstSupplyList.userIdChange}">USER_ID_CHANGE</label><span id="MstSupplyList.userIdChange"></span><input type="hidden" id="MstSupplyList.userIdChange" name="MstSupplyList.userIdChange" />
         </div>
         <div id="deleteFlag">
-          <fieldset id="MstSupplyList.deleteFlagList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:delete_flag" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+          <fieldset id="MstSupplyList.deleteFlagList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:DELETE_FLAG" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
             <legend th:text="#{MstSupplyList.deleteFlag}">DELETE_FLAG</legend>
           </fieldset>
         </div>
@@ -67,7 +67,7 @@
       <div id="MstSupplyListBkGrid" data-selectionMode="link" data-addRow="true" data-frozenColumn="4" th:data-href="@{/model/MstSupplyListBk.html}"></div>
       <h3 th:text="#{MstSupplyListHs.h3}">h3</h3>
       <a th:href="@{/model/MstSupplyListHs.html}" id="MstSupplyListHs" target="dialog" th:text="#{MstSupplyListHs.add}" class="addChild" tabindex="-1">MST_SUPPLY_LIST_HS</a>
-      <div id="MstSupplyListHsGrid" data-selectionMode="link" data-addRow="true" data-frozenColumn="4" th:data-href="@{/model/MstSupplyListHs.html}"></div>
+      <div id="MstSupplyListHsGrid" data-selectionMode="link" data-frozenColumn="4" th:data-href="@{/model/MstSupplyListHs.html}"></div>
       <div class="buttons">
         <button type="button" th:text="#{common.reset}" onClick="Dialogate.refresh(event);">reset</button>
         <a th:href="@{MstSupplyListGet.xlsx(baseMei=#{MstSupplyList.h2})}" id="MstSupplyListGet.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>

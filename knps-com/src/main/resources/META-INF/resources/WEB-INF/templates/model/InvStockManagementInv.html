@@ -62,7 +62,7 @@
           <label for="InvStockManagementInv.userIdChange" th:text="#{InvStockManagementInv.userIdChange}">USER_ID_CHANGE</label><span id="InvStockManagementInv.userIdChange"></span><input type="hidden" id="InvStockManagementInv.userIdChange" name="InvStockManagementInv.userIdChange" />
         </div>
         <div id="deleteFlag">
-          <fieldset id="InvStockManagementInv.deleteFlagList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:delete_flag" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+          <fieldset id="InvStockManagementInv.deleteFlagList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:DELETE_FLAG" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
             <legend th:text="#{InvStockManagementInv.deleteFlag}">DELETE_FLAG</legend>
           </fieldset>
         </div>
@@ -86,14 +86,14 @@
         </div>
         <input type="hidden" name="InvStockManagementInvMer.timeStampChange" />
         <div id="deleteFlag">
-          <fieldset id="InvStockManagementInvMer.deleteFlagList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:delete_flag" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+          <fieldset id="InvStockManagementInvMer.deleteFlagList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:DELETE_FLAG" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
             <legend th:text="#{InvStockManagementInvMer.deleteFlag}">DELETE_FLAG</legend>
           </fieldset>
         </div>
       </fieldset>
       <h3 th:text="#{InvStockManagementInvDet.h3}">h3</h3>
       <a th:href="@{/model/InvStockManagementInvDet.html}" id="InvStockManagementInvDet" target="dialog" th:text="#{InvStockManagementInvDet.add}" class="addChild" tabindex="-1">INV_STOCK_MANAGEMENT_INV_DET</a>
-      <div id="InvStockManagementInvDetGrid" data-selectionMode="link" data-addRow="true" data-frozenColumn="5" th:data-href="@{/model/InvStockManagementInvDet.html}"></div>
+      <div id="InvStockManagementInvDetGrid" data-selectionMode="link" data-frozenColumn="5" th:data-href="@{/model/InvStockManagementInvDet.html}"></div>
       <div class="buttons">
         <button type="button" th:text="#{common.reset}" onClick="Dialogate.refresh(event);">reset</button>
         <a th:href="@{InvStockManagementInvGet.xlsx(baseMei=#{InvStockManagementInv.h2})}" id="InvStockManagementInvGet.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>

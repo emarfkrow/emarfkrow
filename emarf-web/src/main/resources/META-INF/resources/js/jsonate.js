@@ -123,9 +123,9 @@ let Jsonate = {
 			// 入力項目でループ
 			$form.find(Jsonate.inputSelector + ', input[type=checkbox]:enabled, input[type=radio]:enabled').each(function() {
 				let $input = $(this);
+				let k = $input.prop('name');
 
 				// 入力項目のnameで値を取得してみる
-				let k = $input.prop('name');
 				let v = json[k];
 
 				// entityNameなしでも取得してみる
@@ -133,9 +133,19 @@ let Jsonate = {
 					v = json[k.replace(entityName + '.', '')];
 				}
 
-				// upperでも取得してみる
+				// UPPER_CASEでも取得してみる
 				if (!v) {
 					v = json[Casing.toUpper(k.replace(entityName + '.', ''))];
+				}
+
+				// kebab-caseでも取得してみる
+				if (!v) {
+					v = json[Casing.toKebab(k.replace(entityName + '.', ''))];
+				}
+
+				// UPPER-KEBAB-CASEでも取得してみる
+				if (!v) {
+					v = json[Casing.toUpperKebab(k.replace(entityName + '.', ''))];
 				}
 
 				// 値があれば反映

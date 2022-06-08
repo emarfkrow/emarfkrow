@@ -2,7 +2,6 @@ package jp.co.golorp.emarf.generator;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -57,7 +56,7 @@ public final class BeanGenerator {
     private static String[] inputFileSuffixs;
 
     /** 参照列名ペア */
-    private static Map<String, String> referPairs = new HashMap<String, String>();
+    private static Map<String, String> referPairs = new LinkedHashMap<String, String>();
 
     /** プロジェクトディレクトリ */
     private static String projectDir;
