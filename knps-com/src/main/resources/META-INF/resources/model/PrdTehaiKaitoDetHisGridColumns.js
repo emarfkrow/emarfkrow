@@ -9,7 +9,7 @@ let PrdTehaiKaitoDetHisGridColumns = [
     Column.text('IRAI_DET_SEQ', Messages['PrdTehaiKaitoDetHisGrid.iraiDetSeq'], 100, '', null),
     Column.text('ID', Messages['PrdTehaiKaitoDetHisGrid.id'], 140, '', null),
     Column.text('PARENT_ID', Messages['PrdTehaiKaitoDetHisGrid.parentId'], 140, '', null),
-    Column.text('KAITO_HINBAN', Messages['PrdTehaiKaitoDetHisGrid.kaitoHinban'], 250, '', null),
+    Column.refer('KAITO_HINBAN', Messages['PrdTehaiKaitoDetHisGrid.kaitoHinban'], 250, '', 'KAITO_HINMEI'),
     Column.text('KAITO_QT', Messages['PrdTehaiKaitoDetHisGrid.kaitoQt'], 110, '', null),
     Column.check('FUMEIHIN_F', Messages['PrdTehaiKaitoDetHisGrid.fumeihinF'], 10, ''),
     Column.check('SETHIN_F', Messages['PrdTehaiKaitoDetHisGrid.sethinF'], 10, ''),

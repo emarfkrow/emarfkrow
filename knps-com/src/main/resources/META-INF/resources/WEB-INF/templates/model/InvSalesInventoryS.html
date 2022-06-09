@@ -9,6 +9,26 @@
 
 </script>
 <script th:src="@{/model/InvSalesInventoryGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanGridColumns.js}"></script>
+<script th:src="@{/model/InvPrintWarehousingslipGridColumns.js}"></script>
+<script th:src="@{/model/MstEmpGridColumns.js}"></script>
+<script th:src="@{/model/MstDivisionGridColumns.js}"></script>
+<script th:src="@{/model/MstCompanyGridColumns.js}"></script>
+<script th:src="@{/model/InvStockStoreGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanBkGridColumns.js}"></script>
+<script th:src="@{/model/MstUnitGridColumns.js}"></script>
+<script th:src="@{/model/MstAccountCodeGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanEmpGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceBkGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierGridColumns.js}"></script>
+<script th:src="@{/model/InvStockProcessSupplyGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierBkGridColumns.js}"></script>
+<script th:src="@{/model/MstTaxGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailBkGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailHsGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceHsGridColumns.js}"></script>
 </head>
 <body>
   <div layout:fragment="article">
@@ -17,10 +37,10 @@
       <fieldset>
         <legend th:text="#{InvSalesInventoryS.legend}">legend</legend>
         <div id="salesHinban">
-          <label for="InvSalesInventory.salesHinban" th:text="#{InvSalesInventory.salesHinban}">SALES_HINBAN</label><input type="text" id="InvSalesInventory.salesHinban" name="InvSalesInventory.salesHinban" maxlength="20" />
+          <label for="InvSalesInventory.salesHinban" th:text="#{InvSalesInventory.salesHinban}">SALES_HINBAN</label><input type="text" id="InvSalesInventory.salesHinban" name="InvSalesInventory.salesHinban" maxlength="20" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:InvSalesInventory.salesHinban" data-destDef="InvSalesInventory.salesItem:ITEM" /><a id="InvSalesInventory.salesHinban" th:href="@{/model/MstHinbanS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="InvSalesInventory.salesItem" class="refer" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:InvSalesInventory.salesHinban" data-destDef="InvSalesInventory.salesItem:ITEM"></span>
         </div>
         <div id="hinban">
-          <label for="InvSalesInventory.hinban" th:text="#{InvSalesInventory.hinban}">HINBAN</label><input type="text" id="InvSalesInventory.hinban" name="InvSalesInventory.hinban" maxlength="25" />
+          <label for="InvSalesInventory.hinban" th:text="#{InvSalesInventory.hinban}">HINBAN</label><input type="text" id="InvSalesInventory.hinban" name="InvSalesInventory.hinban" maxlength="25" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:InvSalesInventory.hinban" data-destDef="InvSalesInventory.item:ITEM" /><a id="InvSalesInventory.hinban" th:href="@{/model/MstHinbanS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="InvSalesInventory.item" class="refer" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:InvSalesInventory.hinban" data-destDef="InvSalesInventory.item:ITEM"></span>
         </div>
         <div id="inventory">
           <label for="InvSalesInventory.inventory" th:text="#{InvSalesInventory.inventory}">INVENTORY</label><input type="text" id="InvSalesInventory.inventory" name="InvSalesInventory.inventory" maxlength="11" />
@@ -36,6 +56,7 @@
       </fieldset>
       <div class="buttons">
         <button type="reset" th:text="#{common.reset}">reset</button>
+        <a th:href="@{/model/InvSalesInventory.html}" id="InvSalesInventory" target="dialog" th:text="#{InvSalesInventory.add}" tabindex="-1">INV_SALES_INVENTORY</a>
       </div>
       <div class="submits">
         <button id="SearchInvSalesInventory" class="search" data-gridId="InvSalesInventoryGrid" th:text="#{common.search}">submit</button>

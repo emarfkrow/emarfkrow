@@ -3,7 +3,7 @@
  */
 
 let InvStkPlanBkGridColumns = [
-    Column.text('PRO_HINBAN', Messages['InvStkPlanBkGrid.proHinban'], 250, '', null),
+    Column.refer('PRO_HINBAN', Messages['InvStkPlanBkGrid.proHinban'], 250, '', 'PRO_HINMEI'),
     Column.text('YYYY', Messages['InvStkPlanBkGrid.yyyy'], 40, '', null),
     Column.text('MM', Messages['InvStkPlanBkGrid.mm'], 20, '', null),
     Column.text('PAP_KAN_AMT_SCH', Messages['InvStkPlanBkGrid.papKanAmtSch'], 40, '', null),

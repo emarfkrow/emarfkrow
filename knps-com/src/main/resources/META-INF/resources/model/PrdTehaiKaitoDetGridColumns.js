@@ -8,7 +8,7 @@ let PrdTehaiKaitoDetGridColumns = [
     Column.text('IRAI_DET_SEQ', Messages['PrdTehaiKaitoDetGrid.iraiDetSeq'], 100, '', null),
     Column.text('ID', Messages['PrdTehaiKaitoDetGrid.id'], 140, '', null),
     Column.text('PARENT_ID', Messages['PrdTehaiKaitoDetGrid.parentId'], 140, '', null),
-    Column.text('KAITO_HINBAN', Messages['PrdTehaiKaitoDetGrid.kaitoHinban'], 250, '', null),
+    Column.refer('KAITO_HINBAN', Messages['PrdTehaiKaitoDetGrid.kaitoHinban'], 250, '', 'KAITO_HINMEI'),
     Column.text('KAITO_QT', Messages['PrdTehaiKaitoDetGrid.kaitoQt'], 110, '', null),
     Column.check('FUMEIHIN_F', Messages['PrdTehaiKaitoDetGrid.fumeihinF'], 10, ''),
     Column.check('SETHIN_F', Messages['PrdTehaiKaitoDetGrid.sethinF'], 10, ''),

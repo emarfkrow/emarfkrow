@@ -10,6 +10,26 @@
 </script>
 <script th:src="@{/model/InvSurveyResultLocGridColumns.js}"></script>
 <script th:src="@{/model/InvInventoryGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanGridColumns.js}"></script>
+<script th:src="@{/model/InvPrintWarehousingslipGridColumns.js}"></script>
+<script th:src="@{/model/MstEmpGridColumns.js}"></script>
+<script th:src="@{/model/MstDivisionGridColumns.js}"></script>
+<script th:src="@{/model/MstCompanyGridColumns.js}"></script>
+<script th:src="@{/model/InvStockStoreGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanBkGridColumns.js}"></script>
+<script th:src="@{/model/MstUnitGridColumns.js}"></script>
+<script th:src="@{/model/MstAccountCodeGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanEmpGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceBkGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierGridColumns.js}"></script>
+<script th:src="@{/model/InvStockProcessSupplyGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierBkGridColumns.js}"></script>
+<script th:src="@{/model/MstTaxGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailBkGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailHsGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceHsGridColumns.js}"></script>
 <script th:src="@{/model/MstReasonGridColumns.js}"></script>
 <script th:src="@{/model/InvSurveyResultOtherGridColumns.js}"></script>
 </head>
@@ -31,7 +51,7 @@
           <label for="InvSurveyResultLoc.mm" th:text="#{InvSurveyResultLoc.mm}">MM</label><input type="text" id="InvSurveyResultLoc.mm" name="InvSurveyResultLoc.mm" maxlength="2" />
         </div>
         <div id="hinban">
-          <label for="InvSurveyResultLoc.hinban" th:text="#{InvSurveyResultLoc.hinban}">HINBAN</label><input type="text" id="InvSurveyResultLoc.hinban" name="InvSurveyResultLoc.hinban" maxlength="25" />
+          <label for="InvSurveyResultLoc.hinban" th:text="#{InvSurveyResultLoc.hinban}">HINBAN</label><input type="text" id="InvSurveyResultLoc.hinban" name="InvSurveyResultLoc.hinban" maxlength="25" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:InvSurveyResultLoc.hinban" data-destDef="InvSurveyResultLoc.item:ITEM" /><a id="InvSurveyResultLoc.hinban" th:href="@{/model/MstHinbanS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="InvSurveyResultLoc.item" class="refer" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:InvSurveyResultLoc.hinban" data-destDef="InvSurveyResultLoc.item:ITEM"></span>
         </div>
         <div id="stock">
           <label for="InvSurveyResultLoc.stock" th:text="#{InvSurveyResultLoc.stock}">STOCK</label><input type="text" id="InvSurveyResultLoc.stock" name="InvSurveyResultLoc.stock" maxlength="11" />

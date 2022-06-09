@@ -9,6 +9,26 @@
 
 </script>
 <script th:src="@{/model/HktcPrdDailyProPlanGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanGridColumns.js}"></script>
+<script th:src="@{/model/InvPrintWarehousingslipGridColumns.js}"></script>
+<script th:src="@{/model/MstEmpGridColumns.js}"></script>
+<script th:src="@{/model/MstDivisionGridColumns.js}"></script>
+<script th:src="@{/model/MstCompanyGridColumns.js}"></script>
+<script th:src="@{/model/InvStockStoreGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanBkGridColumns.js}"></script>
+<script th:src="@{/model/MstUnitGridColumns.js}"></script>
+<script th:src="@{/model/MstAccountCodeGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanEmpGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceBkGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierGridColumns.js}"></script>
+<script th:src="@{/model/InvStockProcessSupplyGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierBkGridColumns.js}"></script>
+<script th:src="@{/model/MstTaxGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailBkGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailHsGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceHsGridColumns.js}"></script>
 </head>
 <body>
   <div layout:fragment="article">
@@ -25,7 +45,7 @@
           </fieldset>
         </div>
         <div id="hinban">
-          <label for="HktcPrdDailyProPlan.hinban" th:text="#{HktcPrdDailyProPlan.hinban}">HINBAN</label><input type="text" id="HktcPrdDailyProPlan.hinban" name="HktcPrdDailyProPlan.hinban" maxlength="25" />
+          <label for="HktcPrdDailyProPlan.hinban" th:text="#{HktcPrdDailyProPlan.hinban}">HINBAN</label><input type="text" id="HktcPrdDailyProPlan.hinban" name="HktcPrdDailyProPlan.hinban" maxlength="25" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:HktcPrdDailyProPlan.hinban" data-destDef="HktcPrdDailyProPlan.item:ITEM" /><a id="HktcPrdDailyProPlan.hinban" th:href="@{/model/MstHinbanS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a>
         </div>
         <div id="detailPlanCounts">
           <label for="HktcPrdDailyProPlan.detailPlanCounts" th:text="#{HktcPrdDailyProPlan.detailPlanCounts}">DETAIL_PLAN_COUNTS</label><input type="text" id="HktcPrdDailyProPlan.detailPlanCounts" name="HktcPrdDailyProPlan.detailPlanCounts" maxlength="2" />
@@ -95,7 +115,7 @@
           </fieldset>
         </div>
         <div id="hinban">
-          <label for="PrdDailyProPlan.hinban" th:text="#{PrdDailyProPlan.hinban}">HINBAN</label><input type="text" id="PrdDailyProPlan.hinban" name="PrdDailyProPlan.hinban" maxlength="25" />
+          <label for="PrdDailyProPlan.hinban" th:text="#{PrdDailyProPlan.hinban}">HINBAN</label><input type="text" id="PrdDailyProPlan.hinban" name="PrdDailyProPlan.hinban" maxlength="25" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:PrdDailyProPlan.hinban" data-destDef="PrdDailyProPlan.item:ITEM" /><a id="PrdDailyProPlan.hinban" th:href="@{/model/MstHinbanS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="PrdDailyProPlan.item" class="refer" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:PrdDailyProPlan.hinban" data-destDef="PrdDailyProPlan.item:ITEM"></span>
         </div>
         <div id="detailPlanCounts">
           <label for="PrdDailyProPlan.detailPlanCounts" th:text="#{PrdDailyProPlan.detailPlanCounts}">DETAIL_PLAN_COUNTS</label><input type="text" id="PrdDailyProPlan.detailPlanCounts" name="PrdDailyProPlan.detailPlanCounts" maxlength="2" />

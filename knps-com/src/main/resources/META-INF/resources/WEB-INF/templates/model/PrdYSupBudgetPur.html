@@ -9,10 +9,26 @@
 
 </script>
 <script th:src="@{/model/PrdYSupBudgetPurGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanGridColumns.js}"></script>
+<script th:src="@{/model/InvPrintWarehousingslipGridColumns.js}"></script>
+<script th:src="@{/model/MstEmpGridColumns.js}"></script>
+<script th:src="@{/model/MstDivisionGridColumns.js}"></script>
+<script th:src="@{/model/MstCompanyGridColumns.js}"></script>
+<script th:src="@{/model/InvStockStoreGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanBkGridColumns.js}"></script>
+<script th:src="@{/model/MstUnitGridColumns.js}"></script>
+<script th:src="@{/model/MstAccountCodeGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanEmpGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceBkGridColumns.js}"></script>
 <script th:src="@{/model/MstSupplierGridColumns.js}"></script>
 <script th:src="@{/model/InvStockProcessSupplyGridColumns.js}"></script>
 <script th:src="@{/model/MstSupplierBkGridColumns.js}"></script>
 <script th:src="@{/model/MstTaxGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailBkGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailHsGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceHsGridColumns.js}"></script>
 </head>
 <body>
   <div layout:fragment="article">
@@ -27,7 +43,7 @@
           <label for="PrdYSupBudgetPur.mm" th:text="#{PrdYSupBudgetPur.mm}">MM</label><span id="PrdYSupBudgetPur.mm"></span><input type="hidden" id="PrdYSupBudgetPur.mm" name="PrdYSupBudgetPur.mm" class="primaryKey" />
         </div>
         <div id="hinban">
-          <label for="PrdYSupBudgetPur.hinban" th:text="#{PrdYSupBudgetPur.hinban}">HINBAN</label><span id="PrdYSupBudgetPur.hinban"></span><input type="hidden" id="PrdYSupBudgetPur.hinban" name="PrdYSupBudgetPur.hinban" class="primaryKey" />
+          <label for="PrdYSupBudgetPur.hinban" th:text="#{PrdYSupBudgetPur.hinban}">HINBAN</label><span id="PrdYSupBudgetPur.hinban"></span><input type="hidden" id="PrdYSupBudgetPur.hinban" name="PrdYSupBudgetPur.hinban" class="primaryKey" /><a id="PrdYSupBudgetPur.hinban" th:href="@{/model/MstHinbanS.html}" target="dialog" class="primaryKey refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="PrdYSupBudgetPur.item" class="refer" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:PrdYSupBudgetPur.hinban" data-destDef="PrdYSupBudgetPur.item:ITEM"></span>
         </div>
         <div id="supCode">
           <label for="PrdYSupBudgetPur.supCode" th:text="#{PrdYSupBudgetPur.supCode}">SUP_CODE</label><span id="PrdYSupBudgetPur.supCode"></span><input type="hidden" id="PrdYSupBudgetPur.supCode" name="PrdYSupBudgetPur.supCode" class="primaryKey" /><a id="PrdYSupBudgetPur.supCode" th:href="@{/model/MstSupplierS.html}" target="dialog" class="primaryKey refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="PrdYSupBudgetPur.supName" class="refer" data-json="MstSupplierSearch.json" data-srcDef="SUP_CODE:PrdYSupBudgetPur.supCode" data-destDef="PrdYSupBudgetPur.supName:SUP_NAME"></span>

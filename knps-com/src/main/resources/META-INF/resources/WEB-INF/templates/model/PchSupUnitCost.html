@@ -9,10 +9,26 @@
 
 </script>
 <script th:src="@{/model/PchSupUnitCostGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanGridColumns.js}"></script>
+<script th:src="@{/model/InvPrintWarehousingslipGridColumns.js}"></script>
+<script th:src="@{/model/MstEmpGridColumns.js}"></script>
+<script th:src="@{/model/MstDivisionGridColumns.js}"></script>
+<script th:src="@{/model/MstCompanyGridColumns.js}"></script>
+<script th:src="@{/model/InvStockStoreGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanBkGridColumns.js}"></script>
+<script th:src="@{/model/MstUnitGridColumns.js}"></script>
+<script th:src="@{/model/MstAccountCodeGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanEmpGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceBkGridColumns.js}"></script>
 <script th:src="@{/model/MstSupplierGridColumns.js}"></script>
 <script th:src="@{/model/InvStockProcessSupplyGridColumns.js}"></script>
 <script th:src="@{/model/MstSupplierBkGridColumns.js}"></script>
 <script th:src="@{/model/MstTaxGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailBkGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailHsGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceHsGridColumns.js}"></script>
 </head>
 <body>
   <div layout:fragment="article">
@@ -24,7 +40,7 @@
           <label for="PchSupUnitCost.closeDate" th:text="#{PchSupUnitCost.closeDate}">CLOSE_DATE</label><input type="date" id="PchSupUnitCost.closeDate" name="PchSupUnitCost.closeDate" maxlength="4" />
         </div>
         <div id="hinban">
-          <label for="PchSupUnitCost.hinban" th:text="#{PchSupUnitCost.hinban}">HINBAN</label><input type="text" id="PchSupUnitCost.hinban" name="PchSupUnitCost.hinban" maxlength="25" />
+          <label for="PchSupUnitCost.hinban" th:text="#{PchSupUnitCost.hinban}">HINBAN</label><input type="text" id="PchSupUnitCost.hinban" name="PchSupUnitCost.hinban" maxlength="25" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:PchSupUnitCost.hinban" data-destDef="PchSupUnitCost.item:ITEM" /><a id="PchSupUnitCost.hinban" th:href="@{/model/MstHinbanS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="PchSupUnitCost.item" class="refer" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:PchSupUnitCost.hinban" data-destDef="PchSupUnitCost.item:ITEM"></span>
         </div>
         <div id="supCode">
           <label for="PchSupUnitCost.supCode" th:text="#{PchSupUnitCost.supCode}">SUP_CODE</label><input type="text" id="PchSupUnitCost.supCode" name="PchSupUnitCost.supCode" maxlength="6" data-json="MstSupplierSearch.json" data-srcDef="SUP_CODE:PchSupUnitCost.supCode" data-destDef="PchSupUnitCost.supName:SUP_NAME" /><a id="PchSupUnitCost.supCode" th:href="@{/model/MstSupplierS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="PchSupUnitCost.supName" class="refer" data-json="MstSupplierSearch.json" data-srcDef="SUP_CODE:PchSupUnitCost.supCode" data-destDef="PchSupUnitCost.supName:SUP_NAME"></span>

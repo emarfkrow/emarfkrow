@@ -9,6 +9,26 @@
 
 </script>
 <script th:src="@{/model/MstSupplyListBkGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanGridColumns.js}"></script>
+<script th:src="@{/model/InvPrintWarehousingslipGridColumns.js}"></script>
+<script th:src="@{/model/MstEmpGridColumns.js}"></script>
+<script th:src="@{/model/MstDivisionGridColumns.js}"></script>
+<script th:src="@{/model/MstCompanyGridColumns.js}"></script>
+<script th:src="@{/model/InvStockStoreGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanBkGridColumns.js}"></script>
+<script th:src="@{/model/MstUnitGridColumns.js}"></script>
+<script th:src="@{/model/MstAccountCodeGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanEmpGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceBkGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierGridColumns.js}"></script>
+<script th:src="@{/model/InvStockProcessSupplyGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierBkGridColumns.js}"></script>
+<script th:src="@{/model/MstTaxGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailBkGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailHsGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceHsGridColumns.js}"></script>
 </head>
 <body>
   <div layout:fragment="article">
@@ -23,13 +43,13 @@
           <label for="MstSupplyListBk.routingGroup" th:text="#{MstSupplyListBk.routingGroup}">ROUTING_GROUP</label><input type="text" id="MstSupplyListBk.routingGroup" name="MstSupplyListBk.routingGroup" maxlength="2" class="primaryKey" />
         </div>
         <div id="manHinban">
-          <label for="MstSupplyListBk.manHinban" th:text="#{MstSupplyListBk.manHinban}">MAN_HINBAN</label><span id="MstSupplyListBk.manHinban"></span><input type="hidden" id="MstSupplyListBk.manHinban" name="MstSupplyListBk.manHinban" class="primaryKey" />
+          <label for="MstSupplyListBk.manHinban" th:text="#{MstSupplyListBk.manHinban}">MAN_HINBAN</label><span id="MstSupplyListBk.manHinban"></span><input type="hidden" id="MstSupplyListBk.manHinban" name="MstSupplyListBk.manHinban" class="primaryKey" /><a id="MstSupplyListBk.manHinban" th:href="@{/model/MstHinbanS.html}" target="dialog" class="primaryKey refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MstSupplyListBk.manItem" class="refer" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:MstSupplyListBk.manHinban" data-destDef="MstSupplyListBk.manItem:ITEM"></span>
         </div>
         <div id="routing">
           <label for="MstSupplyListBk.routing" th:text="#{MstSupplyListBk.routing}">ROUTING</label><input type="text" id="MstSupplyListBk.routing" name="MstSupplyListBk.routing" maxlength="2" class="primaryKey" />
         </div>
         <div id="supplyHinban">
-          <label for="MstSupplyListBk.supplyHinban" th:text="#{MstSupplyListBk.supplyHinban}">SUPPLY_HINBAN</label><span id="MstSupplyListBk.supplyHinban"></span><input type="hidden" id="MstSupplyListBk.supplyHinban" name="MstSupplyListBk.supplyHinban" class="primaryKey" />
+          <label for="MstSupplyListBk.supplyHinban" th:text="#{MstSupplyListBk.supplyHinban}">SUPPLY_HINBAN</label><span id="MstSupplyListBk.supplyHinban"></span><input type="hidden" id="MstSupplyListBk.supplyHinban" name="MstSupplyListBk.supplyHinban" class="primaryKey" /><a id="MstSupplyListBk.supplyHinban" th:href="@{/model/MstHinbanS.html}" target="dialog" class="primaryKey refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MstSupplyListBk.supplyItem" class="refer" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:MstSupplyListBk.supplyHinban" data-destDef="MstSupplyListBk.supplyItem:ITEM"></span>
         </div>
         <div id="counts">
           <label for="MstSupplyListBk.counts" th:text="#{MstSupplyListBk.counts}">COUNTS</label><input type="text" id="MstSupplyListBk.counts" name="MstSupplyListBk.counts" maxlength="11" />

@@ -9,12 +9,25 @@
 
 </script>
 <script th:src="@{/model/MstHinbanBkGridColumns.js}"></script>
-<script th:src="@{/model/MstUnitGridColumns.js}"></script>
-<script th:src="@{/model/MstAccountCodeGridColumns.js}"></script>
-<script th:src="@{/model/MstHinbanEmpGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanGridColumns.js}"></script>
+<script th:src="@{/model/InvPrintWarehousingslipGridColumns.js}"></script>
 <script th:src="@{/model/MstEmpGridColumns.js}"></script>
 <script th:src="@{/model/MstDivisionGridColumns.js}"></script>
 <script th:src="@{/model/MstCompanyGridColumns.js}"></script>
+<script th:src="@{/model/InvStockStoreGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceBkGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierGridColumns.js}"></script>
+<script th:src="@{/model/InvStockProcessSupplyGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierBkGridColumns.js}"></script>
+<script th:src="@{/model/MstTaxGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailBkGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailHsGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceHsGridColumns.js}"></script>
+<script th:src="@{/model/MstUnitGridColumns.js}"></script>
+<script th:src="@{/model/MstAccountCodeGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanEmpGridColumns.js}"></script>
 </head>
 <body>
   <div layout:fragment="article">
@@ -26,7 +39,7 @@
           <label for="MstHinbanBk.yy" th:text="#{MstHinbanBk.yy}">YY</label><input type="text" id="MstHinbanBk.yy" name="MstHinbanBk.yy" maxlength="4" />
         </div>
         <div id="hinban">
-          <label for="MstHinbanBk.hinban" th:text="#{MstHinbanBk.hinban}">HINBAN</label><input type="text" id="MstHinbanBk.hinban" name="MstHinbanBk.hinban" maxlength="25" />
+          <label for="MstHinbanBk.hinban" th:text="#{MstHinbanBk.hinban}">HINBAN</label><input type="text" id="MstHinbanBk.hinban" name="MstHinbanBk.hinban" maxlength="25" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:MstHinbanBk.hinban" data-destDef="MstHinbanBk.item:ITEM" /><a id="MstHinbanBk.hinban" th:href="@{/model/MstHinbanS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a>
         </div>
         <div id="hinbanCode">
           <fieldset id="MstHinbanBk.hinbanCodeList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:HINBAN_CODE" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
@@ -264,6 +277,7 @@
       </fieldset>
       <div class="buttons">
         <button type="reset" th:text="#{common.reset}">reset</button>
+        <a th:href="@{/model/MstHinbanBk.html}" id="MstHinbanBk" target="dialog" th:text="#{MstHinbanBk.add}" tabindex="-1">MST_HINBAN_BK</a>
       </div>
       <div class="submits">
         <button id="SearchMstHinbanBk" class="search" data-gridId="MstHinbanBkGrid" th:text="#{common.search}">submit</button>

@@ -9,6 +9,26 @@
 
 </script>
 <script th:src="@{/model/PrdMProNesCountsGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanGridColumns.js}"></script>
+<script th:src="@{/model/InvPrintWarehousingslipGridColumns.js}"></script>
+<script th:src="@{/model/MstEmpGridColumns.js}"></script>
+<script th:src="@{/model/MstDivisionGridColumns.js}"></script>
+<script th:src="@{/model/MstCompanyGridColumns.js}"></script>
+<script th:src="@{/model/InvStockStoreGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanBkGridColumns.js}"></script>
+<script th:src="@{/model/MstUnitGridColumns.js}"></script>
+<script th:src="@{/model/MstAccountCodeGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanEmpGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceBkGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierGridColumns.js}"></script>
+<script th:src="@{/model/InvStockProcessSupplyGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierBkGridColumns.js}"></script>
+<script th:src="@{/model/MstTaxGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailBkGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailHsGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceHsGridColumns.js}"></script>
 </head>
 <body>
   <div layout:fragment="article">
@@ -17,7 +37,7 @@
       <fieldset>
         <legend th:text="#{PrdMProNesCounts.legend}">legend</legend>
         <div id="proHinban">
-          <label for="PrdMProNesCounts.proHinban" th:text="#{PrdMProNesCounts.proHinban}">PRO_HINBAN</label><span id="PrdMProNesCounts.proHinban"></span><input type="hidden" id="PrdMProNesCounts.proHinban" name="PrdMProNesCounts.proHinban" class="primaryKey" />
+          <label for="PrdMProNesCounts.proHinban" th:text="#{PrdMProNesCounts.proHinban}">PRO_HINBAN</label><span id="PrdMProNesCounts.proHinban"></span><input type="hidden" id="PrdMProNesCounts.proHinban" name="PrdMProNesCounts.proHinban" class="primaryKey" /><a id="PrdMProNesCounts.proHinban" th:href="@{/model/MstHinbanS.html}" target="dialog" class="primaryKey refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="PrdMProNesCounts.proItem" class="refer" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:PrdMProNesCounts.proHinban" data-destDef="PrdMProNesCounts.proItem:ITEM"></span>
         </div>
         <div id="yyyy">
           <label for="PrdMProNesCounts.yyyy" th:text="#{PrdMProNesCounts.yyyy}">YYYY</label><span id="PrdMProNesCounts.yyyy"></span><input type="hidden" id="PrdMProNesCounts.yyyy" name="PrdMProNesCounts.yyyy" class="primaryKey" />

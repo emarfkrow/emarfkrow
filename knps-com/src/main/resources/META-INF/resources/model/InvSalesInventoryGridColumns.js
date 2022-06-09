@@ -3,7 +3,7 @@
  */
 
 let InvSalesInventoryGridColumns = [
-    Column.cell('SALES_HINBAN', Messages['InvSalesInventoryGrid.salesHinban'], 200, 'primaryKey', null),
+    Column.refer('SALES_HINBAN', Messages['InvSalesInventoryGrid.salesHinban'], 200, 'primaryKey', 'SALES_HINMEI'),
     Column.cell('HINBAN', Messages['InvSalesInventoryGrid.hinban'], 250, 'primaryKey', null),
     Column.text('INVENTORY', Messages['InvSalesInventoryGrid.inventory'], 110, '', null),
     Column.select('LOCATION_CODE', Messages['InvSalesInventoryGrid.locationCode'], 100, '', { json: 'MstCodeValueSearch.json', paramkey: 'code_nm', value: 'CODE_VALUE', label: 'CODE_VALUE_MEI' }),

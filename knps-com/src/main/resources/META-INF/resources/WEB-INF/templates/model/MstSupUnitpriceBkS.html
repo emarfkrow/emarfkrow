@@ -9,10 +9,25 @@
 
 </script>
 <script th:src="@{/model/MstSupUnitpriceBkGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanGridColumns.js}"></script>
+<script th:src="@{/model/InvPrintWarehousingslipGridColumns.js}"></script>
+<script th:src="@{/model/MstEmpGridColumns.js}"></script>
+<script th:src="@{/model/MstDivisionGridColumns.js}"></script>
+<script th:src="@{/model/MstCompanyGridColumns.js}"></script>
+<script th:src="@{/model/InvStockStoreGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanBkGridColumns.js}"></script>
+<script th:src="@{/model/MstUnitGridColumns.js}"></script>
+<script th:src="@{/model/MstAccountCodeGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanEmpGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailBkGridColumns.js}"></script>
 <script th:src="@{/model/MstSupplierGridColumns.js}"></script>
 <script th:src="@{/model/InvStockProcessSupplyGridColumns.js}"></script>
 <script th:src="@{/model/MstSupplierBkGridColumns.js}"></script>
 <script th:src="@{/model/MstTaxGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailHsGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceHsGridColumns.js}"></script>
 </head>
 <body>
   <div layout:fragment="article">
@@ -24,7 +39,7 @@
           <label for="MstSupUnitpriceBk.yy" th:text="#{MstSupUnitpriceBk.yy}">YY</label><input type="text" id="MstSupUnitpriceBk.yy" name="MstSupUnitpriceBk.yy" maxlength="4" />
         </div>
         <div id="hinban">
-          <label for="MstSupUnitpriceBk.hinban" th:text="#{MstSupUnitpriceBk.hinban}">HINBAN</label><input type="text" id="MstSupUnitpriceBk.hinban" name="MstSupUnitpriceBk.hinban" maxlength="25" />
+          <label for="MstSupUnitpriceBk.hinban" th:text="#{MstSupUnitpriceBk.hinban}">HINBAN</label><input type="text" id="MstSupUnitpriceBk.hinban" name="MstSupUnitpriceBk.hinban" maxlength="25" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:MstSupUnitpriceBk.hinban" data-destDef="MstSupUnitpriceBk.item:ITEM" /><a id="MstSupUnitpriceBk.hinban" th:href="@{/model/MstHinbanS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MstSupUnitpriceBk.item" class="refer" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:MstSupUnitpriceBk.hinban" data-destDef="MstSupUnitpriceBk.item:ITEM"></span>
         </div>
         <div id="supCode">
           <label for="MstSupUnitpriceBk.supCode" th:text="#{MstSupUnitpriceBk.supCode}">SUP_CODE</label><input type="text" id="MstSupUnitpriceBk.supCode" name="MstSupUnitpriceBk.supCode" maxlength="6" data-json="MstSupplierSearch.json" data-srcDef="SUP_CODE:MstSupUnitpriceBk.supCode" data-destDef="MstSupUnitpriceBk.supName:SUP_NAME" /><a id="MstSupUnitpriceBk.supCode" th:href="@{/model/MstSupplierS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MstSupUnitpriceBk.supName" class="refer" data-json="MstSupplierSearch.json" data-srcDef="SUP_CODE:MstSupUnitpriceBk.supCode" data-destDef="MstSupUnitpriceBk.supName:SUP_NAME"></span>
@@ -50,6 +65,7 @@
       </fieldset>
       <div class="buttons">
         <button type="reset" th:text="#{common.reset}">reset</button>
+        <a th:href="@{/model/MstSupUnitpriceBk.html}" id="MstSupUnitpriceBk" target="dialog" th:text="#{MstSupUnitpriceBk.add}" tabindex="-1">MST_SUP_UNITPRICE_BK</a>
       </div>
       <div class="submits">
         <button id="SearchMstSupUnitpriceBk" class="search" data-gridId="MstSupUnitpriceBkGrid" th:text="#{common.search}">submit</button>

@@ -10,18 +10,32 @@
 </script>
 <script th:src="@{/model/PrdYProPlanHinbanGridColumns.js}"></script>
 <script th:src="@{/model/PrdYProPlanRoutingGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanGridColumns.js}"></script>
+<script th:src="@{/model/InvPrintWarehousingslipGridColumns.js}"></script>
+<script th:src="@{/model/MstEmpGridColumns.js}"></script>
+<script th:src="@{/model/MstDivisionGridColumns.js}"></script>
+<script th:src="@{/model/MstCompanyGridColumns.js}"></script>
+<script th:src="@{/model/InvStockStoreGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanBkGridColumns.js}"></script>
+<script th:src="@{/model/MstUnitGridColumns.js}"></script>
+<script th:src="@{/model/MstAccountCodeGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanEmpGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceBkGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierGridColumns.js}"></script>
+<script th:src="@{/model/InvStockProcessSupplyGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierBkGridColumns.js}"></script>
+<script th:src="@{/model/MstTaxGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailBkGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailHsGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceHsGridColumns.js}"></script>
 <script th:src="@{/model/MstWcGridColumns.js}"></script>
 <script th:src="@{/model/MstWcBkGridColumns.js}"></script>
 <script th:src="@{/model/MstProcGridColumns.js}"></script>
 <script th:src="@{/model/MstWsGridColumns.js}"></script>
 <script th:src="@{/model/MstTeamGridColumns.js}"></script>
 <script th:src="@{/model/MstGroupGridColumns.js}"></script>
-<script th:src="@{/model/MstDivisionGridColumns.js}"></script>
-<script th:src="@{/model/MstCompanyGridColumns.js}"></script>
-<script th:src="@{/model/MstSupplierGridColumns.js}"></script>
-<script th:src="@{/model/InvStockProcessSupplyGridColumns.js}"></script>
-<script th:src="@{/model/MstSupplierBkGridColumns.js}"></script>
-<script th:src="@{/model/MstTaxGridColumns.js}"></script>
 <script th:src="@{/model/MstCostCenterGridColumns.js}"></script>
 <script th:src="@{/model/MstCostCenterBkGridColumns.js}"></script>
 <script th:src="@{/model/MstSubinvGridColumns.js}"></script>
@@ -39,10 +53,10 @@
           <label for="PrdYProPlanHinban.mm" th:text="#{PrdYProPlanHinban.mm}">MM</label><span id="PrdYProPlanHinban.mm"></span><input type="hidden" id="PrdYProPlanHinban.mm" name="PrdYProPlanHinban.mm" class="primaryKey" />
         </div>
         <div id="proHinban">
-          <label for="PrdYProPlanHinban.proHinban" th:text="#{PrdYProPlanHinban.proHinban}">PRO_HINBAN</label><span id="PrdYProPlanHinban.proHinban"></span><input type="hidden" id="PrdYProPlanHinban.proHinban" name="PrdYProPlanHinban.proHinban" class="primaryKey" />
+          <label for="PrdYProPlanHinban.proHinban" th:text="#{PrdYProPlanHinban.proHinban}">PRO_HINBAN</label><span id="PrdYProPlanHinban.proHinban"></span><input type="hidden" id="PrdYProPlanHinban.proHinban" name="PrdYProPlanHinban.proHinban" class="primaryKey" /><a id="PrdYProPlanHinban.proHinban" th:href="@{/model/MstHinbanS.html}" target="dialog" class="primaryKey refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="PrdYProPlanHinban.proItem" class="refer" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:PrdYProPlanHinban.proHinban" data-destDef="PrdYProPlanHinban.proItem:ITEM"></span>
         </div>
         <div id="hinban">
-          <label for="PrdYProPlanHinban.hinban" th:text="#{PrdYProPlanHinban.hinban}">HINBAN</label><span id="PrdYProPlanHinban.hinban"></span><input type="hidden" id="PrdYProPlanHinban.hinban" name="PrdYProPlanHinban.hinban" class="primaryKey" />
+          <label for="PrdYProPlanHinban.hinban" th:text="#{PrdYProPlanHinban.hinban}">HINBAN</label><span id="PrdYProPlanHinban.hinban"></span><input type="hidden" id="PrdYProPlanHinban.hinban" name="PrdYProPlanHinban.hinban" class="primaryKey" /><a id="PrdYProPlanHinban.hinban" th:href="@{/model/MstHinbanS.html}" target="dialog" class="primaryKey refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="PrdYProPlanHinban.item" class="refer" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:PrdYProPlanHinban.hinban" data-destDef="PrdYProPlanHinban.item:ITEM"></span>
         </div>
         <div id="itemKbn">
           <fieldset id="PrdYProPlanHinban.itemKbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:ITEM_KBN" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
@@ -58,7 +72,7 @@
           <label for="PrdYProPlanHinban.nesCounts" th:text="#{PrdYProPlanHinban.nesCounts}">NES_COUNTS</label><input type="text" id="PrdYProPlanHinban.nesCounts" name="PrdYProPlanHinban.nesCounts" maxlength="10" />
         </div>
         <div id="parentHinban">
-          <label for="PrdYProPlanHinban.parentHinban" th:text="#{PrdYProPlanHinban.parentHinban}">PARENT_HINBAN</label><input type="text" id="PrdYProPlanHinban.parentHinban" name="PrdYProPlanHinban.parentHinban" maxlength="25" />
+          <label for="PrdYProPlanHinban.parentHinban" th:text="#{PrdYProPlanHinban.parentHinban}">PARENT_HINBAN</label><input type="text" id="PrdYProPlanHinban.parentHinban" name="PrdYProPlanHinban.parentHinban" maxlength="25" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:PrdYProPlanHinban.parentHinban" data-destDef="PrdYProPlanHinban.parentItem:ITEM" /><a id="PrdYProPlanHinban.parentHinban" th:href="@{/model/MstHinbanS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="PrdYProPlanHinban.parentItem" class="refer" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:PrdYProPlanHinban.parentHinban" data-destDef="PrdYProPlanHinban.parentItem:ITEM"></span>
         </div>
         <div id="proLt">
           <label for="PrdYProPlanHinban.proLt" th:text="#{PrdYProPlanHinban.proLt}">PRO_LT</label><input type="text" id="PrdYProPlanHinban.proLt" name="PrdYProPlanHinban.proLt" maxlength="6" />

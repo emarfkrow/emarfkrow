@@ -5,7 +5,7 @@
 let PrdMProPlanRoutingGridColumns = [
     Column.cell('YYYY', Messages['PrdMProPlanRoutingGrid.yyyy'], 40, 'primaryKey', null),
     Column.cell('MM', Messages['PrdMProPlanRoutingGrid.mm'], 20, 'primaryKey', null),
-    Column.cell('PRO_HINBAN', Messages['PrdMProPlanRoutingGrid.proHinban'], 250, 'primaryKey', null),
+    Column.refer('PRO_HINBAN', Messages['PrdMProPlanRoutingGrid.proHinban'], 250, 'primaryKey', 'PRO_HINMEI'),
     Column.cell('HINBAN', Messages['PrdMProPlanRoutingGrid.hinban'], 250, 'primaryKey', null),
     Column.cell('ROUTING_GROUP', Messages['PrdMProPlanRoutingGrid.routingGroup'], 20, 'primaryKey', null),
     Column.cell('ROUTING', Messages['PrdMProPlanRoutingGrid.routing'], 20, 'primaryKey', null),

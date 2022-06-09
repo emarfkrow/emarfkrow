@@ -14,7 +14,7 @@ let InvMtrlInoutHistoryGridColumns = [
     Column.text('PRO_NO', Messages['InvMtrlInoutHistoryGrid.proNo'], 140, '', null),
     Column.text('IN_OUT_STATUS', Messages['InvMtrlInoutHistoryGrid.inOutStatus'], 10, '', null),
     Column.refer('RECEIPT_SUP_CODE', Messages['InvMtrlInoutHistoryGrid.receiptSupCode'], 100, '', 'RECEIPT_SUP_NAME'),
-    Column.text('ISSUE_HINBAN', Messages['InvMtrlInoutHistoryGrid.issueHinban'], 250, '', null),
+    Column.refer('ISSUE_HINBAN', Messages['InvMtrlInoutHistoryGrid.issueHinban'], 250, '', 'ISSUE_HINMEI'),
     Column.text('STOCK', Messages['InvMtrlInoutHistoryGrid.stock'], 110, '', null),
     Column.text('GOOD_COUNTS', Messages['InvMtrlInoutHistoryGrid.goodCounts'], 110, '', null),
     Column.text('MASTER_COUNTS', Messages['InvMtrlInoutHistoryGrid.masterCounts'], 120, '', null),

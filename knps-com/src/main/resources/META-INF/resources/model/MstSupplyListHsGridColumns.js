@@ -3,10 +3,10 @@
  */
 
 let MstSupplyListHsGridColumns = [
-    Column.cell('MAN_HINBAN', Messages['MstSupplyListHsGrid.manHinban'], 250, 'primaryKey', null),
+    Column.refer('MAN_HINBAN', Messages['MstSupplyListHsGrid.manHinban'], 250, 'primaryKey', 'MAN_HINMEI'),
     Column.cell('ROUTING_GROUP', Messages['MstSupplyListHsGrid.routingGroup'], 20, 'primaryKey', null),
     Column.cell('ROUTING', Messages['MstSupplyListHsGrid.routing'], 20, 'primaryKey', null),
-    Column.cell('SUPPLY_HINBAN', Messages['MstSupplyListHsGrid.supplyHinban'], 250, 'primaryKey', null),
+    Column.refer('SUPPLY_HINBAN', Messages['MstSupplyListHsGrid.supplyHinban'], 250, 'primaryKey', 'SUPPLY_HINMEI'),
     Column.text('COUNTS', Messages['MstSupplyListHsGrid.counts'], 110, '', null),
     Column.select('SUPPLY_KBN', Messages['MstSupplyListHsGrid.supplyKbn'], 10, '', { json: 'MstCodeValueSearch.json', paramkey: 'code_nm', value: 'CODE_VALUE', label: 'CODE_VALUE_MEI' }),
     Column.text('STAN_COUNTS', Messages['MstSupplyListHsGrid.stanCounts'], 110, '', null),

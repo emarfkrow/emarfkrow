@@ -44,10 +44,12 @@
           <label for="MYuryoku.faxno" th:text="#{MYuryoku.faxno}">ＦＡＸ番号</label><input type="text" id="MYuryoku.faxno" name="MYuryoku.faxno" maxlength="12" />
         </div>
         <div id="yuryokukbn">
-          <label for="MYuryoku.yuryokukbn" th:text="#{MYuryoku.yuryokukbn}">有力店資格区分</label><input type="text" id="MYuryoku.yuryokukbn" name="MYuryoku.yuryokukbn" maxlength="1" />
+          <fieldset id="MYuryoku.yuryokukbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:YURYOKUKBN" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MYuryoku.yuryokukbn}">有力店資格区分</legend>
+          </fieldset>
         </div>
         <div id="tourokubi">
-          <label for="MYuryoku.tourokubi" th:text="#{MYuryoku.tourokubi}">マスター登録日</label><input type="text" id="MYuryoku.tourokubi" name="MYuryoku.tourokubi" maxlength="8" />
+          <label for="MYuryoku.tourokubi" th:text="#{MYuryoku.tourokubi}">マスター登録日</label><input type="date" id="MYuryoku.tourokubi" name="MYuryoku.tourokubi" maxlength="8" />
         </div>
         <div id="kyuryokumei">
           <label for="MYuryoku.kyuryokumei" th:text="#{MYuryoku.kyuryokumei}">カナ有力店名</label><input type="text" id="MYuryoku.kyuryokumei" name="MYuryoku.kyuryokumei" maxlength="20" />
@@ -65,7 +67,9 @@
           <label for="MYuryoku.kamiYuboritu" th:text="#{MYuryoku.kamiYuboritu}">上期有ボ支払率</label><input type="text" id="MYuryoku.kamiYuboritu" name="MYuryoku.kamiYuboritu" maxlength="2" />
         </div>
         <div id="kamiTasseikbn">
-          <label for="MYuryoku.kamiTasseikbn" th:text="#{MYuryoku.kamiTasseikbn}">上期達成区分</label><input type="text" id="MYuryoku.kamiTasseikbn" name="MYuryoku.kamiTasseikbn" maxlength="1" />
+          <fieldset id="MYuryoku.kamiTasseikbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:KAMI-TASSEIKBN" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MYuryoku.kamiTasseikbn}">上期達成区分</legend>
+          </fieldset>
         </div>
         <div id="simoKonyu">
           <label for="MYuryoku.simoKonyu" th:text="#{MYuryoku.simoKonyu}">下期購入額</label><input type="text" id="MYuryoku.simoKonyu" name="MYuryoku.simoKonyu" maxlength="9" />
@@ -77,25 +81,37 @@
           <label for="MYuryoku.simoYuboritu" th:text="#{MYuryoku.simoYuboritu}">下期有ボ支払率</label><input type="text" id="MYuryoku.simoYuboritu" name="MYuryoku.simoYuboritu" maxlength="2" />
         </div>
         <div id="simoTasseikbn">
-          <label for="MYuryoku.simoTasseikbn" th:text="#{MYuryoku.simoTasseikbn}">下期達成区分</label><input type="text" id="MYuryoku.simoTasseikbn" name="MYuryoku.simoTasseikbn" maxlength="1" />
+          <fieldset id="MYuryoku.simoTasseikbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:SIMO-TASSEIKBN" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MYuryoku.simoTasseikbn}">下期達成区分</legend>
+          </fieldset>
         </div>
         <div id="yutenkaikbn">
-          <label for="MYuryoku.yutenkaikbn" th:text="#{MYuryoku.yutenkaikbn}">有力店会区分</label><input type="text" id="MYuryoku.yutenkaikbn" name="MYuryoku.yutenkaikbn" maxlength="1" />
+          <fieldset id="MYuryoku.yutenkaikbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:YUTENKAIKBN" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MYuryoku.yutenkaikbn}">有力店会区分</legend>
+          </fieldset>
         </div>
         <div id="torihikiKbn">
-          <label for="MYuryoku.torihikiKbn" th:text="#{MYuryoku.torihikiKbn}">取引停止区分</label><input type="text" id="MYuryoku.torihikiKbn" name="MYuryoku.torihikiKbn" maxlength="1" />
+          <fieldset id="MYuryoku.torihikiKbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:TORIHIKI-KBN" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MYuryoku.torihikiKbn}">取引停止区分</legend>
+          </fieldset>
         </div>
         <div id="gyoshuKbn">
-          <label for="MYuryoku.gyoshuKbn" th:text="#{MYuryoku.gyoshuKbn}">業種区分</label><input type="text" id="MYuryoku.gyoshuKbn" name="MYuryoku.gyoshuKbn" maxlength="2" />
+          <fieldset id="MYuryoku.gyoshuKbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:GYOSHU-KBN" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MYuryoku.gyoshuKbn}">業種区分</legend>
+          </fieldset>
         </div>
         <div id="sichocd">
           <label for="MYuryoku.sichocd" th:text="#{MYuryoku.sichocd}">市町村コード</label><input type="text" id="MYuryoku.sichocd" name="MYuryoku.sichocd" maxlength="6" />
         </div>
         <div id="faxkbn">
-          <label for="MYuryoku.faxkbn" th:text="#{MYuryoku.faxkbn}">ＦＡＸ区分</label><input type="text" id="MYuryoku.faxkbn" name="MYuryoku.faxkbn" maxlength="1" />
+          <fieldset id="MYuryoku.faxkbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:FAXKBN" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MYuryoku.faxkbn}">ＦＡＸ区分</legend>
+          </fieldset>
         </div>
         <div id="ritukbn">
-          <label for="MYuryoku.ritukbn" th:text="#{MYuryoku.ritukbn}">有ボ率区分</label><input type="text" id="MYuryoku.ritukbn" name="MYuryoku.ritukbn" maxlength="1" />
+          <fieldset id="MYuryoku.ritukbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:RITUKBN" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MYuryoku.ritukbn}">有ボ率区分</legend>
+          </fieldset>
         </div>
         <div id="unsocd">
           <label for="MYuryoku.unsocd" th:text="#{MYuryoku.unsocd}">運送会社コード</label><input type="text" id="MYuryoku.unsocd" name="MYuryoku.unsocd" maxlength="3" />
@@ -107,13 +123,17 @@
           <label for="MYuryoku.todofukencd" th:text="#{MYuryoku.todofukencd}">都道府県コード</label><input type="text" id="MYuryoku.todofukencd" name="MYuryoku.todofukencd" maxlength="1" />
         </div>
         <div id="eigyokbn">
-          <label for="MYuryoku.eigyokbn" th:text="#{MYuryoku.eigyokbn}">営業所区分</label><input type="text" id="MYuryoku.eigyokbn" name="MYuryoku.eigyokbn" maxlength="2" />
+          <fieldset id="MYuryoku.eigyokbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:EIGYOKBN" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MYuryoku.eigyokbn}">営業所区分</legend>
+          </fieldset>
         </div>
         <div id="yuryokuRank">
           <label for="MYuryoku.yuryokuRank" th:text="#{MYuryoku.yuryokuRank}">有力店ランク</label><input type="text" id="MYuryoku.yuryokuRank" name="MYuryoku.yuryokuRank" maxlength="2" />
         </div>
         <div id="stkbn">
-          <label for="MYuryoku.stkbn" th:text="#{MYuryoku.stkbn}">戦略店区分</label><input type="text" id="MYuryoku.stkbn" name="MYuryoku.stkbn" maxlength="1" />
+          <fieldset id="MYuryoku.stkbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:STKBN" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MYuryoku.stkbn}">戦略店区分</legend>
+          </fieldset>
         </div>
         <div id="filler">
           <label for="MYuryoku.filler" th:text="#{MYuryoku.filler}">予備領域</label><input type="text" id="MYuryoku.filler" name="MYuryoku.filler" maxlength="9" />

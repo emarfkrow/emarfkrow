@@ -4,7 +4,7 @@
 
 let MstStructureBkGridColumns = [
     Column.cell('YY', Messages['MstStructureBkGrid.yy'], 40, 'primaryKey', null),
-    Column.cell('MAN_HINBAN', Messages['MstStructureBkGrid.manHinban'], 250, 'primaryKey', null),
+    Column.refer('MAN_HINBAN', Messages['MstStructureBkGrid.manHinban'], 250, 'primaryKey', 'MAN_HINMEI'),
     Column.cell('HINBAN', Messages['MstStructureBkGrid.hinban'], 250, 'primaryKey', null),
     Column.text('COUNTS', Messages['MstStructureBkGrid.counts'], 110, '', null),
     Column.cell('TIME_STAMP_CREATE', Messages['MstStructureBkGrid.timeStampCreate'], 70, 'metaInfo', Slick.Formatters.Extends.DateTime),

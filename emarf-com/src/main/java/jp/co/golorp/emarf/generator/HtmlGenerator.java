@@ -429,37 +429,37 @@ public final class HtmlGenerator {
 
                 c = "Column.cell('" + field + "', " + name + ", " + width + ", '" + css + "', " + formatter + "),";
 
-            } else if (StringUtil.endsWith(inputFlagSuffixs, lower)) {
+            } else if (StringUtil.endsWith(inputFlagSuffixs, columnName)) {
 
                 c = "Column.check('" + field + "', " + name + ", " + width + ", '" + css + "'),";
 
-            } else if (StringUtil.endsWith(inputDateSuffixs, lower)) {
+            } else if (StringUtil.endsWith(inputDateSuffixs, columnName)) {
 
                 c = "Column.date('" + field + "', " + name + ", " + width + ", '" + css + "', " + formatter + "),";
 
-            } else if (StringUtil.endsWith(inputDateTimeSuffixs, lower)) {
+            } else if (StringUtil.endsWith(inputDateTimeSuffixs, columnName)) {
 
                 c = "Column.dateTime('" + field + "', " + name + ", " + width + ", '" + css + "'),";
 
-            } else if (StringUtil.endsWith(inputMonthSuffixs, lower)) {
+            } else if (StringUtil.endsWith(inputMonthSuffixs, columnName)) {
 
                 c = "Column.month('" + field + "', " + name + ", " + width + ", '" + css + "', " + formatter + "),";
 
-            } else if (StringUtil.endsWith(inputTimeSuffixs, lower)) {
+            } else if (StringUtil.endsWith(inputTimeSuffixs, columnName)) {
 
                 c = "Column.time('" + field + "', " + name + ", " + width + ", '" + css + "', " + formatter + "),";
 
-            } else if (StringUtil.endsWith(inputFileSuffixs, lower)) {
+            } else if (StringUtil.endsWith(inputFileSuffixs, columnName)) {
 
                 c = "Column.link('" + field + "', " + name + ", " + width + ", '" + css + "'),";
 
-            } else if (StringUtil.endsWith(optionsSuffixs, lower)) {
+            } else if (StringUtil.endsWith(optionsSuffixs, columnName)) {
 
                 String options = "{ json: '" + json + "', paramkey: '" + optionParamKey + "', value: '" + optionValue
                         + "', label: '" + optionLabel + "' }";
                 c = "Column.select('" + field + "', " + name + ", " + width + ", '" + css + "', " + options + "),";
 
-            } else if (StringUtil.endsWith(textareaSuffixs, lower)) {
+            } else if (StringUtil.endsWith(textareaSuffixs, columnName)) {
 
                 c = "Column.longText('" + field + "', " + name + ", " + width + ", '" + css + "', " + formatter + "),";
 

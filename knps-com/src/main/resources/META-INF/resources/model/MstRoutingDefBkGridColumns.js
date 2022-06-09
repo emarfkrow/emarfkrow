@@ -4,7 +4,7 @@
 
 let MstRoutingDefBkGridColumns = [
     Column.cell('YY', Messages['MstRoutingDefBkGrid.yy'], 40, 'primaryKey', null),
-    Column.cell('MAN_HINBAN', Messages['MstRoutingDefBkGrid.manHinban'], 250, 'primaryKey', null),
+    Column.refer('MAN_HINBAN', Messages['MstRoutingDefBkGrid.manHinban'], 250, 'primaryKey', 'MAN_HINMEI'),
     Column.cell('ROUTING_GROUP', Messages['MstRoutingDefBkGrid.routingGroup'], 20, 'primaryKey', null),
     Column.check('PERMISSION_FLAG', Messages['MstRoutingDefBkGrid.permissionFlag'], 10, ''),
     Column.check('USABLE_FLAG', Messages['MstRoutingDefBkGrid.usableFlag'], 10, ''),

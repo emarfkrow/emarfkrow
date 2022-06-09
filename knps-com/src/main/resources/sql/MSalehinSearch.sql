@@ -1,11 +1,11 @@
 SELECT
       a.*
-    , (SELECT r1."HINMEI" FROM M_HHINMOK r1 WHERE r1."HHINBAN" = a."HHINBAN") AS "HINMEI"
+    , (SELECT r1."ITEM" FROM MST_HINBAN r1 WHERE r1."HINBAN" = a."HHINBAN") AS "HITEM"
 FROM
     M_SALEHIN a 
 WHERE
     1 = 1 
-    AND TRIM (a."SALEKBN") = TRIM (:salekbn) 
+    AND TRIM (a."SALEKBN") IN (:salekbn) 
     AND TRIM (a."SALEMEI") = TRIM (:salemei) 
     AND a."HHINBAN" = :hhinban 
     AND a."KAISI-YY" = :kaisi_yy 

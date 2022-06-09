@@ -3,7 +3,7 @@
  */
 
 let MstSalesHinbanMasterGridColumns = [
-    Column.cell('SALES_HINBAN', Messages['MstSalesHinbanMasterGrid.salesHinban'], 200, 'primaryKey', null),
+    Column.refer('SALES_HINBAN', Messages['MstSalesHinbanMasterGrid.salesHinban'], 200, 'primaryKey', 'SALES_HINMEI'),
     Column.select('LOW_LEVEL_CODE', Messages['MstSalesHinbanMasterGrid.lowLevelCode'], 20, '', { json: 'MstCodeValueSearch.json', paramkey: 'code_nm', value: 'CODE_VALUE', label: 'CODE_VALUE_MEI' }),
     Column.check('DELETE_FLAG', Messages['MstSalesHinbanMasterGrid.deleteFlag'], 10, ''),
     Column.select('HINBAN_CODE', Messages['MstSalesHinbanMasterGrid.hinbanCode'], 200, '', { json: 'MstCodeValueSearch.json', paramkey: 'code_nm', value: 'CODE_VALUE', label: 'CODE_VALUE_MEI' }),
@@ -92,5 +92,5 @@ let MstSalesHinbanMasterGridColumns = [
     Column.text('ALTERNATIVE_HINBAN2', Messages['MstSalesHinbanMasterGrid.alternativeHinban2'], 200, '', null),
     Column.select('NOUKI_ANSWER_NG_KBN', Messages['MstSalesHinbanMasterGrid.noukiAnswerNgKbn'], 10, '', { json: 'MstCodeValueSearch.json', paramkey: 'code_nm', value: 'CODE_VALUE', label: 'CODE_VALUE_MEI' }),
     Column.select('DIRECT_DELIVERY_TARGET_KBN', Messages['MstSalesHinbanMasterGrid.directDeliveryTargetKbn'], 10, '', { json: 'MstCodeValueSearch.json', paramkey: 'code_nm', value: 'CODE_VALUE', label: 'CODE_VALUE_MEI' }),
-    Column.text('YOBI', Messages['MstSalesHinbanMasterGrid.yobi'], 230, '', null),
+    Column.date('YOBI', Messages['MstSalesHinbanMasterGrid.yobi'], 230, '', null),
 ];

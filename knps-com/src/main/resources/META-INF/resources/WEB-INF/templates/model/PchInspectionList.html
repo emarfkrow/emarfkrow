@@ -11,6 +11,22 @@
 <script th:src="@{/model/PchInspectionListGridColumns.js}"></script>
 <script th:src="@{/model/MstSupplierGridColumns.js}"></script>
 <script th:src="@{/model/InvStockProcessSupplyGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanGridColumns.js}"></script>
+<script th:src="@{/model/InvPrintWarehousingslipGridColumns.js}"></script>
+<script th:src="@{/model/MstEmpGridColumns.js}"></script>
+<script th:src="@{/model/MstDivisionGridColumns.js}"></script>
+<script th:src="@{/model/MstCompanyGridColumns.js}"></script>
+<script th:src="@{/model/InvStockStoreGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanBkGridColumns.js}"></script>
+<script th:src="@{/model/MstUnitGridColumns.js}"></script>
+<script th:src="@{/model/MstAccountCodeGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanEmpGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceBkGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailBkGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailHsGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceHsGridColumns.js}"></script>
 <script th:src="@{/model/MstSupplierBkGridColumns.js}"></script>
 <script th:src="@{/model/MstTaxGridColumns.js}"></script>
 </head>
@@ -33,7 +49,7 @@
           <label for="PchInspectionList.orderNo" th:text="#{PchInspectionList.orderNo}">ORDER_NO</label><span id="PchInspectionList.orderNo"></span><input type="hidden" id="PchInspectionList.orderNo" name="PchInspectionList.orderNo" class="primaryKey" />
         </div>
         <div id="hinban">
-          <label for="PchInspectionList.hinban" th:text="#{PchInspectionList.hinban}">HINBAN</label><input type="text" id="PchInspectionList.hinban" name="PchInspectionList.hinban" maxlength="25" />
+          <label for="PchInspectionList.hinban" th:text="#{PchInspectionList.hinban}">HINBAN</label><input type="text" id="PchInspectionList.hinban" name="PchInspectionList.hinban" maxlength="25" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:PchInspectionList.hinban" data-destDef="PchInspectionList.item:ITEM" /><a id="PchInspectionList.hinban" th:href="@{/model/MstHinbanS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a>
         </div>
         <div id="item">
           <label for="PchInspectionList.item" th:text="#{PchInspectionList.item}">ITEM</label><input type="text" id="PchInspectionList.item" name="PchInspectionList.item" maxlength="60" />
@@ -42,7 +58,8 @@
           <label for="PchInspectionList.opeDetail" th:text="#{PchInspectionList.opeDetail}">OPE_DETAIL</label><input type="text" id="PchInspectionList.opeDetail" name="PchInspectionList.opeDetail" maxlength="10" />
         </div>
         <div id="memo">
-          <label for="PchInspectionList.memo" th:text="#{PchInspectionList.memo}">MEMO</label><input type="text" id="PchInspectionList.memo" name="PchInspectionList.memo" maxlength="30" />
+          <label for="PchInspectionList.memo" th:text="#{PchInspectionList.memo}">MEMO</label>
+          <textarea id="PchInspectionList.memo" name="PchInspectionList.memo"></textarea>
         </div>
         <div id="sumInspectCounts">
           <label for="PchInspectionList.sumInspectCounts" th:text="#{PchInspectionList.sumInspectCounts}">SUM_INSPECT_COUNTS</label><input type="text" id="PchInspectionList.sumInspectCounts" name="PchInspectionList.sumInspectCounts" maxlength="11" />

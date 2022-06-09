@@ -9,6 +9,25 @@
 
 </script>
 <script th:src="@{/model/InvStockStoreGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanGridColumns.js}"></script>
+<script th:src="@{/model/InvPrintWarehousingslipGridColumns.js}"></script>
+<script th:src="@{/model/MstEmpGridColumns.js}"></script>
+<script th:src="@{/model/MstDivisionGridColumns.js}"></script>
+<script th:src="@{/model/MstCompanyGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanBkGridColumns.js}"></script>
+<script th:src="@{/model/MstUnitGridColumns.js}"></script>
+<script th:src="@{/model/MstAccountCodeGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanEmpGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceBkGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierGridColumns.js}"></script>
+<script th:src="@{/model/InvStockProcessSupplyGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierBkGridColumns.js}"></script>
+<script th:src="@{/model/MstTaxGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailBkGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailHsGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceHsGridColumns.js}"></script>
 </head>
 <body>
   <div layout:fragment="article">
@@ -17,7 +36,7 @@
       <fieldset>
         <legend th:text="#{InvStockStoreS.legend}">legend</legend>
         <div id="hinban">
-          <label for="InvStockStore.hinban" th:text="#{InvStockStore.hinban}">HINBAN</label><input type="text" id="InvStockStore.hinban" name="InvStockStore.hinban" maxlength="25" />
+          <label for="InvStockStore.hinban" th:text="#{InvStockStore.hinban}">HINBAN</label><input type="text" id="InvStockStore.hinban" name="InvStockStore.hinban" maxlength="25" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:InvStockStore.hinban" data-destDef="InvStockStore.item:ITEM" /><a id="InvStockStore.hinban" th:href="@{/model/MstHinbanS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="InvStockStore.item" class="refer" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:InvStockStore.hinban" data-destDef="InvStockStore.item:ITEM"></span>
         </div>
         <div id="storeNo">
           <label for="InvStockStore.storeNo" th:text="#{InvStockStore.storeNo}">STORE_NO</label><input type="text" id="InvStockStore.storeNo" name="InvStockStore.storeNo" maxlength="10" />

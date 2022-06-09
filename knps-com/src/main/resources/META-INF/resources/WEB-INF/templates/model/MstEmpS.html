@@ -27,7 +27,9 @@
           <label for="MstEmp.empName" th:text="#{MstEmp.empName}">EMP_NAME</label><input type="text" id="MstEmp.empName" name="MstEmp.empName" maxlength="30" />
         </div>
         <div id="position">
-          <label for="MstEmp.position" th:text="#{MstEmp.position}">POSITION</label><input type="text" id="MstEmp.position" name="MstEmp.position" maxlength="1" />
+          <fieldset id="MstEmp.positionList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:POSITION" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstEmp.position}">POSITION</legend>
+          </fieldset>
         </div>
         <div id="compCode">
           <fieldset id="MstEmp.compCodeList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:COMP_CODE" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">

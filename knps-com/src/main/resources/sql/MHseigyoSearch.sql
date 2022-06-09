@@ -6,7 +6,11 @@ WHERE
     1 = 1 
     AND a."KEYCD" = :keycd 
     AND a."KAISIBI" = :kaisibi 
+    AND a."KAISIBI" >= :kaisibi_1 
+    AND a."KAISIBI" <= :kaisibi_2 
     AND a."SHURYOBI" = :shuryobi 
+    AND a."SHURYOBI" >= :shuryobi_1 
+    AND a."SHURYOBI" <= :shuryobi_2 
     AND a."ZEIRITU" = :zeiritu 
     AND a."YUBOENT" = :yuboent 
     AND a."SHUSIJINO1" = :shusijino1 

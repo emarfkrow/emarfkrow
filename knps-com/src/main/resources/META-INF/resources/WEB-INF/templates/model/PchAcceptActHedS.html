@@ -11,10 +11,24 @@
 <script th:src="@{/model/PchAcceptActHedGridColumns.js}"></script>
 <script th:src="@{/model/MstSupplierGridColumns.js}"></script>
 <script th:src="@{/model/InvStockProcessSupplyGridColumns.js}"></script>
-<script th:src="@{/model/MstSupplierBkGridColumns.js}"></script>
-<script th:src="@{/model/MstTaxGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanGridColumns.js}"></script>
+<script th:src="@{/model/InvPrintWarehousingslipGridColumns.js}"></script>
+<script th:src="@{/model/MstEmpGridColumns.js}"></script>
+<script th:src="@{/model/MstDivisionGridColumns.js}"></script>
+<script th:src="@{/model/MstCompanyGridColumns.js}"></script>
+<script th:src="@{/model/InvStockStoreGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanBkGridColumns.js}"></script>
 <script th:src="@{/model/MstUnitGridColumns.js}"></script>
 <script th:src="@{/model/MstAccountCodeGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanEmpGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceBkGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailBkGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailHsGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceHsGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierBkGridColumns.js}"></script>
+<script th:src="@{/model/MstTaxGridColumns.js}"></script>
 </head>
 <body>
   <div layout:fragment="article">
@@ -32,7 +46,7 @@
           <label for="PchAcceptActHed.orderNo" th:text="#{PchAcceptActHed.orderNo}">ORDER_NO</label><input type="text" id="PchAcceptActHed.orderNo" name="PchAcceptActHed.orderNo" maxlength="10" />
         </div>
         <div id="hinban">
-          <label for="PchAcceptActHed.hinban" th:text="#{PchAcceptActHed.hinban}">HINBAN</label><input type="text" id="PchAcceptActHed.hinban" name="PchAcceptActHed.hinban" maxlength="25" />
+          <label for="PchAcceptActHed.hinban" th:text="#{PchAcceptActHed.hinban}">HINBAN</label><input type="text" id="PchAcceptActHed.hinban" name="PchAcceptActHed.hinban" maxlength="25" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:PchAcceptActHed.hinban" data-destDef="PchAcceptActHed.item:ITEM" /><a id="PchAcceptActHed.hinban" th:href="@{/model/MstHinbanS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a>
         </div>
         <div id="item">
           <label for="PchAcceptActHed.item" th:text="#{PchAcceptActHed.item}">ITEM</label><input type="text" id="PchAcceptActHed.item" name="PchAcceptActHed.item" maxlength="60" />

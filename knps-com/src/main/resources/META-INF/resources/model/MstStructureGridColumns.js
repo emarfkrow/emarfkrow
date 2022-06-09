@@ -3,7 +3,7 @@
  */
 
 let MstStructureGridColumns = [
-    Column.cell('MAN_HINBAN', Messages['MstStructureGrid.manHinban'], 250, 'primaryKey', null),
+    Column.refer('MAN_HINBAN', Messages['MstStructureGrid.manHinban'], 250, 'primaryKey', 'MAN_HINMEI'),
     Column.cell('HINBAN', Messages['MstStructureGrid.hinban'], 250, 'primaryKey', null),
     Column.text('COUNTS', Messages['MstStructureGrid.counts'], 110, '', null),
     Column.cell('TIME_STAMP_CREATE', Messages['MstStructureGrid.timeStampCreate'], 70, 'metaInfo', Slick.Formatters.Extends.DateTime),

@@ -9,6 +9,26 @@
 
 </script>
 <script th:src="@{/model/MSetkoseGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanGridColumns.js}"></script>
+<script th:src="@{/model/InvPrintWarehousingslipGridColumns.js}"></script>
+<script th:src="@{/model/MstEmpGridColumns.js}"></script>
+<script th:src="@{/model/MstDivisionGridColumns.js}"></script>
+<script th:src="@{/model/MstCompanyGridColumns.js}"></script>
+<script th:src="@{/model/InvStockStoreGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanBkGridColumns.js}"></script>
+<script th:src="@{/model/MstUnitGridColumns.js}"></script>
+<script th:src="@{/model/MstAccountCodeGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanEmpGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceBkGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierGridColumns.js}"></script>
+<script th:src="@{/model/InvStockProcessSupplyGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierBkGridColumns.js}"></script>
+<script th:src="@{/model/MstTaxGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailBkGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailHsGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceHsGridColumns.js}"></script>
 </head>
 <body>
   <div layout:fragment="article">
@@ -17,13 +37,15 @@
       <fieldset>
         <legend th:text="#{MSetkoseS.legend}">legend</legend>
         <div id="setHinban">
-          <label for="MSetkose.setHinban" th:text="#{MSetkose.setHinban}">セット品番</label><input type="text" id="MSetkose.setHinban" name="MSetkose.setHinban" maxlength="20" />
+          <label for="MSetkose.setHinban" th:text="#{MSetkose.setHinban}">セット品番</label><input type="text" id="MSetkose.setHinban" name="MSetkose.setHinban" maxlength="20" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:MSetkose.setHinban" data-destDef="MSetkose.setItem:ITEM" /><a id="MSetkose.setHinban" th:href="@{/model/MstHinbanS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MSetkose.setItem" class="refer" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:MSetkose.setHinban" data-destDef="MSetkose.setItem:ITEM"></span>
         </div>
         <div id="setKhinban">
-          <label for="MSetkose.setKhinban" th:text="#{MSetkose.setKhinban}">セット子品番</label><input type="text" id="MSetkose.setKhinban" name="MSetkose.setKhinban" maxlength="20" />
+          <label for="MSetkose.setKhinban" th:text="#{MSetkose.setKhinban}">セット子品番</label><input type="text" id="MSetkose.setKhinban" name="MSetkose.setKhinban" maxlength="20" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:MSetkose.setKhinban" data-destDef="MSetkose.setKitem:ITEM" /><a id="MSetkose.setKhinban" th:href="@{/model/MstHinbanS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MSetkose.setKitem" class="refer" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:MSetkose.setKhinban" data-destDef="MSetkose.setKitem:ITEM"></span>
         </div>
         <div id="dltflg">
-          <label for="MSetkose.dltflg" th:text="#{MSetkose.dltflg}">削除フラグ</label><input type="text" id="MSetkose.dltflg" name="MSetkose.dltflg" maxlength="1" />
+          <fieldset id="MSetkose.dltflgList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:DLTFLG" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MSetkose.dltflg}">削除フラグ</legend>
+          </fieldset>
         </div>
         <div id="botm">
           <label for="MSetkose.botm" th:text="#{MSetkose.botm}">ボトムフラグ</label><input type="text" id="MSetkose.botm" name="MSetkose.botm" maxlength="1" />
@@ -32,7 +54,9 @@
           <label for="MSetkose.setinzu" th:text="#{MSetkose.setinzu}">セット員数</label><input type="text" id="MSetkose.setinzu" name="MSetkose.setinzu" maxlength="3" />
         </div>
         <div id="mushokbn">
-          <label for="MSetkose.mushokbn" th:text="#{MSetkose.mushokbn}">無償支給区分</label><input type="text" id="MSetkose.mushokbn" name="MSetkose.mushokbn" maxlength="1" />
+          <fieldset id="MSetkose.mushokbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:MUSHOKBN" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MSetkose.mushokbn}">無償支給区分</legend>
+          </fieldset>
         </div>
         <div id="filler">
           <label for="MSetkose.filler" th:text="#{MSetkose.filler}">予備領域</label><input type="text" id="MSetkose.filler" name="MSetkose.filler" maxlength="34" />

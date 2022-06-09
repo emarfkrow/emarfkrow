@@ -9,10 +9,26 @@
 
 </script>
 <script th:src="@{/model/PchSupplySchGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanGridColumns.js}"></script>
+<script th:src="@{/model/InvPrintWarehousingslipGridColumns.js}"></script>
+<script th:src="@{/model/MstEmpGridColumns.js}"></script>
+<script th:src="@{/model/MstDivisionGridColumns.js}"></script>
+<script th:src="@{/model/MstCompanyGridColumns.js}"></script>
+<script th:src="@{/model/InvStockStoreGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanBkGridColumns.js}"></script>
+<script th:src="@{/model/MstUnitGridColumns.js}"></script>
+<script th:src="@{/model/MstAccountCodeGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanEmpGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceBkGridColumns.js}"></script>
 <script th:src="@{/model/MstSupplierGridColumns.js}"></script>
 <script th:src="@{/model/InvStockProcessSupplyGridColumns.js}"></script>
 <script th:src="@{/model/MstSupplierBkGridColumns.js}"></script>
 <script th:src="@{/model/MstTaxGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailBkGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailHsGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceHsGridColumns.js}"></script>
 </head>
 <body>
   <div layout:fragment="article">
@@ -27,7 +43,7 @@
           <label for="PchSupplySch.supplyOrderNo" th:text="#{PchSupplySch.supplyOrderNo}">SUPPLY_ORDER_NO</label><input type="text" id="PchSupplySch.supplyOrderNo" name="PchSupplySch.supplyOrderNo" maxlength="10" />
         </div>
         <div id="hinban">
-          <label for="PchSupplySch.hinban" th:text="#{PchSupplySch.hinban}">HINBAN</label><input type="text" id="PchSupplySch.hinban" name="PchSupplySch.hinban" maxlength="25" />
+          <label for="PchSupplySch.hinban" th:text="#{PchSupplySch.hinban}">HINBAN</label><input type="text" id="PchSupplySch.hinban" name="PchSupplySch.hinban" maxlength="25" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:PchSupplySch.hinban" data-destDef="PchSupplySch.item:ITEM" /><a id="PchSupplySch.hinban" th:href="@{/model/MstHinbanS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="PchSupplySch.item" class="refer" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:PchSupplySch.hinban" data-destDef="PchSupplySch.item:ITEM"></span>
         </div>
         <div id="supplyKbn">
           <fieldset id="PchSupplySch.supplyKbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:SUPPLY_KBN" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">

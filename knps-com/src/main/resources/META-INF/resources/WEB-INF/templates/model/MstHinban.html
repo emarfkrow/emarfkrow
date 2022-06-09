@@ -273,7 +273,8 @@
           <label for="MstHinban.exTaxRate" th:text="#{MstHinban.exTaxRate}">EX_TAX_RATE</label><input type="text" id="MstHinban.exTaxRate" name="MstHinban.exTaxRate" maxlength="2" />
         </div>
         <div id="memo">
-          <label for="MstHinban.memo" th:text="#{MstHinban.memo}">MEMO</label><input type="text" id="MstHinban.memo" name="MstHinban.memo" maxlength="60" />
+          <label for="MstHinban.memo" th:text="#{MstHinban.memo}">MEMO</label>
+          <textarea id="MstHinban.memo" name="MstHinban.memo"></textarea>
         </div>
         <div id="haibanKbn">
           <fieldset id="MstHinban.haibanKbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:HAIBAN_KBN" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
@@ -293,10 +294,12 @@
           <label for="MGhinmok.hingenka" th:text="#{MGhinmok.hingenka}">品目合計単価</label><input type="text" id="MGhinmok.hingenka" name="MGhinmok.hingenka" maxlength="7" />
         </div>
         <div id="renkeibi">
-          <label for="MGhinmok.renkeibi" th:text="#{MGhinmok.renkeibi}">データ連携日</label><input type="text" id="MGhinmok.renkeibi" name="MGhinmok.renkeibi" maxlength="8" />
+          <label for="MGhinmok.renkeibi" th:text="#{MGhinmok.renkeibi}">データ連携日</label><input type="date" id="MGhinmok.renkeibi" name="MGhinmok.renkeibi" maxlength="8" />
         </div>
         <div id="shoriflg">
-          <label for="MGhinmok.shoriflg" th:text="#{MGhinmok.shoriflg}">処理済フラグ</label><input type="text" id="MGhinmok.shoriflg" name="MGhinmok.shoriflg" maxlength="1" />
+          <fieldset id="MGhinmok.shoriflgList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:SHORIFLG" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MGhinmok.shoriflg}">処理済フラグ</legend>
+          </fieldset>
         </div>
         <div id="filler">
           <label for="MGhinmok.filler" th:text="#{MGhinmok.filler}">予備領域</label><input type="text" id="MGhinmok.filler" name="MGhinmok.filler" maxlength="21" />

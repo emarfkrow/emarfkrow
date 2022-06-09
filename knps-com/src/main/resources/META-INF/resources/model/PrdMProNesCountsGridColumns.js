@@ -3,7 +3,7 @@
  */
 
 let PrdMProNesCountsGridColumns = [
-    Column.cell('PRO_HINBAN', Messages['PrdMProNesCountsGrid.proHinban'], 250, 'primaryKey', null),
+    Column.refer('PRO_HINBAN', Messages['PrdMProNesCountsGrid.proHinban'], 250, 'primaryKey', 'PRO_HINMEI'),
     Column.cell('YYYY', Messages['PrdMProNesCountsGrid.yyyy'], 40, 'primaryKey', null),
     Column.cell('MM', Messages['PrdMProNesCountsGrid.mm'], 20, 'primaryKey', null),
     Column.text('PRO_NES_COUNTS', Messages['PrdMProNesCountsGrid.proNesCounts'], 70, '', null),

@@ -9,6 +9,26 @@
 
 </script>
 <script th:src="@{/model/MstStructureBkGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanGridColumns.js}"></script>
+<script th:src="@{/model/InvPrintWarehousingslipGridColumns.js}"></script>
+<script th:src="@{/model/MstEmpGridColumns.js}"></script>
+<script th:src="@{/model/MstDivisionGridColumns.js}"></script>
+<script th:src="@{/model/MstCompanyGridColumns.js}"></script>
+<script th:src="@{/model/InvStockStoreGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanBkGridColumns.js}"></script>
+<script th:src="@{/model/MstUnitGridColumns.js}"></script>
+<script th:src="@{/model/MstAccountCodeGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanEmpGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceBkGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierGridColumns.js}"></script>
+<script th:src="@{/model/InvStockProcessSupplyGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierBkGridColumns.js}"></script>
+<script th:src="@{/model/MstTaxGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailBkGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailHsGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceHsGridColumns.js}"></script>
 </head>
 <body>
   <div layout:fragment="article">
@@ -20,10 +40,10 @@
           <label for="MstStructureBk.yy" th:text="#{MstStructureBk.yy}">YY</label><input type="text" id="MstStructureBk.yy" name="MstStructureBk.yy" maxlength="4" />
         </div>
         <div id="manHinban">
-          <label for="MstStructureBk.manHinban" th:text="#{MstStructureBk.manHinban}">MAN_HINBAN</label><input type="text" id="MstStructureBk.manHinban" name="MstStructureBk.manHinban" maxlength="25" />
+          <label for="MstStructureBk.manHinban" th:text="#{MstStructureBk.manHinban}">MAN_HINBAN</label><input type="text" id="MstStructureBk.manHinban" name="MstStructureBk.manHinban" maxlength="25" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:MstStructureBk.manHinban" data-destDef="MstStructureBk.manItem:ITEM" /><a id="MstStructureBk.manHinban" th:href="@{/model/MstHinbanS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MstStructureBk.manItem" class="refer" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:MstStructureBk.manHinban" data-destDef="MstStructureBk.manItem:ITEM"></span>
         </div>
         <div id="hinban">
-          <label for="MstStructureBk.hinban" th:text="#{MstStructureBk.hinban}">HINBAN</label><input type="text" id="MstStructureBk.hinban" name="MstStructureBk.hinban" maxlength="25" />
+          <label for="MstStructureBk.hinban" th:text="#{MstStructureBk.hinban}">HINBAN</label><input type="text" id="MstStructureBk.hinban" name="MstStructureBk.hinban" maxlength="25" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:MstStructureBk.hinban" data-destDef="MstStructureBk.item:ITEM" /><a id="MstStructureBk.hinban" th:href="@{/model/MstHinbanS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MstStructureBk.item" class="refer" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:MstStructureBk.hinban" data-destDef="MstStructureBk.item:ITEM"></span>
         </div>
         <div id="counts">
           <label for="MstStructureBk.counts" th:text="#{MstStructureBk.counts}">COUNTS</label><input type="text" id="MstStructureBk.counts" name="MstStructureBk.counts" maxlength="11" />
@@ -41,6 +61,7 @@
       </fieldset>
       <div class="buttons">
         <button type="reset" th:text="#{common.reset}">reset</button>
+        <a th:href="@{/model/MstStructureBk.html}" id="MstStructureBk" target="dialog" th:text="#{MstStructureBk.add}" tabindex="-1">MST_STRUCTURE_BK</a>
       </div>
       <div class="submits">
         <button id="SearchMstStructureBk" class="search" data-gridId="MstStructureBkGrid" th:text="#{common.search}">submit</button>

@@ -13,6 +13,8 @@ WHERE
     AND TRIM (a."UBINNO") = TRIM (:ubinno) 
     AND TRIM (a."TELNO") = TRIM (:telno) 
     AND a."TOUROKUBI" = :tourokubi 
+    AND a."TOUROKUBI" >= :tourokubi_1 
+    AND a."TOUROKUBI" <= :tourokubi_2 
     AND TRIM (a."KCHOKUMEI") = TRIM (:kchokumei) 
     AND TRIM (a."SICHOCD") = TRIM (:sichocd) 
     AND TRIM (a."FAXNO") = TRIM (:faxno) 
@@ -20,7 +22,7 @@ WHERE
     AND TRIM (a."UNSOCD") = TRIM (:unsocd) 
     AND TRIM (a."TIKUCD") = TRIM (:tikucd) 
     AND TRIM (a."TODOFUKENCD") = TRIM (:todofukencd) 
-    AND TRIM (a."UPDNKINKBN") = TRIM (:updnkinkbn) 
+    AND TRIM (a."UPDNKINKBN") IN (:updnkinkbn) 
     AND TRIM (a."FILLER") = TRIM (:filler) 
 ORDER BY
     a."CHOKUCD"

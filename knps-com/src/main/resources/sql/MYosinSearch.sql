@@ -15,6 +15,8 @@ WHERE
     AND a."KASIDAORE-HIKIATE" = :kasidaore_hikiate 
     AND a."SHUKA-GENDO" = :shuka_gendo 
     AND a."TOUROKUBI" = :tourokubi 
+    AND a."TOUROKUBI" >= :tourokubi_1 
+    AND a."TOUROKUBI" <= :tourokubi_2 
     AND a."UPDDATE" = :upddate 
     AND TRIM (a."FILLER") = TRIM (:filler) 
 ORDER BY

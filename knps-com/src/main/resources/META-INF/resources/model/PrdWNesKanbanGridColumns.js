@@ -3,7 +3,7 @@
  */
 
 let PrdWNesKanbanGridColumns = [
-    Column.cell('PRO_HINBAN', Messages['PrdWNesKanbanGrid.proHinban'], 250, 'primaryKey', null),
+    Column.refer('PRO_HINBAN', Messages['PrdWNesKanbanGrid.proHinban'], 250, 'primaryKey', 'PRO_HINMEI'),
     Column.text('STORE_WC', Messages['PrdWNesKanbanGrid.storeWc'], 30, '', null),
     Column.cell('ROUTING', Messages['PrdWNesKanbanGrid.routing'], 20, 'primaryKey', null),
     Column.cell('ROUTING_DEF_GROUP', Messages['PrdWNesKanbanGrid.routingDefGroup'], 20, 'primaryKey', null),

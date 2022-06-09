@@ -4,7 +4,7 @@
 
 let MfgKanbanHedGridColumns = [
     Column.cell('ROUTING_GROUP', Messages['MfgKanbanHedGrid.routingGroup'], 20, 'primaryKey', null),
-    Column.cell('MAN_HINBAN', Messages['MfgKanbanHedGrid.manHinban'], 250, 'primaryKey', null),
+    Column.refer('MAN_HINBAN', Messages['MfgKanbanHedGrid.manHinban'], 250, 'primaryKey', 'MAN_HINMEI'),
     Column.cell('ROUTING', Messages['MfgKanbanHedGrid.routing'], 20, 'primaryKey', null),
     Column.text('KANBAN_ID_CURRENT', Messages['MfgKanbanHedGrid.kanbanIdCurrent'], 90, '', null),
     Column.text('KANBAN_ID_NEXT', Messages['MfgKanbanHedGrid.kanbanIdNext'], 90, '', null),

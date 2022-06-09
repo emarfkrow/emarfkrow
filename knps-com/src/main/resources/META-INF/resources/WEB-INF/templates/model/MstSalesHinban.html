@@ -10,6 +10,26 @@
 </script>
 <script th:src="@{/model/MstSalesHinbanGridColumns.js}"></script>
 <script th:src="@{/model/InvSalesInventoryGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanGridColumns.js}"></script>
+<script th:src="@{/model/InvPrintWarehousingslipGridColumns.js}"></script>
+<script th:src="@{/model/MstEmpGridColumns.js}"></script>
+<script th:src="@{/model/MstDivisionGridColumns.js}"></script>
+<script th:src="@{/model/MstCompanyGridColumns.js}"></script>
+<script th:src="@{/model/InvStockStoreGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanBkGridColumns.js}"></script>
+<script th:src="@{/model/MstUnitGridColumns.js}"></script>
+<script th:src="@{/model/MstAccountCodeGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanEmpGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceBkGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierGridColumns.js}"></script>
+<script th:src="@{/model/InvStockProcessSupplyGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierBkGridColumns.js}"></script>
+<script th:src="@{/model/MstTaxGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailBkGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailHsGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceHsGridColumns.js}"></script>
 </head>
 <body>
   <div layout:fragment="article">
@@ -18,7 +38,7 @@
       <fieldset>
         <legend th:text="#{MstSalesHinban.legend}">legend</legend>
         <div id="salesHinban">
-          <label for="MstSalesHinban.salesHinban" th:text="#{MstSalesHinban.salesHinban}">SALES_HINBAN</label><span id="MstSalesHinban.salesHinban"></span><input type="hidden" id="MstSalesHinban.salesHinban" name="MstSalesHinban.salesHinban" class="primaryKey" />
+          <label for="MstSalesHinban.salesHinban" th:text="#{MstSalesHinban.salesHinban}">SALES_HINBAN</label><span id="MstSalesHinban.salesHinban"></span><input type="hidden" id="MstSalesHinban.salesHinban" name="MstSalesHinban.salesHinban" class="primaryKey" /><a id="MstSalesHinban.salesHinban" th:href="@{/model/MstHinbanS.html}" target="dialog" class="primaryKey refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MstSalesHinban.salesItem" class="refer" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:MstSalesHinban.salesHinban" data-destDef="MstSalesHinban.salesItem:ITEM"></span>
         </div>
         <div id="compKbn">
           <fieldset id="MstSalesHinban.compKbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:COMP_KBN" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
@@ -360,7 +380,7 @@
           </fieldset>
         </div>
         <div id="yobi">
-          <label for="MstSalesHinbanMaster.yobi" th:text="#{MstSalesHinbanMaster.yobi}">YOBI</label><input type="text" id="MstSalesHinbanMaster.yobi" name="MstSalesHinbanMaster.yobi" maxlength="23" />
+          <label for="MstSalesHinbanMaster.yobi" th:text="#{MstSalesHinbanMaster.yobi}">YOBI</label><input type="date" id="MstSalesHinbanMaster.yobi" name="MstSalesHinbanMaster.yobi" maxlength="23" />
         </div>
       </fieldset>
       <h3 th:text="#{InvSalesInventory.h3}">h3</h3>

@@ -7,7 +7,7 @@ WHERE
     1 = 1 
     AND TRIM (a."EMP_CODE") IN (:emp_code) 
     AND a."EMP_NAME" LIKE '%' || :emp_name || '%' 
-    AND a."POSITION" = :position 
+    AND a."POSITION" IN (:position) 
     AND a."COMP_CODE" IN (:comp_code) 
     AND a."PASSWORD" = :password 
     AND a."TEL_NO" = :tel_no 

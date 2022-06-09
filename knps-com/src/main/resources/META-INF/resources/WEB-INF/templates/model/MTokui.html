@@ -56,61 +56,89 @@
           <label for="MTokui.shukeicd" th:text="#{MTokui.shukeicd}">集計先コード</label><input type="text" id="MTokui.shukeicd" name="MTokui.shukeicd" maxlength="8" />
         </div>
         <div id="tankakbn">
-          <label for="MTokui.tankakbn" th:text="#{MTokui.tankakbn}">単価資格区分</label><input type="text" id="MTokui.tankakbn" name="MTokui.tankakbn" maxlength="2" />
+          <fieldset id="MTokui.tankakbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:TANKAKBN" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MTokui.tankakbn}">単価資格区分</legend>
+          </fieldset>
         </div>
         <div id="bonuskbn">
-          <label for="MTokui.bonuskbn" th:text="#{MTokui.bonuskbn}">ボーナス区分</label><input type="text" id="MTokui.bonuskbn" name="MTokui.bonuskbn" maxlength="1" />
+          <fieldset id="MTokui.bonuskbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:BONUSKBN" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MTokui.bonuskbn}">ボーナス区分</legend>
+          </fieldset>
         </div>
         <div id="nohinkbn">
-          <label for="MTokui.nohinkbn" th:text="#{MTokui.nohinkbn}">納品書区分</label><input type="text" id="MTokui.nohinkbn" name="MTokui.nohinkbn" maxlength="2" />
+          <fieldset id="MTokui.nohinkbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:NOHINKBN" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MTokui.nohinkbn}">納品書区分</legend>
+          </fieldset>
         </div>
         <div id="hakkokbn">
-          <label for="MTokui.hakkokbn" th:text="#{MTokui.hakkokbn}">納品書発行区分</label><input type="text" id="MTokui.hakkokbn" name="MTokui.hakkokbn" maxlength="1" />
+          <fieldset id="MTokui.hakkokbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:HAKKOKBN" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MTokui.hakkokbn}">納品書発行区分</legend>
+          </fieldset>
         </div>
         <div id="nohinformkbn">
-          <label for="MTokui.nohinformkbn" th:text="#{MTokui.nohinformkbn}">納品書フォーム区分</label><input type="text" id="MTokui.nohinformkbn" name="MTokui.nohinformkbn" maxlength="3" />
+          <fieldset id="MTokui.nohinformkbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:NOHINFORMKBN" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MTokui.nohinformkbn}">納品書フォーム区分</legend>
+          </fieldset>
         </div>
         <div id="simukekbn">
-          <label for="MTokui.simukekbn" th:text="#{MTokui.simukekbn}">仕向け区分</label><input type="text" id="MTokui.simukekbn" name="MTokui.simukekbn" maxlength="1" />
+          <fieldset id="MTokui.simukekbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:SIMUKEKBN" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MTokui.simukekbn}">仕向け区分</legend>
+          </fieldset>
         </div>
         <div id="eigyokbn">
-          <label for="MTokui.eigyokbn" th:text="#{MTokui.eigyokbn}">営業所区分</label><input type="text" id="MTokui.eigyokbn" name="MTokui.eigyokbn" maxlength="2" />
+          <fieldset id="MTokui.eigyokbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:EIGYOKBN" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MTokui.eigyokbn}">営業所区分</legend>
+          </fieldset>
         </div>
         <div id="filler1">
           <label for="MTokui.filler1" th:text="#{MTokui.filler1}">予備領域１</label><input type="text" id="MTokui.filler1" name="MTokui.filler1" maxlength="1" />
         </div>
         <div id="kinlesskbn">
-          <label for="MTokui.kinlesskbn" th:text="#{MTokui.kinlesskbn}">金額レス区分</label><input type="text" id="MTokui.kinlesskbn" name="MTokui.kinlesskbn" maxlength="1" />
+          <fieldset id="MTokui.kinlesskbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:KINLESSKBN" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MTokui.kinlesskbn}">金額レス区分</legend>
+          </fieldset>
         </div>
         <div id="seikyokbn">
-          <label for="MTokui.seikyokbn" th:text="#{MTokui.seikyokbn}">正協レス区分</label><input type="text" id="MTokui.seikyokbn" name="MTokui.seikyokbn" maxlength="1" />
+          <fieldset id="MTokui.seikyokbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:SEIKYOKBN" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MTokui.seikyokbn}">正協レス区分</legend>
+          </fieldset>
         </div>
         <div id="tikusimebi">
-          <label for="MTokui.tikusimebi" th:text="#{MTokui.tikusimebi}">地区締切日</label><input type="text" id="MTokui.tikusimebi" name="MTokui.tikusimebi" maxlength="2" />
+          <label for="MTokui.tikusimebi" th:text="#{MTokui.tikusimebi}">地区締切日</label><input type="date" id="MTokui.tikusimebi" name="MTokui.tikusimebi" maxlength="2" />
         </div>
         <div id="misesimebi">
-          <label for="MTokui.misesimebi" th:text="#{MTokui.misesimebi}">得意先締切日</label><input type="text" id="MTokui.misesimebi" name="MTokui.misesimebi" maxlength="2" />
+          <label for="MTokui.misesimebi" th:text="#{MTokui.misesimebi}">得意先締切日</label><input type="date" id="MTokui.misesimebi" name="MTokui.misesimebi" maxlength="2" />
         </div>
         <div id="tourokubi">
-          <label for="MTokui.tourokubi" th:text="#{MTokui.tourokubi}">マスター登録日</label><input type="text" id="MTokui.tourokubi" name="MTokui.tourokubi" maxlength="8" />
+          <label for="MTokui.tourokubi" th:text="#{MTokui.tourokubi}">マスター登録日</label><input type="date" id="MTokui.tourokubi" name="MTokui.tourokubi" maxlength="8" />
         </div>
         <div id="jukinkbn">
-          <label for="MTokui.jukinkbn" th:text="#{MTokui.jukinkbn}">受注禁止区分</label><input type="text" id="MTokui.jukinkbn" name="MTokui.jukinkbn" maxlength="1" />
+          <fieldset id="MTokui.jukinkbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:JUKINKBN" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MTokui.jukinkbn}">受注禁止区分</legend>
+          </fieldset>
         </div>
         <div id="tenkinkbn">
-          <label for="MTokui.tenkinkbn" th:text="#{MTokui.tenkinkbn}">転売禁止区分</label><input type="text" id="MTokui.tenkinkbn" name="MTokui.tenkinkbn" maxlength="1" />
+          <fieldset id="MTokui.tenkinkbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:TENKINKBN" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MTokui.tenkinkbn}">転売禁止区分</legend>
+          </fieldset>
         </div>
         <div id="urisumkbn">
-          <label for="MTokui.urisumkbn" th:text="#{MTokui.urisumkbn}">売上集計区分</label><input type="text" id="MTokui.urisumkbn" name="MTokui.urisumkbn" maxlength="1" />
+          <fieldset id="MTokui.urisumkbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:URISUMKBN" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MTokui.urisumkbn}">売上集計区分</legend>
+          </fieldset>
         </div>
         <div id="diykbn">
-          <label for="MTokui.diykbn" th:text="#{MTokui.diykbn}">ＤＩＹ区分</label><input type="text" id="MTokui.diykbn" name="MTokui.diykbn" maxlength="1" />
+          <fieldset id="MTokui.diykbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:DIYKBN" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MTokui.diykbn}">ＤＩＹ区分</legend>
+          </fieldset>
         </div>
         <div id="ktokumei">
           <label for="MTokui.ktokumei" th:text="#{MTokui.ktokumei}">カナ得意先名</label><input type="text" id="MTokui.ktokumei" name="MTokui.ktokumei" maxlength="20" />
         </div>
         <div id="zeikbn">
-          <label for="MTokui.zeikbn" th:text="#{MTokui.zeikbn}">消費税区分</label><input type="text" id="MTokui.zeikbn" name="MTokui.zeikbn" maxlength="1" />
+          <fieldset id="MTokui.zeikbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:ZEIKBN" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MTokui.zeikbn}">消費税区分</legend>
+          </fieldset>
         </div>
         <div id="eiTantocd">
           <label for="MTokui.eiTantocd" th:text="#{MTokui.eiTantocd}">営業担当者コード</label><input type="text" id="MTokui.eiTantocd" name="MTokui.eiTantocd" maxlength="4" />
@@ -131,7 +159,9 @@
           <label for="MTokui.tokuikbn3" th:text="#{MTokui.tokuikbn3}">得意先区分３</label><input type="text" id="MTokui.tokuikbn3" name="MTokui.tokuikbn3" maxlength="2" />
         </div>
         <div id="faxkbn">
-          <label for="MTokui.faxkbn" th:text="#{MTokui.faxkbn}">ＦＡＸ区分</label><input type="text" id="MTokui.faxkbn" name="MTokui.faxkbn" maxlength="1" />
+          <fieldset id="MTokui.faxkbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:FAXKBN" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MTokui.faxkbn}">ＦＡＸ区分</legend>
+          </fieldset>
         </div>
         <div id="unsocd">
           <label for="MTokui.unsocd" th:text="#{MTokui.unsocd}">運送会社コード</label><input type="text" id="MTokui.unsocd" name="MTokui.unsocd" maxlength="3" />
@@ -158,7 +188,9 @@
           <label for="MTokui.kensyukikan" th:text="#{MTokui.kensyukikan}">検収期間</label><input type="text" id="MTokui.kensyukikan" name="MTokui.kensyukikan" maxlength="2" />
         </div>
         <div id="eSeikyukbn">
-          <label for="MTokui.eSeikyukbn" th:text="#{MTokui.eSeikyukbn}">請求発行区分</label><input type="text" id="MTokui.eSeikyukbn" name="MTokui.eSeikyukbn" maxlength="1" />
+          <fieldset id="MTokui.eSeikyukbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:E-SEIKYUKBN" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MTokui.eSeikyukbn}">請求発行区分</legend>
+          </fieldset>
         </div>
         <div id="filler">
           <label for="MTokui.filler" th:text="#{MTokui.filler}">予備領域</label><input type="text" id="MTokui.filler" name="MTokui.filler" maxlength="17" />

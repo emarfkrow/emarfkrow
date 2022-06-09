@@ -9,18 +9,32 @@
 
 </script>
 <script th:src="@{/model/MfgTotalCostRegLineIQGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanGridColumns.js}"></script>
+<script th:src="@{/model/InvPrintWarehousingslipGridColumns.js}"></script>
+<script th:src="@{/model/MstEmpGridColumns.js}"></script>
+<script th:src="@{/model/MstDivisionGridColumns.js}"></script>
+<script th:src="@{/model/MstCompanyGridColumns.js}"></script>
+<script th:src="@{/model/InvStockStoreGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanBkGridColumns.js}"></script>
+<script th:src="@{/model/MstUnitGridColumns.js}"></script>
+<script th:src="@{/model/MstAccountCodeGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanEmpGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceBkGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierGridColumns.js}"></script>
+<script th:src="@{/model/InvStockProcessSupplyGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierBkGridColumns.js}"></script>
+<script th:src="@{/model/MstTaxGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailBkGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailHsGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceHsGridColumns.js}"></script>
 <script th:src="@{/model/MstWcGridColumns.js}"></script>
 <script th:src="@{/model/MstWcBkGridColumns.js}"></script>
 <script th:src="@{/model/MstProcGridColumns.js}"></script>
 <script th:src="@{/model/MstWsGridColumns.js}"></script>
 <script th:src="@{/model/MstTeamGridColumns.js}"></script>
 <script th:src="@{/model/MstGroupGridColumns.js}"></script>
-<script th:src="@{/model/MstDivisionGridColumns.js}"></script>
-<script th:src="@{/model/MstCompanyGridColumns.js}"></script>
-<script th:src="@{/model/MstSupplierGridColumns.js}"></script>
-<script th:src="@{/model/InvStockProcessSupplyGridColumns.js}"></script>
-<script th:src="@{/model/MstSupplierBkGridColumns.js}"></script>
-<script th:src="@{/model/MstTaxGridColumns.js}"></script>
 <script th:src="@{/model/MstCostCenterGridColumns.js}"></script>
 <script th:src="@{/model/MstCostCenterBkGridColumns.js}"></script>
 <script th:src="@{/model/MstSubinvGridColumns.js}"></script>
@@ -41,7 +55,7 @@
           <label for="MfgTotalCostRegLineIQ.proGroupNo" th:text="#{MfgTotalCostRegLineIQ.proGroupNo}">PRO_GROUP_NO</label><input type="text" id="MfgTotalCostRegLineIQ.proGroupNo" name="MfgTotalCostRegLineIQ.proGroupNo" maxlength="2" />
         </div>
         <div id="hinban">
-          <label for="MfgTotalCostRegLineIQ.hinban" th:text="#{MfgTotalCostRegLineIQ.hinban}">HINBAN</label><input type="text" id="MfgTotalCostRegLineIQ.hinban" name="MfgTotalCostRegLineIQ.hinban" maxlength="25" />
+          <label for="MfgTotalCostRegLineIQ.hinban" th:text="#{MfgTotalCostRegLineIQ.hinban}">HINBAN</label><input type="text" id="MfgTotalCostRegLineIQ.hinban" name="MfgTotalCostRegLineIQ.hinban" maxlength="25" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:MfgTotalCostRegLineIQ.hinban" data-destDef="MfgTotalCostRegLineIQ.item:ITEM" /><a id="MfgTotalCostRegLineIQ.hinban" th:href="@{/model/MstHinbanS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MfgTotalCostRegLineIQ.item" class="refer" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:MfgTotalCostRegLineIQ.hinban" data-destDef="MfgTotalCostRegLineIQ.item:ITEM"></span>
         </div>
         <div id="routing">
           <label for="MfgTotalCostRegLineIQ.routing" th:text="#{MfgTotalCostRegLineIQ.routing}">ROUTING</label><input type="text" id="MfgTotalCostRegLineIQ.routing" name="MfgTotalCostRegLineIQ.routing" maxlength="2" />

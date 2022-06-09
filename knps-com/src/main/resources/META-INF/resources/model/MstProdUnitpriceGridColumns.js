@@ -4,7 +4,7 @@
 
 let MstProdUnitpriceGridColumns = [
     Column.cell('ROUTING_GROUP', Messages['MstProdUnitpriceGrid.routingGroup'], 20, 'primaryKey', null),
-    Column.cell('MAN_HINBAN', Messages['MstProdUnitpriceGrid.manHinban'], 250, 'primaryKey', null),
+    Column.refer('MAN_HINBAN', Messages['MstProdUnitpriceGrid.manHinban'], 250, 'primaryKey', 'MAN_HINMEI'),
     Column.cell('ROUTING', Messages['MstProdUnitpriceGrid.routing'], 20, 'primaryKey', null),
     Column.refer('WC_CODE', Messages['MstProdUnitpriceGrid.wcCode'], 30, 'primaryKey', 'WC_NAME'),
     Column.cell('MIN_ORDER', Messages['MstProdUnitpriceGrid.minOrder'], 110, 'primaryKey', null),

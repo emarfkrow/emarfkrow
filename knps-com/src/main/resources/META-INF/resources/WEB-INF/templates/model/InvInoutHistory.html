@@ -9,6 +9,26 @@
 
 </script>
 <script th:src="@{/model/InvInoutHistoryGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanGridColumns.js}"></script>
+<script th:src="@{/model/InvPrintWarehousingslipGridColumns.js}"></script>
+<script th:src="@{/model/MstEmpGridColumns.js}"></script>
+<script th:src="@{/model/MstDivisionGridColumns.js}"></script>
+<script th:src="@{/model/MstCompanyGridColumns.js}"></script>
+<script th:src="@{/model/InvStockStoreGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanBkGridColumns.js}"></script>
+<script th:src="@{/model/MstUnitGridColumns.js}"></script>
+<script th:src="@{/model/MstAccountCodeGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanEmpGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceBkGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierGridColumns.js}"></script>
+<script th:src="@{/model/InvStockProcessSupplyGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierBkGridColumns.js}"></script>
+<script th:src="@{/model/MstTaxGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailBkGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailHsGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceHsGridColumns.js}"></script>
 </head>
 <body>
   <div layout:fragment="article">
@@ -20,7 +40,7 @@
           <label for="InvInoutHistory.actionDate" th:text="#{InvInoutHistory.actionDate}">ACTION_DATE</label><input type="date" id="InvInoutHistory.actionDate" name="InvInoutHistory.actionDate" maxlength="7" class="primaryKey" />
         </div>
         <div id="hinban">
-          <label for="InvInoutHistory.hinban" th:text="#{InvInoutHistory.hinban}">HINBAN</label><span id="InvInoutHistory.hinban"></span><input type="hidden" id="InvInoutHistory.hinban" name="InvInoutHistory.hinban" class="primaryKey" />
+          <label for="InvInoutHistory.hinban" th:text="#{InvInoutHistory.hinban}">HINBAN</label><span id="InvInoutHistory.hinban"></span><input type="hidden" id="InvInoutHistory.hinban" name="InvInoutHistory.hinban" class="primaryKey" /><a id="InvInoutHistory.hinban" th:href="@{/model/MstHinbanS.html}" target="dialog" class="primaryKey refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="InvInoutHistory.item" class="refer" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:InvInoutHistory.hinban" data-destDef="InvInoutHistory.item:ITEM"></span>
         </div>
         <div id="inOutCounts">
           <label for="InvInoutHistory.inOutCounts" th:text="#{InvInoutHistory.inOutCounts}">IN_OUT_COUNTS</label><input type="text" id="InvInoutHistory.inOutCounts" name="InvInoutHistory.inOutCounts" maxlength="12" class="primaryKey" />

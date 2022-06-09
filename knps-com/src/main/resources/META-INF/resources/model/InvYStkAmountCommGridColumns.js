@@ -3,7 +3,7 @@
  */
 
 let InvYStkAmountCommGridColumns = [
-    Column.cell('PRO_HINBAN', Messages['InvYStkAmountCommGrid.proHinban'], 250, 'primaryKey', null),
+    Column.refer('PRO_HINBAN', Messages['InvYStkAmountCommGrid.proHinban'], 250, 'primaryKey', 'PRO_HINMEI'),
     Column.cell('YYYY', Messages['InvYStkAmountCommGrid.yyyy'], 40, 'primaryKey', null),
     Column.cell('MM', Messages['InvYStkAmountCommGrid.mm'], 20, 'primaryKey', null),
     Column.text('NES_COUNTS', Messages['InvYStkAmountCommGrid.nesCounts'], 70, '', null),

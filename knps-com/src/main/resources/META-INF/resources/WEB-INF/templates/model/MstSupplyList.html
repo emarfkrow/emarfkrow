@@ -10,6 +10,26 @@
 </script>
 <script th:src="@{/model/MstSupplyListGridColumns.js}"></script>
 <script th:src="@{/model/MstSupplyListBkGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanGridColumns.js}"></script>
+<script th:src="@{/model/InvPrintWarehousingslipGridColumns.js}"></script>
+<script th:src="@{/model/MstEmpGridColumns.js}"></script>
+<script th:src="@{/model/MstDivisionGridColumns.js}"></script>
+<script th:src="@{/model/MstCompanyGridColumns.js}"></script>
+<script th:src="@{/model/InvStockStoreGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanBkGridColumns.js}"></script>
+<script th:src="@{/model/MstUnitGridColumns.js}"></script>
+<script th:src="@{/model/MstAccountCodeGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanEmpGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceBkGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierGridColumns.js}"></script>
+<script th:src="@{/model/InvStockProcessSupplyGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierBkGridColumns.js}"></script>
+<script th:src="@{/model/MstTaxGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailBkGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailHsGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceHsGridColumns.js}"></script>
 <script th:src="@{/model/MstSupplyListHsGridColumns.js}"></script>
 </head>
 <body>
@@ -22,13 +42,13 @@
           <label for="MstSupplyList.routingGroup" th:text="#{MstSupplyList.routingGroup}">ROUTING_GROUP</label><input type="text" id="MstSupplyList.routingGroup" name="MstSupplyList.routingGroup" maxlength="2" class="primaryKey" />
         </div>
         <div id="manHinban">
-          <label for="MstSupplyList.manHinban" th:text="#{MstSupplyList.manHinban}">MAN_HINBAN</label><span id="MstSupplyList.manHinban"></span><input type="hidden" id="MstSupplyList.manHinban" name="MstSupplyList.manHinban" class="primaryKey" />
+          <label for="MstSupplyList.manHinban" th:text="#{MstSupplyList.manHinban}">MAN_HINBAN</label><span id="MstSupplyList.manHinban"></span><input type="hidden" id="MstSupplyList.manHinban" name="MstSupplyList.manHinban" class="primaryKey" /><a id="MstSupplyList.manHinban" th:href="@{/model/MstHinbanS.html}" target="dialog" class="primaryKey refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MstSupplyList.manItem" class="refer" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:MstSupplyList.manHinban" data-destDef="MstSupplyList.manItem:ITEM"></span>
         </div>
         <div id="routing">
           <label for="MstSupplyList.routing" th:text="#{MstSupplyList.routing}">ROUTING</label><input type="text" id="MstSupplyList.routing" name="MstSupplyList.routing" maxlength="2" class="primaryKey" />
         </div>
         <div id="supplyHinban">
-          <label for="MstSupplyList.supplyHinban" th:text="#{MstSupplyList.supplyHinban}">SUPPLY_HINBAN</label><span id="MstSupplyList.supplyHinban"></span><input type="hidden" id="MstSupplyList.supplyHinban" name="MstSupplyList.supplyHinban" class="primaryKey" />
+          <label for="MstSupplyList.supplyHinban" th:text="#{MstSupplyList.supplyHinban}">SUPPLY_HINBAN</label><span id="MstSupplyList.supplyHinban"></span><input type="hidden" id="MstSupplyList.supplyHinban" name="MstSupplyList.supplyHinban" class="primaryKey" /><a id="MstSupplyList.supplyHinban" th:href="@{/model/MstHinbanS.html}" target="dialog" class="primaryKey refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MstSupplyList.supplyItem" class="refer" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:MstSupplyList.supplyHinban" data-destDef="MstSupplyList.supplyItem:ITEM"></span>
         </div>
         <div id="counts">
           <label for="MstSupplyList.counts" th:text="#{MstSupplyList.counts}">COUNTS</label><input type="text" id="MstSupplyList.counts" name="MstSupplyList.counts" maxlength="11" />

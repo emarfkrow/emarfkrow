@@ -3,7 +3,7 @@
  */
 
 let MstRoutingDefGridColumns = [
-    Column.cell('MAN_HINBAN', Messages['MstRoutingDefGrid.manHinban'], 250, 'primaryKey', null),
+    Column.refer('MAN_HINBAN', Messages['MstRoutingDefGrid.manHinban'], 250, 'primaryKey', 'MAN_HINMEI'),
     Column.cell('ROUTING_GROUP', Messages['MstRoutingDefGrid.routingGroup'], 20, 'primaryKey', null),
     Column.check('PERMISSION_FLAG', Messages['MstRoutingDefGrid.permissionFlag'], 10, ''),
     Column.check('USABLE_FLAG', Messages['MstRoutingDefGrid.usableFlag'], 10, ''),

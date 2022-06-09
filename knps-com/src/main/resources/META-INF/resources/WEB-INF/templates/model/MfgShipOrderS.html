@@ -9,6 +9,26 @@
 
 </script>
 <script th:src="@{/model/MfgShipOrderGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanGridColumns.js}"></script>
+<script th:src="@{/model/InvPrintWarehousingslipGridColumns.js}"></script>
+<script th:src="@{/model/MstEmpGridColumns.js}"></script>
+<script th:src="@{/model/MstDivisionGridColumns.js}"></script>
+<script th:src="@{/model/MstCompanyGridColumns.js}"></script>
+<script th:src="@{/model/InvStockStoreGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanBkGridColumns.js}"></script>
+<script th:src="@{/model/MstUnitGridColumns.js}"></script>
+<script th:src="@{/model/MstAccountCodeGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanEmpGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceBkGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierGridColumns.js}"></script>
+<script th:src="@{/model/InvStockProcessSupplyGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierBkGridColumns.js}"></script>
+<script th:src="@{/model/MstTaxGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailBkGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailHsGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceHsGridColumns.js}"></script>
 </head>
 <body>
   <div layout:fragment="article">
@@ -23,7 +43,7 @@
           <label for="MfgShipOrder.childPlanNo" th:text="#{MfgShipOrder.childPlanNo}">CHILD_PLAN_NO</label><input type="text" id="MfgShipOrder.childPlanNo" name="MfgShipOrder.childPlanNo" maxlength="12" />
         </div>
         <div id="hinban">
-          <label for="MfgShipOrder.hinban" th:text="#{MfgShipOrder.hinban}">HINBAN</label><input type="text" id="MfgShipOrder.hinban" name="MfgShipOrder.hinban" maxlength="25" />
+          <label for="MfgShipOrder.hinban" th:text="#{MfgShipOrder.hinban}">HINBAN</label><input type="text" id="MfgShipOrder.hinban" name="MfgShipOrder.hinban" maxlength="25" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:MfgShipOrder.hinban" data-destDef="MfgShipOrder.item:ITEM" /><a id="MfgShipOrder.hinban" th:href="@{/model/MstHinbanS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MfgShipOrder.item" class="refer" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:MfgShipOrder.hinban" data-destDef="MfgShipOrder.item:ITEM"></span>
         </div>
         <div id="shipDirectCounts">
           <label for="MfgShipOrder.shipDirectCounts_1" th:text="#{MfgShipOrder.shipDirectCounts}">SHIP_DIRECT_COUNTS</label><input type="text" id="MfgShipOrder.shipDirectCounts_1" name="MfgShipOrder.shipDirectCounts_1" maxlength="11" />～<input type="text" id="MfgShipOrder.shipDirectCounts_2" name="MfgShipOrder.shipDirectCounts_2" maxlength="11" />

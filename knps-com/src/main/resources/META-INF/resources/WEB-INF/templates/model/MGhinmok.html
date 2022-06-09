@@ -9,6 +9,26 @@
 
 </script>
 <script th:src="@{/model/MGhinmokGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanGridColumns.js}"></script>
+<script th:src="@{/model/InvPrintWarehousingslipGridColumns.js}"></script>
+<script th:src="@{/model/MstEmpGridColumns.js}"></script>
+<script th:src="@{/model/MstDivisionGridColumns.js}"></script>
+<script th:src="@{/model/MstCompanyGridColumns.js}"></script>
+<script th:src="@{/model/InvStockStoreGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanBkGridColumns.js}"></script>
+<script th:src="@{/model/MstUnitGridColumns.js}"></script>
+<script th:src="@{/model/MstAccountCodeGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanEmpGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceBkGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierGridColumns.js}"></script>
+<script th:src="@{/model/InvStockProcessSupplyGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierBkGridColumns.js}"></script>
+<script th:src="@{/model/MstTaxGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailBkGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailHsGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceHsGridColumns.js}"></script>
 </head>
 <body>
   <div layout:fragment="article">
@@ -17,7 +37,7 @@
       <fieldset>
         <legend th:text="#{MGhinmok.legend}">legend</legend>
         <div id="hinban">
-          <label for="MGhinmok.hinban" th:text="#{MGhinmok.hinban}">品番</label><input type="text" id="MGhinmok.hinban" name="MGhinmok.hinban" maxlength="25" class="primaryKey" />
+          <label for="MGhinmok.hinban" th:text="#{MGhinmok.hinban}">品番</label><input type="text" id="MGhinmok.hinban" name="MGhinmok.hinban" maxlength="25" class="primaryKey" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:MGhinmok.hinban" data-destDef="MGhinmok.item:ITEM" /><a id="MGhinmok.hinban" th:href="@{/model/MstHinbanS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MGhinmok.item" class="refer" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:MGhinmok.hinban" data-destDef="MGhinmok.item:ITEM"></span>
         </div>
         <div id="hincd">
           <label for="MGhinmok.hincd" th:text="#{MGhinmok.hincd}">品目コード</label><input type="text" id="MGhinmok.hincd" name="MGhinmok.hincd" maxlength="20" />
@@ -26,10 +46,12 @@
           <label for="MGhinmok.hingenka" th:text="#{MGhinmok.hingenka}">品目合計単価</label><input type="text" id="MGhinmok.hingenka" name="MGhinmok.hingenka" maxlength="7" />
         </div>
         <div id="renkeibi">
-          <label for="MGhinmok.renkeibi" th:text="#{MGhinmok.renkeibi}">データ連携日</label><input type="text" id="MGhinmok.renkeibi" name="MGhinmok.renkeibi" maxlength="8" />
+          <label for="MGhinmok.renkeibi" th:text="#{MGhinmok.renkeibi}">データ連携日</label><input type="date" id="MGhinmok.renkeibi" name="MGhinmok.renkeibi" maxlength="8" />
         </div>
         <div id="shoriflg">
-          <label for="MGhinmok.shoriflg" th:text="#{MGhinmok.shoriflg}">処理済フラグ</label><input type="text" id="MGhinmok.shoriflg" name="MGhinmok.shoriflg" maxlength="1" />
+          <fieldset id="MGhinmok.shoriflgList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:SHORIFLG" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MGhinmok.shoriflg}">処理済フラグ</legend>
+          </fieldset>
         </div>
         <div id="filler">
           <label for="MGhinmok.filler" th:text="#{MGhinmok.filler}">予備領域</label><input type="text" id="MGhinmok.filler" name="MGhinmok.filler" maxlength="21" />

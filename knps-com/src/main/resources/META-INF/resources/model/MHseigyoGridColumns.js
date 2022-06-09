@@ -4,8 +4,8 @@
 
 let MHseigyoGridColumns = [
     Column.cell('KEYCD', Messages['MHseigyoGrid.keycd'], 10, 'primaryKey', null),
-    Column.text('KAISIBI', Messages['MHseigyoGrid.kaisibi'], 80, '', null),
-    Column.text('SHURYOBI', Messages['MHseigyoGrid.shuryobi'], 80, '', null),
+    Column.date('KAISIBI', Messages['MHseigyoGrid.kaisibi'], 80, '', null),
+    Column.date('SHURYOBI', Messages['MHseigyoGrid.shuryobi'], 80, '', null),
     Column.text('ZEIRITU', Messages['MHseigyoGrid.zeiritu'], 20, '', null),
     Column.text('YUBOENT', Messages['MHseigyoGrid.yuboent'], 10, '', null),
     Column.text('SHUSIJINO1', Messages['MHseigyoGrid.shusijino1'], 50, '', null),

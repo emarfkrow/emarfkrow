@@ -9,6 +9,26 @@
 
 </script>
 <script th:src="@{/model/PrdMonthRoutingGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanGridColumns.js}"></script>
+<script th:src="@{/model/InvPrintWarehousingslipGridColumns.js}"></script>
+<script th:src="@{/model/MstEmpGridColumns.js}"></script>
+<script th:src="@{/model/MstDivisionGridColumns.js}"></script>
+<script th:src="@{/model/MstCompanyGridColumns.js}"></script>
+<script th:src="@{/model/InvStockStoreGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanBkGridColumns.js}"></script>
+<script th:src="@{/model/MstUnitGridColumns.js}"></script>
+<script th:src="@{/model/MstAccountCodeGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanEmpGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceBkGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierGridColumns.js}"></script>
+<script th:src="@{/model/InvStockProcessSupplyGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierBkGridColumns.js}"></script>
+<script th:src="@{/model/MstTaxGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailBkGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailHsGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceHsGridColumns.js}"></script>
 </head>
 <body>
   <div layout:fragment="article">
@@ -17,7 +37,7 @@
       <fieldset>
         <legend th:text="#{PrdMonthRoutingS.legend}">legend</legend>
         <div id="hinban">
-          <label for="PrdMonthRouting.hinban" th:text="#{PrdMonthRouting.hinban}">HINBAN</label><input type="text" id="PrdMonthRouting.hinban" name="PrdMonthRouting.hinban" maxlength="25" />
+          <label for="PrdMonthRouting.hinban" th:text="#{PrdMonthRouting.hinban}">HINBAN</label><input type="text" id="PrdMonthRouting.hinban" name="PrdMonthRouting.hinban" maxlength="25" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:PrdMonthRouting.hinban" data-destDef="PrdMonthRouting.item:ITEM" /><a id="PrdMonthRouting.hinban" th:href="@{/model/MstHinbanS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="PrdMonthRouting.item" class="refer" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:PrdMonthRouting.hinban" data-destDef="PrdMonthRouting.item:ITEM"></span>
         </div>
         <div id="yyyy">
           <label for="PrdMonthRouting.yyyy" th:text="#{PrdMonthRouting.yyyy}">YYYY</label><input type="text" id="PrdMonthRouting.yyyy" name="PrdMonthRouting.yyyy" maxlength="4" />

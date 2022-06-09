@@ -9,11 +9,26 @@
 
 </script>
 <script th:src="@{/model/MSgenkaGridColumns.js}"></script>
-<script th:src="@{/model/MHhinmokGridColumns.js}"></script>
-<script th:src="@{/model/MHososetGridColumns.js}"></script>
-<script th:src="@{/model/MHosozaiGridColumns.js}"></script>
-<script th:src="@{/model/MPkoseGridColumns.js}"></script>
-<script th:src="@{/model/MPhinmokGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanGridColumns.js}"></script>
+<script th:src="@{/model/InvPrintWarehousingslipGridColumns.js}"></script>
+<script th:src="@{/model/MstEmpGridColumns.js}"></script>
+<script th:src="@{/model/MstDivisionGridColumns.js}"></script>
+<script th:src="@{/model/MstCompanyGridColumns.js}"></script>
+<script th:src="@{/model/InvStockStoreGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanBkGridColumns.js}"></script>
+<script th:src="@{/model/MstUnitGridColumns.js}"></script>
+<script th:src="@{/model/MstAccountCodeGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanEmpGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceBkGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierGridColumns.js}"></script>
+<script th:src="@{/model/InvStockProcessSupplyGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierBkGridColumns.js}"></script>
+<script th:src="@{/model/MstTaxGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailBkGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailHsGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceHsGridColumns.js}"></script>
 </head>
 <body>
   <div layout:fragment="article">
@@ -22,31 +37,33 @@
       <fieldset>
         <legend th:text="#{MSgenkaS.legend}">legend</legend>
         <div id="hhinban">
-          <label for="MSgenka.hhinban" th:text="#{MSgenka.hhinban}">販売品番</label><input type="text" id="MSgenka.hhinban" name="MSgenka.hhinban" maxlength="20" data-json="MHhinmokSearch.json" data-srcDef="HHINBAN:MSgenka.hhinban" data-destDef="MSgenka.hinmei:HINMEI" /><a id="MSgenka.hhinban" th:href="@{/model/MHhinmokS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MSgenka.hinmei" class="refer" data-json="MHhinmokSearch.json" data-srcDef="HHINBAN:MSgenka.hhinban" data-destDef="MSgenka.hinmei:HINMEI"></span>
+          <label for="MSgenka.hhinban" th:text="#{MSgenka.hhinban}">販売品番</label><input type="text" id="MSgenka.hhinban" name="MSgenka.hhinban" maxlength="20" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:MSgenka.hhinban" data-destDef="MSgenka.hitem:ITEM" /><a id="MSgenka.hhinban" th:href="@{/model/MstHinbanS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MSgenka.hitem" class="refer" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:MSgenka.hhinban" data-destDef="MSgenka.hitem:ITEM"></span>
         </div>
         <div id="hincd">
           <label for="MSgenka.hincd" th:text="#{MSgenka.hincd}">品目コード</label><input type="text" id="MSgenka.hincd" name="MSgenka.hincd" maxlength="20" />
         </div>
         <div id="setkbn">
-          <label for="MSgenka.setkbn" th:text="#{MSgenka.setkbn}">セット区分</label><input type="text" id="MSgenka.setkbn" name="MSgenka.setkbn" maxlength="1" />
+          <fieldset id="MSgenka.setkbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:SETKBN" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MSgenka.setkbn}">セット区分</legend>
+          </fieldset>
         </div>
         <div id="genka">
-          <label for="MSgenka.genka" th:text="#{MSgenka.genka}">原価</label><input type="text" id="MSgenka.genka" name="MSgenka.genka" maxlength="7" />
+          <label for="MSgenka.genka_1" th:text="#{MSgenka.genka}">原価</label><input type="text" id="MSgenka.genka_1" name="MSgenka.genka_1" maxlength="7" />～<input type="text" id="MSgenka.genka_2" name="MSgenka.genka_2" maxlength="7" />
         </div>
         <div id="seihinGenka">
-          <label for="MSgenka.seihinGenka" th:text="#{MSgenka.seihinGenka}">製品原価</label><input type="text" id="MSgenka.seihinGenka" name="MSgenka.seihinGenka" maxlength="7" />
+          <label for="MSgenka.seihinGenka_1" th:text="#{MSgenka.seihinGenka}">製品原価</label><input type="text" id="MSgenka.seihinGenka_1" name="MSgenka.seihinGenka_1" maxlength="7" />～<input type="text" id="MSgenka.seihinGenka_2" name="MSgenka.seihinGenka_2" maxlength="7" />
         </div>
         <div id="shohinGenka">
-          <label for="MSgenka.shohinGenka" th:text="#{MSgenka.shohinGenka}">商品原価</label><input type="text" id="MSgenka.shohinGenka" name="MSgenka.shohinGenka" maxlength="7" />
+          <label for="MSgenka.shohinGenka_1" th:text="#{MSgenka.shohinGenka}">商品原価</label><input type="text" id="MSgenka.shohinGenka_1" name="MSgenka.shohinGenka_1" maxlength="7" />～<input type="text" id="MSgenka.shohinGenka_2" name="MSgenka.shohinGenka_2" maxlength="7" />
         </div>
         <div id="baika">
-          <label for="MSgenka.baika" th:text="#{MSgenka.baika}">売価</label><input type="text" id="MSgenka.baika" name="MSgenka.baika" maxlength="7" />
+          <label for="MSgenka.baika_1" th:text="#{MSgenka.baika}">売価</label><input type="text" id="MSgenka.baika_1" name="MSgenka.baika_1" maxlength="7" />～<input type="text" id="MSgenka.baika_2" name="MSgenka.baika_2" maxlength="7" />
         </div>
         <div id="seihinBaika">
-          <label for="MSgenka.seihinBaika" th:text="#{MSgenka.seihinBaika}">製品売価</label><input type="text" id="MSgenka.seihinBaika" name="MSgenka.seihinBaika" maxlength="7" />
+          <label for="MSgenka.seihinBaika_1" th:text="#{MSgenka.seihinBaika}">製品売価</label><input type="text" id="MSgenka.seihinBaika_1" name="MSgenka.seihinBaika_1" maxlength="7" />～<input type="text" id="MSgenka.seihinBaika_2" name="MSgenka.seihinBaika_2" maxlength="7" />
         </div>
         <div id="shohinBaika">
-          <label for="MSgenka.shohinBaika" th:text="#{MSgenka.shohinBaika}">商品売価</label><input type="text" id="MSgenka.shohinBaika" name="MSgenka.shohinBaika" maxlength="7" />
+          <label for="MSgenka.shohinBaika_1" th:text="#{MSgenka.shohinBaika}">商品売価</label><input type="text" id="MSgenka.shohinBaika_1" name="MSgenka.shohinBaika_1" maxlength="7" />～<input type="text" id="MSgenka.shohinBaika_2" name="MSgenka.shohinBaika_2" maxlength="7" />
         </div>
         <div id="filler">
           <label for="MSgenka.filler" th:text="#{MSgenka.filler}">予備領域</label><input type="text" id="MSgenka.filler" name="MSgenka.filler" maxlength="9" />

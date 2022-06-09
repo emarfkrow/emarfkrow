@@ -10,6 +10,26 @@
 </script>
 <script th:src="@{/model/MfgKanbanDetGridColumns.js}"></script>
 <script th:src="@{/model/MfgKanbanShippingGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanGridColumns.js}"></script>
+<script th:src="@{/model/InvPrintWarehousingslipGridColumns.js}"></script>
+<script th:src="@{/model/MstEmpGridColumns.js}"></script>
+<script th:src="@{/model/MstDivisionGridColumns.js}"></script>
+<script th:src="@{/model/MstCompanyGridColumns.js}"></script>
+<script th:src="@{/model/InvStockStoreGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanBkGridColumns.js}"></script>
+<script th:src="@{/model/MstUnitGridColumns.js}"></script>
+<script th:src="@{/model/MstAccountCodeGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanEmpGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceBkGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierGridColumns.js}"></script>
+<script th:src="@{/model/InvStockProcessSupplyGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierBkGridColumns.js}"></script>
+<script th:src="@{/model/MstTaxGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailBkGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailHsGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceHsGridColumns.js}"></script>
 <script th:src="@{/model/MfgKanbanStatusGridColumns.js}"></script>
 <script th:src="@{/model/MstProcGridColumns.js}"></script>
 </head>
@@ -23,7 +43,7 @@
           <label for="MfgKanbanDet.kanbanId" th:text="#{MfgKanbanDet.kanbanId}">KANBAN_ID</label><input type="text" id="MfgKanbanDet.kanbanId" name="MfgKanbanDet.kanbanId" maxlength="9" />
         </div>
         <div id="hinban">
-          <label for="MfgKanbanDet.hinban" th:text="#{MfgKanbanDet.hinban}">HINBAN</label><input type="text" id="MfgKanbanDet.hinban" name="MfgKanbanDet.hinban" maxlength="25" />
+          <label for="MfgKanbanDet.hinban" th:text="#{MfgKanbanDet.hinban}">HINBAN</label><input type="text" id="MfgKanbanDet.hinban" name="MfgKanbanDet.hinban" maxlength="25" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:MfgKanbanDet.hinban" data-destDef="MfgKanbanDet.item:ITEM" /><a id="MfgKanbanDet.hinban" th:href="@{/model/MstHinbanS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MfgKanbanDet.item" class="refer" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:MfgKanbanDet.hinban" data-destDef="MfgKanbanDet.item:ITEM"></span>
         </div>
         <div id="neckRoutingCode">
           <label for="MfgKanbanDet.neckRoutingCode" th:text="#{MfgKanbanDet.neckRoutingCode}">NECK_ROUTING_CODE</label><input type="text" id="MfgKanbanDet.neckRoutingCode" name="MfgKanbanDet.neckRoutingCode" maxlength="10" data-json="MstProcSearch.json" data-srcDef="ROUTING_CODE:MfgKanbanDet.neckRoutingCode" data-destDef="MfgKanbanDet.neckRoutingName:ROUTING_NAME" /><a id="MfgKanbanDet.neckRoutingCode" th:href="@{/model/MstProcS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MfgKanbanDet.neckRoutingName" class="refer" data-json="MstProcSearch.json" data-srcDef="ROUTING_CODE:MfgKanbanDet.neckRoutingCode" data-destDef="MfgKanbanDet.neckRoutingName:ROUTING_NAME"></span>

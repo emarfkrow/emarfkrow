@@ -1858,9 +1858,9 @@ public final class BeanGenerator {
             ColumnInfo columnInfo = e.getValue();
 
             String snake = StringUtil.toSnakeCase(columnName);
-            boolean isInputLike = StringUtil.endsWith(inputLikeSuffixs, snake);
-            boolean isInputFlag = StringUtil.endsWith(inputFlagSuffixs, snake);
-            boolean isOption = StringUtil.endsWith(optionsSuffixs, snake);
+            boolean isInputLike = StringUtil.endsWith(inputLikeSuffixs, columnName);
+            boolean isInputFlag = StringUtil.endsWith(inputFlagSuffixs, columnName);
+            boolean isOption = StringUtil.endsWith(optionsSuffixs, columnName);
 
             String quoted = DataSources.getAssist().quoted(columnName);
 
@@ -1892,7 +1892,7 @@ public final class BeanGenerator {
                 s.add("    AND a." + quoted + " = :" + snake + " ");
             }
 
-            boolean isInputRange = StringUtil.endsWith(inputRangeSuffixs, snake);
+            boolean isInputRange = StringUtil.endsWith(inputRangeSuffixs, columnName);
 
             if (isInputRange) {
                 s.add("    AND a." + quoted + " >= :" + snake + "_1 ");

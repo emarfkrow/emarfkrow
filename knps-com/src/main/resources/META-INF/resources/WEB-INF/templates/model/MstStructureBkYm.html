@@ -9,6 +9,26 @@
 
 </script>
 <script th:src="@{/model/MstStructureBkYmGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanGridColumns.js}"></script>
+<script th:src="@{/model/InvPrintWarehousingslipGridColumns.js}"></script>
+<script th:src="@{/model/MstEmpGridColumns.js}"></script>
+<script th:src="@{/model/MstDivisionGridColumns.js}"></script>
+<script th:src="@{/model/MstCompanyGridColumns.js}"></script>
+<script th:src="@{/model/InvStockStoreGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanBkGridColumns.js}"></script>
+<script th:src="@{/model/MstUnitGridColumns.js}"></script>
+<script th:src="@{/model/MstAccountCodeGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanEmpGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceBkGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierGridColumns.js}"></script>
+<script th:src="@{/model/InvStockProcessSupplyGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierBkGridColumns.js}"></script>
+<script th:src="@{/model/MstTaxGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailBkGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailHsGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceHsGridColumns.js}"></script>
 </head>
 <body>
   <div layout:fragment="article">
@@ -23,10 +43,10 @@
           <label for="MstStructureBkYm.mm" th:text="#{MstStructureBkYm.mm}">MM</label><span id="MstStructureBkYm.mm"></span><input type="hidden" id="MstStructureBkYm.mm" name="MstStructureBkYm.mm" class="primaryKey" />
         </div>
         <div id="manHinban">
-          <label for="MstStructureBkYm.manHinban" th:text="#{MstStructureBkYm.manHinban}">MAN_HINBAN</label><span id="MstStructureBkYm.manHinban"></span><input type="hidden" id="MstStructureBkYm.manHinban" name="MstStructureBkYm.manHinban" class="primaryKey" />
+          <label for="MstStructureBkYm.manHinban" th:text="#{MstStructureBkYm.manHinban}">MAN_HINBAN</label><span id="MstStructureBkYm.manHinban"></span><input type="hidden" id="MstStructureBkYm.manHinban" name="MstStructureBkYm.manHinban" class="primaryKey" /><a id="MstStructureBkYm.manHinban" th:href="@{/model/MstHinbanS.html}" target="dialog" class="primaryKey refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MstStructureBkYm.manItem" class="refer" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:MstStructureBkYm.manHinban" data-destDef="MstStructureBkYm.manItem:ITEM"></span>
         </div>
         <div id="hinban">
-          <label for="MstStructureBkYm.hinban" th:text="#{MstStructureBkYm.hinban}">HINBAN</label><span id="MstStructureBkYm.hinban"></span><input type="hidden" id="MstStructureBkYm.hinban" name="MstStructureBkYm.hinban" class="primaryKey" />
+          <label for="MstStructureBkYm.hinban" th:text="#{MstStructureBkYm.hinban}">HINBAN</label><span id="MstStructureBkYm.hinban"></span><input type="hidden" id="MstStructureBkYm.hinban" name="MstStructureBkYm.hinban" class="primaryKey" /><a id="MstStructureBkYm.hinban" th:href="@{/model/MstHinbanS.html}" target="dialog" class="primaryKey refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MstStructureBkYm.item" class="refer" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:MstStructureBkYm.hinban" data-destDef="MstStructureBkYm.item:ITEM"></span>
         </div>
         <div id="counts">
           <label for="MstStructureBkYm.counts" th:text="#{MstStructureBkYm.counts}">COUNTS</label><input type="text" id="MstStructureBkYm.counts" name="MstStructureBkYm.counts" maxlength="11" />

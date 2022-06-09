@@ -9,11 +9,26 @@
 
 </script>
 <script th:src="@{/model/MTankaGridColumns.js}"></script>
-<script th:src="@{/model/MHhinmokGridColumns.js}"></script>
-<script th:src="@{/model/MHososetGridColumns.js}"></script>
-<script th:src="@{/model/MHosozaiGridColumns.js}"></script>
-<script th:src="@{/model/MPkoseGridColumns.js}"></script>
-<script th:src="@{/model/MPhinmokGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanGridColumns.js}"></script>
+<script th:src="@{/model/InvPrintWarehousingslipGridColumns.js}"></script>
+<script th:src="@{/model/MstEmpGridColumns.js}"></script>
+<script th:src="@{/model/MstDivisionGridColumns.js}"></script>
+<script th:src="@{/model/MstCompanyGridColumns.js}"></script>
+<script th:src="@{/model/InvStockStoreGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanBkGridColumns.js}"></script>
+<script th:src="@{/model/MstUnitGridColumns.js}"></script>
+<script th:src="@{/model/MstAccountCodeGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanEmpGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceBkGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierGridColumns.js}"></script>
+<script th:src="@{/model/InvStockProcessSupplyGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierBkGridColumns.js}"></script>
+<script th:src="@{/model/MstTaxGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailBkGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailHsGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceHsGridColumns.js}"></script>
 </head>
 <body>
   <div layout:fragment="article">
@@ -22,7 +37,7 @@
       <fieldset>
         <legend th:text="#{MTankaS.legend}">legend</legend>
         <div id="hhinban">
-          <label for="MTanka.hhinban" th:text="#{MTanka.hhinban}">販売品番</label><input type="text" id="MTanka.hhinban" name="MTanka.hhinban" maxlength="20" data-json="MHhinmokSearch.json" data-srcDef="HHINBAN:MTanka.hhinban" data-destDef="MTanka.hinmei:HINMEI" /><a id="MTanka.hhinban" th:href="@{/model/MHhinmokS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MTanka.hinmei" class="refer" data-json="MHhinmokSearch.json" data-srcDef="HHINBAN:MTanka.hhinban" data-destDef="MTanka.hinmei:HINMEI"></span>
+          <label for="MTanka.hhinban" th:text="#{MTanka.hhinban}">販売品番</label><input type="text" id="MTanka.hhinban" name="MTanka.hhinban" maxlength="20" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:MTanka.hhinban" data-destDef="MTanka.hitem:ITEM" /><a id="MTanka.hhinban" th:href="@{/model/MstHinbanS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MTanka.hitem" class="refer" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:MTanka.hhinban" data-destDef="MTanka.hitem:ITEM"></span>
         </div>
         <div id="dairiTanka">
           <label for="MTanka.dairiTanka" th:text="#{MTanka.dairiTanka}">代理店単価</label><input type="text" id="MTanka.dairiTanka" name="MTanka.dairiTanka" maxlength="7" />
@@ -70,10 +85,14 @@
           <label for="MTanka.kakaku6" th:text="#{MTanka.kakaku6}">価格６</label><input type="text" id="MTanka.kakaku6" name="MTanka.kakaku6" maxlength="7" />
         </div>
         <div id="shohinkbn">
-          <label for="MTanka.shohinkbn" th:text="#{MTanka.shohinkbn}">商品区分</label><input type="text" id="MTanka.shohinkbn" name="MTanka.shohinkbn" maxlength="2" />
+          <fieldset id="MTanka.shohinkbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:SHOHINKBN" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MTanka.shohinkbn}">商品区分</legend>
+          </fieldset>
         </div>
         <div id="kakakukbn">
-          <label for="MTanka.kakakukbn" th:text="#{MTanka.kakakukbn}">価格体系区分</label><input type="text" id="MTanka.kakakukbn" name="MTanka.kakakukbn" maxlength="1" />
+          <fieldset id="MTanka.kakakukbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:KAKAKUKBN" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MTanka.kakakukbn}">価格体系区分</legend>
+          </fieldset>
         </div>
         <div id="filler">
           <label for="MTanka.filler" th:text="#{MTanka.filler}">予備領域</label><input type="text" id="MTanka.filler" name="MTanka.filler" maxlength="12" />

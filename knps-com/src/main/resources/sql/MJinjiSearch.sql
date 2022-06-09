@@ -5,7 +5,7 @@ FROM
 WHERE
     1 = 1 
     AND a."SHAIN-NO" = :shain_no 
-    AND a."SHAIN-MEI" LIKE '%' || :shain_mei || '%' 
+    AND TRIM (a."SHAIN-MEI") = TRIM (:shain_mei) 
     AND a."JINJI-SHOZOKUCD" = :jinji_shozokucd 
     AND TRIM (a."FILLER") = TRIM (:filler) 
 ORDER BY

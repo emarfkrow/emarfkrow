@@ -9,6 +9,26 @@
 
 </script>
 <script th:src="@{/model/PrdStoreMainteGyoDetGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanGridColumns.js}"></script>
+<script th:src="@{/model/InvPrintWarehousingslipGridColumns.js}"></script>
+<script th:src="@{/model/MstEmpGridColumns.js}"></script>
+<script th:src="@{/model/MstDivisionGridColumns.js}"></script>
+<script th:src="@{/model/MstCompanyGridColumns.js}"></script>
+<script th:src="@{/model/InvStockStoreGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanBkGridColumns.js}"></script>
+<script th:src="@{/model/MstUnitGridColumns.js}"></script>
+<script th:src="@{/model/MstAccountCodeGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanEmpGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceBkGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierGridColumns.js}"></script>
+<script th:src="@{/model/InvStockProcessSupplyGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierBkGridColumns.js}"></script>
+<script th:src="@{/model/MstTaxGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailBkGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailHsGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceHsGridColumns.js}"></script>
 </head>
 <body>
   <div layout:fragment="article">
@@ -23,7 +43,7 @@
           <label for="PrdStoreMainteGyoDet.gyoPos" th:text="#{PrdStoreMainteGyoDet.gyoPos}">GYO_POS</label><input type="text" id="PrdStoreMainteGyoDet.gyoPos" name="PrdStoreMainteGyoDet.gyoPos" maxlength="4" />
         </div>
         <div id="hinban">
-          <label for="PrdStoreMainteGyoDet.hinban" th:text="#{PrdStoreMainteGyoDet.hinban}">HINBAN</label><input type="text" id="PrdStoreMainteGyoDet.hinban" name="PrdStoreMainteGyoDet.hinban" maxlength="25" />
+          <label for="PrdStoreMainteGyoDet.hinban" th:text="#{PrdStoreMainteGyoDet.hinban}">HINBAN</label><input type="text" id="PrdStoreMainteGyoDet.hinban" name="PrdStoreMainteGyoDet.hinban" maxlength="25" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:PrdStoreMainteGyoDet.hinban" data-destDef="PrdStoreMainteGyoDet.item:ITEM" /><a id="PrdStoreMainteGyoDet.hinban" th:href="@{/model/MstHinbanS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="PrdStoreMainteGyoDet.item" class="refer" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:PrdStoreMainteGyoDet.hinban" data-destDef="PrdStoreMainteGyoDet.item:ITEM"></span>
         </div>
       </fieldset>
       <div class="buttons">

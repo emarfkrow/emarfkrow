@@ -9,6 +9,26 @@
 
 </script>
 <script th:src="@{/model/MstSupplyListHsGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanGridColumns.js}"></script>
+<script th:src="@{/model/InvPrintWarehousingslipGridColumns.js}"></script>
+<script th:src="@{/model/MstEmpGridColumns.js}"></script>
+<script th:src="@{/model/MstDivisionGridColumns.js}"></script>
+<script th:src="@{/model/MstCompanyGridColumns.js}"></script>
+<script th:src="@{/model/InvStockStoreGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanBkGridColumns.js}"></script>
+<script th:src="@{/model/MstUnitGridColumns.js}"></script>
+<script th:src="@{/model/MstAccountCodeGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanEmpGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceBkGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierGridColumns.js}"></script>
+<script th:src="@{/model/InvStockProcessSupplyGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierBkGridColumns.js}"></script>
+<script th:src="@{/model/MstTaxGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailBkGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailHsGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceHsGridColumns.js}"></script>
 </head>
 <body>
   <div layout:fragment="article">
@@ -17,7 +37,7 @@
       <fieldset>
         <legend th:text="#{MstSupplyListHsS.legend}">legend</legend>
         <div id="manHinban">
-          <label for="MstSupplyListHs.manHinban" th:text="#{MstSupplyListHs.manHinban}">MAN_HINBAN</label><input type="text" id="MstSupplyListHs.manHinban" name="MstSupplyListHs.manHinban" maxlength="25" />
+          <label for="MstSupplyListHs.manHinban" th:text="#{MstSupplyListHs.manHinban}">MAN_HINBAN</label><input type="text" id="MstSupplyListHs.manHinban" name="MstSupplyListHs.manHinban" maxlength="25" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:MstSupplyListHs.manHinban" data-destDef="MstSupplyListHs.manItem:ITEM" /><a id="MstSupplyListHs.manHinban" th:href="@{/model/MstHinbanS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MstSupplyListHs.manItem" class="refer" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:MstSupplyListHs.manHinban" data-destDef="MstSupplyListHs.manItem:ITEM"></span>
         </div>
         <div id="routingGroup">
           <label for="MstSupplyListHs.routingGroup" th:text="#{MstSupplyListHs.routingGroup}">ROUTING_GROUP</label><input type="text" id="MstSupplyListHs.routingGroup" name="MstSupplyListHs.routingGroup" maxlength="2" />
@@ -26,7 +46,7 @@
           <label for="MstSupplyListHs.routing" th:text="#{MstSupplyListHs.routing}">ROUTING</label><input type="text" id="MstSupplyListHs.routing" name="MstSupplyListHs.routing" maxlength="2" />
         </div>
         <div id="supplyHinban">
-          <label for="MstSupplyListHs.supplyHinban" th:text="#{MstSupplyListHs.supplyHinban}">SUPPLY_HINBAN</label><input type="text" id="MstSupplyListHs.supplyHinban" name="MstSupplyListHs.supplyHinban" maxlength="25" />
+          <label for="MstSupplyListHs.supplyHinban" th:text="#{MstSupplyListHs.supplyHinban}">SUPPLY_HINBAN</label><input type="text" id="MstSupplyListHs.supplyHinban" name="MstSupplyListHs.supplyHinban" maxlength="25" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:MstSupplyListHs.supplyHinban" data-destDef="MstSupplyListHs.supplyItem:ITEM" /><a id="MstSupplyListHs.supplyHinban" th:href="@{/model/MstHinbanS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MstSupplyListHs.supplyItem" class="refer" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:MstSupplyListHs.supplyHinban" data-destDef="MstSupplyListHs.supplyItem:ITEM"></span>
         </div>
         <div id="counts">
           <label for="MstSupplyListHs.counts" th:text="#{MstSupplyListHs.counts}">COUNTS</label><input type="text" id="MstSupplyListHs.counts" name="MstSupplyListHs.counts" maxlength="11" />
@@ -50,6 +70,7 @@
       </fieldset>
       <div class="buttons">
         <button type="reset" th:text="#{common.reset}">reset</button>
+        <a th:href="@{/model/MstSupplyListHs.html}" id="MstSupplyListHs" target="dialog" th:text="#{MstSupplyListHs.add}" tabindex="-1">MST_SUPPLY_LIST_HS</a>
       </div>
       <div class="submits">
         <button id="SearchMstSupplyListHs" class="search" data-gridId="MstSupplyListHsGrid" th:text="#{common.search}">submit</button>

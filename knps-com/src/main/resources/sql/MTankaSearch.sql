@@ -1,6 +1,6 @@
 SELECT
       a.*
-    , (SELECT r1."HINMEI" FROM M_HHINMOK r1 WHERE r1."HHINBAN" = a."HHINBAN") AS "HINMEI"
+    , (SELECT r1."ITEM" FROM MST_HINBAN r1 WHERE r1."HINBAN" = a."HHINBAN") AS "HITEM"
 FROM
     M_TANKA a 
 WHERE
@@ -21,8 +21,8 @@ WHERE
     AND a."KAKAKU4" = :kakaku4 
     AND a."KAKAKU5" = :kakaku5 
     AND a."KAKAKU6" = :kakaku6 
-    AND TRIM (a."SHOHINKBN") = TRIM (:shohinkbn) 
-    AND TRIM (a."KAKAKUKBN") = TRIM (:kakakukbn) 
+    AND TRIM (a."SHOHINKBN") IN (:shohinkbn) 
+    AND TRIM (a."KAKAKUKBN") IN (:kakakukbn) 
     AND TRIM (a."FILLER") = TRIM (:filler) 
 ORDER BY
     a."HHINBAN"

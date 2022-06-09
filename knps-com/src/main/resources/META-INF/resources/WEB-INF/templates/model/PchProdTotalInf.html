@@ -9,6 +9,26 @@
 
 </script>
 <script th:src="@{/model/PchProdTotalInfGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanGridColumns.js}"></script>
+<script th:src="@{/model/InvPrintWarehousingslipGridColumns.js}"></script>
+<script th:src="@{/model/MstEmpGridColumns.js}"></script>
+<script th:src="@{/model/MstDivisionGridColumns.js}"></script>
+<script th:src="@{/model/MstCompanyGridColumns.js}"></script>
+<script th:src="@{/model/InvStockStoreGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanBkGridColumns.js}"></script>
+<script th:src="@{/model/MstUnitGridColumns.js}"></script>
+<script th:src="@{/model/MstAccountCodeGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanEmpGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceBkGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierGridColumns.js}"></script>
+<script th:src="@{/model/InvStockProcessSupplyGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierBkGridColumns.js}"></script>
+<script th:src="@{/model/MstTaxGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailBkGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailHsGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceHsGridColumns.js}"></script>
 </head>
 <body>
   <div layout:fragment="article">
@@ -23,7 +43,7 @@
           <label for="PchProdTotalInf.routingGroup" th:text="#{PchProdTotalInf.routingGroup}">ROUTING_GROUP</label><input type="text" id="PchProdTotalInf.routingGroup" name="PchProdTotalInf.routingGroup" maxlength="2" class="primaryKey" />
         </div>
         <div id="hinban">
-          <label for="PchProdTotalInf.hinban" th:text="#{PchProdTotalInf.hinban}">HINBAN</label><span id="PchProdTotalInf.hinban"></span><input type="hidden" id="PchProdTotalInf.hinban" name="PchProdTotalInf.hinban" class="primaryKey" />
+          <label for="PchProdTotalInf.hinban" th:text="#{PchProdTotalInf.hinban}">HINBAN</label><span id="PchProdTotalInf.hinban"></span><input type="hidden" id="PchProdTotalInf.hinban" name="PchProdTotalInf.hinban" class="primaryKey" /><a id="PchProdTotalInf.hinban" th:href="@{/model/MstHinbanS.html}" target="dialog" class="primaryKey refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="PchProdTotalInf.item" class="refer" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:PchProdTotalInf.hinban" data-destDef="PchProdTotalInf.item:ITEM"></span>
         </div>
         <div id="routing">
           <label for="PchProdTotalInf.routing" th:text="#{PchProdTotalInf.routing}">ROUTING</label><input type="text" id="PchProdTotalInf.routing" name="PchProdTotalInf.routing" maxlength="2" class="primaryKey" />

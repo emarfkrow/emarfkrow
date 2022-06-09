@@ -9,6 +9,26 @@
 
 </script>
 <script th:src="@{/model/PrdSalesTargetMonthGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanGridColumns.js}"></script>
+<script th:src="@{/model/InvPrintWarehousingslipGridColumns.js}"></script>
+<script th:src="@{/model/MstEmpGridColumns.js}"></script>
+<script th:src="@{/model/MstDivisionGridColumns.js}"></script>
+<script th:src="@{/model/MstCompanyGridColumns.js}"></script>
+<script th:src="@{/model/InvStockStoreGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanBkGridColumns.js}"></script>
+<script th:src="@{/model/MstUnitGridColumns.js}"></script>
+<script th:src="@{/model/MstAccountCodeGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanEmpGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceBkGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierGridColumns.js}"></script>
+<script th:src="@{/model/InvStockProcessSupplyGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierBkGridColumns.js}"></script>
+<script th:src="@{/model/MstTaxGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailBkGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailHsGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceHsGridColumns.js}"></script>
 </head>
 <body>
   <div layout:fragment="article">
@@ -26,7 +46,7 @@
           <label for="PrdSalesTargetMonth.fileId" th:text="#{PrdSalesTargetMonth.fileId}">FILE_ID</label><input type="text" id="PrdSalesTargetMonth.fileId" name="PrdSalesTargetMonth.fileId" maxlength="1" class="primaryKey" />
         </div>
         <div id="salesHinban">
-          <label for="PrdSalesTargetMonth.salesHinban" th:text="#{PrdSalesTargetMonth.salesHinban}">SALES_HINBAN</label><span id="PrdSalesTargetMonth.salesHinban"></span><input type="hidden" id="PrdSalesTargetMonth.salesHinban" name="PrdSalesTargetMonth.salesHinban" class="primaryKey" />
+          <label for="PrdSalesTargetMonth.salesHinban" th:text="#{PrdSalesTargetMonth.salesHinban}">SALES_HINBAN</label><span id="PrdSalesTargetMonth.salesHinban"></span><input type="hidden" id="PrdSalesTargetMonth.salesHinban" name="PrdSalesTargetMonth.salesHinban" class="primaryKey" /><a id="PrdSalesTargetMonth.salesHinban" th:href="@{/model/MstHinbanS.html}" target="dialog" class="primaryKey refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="PrdSalesTargetMonth.salesItem" class="refer" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:PrdSalesTargetMonth.salesHinban" data-destDef="PrdSalesTargetMonth.salesItem:ITEM"></span>
         </div>
         <div id="salesTargetCounts">
           <label for="PrdSalesTargetMonth.salesTargetCounts" th:text="#{PrdSalesTargetMonth.salesTargetCounts}">SALES_TARGET_COUNTS</label><input type="text" id="PrdSalesTargetMonth.salesTargetCounts" name="PrdSalesTargetMonth.salesTargetCounts" maxlength="7" />

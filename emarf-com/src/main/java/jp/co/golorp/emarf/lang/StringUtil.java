@@ -236,7 +236,7 @@ public final class StringUtil {
      * @return boolean
      */
     public static boolean endWithIgnoreCase(final String suffix, final String s) {
-        return s.matches("(?i).+" + suffix + "$");
+        return s.matches("(?i).*" + suffix + "$");
     }
 
     /**

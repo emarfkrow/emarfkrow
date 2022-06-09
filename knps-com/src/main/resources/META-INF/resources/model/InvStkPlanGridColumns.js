@@ -3,7 +3,7 @@
  */
 
 let InvStkPlanGridColumns = [
-    Column.cell('PRO_HINBAN', Messages['InvStkPlanGrid.proHinban'], 250, 'primaryKey', null),
+    Column.refer('PRO_HINBAN', Messages['InvStkPlanGrid.proHinban'], 250, 'primaryKey', 'PRO_HINMEI'),
     Column.cell('YYYY', Messages['InvStkPlanGrid.yyyy'], 40, 'primaryKey', null),
     Column.cell('MM', Messages['InvStkPlanGrid.mm'], 20, 'primaryKey', null),
     Column.text('PAP_KAN_AMT_SCH', Messages['InvStkPlanGrid.papKanAmtSch'], 40, '', null),

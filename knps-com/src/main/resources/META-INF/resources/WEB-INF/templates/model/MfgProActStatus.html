@@ -41,7 +41,7 @@
           <label for="PrdDailyProPlanDetail.planNo" th:text="#{PrdDailyProPlanDetail.planNo}">PLAN_NO</label><input type="text" id="PrdDailyProPlanDetail.planNo" name="PrdDailyProPlanDetail.planNo" maxlength="10" />
         </div>
         <div id="hinban">
-          <label for="PrdDailyProPlanDetail.hinban" th:text="#{PrdDailyProPlanDetail.hinban}">HINBAN</label><input type="text" id="PrdDailyProPlanDetail.hinban" name="PrdDailyProPlanDetail.hinban" maxlength="25" />
+          <label for="PrdDailyProPlanDetail.hinban" th:text="#{PrdDailyProPlanDetail.hinban}">HINBAN</label><input type="text" id="PrdDailyProPlanDetail.hinban" name="PrdDailyProPlanDetail.hinban" maxlength="25" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:PrdDailyProPlanDetail.hinban" data-destDef="PrdDailyProPlanDetail.item:ITEM" /><a id="PrdDailyProPlanDetail.hinban" th:href="@{/model/MstHinbanS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="PrdDailyProPlanDetail.item" class="refer" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:PrdDailyProPlanDetail.hinban" data-destDef="PrdDailyProPlanDetail.item:ITEM"></span>
         </div>
         <div id="lotSize">
           <label for="PrdDailyProPlanDetail.lotSize" th:text="#{PrdDailyProPlanDetail.lotSize}">LOT_SIZE</label><input type="text" id="PrdDailyProPlanDetail.lotSize" name="PrdDailyProPlanDetail.lotSize" maxlength="6" />

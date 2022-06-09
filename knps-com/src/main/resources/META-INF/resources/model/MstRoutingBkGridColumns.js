@@ -4,7 +4,7 @@
 
 let MstRoutingBkGridColumns = [
     Column.cell('YY', Messages['MstRoutingBkGrid.yy'], 40, 'primaryKey', null),
-    Column.cell('MAN_HINBAN', Messages['MstRoutingBkGrid.manHinban'], 250, 'primaryKey', null),
+    Column.refer('MAN_HINBAN', Messages['MstRoutingBkGrid.manHinban'], 250, 'primaryKey', 'MAN_HINMEI'),
     Column.cell('ROUTING_GROUP', Messages['MstRoutingBkGrid.routingGroup'], 20, 'primaryKey', null),
     Column.cell('ROUTING', Messages['MstRoutingBkGrid.routing'], 20, 'primaryKey', null),
     Column.text('NECK_ROUTING', Messages['MstRoutingBkGrid.neckRouting'], 10, '', null),

@@ -68,7 +68,7 @@ let MstHinbanGridColumns = [
     Column.text('TANTAI_LT', Messages['MstHinbanGrid.tantaiLt'], 70, '', null),
     Column.text('TSUKESU', Messages['MstHinbanGrid.tsukesu'], 30, '', null),
     Column.text('EX_TAX_RATE', Messages['MstHinbanGrid.exTaxRate'], 20, '', null),
-    Column.text('MEMO', Messages['MstHinbanGrid.memo'], 300, '', null),
+    Column.longText('MEMO', Messages['MstHinbanGrid.memo'], 300, '', null),
     Column.select('HAIBAN_KBN', Messages['MstHinbanGrid.haibanKbn'], 10, '', { json: 'MstCodeValueSearch.json', paramkey: 'code_nm', value: 'CODE_VALUE', label: 'CODE_VALUE_MEI' }),
     Column.month('HAIBAN_YM', Messages['MstHinbanGrid.haibanYm'], 60, '', null),
 ];

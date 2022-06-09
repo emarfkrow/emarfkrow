@@ -9,11 +9,27 @@
 
 </script>
 <script th:src="@{/model/InvMtrlInoutHistoryGridColumns.js}"></script>
-<script th:src="@{/model/MstSubinvGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanGridColumns.js}"></script>
+<script th:src="@{/model/InvPrintWarehousingslipGridColumns.js}"></script>
+<script th:src="@{/model/MstEmpGridColumns.js}"></script>
+<script th:src="@{/model/MstDivisionGridColumns.js}"></script>
+<script th:src="@{/model/MstCompanyGridColumns.js}"></script>
+<script th:src="@{/model/InvStockStoreGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanBkGridColumns.js}"></script>
+<script th:src="@{/model/MstUnitGridColumns.js}"></script>
+<script th:src="@{/model/MstAccountCodeGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanEmpGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceBkGridColumns.js}"></script>
 <script th:src="@{/model/MstSupplierGridColumns.js}"></script>
 <script th:src="@{/model/InvStockProcessSupplyGridColumns.js}"></script>
 <script th:src="@{/model/MstSupplierBkGridColumns.js}"></script>
 <script th:src="@{/model/MstTaxGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailBkGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailHsGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceHsGridColumns.js}"></script>
+<script th:src="@{/model/MstSubinvGridColumns.js}"></script>
 </head>
 <body>
   <div layout:fragment="article">
@@ -25,7 +41,7 @@
           <label for="InvMtrlInoutHistory.stockManagementSection" th:text="#{InvMtrlInoutHistory.stockManagementSection}">STOCK_MANAGEMENT_SECTION</label><input type="text" id="InvMtrlInoutHistory.stockManagementSection" name="InvMtrlInoutHistory.stockManagementSection" maxlength="1" class="primaryKey" />
         </div>
         <div id="hinban">
-          <label for="InvMtrlInoutHistory.hinban" th:text="#{InvMtrlInoutHistory.hinban}">HINBAN</label><span id="InvMtrlInoutHistory.hinban"></span><input type="hidden" id="InvMtrlInoutHistory.hinban" name="InvMtrlInoutHistory.hinban" class="primaryKey" />
+          <label for="InvMtrlInoutHistory.hinban" th:text="#{InvMtrlInoutHistory.hinban}">HINBAN</label><span id="InvMtrlInoutHistory.hinban"></span><input type="hidden" id="InvMtrlInoutHistory.hinban" name="InvMtrlInoutHistory.hinban" class="primaryKey" /><a id="InvMtrlInoutHistory.hinban" th:href="@{/model/MstHinbanS.html}" target="dialog" class="primaryKey refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="InvMtrlInoutHistory.item" class="refer" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:InvMtrlInoutHistory.hinban" data-destDef="InvMtrlInoutHistory.item:ITEM"></span>
         </div>
         <div id="subInvCode">
           <label for="InvMtrlInoutHistory.subInvCode" th:text="#{InvMtrlInoutHistory.subInvCode}">SUB_INV_CODE</label><span id="InvMtrlInoutHistory.subInvCode"></span><input type="hidden" id="InvMtrlInoutHistory.subInvCode" name="InvMtrlInoutHistory.subInvCode" class="primaryKey" /><a id="InvMtrlInoutHistory.subInvCode" th:href="@{/model/MstSubinvS.html}" target="dialog" class="primaryKey refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="InvMtrlInoutHistory.subInvName" class="refer" data-json="MstSubinvSearch.json" data-srcDef="SUB_INV_CODE:InvMtrlInoutHistory.subInvCode" data-destDef="InvMtrlInoutHistory.subInvName:SUB_INV_NAME"></span>
@@ -55,7 +71,7 @@
           <label for="InvMtrlInoutHistory.receiptSupCode" th:text="#{InvMtrlInoutHistory.receiptSupCode}">RECEIPT_SUP_CODE</label><input type="text" id="InvMtrlInoutHistory.receiptSupCode" name="InvMtrlInoutHistory.receiptSupCode" maxlength="10" data-json="MstSupplierSearch.json" data-srcDef="SUP_CODE:InvMtrlInoutHistory.receiptSupCode" data-destDef="InvMtrlInoutHistory.receiptSupName:SUP_NAME" /><a id="InvMtrlInoutHistory.receiptSupCode" th:href="@{/model/MstSupplierS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="InvMtrlInoutHistory.receiptSupName" class="refer" data-json="MstSupplierSearch.json" data-srcDef="SUP_CODE:InvMtrlInoutHistory.receiptSupCode" data-destDef="InvMtrlInoutHistory.receiptSupName:SUP_NAME"></span>
         </div>
         <div id="issueHinban">
-          <label for="InvMtrlInoutHistory.issueHinban" th:text="#{InvMtrlInoutHistory.issueHinban}">ISSUE_HINBAN</label><input type="text" id="InvMtrlInoutHistory.issueHinban" name="InvMtrlInoutHistory.issueHinban" maxlength="25" />
+          <label for="InvMtrlInoutHistory.issueHinban" th:text="#{InvMtrlInoutHistory.issueHinban}">ISSUE_HINBAN</label><input type="text" id="InvMtrlInoutHistory.issueHinban" name="InvMtrlInoutHistory.issueHinban" maxlength="25" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:InvMtrlInoutHistory.issueHinban" data-destDef="InvMtrlInoutHistory.issueItem:ITEM" /><a id="InvMtrlInoutHistory.issueHinban" th:href="@{/model/MstHinbanS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="InvMtrlInoutHistory.issueItem" class="refer" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:InvMtrlInoutHistory.issueHinban" data-destDef="InvMtrlInoutHistory.issueItem:ITEM"></span>
         </div>
         <div id="stock">
           <label for="InvMtrlInoutHistory.stock" th:text="#{InvMtrlInoutHistory.stock}">STOCK</label><input type="text" id="InvMtrlInoutHistory.stock" name="InvMtrlInoutHistory.stock" maxlength="11" />

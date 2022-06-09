@@ -9,7 +9,26 @@
 
 </script>
 <script th:src="@{/model/MfgOrderHinbanDeployGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanGridColumns.js}"></script>
+<script th:src="@{/model/InvPrintWarehousingslipGridColumns.js}"></script>
+<script th:src="@{/model/MstEmpGridColumns.js}"></script>
+<script th:src="@{/model/MstDivisionGridColumns.js}"></script>
+<script th:src="@{/model/MstCompanyGridColumns.js}"></script>
+<script th:src="@{/model/InvStockStoreGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanBkGridColumns.js}"></script>
 <script th:src="@{/model/MstUnitGridColumns.js}"></script>
+<script th:src="@{/model/MstAccountCodeGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanEmpGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceBkGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierGridColumns.js}"></script>
+<script th:src="@{/model/InvStockProcessSupplyGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierBkGridColumns.js}"></script>
+<script th:src="@{/model/MstTaxGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailBkGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailHsGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceHsGridColumns.js}"></script>
 </head>
 <body>
   <div layout:fragment="article">
@@ -21,7 +40,7 @@
           <label for="MfgOrderHinbanDeploy.reqid" th:text="#{MfgOrderHinbanDeploy.reqid}">REQID</label><input type="text" id="MfgOrderHinbanDeploy.reqid" name="MfgOrderHinbanDeploy.reqid" maxlength="12" />
         </div>
         <div id="hinban">
-          <label for="MfgOrderHinbanDeploy.hinban" th:text="#{MfgOrderHinbanDeploy.hinban}">HINBAN</label><input type="text" id="MfgOrderHinbanDeploy.hinban" name="MfgOrderHinbanDeploy.hinban" maxlength="25" />
+          <label for="MfgOrderHinbanDeploy.hinban" th:text="#{MfgOrderHinbanDeploy.hinban}">HINBAN</label><input type="text" id="MfgOrderHinbanDeploy.hinban" name="MfgOrderHinbanDeploy.hinban" maxlength="25" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:MfgOrderHinbanDeploy.hinban" data-destDef="MfgOrderHinbanDeploy.item:ITEM" /><a id="MfgOrderHinbanDeploy.hinban" th:href="@{/model/MstHinbanS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MfgOrderHinbanDeploy.item" class="refer" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:MfgOrderHinbanDeploy.hinban" data-destDef="MfgOrderHinbanDeploy.item:ITEM"></span>
         </div>
         <div id="deliveryDate">
           <label for="MfgOrderHinbanDeploy.deliveryDate_1" th:text="#{MfgOrderHinbanDeploy.deliveryDate}">DELIVERY_DATE</label><input type="date" id="MfgOrderHinbanDeploy.deliveryDate_1" name="MfgOrderHinbanDeploy.deliveryDate_1" maxlength="10" />～<input type="date" id="MfgOrderHinbanDeploy.deliveryDate_2" name="MfgOrderHinbanDeploy.deliveryDate_2" maxlength="10" />

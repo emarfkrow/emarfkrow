@@ -5,7 +5,7 @@
 let PrdMWsManLoadPlanBkGridColumns = [
     Column.text('YYYY', Messages['PrdMWsManLoadPlanBkGrid.yyyy'], 40, '', null),
     Column.text('MM', Messages['PrdMWsManLoadPlanBkGrid.mm'], 20, '', null),
-    Column.text('MAN_HINBAN', Messages['PrdMWsManLoadPlanBkGrid.manHinban'], 250, '', null),
+    Column.refer('MAN_HINBAN', Messages['PrdMWsManLoadPlanBkGrid.manHinban'], 250, '', 'MAN_HINMEI'),
     Column.refer('WS_CODE', Messages['PrdMWsManLoadPlanBkGrid.wsCode'], 40, '', 'WS_NAME'),
     Column.text('PRO_NES_COUNTS', Messages['PrdMWsManLoadPlanBkGrid.proNesCounts'], 70, '', null),
     Column.text('HUM_PRE_TIME', Messages['PrdMWsManLoadPlanBkGrid.humPreTime'], 70, '', null),

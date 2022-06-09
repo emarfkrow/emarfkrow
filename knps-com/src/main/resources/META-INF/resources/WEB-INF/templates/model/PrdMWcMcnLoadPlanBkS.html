@@ -9,18 +9,32 @@
 
 </script>
 <script th:src="@{/model/PrdMWcMcnLoadPlanBkGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanGridColumns.js}"></script>
+<script th:src="@{/model/InvPrintWarehousingslipGridColumns.js}"></script>
+<script th:src="@{/model/MstEmpGridColumns.js}"></script>
+<script th:src="@{/model/MstDivisionGridColumns.js}"></script>
+<script th:src="@{/model/MstCompanyGridColumns.js}"></script>
+<script th:src="@{/model/InvStockStoreGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanBkGridColumns.js}"></script>
+<script th:src="@{/model/MstUnitGridColumns.js}"></script>
+<script th:src="@{/model/MstAccountCodeGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanEmpGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceBkGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierGridColumns.js}"></script>
+<script th:src="@{/model/InvStockProcessSupplyGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierBkGridColumns.js}"></script>
+<script th:src="@{/model/MstTaxGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailBkGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailHsGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceHsGridColumns.js}"></script>
 <script th:src="@{/model/MstWcGridColumns.js}"></script>
 <script th:src="@{/model/MstWcBkGridColumns.js}"></script>
 <script th:src="@{/model/MstProcGridColumns.js}"></script>
 <script th:src="@{/model/MstWsGridColumns.js}"></script>
 <script th:src="@{/model/MstTeamGridColumns.js}"></script>
 <script th:src="@{/model/MstGroupGridColumns.js}"></script>
-<script th:src="@{/model/MstDivisionGridColumns.js}"></script>
-<script th:src="@{/model/MstCompanyGridColumns.js}"></script>
-<script th:src="@{/model/MstSupplierGridColumns.js}"></script>
-<script th:src="@{/model/InvStockProcessSupplyGridColumns.js}"></script>
-<script th:src="@{/model/MstSupplierBkGridColumns.js}"></script>
-<script th:src="@{/model/MstTaxGridColumns.js}"></script>
 <script th:src="@{/model/MstCostCenterGridColumns.js}"></script>
 <script th:src="@{/model/MstCostCenterBkGridColumns.js}"></script>
 <script th:src="@{/model/MstSubinvGridColumns.js}"></script>
@@ -38,7 +52,7 @@
           <label for="PrdMWcMcnLoadPlanBk.mm" th:text="#{PrdMWcMcnLoadPlanBk.mm}">MM</label><input type="text" id="PrdMWcMcnLoadPlanBk.mm" name="PrdMWcMcnLoadPlanBk.mm" maxlength="2" />
         </div>
         <div id="manHinban">
-          <label for="PrdMWcMcnLoadPlanBk.manHinban" th:text="#{PrdMWcMcnLoadPlanBk.manHinban}">MAN_HINBAN</label><input type="text" id="PrdMWcMcnLoadPlanBk.manHinban" name="PrdMWcMcnLoadPlanBk.manHinban" maxlength="25" />
+          <label for="PrdMWcMcnLoadPlanBk.manHinban" th:text="#{PrdMWcMcnLoadPlanBk.manHinban}">MAN_HINBAN</label><input type="text" id="PrdMWcMcnLoadPlanBk.manHinban" name="PrdMWcMcnLoadPlanBk.manHinban" maxlength="25" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:PrdMWcMcnLoadPlanBk.manHinban" data-destDef="PrdMWcMcnLoadPlanBk.manItem:ITEM" /><a id="PrdMWcMcnLoadPlanBk.manHinban" th:href="@{/model/MstHinbanS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="PrdMWcMcnLoadPlanBk.manItem" class="refer" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:PrdMWcMcnLoadPlanBk.manHinban" data-destDef="PrdMWcMcnLoadPlanBk.manItem:ITEM"></span>
         </div>
         <div id="wcCode">
           <label for="PrdMWcMcnLoadPlanBk.wcCode" th:text="#{PrdMWcMcnLoadPlanBk.wcCode}">WC_CODE</label><input type="text" id="PrdMWcMcnLoadPlanBk.wcCode" name="PrdMWcMcnLoadPlanBk.wcCode" maxlength="3" data-json="MstWcSearch.json" data-srcDef="WC_CODE:PrdMWcMcnLoadPlanBk.wcCode" data-destDef="PrdMWcMcnLoadPlanBk.wcName:WC_NAME" /><a id="PrdMWcMcnLoadPlanBk.wcCode" th:href="@{/model/MstWcS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="PrdMWcMcnLoadPlanBk.wcName" class="refer" data-json="MstWcSearch.json" data-srcDef="WC_CODE:PrdMWcMcnLoadPlanBk.wcCode" data-destDef="PrdMWcMcnLoadPlanBk.wcName:WC_NAME"></span>

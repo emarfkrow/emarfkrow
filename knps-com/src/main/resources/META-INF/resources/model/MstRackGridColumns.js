@@ -3,7 +3,7 @@
  */
 
 let MstRackGridColumns = [
-    Column.cell('MAN_HINBAN', Messages['MstRackGrid.manHinban'], 250, 'primaryKey', null),
+    Column.refer('MAN_HINBAN', Messages['MstRackGrid.manHinban'], 250, 'primaryKey', 'MAN_HINMEI'),
     Column.text('RACK_NAME', Messages['MstRackGrid.rackName'], 300, '', null),
     Column.text('KAKESU', Messages['MstRackGrid.kakesu'], 30, '', null),
     Column.cell('TIME_STAMP_CREATE', Messages['MstRackGrid.timeStampCreate'], 70, 'metaInfo', Slick.Formatters.Extends.DateTime),

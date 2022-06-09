@@ -5,7 +5,7 @@
 let PrdMWsManLoadPlanGridColumns = [
     Column.cell('YYYY', Messages['PrdMWsManLoadPlanGrid.yyyy'], 40, 'primaryKey', null),
     Column.cell('MM', Messages['PrdMWsManLoadPlanGrid.mm'], 20, 'primaryKey', null),
-    Column.cell('MAN_HINBAN', Messages['PrdMWsManLoadPlanGrid.manHinban'], 250, 'primaryKey', null),
+    Column.refer('MAN_HINBAN', Messages['PrdMWsManLoadPlanGrid.manHinban'], 250, 'primaryKey', 'MAN_HINMEI'),
     Column.refer('WS_CODE', Messages['PrdMWsManLoadPlanGrid.wsCode'], 40, 'primaryKey', 'WS_NAME'),
     Column.text('PRO_NES_COUNTS', Messages['PrdMWsManLoadPlanGrid.proNesCounts'], 70, '', null),
     Column.text('HUM_PRE_TIME', Messages['PrdMWsManLoadPlanGrid.humPreTime'], 70, '', null),

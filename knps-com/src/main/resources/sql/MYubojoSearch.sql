@@ -4,7 +4,7 @@ FROM
     M_YUBOJO a 
 WHERE
     1 = 1 
-    AND TRIM (a."YURYOKUKBN") = TRIM (:yuryokukbn) 
+    AND TRIM (a."YURYOKUKBN") IN (:yuryokukbn) 
     AND a."YURYOCD" = :yuryocd 
     AND TRIM (a."RYURYOKUMEI") = TRIM (:ryuryokumei) 
     AND a."KONYU-MIN" = :konyu_min 

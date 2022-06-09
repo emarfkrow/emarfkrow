@@ -19,12 +19,25 @@
 <script th:src="@{/model/MstCompanyGridColumns.js}"></script>
 <script th:src="@{/model/MstSupplierGridColumns.js}"></script>
 <script th:src="@{/model/InvStockProcessSupplyGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanGridColumns.js}"></script>
+<script th:src="@{/model/InvPrintWarehousingslipGridColumns.js}"></script>
+<script th:src="@{/model/MstEmpGridColumns.js}"></script>
+<script th:src="@{/model/InvStockStoreGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanBkGridColumns.js}"></script>
+<script th:src="@{/model/MstUnitGridColumns.js}"></script>
+<script th:src="@{/model/MstAccountCodeGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanEmpGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceBkGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailBkGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailHsGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceHsGridColumns.js}"></script>
 <script th:src="@{/model/MstSupplierBkGridColumns.js}"></script>
 <script th:src="@{/model/MstTaxGridColumns.js}"></script>
 <script th:src="@{/model/MstCostCenterGridColumns.js}"></script>
 <script th:src="@{/model/MstCostCenterBkGridColumns.js}"></script>
 <script th:src="@{/model/MstSubinvGridColumns.js}"></script>
-<script th:src="@{/model/MstUnitGridColumns.js}"></script>
 </head>
 <body>
   <div layout:fragment="article">
@@ -70,7 +83,7 @@
           <label for="PchOrderInf.comment2" th:text="#{PchOrderInf.comment2}">COMMENT2</label><input type="text" id="PchOrderInf.comment2" name="PchOrderInf.comment2" maxlength="25" />
         </div>
         <div id="hinban">
-          <label for="PchOrderInf.hinban" th:text="#{PchOrderInf.hinban}">HINBAN</label><input type="text" id="PchOrderInf.hinban" name="PchOrderInf.hinban" maxlength="25" />
+          <label for="PchOrderInf.hinban" th:text="#{PchOrderInf.hinban}">HINBAN</label><input type="text" id="PchOrderInf.hinban" name="PchOrderInf.hinban" maxlength="25" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:PchOrderInf.hinban" data-destDef="PchOrderInf.item:ITEM" /><a id="PchOrderInf.hinban" th:href="@{/model/MstHinbanS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="PchOrderInf.item" class="refer" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:PchOrderInf.hinban" data-destDef="PchOrderInf.item:ITEM"></span>
         </div>
         <div id="orderCounts">
           <label for="PchOrderInf.orderCounts" th:text="#{PchOrderInf.orderCounts}">ORDER_COUNTS</label><input type="text" id="PchOrderInf.orderCounts" name="PchOrderInf.orderCounts" maxlength="11" />
@@ -79,7 +92,8 @@
           <label for="PchOrderInf.unitCode" th:text="#{PchOrderInf.unitCode}">UNIT_CODE</label><input type="text" id="PchOrderInf.unitCode" name="PchOrderInf.unitCode" maxlength="2" data-json="MstUnitSearch.json" data-srcDef="UNIT_CODE:PchOrderInf.unitCode" data-destDef="PchOrderInf.unitName:UNIT_NAME" /><a id="PchOrderInf.unitCode" th:href="@{/model/MstUnitS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="PchOrderInf.unitName" class="refer" data-json="MstUnitSearch.json" data-srcDef="UNIT_CODE:PchOrderInf.unitCode" data-destDef="PchOrderInf.unitName:UNIT_NAME"></span>
         </div>
         <div id="memo">
-          <label for="PchOrderInf.memo" th:text="#{PchOrderInf.memo}">MEMO</label><input type="text" id="PchOrderInf.memo" name="PchOrderInf.memo" maxlength="30" />
+          <label for="PchOrderInf.memo" th:text="#{PchOrderInf.memo}">MEMO</label>
+          <textarea id="PchOrderInf.memo" name="PchOrderInf.memo"></textarea>
         </div>
         <div id="period">
           <label for="PchOrderInf.period" th:text="#{PchOrderInf.period}">PERIOD</label><input type="text" id="PchOrderInf.period" name="PchOrderInf.period" maxlength="7" />

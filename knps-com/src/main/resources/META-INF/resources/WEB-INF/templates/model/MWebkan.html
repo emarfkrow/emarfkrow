@@ -9,11 +9,26 @@
 
 </script>
 <script th:src="@{/model/MWebkanGridColumns.js}"></script>
-<script th:src="@{/model/MHhinmokGridColumns.js}"></script>
-<script th:src="@{/model/MHososetGridColumns.js}"></script>
-<script th:src="@{/model/MHosozaiGridColumns.js}"></script>
-<script th:src="@{/model/MPkoseGridColumns.js}"></script>
-<script th:src="@{/model/MPhinmokGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanGridColumns.js}"></script>
+<script th:src="@{/model/InvPrintWarehousingslipGridColumns.js}"></script>
+<script th:src="@{/model/MstEmpGridColumns.js}"></script>
+<script th:src="@{/model/MstDivisionGridColumns.js}"></script>
+<script th:src="@{/model/MstCompanyGridColumns.js}"></script>
+<script th:src="@{/model/InvStockStoreGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanBkGridColumns.js}"></script>
+<script th:src="@{/model/MstUnitGridColumns.js}"></script>
+<script th:src="@{/model/MstAccountCodeGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanEmpGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceBkGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierGridColumns.js}"></script>
+<script th:src="@{/model/InvStockProcessSupplyGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierBkGridColumns.js}"></script>
+<script th:src="@{/model/MstTaxGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailBkGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailHsGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceHsGridColumns.js}"></script>
 </head>
 <body>
   <div layout:fragment="article">
@@ -22,7 +37,7 @@
       <fieldset>
         <legend th:text="#{MWebkan.legend}">legend</legend>
         <div id="hhinban">
-          <label for="MWebkan.hhinban" th:text="#{MWebkan.hhinban}">販売品番</label><input type="text" id="MWebkan.hhinban" name="MWebkan.hhinban" maxlength="20" class="primaryKey" data-json="MHhinmokSearch.json" data-srcDef="HHINBAN:MWebkan.hhinban" data-destDef="MWebkan.hinmei:HINMEI" /><a id="MWebkan.hhinban" th:href="@{/model/MHhinmokS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MWebkan.hinmei" class="refer" data-json="MHhinmokSearch.json" data-srcDef="HHINBAN:MWebkan.hhinban" data-destDef="MWebkan.hinmei:HINMEI"></span>
+          <label for="MWebkan.hhinban" th:text="#{MWebkan.hhinban}">販売品番</label><input type="text" id="MWebkan.hhinban" name="MWebkan.hhinban" maxlength="20" class="primaryKey" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:MWebkan.hhinban" data-destDef="MWebkan.hitem:ITEM" /><a id="MWebkan.hhinban" th:href="@{/model/MstHinbanS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MWebkan.hitem" class="refer" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:MWebkan.hhinban" data-destDef="MWebkan.hitem:ITEM"></span>
         </div>
         <div id="kikaku">
           <label for="MWebkan.kikaku" th:text="#{MWebkan.kikaku}">規格</label><input type="text" id="MWebkan.kikaku" name="MWebkan.kikaku" maxlength="40" />
@@ -43,7 +58,9 @@
           <label for="MWebkan.bbuncd" th:text="#{MWebkan.bbuncd}">分類Ｂコード</label><input type="text" id="MWebkan.bbuncd" name="MWebkan.bbuncd" maxlength="20" />
         </div>
         <div id="whyojikbn">
-          <label for="MWebkan.whyojikbn" th:text="#{MWebkan.whyojikbn}">WEB表示区分</label><input type="text" id="MWebkan.whyojikbn" name="MWebkan.whyojikbn" maxlength="1" />
+          <fieldset id="MWebkan.whyojikbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:WHYOJIKBN" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MWebkan.whyojikbn}">WEB表示区分</legend>
+          </fieldset>
         </div>
         <div id="irisu">
           <label for="MWebkan.irisu" th:text="#{MWebkan.irisu}">入数</label><input type="text" id="MWebkan.irisu" name="MWebkan.irisu" maxlength="4" />
@@ -64,19 +81,25 @@
           <label for="MWebkan.hanyou3" th:text="#{MWebkan.hanyou3}">汎用文字３</label><input type="text" id="MWebkan.hanyou3" name="MWebkan.hanyou3" maxlength="40" />
         </div>
         <div id="zaihenkbn">
-          <label for="MWebkan.zaihenkbn" th:text="#{MWebkan.zaihenkbn}">在庫表示変更区分</label><input type="text" id="MWebkan.zaihenkbn" name="MWebkan.zaihenkbn" maxlength="1" />
+          <fieldset id="MWebkan.zaihenkbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:ZAIHENKBN" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MWebkan.zaihenkbn}">在庫表示変更区分</legend>
+          </fieldset>
         </div>
         <div id="teidspkbn">
-          <label for="MWebkan.teidspkbn" th:text="#{MWebkan.teidspkbn}">定価表示制御区分</label><input type="text" id="MWebkan.teidspkbn" name="MWebkan.teidspkbn" maxlength="1" />
+          <fieldset id="MWebkan.teidspkbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:TEIDSPKBN" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MWebkan.teidspkbn}">定価表示制御区分</legend>
+          </fieldset>
         </div>
         <div id="updexcdkbn">
-          <label for="MWebkan.updexcdkbn" th:text="#{MWebkan.updexcdkbn}">閾値更新対象区分</label><input type="text" id="MWebkan.updexcdkbn" name="MWebkan.updexcdkbn" maxlength="1" />
+          <fieldset id="MWebkan.updexcdkbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:UPDEXCDKBN" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MWebkan.updexcdkbn}">閾値更新対象区分</legend>
+          </fieldset>
         </div>
         <div id="tourokubi">
-          <label for="MWebkan.tourokubi" th:text="#{MWebkan.tourokubi}">作成日</label><input type="text" id="MWebkan.tourokubi" name="MWebkan.tourokubi" maxlength="8" />
+          <label for="MWebkan.tourokubi" th:text="#{MWebkan.tourokubi}">作成日</label><input type="date" id="MWebkan.tourokubi" name="MWebkan.tourokubi" maxlength="8" />
         </div>
         <div id="shuseibi">
-          <label for="MWebkan.shuseibi" th:text="#{MWebkan.shuseibi}">更新日</label><input type="text" id="MWebkan.shuseibi" name="MWebkan.shuseibi" maxlength="8" />
+          <label for="MWebkan.shuseibi" th:text="#{MWebkan.shuseibi}">更新日</label><input type="date" id="MWebkan.shuseibi" name="MWebkan.shuseibi" maxlength="8" />
         </div>
         <div id="filler">
           <label for="MWebkan.filler" th:text="#{MWebkan.filler}">予備領域</label><input type="text" id="MWebkan.filler" name="MWebkan.filler" maxlength="49" />

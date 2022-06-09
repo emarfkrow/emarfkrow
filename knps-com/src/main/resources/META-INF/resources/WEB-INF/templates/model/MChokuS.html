@@ -41,7 +41,7 @@
           <label for="MChoku.telno" th:text="#{MChoku.telno}">電話番号</label><input type="text" id="MChoku.telno" name="MChoku.telno" maxlength="12" />
         </div>
         <div id="tourokubi">
-          <label for="MChoku.tourokubi" th:text="#{MChoku.tourokubi}">マスター登録日</label><input type="text" id="MChoku.tourokubi" name="MChoku.tourokubi" maxlength="8" />
+          <label for="MChoku.tourokubi_1" th:text="#{MChoku.tourokubi}">マスター登録日</label><input type="date" id="MChoku.tourokubi_1" name="MChoku.tourokubi_1" maxlength="8" />～<input type="date" id="MChoku.tourokubi_2" name="MChoku.tourokubi_2" maxlength="8" />
         </div>
         <div id="kchokumei">
           <label for="MChoku.kchokumei" th:text="#{MChoku.kchokumei}">カナ直送先名</label><input type="text" id="MChoku.kchokumei" name="MChoku.kchokumei" maxlength="20" />
@@ -53,7 +53,9 @@
           <label for="MChoku.faxno" th:text="#{MChoku.faxno}">ＦＡＸ番号</label><input type="text" id="MChoku.faxno" name="MChoku.faxno" maxlength="12" />
         </div>
         <div id="torikesiKbn">
-          <label for="MChoku.torikesiKbn" th:text="#{MChoku.torikesiKbn}">注文自動取消区分</label><input type="text" id="MChoku.torikesiKbn" name="MChoku.torikesiKbn" maxlength="1" />
+          <fieldset id="MChoku.torikesiKbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:TORIKESI-KBN" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MChoku.torikesiKbn}">注文自動取消区分</legend>
+          </fieldset>
         </div>
         <div id="unsocd">
           <label for="MChoku.unsocd" th:text="#{MChoku.unsocd}">運送会社コード</label><input type="text" id="MChoku.unsocd" name="MChoku.unsocd" maxlength="3" />
@@ -65,7 +67,9 @@
           <label for="MChoku.todofukencd" th:text="#{MChoku.todofukencd}">都道府県コード</label><input type="text" id="MChoku.todofukencd" name="MChoku.todofukencd" maxlength="1" />
         </div>
         <div id="updnkinkbn">
-          <label for="MChoku.updnkinkbn" th:text="#{MChoku.updnkinkbn}">更新禁止区分</label><input type="text" id="MChoku.updnkinkbn" name="MChoku.updnkinkbn" maxlength="1" />
+          <fieldset id="MChoku.updnkinkbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:UPDNKINKBN" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MChoku.updnkinkbn}">更新禁止区分</legend>
+          </fieldset>
         </div>
         <div id="filler">
           <label for="MChoku.filler" th:text="#{MChoku.filler}">予備領域</label><input type="text" id="MChoku.filler" name="MChoku.filler" maxlength="9" />

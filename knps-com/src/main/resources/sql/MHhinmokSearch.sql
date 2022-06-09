@@ -1,49 +1,66 @@
 SELECT
       a.*
+    , (SELECT r1."ITEM" FROM MST_HINBAN r1 WHERE r1."HINBAN" = a."HHINBAN") AS "HITEM"
 FROM
     M_HHINMOK a 
 WHERE
     1 = 1 
     AND a."HHINBAN" = :hhinban 
     AND a."LVCD" = :lvcd 
-    AND a."DLTFLG" = :dltflg 
+    AND a."DLTFLG" IN (:dltflg) 
     AND TRIM (a."HINCD") = TRIM (:hincd) 
     AND TRIM (a."HINMEI") = TRIM (:hinmei) 
-    AND TRIM (a."SETKBN") = TRIM (:setkbn) 
-    AND TRIM (a."SSHINKBN") = TRIM (:sshinkbn) 
-    AND TRIM (a."JUKINKBN") = TRIM (:jukinkbn) 
-    AND TRIM (a."TENKINKBN") = TRIM (:tenkinkbn) 
-    AND TRIM (a."NYUKOKINKBN") = TRIM (:nyukokinkbn) 
-    AND TRIM (a."SEIHINKBN") = TRIM (:seihinkbn) 
-    AND TRIM (a."SIJIKBN") = TRIM (:sijikbn) 
-    AND a."SHOHIN-BUNRUI" = :shohin_bunrui 
+    AND TRIM (a."SETKBN") IN (:setkbn) 
+    AND TRIM (a."SSHINKBN") IN (:sshinkbn) 
+    AND TRIM (a."JUKINKBN") IN (:jukinkbn) 
+    AND TRIM (a."TENKINKBN") IN (:tenkinkbn) 
+    AND TRIM (a."NYUKOKINKBN") IN (:nyukokinkbn) 
+    AND TRIM (a."SEIHINKBN") IN (:seihinkbn) 
+    AND TRIM (a."SIJIKBN") IN (:sijikbn) 
+    AND a."SHOHIN-BUNRUI" IN (:shohin_bunrui) 
     AND a."KIJUNZAIKO" = :kijunzaiko 
+    AND a."KIJUNZAIKO" >= :kijunzaiko_1 
+    AND a."KIJUNZAIKO" <= :kijunzaiko_2 
     AND a."SEI-TANJU" = :sei_tanju 
+    AND a."SEI-TANJU" >= :sei_tanju_1 
+    AND a."SEI-TANJU" <= :sei_tanju_2 
     AND a."LOCATIONNO" = :locationno 
     AND a."HOSOCD" = :hosocd 
     AND a."HOSOTANI" = :hosotani 
     AND TRIM (a."HOSOKEPIN") = TRIM (:hosokepin) 
-    AND TRIM (a."KONPOKBN") = TRIM (:konpokbn) 
-    AND TRIM (a."KLKBN") = TRIM (:klkbn) 
-    AND TRIM (a."JISKBN") = TRIM (:jiskbn) 
+    AND TRIM (a."KONPOKBN") IN (:konpokbn) 
+    AND TRIM (a."KLKBN") IN (:klkbn) 
+    AND TRIM (a."JISKBN") IN (:jiskbn) 
     AND a."SETKIJUNH" = :setkijunh 
     AND a."KIMATU-GENKA" = :kimatu_genka 
+    AND a."KIMATU-GENKA" >= :kimatu_genka_1 
+    AND a."KIMATU-GENKA" <= :kimatu_genka_2 
     AND a."HYOJUN-GENKA" = :hyojun_genka 
+    AND a."HYOJUN-GENKA" >= :hyojun_genka_1 
+    AND a."HYOJUN-GENKA" <= :hyojun_genka_2 
     AND a."NIJI-GENKA" = :niji_genka 
+    AND a."NIJI-GENKA" >= :niji_genka_1 
+    AND a."NIJI-GENKA" <= :niji_genka_2 
     AND a."HYOJUN-BAIKA" = :hyojun_baika 
+    AND a."HYOJUN-BAIKA" >= :hyojun_baika_1 
+    AND a."HYOJUN-BAIKA" <= :hyojun_baika_2 
     AND a."TOUROKUBI" = :tourokubi 
+    AND a."TOUROKUBI" >= :tourokubi_1 
+    AND a."TOUROKUBI" <= :tourokubi_2 
     AND a."HATUBAIBI" = :hatubaibi 
-    AND TRIM (a."TOJITUKBN") = TRIM (:tojitukbn) 
-    AND a."SIN-SEIHIN-BUNRUI" = :sin_seihin_bunrui 
-    AND TRIM (a."DTEIBANKBN") = TRIM (:dteibankbn) 
-    AND TRIM (a."ZAIJUCKBN") = TRIM (:zaijuckbn) 
+    AND a."HATUBAIBI" >= :hatubaibi_1 
+    AND a."HATUBAIBI" <= :hatubaibi_2 
+    AND TRIM (a."TOJITUKBN") IN (:tojitukbn) 
+    AND a."SIN-SEIHIN-BUNRUI" IN (:sin_seihin_bunrui) 
+    AND TRIM (a."DTEIBANKBN") IN (:dteibankbn) 
+    AND TRIM (a."ZAIJUCKBN") IN (:zaijuckbn) 
     AND a."STANTOCD" = :stantocd 
-    AND TRIM (a."TORIFUKBN") = TRIM (:torifukbn) 
-    AND TRIM (a."PRDENDKBN") = TRIM (:prdendkbn) 
+    AND TRIM (a."TORIFUKBN") IN (:torifukbn) 
+    AND TRIM (a."PRDENDKBN") IN (:prdendkbn) 
     AND a."BUNRUI4" = :bunrui4 
-    AND TRIM (a."ZAISHUKBN") = TRIM (:zaishukbn) 
+    AND TRIM (a."ZAISHUKBN") IN (:zaishukbn) 
     AND a."BARCODE" = :barcode 
-    AND CASE WHEN a."DATA-FLG" IS NULL THEN '0' ELSE TO_CHAR (a."DATA-FLG") END IN (:data_flg) 
+    AND TRIM (a."DATA-FLG") IN (:data_flg) 
     AND TRIM (a."FILLER3") = TRIM (:filler3) 
     AND TRIM (a."UPCCD") = TRIM (:upccd) 
     AND a."ZAIKOSU-H1" = :zaikosu_h1 
@@ -73,29 +90,61 @@ WHERE
     AND a."NYUKOYOTE-H3" = :nyukoyote_h3 
     AND a."NYUKOYOTE-H4" = :nyukoyote_h4 
     AND a."SAPPOROZAIKO" = :sapporozaiko 
+    AND a."SAPPOROZAIKO" >= :sapporozaiko_1 
+    AND a."SAPPOROZAIKO" <= :sapporozaiko_2 
     AND a."SENDAIZAIKO" = :sendaizaiko 
+    AND a."SENDAIZAIKO" >= :sendaizaiko_1 
+    AND a."SENDAIZAIKO" <= :sendaizaiko_2 
     AND a."TOKYOZAIKO" = :tokyozaiko 
+    AND a."TOKYOZAIKO" >= :tokyozaiko_1 
+    AND a."TOKYOZAIKO" <= :tokyozaiko_2 
     AND a."KANTOZAIKO" = :kantozaiko 
+    AND a."KANTOZAIKO" >= :kantozaiko_1 
+    AND a."KANTOZAIKO" <= :kantozaiko_2 
     AND a."KANAZAWAZAIKO" = :kanazawazaiko 
+    AND a."KANAZAWAZAIKO" >= :kanazawazaiko_1 
+    AND a."KANAZAWAZAIKO" <= :kanazawazaiko_2 
     AND a."NAGOYAZAIKO" = :nagoyazaiko 
+    AND a."NAGOYAZAIKO" >= :nagoyazaiko_1 
+    AND a."NAGOYAZAIKO" <= :nagoyazaiko_2 
     AND a."KINKIZAIKO" = :kinkizaiko 
+    AND a."KINKIZAIKO" >= :kinkizaiko_1 
+    AND a."KINKIZAIKO" <= :kinkizaiko_2 
     AND a."HIROSIMAZAIKO" = :hirosimazaiko 
+    AND a."HIROSIMAZAIKO" >= :hirosimazaiko_1 
+    AND a."HIROSIMAZAIKO" <= :hirosimazaiko_2 
     AND a."FUKUOKAZAIKO" = :fukuokazaiko 
+    AND a."FUKUOKAZAIKO" >= :fukuokazaiko_1 
+    AND a."FUKUOKAZAIKO" <= :fukuokazaiko_2 
     AND a."GYOMUZAIKO" = :gyomuzaiko 
+    AND a."GYOMUZAIKO" >= :gyomuzaiko_1 
+    AND a."GYOMUZAIKO" <= :gyomuzaiko_2 
     AND a."BOEKIZAIKO" = :boekizaiko 
+    AND a."BOEKIZAIKO" >= :boekizaiko_1 
+    AND a."BOEKIZAIKO" <= :boekizaiko_2 
     AND a."HITECZAIKO" = :hiteczaiko 
+    AND a."HITECZAIKO" >= :hiteczaiko_1 
+    AND a."HITECZAIKO" <= :hiteczaiko_2 
     AND a."BOEKIITAKU" = :boekiitaku 
     AND a."SKTCHSZAIKO" = :sktchszaiko 
+    AND a."SKTCHSZAIKO" >= :sktchszaiko_1 
+    AND a."SKTCHSZAIKO" <= :sktchszaiko_2 
     AND a."HOSOZAIKO" = :hosozaiko 
+    AND a."HOSOZAIKO" >= :hosozaiko_1 
+    AND a."HOSOZAIKO" <= :hosozaiko_2 
     AND a."SENDYOTEIBI" = :sendyoteibi 
+    AND a."SENDYOTEIBI" >= :sendyoteibi_1 
+    AND a."SENDYOTEIBI" <= :sendyoteibi_2 
     AND a."SENDBI" = :sendbi 
+    AND a."SENDBI" >= :sendbi_1 
+    AND a."SENDBI" <= :sendbi_2 
     AND a."HINCDALT1" = :hincdalt1 
     AND a."HINCDALT2" = :hincdalt2 
-    AND TRIM (a."NOUKIFUKAKBN") = TRIM (:noukifukakbn) 
-    AND TRIM (a."CHOKUHINKBN") = TRIM (:chokuhinkbn) 
+    AND TRIM (a."NOUKIFUKAKBN") IN (:noukifukakbn) 
+    AND TRIM (a."CHOKUHINKBN") IN (:chokuhinkbn) 
     AND TRIM (a."KOKUSAICD") = TRIM (:kokusaicd) 
     AND TRIM (a."KUNICD") = TRIM (:kunicd) 
-    AND TRIM (a."CHOKUKAKBN") = TRIM (:chokukakbn) 
+    AND TRIM (a."CHOKUKAKBN") IN (:chokukakbn) 
     AND TRIM (a."FILLER") = TRIM (:filler) 
 ORDER BY
     a."HHINBAN"

@@ -9,18 +9,32 @@
 
 </script>
 <script th:src="@{/model/PrdYProPlanRoutingGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanGridColumns.js}"></script>
+<script th:src="@{/model/InvPrintWarehousingslipGridColumns.js}"></script>
+<script th:src="@{/model/MstEmpGridColumns.js}"></script>
+<script th:src="@{/model/MstDivisionGridColumns.js}"></script>
+<script th:src="@{/model/MstCompanyGridColumns.js}"></script>
+<script th:src="@{/model/InvStockStoreGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanBkGridColumns.js}"></script>
+<script th:src="@{/model/MstUnitGridColumns.js}"></script>
+<script th:src="@{/model/MstAccountCodeGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanEmpGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceBkGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierGridColumns.js}"></script>
+<script th:src="@{/model/InvStockProcessSupplyGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierBkGridColumns.js}"></script>
+<script th:src="@{/model/MstTaxGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailBkGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailHsGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceHsGridColumns.js}"></script>
 <script th:src="@{/model/MstWcGridColumns.js}"></script>
 <script th:src="@{/model/MstWcBkGridColumns.js}"></script>
 <script th:src="@{/model/MstProcGridColumns.js}"></script>
 <script th:src="@{/model/MstWsGridColumns.js}"></script>
 <script th:src="@{/model/MstTeamGridColumns.js}"></script>
 <script th:src="@{/model/MstGroupGridColumns.js}"></script>
-<script th:src="@{/model/MstDivisionGridColumns.js}"></script>
-<script th:src="@{/model/MstCompanyGridColumns.js}"></script>
-<script th:src="@{/model/MstSupplierGridColumns.js}"></script>
-<script th:src="@{/model/InvStockProcessSupplyGridColumns.js}"></script>
-<script th:src="@{/model/MstSupplierBkGridColumns.js}"></script>
-<script th:src="@{/model/MstTaxGridColumns.js}"></script>
 <script th:src="@{/model/MstCostCenterGridColumns.js}"></script>
 <script th:src="@{/model/MstCostCenterBkGridColumns.js}"></script>
 <script th:src="@{/model/MstSubinvGridColumns.js}"></script>
@@ -38,10 +52,10 @@
           <label for="PrdYProPlanRouting.mm" th:text="#{PrdYProPlanRouting.mm}">MM</label><input type="text" id="PrdYProPlanRouting.mm" name="PrdYProPlanRouting.mm" maxlength="2" />
         </div>
         <div id="proHinban">
-          <label for="PrdYProPlanRouting.proHinban" th:text="#{PrdYProPlanRouting.proHinban}">PRO_HINBAN</label><input type="text" id="PrdYProPlanRouting.proHinban" name="PrdYProPlanRouting.proHinban" maxlength="25" />
+          <label for="PrdYProPlanRouting.proHinban" th:text="#{PrdYProPlanRouting.proHinban}">PRO_HINBAN</label><input type="text" id="PrdYProPlanRouting.proHinban" name="PrdYProPlanRouting.proHinban" maxlength="25" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:PrdYProPlanRouting.proHinban" data-destDef="PrdYProPlanRouting.proItem:ITEM" /><a id="PrdYProPlanRouting.proHinban" th:href="@{/model/MstHinbanS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="PrdYProPlanRouting.proItem" class="refer" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:PrdYProPlanRouting.proHinban" data-destDef="PrdYProPlanRouting.proItem:ITEM"></span>
         </div>
         <div id="hinban">
-          <label for="PrdYProPlanRouting.hinban" th:text="#{PrdYProPlanRouting.hinban}">HINBAN</label><input type="text" id="PrdYProPlanRouting.hinban" name="PrdYProPlanRouting.hinban" maxlength="25" />
+          <label for="PrdYProPlanRouting.hinban" th:text="#{PrdYProPlanRouting.hinban}">HINBAN</label><input type="text" id="PrdYProPlanRouting.hinban" name="PrdYProPlanRouting.hinban" maxlength="25" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:PrdYProPlanRouting.hinban" data-destDef="PrdYProPlanRouting.item:ITEM" /><a id="PrdYProPlanRouting.hinban" th:href="@{/model/MstHinbanS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="PrdYProPlanRouting.item" class="refer" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:PrdYProPlanRouting.hinban" data-destDef="PrdYProPlanRouting.item:ITEM"></span>
         </div>
         <div id="routing">
           <label for="PrdYProPlanRouting.routing" th:text="#{PrdYProPlanRouting.routing}">ROUTING</label><input type="text" id="PrdYProPlanRouting.routing" name="PrdYProPlanRouting.routing" maxlength="2" />

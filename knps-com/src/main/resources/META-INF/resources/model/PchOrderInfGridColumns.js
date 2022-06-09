@@ -17,7 +17,7 @@ let PchOrderInfGridColumns = [
     Column.text('HINBAN', Messages['PchOrderInfGrid.hinban'], 250, '', null),
     Column.text('ORDER_COUNTS', Messages['PchOrderInfGrid.orderCounts'], 110, '', null),
     Column.refer('UNIT_CODE', Messages['PchOrderInfGrid.unitCode'], 20, '', 'UNIT_NAME'),
-    Column.text('MEMO', Messages['PchOrderInfGrid.memo'], 300, '', null),
+    Column.longText('MEMO', Messages['PchOrderInfGrid.memo'], 300, '', null),
     Column.text('PERIOD', Messages['PchOrderInfGrid.period'], 70, '', Slick.Formatters.Extends.DateTime),
     Column.text('PERIOD_CHG', Messages['PchOrderInfGrid.periodChg'], 70, '', Slick.Formatters.Extends.DateTime),
     Column.text('ORDER_LT', Messages['PchOrderInfGrid.orderLt'], 90, '', null),

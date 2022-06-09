@@ -1,5 +1,6 @@
 SELECT
       a.*
+    , (SELECT r1."ITEM" FROM MST_HINBAN r1 WHERE r1."HINBAN" = a."SALES_HINBAN") AS "SALES_ITEM"
 FROM
     MST_SALES_HINBAN_MASTER a 
 WHERE
@@ -104,5 +105,7 @@ WHERE
     AND TRIM (a."NOUKI_ANSWER_NG_KBN") IN (:nouki_answer_ng_kbn) 
     AND TRIM (a."DIRECT_DELIVERY_TARGET_KBN") IN (:direct_delivery_target_kbn) 
     AND TRIM (a."YOBI") = TRIM (:yobi) 
+    AND a."YOBI" >= :yobi_1 
+    AND a."YOBI" <= :yobi_2 
 ORDER BY
     a."SALES_HINBAN"

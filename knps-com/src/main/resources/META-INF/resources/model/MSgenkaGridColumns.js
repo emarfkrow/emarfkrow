@@ -5,7 +5,7 @@
 let MSgenkaGridColumns = [
     Column.refer('HHINBAN', Messages['MSgenkaGrid.hhinban'], 200, 'primaryKey', 'HHINMEI'),
     Column.text('HINCD', Messages['MSgenkaGrid.hincd'], 200, '', null),
-    Column.text('SETKBN', Messages['MSgenkaGrid.setkbn'], 10, '', null),
+    Column.select('SETKBN', Messages['MSgenkaGrid.setkbn'], 10, '', { json: 'MstCodeValueSearch.json', paramkey: 'code_nm', value: 'CODE_VALUE', label: 'CODE_VALUE_MEI' }),
     Column.text('GENKA', Messages['MSgenkaGrid.genka'], 70, '', null),
     Column.text('SEIHIN-GENKA', Messages['MSgenkaGrid.seihinGenka'], 70, '', null),
     Column.text('SHOHIN-GENKA', Messages['MSgenkaGrid.shohinGenka'], 70, '', null),

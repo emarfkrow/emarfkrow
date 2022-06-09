@@ -11,7 +11,7 @@ let MfgModActHedGridColumns = [
     Column.text('EXP_TIME', Messages['MfgModActHedGrid.expTime'], 60, '', null),
     Column.text('MOD_COUNTS', Messages['MfgModActHedGrid.modCounts'], 60, '', null),
     Column.text('ACT_MOD_COUNTS', Messages['MfgModActHedGrid.actModCounts'], 60, '', null),
-    Column.text('MEMO', Messages['MfgModActHedGrid.memo'], 300, '', null),
+    Column.longText('MEMO', Messages['MfgModActHedGrid.memo'], 300, '', null),
     Column.text('MOD_STATUS', Messages['MfgModActHedGrid.modStatus'], 10, '', null),
     Column.check('EXP_FLAG', Messages['MfgModActHedGrid.expFlag'], 10, ''),
     Column.date('BEG_DATE', Messages['MfgModActHedGrid.begDate'], 70, '', Slick.Formatters.Extends.DateTime),

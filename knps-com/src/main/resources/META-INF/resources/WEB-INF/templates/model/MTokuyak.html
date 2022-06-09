@@ -26,13 +26,19 @@
           <label for="MTokuyak.htokuyakucd" th:text="#{MTokuyak.htokuyakucd}">本社特約店コード</label><input type="text" id="MTokuyak.htokuyakucd" name="MTokuyak.htokuyakucd" maxlength="8" />
         </div>
         <div id="eigyokbn">
-          <label for="MTokuyak.eigyokbn" th:text="#{MTokuyak.eigyokbn}">営業区分</label><input type="text" id="MTokuyak.eigyokbn" name="MTokuyak.eigyokbn" maxlength="2" />
+          <fieldset id="MTokuyak.eigyokbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:EIGYOKBN" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MTokuyak.eigyokbn}">営業区分</legend>
+          </fieldset>
         </div>
         <div id="yuryokukbn">
-          <label for="MTokuyak.yuryokukbn" th:text="#{MTokuyak.yuryokukbn}">有力店資格区分</label><input type="text" id="MTokuyak.yuryokukbn" name="MTokuyak.yuryokukbn" maxlength="1" />
+          <fieldset id="MTokuyak.yuryokukbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:YURYOKUKBN" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MTokuyak.yuryokukbn}">有力店資格区分</legend>
+          </fieldset>
         </div>
         <div id="gyoshuKbn">
-          <label for="MTokuyak.gyoshuKbn" th:text="#{MTokuyak.gyoshuKbn}">業種区分</label><input type="text" id="MTokuyak.gyoshuKbn" name="MTokuyak.gyoshuKbn" maxlength="2" />
+          <fieldset id="MTokuyak.gyoshuKbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:GYOSHU-KBN" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MTokuyak.gyoshuKbn}">業種区分</legend>
+          </fieldset>
         </div>
         <div id="rtokuyakumei">
           <label for="MTokuyak.rtokuyakumei" th:text="#{MTokuyak.rtokuyakumei}">略特約店名</label><input type="text" id="MTokuyak.rtokuyakumei" name="MTokuyak.rtokuyakumei" maxlength="20" />
@@ -62,10 +68,12 @@
           <label for="MTokuyak.faxno" th:text="#{MTokuyak.faxno}">ＦＡＸ番号</label><input type="text" id="MTokuyak.faxno" name="MTokuyak.faxno" maxlength="12" />
         </div>
         <div id="tourokubi">
-          <label for="MTokuyak.tourokubi" th:text="#{MTokuyak.tourokubi}">マスター登録日</label><input type="text" id="MTokuyak.tourokubi" name="MTokuyak.tourokubi" maxlength="8" />
+          <label for="MTokuyak.tourokubi" th:text="#{MTokuyak.tourokubi}">マスター登録日</label><input type="date" id="MTokuyak.tourokubi" name="MTokuyak.tourokubi" maxlength="8" />
         </div>
         <div id="torihikiKbn">
-          <label for="MTokuyak.torihikiKbn" th:text="#{MTokuyak.torihikiKbn}">取引停止区分</label><input type="text" id="MTokuyak.torihikiKbn" name="MTokuyak.torihikiKbn" maxlength="1" />
+          <fieldset id="MTokuyak.torihikiKbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:TORIHIKI-KBN" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MTokuyak.torihikiKbn}">取引停止区分</legend>
+          </fieldset>
         </div>
         <div id="konNpjuchukin">
           <label for="MTokuyak.konNpjuchukin" th:text="#{MTokuyak.konNpjuchukin}">ネプロス今期受注金額</label><input type="text" id="MTokuyak.konNpjuchukin" name="MTokuyak.konNpjuchukin" maxlength="9" />
@@ -83,7 +91,9 @@
           <label for="MTokuyak.sichocd" th:text="#{MTokuyak.sichocd}">市町村コード</label><input type="text" id="MTokuyak.sichocd" name="MTokuyak.sichocd" maxlength="6" />
         </div>
         <div id="faxkbn">
-          <label for="MTokuyak.faxkbn" th:text="#{MTokuyak.faxkbn}">ＦＡＸ区分</label><input type="text" id="MTokuyak.faxkbn" name="MTokuyak.faxkbn" maxlength="1" />
+          <fieldset id="MTokuyak.faxkbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:FAXKBN" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MTokuyak.faxkbn}">ＦＡＸ区分</legend>
+          </fieldset>
         </div>
         <div id="unsocd">
           <label for="MTokuyak.unsocd" th:text="#{MTokuyak.unsocd}">運送会社コード</label><input type="text" id="MTokuyak.unsocd" name="MTokuyak.unsocd" maxlength="3" />

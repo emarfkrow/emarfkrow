@@ -29,10 +29,12 @@
           <label for="MHcalend.dd" th:text="#{MHcalend.dd}">日</label><input type="text" id="MHcalend.dd" name="MHcalend.dd" maxlength="2" />
         </div>
         <div id="youbi">
-          <label for="MHcalend.youbi" th:text="#{MHcalend.youbi}">曜日</label><input type="text" id="MHcalend.youbi" name="MHcalend.youbi" maxlength="2" />
+          <label for="MHcalend.youbi" th:text="#{MHcalend.youbi}">曜日</label><input type="date" id="MHcalend.youbi" name="MHcalend.youbi" maxlength="2" />
         </div>
         <div id="kadoukbn">
-          <label for="MHcalend.kadoukbn" th:text="#{MHcalend.kadoukbn}">稼働区分</label><input type="text" id="MHcalend.kadoukbn" name="MHcalend.kadoukbn" maxlength="1" />
+          <fieldset id="MHcalend.kadoukbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:KADOUKBN" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MHcalend.kadoukbn}">稼働区分</legend>
+          </fieldset>
         </div>
         <div id="kadourui">
           <label for="MHcalend.kadourui" th:text="#{MHcalend.kadourui}">稼働日累計</label><input type="text" id="MHcalend.kadourui" name="MHcalend.kadourui" maxlength="4" />

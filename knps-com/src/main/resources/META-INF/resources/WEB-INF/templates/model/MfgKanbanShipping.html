@@ -9,6 +9,26 @@
 
 </script>
 <script th:src="@{/model/MfgKanbanShippingGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanGridColumns.js}"></script>
+<script th:src="@{/model/InvPrintWarehousingslipGridColumns.js}"></script>
+<script th:src="@{/model/MstEmpGridColumns.js}"></script>
+<script th:src="@{/model/MstDivisionGridColumns.js}"></script>
+<script th:src="@{/model/MstCompanyGridColumns.js}"></script>
+<script th:src="@{/model/InvStockStoreGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanBkGridColumns.js}"></script>
+<script th:src="@{/model/MstUnitGridColumns.js}"></script>
+<script th:src="@{/model/MstAccountCodeGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanEmpGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceBkGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierGridColumns.js}"></script>
+<script th:src="@{/model/InvStockProcessSupplyGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierBkGridColumns.js}"></script>
+<script th:src="@{/model/MstTaxGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailBkGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailHsGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceHsGridColumns.js}"></script>
 </head>
 <body>
   <div layout:fragment="article">
@@ -20,7 +40,7 @@
           <label for="MfgKanbanShipping.kanbanId" th:text="#{MfgKanbanShipping.kanbanId}">KANBAN_ID</label><span id="MfgKanbanShipping.kanbanId"></span><input type="hidden" id="MfgKanbanShipping.kanbanId" name="MfgKanbanShipping.kanbanId" class="primaryKey" />
         </div>
         <div id="hinban">
-          <label for="MfgKanbanShipping.hinban" th:text="#{MfgKanbanShipping.hinban}">HINBAN</label><span id="MfgKanbanShipping.hinban"></span><input type="hidden" id="MfgKanbanShipping.hinban" name="MfgKanbanShipping.hinban" class="primaryKey" />
+          <label for="MfgKanbanShipping.hinban" th:text="#{MfgKanbanShipping.hinban}">HINBAN</label><span id="MfgKanbanShipping.hinban"></span><input type="hidden" id="MfgKanbanShipping.hinban" name="MfgKanbanShipping.hinban" class="primaryKey" /><a id="MfgKanbanShipping.hinban" th:href="@{/model/MstHinbanS.html}" target="dialog" class="primaryKey refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MfgKanbanShipping.item" class="refer" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:MfgKanbanShipping.hinban" data-destDef="MfgKanbanShipping.item:ITEM"></span>
         </div>
         <div id="forProCode">
           <fieldset id="MfgKanbanShipping.forProCodeList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:FOR_PRO_CODE" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">

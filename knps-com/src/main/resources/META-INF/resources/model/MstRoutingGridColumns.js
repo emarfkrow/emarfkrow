@@ -3,7 +3,7 @@
  */
 
 let MstRoutingGridColumns = [
-    Column.cell('MAN_HINBAN', Messages['MstRoutingGrid.manHinban'], 250, 'primaryKey', null),
+    Column.refer('MAN_HINBAN', Messages['MstRoutingGrid.manHinban'], 250, 'primaryKey', 'MAN_HINMEI'),
     Column.cell('ROUTING_GROUP', Messages['MstRoutingGrid.routingGroup'], 20, 'primaryKey', null),
     Column.cell('ROUTING', Messages['MstRoutingGrid.routing'], 20, 'primaryKey', null),
     Column.text('NECK_ROUTING', Messages['MstRoutingGrid.neckRouting'], 10, '', null),

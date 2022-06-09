@@ -3,7 +3,7 @@
  */
 
 let MstProdUnitpriceHsGridColumns = [
-    Column.cell('MAN_HINBAN', Messages['MstProdUnitpriceHsGrid.manHinban'], 250, 'primaryKey', null),
+    Column.refer('MAN_HINBAN', Messages['MstProdUnitpriceHsGrid.manHinban'], 250, 'primaryKey', 'MAN_HINMEI'),
     Column.cell('ROUTING_GROUP', Messages['MstProdUnitpriceHsGrid.routingGroup'], 20, 'primaryKey', null),
     Column.cell('ROUTING', Messages['MstProdUnitpriceHsGrid.routing'], 20, 'primaryKey', null),
     Column.refer('WC_CODE', Messages['MstProdUnitpriceHsGrid.wcCode'], 30, 'primaryKey', 'WC_NAME'),

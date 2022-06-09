@@ -9,15 +9,29 @@
 
 </script>
 <script th:src="@{/model/PrdMWsManLoadPlanGridColumns.js}"></script>
-<script th:src="@{/model/MstWsGridColumns.js}"></script>
-<script th:src="@{/model/MstTeamGridColumns.js}"></script>
-<script th:src="@{/model/MstGroupGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanGridColumns.js}"></script>
+<script th:src="@{/model/InvPrintWarehousingslipGridColumns.js}"></script>
+<script th:src="@{/model/MstEmpGridColumns.js}"></script>
 <script th:src="@{/model/MstDivisionGridColumns.js}"></script>
 <script th:src="@{/model/MstCompanyGridColumns.js}"></script>
+<script th:src="@{/model/InvStockStoreGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanBkGridColumns.js}"></script>
+<script th:src="@{/model/MstUnitGridColumns.js}"></script>
+<script th:src="@{/model/MstAccountCodeGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanEmpGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceBkGridColumns.js}"></script>
 <script th:src="@{/model/MstSupplierGridColumns.js}"></script>
 <script th:src="@{/model/InvStockProcessSupplyGridColumns.js}"></script>
 <script th:src="@{/model/MstSupplierBkGridColumns.js}"></script>
 <script th:src="@{/model/MstTaxGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailBkGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailHsGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceHsGridColumns.js}"></script>
+<script th:src="@{/model/MstWsGridColumns.js}"></script>
+<script th:src="@{/model/MstTeamGridColumns.js}"></script>
+<script th:src="@{/model/MstGroupGridColumns.js}"></script>
 </head>
 <body>
   <div layout:fragment="article">
@@ -32,7 +46,7 @@
           <label for="PrdMWsManLoadPlan.mm" th:text="#{PrdMWsManLoadPlan.mm}">MM</label><input type="text" id="PrdMWsManLoadPlan.mm" name="PrdMWsManLoadPlan.mm" maxlength="2" />
         </div>
         <div id="manHinban">
-          <label for="PrdMWsManLoadPlan.manHinban" th:text="#{PrdMWsManLoadPlan.manHinban}">MAN_HINBAN</label><input type="text" id="PrdMWsManLoadPlan.manHinban" name="PrdMWsManLoadPlan.manHinban" maxlength="25" />
+          <label for="PrdMWsManLoadPlan.manHinban" th:text="#{PrdMWsManLoadPlan.manHinban}">MAN_HINBAN</label><input type="text" id="PrdMWsManLoadPlan.manHinban" name="PrdMWsManLoadPlan.manHinban" maxlength="25" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:PrdMWsManLoadPlan.manHinban" data-destDef="PrdMWsManLoadPlan.manItem:ITEM" /><a id="PrdMWsManLoadPlan.manHinban" th:href="@{/model/MstHinbanS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="PrdMWsManLoadPlan.manItem" class="refer" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:PrdMWsManLoadPlan.manHinban" data-destDef="PrdMWsManLoadPlan.manItem:ITEM"></span>
         </div>
         <div id="wsCode">
           <label for="PrdMWsManLoadPlan.wsCode" th:text="#{PrdMWsManLoadPlan.wsCode}">WS_CODE</label><input type="text" id="PrdMWsManLoadPlan.wsCode" name="PrdMWsManLoadPlan.wsCode" maxlength="4" data-json="MstWsSearch.json" data-srcDef="WS_CODE:PrdMWsManLoadPlan.wsCode" data-destDef="PrdMWsManLoadPlan.wsName:WS_NAME" /><a id="PrdMWsManLoadPlan.wsCode" th:href="@{/model/MstWsS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="PrdMWsManLoadPlan.wsName" class="refer" data-json="MstWsSearch.json" data-srcDef="WS_CODE:PrdMWsManLoadPlan.wsCode" data-destDef="PrdMWsManLoadPlan.wsName:WS_NAME"></span>

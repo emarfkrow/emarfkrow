@@ -4,7 +4,7 @@
 
 let PrdWWcMcnLoadPlanGridColumns = [
     Column.cell('W_PLAN_ID', Messages['PrdWWcMcnLoadPlanGrid.wPlanId'], 60, 'primaryKey', null),
-    Column.cell('MAN_HINBAN', Messages['PrdWWcMcnLoadPlanGrid.manHinban'], 250, 'primaryKey', null),
+    Column.refer('MAN_HINBAN', Messages['PrdWWcMcnLoadPlanGrid.manHinban'], 250, 'primaryKey', 'MAN_HINMEI'),
     Column.cell('WC_CODE', Messages['PrdWWcMcnLoadPlanGrid.wcCode'], 30, 'primaryKey', null),
     Column.text('WC_NAME', Messages['PrdWWcMcnLoadPlanGrid.wcName'], 300, '', null),
     Column.select('WS_CODE', Messages['PrdWWcMcnLoadPlanGrid.wsCode'], 40, '', { json: 'MstCodeValueSearch.json', paramkey: 'code_nm', value: 'CODE_VALUE', label: 'CODE_VALUE_MEI' }),

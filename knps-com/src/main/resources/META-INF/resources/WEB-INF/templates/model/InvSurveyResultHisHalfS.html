@@ -9,18 +9,32 @@
 
 </script>
 <script th:src="@{/model/InvSurveyResultHisHalfGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanGridColumns.js}"></script>
+<script th:src="@{/model/InvPrintWarehousingslipGridColumns.js}"></script>
+<script th:src="@{/model/MstEmpGridColumns.js}"></script>
+<script th:src="@{/model/MstDivisionGridColumns.js}"></script>
+<script th:src="@{/model/MstCompanyGridColumns.js}"></script>
+<script th:src="@{/model/InvStockStoreGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanBkGridColumns.js}"></script>
+<script th:src="@{/model/MstUnitGridColumns.js}"></script>
+<script th:src="@{/model/MstAccountCodeGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanEmpGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceBkGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierGridColumns.js}"></script>
+<script th:src="@{/model/InvStockProcessSupplyGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierBkGridColumns.js}"></script>
+<script th:src="@{/model/MstTaxGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailBkGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailHsGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceHsGridColumns.js}"></script>
 <script th:src="@{/model/MstWcGridColumns.js}"></script>
 <script th:src="@{/model/MstWcBkGridColumns.js}"></script>
 <script th:src="@{/model/MstProcGridColumns.js}"></script>
 <script th:src="@{/model/MstWsGridColumns.js}"></script>
 <script th:src="@{/model/MstTeamGridColumns.js}"></script>
 <script th:src="@{/model/MstGroupGridColumns.js}"></script>
-<script th:src="@{/model/MstDivisionGridColumns.js}"></script>
-<script th:src="@{/model/MstCompanyGridColumns.js}"></script>
-<script th:src="@{/model/MstSupplierGridColumns.js}"></script>
-<script th:src="@{/model/InvStockProcessSupplyGridColumns.js}"></script>
-<script th:src="@{/model/MstSupplierBkGridColumns.js}"></script>
-<script th:src="@{/model/MstTaxGridColumns.js}"></script>
 <script th:src="@{/model/MstCostCenterGridColumns.js}"></script>
 <script th:src="@{/model/MstCostCenterBkGridColumns.js}"></script>
 <script th:src="@{/model/MstSubinvGridColumns.js}"></script>
@@ -41,7 +55,7 @@
           <label for="InvSurveyResultHisHalf.mm" th:text="#{InvSurveyResultHisHalf.mm}">MM</label><input type="text" id="InvSurveyResultHisHalf.mm" name="InvSurveyResultHisHalf.mm" maxlength="2" />
         </div>
         <div id="hinban">
-          <label for="InvSurveyResultHisHalf.hinban" th:text="#{InvSurveyResultHisHalf.hinban}">HINBAN</label><input type="text" id="InvSurveyResultHisHalf.hinban" name="InvSurveyResultHisHalf.hinban" maxlength="25" />
+          <label for="InvSurveyResultHisHalf.hinban" th:text="#{InvSurveyResultHisHalf.hinban}">HINBAN</label><input type="text" id="InvSurveyResultHisHalf.hinban" name="InvSurveyResultHisHalf.hinban" maxlength="25" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:InvSurveyResultHisHalf.hinban" data-destDef="InvSurveyResultHisHalf.item:ITEM" /><a id="InvSurveyResultHisHalf.hinban" th:href="@{/model/MstHinbanS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="InvSurveyResultHisHalf.item" class="refer" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:InvSurveyResultHisHalf.hinban" data-destDef="InvSurveyResultHisHalf.item:ITEM"></span>
         </div>
         <div id="stock">
           <label for="InvSurveyResultHisHalf.stock" th:text="#{InvSurveyResultHisHalf.stock}">STOCK</label><input type="text" id="InvSurveyResultHisHalf.stock" name="InvSurveyResultHisHalf.stock" maxlength="11" />

@@ -12,18 +12,32 @@
 <script th:src="@{/model/MstRoutingDefGridColumns.js}"></script>
 <script th:src="@{/model/MfgKanbanHedGridColumns.js}"></script>
 <script th:src="@{/model/MstRoutingBkGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanGridColumns.js}"></script>
+<script th:src="@{/model/InvPrintWarehousingslipGridColumns.js}"></script>
+<script th:src="@{/model/MstEmpGridColumns.js}"></script>
+<script th:src="@{/model/MstDivisionGridColumns.js}"></script>
+<script th:src="@{/model/MstCompanyGridColumns.js}"></script>
+<script th:src="@{/model/InvStockStoreGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanBkGridColumns.js}"></script>
+<script th:src="@{/model/MstUnitGridColumns.js}"></script>
+<script th:src="@{/model/MstAccountCodeGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanEmpGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceBkGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierGridColumns.js}"></script>
+<script th:src="@{/model/InvStockProcessSupplyGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierBkGridColumns.js}"></script>
+<script th:src="@{/model/MstTaxGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailBkGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailHsGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceHsGridColumns.js}"></script>
 <script th:src="@{/model/MstWcGridColumns.js}"></script>
 <script th:src="@{/model/MstWcBkGridColumns.js}"></script>
 <script th:src="@{/model/MstProcGridColumns.js}"></script>
 <script th:src="@{/model/MstWsGridColumns.js}"></script>
 <script th:src="@{/model/MstTeamGridColumns.js}"></script>
 <script th:src="@{/model/MstGroupGridColumns.js}"></script>
-<script th:src="@{/model/MstDivisionGridColumns.js}"></script>
-<script th:src="@{/model/MstCompanyGridColumns.js}"></script>
-<script th:src="@{/model/MstSupplierGridColumns.js}"></script>
-<script th:src="@{/model/InvStockProcessSupplyGridColumns.js}"></script>
-<script th:src="@{/model/MstSupplierBkGridColumns.js}"></script>
-<script th:src="@{/model/MstTaxGridColumns.js}"></script>
 <script th:src="@{/model/MstCostCenterGridColumns.js}"></script>
 <script th:src="@{/model/MstCostCenterBkGridColumns.js}"></script>
 <script th:src="@{/model/MstSubinvGridColumns.js}"></script>
@@ -41,7 +55,7 @@
       <fieldset>
         <legend th:text="#{MstRack.legend}">legend</legend>
         <div id="manHinban">
-          <label for="MstRack.manHinban" th:text="#{MstRack.manHinban}">MAN_HINBAN</label><span id="MstRack.manHinban"></span><input type="hidden" id="MstRack.manHinban" name="MstRack.manHinban" class="primaryKey" />
+          <label for="MstRack.manHinban" th:text="#{MstRack.manHinban}">MAN_HINBAN</label><span id="MstRack.manHinban"></span><input type="hidden" id="MstRack.manHinban" name="MstRack.manHinban" class="primaryKey" /><a id="MstRack.manHinban" th:href="@{/model/MstHinbanS.html}" target="dialog" class="primaryKey refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MstRack.manItem" class="refer" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:MstRack.manHinban" data-destDef="MstRack.manItem:ITEM"></span>
         </div>
         <div id="rackName">
           <label for="MstRack.rackName" th:text="#{MstRack.rackName}">RACK_NAME</label><input type="text" id="MstRack.rackName" name="MstRack.rackName" maxlength="30" />

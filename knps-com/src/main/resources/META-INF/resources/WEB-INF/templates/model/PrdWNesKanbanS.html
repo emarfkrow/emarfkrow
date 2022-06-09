@@ -9,6 +9,26 @@
 
 </script>
 <script th:src="@{/model/PrdWNesKanbanGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanGridColumns.js}"></script>
+<script th:src="@{/model/InvPrintWarehousingslipGridColumns.js}"></script>
+<script th:src="@{/model/MstEmpGridColumns.js}"></script>
+<script th:src="@{/model/MstDivisionGridColumns.js}"></script>
+<script th:src="@{/model/MstCompanyGridColumns.js}"></script>
+<script th:src="@{/model/InvStockStoreGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanBkGridColumns.js}"></script>
+<script th:src="@{/model/MstUnitGridColumns.js}"></script>
+<script th:src="@{/model/MstAccountCodeGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanEmpGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceBkGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierGridColumns.js}"></script>
+<script th:src="@{/model/InvStockProcessSupplyGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierBkGridColumns.js}"></script>
+<script th:src="@{/model/MstTaxGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailBkGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailHsGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceHsGridColumns.js}"></script>
 </head>
 <body>
   <div layout:fragment="article">
@@ -17,7 +37,7 @@
       <fieldset>
         <legend th:text="#{PrdWNesKanbanS.legend}">legend</legend>
         <div id="proHinban">
-          <label for="PrdWNesKanban.proHinban" th:text="#{PrdWNesKanban.proHinban}">PRO_HINBAN</label><input type="text" id="PrdWNesKanban.proHinban" name="PrdWNesKanban.proHinban" maxlength="25" />
+          <label for="PrdWNesKanban.proHinban" th:text="#{PrdWNesKanban.proHinban}">PRO_HINBAN</label><input type="text" id="PrdWNesKanban.proHinban" name="PrdWNesKanban.proHinban" maxlength="25" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:PrdWNesKanban.proHinban" data-destDef="PrdWNesKanban.proItem:ITEM" /><a id="PrdWNesKanban.proHinban" th:href="@{/model/MstHinbanS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="PrdWNesKanban.proItem" class="refer" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:PrdWNesKanban.proHinban" data-destDef="PrdWNesKanban.proItem:ITEM"></span>
         </div>
         <div id="storeWc">
           <label for="PrdWNesKanban.storeWc" th:text="#{PrdWNesKanban.storeWc}">STORE_WC</label><input type="text" id="PrdWNesKanban.storeWc" name="PrdWNesKanban.storeWc" maxlength="3" />

@@ -9,11 +9,26 @@
 
 </script>
 <script th:src="@{/model/FChumonxGridColumns.js}"></script>
-<script th:src="@{/model/MHhinmokGridColumns.js}"></script>
-<script th:src="@{/model/MHososetGridColumns.js}"></script>
-<script th:src="@{/model/MHosozaiGridColumns.js}"></script>
-<script th:src="@{/model/MPkoseGridColumns.js}"></script>
-<script th:src="@{/model/MPhinmokGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanGridColumns.js}"></script>
+<script th:src="@{/model/InvPrintWarehousingslipGridColumns.js}"></script>
+<script th:src="@{/model/MstEmpGridColumns.js}"></script>
+<script th:src="@{/model/MstDivisionGridColumns.js}"></script>
+<script th:src="@{/model/MstCompanyGridColumns.js}"></script>
+<script th:src="@{/model/InvStockStoreGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanBkGridColumns.js}"></script>
+<script th:src="@{/model/MstUnitGridColumns.js}"></script>
+<script th:src="@{/model/MstAccountCodeGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanEmpGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceBkGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierGridColumns.js}"></script>
+<script th:src="@{/model/InvStockProcessSupplyGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierBkGridColumns.js}"></script>
+<script th:src="@{/model/MstTaxGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailBkGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailHsGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceHsGridColumns.js}"></script>
 </head>
 <body>
   <div layout:fragment="article">
@@ -25,7 +40,7 @@
           <label for="FChumonx.tokucd" th:text="#{FChumonx.tokucd}">TOKUCD</label><input type="text" id="FChumonx.tokucd" name="FChumonx.tokucd" maxlength="8" />
         </div>
         <div id="hhinban">
-          <label for="FChumonx.hhinban" th:text="#{FChumonx.hhinban}">HHINBAN</label><input type="text" id="FChumonx.hhinban" name="FChumonx.hhinban" maxlength="20" data-json="MHhinmokSearch.json" data-srcDef="HHINBAN:FChumonx.hhinban" data-destDef="FChumonx.hinmei:HINMEI" /><a id="FChumonx.hhinban" th:href="@{/model/MHhinmokS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="FChumonx.hinmei" class="refer" data-json="MHhinmokSearch.json" data-srcDef="HHINBAN:FChumonx.hhinban" data-destDef="FChumonx.hinmei:HINMEI"></span>
+          <label for="FChumonx.hhinban" th:text="#{FChumonx.hhinban}">HHINBAN</label><input type="text" id="FChumonx.hhinban" name="FChumonx.hhinban" maxlength="20" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:FChumonx.hhinban" data-destDef="FChumonx.hitem:ITEM" /><a id="FChumonx.hhinban" th:href="@{/model/MstHinbanS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="FChumonx.hitem" class="refer" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:FChumonx.hhinban" data-destDef="FChumonx.hitem:ITEM"></span>
         </div>
         <div id="shukkasuRui">
           <label for="FChumonx.shukkasuRui" th:text="#{FChumonx.shukkasuRui}">SHUKKASU-RUI</label><input type="text" id="FChumonx.shukkasuRui" name="FChumonx.shukkasuRui" maxlength="7" />

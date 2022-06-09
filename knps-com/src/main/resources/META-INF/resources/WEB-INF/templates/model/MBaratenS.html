@@ -9,6 +9,26 @@
 
 </script>
 <script th:src="@{/model/MBaratenGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanGridColumns.js}"></script>
+<script th:src="@{/model/InvPrintWarehousingslipGridColumns.js}"></script>
+<script th:src="@{/model/MstEmpGridColumns.js}"></script>
+<script th:src="@{/model/MstDivisionGridColumns.js}"></script>
+<script th:src="@{/model/MstCompanyGridColumns.js}"></script>
+<script th:src="@{/model/InvStockStoreGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanBkGridColumns.js}"></script>
+<script th:src="@{/model/MstUnitGridColumns.js}"></script>
+<script th:src="@{/model/MstAccountCodeGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanEmpGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceBkGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierGridColumns.js}"></script>
+<script th:src="@{/model/InvStockProcessSupplyGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierBkGridColumns.js}"></script>
+<script th:src="@{/model/MstTaxGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailBkGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailHsGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceHsGridColumns.js}"></script>
 </head>
 <body>
   <div layout:fragment="article">
@@ -17,10 +37,10 @@
       <fieldset>
         <legend th:text="#{MBaratenS.legend}">legend</legend>
         <div id="oyaHinban">
-          <label for="MBaraten.oyaHinban" th:text="#{MBaraten.oyaHinban}">親品番</label><input type="text" id="MBaraten.oyaHinban" name="MBaraten.oyaHinban" maxlength="20" />
+          <label for="MBaraten.oyaHinban" th:text="#{MBaraten.oyaHinban}">親品番</label><input type="text" id="MBaraten.oyaHinban" name="MBaraten.oyaHinban" maxlength="20" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:MBaraten.oyaHinban" data-destDef="MBaraten.oyaItem:ITEM" /><a id="MBaraten.oyaHinban" th:href="@{/model/MstHinbanS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MBaraten.oyaItem" class="refer" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:MBaraten.oyaHinban" data-destDef="MBaraten.oyaItem:ITEM"></span>
         </div>
         <div id="koHinban">
-          <label for="MBaraten.koHinban" th:text="#{MBaraten.koHinban}">子品番</label><input type="text" id="MBaraten.koHinban" name="MBaraten.koHinban" maxlength="20" />
+          <label for="MBaraten.koHinban" th:text="#{MBaraten.koHinban}">子品番</label><input type="text" id="MBaraten.koHinban" name="MBaraten.koHinban" maxlength="20" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:MBaraten.koHinban" data-destDef="MBaraten.koItem:ITEM" /><a id="MBaraten.koHinban" th:href="@{/model/MstHinbanS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MBaraten.koItem" class="refer" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:MBaraten.koHinban" data-destDef="MBaraten.koItem:ITEM"></span>
         </div>
         <div id="oyaHinc">
           <label for="MBaraten.oyaHinc" th:text="#{MBaraten.oyaHinc}">親品目コード</label><input type="text" id="MBaraten.oyaHinc" name="MBaraten.oyaHinc" maxlength="20" />
@@ -32,16 +52,16 @@
           <label for="MBaraten.inzu" th:text="#{MBaraten.inzu}">員数</label><input type="text" id="MBaraten.inzu" name="MBaraten.inzu" maxlength="3" />
         </div>
         <div id="oyaBaika">
-          <label for="MBaraten.oyaBaika" th:text="#{MBaraten.oyaBaika}">親売価</label><input type="text" id="MBaraten.oyaBaika" name="MBaraten.oyaBaika" maxlength="7" />
+          <label for="MBaraten.oyaBaika_1" th:text="#{MBaraten.oyaBaika}">親売価</label><input type="text" id="MBaraten.oyaBaika_1" name="MBaraten.oyaBaika_1" maxlength="7" />～<input type="text" id="MBaraten.oyaBaika_2" name="MBaraten.oyaBaika_2" maxlength="7" />
         </div>
         <div id="oyaGenka">
-          <label for="MBaraten.oyaGenka" th:text="#{MBaraten.oyaGenka}">親原価</label><input type="text" id="MBaraten.oyaGenka" name="MBaraten.oyaGenka" maxlength="7" />
+          <label for="MBaraten.oyaGenka_1" th:text="#{MBaraten.oyaGenka}">親原価</label><input type="text" id="MBaraten.oyaGenka_1" name="MBaraten.oyaGenka_1" maxlength="7" />～<input type="text" id="MBaraten.oyaGenka_2" name="MBaraten.oyaGenka_2" maxlength="7" />
         </div>
         <div id="koTanka">
           <label for="MBaraten.koTanka" th:text="#{MBaraten.koTanka}">子単価</label><input type="text" id="MBaraten.koTanka" name="MBaraten.koTanka" maxlength="7" />
         </div>
         <div id="koGenka">
-          <label for="MBaraten.koGenka" th:text="#{MBaraten.koGenka}">子原価</label><input type="text" id="MBaraten.koGenka" name="MBaraten.koGenka" maxlength="7" />
+          <label for="MBaraten.koGenka_1" th:text="#{MBaraten.koGenka}">子原価</label><input type="text" id="MBaraten.koGenka_1" name="MBaraten.koGenka_1" maxlength="7" />～<input type="text" id="MBaraten.koGenka_2" name="MBaraten.koGenka_2" maxlength="7" />
         </div>
         <div id="koTanritu">
           <label for="MBaraten.koTanritu" th:text="#{MBaraten.koTanritu}">子単価率</label><input type="text" id="MBaraten.koTanritu" name="MBaraten.koTanritu" maxlength="3" />
@@ -50,7 +70,9 @@
           <label for="MBaraten.kensakum" th:text="#{MBaraten.kensakum}">検索マスター</label><input type="text" id="MBaraten.kensakum" name="MBaraten.kensakum" maxlength="4" />
         </div>
         <div id="casekbn">
-          <label for="MBaraten.casekbn" th:text="#{MBaraten.casekbn}">ケース区分</label><input type="text" id="MBaraten.casekbn" name="MBaraten.casekbn" maxlength="1" />
+          <fieldset id="MBaraten.casekbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:CASEKBN" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MBaraten.casekbn}">ケース区分</legend>
+          </fieldset>
         </div>
         <div id="filler">
           <label for="MBaraten.filler" th:text="#{MBaraten.filler}">予備領域</label><input type="text" id="MBaraten.filler" name="MBaraten.filler" maxlength="16" />

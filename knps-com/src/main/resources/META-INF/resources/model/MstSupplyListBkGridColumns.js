@@ -5,9 +5,9 @@
 let MstSupplyListBkGridColumns = [
     Column.cell('YY', Messages['MstSupplyListBkGrid.yy'], 40, 'primaryKey', null),
     Column.cell('ROUTING_GROUP', Messages['MstSupplyListBkGrid.routingGroup'], 20, 'primaryKey', null),
-    Column.cell('MAN_HINBAN', Messages['MstSupplyListBkGrid.manHinban'], 250, 'primaryKey', null),
+    Column.refer('MAN_HINBAN', Messages['MstSupplyListBkGrid.manHinban'], 250, 'primaryKey', 'MAN_HINMEI'),
     Column.cell('ROUTING', Messages['MstSupplyListBkGrid.routing'], 20, 'primaryKey', null),
-    Column.cell('SUPPLY_HINBAN', Messages['MstSupplyListBkGrid.supplyHinban'], 250, 'primaryKey', null),
+    Column.refer('SUPPLY_HINBAN', Messages['MstSupplyListBkGrid.supplyHinban'], 250, 'primaryKey', 'SUPPLY_HINMEI'),
     Column.text('COUNTS', Messages['MstSupplyListBkGrid.counts'], 110, '', null),
     Column.select('SUPPLY_KBN', Messages['MstSupplyListBkGrid.supplyKbn'], 10, '', { json: 'MstCodeValueSearch.json', paramkey: 'code_nm', value: 'CODE_VALUE', label: 'CODE_VALUE_MEI' }),
     Column.text('STAN_COUNTS', Messages['MstSupplyListBkGrid.stanCounts'], 110, '', null),

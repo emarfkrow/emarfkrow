@@ -17,7 +17,9 @@
       <fieldset>
         <legend th:text="#{MYubojoS.legend}">legend</legend>
         <div id="yuryokukbn">
-          <label for="MYubojo.yuryokukbn" th:text="#{MYubojo.yuryokukbn}">有力店資格区分</label><input type="text" id="MYubojo.yuryokukbn" name="MYubojo.yuryokukbn" maxlength="1" />
+          <fieldset id="MYubojo.yuryokukbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:YURYOKUKBN" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MYubojo.yuryokukbn}">有力店資格区分</legend>
+          </fieldset>
         </div>
         <div id="yuryocd">
           <label for="MYubojo.yuryocd" th:text="#{MYubojo.yuryocd}">有力店コード</label><input type="text" id="MYubojo.yuryocd" name="MYubojo.yuryocd" maxlength="8" />

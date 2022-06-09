@@ -10,18 +10,32 @@
 </script>
 <script th:src="@{/model/MfgTotalCostRegLineYGridColumns.js}"></script>
 <script th:src="@{/model/MfgTotalCostRegLineIGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanGridColumns.js}"></script>
+<script th:src="@{/model/InvPrintWarehousingslipGridColumns.js}"></script>
+<script th:src="@{/model/MstEmpGridColumns.js}"></script>
+<script th:src="@{/model/MstDivisionGridColumns.js}"></script>
+<script th:src="@{/model/MstCompanyGridColumns.js}"></script>
+<script th:src="@{/model/InvStockStoreGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanBkGridColumns.js}"></script>
+<script th:src="@{/model/MstUnitGridColumns.js}"></script>
+<script th:src="@{/model/MstAccountCodeGridColumns.js}"></script>
+<script th:src="@{/model/MstHinbanEmpGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceBkGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierGridColumns.js}"></script>
+<script th:src="@{/model/InvStockProcessSupplyGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierBkGridColumns.js}"></script>
+<script th:src="@{/model/MstTaxGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailBkGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceDetailHsGridColumns.js}"></script>
+<script th:src="@{/model/MstSupUnitpriceHsGridColumns.js}"></script>
 <script th:src="@{/model/MstWcGridColumns.js}"></script>
 <script th:src="@{/model/MstWcBkGridColumns.js}"></script>
 <script th:src="@{/model/MstProcGridColumns.js}"></script>
 <script th:src="@{/model/MstWsGridColumns.js}"></script>
 <script th:src="@{/model/MstTeamGridColumns.js}"></script>
 <script th:src="@{/model/MstGroupGridColumns.js}"></script>
-<script th:src="@{/model/MstDivisionGridColumns.js}"></script>
-<script th:src="@{/model/MstCompanyGridColumns.js}"></script>
-<script th:src="@{/model/MstSupplierGridColumns.js}"></script>
-<script th:src="@{/model/InvStockProcessSupplyGridColumns.js}"></script>
-<script th:src="@{/model/MstSupplierBkGridColumns.js}"></script>
-<script th:src="@{/model/MstTaxGridColumns.js}"></script>
 <script th:src="@{/model/MstCostCenterGridColumns.js}"></script>
 <script th:src="@{/model/MstCostCenterBkGridColumns.js}"></script>
 <script th:src="@{/model/MstSubinvGridColumns.js}"></script>
@@ -39,7 +53,7 @@
           <label for="MfgTotalCostRegLineY.proGroupNo" th:text="#{MfgTotalCostRegLineY.proGroupNo}">PRO_GROUP_NO</label><input type="text" id="MfgTotalCostRegLineY.proGroupNo" name="MfgTotalCostRegLineY.proGroupNo" maxlength="2" />
         </div>
         <div id="hinban">
-          <label for="MfgTotalCostRegLineY.hinban" th:text="#{MfgTotalCostRegLineY.hinban}">HINBAN</label><input type="text" id="MfgTotalCostRegLineY.hinban" name="MfgTotalCostRegLineY.hinban" maxlength="25" />
+          <label for="MfgTotalCostRegLineY.hinban" th:text="#{MfgTotalCostRegLineY.hinban}">HINBAN</label><input type="text" id="MfgTotalCostRegLineY.hinban" name="MfgTotalCostRegLineY.hinban" maxlength="25" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:MfgTotalCostRegLineY.hinban" data-destDef="MfgTotalCostRegLineY.item:ITEM" /><a id="MfgTotalCostRegLineY.hinban" th:href="@{/model/MstHinbanS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MfgTotalCostRegLineY.item" class="refer" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:MfgTotalCostRegLineY.hinban" data-destDef="MfgTotalCostRegLineY.item:ITEM"></span>
         </div>
         <div id="routing">
           <label for="MfgTotalCostRegLineY.routing" th:text="#{MfgTotalCostRegLineY.routing}">ROUTING</label><input type="text" id="MfgTotalCostRegLineY.routing" name="MfgTotalCostRegLineY.routing" maxlength="2" />
@@ -160,6 +174,7 @@
       </fieldset>
       <div class="buttons">
         <button type="reset" th:text="#{common.reset}">reset</button>
+        <a th:href="@{/model/MfgTotalCostRegLineY.html}" id="MfgTotalCostRegLineY" target="dialog" th:text="#{MfgTotalCostRegLineY.add}" tabindex="-1">MFG_TOTAL_COST_REG_LINE_Y</a>
       </div>
       <div class="submits">
         <button id="SearchMfgTotalCostRegLineY" class="search" data-gridId="MfgTotalCostRegLineYGrid" th:text="#{common.search}">submit</button>

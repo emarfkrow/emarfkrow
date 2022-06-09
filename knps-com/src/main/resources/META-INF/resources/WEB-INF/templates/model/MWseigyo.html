@@ -17,7 +17,9 @@
       <fieldset>
         <legend th:text="#{MWseigyo.legend}">legend</legend>
         <div id="webDatakbn">
-          <label for="MWseigyo.webDatakbn" th:text="#{MWseigyo.webDatakbn}">ＷＥＢデータ区分</label><input type="text" id="MWseigyo.webDatakbn" name="MWseigyo.webDatakbn" maxlength="2" class="primaryKey" />
+          <fieldset id="MWseigyo.webDatakbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:WEB-DATAKBN" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI" class="primaryKey">
+            <legend th:text="#{MWseigyo.webDatakbn}">ＷＥＢデータ区分</legend>
+          </fieldset>
         </div>
         <div id="webJuchuno1">
           <label for="MWseigyo.webJuchuno1" th:text="#{MWseigyo.webJuchuno1}">ＷＥＢ受注番号１</label><input type="text" id="MWseigyo.webJuchuno1" name="MWseigyo.webJuchuno1" maxlength="9" />
