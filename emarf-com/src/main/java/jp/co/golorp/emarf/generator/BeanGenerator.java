@@ -1784,10 +1784,11 @@ public final class BeanGenerator {
         s.add("SELECT");
         s.add("      a.*");
 
-        // 他マスタでの名称解決
+        // 参照モデルの名称解決
         int i = 0;
         for (ColumnInfo columnInfo : tableInfo.getColumnInfos().values()) {
 
+            // 参照元カラム名
             String srcColumnName = columnInfo.getColumnName();
 
             // 列の参照モデル情報
@@ -1797,34 +1798,51 @@ public final class BeanGenerator {
 
                 ++i;
 
-                // 合致するID/名のサフィックスを取得
-                String referIdSuffix = null;
-                String referMeiSuffix = null;
                 for (String[] e : referPairs) {
                     String idSuffix = e[0];
                     String meiSuffix = e[1];
-                    if (srcColumnName.matches("(?i).+" + idSuffix + "$")) {
-                        referIdSuffix = idSuffix;
-                        referMeiSuffix = meiSuffix;
-                        break;
+
+                    // カラム名が参照キーに合致しなければスキップ
+                    if (!srcColumnName.matches("(?i)^.*" + idSuffix + "$")) {
+                        continue;
                     }
-                }
 
-                String srcColumnMei = srcColumnName.replaceAll("(?i)" + referIdSuffix + "$", referMeiSuffix);
+                    // カラム名のIDサフィックスを名称サフィックスに置換して名称カラム名を取得
+                    String srcIdColumn = srcColumnName;
+                    String srcMeiColumn = srcIdColumn.replaceAll("(?i)" + idSuffix + "$", meiSuffix);
 
-                // 名称カラムがない場合はselect句に追加
-                if (!tableInfo.getColumnInfos().containsKey(srcColumnMei)) {
+                    // 参照先テーブルの全カラム名を確認して、末尾が合致するカラム名を、参照先のID・名称カラム名として取得
+                    String destIdColumn = null;
+                    String destMeiColumn = null;
+                    for (String destColumnName : referInfo.getColumnInfos().keySet()) {
+                        if (srcIdColumn.matches("^.*" + destColumnName + "$")) {
+                            destIdColumn = destColumnName;
+                        } else if (srcMeiColumn.matches("^.*" + destColumnName + "$")) {
+                            destMeiColumn = destColumnName;
+                        }
+                    }
 
-                    String destColumnName = referInfo.getPrimaryKeys().get(0);
-                    String destColumnMei = destColumnName.replaceAll("(?i)" + referIdSuffix + "$", referMeiSuffix);
+                    if (destIdColumn == null || destMeiColumn == null) {
+                        continue;
+                    }
 
-                    String srcIdQuoted = DataSources.getAssist().quoted(srcColumnName);
-                    String srcMeiQuoted = DataSources.getAssist().quoted(srcColumnMei);
-                    String destIdQuoted = DataSources.getAssist().quoted(destColumnName);
-                    String destMeiQuoted = DataSources.getAssist().quoted(destColumnMei);
+                    // 名称カラムがない場合はselect句に追加
+                    if (!tableInfo.getColumnInfos().containsKey(srcMeiColumn)) {
 
-                    s.add("    , (SELECT r" + i + "." + destMeiQuoted + " FROM " + referInfo.getTableName() + " r" + i
-                            + " WHERE r" + i + "." + destIdQuoted + " = a." + srcIdQuoted + ") AS " + srcMeiQuoted);
+                        String destColumnName = referInfo.getPrimaryKeys().get(0);
+                        String destColumnMei = destColumnName.replaceAll("(?i)" + idSuffix + "$", meiSuffix);
+
+                        String srcIdQuoted = DataSources.getAssist().quoted(srcIdColumn);
+                        String srcMeiQuoted = DataSources.getAssist().quoted(srcMeiColumn);
+                        String destIdQuoted = DataSources.getAssist().quoted(destColumnName);
+                        String destMeiQuoted = DataSources.getAssist().quoted(destColumnMei);
+
+                        s.add("    , (SELECT r" + i + "." + destMeiQuoted + " FROM " + referInfo.getTableName() + " r"
+                                + i + " WHERE r" + i + "." + destIdQuoted + " = a." + srcIdQuoted + ") AS "
+                                + srcMeiQuoted);
+                    }
+
+                    break;
                 }
             }
         }

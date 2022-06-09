@@ -96,8 +96,6 @@ public final class HtmlGenerator {
         inputFlagSuffixs = bundle.getString("BeanGenerator.input.flag.suffixs").split(",");
         inputFileSuffixs = bundle.getString("BeanGenerator.input.file.suffixs").split(",");
 
-        //        referIdSuffixs = bundle.getString("BeanGenerator.refer.id.suffixs").split(",");
-        //        referMeiSuffix = bundle.getString("BeanGenerator.refer.mei.suffix");
         String[] pairs = bundle.getString("BeanGenerator.refer.pairs").split(",");
         for (String pair : pairs) {
             String[] kv = pair.split(":");

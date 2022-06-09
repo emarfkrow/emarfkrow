@@ -602,7 +602,7 @@ public final class DataSources {
      */
     private static void addReferTable(final List<TableInfo> tableInfos) {
 
-        // テーブル情報でループ（比較元）
+        // マスタ参照先として、比較元テーブル情報でループ
         Iterator<TableInfo> srcIterator = tableInfos.iterator();
         while (srcIterator.hasNext()) {
             TableInfo srcTableInfo = srcIterator.next();
@@ -617,30 +617,31 @@ public final class DataSources {
                 continue;
             }
 
-            // ユニークキーが参照IDに合致しなければスキップ
+            // ユニークキーが参照キーの何れにも合致しなければスキップ
             String srcPrimaryKey = srcTableInfo.getPrimaryKeys().get(0);
             if (!StringUtil.endsWith(referPairs, srcPrimaryKey)) {
                 continue;
             }
 
-            // 参照IDに合致する名称がなければスキップ
+            // マスタ上に、参照IDに合致する参照名称がなければスキップ
             String referMei = null;
             for (String[] entry : referPairs) {
                 String referIdSuffix = entry[0];
                 String referMeiSuffix = entry[1];
                 if (srcPrimaryKey.endsWith(referIdSuffix)) {
                     String mei = srcPrimaryKey.replaceAll("(?i)" + referIdSuffix + "$", referMeiSuffix);
-                    for (String columnName : srcTableInfo.getColumnInfos().keySet()) {
-                        if (mei.equals(columnName)) {
-                            referMei = mei;
-                            break;
-                        }
+                    if (srcTableInfo.getColumnInfos().containsKey(mei)) {
+                        referMei = mei;
                     }
                 }
             }
             if (referMei == null) {
                 continue;
             }
+
+            /*
+             * 参照元の探索
+             */
 
             // テーブル情報でループ（比較先）
             Iterator<TableInfo> destIterator = tableInfos.iterator();
