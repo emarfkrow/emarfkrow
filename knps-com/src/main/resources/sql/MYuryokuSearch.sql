@@ -39,6 +39,5 @@ WHERE
     AND TRIM (a."EIGYOKBN") IN (:eigyokbn) 
     AND TRIM (a."YURYOKU-RANK") = TRIM (:yuryoku_rank) 
     AND TRIM (a."STKBN") IN (:stkbn) 
-    AND TRIM (a."FILLER") = TRIM (:filler) 
 ORDER BY
     a."YURYOCD"

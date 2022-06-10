@@ -187,24 +187,6 @@ public class MSalehinRegistForm implements IForm {
         this.shuryoDd = p;
     }
 
-    /** 予備領域 */
-    @jakarta.validation.constraints.Size(max = 32)
-    private String filler;
-
-    /**
-     * @return 予備領域
-     */
-    public String getFiller() {
-        return filler;
-    }
-
-    /**
-     * @param p 予備領域
-     */
-    public void setFiller(final String p) {
-        this.filler = p;
-    }
-
     /** 関連チェック */
     @Override
     public void validate(final Map<String, String> errors, final BaseProcess baseProcess) {

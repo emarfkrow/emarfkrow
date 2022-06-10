@@ -303,7 +303,7 @@ public class HktcPrdDailyProPlanArr implements IEntity {
     }
 
     /** NECK_FLAG */
-    private java.math.BigDecimal neckFlag;
+    private java.math.BigDecimal neckFlag = new java.math.BigDecimal(0);
 
     /**
      * @return NECK_FLAG
@@ -608,7 +608,7 @@ public class HktcPrdDailyProPlanArr implements IEntity {
     }
 
     /** EXP_FLAG */
-    private java.math.BigDecimal expFlag;
+    private java.math.BigDecimal expFlag = new java.math.BigDecimal(0);
 
     /**
      * @return EXP_FLAG
@@ -630,7 +630,7 @@ public class HktcPrdDailyProPlanArr implements IEntity {
     }
 
     /** VISIBLE_FLAG */
-    private java.math.BigDecimal visibleFlag;
+    private java.math.BigDecimal visibleFlag = new java.math.BigDecimal(0);
 
     /**
      * @return VISIBLE_FLAG
@@ -652,7 +652,7 @@ public class HktcPrdDailyProPlanArr implements IEntity {
     }
 
     /** SUP_FLAG */
-    private java.math.BigDecimal supFlag;
+    private java.math.BigDecimal supFlag = new java.math.BigDecimal(0);
 
     /**
      * @return SUP_FLAG
@@ -802,7 +802,7 @@ public class HktcPrdDailyProPlanArr implements IEntity {
     }
 
     /** DELETE_FLAG */
-    private java.math.BigDecimal deleteFlag;
+    private java.math.BigDecimal deleteFlag = new java.math.BigDecimal(0);
 
     /**
      * @return DELETE_FLAG
@@ -824,7 +824,7 @@ public class HktcPrdDailyProPlanArr implements IEntity {
     }
 
     /** NYUKO_FLAG */
-    private java.math.BigDecimal nyukoFlag;
+    private java.math.BigDecimal nyukoFlag = new java.math.BigDecimal(0);
 
     /**
      * @return NYUKO_FLAG

@@ -13,6 +13,5 @@ WHERE
     AND a."TOUROKUBI" = :tourokubi 
     AND a."TOUROKUBI" >= :tourokubi_1 
     AND a."TOUROKUBI" <= :tourokubi_2 
-    AND TRIM (a."FILLER") = TRIM (:filler) 
 ORDER BY
     a."HHINBAN", a."PHINBAN"

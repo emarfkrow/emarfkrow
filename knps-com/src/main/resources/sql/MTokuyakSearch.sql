@@ -32,6 +32,5 @@ WHERE
     AND TRIM (a."UNSOCD") = TRIM (:unsocd) 
     AND TRIM (a."TIKUCD") = TRIM (:tikucd) 
     AND TRIM (a."TODOFUKENCD") = TRIM (:todofukencd) 
-    AND TRIM (a."FILLER") = TRIM (:filler) 
 ORDER BY
     a."TOKUYAKUCD"

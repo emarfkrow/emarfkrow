@@ -253,24 +253,6 @@ public class MHseigyoRegistForm implements IForm {
         this.hyotanka = p;
     }
 
-    /** 予備領域 */
-    @jakarta.validation.constraints.Size(max = 7)
-    private String filler;
-
-    /**
-     * @return 予備領域
-     */
-    public String getFiller() {
-        return filler;
-    }
-
-    /**
-     * @param p 予備領域
-     */
-    public void setFiller(final String p) {
-        this.filler = p;
-    }
-
     /** バーコード管理マスタ */
     @jakarta.validation.Valid
     private MBarindxRegistForm mBarindxRegistForm;

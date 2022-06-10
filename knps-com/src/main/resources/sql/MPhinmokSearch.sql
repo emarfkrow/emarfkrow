@@ -23,8 +23,7 @@ WHERE
     AND TRIM (a."TOUROKUKBN") IN (:tourokukbn) 
     AND TRIM (a."DENPYOTKBN") IN (:denpyotkbn) 
     AND TRIM (a."JUKINKBN") IN (:jukinkbn) 
-    AND a."DLTFLG" IN (:dltflg) 
+    AND CASE WHEN a."DLTFLG" IS NULL THEN '0' ELSE TO_CHAR (a."DLTFLG") END IN (:dltflg) 
     AND a."UPDDATE" = :upddate 
-    AND TRIM (a."FILLER") = TRIM (:filler) 
 ORDER BY
     a."PHINBAN"

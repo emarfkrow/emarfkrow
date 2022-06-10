@@ -237,7 +237,7 @@ public class MfgModActHed implements IEntity {
     }
 
     /** EXP_FLAG */
-    private java.math.BigDecimal expFlag;
+    private java.math.BigDecimal expFlag = new java.math.BigDecimal(0);
 
     /**
      * @return EXP_FLAG

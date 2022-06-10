@@ -127,24 +127,6 @@ public class MBarcdRegistForm implements IForm {
         this.free3 = p;
     }
 
-    /** 予備領域 */
-    @jakarta.validation.constraints.Size(max = 22)
-    private String fller;
-
-    /**
-     * @return 予備領域
-     */
-    public String getFller() {
-        return fller;
-    }
-
-    /**
-     * @param p 予備領域
-     */
-    public void setFller(final String p) {
-        this.fller = p;
-    }
-
     /** 関連チェック */
     @Override
     public void validate(final Map<String, String> errors, final BaseProcess baseProcess) {

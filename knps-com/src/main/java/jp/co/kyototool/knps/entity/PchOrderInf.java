@@ -1167,7 +1167,7 @@ public class PchOrderInf implements IEntity {
     }
 
     /** MUSHO_HACCHU_F */
-    private String mushoHacchuF;
+    private String mushoHacchuF = "0";
 
     /**
      * @return MUSHO_HACCHU_F
@@ -1233,7 +1233,7 @@ public class PchOrderInf implements IEntity {
     }
 
     /** ORDER_ISSHIKI_UNIT_F */
-    private String orderIsshikiUnitF;
+    private String orderIsshikiUnitF = "0";
 
     /**
      * @return ORDER_ISSHIKI_UNIT_F
@@ -1299,7 +1299,7 @@ public class PchOrderInf implements IEntity {
     }
 
     /** INSPECT_ISSHIKI_UNIT_F */
-    private String inspectIsshikiUnitF;
+    private String inspectIsshikiUnitF = "0";
 
     /**
      * @return INSPECT_ISSHIKI_UNIT_F

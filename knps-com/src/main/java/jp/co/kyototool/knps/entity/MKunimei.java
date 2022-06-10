@@ -104,28 +104,6 @@ public class MKunimei implements IEntity {
         }
     }
 
-    /** 予備領域 */
-    private String filler;
-
-    /**
-     * @return 予備領域
-     */
-    @com.fasterxml.jackson.annotation.JsonProperty("FILLER")
-    public String getFiller() {
-        return this.filler;
-    }
-
-    /**
-     * @param o 予備領域
-     */
-    public void setFiller(final Object o) {
-        if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {
-            this.filler = String.valueOf(o.toString());
-        } else {
-            this.filler = null;
-        }
-    }
-
     /**
      * 国名マスタ照会
      *
@@ -166,7 +144,6 @@ public class MKunimei implements IEntity {
         nameList.add("\"KUNICD\" -- :kunicd");
         nameList.add("\"GENSANKOKU\" -- :gensankoku");
         nameList.add("\"KUNIMEI\" -- :kunimei");
-        nameList.add("\"FILLER\" -- :filler");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO M_KUNIMEI(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -182,7 +159,6 @@ public class MKunimei implements IEntity {
         valueList.add(":kunicd");
         valueList.add(":gensankoku");
         valueList.add(":kunimei");
-        valueList.add(":filler");
         return String.join("\r\n    , ", valueList);
     }
 
@@ -230,7 +206,6 @@ public class MKunimei implements IEntity {
         setList.add("\"KUNICD\" = :kunicd");
         setList.add("\"GENSANKOKU\" = :gensankoku");
         setList.add("\"KUNIMEI\" = :kunimei");
-        setList.add("\"FILLER\" = :filler");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -263,7 +238,6 @@ public class MKunimei implements IEntity {
         params.put("kunicd", this.kunicd);
         params.put("gensankoku", this.gensankoku);
         params.put("kunimei", this.kunimei);
-        params.put("filler", this.filler);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

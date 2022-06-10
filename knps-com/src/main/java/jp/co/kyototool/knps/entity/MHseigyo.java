@@ -302,28 +302,6 @@ public class MHseigyo implements IEntity {
         }
     }
 
-    /** 予備領域 */
-    private String filler;
-
-    /**
-     * @return 予備領域
-     */
-    @com.fasterxml.jackson.annotation.JsonProperty("FILLER")
-    public String getFiller() {
-        return this.filler;
-    }
-
-    /**
-     * @param o 予備領域
-     */
-    public void setFiller(final Object o) {
-        if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {
-            this.filler = String.valueOf(o.toString());
-        } else {
-            this.filler = null;
-        }
-    }
-
     /**
      * 販売制御マスタ照会
      *
@@ -373,7 +351,6 @@ public class MHseigyo implements IEntity {
         nameList.add("\"T-MAXCNT\" -- :t_maxcnt");
         nameList.add("\"CHOKUCNT\" -- :chokucnt");
         nameList.add("\"HYOTANKA\" -- :hyotanka");
-        nameList.add("\"FILLER\" -- :filler");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO M_HSEIGYO(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -398,7 +375,6 @@ public class MHseigyo implements IEntity {
         valueList.add(":t_maxcnt");
         valueList.add(":chokucnt");
         valueList.add(":hyotanka");
-        valueList.add(":filler");
         return String.join("\r\n    , ", valueList);
     }
 
@@ -442,7 +418,6 @@ public class MHseigyo implements IEntity {
         setList.add("\"T-MAXCNT\" = :t_maxcnt");
         setList.add("\"CHOKUCNT\" = :chokucnt");
         setList.add("\"HYOTANKA\" = :hyotanka");
-        setList.add("\"FILLER\" = :filler");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -488,7 +463,6 @@ public class MHseigyo implements IEntity {
         params.put("t_maxcnt", this.tMaxcnt);
         params.put("chokucnt", this.chokucnt);
         params.put("hyotanka", this.hyotanka);
-        params.put("filler", this.filler);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

@@ -211,7 +211,7 @@ public class MstStructureBk implements IEntity {
     }
 
     /** DELETE_FLAG */
-    private java.math.BigDecimal deleteFlag;
+    private java.math.BigDecimal deleteFlag = new java.math.BigDecimal(0);
 
     /**
      * @return DELETE_FLAG
@@ -233,7 +233,7 @@ public class MstStructureBk implements IEntity {
     }
 
     /** BOZAI_F */
-    private String bozaiF;
+    private String bozaiF = "0";
 
     /**
      * @return BOZAI_F

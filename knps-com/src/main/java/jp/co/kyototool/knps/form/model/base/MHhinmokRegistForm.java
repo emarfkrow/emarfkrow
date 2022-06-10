@@ -740,24 +740,6 @@ public class MHhinmokRegistForm implements IForm {
         this.dataFlg = p;
     }
 
-    /** 予備領域3 */
-    @jakarta.validation.constraints.Size(max = 6)
-    private String filler3;
-
-    /**
-     * @return 予備領域3
-     */
-    public String getFiller3() {
-        return filler3;
-    }
-
-    /**
-     * @param p 予備領域3
-     */
-    public void setFiller3(final String p) {
-        this.filler3 = p;
-    }
-
     /** ＵＰＣコード */
     @jakarta.validation.constraints.Size(max = 12)
     private String upccd;
@@ -1674,24 +1656,6 @@ public class MHhinmokRegistForm implements IForm {
      */
     public void setChokukakbn(final String p) {
         this.chokukakbn = p;
-    }
-
-    /** 予備領域 */
-    @jakarta.validation.constraints.Size(max = 19)
-    private String filler;
-
-    /**
-     * @return 予備領域
-     */
-    public String getFiller() {
-        return filler;
-    }
-
-    /**
-     * @param p 予備領域
-     */
-    public void setFiller(final String p) {
-        this.filler = p;
     }
 
     /** バーコードマスタ */

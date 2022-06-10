@@ -21,6 +21,5 @@ WHERE
     AND a."T-MAXCNT" = :t_maxcnt 
     AND a."CHOKUCNT" = :chokucnt 
     AND a."HYOTANKA" = :hyotanka 
-    AND TRIM (a."FILLER") = TRIM (:filler) 
 ORDER BY
     a."KEYCD"

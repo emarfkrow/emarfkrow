@@ -224,7 +224,7 @@ public class PchAcceptActDet implements IEntity {
     }
 
     /** CHECK_FLG */
-    private java.math.BigDecimal checkFlg;
+    private java.math.BigDecimal checkFlg = new java.math.BigDecimal(0);
 
     /**
      * @return CHECK_FLG
@@ -436,7 +436,7 @@ public class PchAcceptActDet implements IEntity {
     }
 
     /** INSPECT_ISSHIKI_UNIT_F */
-    private String inspectIsshikiUnitF;
+    private String inspectIsshikiUnitF = "0";
 
     /**
      * @return INSPECT_ISSHIKI_UNIT_F

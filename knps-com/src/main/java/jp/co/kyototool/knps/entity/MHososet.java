@@ -82,28 +82,6 @@ public class MHososet implements IEntity {
         }
     }
 
-    /** 予備領域 */
-    private String filler;
-
-    /**
-     * @return 予備領域
-     */
-    @com.fasterxml.jackson.annotation.JsonProperty("FILLER")
-    public String getFiller() {
-        return this.filler;
-    }
-
-    /**
-     * @param o 予備領域
-     */
-    public void setFiller(final Object o) {
-        if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {
-            this.filler = String.valueOf(o.toString());
-        } else {
-            this.filler = null;
-        }
-    }
-
     /**
      * 包装材構成マスタ照会
      *
@@ -140,7 +118,6 @@ public class MHososet implements IEntity {
         nameList.add("\"HHINBAN\" -- :hhinban");
         nameList.add("\"HOSO-HINBAN\" -- :hoso_hinban");
         nameList.add("\"INZU\" -- :inzu");
-        nameList.add("\"FILLER\" -- :filler");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO M_HOSOSET(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -155,7 +132,6 @@ public class MHososet implements IEntity {
         valueList.add(":hhinban");
         valueList.add(":hoso_hinban");
         valueList.add(":inzu");
-        valueList.add(":filler");
         return String.join("\r\n    , ", valueList);
     }
 
@@ -179,7 +155,6 @@ public class MHososet implements IEntity {
         setList.add("\"HHINBAN\" = :hhinban");
         setList.add("\"HOSO-HINBAN\" = :hoso_hinban");
         setList.add("\"INZU\" = :inzu");
-        setList.add("\"FILLER\" = :filler");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -211,7 +186,6 @@ public class MHososet implements IEntity {
         params.put("hhinban", this.hhinban);
         params.put("hoso_hinban", this.hosoHinban);
         params.put("inzu", this.inzu);
-        params.put("filler", this.filler);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

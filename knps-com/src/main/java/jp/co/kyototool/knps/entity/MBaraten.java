@@ -280,28 +280,6 @@ public class MBaraten implements IEntity {
         }
     }
 
-    /** 予備領域 */
-    private String filler;
-
-    /**
-     * @return 予備領域
-     */
-    @com.fasterxml.jackson.annotation.JsonProperty("FILLER")
-    public String getFiller() {
-        return this.filler;
-    }
-
-    /**
-     * @param o 予備領域
-     */
-    public void setFiller(final Object o) {
-        if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {
-            this.filler = String.valueOf(o.toString());
-        } else {
-            this.filler = null;
-        }
-    }
-
     /**
      * バラ展開マスタ照会
      *
@@ -347,7 +325,6 @@ public class MBaraten implements IEntity {
         nameList.add("\"KO-TANRITU\" -- :ko_tanritu");
         nameList.add("\"KENSAKUM\" -- :kensakum");
         nameList.add("\"CASEKBN\" -- :casekbn");
-        nameList.add("\"FILLER\" -- :filler");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO M_BARATEN(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -371,7 +348,6 @@ public class MBaraten implements IEntity {
         valueList.add(":ko_tanritu");
         valueList.add(":kensakum");
         valueList.add(":casekbn");
-        valueList.add(":filler");
         return String.join("\r\n    , ", valueList);
     }
 
@@ -404,7 +380,6 @@ public class MBaraten implements IEntity {
         setList.add("\"KO-TANRITU\" = :ko_tanritu");
         setList.add("\"KENSAKUM\" = :kensakum");
         setList.add("\"CASEKBN\" = :casekbn");
-        setList.add("\"FILLER\" = :filler");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -445,7 +420,6 @@ public class MBaraten implements IEntity {
         params.put("ko_tanritu", this.koTanritu);
         params.put("kensakum", this.kensakum);
         params.put("casekbn", this.casekbn);
-        params.put("filler", this.filler);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

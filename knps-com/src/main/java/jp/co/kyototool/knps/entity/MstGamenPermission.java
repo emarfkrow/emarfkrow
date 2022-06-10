@@ -211,7 +211,7 @@ public class MstGamenPermission implements IEntity {
     }
 
     /** DELETE_FLAG */
-    private java.math.BigDecimal deleteFlag;
+    private java.math.BigDecimal deleteFlag = new java.math.BigDecimal(0);
 
     /**
      * @return DELETE_FLAG

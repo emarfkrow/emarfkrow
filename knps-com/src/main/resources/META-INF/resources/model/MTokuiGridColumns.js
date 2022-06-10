@@ -23,7 +23,6 @@ let MTokuiGridColumns = [
     Column.select('NOHINFORMKBN', Messages['MTokuiGrid.nohinformkbn'], 30, '', { json: 'MstCodeValueSearch.json', paramkey: 'code_nm', value: 'CODE_VALUE', label: 'CODE_VALUE_MEI' }),
     Column.select('SIMUKEKBN', Messages['MTokuiGrid.simukekbn'], 10, '', { json: 'MstCodeValueSearch.json', paramkey: 'code_nm', value: 'CODE_VALUE', label: 'CODE_VALUE_MEI' }),
     Column.select('EIGYOKBN', Messages['MTokuiGrid.eigyokbn'], 20, '', { json: 'MstCodeValueSearch.json', paramkey: 'code_nm', value: 'CODE_VALUE', label: 'CODE_VALUE_MEI' }),
-    Column.text('FILLER1', Messages['MTokuiGrid.filler1'], 10, '', null),
     Column.select('KINLESSKBN', Messages['MTokuiGrid.kinlesskbn'], 10, '', { json: 'MstCodeValueSearch.json', paramkey: 'code_nm', value: 'CODE_VALUE', label: 'CODE_VALUE_MEI' }),
     Column.select('SEIKYOKBN', Messages['MTokuiGrid.seikyokbn'], 10, '', { json: 'MstCodeValueSearch.json', paramkey: 'code_nm', value: 'CODE_VALUE', label: 'CODE_VALUE_MEI' }),
     Column.date('TIKUSIMEBI', Messages['MTokuiGrid.tikusimebi'], 20, '', null),
@@ -51,5 +50,4 @@ let MTokuiGridColumns = [
     Column.text('EIGYOAREACD', Messages['MTokuiGrid.eigyoareacd'], 10, '', null),
     Column.text('KENSYUKIKAN', Messages['MTokuiGrid.kensyukikan'], 20, '', null),
     Column.select('E-SEIKYUKBN', Messages['MTokuiGrid.eSeikyukbn'], 10, '', { json: 'MstCodeValueSearch.json', paramkey: 'code_nm', value: 'CODE_VALUE', label: 'CODE_VALUE_MEI' }),
-    Column.text('FILLER', Messages['MTokuiGrid.filler'], 170, '', null),
 ];

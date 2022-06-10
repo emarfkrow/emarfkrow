@@ -171,7 +171,7 @@ public class MstProdUnitpriceHs implements IEntity {
     }
 
     /** STANDARD_UNITPRICE_FLAG */
-    private java.math.BigDecimal standardUnitpriceFlag;
+    private java.math.BigDecimal standardUnitpriceFlag = new java.math.BigDecimal(0);
 
     /**
      * @return STANDARD_UNITPRICE_FLAG
@@ -299,7 +299,7 @@ public class MstProdUnitpriceHs implements IEntity {
     }
 
     /** DELETE_FLAG */
-    private java.math.BigDecimal deleteFlag;
+    private java.math.BigDecimal deleteFlag = new java.math.BigDecimal(0);
 
     /**
      * @return DELETE_FLAG
@@ -365,7 +365,7 @@ public class MstProdUnitpriceHs implements IEntity {
     }
 
     /** ISSHIKI_UNIT_F */
-    private String isshikiUnitF;
+    private String isshikiUnitF = "0";
 
     /**
      * @return ISSHIKI_UNIT_F

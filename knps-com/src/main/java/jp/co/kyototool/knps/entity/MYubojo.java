@@ -170,28 +170,6 @@ public class MYubojo implements IEntity {
         }
     }
 
-    /** 予備領域 */
-    private String filler;
-
-    /**
-     * @return 予備領域
-     */
-    @com.fasterxml.jackson.annotation.JsonProperty("FILLER")
-    public String getFiller() {
-        return this.filler;
-    }
-
-    /**
-     * @param o 予備領域
-     */
-    public void setFiller(final Object o) {
-        if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {
-            this.filler = String.valueOf(o.toString());
-        } else {
-            this.filler = null;
-        }
-    }
-
     /**
      * 有力店ボーナス条件照会
      *
@@ -232,7 +210,6 @@ public class MYubojo implements IEntity {
         nameList.add("\"KONYU-MAX\" -- :konyu_max");
         nameList.add("\"YUBORITU\" -- :yuboritu");
         nameList.add("\"UPDDATE\" -- :upddate");
-        nameList.add("\"FILLER\" -- :filler");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO M_YUBOJO(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -251,7 +228,6 @@ public class MYubojo implements IEntity {
         valueList.add(":konyu_max");
         valueList.add(":yuboritu");
         valueList.add(":upddate");
-        valueList.add(":filler");
         return String.join("\r\n    , ", valueList);
     }
 
@@ -279,7 +255,6 @@ public class MYubojo implements IEntity {
         setList.add("\"KONYU-MAX\" = :konyu_max");
         setList.add("\"YUBORITU\" = :yuboritu");
         setList.add("\"UPDDATE\" = :upddate");
-        setList.add("\"FILLER\" = :filler");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -315,7 +290,6 @@ public class MYubojo implements IEntity {
         params.put("konyu_max", this.konyuMax);
         params.put("yuboritu", this.yuboritu);
         params.put("upddate", this.upddate);
-        params.put("filler", this.filler);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

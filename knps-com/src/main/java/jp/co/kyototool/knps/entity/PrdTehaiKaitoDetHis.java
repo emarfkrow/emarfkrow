@@ -193,7 +193,7 @@ public class PrdTehaiKaitoDetHis implements IEntity {
     }
 
     /** FUMEIHIN_F */
-    private String fumeihinF;
+    private String fumeihinF = "0";
 
     /**
      * @return FUMEIHIN_F
@@ -215,7 +215,7 @@ public class PrdTehaiKaitoDetHis implements IEntity {
     }
 
     /** SETHIN_F */
-    private String sethinF;
+    private String sethinF = "0";
 
     /**
      * @return SETHIN_F
@@ -281,7 +281,7 @@ public class PrdTehaiKaitoDetHis implements IEntity {
     }
 
     /** SET_NOKI_TUCHI_F */
-    private String setNokiTuchiF;
+    private String setNokiTuchiF = "0";
 
     /**
      * @return SET_NOKI_TUCHI_F
@@ -400,7 +400,7 @@ public class PrdTehaiKaitoDetHis implements IEntity {
     }
 
     /** KAITO_NOKI_HININ_F */
-    private String kaitoNokiHininF;
+    private String kaitoNokiHininF = "0";
 
     /**
      * @return KAITO_NOKI_HININ_F

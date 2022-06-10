@@ -28,6 +28,5 @@ WHERE
     AND a."SHUSEIBI" = :shuseibi 
     AND a."SHUSEIBI" >= :shuseibi_1 
     AND a."SHUSEIBI" <= :shuseibi_2 
-    AND TRIM (a."FILLER") = TRIM (:filler) 
 ORDER BY
     a."HHINBAN"

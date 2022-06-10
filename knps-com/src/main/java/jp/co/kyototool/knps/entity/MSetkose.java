@@ -61,7 +61,7 @@ public class MSetkose implements IEntity {
     }
 
     /** 削除フラグ */
-    private java.math.BigDecimal dltflg;
+    private java.math.BigDecimal dltflg = new java.math.BigDecimal(0);
 
     /**
      * @return 削除フラグ
@@ -148,28 +148,6 @@ public class MSetkose implements IEntity {
         }
     }
 
-    /** 予備領域 */
-    private String filler;
-
-    /**
-     * @return 予備領域
-     */
-    @com.fasterxml.jackson.annotation.JsonProperty("FILLER")
-    public String getFiller() {
-        return this.filler;
-    }
-
-    /**
-     * @param o 予備領域
-     */
-    public void setFiller(final Object o) {
-        if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {
-            this.filler = String.valueOf(o.toString());
-        } else {
-            this.filler = null;
-        }
-    }
-
     /**
      * セット構成マスタ照会
      *
@@ -209,7 +187,6 @@ public class MSetkose implements IEntity {
         nameList.add("\"BOTM\" -- :botm");
         nameList.add("\"SETINZU\" -- :setinzu");
         nameList.add("\"MUSHOKBN\" -- :mushokbn");
-        nameList.add("\"FILLER\" -- :filler");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO M_SETKOSE(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -227,7 +204,6 @@ public class MSetkose implements IEntity {
         valueList.add(":botm");
         valueList.add(":setinzu");
         valueList.add(":mushokbn");
-        valueList.add(":filler");
         return String.join("\r\n    , ", valueList);
     }
 
@@ -254,7 +230,6 @@ public class MSetkose implements IEntity {
         setList.add("\"BOTM\" = :botm");
         setList.add("\"SETINZU\" = :setinzu");
         setList.add("\"MUSHOKBN\" = :mushokbn");
-        setList.add("\"FILLER\" = :filler");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -289,7 +264,6 @@ public class MSetkose implements IEntity {
         params.put("botm", this.botm);
         params.put("setinzu", this.setinzu);
         params.put("mushokbn", this.mushokbn);
-        params.put("filler", this.filler);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

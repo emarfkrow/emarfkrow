@@ -742,28 +742,6 @@ public class MYuryoku implements IEntity {
         }
     }
 
-    /** 予備領域 */
-    private String filler;
-
-    /**
-     * @return 予備領域
-     */
-    @com.fasterxml.jackson.annotation.JsonProperty("FILLER")
-    public String getFiller() {
-        return this.filler;
-    }
-
-    /**
-     * @param o 予備領域
-     */
-    public void setFiller(final Object o) {
-        if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {
-            this.filler = String.valueOf(o.toString());
-        } else {
-            this.filler = null;
-        }
-    }
-
     /**
      * 有力店マスタ照会
      *
@@ -827,7 +805,6 @@ public class MYuryoku implements IEntity {
         nameList.add("\"EIGYOKBN\" -- :eigyokbn");
         nameList.add("\"YURYOKU-RANK\" -- :yuryoku_rank");
         nameList.add("\"STKBN\" -- :stkbn");
-        nameList.add("\"FILLER\" -- :filler");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO M_YURYOKU(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -872,7 +849,6 @@ public class MYuryoku implements IEntity {
         valueList.add(":eigyokbn");
         valueList.add(":yuryoku_rank");
         valueList.add(":stkbn");
-        valueList.add(":filler");
         return String.join("\r\n    , ", valueList);
     }
 
@@ -926,7 +902,6 @@ public class MYuryoku implements IEntity {
         setList.add("\"EIGYOKBN\" = :eigyokbn");
         setList.add("\"YURYOKU-RANK\" = :yuryoku_rank");
         setList.add("\"STKBN\" = :stkbn");
-        setList.add("\"FILLER\" = :filler");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -987,7 +962,6 @@ public class MYuryoku implements IEntity {
         params.put("eigyokbn", this.eigyokbn);
         params.put("yuryoku_rank", this.yuryokuRank);
         params.put("stkbn", this.stkbn);
-        params.put("filler", this.filler);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

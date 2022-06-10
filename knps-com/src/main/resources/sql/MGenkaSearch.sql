@@ -26,6 +26,5 @@ WHERE
     AND a."SHOHIN-BAIKA" = :shohin_baika 
     AND a."SHOHIN-BAIKA" >= :shohin_baika_1 
     AND a."SHOHIN-BAIKA" <= :shohin_baika_2 
-    AND TRIM (a."FILLER") = TRIM (:filler) 
 ORDER BY
     a."HHINBAN"

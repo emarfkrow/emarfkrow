@@ -13,6 +13,5 @@ WHERE
     AND a."YOUBI" <= :youbi_2 
     AND TRIM (a."KADOUKBN") IN (:kadoukbn) 
     AND a."KADOURUI" = :kadourui 
-    AND TRIM (a."FILLER") = TRIM (:filler) 
 ORDER BY
     a."YYMM", a."CALENDKBN"

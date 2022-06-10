@@ -110,24 +110,6 @@ public class MNetincRegistForm implements IForm {
         this.upddate = p;
     }
 
-    /** 予備領域 */
-    @jakarta.validation.constraints.Size(max = 13)
-    private String filler;
-
-    /**
-     * @return 予備領域
-     */
-    public String getFiller() {
-        return filler;
-    }
-
-    /**
-     * @param p 予備領域
-     */
-    public void setFiller(final String p) {
-        this.filler = p;
-    }
-
     /** 契約単価マスタ */
     @jakarta.validation.Valid
     private List<MKtankaRegistForm> mKtankaGrid;

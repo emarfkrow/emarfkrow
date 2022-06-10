@@ -13,6 +13,5 @@ WHERE
     AND TRIM (a."SHOHINKBN") IN (:shohinkbn) 
     AND TRIM (a."PERSOKBN") IN (:persokbn) 
     AND TRIM (a."KAKAKUKBN") IN (:kakakukbn) 
-    AND TRIM (a."FILLER") = TRIM (:filler) 
 ORDER BY
     a."HHINBAN"

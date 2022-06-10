@@ -20,5 +20,4 @@ let MChokuGridColumns = [
     Column.text('TIKUCD', Messages['MChokuGrid.tikucd'], 10, '', null),
     Column.text('TODOFUKENCD', Messages['MChokuGrid.todofukencd'], 10, '', null),
     Column.select('UPDNKINKBN', Messages['MChokuGrid.updnkinkbn'], 10, '', { json: 'MstCodeValueSearch.json', paramkey: 'code_nm', value: 'CODE_VALUE', label: 'CODE_VALUE_MEI' }),
-    Column.text('FILLER', Messages['MChokuGrid.filler'], 90, '', null),
 ];

@@ -18,6 +18,5 @@ WHERE
     AND a."TOUROKUBI" >= :tourokubi_1 
     AND a."TOUROKUBI" <= :tourokubi_2 
     AND a."UPDDATE" = :upddate 
-    AND TRIM (a."FILLER") = TRIM (:filler) 
 ORDER BY
     a."SHUKINCD"

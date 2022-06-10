@@ -10,5 +10,4 @@ let MHcalendGridColumns = [
     Column.date('YOUBI', Messages['MHcalendGrid.youbi'], 20, '', null),
     Column.select('KADOUKBN', Messages['MHcalendGrid.kadoukbn'], 10, '', { json: 'MstCodeValueSearch.json', paramkey: 'code_nm', value: 'CODE_VALUE', label: 'CODE_VALUE_MEI' }),
     Column.text('KADOURUI', Messages['MHcalendGrid.kadourui'], 40, '', null),
-    Column.text('FILLER', Messages['MHcalendGrid.filler'], 120, '', null),
 ];

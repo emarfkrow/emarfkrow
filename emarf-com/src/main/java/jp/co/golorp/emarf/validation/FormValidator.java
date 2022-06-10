@@ -4,6 +4,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -189,7 +190,7 @@ public final class FormValidator {
             if (interfaces.length > 0 && (interfaces[0] == IEntity.class || interfaces[0] == IForm.class) && !isGrid) {
 
                 String nestName = parameterTypes[0].getName();
-                value = toBean(nestName, postJson);
+                value = toBean(nestName, postJson, false);
 
             } else {
 
@@ -199,23 +200,46 @@ public final class FormValidator {
                 // 送信値をfieldNameで取得してみる
                 value = postJson.get(fieldName);
 
-                if (value == null) { // entityName付きでも取得してみる
+                // entityName付きでも取得してみる
+                if (value == null) {
                     String entityName = clazz.getSimpleName().replaceAll("RegistForm$", "");
                     value = postJson.get(entityName + "." + fieldName);
                 }
-                if (value == null) { // パスカルでも取得してみる（グリッド本体用）
+
+                // 他のエンティティで同名のfieldNameで取得してみる（兄弟モデルの主キー用）
+                if (value == null) {
+                    for (Entry<String, Object> e : postJson.entrySet()) {
+                        String k = e.getKey();
+                        Object v = e.getValue();
+                        if (k.endsWith("." + fieldName)) {
+                            value = v;
+                            break;
+                        }
+                    }
+                }
+
+                // パスカルでも取得してみる（グリッド本体用）
+                if (value == null) {
                     value = postJson.get(StringUtil.toPascalCase(fieldName));
                 }
-                if (value == null) { // 最後の「s」を「Grid」にしたパスカルでも取得してみる（カスタムフォームのグリッド本体用）
+
+                // 最後の「s」を「Grid」にしたパスカルでも取得してみる（カスタムフォームのグリッド本体用）
+                if (value == null) {
                     value = postJson.get(StringUtil.toPascalCase(fieldName).replaceAll("s$", "Grid"));
                 }
-                if (value == null) { // アッパーでも取得してみる（グリッド行用）
+
+                // アッパーでも取得してみる（グリッド行用）
+                if (value == null) {
                     value = postJson.get(StringUtil.toUpperCase(fieldName));
                 }
-                if (value == null) { // ケバブでも取得してみる（グリッド行用）
+
+                // ケバブでも取得してみる（グリッド行用）
+                if (value == null) {
                     value = postJson.get(StringUtil.toKebabCase(fieldName));
                 }
-                if (value == null) { // アッパーケバブでも取得してみる（グリッド行用）
+
+                // アッパーケバブでも取得してみる（グリッド行用）
+                if (value == null) {
                     value = postJson.get(StringUtil.toUpperKebabCase(fieldName));
                 }
             }

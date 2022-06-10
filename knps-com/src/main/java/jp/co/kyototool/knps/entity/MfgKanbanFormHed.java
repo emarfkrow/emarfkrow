@@ -61,7 +61,7 @@ public class MfgKanbanFormHed implements IEntity {
     }
 
     /** SELF_PROC_AFTER_TUNNEL_FLG */
-    private String selfProcAfterTunnelFlg;
+    private String selfProcAfterTunnelFlg = "0";
 
     /**
      * @return SELF_PROC_AFTER_TUNNEL_FLG
@@ -105,7 +105,7 @@ public class MfgKanbanFormHed implements IEntity {
     }
 
     /** AUTO_SHAPE_FLG */
-    private String autoShapeFlg;
+    private String autoShapeFlg = "0";
 
     /**
      * @return AUTO_SHAPE_FLG

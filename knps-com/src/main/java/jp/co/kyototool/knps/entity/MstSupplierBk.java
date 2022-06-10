@@ -871,7 +871,7 @@ public class MstSupplierBk implements IEntity {
     }
 
     /** DELETE_FLAG */
-    private java.math.BigDecimal deleteFlag;
+    private java.math.BigDecimal deleteFlag = new java.math.BigDecimal(0);
 
     /**
      * @return DELETE_FLAG
@@ -1069,7 +1069,7 @@ public class MstSupplierBk implements IEntity {
     }
 
     /** BUNKATSU_MAIL_F */
-    private String bunkatsuMailF;
+    private String bunkatsuMailF = "0";
 
     /**
      * @return BUNKATSU_MAIL_F
@@ -1091,7 +1091,7 @@ public class MstSupplierBk implements IEntity {
     }
 
     /** CHUMON_MAIL_F */
-    private String chumonMailF;
+    private String chumonMailF = "0";
 
     /**
      * @return CHUMON_MAIL_F
@@ -1135,7 +1135,7 @@ public class MstSupplierBk implements IEntity {
     }
 
     /** KENSHU_MAIL_F */
-    private String kenshuMailF;
+    private String kenshuMailF = "0";
 
     /**
      * @return KENSHU_MAIL_F
@@ -1179,7 +1179,7 @@ public class MstSupplierBk implements IEntity {
     }
 
     /** MAIL_BCC_F */
-    private String mailBccF;
+    private String mailBccF = "0";
 
     /**
      * @return MAIL_BCC_F

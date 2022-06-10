@@ -383,7 +383,7 @@ public class SysCloseStatus implements IEntity {
     }
 
     /** MASTER_COPY_FLAG */
-    private java.math.BigDecimal masterCopyFlag;
+    private java.math.BigDecimal masterCopyFlag = new java.math.BigDecimal(0);
 
     /**
      * @return MASTER_COPY_FLAG

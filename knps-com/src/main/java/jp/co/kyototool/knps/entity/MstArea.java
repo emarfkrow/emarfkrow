@@ -83,7 +83,7 @@ public class MstArea implements IEntity {
     }
 
     /** DELETE_F */
-    private String deleteF;
+    private String deleteF = "0";
 
     /**
      * @return DELETE_F

@@ -127,7 +127,7 @@ public class MstSupUnitpriceDetailHs implements IEntity {
     }
 
     /** STANDARD_UNITPRICE_FLAG */
-    private java.math.BigDecimal standardUnitpriceFlag;
+    private java.math.BigDecimal standardUnitpriceFlag = new java.math.BigDecimal(0);
 
     /**
      * @return STANDARD_UNITPRICE_FLAG
@@ -255,7 +255,7 @@ public class MstSupUnitpriceDetailHs implements IEntity {
     }
 
     /** DELETE_FLAG */
-    private java.math.BigDecimal deleteFlag;
+    private java.math.BigDecimal deleteFlag = new java.math.BigDecimal(0);
 
     /**
      * @return DELETE_FLAG

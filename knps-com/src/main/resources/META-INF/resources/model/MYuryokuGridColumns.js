@@ -36,5 +36,4 @@ let MYuryokuGridColumns = [
     Column.select('EIGYOKBN', Messages['MYuryokuGrid.eigyokbn'], 20, '', { json: 'MstCodeValueSearch.json', paramkey: 'code_nm', value: 'CODE_VALUE', label: 'CODE_VALUE_MEI' }),
     Column.text('YURYOKU-RANK', Messages['MYuryokuGrid.yuryokuRank'], 20, '', null),
     Column.select('STKBN', Messages['MYuryokuGrid.stkbn'], 10, '', { json: 'MstCodeValueSearch.json', paramkey: 'code_nm', value: 'CODE_VALUE', label: 'CODE_VALUE_MEI' }),
-    Column.text('FILLER', Messages['MYuryokuGrid.filler'], 90, '', null),
 ];

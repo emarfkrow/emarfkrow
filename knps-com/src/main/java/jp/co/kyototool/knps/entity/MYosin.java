@@ -280,28 +280,6 @@ public class MYosin implements IEntity {
         }
     }
 
-    /** 予備領域 */
-    private String filler;
-
-    /**
-     * @return 予備領域
-     */
-    @com.fasterxml.jackson.annotation.JsonProperty("FILLER")
-    public String getFiller() {
-        return this.filler;
-    }
-
-    /**
-     * @param o 予備領域
-     */
-    public void setFiller(final Object o) {
-        if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {
-            this.filler = String.valueOf(o.toString());
-        } else {
-            this.filler = null;
-        }
-    }
-
     /**
      * 与信管理マスタ照会
      *
@@ -344,7 +322,6 @@ public class MYosin implements IEntity {
         nameList.add("\"SHUKA-GENDO\" -- :shuka_gendo");
         nameList.add("\"TOUROKUBI\" -- :tourokubi");
         nameList.add("\"UPDDATE\" -- :upddate");
-        nameList.add("\"FILLER\" -- :filler");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO M_YOSIN(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -368,7 +345,6 @@ public class MYosin implements IEntity {
         valueList.add(":shuka_gendo");
         valueList.add(":tourokubi");
         valueList.add(":upddate");
-        valueList.add(":filler");
         return String.join("\r\n    , ", valueList);
     }
 
@@ -401,7 +377,6 @@ public class MYosin implements IEntity {
         setList.add("\"SHUKA-GENDO\" = :shuka_gendo");
         setList.add("\"TOUROKUBI\" = :tourokubi");
         setList.add("\"UPDDATE\" = :upddate");
-        setList.add("\"FILLER\" = :filler");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -441,7 +416,6 @@ public class MYosin implements IEntity {
         params.put("shuka_gendo", this.shukaGendo);
         params.put("tourokubi", this.tourokubi);
         params.put("upddate", this.upddate);
-        params.put("filler", this.filler);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

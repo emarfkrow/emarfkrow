@@ -523,7 +523,7 @@ public class MstHinban implements IEntity {
     }
 
     /** PERMISSION_FLAG */
-    private java.math.BigDecimal permissionFlag;
+    private java.math.BigDecimal permissionFlag = new java.math.BigDecimal(0);
 
     /**
      * @return PERMISSION_FLAG
@@ -963,7 +963,7 @@ public class MstHinban implements IEntity {
     }
 
     /** PRINT_STRUCTURE_FLG */
-    private java.math.BigDecimal printStructureFlg;
+    private java.math.BigDecimal printStructureFlg = new java.math.BigDecimal(0);
 
     /**
      * @return PRINT_STRUCTURE_FLG
@@ -985,7 +985,7 @@ public class MstHinban implements IEntity {
     }
 
     /** PRINT_WORK_FLOW_FLG */
-    private java.math.BigDecimal printWorkFlowFlg;
+    private java.math.BigDecimal printWorkFlowFlg = new java.math.BigDecimal(0);
 
     /**
      * @return PRINT_WORK_FLOW_FLG
@@ -1007,7 +1007,7 @@ public class MstHinban implements IEntity {
     }
 
     /** PRINT_WORK_RESULT_FLG */
-    private java.math.BigDecimal printWorkResultFlg;
+    private java.math.BigDecimal printWorkResultFlg = new java.math.BigDecimal(0);
 
     /**
      * @return PRINT_WORK_RESULT_FLG
@@ -1029,7 +1029,7 @@ public class MstHinban implements IEntity {
     }
 
     /** PRINT_SHIP_SHEET_FLG */
-    private java.math.BigDecimal printShipSheetFlg;
+    private java.math.BigDecimal printShipSheetFlg = new java.math.BigDecimal(0);
 
     /**
      * @return PRINT_SHIP_SHEET_FLG
@@ -1051,7 +1051,7 @@ public class MstHinban implements IEntity {
     }
 
     /** PRINT_INSPECT_FLG */
-    private java.math.BigDecimal printInspectFlg;
+    private java.math.BigDecimal printInspectFlg = new java.math.BigDecimal(0);
 
     /**
      * @return PRINT_INSPECT_FLG
@@ -1073,7 +1073,7 @@ public class MstHinban implements IEntity {
     }
 
     /** PRINT_PRODUCT_BOX_FLG */
-    private java.math.BigDecimal printProductBoxFlg;
+    private java.math.BigDecimal printProductBoxFlg = new java.math.BigDecimal(0);
 
     /**
      * @return PRINT_PRODUCT_BOX_FLG
@@ -1095,7 +1095,7 @@ public class MstHinban implements IEntity {
     }
 
     /** PRINT_HINBAN_STRUCT_FLG */
-    private java.math.BigDecimal printHinbanStructFlg;
+    private java.math.BigDecimal printHinbanStructFlg = new java.math.BigDecimal(0);
 
     /**
      * @return PRINT_HINBAN_STRUCT_FLG
@@ -1117,7 +1117,7 @@ public class MstHinban implements IEntity {
     }
 
     /** SEMI_PRODUCT_FLG */
-    private java.math.BigDecimal semiProductFlg;
+    private java.math.BigDecimal semiProductFlg = new java.math.BigDecimal(0);
 
     /**
      * @return SEMI_PRODUCT_FLG

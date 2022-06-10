@@ -456,28 +456,6 @@ public class MTokui implements IEntity {
         }
     }
 
-    /** 予備領域１ */
-    private String filler1;
-
-    /**
-     * @return 予備領域１
-     */
-    @com.fasterxml.jackson.annotation.JsonProperty("FILLER1")
-    public String getFiller1() {
-        return this.filler1;
-    }
-
-    /**
-     * @param o 予備領域１
-     */
-    public void setFiller1(final Object o) {
-        if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {
-            this.filler1 = String.valueOf(o.toString());
-        } else {
-            this.filler1 = null;
-        }
-    }
-
     /** 金額レス区分 */
     private String kinlesskbn;
 
@@ -1072,28 +1050,6 @@ public class MTokui implements IEntity {
         }
     }
 
-    /** 予備領域 */
-    private String filler;
-
-    /**
-     * @return 予備領域
-     */
-    @com.fasterxml.jackson.annotation.JsonProperty("FILLER")
-    public String getFiller() {
-        return this.filler;
-    }
-
-    /**
-     * @param o 予備領域
-     */
-    public void setFiller(final Object o) {
-        if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {
-            this.filler = String.valueOf(o.toString());
-        } else {
-            this.filler = null;
-        }
-    }
-
     /**
      * 得意先マスタ照会
      *
@@ -1144,7 +1100,6 @@ public class MTokui implements IEntity {
         nameList.add("\"NOHINFORMKBN\" -- :nohinformkbn");
         nameList.add("\"SIMUKEKBN\" -- :simukekbn");
         nameList.add("\"EIGYOKBN\" -- :eigyokbn");
-        nameList.add("\"FILLER1\" -- :filler1");
         nameList.add("\"KINLESSKBN\" -- :kinlesskbn");
         nameList.add("\"SEIKYOKBN\" -- :seikyokbn");
         nameList.add("\"TIKUSIMEBI\" -- :tikusimebi");
@@ -1172,7 +1127,6 @@ public class MTokui implements IEntity {
         nameList.add("\"EIGYOAREACD\" -- :eigyoareacd");
         nameList.add("\"KENSYUKIKAN\" -- :kensyukikan");
         nameList.add("\"E-SEIKYUKBN\" -- :e_seikyukbn");
-        nameList.add("\"FILLER\" -- :filler");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO M_TOKUI(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -1204,7 +1158,6 @@ public class MTokui implements IEntity {
         valueList.add(":nohinformkbn");
         valueList.add(":simukekbn");
         valueList.add(":eigyokbn");
-        valueList.add(":filler1");
         valueList.add(":kinlesskbn");
         valueList.add(":seikyokbn");
         valueList.add(":tikusimebi");
@@ -1232,7 +1185,6 @@ public class MTokui implements IEntity {
         valueList.add(":eigyoareacd");
         valueList.add(":kensyukikan");
         valueList.add(":e_seikyukbn");
-        valueList.add(":filler");
         return String.join("\r\n    , ", valueList);
     }
 
@@ -1273,7 +1225,6 @@ public class MTokui implements IEntity {
         setList.add("\"NOHINFORMKBN\" = :nohinformkbn");
         setList.add("\"SIMUKEKBN\" = :simukekbn");
         setList.add("\"EIGYOKBN\" = :eigyokbn");
-        setList.add("\"FILLER1\" = :filler1");
         setList.add("\"KINLESSKBN\" = :kinlesskbn");
         setList.add("\"SEIKYOKBN\" = :seikyokbn");
         setList.add("\"TIKUSIMEBI\" = :tikusimebi");
@@ -1301,7 +1252,6 @@ public class MTokui implements IEntity {
         setList.add("\"EIGYOAREACD\" = :eigyoareacd");
         setList.add("\"KENSYUKIKAN\" = :kensyukikan");
         setList.add("\"E-SEIKYUKBN\" = :e_seikyukbn");
-        setList.add("\"FILLER\" = :filler");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -1349,7 +1299,6 @@ public class MTokui implements IEntity {
         params.put("nohinformkbn", this.nohinformkbn);
         params.put("simukekbn", this.simukekbn);
         params.put("eigyokbn", this.eigyokbn);
-        params.put("filler1", this.filler1);
         params.put("kinlesskbn", this.kinlesskbn);
         params.put("seikyokbn", this.seikyokbn);
         params.put("tikusimebi", this.tikusimebi);
@@ -1377,7 +1326,6 @@ public class MTokui implements IEntity {
         params.put("eigyoareacd", this.eigyoareacd);
         params.put("kensyukikan", this.kensyukikan);
         params.put("e_seikyukbn", this.eSeikyukbn);
-        params.put("filler", this.filler);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

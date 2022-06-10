@@ -237,7 +237,7 @@ public class PchTempOrderDet implements IEntity {
     }
 
     /** ISSHIKI_F */
-    private String isshikiF;
+    private String isshikiF = "0";
 
     /**
      * @return ISSHIKI_F
@@ -259,7 +259,7 @@ public class PchTempOrderDet implements IEntity {
     }
 
     /** FUTAI_F */
-    private String futaiF;
+    private String futaiF = "0";
 
     /**
      * @return FUTAI_F

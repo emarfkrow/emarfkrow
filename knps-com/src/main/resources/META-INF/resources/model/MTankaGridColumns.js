@@ -21,5 +21,4 @@ let MTankaGridColumns = [
     Column.text('KAKAKU6', Messages['MTankaGrid.kakaku6'], 70, '', null),
     Column.select('SHOHINKBN', Messages['MTankaGrid.shohinkbn'], 20, '', { json: 'MstCodeValueSearch.json', paramkey: 'code_nm', value: 'CODE_VALUE', label: 'CODE_VALUE_MEI' }),
     Column.select('KAKAKUKBN', Messages['MTankaGrid.kakakukbn'], 10, '', { json: 'MstCodeValueSearch.json', paramkey: 'code_nm', value: 'CODE_VALUE', label: 'CODE_VALUE_MEI' }),
-    Column.text('FILLER', Messages['MTankaGrid.filler'], 120, '', null),
 ];

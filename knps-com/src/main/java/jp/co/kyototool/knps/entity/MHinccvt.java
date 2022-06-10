@@ -82,28 +82,6 @@ public class MHinccvt implements IEntity {
         }
     }
 
-    /** 予備領域 */
-    private String filler;
-
-    /**
-     * @return 予備領域
-     */
-    @com.fasterxml.jackson.annotation.JsonProperty("FILLER")
-    public String getFiller() {
-        return this.filler;
-    }
-
-    /**
-     * @param o 予備領域
-     */
-    public void setFiller(final Object o) {
-        if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {
-            this.filler = String.valueOf(o.toString());
-        } else {
-            this.filler = null;
-        }
-    }
-
     /**
      * 品番変換マスタ照会
      *
@@ -143,7 +121,6 @@ public class MHinccvt implements IEntity {
         nameList.add("\"CVTHINBAN\" -- :cvthinban");
         nameList.add("\"HHINBAN\" -- :hhinban");
         nameList.add("\"CHOKUHINKBN\" -- :chokuhinkbn");
-        nameList.add("\"FILLER\" -- :filler");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO M_HINCCVT(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -158,7 +135,6 @@ public class MHinccvt implements IEntity {
         valueList.add(":cvthinban");
         valueList.add(":hhinban");
         valueList.add(":chokuhinkbn");
-        valueList.add(":filler");
         return String.join("\r\n    , ", valueList);
     }
 
@@ -205,7 +181,6 @@ public class MHinccvt implements IEntity {
         setList.add("\"CVTHINBAN\" = :cvthinban");
         setList.add("\"HHINBAN\" = :hhinban");
         setList.add("\"CHOKUHINKBN\" = :chokuhinkbn");
-        setList.add("\"FILLER\" = :filler");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -237,7 +212,6 @@ public class MHinccvt implements IEntity {
         params.put("cvthinban", this.cvthinban);
         params.put("hhinban", this.hhinban);
         params.put("chokuhinkbn", this.chokuhinkbn);
-        params.put("filler", this.filler);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

@@ -214,28 +214,6 @@ public class MHosozai implements IEntity {
         }
     }
 
-    /** 予備領域 */
-    private String filler;
-
-    /**
-     * @return 予備領域
-     */
-    @com.fasterxml.jackson.annotation.JsonProperty("FILLER")
-    public String getFiller() {
-        return this.filler;
-    }
-
-    /**
-     * @param o 予備領域
-     */
-    public void setFiller(final Object o) {
-        if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {
-            this.filler = String.valueOf(o.toString());
-        } else {
-            this.filler = null;
-        }
-    }
-
     /**
      * 包装材マスタ照会
      *
@@ -275,7 +253,6 @@ public class MHosozai implements IEntity {
         nameList.add("\"HOSO-WEIGHT\" -- :hoso_weight");
         nameList.add("\"MAKEDATE\" -- :makedate");
         nameList.add("\"UPDDATE\" -- :upddate");
-        nameList.add("\"FILLER\" -- :filler");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO M_HOSOZAI(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -296,7 +273,6 @@ public class MHosozai implements IEntity {
         valueList.add(":hoso_weight");
         valueList.add(":makedate");
         valueList.add(":upddate");
-        valueList.add(":filler");
         return String.join("\r\n    , ", valueList);
     }
 
@@ -326,7 +302,6 @@ public class MHosozai implements IEntity {
         setList.add("\"HOSO-WEIGHT\" = :hoso_weight");
         setList.add("\"MAKEDATE\" = :makedate");
         setList.add("\"UPDDATE\" = :upddate");
-        setList.add("\"FILLER\" = :filler");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -363,7 +338,6 @@ public class MHosozai implements IEntity {
         params.put("hoso_weight", this.hosoWeight);
         params.put("makedate", this.makedate);
         params.put("upddate", this.upddate);
-        params.put("filler", this.filler);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

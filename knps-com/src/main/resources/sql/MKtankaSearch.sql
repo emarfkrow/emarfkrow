@@ -18,6 +18,5 @@ WHERE
     AND a."KEIYAKU-TANKA" = :keiyaku_tanka 
     AND TRIM (a."SHOHINKBN") IN (:shohinkbn) 
     AND TRIM (a."KAKAKUKBN") IN (:kakakukbn) 
-    AND TRIM (a."FILLER") = TRIM (:filler) 
 ORDER BY
     a."HONSHACD", a."SHAGAI-HINBAN"

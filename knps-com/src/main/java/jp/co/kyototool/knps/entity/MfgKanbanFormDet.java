@@ -61,7 +61,7 @@ public class MfgKanbanFormDet implements IEntity {
     }
 
     /** BASIC_OR_TUNNNEL_FLG */
-    private String basicOrTunnnelFlg;
+    private String basicOrTunnnelFlg = "0";
 
     /**
      * @return BASIC_OR_TUNNNEL_FLG
@@ -127,7 +127,7 @@ public class MfgKanbanFormDet implements IEntity {
     }
 
     /** VALID_FLG */
-    private String validFlg;
+    private String validFlg = "0";
 
     /**
      * @return VALID_FLG

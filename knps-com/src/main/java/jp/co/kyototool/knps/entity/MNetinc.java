@@ -126,28 +126,6 @@ public class MNetinc implements IEntity {
         }
     }
 
-    /** 予備領域 */
-    private String filler;
-
-    /**
-     * @return 予備領域
-     */
-    @com.fasterxml.jackson.annotation.JsonProperty("FILLER")
-    public String getFiller() {
-        return this.filler;
-    }
-
-    /**
-     * @param o 予備領域
-     */
-    public void setFiller(final Object o) {
-        if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {
-            this.filler = String.valueOf(o.toString());
-        } else {
-            this.filler = null;
-        }
-    }
-
     /**
      * ネットインカム照会
      *
@@ -191,7 +169,6 @@ public class MNetinc implements IEntity {
         nameList.add("\"RTOKUMEI\" -- :rtokumei");
         nameList.add("\"NEBIKIRITU\" -- :nebikiritu");
         nameList.add("\"UPDDATE\" -- :upddate");
-        nameList.add("\"FILLER\" -- :filler");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO M_NETINC(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -208,7 +185,6 @@ public class MNetinc implements IEntity {
         valueList.add(":rtokumei");
         valueList.add(":nebikiritu");
         valueList.add(":upddate");
-        valueList.add(":filler");
         return String.join("\r\n    , ", valueList);
     }
 
@@ -247,7 +223,6 @@ public class MNetinc implements IEntity {
         setList.add("\"RTOKUMEI\" = :rtokumei");
         setList.add("\"NEBIKIRITU\" = :nebikiritu");
         setList.add("\"UPDDATE\" = :upddate");
-        setList.add("\"FILLER\" = :filler");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -287,7 +262,6 @@ public class MNetinc implements IEntity {
         params.put("rtokumei", this.rtokumei);
         params.put("nebikiritu", this.nebikiritu);
         params.put("upddate", this.upddate);
-        params.put("filler", this.filler);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

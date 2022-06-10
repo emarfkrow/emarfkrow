@@ -171,7 +171,7 @@ public class PrdTehaiIraiDetHis implements IEntity {
     }
 
     /** SHINSETSUHIN_F */
-    private String shinsetsuhinF;
+    private String shinsetsuhinF = "0";
 
     /**
      * @return SHINSETSUHIN_F
@@ -193,7 +193,7 @@ public class PrdTehaiIraiDetHis implements IEntity {
     }
 
     /** SETHIN_F */
-    private String sethinF;
+    private String sethinF = "0";
 
     /**
      * @return SETHIN_F
@@ -215,7 +215,7 @@ public class PrdTehaiIraiDetHis implements IEntity {
     }
 
     /** HANMOKUGAI_F */
-    private String hanmokugaiF;
+    private String hanmokugaiF = "0";
 
     /**
      * @return HANMOKUGAI_F
@@ -237,7 +237,7 @@ public class PrdTehaiIraiDetHis implements IEntity {
     }
 
     /** CHUMON_NYURYOKU_ZUMI_F */
-    private String chumonNyuryokuZumiF;
+    private String chumonNyuryokuZumiF = "0";
 
     /**
      * @return CHUMON_NYURYOKU_ZUMI_F
@@ -281,7 +281,7 @@ public class PrdTehaiIraiDetHis implements IEntity {
     }
 
     /** SHUKKA_ZUMI_F */
-    private String shukkaZumiF;
+    private String shukkaZumiF = "0";
 
     /**
      * @return SHUKKA_ZUMI_F

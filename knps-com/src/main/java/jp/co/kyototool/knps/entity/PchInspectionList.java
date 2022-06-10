@@ -462,7 +462,7 @@ public class PchInspectionList implements IEntity {
     }
 
     /** ISSHIKI_UNIT_F */
-    private String isshikiUnitF;
+    private String isshikiUnitF = "0";
 
     /**
      * @return ISSHIKI_UNIT_F

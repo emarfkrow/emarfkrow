@@ -9,6 +9,5 @@ WHERE
     AND a."CVTHINBAN" = :cvthinban 
     AND a."HHINBAN" = :hhinban 
     AND TRIM (a."CHOKUHINKBN") IN (:chokuhinkbn) 
-    AND TRIM (a."FILLER") = TRIM (:filler) 
 ORDER BY
     a."CVTHINBAN", a."CHOKUHINKBN"

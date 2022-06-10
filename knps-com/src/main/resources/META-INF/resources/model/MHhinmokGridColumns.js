@@ -5,7 +5,7 @@
 let MHhinmokGridColumns = [
     Column.refer('HHINBAN', Messages['MHhinmokGrid.hhinban'], 200, 'primaryKey', 'HHINMEI'),
     Column.text('LVCD', Messages['MHhinmokGrid.lvcd'], 20, '', null),
-    Column.select('DLTFLG', Messages['MHhinmokGrid.dltflg'], 10, '', { json: 'MstCodeValueSearch.json', paramkey: 'code_nm', value: 'CODE_VALUE', label: 'CODE_VALUE_MEI' }),
+    Column.check('DLTFLG', Messages['MHhinmokGrid.dltflg'], 10, ''),
     Column.text('HINCD', Messages['MHhinmokGrid.hincd'], 200, '', null),
     Column.text('HINMEI', Messages['MHhinmokGrid.hinmei'], 100, '', null),
     Column.select('SETKBN', Messages['MHhinmokGrid.setkbn'], 10, '', { json: 'MstCodeValueSearch.json', paramkey: 'code_nm', value: 'CODE_VALUE', label: 'CODE_VALUE_MEI' }),
@@ -42,8 +42,7 @@ let MHhinmokGridColumns = [
     Column.text('BUNRUI4', Messages['MHhinmokGrid.bunrui4'], 20, '', null),
     Column.select('ZAISHUKBN', Messages['MHhinmokGrid.zaishukbn'], 10, '', { json: 'MstCodeValueSearch.json', paramkey: 'code_nm', value: 'CODE_VALUE', label: 'CODE_VALUE_MEI' }),
     Column.text('BARCODE', Messages['MHhinmokGrid.barcode'], 130, '', null),
-    Column.select('DATA-FLG', Messages['MHhinmokGrid.dataFlg'], 10, '', { json: 'MstCodeValueSearch.json', paramkey: 'code_nm', value: 'CODE_VALUE', label: 'CODE_VALUE_MEI' }),
-    Column.text('FILLER3', Messages['MHhinmokGrid.filler3'], 60, '', null),
+    Column.check('DATA-FLG', Messages['MHhinmokGrid.dataFlg'], 10, ''),
     Column.text('UPCCD', Messages['MHhinmokGrid.upccd'], 120, '', null),
     Column.text('ZAIKOSU-H1', Messages['MHhinmokGrid.zaikosuH1'], 70, '', null),
     Column.text('ZAIKOSU-H2', Messages['MHhinmokGrid.zaikosuH2'], 70, '', null),
@@ -95,5 +94,4 @@ let MHhinmokGridColumns = [
     Column.text('KOKUSAICD', Messages['MHhinmokGrid.kokusaicd'], 10, '', null),
     Column.text('KUNICD', Messages['MHhinmokGrid.kunicd'], 20, '', null),
     Column.select('CHOKUKAKBN', Messages['MHhinmokGrid.chokukakbn'], 10, '', { json: 'MstCodeValueSearch.json', paramkey: 'code_nm', value: 'CODE_VALUE', label: 'CODE_VALUE_MEI' }),
-    Column.text('FILLER', Messages['MHhinmokGrid.filler'], 190, '', null),
 ];

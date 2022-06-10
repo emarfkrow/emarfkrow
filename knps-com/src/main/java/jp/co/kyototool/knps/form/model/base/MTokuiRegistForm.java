@@ -379,24 +379,6 @@ public class MTokuiRegistForm implements IForm {
         this.eigyokbn = p;
     }
 
-    /** 予備領域１ */
-    @jakarta.validation.constraints.Size(max = 1)
-    private String filler1;
-
-    /**
-     * @return 予備領域１
-     */
-    public String getFiller1() {
-        return filler1;
-    }
-
-    /**
-     * @param p 予備領域１
-     */
-    public void setFiller1(final String p) {
-        this.filler1 = p;
-    }
-
     /** 金額レス区分 */
     @jakarta.validation.constraints.Size(max = 1)
     private String kinlesskbn;
@@ -881,24 +863,6 @@ public class MTokuiRegistForm implements IForm {
      */
     public void setESeikyukbn(final String p) {
         this.eSeikyukbn = p;
-    }
-
-    /** 予備領域 */
-    @jakarta.validation.constraints.Size(max = 17)
-    private String filler;
-
-    /**
-     * @return 予備領域
-     */
-    public String getFiller() {
-        return filler;
-    }
-
-    /**
-     * @param p 予備領域
-     */
-    public void setFiller(final String p) {
-        this.filler = p;
     }
 
     /** 関連チェック */

@@ -15,5 +15,4 @@ let MBaratenGridColumns = [
     Column.text('KO-TANRITU', Messages['MBaratenGrid.koTanritu'], 30, '', null),
     Column.text('KENSAKUM', Messages['MBaratenGrid.kensakum'], 40, '', null),
     Column.select('CASEKBN', Messages['MBaratenGrid.casekbn'], 10, '', { json: 'MstCodeValueSearch.json', paramkey: 'code_nm', value: 'CODE_VALUE', label: 'CODE_VALUE_MEI' }),
-    Column.text('FILLER', Messages['MBaratenGrid.filler'], 160, '', null),
 ];

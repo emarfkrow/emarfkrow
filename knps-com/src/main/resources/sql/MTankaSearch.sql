@@ -23,6 +23,5 @@ WHERE
     AND a."KAKAKU6" = :kakaku6 
     AND TRIM (a."SHOHINKBN") IN (:shohinkbn) 
     AND TRIM (a."KAKAKUKBN") IN (:kakakukbn) 
-    AND TRIM (a."FILLER") = TRIM (:filler) 
 ORDER BY
     a."HHINBAN"

@@ -12,5 +12,4 @@ let MHosozaiGridColumns = [
     Column.text('HOSO-WEIGHT', Messages['MHosozaiGrid.hosoWeight'], 70, '', null),
     Column.text('MAKEDATE', Messages['MHosozaiGrid.makedate'], 80, '', null),
     Column.text('UPDDATE', Messages['MHosozaiGrid.upddate'], 80, '', null),
-    Column.text('FILLER', Messages['MHosozaiGrid.filler'], 200, '', null),
 ];

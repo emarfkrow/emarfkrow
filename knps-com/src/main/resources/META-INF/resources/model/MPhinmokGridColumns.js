@@ -16,7 +16,6 @@ let MPhinmokGridColumns = [
     Column.select('TOUROKUKBN', Messages['MPhinmokGrid.tourokukbn'], 10, '', { json: 'MstCodeValueSearch.json', paramkey: 'code_nm', value: 'CODE_VALUE', label: 'CODE_VALUE_MEI' }),
     Column.select('DENPYOTKBN', Messages['MPhinmokGrid.denpyotkbn'], 10, '', { json: 'MstCodeValueSearch.json', paramkey: 'code_nm', value: 'CODE_VALUE', label: 'CODE_VALUE_MEI' }),
     Column.select('JUKINKBN', Messages['MPhinmokGrid.jukinkbn'], 10, '', { json: 'MstCodeValueSearch.json', paramkey: 'code_nm', value: 'CODE_VALUE', label: 'CODE_VALUE_MEI' }),
-    Column.select('DLTFLG', Messages['MPhinmokGrid.dltflg'], 10, '', { json: 'MstCodeValueSearch.json', paramkey: 'code_nm', value: 'CODE_VALUE', label: 'CODE_VALUE_MEI' }),
+    Column.check('DLTFLG', Messages['MPhinmokGrid.dltflg'], 10, ''),
     Column.text('UPDDATE', Messages['MPhinmokGrid.upddate'], 80, '', null),
-    Column.text('FILLER', Messages['MPhinmokGrid.filler'], 300, '', null),
 ];

@@ -12,5 +12,4 @@ let MGenkaGridColumns = [
     Column.text('BAIKA', Messages['MGenkaGrid.baika'], 70, '', null),
     Column.text('SEIHIN-BAIKA', Messages['MGenkaGrid.seihinBaika'], 70, '', null),
     Column.text('SHOHIN-BAIKA', Messages['MGenkaGrid.shohinBaika'], 70, '', null),
-    Column.text('FILLER', Messages['MGenkaGrid.filler'], 90, '', null),
 ];

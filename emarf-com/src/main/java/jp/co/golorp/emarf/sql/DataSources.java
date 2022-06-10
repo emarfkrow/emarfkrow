@@ -653,6 +653,11 @@ public final class DataSources {
                     continue;
                 }
 
+//                // ユニークキーで兄弟テーブルでない（それ自体のマスタテーブル）場合はスキップ
+//                if (destTableInfo.getPrimaryKeys().size() <= 1 && !destTableInfo.isBrother()) {
+//                    continue;
+//                }
+//
                 // 比較先のカラム情報でループして比較元のユニークキーがあれば参照テーブルリストに追加
                 for (Entry<String, ColumnInfo> e : destTableInfo.getColumnInfos().entrySet()) {
                     String destColumnName = e.getKey();

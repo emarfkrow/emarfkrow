@@ -233,7 +233,7 @@ public class MstSupUnitpriceBk implements IEntity {
     }
 
     /** DELETE_FLAG */
-    private java.math.BigDecimal deleteFlag;
+    private java.math.BigDecimal deleteFlag = new java.math.BigDecimal(0);
 
     /**
      * @return DELETE_FLAG
@@ -255,7 +255,7 @@ public class MstSupUnitpriceBk implements IEntity {
     }
 
     /** MUSHO_HACCHU_F */
-    private String mushoHacchuF;
+    private String mushoHacchuF = "0";
 
     /**
      * @return MUSHO_HACCHU_F

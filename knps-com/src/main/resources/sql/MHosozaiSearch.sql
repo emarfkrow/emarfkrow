@@ -14,6 +14,5 @@ WHERE
     AND a."HOSO-WEIGHT" = :hoso_weight 
     AND a."MAKEDATE" = :makedate 
     AND a."UPDDATE" = :upddate 
-    AND TRIM (a."FILLER") = TRIM (:filler) 
 ORDER BY
     a."HOSO-HINBAN"

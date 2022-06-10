@@ -83,7 +83,7 @@ public class MstRoutingDefBk implements IEntity {
     }
 
     /** PERMISSION_FLAG */
-    private java.math.BigDecimal permissionFlag;
+    private java.math.BigDecimal permissionFlag = new java.math.BigDecimal(0);
 
     /**
      * @return PERMISSION_FLAG
@@ -105,7 +105,7 @@ public class MstRoutingDefBk implements IEntity {
     }
 
     /** USABLE_FLAG */
-    private java.math.BigDecimal usableFlag;
+    private java.math.BigDecimal usableFlag = new java.math.BigDecimal(0);
 
     /**
      * @return USABLE_FLAG

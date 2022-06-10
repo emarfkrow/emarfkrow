@@ -24,7 +24,6 @@ WHERE
     AND TRIM (a."NOHINFORMKBN") IN (:nohinformkbn) 
     AND TRIM (a."SIMUKEKBN") IN (:simukekbn) 
     AND TRIM (a."EIGYOKBN") IN (:eigyokbn) 
-    AND TRIM (a."FILLER1") = TRIM (:filler1) 
     AND TRIM (a."KINLESSKBN") IN (:kinlesskbn) 
     AND TRIM (a."SEIKYOKBN") IN (:seikyokbn) 
     AND a."TIKUSIMEBI" = :tikusimebi 
@@ -58,6 +57,5 @@ WHERE
     AND TRIM (a."EIGYOAREACD") = TRIM (:eigyoareacd) 
     AND a."KENSYUKIKAN" = :kensyukikan 
     AND TRIM (a."E-SEIKYUKBN") IN (:e_seikyukbn) 
-    AND TRIM (a."FILLER") = TRIM (:filler) 
 ORDER BY
     a."TOKUCD"

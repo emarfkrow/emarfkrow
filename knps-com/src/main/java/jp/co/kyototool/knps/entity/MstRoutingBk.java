@@ -567,7 +567,7 @@ public class MstRoutingBk implements IEntity {
     }
 
     /** SUPPLY_FLAG */
-    private java.math.BigDecimal supplyFlag;
+    private java.math.BigDecimal supplyFlag = new java.math.BigDecimal(0);
 
     /**
      * @return SUPPLY_FLAG
@@ -695,7 +695,7 @@ public class MstRoutingBk implements IEntity {
     }
 
     /** MUSHO_HACCHU_F */
-    private String mushoHacchuF;
+    private String mushoHacchuF = "0";
 
     /**
      * @return MUSHO_HACCHU_F

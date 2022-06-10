@@ -16,5 +16,4 @@ let MHseigyoGridColumns = [
     Column.text('T-MAXCNT', Messages['MHseigyoGrid.tMaxcnt'], 40, '', null),
     Column.text('CHOKUCNT', Messages['MHseigyoGrid.chokucnt'], 60, '', null),
     Column.text('HYOTANKA', Messages['MHseigyoGrid.hyotanka'], 70, '', null),
-    Column.text('FILLER', Messages['MHseigyoGrid.filler'], 70, '', null),
 ];

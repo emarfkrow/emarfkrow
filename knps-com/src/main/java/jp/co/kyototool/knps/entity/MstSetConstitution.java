@@ -61,7 +61,7 @@ public class MstSetConstitution implements IEntity {
     }
 
     /** DELETE_FLAG */
-    private java.math.BigDecimal deleteFlag;
+    private java.math.BigDecimal deleteFlag = new java.math.BigDecimal(0);
 
     /**
      * @return DELETE_FLAG
@@ -83,7 +83,7 @@ public class MstSetConstitution implements IEntity {
     }
 
     /** BOTTOM_FLAG */
-    private String bottomFlag;
+    private String bottomFlag = "0";
 
     /**
      * @return BOTTOM_FLAG

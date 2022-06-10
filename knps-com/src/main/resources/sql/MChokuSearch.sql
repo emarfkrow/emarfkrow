@@ -23,6 +23,5 @@ WHERE
     AND TRIM (a."TIKUCD") = TRIM (:tikucd) 
     AND TRIM (a."TODOFUKENCD") = TRIM (:todofukencd) 
     AND TRIM (a."UPDNKINKBN") IN (:updnkinkbn) 
-    AND TRIM (a."FILLER") = TRIM (:filler) 
 ORDER BY
     a."CHOKUCD"

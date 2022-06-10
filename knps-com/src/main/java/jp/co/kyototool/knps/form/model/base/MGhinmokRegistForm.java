@@ -109,24 +109,6 @@ public class MGhinmokRegistForm implements IForm {
         this.shoriflg = p;
     }
 
-    /** 予備領域 */
-    @jakarta.validation.constraints.Size(max = 21)
-    private String filler;
-
-    /**
-     * @return 予備領域
-     */
-    public String getFiller() {
-        return filler;
-    }
-
-    /**
-     * @param p 予備領域
-     */
-    public void setFiller(final String p) {
-        this.filler = p;
-    }
-
     /** PRD_ORDERPOINT_STATUS */
     @jakarta.validation.Valid
     private PrdOrderpointStatusRegistForm prdOrderpointStatusRegistForm;

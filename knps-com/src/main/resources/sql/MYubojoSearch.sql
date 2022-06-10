@@ -11,6 +11,5 @@ WHERE
     AND a."KONYU-MAX" = :konyu_max 
     AND a."YUBORITU" = :yuboritu 
     AND a."UPDDATE" = :upddate 
-    AND TRIM (a."FILLER") = TRIM (:filler) 
 ORDER BY
     a."YURYOKUKBN", a."YURYOCD"

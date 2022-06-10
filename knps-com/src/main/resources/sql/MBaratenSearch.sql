@@ -24,6 +24,5 @@ WHERE
     AND a."KO-TANRITU" = :ko_tanritu 
     AND TRIM (a."KENSAKUM") = TRIM (:kensakum) 
     AND TRIM (a."CASEKBN") IN (:casekbn) 
-    AND TRIM (a."FILLER") = TRIM (:filler) 
 ORDER BY
     a."OYA-HINBAN", a."KO-HINBAN"

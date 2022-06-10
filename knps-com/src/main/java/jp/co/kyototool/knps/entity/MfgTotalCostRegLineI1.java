@@ -215,7 +215,7 @@ public class MfgTotalCostRegLineI1 implements IEntity {
     }
 
     /** TOTAL_COST_TARGET_FLAG */
-    private java.math.BigDecimal totalCostTargetFlag;
+    private java.math.BigDecimal totalCostTargetFlag = new java.math.BigDecimal(0);
 
     /**
      * @return TOTAL_COST_TARGET_FLAG

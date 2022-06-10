@@ -22,5 +22,4 @@ let MWebkanGridColumns = [
     Column.select('UPDEXCDKBN', Messages['MWebkanGrid.updexcdkbn'], 10, '', { json: 'MstCodeValueSearch.json', paramkey: 'code_nm', value: 'CODE_VALUE', label: 'CODE_VALUE_MEI' }),
     Column.date('TOUROKUBI', Messages['MWebkanGrid.tourokubi'], 80, '', null),
     Column.date('SHUSEIBI', Messages['MWebkanGrid.shuseibi'], 80, '', null),
-    Column.text('FILLER', Messages['MWebkanGrid.filler'], 300, '', null),
 ];

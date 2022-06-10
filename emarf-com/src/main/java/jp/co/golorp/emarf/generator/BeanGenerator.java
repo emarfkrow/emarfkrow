@@ -246,7 +246,15 @@ public final class BeanGenerator {
                     s.add("    @com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer.class)");
                     s.add("    @com.fasterxml.jackson.databind.annotation.JsonSerialize(using = com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer.class)");
                 }
-                s.add("    private " + dataType + " " + camel + ";");
+                if (StringUtil.endsWith(inputFlagSuffixs, columnName)) {
+                    if (dataType.equals("java.math.BigDecimal")) {
+                        s.add("    private " + dataType + " " + camel + " = new " + dataType + "(0);");
+                    } else {
+                        s.add("    private " + dataType + " " + camel + " = \"0\";");
+                    }
+                } else {
+                    s.add("    private " + dataType + " " + camel + ";");
+                }
                 s.add("");
                 s.add("    /**");
                 s.add("     * @return " + mei);

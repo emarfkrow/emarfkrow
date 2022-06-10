@@ -29,5 +29,4 @@ let MTokuyakGridColumns = [
     Column.text('UNSOCD', Messages['MTokuyakGrid.unsocd'], 30, '', null),
     Column.text('TIKUCD', Messages['MTokuyakGrid.tikucd'], 10, '', null),
     Column.text('TODOFUKENCD', Messages['MTokuyakGrid.todofukencd'], 10, '', null),
-    Column.text('FILLER', Messages['MTokuyakGrid.filler'], 80, '', null),
 ];

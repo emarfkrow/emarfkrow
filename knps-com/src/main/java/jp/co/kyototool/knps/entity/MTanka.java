@@ -412,28 +412,6 @@ public class MTanka implements IEntity {
         }
     }
 
-    /** 予備領域 */
-    private String filler;
-
-    /**
-     * @return 予備領域
-     */
-    @com.fasterxml.jackson.annotation.JsonProperty("FILLER")
-    public String getFiller() {
-        return this.filler;
-    }
-
-    /**
-     * @param o 予備領域
-     */
-    public void setFiller(final Object o) {
-        if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {
-            this.filler = String.valueOf(o.toString());
-        } else {
-            this.filler = null;
-        }
-    }
-
     /**
      * 単価マスタ照会
      *
@@ -482,7 +460,6 @@ public class MTanka implements IEntity {
         nameList.add("\"KAKAKU6\" -- :kakaku6");
         nameList.add("\"SHOHINKBN\" -- :shohinkbn");
         nameList.add("\"KAKAKUKBN\" -- :kakakukbn");
-        nameList.add("\"FILLER\" -- :filler");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO M_TANKA(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -512,7 +489,6 @@ public class MTanka implements IEntity {
         valueList.add(":kakaku6");
         valueList.add(":shohinkbn");
         valueList.add(":kakakukbn");
-        valueList.add(":filler");
         return String.join("\r\n    , ", valueList);
     }
 
@@ -551,7 +527,6 @@ public class MTanka implements IEntity {
         setList.add("\"KAKAKU6\" = :kakaku6");
         setList.add("\"SHOHINKBN\" = :shohinkbn");
         setList.add("\"KAKAKUKBN\" = :kakakukbn");
-        setList.add("\"FILLER\" = :filler");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -597,7 +572,6 @@ public class MTanka implements IEntity {
         params.put("kakaku6", this.kakaku6);
         params.put("shohinkbn", this.shohinkbn);
         params.put("kakakukbn", this.kakakukbn);
-        params.put("filler", this.filler);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

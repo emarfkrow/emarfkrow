@@ -11,6 +11,5 @@ WHERE
     AND TRIM (a."FREE1") = TRIM (:free1) 
     AND TRIM (a."FREE2") = TRIM (:free2) 
     AND TRIM (a."FREE3") = TRIM (:free3) 
-    AND TRIM (a."FLLER") = TRIM (:fller) 
 ORDER BY
     a."HHINBAN"

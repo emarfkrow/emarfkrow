@@ -405,7 +405,7 @@ public class PrdDailyProPlanDetail implements IEntity {
     }
 
     /** PCH_FLAG */
-    private java.math.BigDecimal pchFlag;
+    private java.math.BigDecimal pchFlag = new java.math.BigDecimal(0);
 
     /**
      * @return PCH_FLAG
@@ -577,7 +577,7 @@ public class PrdDailyProPlanDetail implements IEntity {
     }
 
     /** DELETE_FLAG */
-    private java.math.BigDecimal deleteFlag;
+    private java.math.BigDecimal deleteFlag = new java.math.BigDecimal(0);
 
     /**
      * @return DELETE_FLAG

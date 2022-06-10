@@ -12,5 +12,4 @@ let MSgenkaGridColumns = [
     Column.text('BAIKA', Messages['MSgenkaGrid.baika'], 70, '', null),
     Column.text('SEIHIN-BAIKA', Messages['MSgenkaGrid.seihinBaika'], 70, '', null),
     Column.text('SHOHIN-BAIKA', Messages['MSgenkaGrid.shohinBaika'], 70, '', null),
-    Column.text('FILLER', Messages['MSgenkaGrid.filler'], 90, '', null),
 ];

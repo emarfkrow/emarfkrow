@@ -15,5 +15,4 @@ let MYosinGridColumns = [
     Column.text('SHUKA-GENDO', Messages['MYosinGrid.shukaGendo'], 110, '', null),
     Column.date('TOUROKUBI', Messages['MYosinGrid.tourokubi'], 80, '', null),
     Column.text('UPDDATE', Messages['MYosinGrid.upddate'], 80, '', null),
-    Column.text('FILLER', Messages['MYosinGrid.filler'], 110, '', null),
 ];

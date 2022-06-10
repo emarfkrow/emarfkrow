@@ -519,7 +519,7 @@ public class MstWcBk implements IEntity {
     }
 
     /** DELETE_FLAG */
-    private java.math.BigDecimal deleteFlag;
+    private java.math.BigDecimal deleteFlag = new java.math.BigDecimal(0);
 
     /**
      * @return DELETE_FLAG
@@ -585,7 +585,7 @@ public class MstWcBk implements IEntity {
     }
 
     /** NICHIJI_SHIME_F */
-    private String nichijiShimeF;
+    private String nichijiShimeF = "0";
 
     /**
      * @return NICHIJI_SHIME_F

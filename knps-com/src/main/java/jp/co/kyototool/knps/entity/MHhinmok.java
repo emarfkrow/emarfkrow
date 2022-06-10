@@ -61,7 +61,7 @@ public class MHhinmok implements IEntity {
     }
 
     /** 削除フラグ */
-    private java.math.BigDecimal dltflg;
+    private java.math.BigDecimal dltflg = new java.math.BigDecimal(0);
 
     /**
      * @return 削除フラグ
@@ -875,7 +875,7 @@ public class MHhinmok implements IEntity {
     }
 
     /** データ送信区分 */
-    private String dataFlg;
+    private String dataFlg = "0";
 
     /**
      * @return データ送信区分
@@ -893,28 +893,6 @@ public class MHhinmok implements IEntity {
             this.dataFlg = String.valueOf(o.toString());
         } else {
             this.dataFlg = null;
-        }
-    }
-
-    /** 予備領域3 */
-    private String filler3;
-
-    /**
-     * @return 予備領域3
-     */
-    @com.fasterxml.jackson.annotation.JsonProperty("FILLER3")
-    public String getFiller3() {
-        return this.filler3;
-    }
-
-    /**
-     * @param o 予備領域3
-     */
-    public void setFiller3(final Object o) {
-        if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {
-            this.filler3 = String.valueOf(o.toString());
-        } else {
-            this.filler3 = null;
         }
     }
 
@@ -2040,28 +2018,6 @@ public class MHhinmok implements IEntity {
         }
     }
 
-    /** 予備領域 */
-    private String filler;
-
-    /**
-     * @return 予備領域
-     */
-    @com.fasterxml.jackson.annotation.JsonProperty("FILLER")
-    public String getFiller() {
-        return this.filler;
-    }
-
-    /**
-     * @param o 予備領域
-     */
-    public void setFiller(final Object o) {
-        if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {
-            this.filler = String.valueOf(o.toString());
-        } else {
-            this.filler = null;
-        }
-    }
-
     /**
      * 販売品目マスタ照会
      *
@@ -2190,7 +2146,6 @@ public class MHhinmok implements IEntity {
         nameList.add("\"ZAISHUKBN\" -- :zaishukbn");
         nameList.add("\"BARCODE\" -- :barcode");
         nameList.add("\"DATA-FLG\" -- :data_flg");
-        nameList.add("\"FILLER3\" -- :filler3");
         nameList.add("\"UPCCD\" -- :upccd");
         nameList.add("\"ZAIKOSU-H1\" -- :zaikosu_h1");
         nameList.add("\"ZAIKOSU-H2\" -- :zaikosu_h2");
@@ -2242,7 +2197,6 @@ public class MHhinmok implements IEntity {
         nameList.add("\"KOKUSAICD\" -- :kokusaicd");
         nameList.add("\"KUNICD\" -- :kunicd");
         nameList.add("\"CHOKUKAKBN\" -- :chokukakbn");
-        nameList.add("\"FILLER\" -- :filler");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO M_HHINMOK(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -2294,7 +2248,6 @@ public class MHhinmok implements IEntity {
         valueList.add(":zaishukbn");
         valueList.add(":barcode");
         valueList.add(":data_flg");
-        valueList.add(":filler3");
         valueList.add(":upccd");
         valueList.add(":zaikosu_h1");
         valueList.add(":zaikosu_h2");
@@ -2346,7 +2299,6 @@ public class MHhinmok implements IEntity {
         valueList.add(":kokusaicd");
         valueList.add(":kunicd");
         valueList.add(":chokukakbn");
-        valueList.add(":filler");
         return String.join("\r\n    , ", valueList);
     }
 
@@ -2503,7 +2455,6 @@ public class MHhinmok implements IEntity {
         setList.add("\"ZAISHUKBN\" = :zaishukbn");
         setList.add("\"BARCODE\" = :barcode");
         setList.add("\"DATA-FLG\" = :data_flg");
-        setList.add("\"FILLER3\" = :filler3");
         setList.add("\"UPCCD\" = :upccd");
         setList.add("\"ZAIKOSU-H1\" = :zaikosu_h1");
         setList.add("\"ZAIKOSU-H2\" = :zaikosu_h2");
@@ -2555,7 +2506,6 @@ public class MHhinmok implements IEntity {
         setList.add("\"KOKUSAICD\" = :kokusaicd");
         setList.add("\"KUNICD\" = :kunicd");
         setList.add("\"CHOKUKAKBN\" = :chokukakbn");
-        setList.add("\"FILLER\" = :filler");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -2672,7 +2622,6 @@ public class MHhinmok implements IEntity {
         params.put("zaishukbn", this.zaishukbn);
         params.put("barcode", this.barcode);
         params.put("data_flg", this.dataFlg);
-        params.put("filler3", this.filler3);
         params.put("upccd", this.upccd);
         params.put("zaikosu_h1", this.zaikosuH1);
         params.put("zaikosu_h2", this.zaikosuH2);
@@ -2724,7 +2673,6 @@ public class MHhinmok implements IEntity {
         params.put("kokusaicd", this.kokusaicd);
         params.put("kunicd", this.kunicd);
         params.put("chokukakbn", this.chokukakbn);
-        params.put("filler", this.filler);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

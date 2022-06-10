@@ -9,6 +9,5 @@ WHERE
     AND TRIM (a."RTOKUMEI") = TRIM (:rtokumei) 
     AND a."NEBIKIRITU" = :nebikiritu 
     AND a."UPDDATE" = :upddate 
-    AND TRIM (a."FILLER") = TRIM (:filler) 
 ORDER BY
     a."HONSHACD"

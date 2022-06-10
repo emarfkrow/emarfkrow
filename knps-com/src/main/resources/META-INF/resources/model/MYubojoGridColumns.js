@@ -10,5 +10,4 @@ let MYubojoGridColumns = [
     Column.text('KONYU-MAX', Messages['MYubojoGrid.konyuMax'], 90, '', null),
     Column.text('YUBORITU', Messages['MYubojoGrid.yuboritu'], 20, '', null),
     Column.text('UPDDATE', Messages['MYubojoGrid.upddate'], 80, '', null),
-    Column.text('FILLER', Messages['MYubojoGrid.filler'], 300, '', null),
 ];

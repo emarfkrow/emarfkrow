@@ -214,28 +214,6 @@ public class MGenka implements IEntity {
         }
     }
 
-    /** 予備領域 */
-    private String filler;
-
-    /**
-     * @return 予備領域
-     */
-    @com.fasterxml.jackson.annotation.JsonProperty("FILLER")
-    public String getFiller() {
-        return this.filler;
-    }
-
-    /**
-     * @param o 予備領域
-     */
-    public void setFiller(final Object o) {
-        if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {
-            this.filler = String.valueOf(o.toString());
-        } else {
-            this.filler = null;
-        }
-    }
-
     /**
      * 原価マスタ照会
      *
@@ -275,7 +253,6 @@ public class MGenka implements IEntity {
         nameList.add("\"BAIKA\" -- :baika");
         nameList.add("\"SEIHIN-BAIKA\" -- :seihin_baika");
         nameList.add("\"SHOHIN-BAIKA\" -- :shohin_baika");
-        nameList.add("\"FILLER\" -- :filler");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO M_GENKA(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -296,7 +273,6 @@ public class MGenka implements IEntity {
         valueList.add(":baika");
         valueList.add(":seihin_baika");
         valueList.add(":shohin_baika");
-        valueList.add(":filler");
         return String.join("\r\n    , ", valueList);
     }
 
@@ -326,7 +302,6 @@ public class MGenka implements IEntity {
         setList.add("\"BAIKA\" = :baika");
         setList.add("\"SEIHIN-BAIKA\" = :seihin_baika");
         setList.add("\"SHOHIN-BAIKA\" = :shohin_baika");
-        setList.add("\"FILLER\" = :filler");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -363,7 +338,6 @@ public class MGenka implements IEntity {
         params.put("baika", this.baika);
         params.put("seihin_baika", this.seihinBaika);
         params.put("shohin_baika", this.shohinBaika);
-        params.put("filler", this.filler);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

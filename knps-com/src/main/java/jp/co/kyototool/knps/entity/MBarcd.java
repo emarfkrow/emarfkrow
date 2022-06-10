@@ -148,28 +148,6 @@ public class MBarcd implements IEntity {
         }
     }
 
-    /** 予備領域 */
-    private String fller;
-
-    /**
-     * @return 予備領域
-     */
-    @com.fasterxml.jackson.annotation.JsonProperty("FLLER")
-    public String getFller() {
-        return this.fller;
-    }
-
-    /**
-     * @param o 予備領域
-     */
-    public void setFller(final Object o) {
-        if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {
-            this.fller = String.valueOf(o.toString());
-        } else {
-            this.fller = null;
-        }
-    }
-
     /**
      * バーコードマスタ照会
      *
@@ -206,7 +184,6 @@ public class MBarcd implements IEntity {
         nameList.add("\"FREE1\" -- :free1");
         nameList.add("\"FREE2\" -- :free2");
         nameList.add("\"FREE3\" -- :free3");
-        nameList.add("\"FLLER\" -- :fller");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO M_BARCD(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -224,7 +201,6 @@ public class MBarcd implements IEntity {
         valueList.add(":free1");
         valueList.add(":free2");
         valueList.add(":free3");
-        valueList.add(":fller");
         return String.join("\r\n    , ", valueList);
     }
 
@@ -251,7 +227,6 @@ public class MBarcd implements IEntity {
         setList.add("\"FREE1\" = :free1");
         setList.add("\"FREE2\" = :free2");
         setList.add("\"FREE3\" = :free3");
-        setList.add("\"FLLER\" = :fller");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -285,7 +260,6 @@ public class MBarcd implements IEntity {
         params.put("free1", this.free1);
         params.put("free2", this.free2);
         params.put("free3", this.free3);
-        params.put("fller", this.fller);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

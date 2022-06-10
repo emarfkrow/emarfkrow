@@ -7,7 +7,7 @@ WHERE
     1 = 1 
     AND a."HHINBAN" = :hhinban 
     AND a."LVCD" = :lvcd 
-    AND a."DLTFLG" IN (:dltflg) 
+    AND CASE WHEN a."DLTFLG" IS NULL THEN '0' ELSE TO_CHAR (a."DLTFLG") END IN (:dltflg) 
     AND TRIM (a."HINCD") = TRIM (:hincd) 
     AND TRIM (a."HINMEI") = TRIM (:hinmei) 
     AND TRIM (a."SETKBN") IN (:setkbn) 
@@ -60,8 +60,7 @@ WHERE
     AND a."BUNRUI4" = :bunrui4 
     AND TRIM (a."ZAISHUKBN") IN (:zaishukbn) 
     AND a."BARCODE" = :barcode 
-    AND TRIM (a."DATA-FLG") IN (:data_flg) 
-    AND TRIM (a."FILLER3") = TRIM (:filler3) 
+    AND CASE WHEN a."DATA-FLG" IS NULL THEN '0' ELSE TO_CHAR (a."DATA-FLG") END IN (:data_flg) 
     AND TRIM (a."UPCCD") = TRIM (:upccd) 
     AND a."ZAIKOSU-H1" = :zaikosu_h1 
     AND a."ZAIKOSU-H2" = :zaikosu_h2 
@@ -145,6 +144,5 @@ WHERE
     AND TRIM (a."KOKUSAICD") = TRIM (:kokusaicd) 
     AND TRIM (a."KUNICD") = TRIM (:kunicd) 
     AND TRIM (a."CHOKUKAKBN") IN (:chokukakbn) 
-    AND TRIM (a."FILLER") = TRIM (:filler) 
 ORDER BY
     a."HHINBAN"

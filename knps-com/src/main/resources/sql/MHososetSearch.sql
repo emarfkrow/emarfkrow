@@ -9,6 +9,5 @@ WHERE
     AND a."HHINBAN" = :hhinban 
     AND a."HOSO-HINBAN" = :hoso_hinban 
     AND a."INZU" = :inzu 
-    AND TRIM (a."FILLER") = TRIM (:filler) 
 ORDER BY
     a."HHINBAN", a."HOSO-HINBAN"

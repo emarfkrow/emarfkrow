@@ -170,28 +170,6 @@ public class MHcalend implements IEntity {
         }
     }
 
-    /** 予備領域 */
-    private String filler;
-
-    /**
-     * @return 予備領域
-     */
-    @com.fasterxml.jackson.annotation.JsonProperty("FILLER")
-    public String getFiller() {
-        return this.filler;
-    }
-
-    /**
-     * @param o 予備領域
-     */
-    public void setFiller(final Object o) {
-        if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {
-            this.filler = String.valueOf(o.toString());
-        } else {
-            this.filler = null;
-        }
-    }
-
     /**
      * 販売カレンダー照会
      *
@@ -235,7 +213,6 @@ public class MHcalend implements IEntity {
         nameList.add("\"YOUBI\" -- :youbi");
         nameList.add("\"KADOUKBN\" -- :kadoukbn");
         nameList.add("\"KADOURUI\" -- :kadourui");
-        nameList.add("\"FILLER\" -- :filler");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO M_HCALEND(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -254,7 +231,6 @@ public class MHcalend implements IEntity {
         valueList.add(":youbi");
         valueList.add(":kadoukbn");
         valueList.add(":kadourui");
-        valueList.add(":filler");
         return String.join("\r\n    , ", valueList);
     }
 
@@ -305,7 +281,6 @@ public class MHcalend implements IEntity {
         setList.add("\"YOUBI\" = :youbi");
         setList.add("\"KADOUKBN\" = :kadoukbn");
         setList.add("\"KADOURUI\" = :kadourui");
-        setList.add("\"FILLER\" = :filler");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -341,7 +316,6 @@ public class MHcalend implements IEntity {
         params.put("youbi", this.youbi);
         params.put("kadoukbn", this.kadoukbn);
         params.put("kadourui", this.kadourui);
-        params.put("filler", this.filler);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

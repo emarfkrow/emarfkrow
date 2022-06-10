@@ -8,5 +8,4 @@ let MNetincGridColumns = [
     Column.text('RTOKUMEI', Messages['MNetincGrid.rtokumei'], 200, '', null),
     Column.text('NEBIKIRITU', Messages['MNetincGrid.nebikiritu'], 20, '', null),
     Column.text('UPDDATE', Messages['MNetincGrid.upddate'], 80, '', null),
-    Column.text('FILLER', Messages['MNetincGrid.filler'], 130, '', null),
 ];

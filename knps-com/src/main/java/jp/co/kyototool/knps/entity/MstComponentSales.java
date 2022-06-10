@@ -83,7 +83,7 @@ public class MstComponentSales implements IEntity {
     }
 
     /** BOTTOM_FLAG */
-    private java.math.BigDecimal bottomFlag;
+    private java.math.BigDecimal bottomFlag = new java.math.BigDecimal(0);
 
     /**
      * @return BOTTOM_FLAG
@@ -233,7 +233,7 @@ public class MstComponentSales implements IEntity {
     }
 
     /** DELETE_FLAG */
-    private java.math.BigDecimal deleteFlag;
+    private java.math.BigDecimal deleteFlag = new java.math.BigDecimal(0);
 
     /**
      * @return DELETE_FLAG

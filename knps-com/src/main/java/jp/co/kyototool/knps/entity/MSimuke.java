@@ -60,28 +60,6 @@ public class MSimuke implements IEntity {
         }
     }
 
-    /** 予備領域 */
-    private String filler;
-
-    /**
-     * @return 予備領域
-     */
-    @com.fasterxml.jackson.annotation.JsonProperty("FILLER")
-    public String getFiller() {
-        return this.filler;
-    }
-
-    /**
-     * @param o 予備領域
-     */
-    public void setFiller(final Object o) {
-        if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {
-            this.filler = String.valueOf(o.toString());
-        } else {
-            this.filler = null;
-        }
-    }
-
     /**
      * 仕向先マスタ照会
      *
@@ -117,7 +95,6 @@ public class MSimuke implements IEntity {
         List<String> nameList = new ArrayList<String>();
         nameList.add("\"SIMUKECD\" -- :simukecd");
         nameList.add("\"SIMUKEMEI\" -- :simukemei");
-        nameList.add("\"FILLER\" -- :filler");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO M_SIMUKE(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -131,7 +108,6 @@ public class MSimuke implements IEntity {
         List<String> valueList = new ArrayList<String>();
         valueList.add(":simukecd");
         valueList.add(":simukemei");
-        valueList.add(":filler");
         return String.join("\r\n    , ", valueList);
     }
 
@@ -171,7 +147,6 @@ public class MSimuke implements IEntity {
         List<String> setList = new ArrayList<String>();
         setList.add("\"SIMUKECD\" = :simukecd");
         setList.add("\"SIMUKEMEI\" = :simukemei");
-        setList.add("\"FILLER\" = :filler");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -201,7 +176,6 @@ public class MSimuke implements IEntity {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("simukecd", this.simukecd);
         params.put("simukemei", this.simukemei);
-        params.put("filler", this.filler);
         params.put("time_stamp_create", now);
         params.put("user_id_create", id);
         params.put("time_stamp_change", now);

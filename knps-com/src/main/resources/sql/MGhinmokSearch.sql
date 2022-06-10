@@ -13,7 +13,6 @@ WHERE
     AND TRIM (a."RENKEIBI") = TRIM (:renkeibi) 
     AND a."RENKEIBI" >= :renkeibi_1 
     AND a."RENKEIBI" <= :renkeibi_2 
-    AND TRIM (a."SHORIFLG") IN (:shoriflg) 
-    AND TRIM (a."FILLER") = TRIM (:filler) 
+    AND CASE WHEN a."SHORIFLG" IS NULL THEN '0' ELSE TO_CHAR (a."SHORIFLG") END IN (:shoriflg) 
 ORDER BY
     a."HINBAN"

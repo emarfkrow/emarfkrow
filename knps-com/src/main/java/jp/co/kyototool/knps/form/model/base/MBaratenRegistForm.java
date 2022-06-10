@@ -236,24 +236,6 @@ public class MBaratenRegistForm implements IForm {
         this.casekbn = p;
     }
 
-    /** 予備領域 */
-    @jakarta.validation.constraints.Size(max = 16)
-    private String filler;
-
-    /**
-     * @return 予備領域
-     */
-    public String getFiller() {
-        return filler;
-    }
-
-    /**
-     * @param p 予備領域
-     */
-    public void setFiller(final String p) {
-        this.filler = p;
-    }
-
     /** 関連チェック */
     @Override
     public void validate(final Map<String, String> errors, final BaseProcess baseProcess) {
