@@ -13,8 +13,6 @@
 <script th:src="@{/model/MstHinbanGridColumns.js}"></script>
 <script th:src="@{/model/InvPrintWarehousingslipGridColumns.js}"></script>
 <script th:src="@{/model/MstEmpGridColumns.js}"></script>
-<script th:src="@{/model/MstDivisionGridColumns.js}"></script>
-<script th:src="@{/model/MstCompanyGridColumns.js}"></script>
 <script th:src="@{/model/InvStockStoreGridColumns.js}"></script>
 <script th:src="@{/model/MstHinbanBkGridColumns.js}"></script>
 <script th:src="@{/model/MstUnitGridColumns.js}"></script>
@@ -82,7 +80,9 @@
           <label for="MstSupplier.payDay" th:text="#{MstSupplier.payDay}">PAY_DAY</label><input type="text" id="MstSupplier.payDay" name="MstSupplier.payDay" maxlength="2" />
         </div>
         <div id="taxCode">
-          <label for="MstSupplier.taxCode" th:text="#{MstSupplier.taxCode}">TAX_CODE</label><input type="text" id="MstSupplier.taxCode" name="MstSupplier.taxCode" maxlength="2" data-json="MstTaxSearch.json" data-srcDef="TAX_CODE:MstSupplier.taxCode" data-destDef="MstSupplier.taxName:TAX_NAME" /><a id="MstSupplier.taxCode" th:href="@{/model/MstTaxS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MstSupplier.taxName" class="refer" data-json="MstTaxSearch.json" data-srcDef="TAX_CODE:MstSupplier.taxCode" data-destDef="MstSupplier.taxName:TAX_NAME"></span>
+          <fieldset id="MstSupplier.taxCodeList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:TAX_CODE" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstSupplier.taxCode}">TAX_CODE</legend>
+          </fieldset>
         </div>
         <div id="taxCalCode">
           <fieldset id="MstSupplier.taxCalCodeList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:TAX_CAL_CODE" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">

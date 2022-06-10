@@ -9,26 +9,6 @@
 
 </script>
 <script th:src="@{/model/MPhinmokGridColumns.js}"></script>
-<script th:src="@{/model/MstHinbanGridColumns.js}"></script>
-<script th:src="@{/model/InvPrintWarehousingslipGridColumns.js}"></script>
-<script th:src="@{/model/MstEmpGridColumns.js}"></script>
-<script th:src="@{/model/MstDivisionGridColumns.js}"></script>
-<script th:src="@{/model/MstCompanyGridColumns.js}"></script>
-<script th:src="@{/model/InvStockStoreGridColumns.js}"></script>
-<script th:src="@{/model/MstHinbanBkGridColumns.js}"></script>
-<script th:src="@{/model/MstUnitGridColumns.js}"></script>
-<script th:src="@{/model/MstAccountCodeGridColumns.js}"></script>
-<script th:src="@{/model/MstHinbanEmpGridColumns.js}"></script>
-<script th:src="@{/model/MstSupUnitpriceGridColumns.js}"></script>
-<script th:src="@{/model/MstSupUnitpriceBkGridColumns.js}"></script>
-<script th:src="@{/model/MstSupplierGridColumns.js}"></script>
-<script th:src="@{/model/InvStockProcessSupplyGridColumns.js}"></script>
-<script th:src="@{/model/MstSupplierBkGridColumns.js}"></script>
-<script th:src="@{/model/MstTaxGridColumns.js}"></script>
-<script th:src="@{/model/MstSupUnitpriceDetailGridColumns.js}"></script>
-<script th:src="@{/model/MstSupUnitpriceDetailBkGridColumns.js}"></script>
-<script th:src="@{/model/MstSupUnitpriceDetailHsGridColumns.js}"></script>
-<script th:src="@{/model/MstSupUnitpriceHsGridColumns.js}"></script>
 </head>
 <body>
   <div layout:fragment="article">
@@ -37,7 +17,7 @@
       <fieldset>
         <legend th:text="#{MPhinmokS.legend}">legend</legend>
         <div id="phinban">
-          <label for="MPhinmok.phinban" th:text="#{MPhinmok.phinban}">部品品番</label><input type="text" id="MPhinmok.phinban" name="MPhinmok.phinban" maxlength="20" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:MPhinmok.phinban" data-destDef="MPhinmok.pitem:ITEM" /><a id="MPhinmok.phinban" th:href="@{/model/MstHinbanS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MPhinmok.pitem" class="refer" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:MPhinmok.phinban" data-destDef="MPhinmok.pitem:ITEM"></span>
+          <label for="MPhinmok.phinban" th:text="#{MPhinmok.phinban}">部品品番</label><input type="text" id="MPhinmok.phinban" name="MPhinmok.phinban" maxlength="20" />
         </div>
         <div id="phinmei">
           <label for="MPhinmok.phinmei" th:text="#{MPhinmok.phinmei}">部品名</label><input type="text" id="MPhinmok.phinmei" name="MPhinmok.phinmei" maxlength="20" />
@@ -46,7 +26,7 @@
           <label for="MPhinmok.phinmeik" th:text="#{MPhinmok.phinmeik}">部品名カナ</label><input type="text" id="MPhinmok.phinmeik" name="MPhinmok.phinmeik" maxlength="20" />
         </div>
         <div id="hinban">
-          <label for="MPhinmok.hinban" th:text="#{MPhinmok.hinban}">生産品番</label><input type="text" id="MPhinmok.hinban" name="MPhinmok.hinban" maxlength="25" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:MPhinmok.hinban" data-destDef="MPhinmok.item:ITEM" /><a id="MPhinmok.hinban" th:href="@{/model/MstHinbanS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MPhinmok.item" class="refer" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:MPhinmok.hinban" data-destDef="MPhinmok.item:ITEM"></span>
+          <label for="MPhinmok.hinban" th:text="#{MPhinmok.hinban}">生産品番</label><input type="text" id="MPhinmok.hinban" name="MPhinmok.hinban" maxlength="25" />
         </div>
         <div id="pKakaku">
           <label for="MPhinmok.pKakaku" th:text="#{MPhinmok.pKakaku}">部品価格</label><input type="text" id="MPhinmok.pKakaku" name="MPhinmok.pKakaku" maxlength="7" />

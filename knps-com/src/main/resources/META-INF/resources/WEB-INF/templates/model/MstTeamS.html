@@ -9,9 +9,6 @@
 
 </script>
 <script th:src="@{/model/MstTeamGridColumns.js}"></script>
-<script th:src="@{/model/MstGroupGridColumns.js}"></script>
-<script th:src="@{/model/MstDivisionGridColumns.js}"></script>
-<script th:src="@{/model/MstCompanyGridColumns.js}"></script>
 </head>
 <body>
   <div layout:fragment="article">
@@ -33,7 +30,9 @@
           </fieldset>
         </div>
         <div id="groupCode">
-          <label for="MstTeam.groupCode" th:text="#{MstTeam.groupCode}">GROUP_CODE</label><input type="text" id="MstTeam.groupCode" name="MstTeam.groupCode" maxlength="10" data-json="MstGroupSearch.json" data-srcDef="GROUP_CODE:MstTeam.groupCode" data-destDef="MstTeam.groupName:GROUP_NAME" /><a id="MstTeam.groupCode" th:href="@{/model/MstGroupS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MstTeam.groupName" class="refer" data-json="MstGroupSearch.json" data-srcDef="GROUP_CODE:MstTeam.groupCode" data-destDef="MstTeam.groupName:GROUP_NAME"></span>
+          <fieldset id="MstTeam.groupCodeList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:GROUP_CODE" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstTeam.groupCode}">GROUP_CODE</legend>
+          </fieldset>
         </div>
         <div id="individualCounts">
           <label for="MstTeam.individualCounts_1" th:text="#{MstTeam.individualCounts}">INDIVIDUAL_COUNTS</label><input type="text" id="MstTeam.individualCounts_1" name="MstTeam.individualCounts_1" maxlength="7" />～<input type="text" id="MstTeam.individualCounts_2" name="MstTeam.individualCounts_2" maxlength="7" />

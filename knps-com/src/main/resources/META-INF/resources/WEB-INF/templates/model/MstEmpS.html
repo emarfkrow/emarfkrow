@@ -9,8 +9,6 @@
 
 </script>
 <script th:src="@{/model/MstEmpGridColumns.js}"></script>
-<script th:src="@{/model/MstDivisionGridColumns.js}"></script>
-<script th:src="@{/model/MstCompanyGridColumns.js}"></script>
 </head>
 <body>
   <div layout:fragment="article">
@@ -51,7 +49,9 @@
           <label for="MstEmp.mailAddress" th:text="#{MstEmp.mailAddress}">MAIL_ADDRESS</label><input type="text" id="MstEmp.mailAddress" name="MstEmp.mailAddress" maxlength="128" />
         </div>
         <div id="divisionCode">
-          <label for="MstEmp.divisionCode" th:text="#{MstEmp.divisionCode}">DIVISION_CODE</label><input type="text" id="MstEmp.divisionCode" name="MstEmp.divisionCode" maxlength="10" data-json="MstDivisionSearch.json" data-srcDef="DIVISION_CODE:MstEmp.divisionCode" data-destDef="MstEmp.divisionName:DIVISION_NAME" /><a id="MstEmp.divisionCode" th:href="@{/model/MstDivisionS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MstEmp.divisionName" class="refer" data-json="MstDivisionSearch.json" data-srcDef="DIVISION_CODE:MstEmp.divisionCode" data-destDef="MstEmp.divisionName:DIVISION_NAME"></span>
+          <fieldset id="MstEmp.divisionCodeList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:DIVISION_CODE" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstEmp.divisionCode}">DIVISION_CODE</legend>
+          </fieldset>
         </div>
       </fieldset>
       <div class="buttons">

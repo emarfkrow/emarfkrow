@@ -317,6 +317,11 @@ public final class HtmlGenerator {
 
     private static void htmlNestGrid(final TableInfo tableInfo, final List<String> s, final Set<TableInfo> added) {
 
+        String tableName = tableInfo.getTableName();
+        if (tableName.equals("M_HHINMOK")) {
+            int i = 0;
+        }
+
         for (TableInfo childInfo : tableInfo.getChildInfos()) {
 
             if (added.contains(childInfo)) {
@@ -347,6 +352,28 @@ public final class HtmlGenerator {
                 added.add(referInfo);
 
                 htmlNestGrid(referInfo, s, added);
+            }
+        }
+
+        for (TableInfo brosInfo : tableInfo.getBrosInfos()) {
+
+            for (ColumnInfo columnInfo : brosInfo.getColumnInfos().values()) {
+
+                TableInfo referInfo = columnInfo.getReferInfo();
+
+                if (referInfo != null) {
+
+                    if (added.contains(referInfo)) {
+                        continue;
+                    }
+
+                    String referName = referInfo.getTableName();
+                    String pascalRefer = StringUtil.toPascalCase(referName);
+                    s.add("<script th:src=\"@{/model/" + pascalRefer + "GridColumns.js}\"></script>");
+                    added.add(referInfo);
+
+                    htmlNestGrid(referInfo, s, added);
+                }
             }
         }
     }

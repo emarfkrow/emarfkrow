@@ -6,7 +6,7 @@ let MstCostCenterGridColumns = [
     Column.cell('COST_CENTER_CODE', Messages['MstCostCenterGrid.costCenterCode'], 100, 'primaryKey', null),
     Column.text('COST_CENTER_NAME', Messages['MstCostCenterGrid.costCenterName'], 300, '', null),
     Column.select('IN_OUT_KBN', Messages['MstCostCenterGrid.inOutKbn'], 10, '', { json: 'MstCodeValueSearch.json', paramkey: 'code_nm', value: 'CODE_VALUE', label: 'CODE_VALUE_MEI' }),
-    Column.refer('SUP_CODE', Messages['MstCostCenterGrid.supCode'], 60, '', 'SUP_NAME'),
+    Column.select('SUP_CODE', Messages['MstCostCenterGrid.supCode'], 60, '', { json: 'MstCodeValueSearch.json', paramkey: 'code_nm', value: 'CODE_VALUE', label: 'CODE_VALUE_MEI' }),
     Column.select('COST_RATE_KBN', Messages['MstCostCenterGrid.costRateKbn'], 10, '', { json: 'MstCodeValueSearch.json', paramkey: 'code_nm', value: 'CODE_VALUE', label: 'CODE_VALUE_MEI' }),
     Column.select('COST_RATE_CODE', Messages['MstCostCenterGrid.costRateCode'], 100, '', { json: 'MstCodeValueSearch.json', paramkey: 'code_nm', value: 'CODE_VALUE', label: 'CODE_VALUE_MEI' }),
     Column.text('COST_COLLECT', Messages['MstCostCenterGrid.costCollect'], 10, '', null),

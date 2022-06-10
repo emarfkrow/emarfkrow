@@ -3,7 +3,7 @@
  */
 
 let MHhinmokGridColumns = [
-    Column.refer('HHINBAN', Messages['MHhinmokGrid.hhinban'], 200, 'primaryKey', 'HHINMEI'),
+    Column.cell('HHINBAN', Messages['MHhinmokGrid.hhinban'], 200, 'primaryKey', null),
     Column.text('LVCD', Messages['MHhinmokGrid.lvcd'], 20, '', null),
     Column.check('DLTFLG', Messages['MHhinmokGrid.dltflg'], 10, ''),
     Column.text('HINCD', Messages['MHhinmokGrid.hincd'], 200, '', null),

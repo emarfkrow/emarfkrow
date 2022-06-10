@@ -12,10 +12,8 @@
 <script th:src="@{/model/MstWcBkGridColumns.js}"></script>
 <script th:src="@{/model/MstProcGridColumns.js}"></script>
 <script th:src="@{/model/MstWsGridColumns.js}"></script>
-<script th:src="@{/model/MstTeamGridColumns.js}"></script>
-<script th:src="@{/model/MstGroupGridColumns.js}"></script>
-<script th:src="@{/model/MstDivisionGridColumns.js}"></script>
-<script th:src="@{/model/MstCompanyGridColumns.js}"></script>
+<script th:src="@{/model/MstCostCenterGridColumns.js}"></script>
+<script th:src="@{/model/MstCostCenterBkGridColumns.js}"></script>
 <script th:src="@{/model/MstSupplierGridColumns.js}"></script>
 <script th:src="@{/model/InvStockProcessSupplyGridColumns.js}"></script>
 <script th:src="@{/model/MstHinbanGridColumns.js}"></script>
@@ -34,8 +32,6 @@
 <script th:src="@{/model/MstSupUnitpriceHsGridColumns.js}"></script>
 <script th:src="@{/model/MstSupplierBkGridColumns.js}"></script>
 <script th:src="@{/model/MstTaxGridColumns.js}"></script>
-<script th:src="@{/model/MstCostCenterGridColumns.js}"></script>
-<script th:src="@{/model/MstCostCenterBkGridColumns.js}"></script>
 <script th:src="@{/model/MstSubinvGridColumns.js}"></script>
 </head>
 <body>
@@ -75,7 +71,9 @@
           <label for="MstWc.atoControl" th:text="#{MstWc.atoControl}">ATO_CONTROL</label><input type="text" id="MstWc.atoControl" name="MstWc.atoControl" maxlength="1" />
         </div>
         <div id="routingCode">
-          <label for="MstWc.routingCode" th:text="#{MstWc.routingCode}">ROUTING_CODE</label><input type="text" id="MstWc.routingCode" name="MstWc.routingCode" maxlength="10" data-json="MstProcSearch.json" data-srcDef="ROUTING_CODE:MstWc.routingCode" data-destDef="MstWc.routingName:ROUTING_NAME" /><a id="MstWc.routingCode" th:href="@{/model/MstProcS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MstWc.routingName" class="refer" data-json="MstProcSearch.json" data-srcDef="ROUTING_CODE:MstWc.routingCode" data-destDef="MstWc.routingName:ROUTING_NAME"></span>
+          <fieldset id="MstWc.routingCodeList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:ROUTING_CODE" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstWc.routingCode}">ROUTING_CODE</legend>
+          </fieldset>
         </div>
         <div id="inOutKbn">
           <fieldset id="MstWc.inOutKbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:IN_OUT_KBN" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
@@ -83,10 +81,14 @@
           </fieldset>
         </div>
         <div id="wsCode">
-          <label for="MstWc.wsCode" th:text="#{MstWc.wsCode}">WS_CODE</label><input type="text" id="MstWc.wsCode" name="MstWc.wsCode" maxlength="4" data-json="MstWsSearch.json" data-srcDef="WS_CODE:MstWc.wsCode" data-destDef="MstWc.wsName:WS_NAME" /><a id="MstWc.wsCode" th:href="@{/model/MstWsS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MstWc.wsName" class="refer" data-json="MstWsSearch.json" data-srcDef="WS_CODE:MstWc.wsCode" data-destDef="MstWc.wsName:WS_NAME"></span>
+          <fieldset id="MstWc.wsCodeList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:WS_CODE" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstWc.wsCode}">WS_CODE</legend>
+          </fieldset>
         </div>
         <div id="costCenterCode">
-          <label for="MstWc.costCenterCode" th:text="#{MstWc.costCenterCode}">COST_CENTER_CODE</label><input type="text" id="MstWc.costCenterCode" name="MstWc.costCenterCode" maxlength="10" data-json="MstCostCenterSearch.json" data-srcDef="COST_CENTER_CODE:MstWc.costCenterCode" data-destDef="MstWc.costCenterName:COST_CENTER_NAME" /><a id="MstWc.costCenterCode" th:href="@{/model/MstCostCenterS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MstWc.costCenterName" class="refer" data-json="MstCostCenterSearch.json" data-srcDef="COST_CENTER_CODE:MstWc.costCenterCode" data-destDef="MstWc.costCenterName:COST_CENTER_NAME"></span>
+          <fieldset id="MstWc.costCenterCodeList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:COST_CENTER_CODE" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstWc.costCenterCode}">COST_CENTER_CODE</legend>
+          </fieldset>
         </div>
         <div id="neckKbn">
           <fieldset id="MstWc.neckKbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:NECK_KBN" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
@@ -94,7 +96,9 @@
           </fieldset>
         </div>
         <div id="subInvCode">
-          <label for="MstWc.subInvCode" th:text="#{MstWc.subInvCode}">SUB_INV_CODE</label><input type="text" id="MstWc.subInvCode" name="MstWc.subInvCode" maxlength="10" data-json="MstSubinvSearch.json" data-srcDef="SUB_INV_CODE:MstWc.subInvCode" data-destDef="MstWc.subInvName:SUB_INV_NAME" /><a id="MstWc.subInvCode" th:href="@{/model/MstSubinvS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MstWc.subInvName" class="refer" data-json="MstSubinvSearch.json" data-srcDef="SUB_INV_CODE:MstWc.subInvCode" data-destDef="MstWc.subInvName:SUB_INV_NAME"></span>
+          <fieldset id="MstWc.subInvCodeList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:SUB_INV_CODE" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstWc.subInvCode}">SUB_INV_CODE</legend>
+          </fieldset>
         </div>
         <div id="stockControl">
           <label for="MstWc.stockControl" th:text="#{MstWc.stockControl}">STOCK_CONTROL</label><input type="text" id="MstWc.stockControl" name="MstWc.stockControl" maxlength="1" />

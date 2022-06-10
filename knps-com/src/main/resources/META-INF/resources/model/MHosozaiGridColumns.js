@@ -3,7 +3,7 @@
  */
 
 let MHosozaiGridColumns = [
-    Column.refer('HOSO-HINBAN', Messages['MHosozaiGrid.hosoHinban'], 250, 'primaryKey', 'HOSO_HINMEI'),
+    Column.cell('HOSO-HINBAN', Messages['MHosozaiGrid.hosoHinban'], 250, 'primaryKey', null),
     Column.text('HOSO-HINMEI', Messages['MHosozaiGrid.hosoHinmei'], 300, '', null),
     Column.text('HOSO-HINMEI-RYAKU', Messages['MHosozaiGrid.hosoHinmeiRyaku'], 250, '', null),
     Column.text('HOSO-SIZE', Messages['MHosozaiGrid.hosoSize'], 300, '', null),

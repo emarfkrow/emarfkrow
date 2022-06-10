@@ -648,6 +648,26 @@ public final class DataSources {
                         continue;
                     }
 
+                    // 比較先自体が参照マスタならスキップ
+                    boolean self = false;
+                    if (tableInfo.getPrimaryKeys().size() == 1) {
+                        String primaryKey = tableInfo.getPrimaryKeys().get(0);
+                        for (String[] pair : referPairs) {
+                            String idSuffix = pair[0];
+                            String meiSuffix = pair[1];
+                            if (StringUtil.endsWithIgnoreCase(idSuffix, primaryKey)) {
+                                String meiColumnName = primaryKey.replaceAll("(?i)" + idSuffix + "$", meiSuffix);
+                                if (tableInfo.getColumnInfos().containsKey(meiColumnName)) {
+                                    self = true;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    if (self) {
+                        continue;
+                    }
+
                     // 比較先のカラム情報でループして比較元のユニークキーがあれば参照テーブルリストに追加
                     for (Entry<String, ColumnInfo> e : tableInfo.getColumnInfos().entrySet()) {
                         String columnName = e.getKey();

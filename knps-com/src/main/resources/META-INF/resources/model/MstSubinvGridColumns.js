@@ -7,7 +7,7 @@ let MstSubinvGridColumns = [
     Column.text('SUB_INV_NAME', Messages['MstSubinvGrid.subInvName'], 300, '', null),
     Column.select('MANAGE_KBN', Messages['MstSubinvGrid.manageKbn'], 10, '', { json: 'MstCodeValueSearch.json', paramkey: 'code_nm', value: 'CODE_VALUE', label: 'CODE_VALUE_MEI' }),
     Column.select('IN_OUT_KBN', Messages['MstSubinvGrid.inOutKbn'], 10, '', { json: 'MstCodeValueSearch.json', paramkey: 'code_nm', value: 'CODE_VALUE', label: 'CODE_VALUE_MEI' }),
-    Column.refer('SUP_CODE', Messages['MstSubinvGrid.supCode'], 60, '', 'SUP_NAME'),
+    Column.select('SUP_CODE', Messages['MstSubinvGrid.supCode'], 60, '', { json: 'MstCodeValueSearch.json', paramkey: 'code_nm', value: 'CODE_VALUE', label: 'CODE_VALUE_MEI' }),
     Column.cell('TIME_STAMP_CREATE', Messages['MstSubinvGrid.timeStampCreate'], 70, 'metaInfo', Slick.Formatters.Extends.DateTime),
     Column.cell('TIME_STAMP_CHANGE', Messages['MstSubinvGrid.timeStampChange'], 70, 'metaInfo', Slick.Formatters.Extends.DateTime),
     Column.cell('USER_ID_CREATE', Messages['MstSubinvGrid.userIdCreate'], 100, 'metaInfo', null),
