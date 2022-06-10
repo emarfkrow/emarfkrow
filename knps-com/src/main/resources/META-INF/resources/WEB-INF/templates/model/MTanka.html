@@ -9,6 +9,9 @@
 
 </script>
 <script th:src="@{/model/MTankaGridColumns.js}"></script>
+<script th:src="@{/model/MHhinmokGridColumns.js}"></script>
+<script th:src="@{/model/MHososetGridColumns.js}"></script>
+<script th:src="@{/model/MHosozaiGridColumns.js}"></script>
 <script th:src="@{/model/MstHinbanGridColumns.js}"></script>
 <script th:src="@{/model/InvPrintWarehousingslipGridColumns.js}"></script>
 <script th:src="@{/model/MstEmpGridColumns.js}"></script>
@@ -29,6 +32,8 @@
 <script th:src="@{/model/MstSupUnitpriceDetailBkGridColumns.js}"></script>
 <script th:src="@{/model/MstSupUnitpriceDetailHsGridColumns.js}"></script>
 <script th:src="@{/model/MstSupUnitpriceHsGridColumns.js}"></script>
+<script th:src="@{/model/MPkoseGridColumns.js}"></script>
+<script th:src="@{/model/MPhinmokGridColumns.js}"></script>
 </head>
 <body>
   <div layout:fragment="article">
@@ -37,7 +42,7 @@
       <fieldset>
         <legend th:text="#{MTanka.legend}">legend</legend>
         <div id="hhinban">
-          <label for="MTanka.hhinban" th:text="#{MTanka.hhinban}">販売品番</label><input type="text" id="MTanka.hhinban" name="MTanka.hhinban" maxlength="20" class="primaryKey" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:MTanka.hhinban" data-destDef="MTanka.hitem:ITEM" /><a id="MTanka.hhinban" th:href="@{/model/MstHinbanS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MTanka.hitem" class="refer" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:MTanka.hhinban" data-destDef="MTanka.hitem:ITEM"></span>
+          <label for="MTanka.hhinban" th:text="#{MTanka.hhinban}">販売品番</label><input type="text" id="MTanka.hhinban" name="MTanka.hhinban" maxlength="20" class="primaryKey" data-json="MHhinmokSearch.json" data-srcDef="HHINBAN:MTanka.hhinban" data-destDef="MTanka.hinmei:HINMEI" /><a id="MTanka.hhinban" th:href="@{/model/MHhinmokS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MTanka.hinmei" class="refer" data-json="MHhinmokSearch.json" data-srcDef="HHINBAN:MTanka.hhinban" data-destDef="MTanka.hinmei:HINMEI"></span>
         </div>
         <div id="dairiTanka">
           <label for="MTanka.dairiTanka" th:text="#{MTanka.dairiTanka}">代理店単価</label><input type="text" id="MTanka.dairiTanka" name="MTanka.dairiTanka" maxlength="7" />

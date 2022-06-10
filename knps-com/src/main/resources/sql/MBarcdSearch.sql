@@ -1,6 +1,5 @@
 SELECT
       a.*
-    , (SELECT r1."ITEM" FROM MST_HINBAN r1 WHERE r1."HINBAN" = a."HHINBAN") AS "HITEM"
 FROM
     M_BARCD a 
 WHERE

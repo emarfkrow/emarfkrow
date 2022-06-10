@@ -9,6 +9,9 @@
 
 </script>
 <script th:src="@{/model/MNtankaGridColumns.js}"></script>
+<script th:src="@{/model/MHhinmokGridColumns.js}"></script>
+<script th:src="@{/model/MHososetGridColumns.js}"></script>
+<script th:src="@{/model/MHosozaiGridColumns.js}"></script>
 <script th:src="@{/model/MstHinbanGridColumns.js}"></script>
 <script th:src="@{/model/InvPrintWarehousingslipGridColumns.js}"></script>
 <script th:src="@{/model/MstEmpGridColumns.js}"></script>
@@ -29,6 +32,8 @@
 <script th:src="@{/model/MstSupUnitpriceDetailBkGridColumns.js}"></script>
 <script th:src="@{/model/MstSupUnitpriceDetailHsGridColumns.js}"></script>
 <script th:src="@{/model/MstSupUnitpriceHsGridColumns.js}"></script>
+<script th:src="@{/model/MPkoseGridColumns.js}"></script>
+<script th:src="@{/model/MPhinmokGridColumns.js}"></script>
 </head>
 <body>
   <div layout:fragment="article">
@@ -37,7 +42,7 @@
       <fieldset>
         <legend th:text="#{MNtanka.legend}">legend</legend>
         <div id="hhinban">
-          <label for="MNtanka.hhinban" th:text="#{MNtanka.hhinban}">販売品番</label><input type="text" id="MNtanka.hhinban" name="MNtanka.hhinban" maxlength="20" class="primaryKey" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:MNtanka.hhinban" data-destDef="MNtanka.hitem:ITEM" /><a id="MNtanka.hhinban" th:href="@{/model/MstHinbanS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MNtanka.hitem" class="refer" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:MNtanka.hhinban" data-destDef="MNtanka.hitem:ITEM"></span>
+          <label for="MNtanka.hhinban" th:text="#{MNtanka.hhinban}">販売品番</label><input type="text" id="MNtanka.hhinban" name="MNtanka.hhinban" maxlength="20" class="primaryKey" data-json="MHhinmokSearch.json" data-srcDef="HHINBAN:MNtanka.hhinban" data-destDef="MNtanka.hinmei:HINMEI" /><a id="MNtanka.hhinban" th:href="@{/model/MHhinmokS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MNtanka.hinmei" class="refer" data-json="MHhinmokSearch.json" data-srcDef="HHINBAN:MNtanka.hhinban" data-destDef="MNtanka.hinmei:HINMEI"></span>
         </div>
         <div id="nissanHinban">
           <label for="MNtanka.nissanHinban" th:text="#{MNtanka.nissanHinban}">日産品番</label><input type="text" id="MNtanka.nissanHinban" name="MNtanka.nissanHinban" maxlength="20" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:MNtanka.nissanHinban" data-destDef="MNtanka.nissanItem:ITEM" /><a id="MNtanka.nissanHinban" th:href="@{/model/MstHinbanS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MNtanka.nissanItem" class="refer" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:MNtanka.nissanHinban" data-destDef="MNtanka.nissanItem:ITEM"></span>

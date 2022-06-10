@@ -407,6 +407,7 @@ public final class HtmlGenerator {
                     for (String[] suffix : referPairs) {
                         if (referMei.matches("(?i).+" + suffix[0] + "$")) {
                             referMei = referMei.replaceAll("(?i)" + suffix[0] + "$", suffix[1]);
+                            break;
                         }
                     }
                     referMei = StringUtil.toUpperCase(referMei);

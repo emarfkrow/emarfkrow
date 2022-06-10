@@ -247,6 +247,7 @@ public final class BeanGenerator {
                     s.add("    @com.fasterxml.jackson.databind.annotation.JsonSerialize(using = com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer.class)");
                 }
                 if (StringUtil.endsWith(inputFlagSuffixs, columnName)) {
+                    // フラグを外した際、何も送信されず更新もかからないため、フラグ項目には初期値を設定しておく
                     if (dataType.equals("java.math.BigDecimal")) {
                         s.add("    private " + dataType + " " + camel + " = new " + dataType + "(0);");
                     } else {

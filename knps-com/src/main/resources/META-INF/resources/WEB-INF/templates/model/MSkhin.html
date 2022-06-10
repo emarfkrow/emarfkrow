@@ -9,6 +9,9 @@
 
 </script>
 <script th:src="@{/model/MSkhinGridColumns.js}"></script>
+<script th:src="@{/model/MHhinmokGridColumns.js}"></script>
+<script th:src="@{/model/MHososetGridColumns.js}"></script>
+<script th:src="@{/model/MHosozaiGridColumns.js}"></script>
 <script th:src="@{/model/MstHinbanGridColumns.js}"></script>
 <script th:src="@{/model/InvPrintWarehousingslipGridColumns.js}"></script>
 <script th:src="@{/model/MstEmpGridColumns.js}"></script>
@@ -29,6 +32,8 @@
 <script th:src="@{/model/MstSupUnitpriceDetailBkGridColumns.js}"></script>
 <script th:src="@{/model/MstSupUnitpriceDetailHsGridColumns.js}"></script>
 <script th:src="@{/model/MstSupUnitpriceHsGridColumns.js}"></script>
+<script th:src="@{/model/MPkoseGridColumns.js}"></script>
+<script th:src="@{/model/MPhinmokGridColumns.js}"></script>
 </head>
 <body>
   <div layout:fragment="article">
@@ -37,7 +42,7 @@
       <fieldset>
         <legend th:text="#{MSkhin.legend}">legend</legend>
         <div id="hhinban">
-          <label for="MSkhin.hhinban" th:text="#{MSkhin.hhinban}">販売品番</label><input type="text" id="MSkhin.hhinban" name="MSkhin.hhinban" maxlength="20" class="primaryKey" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:MSkhin.hhinban" data-destDef="MSkhin.hitem:ITEM" /><a id="MSkhin.hhinban" th:href="@{/model/MstHinbanS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MSkhin.hitem" class="refer" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:MSkhin.hhinban" data-destDef="MSkhin.hitem:ITEM"></span>
+          <label for="MSkhin.hhinban" th:text="#{MSkhin.hhinban}">販売品番</label><input type="text" id="MSkhin.hhinban" name="MSkhin.hhinban" maxlength="20" class="primaryKey" data-json="MHhinmokSearch.json" data-srcDef="HHINBAN:MSkhin.hhinban" data-destDef="MSkhin.hinmei:HINMEI" /><a id="MSkhin.hhinban" th:href="@{/model/MHhinmokS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MSkhin.hinmei" class="refer" data-json="MHhinmokSearch.json" data-srcDef="HHINBAN:MSkhin.hhinban" data-destDef="MSkhin.hinmei:HINMEI"></span>
         </div>
         <div id="skkbn">
           <fieldset id="MSkhin.skkbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:SKKBN" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">

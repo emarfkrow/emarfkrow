@@ -195,7 +195,7 @@ public final class StringUtil {
      */
     public static boolean endsWith(final String[] suffixs, final String s) {
         for (String suffix : suffixs) {
-            if (endWithIgnoreCase(suffix, s)) {
+            if (endsWithIgnoreCase(suffix, s)) {
                 return true;
             }
         }
@@ -209,7 +209,7 @@ public final class StringUtil {
      */
     public static boolean endsWith(final Map<String, String> suffixs, final String s) {
         for (String suffix : suffixs.keySet()) {
-            if (endWithIgnoreCase(suffix, s)) {
+            if (endsWithIgnoreCase(suffix, s)) {
                 return true;
             }
         }
@@ -223,7 +223,7 @@ public final class StringUtil {
      */
     public static boolean endsWith(final Set<String[]> suffixs, final String s) {
         for (String[] suffix : suffixs) {
-            if (endWithIgnoreCase(suffix[0], s)) {
+            if (endsWithIgnoreCase(suffix[0], s)) {
                 return true;
             }
         }
@@ -235,7 +235,7 @@ public final class StringUtil {
      * @param s
      * @return boolean
      */
-    public static boolean endWithIgnoreCase(final String suffix, final String s) {
+    public static boolean endsWithIgnoreCase(final String suffix, final String s) {
         return s.matches("(?i).*" + suffix + "$");
     }
 

@@ -9,6 +9,9 @@
 
 </script>
 <script th:src="@{/model/MPkoseGridColumns.js}"></script>
+<script th:src="@{/model/MHhinmokGridColumns.js}"></script>
+<script th:src="@{/model/MHososetGridColumns.js}"></script>
+<script th:src="@{/model/MHosozaiGridColumns.js}"></script>
 <script th:src="@{/model/MstHinbanGridColumns.js}"></script>
 <script th:src="@{/model/InvPrintWarehousingslipGridColumns.js}"></script>
 <script th:src="@{/model/MstEmpGridColumns.js}"></script>
@@ -29,6 +32,7 @@
 <script th:src="@{/model/MstSupUnitpriceDetailBkGridColumns.js}"></script>
 <script th:src="@{/model/MstSupUnitpriceDetailHsGridColumns.js}"></script>
 <script th:src="@{/model/MstSupUnitpriceHsGridColumns.js}"></script>
+<script th:src="@{/model/MPhinmokGridColumns.js}"></script>
 </head>
 <body>
   <div layout:fragment="article">
@@ -37,13 +41,13 @@
       <fieldset>
         <legend th:text="#{MPkoseS.legend}">legend</legend>
         <div id="hhinban">
-          <label for="MPkose.hhinban" th:text="#{MPkose.hhinban}">販売品番</label><input type="text" id="MPkose.hhinban" name="MPkose.hhinban" maxlength="20" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:MPkose.hhinban" data-destDef="MPkose.hitem:ITEM" /><a id="MPkose.hhinban" th:href="@{/model/MstHinbanS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MPkose.hitem" class="refer" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:MPkose.hhinban" data-destDef="MPkose.hitem:ITEM"></span>
+          <label for="MPkose.hhinban" th:text="#{MPkose.hhinban}">販売品番</label><input type="text" id="MPkose.hhinban" name="MPkose.hhinban" maxlength="20" data-json="MHhinmokSearch.json" data-srcDef="HHINBAN:MPkose.hhinban" data-destDef="MPkose.hinmei:HINMEI" /><a id="MPkose.hhinban" th:href="@{/model/MHhinmokS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a>
         </div>
         <div id="hinmei">
           <label for="MPkose.hinmei" th:text="#{MPkose.hinmei}">販売品名</label><input type="text" id="MPkose.hinmei" name="MPkose.hinmei" maxlength="10" />
         </div>
         <div id="phinban">
-          <label for="MPkose.phinban" th:text="#{MPkose.phinban}">部品品番</label><input type="text" id="MPkose.phinban" name="MPkose.phinban" maxlength="20" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:MPkose.phinban" data-destDef="MPkose.pitem:ITEM" /><a id="MPkose.phinban" th:href="@{/model/MstHinbanS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MPkose.pitem" class="refer" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:MPkose.phinban" data-destDef="MPkose.pitem:ITEM"></span>
+          <label for="MPkose.phinban" th:text="#{MPkose.phinban}">部品品番</label><input type="text" id="MPkose.phinban" name="MPkose.phinban" maxlength="20" data-json="MPhinmokSearch.json" data-srcDef="HINBAN:MPkose.phinban" data-destDef="MPkose.phinmei:PHINMEI" /><a id="MPkose.phinban" th:href="@{/model/MPhinmokS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a>
         </div>
         <div id="phinmei">
           <label for="MPkose.phinmei" th:text="#{MPkose.phinmei}">部品名</label><input type="text" id="MPkose.phinmei" name="MPkose.phinmei" maxlength="20" />

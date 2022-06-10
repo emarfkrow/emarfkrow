@@ -602,68 +602,59 @@ public final class DataSources {
      */
     private static void addReferTable(final List<TableInfo> tableInfos) {
 
-        // マスタ参照先として、比較元テーブル情報でループ
-        Iterator<TableInfo> srcIterator = tableInfos.iterator();
-        while (srcIterator.hasNext()) {
-            TableInfo srcTableInfo = srcIterator.next();
+        // 参照IDサフィックスと参照名称サフィックスの組み合わせでループ（定義した順に優先）
+        for (String[] referPair : referPairs) {
+            String referIdSuffix = referPair[0];
+            String referMeiSuffix = referPair[1];
 
-            // 他のテーブルの弟ならスキップ
-            if (srcTableInfo.isBrother()) {
-                continue;
-            }
+            // マスタ参照先として、比較元テーブル情報でループ
+            Iterator<TableInfo> referIterator = tableInfos.iterator();
+            while (referIterator.hasNext()) {
+                TableInfo referInfo = referIterator.next();
 
-            // 複合キーならスキップ
-            if (srcTableInfo.getPrimaryKeys().size() != 1) {
-                continue;
-            }
-
-            // ユニークキーが参照キーの何れにも合致しなければスキップ
-            String srcPrimaryKey = srcTableInfo.getPrimaryKeys().get(0);
-            if (!StringUtil.endsWith(referPairs, srcPrimaryKey)) {
-                continue;
-            }
-
-            // マスタ上に、参照IDに合致する参照名称がなければスキップ
-            String referMei = null;
-            for (String[] entry : referPairs) {
-                String referIdSuffix = entry[0];
-                String referMeiSuffix = entry[1];
-                if (srcPrimaryKey.endsWith(referIdSuffix)) {
-                    String mei = srcPrimaryKey.replaceAll("(?i)" + referIdSuffix + "$", referMeiSuffix);
-                    if (srcTableInfo.getColumnInfos().containsKey(mei)) {
-                        referMei = mei;
-                    }
-                }
-            }
-            if (referMei == null) {
-                continue;
-            }
-
-            /*
-             * 参照元の探索
-             */
-
-            // テーブル情報でループ（比較先）
-            Iterator<TableInfo> destIterator = tableInfos.iterator();
-            while (destIterator.hasNext()) {
-                TableInfo destTableInfo = destIterator.next();
-
-                // 比較元と同じならスキップ
-                if (srcTableInfo == destTableInfo) {
+                // 他のテーブルの弟ならスキップ
+                if (referInfo.isBrother()) {
                     continue;
                 }
 
-//                // ユニークキーで兄弟テーブルでない（それ自体のマスタテーブル）場合はスキップ
-//                if (destTableInfo.getPrimaryKeys().size() <= 1 && !destTableInfo.isBrother()) {
-//                    continue;
-//                }
-//
-                // 比較先のカラム情報でループして比較元のユニークキーがあれば参照テーブルリストに追加
-                for (Entry<String, ColumnInfo> e : destTableInfo.getColumnInfos().entrySet()) {
-                    String destColumnName = e.getKey();
-                    ColumnInfo destColumnInfo = e.getValue();
-                    if (destColumnInfo.getReferInfo() == null && destColumnName.endsWith(srcPrimaryKey)) {
-                        destColumnInfo.setReferInfo(srcTableInfo);
+                // 複合キーならスキップ
+                if (referInfo.getPrimaryKeys().size() != 1) {
+                    continue;
+                }
+
+                // ユニークキーが参照キーの何れにも合致しなければスキップ
+                String referId = referInfo.getPrimaryKeys().get(0);
+                if (!StringUtil.endsWithIgnoreCase(referIdSuffix, referId)) {
+                    continue;
+                }
+
+                // 参照名称サフィックスに合致するカラムがなければスキップ
+                String referMei = referId.replaceAll("(?i)" + referIdSuffix + "$", referMeiSuffix);
+                if (!referInfo.getColumnInfos().containsKey(referMei)) {
+                    continue;
+                }
+
+                /*
+                 * 参照元の探索
+                 */
+
+                // テーブル情報でループ（比較先）
+                Iterator<TableInfo> iterator = tableInfos.iterator();
+                while (iterator.hasNext()) {
+                    TableInfo tableInfo = iterator.next();
+
+                    // 参照テーブル自体ならスキップ
+                    if (tableInfo == referInfo) {
+                        continue;
+                    }
+
+                    // 比較先のカラム情報でループして比較元のユニークキーがあれば参照テーブルリストに追加
+                    for (Entry<String, ColumnInfo> e : tableInfo.getColumnInfos().entrySet()) {
+                        String columnName = e.getKey();
+                        ColumnInfo columnInfo = e.getValue();
+                        if (columnName.endsWith(referId) && columnInfo.getReferInfo() == null) {
+                            columnInfo.setReferInfo(referInfo);
+                        }
                     }
                 }
             }

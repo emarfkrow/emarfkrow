@@ -9,6 +9,9 @@
 
 </script>
 <script th:src="@{/model/MWebkanGridColumns.js}"></script>
+<script th:src="@{/model/MHhinmokGridColumns.js}"></script>
+<script th:src="@{/model/MHososetGridColumns.js}"></script>
+<script th:src="@{/model/MHosozaiGridColumns.js}"></script>
 <script th:src="@{/model/MstHinbanGridColumns.js}"></script>
 <script th:src="@{/model/InvPrintWarehousingslipGridColumns.js}"></script>
 <script th:src="@{/model/MstEmpGridColumns.js}"></script>
@@ -29,6 +32,8 @@
 <script th:src="@{/model/MstSupUnitpriceDetailBkGridColumns.js}"></script>
 <script th:src="@{/model/MstSupUnitpriceDetailHsGridColumns.js}"></script>
 <script th:src="@{/model/MstSupUnitpriceHsGridColumns.js}"></script>
+<script th:src="@{/model/MPkoseGridColumns.js}"></script>
+<script th:src="@{/model/MPhinmokGridColumns.js}"></script>
 </head>
 <body>
   <div layout:fragment="article">
@@ -37,7 +42,7 @@
       <fieldset>
         <legend th:text="#{MWebkanS.legend}">legend</legend>
         <div id="hhinban">
-          <label for="MWebkan.hhinban" th:text="#{MWebkan.hhinban}">販売品番</label><input type="text" id="MWebkan.hhinban" name="MWebkan.hhinban" maxlength="20" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:MWebkan.hhinban" data-destDef="MWebkan.hitem:ITEM" /><a id="MWebkan.hhinban" th:href="@{/model/MstHinbanS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MWebkan.hitem" class="refer" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:MWebkan.hhinban" data-destDef="MWebkan.hitem:ITEM"></span>
+          <label for="MWebkan.hhinban" th:text="#{MWebkan.hhinban}">販売品番</label><input type="text" id="MWebkan.hhinban" name="MWebkan.hhinban" maxlength="20" data-json="MHhinmokSearch.json" data-srcDef="HHINBAN:MWebkan.hhinban" data-destDef="MWebkan.hinmei:HINMEI" /><a id="MWebkan.hhinban" th:href="@{/model/MHhinmokS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MWebkan.hinmei" class="refer" data-json="MHhinmokSearch.json" data-srcDef="HHINBAN:MWebkan.hhinban" data-destDef="MWebkan.hinmei:HINMEI"></span>
         </div>
         <div id="kikaku">
           <label for="MWebkan.kikaku" th:text="#{MWebkan.kikaku}">規格</label><input type="text" id="MWebkan.kikaku" name="MWebkan.kikaku" maxlength="40" />
