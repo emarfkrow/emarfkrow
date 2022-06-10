@@ -11,24 +11,7 @@
 <script th:src="@{/model/PchTempOrderGridColumns.js}"></script>
 <script th:src="@{/model/PchTempOrderDetGridColumns.js}"></script>
 <script th:src="@{/model/PchTempOrderEstFileGridColumns.js}"></script>
-<script th:src="@{/model/MstEmpGridColumns.js}"></script>
-<script th:src="@{/model/MstSupplierGridColumns.js}"></script>
-<script th:src="@{/model/InvStockProcessSupplyGridColumns.js}"></script>
-<script th:src="@{/model/MstHinbanGridColumns.js}"></script>
-<script th:src="@{/model/InvPrintWarehousingslipGridColumns.js}"></script>
-<script th:src="@{/model/InvStockStoreGridColumns.js}"></script>
-<script th:src="@{/model/MstHinbanBkGridColumns.js}"></script>
-<script th:src="@{/model/MstUnitGridColumns.js}"></script>
-<script th:src="@{/model/MstAccountCodeGridColumns.js}"></script>
-<script th:src="@{/model/MstHinbanEmpGridColumns.js}"></script>
-<script th:src="@{/model/MstSupUnitpriceGridColumns.js}"></script>
-<script th:src="@{/model/MstSupUnitpriceBkGridColumns.js}"></script>
-<script th:src="@{/model/MstSupUnitpriceDetailGridColumns.js}"></script>
-<script th:src="@{/model/MstSupUnitpriceDetailBkGridColumns.js}"></script>
-<script th:src="@{/model/MstSupUnitpriceDetailHsGridColumns.js}"></script>
-<script th:src="@{/model/MstSupUnitpriceHsGridColumns.js}"></script>
-<script th:src="@{/model/MstSupplierBkGridColumns.js}"></script>
-<script th:src="@{/model/MstTaxGridColumns.js}"></script>
+<script th:src="@{/model/MstTempSupplierGridColumns.js}"></script>
 </head>
 <body>
   <div layout:fragment="article">
@@ -43,13 +26,17 @@
           <label for="PchTempOrder.iraiDt" th:text="#{PchTempOrder.iraiDt}">IRAI_DT</label><input type="datetime-local" id="PchTempOrder.iraiDt" name="PchTempOrder.iraiDt" maxlength="7" />
         </div>
         <div id="iraiEmpCode">
-          <label for="PchTempOrder.iraiEmpCode" th:text="#{PchTempOrder.iraiEmpCode}">IRAI_EMP_CODE</label><input type="text" id="PchTempOrder.iraiEmpCode" name="PchTempOrder.iraiEmpCode" maxlength="10" data-json="MstEmpSearch.json" data-srcDef="EMP_CODE:PchTempOrder.iraiEmpCode" data-destDef="PchTempOrder.iraiEmpName:EMP_NAME" /><a id="PchTempOrder.iraiEmpCode" th:href="@{/model/MstEmpS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="PchTempOrder.iraiEmpName" class="refer" data-json="MstEmpSearch.json" data-srcDef="EMP_CODE:PchTempOrder.iraiEmpCode" data-destDef="PchTempOrder.iraiEmpName:EMP_NAME"></span>
+          <fieldset id="PchTempOrder.iraiEmpCodeList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:IRAI_EMP_CODE" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{PchTempOrder.iraiEmpCode}">IRAI_EMP_CODE</legend>
+          </fieldset>
         </div>
         <div id="supCode">
-          <label for="PchTempOrder.supCode" th:text="#{PchTempOrder.supCode}">SUP_CODE</label><input type="text" id="PchTempOrder.supCode" name="PchTempOrder.supCode" maxlength="6" data-json="MstSupplierSearch.json" data-srcDef="SUP_CODE:PchTempOrder.supCode" data-destDef="PchTempOrder.supName:SUP_NAME" /><a id="PchTempOrder.supCode" th:href="@{/model/MstSupplierS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="PchTempOrder.supName" class="refer" data-json="MstSupplierSearch.json" data-srcDef="SUP_CODE:PchTempOrder.supCode" data-destDef="PchTempOrder.supName:SUP_NAME"></span>
+          <fieldset id="PchTempOrder.supCodeList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:SUP_CODE" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{PchTempOrder.supCode}">SUP_CODE</legend>
+          </fieldset>
         </div>
         <div id="tempSupCode">
-          <label for="PchTempOrder.tempSupCode" th:text="#{PchTempOrder.tempSupCode}">TEMP_SUP_CODE</label><input type="text" id="PchTempOrder.tempSupCode" name="PchTempOrder.tempSupCode" maxlength="6" data-json="MstSupplierSearch.json" data-srcDef="SUP_CODE:PchTempOrder.tempSupCode" data-destDef="PchTempOrder.tempSupName:SUP_NAME" /><a id="PchTempOrder.tempSupCode" th:href="@{/model/MstSupplierS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="PchTempOrder.tempSupName" class="refer" data-json="MstSupplierSearch.json" data-srcDef="SUP_CODE:PchTempOrder.tempSupCode" data-destDef="PchTempOrder.tempSupName:SUP_NAME"></span>
+          <label for="PchTempOrder.tempSupCode" th:text="#{PchTempOrder.tempSupCode}">TEMP_SUP_CODE</label><input type="text" id="PchTempOrder.tempSupCode" name="PchTempOrder.tempSupCode" maxlength="6" data-json="MstTempSupplierSearch.json" data-srcDef="TEMP_SUP_CODE:PchTempOrder.tempSupCode" data-destDef="PchTempOrder.tempSupName:TEMP_SUP_NAME" /><a id="PchTempOrder.tempSupCode" th:href="@{/model/MstTempSupplierS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="PchTempOrder.tempSupName" class="refer" data-json="MstTempSupplierSearch.json" data-srcDef="TEMP_SUP_CODE:PchTempOrder.tempSupCode" data-destDef="PchTempOrder.tempSupName:TEMP_SUP_NAME"></span>
         </div>
         <div id="memo">
           <label for="PchTempOrder.memo" th:text="#{PchTempOrder.memo}">MEMO</label>
@@ -59,7 +46,9 @@
           <label for="PchTempOrder.payIraiDt" th:text="#{PchTempOrder.payIraiDt}">PAY_IRAI_DT</label><input type="datetime-local" id="PchTempOrder.payIraiDt" name="PchTempOrder.payIraiDt" maxlength="7" />
         </div>
         <div id="payIraiEmpCode">
-          <label for="PchTempOrder.payIraiEmpCode" th:text="#{PchTempOrder.payIraiEmpCode}">PAY_IRAI_EMP_CODE</label><input type="text" id="PchTempOrder.payIraiEmpCode" name="PchTempOrder.payIraiEmpCode" maxlength="10" data-json="MstEmpSearch.json" data-srcDef="EMP_CODE:PchTempOrder.payIraiEmpCode" data-destDef="PchTempOrder.payIraiEmpName:EMP_NAME" /><a id="PchTempOrder.payIraiEmpCode" th:href="@{/model/MstEmpS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="PchTempOrder.payIraiEmpName" class="refer" data-json="MstEmpSearch.json" data-srcDef="EMP_CODE:PchTempOrder.payIraiEmpCode" data-destDef="PchTempOrder.payIraiEmpName:EMP_NAME"></span>
+          <fieldset id="PchTempOrder.payIraiEmpCodeList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:PAY_IRAI_EMP_CODE" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{PchTempOrder.payIraiEmpCode}">PAY_IRAI_EMP_CODE</legend>
+          </fieldset>
         </div>
         <div id="timeStampCreate">
           <label for="PchTempOrder.timeStampCreate" th:text="#{PchTempOrder.timeStampCreate}">TIME_STAMP_CREATE</label><span id="PchTempOrder.timeStampCreate"></span><input type="hidden" id="PchTempOrder.timeStampCreate" name="PchTempOrder.timeStampCreate" />

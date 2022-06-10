@@ -9,24 +9,6 @@
 
 </script>
 <script th:src="@{/model/MstSetConstitutionGridColumns.js}"></script>
-<script th:src="@{/model/MstHinbanGridColumns.js}"></script>
-<script th:src="@{/model/InvPrintWarehousingslipGridColumns.js}"></script>
-<script th:src="@{/model/MstEmpGridColumns.js}"></script>
-<script th:src="@{/model/InvStockStoreGridColumns.js}"></script>
-<script th:src="@{/model/MstHinbanBkGridColumns.js}"></script>
-<script th:src="@{/model/MstUnitGridColumns.js}"></script>
-<script th:src="@{/model/MstAccountCodeGridColumns.js}"></script>
-<script th:src="@{/model/MstHinbanEmpGridColumns.js}"></script>
-<script th:src="@{/model/MstSupUnitpriceGridColumns.js}"></script>
-<script th:src="@{/model/MstSupUnitpriceBkGridColumns.js}"></script>
-<script th:src="@{/model/MstSupplierGridColumns.js}"></script>
-<script th:src="@{/model/InvStockProcessSupplyGridColumns.js}"></script>
-<script th:src="@{/model/MstSupplierBkGridColumns.js}"></script>
-<script th:src="@{/model/MstTaxGridColumns.js}"></script>
-<script th:src="@{/model/MstSupUnitpriceDetailGridColumns.js}"></script>
-<script th:src="@{/model/MstSupUnitpriceDetailBkGridColumns.js}"></script>
-<script th:src="@{/model/MstSupUnitpriceDetailHsGridColumns.js}"></script>
-<script th:src="@{/model/MstSupUnitpriceHsGridColumns.js}"></script>
 </head>
 <body>
   <div layout:fragment="article">
@@ -35,10 +17,10 @@
       <fieldset>
         <legend th:text="#{MstSetConstitution.legend}">legend</legend>
         <div id="setHinban">
-          <label for="MstSetConstitution.setHinban" th:text="#{MstSetConstitution.setHinban}">SET_HINBAN</label><span id="MstSetConstitution.setHinban"></span><input type="hidden" id="MstSetConstitution.setHinban" name="MstSetConstitution.setHinban" class="primaryKey" /><a id="MstSetConstitution.setHinban" th:href="@{/model/MstHinbanS.html}" target="dialog" class="primaryKey refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MstSetConstitution.setItem" class="refer" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:MstSetConstitution.setHinban" data-destDef="MstSetConstitution.setItem:ITEM"></span>
+          <label for="MstSetConstitution.setHinban" th:text="#{MstSetConstitution.setHinban}">SET_HINBAN</label><span id="MstSetConstitution.setHinban"></span><input type="hidden" id="MstSetConstitution.setHinban" name="MstSetConstitution.setHinban" class="primaryKey" />
         </div>
         <div id="setChildHinban">
-          <label for="MstSetConstitution.setChildHinban" th:text="#{MstSetConstitution.setChildHinban}">SET_CHILD_HINBAN</label><span id="MstSetConstitution.setChildHinban"></span><input type="hidden" id="MstSetConstitution.setChildHinban" name="MstSetConstitution.setChildHinban" class="primaryKey" /><a id="MstSetConstitution.setChildHinban" th:href="@{/model/MstHinbanS.html}" target="dialog" class="primaryKey refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MstSetConstitution.setChildItem" class="refer" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:MstSetConstitution.setChildHinban" data-destDef="MstSetConstitution.setChildItem:ITEM"></span>
+          <label for="MstSetConstitution.setChildHinban" th:text="#{MstSetConstitution.setChildHinban}">SET_CHILD_HINBAN</label><span id="MstSetConstitution.setChildHinban"></span><input type="hidden" id="MstSetConstitution.setChildHinban" name="MstSetConstitution.setChildHinban" class="primaryKey" />
         </div>
         <div id="deleteFlag">
           <fieldset id="MstSetConstitution.deleteFlagList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:DELETE_FLAG" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">

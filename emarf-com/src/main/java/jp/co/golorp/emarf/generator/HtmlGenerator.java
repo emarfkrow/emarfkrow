@@ -317,11 +317,6 @@ public final class HtmlGenerator {
 
     private static void htmlNestGrid(final TableInfo tableInfo, final List<String> s, final Set<TableInfo> added) {
 
-        String tableName = tableInfo.getTableName();
-        if (tableName.equals("M_HHINMOK")) {
-            int i = 0;
-        }
-
         for (TableInfo childInfo : tableInfo.getChildInfos()) {
 
             if (added.contains(childInfo)) {

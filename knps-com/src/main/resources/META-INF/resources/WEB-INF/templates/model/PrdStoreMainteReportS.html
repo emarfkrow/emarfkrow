@@ -9,7 +9,6 @@
 
 </script>
 <script th:src="@{/model/PrdStoreMainteReportGridColumns.js}"></script>
-<script th:src="@{/model/MstGroupGridColumns.js}"></script>
 </head>
 <body>
   <div layout:fragment="article">
@@ -18,7 +17,9 @@
       <fieldset>
         <legend th:text="#{PrdStoreMainteReportS.legend}">legend</legend>
         <div id="repGroupCode">
-          <label for="PrdStoreMainteReport.repGroupCode" th:text="#{PrdStoreMainteReport.repGroupCode}">REP_GROUP_CODE</label><input type="text" id="PrdStoreMainteReport.repGroupCode" name="PrdStoreMainteReport.repGroupCode" maxlength="2" data-json="MstGroupSearch.json" data-srcDef="GROUP_CODE:PrdStoreMainteReport.repGroupCode" data-destDef="PrdStoreMainteReport.repGroupName:GROUP_NAME" /><a id="PrdStoreMainteReport.repGroupCode" th:href="@{/model/MstGroupS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="PrdStoreMainteReport.repGroupName" class="refer" data-json="MstGroupSearch.json" data-srcDef="GROUP_CODE:PrdStoreMainteReport.repGroupCode" data-destDef="PrdStoreMainteReport.repGroupName:GROUP_NAME"></span>
+          <fieldset id="PrdStoreMainteReport.repGroupCodeList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:REP_GROUP_CODE" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{PrdStoreMainteReport.repGroupCode}">REP_GROUP_CODE</legend>
+          </fieldset>
         </div>
         <div id="groupName">
           <label for="PrdStoreMainteReport.groupName" th:text="#{PrdStoreMainteReport.groupName}">GROUP_NAME</label><input type="text" id="PrdStoreMainteReport.groupName" name="PrdStoreMainteReport.groupName" maxlength="20" />

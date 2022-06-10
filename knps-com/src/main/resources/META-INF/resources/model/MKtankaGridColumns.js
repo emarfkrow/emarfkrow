@@ -4,7 +4,7 @@
 
 let MKtankaGridColumns = [
     Column.cell('HONSHACD', Messages['MKtankaGrid.honshacd'], 80, 'primaryKey', null),
-    Column.refer('SHAGAI-HINBAN', Messages['MKtankaGrid.shagaiHinban'], 200, 'primaryKey', 'SHAGAI_HINMEI'),
+    Column.cell('SHAGAI-HINBAN', Messages['MKtankaGrid.shagaiHinban'], 200, 'primaryKey', null),
     Column.date('KKAISIBI', Messages['MKtankaGrid.kkaisibi'], 80, '', null),
     Column.date('KSHURYOBI', Messages['MKtankaGrid.kshuryobi'], 80, '', null),
     Column.refer('HHINBAN', Messages['MKtankaGrid.hhinban'], 200, '', 'HHINMEI'),

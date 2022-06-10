@@ -6,7 +6,7 @@ let InvStockProcessWkGridColumns = [
     Column.text('HINBAN', Messages['InvStockProcessWkGrid.hinban'], 250, '', null),
     Column.text('ITEM', Messages['InvStockProcessWkGrid.item'], 300, '', null),
     Column.select('ITEM_KBN', Messages['InvStockProcessWkGrid.itemKbn'], 20, '', { json: 'MstCodeValueSearch.json', paramkey: 'code_nm', value: 'CODE_VALUE', label: 'CODE_VALUE_MEI' }),
-    Column.refer('HINBAN_OPE_CODE', Messages['InvStockProcessWkGrid.hinbanOpeCode'], 100, '', 'HINBAN_OPE_NAME'),
+    Column.select('HINBAN_OPE_CODE', Messages['InvStockProcessWkGrid.hinbanOpeCode'], 100, '', { json: 'MstCodeValueSearch.json', paramkey: 'code_nm', value: 'CODE_VALUE', label: 'CODE_VALUE_MEI' }),
     Column.text('ROUTING_GROUP', Messages['InvStockProcessWkGrid.routingGroup'], 20, '', null),
     Column.select('WC_CODE', Messages['InvStockProcessWkGrid.wcCode'], 30, '', { json: 'MstCodeValueSearch.json', paramkey: 'code_nm', value: 'CODE_VALUE', label: 'CODE_VALUE_MEI' }),
     Column.text('WC_NAME', Messages['InvStockProcessWkGrid.wcName'], 300, '', null),

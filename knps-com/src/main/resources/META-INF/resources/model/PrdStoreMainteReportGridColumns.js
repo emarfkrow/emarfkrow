@@ -3,7 +3,7 @@
  */
 
 let PrdStoreMainteReportGridColumns = [
-    Column.refer('REP_GROUP_CODE', Messages['PrdStoreMainteReportGrid.repGroupCode'], 20, 'primaryKey', 'REP_GROUP_NAME'),
+    Column.cell('REP_GROUP_CODE', Messages['PrdStoreMainteReportGrid.repGroupCode'], 20, 'primaryKey', null),
     Column.text('GROUP_NAME', Messages['PrdStoreMainteReportGrid.groupName'], 200, '', null),
     Column.text('RETSU_NO', Messages['PrdStoreMainteReportGrid.retsuNo'], 30, '', null),
     Column.text('GYO_NO', Messages['PrdStoreMainteReportGrid.gyoNo'], 30, '', null),

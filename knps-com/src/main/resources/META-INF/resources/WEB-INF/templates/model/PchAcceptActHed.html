@@ -9,8 +9,6 @@
 
 </script>
 <script th:src="@{/model/PchAcceptActHedGridColumns.js}"></script>
-<script th:src="@{/model/MstSupplierGridColumns.js}"></script>
-<script th:src="@{/model/InvStockProcessSupplyGridColumns.js}"></script>
 <script th:src="@{/model/MstHinbanGridColumns.js}"></script>
 <script th:src="@{/model/InvPrintWarehousingslipGridColumns.js}"></script>
 <script th:src="@{/model/MstEmpGridColumns.js}"></script>
@@ -21,12 +19,14 @@
 <script th:src="@{/model/MstHinbanEmpGridColumns.js}"></script>
 <script th:src="@{/model/MstSupUnitpriceGridColumns.js}"></script>
 <script th:src="@{/model/MstSupUnitpriceBkGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierGridColumns.js}"></script>
+<script th:src="@{/model/InvStockProcessSupplyGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierBkGridColumns.js}"></script>
+<script th:src="@{/model/MstTaxGridColumns.js}"></script>
 <script th:src="@{/model/MstSupUnitpriceDetailGridColumns.js}"></script>
 <script th:src="@{/model/MstSupUnitpriceDetailBkGridColumns.js}"></script>
 <script th:src="@{/model/MstSupUnitpriceDetailHsGridColumns.js}"></script>
 <script th:src="@{/model/MstSupUnitpriceHsGridColumns.js}"></script>
-<script th:src="@{/model/MstSupplierBkGridColumns.js}"></script>
-<script th:src="@{/model/MstTaxGridColumns.js}"></script>
 </head>
 <body>
   <div layout:fragment="article">
@@ -38,7 +38,9 @@
           <label for="PchAcceptActHed.actNo" th:text="#{PchAcceptActHed.actNo}">ACT_NO</label><span id="PchAcceptActHed.actNo"></span><input type="hidden" id="PchAcceptActHed.actNo" name="PchAcceptActHed.actNo" class="primaryKey" />
         </div>
         <div id="supCode">
-          <label for="PchAcceptActHed.supCode" th:text="#{PchAcceptActHed.supCode}">SUP_CODE</label><input type="text" id="PchAcceptActHed.supCode" name="PchAcceptActHed.supCode" maxlength="10" data-json="MstSupplierSearch.json" data-srcDef="SUP_CODE:PchAcceptActHed.supCode" data-destDef="PchAcceptActHed.supName:SUP_NAME" /><a id="PchAcceptActHed.supCode" th:href="@{/model/MstSupplierS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="PchAcceptActHed.supName" class="refer" data-json="MstSupplierSearch.json" data-srcDef="SUP_CODE:PchAcceptActHed.supCode" data-destDef="PchAcceptActHed.supName:SUP_NAME"></span>
+          <fieldset id="PchAcceptActHed.supCodeList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:SUP_CODE" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{PchAcceptActHed.supCode}">SUP_CODE</legend>
+          </fieldset>
         </div>
         <div id="orderNo">
           <label for="PchAcceptActHed.orderNo" th:text="#{PchAcceptActHed.orderNo}">ORDER_NO</label><input type="text" id="PchAcceptActHed.orderNo" name="PchAcceptActHed.orderNo" maxlength="10" />

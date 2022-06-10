@@ -3,8 +3,8 @@
  */
 
 let MBaratenGridColumns = [
-    Column.refer('OYA-HINBAN', Messages['MBaratenGrid.oyaHinban'], 200, 'primaryKey', 'OYA_HINMEI'),
-    Column.refer('KO-HINBAN', Messages['MBaratenGrid.koHinban'], 200, 'primaryKey', 'KO_HINMEI'),
+    Column.cell('OYA-HINBAN', Messages['MBaratenGrid.oyaHinban'], 200, 'primaryKey', null),
+    Column.cell('KO-HINBAN', Messages['MBaratenGrid.koHinban'], 200, 'primaryKey', null),
     Column.text('OYA-HINC', Messages['MBaratenGrid.oyaHinc'], 200, '', null),
     Column.text('KO-HINC', Messages['MBaratenGrid.koHinc'], 200, '', null),
     Column.text('INZU', Messages['MBaratenGrid.inzu'], 30, '', null),

@@ -9,31 +9,6 @@
 
 </script>
 <script th:src="@{/model/MfgTotalCostRegLineI1GridColumns.js}"></script>
-<script th:src="@{/model/MstHinbanGridColumns.js}"></script>
-<script th:src="@{/model/InvPrintWarehousingslipGridColumns.js}"></script>
-<script th:src="@{/model/MstEmpGridColumns.js}"></script>
-<script th:src="@{/model/InvStockStoreGridColumns.js}"></script>
-<script th:src="@{/model/MstHinbanBkGridColumns.js}"></script>
-<script th:src="@{/model/MstUnitGridColumns.js}"></script>
-<script th:src="@{/model/MstAccountCodeGridColumns.js}"></script>
-<script th:src="@{/model/MstHinbanEmpGridColumns.js}"></script>
-<script th:src="@{/model/MstSupUnitpriceGridColumns.js}"></script>
-<script th:src="@{/model/MstSupUnitpriceBkGridColumns.js}"></script>
-<script th:src="@{/model/MstSupplierGridColumns.js}"></script>
-<script th:src="@{/model/InvStockProcessSupplyGridColumns.js}"></script>
-<script th:src="@{/model/MstSupplierBkGridColumns.js}"></script>
-<script th:src="@{/model/MstTaxGridColumns.js}"></script>
-<script th:src="@{/model/MstSupUnitpriceDetailGridColumns.js}"></script>
-<script th:src="@{/model/MstSupUnitpriceDetailBkGridColumns.js}"></script>
-<script th:src="@{/model/MstSupUnitpriceDetailHsGridColumns.js}"></script>
-<script th:src="@{/model/MstSupUnitpriceHsGridColumns.js}"></script>
-<script th:src="@{/model/MstWcGridColumns.js}"></script>
-<script th:src="@{/model/MstWcBkGridColumns.js}"></script>
-<script th:src="@{/model/MstProcGridColumns.js}"></script>
-<script th:src="@{/model/MstWsGridColumns.js}"></script>
-<script th:src="@{/model/MstCostCenterGridColumns.js}"></script>
-<script th:src="@{/model/MstCostCenterBkGridColumns.js}"></script>
-<script th:src="@{/model/MstSubinvGridColumns.js}"></script>
 </head>
 <body>
   <div layout:fragment="article">
@@ -51,16 +26,20 @@
           <label for="MfgTotalCostRegLineI1.proGroupNo" th:text="#{MfgTotalCostRegLineI1.proGroupNo}">PRO_GROUP_NO</label><input type="text" id="MfgTotalCostRegLineI1.proGroupNo" name="MfgTotalCostRegLineI1.proGroupNo" maxlength="2" />
         </div>
         <div id="hinban">
-          <label for="MfgTotalCostRegLineI1.hinban" th:text="#{MfgTotalCostRegLineI1.hinban}">HINBAN</label><input type="text" id="MfgTotalCostRegLineI1.hinban" name="MfgTotalCostRegLineI1.hinban" maxlength="100" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:MfgTotalCostRegLineI1.hinban" data-destDef="MfgTotalCostRegLineI1.item:ITEM" /><a id="MfgTotalCostRegLineI1.hinban" th:href="@{/model/MstHinbanS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MfgTotalCostRegLineI1.item" class="refer" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:MfgTotalCostRegLineI1.hinban" data-destDef="MfgTotalCostRegLineI1.item:ITEM"></span>
+          <label for="MfgTotalCostRegLineI1.hinban" th:text="#{MfgTotalCostRegLineI1.hinban}">HINBAN</label><input type="text" id="MfgTotalCostRegLineI1.hinban" name="MfgTotalCostRegLineI1.hinban" maxlength="100" />
         </div>
         <div id="routing">
           <label for="MfgTotalCostRegLineI1.routing" th:text="#{MfgTotalCostRegLineI1.routing}">ROUTING</label><input type="text" id="MfgTotalCostRegLineI1.routing" name="MfgTotalCostRegLineI1.routing" maxlength="2" />
         </div>
         <div id="wcCode">
-          <label for="MfgTotalCostRegLineI1.wcCode" th:text="#{MfgTotalCostRegLineI1.wcCode}">WC_CODE</label><input type="text" id="MfgTotalCostRegLineI1.wcCode" name="MfgTotalCostRegLineI1.wcCode" maxlength="12" data-json="MstWcSearch.json" data-srcDef="WC_CODE:MfgTotalCostRegLineI1.wcCode" data-destDef="MfgTotalCostRegLineI1.wcName:WC_NAME" /><a id="MfgTotalCostRegLineI1.wcCode" th:href="@{/model/MstWcS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MfgTotalCostRegLineI1.wcName" class="refer" data-json="MstWcSearch.json" data-srcDef="WC_CODE:MfgTotalCostRegLineI1.wcCode" data-destDef="MfgTotalCostRegLineI1.wcName:WC_NAME"></span>
+          <fieldset id="MfgTotalCostRegLineI1.wcCodeList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:WC_CODE" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MfgTotalCostRegLineI1.wcCode}">WC_CODE</legend>
+          </fieldset>
         </div>
         <div id="supCode">
-          <label for="MfgTotalCostRegLineI1.supCode" th:text="#{MfgTotalCostRegLineI1.supCode}">SUP_CODE</label><input type="text" id="MfgTotalCostRegLineI1.supCode" name="MfgTotalCostRegLineI1.supCode" maxlength="24" data-json="MstSupplierSearch.json" data-srcDef="SUP_CODE:MfgTotalCostRegLineI1.supCode" data-destDef="MfgTotalCostRegLineI1.supName:SUP_NAME" /><a id="MfgTotalCostRegLineI1.supCode" th:href="@{/model/MstSupplierS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MfgTotalCostRegLineI1.supName" class="refer" data-json="MstSupplierSearch.json" data-srcDef="SUP_CODE:MfgTotalCostRegLineI1.supCode" data-destDef="MfgTotalCostRegLineI1.supName:SUP_NAME"></span>
+          <fieldset id="MfgTotalCostRegLineI1.supCodeList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:SUP_CODE" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MfgTotalCostRegLineI1.supCode}">SUP_CODE</legend>
+          </fieldset>
         </div>
         <div id="opeDetail">
           <label for="MfgTotalCostRegLineI1.opeDetail" th:text="#{MfgTotalCostRegLineI1.opeDetail}">OPE_DETAIL</label><input type="text" id="MfgTotalCostRegLineI1.opeDetail" name="MfgTotalCostRegLineI1.opeDetail" maxlength="40" />

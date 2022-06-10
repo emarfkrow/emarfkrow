@@ -9,24 +9,6 @@
 
 </script>
 <script th:src="@{/model/MSetkariGridColumns.js}"></script>
-<script th:src="@{/model/MstHinbanGridColumns.js}"></script>
-<script th:src="@{/model/InvPrintWarehousingslipGridColumns.js}"></script>
-<script th:src="@{/model/MstEmpGridColumns.js}"></script>
-<script th:src="@{/model/InvStockStoreGridColumns.js}"></script>
-<script th:src="@{/model/MstHinbanBkGridColumns.js}"></script>
-<script th:src="@{/model/MstUnitGridColumns.js}"></script>
-<script th:src="@{/model/MstAccountCodeGridColumns.js}"></script>
-<script th:src="@{/model/MstHinbanEmpGridColumns.js}"></script>
-<script th:src="@{/model/MstSupUnitpriceGridColumns.js}"></script>
-<script th:src="@{/model/MstSupUnitpriceBkGridColumns.js}"></script>
-<script th:src="@{/model/MstSupplierGridColumns.js}"></script>
-<script th:src="@{/model/InvStockProcessSupplyGridColumns.js}"></script>
-<script th:src="@{/model/MstSupplierBkGridColumns.js}"></script>
-<script th:src="@{/model/MstTaxGridColumns.js}"></script>
-<script th:src="@{/model/MstSupUnitpriceDetailGridColumns.js}"></script>
-<script th:src="@{/model/MstSupUnitpriceDetailBkGridColumns.js}"></script>
-<script th:src="@{/model/MstSupUnitpriceDetailHsGridColumns.js}"></script>
-<script th:src="@{/model/MstSupUnitpriceHsGridColumns.js}"></script>
 </head>
 <body>
   <div layout:fragment="article">
@@ -35,10 +17,10 @@
       <fieldset>
         <legend th:text="#{MSetkari.legend}">legend</legend>
         <div id="setHinban">
-          <label for="MSetkari.setHinban" th:text="#{MSetkari.setHinban}">セット品番</label><input type="text" id="MSetkari.setHinban" name="MSetkari.setHinban" maxlength="20" class="primaryKey" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:MSetkari.setHinban" data-destDef="MSetkari.setItem:ITEM" /><a id="MSetkari.setHinban" th:href="@{/model/MstHinbanS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MSetkari.setItem" class="refer" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:MSetkari.setHinban" data-destDef="MSetkari.setItem:ITEM"></span>
+          <label for="MSetkari.setHinban" th:text="#{MSetkari.setHinban}">セット品番</label><input type="text" id="MSetkari.setHinban" name="MSetkari.setHinban" maxlength="20" class="primaryKey" />
         </div>
         <div id="setKhinban">
-          <label for="MSetkari.setKhinban" th:text="#{MSetkari.setKhinban}">セット子品番</label><input type="text" id="MSetkari.setKhinban" name="MSetkari.setKhinban" maxlength="20" class="primaryKey" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:MSetkari.setKhinban" data-destDef="MSetkari.setKitem:ITEM" /><a id="MSetkari.setKhinban" th:href="@{/model/MstHinbanS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MSetkari.setKitem" class="refer" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:MSetkari.setKhinban" data-destDef="MSetkari.setKitem:ITEM"></span>
+          <label for="MSetkari.setKhinban" th:text="#{MSetkari.setKhinban}">セット子品番</label><input type="text" id="MSetkari.setKhinban" name="MSetkari.setKhinban" maxlength="20" class="primaryKey" />
         </div>
         <div id="tokucd">
           <label for="MSetkari.tokucd" th:text="#{MSetkari.tokucd}">得意先コード</label><input type="text" id="MSetkari.tokucd" name="MSetkari.tokucd" maxlength="8" />

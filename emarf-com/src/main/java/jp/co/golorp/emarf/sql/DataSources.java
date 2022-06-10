@@ -634,6 +634,8 @@ public final class DataSources {
                     continue;
                 }
 
+                ColumnInfo referIdInfo = referInfo.getColumnInfos().get(referId);
+
                 /*
                  * 参照元の探索
                  */
@@ -672,6 +674,15 @@ public final class DataSources {
                     for (Entry<String, ColumnInfo> e : tableInfo.getColumnInfos().entrySet()) {
                         String columnName = e.getKey();
                         ColumnInfo columnInfo = e.getValue();
+                        if (!columnInfo.getTypeName().equals(referIdInfo.getTypeName())) {
+                            continue;
+                        }
+                        if (columnInfo.getColumnSize() != referIdInfo.getColumnSize()) {
+                            continue;
+                        }
+                        if (columnInfo.getDecimalDigits() != referIdInfo.getDecimalDigits()) {
+                            continue;
+                        }
                         if (columnName.endsWith(referId) && columnInfo.getReferInfo() == null) {
                             columnInfo.setReferInfo(referInfo);
                         }

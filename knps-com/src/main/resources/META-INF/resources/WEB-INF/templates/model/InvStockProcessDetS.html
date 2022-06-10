@@ -9,24 +9,6 @@
 
 </script>
 <script th:src="@{/model/InvStockProcessDetGridColumns.js}"></script>
-<script th:src="@{/model/MstHinbanGridColumns.js}"></script>
-<script th:src="@{/model/InvPrintWarehousingslipGridColumns.js}"></script>
-<script th:src="@{/model/MstEmpGridColumns.js}"></script>
-<script th:src="@{/model/InvStockStoreGridColumns.js}"></script>
-<script th:src="@{/model/MstHinbanBkGridColumns.js}"></script>
-<script th:src="@{/model/MstUnitGridColumns.js}"></script>
-<script th:src="@{/model/MstAccountCodeGridColumns.js}"></script>
-<script th:src="@{/model/MstHinbanEmpGridColumns.js}"></script>
-<script th:src="@{/model/MstSupUnitpriceGridColumns.js}"></script>
-<script th:src="@{/model/MstSupUnitpriceBkGridColumns.js}"></script>
-<script th:src="@{/model/MstSupplierGridColumns.js}"></script>
-<script th:src="@{/model/InvStockProcessSupplyGridColumns.js}"></script>
-<script th:src="@{/model/MstSupplierBkGridColumns.js}"></script>
-<script th:src="@{/model/MstTaxGridColumns.js}"></script>
-<script th:src="@{/model/MstSupUnitpriceDetailGridColumns.js}"></script>
-<script th:src="@{/model/MstSupUnitpriceDetailBkGridColumns.js}"></script>
-<script th:src="@{/model/MstSupUnitpriceDetailHsGridColumns.js}"></script>
-<script th:src="@{/model/MstSupUnitpriceHsGridColumns.js}"></script>
 </head>
 <body>
   <div layout:fragment="article">
@@ -40,7 +22,7 @@
           </fieldset>
         </div>
         <div id="hinban">
-          <label for="InvStockProcessDet.hinban" th:text="#{InvStockProcessDet.hinban}">HINBAN</label><input type="text" id="InvStockProcessDet.hinban" name="InvStockProcessDet.hinban" maxlength="25" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:InvStockProcessDet.hinban" data-destDef="InvStockProcessDet.item:ITEM" /><a id="InvStockProcessDet.hinban" th:href="@{/model/MstHinbanS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="InvStockProcessDet.item" class="refer" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:InvStockProcessDet.hinban" data-destDef="InvStockProcessDet.item:ITEM"></span>
+          <label for="InvStockProcessDet.hinban" th:text="#{InvStockProcessDet.hinban}">HINBAN</label><input type="text" id="InvStockProcessDet.hinban" name="InvStockProcessDet.hinban" maxlength="25" />
         </div>
         <div id="inOutYmd">
           <label for="InvStockProcessDet.inOutYmd_1" th:text="#{InvStockProcessDet.inOutYmd}">IN_OUT_YMD</label><input type="date" id="InvStockProcessDet.inOutYmd_1" name="InvStockProcessDet.inOutYmd_1" maxlength="10" />～<input type="date" id="InvStockProcessDet.inOutYmd_2" name="InvStockProcessDet.inOutYmd_2" maxlength="10" />

@@ -9,24 +9,6 @@
 
 </script>
 <script th:src="@{/model/PrdTehaiKaitoDetGridColumns.js}"></script>
-<script th:src="@{/model/MstHinbanGridColumns.js}"></script>
-<script th:src="@{/model/InvPrintWarehousingslipGridColumns.js}"></script>
-<script th:src="@{/model/MstEmpGridColumns.js}"></script>
-<script th:src="@{/model/InvStockStoreGridColumns.js}"></script>
-<script th:src="@{/model/MstHinbanBkGridColumns.js}"></script>
-<script th:src="@{/model/MstUnitGridColumns.js}"></script>
-<script th:src="@{/model/MstAccountCodeGridColumns.js}"></script>
-<script th:src="@{/model/MstHinbanEmpGridColumns.js}"></script>
-<script th:src="@{/model/MstSupUnitpriceGridColumns.js}"></script>
-<script th:src="@{/model/MstSupUnitpriceBkGridColumns.js}"></script>
-<script th:src="@{/model/MstSupplierGridColumns.js}"></script>
-<script th:src="@{/model/InvStockProcessSupplyGridColumns.js}"></script>
-<script th:src="@{/model/MstSupplierBkGridColumns.js}"></script>
-<script th:src="@{/model/MstTaxGridColumns.js}"></script>
-<script th:src="@{/model/MstSupUnitpriceDetailGridColumns.js}"></script>
-<script th:src="@{/model/MstSupUnitpriceDetailBkGridColumns.js}"></script>
-<script th:src="@{/model/MstSupUnitpriceDetailHsGridColumns.js}"></script>
-<script th:src="@{/model/MstSupUnitpriceHsGridColumns.js}"></script>
 </head>
 <body>
   <div layout:fragment="article">
@@ -50,7 +32,7 @@
           <label for="PrdTehaiKaitoDet.parentId" th:text="#{PrdTehaiKaitoDet.parentId}">PARENT_ID</label><input type="text" id="PrdTehaiKaitoDet.parentId" name="PrdTehaiKaitoDet.parentId" maxlength="14" />
         </div>
         <div id="kaitoHinban">
-          <label for="PrdTehaiKaitoDet.kaitoHinban" th:text="#{PrdTehaiKaitoDet.kaitoHinban}">KAITO_HINBAN</label><input type="text" id="PrdTehaiKaitoDet.kaitoHinban" name="PrdTehaiKaitoDet.kaitoHinban" maxlength="25" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:PrdTehaiKaitoDet.kaitoHinban" data-destDef="PrdTehaiKaitoDet.kaitoItem:ITEM" /><a id="PrdTehaiKaitoDet.kaitoHinban" th:href="@{/model/MstHinbanS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="PrdTehaiKaitoDet.kaitoItem" class="refer" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:PrdTehaiKaitoDet.kaitoHinban" data-destDef="PrdTehaiKaitoDet.kaitoItem:ITEM"></span>
+          <label for="PrdTehaiKaitoDet.kaitoHinban" th:text="#{PrdTehaiKaitoDet.kaitoHinban}">KAITO_HINBAN</label><input type="text" id="PrdTehaiKaitoDet.kaitoHinban" name="PrdTehaiKaitoDet.kaitoHinban" maxlength="25" />
         </div>
         <div id="kaitoQt">
           <label for="PrdTehaiKaitoDet.kaitoQt_1" th:text="#{PrdTehaiKaitoDet.kaitoQt}">KAITO_QT</label><input type="text" id="PrdTehaiKaitoDet.kaitoQt_1" name="PrdTehaiKaitoDet.kaitoQt_1" maxlength="11" />～<input type="text" id="PrdTehaiKaitoDet.kaitoQt_2" name="PrdTehaiKaitoDet.kaitoQt_2" maxlength="11" />

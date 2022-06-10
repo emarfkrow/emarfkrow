@@ -9,24 +9,6 @@
 
 </script>
 <script th:src="@{/model/MHinccvtGridColumns.js}"></script>
-<script th:src="@{/model/MstHinbanGridColumns.js}"></script>
-<script th:src="@{/model/InvPrintWarehousingslipGridColumns.js}"></script>
-<script th:src="@{/model/MstEmpGridColumns.js}"></script>
-<script th:src="@{/model/InvStockStoreGridColumns.js}"></script>
-<script th:src="@{/model/MstHinbanBkGridColumns.js}"></script>
-<script th:src="@{/model/MstUnitGridColumns.js}"></script>
-<script th:src="@{/model/MstAccountCodeGridColumns.js}"></script>
-<script th:src="@{/model/MstHinbanEmpGridColumns.js}"></script>
-<script th:src="@{/model/MstSupUnitpriceGridColumns.js}"></script>
-<script th:src="@{/model/MstSupUnitpriceBkGridColumns.js}"></script>
-<script th:src="@{/model/MstSupplierGridColumns.js}"></script>
-<script th:src="@{/model/InvStockProcessSupplyGridColumns.js}"></script>
-<script th:src="@{/model/MstSupplierBkGridColumns.js}"></script>
-<script th:src="@{/model/MstTaxGridColumns.js}"></script>
-<script th:src="@{/model/MstSupUnitpriceDetailGridColumns.js}"></script>
-<script th:src="@{/model/MstSupUnitpriceDetailBkGridColumns.js}"></script>
-<script th:src="@{/model/MstSupUnitpriceDetailHsGridColumns.js}"></script>
-<script th:src="@{/model/MstSupUnitpriceHsGridColumns.js}"></script>
 <script th:src="@{/model/MHhinmokGridColumns.js}"></script>
 <script th:src="@{/model/MHososetGridColumns.js}"></script>
 <script th:src="@{/model/MHosozaiGridColumns.js}"></script>
@@ -40,7 +22,7 @@
       <fieldset>
         <legend th:text="#{MHinccvt.legend}">legend</legend>
         <div id="cvthinban">
-          <label for="MHinccvt.cvthinban" th:text="#{MHinccvt.cvthinban}">変換品番</label><input type="text" id="MHinccvt.cvthinban" name="MHinccvt.cvthinban" maxlength="20" class="primaryKey" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:MHinccvt.cvthinban" data-destDef="MHinccvt.cvtitem:ITEM" /><a id="MHinccvt.cvthinban" th:href="@{/model/MstHinbanS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MHinccvt.cvtitem" class="refer" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:MHinccvt.cvthinban" data-destDef="MHinccvt.cvtitem:ITEM"></span>
+          <label for="MHinccvt.cvthinban" th:text="#{MHinccvt.cvthinban}">変換品番</label><input type="text" id="MHinccvt.cvthinban" name="MHinccvt.cvthinban" maxlength="20" class="primaryKey" />
         </div>
         <div id="hhinban">
           <label for="MHinccvt.hhinban" th:text="#{MHinccvt.hhinban}">販売品番</label><input type="text" id="MHinccvt.hhinban" name="MHinccvt.hhinban" maxlength="20" data-json="MHhinmokSearch.json" data-srcDef="HHINBAN:MHinccvt.hhinban" data-destDef="MHinccvt.hinmei:HINMEI" /><a id="MHinccvt.hhinban" th:href="@{/model/MHhinmokS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MHinccvt.hinmei" class="refer" data-json="MHhinmokSearch.json" data-srcDef="HHINBAN:MHinccvt.hhinban" data-destDef="MHinccvt.hinmei:HINMEI"></span>

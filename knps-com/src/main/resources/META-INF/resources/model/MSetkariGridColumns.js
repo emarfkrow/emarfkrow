@@ -3,8 +3,8 @@
  */
 
 let MSetkariGridColumns = [
-    Column.refer('SET-HINBAN', Messages['MSetkariGrid.setHinban'], 200, 'primaryKey', 'SET_HINMEI'),
-    Column.refer('SET-KHINBAN', Messages['MSetkariGrid.setKhinban'], 200, 'primaryKey', 'SET_KHINMEI'),
+    Column.cell('SET-HINBAN', Messages['MSetkariGrid.setHinban'], 200, 'primaryKey', null),
+    Column.cell('SET-KHINBAN', Messages['MSetkariGrid.setKhinban'], 200, 'primaryKey', null),
     Column.text('TOKUCD', Messages['MSetkariGrid.tokucd'], 80, '', null),
     Column.text('HINMEI', Messages['MSetkariGrid.hinmei'], 100, '', null),
     Column.text('KO-HINMEI', Messages['MSetkariGrid.koHinmei'], 100, '', null),

@@ -4,7 +4,7 @@
 
 let PchAcceptActHedGridColumns = [
     Column.cell('ACT_NO', Messages['PchAcceptActHedGrid.actNo'], 100, 'primaryKey', null),
-    Column.refer('SUP_CODE', Messages['PchAcceptActHedGrid.supCode'], 100, '', 'SUP_NAME'),
+    Column.select('SUP_CODE', Messages['PchAcceptActHedGrid.supCode'], 100, '', { json: 'MstCodeValueSearch.json', paramkey: 'code_nm', value: 'CODE_VALUE', label: 'CODE_VALUE_MEI' }),
     Column.text('ORDER_NO', Messages['PchAcceptActHedGrid.orderNo'], 100, '', null),
     Column.text('HINBAN', Messages['PchAcceptActHedGrid.hinban'], 250, '', null),
     Column.text('ITEM', Messages['PchAcceptActHedGrid.item'], 300, '', null),

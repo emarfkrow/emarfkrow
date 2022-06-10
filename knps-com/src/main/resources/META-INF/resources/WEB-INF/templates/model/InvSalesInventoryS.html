@@ -35,7 +35,7 @@
       <fieldset>
         <legend th:text="#{InvSalesInventoryS.legend}">legend</legend>
         <div id="salesHinban">
-          <label for="InvSalesInventory.salesHinban" th:text="#{InvSalesInventory.salesHinban}">SALES_HINBAN</label><input type="text" id="InvSalesInventory.salesHinban" name="InvSalesInventory.salesHinban" maxlength="20" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:InvSalesInventory.salesHinban" data-destDef="InvSalesInventory.salesItem:ITEM" /><a id="InvSalesInventory.salesHinban" th:href="@{/model/MstHinbanS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="InvSalesInventory.salesItem" class="refer" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:InvSalesInventory.salesHinban" data-destDef="InvSalesInventory.salesItem:ITEM"></span>
+          <label for="InvSalesInventory.salesHinban" th:text="#{InvSalesInventory.salesHinban}">SALES_HINBAN</label><input type="text" id="InvSalesInventory.salesHinban" name="InvSalesInventory.salesHinban" maxlength="20" />
         </div>
         <div id="hinban">
           <label for="InvSalesInventory.hinban" th:text="#{InvSalesInventory.hinban}">HINBAN</label><input type="text" id="InvSalesInventory.hinban" name="InvSalesInventory.hinban" maxlength="25" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:InvSalesInventory.hinban" data-destDef="InvSalesInventory.item:ITEM" /><a id="InvSalesInventory.hinban" th:href="@{/model/MstHinbanS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="InvSalesInventory.item" class="refer" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:InvSalesInventory.hinban" data-destDef="InvSalesInventory.item:ITEM"></span>

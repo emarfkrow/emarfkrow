@@ -13,7 +13,7 @@ let InvMtrlInoutHistoryGridColumns = [
     Column.text('ORDER_NO', Messages['InvMtrlInoutHistoryGrid.orderNo'], 100, '', null),
     Column.text('PRO_NO', Messages['InvMtrlInoutHistoryGrid.proNo'], 140, '', null),
     Column.text('IN_OUT_STATUS', Messages['InvMtrlInoutHistoryGrid.inOutStatus'], 10, '', null),
-    Column.refer('RECEIPT_SUP_CODE', Messages['InvMtrlInoutHistoryGrid.receiptSupCode'], 100, '', 'RECEIPT_SUP_NAME'),
+    Column.select('RECEIPT_SUP_CODE', Messages['InvMtrlInoutHistoryGrid.receiptSupCode'], 100, '', { json: 'MstCodeValueSearch.json', paramkey: 'code_nm', value: 'CODE_VALUE', label: 'CODE_VALUE_MEI' }),
     Column.refer('ISSUE_HINBAN', Messages['InvMtrlInoutHistoryGrid.issueHinban'], 250, '', 'ISSUE_HINMEI'),
     Column.text('STOCK', Messages['InvMtrlInoutHistoryGrid.stock'], 110, '', null),
     Column.text('GOOD_COUNTS', Messages['InvMtrlInoutHistoryGrid.goodCounts'], 110, '', null),

@@ -66,7 +66,9 @@
           <label for="InvMtrlInoutHistory.inOutStatus" th:text="#{InvMtrlInoutHistory.inOutStatus}">IN_OUT_STATUS</label><input type="text" id="InvMtrlInoutHistory.inOutStatus" name="InvMtrlInoutHistory.inOutStatus" maxlength="1" />
         </div>
         <div id="receiptSupCode">
-          <label for="InvMtrlInoutHistory.receiptSupCode" th:text="#{InvMtrlInoutHistory.receiptSupCode}">RECEIPT_SUP_CODE</label><input type="text" id="InvMtrlInoutHistory.receiptSupCode" name="InvMtrlInoutHistory.receiptSupCode" maxlength="10" data-json="MstSupplierSearch.json" data-srcDef="SUP_CODE:InvMtrlInoutHistory.receiptSupCode" data-destDef="InvMtrlInoutHistory.receiptSupName:SUP_NAME" /><a id="InvMtrlInoutHistory.receiptSupCode" th:href="@{/model/MstSupplierS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="InvMtrlInoutHistory.receiptSupName" class="refer" data-json="MstSupplierSearch.json" data-srcDef="SUP_CODE:InvMtrlInoutHistory.receiptSupCode" data-destDef="InvMtrlInoutHistory.receiptSupName:SUP_NAME"></span>
+          <fieldset id="InvMtrlInoutHistory.receiptSupCodeList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:RECEIPT_SUP_CODE" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{InvMtrlInoutHistory.receiptSupCode}">RECEIPT_SUP_CODE</legend>
+          </fieldset>
         </div>
         <div id="issueHinban">
           <label for="InvMtrlInoutHistory.issueHinban" th:text="#{InvMtrlInoutHistory.issueHinban}">ISSUE_HINBAN</label><input type="text" id="InvMtrlInoutHistory.issueHinban" name="InvMtrlInoutHistory.issueHinban" maxlength="25" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:InvMtrlInoutHistory.issueHinban" data-destDef="InvMtrlInoutHistory.issueItem:ITEM" /><a id="InvMtrlInoutHistory.issueHinban" th:href="@{/model/MstHinbanS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="InvMtrlInoutHistory.issueItem" class="refer" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:InvMtrlInoutHistory.issueHinban" data-destDef="InvMtrlInoutHistory.issueItem:ITEM"></span>

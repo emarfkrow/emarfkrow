@@ -9,24 +9,7 @@
 
 </script>
 <script th:src="@{/model/PrdWProNesCountsGridColumns.js}"></script>
-<script th:src="@{/model/MstHinbanGridColumns.js}"></script>
-<script th:src="@{/model/InvPrintWarehousingslipGridColumns.js}"></script>
 <script th:src="@{/model/MstEmpGridColumns.js}"></script>
-<script th:src="@{/model/InvStockStoreGridColumns.js}"></script>
-<script th:src="@{/model/MstHinbanBkGridColumns.js}"></script>
-<script th:src="@{/model/MstUnitGridColumns.js}"></script>
-<script th:src="@{/model/MstAccountCodeGridColumns.js}"></script>
-<script th:src="@{/model/MstHinbanEmpGridColumns.js}"></script>
-<script th:src="@{/model/MstSupUnitpriceGridColumns.js}"></script>
-<script th:src="@{/model/MstSupUnitpriceBkGridColumns.js}"></script>
-<script th:src="@{/model/MstSupplierGridColumns.js}"></script>
-<script th:src="@{/model/InvStockProcessSupplyGridColumns.js}"></script>
-<script th:src="@{/model/MstSupplierBkGridColumns.js}"></script>
-<script th:src="@{/model/MstTaxGridColumns.js}"></script>
-<script th:src="@{/model/MstSupUnitpriceDetailGridColumns.js}"></script>
-<script th:src="@{/model/MstSupUnitpriceDetailBkGridColumns.js}"></script>
-<script th:src="@{/model/MstSupUnitpriceDetailHsGridColumns.js}"></script>
-<script th:src="@{/model/MstSupUnitpriceHsGridColumns.js}"></script>
 </head>
 <body>
   <div layout:fragment="article">
@@ -38,7 +21,7 @@
           <label for="PrdWProNesCounts.prdWProNesCountsKey" th:text="#{PrdWProNesCounts.prdWProNesCountsKey}">PRD_W_PRO_NES_COUNTS_KEY</label><input type="text" id="PrdWProNesCounts.prdWProNesCountsKey" name="PrdWProNesCounts.prdWProNesCountsKey" maxlength="10" class="primaryKey" />
         </div>
         <div id="proHinban">
-          <label for="PrdWProNesCounts.proHinban" th:text="#{PrdWProNesCounts.proHinban}">PRO_HINBAN</label><input type="text" id="PrdWProNesCounts.proHinban" name="PrdWProNesCounts.proHinban" maxlength="20" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:PrdWProNesCounts.proHinban" data-destDef="PrdWProNesCounts.proItem:ITEM" /><a id="PrdWProNesCounts.proHinban" th:href="@{/model/MstHinbanS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="PrdWProNesCounts.proItem" class="refer" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:PrdWProNesCounts.proHinban" data-destDef="PrdWProNesCounts.proItem:ITEM"></span>
+          <label for="PrdWProNesCounts.proHinban" th:text="#{PrdWProNesCounts.proHinban}">PRO_HINBAN</label><input type="text" id="PrdWProNesCounts.proHinban" name="PrdWProNesCounts.proHinban" maxlength="20" />
         </div>
         <div id="scheduledDate">
           <label for="PrdWProNesCounts.scheduledDate" th:text="#{PrdWProNesCounts.scheduledDate}">SCHEDULED_DATE</label><input type="date" id="PrdWProNesCounts.scheduledDate" name="PrdWProNesCounts.scheduledDate" maxlength="7" />

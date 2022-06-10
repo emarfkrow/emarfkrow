@@ -9,23 +9,6 @@
 
 </script>
 <script th:src="@{/model/InvStockProcessSupplyGridColumns.js}"></script>
-<script th:src="@{/model/MstSupplierGridColumns.js}"></script>
-<script th:src="@{/model/MstSupplierBkGridColumns.js}"></script>
-<script th:src="@{/model/MstTaxGridColumns.js}"></script>
-<script th:src="@{/model/MstHinbanGridColumns.js}"></script>
-<script th:src="@{/model/InvPrintWarehousingslipGridColumns.js}"></script>
-<script th:src="@{/model/MstEmpGridColumns.js}"></script>
-<script th:src="@{/model/InvStockStoreGridColumns.js}"></script>
-<script th:src="@{/model/MstHinbanBkGridColumns.js}"></script>
-<script th:src="@{/model/MstUnitGridColumns.js}"></script>
-<script th:src="@{/model/MstAccountCodeGridColumns.js}"></script>
-<script th:src="@{/model/MstHinbanEmpGridColumns.js}"></script>
-<script th:src="@{/model/MstSupUnitpriceGridColumns.js}"></script>
-<script th:src="@{/model/MstSupUnitpriceBkGridColumns.js}"></script>
-<script th:src="@{/model/MstSupUnitpriceDetailGridColumns.js}"></script>
-<script th:src="@{/model/MstSupUnitpriceDetailBkGridColumns.js}"></script>
-<script th:src="@{/model/MstSupUnitpriceDetailHsGridColumns.js}"></script>
-<script th:src="@{/model/MstSupUnitpriceHsGridColumns.js}"></script>
 </head>
 <body>
   <div layout:fragment="article">
@@ -34,10 +17,12 @@
       <fieldset>
         <legend th:text="#{InvStockProcessSupply.legend}">legend</legend>
         <div id="supCode">
-          <label for="InvStockProcessSupply.supCode" th:text="#{InvStockProcessSupply.supCode}">SUP_CODE</label><input type="text" id="InvStockProcessSupply.supCode" name="InvStockProcessSupply.supCode" maxlength="6" class="primaryKey" data-json="MstSupplierSearch.json" data-srcDef="SUP_CODE:InvStockProcessSupply.supCode" data-destDef="InvStockProcessSupply.supName:SUP_NAME" /><a id="InvStockProcessSupply.supCode" th:href="@{/model/MstSupplierS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="InvStockProcessSupply.supName" class="refer" data-json="MstSupplierSearch.json" data-srcDef="SUP_CODE:InvStockProcessSupply.supCode" data-destDef="InvStockProcessSupply.supName:SUP_NAME"></span>
+          <fieldset id="InvStockProcessSupply.supCodeList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:SUP_CODE" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI" class="primaryKey">
+            <legend th:text="#{InvStockProcessSupply.supCode}">SUP_CODE</legend>
+          </fieldset>
         </div>
         <div id="hinban">
-          <label for="InvStockProcessSupply.hinban" th:text="#{InvStockProcessSupply.hinban}">HINBAN</label><input type="text" id="InvStockProcessSupply.hinban" name="InvStockProcessSupply.hinban" maxlength="25" class="primaryKey" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:InvStockProcessSupply.hinban" data-destDef="InvStockProcessSupply.item:ITEM" /><a id="InvStockProcessSupply.hinban" th:href="@{/model/MstHinbanS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="InvStockProcessSupply.item" class="refer" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:InvStockProcessSupply.hinban" data-destDef="InvStockProcessSupply.item:ITEM"></span>
+          <label for="InvStockProcessSupply.hinban" th:text="#{InvStockProcessSupply.hinban}">HINBAN</label><input type="text" id="InvStockProcessSupply.hinban" name="InvStockProcessSupply.hinban" maxlength="25" class="primaryKey" />
         </div>
         <div id="shikyuQt">
           <label for="InvStockProcessSupply.shikyuQt" th:text="#{InvStockProcessSupply.shikyuQt}">SHIKYU_QT</label><input type="text" id="InvStockProcessSupply.shikyuQt" name="InvStockProcessSupply.shikyuQt" maxlength="11" />

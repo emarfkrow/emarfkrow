@@ -9,7 +9,6 @@
 
 </script>
 <script th:src="@{/model/MstAreaGridColumns.js}"></script>
-<script th:src="@{/model/MstSubinvGridColumns.js}"></script>
 </head>
 <body>
   <div layout:fragment="article">
@@ -24,7 +23,9 @@
           <label for="MstArea.areaMei" th:text="#{MstArea.areaMei}">AREA_MEI</label><input type="text" id="MstArea.areaMei" name="MstArea.areaMei" maxlength="60" />
         </div>
         <div id="subInvCode">
-          <label for="MstArea.subInvCode" th:text="#{MstArea.subInvCode}">SUB_INV_CODE</label><input type="text" id="MstArea.subInvCode" name="MstArea.subInvCode" maxlength="10" data-json="MstSubinvSearch.json" data-srcDef="SUB_INV_CODE:MstArea.subInvCode" data-destDef="MstArea.subInvName:SUB_INV_NAME" /><a id="MstArea.subInvCode" th:href="@{/model/MstSubinvS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MstArea.subInvName" class="refer" data-json="MstSubinvSearch.json" data-srcDef="SUB_INV_CODE:MstArea.subInvCode" data-destDef="MstArea.subInvName:SUB_INV_NAME"></span>
+          <fieldset id="MstArea.subInvCodeList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:SUB_INV_CODE" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+            <legend th:text="#{MstArea.subInvCode}">SUB_INV_CODE</legend>
+          </fieldset>
         </div>
         <div id="deleteF">
           <fieldset id="MstArea.deleteFList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:DELETE_F" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">

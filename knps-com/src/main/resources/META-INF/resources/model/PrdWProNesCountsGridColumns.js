@@ -4,7 +4,7 @@
 
 let PrdWProNesCountsGridColumns = [
     Column.cell('PRD_W_PRO_NES_COUNTS_KEY', Messages['PrdWProNesCountsGrid.prdWProNesCountsKey'], 100, 'primaryKey', null),
-    Column.refer('PRO_HINBAN', Messages['PrdWProNesCountsGrid.proHinban'], 200, '', 'PRO_HINMEI'),
+    Column.text('PRO_HINBAN', Messages['PrdWProNesCountsGrid.proHinban'], 200, '', null),
     Column.date('SCHEDULED_DATE', Messages['PrdWProNesCountsGrid.scheduledDate'], 70, '', Slick.Formatters.Extends.DateTime),
     Column.text('PRO_NES_COUNTS', Messages['PrdWProNesCountsGrid.proNesCounts'], 60, '', null),
     Column.text('PRO_NES_COMMENT', Messages['PrdWProNesCountsGrid.proNesComment'], 300, '', null),

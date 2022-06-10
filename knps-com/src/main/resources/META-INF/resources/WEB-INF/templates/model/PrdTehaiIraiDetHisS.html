@@ -9,24 +9,6 @@
 
 </script>
 <script th:src="@{/model/PrdTehaiIraiDetHisGridColumns.js}"></script>
-<script th:src="@{/model/MstHinbanGridColumns.js}"></script>
-<script th:src="@{/model/InvPrintWarehousingslipGridColumns.js}"></script>
-<script th:src="@{/model/MstEmpGridColumns.js}"></script>
-<script th:src="@{/model/InvStockStoreGridColumns.js}"></script>
-<script th:src="@{/model/MstHinbanBkGridColumns.js}"></script>
-<script th:src="@{/model/MstUnitGridColumns.js}"></script>
-<script th:src="@{/model/MstAccountCodeGridColumns.js}"></script>
-<script th:src="@{/model/MstHinbanEmpGridColumns.js}"></script>
-<script th:src="@{/model/MstSupUnitpriceGridColumns.js}"></script>
-<script th:src="@{/model/MstSupUnitpriceBkGridColumns.js}"></script>
-<script th:src="@{/model/MstSupplierGridColumns.js}"></script>
-<script th:src="@{/model/InvStockProcessSupplyGridColumns.js}"></script>
-<script th:src="@{/model/MstSupplierBkGridColumns.js}"></script>
-<script th:src="@{/model/MstTaxGridColumns.js}"></script>
-<script th:src="@{/model/MstSupUnitpriceDetailGridColumns.js}"></script>
-<script th:src="@{/model/MstSupUnitpriceDetailBkGridColumns.js}"></script>
-<script th:src="@{/model/MstSupUnitpriceDetailHsGridColumns.js}"></script>
-<script th:src="@{/model/MstSupUnitpriceHsGridColumns.js}"></script>
 </head>
 <body>
   <div layout:fragment="article">
@@ -50,7 +32,7 @@
           <label for="PrdTehaiIraiDetHis.parentId" th:text="#{PrdTehaiIraiDetHis.parentId}">PARENT_ID</label><input type="text" id="PrdTehaiIraiDetHis.parentId" name="PrdTehaiIraiDetHis.parentId" maxlength="14" />
         </div>
         <div id="iraiHinban">
-          <label for="PrdTehaiIraiDetHis.iraiHinban" th:text="#{PrdTehaiIraiDetHis.iraiHinban}">IRAI_HINBAN</label><input type="text" id="PrdTehaiIraiDetHis.iraiHinban" name="PrdTehaiIraiDetHis.iraiHinban" maxlength="25" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:PrdTehaiIraiDetHis.iraiHinban" data-destDef="PrdTehaiIraiDetHis.iraiItem:ITEM" /><a id="PrdTehaiIraiDetHis.iraiHinban" th:href="@{/model/MstHinbanS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="PrdTehaiIraiDetHis.iraiItem" class="refer" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:PrdTehaiIraiDetHis.iraiHinban" data-destDef="PrdTehaiIraiDetHis.iraiItem:ITEM"></span>
+          <label for="PrdTehaiIraiDetHis.iraiHinban" th:text="#{PrdTehaiIraiDetHis.iraiHinban}">IRAI_HINBAN</label><input type="text" id="PrdTehaiIraiDetHis.iraiHinban" name="PrdTehaiIraiDetHis.iraiHinban" maxlength="25" />
         </div>
         <div id="iraiQt">
           <label for="PrdTehaiIraiDetHis.iraiQt_1" th:text="#{PrdTehaiIraiDetHis.iraiQt}">IRAI_QT</label><input type="text" id="PrdTehaiIraiDetHis.iraiQt_1" name="PrdTehaiIraiDetHis.iraiQt_1" maxlength="11" />～<input type="text" id="PrdTehaiIraiDetHis.iraiQt_2" name="PrdTehaiIraiDetHis.iraiQt_2" maxlength="11" />

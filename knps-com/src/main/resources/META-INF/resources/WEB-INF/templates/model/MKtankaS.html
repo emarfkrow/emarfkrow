@@ -9,24 +9,6 @@
 
 </script>
 <script th:src="@{/model/MKtankaGridColumns.js}"></script>
-<script th:src="@{/model/MstHinbanGridColumns.js}"></script>
-<script th:src="@{/model/InvPrintWarehousingslipGridColumns.js}"></script>
-<script th:src="@{/model/MstEmpGridColumns.js}"></script>
-<script th:src="@{/model/InvStockStoreGridColumns.js}"></script>
-<script th:src="@{/model/MstHinbanBkGridColumns.js}"></script>
-<script th:src="@{/model/MstUnitGridColumns.js}"></script>
-<script th:src="@{/model/MstAccountCodeGridColumns.js}"></script>
-<script th:src="@{/model/MstHinbanEmpGridColumns.js}"></script>
-<script th:src="@{/model/MstSupUnitpriceGridColumns.js}"></script>
-<script th:src="@{/model/MstSupUnitpriceBkGridColumns.js}"></script>
-<script th:src="@{/model/MstSupplierGridColumns.js}"></script>
-<script th:src="@{/model/InvStockProcessSupplyGridColumns.js}"></script>
-<script th:src="@{/model/MstSupplierBkGridColumns.js}"></script>
-<script th:src="@{/model/MstTaxGridColumns.js}"></script>
-<script th:src="@{/model/MstSupUnitpriceDetailGridColumns.js}"></script>
-<script th:src="@{/model/MstSupUnitpriceDetailBkGridColumns.js}"></script>
-<script th:src="@{/model/MstSupUnitpriceDetailHsGridColumns.js}"></script>
-<script th:src="@{/model/MstSupUnitpriceHsGridColumns.js}"></script>
 <script th:src="@{/model/MHhinmokGridColumns.js}"></script>
 <script th:src="@{/model/MHososetGridColumns.js}"></script>
 <script th:src="@{/model/MHosozaiGridColumns.js}"></script>
@@ -43,7 +25,7 @@
           <label for="MKtanka.honshacd" th:text="#{MKtanka.honshacd}">本社コード</label><input type="text" id="MKtanka.honshacd" name="MKtanka.honshacd" maxlength="8" />
         </div>
         <div id="shagaiHinban">
-          <label for="MKtanka.shagaiHinban" th:text="#{MKtanka.shagaiHinban}">社外品番</label><input type="text" id="MKtanka.shagaiHinban" name="MKtanka.shagaiHinban" maxlength="20" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:MKtanka.shagaiHinban" data-destDef="MKtanka.shagaiItem:ITEM" /><a id="MKtanka.shagaiHinban" th:href="@{/model/MstHinbanS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MKtanka.shagaiItem" class="refer" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:MKtanka.shagaiHinban" data-destDef="MKtanka.shagaiItem:ITEM"></span>
+          <label for="MKtanka.shagaiHinban" th:text="#{MKtanka.shagaiHinban}">社外品番</label><input type="text" id="MKtanka.shagaiHinban" name="MKtanka.shagaiHinban" maxlength="20" />
         </div>
         <div id="kkaisibi">
           <label for="MKtanka.kkaisibi_1" th:text="#{MKtanka.kkaisibi}">契約単価開始日</label><input type="date" id="MKtanka.kkaisibi_1" name="MKtanka.kkaisibi_1" maxlength="8" />～<input type="date" id="MKtanka.kkaisibi_2" name="MKtanka.kkaisibi_2" maxlength="8" />

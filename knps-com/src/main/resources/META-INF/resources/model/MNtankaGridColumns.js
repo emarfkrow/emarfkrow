@@ -4,7 +4,7 @@
 
 let MNtankaGridColumns = [
     Column.refer('HHINBAN', Messages['MNtankaGrid.hhinban'], 200, 'primaryKey', 'HHINMEI'),
-    Column.refer('NISSAN-HINBAN', Messages['MNtankaGrid.nissanHinban'], 200, '', 'NISSAN_HINMEI'),
+    Column.text('NISSAN-HINBAN', Messages['MNtankaGrid.nissanHinban'], 200, '', null),
     Column.text('NISSAN-TANKA', Messages['MNtankaGrid.nissanTanka'], 70, '', null),
     Column.text('KOURI-KAKAKU', Messages['MNtankaGrid.kouriKakaku'], 70, '', null),
     Column.select('SHOHINKBN', Messages['MNtankaGrid.shohinkbn'], 20, '', { json: 'MstCodeValueSearch.json', paramkey: 'code_nm', value: 'CODE_VALUE', label: 'CODE_VALUE_MEI' }),

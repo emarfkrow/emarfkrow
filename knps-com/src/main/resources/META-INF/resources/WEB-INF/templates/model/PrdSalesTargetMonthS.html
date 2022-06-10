@@ -9,24 +9,6 @@
 
 </script>
 <script th:src="@{/model/PrdSalesTargetMonthGridColumns.js}"></script>
-<script th:src="@{/model/MstHinbanGridColumns.js}"></script>
-<script th:src="@{/model/InvPrintWarehousingslipGridColumns.js}"></script>
-<script th:src="@{/model/MstEmpGridColumns.js}"></script>
-<script th:src="@{/model/InvStockStoreGridColumns.js}"></script>
-<script th:src="@{/model/MstHinbanBkGridColumns.js}"></script>
-<script th:src="@{/model/MstUnitGridColumns.js}"></script>
-<script th:src="@{/model/MstAccountCodeGridColumns.js}"></script>
-<script th:src="@{/model/MstHinbanEmpGridColumns.js}"></script>
-<script th:src="@{/model/MstSupUnitpriceGridColumns.js}"></script>
-<script th:src="@{/model/MstSupUnitpriceBkGridColumns.js}"></script>
-<script th:src="@{/model/MstSupplierGridColumns.js}"></script>
-<script th:src="@{/model/InvStockProcessSupplyGridColumns.js}"></script>
-<script th:src="@{/model/MstSupplierBkGridColumns.js}"></script>
-<script th:src="@{/model/MstTaxGridColumns.js}"></script>
-<script th:src="@{/model/MstSupUnitpriceDetailGridColumns.js}"></script>
-<script th:src="@{/model/MstSupUnitpriceDetailBkGridColumns.js}"></script>
-<script th:src="@{/model/MstSupUnitpriceDetailHsGridColumns.js}"></script>
-<script th:src="@{/model/MstSupUnitpriceHsGridColumns.js}"></script>
 </head>
 <body>
   <div layout:fragment="article">
@@ -44,7 +26,7 @@
           <label for="PrdSalesTargetMonth.fileId" th:text="#{PrdSalesTargetMonth.fileId}">FILE_ID</label><input type="text" id="PrdSalesTargetMonth.fileId" name="PrdSalesTargetMonth.fileId" maxlength="1" />
         </div>
         <div id="salesHinban">
-          <label for="PrdSalesTargetMonth.salesHinban" th:text="#{PrdSalesTargetMonth.salesHinban}">SALES_HINBAN</label><input type="text" id="PrdSalesTargetMonth.salesHinban" name="PrdSalesTargetMonth.salesHinban" maxlength="20" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:PrdSalesTargetMonth.salesHinban" data-destDef="PrdSalesTargetMonth.salesItem:ITEM" /><a id="PrdSalesTargetMonth.salesHinban" th:href="@{/model/MstHinbanS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="PrdSalesTargetMonth.salesItem" class="refer" data-json="MstHinbanSearch.json" data-srcDef="HINBAN:PrdSalesTargetMonth.salesHinban" data-destDef="PrdSalesTargetMonth.salesItem:ITEM"></span>
+          <label for="PrdSalesTargetMonth.salesHinban" th:text="#{PrdSalesTargetMonth.salesHinban}">SALES_HINBAN</label><input type="text" id="PrdSalesTargetMonth.salesHinban" name="PrdSalesTargetMonth.salesHinban" maxlength="20" />
         </div>
         <div id="salesTargetCounts">
           <label for="PrdSalesTargetMonth.salesTargetCounts_1" th:text="#{PrdSalesTargetMonth.salesTargetCounts}">SALES_TARGET_COUNTS</label><input type="text" id="PrdSalesTargetMonth.salesTargetCounts_1" name="PrdSalesTargetMonth.salesTargetCounts_1" maxlength="7" />～<input type="text" id="PrdSalesTargetMonth.salesTargetCounts_2" name="PrdSalesTargetMonth.salesTargetCounts_2" maxlength="7" />

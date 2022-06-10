@@ -3,7 +3,7 @@
  */
 
 let MstSalesHinbanMasterGridColumns = [
-    Column.refer('SALES_HINBAN', Messages['MstSalesHinbanMasterGrid.salesHinban'], 200, 'primaryKey', 'SALES_HINMEI'),
+    Column.cell('SALES_HINBAN', Messages['MstSalesHinbanMasterGrid.salesHinban'], 200, 'primaryKey', null),
     Column.select('LOW_LEVEL_CODE', Messages['MstSalesHinbanMasterGrid.lowLevelCode'], 20, '', { json: 'MstCodeValueSearch.json', paramkey: 'code_nm', value: 'CODE_VALUE', label: 'CODE_VALUE_MEI' }),
     Column.check('DELETE_FLAG', Messages['MstSalesHinbanMasterGrid.deleteFlag'], 10, ''),
     Column.select('HINBAN_CODE', Messages['MstSalesHinbanMasterGrid.hinbanCode'], 200, '', { json: 'MstCodeValueSearch.json', paramkey: 'code_nm', value: 'CODE_VALUE', label: 'CODE_VALUE_MEI' }),

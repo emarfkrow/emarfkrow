@@ -7,7 +7,7 @@ let PrdTehaiIraiDetGridColumns = [
     Column.cell('IRAI_DET_SEQ', Messages['PrdTehaiIraiDetGrid.iraiDetSeq'], 100, 'primaryKey', null),
     Column.text('ID', Messages['PrdTehaiIraiDetGrid.id'], 140, '', null),
     Column.text('PARENT_ID', Messages['PrdTehaiIraiDetGrid.parentId'], 140, '', null),
-    Column.refer('IRAI_HINBAN', Messages['PrdTehaiIraiDetGrid.iraiHinban'], 250, '', 'IRAI_HINMEI'),
+    Column.text('IRAI_HINBAN', Messages['PrdTehaiIraiDetGrid.iraiHinban'], 250, '', null),
     Column.text('IRAI_QT', Messages['PrdTehaiIraiDetGrid.iraiQt'], 110, '', null),
     Column.check('SHINSETSUHIN_F', Messages['PrdTehaiIraiDetGrid.shinsetsuhinF'], 10, ''),
     Column.check('SETHIN_F', Messages['PrdTehaiIraiDetGrid.sethinF'], 10, ''),
