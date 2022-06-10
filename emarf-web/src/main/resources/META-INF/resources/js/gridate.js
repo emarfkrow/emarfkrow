@@ -471,9 +471,10 @@ var Gridate = {
 				}
 			}
 
-			if ($item.hasClass('primaryKey')) {
-				$item.attr('readonly', true).attr('tabindex', '-1');
-			}
+			//if ($item.hasClass('primaryKey')) {
+			//$item.attr('readonly', true).attr('tabindex', '-1').addClass('readonly');
+			//$item.next('a').hide();
+			//}
 		}
 
 		let $dialogDiv = $('div[id="' + dialogId + '"]');

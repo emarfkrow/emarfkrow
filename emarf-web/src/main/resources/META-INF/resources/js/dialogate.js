@@ -222,6 +222,15 @@ let Dialogate = {
 						$dialogDiv.find('.addChild').button('option', 'disabled', true);
 					}
 
+					// 詳細画面の主キー項目は、値が既にあれば読み取り専用
+					$dialogDiv.find('[name$="RegistForm"] input.primaryKey').each(function() {
+						if ($(this).val() != '') {
+							$(this).attr('readonly', true).attr('tabindex', '-1').addClass('readonly');
+						} else {
+							$(this).removeAttr('readonly').removeClass('readonly').removeAttr('tabindex');
+						}
+					});
+
 					// 詳細画面の主キー項目の参照ボタンは、値が既にあれば非表示
 					$dialogDiv.find('[name$="RegistForm"] [target=dialog].refer.primaryKey').each(function() {
 						if ($('input[id="' + this.id + '"]').val() != '') {

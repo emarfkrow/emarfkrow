@@ -22,7 +22,7 @@
       <fieldset>
         <legend th:text="#{MNtanka.legend}">legend</legend>
         <div id="hhinban">
-          <label for="MNtanka.hhinban" th:text="#{MNtanka.hhinban}">販売品番</label><input type="text" id="MNtanka.hhinban" name="MNtanka.hhinban" maxlength="20" class="primaryKey" data-json="MHhinmokSearch.json" data-srcDef="HHINBAN:MNtanka.hhinban" data-destDef="MNtanka.hinmei:HINMEI" /><a id="MNtanka.hhinban" th:href="@{/model/MHhinmokS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MNtanka.hinmei" class="refer" data-json="MHhinmokSearch.json" data-srcDef="HHINBAN:MNtanka.hhinban" data-destDef="MNtanka.hinmei:HINMEI"></span>
+          <label for="MNtanka.hhinban" th:text="#{MNtanka.hhinban}">販売品番</label><input type="text" id="MNtanka.hhinban" name="MNtanka.hhinban" maxlength="20" class="primaryKey" data-json="MHhinmokSearch.json" data-srcDef="HHINBAN:MNtanka.hhinban" data-destDef="MNtanka.hinmei:HINMEI" /><a id="MNtanka.hhinban" th:href="@{/model/MHhinmokS.html}" target="dialog" class="refer primaryKey" th:text="#{common.refer}" tabindex="-1">...</a><span id="MNtanka.hinmei" class="refer primaryKey" data-json="MHhinmokSearch.json" data-srcDef="HHINBAN:MNtanka.hhinban" data-destDef="MNtanka.hinmei:HINMEI"></span>
         </div>
         <div id="nissanHinban">
           <label for="MNtanka.nissanHinban" th:text="#{MNtanka.nissanHinban}">日産品番</label><input type="text" id="MNtanka.nissanHinban" name="MNtanka.nissanHinban" maxlength="20" />

@@ -18,7 +18,7 @@
       <fieldset>
         <legend th:text="#{MstCodeValue.legend}">legend</legend>
         <div id="codeNm">
-          <label for="MstCodeValue.codeNm" th:text="#{MstCodeValue.codeNm}">CODE_NM</label><input type="text" id="MstCodeValue.codeNm" name="MstCodeValue.codeNm" maxlength="30" class="primaryKey" data-json="MstCodeSearch.json" data-srcDef="CODE_NM:MstCodeValue.codeNm" data-destDef="MstCodeValue.codeMei:CODE_MEI" /><a id="MstCodeValue.codeNm" th:href="@{/model/MstCodeS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MstCodeValue.codeMei" class="refer" data-json="MstCodeSearch.json" data-srcDef="CODE_NM:MstCodeValue.codeNm" data-destDef="MstCodeValue.codeMei:CODE_MEI"></span>
+          <label for="MstCodeValue.codeNm" th:text="#{MstCodeValue.codeNm}">CODE_NM</label><input type="text" id="MstCodeValue.codeNm" name="MstCodeValue.codeNm" maxlength="30" class="primaryKey" data-json="MstCodeSearch.json" data-srcDef="CODE_NM:MstCodeValue.codeNm" data-destDef="MstCodeValue.codeMei:CODE_MEI" /><a id="MstCodeValue.codeNm" th:href="@{/model/MstCodeS.html}" target="dialog" class="refer primaryKey" th:text="#{common.refer}" tabindex="-1">...</a><span id="MstCodeValue.codeMei" class="refer primaryKey" data-json="MstCodeSearch.json" data-srcDef="CODE_NM:MstCodeValue.codeNm" data-destDef="MstCodeValue.codeMei:CODE_MEI"></span>
         </div>
         <div id="codeValue">
           <label for="MstCodeValue.codeValue" th:text="#{MstCodeValue.codeValue}">CODE_VALUE</label><input type="text" id="MstCodeValue.codeValue" name="MstCodeValue.codeValue" maxlength="2" class="primaryKey" />

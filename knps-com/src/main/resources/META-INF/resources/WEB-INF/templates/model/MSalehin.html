@@ -28,7 +28,7 @@
           <label for="MSalehin.salemei" th:text="#{MSalehin.salemei}">セール名</label><input type="text" id="MSalehin.salemei" name="MSalehin.salemei" maxlength="20" />
         </div>
         <div id="hhinban">
-          <label for="MSalehin.hhinban" th:text="#{MSalehin.hhinban}">販売品番</label><input type="text" id="MSalehin.hhinban" name="MSalehin.hhinban" maxlength="20" class="primaryKey" data-json="MHhinmokSearch.json" data-srcDef="HHINBAN:MSalehin.hhinban" data-destDef="MSalehin.hinmei:HINMEI" /><a id="MSalehin.hhinban" th:href="@{/model/MHhinmokS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MSalehin.hinmei" class="refer" data-json="MHhinmokSearch.json" data-srcDef="HHINBAN:MSalehin.hhinban" data-destDef="MSalehin.hinmei:HINMEI"></span>
+          <label for="MSalehin.hhinban" th:text="#{MSalehin.hhinban}">販売品番</label><input type="text" id="MSalehin.hhinban" name="MSalehin.hhinban" maxlength="20" class="primaryKey" data-json="MHhinmokSearch.json" data-srcDef="HHINBAN:MSalehin.hhinban" data-destDef="MSalehin.hinmei:HINMEI" /><a id="MSalehin.hhinban" th:href="@{/model/MHhinmokS.html}" target="dialog" class="refer primaryKey" th:text="#{common.refer}" tabindex="-1">...</a><span id="MSalehin.hinmei" class="refer primaryKey" data-json="MHhinmokSearch.json" data-srcDef="HHINBAN:MSalehin.hhinban" data-destDef="MSalehin.hinmei:HINMEI"></span>
         </div>
         <div id="kaisiYy">
           <label for="MSalehin.kaisiYy" th:text="#{MSalehin.kaisiYy}">開始年</label><input type="text" id="MSalehin.kaisiYy" name="MSalehin.kaisiYy" maxlength="4" class="primaryKey" />

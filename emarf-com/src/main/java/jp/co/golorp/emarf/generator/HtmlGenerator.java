@@ -732,8 +732,10 @@ public final class HtmlGenerator {
                 int max = columnInfo.getColumnSize();
 
                 String css = "";
+                String referCss = " class=\"refer\"";
                 if (isDetail && columnInfo.isPk()) {
                     css = " class=\"primaryKey\"";
+                    referCss = " class=\"refer primaryKey\"";
                 }
 
                 if (!isDetail && StringUtil.endsWith(inputRangeSuffixs, columnName)) {
@@ -753,13 +755,13 @@ public final class HtmlGenerator {
                     tag += "<input type=\"" + type + "\" id=\"" + fieldId + "\" name=\"" + fieldId + "\" maxlength=\""
                             + max + "\"" + css + referDef + "" + " />";
 
-                    tag += "<a id=\"" + fieldId + "\" th:href=\"@{/model/" + referName
-                            + "S.html}\" target=\"dialog\" class=\"refer\" th:text=\"#{common.refer}\" tabindex=\"-1\">...</a>";
+                    tag += "<a id=\"" + fieldId + "\" th:href=\"@{/model/" + referName + "S.html}\" target=\"dialog\""
+                            + referCss + " th:text=\"#{common.refer}\" tabindex=\"-1\">...</a>";
 
                     String meiColumnName = getMeiColumnName(columnName, referInfo);
                     if (!tableInfo.getColumnInfos().containsKey(meiColumnName)) {
                         String meiId = pascalTable + "." + StringUtil.toCamelCase(meiColumnName);
-                        tag += "<span id=\"" + meiId + "\" class=\"refer\"" + referDef + "></span>";
+                        tag += "<span id=\"" + meiId + "\"" + referCss + referDef + "></span>";
                     }
 
                     s.add(tag);

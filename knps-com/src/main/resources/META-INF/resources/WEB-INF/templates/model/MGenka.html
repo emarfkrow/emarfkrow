@@ -22,7 +22,7 @@
       <fieldset>
         <legend th:text="#{MGenka.legend}">legend</legend>
         <div id="hhinban">
-          <label for="MGenka.hhinban" th:text="#{MGenka.hhinban}">販売品番</label><input type="text" id="MGenka.hhinban" name="MGenka.hhinban" maxlength="20" class="primaryKey" data-json="MHhinmokSearch.json" data-srcDef="HHINBAN:MGenka.hhinban" data-destDef="MGenka.hinmei:HINMEI" /><a id="MGenka.hhinban" th:href="@{/model/MHhinmokS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MGenka.hinmei" class="refer" data-json="MHhinmokSearch.json" data-srcDef="HHINBAN:MGenka.hhinban" data-destDef="MGenka.hinmei:HINMEI"></span>
+          <label for="MGenka.hhinban" th:text="#{MGenka.hhinban}">販売品番</label><input type="text" id="MGenka.hhinban" name="MGenka.hhinban" maxlength="20" class="primaryKey" data-json="MHhinmokSearch.json" data-srcDef="HHINBAN:MGenka.hhinban" data-destDef="MGenka.hinmei:HINMEI" /><a id="MGenka.hhinban" th:href="@{/model/MHhinmokS.html}" target="dialog" class="refer primaryKey" th:text="#{common.refer}" tabindex="-1">...</a><span id="MGenka.hinmei" class="refer primaryKey" data-json="MHhinmokSearch.json" data-srcDef="HHINBAN:MGenka.hhinban" data-destDef="MGenka.hinmei:HINMEI"></span>
         </div>
         <div id="hincd">
           <label for="MGenka.hincd" th:text="#{MGenka.hincd}">品目コード</label><input type="text" id="MGenka.hincd" name="MGenka.hincd" maxlength="20" />

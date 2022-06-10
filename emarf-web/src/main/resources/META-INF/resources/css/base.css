@@ -235,3 +235,7 @@ input.primaryKey, div.primaryKey {
 span.refer::before {
 	content: '：';
 }
+
+.readonly {
+	border-style: none;
+}

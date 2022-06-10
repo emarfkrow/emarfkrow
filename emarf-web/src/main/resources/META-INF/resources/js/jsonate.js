@@ -240,7 +240,8 @@ let Jsonate = {
 
 		// 入力項目のエラースタイル解除
 		let $inputs = $form.find(':input');
-		$inputs.removeClass('error').prop('title', '').removeAttr('readonly').removeAttr('tabindex');
+		$inputs.removeClass('error').prop('title', '');//.removeAttr('readonly').removeClass('readonly').removeAttr('tabindex');
+		//$inputs.next('a').show();
 
 		// 選択項目のエラースタイル解除
 		let $label = $inputs.parent('label');

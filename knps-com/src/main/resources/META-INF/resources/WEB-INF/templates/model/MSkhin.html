@@ -22,7 +22,7 @@
       <fieldset>
         <legend th:text="#{MSkhin.legend}">legend</legend>
         <div id="hhinban">
-          <label for="MSkhin.hhinban" th:text="#{MSkhin.hhinban}">販売品番</label><input type="text" id="MSkhin.hhinban" name="MSkhin.hhinban" maxlength="20" class="primaryKey" data-json="MHhinmokSearch.json" data-srcDef="HHINBAN:MSkhin.hhinban" data-destDef="MSkhin.hinmei:HINMEI" /><a id="MSkhin.hhinban" th:href="@{/model/MHhinmokS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MSkhin.hinmei" class="refer" data-json="MHhinmokSearch.json" data-srcDef="HHINBAN:MSkhin.hhinban" data-destDef="MSkhin.hinmei:HINMEI"></span>
+          <label for="MSkhin.hhinban" th:text="#{MSkhin.hhinban}">販売品番</label><input type="text" id="MSkhin.hhinban" name="MSkhin.hhinban" maxlength="20" class="primaryKey" data-json="MHhinmokSearch.json" data-srcDef="HHINBAN:MSkhin.hhinban" data-destDef="MSkhin.hinmei:HINMEI" /><a id="MSkhin.hhinban" th:href="@{/model/MHhinmokS.html}" target="dialog" class="refer primaryKey" th:text="#{common.refer}" tabindex="-1">...</a><span id="MSkhin.hinmei" class="refer primaryKey" data-json="MHhinmokSearch.json" data-srcDef="HHINBAN:MSkhin.hhinban" data-destDef="MSkhin.hinmei:HINMEI"></span>
         </div>
         <div id="skkbn">
           <fieldset id="MSkhin.skkbnList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:SKKBN" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
