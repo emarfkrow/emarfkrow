@@ -9,16 +9,8 @@ $(function() {
 	console.debug('Nextize init.');
 
 	// article内の一つ目の対象項目にフォーカス
-	$('.article').find(Nextize.selector).each(function() {
-		if ($(this).css('visibility') != 'hidden') {
-			let first = this;
-			first.focus();
-			if (first.tagName === 'INPUT' && (!$(first).prop('type') || $(first).prop('type') === 'text')) {
-				first.select();
-			}
-			return false;
-		}
-	});
+	let $container = $('body>div.article');
+	Nextize.first($container);
 
 	$(document).on('keypress', Nextize.selector, function(event) {
 
@@ -110,5 +102,23 @@ let Nextize = {
 		'select:visible:enabled:not([readonly])[tabindex!=-1], ' +
 		'textarea:visible:enabled:not([readonly])[tabindex!=-1], ' +
 		'button[type!=button][type!=reset]:visible:enabled:not([readonly])[tabindex!=-1]',
+
+	first: function($container) {
+
+		Base.loaded(function() {
+
+			$container.find(Nextize.selector).each(function() {
+
+				if ($(this).css('visibility') != 'hidden') {
+					let first = this;
+					first.focus();
+					if (first.tagName === 'INPUT' && (!$(first).prop('type') || $(first).prop('type') === 'text')) {
+						first.select();
+					}
+					return false;
+				}
+			});
+		});
+	},
 
 };

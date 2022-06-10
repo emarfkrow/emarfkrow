@@ -864,6 +864,9 @@ public final class HtmlGenerator {
                     } else if (srcMeiColumn.matches("^.*" + destColumnName + "$")) {
                         destMeiColumn = destColumnName;
                     }
+                    if (destIdColumn != null && destMeiColumn != null) {
+                        break;
+                    }
                 }
 
                 if (destIdColumn == null || destMeiColumn == null) {

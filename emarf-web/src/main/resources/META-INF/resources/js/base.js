@@ -109,7 +109,10 @@ let Base = {
 			let timer = setInterval(function() {
 				if (Loading.stack <= 1) {
 					try {
-						func();
+						// 念押しで0.1秒待つ
+						setTimeout(function() {
+							func();
+						}, 100);
 					} catch (e) {
 						alert(e);
 						throw e;

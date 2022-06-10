@@ -269,6 +269,8 @@ let Dialogate = {
 					} catch (e) {
 						console.debug(e.message);
 					}
+
+					Nextize.first($dialogDiv);
 				},
 
 				/*
