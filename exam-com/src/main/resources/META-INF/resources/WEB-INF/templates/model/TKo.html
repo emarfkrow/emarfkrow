@@ -10,12 +10,6 @@
 </script>
 <script th:src="@{/model/TKoGridColumns.js}"></script>
 <script th:src="@{/model/TShisonGridColumns.js}"></script>
-<script th:src="@{/model/TSosenGridColumns.js}"></script>
-<script th:src="@{/model/TOyaGridColumns.js}"></script>
-<script th:src="@{/model/TEntityGridColumns.js}"></script>
-<script th:src="@{/model/TTenpuFileGridColumns.js}"></script>
-<script th:src="@{/model/MSansho1GridColumns.js}"></script>
-<script th:src="@{/model/MSansho2GridColumns.js}"></script>
 </head>
 <body>
   <div layout:fragment="article">
@@ -24,7 +18,7 @@
       <fieldset>
         <legend th:text="#{TKo.legend}">legend</legend>
         <div id="sosenId">
-          <label for="TKo.sosenId" th:text="#{TKo.sosenId}">祖先ID</label><span id="TKo.sosenId"></span><input type="hidden" id="TKo.sosenId" name="TKo.sosenId" class="primaryKey" /><a id="TKo.sosenId" th:href="@{/model/TSosenS.html}" target="dialog" class="primaryKey refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="TKo.sosenMei" class="refer" data-json="TSosenSearch.json" data-srcDef="SOSEN_ID:TKo.sosenId" data-destDef="TKo.sosenMei:SOSEN_MEI"></span>
+          <label for="TKo.sosenId" th:text="#{TKo.sosenId}">祖先ID</label><span id="TKo.sosenId"></span><input type="hidden" id="TKo.sosenId" name="TKo.sosenId" class="primaryKey" />
         </div>
         <div id="oyaSn">
           <label for="TKo.oyaSn" th:text="#{TKo.oyaSn}">親連番</label><span id="TKo.oyaSn"></span><input type="hidden" id="TKo.oyaSn" name="TKo.oyaSn" class="primaryKey" />
@@ -51,7 +45,7 @@
           <label for="TKo.updateBy" th:text="#{TKo.updateBy}">更新者</label><span id="TKo.updateBy"></span><input type="hidden" id="TKo.updateBy" name="TKo.updateBy" />
         </div>
         <div id="deleteF">
-          <fieldset id="TKo.deleteFList" data-options="MCodeValueSearch.json" data-optionParams="code_nm:delete_f" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+          <fieldset id="TKo.deleteFList" data-options="MCodeValueSearch.json" data-optionParams="code_nm:DELETE_F" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
             <legend th:text="#{TKo.deleteF}">削除フラグ</legend>
           </fieldset>
         </div>

@@ -3,7 +3,7 @@
  */
 
 let TEntity2GridColumns = [
-    Column.refer('SOSEN_ID', Messages['TEntity2Grid.sosenId'], 100, 'primaryKey', 'SOSEN_MEI'),
+    Column.cell('SOSEN_ID', Messages['TEntity2Grid.sosenId'], 100, 'primaryKey', null),
     Column.cell('OYA_SN', Messages['TEntity2Grid.oyaSn'], 100, 'primaryKey', null),
     Column.cell('ENTITY_SN', Messages['TEntity2Grid.entitySn'], 100, 'primaryKey', null),
     Column.text('NULL_ENTITY2_MEI', Messages['TEntity2Grid.nullEntity2Mei'], 200, '', null),

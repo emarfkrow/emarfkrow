@@ -36,14 +36,14 @@
           <label for="MCode.updateBy" th:text="#{MCode.updateBy}">更新者</label><span id="MCode.updateBy"></span><input type="hidden" id="MCode.updateBy" name="MCode.updateBy" />
         </div>
         <div id="deleteF">
-          <fieldset id="MCode.deleteFList" data-options="MCodeValueSearch.json" data-optionParams="code_nm:delete_f" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+          <fieldset id="MCode.deleteFList" data-options="MCodeValueSearch.json" data-optionParams="code_nm:DELETE_F" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
             <legend th:text="#{MCode.deleteF}">削除フラグ</legend>
           </fieldset>
         </div>
       </fieldset>
       <h3 th:text="#{MCodeValue.h3}">h3</h3>
       <a th:href="@{/model/MCodeValue.html}" id="MCodeValue" target="dialog" th:text="#{MCodeValue.add}" class="addChild" tabindex="-1">コード値マスタ</a>
-      <div id="MCodeValueGrid" data-selectionMode="link" data-addRow="true" data-frozenColumn="1" th:data-href="@{/model/MCodeValue.html}"></div>
+      <div id="MCodeValueGrid" data-selectionMode="link" data-frozenColumn="1" th:data-href="@{/model/MCodeValue.html}"></div>
       <div class="buttons">
         <button type="button" th:text="#{common.reset}" onClick="Dialogate.refresh(event);">reset</button>
         <a th:href="@{MCodeGet.xlsx(baseMei=#{MCode.h2})}" id="MCodeGet.xlsx" th:text="#{common.xlsx}" tabindex="-1">xlsx</a>

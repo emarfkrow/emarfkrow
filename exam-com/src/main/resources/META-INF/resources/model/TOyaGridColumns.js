@@ -3,7 +3,7 @@
  */
 
 let TOyaGridColumns = [
-    Column.refer('SOSEN_ID', Messages['TOyaGrid.sosenId'], 100, 'primaryKey', 'SOSEN_MEI'),
+    Column.cell('SOSEN_ID', Messages['TOyaGrid.sosenId'], 100, 'primaryKey', null),
     Column.cell('OYA_SN', Messages['TOyaGrid.oyaSn'], 100, 'primaryKey', null),
     Column.text('OYA_MEI', Messages['TOyaGrid.oyaMei'], 300, '', null),
     Column.cell('INSERT_DT', Messages['TOyaGrid.insertDt'], 230, 'metaInfo', Slick.Formatters.Extends.DateTime),

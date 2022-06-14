@@ -22,6 +22,7 @@ public class TEntity2 implements IEntity {
     /**
      * @return 祖先ID
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SOSEN_ID")
     public Integer getSosenId() {
         return this.sosenId;
     }
@@ -43,6 +44,7 @@ public class TEntity2 implements IEntity {
     /**
      * @return 親連番
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("OYA_SN")
     public Integer getOyaSn() {
         return this.oyaSn;
     }
@@ -64,6 +66,7 @@ public class TEntity2 implements IEntity {
     /**
      * @return エンティティ連番
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ENTITY_SN")
     public Integer getEntitySn() {
         return this.entitySn;
     }
@@ -85,6 +88,7 @@ public class TEntity2 implements IEntity {
     /**
      * @return 任意エンティティ２名
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("NULL_ENTITY2_MEI")
     public String getNullEntity2Mei() {
         return this.nullEntity2Mei;
     }
@@ -106,6 +110,7 @@ public class TEntity2 implements IEntity {
     /**
      * @return エンティティ２名
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ENTITY2_MEI")
     public String getEntity2Mei() {
         return this.entity2Mei;
     }
@@ -122,11 +127,12 @@ public class TEntity2 implements IEntity {
     }
 
     /** チェックフラグ */
-    private String checkF;
+    private String checkF = "0";
 
     /**
      * @return チェックフラグ
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("CHECK_F")
     public String getCheckF() {
         return this.checkF;
     }
@@ -148,6 +154,7 @@ public class TEntity2 implements IEntity {
     /**
      * @return ラジオ区分
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("RADIO_KB")
     public String getRadioKb() {
         return this.radioKb;
     }
@@ -169,6 +176,7 @@ public class TEntity2 implements IEntity {
     /**
      * @return プルダウン区分
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("PULLDOWN_KB")
     public String getPulldownKb() {
         return this.pulldownKb;
     }
@@ -190,6 +198,7 @@ public class TEntity2 implements IEntity {
     /**
      * @return メモ
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("MEMO_TX")
     public String getMemoTx() {
         return this.memoTx;
     }
@@ -211,6 +220,7 @@ public class TEntity2 implements IEntity {
     /**
      * @return 日付
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("HIDUKE_YMD")
     public String getHidukeYmd() {
         return this.hidukeYmd;
     }
@@ -232,6 +242,7 @@ public class TEntity2 implements IEntity {
     /**
      * @return 年月
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("NENGETSU_YM")
     public String getNengetsuYm() {
         return this.nengetsuYm;
     }
@@ -253,6 +264,7 @@ public class TEntity2 implements IEntity {
     /**
      * @return 年
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SAMPLE_Y")
     public String getSampleY() {
         return this.sampleY;
     }
@@ -274,6 +286,7 @@ public class TEntity2 implements IEntity {
     /**
      * @return 月
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SAMPLE_M")
     public String getSampleM() {
         return this.sampleM;
     }
@@ -298,6 +311,7 @@ public class TEntity2 implements IEntity {
     /**
      * @return 日時
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("NICHIJI_DT")
     public java.time.LocalDateTime getNichijiDt() {
         return this.nichijiDt;
     }
@@ -325,6 +339,7 @@ public class TEntity2 implements IEntity {
     /**
      * @return 時刻
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("JIKOKU_HM")
     public String getJikokuHm() {
         return this.jikokuHm;
     }
@@ -346,6 +361,7 @@ public class TEntity2 implements IEntity {
     /**
      * @return 時間
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("JIKAN_TM")
     public String getJikanTm() {
         return this.jikanTm;
     }
@@ -367,6 +383,7 @@ public class TEntity2 implements IEntity {
     /**
      * @return 数量
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SURYO_QT")
     public java.math.BigDecimal getSuryoQt() {
         return this.suryoQt;
     }
@@ -388,6 +405,7 @@ public class TEntity2 implements IEntity {
     /**
      * @return 単価
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("TANKA_AM")
     public java.math.BigDecimal getTankaAm() {
         return this.tankaAm;
     }
@@ -409,6 +427,7 @@ public class TEntity2 implements IEntity {
     /**
      * @return 金額
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("KINGAKU_AM")
     public java.math.BigDecimal getKingakuAm() {
         return this.kingakuAm;
     }
@@ -433,6 +452,7 @@ public class TEntity2 implements IEntity {
     /**
      * @return 登録日時
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("INSERT_DT")
     public java.time.LocalDateTime getInsertDt() {
         return this.insertDt;
     }
@@ -460,6 +480,7 @@ public class TEntity2 implements IEntity {
     /**
      * @return 登録者
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("INSERT_BY")
     public String getInsertBy() {
         return this.insertBy;
     }
@@ -484,6 +505,7 @@ public class TEntity2 implements IEntity {
     /**
      * @return 更新日時
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("UPDATE_DT")
     public java.time.LocalDateTime getUpdateDt() {
         return this.updateDt;
     }
@@ -511,6 +533,7 @@ public class TEntity2 implements IEntity {
     /**
      * @return 更新者
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("UPDATE_BY")
     public String getUpdateBy() {
         return this.updateBy;
     }
@@ -527,11 +550,12 @@ public class TEntity2 implements IEntity {
     }
 
     /** 削除フラグ */
-    private String deleteF;
+    private String deleteF = "0";
 
     /**
      * @return 削除フラグ
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("DELETE_F")
     public String getDeleteF() {
         return this.deleteF;
     }
@@ -558,9 +582,9 @@ public class TEntity2 implements IEntity {
     public static TEntity2 get(final Object param1, final Object param2, final Object param3) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("sosen_id = :sosen_id");
-        whereList.add("oya_sn = :oya_sn");
-        whereList.add("entity_sn = :entity_sn");
+        whereList.add("`SOSEN_ID` = :sosen_id");
+        whereList.add("`OYA_SN` = :oya_sn");
+        whereList.add("`ENTITY_SN` = :entity_sn");
 
         String sql = "SELECT * FROM t_entity2 WHERE " + String.join(" AND ", whereList);
 
@@ -586,30 +610,30 @@ public class TEntity2 implements IEntity {
 
         // エンティティ２の登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("sosen_id -- :sosen_id");
-        nameList.add("oya_sn -- :oya_sn");
-        nameList.add("entity_sn -- :entity_sn");
-        nameList.add("null_entity2_mei -- :null_entity2_mei");
-        nameList.add("entity2_mei -- :entity2_mei");
-        nameList.add("check_f -- :check_f");
-        nameList.add("radio_kb -- :radio_kb");
-        nameList.add("pulldown_kb -- :pulldown_kb");
-        nameList.add("memo_tx -- :memo_tx");
-        nameList.add("hiduke_ymd -- :hiduke_ymd");
-        nameList.add("nengetsu_ym -- :nengetsu_ym");
-        nameList.add("sample_y -- :sample_y");
-        nameList.add("sample_m -- :sample_m");
-        nameList.add("nichiji_dt -- :nichiji_dt");
-        nameList.add("jikoku_hm -- :jikoku_hm");
-        nameList.add("jikan_tm -- :jikan_tm");
-        nameList.add("suryo_qt -- :suryo_qt");
-        nameList.add("tanka_am -- :tanka_am");
-        nameList.add("kingaku_am -- :kingaku_am");
-        nameList.add("insert_dt -- :insert_dt");
-        nameList.add("insert_by -- :insert_by");
-        nameList.add("update_dt -- :update_dt");
-        nameList.add("update_by -- :update_by");
-        nameList.add("delete_f -- :delete_f");
+        nameList.add("`SOSEN_ID` -- :sosen_id");
+        nameList.add("`OYA_SN` -- :oya_sn");
+        nameList.add("`ENTITY_SN` -- :entity_sn");
+        nameList.add("`NULL_ENTITY2_MEI` -- :null_entity2_mei");
+        nameList.add("`ENTITY2_MEI` -- :entity2_mei");
+        nameList.add("`CHECK_F` -- :check_f");
+        nameList.add("`RADIO_KB` -- :radio_kb");
+        nameList.add("`PULLDOWN_KB` -- :pulldown_kb");
+        nameList.add("`MEMO_TX` -- :memo_tx");
+        nameList.add("`HIDUKE_YMD` -- :hiduke_ymd");
+        nameList.add("`NENGETSU_YM` -- :nengetsu_ym");
+        nameList.add("`SAMPLE_Y` -- :sample_y");
+        nameList.add("`SAMPLE_M` -- :sample_m");
+        nameList.add("`NICHIJI_DT` -- :nichiji_dt");
+        nameList.add("`JIKOKU_HM` -- :jikoku_hm");
+        nameList.add("`JIKAN_TM` -- :jikan_tm");
+        nameList.add("`SURYO_QT` -- :suryo_qt");
+        nameList.add("`TANKA_AM` -- :tanka_am");
+        nameList.add("`KINGAKU_AM` -- :kingaku_am");
+        nameList.add("`INSERT_DT` -- :insert_dt");
+        nameList.add("`INSERT_BY` -- :insert_by");
+        nameList.add("`UPDATE_DT` -- :update_dt");
+        nameList.add("`UPDATE_BY` -- :update_by");
+        nameList.add("`DELETE_F` -- :delete_f");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO t_entity2(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -655,17 +679,17 @@ public class TEntity2 implements IEntity {
             return;
         }
 
-        String sql = "SELECT CASE WHEN MAX(e.ENTITY_SN) IS NULL THEN 0 ELSE MAX(e.ENTITY_SN) * 1 END + 1 AS ENTITY_SN FROM t_entity2 e";
+        String sql = "SELECT CASE WHEN MAX(e.`ENTITY_SN`) IS NULL THEN 0 ELSE MAX(e.`ENTITY_SN`) * 1 END + 1 AS `ENTITY_SN` FROM t_entity2 e";
 
         Map<String, Object> params = new HashMap<String, Object>();
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("e.SOSEN_ID = :sosen_id");
-        whereList.add("e.OYA_SN = :oya_sn");
+        whereList.add("e.`SOSEN_ID` = :sosen_id");
+        whereList.add("e.`OYA_SN` = :oya_sn");
         sql += " WHERE " + String.join(" AND ", whereList);
 
-        params.put("sosenId", this.sosenId);
-        params.put("oyaSn", this.oyaSn);
+        params.put("sosen_id", this.sosenId);
+        params.put("oya_sn", this.oyaSn);
 
         jp.co.golorp.emarf.util.MapList mapList = Queries.select(sql, params);
         Object o = mapList.get(0).get("ENTITY_SN");
@@ -690,28 +714,28 @@ public class TEntity2 implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("sosen_id = :sosen_id");
-        setList.add("oya_sn = :oya_sn");
-        setList.add("entity_sn = :entity_sn");
-        setList.add("null_entity2_mei = :null_entity2_mei");
-        setList.add("entity2_mei = :entity2_mei");
-        setList.add("check_f = :check_f");
-        setList.add("radio_kb = :radio_kb");
-        setList.add("pulldown_kb = :pulldown_kb");
-        setList.add("memo_tx = :memo_tx");
-        setList.add("hiduke_ymd = :hiduke_ymd");
-        setList.add("nengetsu_ym = :nengetsu_ym");
-        setList.add("sample_y = :sample_y");
-        setList.add("sample_m = :sample_m");
-        setList.add("nichiji_dt = :nichiji_dt");
-        setList.add("jikoku_hm = :jikoku_hm");
-        setList.add("jikan_tm = :jikan_tm");
-        setList.add("suryo_qt = :suryo_qt");
-        setList.add("tanka_am = :tanka_am");
-        setList.add("kingaku_am = :kingaku_am");
-        setList.add("update_dt = :update_dt");
-        setList.add("update_by = :update_by");
-        setList.add("delete_f = :delete_f");
+        setList.add("`SOSEN_ID` = :sosen_id");
+        setList.add("`OYA_SN` = :oya_sn");
+        setList.add("`ENTITY_SN` = :entity_sn");
+        setList.add("`NULL_ENTITY2_MEI` = :null_entity2_mei");
+        setList.add("`ENTITY2_MEI` = :entity2_mei");
+        setList.add("`CHECK_F` = :check_f");
+        setList.add("`RADIO_KB` = :radio_kb");
+        setList.add("`PULLDOWN_KB` = :pulldown_kb");
+        setList.add("`MEMO_TX` = :memo_tx");
+        setList.add("`HIDUKE_YMD` = :hiduke_ymd");
+        setList.add("`NENGETSU_YM` = :nengetsu_ym");
+        setList.add("`SAMPLE_Y` = :sample_y");
+        setList.add("`SAMPLE_M` = :sample_m");
+        setList.add("`NICHIJI_DT` = :nichiji_dt");
+        setList.add("`JIKOKU_HM` = :jikoku_hm");
+        setList.add("`JIKAN_TM` = :jikan_tm");
+        setList.add("`SURYO_QT` = :suryo_qt");
+        setList.add("`TANKA_AM` = :tanka_am");
+        setList.add("`KINGAKU_AM` = :kingaku_am");
+        setList.add("`UPDATE_DT` = :update_dt");
+        setList.add("`UPDATE_BY` = :update_by");
+        setList.add("`DELETE_F` = :delete_f");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -733,35 +757,34 @@ public class TEntity2 implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("sosen_id = :sosen_id");
-        whereList.add("oya_sn = :oya_sn");
-        whereList.add("entity_sn = :entity_sn");
-        whereList.add("update_dt = '" + this.updateDt + "'");
+        whereList.add("`SOSEN_ID` = :sosen_id");
+        whereList.add("`OYA_SN` = :oya_sn");
+        whereList.add("`ENTITY_SN` = :entity_sn");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("SOSEN_ID", this.sosenId);
-        params.put("OYA_SN", this.oyaSn);
-        params.put("ENTITY_SN", this.entitySn);
-        params.put("NULL_ENTITY2_MEI", this.nullEntity2Mei);
-        params.put("ENTITY2_MEI", this.entity2Mei);
-        params.put("CHECK_F", this.checkF);
-        params.put("RADIO_KB", this.radioKb);
-        params.put("PULLDOWN_KB", this.pulldownKb);
-        params.put("MEMO_TX", this.memoTx);
-        params.put("HIDUKE_YMD", this.hidukeYmd);
-        params.put("NENGETSU_YM", this.nengetsuYm);
-        params.put("SAMPLE_Y", this.sampleY);
-        params.put("SAMPLE_M", this.sampleM);
-        params.put("NICHIJI_DT", this.nichijiDt);
-        params.put("JIKOKU_HM", this.jikokuHm);
-        params.put("JIKAN_TM", this.jikanTm);
-        params.put("SURYO_QT", this.suryoQt);
-        params.put("TANKA_AM", this.tankaAm);
-        params.put("KINGAKU_AM", this.kingakuAm);
-        params.put("DELETE_F", this.deleteF);
+        params.put("sosen_id", this.sosenId);
+        params.put("oya_sn", this.oyaSn);
+        params.put("entity_sn", this.entitySn);
+        params.put("null_entity2_mei", this.nullEntity2Mei);
+        params.put("entity2_mei", this.entity2Mei);
+        params.put("check_f", this.checkF);
+        params.put("radio_kb", this.radioKb);
+        params.put("pulldown_kb", this.pulldownKb);
+        params.put("memo_tx", this.memoTx);
+        params.put("hiduke_ymd", this.hidukeYmd);
+        params.put("nengetsu_ym", this.nengetsuYm);
+        params.put("sample_y", this.sampleY);
+        params.put("sample_m", this.sampleM);
+        params.put("nichiji_dt", this.nichijiDt);
+        params.put("jikoku_hm", this.jikokuHm);
+        params.put("jikan_tm", this.jikanTm);
+        params.put("suryo_qt", this.suryoQt);
+        params.put("tanka_am", this.tankaAm);
+        params.put("kingaku_am", this.kingakuAm);
+        params.put("delete_f", this.deleteF);
         params.put("insert_dt", now);
         params.put("insert_by", id);
         params.put("update_dt", now);

@@ -22,6 +22,7 @@ public class MSansho2 implements IEntity {
     /**
      * @return 参照２ID
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SANSHO2_ID")
     public String getSansho2Id() {
         return this.sansho2Id;
     }
@@ -43,6 +44,7 @@ public class MSansho2 implements IEntity {
     /**
      * @return 参照２名
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SANSHO2_MEI")
     public String getSansho2Mei() {
         return this.sansho2Mei;
     }
@@ -67,6 +69,7 @@ public class MSansho2 implements IEntity {
     /**
      * @return 登録日時
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("INSERT_DT")
     public java.time.LocalDateTime getInsertDt() {
         return this.insertDt;
     }
@@ -94,6 +97,7 @@ public class MSansho2 implements IEntity {
     /**
      * @return 登録者
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("INSERT_BY")
     public String getInsertBy() {
         return this.insertBy;
     }
@@ -118,6 +122,7 @@ public class MSansho2 implements IEntity {
     /**
      * @return 更新日時
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("UPDATE_DT")
     public java.time.LocalDateTime getUpdateDt() {
         return this.updateDt;
     }
@@ -145,6 +150,7 @@ public class MSansho2 implements IEntity {
     /**
      * @return 更新者
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("UPDATE_BY")
     public String getUpdateBy() {
         return this.updateBy;
     }
@@ -161,11 +167,12 @@ public class MSansho2 implements IEntity {
     }
 
     /** 削除フラグ */
-    private String deleteF;
+    private String deleteF = "0";
 
     /**
      * @return 削除フラグ
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("DELETE_F")
     public String getDeleteF() {
         return this.deleteF;
     }
@@ -190,7 +197,7 @@ public class MSansho2 implements IEntity {
     public static MSansho2 get(final Object param1) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (sansho2_id) = TRIM (:sansho2_id)");
+        whereList.add("TRIM (`SANSHO2_ID`) = TRIM (:sansho2_id)");
 
         String sql = "SELECT * FROM m_sansho2 WHERE " + String.join(" AND ", whereList);
 
@@ -214,13 +221,13 @@ public class MSansho2 implements IEntity {
 
         // 参照２マスタの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("sansho2_id -- :sansho2_id");
-        nameList.add("sansho2_mei -- :sansho2_mei");
-        nameList.add("insert_dt -- :insert_dt");
-        nameList.add("insert_by -- :insert_by");
-        nameList.add("update_dt -- :update_dt");
-        nameList.add("update_by -- :update_by");
-        nameList.add("delete_f -- :delete_f");
+        nameList.add("`SANSHO2_ID` -- :sansho2_id");
+        nameList.add("`SANSHO2_MEI` -- :sansho2_mei");
+        nameList.add("`INSERT_DT` -- :insert_dt");
+        nameList.add("`INSERT_BY` -- :insert_by");
+        nameList.add("`UPDATE_DT` -- :update_dt");
+        nameList.add("`UPDATE_BY` -- :update_by");
+        nameList.add("`DELETE_F` -- :delete_f");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO m_sansho2(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -249,7 +256,7 @@ public class MSansho2 implements IEntity {
             return;
         }
 
-        String sql = "SELECT LPAD (CASE WHEN MAX(e.SANSHO2_ID) IS NULL THEN 0 ELSE MAX(e.SANSHO2_ID) * 1 END + 1, 6, '0') AS SANSHO2_ID FROM m_sansho2 e WHERE e.SANSHO2_ID < '999999'";
+        String sql = "SELECT LPAD (CASE WHEN MAX(e.`SANSHO2_ID`) IS NULL THEN 0 ELSE MAX(e.`SANSHO2_ID`) * 1 END + 1, 6, '0') AS `SANSHO2_ID` FROM m_sansho2 e WHERE e.`SANSHO2_ID` < '999999'";
 
         Map<String, Object> params = new HashMap<String, Object>();
 
@@ -276,11 +283,11 @@ public class MSansho2 implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("sansho2_id = :sansho2_id");
-        setList.add("sansho2_mei = :sansho2_mei");
-        setList.add("update_dt = :update_dt");
-        setList.add("update_by = :update_by");
-        setList.add("delete_f = :delete_f");
+        setList.add("`SANSHO2_ID` = :sansho2_id");
+        setList.add("`SANSHO2_MEI` = :sansho2_mei");
+        setList.add("`UPDATE_DT` = :update_dt");
+        setList.add("`UPDATE_BY` = :update_by");
+        setList.add("`DELETE_F` = :delete_f");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -302,16 +309,15 @@ public class MSansho2 implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("TRIM (sansho2_id) = TRIM (:sansho2_id)");
-        whereList.add("update_dt = '" + this.updateDt + "'");
+        whereList.add("TRIM (`SANSHO2_ID`) = TRIM (:sansho2_id)");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("SANSHO2_ID", this.sansho2Id);
-        params.put("SANSHO2_MEI", this.sansho2Mei);
-        params.put("DELETE_F", this.deleteF);
+        params.put("sansho2_id", this.sansho2Id);
+        params.put("sansho2_mei", this.sansho2Mei);
+        params.put("delete_f", this.deleteF);
         params.put("insert_dt", now);
         params.put("insert_by", id);
         params.put("update_dt", now);

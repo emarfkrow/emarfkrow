@@ -278,7 +278,7 @@ $(function() {
 						// メタ情報以外の項目を親画面に反映
 						if (!columnName.match(Messages['column.meta.re'])) {
 							let camel = Casing.toCamel(prefix + columnName);
-							$(parentSelector + ' [name$="' + camel + '"]').val(item[columnName]);
+							$(parentSelector + ' [name$="' + camel + '"]:not([readonly])').val(item[columnName]);
 							$(parentSelector + ' span[id$="' + camel + '"]').html(item[columnName]);
 						}
 					}

@@ -1,23 +1,22 @@
 SELECT
       a.*
-    , (SELECT r1.CODE_MEI FROM m_code r1 WHERE r1.CODE_NM = a.CODE_NM) AS CODE_MEI
 FROM
     m_code_value a 
 WHERE
     1 = 1 
-    AND a.code_nm = :code_nm 
-    AND a.code_value = :code_value 
-    AND a.code_value_mei LIKE CONCAT ('%', :code_value_mei, '%') 
-    AND a.hyoji_jun = :hyoji_jun 
-    AND a.criteria = :criteria 
-    AND a.insert_dt = :insert_dt 
-    AND a.insert_dt >= :insert_dt_1 
-    AND a.insert_dt <= :insert_dt_2 
-    AND a.insert_by = :insert_by 
-    AND a.update_dt = :update_dt 
-    AND a.update_dt >= :update_dt_1 
-    AND a.update_dt <= :update_dt_2 
-    AND a.update_by = :update_by 
-    AND CASE WHEN a.delete_f IS NULL THEN '0' ELSE TO_CHAR (a.delete_f) END IN (:delete_f) 
+    AND a.`CODE_NM` = :code_nm 
+    AND a.`CODE_VALUE` = :code_value 
+    AND a.`CODE_VALUE_MEI` LIKE CONCAT ('%', :code_value_mei, '%') 
+    AND a.`HYOJI_JUN` = :hyoji_jun 
+    AND a.`CRITERIA` = :criteria 
+    AND a.`INSERT_DT` = :insert_dt 
+    AND a.`INSERT_DT` >= :insert_dt_1 
+    AND a.`INSERT_DT` <= :insert_dt_2 
+    AND a.`INSERT_BY` = :insert_by 
+    AND a.`UPDATE_DT` = :update_dt 
+    AND a.`UPDATE_DT` >= :update_dt_1 
+    AND a.`UPDATE_DT` <= :update_dt_2 
+    AND a.`UPDATE_BY` = :update_by 
+    AND CASE WHEN a.`DELETE_F` IS NULL THEN '0' ELSE TO_CHAR (a.`DELETE_F`) END IN (:delete_f) 
 ORDER BY
-    a.CODE_NM, a.CODE_VALUE
+    a.`CODE_NM`, a.`CODE_VALUE`

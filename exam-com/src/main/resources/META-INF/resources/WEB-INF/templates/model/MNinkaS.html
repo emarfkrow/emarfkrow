@@ -9,8 +9,6 @@
 
 </script>
 <script th:src="@{/model/MNinkaGridColumns.js}"></script>
-<script th:src="@{/model/MBushoGridColumns.js}"></script>
-<script th:src="@{/model/MShokuiGridColumns.js}"></script>
 </head>
 <body>
   <div layout:fragment="article">
@@ -19,16 +17,16 @@
       <fieldset>
         <legend th:text="#{MNinkaS.legend}">legend</legend>
         <div id="bushoId">
-          <label for="MNinka.bushoId" th:text="#{MNinka.bushoId}">部署ID</label><input type="text" id="MNinka.bushoId" name="MNinka.bushoId" maxlength="10" data-json="MBushoSearch.json" data-srcDef="BUSHO_ID:MNinka.bushoId" data-destDef="MNinka.bushoMei:BUSHO_MEI" /><a id="MNinka.bushoId" th:href="@{/model/MBushoS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MNinka.bushoMei" class="refer" data-json="MBushoSearch.json" data-srcDef="BUSHO_ID:MNinka.bushoId" data-destDef="MNinka.bushoMei:BUSHO_MEI"></span>
+          <label for="MNinka.bushoId" th:text="#{MNinka.bushoId}">部署ID</label><input type="text" id="MNinka.bushoId" name="MNinka.bushoId" maxlength="10" />
         </div>
         <div id="shokuiId">
-          <label for="MNinka.shokuiId" th:text="#{MNinka.shokuiId}">職位ID</label><input type="text" id="MNinka.shokuiId" name="MNinka.shokuiId" maxlength="10" data-json="MShokuiSearch.json" data-srcDef="SHOKUI_ID:MNinka.shokuiId" data-destDef="MNinka.shokuiMei:SHOKUI_MEI" /><a id="MNinka.shokuiId" th:href="@{/model/MShokuiS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MNinka.shokuiMei" class="refer" data-json="MShokuiSearch.json" data-srcDef="SHOKUI_ID:MNinka.shokuiId" data-destDef="MNinka.shokuiMei:SHOKUI_MEI"></span>
+          <label for="MNinka.shokuiId" th:text="#{MNinka.shokuiId}">職位ID</label><input type="text" id="MNinka.shokuiId" name="MNinka.shokuiId" maxlength="10" />
         </div>
         <div id="gamenNm">
           <label for="MNinka.gamenNm" th:text="#{MNinka.gamenNm}">画面名</label><input type="text" id="MNinka.gamenNm" name="MNinka.gamenNm" maxlength="20" />
         </div>
         <div id="kengenKb">
-          <fieldset id="MNinka.kengenKbList" data-options="MCodeValueSearch.json" data-optionParams="code_nm:kengen_kb" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+          <fieldset id="MNinka.kengenKbList" data-options="MCodeValueSearch.json" data-optionParams="code_nm:KENGEN_KB" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
             <legend th:text="#{MNinka.kengenKb}">権限区分</legend>
           </fieldset>
         </div>
@@ -39,14 +37,13 @@
           <label for="MNinka.shuryoYmd_1" th:text="#{MNinka.shuryoYmd}">終了日</label><input type="date" id="MNinka.shuryoYmd_1" name="MNinka.shuryoYmd_1" maxlength="10" />～<input type="date" id="MNinka.shuryoYmd_2" name="MNinka.shuryoYmd_2" maxlength="10" />
         </div>
         <div id="deleteF">
-          <fieldset id="MNinka.deleteFList" data-options="MCodeValueSearch.json" data-optionParams="code_nm:delete_f" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+          <fieldset id="MNinka.deleteFList" data-options="MCodeValueSearch.json" data-optionParams="code_nm:DELETE_F" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
             <legend th:text="#{MNinka.deleteF}">削除フラグ</legend>
           </fieldset>
         </div>
       </fieldset>
       <div class="buttons">
         <button type="reset" th:text="#{common.reset}">reset</button>
-        <a th:href="@{/model/MNinka.html}" id="MNinka" target="dialog" th:text="#{MNinka.add}" tabindex="-1">認可マスタ</a>
       </div>
       <div class="submits">
         <button id="SearchMNinka" class="search" data-gridId="MNinkaGrid" th:text="#{common.search}">submit</button>

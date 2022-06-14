@@ -11,11 +11,7 @@
 <script th:src="@{/model/TEntityGridColumns.js}"></script>
 <script th:src="@{/model/TKoGridColumns.js}"></script>
 <script th:src="@{/model/TShisonGridColumns.js}"></script>
-<script th:src="@{/model/TSosenGridColumns.js}"></script>
-<script th:src="@{/model/TOyaGridColumns.js}"></script>
 <script th:src="@{/model/TTenpuFileGridColumns.js}"></script>
-<script th:src="@{/model/MSansho1GridColumns.js}"></script>
-<script th:src="@{/model/MSansho2GridColumns.js}"></script>
 </head>
 <body>
   <div layout:fragment="article">
@@ -24,7 +20,7 @@
       <fieldset>
         <legend th:text="#{TEntity.legend}">legend</legend>
         <div id="sosenId">
-          <label for="TEntity.sosenId" th:text="#{TEntity.sosenId}">祖先ID</label><span id="TEntity.sosenId"></span><input type="hidden" id="TEntity.sosenId" name="TEntity.sosenId" class="primaryKey" /><a id="TEntity.sosenId" th:href="@{/model/TSosenS.html}" target="dialog" class="primaryKey refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="TEntity.sosenMei" class="refer" data-json="TSosenSearch.json" data-srcDef="SOSEN_ID:TEntity.sosenId" data-destDef="TEntity.sosenMei:SOSEN_MEI"></span>
+          <label for="TEntity.sosenId" th:text="#{TEntity.sosenId}">祖先ID</label><span id="TEntity.sosenId"></span><input type="hidden" id="TEntity.sosenId" name="TEntity.sosenId" class="primaryKey" />
         </div>
         <div id="oyaSn">
           <label for="TEntity.oyaSn" th:text="#{TEntity.oyaSn}">親連番</label><span id="TEntity.oyaSn"></span><input type="hidden" id="TEntity.oyaSn" name="TEntity.oyaSn" class="primaryKey" />
@@ -36,19 +32,19 @@
           <label for="TEntity.entityMei" th:text="#{TEntity.entityMei}">エンティティ名</label><input type="text" id="TEntity.entityMei" name="TEntity.entityMei" maxlength="30" />
         </div>
         <div id="sansho1Id">
-          <label for="TEntity.sansho1Id" th:text="#{TEntity.sansho1Id}">参照１ID</label><input type="text" id="TEntity.sansho1Id" name="TEntity.sansho1Id" maxlength="10" data-json="MSansho1Search.json" data-srcDef="SANSHO1_ID:TEntity.sansho1Id" data-destDef="TEntity.sansho1Mei:SANSHO1_MEI" /><a id="TEntity.sansho1Id" th:href="@{/model/MSansho1S.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a>
+          <label for="TEntity.sansho1Id" th:text="#{TEntity.sansho1Id}">参照１ID</label><input type="text" id="TEntity.sansho1Id" name="TEntity.sansho1Id" maxlength="10" />
         </div>
         <div id="sansho1Mei">
           <label for="TEntity.sansho1Mei" th:text="#{TEntity.sansho1Mei}">参照１名</label><input type="text" id="TEntity.sansho1Mei" name="TEntity.sansho1Mei" maxlength="30" />
         </div>
         <div id="sansho2Id">
-          <label for="TEntity.sansho2Id" th:text="#{TEntity.sansho2Id}">参照２ID</label><input type="text" id="TEntity.sansho2Id" name="TEntity.sansho2Id" maxlength="10" data-json="MSansho2Search.json" data-srcDef="SANSHO2_ID:TEntity.sansho2Id" data-destDef="TEntity.sansho2Mei:SANSHO2_MEI" /><a id="TEntity.sansho2Id" th:href="@{/model/MSansho2S.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a>
+          <label for="TEntity.sansho2Id" th:text="#{TEntity.sansho2Id}">参照２ID</label><input type="text" id="TEntity.sansho2Id" name="TEntity.sansho2Id" maxlength="10" />
         </div>
         <div id="sansho2Mei">
           <label for="TEntity.sansho2Mei" th:text="#{TEntity.sansho2Mei}">参照２名</label><input type="text" id="TEntity.sansho2Mei" name="TEntity.sansho2Mei" maxlength="30" />
         </div>
         <div id="betsuSansho1Id">
-          <label for="TEntity.betsuSansho1Id" th:text="#{TEntity.betsuSansho1Id}">別参照１ID</label><input type="text" id="TEntity.betsuSansho1Id" name="TEntity.betsuSansho1Id" maxlength="10" data-json="MSansho1Search.json" data-srcDef="SANSHO1_ID:TEntity.betsuSansho1Id" data-destDef="TEntity.betsuSansho1Mei:SANSHO1_MEI" /><a id="TEntity.betsuSansho1Id" th:href="@{/model/MSansho1S.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a>
+          <label for="TEntity.betsuSansho1Id" th:text="#{TEntity.betsuSansho1Id}">別参照１ID</label><input type="text" id="TEntity.betsuSansho1Id" name="TEntity.betsuSansho1Id" maxlength="10" />
         </div>
         <div id="betsuSansho1Mei">
           <label for="TEntity.betsuSansho1Mei" th:text="#{TEntity.betsuSansho1Mei}">別参照１名</label><input type="text" id="TEntity.betsuSansho1Mei" name="TEntity.betsuSansho1Mei" maxlength="30" />
@@ -66,7 +62,7 @@
           <label for="TEntity.updateBy" th:text="#{TEntity.updateBy}">更新者</label><span id="TEntity.updateBy"></span><input type="hidden" id="TEntity.updateBy" name="TEntity.updateBy" />
         </div>
         <div id="deleteF">
-          <fieldset id="TEntity.deleteFList" data-options="MCodeValueSearch.json" data-optionParams="code_nm:delete_f" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+          <fieldset id="TEntity.deleteFList" data-options="MCodeValueSearch.json" data-optionParams="code_nm:DELETE_F" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
             <legend th:text="#{TEntity.deleteF}">削除フラグ</legend>
           </fieldset>
         </div>
@@ -80,17 +76,17 @@
           <label for="TEntity2.entity2Mei" th:text="#{TEntity2.entity2Mei}">エンティティ２名</label><input type="text" id="TEntity2.entity2Mei" name="TEntity2.entity2Mei" maxlength="30" />
         </div>
         <div id="checkF">
-          <fieldset id="TEntity2.checkFList" data-options="MCodeValueSearch.json" data-optionParams="code_nm:check_f" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+          <fieldset id="TEntity2.checkFList" data-options="MCodeValueSearch.json" data-optionParams="code_nm:CHECK_F" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
             <legend th:text="#{TEntity2.checkF}">チェックフラグ</legend>
           </fieldset>
         </div>
         <div id="radioKb">
-          <fieldset id="TEntity2.radioKbList" data-options="MCodeValueSearch.json" data-optionParams="code_nm:radio_kb" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+          <fieldset id="TEntity2.radioKbList" data-options="MCodeValueSearch.json" data-optionParams="code_nm:RADIO_KB" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
             <legend th:text="#{TEntity2.radioKb}">ラジオ区分</legend>
           </fieldset>
         </div>
         <div id="pulldownKb">
-          <fieldset id="TEntity2.pulldownKbList" data-options="MCodeValueSearch.json" data-optionParams="code_nm:pulldown_kb" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+          <fieldset id="TEntity2.pulldownKbList" data-options="MCodeValueSearch.json" data-optionParams="code_nm:PULLDOWN_KB" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
             <legend th:text="#{TEntity2.pulldownKb}">プルダウン区分</legend>
           </fieldset>
         </div>
@@ -130,7 +126,7 @@
         </div>
         <input type="hidden" name="TEntity2.updateDt" />
         <div id="deleteF">
-          <fieldset id="TEntity2.deleteFList" data-options="MCodeValueSearch.json" data-optionParams="code_nm:delete_f" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+          <fieldset id="TEntity2.deleteFList" data-options="MCodeValueSearch.json" data-optionParams="code_nm:DELETE_F" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
             <legend th:text="#{TEntity2.deleteF}">削除フラグ</legend>
           </fieldset>
         </div>

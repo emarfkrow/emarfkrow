@@ -22,6 +22,7 @@ public class MNinka implements IEntity {
     /**
      * @return 部署ID
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("BUSHO_ID")
     public Integer getBushoId() {
         return this.bushoId;
     }
@@ -43,6 +44,7 @@ public class MNinka implements IEntity {
     /**
      * @return 職位ID
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SHOKUI_ID")
     public Integer getShokuiId() {
         return this.shokuiId;
     }
@@ -64,6 +66,7 @@ public class MNinka implements IEntity {
     /**
      * @return 画面名
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("GAMEN_NM")
     public String getGamenNm() {
         return this.gamenNm;
     }
@@ -85,6 +88,7 @@ public class MNinka implements IEntity {
     /**
      * @return 権限区分
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("KENGEN_KB")
     public String getKengenKb() {
         return this.kengenKb;
     }
@@ -106,6 +110,7 @@ public class MNinka implements IEntity {
     /**
      * @return 開始日
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("KAISHI_YMD")
     public String getKaishiYmd() {
         return this.kaishiYmd;
     }
@@ -127,6 +132,7 @@ public class MNinka implements IEntity {
     /**
      * @return 終了日
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SHURYO_YMD")
     public String getShuryoYmd() {
         return this.shuryoYmd;
     }
@@ -151,6 +157,7 @@ public class MNinka implements IEntity {
     /**
      * @return 登録日時
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("INSERT_DT")
     public java.time.LocalDateTime getInsertDt() {
         return this.insertDt;
     }
@@ -178,6 +185,7 @@ public class MNinka implements IEntity {
     /**
      * @return 登録者
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("INSERT_BY")
     public String getInsertBy() {
         return this.insertBy;
     }
@@ -202,6 +210,7 @@ public class MNinka implements IEntity {
     /**
      * @return 更新日時
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("UPDATE_DT")
     public java.time.LocalDateTime getUpdateDt() {
         return this.updateDt;
     }
@@ -229,6 +238,7 @@ public class MNinka implements IEntity {
     /**
      * @return 更新者
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("UPDATE_BY")
     public String getUpdateBy() {
         return this.updateBy;
     }
@@ -245,11 +255,12 @@ public class MNinka implements IEntity {
     }
 
     /** 削除フラグ */
-    private String deleteF;
+    private String deleteF = "0";
 
     /**
      * @return 削除フラグ
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("DELETE_F")
     public String getDeleteF() {
         return this.deleteF;
     }
@@ -276,9 +287,9 @@ public class MNinka implements IEntity {
     public static MNinka get(final Object param1, final Object param2, final Object param3) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("busho_id = :busho_id");
-        whereList.add("shokui_id = :shokui_id");
-        whereList.add("gamen_nm = :gamen_nm");
+        whereList.add("`BUSHO_ID` = :busho_id");
+        whereList.add("`SHOKUI_ID` = :shokui_id");
+        whereList.add("`GAMEN_NM` = :gamen_nm");
 
         String sql = "SELECT * FROM m_ninka WHERE " + String.join(" AND ", whereList);
 
@@ -301,17 +312,17 @@ public class MNinka implements IEntity {
 
         // 認可マスタの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("busho_id -- :busho_id");
-        nameList.add("shokui_id -- :shokui_id");
-        nameList.add("gamen_nm -- :gamen_nm");
-        nameList.add("kengen_kb -- :kengen_kb");
-        nameList.add("kaishi_ymd -- :kaishi_ymd");
-        nameList.add("shuryo_ymd -- :shuryo_ymd");
-        nameList.add("insert_dt -- :insert_dt");
-        nameList.add("insert_by -- :insert_by");
-        nameList.add("update_dt -- :update_dt");
-        nameList.add("update_by -- :update_by");
-        nameList.add("delete_f -- :delete_f");
+        nameList.add("`BUSHO_ID` -- :busho_id");
+        nameList.add("`SHOKUI_ID` -- :shokui_id");
+        nameList.add("`GAMEN_NM` -- :gamen_nm");
+        nameList.add("`KENGEN_KB` -- :kengen_kb");
+        nameList.add("`KAISHI_YMD` -- :kaishi_ymd");
+        nameList.add("`SHURYO_YMD` -- :shuryo_ymd");
+        nameList.add("`INSERT_DT` -- :insert_dt");
+        nameList.add("`INSERT_BY` -- :insert_by");
+        nameList.add("`UPDATE_DT` -- :update_dt");
+        nameList.add("`UPDATE_BY` -- :update_by");
+        nameList.add("`DELETE_F` -- :delete_f");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO m_ninka(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -354,15 +365,15 @@ public class MNinka implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("busho_id = :busho_id");
-        setList.add("shokui_id = :shokui_id");
-        setList.add("gamen_nm = :gamen_nm");
-        setList.add("kengen_kb = :kengen_kb");
-        setList.add("kaishi_ymd = :kaishi_ymd");
-        setList.add("shuryo_ymd = :shuryo_ymd");
-        setList.add("update_dt = :update_dt");
-        setList.add("update_by = :update_by");
-        setList.add("delete_f = :delete_f");
+        setList.add("`BUSHO_ID` = :busho_id");
+        setList.add("`SHOKUI_ID` = :shokui_id");
+        setList.add("`GAMEN_NM` = :gamen_nm");
+        setList.add("`KENGEN_KB` = :kengen_kb");
+        setList.add("`KAISHI_YMD` = :kaishi_ymd");
+        setList.add("`SHURYO_YMD` = :shuryo_ymd");
+        setList.add("`UPDATE_DT` = :update_dt");
+        setList.add("`UPDATE_BY` = :update_by");
+        setList.add("`DELETE_F` = :delete_f");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -384,22 +395,21 @@ public class MNinka implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("busho_id = :busho_id");
-        whereList.add("shokui_id = :shokui_id");
-        whereList.add("gamen_nm = :gamen_nm");
-        whereList.add("update_dt = '" + this.updateDt + "'");
+        whereList.add("`BUSHO_ID` = :busho_id");
+        whereList.add("`SHOKUI_ID` = :shokui_id");
+        whereList.add("`GAMEN_NM` = :gamen_nm");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("BUSHO_ID", this.bushoId);
-        params.put("SHOKUI_ID", this.shokuiId);
-        params.put("GAMEN_NM", this.gamenNm);
-        params.put("KENGEN_KB", this.kengenKb);
-        params.put("KAISHI_YMD", this.kaishiYmd);
-        params.put("SHURYO_YMD", this.shuryoYmd);
-        params.put("DELETE_F", this.deleteF);
+        params.put("busho_id", this.bushoId);
+        params.put("shokui_id", this.shokuiId);
+        params.put("gamen_nm", this.gamenNm);
+        params.put("kengen_kb", this.kengenKb);
+        params.put("kaishi_ymd", this.kaishiYmd);
+        params.put("shuryo_ymd", this.shuryoYmd);
+        params.put("delete_f", this.deleteF);
         params.put("insert_dt", now);
         params.put("insert_by", id);
         params.put("update_dt", now);

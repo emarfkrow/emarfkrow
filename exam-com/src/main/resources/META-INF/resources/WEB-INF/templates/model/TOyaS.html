@@ -12,10 +12,7 @@
 <script th:src="@{/model/TEntityGridColumns.js}"></script>
 <script th:src="@{/model/TKoGridColumns.js}"></script>
 <script th:src="@{/model/TShisonGridColumns.js}"></script>
-<script th:src="@{/model/TSosenGridColumns.js}"></script>
 <script th:src="@{/model/TTenpuFileGridColumns.js}"></script>
-<script th:src="@{/model/MSansho1GridColumns.js}"></script>
-<script th:src="@{/model/MSansho2GridColumns.js}"></script>
 </head>
 <body>
   <div layout:fragment="article">
@@ -24,7 +21,7 @@
       <fieldset>
         <legend th:text="#{TOyaS.legend}">legend</legend>
         <div id="sosenId">
-          <label for="TOya.sosenId" th:text="#{TOya.sosenId}">祖先ID</label><input type="text" id="TOya.sosenId" name="TOya.sosenId" maxlength="10" data-json="TSosenSearch.json" data-srcDef="SOSEN_ID:TOya.sosenId" data-destDef="TOya.sosenMei:SOSEN_MEI" /><a id="TOya.sosenId" th:href="@{/model/TSosenS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="TOya.sosenMei" class="refer" data-json="TSosenSearch.json" data-srcDef="SOSEN_ID:TOya.sosenId" data-destDef="TOya.sosenMei:SOSEN_MEI"></span>
+          <label for="TOya.sosenId" th:text="#{TOya.sosenId}">祖先ID</label><input type="text" id="TOya.sosenId" name="TOya.sosenId" maxlength="10" />
         </div>
         <div id="oyaSn">
           <label for="TOya.oyaSn" th:text="#{TOya.oyaSn}">親連番</label><input type="text" id="TOya.oyaSn" name="TOya.oyaSn" maxlength="10" />
@@ -33,14 +30,13 @@
           <label for="TOya.oyaMei" th:text="#{TOya.oyaMei}">親名</label><input type="text" id="TOya.oyaMei" name="TOya.oyaMei" maxlength="30" />
         </div>
         <div id="deleteF">
-          <fieldset id="TOya.deleteFList" data-options="MCodeValueSearch.json" data-optionParams="code_nm:delete_f" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+          <fieldset id="TOya.deleteFList" data-options="MCodeValueSearch.json" data-optionParams="code_nm:DELETE_F" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
             <legend th:text="#{TOya.deleteF}">削除フラグ</legend>
           </fieldset>
         </div>
       </fieldset>
       <div class="buttons">
         <button type="reset" th:text="#{common.reset}">reset</button>
-        <a th:href="@{/model/TOya.html}" id="TOya" target="dialog" th:text="#{TOya.add}" tabindex="-1">親</a>
       </div>
       <div class="submits">
         <button id="SearchTOya" class="search" data-gridId="TOyaGrid" th:text="#{common.search}">submit</button>

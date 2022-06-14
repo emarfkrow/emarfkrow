@@ -22,6 +22,7 @@ public class MShokui implements IEntity {
     /**
      * @return 職位ID
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SHOKUI_ID")
     public Integer getShokuiId() {
         return this.shokuiId;
     }
@@ -43,6 +44,7 @@ public class MShokui implements IEntity {
     /**
      * @return 職位名
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SHOKUI_MEI")
     public String getShokuiMei() {
         return this.shokuiMei;
     }
@@ -64,6 +66,7 @@ public class MShokui implements IEntity {
     /**
      * @return 職位順
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ORDER_ID")
     public Integer getOrderId() {
         return this.orderId;
     }
@@ -85,6 +88,7 @@ public class MShokui implements IEntity {
     /**
      * @return 開始日
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("KAISHI_YMD")
     public String getKaishiYmd() {
         return this.kaishiYmd;
     }
@@ -106,6 +110,7 @@ public class MShokui implements IEntity {
     /**
      * @return 終了日
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SHURYO_YMD")
     public String getShuryoYmd() {
         return this.shuryoYmd;
     }
@@ -130,6 +135,7 @@ public class MShokui implements IEntity {
     /**
      * @return 登録日時
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("INSERT_DT")
     public java.time.LocalDateTime getInsertDt() {
         return this.insertDt;
     }
@@ -157,6 +163,7 @@ public class MShokui implements IEntity {
     /**
      * @return 登録者
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("INSERT_BY")
     public String getInsertBy() {
         return this.insertBy;
     }
@@ -181,6 +188,7 @@ public class MShokui implements IEntity {
     /**
      * @return 更新日時
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("UPDATE_DT")
     public java.time.LocalDateTime getUpdateDt() {
         return this.updateDt;
     }
@@ -208,6 +216,7 @@ public class MShokui implements IEntity {
     /**
      * @return 更新者
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("UPDATE_BY")
     public String getUpdateBy() {
         return this.updateBy;
     }
@@ -224,11 +233,12 @@ public class MShokui implements IEntity {
     }
 
     /** 削除フラグ */
-    private String deleteF;
+    private String deleteF = "0";
 
     /**
      * @return 削除フラグ
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("DELETE_F")
     public String getDeleteF() {
         return this.deleteF;
     }
@@ -253,7 +263,7 @@ public class MShokui implements IEntity {
     public static MShokui get(final Object param1) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("shokui_id = :shokui_id");
+        whereList.add("`SHOKUI_ID` = :shokui_id");
 
         String sql = "SELECT * FROM m_shokui WHERE " + String.join(" AND ", whereList);
 
@@ -277,16 +287,16 @@ public class MShokui implements IEntity {
 
         // 職位マスタの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("shokui_id -- :shokui_id");
-        nameList.add("shokui_mei -- :shokui_mei");
-        nameList.add("order_id -- :order_id");
-        nameList.add("kaishi_ymd -- :kaishi_ymd");
-        nameList.add("shuryo_ymd -- :shuryo_ymd");
-        nameList.add("insert_dt -- :insert_dt");
-        nameList.add("insert_by -- :insert_by");
-        nameList.add("update_dt -- :update_dt");
-        nameList.add("update_by -- :update_by");
-        nameList.add("delete_f -- :delete_f");
+        nameList.add("`SHOKUI_ID` -- :shokui_id");
+        nameList.add("`SHOKUI_MEI` -- :shokui_mei");
+        nameList.add("`ORDER_ID` -- :order_id");
+        nameList.add("`KAISHI_YMD` -- :kaishi_ymd");
+        nameList.add("`SHURYO_YMD` -- :shuryo_ymd");
+        nameList.add("`INSERT_DT` -- :insert_dt");
+        nameList.add("`INSERT_BY` -- :insert_by");
+        nameList.add("`UPDATE_DT` -- :update_dt");
+        nameList.add("`UPDATE_BY` -- :update_by");
+        nameList.add("`DELETE_F` -- :delete_f");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO m_shokui(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -318,7 +328,7 @@ public class MShokui implements IEntity {
             return;
         }
 
-        String sql = "SELECT CASE WHEN MAX(e.SHOKUI_ID) IS NULL THEN 0 ELSE MAX(e.SHOKUI_ID) * 1 END + 1 AS SHOKUI_ID FROM m_shokui e";
+        String sql = "SELECT CASE WHEN MAX(e.`SHOKUI_ID`) IS NULL THEN 0 ELSE MAX(e.`SHOKUI_ID`) * 1 END + 1 AS `SHOKUI_ID` FROM m_shokui e";
 
         Map<String, Object> params = new HashMap<String, Object>();
 
@@ -345,14 +355,14 @@ public class MShokui implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("shokui_id = :shokui_id");
-        setList.add("shokui_mei = :shokui_mei");
-        setList.add("order_id = :order_id");
-        setList.add("kaishi_ymd = :kaishi_ymd");
-        setList.add("shuryo_ymd = :shuryo_ymd");
-        setList.add("update_dt = :update_dt");
-        setList.add("update_by = :update_by");
-        setList.add("delete_f = :delete_f");
+        setList.add("`SHOKUI_ID` = :shokui_id");
+        setList.add("`SHOKUI_MEI` = :shokui_mei");
+        setList.add("`ORDER_ID` = :order_id");
+        setList.add("`KAISHI_YMD` = :kaishi_ymd");
+        setList.add("`SHURYO_YMD` = :shuryo_ymd");
+        setList.add("`UPDATE_DT` = :update_dt");
+        setList.add("`UPDATE_BY` = :update_by");
+        setList.add("`DELETE_F` = :delete_f");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -374,19 +384,18 @@ public class MShokui implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("shokui_id = :shokui_id");
-        whereList.add("update_dt = '" + this.updateDt + "'");
+        whereList.add("`SHOKUI_ID` = :shokui_id");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("SHOKUI_ID", this.shokuiId);
-        params.put("SHOKUI_MEI", this.shokuiMei);
-        params.put("ORDER_ID", this.orderId);
-        params.put("KAISHI_YMD", this.kaishiYmd);
-        params.put("SHURYO_YMD", this.shuryoYmd);
-        params.put("DELETE_F", this.deleteF);
+        params.put("shokui_id", this.shokuiId);
+        params.put("shokui_mei", this.shokuiMei);
+        params.put("order_id", this.orderId);
+        params.put("kaishi_ymd", this.kaishiYmd);
+        params.put("shuryo_ymd", this.shuryoYmd);
+        params.put("delete_f", this.deleteF);
         params.put("insert_dt", now);
         params.put("insert_by", id);
         params.put("update_dt", now);

@@ -9,9 +9,6 @@
 
 </script>
 <script th:src="@{/model/MShozokuGridColumns.js}"></script>
-<script th:src="@{/model/MBushoGridColumns.js}"></script>
-<script th:src="@{/model/MShokuiGridColumns.js}"></script>
-<script th:src="@{/model/MUserGridColumns.js}"></script>
 </head>
 <body>
   <div layout:fragment="article">
@@ -20,13 +17,13 @@
       <fieldset>
         <legend th:text="#{MShozoku.legend}">legend</legend>
         <div id="bushoId">
-          <label for="MShozoku.bushoId" th:text="#{MShozoku.bushoId}">部署ID</label><span id="MShozoku.bushoId"></span><input type="hidden" id="MShozoku.bushoId" name="MShozoku.bushoId" class="primaryKey" /><a id="MShozoku.bushoId" th:href="@{/model/MBushoS.html}" target="dialog" class="primaryKey refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MShozoku.bushoMei" class="refer" data-json="MBushoSearch.json" data-srcDef="BUSHO_ID:MShozoku.bushoId" data-destDef="MShozoku.bushoMei:BUSHO_MEI"></span>
+          <label for="MShozoku.bushoId" th:text="#{MShozoku.bushoId}">部署ID</label><span id="MShozoku.bushoId"></span><input type="hidden" id="MShozoku.bushoId" name="MShozoku.bushoId" class="primaryKey" />
         </div>
         <div id="shokuiId">
-          <label for="MShozoku.shokuiId" th:text="#{MShozoku.shokuiId}">職位ID</label><span id="MShozoku.shokuiId"></span><input type="hidden" id="MShozoku.shokuiId" name="MShozoku.shokuiId" class="primaryKey" /><a id="MShozoku.shokuiId" th:href="@{/model/MShokuiS.html}" target="dialog" class="primaryKey refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MShozoku.shokuiMei" class="refer" data-json="MShokuiSearch.json" data-srcDef="SHOKUI_ID:MShozoku.shokuiId" data-destDef="MShozoku.shokuiMei:SHOKUI_MEI"></span>
+          <label for="MShozoku.shokuiId" th:text="#{MShozoku.shokuiId}">職位ID</label><span id="MShozoku.shokuiId"></span><input type="hidden" id="MShozoku.shokuiId" name="MShozoku.shokuiId" class="primaryKey" />
         </div>
         <div id="userId">
-          <label for="MShozoku.userId" th:text="#{MShozoku.userId}">ユーザID</label><span id="MShozoku.userId"></span><input type="hidden" id="MShozoku.userId" name="MShozoku.userId" class="primaryKey" /><a id="MShozoku.userId" th:href="@{/model/MUserS.html}" target="dialog" class="primaryKey refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MShozoku.userMei" class="refer" data-json="MUserSearch.json" data-srcDef="USER_ID:MShozoku.userId" data-destDef="MShozoku.userMei:USER_MEI"></span>
+          <label for="MShozoku.userId" th:text="#{MShozoku.userId}">ユーザID</label><span id="MShozoku.userId"></span><input type="hidden" id="MShozoku.userId" name="MShozoku.userId" class="primaryKey" />
         </div>
         <div id="kaishiYmd">
           <label for="MShozoku.kaishiYmd" th:text="#{MShozoku.kaishiYmd}">開始日</label><input type="date" id="MShozoku.kaishiYmd" name="MShozoku.kaishiYmd" maxlength="10" />
@@ -47,7 +44,7 @@
           <label for="MShozoku.updateBy" th:text="#{MShozoku.updateBy}">更新者</label><span id="MShozoku.updateBy"></span><input type="hidden" id="MShozoku.updateBy" name="MShozoku.updateBy" />
         </div>
         <div id="deleteF">
-          <fieldset id="MShozoku.deleteFList" data-options="MCodeValueSearch.json" data-optionParams="code_nm:delete_f" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+          <fieldset id="MShozoku.deleteFList" data-options="MCodeValueSearch.json" data-optionParams="code_nm:DELETE_F" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
             <legend th:text="#{MShozoku.deleteF}">削除フラグ</legend>
           </fieldset>
         </div>

@@ -22,6 +22,7 @@ public class MCodeValue implements IEntity {
     /**
      * @return コード名称
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("CODE_NM")
     public String getCodeNm() {
         return this.codeNm;
     }
@@ -43,6 +44,7 @@ public class MCodeValue implements IEntity {
     /**
      * @return コード値
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("CODE_VALUE")
     public String getCodeValue() {
         return this.codeValue;
     }
@@ -64,6 +66,7 @@ public class MCodeValue implements IEntity {
     /**
      * @return コード値名
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("CODE_VALUE_MEI")
     public String getCodeValueMei() {
         return this.codeValueMei;
     }
@@ -85,6 +88,7 @@ public class MCodeValue implements IEntity {
     /**
      * @return 表示順
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("HYOJI_JUN")
     public Integer getHyojiJun() {
         return this.hyojiJun;
     }
@@ -106,6 +110,7 @@ public class MCodeValue implements IEntity {
     /**
      * @return 取得条件
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("CRITERIA")
     public String getCriteria() {
         return this.criteria;
     }
@@ -130,6 +135,7 @@ public class MCodeValue implements IEntity {
     /**
      * @return 登録日時
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("INSERT_DT")
     public java.time.LocalDateTime getInsertDt() {
         return this.insertDt;
     }
@@ -157,6 +163,7 @@ public class MCodeValue implements IEntity {
     /**
      * @return 登録者
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("INSERT_BY")
     public String getInsertBy() {
         return this.insertBy;
     }
@@ -181,6 +188,7 @@ public class MCodeValue implements IEntity {
     /**
      * @return 更新日時
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("UPDATE_DT")
     public java.time.LocalDateTime getUpdateDt() {
         return this.updateDt;
     }
@@ -208,6 +216,7 @@ public class MCodeValue implements IEntity {
     /**
      * @return 更新者
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("UPDATE_BY")
     public String getUpdateBy() {
         return this.updateBy;
     }
@@ -224,11 +233,12 @@ public class MCodeValue implements IEntity {
     }
 
     /** 削除フラグ */
-    private String deleteF;
+    private String deleteF = "0";
 
     /**
      * @return 削除フラグ
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("DELETE_F")
     public String getDeleteF() {
         return this.deleteF;
     }
@@ -254,8 +264,8 @@ public class MCodeValue implements IEntity {
     public static MCodeValue get(final Object param1, final Object param2) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("code_nm = :code_nm");
-        whereList.add("code_value = :code_value");
+        whereList.add("`CODE_NM` = :code_nm");
+        whereList.add("`CODE_VALUE` = :code_value");
 
         String sql = "SELECT * FROM m_code_value WHERE " + String.join(" AND ", whereList);
 
@@ -277,16 +287,16 @@ public class MCodeValue implements IEntity {
 
         // コード値マスタの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("code_nm -- :code_nm");
-        nameList.add("code_value -- :code_value");
-        nameList.add("code_value_mei -- :code_value_mei");
-        nameList.add("hyoji_jun -- :hyoji_jun");
-        nameList.add("criteria -- :criteria");
-        nameList.add("insert_dt -- :insert_dt");
-        nameList.add("insert_by -- :insert_by");
-        nameList.add("update_dt -- :update_dt");
-        nameList.add("update_by -- :update_by");
-        nameList.add("delete_f -- :delete_f");
+        nameList.add("`CODE_NM` -- :code_nm");
+        nameList.add("`CODE_VALUE` -- :code_value");
+        nameList.add("`CODE_VALUE_MEI` -- :code_value_mei");
+        nameList.add("`HYOJI_JUN` -- :hyoji_jun");
+        nameList.add("`CRITERIA` -- :criteria");
+        nameList.add("`INSERT_DT` -- :insert_dt");
+        nameList.add("`INSERT_BY` -- :insert_by");
+        nameList.add("`UPDATE_DT` -- :update_dt");
+        nameList.add("`UPDATE_BY` -- :update_by");
+        nameList.add("`DELETE_F` -- :delete_f");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO m_code_value(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -328,14 +338,14 @@ public class MCodeValue implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("code_nm = :code_nm");
-        setList.add("code_value = :code_value");
-        setList.add("code_value_mei = :code_value_mei");
-        setList.add("hyoji_jun = :hyoji_jun");
-        setList.add("criteria = :criteria");
-        setList.add("update_dt = :update_dt");
-        setList.add("update_by = :update_by");
-        setList.add("delete_f = :delete_f");
+        setList.add("`CODE_NM` = :code_nm");
+        setList.add("`CODE_VALUE` = :code_value");
+        setList.add("`CODE_VALUE_MEI` = :code_value_mei");
+        setList.add("`HYOJI_JUN` = :hyoji_jun");
+        setList.add("`CRITERIA` = :criteria");
+        setList.add("`UPDATE_DT` = :update_dt");
+        setList.add("`UPDATE_BY` = :update_by");
+        setList.add("`DELETE_F` = :delete_f");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -357,20 +367,19 @@ public class MCodeValue implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("code_nm = :code_nm");
-        whereList.add("code_value = :code_value");
-        whereList.add("update_dt = '" + this.updateDt + "'");
+        whereList.add("`CODE_NM` = :code_nm");
+        whereList.add("`CODE_VALUE` = :code_value");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("CODE_NM", this.codeNm);
-        params.put("CODE_VALUE", this.codeValue);
-        params.put("CODE_VALUE_MEI", this.codeValueMei);
-        params.put("HYOJI_JUN", this.hyojiJun);
-        params.put("CRITERIA", this.criteria);
-        params.put("DELETE_F", this.deleteF);
+        params.put("code_nm", this.codeNm);
+        params.put("code_value", this.codeValue);
+        params.put("code_value_mei", this.codeValueMei);
+        params.put("hyoji_jun", this.hyojiJun);
+        params.put("criteria", this.criteria);
+        params.put("delete_f", this.deleteF);
         params.put("insert_dt", now);
         params.put("insert_by", id);
         params.put("update_dt", now);

@@ -9,13 +9,6 @@
 
 </script>
 <script th:src="@{/model/TShisonGridColumns.js}"></script>
-<script th:src="@{/model/TSosenGridColumns.js}"></script>
-<script th:src="@{/model/TOyaGridColumns.js}"></script>
-<script th:src="@{/model/TEntityGridColumns.js}"></script>
-<script th:src="@{/model/TKoGridColumns.js}"></script>
-<script th:src="@{/model/TTenpuFileGridColumns.js}"></script>
-<script th:src="@{/model/MSansho1GridColumns.js}"></script>
-<script th:src="@{/model/MSansho2GridColumns.js}"></script>
 </head>
 <body>
   <div layout:fragment="article">
@@ -24,7 +17,7 @@
       <fieldset>
         <legend th:text="#{TShisonS.legend}">legend</legend>
         <div id="sosenId">
-          <label for="TShison.sosenId" th:text="#{TShison.sosenId}">祖先ID</label><input type="text" id="TShison.sosenId" name="TShison.sosenId" maxlength="10" data-json="TSosenSearch.json" data-srcDef="SOSEN_ID:TShison.sosenId" data-destDef="TShison.sosenMei:SOSEN_MEI" /><a id="TShison.sosenId" th:href="@{/model/TSosenS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="TShison.sosenMei" class="refer" data-json="TSosenSearch.json" data-srcDef="SOSEN_ID:TShison.sosenId" data-destDef="TShison.sosenMei:SOSEN_MEI"></span>
+          <label for="TShison.sosenId" th:text="#{TShison.sosenId}">祖先ID</label><input type="text" id="TShison.sosenId" name="TShison.sosenId" maxlength="10" />
         </div>
         <div id="oyaSn">
           <label for="TShison.oyaSn" th:text="#{TShison.oyaSn}">親連番</label><input type="text" id="TShison.oyaSn" name="TShison.oyaSn" maxlength="10" />
@@ -42,7 +35,7 @@
           <label for="TShison.shisonMei" th:text="#{TShison.shisonMei}">子孫名</label><input type="text" id="TShison.shisonMei" name="TShison.shisonMei" maxlength="30" />
         </div>
         <div id="deleteF">
-          <fieldset id="TShison.deleteFList" data-options="MCodeValueSearch.json" data-optionParams="code_nm:delete_f" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+          <fieldset id="TShison.deleteFList" data-options="MCodeValueSearch.json" data-optionParams="code_nm:DELETE_F" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
             <legend th:text="#{TShison.deleteF}">削除フラグ</legend>
           </fieldset>
         </div>

@@ -22,6 +22,7 @@ public class MUser implements IEntity {
     /**
      * @return ユーザID
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_ID")
     public Integer getUserId() {
         return this.userId;
     }
@@ -43,6 +44,7 @@ public class MUser implements IEntity {
     /**
      * @return ユーザ姓
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_SEI")
     public String getUserSei() {
         return this.userSei;
     }
@@ -64,6 +66,7 @@ public class MUser implements IEntity {
     /**
      * @return ユーザ名
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("USER_MEI")
     public String getUserMei() {
         return this.userMei;
     }
@@ -85,6 +88,7 @@ public class MUser implements IEntity {
     /**
      * @return メールアドレス
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("EMAIL")
     public String getEmail() {
         return this.email;
     }
@@ -106,6 +110,7 @@ public class MUser implements IEntity {
     /**
      * @return パスワード
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("PASSWORD")
     public String getPassword() {
         return this.password;
     }
@@ -130,6 +135,7 @@ public class MUser implements IEntity {
     /**
      * @return 登録日時
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("INSERT_DT")
     public java.time.LocalDateTime getInsertDt() {
         return this.insertDt;
     }
@@ -157,6 +163,7 @@ public class MUser implements IEntity {
     /**
      * @return 登録者
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("INSERT_BY")
     public String getInsertBy() {
         return this.insertBy;
     }
@@ -181,6 +188,7 @@ public class MUser implements IEntity {
     /**
      * @return 更新日時
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("UPDATE_DT")
     public java.time.LocalDateTime getUpdateDt() {
         return this.updateDt;
     }
@@ -208,6 +216,7 @@ public class MUser implements IEntity {
     /**
      * @return 更新者
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("UPDATE_BY")
     public String getUpdateBy() {
         return this.updateBy;
     }
@@ -224,11 +233,12 @@ public class MUser implements IEntity {
     }
 
     /** 削除フラグ */
-    private String deleteF;
+    private String deleteF = "0";
 
     /**
      * @return 削除フラグ
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("DELETE_F")
     public String getDeleteF() {
         return this.deleteF;
     }
@@ -253,7 +263,7 @@ public class MUser implements IEntity {
     public static MUser get(final Object param1) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("user_id = :user_id");
+        whereList.add("`USER_ID` = :user_id");
 
         String sql = "SELECT * FROM m_user WHERE " + String.join(" AND ", whereList);
 
@@ -277,16 +287,16 @@ public class MUser implements IEntity {
 
         // ユーザマスタの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("user_id -- :user_id");
-        nameList.add("user_sei -- :user_sei");
-        nameList.add("user_mei -- :user_mei");
-        nameList.add("email -- :email");
-        nameList.add("password -- :password");
-        nameList.add("insert_dt -- :insert_dt");
-        nameList.add("insert_by -- :insert_by");
-        nameList.add("update_dt -- :update_dt");
-        nameList.add("update_by -- :update_by");
-        nameList.add("delete_f -- :delete_f");
+        nameList.add("`USER_ID` -- :user_id");
+        nameList.add("`USER_SEI` -- :user_sei");
+        nameList.add("`USER_MEI` -- :user_mei");
+        nameList.add("`EMAIL` -- :email");
+        nameList.add("`PASSWORD` -- :password");
+        nameList.add("`INSERT_DT` -- :insert_dt");
+        nameList.add("`INSERT_BY` -- :insert_by");
+        nameList.add("`UPDATE_DT` -- :update_dt");
+        nameList.add("`UPDATE_BY` -- :update_by");
+        nameList.add("`DELETE_F` -- :delete_f");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO m_user(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -318,7 +328,7 @@ public class MUser implements IEntity {
             return;
         }
 
-        String sql = "SELECT CASE WHEN MAX(e.USER_ID) IS NULL THEN 0 ELSE MAX(e.USER_ID) * 1 END + 1 AS USER_ID FROM m_user e";
+        String sql = "SELECT CASE WHEN MAX(e.`USER_ID`) IS NULL THEN 0 ELSE MAX(e.`USER_ID`) * 1 END + 1 AS `USER_ID` FROM m_user e";
 
         Map<String, Object> params = new HashMap<String, Object>();
 
@@ -345,14 +355,14 @@ public class MUser implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("user_id = :user_id");
-        setList.add("user_sei = :user_sei");
-        setList.add("user_mei = :user_mei");
-        setList.add("email = :email");
-        setList.add("password = :password");
-        setList.add("update_dt = :update_dt");
-        setList.add("update_by = :update_by");
-        setList.add("delete_f = :delete_f");
+        setList.add("`USER_ID` = :user_id");
+        setList.add("`USER_SEI` = :user_sei");
+        setList.add("`USER_MEI` = :user_mei");
+        setList.add("`EMAIL` = :email");
+        setList.add("`PASSWORD` = :password");
+        setList.add("`UPDATE_DT` = :update_dt");
+        setList.add("`UPDATE_BY` = :update_by");
+        setList.add("`DELETE_F` = :delete_f");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -374,19 +384,18 @@ public class MUser implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("user_id = :user_id");
-        whereList.add("update_dt = '" + this.updateDt + "'");
+        whereList.add("`USER_ID` = :user_id");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("USER_ID", this.userId);
-        params.put("USER_SEI", this.userSei);
-        params.put("USER_MEI", this.userMei);
-        params.put("EMAIL", this.email);
-        params.put("PASSWORD", this.password);
-        params.put("DELETE_F", this.deleteF);
+        params.put("user_id", this.userId);
+        params.put("user_sei", this.userSei);
+        params.put("user_mei", this.userMei);
+        params.put("email", this.email);
+        params.put("password", this.password);
+        params.put("delete_f", this.deleteF);
         params.put("insert_dt", now);
         params.put("insert_by", id);
         params.put("update_dt", now);

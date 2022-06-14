@@ -22,6 +22,7 @@ public class TEntity implements IEntity {
     /**
      * @return 祖先ID
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SOSEN_ID")
     public Integer getSosenId() {
         return this.sosenId;
     }
@@ -43,6 +44,7 @@ public class TEntity implements IEntity {
     /**
      * @return 親連番
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("OYA_SN")
     public Integer getOyaSn() {
         return this.oyaSn;
     }
@@ -64,6 +66,7 @@ public class TEntity implements IEntity {
     /**
      * @return エンティティ連番
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ENTITY_SN")
     public Integer getEntitySn() {
         return this.entitySn;
     }
@@ -85,6 +88,7 @@ public class TEntity implements IEntity {
     /**
      * @return エンティティ名
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ENTITY_MEI")
     public String getEntityMei() {
         return this.entityMei;
     }
@@ -106,6 +110,7 @@ public class TEntity implements IEntity {
     /**
      * @return 参照１ID
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SANSHO1_ID")
     public Integer getSansho1Id() {
         return this.sansho1Id;
     }
@@ -127,6 +132,7 @@ public class TEntity implements IEntity {
     /**
      * @return 参照１名
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SANSHO1_MEI")
     public String getSansho1Mei() {
         return this.sansho1Mei;
     }
@@ -148,6 +154,7 @@ public class TEntity implements IEntity {
     /**
      * @return 参照２ID
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SANSHO2_ID")
     public Integer getSansho2Id() {
         return this.sansho2Id;
     }
@@ -169,6 +176,7 @@ public class TEntity implements IEntity {
     /**
      * @return 参照２名
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SANSHO2_MEI")
     public String getSansho2Mei() {
         return this.sansho2Mei;
     }
@@ -190,6 +198,7 @@ public class TEntity implements IEntity {
     /**
      * @return 別参照１ID
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("BETSU_SANSHO1_ID")
     public Integer getBetsuSansho1Id() {
         return this.betsuSansho1Id;
     }
@@ -211,6 +220,7 @@ public class TEntity implements IEntity {
     /**
      * @return 別参照１名
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("BETSU_SANSHO1_MEI")
     public String getBetsuSansho1Mei() {
         return this.betsuSansho1Mei;
     }
@@ -235,6 +245,7 @@ public class TEntity implements IEntity {
     /**
      * @return 登録日時
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("INSERT_DT")
     public java.time.LocalDateTime getInsertDt() {
         return this.insertDt;
     }
@@ -262,6 +273,7 @@ public class TEntity implements IEntity {
     /**
      * @return 登録者
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("INSERT_BY")
     public String getInsertBy() {
         return this.insertBy;
     }
@@ -286,6 +298,7 @@ public class TEntity implements IEntity {
     /**
      * @return 更新日時
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("UPDATE_DT")
     public java.time.LocalDateTime getUpdateDt() {
         return this.updateDt;
     }
@@ -313,6 +326,7 @@ public class TEntity implements IEntity {
     /**
      * @return 更新者
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("UPDATE_BY")
     public String getUpdateBy() {
         return this.updateBy;
     }
@@ -329,11 +343,12 @@ public class TEntity implements IEntity {
     }
 
     /** 削除フラグ */
-    private String deleteF;
+    private String deleteF = "0";
 
     /**
      * @return 削除フラグ
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("DELETE_F")
     public String getDeleteF() {
         return this.deleteF;
     }
@@ -360,9 +375,9 @@ public class TEntity implements IEntity {
     public static TEntity get(final Object param1, final Object param2, final Object param3) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("sosen_id = :sosen_id");
-        whereList.add("oya_sn = :oya_sn");
-        whereList.add("entity_sn = :entity_sn");
+        whereList.add("`SOSEN_ID` = :sosen_id");
+        whereList.add("`OYA_SN` = :oya_sn");
+        whereList.add("`ENTITY_SN` = :entity_sn");
 
         String sql = "SELECT * FROM t_entity WHERE " + String.join(" AND ", whereList);
 
@@ -435,21 +450,21 @@ public class TEntity implements IEntity {
 
         // エンティティの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("sosen_id -- :sosen_id");
-        nameList.add("oya_sn -- :oya_sn");
-        nameList.add("entity_sn -- :entity_sn");
-        nameList.add("entity_mei -- :entity_mei");
-        nameList.add("sansho1_id -- :sansho1_id");
-        nameList.add("sansho1_mei -- :sansho1_mei");
-        nameList.add("sansho2_id -- :sansho2_id");
-        nameList.add("sansho2_mei -- :sansho2_mei");
-        nameList.add("betsu_sansho1_id -- :betsu_sansho1_id");
-        nameList.add("betsu_sansho1_mei -- :betsu_sansho1_mei");
-        nameList.add("insert_dt -- :insert_dt");
-        nameList.add("insert_by -- :insert_by");
-        nameList.add("update_dt -- :update_dt");
-        nameList.add("update_by -- :update_by");
-        nameList.add("delete_f -- :delete_f");
+        nameList.add("`SOSEN_ID` -- :sosen_id");
+        nameList.add("`OYA_SN` -- :oya_sn");
+        nameList.add("`ENTITY_SN` -- :entity_sn");
+        nameList.add("`ENTITY_MEI` -- :entity_mei");
+        nameList.add("`SANSHO1_ID` -- :sansho1_id");
+        nameList.add("`SANSHO1_MEI` -- :sansho1_mei");
+        nameList.add("`SANSHO2_ID` -- :sansho2_id");
+        nameList.add("`SANSHO2_MEI` -- :sansho2_mei");
+        nameList.add("`BETSU_SANSHO1_ID` -- :betsu_sansho1_id");
+        nameList.add("`BETSU_SANSHO1_MEI` -- :betsu_sansho1_mei");
+        nameList.add("`INSERT_DT` -- :insert_dt");
+        nameList.add("`INSERT_BY` -- :insert_by");
+        nameList.add("`UPDATE_DT` -- :update_dt");
+        nameList.add("`UPDATE_BY` -- :update_by");
+        nameList.add("`DELETE_F` -- :delete_f");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO t_entity(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -486,17 +501,17 @@ public class TEntity implements IEntity {
             return;
         }
 
-        String sql = "SELECT CASE WHEN MAX(e.ENTITY_SN) IS NULL THEN 0 ELSE MAX(e.ENTITY_SN) * 1 END + 1 AS ENTITY_SN FROM t_entity e";
+        String sql = "SELECT CASE WHEN MAX(e.`ENTITY_SN`) IS NULL THEN 0 ELSE MAX(e.`ENTITY_SN`) * 1 END + 1 AS `ENTITY_SN` FROM t_entity e";
 
         Map<String, Object> params = new HashMap<String, Object>();
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("e.SOSEN_ID = :sosen_id");
-        whereList.add("e.OYA_SN = :oya_sn");
+        whereList.add("e.`SOSEN_ID` = :sosen_id");
+        whereList.add("e.`OYA_SN` = :oya_sn");
         sql += " WHERE " + String.join(" AND ", whereList);
 
-        params.put("sosenId", this.sosenId);
-        params.put("oyaSn", this.oyaSn);
+        params.put("sosen_id", this.sosenId);
+        params.put("oya_sn", this.oyaSn);
 
         jp.co.golorp.emarf.util.MapList mapList = Queries.select(sql, params);
         Object o = mapList.get(0).get("ENTITY_SN");
@@ -515,6 +530,7 @@ public class TEntity implements IEntity {
 
         // 子の登録
         if (this.tKos != null) {
+            Queries.regist("DELETE FROM t_ko WHERE `SOSEN_ID` = :sosen_id AND `OYA_SN` = :oya_sn AND `ENTITY_SN` = :entity_sn AND `KO_SN` = :ko_sn", toMap(now, id));
             for (TKo tKo : this.tKos) {
                 tKo.setSosenId(this.sosenId);
                 tKo.setOyaSn(this.oyaSn);
@@ -525,19 +541,11 @@ public class TEntity implements IEntity {
                     tKo.update(now, id);
                 }
             }
-            this.tKos = null;
-            this.referTKos();
-            if (this.tKos != null) {
-                for (TKo tKo : this.tKos) {
-                    if (!tKo.getUpdateDt().equals(now)) {
-                        tKo.delete();
-                    }
-                }
-            }
         }
 
         // 添付ファイルの登録
         if (this.tTenpuFiles != null) {
+            Queries.regist("DELETE FROM t_tenpu_file WHERE `SOSEN_ID` = :sosen_id AND `OYA_SN` = :oya_sn AND `ENTITY_SN` = :entity_sn AND `TENPU_FILE_SN` = :tenpu_file_sn", toMap(now, id));
             for (TTenpuFile tTenpuFile : this.tTenpuFiles) {
                 tTenpuFile.setSosenId(this.sosenId);
                 tTenpuFile.setOyaSn(this.oyaSn);
@@ -546,15 +554,6 @@ public class TEntity implements IEntity {
                     tTenpuFile.insert(now, id);
                 } catch (Exception e) {
                     tTenpuFile.update(now, id);
-                }
-            }
-            this.tTenpuFiles = null;
-            this.referTTenpuFiles();
-            if (this.tTenpuFiles != null) {
-                for (TTenpuFile tTenpuFile : this.tTenpuFiles) {
-                    if (!tTenpuFile.getUpdateDt().equals(now)) {
-                        tTenpuFile.delete();
-                    }
                 }
             }
         }
@@ -598,19 +597,19 @@ public class TEntity implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("sosen_id = :sosen_id");
-        setList.add("oya_sn = :oya_sn");
-        setList.add("entity_sn = :entity_sn");
-        setList.add("entity_mei = :entity_mei");
-        setList.add("sansho1_id = :sansho1_id");
-        setList.add("sansho1_mei = :sansho1_mei");
-        setList.add("sansho2_id = :sansho2_id");
-        setList.add("sansho2_mei = :sansho2_mei");
-        setList.add("betsu_sansho1_id = :betsu_sansho1_id");
-        setList.add("betsu_sansho1_mei = :betsu_sansho1_mei");
-        setList.add("update_dt = :update_dt");
-        setList.add("update_by = :update_by");
-        setList.add("delete_f = :delete_f");
+        setList.add("`SOSEN_ID` = :sosen_id");
+        setList.add("`OYA_SN` = :oya_sn");
+        setList.add("`ENTITY_SN` = :entity_sn");
+        setList.add("`ENTITY_MEI` = :entity_mei");
+        setList.add("`SANSHO1_ID` = :sansho1_id");
+        setList.add("`SANSHO1_MEI` = :sansho1_mei");
+        setList.add("`SANSHO2_ID` = :sansho2_id");
+        setList.add("`SANSHO2_MEI` = :sansho2_mei");
+        setList.add("`BETSU_SANSHO1_ID` = :betsu_sansho1_id");
+        setList.add("`BETSU_SANSHO1_MEI` = :betsu_sansho1_mei");
+        setList.add("`UPDATE_DT` = :update_dt");
+        setList.add("`UPDATE_BY` = :update_by");
+        setList.add("`DELETE_F` = :delete_f");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -651,26 +650,25 @@ public class TEntity implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("sosen_id = :sosen_id");
-        whereList.add("oya_sn = :oya_sn");
-        whereList.add("entity_sn = :entity_sn");
-        whereList.add("update_dt = '" + this.updateDt + "'");
+        whereList.add("`SOSEN_ID` = :sosen_id");
+        whereList.add("`OYA_SN` = :oya_sn");
+        whereList.add("`ENTITY_SN` = :entity_sn");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("SOSEN_ID", this.sosenId);
-        params.put("OYA_SN", this.oyaSn);
-        params.put("ENTITY_SN", this.entitySn);
-        params.put("ENTITY_MEI", this.entityMei);
-        params.put("SANSHO1_ID", this.sansho1Id);
-        params.put("SANSHO1_MEI", this.sansho1Mei);
-        params.put("SANSHO2_ID", this.sansho2Id);
-        params.put("SANSHO2_MEI", this.sansho2Mei);
-        params.put("BETSU_SANSHO1_ID", this.betsuSansho1Id);
-        params.put("BETSU_SANSHO1_MEI", this.betsuSansho1Mei);
-        params.put("DELETE_F", this.deleteF);
+        params.put("sosen_id", this.sosenId);
+        params.put("oya_sn", this.oyaSn);
+        params.put("entity_sn", this.entitySn);
+        params.put("entity_mei", this.entityMei);
+        params.put("sansho1_id", this.sansho1Id);
+        params.put("sansho1_mei", this.sansho1Mei);
+        params.put("sansho2_id", this.sansho2Id);
+        params.put("sansho2_mei", this.sansho2Mei);
+        params.put("betsu_sansho1_id", this.betsuSansho1Id);
+        params.put("betsu_sansho1_mei", this.betsuSansho1Mei);
+        params.put("delete_f", this.deleteF);
         params.put("insert_dt", now);
         params.put("insert_by", id);
         params.put("update_dt", now);

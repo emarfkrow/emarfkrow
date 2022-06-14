@@ -9,14 +9,6 @@
 
 </script>
 <script th:src="@{/model/TEntityHisGridColumns.js}"></script>
-<script th:src="@{/model/TSosenGridColumns.js}"></script>
-<script th:src="@{/model/TOyaGridColumns.js}"></script>
-<script th:src="@{/model/TEntityGridColumns.js}"></script>
-<script th:src="@{/model/TKoGridColumns.js}"></script>
-<script th:src="@{/model/TShisonGridColumns.js}"></script>
-<script th:src="@{/model/TTenpuFileGridColumns.js}"></script>
-<script th:src="@{/model/MSansho1GridColumns.js}"></script>
-<script th:src="@{/model/MSansho2GridColumns.js}"></script>
 </head>
 <body>
   <div layout:fragment="article">
@@ -25,7 +17,7 @@
       <fieldset>
         <legend th:text="#{TEntityHisS.legend}">legend</legend>
         <div id="sosenId">
-          <label for="TEntityHis.sosenId" th:text="#{TEntityHis.sosenId}">祖先ID</label><input type="text" id="TEntityHis.sosenId" name="TEntityHis.sosenId" maxlength="10" data-json="TSosenSearch.json" data-srcDef="SOSEN_ID:TEntityHis.sosenId" data-destDef="TEntityHis.sosenMei:SOSEN_MEI" /><a id="TEntityHis.sosenId" th:href="@{/model/TSosenS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="TEntityHis.sosenMei" class="refer" data-json="TSosenSearch.json" data-srcDef="SOSEN_ID:TEntityHis.sosenId" data-destDef="TEntityHis.sosenMei:SOSEN_MEI"></span>
+          <label for="TEntityHis.sosenId" th:text="#{TEntityHis.sosenId}">祖先ID</label><input type="text" id="TEntityHis.sosenId" name="TEntityHis.sosenId" maxlength="10" />
         </div>
         <div id="oyaSn">
           <label for="TEntityHis.oyaSn" th:text="#{TEntityHis.oyaSn}">親連番</label><input type="text" id="TEntityHis.oyaSn" name="TEntityHis.oyaSn" maxlength="10" />
@@ -40,25 +32,25 @@
           <label for="TEntityHis.entityMei" th:text="#{TEntityHis.entityMei}">エンティティ名</label><input type="text" id="TEntityHis.entityMei" name="TEntityHis.entityMei" maxlength="30" />
         </div>
         <div id="sansho1Id">
-          <label for="TEntityHis.sansho1Id" th:text="#{TEntityHis.sansho1Id}">参照１ID</label><input type="text" id="TEntityHis.sansho1Id" name="TEntityHis.sansho1Id" maxlength="10" data-json="MSansho1Search.json" data-srcDef="SANSHO1_ID:TEntityHis.sansho1Id" data-destDef="TEntityHis.sansho1Mei:SANSHO1_MEI" /><a id="TEntityHis.sansho1Id" th:href="@{/model/MSansho1S.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a>
+          <label for="TEntityHis.sansho1Id" th:text="#{TEntityHis.sansho1Id}">参照１ID</label><input type="text" id="TEntityHis.sansho1Id" name="TEntityHis.sansho1Id" maxlength="10" />
         </div>
         <div id="sansho1Mei">
           <label for="TEntityHis.sansho1Mei" th:text="#{TEntityHis.sansho1Mei}">参照１名</label><input type="text" id="TEntityHis.sansho1Mei" name="TEntityHis.sansho1Mei" maxlength="30" />
         </div>
         <div id="sansho2Id">
-          <label for="TEntityHis.sansho2Id" th:text="#{TEntityHis.sansho2Id}">参照２ID</label><input type="text" id="TEntityHis.sansho2Id" name="TEntityHis.sansho2Id" maxlength="10" data-json="MSansho2Search.json" data-srcDef="SANSHO2_ID:TEntityHis.sansho2Id" data-destDef="TEntityHis.sansho2Mei:SANSHO2_MEI" /><a id="TEntityHis.sansho2Id" th:href="@{/model/MSansho2S.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a>
+          <label for="TEntityHis.sansho2Id" th:text="#{TEntityHis.sansho2Id}">参照２ID</label><input type="text" id="TEntityHis.sansho2Id" name="TEntityHis.sansho2Id" maxlength="10" />
         </div>
         <div id="sansho2Mei">
           <label for="TEntityHis.sansho2Mei" th:text="#{TEntityHis.sansho2Mei}">参照２名</label><input type="text" id="TEntityHis.sansho2Mei" name="TEntityHis.sansho2Mei" maxlength="30" />
         </div>
         <div id="betsuSansho1Id">
-          <label for="TEntityHis.betsuSansho1Id" th:text="#{TEntityHis.betsuSansho1Id}">別参照１ID</label><input type="text" id="TEntityHis.betsuSansho1Id" name="TEntityHis.betsuSansho1Id" maxlength="10" data-json="MSansho1Search.json" data-srcDef="SANSHO1_ID:TEntityHis.betsuSansho1Id" data-destDef="TEntityHis.betsuSansho1Mei:SANSHO1_MEI" /><a id="TEntityHis.betsuSansho1Id" th:href="@{/model/MSansho1S.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a>
+          <label for="TEntityHis.betsuSansho1Id" th:text="#{TEntityHis.betsuSansho1Id}">別参照１ID</label><input type="text" id="TEntityHis.betsuSansho1Id" name="TEntityHis.betsuSansho1Id" maxlength="10" />
         </div>
         <div id="betsuSansho1Mei">
           <label for="TEntityHis.betsuSansho1Mei" th:text="#{TEntityHis.betsuSansho1Mei}">別参照１名</label><input type="text" id="TEntityHis.betsuSansho1Mei" name="TEntityHis.betsuSansho1Mei" maxlength="30" />
         </div>
         <div id="deleteF">
-          <fieldset id="TEntityHis.deleteFList" data-options="MCodeValueSearch.json" data-optionParams="code_nm:delete_f" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+          <fieldset id="TEntityHis.deleteFList" data-options="MCodeValueSearch.json" data-optionParams="code_nm:DELETE_F" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
             <legend th:text="#{TEntityHis.deleteF}">削除フラグ</legend>
           </fieldset>
         </div>

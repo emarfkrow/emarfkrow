@@ -22,6 +22,7 @@ public class MBusho implements IEntity {
     /**
      * @return 部署ID
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("BUSHO_ID")
     public Integer getBushoId() {
         return this.bushoId;
     }
@@ -43,6 +44,7 @@ public class MBusho implements IEntity {
     /**
      * @return 部署名
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("BUSHO_MEI")
     public String getBushoMei() {
         return this.bushoMei;
     }
@@ -64,6 +66,7 @@ public class MBusho implements IEntity {
     /**
      * @return 開始日
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("KAISHI_YMD")
     public String getKaishiYmd() {
         return this.kaishiYmd;
     }
@@ -85,6 +88,7 @@ public class MBusho implements IEntity {
     /**
      * @return 終了日
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SHURYO_YMD")
     public String getShuryoYmd() {
         return this.shuryoYmd;
     }
@@ -106,6 +110,7 @@ public class MBusho implements IEntity {
     /**
      * @return 親部署ID
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("OYA_BUSHO_ID")
     public Integer getOyaBushoId() {
         return this.oyaBushoId;
     }
@@ -130,6 +135,7 @@ public class MBusho implements IEntity {
     /**
      * @return 登録日時
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("INSERT_DT")
     public java.time.LocalDateTime getInsertDt() {
         return this.insertDt;
     }
@@ -157,6 +163,7 @@ public class MBusho implements IEntity {
     /**
      * @return 登録者
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("INSERT_BY")
     public String getInsertBy() {
         return this.insertBy;
     }
@@ -181,6 +188,7 @@ public class MBusho implements IEntity {
     /**
      * @return 更新日時
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("UPDATE_DT")
     public java.time.LocalDateTime getUpdateDt() {
         return this.updateDt;
     }
@@ -208,6 +216,7 @@ public class MBusho implements IEntity {
     /**
      * @return 更新者
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("UPDATE_BY")
     public String getUpdateBy() {
         return this.updateBy;
     }
@@ -224,11 +233,12 @@ public class MBusho implements IEntity {
     }
 
     /** 削除フラグ */
-    private String deleteF;
+    private String deleteF = "0";
 
     /**
      * @return 削除フラグ
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("DELETE_F")
     public String getDeleteF() {
         return this.deleteF;
     }
@@ -253,7 +263,7 @@ public class MBusho implements IEntity {
     public static MBusho get(final Object param1) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("busho_id = :busho_id");
+        whereList.add("`BUSHO_ID` = :busho_id");
 
         String sql = "SELECT * FROM m_busho WHERE " + String.join(" AND ", whereList);
 
@@ -277,16 +287,16 @@ public class MBusho implements IEntity {
 
         // 部署マスタの登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("busho_id -- :busho_id");
-        nameList.add("busho_mei -- :busho_mei");
-        nameList.add("kaishi_ymd -- :kaishi_ymd");
-        nameList.add("shuryo_ymd -- :shuryo_ymd");
-        nameList.add("oya_busho_id -- :oya_busho_id");
-        nameList.add("insert_dt -- :insert_dt");
-        nameList.add("insert_by -- :insert_by");
-        nameList.add("update_dt -- :update_dt");
-        nameList.add("update_by -- :update_by");
-        nameList.add("delete_f -- :delete_f");
+        nameList.add("`BUSHO_ID` -- :busho_id");
+        nameList.add("`BUSHO_MEI` -- :busho_mei");
+        nameList.add("`KAISHI_YMD` -- :kaishi_ymd");
+        nameList.add("`SHURYO_YMD` -- :shuryo_ymd");
+        nameList.add("`OYA_BUSHO_ID` -- :oya_busho_id");
+        nameList.add("`INSERT_DT` -- :insert_dt");
+        nameList.add("`INSERT_BY` -- :insert_by");
+        nameList.add("`UPDATE_DT` -- :update_dt");
+        nameList.add("`UPDATE_BY` -- :update_by");
+        nameList.add("`DELETE_F` -- :delete_f");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO m_busho(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -318,7 +328,7 @@ public class MBusho implements IEntity {
             return;
         }
 
-        String sql = "SELECT CASE WHEN MAX(e.BUSHO_ID) IS NULL THEN 0 ELSE MAX(e.BUSHO_ID) * 1 END + 1 AS BUSHO_ID FROM m_busho e";
+        String sql = "SELECT CASE WHEN MAX(e.`BUSHO_ID`) IS NULL THEN 0 ELSE MAX(e.`BUSHO_ID`) * 1 END + 1 AS `BUSHO_ID` FROM m_busho e";
 
         Map<String, Object> params = new HashMap<String, Object>();
 
@@ -345,14 +355,14 @@ public class MBusho implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("busho_id = :busho_id");
-        setList.add("busho_mei = :busho_mei");
-        setList.add("kaishi_ymd = :kaishi_ymd");
-        setList.add("shuryo_ymd = :shuryo_ymd");
-        setList.add("oya_busho_id = :oya_busho_id");
-        setList.add("update_dt = :update_dt");
-        setList.add("update_by = :update_by");
-        setList.add("delete_f = :delete_f");
+        setList.add("`BUSHO_ID` = :busho_id");
+        setList.add("`BUSHO_MEI` = :busho_mei");
+        setList.add("`KAISHI_YMD` = :kaishi_ymd");
+        setList.add("`SHURYO_YMD` = :shuryo_ymd");
+        setList.add("`OYA_BUSHO_ID` = :oya_busho_id");
+        setList.add("`UPDATE_DT` = :update_dt");
+        setList.add("`UPDATE_BY` = :update_by");
+        setList.add("`DELETE_F` = :delete_f");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -374,19 +384,18 @@ public class MBusho implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("busho_id = :busho_id");
-        whereList.add("update_dt = '" + this.updateDt + "'");
+        whereList.add("`BUSHO_ID` = :busho_id");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("BUSHO_ID", this.bushoId);
-        params.put("BUSHO_MEI", this.bushoMei);
-        params.put("KAISHI_YMD", this.kaishiYmd);
-        params.put("SHURYO_YMD", this.shuryoYmd);
-        params.put("OYA_BUSHO_ID", this.oyaBushoId);
-        params.put("DELETE_F", this.deleteF);
+        params.put("busho_id", this.bushoId);
+        params.put("busho_mei", this.bushoMei);
+        params.put("kaishi_ymd", this.kaishiYmd);
+        params.put("shuryo_ymd", this.shuryoYmd);
+        params.put("oya_busho_id", this.oyaBushoId);
+        params.put("delete_f", this.deleteF);
         params.put("insert_dt", now);
         params.put("insert_by", id);
         params.put("update_dt", now);

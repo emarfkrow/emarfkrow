@@ -3,7 +3,7 @@
  */
 
 let TTenpuFileGridColumns = [
-    Column.refer('SOSEN_ID', Messages['TTenpuFileGrid.sosenId'], 100, 'primaryKey', 'SOSEN_MEI'),
+    Column.cell('SOSEN_ID', Messages['TTenpuFileGrid.sosenId'], 100, 'primaryKey', null),
     Column.cell('OYA_SN', Messages['TTenpuFileGrid.oyaSn'], 100, 'primaryKey', null),
     Column.cell('ENTITY_SN', Messages['TTenpuFileGrid.entitySn'], 100, 'primaryKey', null),
     Column.cell('TENPU_FILE_SN', Messages['TTenpuFileGrid.tenpuFileSn'], 100, 'primaryKey', null),

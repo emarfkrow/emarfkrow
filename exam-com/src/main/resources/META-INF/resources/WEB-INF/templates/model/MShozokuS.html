@@ -9,9 +9,6 @@
 
 </script>
 <script th:src="@{/model/MShozokuGridColumns.js}"></script>
-<script th:src="@{/model/MBushoGridColumns.js}"></script>
-<script th:src="@{/model/MShokuiGridColumns.js}"></script>
-<script th:src="@{/model/MUserGridColumns.js}"></script>
 </head>
 <body>
   <div layout:fragment="article">
@@ -20,13 +17,13 @@
       <fieldset>
         <legend th:text="#{MShozokuS.legend}">legend</legend>
         <div id="bushoId">
-          <label for="MShozoku.bushoId" th:text="#{MShozoku.bushoId}">部署ID</label><input type="text" id="MShozoku.bushoId" name="MShozoku.bushoId" maxlength="10" data-json="MBushoSearch.json" data-srcDef="BUSHO_ID:MShozoku.bushoId" data-destDef="MShozoku.bushoMei:BUSHO_MEI" /><a id="MShozoku.bushoId" th:href="@{/model/MBushoS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MShozoku.bushoMei" class="refer" data-json="MBushoSearch.json" data-srcDef="BUSHO_ID:MShozoku.bushoId" data-destDef="MShozoku.bushoMei:BUSHO_MEI"></span>
+          <label for="MShozoku.bushoId" th:text="#{MShozoku.bushoId}">部署ID</label><input type="text" id="MShozoku.bushoId" name="MShozoku.bushoId" maxlength="10" />
         </div>
         <div id="shokuiId">
-          <label for="MShozoku.shokuiId" th:text="#{MShozoku.shokuiId}">職位ID</label><input type="text" id="MShozoku.shokuiId" name="MShozoku.shokuiId" maxlength="10" data-json="MShokuiSearch.json" data-srcDef="SHOKUI_ID:MShozoku.shokuiId" data-destDef="MShozoku.shokuiMei:SHOKUI_MEI" /><a id="MShozoku.shokuiId" th:href="@{/model/MShokuiS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MShozoku.shokuiMei" class="refer" data-json="MShokuiSearch.json" data-srcDef="SHOKUI_ID:MShozoku.shokuiId" data-destDef="MShozoku.shokuiMei:SHOKUI_MEI"></span>
+          <label for="MShozoku.shokuiId" th:text="#{MShozoku.shokuiId}">職位ID</label><input type="text" id="MShozoku.shokuiId" name="MShozoku.shokuiId" maxlength="10" />
         </div>
         <div id="userId">
-          <label for="MShozoku.userId" th:text="#{MShozoku.userId}">ユーザID</label><input type="text" id="MShozoku.userId" name="MShozoku.userId" maxlength="10" data-json="MUserSearch.json" data-srcDef="USER_ID:MShozoku.userId" data-destDef="MShozoku.userMei:USER_MEI" /><a id="MShozoku.userId" th:href="@{/model/MUserS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MShozoku.userMei" class="refer" data-json="MUserSearch.json" data-srcDef="USER_ID:MShozoku.userId" data-destDef="MShozoku.userMei:USER_MEI"></span>
+          <label for="MShozoku.userId" th:text="#{MShozoku.userId}">ユーザID</label><input type="text" id="MShozoku.userId" name="MShozoku.userId" maxlength="10" />
         </div>
         <div id="kaishiYmd">
           <label for="MShozoku.kaishiYmd_1" th:text="#{MShozoku.kaishiYmd}">開始日</label><input type="date" id="MShozoku.kaishiYmd_1" name="MShozoku.kaishiYmd_1" maxlength="10" />～<input type="date" id="MShozoku.kaishiYmd_2" name="MShozoku.kaishiYmd_2" maxlength="10" />
@@ -35,14 +32,13 @@
           <label for="MShozoku.shuryoYmd_1" th:text="#{MShozoku.shuryoYmd}">終了日</label><input type="date" id="MShozoku.shuryoYmd_1" name="MShozoku.shuryoYmd_1" maxlength="10" />～<input type="date" id="MShozoku.shuryoYmd_2" name="MShozoku.shuryoYmd_2" maxlength="10" />
         </div>
         <div id="deleteF">
-          <fieldset id="MShozoku.deleteFList" data-options="MCodeValueSearch.json" data-optionParams="code_nm:delete_f" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+          <fieldset id="MShozoku.deleteFList" data-options="MCodeValueSearch.json" data-optionParams="code_nm:DELETE_F" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
             <legend th:text="#{MShozoku.deleteF}">削除フラグ</legend>
           </fieldset>
         </div>
       </fieldset>
       <div class="buttons">
         <button type="reset" th:text="#{common.reset}">reset</button>
-        <a th:href="@{/model/MShozoku.html}" id="MShozoku" target="dialog" th:text="#{MShozoku.add}" tabindex="-1">所属マスタ</a>
       </div>
       <div class="submits">
         <button id="SearchMShozoku" class="search" data-gridId="MShozokuGrid" th:text="#{common.search}">submit</button>

@@ -22,6 +22,7 @@ public class TKo implements IEntity {
     /**
      * @return 祖先ID
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SOSEN_ID")
     public Integer getSosenId() {
         return this.sosenId;
     }
@@ -43,6 +44,7 @@ public class TKo implements IEntity {
     /**
      * @return 親連番
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("OYA_SN")
     public Integer getOyaSn() {
         return this.oyaSn;
     }
@@ -64,6 +66,7 @@ public class TKo implements IEntity {
     /**
      * @return エンティティ連番
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("ENTITY_SN")
     public Integer getEntitySn() {
         return this.entitySn;
     }
@@ -85,6 +88,7 @@ public class TKo implements IEntity {
     /**
      * @return 子連番
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("KO_SN")
     public Integer getKoSn() {
         return this.koSn;
     }
@@ -106,6 +110,7 @@ public class TKo implements IEntity {
     /**
      * @return 子名
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("KO_MEI")
     public String getKoMei() {
         return this.koMei;
     }
@@ -130,6 +135,7 @@ public class TKo implements IEntity {
     /**
      * @return 登録日時
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("INSERT_DT")
     public java.time.LocalDateTime getInsertDt() {
         return this.insertDt;
     }
@@ -157,6 +163,7 @@ public class TKo implements IEntity {
     /**
      * @return 登録者
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("INSERT_BY")
     public String getInsertBy() {
         return this.insertBy;
     }
@@ -181,6 +188,7 @@ public class TKo implements IEntity {
     /**
      * @return 更新日時
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("UPDATE_DT")
     public java.time.LocalDateTime getUpdateDt() {
         return this.updateDt;
     }
@@ -208,6 +216,7 @@ public class TKo implements IEntity {
     /**
      * @return 更新者
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("UPDATE_BY")
     public String getUpdateBy() {
         return this.updateBy;
     }
@@ -224,11 +233,12 @@ public class TKo implements IEntity {
     }
 
     /** 削除フラグ */
-    private String deleteF;
+    private String deleteF = "0";
 
     /**
      * @return 削除フラグ
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("DELETE_F")
     public String getDeleteF() {
         return this.deleteF;
     }
@@ -256,10 +266,10 @@ public class TKo implements IEntity {
     public static TKo get(final Object param1, final Object param2, final Object param3, final Object param4) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("sosen_id = :sosen_id");
-        whereList.add("oya_sn = :oya_sn");
-        whereList.add("entity_sn = :entity_sn");
-        whereList.add("ko_sn = :ko_sn");
+        whereList.add("`SOSEN_ID` = :sosen_id");
+        whereList.add("`OYA_SN` = :oya_sn");
+        whereList.add("`ENTITY_SN` = :entity_sn");
+        whereList.add("`KO_SN` = :ko_sn");
 
         String sql = "SELECT * FROM t_ko WHERE " + String.join(" AND ", whereList);
 
@@ -297,16 +307,16 @@ public class TKo implements IEntity {
 
         // 子の登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("sosen_id -- :sosen_id");
-        nameList.add("oya_sn -- :oya_sn");
-        nameList.add("entity_sn -- :entity_sn");
-        nameList.add("ko_sn -- :ko_sn");
-        nameList.add("ko_mei -- :ko_mei");
-        nameList.add("insert_dt -- :insert_dt");
-        nameList.add("insert_by -- :insert_by");
-        nameList.add("update_dt -- :update_dt");
-        nameList.add("update_by -- :update_by");
-        nameList.add("delete_f -- :delete_f");
+        nameList.add("`SOSEN_ID` -- :sosen_id");
+        nameList.add("`OYA_SN` -- :oya_sn");
+        nameList.add("`ENTITY_SN` -- :entity_sn");
+        nameList.add("`KO_SN` -- :ko_sn");
+        nameList.add("`KO_MEI` -- :ko_mei");
+        nameList.add("`INSERT_DT` -- :insert_dt");
+        nameList.add("`INSERT_BY` -- :insert_by");
+        nameList.add("`UPDATE_DT` -- :update_dt");
+        nameList.add("`UPDATE_BY` -- :update_by");
+        nameList.add("`DELETE_F` -- :delete_f");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO t_ko(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -338,19 +348,19 @@ public class TKo implements IEntity {
             return;
         }
 
-        String sql = "SELECT CASE WHEN MAX(e.KO_SN) IS NULL THEN 0 ELSE MAX(e.KO_SN) * 1 END + 1 AS KO_SN FROM t_ko e";
+        String sql = "SELECT CASE WHEN MAX(e.`KO_SN`) IS NULL THEN 0 ELSE MAX(e.`KO_SN`) * 1 END + 1 AS `KO_SN` FROM t_ko e";
 
         Map<String, Object> params = new HashMap<String, Object>();
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("e.SOSEN_ID = :sosen_id");
-        whereList.add("e.OYA_SN = :oya_sn");
-        whereList.add("e.ENTITY_SN = :entity_sn");
+        whereList.add("e.`SOSEN_ID` = :sosen_id");
+        whereList.add("e.`OYA_SN` = :oya_sn");
+        whereList.add("e.`ENTITY_SN` = :entity_sn");
         sql += " WHERE " + String.join(" AND ", whereList);
 
-        params.put("sosenId", this.sosenId);
-        params.put("oyaSn", this.oyaSn);
-        params.put("entitySn", this.entitySn);
+        params.put("sosen_id", this.sosenId);
+        params.put("oya_sn", this.oyaSn);
+        params.put("entity_sn", this.entitySn);
 
         jp.co.golorp.emarf.util.MapList mapList = Queries.select(sql, params);
         Object o = mapList.get(0).get("KO_SN");
@@ -369,6 +379,7 @@ public class TKo implements IEntity {
 
         // 子孫の登録
         if (this.tShisons != null) {
+            Queries.regist("DELETE FROM t_shison WHERE `SOSEN_ID` = :sosen_id AND `OYA_SN` = :oya_sn AND `ENTITY_SN` = :entity_sn AND `KO_SN` = :ko_sn AND `SHISON_SN` = :shison_sn", toMap(now, id));
             for (TShison tShison : this.tShisons) {
                 tShison.setSosenId(this.sosenId);
                 tShison.setOyaSn(this.oyaSn);
@@ -378,15 +389,6 @@ public class TKo implements IEntity {
                     tShison.insert(now, id);
                 } catch (Exception e) {
                     tShison.update(now, id);
-                }
-            }
-            this.tShisons = null;
-            this.referTShisons();
-            if (this.tShisons != null) {
-                for (TShison tShison : this.tShisons) {
-                    if (!tShison.getUpdateDt().equals(now)) {
-                        tShison.delete();
-                    }
                 }
             }
         }
@@ -399,14 +401,14 @@ public class TKo implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("sosen_id = :sosen_id");
-        setList.add("oya_sn = :oya_sn");
-        setList.add("entity_sn = :entity_sn");
-        setList.add("ko_sn = :ko_sn");
-        setList.add("ko_mei = :ko_mei");
-        setList.add("update_dt = :update_dt");
-        setList.add("update_by = :update_by");
-        setList.add("delete_f = :delete_f");
+        setList.add("`SOSEN_ID` = :sosen_id");
+        setList.add("`OYA_SN` = :oya_sn");
+        setList.add("`ENTITY_SN` = :entity_sn");
+        setList.add("`KO_SN` = :ko_sn");
+        setList.add("`KO_MEI` = :ko_mei");
+        setList.add("`UPDATE_DT` = :update_dt");
+        setList.add("`UPDATE_BY` = :update_by");
+        setList.add("`DELETE_F` = :delete_f");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -435,22 +437,21 @@ public class TKo implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("sosen_id = :sosen_id");
-        whereList.add("oya_sn = :oya_sn");
-        whereList.add("entity_sn = :entity_sn");
-        whereList.add("ko_sn = :ko_sn");
-        whereList.add("update_dt = '" + this.updateDt + "'");
+        whereList.add("`SOSEN_ID` = :sosen_id");
+        whereList.add("`OYA_SN` = :oya_sn");
+        whereList.add("`ENTITY_SN` = :entity_sn");
+        whereList.add("`KO_SN` = :ko_sn");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("SOSEN_ID", this.sosenId);
-        params.put("OYA_SN", this.oyaSn);
-        params.put("ENTITY_SN", this.entitySn);
-        params.put("KO_SN", this.koSn);
-        params.put("KO_MEI", this.koMei);
-        params.put("DELETE_F", this.deleteF);
+        params.put("sosen_id", this.sosenId);
+        params.put("oya_sn", this.oyaSn);
+        params.put("entity_sn", this.entitySn);
+        params.put("ko_sn", this.koSn);
+        params.put("ko_mei", this.koMei);
+        params.put("delete_f", this.deleteF);
         params.put("insert_dt", now);
         params.put("insert_by", id);
         params.put("update_dt", now);

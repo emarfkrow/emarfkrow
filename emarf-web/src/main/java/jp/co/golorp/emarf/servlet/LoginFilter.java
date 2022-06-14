@@ -131,6 +131,7 @@ public class LoginFilter implements Filter {
 
                 } catch (AppError e) {
 
+                    LOG.error(e.getMessage(), e);
                     res.sendRedirect(contextPath + LoginFilter.LOGIN_PAGE + "?ERROR=error.login");
                     return;
 

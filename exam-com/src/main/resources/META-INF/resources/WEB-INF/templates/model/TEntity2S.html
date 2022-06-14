@@ -9,14 +9,6 @@
 
 </script>
 <script th:src="@{/model/TEntity2GridColumns.js}"></script>
-<script th:src="@{/model/TSosenGridColumns.js}"></script>
-<script th:src="@{/model/TOyaGridColumns.js}"></script>
-<script th:src="@{/model/TEntityGridColumns.js}"></script>
-<script th:src="@{/model/TKoGridColumns.js}"></script>
-<script th:src="@{/model/TShisonGridColumns.js}"></script>
-<script th:src="@{/model/TTenpuFileGridColumns.js}"></script>
-<script th:src="@{/model/MSansho1GridColumns.js}"></script>
-<script th:src="@{/model/MSansho2GridColumns.js}"></script>
 </head>
 <body>
   <div layout:fragment="article">
@@ -25,7 +17,7 @@
       <fieldset>
         <legend th:text="#{TEntity2S.legend}">legend</legend>
         <div id="sosenId">
-          <label for="TEntity2.sosenId" th:text="#{TEntity2.sosenId}">祖先ID</label><input type="text" id="TEntity2.sosenId" name="TEntity2.sosenId" maxlength="10" data-json="TSosenSearch.json" data-srcDef="SOSEN_ID:TEntity2.sosenId" data-destDef="TEntity2.sosenMei:SOSEN_MEI" /><a id="TEntity2.sosenId" th:href="@{/model/TSosenS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="TEntity2.sosenMei" class="refer" data-json="TSosenSearch.json" data-srcDef="SOSEN_ID:TEntity2.sosenId" data-destDef="TEntity2.sosenMei:SOSEN_MEI"></span>
+          <label for="TEntity2.sosenId" th:text="#{TEntity2.sosenId}">祖先ID</label><input type="text" id="TEntity2.sosenId" name="TEntity2.sosenId" maxlength="10" />
         </div>
         <div id="oyaSn">
           <label for="TEntity2.oyaSn" th:text="#{TEntity2.oyaSn}">親連番</label><input type="text" id="TEntity2.oyaSn" name="TEntity2.oyaSn" maxlength="10" />
@@ -40,17 +32,17 @@
           <label for="TEntity2.entity2Mei" th:text="#{TEntity2.entity2Mei}">エンティティ２名</label><input type="text" id="TEntity2.entity2Mei" name="TEntity2.entity2Mei" maxlength="30" />
         </div>
         <div id="checkF">
-          <fieldset id="TEntity2.checkFList" data-options="MCodeValueSearch.json" data-optionParams="code_nm:check_f" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+          <fieldset id="TEntity2.checkFList" data-options="MCodeValueSearch.json" data-optionParams="code_nm:CHECK_F" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
             <legend th:text="#{TEntity2.checkF}">チェックフラグ</legend>
           </fieldset>
         </div>
         <div id="radioKb">
-          <fieldset id="TEntity2.radioKbList" data-options="MCodeValueSearch.json" data-optionParams="code_nm:radio_kb" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+          <fieldset id="TEntity2.radioKbList" data-options="MCodeValueSearch.json" data-optionParams="code_nm:RADIO_KB" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
             <legend th:text="#{TEntity2.radioKb}">ラジオ区分</legend>
           </fieldset>
         </div>
         <div id="pulldownKb">
-          <fieldset id="TEntity2.pulldownKbList" data-options="MCodeValueSearch.json" data-optionParams="code_nm:pulldown_kb" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+          <fieldset id="TEntity2.pulldownKbList" data-options="MCodeValueSearch.json" data-optionParams="code_nm:PULLDOWN_KB" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
             <legend th:text="#{TEntity2.pulldownKb}">プルダウン区分</legend>
           </fieldset>
         </div>
@@ -88,7 +80,7 @@
           <label for="TEntity2.kingakuAm_1" th:text="#{TEntity2.kingakuAm}">金額</label><input type="text" id="TEntity2.kingakuAm_1" name="TEntity2.kingakuAm_1" maxlength="11" />～<input type="text" id="TEntity2.kingakuAm_2" name="TEntity2.kingakuAm_2" maxlength="11" />
         </div>
         <div id="deleteF">
-          <fieldset id="TEntity2.deleteFList" data-options="MCodeValueSearch.json" data-optionParams="code_nm:delete_f" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+          <fieldset id="TEntity2.deleteFList" data-options="MCodeValueSearch.json" data-optionParams="code_nm:DELETE_F" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
             <legend th:text="#{TEntity2.deleteF}">削除フラグ</legend>
           </fieldset>
         </div>

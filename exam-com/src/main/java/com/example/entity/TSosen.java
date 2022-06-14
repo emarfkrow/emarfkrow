@@ -22,6 +22,7 @@ public class TSosen implements IEntity {
     /**
      * @return 祖先ID
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SOSEN_ID")
     public Integer getSosenId() {
         return this.sosenId;
     }
@@ -43,6 +44,7 @@ public class TSosen implements IEntity {
     /**
      * @return 祖先名
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SOSEN_MEI")
     public String getSosenMei() {
         return this.sosenMei;
     }
@@ -67,6 +69,7 @@ public class TSosen implements IEntity {
     /**
      * @return 登録日時
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("INSERT_DT")
     public java.time.LocalDateTime getInsertDt() {
         return this.insertDt;
     }
@@ -94,6 +97,7 @@ public class TSosen implements IEntity {
     /**
      * @return 登録者
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("INSERT_BY")
     public String getInsertBy() {
         return this.insertBy;
     }
@@ -118,6 +122,7 @@ public class TSosen implements IEntity {
     /**
      * @return 更新日時
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("UPDATE_DT")
     public java.time.LocalDateTime getUpdateDt() {
         return this.updateDt;
     }
@@ -145,6 +150,7 @@ public class TSosen implements IEntity {
     /**
      * @return 更新者
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("UPDATE_BY")
     public String getUpdateBy() {
         return this.updateBy;
     }
@@ -161,11 +167,12 @@ public class TSosen implements IEntity {
     }
 
     /** 削除フラグ */
-    private String deleteF;
+    private String deleteF = "0";
 
     /**
      * @return 削除フラグ
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("DELETE_F")
     public String getDeleteF() {
         return this.deleteF;
     }
@@ -190,7 +197,7 @@ public class TSosen implements IEntity {
     public static TSosen get(final Object param1) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("sosen_id = :sosen_id");
+        whereList.add("`SOSEN_ID` = :sosen_id");
 
         String sql = "SELECT * FROM t_sosen WHERE " + String.join(" AND ", whereList);
 
@@ -222,13 +229,13 @@ public class TSosen implements IEntity {
 
         // 祖先の登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("sosen_id -- :sosen_id");
-        nameList.add("sosen_mei -- :sosen_mei");
-        nameList.add("insert_dt -- :insert_dt");
-        nameList.add("insert_by -- :insert_by");
-        nameList.add("update_dt -- :update_dt");
-        nameList.add("update_by -- :update_by");
-        nameList.add("delete_f -- :delete_f");
+        nameList.add("`SOSEN_ID` -- :sosen_id");
+        nameList.add("`SOSEN_MEI` -- :sosen_mei");
+        nameList.add("`INSERT_DT` -- :insert_dt");
+        nameList.add("`INSERT_BY` -- :insert_by");
+        nameList.add("`UPDATE_DT` -- :update_dt");
+        nameList.add("`UPDATE_BY` -- :update_by");
+        nameList.add("`DELETE_F` -- :delete_f");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO t_sosen(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -257,7 +264,7 @@ public class TSosen implements IEntity {
             return;
         }
 
-        String sql = "SELECT CASE WHEN MAX(e.SOSEN_ID) IS NULL THEN 0 ELSE MAX(e.SOSEN_ID) * 1 END + 1 AS SOSEN_ID FROM t_sosen e";
+        String sql = "SELECT CASE WHEN MAX(e.`SOSEN_ID`) IS NULL THEN 0 ELSE MAX(e.`SOSEN_ID`) * 1 END + 1 AS `SOSEN_ID` FROM t_sosen e";
 
         Map<String, Object> params = new HashMap<String, Object>();
 
@@ -278,21 +285,13 @@ public class TSosen implements IEntity {
 
         // 親の登録
         if (this.tOyas != null) {
+            Queries.regist("DELETE FROM t_oya WHERE `SOSEN_ID` = :sosen_id AND `OYA_SN` = :oya_sn", toMap(now, id));
             for (TOya tOya : this.tOyas) {
                 tOya.setSosenId(this.sosenId);
                 try {
                     tOya.insert(now, id);
                 } catch (Exception e) {
                     tOya.update(now, id);
-                }
-            }
-            this.tOyas = null;
-            this.referTOyas();
-            if (this.tOyas != null) {
-                for (TOya tOya : this.tOyas) {
-                    if (!tOya.getUpdateDt().equals(now)) {
-                        tOya.delete();
-                    }
                 }
             }
         }
@@ -305,11 +304,11 @@ public class TSosen implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("sosen_id = :sosen_id");
-        setList.add("sosen_mei = :sosen_mei");
-        setList.add("update_dt = :update_dt");
-        setList.add("update_by = :update_by");
-        setList.add("delete_f = :delete_f");
+        setList.add("`SOSEN_ID` = :sosen_id");
+        setList.add("`SOSEN_MEI` = :sosen_mei");
+        setList.add("`UPDATE_DT` = :update_dt");
+        setList.add("`UPDATE_BY` = :update_by");
+        setList.add("`DELETE_F` = :delete_f");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -338,16 +337,15 @@ public class TSosen implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("sosen_id = :sosen_id");
-        whereList.add("update_dt = '" + this.updateDt + "'");
+        whereList.add("`SOSEN_ID` = :sosen_id");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("SOSEN_ID", this.sosenId);
-        params.put("SOSEN_MEI", this.sosenMei);
-        params.put("DELETE_F", this.deleteF);
+        params.put("sosen_id", this.sosenId);
+        params.put("sosen_mei", this.sosenMei);
+        params.put("delete_f", this.deleteF);
         params.put("insert_dt", now);
         params.put("insert_by", id);
         params.put("update_dt", now);

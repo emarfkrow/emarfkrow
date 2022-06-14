@@ -22,6 +22,7 @@ public class TOya implements IEntity {
     /**
      * @return 祖先ID
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("SOSEN_ID")
     public Integer getSosenId() {
         return this.sosenId;
     }
@@ -43,6 +44,7 @@ public class TOya implements IEntity {
     /**
      * @return 親連番
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("OYA_SN")
     public Integer getOyaSn() {
         return this.oyaSn;
     }
@@ -64,6 +66,7 @@ public class TOya implements IEntity {
     /**
      * @return 親名
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("OYA_MEI")
     public String getOyaMei() {
         return this.oyaMei;
     }
@@ -88,6 +91,7 @@ public class TOya implements IEntity {
     /**
      * @return 登録日時
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("INSERT_DT")
     public java.time.LocalDateTime getInsertDt() {
         return this.insertDt;
     }
@@ -115,6 +119,7 @@ public class TOya implements IEntity {
     /**
      * @return 登録者
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("INSERT_BY")
     public String getInsertBy() {
         return this.insertBy;
     }
@@ -139,6 +144,7 @@ public class TOya implements IEntity {
     /**
      * @return 更新日時
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("UPDATE_DT")
     public java.time.LocalDateTime getUpdateDt() {
         return this.updateDt;
     }
@@ -166,6 +172,7 @@ public class TOya implements IEntity {
     /**
      * @return 更新者
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("UPDATE_BY")
     public String getUpdateBy() {
         return this.updateBy;
     }
@@ -182,11 +189,12 @@ public class TOya implements IEntity {
     }
 
     /** 削除フラグ */
-    private String deleteF;
+    private String deleteF = "0";
 
     /**
      * @return 削除フラグ
      */
+    @com.fasterxml.jackson.annotation.JsonProperty("DELETE_F")
     public String getDeleteF() {
         return this.deleteF;
     }
@@ -212,8 +220,8 @@ public class TOya implements IEntity {
     public static TOya get(final Object param1, final Object param2) {
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("sosen_id = :sosen_id");
-        whereList.add("oya_sn = :oya_sn");
+        whereList.add("`SOSEN_ID` = :sosen_id");
+        whereList.add("`OYA_SN` = :oya_sn");
 
         String sql = "SELECT * FROM t_oya WHERE " + String.join(" AND ", whereList);
 
@@ -247,14 +255,14 @@ public class TOya implements IEntity {
 
         // 親の登録
         List<String> nameList = new ArrayList<String>();
-        nameList.add("sosen_id -- :sosen_id");
-        nameList.add("oya_sn -- :oya_sn");
-        nameList.add("oya_mei -- :oya_mei");
-        nameList.add("insert_dt -- :insert_dt");
-        nameList.add("insert_by -- :insert_by");
-        nameList.add("update_dt -- :update_dt");
-        nameList.add("update_by -- :update_by");
-        nameList.add("delete_f -- :delete_f");
+        nameList.add("`SOSEN_ID` -- :sosen_id");
+        nameList.add("`OYA_SN` -- :oya_sn");
+        nameList.add("`OYA_MEI` -- :oya_mei");
+        nameList.add("`INSERT_DT` -- :insert_dt");
+        nameList.add("`INSERT_BY` -- :insert_by");
+        nameList.add("`UPDATE_DT` -- :update_dt");
+        nameList.add("`UPDATE_BY` -- :update_by");
+        nameList.add("`DELETE_F` -- :delete_f");
         String name = String.join("\r\n    , ", nameList);
 
         String sql = "INSERT INTO t_oya(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
@@ -284,15 +292,15 @@ public class TOya implements IEntity {
             return;
         }
 
-        String sql = "SELECT CASE WHEN MAX(e.OYA_SN) IS NULL THEN 0 ELSE MAX(e.OYA_SN) * 1 END + 1 AS OYA_SN FROM t_oya e";
+        String sql = "SELECT CASE WHEN MAX(e.`OYA_SN`) IS NULL THEN 0 ELSE MAX(e.`OYA_SN`) * 1 END + 1 AS `OYA_SN` FROM t_oya e";
 
         Map<String, Object> params = new HashMap<String, Object>();
 
         List<String> whereList = new ArrayList<String>();
-        whereList.add("e.SOSEN_ID = :sosen_id");
+        whereList.add("e.`SOSEN_ID` = :sosen_id");
         sql += " WHERE " + String.join(" AND ", whereList);
 
-        params.put("sosenId", this.sosenId);
+        params.put("sosen_id", this.sosenId);
 
         jp.co.golorp.emarf.util.MapList mapList = Queries.select(sql, params);
         Object o = mapList.get(0).get("OYA_SN");
@@ -311,6 +319,7 @@ public class TOya implements IEntity {
 
         // エンティティの登録
         if (this.tEntitys != null) {
+            Queries.regist("DELETE FROM t_entity WHERE `SOSEN_ID` = :sosen_id AND `OYA_SN` = :oya_sn AND `ENTITY_SN` = :entity_sn", toMap(now, id));
             for (TEntity tEntity : this.tEntitys) {
                 tEntity.setSosenId(this.sosenId);
                 tEntity.setOyaSn(this.oyaSn);
@@ -318,15 +327,6 @@ public class TOya implements IEntity {
                     tEntity.insert(now, id);
                 } catch (Exception e) {
                     tEntity.update(now, id);
-                }
-            }
-            this.tEntitys = null;
-            this.referTEntitys();
-            if (this.tEntitys != null) {
-                for (TEntity tEntity : this.tEntitys) {
-                    if (!tEntity.getUpdateDt().equals(now)) {
-                        tEntity.delete();
-                    }
                 }
             }
         }
@@ -339,12 +339,12 @@ public class TOya implements IEntity {
 
     private String getSet() {
         List<String> setList = new ArrayList<String>();
-        setList.add("sosen_id = :sosen_id");
-        setList.add("oya_sn = :oya_sn");
-        setList.add("oya_mei = :oya_mei");
-        setList.add("update_dt = :update_dt");
-        setList.add("update_by = :update_by");
-        setList.add("delete_f = :delete_f");
+        setList.add("`SOSEN_ID` = :sosen_id");
+        setList.add("`OYA_SN` = :oya_sn");
+        setList.add("`OYA_MEI` = :oya_mei");
+        setList.add("`UPDATE_DT` = :update_dt");
+        setList.add("`UPDATE_BY` = :update_by");
+        setList.add("`DELETE_F` = :delete_f");
         String set = String.join("\r\n    , ", setList);
         return set;
     }
@@ -373,18 +373,17 @@ public class TOya implements IEntity {
 
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
-        whereList.add("sosen_id = :sosen_id");
-        whereList.add("oya_sn = :oya_sn");
-        whereList.add("update_dt = '" + this.updateDt + "'");
+        whereList.add("`SOSEN_ID` = :sosen_id");
+        whereList.add("`OYA_SN` = :oya_sn");
         return String.join(" AND ", whereList);
     }
 
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("SOSEN_ID", this.sosenId);
-        params.put("OYA_SN", this.oyaSn);
-        params.put("OYA_MEI", this.oyaMei);
-        params.put("DELETE_F", this.deleteF);
+        params.put("sosen_id", this.sosenId);
+        params.put("oya_sn", this.oyaSn);
+        params.put("oya_mei", this.oyaMei);
+        params.put("delete_f", this.deleteF);
         params.put("insert_dt", now);
         params.put("insert_by", id);
         params.put("update_dt", now);

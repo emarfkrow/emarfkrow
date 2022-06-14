@@ -14,8 +14,6 @@
 <script th:src="@{/model/TKoGridColumns.js}"></script>
 <script th:src="@{/model/TShisonGridColumns.js}"></script>
 <script th:src="@{/model/TTenpuFileGridColumns.js}"></script>
-<script th:src="@{/model/MSansho1GridColumns.js}"></script>
-<script th:src="@{/model/MSansho2GridColumns.js}"></script>
 </head>
 <body>
   <div layout:fragment="article">
@@ -42,7 +40,7 @@
           <label for="TSosen.updateBy" th:text="#{TSosen.updateBy}">更新者</label><span id="TSosen.updateBy"></span><input type="hidden" id="TSosen.updateBy" name="TSosen.updateBy" />
         </div>
         <div id="deleteF">
-          <fieldset id="TSosen.deleteFList" data-options="MCodeValueSearch.json" data-optionParams="code_nm:delete_f" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
+          <fieldset id="TSosen.deleteFList" data-options="MCodeValueSearch.json" data-optionParams="code_nm:DELETE_F" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
             <legend th:text="#{TSosen.deleteF}">削除フラグ</legend>
           </fieldset>
         </div>

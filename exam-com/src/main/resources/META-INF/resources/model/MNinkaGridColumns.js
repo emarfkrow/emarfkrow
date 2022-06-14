@@ -3,8 +3,8 @@
  */
 
 let MNinkaGridColumns = [
-    Column.refer('BUSHO_ID', Messages['MNinkaGrid.bushoId'], 100, 'primaryKey', 'BUSHO_MEI'),
-    Column.refer('SHOKUI_ID', Messages['MNinkaGrid.shokuiId'], 100, 'primaryKey', 'SHOKUI_MEI'),
+    Column.cell('BUSHO_ID', Messages['MNinkaGrid.bushoId'], 100, 'primaryKey', null),
+    Column.cell('SHOKUI_ID', Messages['MNinkaGrid.shokuiId'], 100, 'primaryKey', null),
     Column.cell('GAMEN_NM', Messages['MNinkaGrid.gamenNm'], 200, 'primaryKey', null),
     Column.select('KENGEN_KB', Messages['MNinkaGrid.kengenKb'], 20, '', { json: 'MCodeValueSearch.json', paramkey: 'code_nm', value: 'CODE_VALUE', label: 'CODE_VALUE_MEI' }),
     Column.date('KAISHI_YMD', Messages['MNinkaGrid.kaishiYmd'], 100, '', null),

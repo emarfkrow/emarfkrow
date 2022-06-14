@@ -356,10 +356,11 @@ public final class BeanGenerator {
             if (primaryKey.length() > 0) {
                 String snake = StringUtil.toSnakeCase(primaryKey);
                 ColumnInfo primaryKeyInfo = tableInfo.getColumnInfos().get(primaryKey);
+                String columnName = DataSources.getAssist().quoteEscaped(primaryKey);
                 if (primaryKeyInfo.getTypeName().equals("CHAR")) {
-                    s.add("        whereList.add(\"TRIM (\\\"" + primaryKey + "\\\") = TRIM (:" + snake + ")\");");
+                    s.add("        whereList.add(\"TRIM (" + columnName + ") = TRIM (:" + snake + ")\");");
                 } else {
-                    s.add("        whereList.add(\"\\\"" + primaryKey + "\\\" = :" + snake + "\");");
+                    s.add("        whereList.add(\"" + columnName + " = :" + snake + "\");");
                 }
             }
         }
@@ -429,8 +430,7 @@ public final class BeanGenerator {
                         + " = " + entityName + ".get(" + params + ");");
                 s.add("        try {");
                 s.add("            java.nio.file.Files.delete(java.nio.file.Paths.get(" + camelName + "."
-                        + StringUtil.toCamelCase(columnName)
-                        + "));");
+                        + StringUtil.toCamelCase(columnName) + "));");
                 s.add("        } catch (Exception e) {");
                 s.add("            throw new jp.co.golorp.emarf.exception.SysError(e);");
                 s.add("        }");
@@ -1911,7 +1911,14 @@ public final class BeanGenerator {
 
         s.add("ORDER BY");
         if (tableInfo.getPrimaryKeys().size() > 0) {
-            s.add("    a.\"" + StringUtil.join("\", a.\"", tableInfo.getPrimaryKeys()) + "\"");
+            String orders = "";
+            for (String primaryKey : tableInfo.getPrimaryKeys()) {
+                if (orders.length() > 0) {
+                    orders += ", ";
+                }
+                orders += "a." + DataSources.getAssist().quoted(primaryKey);
+            }
+            s.add("    " + orders);
         } else {
             for (i = 1; i <= tableInfo.getColumnInfos().size(); i++) {
                 if (i == 1) {
