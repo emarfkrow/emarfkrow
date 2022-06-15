@@ -1,26 +1,47 @@
+/*
+Copyright 2022 golorp
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
 package jp.co.golorp.emarf.generator;
 
+/**
+ * カラム情報
+ *
+ * @author golorp
+ */
 public class ColumnInfo {
 
-    /** COLUMN_NAME */
+    /** カラム名 */
     private String columnName;
 
-    /** TYPE_NAME */
+    /** 取得したタイプ名 */
     private String typeName;
 
-    /** TYPE_NAMEを変換 */
+    /** タイプ名から変換したデータ型 */
     private String dataType;
 
-    /** COLUMN_SIZE */
+    /** サイズ */
     private int columnSize;
 
-    /** DECIMAL_DIGITS */
+    /** 小数桁数 */
     private int decimalDigits;
 
-    /** NULLABLE */
+    /** null可なら「1」 */
     private int nullable;
 
-    /** REMARKS */
+    /** コメント */
     private String remarks;
 
     /** 主キーならtrue */
@@ -29,144 +50,144 @@ public class ColumnInfo {
     /** 採番キーならtrue */
     private boolean isNumbering;
 
-    /** 参照テーブル */
+    /** 参照先テーブル */
     private TableInfo referInfo;
 
     /**
-     * @return columnName
+     * @return カラム名
      */
     public String getColumnName() {
         return columnName;
     }
 
     /**
-     * @param p
+     * @param p カラム名
      */
     public void setColumnName(final String p) {
         this.columnName = p;
     }
 
     /**
-     * @return typeName
+     * @return 取得したタイプ名
      */
     public String getTypeName() {
         return typeName;
     }
 
     /**
-     * @param p
+     * @param p 取得したタイプ名
      */
     public void setTypeName(final String p) {
         this.typeName = p;
     }
 
     /**
-     * @return dataType
+     * @return タイプ名から変換したデータ型
      */
     public String getDataType() {
         return dataType;
     }
 
     /**
-     * @param p
+     * @param p タイプ名から変換したデータ型
      */
     public void setDataType(final String p) {
         this.dataType = p;
     }
 
     /**
-     * @return columnSize
+     * @return サイズ
      */
     public int getColumnSize() {
         return columnSize;
     }
 
     /**
-     * @param p
+     * @param p サイズ
      */
     public void setColumnSize(final int p) {
         this.columnSize = p;
     }
 
     /**
-     * @return int
+     * @return 小数桁数
      */
     public int getDecimalDigits() {
         return decimalDigits;
     }
 
     /**
-     * @param p
+     * @param p 小数桁数
      */
     public void setDecimalDigits(final int p) {
         this.decimalDigits = p;
     }
 
     /**
-     * @return int
+     * @return null可なら「1」
      */
     public int getNullable() {
         return nullable;
     }
 
     /**
-     * @param p
+     * @param p null可なら「1」
      */
     public void setNullable(final int p) {
         this.nullable = p;
     }
 
     /**
-     * @return remarks
+     * @return コメント
      */
     public String getRemarks() {
         return remarks;
     }
 
     /**
-     * @param p
+     * @param p コメント
      */
     public void setRemarks(final String p) {
         this.remarks = p;
     }
 
     /**
-     * @return 主キーか
+     * @return 主キーならtrue
      */
     public boolean isPk() {
         return isPk;
     }
 
     /**
-     * @param p
+     * @param p 主キーならtrue
      */
     public void setPk(final boolean p) {
         this.isPk = p;
     }
 
     /**
-     * @return boolean
+     * @return 採番キーならtrue
      */
     public boolean isNumbering() {
         return isNumbering;
     }
 
     /**
-     * @param p
+     * @param p 採番キーならtrue
      */
     public void setNumbering(final boolean p) {
         this.isNumbering = p;
     }
 
     /**
-     * @return 参照テーブル
+     * @return 参照先テーブル
      */
     public TableInfo getReferInfo() {
         return referInfo;
     }
 
     /**
-     * @param p
+     * @param p 参照先テーブル
      */
     public void setReferInfo(final TableInfo p) {
         this.referInfo = p;

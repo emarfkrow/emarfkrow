@@ -1,3 +1,19 @@
+/*
+Copyright 2022 golorp
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
 package jp.co.golorp.emarf.generator;
 
 import java.io.File;
@@ -15,6 +31,11 @@ import jp.co.golorp.emarf.io.FileUtil;
 import jp.co.golorp.emarf.lang.StringUtil;
 import jp.co.golorp.emarf.util.ResourceBundles;
 
+/**
+ * HTMLファイル出力
+ *
+ * @author golorp
+ */
 public final class HtmlGenerator {
 
     /** properties */
@@ -64,12 +85,14 @@ public final class HtmlGenerator {
     /** 参照列名ペア */
     private static Set<String[]> referPairs = new LinkedHashSet<String[]>();
 
+    /** プライベートコンストラクタ */
     private HtmlGenerator() {
     }
 
     /**
-     * @param projectDir
-     * @param tableInfos
+     * HTMLファイル出力
+     * @param projectDir プロジェクトディレクトリ
+     * @param tableInfos テーブル情報のリスト
      */
     static void generate(final String projectDir, final List<TableInfo> tableInfos) {
 
@@ -143,6 +166,11 @@ public final class HtmlGenerator {
         //                s);
     }
 
+    /**
+     * navファイル出力
+     * @param htmlDir HTMLファイル出力ディレクトリ
+     * @param tableInfos テーブル情報のリスト
+     */
     private static void htmlNav(final String htmlDir, final List<TableInfo> tableInfos) {
 
         // プレフィクス毎にグループ化
@@ -214,8 +242,8 @@ public final class HtmlGenerator {
 
     /**
      * 検索画面 HTML出力
-     * @param htmlDir
-     * @param tableInfo
+     * @param htmlDir HTMLファイル出力ディレクトリ
+     * @param tableInfo テーブル情報
      */
     private static void htmlIndex(final String htmlDir, final TableInfo tableInfo) {
 
@@ -315,6 +343,12 @@ public final class HtmlGenerator {
         FileUtil.writeFile(htmlDir + File.separator + pageName + ".html", s);
     }
 
+    /**
+     * ネストした兄弟モデル・子モデル・参照モデルのgrid定義出力
+     * @param tableInfo テーブル情報
+     * @param s 出力文字列のリスト
+     * @param added 出力済みテーブル情報のリスト
+     */
     private static void htmlNestGrid(final TableInfo tableInfo, final List<String> s, final Set<TableInfo> added) {
 
         for (TableInfo childInfo : tableInfo.getChildInfos()) {
@@ -375,8 +409,8 @@ public final class HtmlGenerator {
 
     /**
      * 検索画面 グリッド定義出力
-     * @param gridDir
-     * @param tableInfo
+     * @param gridDir グリッド出力ディレクトリ
+     * @param tableInfo テーブル情報
      */
     private static void htmlGridColumns(final String gridDir, final TableInfo tableInfo) {
 
@@ -513,8 +547,8 @@ public final class HtmlGenerator {
 
     /**
      * 詳細画面 HTML出力
-     * @param htmlDir
-     * @param tableInfo
+     * @param htmlDir HTMLファイル出力ディレクトリ
+     * @param tableInfo テーブル情報
      */
     private static void htmlDetail(final String htmlDir, final TableInfo tableInfo) {
 
@@ -618,11 +652,10 @@ public final class HtmlGenerator {
 
     /**
      * htmlにフィールド追加
-     *
-     * @param tableInfo
-     * @param s
-     * @param isDetail
-     * @param isBrother
+     * @param tableInfo テーブル情報
+     * @param s 出力文字列のリスト
+     * @param isDetail 詳細画面ならtrue
+     * @param isBrother 兄弟モデルならtrue
      */
     private static void htmlFields(final TableInfo tableInfo, final List<String> s, final boolean isDetail,
             final boolean isBrother) {
@@ -776,6 +809,15 @@ public final class HtmlGenerator {
         }
     }
 
+    /**
+     * inputタグ出力
+     * @param s 出力文字列のリスト
+     * @param id 入力項目のID
+     * @param remarks コメント
+     * @param type タイプ
+     * @param max 最大文字数
+     * @param css スタイル
+     */
     private static void htmlFieldsInput(final List<String> s, final String id, final String remarks, final String type,
             final int max, final String css) {
 
@@ -793,6 +835,14 @@ public final class HtmlGenerator {
         s.add(tag);
     }
 
+    /**
+     * 範囲指定の入力項目出力
+     * @param s 出力文字列のリスト
+     * @param id 項目ID
+     * @param remarks コメント
+     * @param type タイプ
+     * @param max 最大文字数
+     */
     private static void htmlFieldsInputRange(final List<String> s, final String id, final String remarks,
             final String type, final int max) {
 
@@ -804,11 +854,25 @@ public final class HtmlGenerator {
         s.add(tag);
     }
 
+    /**
+     * テキストエリア出力
+     * @param s 出力文字列のリスト
+     * @param id 項目ID
+     * @param remarks コメント
+     */
     private static void htmlFieldsTextarea(final List<String> s, final String id, final String remarks) {
         s.add("          <label for=\"" + id + "\" th:text=\"#{" + id + "}\">" + remarks + "</label>");
         s.add("          <textarea id=\"" + id + "\" name=\"" + id + "\"></textarea>");
     }
 
+    /**
+     * 選択項目の出力
+     * @param s 出力文字列のリスト
+     * @param id 項目ID
+     * @param columnName カラム名
+     * @param remarks コメント
+     * @param isPrimariKey 主キーならtrue
+     */
     private static void htmlFieldsOptions(final List<String> s, final String id, final String columnName,
             final String remarks, final boolean isPrimariKey) {
         String primaryKey = " class=\"primaryKey\"";
@@ -822,6 +886,12 @@ public final class HtmlGenerator {
         s.add("          </fieldset>");
     }
 
+    /**
+     * レコードメタ情報の出力
+     * @param s 出力文字列のリスト
+     * @param id 項目ID
+     * @param remarks コメント
+     */
     private static void htmlFieldsMeta(final List<String> s, final String id, final String remarks) {
 
         String tag = "          ";
@@ -832,6 +902,7 @@ public final class HtmlGenerator {
     }
 
     /**
+     * 参照定義の取得
      * @param entityName 参照元エンティティ名
      * @param columnName 参照元カラム名
      * @param referInfo 参照先エンティティ情報
@@ -888,6 +959,12 @@ public final class HtmlGenerator {
         return "";
     }
 
+    /**
+     * 参照IDカラム名に合致する、参照名称カラム名の取得
+     * @param columnName カラム名
+     * @param referInfo 参照テーブル情報
+     * @return 名称カラム名
+     */
     private static String getMeiColumnName(final String columnName, final TableInfo referInfo) {
 
         // カラム名が参照キーに合致する場合
@@ -930,8 +1007,8 @@ public final class HtmlGenerator {
 
     /**
      * 各モデルのプロパティファイル出力
-     * @param htmlDir
-     * @param tableInfo
+     * @param htmlDir HTMLファイル出力ディレクトリ
+     * @param tableInfo テーブル情報
      */
     private static void htmlProperties(final String htmlDir, final TableInfo tableInfo) {
 

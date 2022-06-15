@@ -1,3 +1,19 @@
+/*
+Copyright 2022 golorp
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
 package jp.co.golorp.emarf.generator;
 
 import java.io.File;
@@ -26,7 +42,7 @@ import jp.co.golorp.emarf.util.ResourceBundles;
 /**
  * java/html/sql出力
  *
- * @author toshiyuki
+ * @author golorp
  */
 public final class BeanGenerator {
 
@@ -77,12 +93,12 @@ public final class BeanGenerator {
 
     /**
      * 各ファイル出力 主処理
-     * @param s
-     * @param isManual
+     * @param dir プロジェクトのディレクトリ
+     * @param isManual 手動実行フラグ
      */
-    public static void generate(final String s, final boolean isManual) {
+    public static void generate(final String dir, final boolean isManual) {
 
-        projectDir = s;
+        projectDir = dir;
 
         /* 設定ファイル読み込み */
         bundle = ResourceBundles.getBundle(BeanGenerator.class);
@@ -198,7 +214,7 @@ public final class BeanGenerator {
 
     /**
      * エンティティ出力
-     * @param tableInfos
+     * @param tableInfos テーブル情報のリスト
      */
     private static void javaEntity(final List<TableInfo> tableInfos) {
 
@@ -313,8 +329,8 @@ public final class BeanGenerator {
 
     /**
      * エンティティにCRUD追加
-     * @param tableInfo
-     * @param s
+     * @param tableInfo テーブル情報
+     * @param s 出力文字列のリスト
      */
     private static void javaEntityCRUD(final TableInfo tableInfo, final List<String> s) {
 
@@ -446,6 +462,11 @@ public final class BeanGenerator {
         s.add("    }");
     }
 
+    /**
+     * エンティティにINSERT追加
+     * @param tableInfo テーブル情報
+     * @param s 出力文字列のリスト
+     */
     private static void javaEntityCRUDInsert(final TableInfo tableInfo, final List<String> s) {
 
         String tableName = tableInfo.getTableName();
@@ -561,6 +582,12 @@ public final class BeanGenerator {
         }
     }
 
+    /**
+     * エンティティに採番追加
+     * @param tableInfo テーブル情報
+     * @param s 出力文字列のリスト
+     * @param lastKeyInfo 最終キー情報
+     */
     private static void javaEntityCRUDInsertNumbering(final TableInfo tableInfo, final List<String> s,
             final ColumnInfo lastKeyInfo) {
 
@@ -625,6 +652,11 @@ public final class BeanGenerator {
         s.add("    }");
     }
 
+    /**
+     * エンティティにUPDATE追加
+     * @param tableInfo テーブル情報
+     * @param s 出力文字列のリスト
+     */
     private static void javaEntityCRUDUpdate(final TableInfo tableInfo, final List<String> s) {
 
         DataSourcesAssist assist = DataSources.getAssist();
@@ -761,8 +793,8 @@ public final class BeanGenerator {
 
     /**
      * エンティティにCRUD用ユーティリティ追加
-     * @param tableInfo
-     * @param s
+     * @param tableInfo テーブル情報
+     * @param s 出力文字列のリスト
      */
     private static void javaEntityUtil(final TableInfo tableInfo, final List<String> s) {
 
@@ -828,8 +860,8 @@ public final class BeanGenerator {
 
     /**
      * エンティティに兄弟モデル追加
-     * @param tableInfo
-     * @param s
+     * @param tableInfo テーブル情報
+     * @param s 出力文字列のリスト
      */
     private static void javaEntityBros(final TableInfo tableInfo, final List<String> s) {
 
@@ -887,8 +919,8 @@ public final class BeanGenerator {
 
     /**
      * エンティティに子モデル追加
-     * @param tableInfo
-     * @param s
+     * @param tableInfo テーブル情報
+     * @param s 出力文字列のリスト
      */
     private static void javaEntityChild(final TableInfo tableInfo, final List<String> s) {
 
@@ -1002,7 +1034,7 @@ public final class BeanGenerator {
 
     /**
      * 詳細画面 登録処理出力
-     * @param tableInfos
+     * @param tableInfos テーブル情報のリスト
      */
     private static void javaActionDetailDelete(final List<TableInfo> tableInfos) {
 
@@ -1088,7 +1120,7 @@ public final class BeanGenerator {
 
     /**
      * 詳細画面 登録処理出力
-     * @param tableInfos
+     * @param tableInfos テーブル情報のリスト
      */
     private static void javaActionDetailGet(final List<TableInfo> tableInfos) {
 
@@ -1179,7 +1211,7 @@ public final class BeanGenerator {
 
     /**
      * 詳細画面 登録処理出力
-     * @param tableInfos
+     * @param tableInfos テーブル情報のリスト
      */
     private static void javaActionDetailRegist(final List<TableInfo> tableInfos) {
 
@@ -1273,7 +1305,7 @@ public final class BeanGenerator {
 
     /**
      * 検索画面 登録処理出力
-     * @param tableInfos
+     * @param tableInfos テーブル情報のリスト
      */
     private static void javaActionIndexDelete(final List<TableInfo> tableInfos) {
 
@@ -1364,7 +1396,7 @@ public final class BeanGenerator {
 
     /**
      * 検索画面 登録処理出力
-     * @param tableInfos
+     * @param tableInfos テーブル情報のリスト
      */
     private static void javaActionIndexRegist(final List<TableInfo> tableInfos) {
 
@@ -1468,7 +1500,7 @@ public final class BeanGenerator {
 
     /**
      * 詳細画面 フォーム出力
-     * @param tableInfos
+     * @param tableInfos テーブル情報のリスト
      */
     private static void javaFormDetailRegist(final List<TableInfo> tableInfos) {
 
@@ -1614,9 +1646,10 @@ public final class BeanGenerator {
     }
 
     /**
-     * @param primaryKeys
-     * @param columnInfo
-     * @param s
+     * 詳細画面 フォームチェック追加
+     * @param primaryKeys 主キー情報のリスト
+     * @param columnInfo カラム情報
+     * @param s 出力文字列のリスト
      */
     private static void javaFormDetailRegistChecks(final List<String> primaryKeys, final ColumnInfo columnInfo,
             final List<String> s) {
@@ -1652,7 +1685,7 @@ public final class BeanGenerator {
 
     /**
      * 検索画面 フォーム出力
-     * @param tableInfos
+     * @param tableInfos テーブル情報のリスト
      */
     private static void javaFormIndexRegist(final List<TableInfo> tableInfos) {
 
@@ -1734,8 +1767,8 @@ public final class BeanGenerator {
 
     /**
      * javaファイルをコンパイル
-     * @param javaFilePath
-     * @param className
+     * @param javaFilePath javaファイルパス
+     * @param className クラス名
      */
     private static void javaCompile(final String javaFilePath, final String className) {
 
@@ -1781,8 +1814,8 @@ public final class BeanGenerator {
 
     /**
      * 各モデルの検索SQL出力
-     * @param sqlDir
-     * @param tableInfo
+     * @param sqlDir SQLファイル出力ディレクトリ
+     * @param tableInfo テーブル情報
      */
     private static void sqlSearch(final String sqlDir, final TableInfo tableInfo) {
 

@@ -110,7 +110,10 @@
     <module name="JavadocStyle">
       <property name="checkFirstSentence" value="false"/>
     </module>
-    <module name="MissingJavadocMethod"/>
+    <module name="MissingJavadocType"/>
+    <module name="MissingJavadocMethod">
+      <property name="scope" value="private"/>
+    </module>
 
     <!-- Checks for Naming Conventions.                  -->
     <!-- See https://checkstyle.org/config_naming.html -->

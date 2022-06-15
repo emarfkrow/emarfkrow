@@ -1,3 +1,19 @@
+/*
+Copyright 2022 golorp
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
 package jp.co.golorp.emarf.lang;
 
 import java.security.MessageDigest;
@@ -15,29 +31,17 @@ import jp.co.golorp.emarf.properties.App;
 /**
  * 文字列操作クラス
  *
- * @author toshiyuki
- *
+ * @author golorp
  */
 public final class StringUtil {
 
+    /** プライベートコンストラクタ*/
     private StringUtil() {
     }
 
     /**
-     * スネークケースに変換
-     * <dl>
-     * <dt>snake_case</dt>
-     * <dd>snake_case</dd>
-     * <dt>UPPER_CASE</dt>
-     * <dd>upper_case（小文字化するだけ）</dd>
-     * <dt>camelCase</dt>
-     * <dd>camel_case（小文字か数字直後の大文字の前に「_」を挿入してから小文字化）</dd>
-     * <dt>PascalCase</dt>
-     * <dd>pascal_case（小文字か数字直後の大文字の前に「_」を挿入してから小文字化）</dd>
-     * </dl>
-     *
-     * @param s
-     * @return snakeCase
+     * @param s 変換する文字列
+     * @return snake_case
      */
     public static String toSnakeCase(final String s) {
 
@@ -57,15 +61,15 @@ public final class StringUtil {
     }
 
     /**
-     * @param s
-     * @return upperCase
+     * @param s 変換する文字列
+     * @return UPPER_CASE
      */
     public static String toUpperCase(final String s) {
         return toSnakeCase(s).toUpperCase();
     }
 
     /**
-     * @param s
+     * @param s 変換する文字列
      * @return camelCase
      */
     public static String toCamelCase(final String s) {
@@ -100,7 +104,7 @@ public final class StringUtil {
     }
 
     /**
-     * @param s
+     * @param s 変換する文字列
      * @return PascalCase
      */
     public static String toPascalCase(final String s) {
@@ -114,7 +118,7 @@ public final class StringUtil {
     }
 
     /**
-     * @param s
+     * @param s 変換する文字列
      * @return kebab-case
      */
     public static String toKebabCase(final String s) {
@@ -128,8 +132,8 @@ public final class StringUtil {
     }
 
     /**
-     * @param s
-     * @return KEBAB-CASE
+     * @param s 変換する文字列
+     * @return UPPER-KEBAB-CASE
      */
     public static String toUpperKebabCase(final String s) {
 
@@ -151,8 +155,8 @@ public final class StringUtil {
     // }
 
     /**
-     * @param s s
-     * @return 「,」で分解した文字列
+     * @param s csv文字列
+     * @return 「, 」で分解した文字列
      */
     public static String[] split(final String s) {
 
@@ -164,19 +168,17 @@ public final class StringUtil {
     }
 
     /**
-     * @param o
-     * @return boolean
+     * @param o 検査対象
+     * @return nullか空白ならtrue
      */
     public static boolean isNullOrBlank(final Object o) {
         return o == null || o.toString().trim().equals("");
     }
 
     /**
-     * String.join拡張
-     *
-     * @param delimiter
-     * @param list
-     * @return String
+     * @param delimiter 区切り文字
+     * @param list 結合する文字列のリスト
+     * @return 空白を無視して結合した文字列
      */
     public static String join(final String delimiter, final List<String> list) {
         List<String> elements = new ArrayList<String>();
@@ -189,9 +191,9 @@ public final class StringUtil {
     }
 
     /**
-     * @param suffixs
-     * @param s
-     * @return boolean
+     * @param suffixs サフィックスの配列
+     * @param s 検査文字列
+     * @return 検査文字列がサフィックスの何れかに合致すればtrue
      */
     public static boolean endsWith(final String[] suffixs, final String s) {
         for (String suffix : suffixs) {
@@ -203,9 +205,9 @@ public final class StringUtil {
     }
 
     /**
-     * @param suffixs
-     * @param s
-     * @return boolean
+     * @param suffixs サフィックスのマップ
+     * @param s 検査文字列
+     * @return 検査文字列がサフィックスのマップのキーの何れかに合致すればtrue
      */
     public static boolean endsWith(final Map<String, String> suffixs, final String s) {
         for (String suffix : suffixs.keySet()) {
@@ -217,9 +219,9 @@ public final class StringUtil {
     }
 
     /**
-     * @param suffixs
-     * @param s
-     * @return boolean
+     * @param suffixs サフィックスの配列のセット
+     * @param s 検査文字列
+     * @return 検査文字列がサフィックスの配列の一つ目の何れかに合致すればtrue
      */
     public static boolean endsWith(final Set<String[]> suffixs, final String s) {
         for (String[] suffix : suffixs) {
@@ -231,26 +233,25 @@ public final class StringUtil {
     }
 
     /**
-     * @param suffix
-     * @param s
-     * @return boolean
+     * @param suffix サフィックス
+     * @param s 検査文字列
+     * @return 検査文字列がサフィックスに合致すればtrue
      */
     public static boolean endsWithIgnoreCase(final String suffix, final String s) {
         return s.matches("(?i).*" + suffix + "$");
     }
 
     /**
-     * @param s
-     * @return String
+     * @param s 検査文字列
+     * @return 特定の記号を変換
      */
     public static String sanitize(final String s) {
-        String sanitized = s.replaceAll("<", "＜").replaceAll(">", "＞");
-        return sanitized;
+        return s.replaceAll("<", "＜").replaceAll(">", "＞");
     }
 
     /**
-     * @param s
-     * @return String
+     * @param s 検査文字列の配列
+     * @return 特定の記号を変換
      */
     public static String[] sanitize(final String[] s) {
         List<String> sanitizeds = new ArrayList<String>();
@@ -365,7 +366,7 @@ public final class StringUtil {
     private static MessageDigest md;
 
     /**
-     * @param s
+     * @param s 対象文字列
      * @return SHA3-512ハッシュ文字列
      */
     public static String hash(final String s) {

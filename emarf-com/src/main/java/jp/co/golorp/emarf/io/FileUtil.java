@@ -1,3 +1,19 @@
+/*
+Copyright 2022 golorp
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
 package jp.co.golorp.emarf.io;
 
 import java.io.File;
@@ -9,6 +25,11 @@ import java.util.List;
 
 import jp.co.golorp.emarf.exception.SysError;
 
+/**
+ * ファイル操作ユーティリティ
+ *
+ * @author golorp
+ */
 public final class FileUtil {
 
     /** プライベートコンストラクタ */
@@ -26,15 +47,15 @@ public final class FileUtil {
     }
 
     /**
-     * @param p
+     * @param p コンテキストパス
      */
     public static void setContextDir(final String p) {
         FileUtil.contextDir = p;
     }
 
     /**
-     * @param filePath
-     * @return File
+     * @param filePath ファイルパス
+     * @return File ファイル実体
      */
     public static File get(final String filePath) {
         String pathname = contextDir + File.separator + filePath;
@@ -48,7 +69,8 @@ public final class FileUtil {
     }
 
     /**
-     * @param file
+     * 指定した配下の全てを削除
+     * @param file 削除するファイルかパス
      */
     public static void forceDelete(final File file) {
         File[] files = file.listFiles();
@@ -65,7 +87,8 @@ public final class FileUtil {
     }
 
     /**
-     * @param pathname
+     * 指定したパスを再作成
+     * @param pathname 再作成するパス
      */
     public static void reMkDir(final String pathname) {
         File gridFolder = new File(pathname);
@@ -76,8 +99,8 @@ public final class FileUtil {
     }
 
     /**
-     * @param filePath
-     * @param s
+     * @param filePath 出力ファイルパス
+     * @param s 出力文字列のリスト
      */
     public static void writeFile(final String filePath, final List<String> s) {
         FileWriter w = null;
