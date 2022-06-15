@@ -17,7 +17,7 @@ let MstSupplierGridColumns = [
     Column.text('SUP_OPE_MAIL_ADD', Messages['MstSupplierGrid.supOpeMailAdd'], 300, '', null),
     Column.text('SUP_PERIOD_DAY', Messages['MstSupplierGrid.supPeriodDay'], 20, '', null),
     Column.text('PAY_DAY', Messages['MstSupplierGrid.payDay'], 20, '', null),
-    Column.select('TAX_CODE', Messages['MstSupplierGrid.taxCode'], 20, '', { json: 'MstCodeValueSearch.json', paramkey: 'code_nm', value: 'CODE_VALUE', label: 'CODE_VALUE_MEI' }),
+    Column.refer('TAX_CODE', Messages['MstSupplierGrid.taxCode'], 20, '', 'TAX_NAME'),
     Column.select('TAX_CAL_CODE', Messages['MstSupplierGrid.taxCalCode'], 10, '', { json: 'MstCodeValueSearch.json', paramkey: 'code_nm', value: 'CODE_VALUE', label: 'CODE_VALUE_MEI' }),
     Column.select('TAX_DISP_CODE', Messages['MstSupplierGrid.taxDispCode'], 10, '', { json: 'MstCodeValueSearch.json', paramkey: 'code_nm', value: 'CODE_VALUE', label: 'CODE_VALUE_MEI' }),
     Column.select('FRACTION_KBN', Messages['MstSupplierGrid.fractionKbn'], 10, '', { json: 'MstCodeValueSearch.json', paramkey: 'code_nm', value: 'CODE_VALUE', label: 'CODE_VALUE_MEI' }),

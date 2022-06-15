@@ -11,6 +11,8 @@
 <script th:src="@{/model/MstHinbanGridColumns.js}"></script>
 <script th:src="@{/model/InvPrintWarehousingslipGridColumns.js}"></script>
 <script th:src="@{/model/MstEmpGridColumns.js}"></script>
+<script th:src="@{/model/MstDivisionGridColumns.js}"></script>
+<script th:src="@{/model/MstCompanyGridColumns.js}"></script>
 <script th:src="@{/model/InvStockStoreGridColumns.js}"></script>
 <script th:src="@{/model/MstHinbanBkGridColumns.js}"></script>
 <script th:src="@{/model/MstUnitGridColumns.js}"></script>
@@ -61,14 +63,10 @@
           <label for="MstHinban.counts" th:text="#{MstHinban.counts}">COUNTS</label><input type="text" id="MstHinban.counts" name="MstHinban.counts" maxlength="6" />
         </div>
         <div id="unitCode">
-          <fieldset id="MstHinban.unitCodeList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:UNIT_CODE" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
-            <legend th:text="#{MstHinban.unitCode}">UNIT_CODE</legend>
-          </fieldset>
+          <label for="MstHinban.unitCode" th:text="#{MstHinban.unitCode}">UNIT_CODE</label><input type="text" id="MstHinban.unitCode" name="MstHinban.unitCode" maxlength="2" data-json="MstUnitSearch.json" data-srcDef="UNIT_CODE:MstHinban.unitCode" data-destDef="MstHinban.unitName:UNIT_NAME" /><a id="MstHinban.unitCode" th:href="@{/model/MstUnitS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MstHinban.unitName" class="refer" data-json="MstUnitSearch.json" data-srcDef="UNIT_CODE:MstHinban.unitCode" data-destDef="MstHinban.unitName:UNIT_NAME"></span>
         </div>
         <div id="accountCode">
-          <fieldset id="MstHinban.accountCodeList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:ACCOUNT_CODE" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
-            <legend th:text="#{MstHinban.accountCode}">ACCOUNT_CODE</legend>
-          </fieldset>
+          <label for="MstHinban.accountCode" th:text="#{MstHinban.accountCode}">ACCOUNT_CODE</label><input type="text" id="MstHinban.accountCode" name="MstHinban.accountCode" maxlength="5" data-json="MstAccountCodeSearch.json" data-srcDef="ACCOUNT_CODE:MstHinban.accountCode" data-destDef="MstHinban.accountName:ACCOUNT_NAME" /><a id="MstHinban.accountCode" th:href="@{/model/MstAccountCodeS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MstHinban.accountName" class="refer" data-json="MstAccountCodeSearch.json" data-srcDef="ACCOUNT_CODE:MstHinban.accountCode" data-destDef="MstHinban.accountName:ACCOUNT_NAME"></span>
         </div>
         <div id="supplyChange">
           <label for="MstHinban.supplyChange" th:text="#{MstHinban.supplyChange}">SUPPLY_CHANGE</label><input type="text" id="MstHinban.supplyChange" name="MstHinban.supplyChange" maxlength="1" />
@@ -122,9 +120,7 @@
           </fieldset>
         </div>
         <div id="hinbanOpeCode">
-          <fieldset id="MstHinban.hinbanOpeCodeList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:HINBAN_OPE_CODE" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
-            <legend th:text="#{MstHinban.hinbanOpeCode}">HINBAN_OPE_CODE</legend>
-          </fieldset>
+          <label for="MstHinban.hinbanOpeCode" th:text="#{MstHinban.hinbanOpeCode}">HINBAN_OPE_CODE</label><input type="text" id="MstHinban.hinbanOpeCode" name="MstHinban.hinbanOpeCode" maxlength="10" data-json="MstHinbanEmpSearch.json" data-srcDef="HINBAN_OPE_CODE:MstHinban.hinbanOpeCode" data-destDef="MstHinban.hinbanOpeName:HINBAN_OPE_NAME" /><a id="MstHinban.hinbanOpeCode" th:href="@{/model/MstHinbanEmpS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MstHinban.hinbanOpeName" class="refer" data-json="MstHinbanEmpSearch.json" data-srcDef="HINBAN_OPE_CODE:MstHinban.hinbanOpeCode" data-destDef="MstHinban.hinbanOpeName:HINBAN_OPE_NAME"></span>
         </div>
         <div id="permissionFlag">
           <fieldset id="MstHinban.permissionFlagList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:PERMISSION_FLAG" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">

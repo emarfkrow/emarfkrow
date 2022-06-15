@@ -9,6 +9,7 @@
 
 </script>
 <script th:src="@{/model/MstDivisionGridColumns.js}"></script>
+<script th:src="@{/model/MstCompanyGridColumns.js}"></script>
 </head>
 <body>
   <div layout:fragment="article">
@@ -28,9 +29,7 @@
           </fieldset>
         </div>
         <div id="companyCode">
-          <fieldset id="MstDivision.companyCodeList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:COMPANY_CODE" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
-            <legend th:text="#{MstDivision.companyCode}">COMPANY_CODE</legend>
-          </fieldset>
+          <label for="MstDivision.companyCode" th:text="#{MstDivision.companyCode}">COMPANY_CODE</label><input type="text" id="MstDivision.companyCode" name="MstDivision.companyCode" maxlength="10" data-json="MstCompanySearch.json" data-srcDef="COMPANY_CODE:MstDivision.companyCode" data-destDef="MstDivision.companyName:COMPANY_NAME" /><a id="MstDivision.companyCode" th:href="@{/model/MstCompanyS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MstDivision.companyName" class="refer" data-json="MstCompanySearch.json" data-srcDef="COMPANY_CODE:MstDivision.companyCode" data-destDef="MstDivision.companyName:COMPANY_NAME"></span>
         </div>
         <div id="timeStampCreate">
           <label for="MstDivision.timeStampCreate" th:text="#{MstDivision.timeStampCreate}">TIME_STAMP_CREATE</label><span id="MstDivision.timeStampCreate"></span><input type="hidden" id="MstDivision.timeStampCreate" name="MstDivision.timeStampCreate" />

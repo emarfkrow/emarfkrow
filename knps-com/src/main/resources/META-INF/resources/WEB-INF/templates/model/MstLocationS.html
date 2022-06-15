@@ -9,6 +9,12 @@
 
 </script>
 <script th:src="@{/model/MstLocationGridColumns.js}"></script>
+<script th:src="@{/model/MstSubinvGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierGridColumns.js}"></script>
+<script th:src="@{/model/InvStockProcessSupplyGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierBkGridColumns.js}"></script>
+<script th:src="@{/model/MstTaxGridColumns.js}"></script>
+<script th:src="@{/model/MstStoreManGridColumns.js}"></script>
 </head>
 <body>
   <div layout:fragment="article">
@@ -36,9 +42,7 @@
           <label for="MstLocation.locEnable" th:text="#{MstLocation.locEnable}">LOC_ENABLE</label><input type="text" id="MstLocation.locEnable" name="MstLocation.locEnable" maxlength="1" />
         </div>
         <div id="subInvCode">
-          <fieldset id="MstLocation.subInvCodeList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:SUB_INV_CODE" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
-            <legend th:text="#{MstLocation.subInvCode}">SUB_INV_CODE</legend>
-          </fieldset>
+          <label for="MstLocation.subInvCode" th:text="#{MstLocation.subInvCode}">SUB_INV_CODE</label><input type="text" id="MstLocation.subInvCode" name="MstLocation.subInvCode" maxlength="10" data-json="MstSubinvSearch.json" data-srcDef="SUB_INV_CODE:MstLocation.subInvCode" data-destDef="MstLocation.subInvName:SUB_INV_NAME" /><a id="MstLocation.subInvCode" th:href="@{/model/MstSubinvS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MstLocation.subInvName" class="refer" data-json="MstSubinvSearch.json" data-srcDef="SUB_INV_CODE:MstLocation.subInvCode" data-destDef="MstLocation.subInvName:SUB_INV_NAME"></span>
         </div>
         <div id="deleteFlag">
           <fieldset id="MstLocation.deleteFlagList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:DELETE_FLAG" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
@@ -49,7 +53,7 @@
           <label for="MstLocation.areaCd" th:text="#{MstLocation.areaCd}">AREA_CD</label><input type="text" id="MstLocation.areaCd" name="MstLocation.areaCd" maxlength="10" />
         </div>
         <div id="storeManId">
-          <label for="MstLocation.storeManId" th:text="#{MstLocation.storeManId}">STORE_MAN_ID</label><input type="text" id="MstLocation.storeManId" name="MstLocation.storeManId" maxlength="10" />
+          <label for="MstLocation.storeManId" th:text="#{MstLocation.storeManId}">STORE_MAN_ID</label><input type="text" id="MstLocation.storeManId" name="MstLocation.storeManId" maxlength="10" data-json="MstStoreManSearch.json" data-srcDef="STORE_MAN_ID:MstLocation.storeManId" data-destDef="MstLocation.storeManMei:STORE_MAN_MEI" /><a id="MstLocation.storeManId" th:href="@{/model/MstStoreManS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MstLocation.storeManMei" class="refer" data-json="MstStoreManSearch.json" data-srcDef="STORE_MAN_ID:MstLocation.storeManId" data-destDef="MstLocation.storeManMei:STORE_MAN_MEI"></span>
         </div>
       </fieldset>
       <div class="buttons">

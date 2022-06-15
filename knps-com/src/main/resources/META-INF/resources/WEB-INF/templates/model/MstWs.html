@@ -9,6 +9,14 @@
 
 </script>
 <script th:src="@{/model/MstWsGridColumns.js}"></script>
+<script th:src="@{/model/MstTeamGridColumns.js}"></script>
+<script th:src="@{/model/MstGroupGridColumns.js}"></script>
+<script th:src="@{/model/MstDivisionGridColumns.js}"></script>
+<script th:src="@{/model/MstCompanyGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierGridColumns.js}"></script>
+<script th:src="@{/model/InvStockProcessSupplyGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierBkGridColumns.js}"></script>
+<script th:src="@{/model/MstTaxGridColumns.js}"></script>
 </head>
 <body>
   <div layout:fragment="article">
@@ -42,14 +50,10 @@
           </fieldset>
         </div>
         <div id="teamCode">
-          <fieldset id="MstWs.teamCodeList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:TEAM_CODE" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
-            <legend th:text="#{MstWs.teamCode}">TEAM_CODE</legend>
-          </fieldset>
+          <label for="MstWs.teamCode" th:text="#{MstWs.teamCode}">TEAM_CODE</label><input type="text" id="MstWs.teamCode" name="MstWs.teamCode" maxlength="10" data-json="MstTeamSearch.json" data-srcDef="TEAM_CODE:MstWs.teamCode" data-destDef="MstWs.teamName:TEAM_NAME" /><a id="MstWs.teamCode" th:href="@{/model/MstTeamS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MstWs.teamName" class="refer" data-json="MstTeamSearch.json" data-srcDef="TEAM_CODE:MstWs.teamCode" data-destDef="MstWs.teamName:TEAM_NAME"></span>
         </div>
         <div id="supCode">
-          <fieldset id="MstWs.supCodeList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:SUP_CODE" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
-            <legend th:text="#{MstWs.supCode}">SUP_CODE</legend>
-          </fieldset>
+          <label for="MstWs.supCode" th:text="#{MstWs.supCode}">SUP_CODE</label><input type="text" id="MstWs.supCode" name="MstWs.supCode" maxlength="6" data-json="MstSupplierSearch.json" data-srcDef="SUP_CODE:MstWs.supCode" data-destDef="MstWs.supName:SUP_NAME" /><a id="MstWs.supCode" th:href="@{/model/MstSupplierS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MstWs.supName" class="refer" data-json="MstSupplierSearch.json" data-srcDef="SUP_CODE:MstWs.supCode" data-destDef="MstWs.supName:SUP_NAME"></span>
         </div>
         <div id="timeStampCreate">
           <label for="MstWs.timeStampCreate" th:text="#{MstWs.timeStampCreate}">TIME_STAMP_CREATE</label><span id="MstWs.timeStampCreate"></span><input type="hidden" id="MstWs.timeStampCreate" name="MstWs.timeStampCreate" />

@@ -11,7 +11,14 @@
 <script th:src="@{/model/PrdStoreMainteTeamHedGridColumns.js}"></script>
 <script th:src="@{/model/PrdStoreMainteTeamDetGridColumns.js}"></script>
 <script th:src="@{/model/MstTeamGridColumns.js}"></script>
+<script th:src="@{/model/MstGroupGridColumns.js}"></script>
+<script th:src="@{/model/MstDivisionGridColumns.js}"></script>
+<script th:src="@{/model/MstCompanyGridColumns.js}"></script>
 <script th:src="@{/model/MstWsGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierGridColumns.js}"></script>
+<script th:src="@{/model/InvStockProcessSupplyGridColumns.js}"></script>
+<script th:src="@{/model/MstSupplierBkGridColumns.js}"></script>
+<script th:src="@{/model/MstTaxGridColumns.js}"></script>
 </head>
 <body>
   <div layout:fragment="article">
@@ -20,9 +27,7 @@
       <fieldset>
         <legend th:text="#{PrdStoreMainteTeamHedS.legend}">legend</legend>
         <div id="mfgTeamCode">
-          <fieldset id="PrdStoreMainteTeamHed.mfgTeamCodeList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:MFG_TEAM_CODE" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
-            <legend th:text="#{PrdStoreMainteTeamHed.mfgTeamCode}">MFG_TEAM_CODE</legend>
-          </fieldset>
+          <label for="PrdStoreMainteTeamHed.mfgTeamCode" th:text="#{PrdStoreMainteTeamHed.mfgTeamCode}">MFG_TEAM_CODE</label><input type="text" id="PrdStoreMainteTeamHed.mfgTeamCode" name="PrdStoreMainteTeamHed.mfgTeamCode" maxlength="10" data-json="MstTeamSearch.json" data-srcDef="TEAM_CODE:PrdStoreMainteTeamHed.mfgTeamCode" data-destDef="PrdStoreMainteTeamHed.mfgTeamName:TEAM_NAME" /><a id="PrdStoreMainteTeamHed.mfgTeamCode" th:href="@{/model/MstTeamS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a>
         </div>
         <div id="mfgTeamName">
           <label for="PrdStoreMainteTeamHed.mfgTeamName" th:text="#{PrdStoreMainteTeamHed.mfgTeamName}">MFG_TEAM_NAME</label><input type="text" id="PrdStoreMainteTeamHed.mfgTeamName" name="PrdStoreMainteTeamHed.mfgTeamName" maxlength="60" />

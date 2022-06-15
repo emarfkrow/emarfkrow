@@ -9,6 +9,9 @@
 
 </script>
 <script th:src="@{/model/MstSupEmpGridColumns.js}"></script>
+<script th:src="@{/model/MstEmpGridColumns.js}"></script>
+<script th:src="@{/model/MstDivisionGridColumns.js}"></script>
+<script th:src="@{/model/MstCompanyGridColumns.js}"></script>
 </head>
 <body>
   <div layout:fragment="article">
@@ -23,9 +26,7 @@
           <label for="MstSupEmp.supplierOpeName" th:text="#{MstSupEmp.supplierOpeName}">SUPPLIER_OPE_NAME</label><input type="text" id="MstSupEmp.supplierOpeName" name="MstSupEmp.supplierOpeName" maxlength="30" />
         </div>
         <div id="empCode">
-          <fieldset id="MstSupEmp.empCodeList" data-options="MstCodeValueSearch.json" data-optionParams="code_nm:EMP_CODE" data-optionValue="CODE_VALUE" data-optionLabel="CODE_VALUE_MEI">
-            <legend th:text="#{MstSupEmp.empCode}">EMP_CODE</legend>
-          </fieldset>
+          <label for="MstSupEmp.empCode" th:text="#{MstSupEmp.empCode}">EMP_CODE</label><input type="text" id="MstSupEmp.empCode" name="MstSupEmp.empCode" maxlength="10" data-json="MstEmpSearch.json" data-srcDef="EMP_CODE:MstSupEmp.empCode" data-destDef="MstSupEmp.empName:EMP_NAME" /><a id="MstSupEmp.empCode" th:href="@{/model/MstEmpS.html}" target="dialog" class="refer" th:text="#{common.refer}" tabindex="-1">...</a><span id="MstSupEmp.empName" class="refer" data-json="MstEmpSearch.json" data-srcDef="EMP_CODE:MstSupEmp.empCode" data-destDef="MstSupEmp.empName:EMP_NAME"></span>
         </div>
         <div id="timeStampCreate">
           <label for="MstSupEmp.timeStampCreate" th:text="#{MstSupEmp.timeStampCreate}">TIME_STAMP_CREATE</label><span id="MstSupEmp.timeStampCreate"></span><input type="hidden" id="MstSupEmp.timeStampCreate" name="MstSupEmp.timeStampCreate" />
