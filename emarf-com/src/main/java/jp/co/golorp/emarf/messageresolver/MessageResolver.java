@@ -1,6 +1,21 @@
+/*
+Copyright 2022 golorp
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
 package jp.co.golorp.emarf.messageresolver;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -16,44 +31,37 @@ import org.thymeleaf.messageresolver.StandardMessageResolver;
 import org.thymeleaf.templateresource.ITemplateResource;
 import org.thymeleaf.util.StringUtils;
 
-import jp.co.golorp.emarf.exception.SysError;
+import jp.co.golorp.emarf.lang.ReflectUtil;
 import jp.co.golorp.emarf.properties.App;
 import jp.co.golorp.emarf.util.Locales;
 
 /**
- * @author toshiyuki
+ * Thymeleafのメッセージ拡張
  *
+ * @author golorp
  */
 public class MessageResolver extends StandardMessageResolver {
 
     /** ロガー */
     private static final Logger LOG = LoggerFactory.getLogger(MessageResolver.class);
 
-    /**
-     *
-     */
+    /** 空メッセージ */
     private static final Map<String, String> EMPTY_MESSAGES = Collections.emptyMap();
 
-    /**
-     *
-     */
-    private static final String PROPERTIES_FILE_EXTENSION = ".properties";
+    /** プロパティファイル拡張子 */
+    private static final String EXT = ".properties";
 
-    /**
-     *
-     */
+    /** メッセージマップの要素数初期値 */
     private static final int COMBINED_MESSAGES = 20;
 
-    /**
-     *
-     */
+    /** ロケールのマップ */
     private static Map<Locale, Map<String, String>> localeMap = new HashMap<Locale, Map<String, String>>();
 
     /**
-     * @param template
-     * @param templateResource
-     * @param locale
-     * @return Map
+     * @param template 対象の画面名
+     * @param templateResource 対象画面のリソース
+     * @param locale ロケール
+     * @return 対象画面のプロパティファイルと共通メッセージプロパティを合わせたマップ
      */
     protected Map<String, String> resolveMessagesForTemplate(final String template,
             final ITemplateResource templateResource, final Locale locale) {
@@ -63,9 +71,9 @@ public class MessageResolver extends StandardMessageResolver {
             map = new HashMap<String, String>();
         }
 
-        String path = getValue(templateResource, "path").toString();
+        String path = (String) ReflectUtil.get(templateResource, "path");
         path = path.replaceFirst("S\\.html", ".html");
-        setValue(templateResource, "path", path);
+        ReflectUtil.set(templateResource, "path", path);
 
         Map<String, String> templateMap = super.resolveMessagesForTemplate(template, templateResource, locale);
         if (!templateMap.isEmpty()) {
@@ -83,34 +91,8 @@ public class MessageResolver extends StandardMessageResolver {
         return map;
     }
 
-    private static void setValue(final Object obj, final String name, final Object value) {
-        try {
-            Field field = getField(obj, name);
-            field.set(obj, value);
-        } catch (Exception e) {
-            throw new SysError(e);
-        }
-    }
-
-    private static Object getValue(final Object obj, final String name) {
-        try {
-            Field field = getField(obj, name);
-            return field.get(obj);
-        } catch (Exception e) {
-            throw new SysError(e);
-        }
-    }
-
-    private static Field getField(final Object obj, final String name) throws NoSuchFieldException {
-        Field field = obj.getClass().getDeclaredField(name);
-        field.setAccessible(true);
-        return field;
-    }
-
     /**
-     * クラスパスのmessages.propertiesを読み込み
-     *
-     * @return Map
+     * @return クラスパスのmessages.propertiesのマップ
      */
     public static Map<String, String> getMessages() {
 
@@ -156,32 +138,33 @@ public class MessageResolver extends StandardMessageResolver {
 
     /**
      * StandardMessageResolutionUtils.computeMessageResourceNamesFromBaseがprivateのため移植
-     *
-     * @param resourceBaseName
-     * @param locale
-     * @return List<String>
+     * @param resourceBaseName プロパティファイルの名称
+     * @param locale ロケール
+     * @return プロパティファイル名の候補リスト
      */
     private static List<String> computeMessageResourceNamesFromBase(final String resourceBaseName,
             final Locale locale) {
 
         final List<String> resourceNames = new ArrayList<String>(5);
 
-        if (StringUtils.isEmptyOrWhitespace(locale.getLanguage())) {
-            throw new TemplateProcessingException(
-                    "Locale \"" + locale.toString() + "\" " + "cannot be used as it does not specify a language.");
+        String lang = locale.getLanguage();
+        String country = locale.getCountry();
+
+        if (StringUtils.isEmptyOrWhitespace(lang)) {
+            String message = "Locale \"" + locale.toString() + "\" cannot be used as it does not specify a language.";
+            throw new TemplateProcessingException(message);
         }
 
-        resourceNames.add(resourceBaseName + PROPERTIES_FILE_EXTENSION);
-        resourceNames.add(resourceBaseName + "_" + locale.getLanguage() + PROPERTIES_FILE_EXTENSION);
+        resourceNames.add(resourceBaseName + EXT);
 
-        if (!StringUtils.isEmptyOrWhitespace(locale.getCountry())) {
-            resourceNames.add(resourceBaseName + "_" + locale.getLanguage() + "_" + locale.getCountry()
-                    + PROPERTIES_FILE_EXTENSION);
+        resourceNames.add(resourceBaseName + "_" + lang + EXT);
+
+        if (!StringUtils.isEmptyOrWhitespace(country)) {
+            resourceNames.add(resourceBaseName + "_" + lang + "_" + country + EXT);
         }
 
         if (!StringUtils.isEmptyOrWhitespace(locale.getVariant())) {
-            resourceNames.add(resourceBaseName + "_" + locale.getLanguage() + "_" + locale.getCountry() + "-"
-                    + locale.getVariant() + PROPERTIES_FILE_EXTENSION);
+            resourceNames.add(resourceBaseName + "_" + lang + "_" + country + "-" + locale.getVariant() + EXT);
         }
 
         return resourceNames;

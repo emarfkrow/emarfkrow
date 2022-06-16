@@ -1,3 +1,19 @@
+/*
+Copyright 2022 golorp
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
 package jp.co.golorp.emarf.properties;
 
 import java.util.LinkedHashMap;
@@ -14,31 +30,26 @@ import jp.co.golorp.emarf.lang.StringUtil;
 /**
  * アプリケーションプロパティファイル
  *
- * @author toshiyuki
- *
+ * @author golorp
  */
 public final class App {
 
     /** ロガー */
     private static final Logger LOG = LoggerFactory.getLogger(App.class);
 
-    /** リソースバンドル */
+    /** リソースバンドル（規定値用） */
     private static final ResourceBundle BUNDLE_BASE = ResourceBundle.getBundle(App.class.getSimpleName() + "_base");
 
     /** リソースバンドル */
     private static final ResourceBundle BUNDLE = ResourceBundle.getBundle(App.class.getSimpleName());
 
-    /**
-     * コンストラクタ
-     */
+    /** プライベートコンストラクタ */
     private App() {
     }
 
     /**
-     * キーに合致する値を取得。なくてもエラーにしない。
-     *
      * @param key プロパティキー
-     * @return プロパティ値
+     * @return キーに合致する値を取得。なくてもエラーにしない。
      */
     public static String get(final String key) {
         if (key != null) {
@@ -54,10 +65,8 @@ public final class App {
     }
 
     /**
-     * キーに合致する値を","でsplitして取得。なくてもエラーにしない。
-     *
      * @param key プロパティキー
-     * @return 配列化したプロパティ値
+     * @return キーに合致する値を","でsplitして取得。なくてもエラーにしない。
      */
     public static String[] gets(final String key) {
         String value = App.get(key);
@@ -68,10 +77,8 @@ public final class App {
     }
 
     /**
-     * キーに合致する値を","でsplitして{@link AppSet}として取得。なくてもエラーにしない。
-     *
      * @param key プロパティキー
-     * @return {@link AppSet}化したプロパティ値
+     * @return キーに合致する値を","でsplitしてSetとして取得。なくてもエラーにしない。
      */
     public static Set<String> getSet(final String key) {
 
@@ -88,10 +95,8 @@ public final class App {
     }
 
     /**
-     * キーに合致する値を","でsplitしてから、":"でもsplitしてキー＆値化し、LinkedHashMapとして取得。なくてもエラーにしない。
-     *
      * @param key プロパティキー
-     * @return LinkedHashMap化したプロパティ値
+     * @return キーに合致する値を","でsplitしてから、":"でもsplitしてLinkedHashMapとして取得。なくてもエラーにしない。
      */
     public static Map<String, String> getMap(final String key) {
 

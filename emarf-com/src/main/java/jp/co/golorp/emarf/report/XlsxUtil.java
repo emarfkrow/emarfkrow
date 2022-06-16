@@ -1,3 +1,19 @@
+/*
+Copyright 2022 golorp
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
 package jp.co.golorp.emarf.report;
 
 import java.io.File;
@@ -25,30 +41,41 @@ import jp.co.golorp.emarf.properties.App;
 import jp.co.golorp.emarf.time.LocalDateTime;
 import jp.co.golorp.emarf.util.Messages;
 
+/**
+ * エクセル操作ユーティリティ
+ *
+ * @author golorp
+ */
 public final class XlsxUtil {
+
+    /** セパレータ */
+    private static String sep = File.separator;
 
     /** プライベートコンストラクタ */
     private XlsxUtil() {
     }
 
     /**
-     * 帳票エクセルを一時ディレクトリに作成し、パスを返す.
-     * @param pathes
+     * @param pathes テンプレートファイル保管ディレクトリ内のパス構成
      * @param layoutFileName レイアウトファイル名
-     * @param layoutSheetMap   Map<レイアウトシート名, Map<追加するシート名, Map<データの名称, Object>>>
-     * @param baseMei        保存ファイル接頭辞
-     * @return 保存ファイルパス
+     * @param layoutSheetMap Map<レイアウトシート名, Map<追加するシート名, Map<データの名称, Object>>>
+     * @param baseMei 保存ファイル接頭辞
+     * @return 一時ディレクトリに作成した帳票ファイルパス
      */
     public static String getGeneratedPath(final List<String> pathes, final String layoutFileName,
             final Map<String, Map<String, Map<String, Object>>> layoutSheetMap, final String baseMei) {
 
         // テンプレートファイルのロック防止のため、テンプレートファイルを作業用ファイルにコピー
-        String layoutFilePath = App.get("context.path.layouts") + File.separator + String.join(File.separator, pathes)
-                + File.separator + layoutFileName;
+        String layoutFilePath = App.get("context.path.layouts") + sep + String.join(sep, pathes) + sep + layoutFileName;
         File layoutFile = FileUtil.get(layoutFilePath);
 
         if (!layoutFile.exists()) {
-            return getGeneratedPath(pathes, layoutFileName, layoutSheetMap, baseMei);
+            if (pathes.size() > 0) {
+                pathes.remove(pathes.size() - 1);
+                return getGeneratedPath(pathes, layoutFileName, layoutSheetMap, baseMei);
+            } else {
+                throw new SysError("error.notexist.file", layoutFileName);
+            }
         }
 
         Workbook layoutBook = XlsxUtil.getWorkbook(layoutFile);
@@ -141,6 +168,10 @@ public final class XlsxUtil {
         workbook.removeSheetAt(workbook.getSheetIndex(layoutSheet));
     }
 
+    /**
+     * @param sheet 対象シート名
+     * @param sheetDataMap 設定するデータのマップ
+     */
     private static void print(final Sheet sheet, final Map<String, Object> sheetDataMap) {
 
         for (Entry<String, Object> sheetData : sheetDataMap.entrySet()) {
@@ -264,6 +295,12 @@ public final class XlsxUtil {
         }
     }
 
+    /**
+     * @param sheet 対象シート
+     * @param meisaiAddresses 「プレースホルダ：セル」のマップ
+     * @param prefix プレースホルダの接頭辞
+     * @return セル範囲
+     */
     private static Range getRange(final Sheet sheet, final Map<String, CellAddress> meisaiAddresses,
             final String prefix) {
 
@@ -308,12 +345,10 @@ public final class XlsxUtil {
     }
 
     /**
-     * エクセルファイルを保管してファイルパスを返す
-     *
-     * @param workbook
-     * @param fileBaseMei
-     * @param extension
-     * @return 作成したファイルパス
+     * @param workbook ワークブック
+     * @param fileBaseMei 基底ファイル名
+     * @param extension 拡張子
+     * @return 作成した一時ファイルパス
      */
     private static File write(final Workbook workbook, final String fileBaseMei, final String extension) {
 
@@ -335,10 +370,8 @@ public final class XlsxUtil {
     }
 
     /**
-     * エクセルファイルを取得
-     *
-     * @param file
-     * @return ワークブックインスタンス
+     * @param file ファイル
+     * @return ファイルをワークブックとして取得
      */
     private static Workbook getWorkbook(final File file) {
         try {
@@ -349,9 +382,7 @@ public final class XlsxUtil {
     }
 
     /**
-     * セル値の取得
-     *
-     * @param cell
+     * @param cell 対象セル
      * @return セル値
      */
     private static Object getCellValue(final Cell cell) {
@@ -359,10 +390,8 @@ public final class XlsxUtil {
     }
 
     /**
-     * セル値の取得
-     *
-     * @param cell
-     * @param type
+     * @param cell 対象セル
+     * @param type セルのタイプ
      * @return セル値
      */
     private static Object getCellValue(final Cell cell, final CellType type) {
@@ -387,23 +416,19 @@ public final class XlsxUtil {
     }
 
     /**
-     * セル値の設定
-     *
-     * @param sheet
-     * @param address
-     * @param o
+     * @param sheet 対象シート
+     * @param address セルアドレス
+     * @param o セルに設定する値
      */
     private static void setCellValue(final Sheet sheet, final CellAddress address, final Object o) {
         setCellValue(sheet, address.getRow(), address.getColumn(), o);
     }
 
     /**
-     * セル値の設定
-     *
-     * @param sheet
-     * @param r
-     * @param c
-     * @param o
+     * @param sheet 対象シート
+     * @param r 対象行
+     * @param c 対象列
+     * @param o セルに設定する値
      */
     private static void setCellValue(final Sheet sheet, final int r, final int c, final Object o) {
         Cell cell = sheet.getRow(r).getCell(c);
@@ -411,10 +436,8 @@ public final class XlsxUtil {
     }
 
     /**
-     * セル値の設定
-     *
-     * @param cell
-     * @param o
+     * @param cell 対象セル
+     * @param o セルに設定する値
      */
     private static void setCellValue(final Cell cell, final Object o) {
         if (Objects.nonNull(o)) {
@@ -432,10 +455,9 @@ public final class XlsxUtil {
 
     /**
      * セル範囲のコピー
-     *
-     * @param sheet
-     * @param range
-     * @param destRowIndex
+     * @param sheet 対象シート
+     * @param range 対象セル範囲
+     * @param destRowIndex コピー先の行インデクス
      */
     private static void copyRange(final Sheet sheet, final Range range, final int destRowIndex) {
         for (int r = range.getBoR(); r <= range.getEoR(); r++) {

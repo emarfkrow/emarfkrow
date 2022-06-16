@@ -17,7 +17,7 @@ limitations under the License.
 package jp.co.golorp.emarf.entity;
 
 /**
- * エンティティのマーカインタフェース
+ * エンティティのマーカー
  *
  * @author golorp
  */

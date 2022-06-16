@@ -1,3 +1,19 @@
+/*
+Copyright 2022 golorp
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
 package jp.co.golorp.emarf.process;
 
 import java.util.ArrayList;
@@ -10,39 +26,45 @@ import jp.co.golorp.emarf.sql.Queries;
 import jp.co.golorp.emarf.util.MapList;
 import jp.co.golorp.emarf.util.Messages;
 
+/**
+ * バッチジョブとウェブアクションの基底クラス
+ *
+ * @author golorp
+ */
 public class BaseProcess {
 
-    /** リクエストのパス構成 */
+    /** 処理のパス構成 */
     private List<String> pathes = new ArrayList<String>();
 
     /**
-     * @return List
+     * @return 処理のパス構成
      */
     public List<String> getPathes() {
         return pathes;
     }
 
     /**
-     * @param strings
+     * @param p 処理のパス構成
      */
-    public void setPathes(final List<String> strings) {
-        this.pathes = strings;
+    public void setPathes(final List<String> p) {
+        this.pathes = p;
     }
 
     /**
-     * @param sqlName
-     * @return sql
+     * @param sqlName SQLファイル名
+     * @return SQL本文
      */
     public String loadSqlFile(final String sqlName) {
         return Queries.loadSqlFile(this.getPathes(), this.getClass(), sqlName);
     }
 
     /**
-     * @param errors
-     * @param sqlName
-     * @param itemName
-     * @param itemValue
-     * @param itemMei
+     * マスタチェック処理
+     * @param errors 維持するエラーリスト
+     * @param sqlName マスタチェック用SQLファイル名
+     * @param itemName 主キー名
+     * @param itemValue 主キー値
+     * @param itemMei 項目名
      */
     public void masterCheck(final Map<String, String> errors, final String sqlName, final String itemName,
             final String itemValue, final String itemMei) {
@@ -57,7 +79,6 @@ public class BaseProcess {
             MapList mapList = Queries.select(namedSql, params);
 
             if (mapList == null) {
-
                 String processName = this.getClass().getSimpleName();
                 String formName = processName.replaceFirst("Action$", "Form");
                 errors.put(formName + "." + itemName, Messages.get("error.notexist", itemMei));

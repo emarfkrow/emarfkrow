@@ -1,3 +1,19 @@
+/*
+Copyright 2022 golorp
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
 package jp.co.golorp.emarf.mail;
 
 import java.io.IOException;
@@ -29,6 +45,11 @@ import jakarta.mail.internet.MimeUtility;
 import jp.co.golorp.emarf.exception.SysError;
 import jp.co.golorp.emarf.time.LocalDateTime;
 
+/**
+ * メール送受信
+ *
+ * @author golorp
+ */
 public final class Mailer {
 
     /** ロガー */
@@ -84,17 +105,13 @@ public final class Mailer {
         }
     }
 
-    /**
-     * コンストラクタ
-     */
+    /** プライベートコンストラクタ */
     private Mailer() {
     }
 
     /**
      * メール送信
-     *
-     * @param mi
-     *            MailInfo
+     * @param mi MailInfo
      */
     public static void send(final MailInfo mi) {
 
@@ -184,24 +201,23 @@ public final class Mailer {
     }
 
     /**
-     * @return Authenticator
+     * @return メールサーバー用の認証情報
      */
     private static Authenticator getAuthenticator() {
         return new PasswordAuthenticator(Mailer.USERNAME, Mailer.PASSWORD);
     }
 
     /**
-     * @param addressList
-     *            sendtos
-     * @return メールアドレス：名前のMapを、InternetAddress[]に変換
+     * @param addressMap メールアドレス：送信先名のマップ
+     * @return InternetAddress[]に変換
      */
-    private static InternetAddress[] toArrayAddress(final Map<String, String> addressList) {
+    private static InternetAddress[] toArrayAddress(final Map<String, String> addressMap) {
 
-        InternetAddress[] addresses = new InternetAddress[addressList.size()];
+        InternetAddress[] addresses = new InternetAddress[addressMap.size()];
 
         int i = 0;
 
-        for (Entry<String, String> sendto : addressList.entrySet()) {
+        for (Entry<String, String> sendto : addressMap.entrySet()) {
 
             String address = sendto.getKey();
             String personal = sendto.getValue();
@@ -218,8 +234,7 @@ public final class Mailer {
     }
 
     /**
-     * @param filePath
-     *            ファイルパス
+     * @param filePath 添付ファイルのサーバ上パス
      * @return 添付ファイルを設定したMimeBodyPart
      */
     private static MimeBodyPart getFileMimeBodyPart(final String filePath) {
@@ -242,8 +257,7 @@ public final class Mailer {
     }
 
     /**
-     * @param text
-     *            text
+     * @param text メール本文
      * @return 本文を設定したMimeBodyPart
      */
     private static MimeBodyPart getTextMimeBodyPart(final String text) {
@@ -258,4 +272,5 @@ public final class Mailer {
 
         return mbp;
     }
+
 }

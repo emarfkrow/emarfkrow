@@ -1,3 +1,19 @@
+/*
+Copyright 2022 golorp
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
 package jp.co.golorp.emarf.messageresolver;
 
 import java.io.IOException;
@@ -11,18 +27,19 @@ import java.util.ResourceBundle;
 import java.util.ResourceBundle.Control;
 
 /**
- * @author toshiyuki
+ * ThymeleafのUTF8拡張
  *
+ * @author golorp
  */
 public class UTF8Control extends Control {
 
     /**
-     * @param baseName
-     * @param locale
-     * @param format
-     * @param loader
-     * @param reload
-     * @return ResourceBundle
+     * @param baseName リソースファイルの名称
+     * @param locale ロケール
+     * @param format フォーマット（未使用）
+     * @param loader ローダー
+     * @param reload 再読み込みならtrue
+     * @return リソースファイル内容
      */
     public ResourceBundle newBundle(final String baseName, final Locale locale, final String format,
             final ClassLoader loader, final boolean reload)
@@ -64,4 +81,5 @@ public class UTF8Control extends Control {
 
         return bundle;
     }
+
 }
