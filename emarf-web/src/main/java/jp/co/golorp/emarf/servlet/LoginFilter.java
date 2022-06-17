@@ -1,3 +1,19 @@
+/*
+Copyright 2022 golorp
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
 package jp.co.golorp.emarf.servlet;
 
 import java.io.IOException;
@@ -27,7 +43,9 @@ import jp.co.golorp.emarf.servlet.http.ServletUtil;
 import jp.co.golorp.emarf.util.Messages;
 
 /**
- * 認証フィルタ
+ * 認証・認可フィルタ
+ *
+ * @author golorp
  */
 @WebFilter("/*")
 public class LoginFilter implements Filter {
@@ -68,9 +86,10 @@ public class LoginFilter implements Filter {
     }
 
     /**
-     * @param request
-     * @param response
-     * @param chain
+     * 認証・認可処理
+     * @param request {@link ServletRequest}
+     * @param response {@link ServletResponse}
+     * @param chain {@link FilterChain}
      */
     public void doFilter(final ServletRequest request, final ServletResponse response, final FilterChain chain)
             throws IOException, ServletException {
@@ -174,14 +193,30 @@ public class LoginFilter implements Filter {
         chain.doFilter(request, response);
     }
 
+    /**
+     * パスワードリセットメール送信
+     * @param req {@link HttpServletRequest}
+     * @param res {@link HttpServletResponse}
+     */
     private void execPassmail(final HttpServletRequest req, final HttpServletResponse res) {
         execAjaxAction(req, res, "PassmailAction");
     }
 
+    /**
+     * パスワードリセット
+     * @param req {@link HttpServletRequest}
+     * @param res {@link HttpServletResponse}
+     */
     private void execPassreset(final HttpServletRequest req, final HttpServletResponse res) {
         execAjaxAction(req, res, "PassresetAction");
     }
 
+    /**
+     * ajaxアクション実行
+     * @param req {@link HttpServletRequest}
+     * @param res {@link HttpServletResponse}
+     * @param actionName アクション名
+     */
     private void execAjaxAction(final HttpServletRequest req, final HttpServletResponse res, final String actionName) {
 
         Map<String, Object> postJson = ServletUtil.suckParameterMap(req);

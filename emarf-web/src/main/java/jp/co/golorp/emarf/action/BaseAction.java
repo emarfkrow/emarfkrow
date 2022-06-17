@@ -1,3 +1,19 @@
+/*
+Copyright 2022 golorp
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
 package jp.co.golorp.emarf.action;
 
 import java.time.LocalDateTime;
@@ -19,73 +35,70 @@ import jp.co.golorp.emarf.validation.FormValidator;
 import jp.co.golorp.emarf.validation.IForm;
 
 /**
- * @author toshiyuki
+ * WEBアクションの基底クラス
  *
+ * @author golorp
  */
 public abstract class BaseAction extends BaseProcess {
 
     /** logger */
     private static final Logger LOG = LoggerFactory.getLogger(BaseAction.class);
 
-    /**
-     * デフォルトのSQLファイル名（リクエストしたURIの末尾から拡張子を除去した文字列）
-     */
+    /** アクション名（リクエストしたURIの末尾から拡張子を除去した文字列） */
     private String baseName;
 
     /**
-     * @return String
+     * @return アクション名（リクエストしたURIの末尾から拡張子を除去した文字列）
      */
     public String getBaseName() {
         return baseName;
     }
 
     /**
-     * @param s
+     * @param s アクション名（リクエストしたURIの末尾から拡張子を除去した文字列）
      */
     public void setBaseName(final String s) {
         this.baseName = s;
     }
 
-    /**
-     *
-     */
+    /** ユーザID */
     private String userId;
 
     /**
-     * @return id
+     * @return ユーザID
      */
     public String getId() {
         return userId;
     }
 
     /**
-     * @param s
+     * @param s ユーザID
      */
     public void setId(final String s) {
         this.userId = s;
     }
 
-    /** HttpSession */
+    /** {@link HttpSession} */
     private HttpSession session;
 
     /**
-     * @return HttpSession
+     * @return {@link HttpSession}
      */
     public HttpSession getSession() {
         return session;
     }
 
     /**
-     * @param ses
+     * @param ses {@link HttpSession}
      */
     public void setSession(final HttpSession ses) {
         this.session = ses;
     }
 
     /**
-     * @param postJson
-     * @return Map
-     * @throws Exception
+     * 事前処理・事後処理
+     * @param postJson 送信値
+     * @return 実行結果のマップ
      */
     public Map<String, Object> run(final Map<String, Object> postJson) {
 
@@ -155,10 +168,11 @@ public abstract class BaseAction extends BaseProcess {
     }
 
     /**
-     * @param now
-     * @param id
-     * @param postJson
-     * @return Map
+     * 主処理の抽象メソッド
+     * @param now システム日時
+     * @param id ユーザID
+     * @param postJson 送信値
+     * @return 実行結果のマップ
      */
     public abstract Map<String, Object> running(LocalDateTime now, String id, Map<String, Object> postJson);
 
