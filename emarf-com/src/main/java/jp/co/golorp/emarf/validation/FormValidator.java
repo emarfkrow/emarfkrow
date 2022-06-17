@@ -1,3 +1,19 @@
+/*
+Copyright 2022 golorp
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
 package jp.co.golorp.emarf.validation;
 
 import java.lang.reflect.Method;
@@ -22,29 +38,31 @@ import jp.co.golorp.emarf.lang.StringUtil;
 import jp.co.golorp.emarf.util.Messages;
 
 /**
- * @author toshiyuki
+ * フォームバリデータ
  *
+ * @author golorp
  */
 public final class FormValidator {
 
     /** logger */
     private static final Logger LOG = LoggerFactory.getLogger(FormValidator.class);
 
-    //
     /** グリッド先頭文字のパターン */
     private static Pattern gridNamePattern = Pattern.compile("\\.[a-z]");
 
     /** ~に囲まれたパターン（正規表現部の名称変換用） */
     private static Pattern regexpPattern = Pattern.compile("\\~\\~(.+?)\\~\\~");
 
+    /** プライベートコンストラクタ */
     private FormValidator() {
     }
 
     /**
-     * @param errors
-     * @param formClassName
-     * @param postJson
-     * @return form
+     * フォームの検証
+     * @param errors 「エラー項目名：エラーメッセージ」のマップ
+     * @param formClassName フォームクラス名
+     * @param postJson 送信値のマップ
+     * @return 値を設定後のフォーム
      */
     public static IForm validate(final Map<String, String> errors, final String formClassName,
             final Map<String, Object> postJson) {
@@ -130,31 +148,34 @@ public final class FormValidator {
     }
 
     /**
-     * @param <T>
-     * @param className
-     * @param postJson
-     * @return IForm
+     * マップをインスタンス化
+     * @param <T> 返却クラス
+     * @param className クラス名
+     * @param postJson 送信値のマップ
+     * @return 指定クラスのインスタンス
      */
     public static <T> T toBean(final String className, final Map<String, Object> postJson) {
         return toBean(className, postJson, false);
     }
 
     /**
-     * @param <T>
-     * @param className
-     * @param postJson
-     * @return IForm
+     * マップをインスタンス化（グリッドフォーム用）
+     * @param <T> 返却クラス
+     * @param className クラス名
+     * @param postJson 送信値のマップ
+     * @return 指定クラスのインスタンス
      */
     public static <T> T toGridForm(final String className, final Map<String, Object> postJson) {
         return toBean(className, postJson, true);
     }
 
     /**
-     * @param <T>
-     * @param className
-     * @param postJson
-     * @param isGrid
-     * @return IForm
+     * マップをインスタンス化
+     * @param <T> 返却クラス
+     * @param className クラス名
+     * @param postJson 送信値のマップ
+     * @param isGrid グリッドフォームならtrue
+     * @return 指定クラスのインスタンス
      */
     public static <T> T toBean(final String className, final Map<String, Object> postJson, final boolean isGrid) {
 
@@ -297,6 +318,11 @@ public final class FormValidator {
         return t;
     }
 
+    /**
+     * クラスを探索
+     * @param className 対象クラス名
+     * @return 探索結果のクラス
+     */
     private static Class<?> forNameIf(final String className) {
 
         try {

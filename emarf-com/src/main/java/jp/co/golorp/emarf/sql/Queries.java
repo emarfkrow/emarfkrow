@@ -1,3 +1,19 @@
+/*
+Copyright 2022 golorp
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
 package jp.co.golorp.emarf.sql;
 
 import java.io.BufferedReader;
@@ -39,25 +55,24 @@ import jp.co.golorp.emarf.util.MapList;
 /**
  * SQL実行クラス
  *
- * @author toshiyuki
- *
+ * @author golorp
  */
 public final class Queries {
 
     /** logger */
     private static final Logger LOG = LoggerFactory.getLogger(Queries.class);
 
+    /** プライベートコンストラクタ */
     private Queries() {
     }
 
     /**
-     * 名前パラメータSQLで１件取得
-     *
-     * @param <T>
-     * @param namedSql
-     * @param params
-     * @param c
-     * @return T
+     * 名前付きパラメータでエンティティを１件取得
+     * @param <T> 返却クラス
+     * @param namedSql 名前付きパラメータSQL
+     * @param params パラメータのマップ
+     * @param c 返却クラスに反映するエンティティクラス
+     * @return T 返却クラス
      */
     public static <T> T get(final String namedSql, final Map<String, Object> params, final Class<?> c) {
 
@@ -72,34 +87,31 @@ public final class Queries {
     }
 
     /**
-     * 名前パラメータSQLで検索
-     *
-     * @param namedSql
-     * @return MapList
+     * アドホッククエリで検索
+     * @param adhocSql アドホッククエリ
+     * @return 検索結果の{@link MapList}
      */
-    public static MapList select(final String namedSql) {
-        return Queries.select(namedSql, null, null);
+    public static MapList select(final String adhocSql) {
+        return Queries.select(adhocSql, null, null);
     }
 
     /**
-     * 名前パラメータSQLで検索
-     *
-     * @param namedSql
-     * @param params
-     * @return MapList
+     * 名前付きパラメータSQLで検索
+     * @param namedSql 名前付きパラメータSQL
+     * @param params パラメータのマップ
+     * @return 検索結果の{@link MapList}
      */
     public static MapList select(final String namedSql, final Map<String, Object> params) {
         return Queries.select(namedSql, params, null);
     }
 
     /**
-     * 名前パラメータSQLで検索
-     *
-     * @param <T>
-     * @param namedSql
-     * @param params
-     * @param c
-     * @return List<c>
+     * 名前付きパラメータSQLで検索
+     * @param <T> 返却クラス
+     * @param namedSql 名前付きパラメータSQL
+     * @param params パラメータのマップ
+     * @param c 返却クラスに反映するエンティティクラス
+     * @return エンティティクラスのリスト
      */
     public static <T> T select(final String namedSql, final Map<String, Object> params, final Class<?> c) {
 
@@ -126,14 +138,14 @@ public final class Queries {
     }
 
     /**
-     * 名前付きパラメータをプレースホルダに変換し、プレースホルダの出現箇所に応じて、パラメータのMapをList化
-     *
-     * @param namedSql
-     * @param params
-     * @param args
+     * 名前付きパラメータをプレースホルダに変換し、プレースホルダの出現箇所に応じてパラメータのMapをList化
+     * @param namedSql 名前付きパラメータSQL
+     * @param params パラメータのマップ
+     * @param repackedArgs プレースホルダの出現順に詰め直したパラメータ値のリスト
      * @return プレースホルダに変換後のSQL
      */
-    private static String convRawSql(final String namedSql, final Map<String, Object> params, final List<Object> args) {
+    private static String convRawSql(final String namedSql, final Map<String, Object> params,
+            final List<Object> repackedArgs) {
 
         Map<String, Object> snakes = new HashMap<String, Object>();
 
@@ -231,7 +243,7 @@ public final class Queries {
                 }
 
                 // 出現箇所に応じてパラメータを追加
-                args.add(o);
+                repackedArgs.add(o);
             }
         }
 
@@ -243,12 +255,11 @@ public final class Queries {
 
     /**
      * プレースホルダのSQLを実行
-     *
-     * @param <T>
-     * @param sql
-     * @param args
-     * @param c
-     * @return List<c>
+     * @param <T> 返却クラス
+     * @param sql プレースホルダSQL
+     * @param args プレースホルダ値のリスト
+     * @param c 返却クラスに反映するエンティティクラス
+     * @return エンティティクラスのリストか{@link MapList}
      */
     private static <T> T selectByRawSql(final String sql, final List<Object> args, final Class<?> c) {
 
@@ -313,12 +324,11 @@ public final class Queries {
     }
 
     /**
-     * ResultSetをEntityに変換
-     *
-     * @param <T>
-     * @param rs
-     * @param c
-     * @return T
+     * {@link ResultSet}をエンティティクラスのリストに変換
+     * @param <T> 返却クラス
+     * @param rs {@link ResultSet}
+     * @param c エンティティクラス
+     * @return エンティティクラスのリスト
      * @throws Exception
      */
     private static <T> T rs2Entity(final ResultSet rs, final Class<?> c) throws Exception {
@@ -373,10 +383,11 @@ public final class Queries {
     }
 
     /**
+     * 実行パスから遡ってSQLファイル内容を取得
      * @param sqlPathes 相対パスでsqlファイルを探す場合に使用
-     * @param c         クラスローダでsqlファイルを探す場合に使用
-     * @param sqlName
-     * @return sql
+     * @param c クラスローダでsqlファイルを探す場合に使用
+     * @param sqlName SQLファイル名
+     * @return SQLファイル内容
      */
     public static String loadSqlFile(final List<String> sqlPathes, final Class<?> c, final String sqlName) {
         try {
@@ -390,10 +401,9 @@ public final class Queries {
 
     /**
      * クラスパス内のSQLファイルをロード
-     *
-     * @param c
-     * @param sqlName
-     * @return SQL
+     * @param c 呼び出し元のクラス
+     * @param sqlName SQLファイル名
+     * @return SQLファイル内容
      */
     private static String loadSqlFile(final Class<?> c, final String sqlName) {
 
@@ -428,11 +438,10 @@ public final class Queries {
     }
 
     /**
-     * クラスパス内のSQLファイルを再帰して検索
-     *
-     * @param cl
-     * @param packageName
-     * @param sqlName
+     * パッケージを後方一致で辿り、クラスパス内のSQLファイルを検索
+     * @param cl クラスローダ
+     * @param packageName 呼び出し元クラスのパッケージ（先頭から減らしていく）
+     * @param sqlName SQLファイル名
      * @return SQLファイルのURL
      */
     private static URL seekSqlFile(final ClassLoader cl, final String packageName, final String sqlName) {
@@ -457,10 +466,9 @@ public final class Queries {
 
     /**
      * サーブレットコンテキスト内のSQLファイルをロード
-     *
-     * @param sqlPathes
-     * @param sqlName
-     * @return SQL
+     * @param sqlPathes サーブレットコンテキストからのパス
+     * @param sqlName SQLファイル名
+     * @return SQLファイル内容
      */
     private static String loadSqlFile(final List<String> sqlPathes, final String sqlName) {
 
@@ -482,11 +490,10 @@ public final class Queries {
     }
 
     /**
-     * サーブレットコンテキスト内のSQLファイルを再帰して検索
-     *
-     * @param sqlPathes
-     * @param sqlName
-     * @return SQLファイルのURL
+     * パスを後方一致で辿り、サーブレットコンテキスト内のSQLファイルを検索
+     * @param sqlPathes サーブレットコンテキストからのパス（先頭から減らしていく）
+     * @param sqlName SQLファイル名
+     * @return SQLファイル
      */
     private static File seekSqlFile(final List<String> sqlPathes, final String sqlName) {
 
@@ -504,15 +511,13 @@ public final class Queries {
     }
 
     /**
-     * 名前付きパラメータのSQLで登録
-     *
-     * @param namedSql
-     * @param params
+     * 名前付きパラメータSQLで登録
+     * @param namedSql 名前付きパラメータSQL
+     * @param params パラメータのマップ
      * @return 登録件数
      */
     public static int regist(final String namedSql, final Map<String, Object> params) {
 
-        // パラメータ
         List<Object> args = new ArrayList<Object>();
 
         String sql = Queries.convRawSql(namedSql, params, args);
@@ -525,10 +530,9 @@ public final class Queries {
     }
 
     /**
-     * プレースホルダのSQLを実行
-     *
-     * @param sql
-     * @param args
+     * プレースホルダのSQLで登録
+     * @param sql プレースホルダSQL
+     * @param args プレースホルダ値
      * @return 登録件数
      */
     private static int registByRawSql(final String sql, final List<Object> args) {
