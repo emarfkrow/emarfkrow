@@ -62,6 +62,10 @@ public class LoginAction extends BaseAction {
         return ret;
     }
 
+    /**
+     * @param mUser ユーザエンティティ
+     * @return 認可情報のマップ（画面ID：認可レベル）
+     */
     private Map<String, String> getAuthzInfos(final MUser mUser) {
 
         Map<String, String> authzInfo = new HashMap<String, String>();

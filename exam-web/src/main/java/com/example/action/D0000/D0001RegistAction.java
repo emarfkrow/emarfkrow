@@ -7,6 +7,11 @@ import java.util.Map;
 import jp.co.golorp.emarf.action.BaseAction;
 import jp.co.golorp.emarf.util.Messages;
 
+/**
+ * 検索画面登録アクション
+ * @author toshiyuki
+ *
+ */
 public class D0001RegistAction extends BaseAction {
 
     /**

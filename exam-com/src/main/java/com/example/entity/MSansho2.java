@@ -237,6 +237,9 @@ public class MSansho2 implements IEntity {
         return Queries.regist(sql, params);
     }
 
+    /**
+     * @return insert用のvalue句
+     */
     private String getValues() {
         List<String> valueList = new ArrayList<String>();
         valueList.add(":sansho2_id");
@@ -281,6 +284,9 @@ public class MSansho2 implements IEntity {
         return Queries.regist(sql, params);
     }
 
+    /**
+     * @return update用のset句
+     */
     private String getSet() {
         List<String> setList = new ArrayList<String>();
         setList.add("`SANSHO2_ID` = :sansho2_id");
@@ -307,12 +313,20 @@ public class MSansho2 implements IEntity {
         return Queries.regist(sql, params);
     }
 
+    /**
+     * @return where句
+     */
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
         whereList.add("TRIM (`SANSHO2_ID`) = TRIM (:sansho2_id)");
         return String.join(" AND ", whereList);
     }
 
+    /**
+     * @param now システム日時
+     * @param id 実行ID
+     * @return マップ化したエンティティ
+     */
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("sansho2_id", this.sansho2Id);

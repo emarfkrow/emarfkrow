@@ -7,6 +7,11 @@ import jakarta.validation.constraints.Pattern;
 import jp.co.golorp.emarf.process.BaseProcess;
 import jp.co.golorp.emarf.validation.IForm;
 
+/**
+ * 検索画面グリッドフォーム
+ * @author toshiyuki
+ *
+ */
 public class D0001GridForm implements IForm {
 
     /***/

@@ -563,6 +563,9 @@ public final class BeanGenerator {
         s.add("        return Queries.regist(sql, params);");
         s.add("    }");
         s.add("");
+        s.add("    /**");
+        s.add("     * @return insert用のvalue句");
+        s.add("     */");
         s.add("    private String getValues() {");
         s.add("        List<String> valueList = new ArrayList<String>();");
         for (Entry<String, ColumnInfo> e : tableInfo.getColumnInfos().entrySet()) {
@@ -765,6 +768,9 @@ public final class BeanGenerator {
         s.add("        return Queries.regist(sql, params);");
         s.add("    }");
         s.add("");
+        s.add("    /**");
+        s.add("     * @return update用のset句");
+        s.add("     */");
         s.add("    private String getSet() {");
         s.add("        List<String> setList = new ArrayList<String>();");
 
@@ -801,6 +807,9 @@ public final class BeanGenerator {
         DataSourcesAssist assist = DataSources.getAssist();
 
         s.add("");
+        s.add("    /**");
+        s.add("     * @return where句");
+        s.add("     */");
         s.add("    private String getWhere() {");
         s.add("        List<String> whereList = new ArrayList<String>();");
 
@@ -836,6 +845,11 @@ public final class BeanGenerator {
 
         // toMap
         s.add("");
+        s.add("    /**");
+        s.add("     * @param now システム日時");
+        s.add("     * @param id 実行ID");
+        s.add("     * @return マップ化したエンティティ");
+        s.add("     */");
         s.add("    private Map<String, Object> toMap(final LocalDateTime now, final String id) {");
         s.add("        Map<String, Object> params = new HashMap<String, Object>();");
         for (String columnName : tableInfo.getColumnInfos().keySet()) {

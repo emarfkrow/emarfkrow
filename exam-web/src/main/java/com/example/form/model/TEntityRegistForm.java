@@ -5,6 +5,11 @@ import java.util.Map;
 import jp.co.golorp.emarf.process.BaseProcess;
 import jp.co.golorp.emarf.util.Messages;
 
+/**
+ * エンティティ検証拡張
+ * @author toshiyuki
+ *
+ */
 public class TEntityRegistForm extends com.example.form.model.base.TEntityRegistForm {
 
     /**

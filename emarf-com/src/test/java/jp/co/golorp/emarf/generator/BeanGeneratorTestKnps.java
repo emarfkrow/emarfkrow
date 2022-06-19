@@ -52,7 +52,7 @@ public class BeanGeneratorTestKnps {
      */
     @Test
     public final void testGenerate() {
-        String s = "C:\\Users\\toshiyuki\\git\\emarfkrow\\knps-com";
+        String s = "C:\\Users\\toshiyuki\\git\\knps\\knps-com";
         ResourceBundles.getSrcPaths().add(s + File.separator + "src\\main\\resources");
         BeanGenerator.generate(s, true);
     }

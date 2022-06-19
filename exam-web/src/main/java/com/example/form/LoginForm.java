@@ -7,6 +7,11 @@ import jakarta.validation.constraints.Pattern;
 import jp.co.golorp.emarf.process.BaseProcess;
 import jp.co.golorp.emarf.validation.IForm;
 
+/**
+ * ログインフォーム
+ * @author toshiyuki
+ *
+ */
 public class LoginForm implements IForm {
 
     /***/

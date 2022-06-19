@@ -7,6 +7,11 @@ import jakarta.validation.Valid;
 import jp.co.golorp.emarf.process.BaseProcess;
 import jp.co.golorp.emarf.validation.IForm;
 
+/**
+ * 検索画面登録フォーム
+ * @author toshiyuki
+ *
+ */
 public class D0001RegistForm implements IForm {
 
     // /***/

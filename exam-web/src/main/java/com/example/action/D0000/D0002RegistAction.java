@@ -14,6 +14,11 @@ import jp.co.golorp.emarf.exception.AppError;
 import jp.co.golorp.emarf.util.Messages;
 import jp.co.golorp.emarf.validation.FormValidator;
 
+/**
+ * 詳細画面登録アクション
+ * @author toshiyuki
+ *
+ */
 public class D0002RegistAction extends BaseAction {
 
     /**
