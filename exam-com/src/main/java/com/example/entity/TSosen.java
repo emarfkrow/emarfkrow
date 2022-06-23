@@ -11,7 +11,6 @@ import jp.co.golorp.emarf.sql.Queries;
 
 /**
  * 祖先
- *
  * @author emarfkrow
  */
 public class TSosen implements IEntity {
@@ -19,17 +18,13 @@ public class TSosen implements IEntity {
     /** 祖先ID */
     private Integer sosenId;
 
-    /**
-     * @return 祖先ID
-     */
+    /** @return 祖先ID */
     @com.fasterxml.jackson.annotation.JsonProperty("SOSEN_ID")
     public Integer getSosenId() {
         return this.sosenId;
     }
 
-    /**
-     * @param o 祖先ID
-     */
+    /** @param o 祖先ID */
     public void setSosenId(final Object o) {
         if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {
             this.sosenId = Integer.valueOf(o.toString());
@@ -41,17 +36,13 @@ public class TSosen implements IEntity {
     /** 祖先名 */
     private String sosenMei;
 
-    /**
-     * @return 祖先名
-     */
+    /** @return 祖先名 */
     @com.fasterxml.jackson.annotation.JsonProperty("SOSEN_MEI")
     public String getSosenMei() {
         return this.sosenMei;
     }
 
-    /**
-     * @param o 祖先名
-     */
+    /** @param o 祖先名 */
     public void setSosenMei(final Object o) {
         if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {
             this.sosenMei = String.valueOf(o.toString());
@@ -66,17 +57,13 @@ public class TSosen implements IEntity {
     @com.fasterxml.jackson.databind.annotation.JsonSerialize(using = com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer.class)
     private java.time.LocalDateTime insertDt;
 
-    /**
-     * @return 登録日時
-     */
+    /** @return 登録日時 */
     @com.fasterxml.jackson.annotation.JsonProperty("INSERT_DT")
     public java.time.LocalDateTime getInsertDt() {
         return this.insertDt;
     }
 
-    /**
-     * @param o 登録日時
-     */
+    /** @param o 登録日時 */
     public void setInsertDt(final Object o) {
         if (o != null && o instanceof Long) {
             java.util.Date d = new java.util.Date((Long) o);
@@ -94,17 +81,13 @@ public class TSosen implements IEntity {
     /** 登録者 */
     private String insertBy;
 
-    /**
-     * @return 登録者
-     */
+    /** @return 登録者 */
     @com.fasterxml.jackson.annotation.JsonProperty("INSERT_BY")
     public String getInsertBy() {
         return this.insertBy;
     }
 
-    /**
-     * @param o 登録者
-     */
+    /** @param o 登録者 */
     public void setInsertBy(final Object o) {
         if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {
             this.insertBy = String.valueOf(o.toString());
@@ -119,17 +102,13 @@ public class TSosen implements IEntity {
     @com.fasterxml.jackson.databind.annotation.JsonSerialize(using = com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer.class)
     private java.time.LocalDateTime updateDt;
 
-    /**
-     * @return 更新日時
-     */
+    /** @return 更新日時 */
     @com.fasterxml.jackson.annotation.JsonProperty("UPDATE_DT")
     public java.time.LocalDateTime getUpdateDt() {
         return this.updateDt;
     }
 
-    /**
-     * @param o 更新日時
-     */
+    /** @param o 更新日時 */
     public void setUpdateDt(final Object o) {
         if (o != null && o instanceof Long) {
             java.util.Date d = new java.util.Date((Long) o);
@@ -147,17 +126,13 @@ public class TSosen implements IEntity {
     /** 更新者 */
     private String updateBy;
 
-    /**
-     * @return 更新者
-     */
+    /** @return 更新者 */
     @com.fasterxml.jackson.annotation.JsonProperty("UPDATE_BY")
     public String getUpdateBy() {
         return this.updateBy;
     }
 
-    /**
-     * @param o 更新者
-     */
+    /** @param o 更新者 */
     public void setUpdateBy(final Object o) {
         if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {
             this.updateBy = String.valueOf(o.toString());
@@ -169,17 +144,13 @@ public class TSosen implements IEntity {
     /** 削除フラグ */
     private String deleteF = "0";
 
-    /**
-     * @return 削除フラグ
-     */
+    /** @return 削除フラグ */
     @com.fasterxml.jackson.annotation.JsonProperty("DELETE_F")
     public String getDeleteF() {
         return this.deleteF;
     }
 
-    /**
-     * @param o 削除フラグ
-     */
+    /** @param o 削除フラグ */
     public void setDeleteF(final Object o) {
         if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {
             this.deleteF = String.valueOf(o.toString());
@@ -190,26 +161,20 @@ public class TSosen implements IEntity {
 
     /**
      * 祖先照会
-     *
      * @param param1 祖先ID
      * @return 祖先
      */
     public static TSosen get(final Object param1) {
-
         List<String> whereList = new ArrayList<String>();
         whereList.add("`SOSEN_ID` = :sosen_id");
-
         String sql = "SELECT * FROM t_sosen WHERE " + String.join(" AND ", whereList);
-
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put("sosen_id", param1);
-
-        return Queries.get(sql, params, TSosen.class);
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("sosen_id", param1);
+        return Queries.get(sql, map, TSosen.class);
     }
 
     /**
      * 祖先追加
-     *
      * @param now システム日時
      * @param id 登録者
      * @return 追加件数
@@ -228,6 +193,12 @@ public class TSosen implements IEntity {
         }
 
         // 祖先の登録
+        String sql = "INSERT INTO t_sosen(\r\n      " + names() + "\r\n) VALUES (\r\n      " + values() + "\r\n)";
+        return Queries.regist(sql, toMap(now, id));
+    }
+
+    /** @return insert用のname句 */
+    private String names() {
         List<String> nameList = new ArrayList<String>();
         nameList.add("`SOSEN_ID` -- :sosen_id");
         nameList.add("`SOSEN_MEI` -- :sosen_mei");
@@ -236,19 +207,11 @@ public class TSosen implements IEntity {
         nameList.add("`UPDATE_DT` -- :update_dt");
         nameList.add("`UPDATE_BY` -- :update_by");
         nameList.add("`DELETE_F` -- :delete_f");
-        String name = String.join("\r\n    , ", nameList);
-
-        String sql = "INSERT INTO t_sosen(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
-
-        Map<String, Object> params = toMap(now, id);
-
-        return Queries.regist(sql, params);
+        return String.join("\r\n    , ", nameList);
     }
 
-    /**
-     * @return insert用のvalue句
-     */
-    private String getValues() {
+    /** @return insert用のvalue句 */
+    private String values() {
         List<String> valueList = new ArrayList<String>();
         valueList.add(":sosen_id");
         valueList.add(":sosen_mei");
@@ -262,24 +225,18 @@ public class TSosen implements IEntity {
 
     /** 祖先IDの採番処理 */
     private void numbering() {
-
         if (this.sosenId != null) {
             return;
         }
-
         String sql = "SELECT CASE WHEN MAX(e.`SOSEN_ID`) IS NULL THEN 0 ELSE MAX(e.`SOSEN_ID`) * 1 END + 1 AS `SOSEN_ID` FROM t_sosen e";
-
-        Map<String, Object> params = new HashMap<String, Object>();
-
-        jp.co.golorp.emarf.util.MapList mapList = Queries.select(sql, params);
+        Map<String, Object> map = new HashMap<String, Object>();
+        jp.co.golorp.emarf.util.MapList mapList = Queries.select(sql, map);
         Object o = mapList.get(0).get("SOSEN_ID");
-
         this.setSosenId(o);
     }
 
     /**
      * 祖先更新
-     *
      * @param now システム日時
      * @param id 更新者
      * @return 更新件数
@@ -301,13 +258,10 @@ public class TSosen implements IEntity {
 
         // 祖先の登録
         String sql = "UPDATE t_sosen\r\nSET\r\n      " + getSet() + "\r\nWHERE\r\n    " + getWhere();
-        Map<String, Object> params = toMap(now, id);
-        return Queries.regist(sql, params);
+        return Queries.regist(sql, toMap(now, id));
     }
 
-    /**
-     * @return update用のset句
-     */
+    /** @return update用のset句 */
     private String getSet() {
         List<String> setList = new ArrayList<String>();
         setList.add("`SOSEN_ID` = :sosen_id");
@@ -315,13 +269,11 @@ public class TSosen implements IEntity {
         setList.add("`UPDATE_DT` = :update_dt");
         setList.add("`UPDATE_BY` = :update_by");
         setList.add("`DELETE_F` = :delete_f");
-        String set = String.join("\r\n    , ", setList);
-        return set;
+        return String.join("\r\n    , ", setList);
     }
 
     /**
      * 祖先削除
-     *
      * @return 削除件数
      */
     public int delete() {
@@ -335,15 +287,10 @@ public class TSosen implements IEntity {
 
         // 祖先の削除
         String sql = "DELETE FROM t_sosen WHERE " + getWhere();
-
-        Map<String, Object> params = toMap(null, null);
-
-        return Queries.regist(sql, params);
+        return Queries.regist(sql, toMap(null, null));
     }
 
-    /**
-     * @return where句
-     */
+    /** @return where句 */
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
         whereList.add("`SOSEN_ID` = :sosen_id");
@@ -356,40 +303,32 @@ public class TSosen implements IEntity {
      * @return マップ化したエンティティ
      */
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put("sosen_id", this.sosenId);
-        params.put("sosen_mei", this.sosenMei);
-        params.put("delete_f", this.deleteF);
-        params.put("insert_dt", now);
-        params.put("insert_by", id);
-        params.put("update_dt", now);
-        params.put("update_by", id);
-        return params;
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("sosen_id", this.sosenId);
+        map.put("sosen_mei", this.sosenMei);
+        map.put("delete_f", this.deleteF);
+        map.put("insert_dt", now);
+        map.put("insert_by", id);
+        map.put("update_dt", now);
+        map.put("update_by", id);
+        return map;
     }
 
-    /**
-     * 親のリスト
-     */
+    /** 親のリスト */
     private List<TOya> tOyas;
 
-    /**
-     * @return 親のリスト
-     */
+    /** @return 親のリスト */
     @com.fasterxml.jackson.annotation.JsonProperty("TOyas")
     public List<TOya> getTOyas() {
         return this.tOyas;
     }
 
-    /**
-     * @param list 親のリスト
-     */
+    /** @param list 親のリスト */
     public void setTOyas(final List<TOya> list) {
         this.tOyas = list;
     }
 
-    /**
-     * @param tOya
-     */
+    /** @param tOya */
     public void addTOyas(final TOya tOya) {
         if (this.tOyas == null) {
             this.tOyas = new ArrayList<TOya>();
@@ -397,9 +336,7 @@ public class TSosen implements IEntity {
         this.tOyas.add(tOya);
     }
 
-    /**
-     * @return 親のリスト
-     */
+    /** @return 親のリスト */
     public List<TOya> referTOyas() {
         if (this.tOyas == null) {
             this.tOyas = TSosen.referTOyas(this.sosenId);
@@ -412,15 +349,11 @@ public class TSosen implements IEntity {
      * @return List<TOya>
      */
     public static List<TOya> referTOyas(final Integer param1) {
-
         List<String> whereList = new ArrayList<String>();
         whereList.add("sosen_id = :sosen_id");
-
         String sql = "SELECT * FROM t_oya WHERE " + String.join(" AND ", whereList);
-
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put("sosen_id", param1);
-
-        return Queries.select(sql, params, TOya.class);
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("sosen_id", param1);
+        return Queries.select(sql, map, TOya.class);
     }
 }

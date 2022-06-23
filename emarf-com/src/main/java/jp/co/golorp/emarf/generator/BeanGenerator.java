@@ -244,7 +244,6 @@ public final class BeanGenerator {
             s.add("");
             s.add("/**");
             s.add(" * " + remarks + "");
-            s.add(" *");
             s.add(" * @author emarfkrow");
             s.add(" */");
             s.add("public class " + entityName + " implements IEntity {");
@@ -273,17 +272,13 @@ public final class BeanGenerator {
                     s.add("    private " + dataType + " " + camel + ";");
                 }
                 s.add("");
-                s.add("    /**");
-                s.add("     * @return " + mei);
-                s.add("     */");
+                s.add("    /** @return " + mei + " */");
                 s.add("    @com.fasterxml.jackson.annotation.JsonProperty(\"" + columnName + "\")");
                 s.add("    public " + dataType + " get" + pascal + "() {");
                 s.add("        return this." + camel + ";");
                 s.add("    }");
                 s.add("");
-                s.add("    /**");
-                s.add("     * @param o " + mei);
-                s.add("     */");
+                s.add("    /** @param o " + mei + " */");
                 s.add("    public void set" + pascal + "(final Object o) {");
                 if (dataType.equals("java.time.LocalDateTime")) {
                     s.add("        if (o != null && o instanceof Long) {");
@@ -343,7 +338,6 @@ public final class BeanGenerator {
         s.add("");
         s.add("    /**");
         s.add("     * " + remarks + "照会");
-        s.add("     *");
         int i = 0;
         String getParams = "";
         for (String pk : tableInfo.getPrimaryKeys()) {
@@ -364,7 +358,6 @@ public final class BeanGenerator {
         s.add("     * @return " + remarks);
         s.add("     */");
         s.add("    public static " + entityName + " get(" + getParams + ") {");
-        s.add("");
         s.add("        List<String> whereList = new ArrayList<String>();");
 
         // 主キー条件
@@ -381,21 +374,18 @@ public final class BeanGenerator {
             }
         }
 
-        s.add("");
         s.add("        String sql = \"SELECT * FROM " + tableName + " WHERE \" + String.join(\" AND \", whereList);");
-        s.add("");
-        s.add("        Map<String, Object> params = new HashMap<String, Object>();");
+        s.add("        Map<String, Object> map = new HashMap<String, Object>();");
 
         i = 0;
         for (String primaryKey : tableInfo.getPrimaryKeys()) {
             if (primaryKey.length() > 0) {
                 String snake = StringUtil.toSnakeCase(primaryKey);
-                s.add("        params.put(\"" + snake + "\", param" + ++i + ");");
+                s.add("        map.put(\"" + snake + "\", param" + ++i + ");");
             }
         }
 
-        s.add("");
-        s.add("        return Queries.get(sql, params, " + entityName + ".class);");
+        s.add("        return Queries.get(sql, map, " + entityName + ".class);");
         s.add("    }");
 
         javaEntityCRUDInsert(tableInfo, s);
@@ -405,7 +395,6 @@ public final class BeanGenerator {
         s.add("");
         s.add("    /**");
         s.add("     * " + remarks + "削除");
-        s.add("     *");
         s.add("     * @return 削除件数");
         s.add("     */");
         s.add("    public int delete() {");
@@ -442,8 +431,7 @@ public final class BeanGenerator {
                     params += "this." + camel;
                 }
                 s.add("");
-                s.add("        " + entityName + " " + camelName
-                        + " = " + entityName + ".get(" + params + ");");
+                s.add("        " + entityName + " " + camelName + " = " + entityName + ".get(" + params + ");");
                 s.add("        try {");
                 s.add("            java.nio.file.Files.delete(java.nio.file.Paths.get(" + camelName + "."
                         + StringUtil.toCamelCase(columnName) + "));");
@@ -455,10 +443,7 @@ public final class BeanGenerator {
         s.add("");
         s.add("        // " + remarks + "の削除");
         s.add("        String sql = \"DELETE FROM " + tableName + " WHERE \" + getWhere();");
-        s.add("");
-        s.add("        Map<String, Object> params = toMap(null, null);");
-        s.add("");
-        s.add("        return Queries.regist(sql, params);");
+        s.add("        return Queries.regist(sql, toMap(null, null));");
         s.add("    }");
     }
 
@@ -475,7 +460,6 @@ public final class BeanGenerator {
         s.add("");
         s.add("    /**");
         s.add("     * " + remarks + "追加");
-        s.add("     *");
         s.add("     * @param now システム日時");
         s.add("     * @param id 登録者");
         s.add("     * @return 追加件数");
@@ -548,25 +532,23 @@ public final class BeanGenerator {
 
         s.add("");
         s.add("        // " + tableInfo.getRemarks() + "の登録");
+        s.add("        String sql = \"INSERT INTO " + tableName
+                + "(\\r\\n      \" + names() + \"\\r\\n) VALUES (\\r\\n      \" + values() + \"\\r\\n)\";");
+        s.add("        return Queries.regist(sql, toMap(now, id));");
+        s.add("    }");
+        s.add("");
+        s.add("    /** @return insert用のname句 */");
+        s.add("    private String names() {");
         s.add("        List<String> nameList = new ArrayList<String>();");
         for (String columnName : tableInfo.getColumnInfos().keySet()) {
             String snake = StringUtil.toSnakeCase(columnName);
             s.add("        nameList.add(\"" + assist.quoteEscaped(columnName) + " -- :" + snake + "\");");
         }
-        s.add("        String name = String.join(\"\\r\\n    , \", nameList);");
-        s.add("");
-        s.add("        String sql = \"INSERT INTO " + tableName
-                + "(\\r\\n      \" + name + \"\\r\\n) VALUES (\\r\\n      \" + getValues() + \"\\r\\n)\";");
-        s.add("");
-        s.add("        Map<String, Object> params = toMap(now, id);");
-        s.add("");
-        s.add("        return Queries.regist(sql, params);");
+        s.add("        return String.join(\"\\r\\n    , \", nameList);");
         s.add("    }");
         s.add("");
-        s.add("    /**");
-        s.add("     * @return insert用のvalue句");
-        s.add("     */");
-        s.add("    private String getValues() {");
+        s.add("    /** @return insert用のvalue句 */");
+        s.add("    private String values() {");
         s.add("        List<String> valueList = new ArrayList<String>();");
         for (Entry<String, ColumnInfo> e : tableInfo.getColumnInfos().entrySet()) {
             String columnName = e.getKey();
@@ -606,11 +588,9 @@ public final class BeanGenerator {
         s.add("");
         s.add("    /** " + lastKeyInfo.getRemarks() + "の採番処理 */");
         s.add("    private void numbering() {");
-        s.add("");
         s.add("        if (this." + camel + " != null) {");
         s.add("            return;");
         s.add("        }");
-        s.add("");
 
         String numbering = "CASE WHEN MAX(e." + quoted + ") IS NULL THEN 0 ELSE MAX(e." + quoted + ") * 1 END + 1";
         String w = "";
@@ -620,12 +600,10 @@ public final class BeanGenerator {
             w = " WHERE e." + quoted + " < '" + new String(new char[columnSize]).replace("\0", "9") + "'";
         }
         s.add("        String sql = \"SELECT " + numbering + " AS " + quoted + " FROM " + tableName + " e" + w + "\";");
-        s.add("");
-        s.add("        Map<String, Object> params = new HashMap<String, Object>();");
+        s.add("        Map<String, Object> map = new HashMap<String, Object>();");
 
         if (tableInfo.getPrimaryKeys().size() > 1) {
 
-            s.add("");
             s.add("        List<String> whereList = new ArrayList<String>();");
 
             // 一つ前までループ
@@ -637,20 +615,17 @@ public final class BeanGenerator {
             }
 
             s.add("        sql += \" WHERE \" + String.join(\" AND \", whereList);");
-            s.add("");
 
             // 一つ前までループ
             for (int j = 0; j < tableInfo.getPrimaryKeys().size() - 1; j++) {
                 String primaryKey = tableInfo.getPrimaryKeys().get(j);
                 String snakeKey = StringUtil.toSnakeCase(primaryKey);
                 String camelKey = StringUtil.toCamelCase(primaryKey);
-                s.add("        params.put(\"" + snakeKey + "\", this." + camelKey + ");");
+                s.add("        map.put(\"" + snakeKey + "\", this." + camelKey + ");");
             }
         }
-        s.add("");
-        s.add("        jp.co.golorp.emarf.util.MapList mapList = Queries.select(sql, params);");
+        s.add("        jp.co.golorp.emarf.util.MapList mapList = Queries.select(sql, map);");
         s.add("        Object o = mapList.get(0).get(\"" + keyName + "\");");
-        s.add("");
         s.add("        this.set" + StringUtil.toPascalCase(keyName) + "(o);");
         s.add("    }");
     }
@@ -670,7 +645,6 @@ public final class BeanGenerator {
         s.add("");
         s.add("    /**");
         s.add("     * " + remarks + "更新");
-        s.add("     *");
         s.add("     * @param now システム日時");
         s.add("     * @param id 更新者");
         s.add("     * @return 更新件数");
@@ -764,13 +738,10 @@ public final class BeanGenerator {
         s.add("        // " + tableInfo.getRemarks() + "の登録");
         s.add("        String sql = \"UPDATE " + tableName
                 + "\\r\\nSET\\r\\n      \" + getSet() + \"\\r\\nWHERE\\r\\n    \" + getWhere();");
-        s.add("        Map<String, Object> params = toMap(now, id);");
-        s.add("        return Queries.regist(sql, params);");
+        s.add("        return Queries.regist(sql, toMap(now, id));");
         s.add("    }");
         s.add("");
-        s.add("    /**");
-        s.add("     * @return update用のset句");
-        s.add("     */");
+        s.add("    /** @return update用のset句 */");
         s.add("    private String getSet() {");
         s.add("        List<String> setList = new ArrayList<String>();");
 
@@ -792,8 +763,7 @@ public final class BeanGenerator {
                 s.add("        setList.add(\"" + assist.quoteEscaped(columnName) + " = " + rightHand + "\");");
             }
         }
-        s.add("        String set = String.join(\"\\r\\n    , \", setList);");
-        s.add("        return set;");
+        s.add("        return String.join(\"\\r\\n    , \", setList);");
         s.add("    }");
     }
 
@@ -807,9 +777,7 @@ public final class BeanGenerator {
         DataSourcesAssist assist = DataSources.getAssist();
 
         s.add("");
-        s.add("    /**");
-        s.add("     * @return where句");
-        s.add("     */");
+        s.add("    /** @return where句 */");
         s.add("    private String getWhere() {");
         s.add("        List<String> whereList = new ArrayList<String>();");
 
@@ -851,7 +819,7 @@ public final class BeanGenerator {
         s.add("     * @return マップ化したエンティティ");
         s.add("     */");
         s.add("    private Map<String, Object> toMap(final LocalDateTime now, final String id) {");
-        s.add("        Map<String, Object> params = new HashMap<String, Object>();");
+        s.add("        Map<String, Object> map = new HashMap<String, Object>();");
         for (String columnName : tableInfo.getColumnInfos().keySet()) {
             boolean isInsertDt = columnName.matches("(?i)^" + insertDt + "$");
             boolean isUpdateDt = columnName.matches("(?i)^" + updateDt + "$");
@@ -862,13 +830,13 @@ public final class BeanGenerator {
             }
             String snake = StringUtil.toSnakeCase(columnName);
             String camel = StringUtil.toCamelCase(columnName);
-            s.add("        params.put(\"" + snake + "\", this." + camel + ");");
+            s.add("        map.put(\"" + snake + "\", this." + camel + ");");
         }
-        s.add("        params.put(\"" + StringUtil.toSnakeCase(insertDt) + "\", now);");
-        s.add("        params.put(\"" + StringUtil.toSnakeCase(insertBy) + "\", id);");
-        s.add("        params.put(\"" + StringUtil.toSnakeCase(updateDt) + "\", now);");
-        s.add("        params.put(\"" + StringUtil.toSnakeCase(updateBy) + "\", id);");
-        s.add("        return params;");
+        s.add("        map.put(\"" + StringUtil.toSnakeCase(insertDt) + "\", now);");
+        s.add("        map.put(\"" + StringUtil.toSnakeCase(insertBy) + "\", id);");
+        s.add("        map.put(\"" + StringUtil.toSnakeCase(updateDt) + "\", now);");
+        s.add("        map.put(\"" + StringUtil.toSnakeCase(updateBy) + "\", id);");
+        s.add("        return map;");
         s.add("    }");
     }
 
@@ -896,29 +864,21 @@ public final class BeanGenerator {
             String pascal = StringUtil.toPascalCase(brosName);
 
             s.add("");
-            s.add("    /**");
-            s.add("     * " + brosInfo.getRemarks());
-            s.add("     */");
+            s.add("    /** " + brosInfo.getRemarks() + " */");
             s.add("    private " + pascal + " " + camel + ";");
             s.add("");
-            s.add("    /**");
-            s.add("     * @return " + brosInfo.getRemarks());
-            s.add("     */");
+            s.add("    /** @return " + brosInfo.getRemarks() + " */");
             s.add("    @com.fasterxml.jackson.annotation.JsonProperty(\"" + pascal + "\")");
             s.add("    public " + pascal + " get" + pascal + "() {");
             s.add("        return this." + camel + ";");
             s.add("    }");
             s.add("");
-            s.add("    /**");
-            s.add("     * @param p " + brosInfo.getRemarks());
-            s.add("     */");
+            s.add("    /** @param p " + brosInfo.getRemarks() + " */");
             s.add("    public void set" + pascal + "(final " + pascal + " p) {");
             s.add("        this." + camel + " = p;");
             s.add("    }");
             s.add("");
-            s.add("    /**");
-            s.add("     * @return " + brosInfo.getRemarks());
-            s.add("     */");
+            s.add("    /** @return " + brosInfo.getRemarks() + " */");
             s.add("    public " + pascal + " refer" + pascal + "() {");
             s.add("        if (this." + camel + " == null) {");
             s.add("            try {");
@@ -958,29 +918,21 @@ public final class BeanGenerator {
 
             // childList
             s.add("");
-            s.add("    /**");
-            s.add("     * " + childInfo.getRemarks() + "のリスト");
-            s.add("     */");
+            s.add("    /** " + childInfo.getRemarks() + "のリスト */");
             s.add("    private List<" + pascal + "> " + camel + "s;");
             s.add("");
-            s.add("    /**");
-            s.add("     * @return " + childInfo.getRemarks() + "のリスト");
-            s.add("     */");
+            s.add("    /** @return " + childInfo.getRemarks() + "のリスト */");
             s.add("    @com.fasterxml.jackson.annotation.JsonProperty(\"" + pascal + "s\")");
             s.add("    public List<" + pascal + "> get" + pascal + "s() {");
             s.add("        return this." + camel + "s;");
             s.add("    }");
             s.add("");
-            s.add("    /**");
-            s.add("     * @param list " + childInfo.getRemarks() + "のリスト");
-            s.add("     */");
+            s.add("    /** @param list " + childInfo.getRemarks() + "のリスト */");
             s.add("    public void set" + pascal + "s(final List<" + pascal + "> list) {");
             s.add("        this." + camel + "s = list;");
             s.add("    }");
             s.add("");
-            s.add("    /**");
-            s.add("     * @param " + camel);
-            s.add("     */");
+            s.add("    /** @param " + camel + " */");
             s.add("    public void add" + pascal + "s(final " + pascal + " " + camel + ") {");
             s.add("        if (this." + camel + "s == null) {");
             s.add("            this." + camel + "s = new ArrayList<" + pascal + ">();");
@@ -988,9 +940,7 @@ public final class BeanGenerator {
             s.add("        this." + camel + "s.add(" + camel + ");");
             s.add("    }");
             s.add("");
-            s.add("    /**");
-            s.add("     * @return " + childInfo.getRemarks() + "のリスト");
-            s.add("     */");
+            s.add("    /** @return " + childInfo.getRemarks() + "のリスト */");
             s.add("    public List<" + pascal + "> refer" + pascal + "s() {");
             s.add("        if (this." + camel + "s == null) {");
             s.add("            this." + camel + "s = " + entityName + ".refer" + pascal + "s(" + params + ");");
@@ -1018,7 +968,6 @@ public final class BeanGenerator {
             s.add("     * @return List<" + pascal + ">");
             s.add("     */");
             s.add("    public static List<" + pascal + "> refer" + pascal + "s(" + getParams + ") {");
-            s.add("");
             s.add("        List<String> whereList = new ArrayList<String>();");
             for (String pk : tableInfo.getPrimaryKeys()) {
                 if (pk.length() == 0) {
@@ -1027,21 +976,18 @@ public final class BeanGenerator {
                 pk = pk.toLowerCase();
                 s.add("        whereList.add(\"" + pk + " = :" + pk + "\");");
             }
-            s.add("");
             s.add("        String sql = \"SELECT * FROM " + childName
                     + " WHERE \" + String.join(\" AND \", whereList);");
-            s.add("");
-            s.add("        Map<String, Object> params = new HashMap<String, Object>();");
+            s.add("        Map<String, Object> map = new HashMap<String, Object>();");
             i = 0;
             for (String pk : tableInfo.getPrimaryKeys()) {
                 if (pk.length() == 0) {
                     continue;
                 }
                 pk = pk.toLowerCase();
-                s.add("        params.put(\"" + pk + "\", param" + ++i + ");");
+                s.add("        map.put(\"" + pk + "\", param" + ++i + ");");
             }
-            s.add("");
-            s.add("        return Queries.select(sql, params, " + pascal + ".class);");
+            s.add("        return Queries.select(sql, map, " + pascal + ".class);");
             s.add("    }");
         }
     }

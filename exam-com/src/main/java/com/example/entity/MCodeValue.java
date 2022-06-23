@@ -11,7 +11,6 @@ import jp.co.golorp.emarf.sql.Queries;
 
 /**
  * コード値マスタ
- *
  * @author emarfkrow
  */
 public class MCodeValue implements IEntity {
@@ -19,17 +18,13 @@ public class MCodeValue implements IEntity {
     /** コード名称 */
     private String codeNm;
 
-    /**
-     * @return コード名称
-     */
+    /** @return コード名称 */
     @com.fasterxml.jackson.annotation.JsonProperty("CODE_NM")
     public String getCodeNm() {
         return this.codeNm;
     }
 
-    /**
-     * @param o コード名称
-     */
+    /** @param o コード名称 */
     public void setCodeNm(final Object o) {
         if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {
             this.codeNm = String.valueOf(o.toString());
@@ -41,17 +36,13 @@ public class MCodeValue implements IEntity {
     /** コード値 */
     private String codeValue;
 
-    /**
-     * @return コード値
-     */
+    /** @return コード値 */
     @com.fasterxml.jackson.annotation.JsonProperty("CODE_VALUE")
     public String getCodeValue() {
         return this.codeValue;
     }
 
-    /**
-     * @param o コード値
-     */
+    /** @param o コード値 */
     public void setCodeValue(final Object o) {
         if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {
             this.codeValue = String.valueOf(o.toString());
@@ -63,17 +54,13 @@ public class MCodeValue implements IEntity {
     /** コード値名 */
     private String codeValueMei;
 
-    /**
-     * @return コード値名
-     */
+    /** @return コード値名 */
     @com.fasterxml.jackson.annotation.JsonProperty("CODE_VALUE_MEI")
     public String getCodeValueMei() {
         return this.codeValueMei;
     }
 
-    /**
-     * @param o コード値名
-     */
+    /** @param o コード値名 */
     public void setCodeValueMei(final Object o) {
         if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {
             this.codeValueMei = String.valueOf(o.toString());
@@ -85,17 +72,13 @@ public class MCodeValue implements IEntity {
     /** 表示順 */
     private Integer hyojiJun;
 
-    /**
-     * @return 表示順
-     */
+    /** @return 表示順 */
     @com.fasterxml.jackson.annotation.JsonProperty("HYOJI_JUN")
     public Integer getHyojiJun() {
         return this.hyojiJun;
     }
 
-    /**
-     * @param o 表示順
-     */
+    /** @param o 表示順 */
     public void setHyojiJun(final Object o) {
         if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {
             this.hyojiJun = Integer.valueOf(o.toString());
@@ -107,17 +90,13 @@ public class MCodeValue implements IEntity {
     /** 取得条件 */
     private String criteria;
 
-    /**
-     * @return 取得条件
-     */
+    /** @return 取得条件 */
     @com.fasterxml.jackson.annotation.JsonProperty("CRITERIA")
     public String getCriteria() {
         return this.criteria;
     }
 
-    /**
-     * @param o 取得条件
-     */
+    /** @param o 取得条件 */
     public void setCriteria(final Object o) {
         if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {
             this.criteria = String.valueOf(o.toString());
@@ -132,17 +111,13 @@ public class MCodeValue implements IEntity {
     @com.fasterxml.jackson.databind.annotation.JsonSerialize(using = com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer.class)
     private java.time.LocalDateTime insertDt;
 
-    /**
-     * @return 登録日時
-     */
+    /** @return 登録日時 */
     @com.fasterxml.jackson.annotation.JsonProperty("INSERT_DT")
     public java.time.LocalDateTime getInsertDt() {
         return this.insertDt;
     }
 
-    /**
-     * @param o 登録日時
-     */
+    /** @param o 登録日時 */
     public void setInsertDt(final Object o) {
         if (o != null && o instanceof Long) {
             java.util.Date d = new java.util.Date((Long) o);
@@ -160,17 +135,13 @@ public class MCodeValue implements IEntity {
     /** 登録者 */
     private String insertBy;
 
-    /**
-     * @return 登録者
-     */
+    /** @return 登録者 */
     @com.fasterxml.jackson.annotation.JsonProperty("INSERT_BY")
     public String getInsertBy() {
         return this.insertBy;
     }
 
-    /**
-     * @param o 登録者
-     */
+    /** @param o 登録者 */
     public void setInsertBy(final Object o) {
         if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {
             this.insertBy = String.valueOf(o.toString());
@@ -185,17 +156,13 @@ public class MCodeValue implements IEntity {
     @com.fasterxml.jackson.databind.annotation.JsonSerialize(using = com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer.class)
     private java.time.LocalDateTime updateDt;
 
-    /**
-     * @return 更新日時
-     */
+    /** @return 更新日時 */
     @com.fasterxml.jackson.annotation.JsonProperty("UPDATE_DT")
     public java.time.LocalDateTime getUpdateDt() {
         return this.updateDt;
     }
 
-    /**
-     * @param o 更新日時
-     */
+    /** @param o 更新日時 */
     public void setUpdateDt(final Object o) {
         if (o != null && o instanceof Long) {
             java.util.Date d = new java.util.Date((Long) o);
@@ -213,17 +180,13 @@ public class MCodeValue implements IEntity {
     /** 更新者 */
     private String updateBy;
 
-    /**
-     * @return 更新者
-     */
+    /** @return 更新者 */
     @com.fasterxml.jackson.annotation.JsonProperty("UPDATE_BY")
     public String getUpdateBy() {
         return this.updateBy;
     }
 
-    /**
-     * @param o 更新者
-     */
+    /** @param o 更新者 */
     public void setUpdateBy(final Object o) {
         if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {
             this.updateBy = String.valueOf(o.toString());
@@ -235,17 +198,13 @@ public class MCodeValue implements IEntity {
     /** 削除フラグ */
     private String deleteF = "0";
 
-    /**
-     * @return 削除フラグ
-     */
+    /** @return 削除フラグ */
     @com.fasterxml.jackson.annotation.JsonProperty("DELETE_F")
     public String getDeleteF() {
         return this.deleteF;
     }
 
-    /**
-     * @param o 削除フラグ
-     */
+    /** @param o 削除フラグ */
     public void setDeleteF(final Object o) {
         if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {
             this.deleteF = String.valueOf(o.toString());
@@ -256,29 +215,23 @@ public class MCodeValue implements IEntity {
 
     /**
      * コード値マスタ照会
-     *
      * @param param1 コード名称
      * @param param2 コード値
      * @return コード値マスタ
      */
     public static MCodeValue get(final Object param1, final Object param2) {
-
         List<String> whereList = new ArrayList<String>();
         whereList.add("`CODE_NM` = :code_nm");
         whereList.add("`CODE_VALUE` = :code_value");
-
         String sql = "SELECT * FROM m_code_value WHERE " + String.join(" AND ", whereList);
-
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put("code_nm", param1);
-        params.put("code_value", param2);
-
-        return Queries.get(sql, params, MCodeValue.class);
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("code_nm", param1);
+        map.put("code_value", param2);
+        return Queries.get(sql, map, MCodeValue.class);
     }
 
     /**
      * コード値マスタ追加
-     *
      * @param now システム日時
      * @param id 登録者
      * @return 追加件数
@@ -286,6 +239,12 @@ public class MCodeValue implements IEntity {
     public int insert(final LocalDateTime now, final String id) {
 
         // コード値マスタの登録
+        String sql = "INSERT INTO m_code_value(\r\n      " + names() + "\r\n) VALUES (\r\n      " + values() + "\r\n)";
+        return Queries.regist(sql, toMap(now, id));
+    }
+
+    /** @return insert用のname句 */
+    private String names() {
         List<String> nameList = new ArrayList<String>();
         nameList.add("`CODE_NM` -- :code_nm");
         nameList.add("`CODE_VALUE` -- :code_value");
@@ -297,19 +256,11 @@ public class MCodeValue implements IEntity {
         nameList.add("`UPDATE_DT` -- :update_dt");
         nameList.add("`UPDATE_BY` -- :update_by");
         nameList.add("`DELETE_F` -- :delete_f");
-        String name = String.join("\r\n    , ", nameList);
-
-        String sql = "INSERT INTO m_code_value(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
-
-        Map<String, Object> params = toMap(now, id);
-
-        return Queries.regist(sql, params);
+        return String.join("\r\n    , ", nameList);
     }
 
-    /**
-     * @return insert用のvalue句
-     */
-    private String getValues() {
+    /** @return insert用のvalue句 */
+    private String values() {
         List<String> valueList = new ArrayList<String>();
         valueList.add(":code_nm");
         valueList.add(":code_value");
@@ -326,7 +277,6 @@ public class MCodeValue implements IEntity {
 
     /**
      * コード値マスタ更新
-     *
      * @param now システム日時
      * @param id 更新者
      * @return 更新件数
@@ -335,13 +285,10 @@ public class MCodeValue implements IEntity {
 
         // コード値マスタの登録
         String sql = "UPDATE m_code_value\r\nSET\r\n      " + getSet() + "\r\nWHERE\r\n    " + getWhere();
-        Map<String, Object> params = toMap(now, id);
-        return Queries.regist(sql, params);
+        return Queries.regist(sql, toMap(now, id));
     }
 
-    /**
-     * @return update用のset句
-     */
+    /** @return update用のset句 */
     private String getSet() {
         List<String> setList = new ArrayList<String>();
         setList.add("`CODE_NM` = :code_nm");
@@ -352,28 +299,21 @@ public class MCodeValue implements IEntity {
         setList.add("`UPDATE_DT` = :update_dt");
         setList.add("`UPDATE_BY` = :update_by");
         setList.add("`DELETE_F` = :delete_f");
-        String set = String.join("\r\n    , ", setList);
-        return set;
+        return String.join("\r\n    , ", setList);
     }
 
     /**
      * コード値マスタ削除
-     *
      * @return 削除件数
      */
     public int delete() {
 
         // コード値マスタの削除
         String sql = "DELETE FROM m_code_value WHERE " + getWhere();
-
-        Map<String, Object> params = toMap(null, null);
-
-        return Queries.regist(sql, params);
+        return Queries.regist(sql, toMap(null, null));
     }
 
-    /**
-     * @return where句
-     */
+    /** @return where句 */
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
         whereList.add("`CODE_NM` = :code_nm");
@@ -387,17 +327,17 @@ public class MCodeValue implements IEntity {
      * @return マップ化したエンティティ
      */
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put("code_nm", this.codeNm);
-        params.put("code_value", this.codeValue);
-        params.put("code_value_mei", this.codeValueMei);
-        params.put("hyoji_jun", this.hyojiJun);
-        params.put("criteria", this.criteria);
-        params.put("delete_f", this.deleteF);
-        params.put("insert_dt", now);
-        params.put("insert_by", id);
-        params.put("update_dt", now);
-        params.put("update_by", id);
-        return params;
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("code_nm", this.codeNm);
+        map.put("code_value", this.codeValue);
+        map.put("code_value_mei", this.codeValueMei);
+        map.put("hyoji_jun", this.hyojiJun);
+        map.put("criteria", this.criteria);
+        map.put("delete_f", this.deleteF);
+        map.put("insert_dt", now);
+        map.put("insert_by", id);
+        map.put("update_dt", now);
+        map.put("update_by", id);
+        return map;
     }
 }

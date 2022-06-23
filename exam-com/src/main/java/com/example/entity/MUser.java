@@ -11,7 +11,6 @@ import jp.co.golorp.emarf.sql.Queries;
 
 /**
  * ユーザマスタ
- *
  * @author emarfkrow
  */
 public class MUser implements IEntity {
@@ -19,17 +18,13 @@ public class MUser implements IEntity {
     /** ユーザID */
     private Integer userId;
 
-    /**
-     * @return ユーザID
-     */
+    /** @return ユーザID */
     @com.fasterxml.jackson.annotation.JsonProperty("USER_ID")
     public Integer getUserId() {
         return this.userId;
     }
 
-    /**
-     * @param o ユーザID
-     */
+    /** @param o ユーザID */
     public void setUserId(final Object o) {
         if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {
             this.userId = Integer.valueOf(o.toString());
@@ -41,17 +36,13 @@ public class MUser implements IEntity {
     /** ユーザ姓 */
     private String userSei;
 
-    /**
-     * @return ユーザ姓
-     */
+    /** @return ユーザ姓 */
     @com.fasterxml.jackson.annotation.JsonProperty("USER_SEI")
     public String getUserSei() {
         return this.userSei;
     }
 
-    /**
-     * @param o ユーザ姓
-     */
+    /** @param o ユーザ姓 */
     public void setUserSei(final Object o) {
         if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {
             this.userSei = String.valueOf(o.toString());
@@ -63,17 +54,13 @@ public class MUser implements IEntity {
     /** ユーザ名 */
     private String userMei;
 
-    /**
-     * @return ユーザ名
-     */
+    /** @return ユーザ名 */
     @com.fasterxml.jackson.annotation.JsonProperty("USER_MEI")
     public String getUserMei() {
         return this.userMei;
     }
 
-    /**
-     * @param o ユーザ名
-     */
+    /** @param o ユーザ名 */
     public void setUserMei(final Object o) {
         if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {
             this.userMei = String.valueOf(o.toString());
@@ -85,17 +72,13 @@ public class MUser implements IEntity {
     /** メールアドレス */
     private String email;
 
-    /**
-     * @return メールアドレス
-     */
+    /** @return メールアドレス */
     @com.fasterxml.jackson.annotation.JsonProperty("EMAIL")
     public String getEmail() {
         return this.email;
     }
 
-    /**
-     * @param o メールアドレス
-     */
+    /** @param o メールアドレス */
     public void setEmail(final Object o) {
         if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {
             this.email = String.valueOf(o.toString());
@@ -107,17 +90,13 @@ public class MUser implements IEntity {
     /** パスワード */
     private String password;
 
-    /**
-     * @return パスワード
-     */
+    /** @return パスワード */
     @com.fasterxml.jackson.annotation.JsonProperty("PASSWORD")
     public String getPassword() {
         return this.password;
     }
 
-    /**
-     * @param o パスワード
-     */
+    /** @param o パスワード */
     public void setPassword(final Object o) {
         if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {
             this.password = String.valueOf(o.toString());
@@ -132,17 +111,13 @@ public class MUser implements IEntity {
     @com.fasterxml.jackson.databind.annotation.JsonSerialize(using = com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer.class)
     private java.time.LocalDateTime insertDt;
 
-    /**
-     * @return 登録日時
-     */
+    /** @return 登録日時 */
     @com.fasterxml.jackson.annotation.JsonProperty("INSERT_DT")
     public java.time.LocalDateTime getInsertDt() {
         return this.insertDt;
     }
 
-    /**
-     * @param o 登録日時
-     */
+    /** @param o 登録日時 */
     public void setInsertDt(final Object o) {
         if (o != null && o instanceof Long) {
             java.util.Date d = new java.util.Date((Long) o);
@@ -160,17 +135,13 @@ public class MUser implements IEntity {
     /** 登録者 */
     private String insertBy;
 
-    /**
-     * @return 登録者
-     */
+    /** @return 登録者 */
     @com.fasterxml.jackson.annotation.JsonProperty("INSERT_BY")
     public String getInsertBy() {
         return this.insertBy;
     }
 
-    /**
-     * @param o 登録者
-     */
+    /** @param o 登録者 */
     public void setInsertBy(final Object o) {
         if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {
             this.insertBy = String.valueOf(o.toString());
@@ -185,17 +156,13 @@ public class MUser implements IEntity {
     @com.fasterxml.jackson.databind.annotation.JsonSerialize(using = com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer.class)
     private java.time.LocalDateTime updateDt;
 
-    /**
-     * @return 更新日時
-     */
+    /** @return 更新日時 */
     @com.fasterxml.jackson.annotation.JsonProperty("UPDATE_DT")
     public java.time.LocalDateTime getUpdateDt() {
         return this.updateDt;
     }
 
-    /**
-     * @param o 更新日時
-     */
+    /** @param o 更新日時 */
     public void setUpdateDt(final Object o) {
         if (o != null && o instanceof Long) {
             java.util.Date d = new java.util.Date((Long) o);
@@ -213,17 +180,13 @@ public class MUser implements IEntity {
     /** 更新者 */
     private String updateBy;
 
-    /**
-     * @return 更新者
-     */
+    /** @return 更新者 */
     @com.fasterxml.jackson.annotation.JsonProperty("UPDATE_BY")
     public String getUpdateBy() {
         return this.updateBy;
     }
 
-    /**
-     * @param o 更新者
-     */
+    /** @param o 更新者 */
     public void setUpdateBy(final Object o) {
         if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {
             this.updateBy = String.valueOf(o.toString());
@@ -235,17 +198,13 @@ public class MUser implements IEntity {
     /** 削除フラグ */
     private String deleteF = "0";
 
-    /**
-     * @return 削除フラグ
-     */
+    /** @return 削除フラグ */
     @com.fasterxml.jackson.annotation.JsonProperty("DELETE_F")
     public String getDeleteF() {
         return this.deleteF;
     }
 
-    /**
-     * @param o 削除フラグ
-     */
+    /** @param o 削除フラグ */
     public void setDeleteF(final Object o) {
         if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {
             this.deleteF = String.valueOf(o.toString());
@@ -256,26 +215,20 @@ public class MUser implements IEntity {
 
     /**
      * ユーザマスタ照会
-     *
      * @param param1 ユーザID
      * @return ユーザマスタ
      */
     public static MUser get(final Object param1) {
-
         List<String> whereList = new ArrayList<String>();
         whereList.add("`USER_ID` = :user_id");
-
         String sql = "SELECT * FROM m_user WHERE " + String.join(" AND ", whereList);
-
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put("user_id", param1);
-
-        return Queries.get(sql, params, MUser.class);
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("user_id", param1);
+        return Queries.get(sql, map, MUser.class);
     }
 
     /**
      * ユーザマスタ追加
-     *
      * @param now システム日時
      * @param id 登録者
      * @return 追加件数
@@ -286,6 +239,12 @@ public class MUser implements IEntity {
         numbering();
 
         // ユーザマスタの登録
+        String sql = "INSERT INTO m_user(\r\n      " + names() + "\r\n) VALUES (\r\n      " + values() + "\r\n)";
+        return Queries.regist(sql, toMap(now, id));
+    }
+
+    /** @return insert用のname句 */
+    private String names() {
         List<String> nameList = new ArrayList<String>();
         nameList.add("`USER_ID` -- :user_id");
         nameList.add("`USER_SEI` -- :user_sei");
@@ -297,19 +256,11 @@ public class MUser implements IEntity {
         nameList.add("`UPDATE_DT` -- :update_dt");
         nameList.add("`UPDATE_BY` -- :update_by");
         nameList.add("`DELETE_F` -- :delete_f");
-        String name = String.join("\r\n    , ", nameList);
-
-        String sql = "INSERT INTO m_user(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
-
-        Map<String, Object> params = toMap(now, id);
-
-        return Queries.regist(sql, params);
+        return String.join("\r\n    , ", nameList);
     }
 
-    /**
-     * @return insert用のvalue句
-     */
-    private String getValues() {
+    /** @return insert用のvalue句 */
+    private String values() {
         List<String> valueList = new ArrayList<String>();
         valueList.add(":user_id");
         valueList.add(":user_sei");
@@ -326,24 +277,18 @@ public class MUser implements IEntity {
 
     /** ユーザIDの採番処理 */
     private void numbering() {
-
         if (this.userId != null) {
             return;
         }
-
         String sql = "SELECT CASE WHEN MAX(e.`USER_ID`) IS NULL THEN 0 ELSE MAX(e.`USER_ID`) * 1 END + 1 AS `USER_ID` FROM m_user e";
-
-        Map<String, Object> params = new HashMap<String, Object>();
-
-        jp.co.golorp.emarf.util.MapList mapList = Queries.select(sql, params);
+        Map<String, Object> map = new HashMap<String, Object>();
+        jp.co.golorp.emarf.util.MapList mapList = Queries.select(sql, map);
         Object o = mapList.get(0).get("USER_ID");
-
         this.setUserId(o);
     }
 
     /**
      * ユーザマスタ更新
-     *
      * @param now システム日時
      * @param id 更新者
      * @return 更新件数
@@ -352,13 +297,10 @@ public class MUser implements IEntity {
 
         // ユーザマスタの登録
         String sql = "UPDATE m_user\r\nSET\r\n      " + getSet() + "\r\nWHERE\r\n    " + getWhere();
-        Map<String, Object> params = toMap(now, id);
-        return Queries.regist(sql, params);
+        return Queries.regist(sql, toMap(now, id));
     }
 
-    /**
-     * @return update用のset句
-     */
+    /** @return update用のset句 */
     private String getSet() {
         List<String> setList = new ArrayList<String>();
         setList.add("`USER_ID` = :user_id");
@@ -369,28 +311,21 @@ public class MUser implements IEntity {
         setList.add("`UPDATE_DT` = :update_dt");
         setList.add("`UPDATE_BY` = :update_by");
         setList.add("`DELETE_F` = :delete_f");
-        String set = String.join("\r\n    , ", setList);
-        return set;
+        return String.join("\r\n    , ", setList);
     }
 
     /**
      * ユーザマスタ削除
-     *
      * @return 削除件数
      */
     public int delete() {
 
         // ユーザマスタの削除
         String sql = "DELETE FROM m_user WHERE " + getWhere();
-
-        Map<String, Object> params = toMap(null, null);
-
-        return Queries.regist(sql, params);
+        return Queries.regist(sql, toMap(null, null));
     }
 
-    /**
-     * @return where句
-     */
+    /** @return where句 */
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
         whereList.add("`USER_ID` = :user_id");
@@ -403,17 +338,17 @@ public class MUser implements IEntity {
      * @return マップ化したエンティティ
      */
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put("user_id", this.userId);
-        params.put("user_sei", this.userSei);
-        params.put("user_mei", this.userMei);
-        params.put("email", this.email);
-        params.put("password", this.password);
-        params.put("delete_f", this.deleteF);
-        params.put("insert_dt", now);
-        params.put("insert_by", id);
-        params.put("update_dt", now);
-        params.put("update_by", id);
-        return params;
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("user_id", this.userId);
+        map.put("user_sei", this.userSei);
+        map.put("user_mei", this.userMei);
+        map.put("email", this.email);
+        map.put("password", this.password);
+        map.put("delete_f", this.deleteF);
+        map.put("insert_dt", now);
+        map.put("insert_by", id);
+        map.put("update_dt", now);
+        map.put("update_by", id);
+        return map;
     }
 }

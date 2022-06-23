@@ -11,7 +11,6 @@ import jp.co.golorp.emarf.sql.Queries;
 
 /**
  * 参照１マスタ
- *
  * @author emarfkrow
  */
 public class MSansho1 implements IEntity {
@@ -19,17 +18,13 @@ public class MSansho1 implements IEntity {
     /** 参照１ID */
     private Integer sansho1Id;
 
-    /**
-     * @return 参照１ID
-     */
+    /** @return 参照１ID */
     @com.fasterxml.jackson.annotation.JsonProperty("SANSHO1_ID")
     public Integer getSansho1Id() {
         return this.sansho1Id;
     }
 
-    /**
-     * @param o 参照１ID
-     */
+    /** @param o 参照１ID */
     public void setSansho1Id(final Object o) {
         if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {
             this.sansho1Id = Integer.valueOf(o.toString());
@@ -41,17 +36,13 @@ public class MSansho1 implements IEntity {
     /** 参照１名 */
     private String sansho1Mei;
 
-    /**
-     * @return 参照１名
-     */
+    /** @return 参照１名 */
     @com.fasterxml.jackson.annotation.JsonProperty("SANSHO1_MEI")
     public String getSansho1Mei() {
         return this.sansho1Mei;
     }
 
-    /**
-     * @param o 参照１名
-     */
+    /** @param o 参照１名 */
     public void setSansho1Mei(final Object o) {
         if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {
             this.sansho1Mei = String.valueOf(o.toString());
@@ -66,17 +57,13 @@ public class MSansho1 implements IEntity {
     @com.fasterxml.jackson.databind.annotation.JsonSerialize(using = com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer.class)
     private java.time.LocalDateTime insertDt;
 
-    /**
-     * @return 登録日時
-     */
+    /** @return 登録日時 */
     @com.fasterxml.jackson.annotation.JsonProperty("INSERT_DT")
     public java.time.LocalDateTime getInsertDt() {
         return this.insertDt;
     }
 
-    /**
-     * @param o 登録日時
-     */
+    /** @param o 登録日時 */
     public void setInsertDt(final Object o) {
         if (o != null && o instanceof Long) {
             java.util.Date d = new java.util.Date((Long) o);
@@ -94,17 +81,13 @@ public class MSansho1 implements IEntity {
     /** 登録者 */
     private String insertBy;
 
-    /**
-     * @return 登録者
-     */
+    /** @return 登録者 */
     @com.fasterxml.jackson.annotation.JsonProperty("INSERT_BY")
     public String getInsertBy() {
         return this.insertBy;
     }
 
-    /**
-     * @param o 登録者
-     */
+    /** @param o 登録者 */
     public void setInsertBy(final Object o) {
         if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {
             this.insertBy = String.valueOf(o.toString());
@@ -119,17 +102,13 @@ public class MSansho1 implements IEntity {
     @com.fasterxml.jackson.databind.annotation.JsonSerialize(using = com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer.class)
     private java.time.LocalDateTime updateDt;
 
-    /**
-     * @return 更新日時
-     */
+    /** @return 更新日時 */
     @com.fasterxml.jackson.annotation.JsonProperty("UPDATE_DT")
     public java.time.LocalDateTime getUpdateDt() {
         return this.updateDt;
     }
 
-    /**
-     * @param o 更新日時
-     */
+    /** @param o 更新日時 */
     public void setUpdateDt(final Object o) {
         if (o != null && o instanceof Long) {
             java.util.Date d = new java.util.Date((Long) o);
@@ -147,17 +126,13 @@ public class MSansho1 implements IEntity {
     /** 更新者 */
     private String updateBy;
 
-    /**
-     * @return 更新者
-     */
+    /** @return 更新者 */
     @com.fasterxml.jackson.annotation.JsonProperty("UPDATE_BY")
     public String getUpdateBy() {
         return this.updateBy;
     }
 
-    /**
-     * @param o 更新者
-     */
+    /** @param o 更新者 */
     public void setUpdateBy(final Object o) {
         if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {
             this.updateBy = String.valueOf(o.toString());
@@ -169,17 +144,13 @@ public class MSansho1 implements IEntity {
     /** 削除フラグ */
     private String deleteF = "0";
 
-    /**
-     * @return 削除フラグ
-     */
+    /** @return 削除フラグ */
     @com.fasterxml.jackson.annotation.JsonProperty("DELETE_F")
     public String getDeleteF() {
         return this.deleteF;
     }
 
-    /**
-     * @param o 削除フラグ
-     */
+    /** @param o 削除フラグ */
     public void setDeleteF(final Object o) {
         if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {
             this.deleteF = String.valueOf(o.toString());
@@ -190,26 +161,20 @@ public class MSansho1 implements IEntity {
 
     /**
      * 参照１マスタ照会
-     *
      * @param param1 参照１ID
      * @return 参照１マスタ
      */
     public static MSansho1 get(final Object param1) {
-
         List<String> whereList = new ArrayList<String>();
         whereList.add("`SANSHO1_ID` = :sansho1_id");
-
         String sql = "SELECT * FROM m_sansho1 WHERE " + String.join(" AND ", whereList);
-
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put("sansho1_id", param1);
-
-        return Queries.get(sql, params, MSansho1.class);
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("sansho1_id", param1);
+        return Queries.get(sql, map, MSansho1.class);
     }
 
     /**
      * 参照１マスタ追加
-     *
      * @param now システム日時
      * @param id 登録者
      * @return 追加件数
@@ -220,6 +185,12 @@ public class MSansho1 implements IEntity {
         numbering();
 
         // 参照１マスタの登録
+        String sql = "INSERT INTO m_sansho1(\r\n      " + names() + "\r\n) VALUES (\r\n      " + values() + "\r\n)";
+        return Queries.regist(sql, toMap(now, id));
+    }
+
+    /** @return insert用のname句 */
+    private String names() {
         List<String> nameList = new ArrayList<String>();
         nameList.add("`SANSHO1_ID` -- :sansho1_id");
         nameList.add("`SANSHO1_MEI` -- :sansho1_mei");
@@ -228,19 +199,11 @@ public class MSansho1 implements IEntity {
         nameList.add("`UPDATE_DT` -- :update_dt");
         nameList.add("`UPDATE_BY` -- :update_by");
         nameList.add("`DELETE_F` -- :delete_f");
-        String name = String.join("\r\n    , ", nameList);
-
-        String sql = "INSERT INTO m_sansho1(\r\n      " + name + "\r\n) VALUES (\r\n      " + getValues() + "\r\n)";
-
-        Map<String, Object> params = toMap(now, id);
-
-        return Queries.regist(sql, params);
+        return String.join("\r\n    , ", nameList);
     }
 
-    /**
-     * @return insert用のvalue句
-     */
-    private String getValues() {
+    /** @return insert用のvalue句 */
+    private String values() {
         List<String> valueList = new ArrayList<String>();
         valueList.add(":sansho1_id");
         valueList.add(":sansho1_mei");
@@ -254,24 +217,18 @@ public class MSansho1 implements IEntity {
 
     /** 参照１IDの採番処理 */
     private void numbering() {
-
         if (this.sansho1Id != null) {
             return;
         }
-
         String sql = "SELECT CASE WHEN MAX(e.`SANSHO1_ID`) IS NULL THEN 0 ELSE MAX(e.`SANSHO1_ID`) * 1 END + 1 AS `SANSHO1_ID` FROM m_sansho1 e";
-
-        Map<String, Object> params = new HashMap<String, Object>();
-
-        jp.co.golorp.emarf.util.MapList mapList = Queries.select(sql, params);
+        Map<String, Object> map = new HashMap<String, Object>();
+        jp.co.golorp.emarf.util.MapList mapList = Queries.select(sql, map);
         Object o = mapList.get(0).get("SANSHO1_ID");
-
         this.setSansho1Id(o);
     }
 
     /**
      * 参照１マスタ更新
-     *
      * @param now システム日時
      * @param id 更新者
      * @return 更新件数
@@ -280,13 +237,10 @@ public class MSansho1 implements IEntity {
 
         // 参照１マスタの登録
         String sql = "UPDATE m_sansho1\r\nSET\r\n      " + getSet() + "\r\nWHERE\r\n    " + getWhere();
-        Map<String, Object> params = toMap(now, id);
-        return Queries.regist(sql, params);
+        return Queries.regist(sql, toMap(now, id));
     }
 
-    /**
-     * @return update用のset句
-     */
+    /** @return update用のset句 */
     private String getSet() {
         List<String> setList = new ArrayList<String>();
         setList.add("`SANSHO1_ID` = :sansho1_id");
@@ -294,28 +248,21 @@ public class MSansho1 implements IEntity {
         setList.add("`UPDATE_DT` = :update_dt");
         setList.add("`UPDATE_BY` = :update_by");
         setList.add("`DELETE_F` = :delete_f");
-        String set = String.join("\r\n    , ", setList);
-        return set;
+        return String.join("\r\n    , ", setList);
     }
 
     /**
      * 参照１マスタ削除
-     *
      * @return 削除件数
      */
     public int delete() {
 
         // 参照１マスタの削除
         String sql = "DELETE FROM m_sansho1 WHERE " + getWhere();
-
-        Map<String, Object> params = toMap(null, null);
-
-        return Queries.regist(sql, params);
+        return Queries.regist(sql, toMap(null, null));
     }
 
-    /**
-     * @return where句
-     */
+    /** @return where句 */
     private String getWhere() {
         List<String> whereList = new ArrayList<String>();
         whereList.add("`SANSHO1_ID` = :sansho1_id");
@@ -328,14 +275,14 @@ public class MSansho1 implements IEntity {
      * @return マップ化したエンティティ
      */
     private Map<String, Object> toMap(final LocalDateTime now, final String id) {
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put("sansho1_id", this.sansho1Id);
-        params.put("sansho1_mei", this.sansho1Mei);
-        params.put("delete_f", this.deleteF);
-        params.put("insert_dt", now);
-        params.put("insert_by", id);
-        params.put("update_dt", now);
-        params.put("update_by", id);
-        return params;
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("sansho1_id", this.sansho1Id);
+        map.put("sansho1_mei", this.sansho1Mei);
+        map.put("delete_f", this.deleteF);
+        map.put("insert_dt", now);
+        map.put("insert_by", id);
+        map.put("update_dt", now);
+        map.put("update_by", id);
+        return map;
     }
 }
