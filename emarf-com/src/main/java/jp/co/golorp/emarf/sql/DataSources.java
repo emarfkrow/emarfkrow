@@ -387,6 +387,10 @@ public final class DataSources {
 
             String tableName = rs.getString("TABLE_NAME");
 
+            if (!tableName.matches("^[!-~]+$")) {
+                continue;
+            }
+
             if (tableName.equals("PLAN_TABLE") || tableName.startsWith("SYS_IMPORT_TABLE_")
                     || tableName.contains("$")) {
                 continue;

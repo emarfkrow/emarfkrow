@@ -464,9 +464,9 @@ var Gridate = {
 			let column = columns[i];
 
 			// 主キー列でなければスキップ
-			if (column.cssClass != 'primaryKey') {
-				continue;
-			}
+//			if (column.cssClass != 'primaryKey') {
+//				continue;
+//			}
 
 			// 反映先の項目名を取得
 			let camel = Casing.toCamel(column.field);
