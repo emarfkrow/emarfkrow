@@ -25,9 +25,12 @@ import jp.co.golorp.emarf.util.MapList;
  *
  * @author golorp
  */
-public final class DataSourcesAssistOracle extends DataSourcesAssist {
+public class DataSourcesAssistOracle extends DataSourcesAssist {
 
-    @Override
+    /**
+     * @param tableName テーブル名
+     * @return テーブルコメント
+     */
     protected String getTableComment(final String tableName) {
         String sql = "SELECT COMMENTS FROM USER_TAB_COMMENTS WHERE TABLE_NAME = '" + tableName + "'";
         MapList mapList = Queries.select(sql);
@@ -38,7 +41,11 @@ public final class DataSourcesAssistOracle extends DataSourcesAssist {
         return null;
     }
 
-    @Override
+    /**
+     * @param tableName テーブル名
+     * @param columnName カラム名
+     * @return カラムコメント
+     */
     protected String getColumnComment(final String tableName, final String columnName) {
         String sql = "SELECT COMMENTS FROM USER_COL_COMMENTS WHERE TABLE_NAME = '" + tableName + "' AND COLUMN_NAME = '"
                 + columnName + "'";
@@ -50,22 +57,34 @@ public final class DataSourcesAssistOracle extends DataSourcesAssist {
         return null;
     }
 
-    @Override
+    /**
+     * @param array 文字列配列
+     * @return 結合後の文字列
+     */
     public String join(final String[] array) {
         return String.join(" || ", array);
     }
 
-    @Override
+    /**
+     * @param s カラム物理名
+     * @return タイムスタンプ変換SQL
+     */
     public String toTimestamp(final String s) {
         return "TO_TIMESTAMP (" + s + ", 'YYYY-MM-DD\\\"T\\\"HH24:MI:SS.FF3')";
     }
 
-    @Override
+    /**
+     * @param columnName カラム物理名
+     * @return 囲み後のSQL文字列
+     */
     public String quoted(final String columnName) {
         return "\"" + columnName + "\"";
     }
 
-    @Override
+    /**
+     * @param columnName カラム物理名
+     * @return エスケープ済みで囲み後のSQL文字列
+     */
     public String quoteEscaped(final String columnName) {
         return "\\\"" + columnName + "\\\"";
     }

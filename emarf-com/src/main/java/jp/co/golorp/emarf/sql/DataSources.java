@@ -89,6 +89,9 @@ public final class DataSources {
         /** oracle. */
         oracle,
 
+        /** tibero. */
+        tibero,
+
         /** sqlite. */
         sqlite,
 
@@ -173,6 +176,10 @@ public final class DataSources {
                     } else if (databaseName == DatabaseNames.oracle) {
 
                         assist = new DataSourcesAssistOracle();
+
+                    } else if (databaseName == DatabaseNames.tibero) {
+
+                        assist = new DataSourcesAssistTibero();
 
                     } else if (databaseName == DatabaseNames.postgresql) {
 
