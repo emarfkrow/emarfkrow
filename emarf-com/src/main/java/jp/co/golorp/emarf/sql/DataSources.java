@@ -89,6 +89,9 @@ public final class DataSources {
         /** oracle. */
         oracle,
 
+        /** tibero. */
+        tibero,
+
         /** sqlite. */
         sqlite,
 
@@ -173,6 +176,10 @@ public final class DataSources {
                     } else if (databaseName == DatabaseNames.oracle) {
 
                         assist = new DataSourcesAssistOracle();
+
+                    } else if (databaseName == DatabaseNames.tibero) {
+
+                        assist = new DataSourcesAssistTibero();
 
                     } else if (databaseName == DatabaseNames.postgresql) {
 
@@ -379,6 +386,10 @@ public final class DataSources {
         while (rs.next()) {
 
             String tableName = rs.getString("TABLE_NAME");
+
+            if (!tableName.matches("^[!-~]+$")) {
+                continue;
+            }
 
             if (tableName.equals("PLAN_TABLE") || tableName.startsWith("SYS_IMPORT_TABLE_")
                     || tableName.contains("$")) {

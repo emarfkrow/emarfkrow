@@ -361,8 +361,10 @@ public final class BeanGenerator {
         s.add("        List<String> whereList = new ArrayList<String>();");
 
         // 主キー条件
+        boolean isPrimaryKey = false;
         for (String primaryKey : tableInfo.getPrimaryKeys()) {
             if (primaryKey.length() > 0) {
+                isPrimaryKey = true;
                 String snake = StringUtil.toSnakeCase(primaryKey);
                 ColumnInfo primaryKeyInfo = tableInfo.getColumnInfos().get(primaryKey);
                 String columnName = DataSources.getAssist().quoteEscaped(primaryKey);
@@ -370,6 +372,20 @@ public final class BeanGenerator {
                     s.add("        whereList.add(\"TRIM (" + columnName + ") = TRIM (:" + snake + ")\");");
                 } else {
                     s.add("        whereList.add(\"" + columnName + " = :" + snake + "\");");
+                }
+            }
+        }
+        if (!isPrimaryKey) {
+            for (String key : tableInfo.getColumnInfos().keySet()) {
+                if (key.length() > 0) {
+                    String snake = StringUtil.toSnakeCase(key);
+                    ColumnInfo keyInfo = tableInfo.getColumnInfos().get(key);
+                    String columnName = DataSources.getAssist().quoteEscaped(key);
+                    if (keyInfo.getTypeName().equals("CHAR")) {
+                        s.add("        whereList.add(\"TRIM (" + columnName + ") = TRIM (:" + snake + ")\");");
+                    } else {
+                        s.add("        whereList.add(\"" + columnName + " = :" + snake + "\");");
+                    }
                 }
             }
         }

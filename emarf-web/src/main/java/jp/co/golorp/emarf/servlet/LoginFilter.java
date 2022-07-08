@@ -54,6 +54,9 @@ public class LoginFilter implements Filter {
     private static final Logger LOG = LoggerFactory.getLogger(LoginFilter.class);
 
     /** ログイン画面 */
+    private static final String AUTHN = App.get("loginfilter.authn");
+
+    /** ログイン画面 */
     private static final String LOGIN_PAGE = App.get("loginfilter.login.page");
 
     /** ログイン処理URI */
@@ -101,7 +104,19 @@ public class LoginFilter implements Filter {
 
         String contextPath = req.getContextPath() + "/";
 
-        if (!requestURI.matches(LoginFilter.EXCLUDE_REGEXP)
+        if (!AUTHN.equals("true")) {
+
+            LOG.trace("skip authentication.");
+
+            Map<String, String> authzMap = new HashMap<String, String>();
+            authzMap.put("authz", "false");
+
+            HttpSession ses = req.getSession();
+            ses.setAttribute("AUTHN_KEY", "anonymous");
+            ses.setAttribute("AUTHN_NAME", "anonymous");
+            ses.setAttribute("AUTHZ_INFO", authzMap);
+
+        } else if (!requestURI.matches(LoginFilter.EXCLUDE_REGEXP)
                 && !requestURI.equals(contextPath + LoginFilter.PASSMAIL_PAGE)
                 && !requestURI.equals(contextPath + LoginFilter.PASSRESET_PAGE)) {
             // ログインチェック除外URLでなく、

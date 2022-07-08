@@ -165,6 +165,9 @@ let Base = {
 		}
 		if (sessionStorage['authzInfo']) {
 			let authzInfo = JSON.parse(sessionStorage['authzInfo']);
+			if (authzInfo['authz'] && authzInfo['authz'] == 'false') {
+				return 9;
+			}
 			let matchLength = 0;
 			for (let gamenNm in authzInfo) {
 				if (gamenId.match('^' + gamenNm + '.*')) {
