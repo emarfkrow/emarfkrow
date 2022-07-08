@@ -743,7 +743,7 @@ PName=T_TENPU_FILE
 LName=添付ファイル
 Comment=
 TableOption=
-Page=Main
+Page=MAIN
 Left=1400
 Top=1300
 Field="祖先ID","SOSEN_ID","*ID","NOT NULL",0,"","",$FFFFFFFF,""
@@ -756,7 +756,7 @@ EffectMode=None
 Color=$000000
 BkColor=$FFFFFF
 ModifiedDateTime=20220429132114
-Position="Main",1400,1300
+Position="MAIN",1400,1300
 ZOrder=13
 
 [Relation]
@@ -779,3 +779,21 @@ Bar3=226
 TermPos1=R
 TermPos2=R
 ZOrder=14
+
+[Entity]
+PName=T_NO_PK
+LName=主キーなし
+Comment=
+TableOption=
+Page=Main
+Left=2300
+Top=800
+Field="列Ａ","COLUMN_A","*MEI",,,"","",$FFFFFFFF,""
+Field="列Ｂ","COLUMN_B","*MEI",,,"","",$FFFFFFFF,""
+Field="列Ｃ","COLUMN_C","*MEI",,,"","",$FFFFFFFF,""
+EffectMode=None
+Color=$000000
+BkColor=$FFFFFF
+ModifiedDateTime=20220708194315
+Position="Main",2300,800
+ZOrder=15

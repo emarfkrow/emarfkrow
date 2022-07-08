@@ -52,7 +52,7 @@ public class BeanGeneratorTestExam {
      */
     @Test
     public final void testGenerate() {
-        String s = "C:\\Users\\toshiyuki\\git\\emarfkrow\\exam-com";
+        String s = "C:\\Users\\toshiyuki\\git\\exam\\exam-com";
         ResourceBundles.getSrcPaths().add(s + File.separator + "src\\main\\resources");
         BeanGenerator.generate(s, true);
     }
