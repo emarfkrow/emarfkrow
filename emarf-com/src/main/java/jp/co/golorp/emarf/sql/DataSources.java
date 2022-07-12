@@ -56,9 +56,7 @@ public final class DataSources {
     /** logger */
     private static final Logger LOG = LoggerFactory.getLogger(DataSources.class);
 
-    /**
-     * DataSources.properties
-     */
+    /** DataSources.properties */
     private static final ResourceBundle BUNDLE = ResourceBundles.getBundle(DataSources.class);
 
     /** 参照列名ペア */
@@ -70,16 +68,15 @@ public final class DataSources {
     /** 弟テーブルを設定しないテーブル名 */
     private static String[] onlychilds;
 
-    /**
-     * DataSourceのJNDI名
-     */
+    /** 列評価をスキップする列名 */
+    private static String skipcolumn;
+
+    /** DataSourceのJNDI名 */
     private static final String JNDI_NAME = "JNDIName";
 
     /**
      * データベース名列挙子
-     *
-     * @author toshiyuki
-     *
+     * @author golorp
      */
     private enum DatabaseNames {
 
@@ -102,14 +99,10 @@ public final class DataSources {
     /** データベース毎の処理を受け持つクラス. */
     private static DataSourcesAssist assist = null;
 
-    /**
-     * シングルトンインスタンス
-     */
+    /** シングルトンインスタンス */
     private static DataSource ds = null;
 
-    /**
-     * プライベートコンストラクタ
-     */
+    /** プライベートコンストラクタ */
     private DataSources() {
     }
 
@@ -123,10 +116,7 @@ public final class DataSources {
             return ds;
         }
 
-        /*
-         * JNDIから取得してみる
-         */
-
+        // JNDIから取得してみる
         String jndiName = BUNDLE.getString(JNDI_NAME);
         try {
             setAssist(jndiName);
@@ -137,10 +127,7 @@ public final class DataSources {
             LOG.trace(e.getMessage());
         }
 
-        /*
-         * DBCPから取得してみる
-         */
-
+        // DBCPから取得してみる
         Properties properties = new Properties();
         Enumeration<String> keys = BUNDLE.getKeys();
         while (keys.hasMoreElements()) {
@@ -223,6 +210,8 @@ public final class DataSources {
 
         onlychilds = bundle.getString("BeanGenerator.onlychilds").split(",");
 
+        skipcolumn = bundle.getString("BeanGenerator.skipcolumn");
+
         // テーブル情報の取得
         List<TableInfo> tableInfos = new ArrayList<TableInfo>();
 
@@ -253,7 +242,7 @@ public final class DataSources {
 
                     // カラム名が合致しなければスキップ
                     String columnName = columns.getString("COLUMN_NAME");
-                    if (columnName.equals("ABSTRACT") || !columnName.matches("^[0-9A-Za-z\\_\\-]+$")) {
+                    if (columnName.matches(skipcolumn) || !columnName.matches("^[0-9A-Za-z\\_\\-]+$")) {
                         continue;
                     }
 
@@ -348,7 +337,7 @@ public final class DataSources {
 
             String columnName = rs.getString("COLUMN_NAME");
 
-            if (columnName.equals("ABSTRACT") || !columnName.matches("^[0-9A-Za-z\\_\\-]+$")) {
+            if (columnName.matches(skipcolumn) || !columnName.matches("^[0-9A-Za-z\\_\\-]+$")) {
                 continue;
             }
 
@@ -367,6 +356,72 @@ public final class DataSources {
         for (String primaryKey : primaryKeys) {
             if (primaryKey.length() > 0) {
                 tableInfo.getPrimaryKeys().add(primaryKey);
+            }
+        }
+
+        if (tableInfo.getPrimaryKeys().size() == 0) {
+
+            ResultSet rs2 = metaData.getIndexInfo(null, null, tableInfo.getTableName(), true, false);
+
+            //        SELECT
+            //            ui.*
+            //            , '■■■■■'
+            //            , uic.* 
+            //        FROM
+            //            user_indexes ui                             --インデクス
+            //            INNER JOIN user_ind_columns uic 
+            //                ON uic.index_name = ui.index_name 
+            //            LEFT OUTER JOIN user_constraints uc         --主キー
+            //                ON uc.owner = ui.table_owner 
+            //                AND uc.table_name = ui.table_name 
+            //                AND uc.constraint_type = 'P' 
+            //        WHERE
+            //            ui.index_type = 'NORMAL' 
+            //            AND ui.uniqueness = 'UNIQUE' 
+            //            AND uc.owner IS NULL                        --主キー以外のインデクス
+            //        ORDER BY
+            //            ui.table_name
+            //            , ui.index_name
+            //            , uic.column_position;
+
+            while (rs2.next()) {
+
+                LOG.debug("TABLE_CAT: " + rs2.getString("TABLE_CAT"));
+                LOG.debug("TABLE_SCHEM: " + rs2.getString("TABLE_SCHEM"));
+                LOG.debug("TABLE_NAME: " + rs2.getString("TABLE_NAME"));
+                LOG.debug("NON_UNIQUE: " + String.valueOf(rs2.getBoolean("NON_UNIQUE")));
+                LOG.debug("INDEX_QUALIFIER: " + rs2.getString("INDEX_QUALIFIER"));
+                LOG.debug("INDEX_NAME: " + rs2.getString("INDEX_NAME"));
+                LOG.debug("TYPE: " + String.valueOf(rs2.getShort("TYPE")));
+                LOG.debug("ORDINAL_POSITION: " + String.valueOf(rs2.getShort("ORDINAL_POSITION")));
+                LOG.debug("COLUMN_NAME: " + rs2.getString("COLUMN_NAME"));
+                LOG.debug("ASC_OR_DESC: " + rs2.getString("ASC_OR_DESC"));
+                LOG.debug("CARDINALITY: " + String.valueOf(rs2.getLong("CARDINALITY")));
+                LOG.debug("PAGES: " + String.valueOf(rs2.getLong("PAGES")));
+                LOG.debug("FILTER_CONDITION: " + rs2.getString("FILTER_CONDITION"));
+
+                String columnName = rs2.getString("COLUMN_NAME");
+
+                if (columnName.matches(skipcolumn) || !columnName.matches("^[0-9A-Za-z\\_\\-]+$")) {
+                    continue;
+                }
+
+                short keySeq = rs2.getShort("KEY_SEQ");
+
+                while (primaryKeys.size() <= keySeq) {
+                    primaryKeys.add("");
+                }
+
+                primaryKeys.set(keySeq, columnName);
+            }
+
+            rs2.close();
+
+            // 一部DBではKEY_SEQが「[1]origin」なので「[0]origin」に詰め替え
+            for (String primaryKey : primaryKeys) {
+                if (primaryKey.length() > 0) {
+                    tableInfo.getPrimaryKeys().add(primaryKey);
+                }
             }
         }
     }
