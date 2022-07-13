@@ -58,6 +58,38 @@ public class DataSourcesAssistOracle extends DataSourcesAssist {
     }
 
     /**
+     * @param tableName テーブル名
+     * @return 複数のユニークインデクスについての列情報
+     */
+    protected MapList getUniqueIndexes(final String tableName) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("SELECT \n");
+        sb.append("    uic.* \n");
+        sb.append("FROM \n");
+        sb.append("    user_indexes ui                             --インデクス \n");
+        sb.append("    INNER JOIN user_ind_columns uic             --インデクス列 \n");
+        sb.append("        ON uic.table_owner = ui.table_owner \n");
+        sb.append("        AND uic.table_name = ui.table_name \n");
+        sb.append("        AND uic.index_name = ui.index_name \n");
+        sb.append("    LEFT OUTER JOIN user_constraints uc         --主キー \n");
+        sb.append("        ON uc.owner = ui.table_owner \n");
+        sb.append("        AND uc.table_name = ui.table_name \n");
+        sb.append("        AND uc.constraint_type = 'P' \n");
+        sb.append("WHERE \n");
+        sb.append("    ui.table_name = '" + tableName + "' \n");
+        sb.append("    AND ui.index_type = 'NORMAL' \n");
+        sb.append("    AND ui.uniqueness = 'UNIQUE' \n");
+        sb.append("    AND uc.owner IS NULL                        --主キー以外のインデクス \n");
+        sb.append("ORDER BY \n");
+        sb.append("    ui.table_name \n");
+        sb.append("    , ui.index_name \n");
+        sb.append("    , uic.column_position \n");
+        String sql = sb.toString();
+        MapList mapList = Queries.select(sql);
+        return mapList;
+    }
+
+    /**
      * @param array 文字列配列
      * @return 結合後の文字列
      */

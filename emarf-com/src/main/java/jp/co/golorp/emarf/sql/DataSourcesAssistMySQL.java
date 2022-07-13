@@ -38,6 +38,11 @@ public final class DataSourcesAssistMySQL extends DataSourcesAssist {
     }
 
     @Override
+    protected MapList getUniqueIndexes(final String tableName) {
+        return null;
+    }
+
+    @Override
     public String join(final String[] array) {
         return "CONCAT (" + String.join(", ", array) + ")";
     }
