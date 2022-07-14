@@ -22,7 +22,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Enumeration;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -241,27 +240,27 @@ public final class DataSources {
 
                 while (columns.next()) {
 
-                    LOG.debug("TABLE_CAT: " + columns.getString("TABLE_CAT"));
-                    LOG.debug("TABLE_SCHEM: " + columns.getString("TABLE_SCHEM"));
-                    LOG.debug("TABLE_NAME: " + columns.getString("TABLE_NAME"));
-                    LOG.debug("COLUMN_NAME: " + columns.getString("COLUMN_NAME"));
-                    LOG.debug("DATA_TYPE: " + String.valueOf(columns.getInt("DATA_TYPE")));
-                    LOG.debug("TYPE_NAME: " + columns.getString("TYPE_NAME"));
-                    LOG.debug("COLUMN_SIZE: " + String.valueOf(columns.getInt("COLUMN_SIZE")));
-                    LOG.debug("DECIMAL_DIGITS: " + String.valueOf(columns.getInt("DECIMAL_DIGITS")));
-                    LOG.debug("NUM_PREC_RADIX: " + String.valueOf(columns.getInt("NUM_PREC_RADIX")));
-                    LOG.debug("NULLABLE: " + String.valueOf(columns.getInt("NULLABLE")));
-                    LOG.debug("REMARKS: " + columns.getString("REMARKS"));
-                    LOG.debug("COLUMN_DEF: " + columns.getString("COLUMN_DEF"));
-                    LOG.debug("CHAR_OCTET_LENGTH: " + String.valueOf(columns.getInt("CHAR_OCTET_LENGTH")));
-                    LOG.debug("ORDINAL_POSITION: " + String.valueOf(columns.getInt("ORDINAL_POSITION")));
-                    LOG.debug("IS_NULLABLE: " + columns.getString("IS_NULLABLE"));
-                    LOG.debug("SCOPE_CATALOG: " + columns.getString("SCOPE_CATALOG"));
-                    LOG.debug("SCOPE_SCHEMA: " + columns.getString("SCOPE_SCHEMA"));
-                    LOG.debug("SCOPE_TABLE: " + columns.getString("SCOPE_TABLE"));
-                    LOG.debug("SOURCE_DATA_TYPE: " + String.valueOf(columns.getShort("SOURCE_DATA_TYPE")));
-                    LOG.debug("IS_AUTOINCREMENT: " + columns.getString("IS_AUTOINCREMENT"));
-                    //LOG.debug(columns.getString("IS_GENERATEDCOLUMN"));
+                    //                    LOG.debug("TABLE_CAT: " + columns.getString("TABLE_CAT"));
+                    //                    LOG.debug("TABLE_SCHEM: " + columns.getString("TABLE_SCHEM"));
+                    //                    LOG.debug("TABLE_NAME: " + columns.getString("TABLE_NAME"));
+                    //                    LOG.debug("COLUMN_NAME: " + columns.getString("COLUMN_NAME"));
+                    //                    LOG.debug("DATA_TYPE: " + String.valueOf(columns.getInt("DATA_TYPE")));
+                    //                    LOG.debug("TYPE_NAME: " + columns.getString("TYPE_NAME"));
+                    //                    LOG.debug("COLUMN_SIZE: " + String.valueOf(columns.getInt("COLUMN_SIZE")));
+                    //                    LOG.debug("DECIMAL_DIGITS: " + String.valueOf(columns.getInt("DECIMAL_DIGITS")));
+                    //                    LOG.debug("NUM_PREC_RADIX: " + String.valueOf(columns.getInt("NUM_PREC_RADIX")));
+                    //                    LOG.debug("NULLABLE: " + String.valueOf(columns.getInt("NULLABLE")));
+                    //                    LOG.debug("REMARKS: " + columns.getString("REMARKS"));
+                    //                    LOG.debug("COLUMN_DEF: " + columns.getString("COLUMN_DEF"));
+                    //                    LOG.debug("CHAR_OCTET_LENGTH: " + String.valueOf(columns.getInt("CHAR_OCTET_LENGTH")));
+                    //                    LOG.debug("ORDINAL_POSITION: " + String.valueOf(columns.getInt("ORDINAL_POSITION")));
+                    //                    LOG.debug("IS_NULLABLE: " + columns.getString("IS_NULLABLE"));
+                    //                    LOG.debug("SCOPE_CATALOG: " + columns.getString("SCOPE_CATALOG"));
+                    //                    LOG.debug("SCOPE_SCHEMA: " + columns.getString("SCOPE_SCHEMA"));
+                    //                    LOG.debug("SCOPE_TABLE: " + columns.getString("SCOPE_TABLE"));
+                    //                    LOG.debug("SOURCE_DATA_TYPE: " + String.valueOf(columns.getShort("SOURCE_DATA_TYPE")));
+                    //                    LOG.debug("IS_AUTOINCREMENT: " + columns.getString("IS_AUTOINCREMENT"));
+                    //                    //LOG.debug(columns.getString("IS_GENERATEDCOLUMN"));
 
                     if (!String.valueOf(columns.getInt("NULLABLE")).equals("0")
                             || !columns.getString("IS_NULLABLE").equals("NO")) {
@@ -389,24 +388,22 @@ public final class DataSources {
 
         if (tableInfo.getPrimaryKeys().size() == 0) {
 
-            Set<String> set = new HashSet<String>();
+            MapList uniqueIndexColumns = assist.getUniqueIndexes(tableInfo.getTableName());
+            if (uniqueIndexColumns != null) {
 
-            MapList uniqueIndexes = assist.getUniqueIndexes(tableInfo.getTableName());
-            if (uniqueIndexes != null) {
-                for (Map<String, Object> e : uniqueIndexes) {
-                    LOG.debug("■INDEX_NAME: " + e.get("INDEX_NAME"));
-                    LOG.debug("    TABLE_OWNER: " + e.get("TABLE_OWNER"));
-                    LOG.debug("    TABLE_NAME: " + e.get("TABLE_NAME"));
-                    LOG.debug("    COLUMN_NAME: " + e.get("COLUMN_NAME"));
-                    LOG.debug("    COLUMN_POSITION: " + e.get("COLUMN_POSITION"));
-                    LOG.debug("    COLUMN_LENGTH: " + e.get("COLUMN_LENGTH"));
-                    LOG.debug("    DESCEND: " + e.get("DESCEND"));
-
-                    String columnName = e.get("COLUMN_NAME").toString();
-                    if (!set.contains(columnName)) {
-                        set.add(columnName);
-                        tableInfo.getPrimaryKeys().add(columnName);
+                // 最初にとれたユニークインデクスを主キー扱いにする
+                String preIndexName = null;
+                for (Map<String, Object> uniqueIndexColumn : uniqueIndexColumns) {
+                    //                    LOG.info(uniqueIndexColumn.get("TABLE_NAME") + "\t" + uniqueIndexColumn.get("INDEX_NAME") + "\t"
+                    //                            + uniqueIndexColumn.get("COLUMN_POSITION") + "\t" + uniqueIndexColumn.get("COLUMN_NAME"));
+                    if (preIndexName == null) {
+                        preIndexName = uniqueIndexColumn.get("INDEX_NAME").toString();
                     }
+                    if (!preIndexName.equals(uniqueIndexColumn.get("INDEX_NAME").toString())) {
+                        break;
+                    }
+                    String columnName = uniqueIndexColumn.get("COLUMN_NAME").toString();
+                    tableInfo.getPrimaryKeys().add(columnName);
                 }
             }
 
