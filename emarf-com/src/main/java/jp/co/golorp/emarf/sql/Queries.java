@@ -363,8 +363,13 @@ public final class Queries {
             try {
                 o = rs.getObject(snake);
             } catch (Exception e) {
-                // ケバブケースでも取ってみる
-                o = rs.getObject(snake.replaceAll("\\_", "-"));
+                try {
+                    // 数字の前に「_」入れて取ってみる
+                    o = rs.getObject(snake.replaceAll("([0-9]+)", "_$1"));
+                } catch (Exception e1) {
+                    // ケバブケースでも取ってみる
+                    o = rs.getObject(snake.replaceAll("\\_", "-"));
+                }
             }
 
             Class<?> columnClass = null;

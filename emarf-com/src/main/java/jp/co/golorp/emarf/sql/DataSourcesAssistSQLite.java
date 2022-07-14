@@ -16,6 +16,8 @@ limitations under the License.
 
 package jp.co.golorp.emarf.sql;
 
+import jp.co.golorp.emarf.util.MapList;
+
 /**
  * SQLite用データソース実装
  *
@@ -30,6 +32,11 @@ public final class DataSourcesAssistSQLite extends DataSourcesAssist {
 
     @Override
     protected String getColumnComment(final String tableName, final String columnName) {
+        return null;
+    }
+
+    @Override
+    protected MapList getUniqueIndexes(final String tableName) {
         return null;
     }
 

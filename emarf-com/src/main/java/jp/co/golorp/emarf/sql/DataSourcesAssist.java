@@ -16,6 +16,8 @@ limitations under the License.
 
 package jp.co.golorp.emarf.sql;
 
+import jp.co.golorp.emarf.util.MapList;
+
 /**
  * データソース毎実装のインタフェース
  *
@@ -35,6 +37,12 @@ public abstract class DataSourcesAssist {
      * @return カラムコメント
      */
     protected abstract String getColumnComment(String tableName, String columnName);
+
+    /**
+     * @param tableName テーブル名
+     * @return カラムコメント
+     */
+    protected abstract MapList getUniqueIndexes(String tableName);
 
     /**
      * @param array 文字列配列

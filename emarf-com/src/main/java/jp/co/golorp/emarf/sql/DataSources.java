@@ -25,6 +25,7 @@ import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.ResourceBundle;
@@ -44,6 +45,7 @@ import jp.co.golorp.emarf.generator.BeanGenerator;
 import jp.co.golorp.emarf.generator.ColumnInfo;
 import jp.co.golorp.emarf.generator.TableInfo;
 import jp.co.golorp.emarf.lang.StringUtil;
+import jp.co.golorp.emarf.util.MapList;
 import jp.co.golorp.emarf.util.ResourceBundles;
 
 /**
@@ -56,9 +58,7 @@ public final class DataSources {
     /** logger */
     private static final Logger LOG = LoggerFactory.getLogger(DataSources.class);
 
-    /**
-     * DataSources.properties
-     */
+    /** DataSources.properties */
     private static final ResourceBundle BUNDLE = ResourceBundles.getBundle(DataSources.class);
 
     /** 参照列名ペア */
@@ -70,16 +70,15 @@ public final class DataSources {
     /** 弟テーブルを設定しないテーブル名 */
     private static String[] onlychilds;
 
-    /**
-     * DataSourceのJNDI名
-     */
+    /** 列評価をスキップする列名 */
+    private static String skipcolumn;
+
+    /** DataSourceのJNDI名 */
     private static final String JNDI_NAME = "JNDIName";
 
     /**
      * データベース名列挙子
-     *
-     * @author toshiyuki
-     *
+     * @author golorp
      */
     private enum DatabaseNames {
 
@@ -102,14 +101,10 @@ public final class DataSources {
     /** データベース毎の処理を受け持つクラス. */
     private static DataSourcesAssist assist = null;
 
-    /**
-     * シングルトンインスタンス
-     */
+    /** シングルトンインスタンス */
     private static DataSource ds = null;
 
-    /**
-     * プライベートコンストラクタ
-     */
+    /** プライベートコンストラクタ */
     private DataSources() {
     }
 
@@ -123,10 +118,7 @@ public final class DataSources {
             return ds;
         }
 
-        /*
-         * JNDIから取得してみる
-         */
-
+        // JNDIから取得してみる
         String jndiName = BUNDLE.getString(JNDI_NAME);
         try {
             setAssist(jndiName);
@@ -137,10 +129,7 @@ public final class DataSources {
             LOG.trace(e.getMessage());
         }
 
-        /*
-         * DBCPから取得してみる
-         */
-
+        // DBCPから取得してみる
         Properties properties = new Properties();
         Enumeration<String> keys = BUNDLE.getKeys();
         while (keys.hasMoreElements()) {
@@ -220,8 +209,8 @@ public final class DataSources {
         }
 
         eldests = bundle.getString("BeanGenerator.eldests").split(",");
-
         onlychilds = bundle.getString("BeanGenerator.onlychilds").split(",");
+        skipcolumn = bundle.getString("BeanGenerator.skipcolumn");
 
         // テーブル情報の取得
         List<TableInfo> tableInfos = new ArrayList<TableInfo>();
@@ -251,9 +240,36 @@ public final class DataSources {
 
                 while (columns.next()) {
 
+                    //                    LOG.debug("TABLE_CAT: " + columns.getString("TABLE_CAT"));
+                    //                    LOG.debug("TABLE_SCHEM: " + columns.getString("TABLE_SCHEM"));
+                    //                    LOG.debug("TABLE_NAME: " + columns.getString("TABLE_NAME"));
+                    //                    LOG.debug("COLUMN_NAME: " + columns.getString("COLUMN_NAME"));
+                    //                    LOG.debug("DATA_TYPE: " + String.valueOf(columns.getInt("DATA_TYPE")));
+                    //                    LOG.debug("TYPE_NAME: " + columns.getString("TYPE_NAME"));
+                    //                    LOG.debug("COLUMN_SIZE: " + String.valueOf(columns.getInt("COLUMN_SIZE")));
+                    //                    LOG.debug("DECIMAL_DIGITS: " + String.valueOf(columns.getInt("DECIMAL_DIGITS")));
+                    //                    LOG.debug("NUM_PREC_RADIX: " + String.valueOf(columns.getInt("NUM_PREC_RADIX")));
+                    //                    LOG.debug("NULLABLE: " + String.valueOf(columns.getInt("NULLABLE")));
+                    //                    LOG.debug("REMARKS: " + columns.getString("REMARKS"));
+                    //                    LOG.debug("COLUMN_DEF: " + columns.getString("COLUMN_DEF"));
+                    //                    LOG.debug("CHAR_OCTET_LENGTH: " + String.valueOf(columns.getInt("CHAR_OCTET_LENGTH")));
+                    //                    LOG.debug("ORDINAL_POSITION: " + String.valueOf(columns.getInt("ORDINAL_POSITION")));
+                    //                    LOG.debug("IS_NULLABLE: " + columns.getString("IS_NULLABLE"));
+                    //                    LOG.debug("SCOPE_CATALOG: " + columns.getString("SCOPE_CATALOG"));
+                    //                    LOG.debug("SCOPE_SCHEMA: " + columns.getString("SCOPE_SCHEMA"));
+                    //                    LOG.debug("SCOPE_TABLE: " + columns.getString("SCOPE_TABLE"));
+                    //                    LOG.debug("SOURCE_DATA_TYPE: " + String.valueOf(columns.getShort("SOURCE_DATA_TYPE")));
+                    //                    LOG.debug("IS_AUTOINCREMENT: " + columns.getString("IS_AUTOINCREMENT"));
+                    //                    //LOG.debug(columns.getString("IS_GENERATEDCOLUMN"));
+
+                    if (!String.valueOf(columns.getInt("NULLABLE")).equals("0")
+                            || !columns.getString("IS_NULLABLE").equals("NO")) {
+                        LOG.debug("NULLABLE");
+                    }
+
                     // カラム名が合致しなければスキップ
                     String columnName = columns.getString("COLUMN_NAME");
-                    if (columnName.equals("ABSTRACT") || !columnName.matches("^[0-9A-Za-z\\_\\-]+$")) {
+                    if (columnName.matches(skipcolumn) || !columnName.matches("^[0-9A-Za-z\\_\\-]+$")) {
                         continue;
                     }
 
@@ -348,7 +364,7 @@ public final class DataSources {
 
             String columnName = rs.getString("COLUMN_NAME");
 
-            if (columnName.equals("ABSTRACT") || !columnName.matches("^[0-9A-Za-z\\_\\-]+$")) {
+            if (columnName.matches(skipcolumn) || !columnName.matches("^[0-9A-Za-z\\_\\-]+$")) {
                 continue;
             }
 
@@ -368,6 +384,71 @@ public final class DataSources {
             if (primaryKey.length() > 0) {
                 tableInfo.getPrimaryKeys().add(primaryKey);
             }
+        }
+
+        if (tableInfo.getPrimaryKeys().size() == 0) {
+
+            MapList uniqueIndexColumns = assist.getUniqueIndexes(tableInfo.getTableName());
+            if (uniqueIndexColumns != null) {
+
+                // 最初にとれたユニークインデクスを主キー扱いにする
+                String preIndexName = null;
+                for (Map<String, Object> uniqueIndexColumn : uniqueIndexColumns) {
+                    //                    LOG.info(uniqueIndexColumn.get("TABLE_NAME") + "\t" + uniqueIndexColumn.get("INDEX_NAME") + "\t"
+                    //                            + uniqueIndexColumn.get("COLUMN_POSITION") + "\t" + uniqueIndexColumn.get("COLUMN_NAME"));
+                    if (preIndexName == null) {
+                        preIndexName = uniqueIndexColumn.get("INDEX_NAME").toString();
+                    }
+                    if (!preIndexName.equals(uniqueIndexColumn.get("INDEX_NAME").toString())) {
+                        break;
+                    }
+                    String columnName = uniqueIndexColumn.get("COLUMN_NAME").toString();
+                    tableInfo.getPrimaryKeys().add(columnName);
+                }
+            }
+
+            //            ResultSet rs2 = metaData.getIndexInfo(null, null, tableInfo.getTableName(), true, false);
+            //
+            //            while (rs2.next()) {
+            //
+            //                LOG.debug("■INDEX_NAME: " + rs2.getString("INDEX_NAME"));
+            //
+            //                LOG.debug("    TABLE_CAT: " + rs2.getString("TABLE_CAT"));
+            //                LOG.debug("    TABLE_SCHEM: " + rs2.getString("TABLE_SCHEM"));
+            //                LOG.debug("    TABLE_NAME: " + rs2.getString("TABLE_NAME"));
+            //                LOG.debug("    NON_UNIQUE: " + String.valueOf(rs2.getBoolean("NON_UNIQUE")));
+            //                LOG.debug("    INDEX_QUALIFIER: " + rs2.getString("INDEX_QUALIFIER"));
+            //                LOG.debug("    TYPE: " + String.valueOf(rs2.getShort("TYPE")));
+            //                LOG.debug("    ORDINAL_POSITION: " + String.valueOf(rs2.getShort("ORDINAL_POSITION")));
+            //                LOG.debug("    COLUMN_NAME: " + rs2.getString("COLUMN_NAME"));
+            //                LOG.debug("    ASC_OR_DESC: " + rs2.getString("ASC_OR_DESC"));
+            //                LOG.debug("    CARDINALITY: " + String.valueOf(rs2.getLong("CARDINALITY")));
+            //                LOG.debug("    PAGES: " + String.valueOf(rs2.getLong("PAGES")));
+            //                LOG.debug("    FILTER_CONDITION: " + rs2.getString("FILTER_CONDITION"));
+            //
+            //                String columnName = rs2.getString("COLUMN_NAME");
+            //
+            //                if (columnName.matches(skipcolumn) || !columnName.matches("^[0-9A-Za-z\\_\\-]+$")) {
+            //                    continue;
+            //                }
+            //
+            //                short keySeq = rs2.getShort("KEY_SEQ");
+            //
+            //                while (primaryKeys.size() <= keySeq) {
+            //                    primaryKeys.add("");
+            //                }
+            //
+            //                primaryKeys.set(keySeq, columnName);
+            //            }
+            //
+            //            rs2.close();
+            //
+            //            // 一部DBではKEY_SEQが「[1]origin」なので「[0]origin」に詰め替え
+            //            for (String primaryKey : primaryKeys) {
+            //                if (primaryKey.length() > 0) {
+            //                    tableInfo.getPrimaryKeys().add(primaryKey);
+            //                }
+            //            }
         }
     }
 
