@@ -139,7 +139,8 @@ let Column = {
 		let label = options['label'];
 		if (json && paramkey && value && label) {
 			let postJson = {};
-			postJson[paramkey] = field.toLowerCase();
+			//postJson[paramkey] = field.toLowerCase();
+			postJson[paramkey] = field;
 
 			let k = json + JSON.stringify(postJson);
 			if (!sessionStorage[k]) {

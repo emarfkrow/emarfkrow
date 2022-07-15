@@ -262,10 +262,10 @@ public final class DataSources {
                     //                    LOG.debug("IS_AUTOINCREMENT: " + columns.getString("IS_AUTOINCREMENT"));
                     //                    //LOG.debug(columns.getString("IS_GENERATEDCOLUMN"));
 
-                    if (!String.valueOf(columns.getInt("NULLABLE")).equals("0")
-                            || !columns.getString("IS_NULLABLE").equals("NO")) {
-                        LOG.debug("NULLABLE");
-                    }
+                    //                    if (!String.valueOf(columns.getInt("NULLABLE")).equals("0")
+                    //                            || !columns.getString("IS_NULLABLE").equals("NO")) {
+                    //                        LOG.debug("NULLABLE");
+                    //                    }
 
                     // カラム名が合致しなければスキップ
                     String columnName = columns.getString("COLUMN_NAME");

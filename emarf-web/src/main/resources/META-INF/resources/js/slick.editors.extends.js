@@ -101,6 +101,12 @@ limitations under the License.
 
 		this.loadValue = function(item) {
 			defaultValue = item[args.column.field] || "";
+			
+			// 8桁日付の場合
+			if (defaultValue.toString().match(/^[0-9]{8}$/)) {
+				defaultValue = defaultValue.toString().replace(/([0-9]{4})([0-9]{2})([0-9]{2})/, '$1-$2-$3');
+			}
+			
 			$input.val(defaultValue);
 			$input[0].defaultValue = defaultValue;
 			$input.select();
@@ -111,6 +117,10 @@ limitations under the License.
 		};
 
 		this.applyValue = function(item, state) {
+			
+			// 8桁日付の場合
+			state = state.replace(/-/g, '');
+			
 			item[args.column.field] = state;
 		};
 
