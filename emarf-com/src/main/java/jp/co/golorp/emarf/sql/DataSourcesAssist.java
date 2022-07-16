@@ -69,9 +69,17 @@ public abstract class DataSourcesAssist {
     public abstract String quoteEscaped(String columnName);
 
     /**
-     * @param rawSql 発行するSQL
+     * @param sql 発行するSQL
      * @return ID列を付加したSQL
      */
-    public abstract String addIdColumn(String rawSql);
+    public abstract String addIdColumn(String sql);
+
+    /**
+     * @param sql  発行するSQL
+     * @param rows ページ行数
+     * @param page ページ番号
+     * @return ページ繰りしたSQL
+     */
+    public abstract String getPagedSql(String sql, Integer rows, Integer page);
 
 }

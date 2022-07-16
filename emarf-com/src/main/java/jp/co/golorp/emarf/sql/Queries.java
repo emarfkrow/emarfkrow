@@ -260,18 +260,22 @@ public final class Queries {
         // ログ用SQLを出力
         LOG.debug("\r\n\r\n" + logSql + "\r\n");
 
-        String pagedSql = rawSql;
+        if (rows != null && rows > 0) {
 
-        if (rows != null) {
+            // 上限なしの件数を取得
+            Integer totalRows = Queries.selectByRawSql("SELECT COUNT(*) FROM (" + rawSql + ") SUB", repackedArgs,
+                    Integer.class);
+            params.put("totalRows", totalRows);
+            params.put("lastPage", (int) Math.ceil(totalRows / (double) rows));
 
             // id列を付与（SlickGridのDataView対応）
-            String idedSql = DataSources.getAssist().addIdColumn(pagedSql);
+            String idedSql = DataSources.getAssist().addIdColumn(rawSql);
 
-            // TODO
-            pagedSql = idedSql;
+            // ページング
+            rawSql = DataSources.getAssist().getPagedSql(idedSql, rows, page);
         }
 
-        return pagedSql;
+        return rawSql;
     }
 
     /**

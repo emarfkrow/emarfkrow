@@ -61,7 +61,12 @@ public final class DataSourcesAssistSQLite extends DataSourcesAssist {
     }
 
     @Override
-    public String addIdColumn(final String rawSql) {
+    public String addIdColumn(final String sql) {
+        return null;
+    }
+
+    @Override
+    public String getPagedSql(final String sql, final Integer rows, final Integer page) {
         return null;
     }
 

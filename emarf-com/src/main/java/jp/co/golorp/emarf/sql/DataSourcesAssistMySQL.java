@@ -63,8 +63,14 @@ public final class DataSourcesAssistMySQL extends DataSourcesAssist {
     }
 
     @Override
-    public String addIdColumn(final String rawSql) {
-        return "SELECT ROW_NUMBER () OVER () AS \"id\", sub.* FROM (" + rawSql + ") sub ORDER BY ROW_NUMBER () OVER ()";
+    public String addIdColumn(final String sql) {
+        return "SELECT ROW_NUMBER () OVER () AS \"id\", sub.* FROM (" + sql + ") sub ORDER BY ROW_NUMBER () OVER ()";
+    }
+
+    @Override
+    public String getPagedSql(final String sql, final Integer rows, final Integer page) {
+        int firstRow = (page - 1) * rows;
+        return sql + " limit " + firstRow + ", " + rows;
     }
 
 }

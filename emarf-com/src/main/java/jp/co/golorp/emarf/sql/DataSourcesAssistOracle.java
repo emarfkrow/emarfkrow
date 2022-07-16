@@ -135,11 +135,37 @@ public class DataSourcesAssistOracle extends DataSourcesAssist {
     }
 
     /**
-     * @param rawSql 発行するSQL
+     * @param sql 発行するSQL
      * @return ID列を付加したSQL
      */
-    public String addIdColumn(final String rawSql) {
-        return "SELECT ROWNUM AS \"id\", sub.* FROM (" + rawSql + ") sub ORDER BY ROWNUM";
+    public String addIdColumn(final String sql) {
+        return "SELECT ROWNUM AS \"id\", sub.* FROM (" + sql + ") sub ORDER BY ROWNUM";
+    }
+
+    /**
+     * @param sql  発行するSQL
+     * @param rows ページ行数
+     * @param page ページ番号
+     * @return ページ繰りしたSQL
+     */
+    public String getPagedSql(final String sql, final Integer rows, final Integer page) {
+        int firstRow = (page - 1) * rows;
+        String pagedSql = "";
+        pagedSql += "SELECT ";
+        pagedSql += "    B.* ";
+        pagedSql += "FROM ";
+        pagedSql += "    (";
+        pagedSql += "        SELECT ";
+        pagedSql += "            ROWNUM AS ROW_NUM, ";
+        pagedSql += "            A.* ";
+        pagedSql += "        FROM ";
+        pagedSql += "            (";
+        pagedSql += sql;
+        pagedSql += "            ) A";
+        pagedSql += "    ) B ";
+        pagedSql += "WHERE ";
+        pagedSql += "    B.ROW_NUM BETWEEN " + firstRow + " AND " + (firstRow + rows - 1);
+        return pagedSql;
     }
 
 }
