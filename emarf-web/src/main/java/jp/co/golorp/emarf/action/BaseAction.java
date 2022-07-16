@@ -95,6 +95,23 @@ public abstract class BaseAction extends BaseProcess {
         this.session = ses;
     }
 
+    /** requestURI */
+    private String requestURI;
+
+    /**
+     * @return requestURI
+     */
+    public String getRequestURI() {
+        return requestURI;
+    }
+
+    /**
+     * @param p セットする requestURI
+     */
+    public void setRequestURI(final String p) {
+        this.requestURI = p;
+    }
+
     /**
      * 事前処理・事後処理
      * @param postJson 送信値

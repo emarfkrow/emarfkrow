@@ -178,9 +178,9 @@ $(function() {
 			Gridate.grids[gridId] = grid;
 
 			new Slick.Controls.Pager(dataView, grid, $pager, {
-				showAllText: Messages['common.grid.showAllText'],
-				showPageText: Messages['common.grid.showPageText'],
-				showCountText: Messages['common.grid.showCountText']
+				//				showAllText: Messages['common.grid.showAllText'],
+				//				showPageText: Messages['common.grid.showPageText'],
+				//				showCountText: Messages['common.grid.showCountText']
 			});
 
 			dataView.onRowCountChanged.subscribe(function(e, args) {
@@ -433,7 +433,13 @@ var Gridate = {
 		//showFooterRow: true,
 	},
 
-	refresh: function(gridId, data) {
+	refresh: function(gridId, data, totalRows) {
+		if (totalRows) {
+			console.log(totalRows);
+			let pagerId = gridId.replace(/Grid$/, 'Pager');
+			let $pager = $('[id="' + pagerId + '"]');
+			$pager.html('<a href="./" >' + totalRows + '</a>');
+		}
 		let grid = Gridate.grids[gridId];
 		if (!data) {
 			data = [];

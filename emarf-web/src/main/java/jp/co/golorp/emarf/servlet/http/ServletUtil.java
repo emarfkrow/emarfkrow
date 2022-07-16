@@ -167,6 +167,8 @@ public final class ServletUtil {
         HttpSession ses = request.getSession();
         a.setSession(ses);
 
+        a.setRequestURI(request.getRequestURI());
+
         if (ses.getAttribute("AUTHN_KEY") != null) {
             a.setId(ses.getAttribute("AUTHN_KEY").toString());
         }

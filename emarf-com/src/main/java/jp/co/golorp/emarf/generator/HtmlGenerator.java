@@ -44,6 +44,9 @@ public final class HtmlGenerator {
     /** グリッド列幅ピクセル乗数 */
     private static final int COLUMN_WIDTH_PX_MULTIPLIER = 10;
 
+    /** ページ行数 */
+    private static String rows;
+
     /** 登録日時カラム名 */
     private static String insertDt;
     /** 登録者カラム名 */
@@ -97,6 +100,8 @@ public final class HtmlGenerator {
     static void generate(final String projectDir, final List<TableInfo> tableInfos) {
 
         bundle = ResourceBundles.getBundle(BeanGenerator.class);
+
+        rows = bundle.getString("BeanGenerator.rows");
 
         insertDt = bundle.getString("BeanGenerator.insert_dt");
         insertBy = bundle.getString("BeanGenerator.insert_by");
@@ -274,6 +279,8 @@ public final class HtmlGenerator {
 
         /* 検索フォーム */
         s.add("    <form name=\"" + pascal + "SearchForm\" action=\"" + pascal + "Search.ajax\" class=\"search\">");
+        s.add("      <input type=\"hidden\" name=\"rows\" value=\"" + rows + "\" />");
+        s.add("      <input type=\"hidden\" name=\"page\" value=\"0\" />");
         s.add("      <fieldset>");
         s.add("        <legend th:text=\"#{" + pageName + ".legend}\">legend</legend>");
         htmlFields(tableInfo, s, false, false);

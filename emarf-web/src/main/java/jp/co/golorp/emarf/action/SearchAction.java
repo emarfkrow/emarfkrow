@@ -37,16 +37,25 @@ public class SearchAction extends BaseAction {
     @Override
     public Map<String, Object> running(final LocalDateTime now, final String id, final Map<String, Object> postJson) {
 
+        Map<String, Object> postedJson = postJson;
+
         Integer rows = null;
         Integer page = null;
-        if (postJson.containsKey("rows")) {
-            rows = Integer.valueOf(postJson.get("rows").toString());
-            page = Integer.valueOf(postJson.get("page").toString());
+        if (postedJson.containsKey("rows")) {
+            rows = Integer.valueOf(postedJson.get("rows").toString());
+            page = Integer.valueOf(postedJson.get("page").toString());
+            if (page == 0) {
+                page = 1;
+            } else {
+                @SuppressWarnings("unchecked")
+                Map<String, Object> temp = (Map<String, Object>) this.getSession().getAttribute(this.getRequestURI());
+                postedJson = temp;
+            }
         }
 
         String sql = this.loadSqlFile(this.getBaseName());
 
-        MapList list = Queries.select(sql, postJson, rows, page);
+        MapList list = Queries.select(sql, postedJson, rows, page);
 
         Map<String, Object> map = new HashMap<String, Object>();
 
@@ -54,6 +63,9 @@ public class SearchAction extends BaseAction {
             map.put("INFO", Messages.get("info.nodata"));
         } else {
             map.put(this.getBaseName(), list);
+            if (rows != null) {
+                map.put("totalRows", postedJson.get("totalRows"));
+            }
         }
 
         return map;

@@ -142,6 +142,8 @@ public final class Queries {
 
         String sql = convRawSql(namedSql, newParams, args, rows, page);
 
+        params.put("totalRows", newParams.get("totalRows"));
+
         return selectByRawSql(sql, args, c);
     }
 
@@ -263,10 +265,11 @@ public final class Queries {
         if (rows != null && rows > 0) {
 
             // 上限なしの件数を取得
-            Integer totalRows = Queries.selectByRawSql("SELECT COUNT(*) FROM (" + rawSql + ") SUB", repackedArgs,
-                    Integer.class);
+            MapList mapList = Queries.selectByRawSql("SELECT COUNT(*) AS TOTAL_ROWS FROM (" + rawSql + ") SUB",
+                    repackedArgs, null);
+            Integer totalRows = Integer.valueOf(mapList.get(0).get("TOTAL_ROWS").toString());
             params.put("totalRows", totalRows);
-            params.put("lastPage", (int) Math.ceil(totalRows / (double) rows));
+            //            params.put("lastPage", (int) Math.ceil(totalRows / (double) rows));
 
             // id列を付与（SlickGridのDataView対応）
             String idedSql = DataSources.getAssist().addIdColumn(rawSql);
