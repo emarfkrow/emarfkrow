@@ -39,7 +39,7 @@ public class GetAction extends BaseAction {
 
         String sql = this.loadSqlFile(this.getBaseName());
 
-        MapList list = Queries.select(sql, postJson);
+        MapList list = Queries.select(sql, postJson, 1, 1);
 
         Map<String, Object> map = new HashMap<String, Object>();
 

@@ -37,9 +37,16 @@ public class SearchAction extends BaseAction {
     @Override
     public Map<String, Object> running(final LocalDateTime now, final String id, final Map<String, Object> postJson) {
 
+        Integer rows = null;
+        Integer page = null;
+        if (postJson.containsKey("rows")) {
+            rows = Integer.valueOf(postJson.get("rows").toString());
+            page = Integer.valueOf(postJson.get("page").toString());
+        }
+
         String sql = this.loadSqlFile(this.getBaseName());
 
-        MapList list = Queries.select(sql, postJson);
+        MapList list = Queries.select(sql, postJson, rows, page);
 
         Map<String, Object> map = new HashMap<String, Object>();
 

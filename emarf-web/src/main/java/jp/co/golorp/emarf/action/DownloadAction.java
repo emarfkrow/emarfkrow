@@ -41,7 +41,7 @@ public class DownloadAction extends BaseAction {
 
         String sql = this.loadSqlFile(this.getBaseName());
 
-        MapList list = Queries.select(sql, postJson);
+        MapList list = Queries.select(sql, postJson, null, null);
 
         Map<String, Object> map = new HashMap<String, Object>();
 

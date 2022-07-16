@@ -76,7 +76,7 @@ public class BaseProcess {
             Map<String, Object> params = new HashMap<String, Object>();
             params.put(itemName, itemValue);
 
-            MapList mapList = Queries.select(namedSql, params);
+            MapList mapList = Queries.select(namedSql, params, null, null);
 
             if (mapList == null) {
                 String processName = this.getClass().getSimpleName();

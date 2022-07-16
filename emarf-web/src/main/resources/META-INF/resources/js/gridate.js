@@ -5,7 +5,7 @@ Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
 
-    http://www.apache.org/licenses/LICENSE-2.0
+	http://www.apache.org/licenses/LICENSE-2.0
 
 Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
@@ -437,10 +437,10 @@ var Gridate = {
 		let grid = Gridate.grids[gridId];
 		if (!data) {
 			data = [];
-		} else {
-			for (let i in data) {
-				data[i]['id'] = i;
-			}
+			//		} else {
+			//			for (let i in data) {
+			//				data[i]['id'] = i;
+			//			}
 		}
 		grid['orgData'] = JSON.parse(JSON.stringify(data));
 		//		if (data.length > 0 && data[0]['id']) {
@@ -464,9 +464,9 @@ var Gridate = {
 			let column = columns[i];
 
 			// 主キー列でなければスキップ
-//			if (column.cssClass != 'primaryKey') {
-//				continue;
-//			}
+			//			if (column.cssClass != 'primaryKey') {
+			//				continue;
+			//			}
 
 			// 反映先の項目名を取得
 			let camel = Casing.toCamel(column.field);

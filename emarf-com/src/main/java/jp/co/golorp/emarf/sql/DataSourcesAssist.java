@@ -68,4 +68,10 @@ public abstract class DataSourcesAssist {
      */
     public abstract String quoteEscaped(String columnName);
 
+    /**
+     * @param rawSql 発行するSQL
+     * @return ID列を付加したSQL
+     */
+    public abstract String addIdColumn(String rawSql);
+
 }

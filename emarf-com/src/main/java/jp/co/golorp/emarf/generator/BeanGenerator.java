@@ -640,7 +640,7 @@ public final class BeanGenerator {
                 s.add("        map.put(\"" + snakeKey + "\", this." + camelKey + ");");
             }
         }
-        s.add("        jp.co.golorp.emarf.util.MapList mapList = Queries.select(sql, map);");
+        s.add("        jp.co.golorp.emarf.util.MapList mapList = Queries.select(sql, map, 1, 1);");
         s.add("        Object o = mapList.get(0).get(\"" + keyName + "\");");
         s.add("        this.set" + StringUtil.toPascalCase(keyName) + "(o);");
         s.add("    }");
@@ -1003,7 +1003,7 @@ public final class BeanGenerator {
                 pk = pk.toLowerCase();
                 s.add("        map.put(\"" + pk + "\", param" + ++i + ");");
             }
-            s.add("        return Queries.select(sql, map, " + pascal + ".class);");
+            s.add("        return Queries.select(sql, map, " + pascal + ".class, null, null);");
             s.add("    }");
         }
     }
@@ -1649,7 +1649,7 @@ public final class BeanGenerator {
             String[] columnNames = columnInfo.getColumnName().split("_");
             String suffix = columnNames[columnNames.length - 1];
             try {
-                // Patternの指定がある場合
+                // TODO Patternの指定がある場合
                 String re = bundle.getString("BeanGenerator.valid." + suffix);
                 s.add("    @jakarta.validation.constraints.Pattern(regexp = \"" + re + "\")");
             } catch (Exception e) {

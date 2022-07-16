@@ -60,4 +60,9 @@ public final class DataSourcesAssistSQLite extends DataSourcesAssist {
         return null;
     }
 
+    @Override
+    public String addIdColumn(final String rawSql) {
+        return null;
+    }
+
 }

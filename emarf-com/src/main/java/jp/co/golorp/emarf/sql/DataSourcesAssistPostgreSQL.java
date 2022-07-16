@@ -60,4 +60,9 @@ public final class DataSourcesAssistPostgreSQL extends DataSourcesAssist {
         return null;
     }
 
+    @Override
+    public String addIdColumn(final String rawSql) {
+        return "SELECT ROW_NUMBER () OVER () AS \"id\", sub.* FROM (" + rawSql + ") sub ORDER BY ROW_NUMBER () OVER ()";
+    }
+
 }

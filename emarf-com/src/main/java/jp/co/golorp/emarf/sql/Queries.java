@@ -70,13 +70,13 @@ public final class Queries {
      * 名前付きパラメータでエンティティを１件取得
      * @param <T> 返却クラス
      * @param namedSql 名前付きパラメータSQL
-     * @param params パラメータのマップ
-     * @param c 返却クラスに反映するエンティティクラス
+     * @param params   パラメータのマップ
+     * @param c        返却クラスに反映するエンティティクラス
      * @return T 返却クラス
      */
     public static <T> T get(final String namedSql, final Map<String, Object> params, final Class<?> c) {
 
-        List<T> list = Queries.select(namedSql, params, c);
+        List<T> list = Queries.select(namedSql, params, c, 1, 1);
 
         if (list != null && list.size() == 1) {
             T t = (T) list.get(0);
@@ -89,31 +89,39 @@ public final class Queries {
     /**
      * アドホッククエリで検索
      * @param adhocSql アドホッククエリ
+     * @param rows     ページ行数
+     * @param page     ページ番号
      * @return 検索結果の{@link MapList}
      */
-    public static MapList select(final String adhocSql) {
-        return Queries.select(adhocSql, null, null);
+    public static MapList select(final String adhocSql, final Integer rows, final Integer page) {
+        return Queries.select(adhocSql, null, null, rows, page);
     }
 
     /**
      * 名前付きパラメータSQLで検索
      * @param namedSql 名前付きパラメータSQL
-     * @param params パラメータのマップ
+     * @param params   パラメータのマップ
+     * @param rows     ページ行数
+     * @param page     ページ番号
      * @return 検索結果の{@link MapList}
      */
-    public static MapList select(final String namedSql, final Map<String, Object> params) {
-        return Queries.select(namedSql, params, null);
+    public static MapList select(final String namedSql, final Map<String, Object> params, final Integer rows,
+            final Integer page) {
+        return Queries.select(namedSql, params, null, rows, page);
     }
 
     /**
      * 名前付きパラメータSQLで検索
-     * @param <T> 返却クラス
+     * @param <T>      返却クラス
      * @param namedSql 名前付きパラメータSQL
-     * @param params パラメータのマップ
-     * @param c 返却クラスに反映するエンティティクラス
+     * @param params   パラメータのマップ
+     * @param c        返却クラスに反映するエンティティクラス
+     * @param rows     ページ行数
+     * @param page     ページ番号
      * @return エンティティクラスのリスト
      */
-    public static <T> T select(final String namedSql, final Map<String, Object> params, final Class<?> c) {
+    public static <T> T select(final String namedSql, final Map<String, Object> params, final Class<?> c,
+            final Integer rows, final Integer page) {
 
         Map<String, Object> newParams = new HashMap<String, Object>();
 
@@ -132,20 +140,22 @@ public final class Queries {
 
         List<Object> args = new ArrayList<Object>();
 
-        String sql = convRawSql(namedSql, newParams, args);
+        String sql = convRawSql(namedSql, newParams, args, rows, page);
 
         return selectByRawSql(sql, args, c);
     }
 
     /**
      * 名前付きパラメータをプレースホルダに変換し、プレースホルダの出現箇所に応じてパラメータのMapをList化
-     * @param namedSql 名前付きパラメータSQL
-     * @param params パラメータのマップ
+     * @param namedSql     名前付きパラメータSQL
+     * @param params       パラメータのマップ
      * @param repackedArgs プレースホルダの出現順に詰め直したパラメータ値のリスト
+     * @param rows         ページ行数
+     * @param page         ページ番号
      * @return プレースホルダに変換後のSQL
      */
     private static String convRawSql(final String namedSql, final Map<String, Object> params,
-            final List<Object> repackedArgs) {
+            final List<Object> repackedArgs, final Integer rows, final Integer page) {
 
         Map<String, Object> snakes = new HashMap<String, Object>();
 
@@ -250,7 +260,18 @@ public final class Queries {
         // ログ用SQLを出力
         LOG.debug("\r\n\r\n" + logSql + "\r\n");
 
-        return rawSql;
+        String pagedSql = rawSql;
+
+        if (rows != null) {
+
+            // id列を付与（SlickGridのDataView対応）
+            String idedSql = DataSources.getAssist().addIdColumn(pagedSql);
+
+            // TODO
+            pagedSql = idedSql;
+        }
+
+        return pagedSql;
     }
 
     /**
@@ -525,7 +546,7 @@ public final class Queries {
 
         List<Object> args = new ArrayList<Object>();
 
-        String sql = Queries.convRawSql(namedSql, params, args);
+        String sql = Queries.convRawSql(namedSql, params, args, null, null);
 
         if (sql.equals("")) {
             return 0;

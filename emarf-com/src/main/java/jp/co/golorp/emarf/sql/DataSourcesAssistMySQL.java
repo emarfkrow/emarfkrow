@@ -28,7 +28,7 @@ public final class DataSourcesAssistMySQL extends DataSourcesAssist {
     @Override
     protected String getTableComment(final String tableName) {
         String sql = "show table status where name = '" + tableName + "'";
-        MapList mapList = Queries.select(sql);
+        MapList mapList = Queries.select(sql, null, null);
         return mapList.get(0).get("TABLE_COMMENT").toString();
     }
 
@@ -60,6 +60,11 @@ public final class DataSourcesAssistMySQL extends DataSourcesAssist {
     @Override
     public String quoteEscaped(final String columnName) {
         return "`" + columnName + "`";
+    }
+
+    @Override
+    public String addIdColumn(final String rawSql) {
+        return "SELECT ROW_NUMBER () OVER () AS \"id\", sub.* FROM (" + rawSql + ") sub ORDER BY ROW_NUMBER () OVER ()";
     }
 
 }
