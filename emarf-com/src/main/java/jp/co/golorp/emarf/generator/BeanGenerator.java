@@ -247,6 +247,25 @@ public final class BeanGenerator {
             s.add(" * @author emarfkrow");
             s.add(" */");
             s.add("public class " + entityName + " implements IEntity {");
+
+            s.add("");
+            s.add("    /** SlickGridのDataView用ID */");
+            s.add("    private java.math.BigInteger id;");
+            s.add("");
+            s.add("    /**");
+            s.add("     * @return id");
+            s.add("     */");
+            s.add("    public final java.math.BigInteger getId() {");
+            s.add("        return id;");
+            s.add("    }");
+            s.add("");
+            s.add("    /**");
+            s.add("     * @param i セットする id");
+            s.add("     */");
+            s.add("    public final void setId(final java.math.BigInteger i) {");
+            s.add("        this.id = i;");
+            s.add("    }");
+
             // property
             for (ColumnInfo columnInfo : tableInfo.getColumnInfos().values()) {
                 String columnName = columnInfo.getColumnName();
@@ -477,10 +496,10 @@ public final class BeanGenerator {
         s.add("    /**");
         s.add("     * " + remarks + "追加");
         s.add("     * @param now システム日時");
-        s.add("     * @param id 登録者");
+        s.add("     * @param execId 登録者");
         s.add("     * @return 追加件数");
         s.add("     */");
-        s.add("    public int insert(final LocalDateTime now, final String id) {");
+        s.add("    public int insert(final LocalDateTime now, final String execId) {");
 
         // 最後のキーを取得
         ColumnInfo lastKeyInfo = null;
@@ -508,7 +527,7 @@ public final class BeanGenerator {
                 String pascalKey = StringUtil.toPascalCase(primaryKey);
                 s.add("                " + camel + ".set" + pascalKey + "(this.get" + pascalKey + "());");
             }
-            s.add("                " + camel + ".insert(now, id);");
+            s.add("                " + camel + ".insert(now, execId);");
             s.add("            }");
             s.add("        }");
         }
@@ -524,7 +543,7 @@ public final class BeanGenerator {
                 String pascalKey = StringUtil.toPascalCase(primaryKey);
                 s.add("            this." + camel + ".set" + pascalKey + "(this.get" + pascalKey + "());");
             }
-            s.add("            this." + camel + ".insert(now, id);");
+            s.add("            this." + camel + ".insert(now, execId);");
             s.add("        }");
         }
 
@@ -541,7 +560,7 @@ public final class BeanGenerator {
                 String pascalColumn = StringUtil.toPascalCase(columnName);
                 s.add("        " + camel + ".set" + pascalColumn + "(this." + camelColumn + ");");
             }
-            s.add("        " + camel + ".insert(now, id);");
+            s.add("        " + camel + ".insert(now, execId);");
         }
 
         DataSourcesAssist assist = DataSources.getAssist();
@@ -550,7 +569,7 @@ public final class BeanGenerator {
         s.add("        // " + tableInfo.getRemarks() + "の登録");
         s.add("        String sql = \"INSERT INTO " + tableName
                 + "(\\r\\n      \" + names() + \"\\r\\n) VALUES (\\r\\n      \" + values() + \"\\r\\n)\";");
-        s.add("        return Queries.regist(sql, toMap(now, id));");
+        s.add("        return Queries.regist(sql, toMap(now, execId));");
         s.add("    }");
         s.add("");
         s.add("    /** @return insert用のname句 */");
@@ -662,10 +681,10 @@ public final class BeanGenerator {
         s.add("    /**");
         s.add("     * " + remarks + "更新");
         s.add("     * @param now システム日時");
-        s.add("     * @param id 更新者");
+        s.add("     * @param execId 更新者");
         s.add("     * @return 更新件数");
         s.add("     */");
-        s.add("    public int update(final LocalDateTime now, final String id) {");
+        s.add("    public int update(final LocalDateTime now, final String execId) {");
 
         // 子モデル
         for (TableInfo childInfo : tableInfo.getChildInfos()) {
@@ -685,7 +704,7 @@ public final class BeanGenerator {
                 }
                 String where = String.join(" AND ", childWhere);
                 s.add("            Queries.regist(\"DELETE FROM " + childName + " WHERE " + where
-                        + "\", toMap(now, id));");
+                        + "\", toMap(now, execId));");
             }
 
             s.add("            for (" + pascal + " " + camel + " : this." + camel + "s) {");
@@ -695,9 +714,9 @@ public final class BeanGenerator {
                 s.add("                " + camel + ".set" + pascalKey + "(this." + camelKey + ");");
             }
             s.add("                try {");
-            s.add("                    " + camel + ".insert(now, id);");
+            s.add("                    " + camel + ".insert(now, execId);");
             s.add("                } catch (Exception e) {");
-            s.add("                    " + camel + ".update(now, id);");
+            s.add("                    " + camel + ".update(now, execId);");
             s.add("                }");
             s.add("            }");
             if (childInfo.getColumnInfos().containsKey(updateDt)) {
@@ -727,9 +746,9 @@ public final class BeanGenerator {
                 s.add("            " + camel + ".set" + pascalKey + "(this.get" + pascalKey + "());");
             }
             s.add("            try {");
-            s.add("                " + camel + ".insert(now, id);");
+            s.add("                " + camel + ".insert(now, execId);");
             s.add("            } catch (Exception e) {");
-            s.add("                " + camel + ".update(now, id);");
+            s.add("                " + camel + ".update(now, execId);");
             s.add("            }");
             s.add("        }");
         }
@@ -748,13 +767,13 @@ public final class BeanGenerator {
                 String pascalColumn = StringUtil.toPascalCase(columnName);
                 s.add("        " + camel + ".set" + pascalColumn + "(this." + camelColumn + ");");
             }
-            s.add("        " + camel + ".insert(now, id);");
+            s.add("        " + camel + ".insert(now, execId);");
         }
         s.add("");
         s.add("        // " + tableInfo.getRemarks() + "の登録");
         s.add("        String sql = \"UPDATE " + tableName
                 + "\\r\\nSET\\r\\n      \" + getSet() + \"\\r\\nWHERE\\r\\n    \" + getWhere();");
-        s.add("        return Queries.regist(sql, toMap(now, id));");
+        s.add("        return Queries.regist(sql, toMap(now, execId));");
         s.add("    }");
         s.add("");
         s.add("    /** @return update用のset句 */");
@@ -831,10 +850,10 @@ public final class BeanGenerator {
         s.add("");
         s.add("    /**");
         s.add("     * @param now システム日時");
-        s.add("     * @param id 実行ID");
+        s.add("     * @param execId 実行ID");
         s.add("     * @return マップ化したエンティティ");
         s.add("     */");
-        s.add("    private Map<String, Object> toMap(final LocalDateTime now, final String id) {");
+        s.add("    private Map<String, Object> toMap(final LocalDateTime now, final String execId) {");
         s.add("        Map<String, Object> map = new HashMap<String, Object>();");
         for (String columnName : tableInfo.getColumnInfos().keySet()) {
             boolean isInsertDt = columnName.matches("(?i)^" + insertDt + "$");
@@ -849,9 +868,9 @@ public final class BeanGenerator {
             s.add("        map.put(\"" + snake + "\", this." + camel + ");");
         }
         s.add("        map.put(\"" + StringUtil.toSnakeCase(insertDt) + "\", now);");
-        s.add("        map.put(\"" + StringUtil.toSnakeCase(insertBy) + "\", id);");
+        s.add("        map.put(\"" + StringUtil.toSnakeCase(insertBy) + "\", execId);");
         s.add("        map.put(\"" + StringUtil.toSnakeCase(updateDt) + "\", now);");
-        s.add("        map.put(\"" + StringUtil.toSnakeCase(updateBy) + "\", id);");
+        s.add("        map.put(\"" + StringUtil.toSnakeCase(updateBy) + "\", execId);");
         s.add("        return map;");
         s.add("    }");
     }
@@ -1049,7 +1068,7 @@ public final class BeanGenerator {
             s.add("");
             s.add("    /** " + remarks + "削除処理 */");
             s.add("    @Override");
-            s.add("    public Map<String, Object> running(final LocalDateTime now, final String id, final Map<String, Object> postJson) {");
+            s.add("    public Map<String, Object> running(final LocalDateTime now, final String execId, final Map<String, Object> postJson) {");
             s.add("");
             s.add("        // 主キーが不足していたらエラー");
             String params = "";
@@ -1133,7 +1152,7 @@ public final class BeanGenerator {
             s.add("");
             s.add("    /** " + remarks + "照会処理 */");
             s.add("    @Override");
-            s.add("    public Map<String, Object> running(final LocalDateTime now, final String id, final Map<String, Object> postJson) {");
+            s.add("    public Map<String, Object> running(final LocalDateTime now, final String execId, final Map<String, Object> postJson) {");
             s.add("");
             s.add("        Map<String, Object> map = new HashMap<String, Object>();");
             s.add("");
@@ -1226,7 +1245,7 @@ public final class BeanGenerator {
             s.add("");
             s.add("    /** " + remarks + "登録処理 */");
             s.add("    @Override");
-            s.add("    public Map<String, Object> running(final LocalDateTime now, final String id, final Map<String, Object> postJson) {");
+            s.add("    public Map<String, Object> running(final LocalDateTime now, final String execId, final Map<String, Object> postJson) {");
             s.add("");
             s.add("        Map<String, Object> map = new HashMap<String, Object>();");
             s.add("");
@@ -1243,7 +1262,7 @@ public final class BeanGenerator {
             s.add("");
             s.add("        if (isNew) {");
             s.add("");
-            s.add("            if (e.insert(now, id) != 1) {");
+            s.add("            if (e.insert(now, execId) != 1) {");
             s.add("                throw new OptLockError(\"error.cant.insert\");");
             s.add("            }");
             s.add("");
@@ -1251,9 +1270,9 @@ public final class BeanGenerator {
             s.add("");
             s.add("        } else {");
             s.add("");
-            s.add("            if (e.update(now, id) == 1) {");
+            s.add("            if (e.update(now, execId) == 1) {");
             s.add("                map.put(\"INFO\", Messages.get(\"info.update\"));");
-            s.add("            } else if (e.insert(now, id) == 1) {");
+            s.add("            } else if (e.insert(now, execId) == 1) {");
             s.add("                map.put(\"INFO\", Messages.get(\"info.insert\"));");
             s.add("            } else {");
             s.add("                throw new OptLockError(\"error.cant.update\");");
@@ -1321,7 +1340,7 @@ public final class BeanGenerator {
             s.add("");
             s.add("    /** " + remarks + "一覧削除処理 */");
             s.add("    @Override");
-            s.add("    public Map<String, Object> running(final LocalDateTime now, final String id, final Map<String, Object> postJson) {");
+            s.add("    public Map<String, Object> running(final LocalDateTime now, final String execId, final Map<String, Object> postJson) {");
             s.add("");
             s.add("        Map<String, Object> map = new HashMap<String, Object>();");
             s.add("");
@@ -1412,7 +1431,7 @@ public final class BeanGenerator {
             s.add("");
             s.add("    /** " + remarks + "一覧登録処理 */");
             s.add("    @Override");
-            s.add("    public Map<String, Object> running(final LocalDateTime now, final String id, final Map<String, Object> postJson) {");
+            s.add("    public Map<String, Object> running(final LocalDateTime now, final String execId, final Map<String, Object> postJson) {");
             s.add("");
             s.add("        Map<String, Object> map = new HashMap<String, Object>();");
             s.add("");
@@ -1442,13 +1461,13 @@ public final class BeanGenerator {
             s.add("");
             s.add("            if (isNew) {");
             s.add("");
-            s.add("                if (e.insert(now, id) != 1) {");
+            s.add("                if (e.insert(now, execId) != 1) {");
             s.add("                    throw new OptLockError(\"error.cant.insert\");");
             s.add("                }");
             s.add("");
             s.add("            } else {");
             s.add("");
-            s.add("                if (e.update(now, id) != 1) {");
+            s.add("                if (e.update(now, execId) != 1) {");
             s.add("                    throw new OptLockError(\"error.cant.update\");");
             s.add("                }");
             s.add("            }");

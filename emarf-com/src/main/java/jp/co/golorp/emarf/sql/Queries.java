@@ -262,23 +262,23 @@ public final class Queries {
         // ログ用SQLを出力
         LOG.debug("\r\n\r\n" + logSql + "\r\n");
 
+        // id列を付与（SlickGridのDataView対応）
+        String idedSql = DataSources.getAssist().addIdColumn(rawSql);
+
         if (rows != null && rows > 0) {
 
             // 上限なしの件数を取得
-            MapList mapList = Queries.selectByRawSql("SELECT COUNT(*) AS TOTAL_ROWS FROM (" + rawSql + ") SUB",
+            MapList mapList = Queries.selectByRawSql("SELECT COUNT(*) AS TOTAL_ROWS FROM (" + idedSql + ") SUB",
                     repackedArgs, null);
             Integer totalRows = Integer.valueOf(mapList.get(0).get("TOTAL_ROWS").toString());
             params.put("totalRows", totalRows);
             //            params.put("lastPage", (int) Math.ceil(totalRows / (double) rows));
 
-            // id列を付与（SlickGridのDataView対応）
-            String idedSql = DataSources.getAssist().addIdColumn(rawSql);
-
             // ページング
-            rawSql = DataSources.getAssist().getPagedSql(idedSql, rows, page);
+            idedSql = DataSources.getAssist().getPagedSql(idedSql, rows, page);
         }
 
-        return rawSql;
+        return idedSql;
     }
 
     /**

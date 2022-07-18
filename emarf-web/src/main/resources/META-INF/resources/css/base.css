@@ -201,6 +201,10 @@ input[type="datetime-local"] {
 	height: 300px;
 }
 
+[id$="Pager"] {
+	height: 1rem;
+}
+
 [role="dialog"] form>fieldset {
 	width: 1190px;
 }

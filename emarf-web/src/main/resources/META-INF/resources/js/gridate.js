@@ -177,11 +177,11 @@ $(function() {
 			let grid = new Slick.Grid($gridDiv, dataView, columns, options);
 			Gridate.grids[gridId] = grid;
 
-			new Slick.Controls.Pager(dataView, grid, $pager, {
-				//				showAllText: Messages['common.grid.showAllText'],
-				//				showPageText: Messages['common.grid.showPageText'],
-				//				showCountText: Messages['common.grid.showCountText']
-			});
+			//new Slick.Controls.Pager(dataView, grid, $pager, {
+			//				showAllText: Messages['common.grid.showAllText'],
+			//				showPageText: Messages['common.grid.showPageText'],
+			//				showCountText: Messages['common.grid.showCountText']
+			//});
 
 			dataView.onRowCountChanged.subscribe(function(e, args) {
 				grid.updateRowCount();
@@ -436,16 +436,29 @@ var Gridate = {
 	refresh: function(gridId, data, totalRows) {
 		if (totalRows) {
 			console.log(totalRows);
+			let rows = $('[name="rows"]').val();
+			console.log(rows);
+			let maxPage = Math.ceil(totalRows / rows);
+			console.log(maxPage);
+
 			let pagerId = gridId.replace(/Grid$/, 'Pager');
 			let $pager = $('[id="' + pagerId + '"]');
-			$pager.html('<a href="./" >' + totalRows + '</a>');
+			let html = '';
+			for (let i = 1; i <= maxPage; i++) {
+				html += '<a href="' + document.location.href + '?page=' + i + '" style="margin-right:0.5rem;">' + i + '</a>';
+			}
+			$pager.html(html);
 		}
 		let grid = Gridate.grids[gridId];
 		if (!data) {
 			data = [];
 			//		} else {
 			//			for (let i in data) {
-			//				data[i]['id'] = i;
+			//				let item = data[i];
+			//				if (item['id']) {
+			//					break;
+			//				}
+			//				item['id'] = i;
 			//			}
 		}
 		grid['orgData'] = JSON.parse(JSON.stringify(data));
