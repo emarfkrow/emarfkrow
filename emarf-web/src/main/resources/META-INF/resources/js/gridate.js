@@ -433,19 +433,20 @@ var Gridate = {
 		//showFooterRow: true,
 	},
 
-	refresh: function(gridId, data, totalRows) {
+	refresh: function(gridId, data, totalRows, currentPage) {
 		if (totalRows) {
-			console.log(totalRows);
 			let rows = $('[name="rows"]').val();
-			console.log(rows);
 			let maxPage = Math.ceil(totalRows / rows);
-			console.log(maxPage);
 
 			let pagerId = gridId.replace(/Grid$/, 'Pager');
 			let $pager = $('[id="' + pagerId + '"]');
 			let html = '';
 			for (let i = 1; i <= maxPage; i++) {
-				html += '<a href="' + document.location.href + '?page=' + i + '" style="margin-right:0.5rem;">' + i + '</a>';
+				if (i == currentPage) {
+					html += '<a>' + i + '</a>';
+				} else {					
+					html += '<a href="javascript:void(0);" onclick="Gridate.paginate(\'' + gridId + '\',' + i + ')">' + i + '</a>';
+				}
 			}
 			$pager.html(html);
 		}
@@ -471,6 +472,15 @@ var Gridate = {
 		//			grid.setData(data);
 		//			grid.invalidate();
 		//		}
+	},
+	
+	paginate: function(gridId, page) {
+		let $button = $('[data-gridid="' + gridId + '"]');
+		let $form = $button.closest('form');
+		let $page = $form.find('[name="page"]');
+		$page.val(page);
+		$button.click();
+		$page.val(0);
 	},
 
 	openDetail: function(gridId, entityName, columns, item) {

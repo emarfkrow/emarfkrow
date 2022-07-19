@@ -73,6 +73,9 @@ public final class DataSources {
     /** 列評価をスキップする列名 */
     private static String skipcolumn;
 
+    /** 固定長列で自動採番のサフィックス */
+    private static String[] charNumberingSuffixs;
+
     /** DataSourceのJNDI名 */
     private static final String JNDI_NAME = "JNDIName";
 
@@ -190,6 +193,9 @@ public final class DataSources {
      * @return DataSourcesAssist
      */
     public static DataSourcesAssist getAssist() {
+        if (ds == null) {
+            get();
+        }
         return assist;
     }
 
@@ -211,6 +217,7 @@ public final class DataSources {
         eldests = bundle.getString("BeanGenerator.eldests").split(",");
         onlychilds = bundle.getString("BeanGenerator.onlychilds").split(",");
         skipcolumn = bundle.getString("BeanGenerator.skipcolumn");
+        charNumberingSuffixs = bundle.getString("BeanGenerator.char.numbering.suffixs").split(",");
 
         // テーブル情報の取得
         List<TableInfo> tableInfos = new ArrayList<TableInfo>();
@@ -499,7 +506,7 @@ public final class DataSources {
     }
 
     /**
-     * @param typeName メタ情報から取得したデータ型
+     * @param typeName   メタ情報から取得したデータ型
      * @param columnInfo 対象のカラム情報
      * @return javaデータ型に変換した文字列
      */
@@ -529,8 +536,12 @@ public final class DataSources {
 
             dataType = "String";
 
-            if (typeName.equals("CHAR") && columnInfo.isPk()) {
-                columnInfo.setNumbering(true);
+            if (typeName.equals("CHAR")) {
+                if (columnInfo.isPk()) {
+                    if (StringUtil.endsWith(charNumberingSuffixs, columnInfo.getColumnName())) {
+                        columnInfo.setNumbering(true);
+                    }
+                }
             }
         }
 
@@ -787,6 +798,7 @@ public final class DataSources {
                         continue;
                     }
 
+                    // マスタ系が悉く参照モデルでなくなるので廃止
                     //                    // 比較先自体が参照マスタならスキップ
                     //                    boolean self = false;
                     //                    if (tableInfo.getPrimaryKeys().size() == 1) {
@@ -811,15 +823,35 @@ public final class DataSources {
                     for (Entry<String, ColumnInfo> e : tableInfo.getColumnInfos().entrySet()) {
                         String columnName = e.getKey();
                         ColumnInfo columnInfo = e.getValue();
+
+                        if (columnInfo.isPk() && tableInfo.getPrimaryKeys().size() == 1) {
+                            // ユニークキーの場合
+
+                            // 弟に設定しないテーブルならスキップ
+                            boolean isEldest = false;
+                            for (String eldest : eldests) {
+                                if (eldest.equals(tableInfo.getTableName())) {
+                                    isEldest = true;
+                                    break;
+                                }
+                            }
+                            if (isEldest) {
+                                continue;
+                            }
+                        }
+
                         if (!columnInfo.getTypeName().equals(referIdInfo.getTypeName())) {
                             continue;
                         }
+
                         if (columnInfo.getColumnSize() != referIdInfo.getColumnSize()) {
                             continue;
                         }
+
                         if (columnInfo.getDecimalDigits() != referIdInfo.getDecimalDigits()) {
                             continue;
                         }
+
                         if (columnName.endsWith(referId) && columnInfo.getReferInfo() == null) {
                             columnInfo.setReferInfo(referInfo);
                         }

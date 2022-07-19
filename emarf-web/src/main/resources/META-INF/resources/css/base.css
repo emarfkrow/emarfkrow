@@ -99,7 +99,12 @@ form>div {
 }
 
 form>div[id$=Pager] {
+	height: 1.5rem;
 	margin-top: 0px;
+}
+
+form>div[id$=Pager]>a {
+	margin-right: 0.5rem;
 }
 
 form>fieldset {
@@ -199,10 +204,6 @@ input[type="datetime-local"] {
 	background-color: #ccc;
 	clear: both;
 	height: 300px;
-}
-
-[id$="Pager"] {
-	height: 1rem;
 }
 
 [role="dialog"] form>fieldset {
