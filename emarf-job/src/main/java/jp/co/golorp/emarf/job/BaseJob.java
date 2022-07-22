@@ -26,6 +26,7 @@ import jp.co.golorp.emarf.exception.AppError;
 import jp.co.golorp.emarf.exception.SysError;
 import jp.co.golorp.emarf.process.BaseProcess;
 import jp.co.golorp.emarf.sql.Connections;
+import jp.co.golorp.emarf.time.DateTimeUtil;
 
 /**
  * バッチ基底クラス
@@ -52,7 +53,7 @@ public abstract class BaseJob extends BaseProcess {
 
             String simpleName = this.getClass().getSimpleName();
             String id = simpleName.replaceFirst("Job$", "");
-            this.running(jp.co.golorp.emarf.time.LocalDateTime.now(), id, args);
+            this.running(DateTimeUtil.now(), id, args);
             Connections.commit();
 
         } catch (AppError e) {

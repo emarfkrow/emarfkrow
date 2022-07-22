@@ -17,6 +17,7 @@ limitations under the License.
 package jp.co.golorp.emarf.time;
 
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -27,24 +28,24 @@ import java.util.Date;
  *
  * @author golorp
  */
-public final class LocalDateTime {
+public final class DateTimeUtil {
 
     /** プライベートコンストラクタ */
-    private LocalDateTime() {
+    private DateTimeUtil() {
     }
 
     /**
      * @return 現在日時
      */
-    public static java.time.LocalDateTime now() {
-        return java.time.LocalDateTime.now();
+    public static LocalDateTime now() {
+        return LocalDateTime.now();
     }
 
     /**
      * @return yyyyMMddHHmmssSSS形式の現在日時
      */
     public static String ymdhmsS() {
-        return LocalDateTime.format("yyyyMMddHHmmssSSS");
+        return DateTimeUtil.format("yyyyMMddHHmmssSSS");
     }
 
     /**
@@ -53,7 +54,7 @@ public final class LocalDateTime {
      */
     private static String format(final String format) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format);
-        return LocalDateTime.now().format(formatter);
+        return DateTimeUtil.now().format(formatter);
     }
 
     /**
