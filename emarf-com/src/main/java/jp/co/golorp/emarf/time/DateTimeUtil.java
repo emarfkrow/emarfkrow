@@ -52,7 +52,7 @@ public final class DateTimeUtil {
      * @param format フォーマット
      * @return フォーマットで指定した形式の現在日時
      */
-    private static String format(final String format) {
+    public static String format(final String format) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format);
         return DateTimeUtil.now().format(formatter);
     }
@@ -65,6 +65,16 @@ public final class DateTimeUtil {
         ZonedDateTime zonedDateTime = ZonedDateTime.of(now(), zone);
         Instant instant = zonedDateTime.toInstant();
         return Date.from(instant);
+    }
+
+    /**
+     * @param s      対象文字列
+     * @param format フォーマット
+     * @return フォーマットで指定した形式の現在日時
+     */
+    public static LocalDateTime parse(final String s, final String format) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format);
+        return LocalDateTime.parse(s, formatter);
     }
 
 }

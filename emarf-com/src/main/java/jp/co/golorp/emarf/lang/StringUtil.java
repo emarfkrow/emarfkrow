@@ -49,13 +49,18 @@ public final class StringUtil {
             return null;
         }
 
-        // 一旦、数字か小文字の直後の大文字の前に「_」を挿入
+        // 一旦「数字直後の大文字」「小文字の直後の大文字」の前に「_」を挿入
         // password→password、EMAIL→EMAIL、sampleY_1→sample_Y_1、MUser→MUser）
         String snake = s.replaceAll("([0-9a-z])([A-Z])", "$1_$2");
 
-        // 大文字の次に小文字がある場合は大文字の前に「_」を挿入
+        // 直後に小文字が続く大文字の前に「_」を挿入
         // password→password、EMAIL→EMAIL、sampleY_1→sample_Y_1、MUser→M_User）
-        snake = snake.replaceAll("([A-Z][a-z])", "_$1").replaceAll("^_", "").replaceAll("__", "_").replaceAll("-", "_");
+        snake = snake.replaceAll("([A-Z][a-z])", "_$1");
+
+        snake = snake.replaceAll("([0-9]+)", "_$1");
+
+        //先頭から続く「_」を除去。「_」が連続する場合は一つに。「-」は「_」に変更。
+        snake = snake.replaceAll("^_+", "").replaceAll("_+", "_").replaceAll("-", "_");
 
         return snake.toLowerCase();
     }
