@@ -363,7 +363,7 @@ public final class Queries {
 
         // エンティティのインスタンスを取得
         @SuppressWarnings("unchecked")
-        T t = (T) c.newInstance();
+        T t = (T) c.getDeclaredConstructor().newInstance();
 
         // エンティティのフィールドを取得してループ
         Field[] fields = c.getDeclaredFields();

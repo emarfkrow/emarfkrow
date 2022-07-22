@@ -89,12 +89,12 @@ public final class XlsxServlet extends HttpServlet {
         String className = App.get("package.action") + String.join(".", servletPathes);
         try {
             Class<?> c = Class.forName(className);
-            xlsxAction = (BaseAction) c.newInstance();
+            xlsxAction = (BaseAction) c.getDeclaredConstructor().newInstance();
         } catch (Exception e) {
             className = "jp.co.golorp.emarf.action.XlsxAction";
             try {
                 Class<?> c = Class.forName(className);
-                xlsxAction = (BaseAction) c.newInstance();
+                xlsxAction = (BaseAction) c.getDeclaredConstructor().newInstance();
             } catch (Exception e1) {
                 LOG.error(e.getMessage(), e);
                 throw new SysError(e);

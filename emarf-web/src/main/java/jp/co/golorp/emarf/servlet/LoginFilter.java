@@ -160,7 +160,7 @@ public class LoginFilter implements Filter {
 
                 try {
 
-                    BaseAction action = (BaseAction) c.newInstance();
+                    BaseAction action = (BaseAction) c.getDeclaredConstructor().newInstance();
                     map = action.run(postJson);
 
                 } catch (AppError e) {
@@ -247,7 +247,7 @@ public class LoginFilter implements Filter {
 
         try {
 
-            BaseAction action = (BaseAction) c.newInstance();
+            BaseAction action = (BaseAction) c.getDeclaredConstructor().newInstance();
             action.setSession(req.getSession());
             map = action.run(postJson);
 

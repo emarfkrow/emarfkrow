@@ -188,7 +188,7 @@ public final class FormValidator {
         // インスタンス取得
         Object o = null;
         try {
-            o = clazz.newInstance();
+            o = clazz.getDeclaredConstructor().newInstance();
         } catch (Exception e) {
             throw new SysError(e);
         }
