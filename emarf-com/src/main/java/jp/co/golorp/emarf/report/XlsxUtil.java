@@ -38,7 +38,7 @@ import jp.co.golorp.emarf.exception.SysError;
 import jp.co.golorp.emarf.io.FileUtil;
 import jp.co.golorp.emarf.lang.StringUtil;
 import jp.co.golorp.emarf.properties.App;
-import jp.co.golorp.emarf.time.LocalDateTime;
+import jp.co.golorp.emarf.time.DateTimeUtil;
 import jp.co.golorp.emarf.util.Messages;
 
 /**
@@ -354,7 +354,7 @@ public final class XlsxUtil {
 
         // 保存ファイルパス
         String saveDir = App.get("context.path.temp");
-        String timestamp = LocalDateTime.ymdhmsS();
+        String timestamp = DateTimeUtil.ymdhmsS();
         String writeFileName = fileBaseMei + "." + timestamp + "." + extension;
         String writeFilePath = saveDir + File.separator + writeFileName;
         File file = FileUtil.get(writeFilePath);

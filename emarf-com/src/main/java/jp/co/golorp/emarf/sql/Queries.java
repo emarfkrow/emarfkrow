@@ -76,7 +76,7 @@ public final class Queries {
      */
     public static <T> T get(final String namedSql, final Map<String, Object> params, final Class<?> c) {
 
-        List<T> list = Queries.select(namedSql, params, c, 1, 1);
+        List<T> list = Queries.select(namedSql, params, c, null, null);
 
         if (list != null && list.size() == 1) {
             T t = (T) list.get(0);
@@ -142,9 +142,23 @@ public final class Queries {
 
         String sql = convRawSql(namedSql, newParams, args, rows, page);
 
-        params.put("totalRows", newParams.get("totalRows"));
+        // id列を付与（SlickGridのDataView対応）
+        DataSourcesAssist assist = DataSources.getAssist();
+        String idSql = assist.addIdColumn(sql);
 
-        return selectByRawSql(sql, args, c);
+        if (rows != null && rows > 0) {
+
+            // 上限なしの件数を取得
+            MapList data = Queries.selectByRawSql("SELECT COUNT(*) AS TOTAL_ROWS FROM (" + idSql + ") SUB", args, null);
+            Map<String, Object> item = data.get(0);
+            Integer totalRows = Integer.valueOf(item.get("TOTAL_ROWS").toString());
+            params.put("totalRows", totalRows);
+
+            // ページング
+            idSql = assist.getPagedSql(idSql, rows, page);
+        }
+
+        return selectByRawSql(idSql, args, c);
     }
 
     /**
@@ -172,7 +186,7 @@ public final class Queries {
         String rawSql = namedSql;
         String logSql = namedSql;
 
-        // SQL内の名前付きパラメータ「:***」が、パラメータのキーに含まれない場合は、SQLから削除
+        // SQL内の、名前付きパラメータ「:***」を、SQLから削除
         Matcher m = Pattern.compile("(?<=:)[A-Za-z][0-9A-Z\\_a-z]+").matcher(rawSql);
         while (m.find()) {
             String parameterName = m.group();
@@ -183,17 +197,25 @@ public final class Queries {
 
             String blockRE = ".*\\/\\* *:" + parameterName + " *\\*\\/(\\r|\\n|.)+\\/\\* *:" + parameterName
                     + " *\\*\\/[\\r\\n]+";
+
             if (!snakes.containsKey(parameterName)) {
+                // パラメータのキーに含まれない場合
+
                 // ブロック削除
                 rawSql = rawSql.replaceFirst(blockRE, "");
                 logSql = logSql.replaceFirst(blockRE, "");
+
                 // １行削除
                 rawSql = rawSql.replaceFirst(".*:" + parameterName + "[^_\r\n]*([\r\n]+|$)", "");
                 logSql = logSql.replaceFirst(".*:" + parameterName + "[^_\r\n]*([\r\n]+|$)", "");
+
             } else if (snakes.get(parameterName) == null) {
+                // パラメータ値がない場合
+
                 // ブロック削除
                 rawSql = rawSql.replaceFirst(blockRE, "");
                 logSql = logSql.replaceFirst(blockRE, "");
+
                 // １行削除
                 rawSql = rawSql.replaceFirst(".*:" + parameterName + "[^_\r\n]*([\r\n]+|$)", "");
                 logSql = logSql.replaceFirst(".*:" + parameterName + "[^_\r\n]*([\r\n]+|$)", "");
@@ -262,23 +284,7 @@ public final class Queries {
         // ログ用SQLを出力
         LOG.debug("\r\n\r\n" + logSql + "\r\n");
 
-        // id列を付与（SlickGridのDataView対応）
-        String idedSql = DataSources.getAssist().addIdColumn(rawSql);
-
-        if (rows != null && rows > 0) {
-
-            // 上限なしの件数を取得
-            MapList mapList = Queries.selectByRawSql("SELECT COUNT(*) AS TOTAL_ROWS FROM (" + idedSql + ") SUB",
-                    repackedArgs, null);
-            Integer totalRows = Integer.valueOf(mapList.get(0).get("TOTAL_ROWS").toString());
-            params.put("totalRows", totalRows);
-            //            params.put("lastPage", (int) Math.ceil(totalRows / (double) rows));
-
-            // ページング
-            idedSql = DataSources.getAssist().getPagedSql(idedSql, rows, page);
-        }
-
-        return idedSql;
+        return rawSql;
     }
 
     /**

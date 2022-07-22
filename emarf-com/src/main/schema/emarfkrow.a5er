@@ -1,7 +1,7 @@
-﻿# A5:ER FORMAT:15
+﻿# A5:ER FORMAT:16
 # A5:ER ENCODING:UTF8
 # A5:ER Mk-1 Copyright © 2007 m.matsubara
-# A5:SQL Mk-2 Version 2.16.2 Copyright © 1997 - 2021 m.matsubara
+# A5:SQL Mk-2 Version 2.17.2 Copyright © 1997 - 2022 m.matsubara
 #  https://a5m2.mmatsubara.com
 
 [Manager]
@@ -12,39 +12,39 @@ ReadOnlyRecommend=0
 Page=Main
 PageInfo="Main",7,"A3Landscape",$FFFFFF
 Domain=ID=@INT
-DomainInfo="ID","@INT","ユニーク識別子"
+DomainInfo="ID","@INT","ユニーク識別子",""
 Domain=CD=@CHAR(6)
-DomainInfo="CD","@CHAR(6)","ZERO埋めコード"
+DomainInfo="CD","@CHAR(6)","ZERO埋めコード",""
 Domain=SN=@INT
-DomainInfo="SN","@INT","連番"
+DomainInfo="SN","@INT","連番",""
 Domain=NM=@VARCHAR(20)
-DomainInfo="NM","@VARCHAR(20)","半角20文字以内"
+DomainInfo="NM","@VARCHAR(20)","半角20文字以内",""
 Domain=MEI=@VARCHAR(30)
-DomainInfo="MEI","@VARCHAR(30)","全角30文字以内"
+DomainInfo="MEI","@VARCHAR(30)","全角30文字以内",""
 Domain=F=@CHAR(1)
-DomainInfo="F","@CHAR(1)","半角1文字"
+DomainInfo="F","@CHAR(1)","半角1文字",""
 Domain=KB=@VARCHAR(2)
-DomainInfo="KB","@VARCHAR(2)","半角2文字"
+DomainInfo="KB","@VARCHAR(2)","半角2文字",""
 Domain=TX=@VARCHAR(200)
-DomainInfo="TX","@VARCHAR(200)","全角200文字以内"
+DomainInfo="TX","@VARCHAR(200)","全角200文字以内",""
 Domain=YMD=@CHAR(10)
-DomainInfo="YMD","@CHAR(10)","日付"
+DomainInfo="YMD","@CHAR(10)","日付",""
 Domain=YM=@CHAR(7)
-DomainInfo="YM","@CHAR(7)","年月"
+DomainInfo="YM","@CHAR(7)","年月",""
 Domain=Y=@CHAR(4)
-DomainInfo="Y","@CHAR(4)","年"
+DomainInfo="Y","@CHAR(4)","年",""
 Domain=M=@CHAR(2)
-DomainInfo="M","@CHAR(2)","月"
+DomainInfo="M","@CHAR(2)","月",""
 Domain=DT=@DATETIME(3)
-DomainInfo="DT","@DATETIME(3)","日時"
+DomainInfo="DT","@DATETIME(3)","日時",""
 Domain=HM=@VARCHAR(6)
-DomainInfo="HM","@VARCHAR(6)","時刻（00:00:00～23:59:00）"
+DomainInfo="HM","@VARCHAR(6)","時刻（00:00:00～23:59:00）",""
 Domain=TM=@VARCHAR(6)
-DomainInfo="TM","@VARCHAR(6)","時間（00:00:00～999:59:59）"
+DomainInfo="TM","@VARCHAR(6)","時間（00:00:00～999:59:59）",""
 Domain=QT=@DECIMAL(9,2)
-DomainInfo="QT","@DECIMAL(9,2)","整数７桁・小数２桁"
+DomainInfo="QT","@DECIMAL(9,2)","整数７桁・小数２桁",""
 Domain=AM=@DECIMAL(11,3)
-DomainInfo="AM","@DECIMAL(11,3)","金額"
+DomainInfo="AM","@DECIMAL(11,3)","金額",""
 LogicalView=1
 DecodeDomain=0
 ViewModePageIndividually=1
@@ -79,6 +79,7 @@ SqlSeparator=0
 UpperCaseKeyword=0
 ShowTag=1
 ShowCommonAttributes=0
+BugFixEntityWidth=0
 
 [Entity]
 PName=M_NINKA
@@ -114,10 +115,12 @@ Field="ユーザ姓","USER_SEI","*MEI","NOT NULL",,"","",$FFFFFFFF,""
 Field="ユーザ名","USER_MEI","*MEI","NOT NULL",,"","",$FFFFFFFF,""
 Field="メールアドレス","EMAIL","*TX","NOT NULL",,"","",$FFFFFFFF,""
 Field="パスワード","PASSWORD","*TX","NOT NULL",,"","",$FFFFFFFF,""
+Field="開始日","KAISHI_YMD","*YMD",,,"","",$FFFFFFFF,""
+Field="終了日","SHURYO_YMD","*YMD",,,"","",$FFFFFFFF,""
 EffectMode=Gradation
 Color=$000000
 BkColor=$C0DCC0
-ModifiedDateTime=20220319111146
+ModifiedDateTime=20220721105112
 Position="MAIN",2000,100
 ZOrder=-12
 
@@ -785,9 +788,9 @@ PName=T_NO_PK
 LName=主キーなし
 Comment=
 TableOption=
-Page=Main
-Left=2300
-Top=800
+Page=MAIN
+Left=2200
+Top=1000
 Field="列Ａ","COLUMN_A","*MEI",,,"","",$FFFFFFFF,""
 Field="列Ｂ","COLUMN_B","*MEI",,,"","",$FFFFFFFF,""
 Field="列Ｃ","COLUMN_C","*MEI",,,"","",$FFFFFFFF,""
@@ -795,5 +798,5 @@ EffectMode=None
 Color=$000000
 BkColor=$FFFFFF
 ModifiedDateTime=20220708194315
-Position="Main",2300,800
+Position="MAIN",2200,1000
 ZOrder=15

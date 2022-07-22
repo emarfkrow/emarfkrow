@@ -48,7 +48,7 @@ import jp.co.golorp.emarf.action.BaseAction;
 import jp.co.golorp.emarf.exception.SysError;
 import jp.co.golorp.emarf.lang.StringUtil;
 import jp.co.golorp.emarf.properties.App;
-import jp.co.golorp.emarf.time.LocalDateTime;
+import jp.co.golorp.emarf.time.DateTimeUtil;
 
 /**
  * サーブレット用ユーティリティ
@@ -251,7 +251,7 @@ public final class ServletUtil {
                         // アップロードフォルダに保管
                         String uploadDir = App.get("context.upload.dir");
                         String ext = fileName.replaceFirst("^.+\\.", "");
-                        String saveName = partName + "." + LocalDateTime.ymdhmsS() + "." + ext;
+                        String saveName = partName + "." + DateTimeUtil.ymdhmsS() + "." + ext;
                         String uploadPath = uploadDir + File.separator + saveName;
                         try {
                             part.write(uploadPath);

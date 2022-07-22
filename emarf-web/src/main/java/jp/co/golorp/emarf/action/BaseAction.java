@@ -31,6 +31,7 @@ import jp.co.golorp.emarf.exception.OptLockError;
 import jp.co.golorp.emarf.exception.SysError;
 import jp.co.golorp.emarf.process.BaseProcess;
 import jp.co.golorp.emarf.sql.Connections;
+import jp.co.golorp.emarf.time.DateTimeUtil;
 import jp.co.golorp.emarf.validation.FormValidator;
 import jp.co.golorp.emarf.validation.IForm;
 
@@ -146,7 +147,7 @@ public abstract class BaseAction extends BaseProcess {
             }
 
             // アクションの主処理を実行
-            Map<String, Object> map = this.running(jp.co.golorp.emarf.time.LocalDateTime.now(), this.userId, postJson);
+            Map<String, Object> map = this.running(DateTimeUtil.now(), this.userId, postJson);
 
             // コミット
             Connections.commit();
