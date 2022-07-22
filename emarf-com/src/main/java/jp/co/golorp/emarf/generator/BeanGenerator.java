@@ -52,6 +52,9 @@ public final class BeanGenerator {
     /** BeanGenerator.properties */
     private static ResourceBundle bundle;
 
+    /** validサフィックス */
+    private static List<String> validSuffixs;
+
     /** 登録日時カラム名 */
     private static String insertDt;
     /** 登録者カラム名 */
@@ -110,6 +113,13 @@ public final class BeanGenerator {
 
         LOG.info("start.");
 
+        validSuffixs = new ArrayList<String>();
+        for (String key : bundle.keySet()) {
+            if (key.startsWith("BeanGenerator.valid.")) {
+                validSuffixs.add(key.replaceFirst("BeanGenerator.valid.", ""));
+            }
+        }
+
         insertDt = bundle.getString("BeanGenerator.insert_dt");
         insertBy = bundle.getString("BeanGenerator.insert_by");
         updateDt = bundle.getString("BeanGenerator.update_dt");
@@ -135,43 +145,6 @@ public final class BeanGenerator {
 
         // テーブル情報を取得
         List<TableInfo> tableInfos = DataSources.getTableInfos();
-
-        //        int maxDependLevel = 0;
-        //        for (TableInfo tableInfo : rawTableInfos) {
-        //            if (tableInfo.getBrosInfos().size() > 0 || tableInfo.getHistoryInfo() != null
-        //                    || tableInfo.getChildInfos().size() > 0) {
-        //
-        //                int dependLevel = 0;
-        //
-        //                for (TableInfo nestInfo : tableInfo.getBrosInfos()) {
-        //                    dependLevel = Math.max(tableInfo.getDependLevel(), nestInfo.getDependLevel()) + 1;
-        //                    maxDependLevel = Math.max(maxDependLevel, dependLevel);
-        //                    nestInfo.setDependLevel(dependLevel);
-        //                }
-        //
-        //                if (tableInfo.getHistoryInfo() != null) {
-        //                    TableInfo nestInfo = tableInfo.getHistoryInfo();
-        //                    dependLevel = Math.max(tableInfo.getDependLevel(), nestInfo.getDependLevel()) + 1;
-        //                    maxDependLevel = Math.max(maxDependLevel, dependLevel);
-        //                    nestInfo.setDependLevel(dependLevel);
-        //                }
-        //
-        //                for (TableInfo nestInfo : tableInfo.getChildInfos()) {
-        //                    dependLevel = Math.max(tableInfo.getDependLevel(), nestInfo.getDependLevel()) + 1;
-        //                    maxDependLevel = Math.max(maxDependLevel, dependLevel);
-        //                    nestInfo.setDependLevel(dependLevel);
-        //                }
-        //            }
-        //        }
-        //
-        //        List<TableInfo> tableInfos = new ArrayList<TableInfo>();
-        //        for (int i = maxDependLevel; i >= 0; i--) {
-        //            for (TableInfo tableInfo : rawTableInfos) {
-        //                if (tableInfo.getDependLevel() == i) {
-        //                    tableInfos.add(tableInfo);
-        //                }
-        //            }
-        //        }
 
         // 出力フォルダを再作成
         String entityPackagePath = entityPackage.replace(".", File.separator);
@@ -250,19 +223,19 @@ public final class BeanGenerator {
 
             s.add("");
             s.add("    /** SlickGridのDataView用ID */");
-            s.add("    private java.math.BigInteger id;");
+            s.add("    private java.math.BigDecimal id;");
             s.add("");
             s.add("    /**");
             s.add("     * @return id");
             s.add("     */");
-            s.add("    public final java.math.BigInteger getId() {");
+            s.add("    public final java.math.BigDecimal getId() {");
             s.add("        return id;");
             s.add("    }");
             s.add("");
             s.add("    /**");
             s.add("     * @param i セットする id");
             s.add("     */");
-            s.add("    public final void setId(final java.math.BigInteger i) {");
+            s.add("    public final void setId(final java.math.BigDecimal i) {");
             s.add("        this.id = i;");
             s.add("    }");
 
@@ -314,7 +287,8 @@ public final class BeanGenerator {
                     s.add("        if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {");
                     s.add("            this." + camel + " = new java.math.BigDecimal(o.toString());");
                 } else {
-                    s.add("        if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {");
+                    //s.add("        if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {");
+                    s.add("        if (o != null) {");
                     s.add("            this." + camel + " = " + dataType + ".valueOf(o.toString());");
                 }
                 s.add("        } else {");
@@ -659,7 +633,7 @@ public final class BeanGenerator {
                 s.add("        map.put(\"" + snakeKey + "\", this." + camelKey + ");");
             }
         }
-        s.add("        jp.co.golorp.emarf.util.MapList mapList = Queries.select(sql, map, 1, 1);");
+        s.add("        jp.co.golorp.emarf.util.MapList mapList = Queries.select(sql, map, null, null);");
         s.add("        Object o = mapList.get(0).get(\"" + keyName + "\");");
         s.add("        this.set" + StringUtil.toPascalCase(keyName) + "(o);");
         s.add("    }");
@@ -1649,30 +1623,59 @@ public final class BeanGenerator {
     private static void javaFormDetailRegistChecks(final List<String> primaryKeys, final ColumnInfo columnInfo,
             final List<String> s) {
 
-        // NotBlank（主キーは親モデルから植え付けるか採番するので除外。フラグも除外）
+        // 必須チェック
         if (columnInfo.getNullable() == 0) {
-            if (!columnInfo.isNumbering() && !StringUtil.endsWith(inputFlagSuffixs, columnInfo.getColumnName())) {
+
+            if (columnInfo.isNumbering()) {
+                // 主キーは親モデルから植え付けるか採番するので除外
+                LOG.trace("skip NotBlank.");
+
+            } else if (StringUtil.endsWith(inputFlagSuffixs, columnInfo.getColumnName())) {
+                // フラグも除外
+                LOG.trace("skip NotBlank.");
+
+            } else if (columnInfo.getTypeName().equals("CHAR") && columnInfo.getReferInfo() == null) {
+                // CHARで参照モデルでない場合も除外（ホスト向け対応）
+                LOG.trace("skip NotBlank.");
+
+            } else {
                 s.add("    @jakarta.validation.constraints.NotBlank");
             }
         }
 
-        // 形式チェック
         int columnSize = columnInfo.getColumnSize();
+
+        // 形式チェック
         if (columnInfo.getTypeName().equals("DECIMAL")) {
-            // DECIMALの場合
+
+            // DECIMALの場合（整数桁・小数桁）
             int decimalDigits = columnInfo.getDecimalDigits();
             int integer = columnSize - decimalDigits;
             String re = "[0-9]{0," + integer + "}\\\\.?[0-9]{0," + decimalDigits + "}?";
             s.add("    @jakarta.validation.constraints.Pattern(regexp = \"" + re + "\")");
+
         } else {
-            String[] columnNames = columnInfo.getColumnName().split("_");
-            String suffix = columnNames[columnNames.length - 1];
-            try {
-                // TODO Patternの指定がある場合
-                String re = bundle.getString("BeanGenerator.valid." + suffix);
+            // DECIMAL以外
+
+            String columnName = columnInfo.getColumnName();
+
+            String validSuffix = null;
+            for (String suffix : validSuffixs) {
+                if (columnName.matches("(?i).*" + suffix + "$")) {
+                    validSuffix = suffix;
+                    break;
+                }
+            }
+
+            if (validSuffix != null) {
+
+                // Patternの指定がある場合
+                String re = bundle.getString("BeanGenerator.valid." + validSuffix);
                 s.add("    @jakarta.validation.constraints.Pattern(regexp = \"" + re + "\")");
-            } catch (Exception e) {
-                // 上記以外の場合
+
+            } else {
+
+                // 上記以外の場合は最大桁チェック
                 s.add("    @jakarta.validation.constraints.Size(max = " + columnSize + ")");
             }
         }

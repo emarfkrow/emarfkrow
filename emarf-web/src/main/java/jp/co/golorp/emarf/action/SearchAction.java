@@ -20,6 +20,8 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import jp.co.golorp.emarf.sql.Queries;
 import jp.co.golorp.emarf.util.MapList;
 import jp.co.golorp.emarf.util.Messages;
@@ -44,11 +46,15 @@ public class SearchAction extends BaseAction {
         if (postedJson.containsKey("rows")) {
             rows = Integer.valueOf(postedJson.get("rows").toString());
             page = Integer.valueOf(postedJson.get("page").toString());
+
+            HttpSession ses = this.getSession();
+            String requestURI = this.getRequestURI();
             if (page == 0) {
                 page = 1;
+                ses.removeAttribute(requestURI);
             } else {
                 @SuppressWarnings("unchecked")
-                Map<String, Object> temp = (Map<String, Object>) this.getSession().getAttribute(this.getRequestURI());
+                Map<String, Object> temp = (Map<String, Object>) ses.getAttribute(requestURI);
                 postedJson = temp;
             }
         }
@@ -64,7 +70,9 @@ public class SearchAction extends BaseAction {
         } else {
             map.put(this.getBaseName(), list);
             if (rows != null) {
-                map.put("totalRows", postedJson.get("totalRows"));
+                Object totalRows = postedJson.get("totalRows");
+                map.put("totalRows", totalRows);
+                map.put("currentPage", page);
             }
         }
 

@@ -101,9 +101,9 @@ $(function() {
 			callback = function(data) {
 				for (let dataName in data) {
 					if (Array.isArray(data[dataName])) {
-						Gridate.refresh(gridId, data[dataName], data['totalRows']);
+						Gridate.refresh(gridId, data[dataName], data['totalRows'], data['currentPage']);
+						break;
 					}
-					break;
 				}
 			};
 

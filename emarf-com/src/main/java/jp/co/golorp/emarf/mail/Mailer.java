@@ -43,7 +43,7 @@ import jakarta.mail.internet.MimeMessage.RecipientType;
 import jakarta.mail.internet.MimeMultipart;
 import jakarta.mail.internet.MimeUtility;
 import jp.co.golorp.emarf.exception.SysError;
-import jp.co.golorp.emarf.time.LocalDateTime;
+import jp.co.golorp.emarf.time.DateTimeUtil;
 
 /**
  * メール送受信
@@ -143,7 +143,7 @@ public final class Mailer {
             }
 
             // 送信日
-            m.setSentDate(LocalDateTime.date());
+            m.setSentDate(DateTimeUtil.date());
 
             // タイトル
             m.setSubject(mi.getSubject(), CHARSET);

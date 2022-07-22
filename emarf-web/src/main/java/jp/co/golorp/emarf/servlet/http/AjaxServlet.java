@@ -26,6 +26,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -66,15 +67,18 @@ public final class AjaxServlet extends HttpServlet {
         Map<String, Object> map = null;
         try {
 
+            HttpSession ses = request.getSession();
+            String requestURI = request.getRequestURI();
+
             // エクセルダウンロードの検索条件退避用
-            request.getSession().removeAttribute(request.getRequestURI());
+            //ses.removeAttribute(requestURL);
 
             Map<String, Object> postJson = ServletUtil.getPostJson(request);
             BaseAction action = ServletUtil.getAction(request);
             map = action.run(postJson);
 
             // エクセルダウンロードの検索条件退避用
-            request.getSession().setAttribute(request.getRequestURI(), postJson);
+            ses.setAttribute(requestURI, postJson);
 
         } catch (OptLockError e) {
 

@@ -5,7 +5,7 @@ Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
 
-    http://www.apache.org/licenses/LICENSE-2.0
+	http://www.apache.org/licenses/LICENSE-2.0
 
 Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
@@ -145,29 +145,48 @@ let Base = {
 
 	getAuthz: function(href) {
 
+		//返却値を初期化
 		let authz = '';
 
+		//画面IDを取得（URLから、最後の「/」までと、「?」以降と、拡張子を除去）
 		let gamenId = href.replace(/.+\//, '').replace(/\?.+/, '').replace(/\.html/, '');
+		//エクセルボタン用
 		gamenId = gamenId.replace(/(Search|Get)/, '').replace(/\.xlsx/, '');
+		//登録系ボタン用
 		gamenId = gamenId.replace(/(Search|Regist)/, '').replace(/Form/, '');
 
+		//画面IDが取れなければ参照可
 		if (gamenId == '') {
 			return '1';
 		}
+
+		//ログイン画面なら参照可
 		if (gamenId == 'login') {
 			return '1';
 		}
+
+		//パスワードメール画面なら参照可
 		if (gamenId == 'passmail') {
 			return '1';
 		}
+
+		//パスワードリセット画面なら参照可
 		if (gamenId == 'passreset') {
 			return '1';
 		}
+
+		//sessionStorageに認可情報がある場合
 		if (sessionStorage['authzInfo']) {
+
+			//認可情報を取得
 			let authzInfo = JSON.parse(sessionStorage['authzInfo']);
+			
+			//認可スキップなら「9」を返す
 			if (authzInfo['authz'] && authzInfo['authz'] == 'false') {
 				return 9;
 			}
+			
+			//認可情報のうち画面IDが最長でマッチする認可区分を返す
 			let matchLength = 0;
 			for (let gamenNm in authzInfo) {
 				if (gamenId.match('^' + gamenNm + '.*')) {
