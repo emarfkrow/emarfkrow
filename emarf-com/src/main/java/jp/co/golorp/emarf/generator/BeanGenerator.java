@@ -228,19 +228,19 @@ public final class BeanGenerator {
 
             s.add("");
             s.add("    /** SlickGridのDataView用ID */");
-            s.add("    private java.math.BigDecimal id;");
+            s.add("    private java.math.BigInteger id;");
             s.add("");
             s.add("    /**");
             s.add("     * @return id");
             s.add("     */");
-            s.add("    public final java.math.BigDecimal getId() {");
+            s.add("    public final java.math.BigInteger getId() {");
             s.add("        return id;");
             s.add("    }");
             s.add("");
             s.add("    /**");
             s.add("     * @param i セットする id");
             s.add("     */");
-            s.add("    public final void setId(final java.math.BigDecimal i) {");
+            s.add("    public final void setId(final java.math.BigInteger i) {");
             s.add("        this.id = i;");
             s.add("    }");
 

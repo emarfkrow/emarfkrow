@@ -243,6 +243,9 @@ public final class StringUtil {
      * @return 検査文字列がサフィックスに合致すればtrue
      */
     public static boolean endsWithIgnoreCase(final String suffix, final String s) {
+        if (suffix.length() == 0) {
+            return false;
+        }
         return s.matches("(?i).*" + suffix + "$");
     }
 
