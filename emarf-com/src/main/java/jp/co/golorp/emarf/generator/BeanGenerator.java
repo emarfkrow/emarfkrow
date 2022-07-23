@@ -1627,18 +1627,22 @@ public final class BeanGenerator {
         if (columnInfo.getNullable() == 0) {
 
             if (columnInfo.isNumbering()) {
+
                 // 主キーは親モデルから植え付けるか採番するので除外
                 LOG.trace("skip NotBlank.");
 
             } else if (StringUtil.endsWith(inputFlagSuffixs, columnInfo.getColumnName())) {
+
                 // フラグも除外
                 LOG.trace("skip NotBlank.");
 
             } else if (columnInfo.getTypeName().equals("CHAR") && columnInfo.getReferInfo() == null) {
+
                 // CHARで参照モデルでない場合も除外（ホスト向け対応）
                 LOG.trace("skip NotBlank.");
 
             } else {
+
                 s.add("    @jakarta.validation.constraints.NotBlank");
             }
         }
