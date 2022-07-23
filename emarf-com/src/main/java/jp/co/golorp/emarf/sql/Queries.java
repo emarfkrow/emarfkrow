@@ -197,13 +197,16 @@ public final class Queries {
 
             String blockRE = ".*\\/\\* *:" + parameterName + " *\\*\\/(\\r|\\n|.)+\\/\\* *:" + parameterName
                     + " *\\*\\/[\\r\\n]+";
+            Pattern p = Pattern.compile(blockRE);
 
             if (!snakes.containsKey(parameterName)) {
                 // パラメータのキーに含まれない場合
 
                 // ブロック削除
-                rawSql = rawSql.replaceFirst(blockRE, "");
-                logSql = logSql.replaceFirst(blockRE, "");
+                //                rawSql = rawSql.replaceFirst(blockRE, "");
+                //                logSql = logSql.replaceFirst(blockRE, "");
+                rawSql = p.matcher(rawSql).replaceFirst("");
+                logSql = p.matcher(logSql).replaceFirst("");
 
                 // １行削除
                 rawSql = rawSql.replaceFirst(".*:" + parameterName + "[^_\r\n]*([\r\n]+|$)", "");
@@ -213,8 +216,8 @@ public final class Queries {
                 // パラメータ値がない場合
 
                 // ブロック削除
-                rawSql = rawSql.replaceFirst(blockRE, "");
-                logSql = logSql.replaceFirst(blockRE, "");
+                rawSql = p.matcher(rawSql).replaceFirst("");
+                logSql = p.matcher(logSql).replaceFirst("");
 
                 // １行削除
                 rawSql = rawSql.replaceFirst(".*:" + parameterName + "[^_\r\n]*([\r\n]+|$)", "");
