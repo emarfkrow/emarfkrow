@@ -55,6 +55,9 @@ public final class BeanGenerator {
     /** validサフィックス */
     private static List<String> validSuffixs;
 
+    /** NOTNULL-CHARのNULLABLE化の対象外にするサフィックス */
+    private static String[] charNotNullSuffixs;
+
     /** 登録日時カラム名 */
     private static String insertDt;
     /** 登録者カラム名 */
@@ -119,6 +122,8 @@ public final class BeanGenerator {
                 validSuffixs.add(key.replaceFirst("BeanGenerator.valid.", ""));
             }
         }
+
+        charNotNullSuffixs = bundle.getString("BeanGenerator.char.notnull.suffixs").split(",");
 
         insertDt = bundle.getString("BeanGenerator.insert_dt");
         insertBy = bundle.getString("BeanGenerator.insert_by");
@@ -1636,7 +1641,8 @@ public final class BeanGenerator {
                 // フラグも除外
                 LOG.trace("skip NotBlank.");
 
-            } else if (columnInfo.getTypeName().equals("CHAR") && columnInfo.getReferInfo() == null) {
+            } else if (columnInfo.getTypeName().equals("CHAR") && !StringUtil.isNullOrBlank(charNotNullSuffixs)
+                    && !StringUtil.endsWith(charNotNullSuffixs, columnInfo.getColumnName())) {
 
                 // CHARで参照モデルでない場合も除外（ホスト向け対応）
                 LOG.trace("skip NotBlank.");
