@@ -16,7 +16,7 @@ limitations under the License.
 /**
  * パンくずリスト
  *
- * @author toshiyuki
+ * @author golorp
  */
 
 $(function() {

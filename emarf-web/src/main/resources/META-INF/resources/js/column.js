@@ -16,7 +16,7 @@ limitations under the License.
 /**
  * SlickGridのcolumn定義
  *
- * @author toshiyuki
+ * @author golorp
  */
 
 let Column = {

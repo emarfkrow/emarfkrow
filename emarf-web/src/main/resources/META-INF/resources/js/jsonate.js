@@ -16,7 +16,7 @@ limitations under the License.
 /**
  * json/form制御
  *
- * @author toshiyuki
+ * @author golorp
  */
 
 let Jsonate = {

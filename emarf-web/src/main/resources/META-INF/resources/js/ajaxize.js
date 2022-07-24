@@ -16,7 +16,7 @@ limitations under the License.
 /**
  * ajax通信
  *
- * @author toshiyuki
+ * @author golorp
  */
 
 $(function() {

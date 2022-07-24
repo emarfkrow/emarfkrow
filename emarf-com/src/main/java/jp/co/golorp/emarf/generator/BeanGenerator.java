@@ -1607,7 +1607,7 @@ public final class BeanGenerator {
             s.add("    /** 関連チェック */");
             s.add("    @Override");
             s.add("    public void validate(final Map<String, String> errors, final BaseProcess baseProcess) {");
-            s.add("        LOG.trace(\"not overridden in subclasses.\");");
+            s.add("        LOG.trace(\"validate() not overridden in subclasses.\");");
             s.add("    }");
             s.add("");
             s.add("}");
@@ -1761,7 +1761,7 @@ public final class BeanGenerator {
             s.add("    /** 関連チェック */");
             s.add("    @Override");
             s.add("    public void validate(final Map<String, String> errors, final BaseProcess baseProcess) {");
-            s.add("        LOG.debug(\"not overridden in subclasses.\");");
+            s.add("        LOG.debug(\"validate() not overridden in subclasses.\");");
             s.add("    }");
             s.add("");
             s.add("}");

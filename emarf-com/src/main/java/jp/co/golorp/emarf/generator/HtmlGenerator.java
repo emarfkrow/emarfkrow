@@ -434,10 +434,11 @@ public final class HtmlGenerator {
         for (ColumnInfo columnInfo : tableInfo.getColumnInfos().values()) {
 
             String columnName = columnInfo.getColumnName();
-            String lower = columnName.toLowerCase();
-            String camel = StringUtil.toCamelCase(lower);
+            //            String lower = columnName.toLowerCase();
+            String camel = StringUtil.toCamelCase(columnName);
             String name = "Messages['" + entityName + "Grid." + camel + "']";
-            String field = lower.toUpperCase();
+            //            String field = lower.toUpperCase();
+            String field = columnName;
 
             int width = columnInfo.getColumnSize() * COLUMN_WIDTH_PX_MULTIPLIER;
             if (width > 300) {

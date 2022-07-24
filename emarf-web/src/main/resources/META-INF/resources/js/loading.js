@@ -16,7 +16,7 @@ limitations under the License.
 /**
  * ローディングレイヤユーティリティ
  *
- * @author toshiyuki
+ * @author golorp
  */
 
 $(function() {

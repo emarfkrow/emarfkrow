@@ -254,6 +254,11 @@ public final class FormValidator {
                     value = postJson.get(StringUtil.toUpperCase(fieldName));
                 }
 
+                // 数字の前の「_」を消して、アッパーでも取得してみる（グリッド行用）
+                if (value == null) {
+                    value = postJson.get(StringUtil.toUpperCase(fieldName).replaceAll("\\_([0-9]+)", "$1"));
+                }
+
                 // ケバブでも取得してみる（グリッド行用）
                 if (value == null) {
                     value = postJson.get(StringUtil.toKebabCase(fieldName));

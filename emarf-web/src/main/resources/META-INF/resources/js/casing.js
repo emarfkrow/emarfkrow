@@ -16,7 +16,7 @@ limitations under the License.
 /**
  * 文字列操作
  *
- * @author toshiyuki
+ * @author golorp
  */
 
 let Casing = {

@@ -19,7 +19,7 @@ limitations under the License.
  * ２．パラメータがある場合は、data-optionParams（パラメータ名：パラメータ値（もしくはパラメータ値を保持する項目名））を指定する。
  * ３．コールバック関数を追加し、チェックボックスかラジオボタンかプルダウンを作成する。
  *
- * @author toshiyuki
+ * @author golorp
  */
 $(function() {
 

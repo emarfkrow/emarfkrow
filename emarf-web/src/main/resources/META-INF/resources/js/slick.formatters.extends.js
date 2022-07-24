@@ -16,7 +16,7 @@ limitations under the License.
 /**
  * SlickGridのformatter拡張
  *
- * @author toshiyuki
+ * @author golorp
  */
 
 (function($) {

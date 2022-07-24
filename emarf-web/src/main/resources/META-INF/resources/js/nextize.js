@@ -16,7 +16,7 @@ limitations under the License.
 /**
  * フォーカス制御
  *
- * @author toshiyuki
+ * @author golorp
  */
 
 $(function() {

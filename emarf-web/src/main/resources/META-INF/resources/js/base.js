@@ -16,7 +16,7 @@ limitations under the License.
 /**
  * 基本実装
  *
- * @author toshiyuki
+ * @author golorp
  */
 
 console.trace = function() { }
@@ -180,12 +180,12 @@ let Base = {
 
 			//認可情報を取得
 			let authzInfo = JSON.parse(sessionStorage['authzInfo']);
-			
+
 			//認可スキップなら「9」を返す
 			if (authzInfo['authz'] && authzInfo['authz'] == 'false') {
 				return 9;
 			}
-			
+
 			//認可情報のうち画面IDが最長でマッチする認可区分を返す
 			let matchLength = 0;
 			for (let gamenNm in authzInfo) {

@@ -16,7 +16,7 @@ limitations under the License.
 /**
  * 文字列のフォーマット処理
  *
- * @author toshiyuki
+ * @author golorp
  */
 
 let Formatter = {

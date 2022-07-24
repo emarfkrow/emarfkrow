@@ -16,7 +16,7 @@ limitations under the License.
 /**
  * SlickGrid制御
  *
- * @author toshiyuki
+ * @author golorp
  */
 
 $(function() {
@@ -444,7 +444,7 @@ var Gridate = {
 			for (let i = 1; i <= maxPage; i++) {
 				if (i == currentPage) {
 					html += '<a>' + i + '</a>';
-				} else {					
+				} else {
 					html += '<a href="javascript:void(0);" onclick="Gridate.paginate(\'' + gridId + '\',' + i + ')">' + i + '</a>';
 				}
 			}
@@ -473,7 +473,7 @@ var Gridate = {
 		//			grid.invalidate();
 		//		}
 	},
-	
+
 	paginate: function(gridId, page) {
 		let $button = $('[data-gridid="' + gridId + '"]');
 		let $form = $button.closest('form');
