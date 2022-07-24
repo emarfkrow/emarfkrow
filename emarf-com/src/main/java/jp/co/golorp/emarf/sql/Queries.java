@@ -22,6 +22,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.net.URL;
 import java.sql.Connection;
@@ -378,31 +379,33 @@ public final class Queries {
         Field[] fields = c.getDeclaredFields();
         for (Field field : fields) {
 
-            // フィールドを書き込み可に設定
-            field.setAccessible(true);
-
-            // フィールド名からカラム名を取得
-            String snake = StringUtil.toSnakeCase(field.getName());
-
-            // キャストが必要な場合は各タイプごとに対応して値を設定
+            // 子モデルならスキップ
             Type fieldType = field.getType();
             if (fieldType == List.class) {
                 continue;
             }
 
-            Class<?> fieldClass = Class.forName(fieldType.getTypeName());
+            // 兄弟モデルならスキップ
+            String typeName = fieldType.getTypeName();
+            Class<?> fieldClass = Class.forName(typeName);
             Class<?>[] interfaces = fieldClass.getInterfaces();
             if (interfaces.length > 0 && interfaces[0] == IEntity.class) {
                 continue;
             }
 
+            //            // フィールドを書き込み可に設定
+            //            field.setAccessible(true);
+
+            // ResultSetから値取得
+            String fieldName = field.getName();
+            String snake = StringUtil.toSnakeCase(fieldName);
             Object o = null;
             try {
                 o = rs.getObject(snake);
             } catch (Exception e) {
                 try {
-                    // 数字の前に「_」入れて取ってみる
-                    o = rs.getObject(snake.replaceAll("([0-9]+)", "_$1"));
+                    // 数字の前の「_」を消して取ってみる
+                    o = rs.getObject(snake.replaceAll("\\_([0-9]+)", "$1"));
                 } catch (Exception e1) {
                     // ケバブケースでも取ってみる
                     o = rs.getObject(snake.replaceAll("\\_", "-"));
@@ -413,11 +416,16 @@ public final class Queries {
             if (o != null) {
                 columnClass = o.getClass();
             }
-
             if (fieldType == LocalDateTime.class && columnClass == Timestamp.class) {
-                field.set(t, ((Timestamp) o).toLocalDateTime());
-            } else {
-                field.set(t, o);
+                o = ((Timestamp) o).toLocalDateTime();
+            }
+
+            String pascal = StringUtil.toPascalCase(fieldName);
+            Method setter = c.getDeclaredMethod("set" + pascal, Object.class);
+            try {
+                setter.invoke(t, o);
+            } catch (Exception e) {
+                throw new SysError(e);
             }
         }
 
