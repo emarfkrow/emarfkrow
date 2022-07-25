@@ -771,10 +771,12 @@ public final class HtmlGenerator {
                 // 上記以外の場合
 
                 String type = "text";
+                String format = "";
                 if (StringUtil.endsWith(inputDateSuffixs, columnName)) { // 日付項目
                     type = "date";
-                    //                } else if (StringUtil.endsWith(inputDate8Suffixs, columnName)) { // 8桁日付項目
-                    //                    type = "date";
+                } else if (StringUtil.endsWith(inputDate8Suffixs, columnName)) { // 8桁日付項目
+                    type = "date";
+                    format = "yyyyMMdd";
                 } else if (StringUtil.endsWith(inputDateTimeSuffixs, columnName)) { // 日時項目
                     type = "datetime-local";
                 } else if (StringUtil.endsWith(inputMonthSuffixs, columnName)) { // 年月項目
@@ -784,8 +786,6 @@ public final class HtmlGenerator {
                 } else if (isInputFile) { // ファイル
                     type = "file";
                 }
-
-                int max = columnInfo.getColumnSize();
 
                 String css = "";
                 String referCss = " class=\"refer\"";
@@ -800,15 +800,15 @@ public final class HtmlGenerator {
                 if (!isDetail && StringUtil.endsWith(inputRangeSuffixs, columnName)) {
                     // 検索画面の範囲指定項目の場合
 
-                    htmlFieldsInputRange(s, fieldId, remarks, type, max);
+                    htmlFieldsInputRange(s, fieldId, type, columnInfo, format);
 
                 } else if (columnInfo.getReferInfo() != null) {
                     // 参照モデルの場合
 
-                    s.add(htmlFieldsRefer(fieldId, type, max, css, tableInfo, columnInfo, referCss));
+                    s.add(htmlFieldsRefer(fieldId, type, css, tableInfo, columnInfo, referCss, format));
 
                 } else {
-                    htmlFieldsInput(s, fieldId, remarks, type, max, css);
+                    htmlFieldsInput(s, fieldId, type, css, columnInfo, format);
                 }
             }
 
@@ -820,20 +820,26 @@ public final class HtmlGenerator {
      * referタグ出力
      * @param fieldId    入力項目のID
      * @param type       タイプ
-     * @param max        最大文字数
      * @param css        スタイル
      * @param tableInfo
      * @param columnInfo
      * @param referCss
+     * @param format     フォーマット
      * @return referタグ
      */
-    private static String htmlFieldsRefer(final String fieldId, final String type, final int max, final String css,
-            final TableInfo tableInfo, final ColumnInfo columnInfo, final String referCss) {
+    private static String htmlFieldsRefer(final String fieldId, final String type, final String css,
+            final TableInfo tableInfo, final ColumnInfo columnInfo, final String referCss, final String format) {
+
+        String dataFormat = "";
+        if (!StringUtil.isNullOrBlank(format)) {
+            dataFormat = " data-format=\"" + format + "\"";
+        }
 
         String tableName = tableInfo.getTableName();
         String pascalTable = StringUtil.toPascalCase(tableName);
         String columnName = columnInfo.getColumnName();
         String remarks = columnInfo.getRemarks();
+        int max = columnInfo.getColumnSize();
 
         String tag = "          ";
         tag += "<label for=\"" + fieldId + "\" th:text=\"#{" + fieldId + "}\">" + remarks + "</label>";
@@ -842,7 +848,7 @@ public final class HtmlGenerator {
         String referName = StringUtil.toPascalCase(referInfo.getTableName());
         String referDef = getReferDef(pascalTable, columnName, referInfo);
         tag += "<input type=\"" + type + "\" id=\"" + fieldId + "\" name=\"" + fieldId + "\" maxlength=\"" + max + "\""
-                + css + referDef + "" + " />";
+                + css + referDef + dataFormat + " />";
 
         tag += "<a id=\"" + fieldId + "\" th:href=\"@{/model/" + referName + "S.html}\" target=\"dialog\"" + referCss
                 + " th:text=\"#{common.refer}\" tabindex=\"-1\">...</a>";
@@ -858,20 +864,28 @@ public final class HtmlGenerator {
 
     /**
      * inputタグ出力
-     * @param s       出力文字列のリスト
-     * @param id      入力項目のID
-     * @param remarks コメント
-     * @param type    タイプ
-     * @param max     最大文字数
-     * @param css     スタイル
+     * @param s          出力文字列のリスト
+     * @param id         入力項目のID
+     * @param type       タイプ
+     * @param css        スタイル
+     * @param columnInfo 列情報
+     * @param format     フォーマット
      */
-    private static void htmlFieldsInput(final List<String> s, final String id, final String remarks, final String type,
-            final int max, final String css) {
+    private static void htmlFieldsInput(final List<String> s, final String id, final String type, final String css,
+            final ColumnInfo columnInfo, final String format) {
+
+        String dataFormat = "";
+        if (!StringUtil.isNullOrBlank(format)) {
+            dataFormat = " data-format=\"" + format + "\"";
+        }
+
+        String remarks = columnInfo.getRemarks();
+        int max = columnInfo.getColumnSize();
 
         String tag = "          ";
         tag += "<label for=\"" + id + "\" th:text=\"#{" + id + "}\">" + remarks + "</label>";
         tag += "<input type=\"" + type + "\" id=\"" + id + "\" name=\"" + id + "\" maxlength=\"" + max + "\"" + css
-                + " />";
+                + dataFormat + " />";
 
         if (type.equals("file")) {
             tag += "<a id=\"" + id
@@ -884,20 +898,30 @@ public final class HtmlGenerator {
 
     /**
      * 範囲指定の入力項目出力
-     * @param s 出力文字列のリスト
-     * @param id 項目ID
-     * @param remarks コメント
-     * @param type タイプ
-     * @param max 最大文字数
+     * @param s          出力文字列のリスト
+     * @param id         項目ID
+     * @param type       タイプ
+     * @param columnInfo 列情報
+     * @param format     フォーマット
      */
-    private static void htmlFieldsInputRange(final List<String> s, final String id, final String remarks,
-            final String type, final int max) {
+    private static void htmlFieldsInputRange(final List<String> s, final String id, final String type,
+            final ColumnInfo columnInfo, final String format) {
+
+        String dataFormat = "";
+        if (!StringUtil.isNullOrBlank(format)) {
+            dataFormat = " data-format=\"" + format + "\"";
+        }
+
+        String remarks = columnInfo.getRemarks();
+        int max = columnInfo.getColumnSize();
 
         String tag = "          ";
         tag += "<label for=\"" + id + "_1\" th:text=\"#{" + id + "}\">" + remarks + "</label>";
-        tag += "<input type=\"" + type + "\" id=\"" + id + "_1\" name=\"" + id + "_1\" maxlength=\"" + max + "\" />";
+        tag += "<input type=\"" + type + "\" id=\"" + id + "_1\" name=\"" + id + "_1\" maxlength=\"" + max + "\""
+                + dataFormat + " />";
         tag += "～";
-        tag += "<input type=\"" + type + "\" id=\"" + id + "_2\" name=\"" + id + "_2\" maxlength=\"" + max + "\" />";
+        tag += "<input type=\"" + type + "\" id=\"" + id + "_2\" name=\"" + id + "_2\" maxlength=\"" + max + "\""
+                + dataFormat + " />";
         s.add(tag);
     }
 
