@@ -5,7 +5,7 @@ Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
 
-    http://www.apache.org/licenses/LICENSE-2.0
+	http://www.apache.org/licenses/LICENSE-2.0
 
 Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
@@ -26,6 +26,7 @@ limitations under the License.
 			"Editors": {
 				"Extends": {
 					"Date": DateEditor,
+					"Date8": Date8Editor,
 					"Month": MonthEditor,
 					"DateTime": DateTimeEditor,
 					"Time": TimeEditor,
@@ -101,12 +102,6 @@ limitations under the License.
 
 		this.loadValue = function(item) {
 			defaultValue = item[args.column.field] || "";
-
-			// 8桁日付の場合
-			if (defaultValue.toString().match(/^[0-9]{8}$/)) {
-				defaultValue = defaultValue.toString().replace(/([0-9]{4})([0-9]{2})([0-9]{2})/, '$1-$2-$3');
-			}
-
 			$input.val(defaultValue);
 			$input[0].defaultValue = defaultValue;
 			$input.select();
@@ -117,10 +112,94 @@ limitations under the License.
 		};
 
 		this.applyValue = function(item, state) {
+			item[args.column.field] = state;
+		};
 
-			// 8桁日付の場合
+		this.isValueChanged = function() {
+			return (!($input.val() === "" && defaultValue == null)) && ($input.val() != defaultValue);
+		};
+
+		this.validate = function() {
+			if (args.column.validator) {
+				var validationResults = args.column.validator($input.val(), args);
+				if (!validationResults.valid) {
+					return validationResults;
+				}
+			}
+
+			return {
+				valid: true,
+				msg: null
+			};
+		};
+
+		this.init();
+	}
+
+	/**
+	 * 8桁日付用
+	 */
+	function Date8Editor(args) {
+		var $input;
+		var defaultValue;
+		var scope = this;
+		this.args = args;
+
+		this.init = function() {
+			var navOnLR = args.grid.getOptions().editorCellNavOnLRKeys;
+			$input = $("<INPUT type=date class='editor-text' />")
+				.appendTo(args.container)
+				.on("keydown.nav", navOnLR ? handleKeydownLRNav : handleKeydownLRNoNav)
+				.focus()
+				.select();
+
+			// don't show Save/Cancel when it's a Composite Editor and also trigger a onCompositeEditorChange event when input changes
+			if (args.compositeEditorOptions) {
+				$input.on("change", function() {
+					var activeCell = args.grid.getActiveCell();
+
+					// when valid, we'll also apply the new value to the dataContext item object
+					if (scope.validate().valid) {
+						scope.applyValue(scope.args.item, scope.serializeValue());
+					}
+					scope.applyValue(scope.args.compositeEditorOptions.formValues, scope.serializeValue());
+					args.grid.onCompositeEditorChange.notify({ row: activeCell.row, cell: activeCell.cell, item: scope.args.item, column: scope.args.column, formValues: scope.args.compositeEditorOptions.formValues });
+				});
+			}
+		};
+
+		this.destroy = function() {
+			$input.remove();
+		};
+
+		this.focus = function() {
+			$input.focus();
+		};
+
+		this.getValue = function() {
+			return $input.val();
+		};
+
+		this.setValue = function(val) {
+			$input.val(val);
+		};
+
+		this.loadValue = function(item) {
+			defaultValue = item[args.column.field] || "";
+			// 8桁日付の対応
+			defaultValue = defaultValue.toString().replace(/([0-9]{4})([0-9]{2})([0-9]{2})/, '$1-$2-$3');
+			$input.val(defaultValue);
+			$input[0].defaultValue = defaultValue;
+			$input.select();
+		};
+
+		this.serializeValue = function() {
+			return $input.val();
+		};
+
+		this.applyValue = function(item, state) {
+			// 8桁日付の対応
 			state = state.replace(/-/g, '');
-
 			item[args.column.field] = state;
 		};
 

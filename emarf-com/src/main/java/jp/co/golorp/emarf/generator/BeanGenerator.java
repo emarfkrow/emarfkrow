@@ -1341,7 +1341,7 @@ public final class BeanGenerator {
             s.add("");
             s.add("        for (Map<String, Object> gridRow : gridData) {");
             s.add("");
-            s.add("            if (gridRow == null) {");
+            s.add("            if (gridRow.isEmpty()) {");
             s.add("                continue;");
             s.add("            }");
             s.add("");
@@ -1435,7 +1435,7 @@ public final class BeanGenerator {
             s.add("");
             s.add("        for (Map<String, Object> gridRow : gridData) {");
             s.add("");
-            s.add("            if (gridRow == null) {");
+            s.add("            if (gridRow.isEmpty()) {");
             s.add("                continue;");
             s.add("            }");
             s.add("");
