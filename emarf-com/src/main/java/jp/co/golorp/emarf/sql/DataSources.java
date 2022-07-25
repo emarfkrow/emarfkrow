@@ -64,6 +64,9 @@ public final class DataSources {
     /** 参照列名ペア */
     private static Set<String[]> referPairs = new LinkedHashSet<String[]>();
 
+    /** テーブルを評価しないテーブル名 */
+    private static String[] ignores;
+
     /** 他のテーブルの兄弟テーブルにしないテーブル名 */
     private static String[] eldests;
 
@@ -214,6 +217,7 @@ public final class DataSources {
             referPairs.add(kv);
         }
 
+        ignores = bundle.getString("BeanGenerator.ignores").split(",");
         eldests = bundle.getString("BeanGenerator.eldests").split(",");
         onlychilds = bundle.getString("BeanGenerator.onlychilds").split(",");
         skipcolumn = bundle.getString("BeanGenerator.skipcolumn");
@@ -226,12 +230,10 @@ public final class DataSources {
         try {
 
             Connection cn = Connections.get();
-
             DatabaseMetaData metaData = cn.getMetaData();
 
-            String schemaPattern = BUNDLE.getString("username");
-
             // テーブル情報を取得
+            String schemaPattern = BUNDLE.getString("username");
             addTableInfos(tableInfos, metaData, schemaPattern);
 
             // テーブル毎に主キー情報を取得
@@ -267,12 +269,6 @@ public final class DataSources {
                     //                    LOG.debug("SCOPE_TABLE: " + columns.getString("SCOPE_TABLE"));
                     //                    LOG.debug("SOURCE_DATA_TYPE: " + String.valueOf(columns.getShort("SOURCE_DATA_TYPE")));
                     //                    LOG.debug("IS_AUTOINCREMENT: " + columns.getString("IS_AUTOINCREMENT"));
-                    //                    //LOG.debug(columns.getString("IS_GENERATEDCOLUMN"));
-
-                    //                    if (!String.valueOf(columns.getInt("NULLABLE")).equals("0")
-                    //                            || !columns.getString("IS_NULLABLE").equals("NO")) {
-                    //                        LOG.debug("NULLABLE");
-                    //                    }
 
                     // カラム名が合致しなければスキップ
                     String columnName = columns.getString("COLUMN_NAME");
@@ -317,6 +313,9 @@ public final class DataSources {
                     if (tableInfo.getPrimaryKeys().contains(columnName)) {
                         columnInfo.setPk(true);
                     } else {
+                        if (tableInfo.getUniqueIndexColumns().contains(columnName)) {
+                            columnInfo.setUnique(true);
+                        }
                         tableInfo.getNonPrimaryKeys().add(columnName);
                     }
 
@@ -360,8 +359,7 @@ public final class DataSources {
      * @param tableInfo テーブル情報
      * @throws SQLException
      */
-    private static void addPrimaryKeys(final DatabaseMetaData metaData, final TableInfo tableInfo)
-            throws SQLException {
+    private static void addPrimaryKeys(final DatabaseMetaData metaData, final TableInfo tableInfo) throws SQLException {
 
         List<String> primaryKeys = new ArrayList<String>();
 
@@ -393,10 +391,17 @@ public final class DataSources {
             }
         }
 
-        if (tableInfo.getPrimaryKeys().size() == 0) {
+        MapList uniqueIndexColumns = assist.getUniqueIndexes(tableInfo.getTableName());
+        if (uniqueIndexColumns != null) {
 
-            MapList uniqueIndexColumns = assist.getUniqueIndexes(tableInfo.getTableName());
-            if (uniqueIndexColumns != null) {
+            for (Map<String, Object> uniqueIndexColumn : uniqueIndexColumns) {
+                String columnName = uniqueIndexColumn.get("COLUMN_NAME").toString();
+                if (!tableInfo.getUniqueIndexColumns().contains(columnName)) {
+                    tableInfo.getUniqueIndexColumns().add(columnName);
+                }
+            }
+
+            if (tableInfo.getPrimaryKeys().size() == 0) {
 
                 // 最初にとれたユニークインデクスを主キー扱いにする
                 String preIndexName = null;
@@ -474,6 +479,17 @@ public final class DataSources {
         while (rs.next()) {
 
             String tableName = rs.getString("TABLE_NAME");
+
+            boolean isIgnore = false;
+            for (String ignore : ignores) {
+                if (ignore.equals(tableName)) {
+                    isIgnore = true;
+                    break;
+                }
+            }
+            if (isIgnore) {
+                continue;
+            }
 
             if (!tableName.matches("^[!-~]+$")) {
                 continue;

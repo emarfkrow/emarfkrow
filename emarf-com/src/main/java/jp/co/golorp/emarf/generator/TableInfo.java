@@ -37,6 +37,19 @@ public class TableInfo {
     /** 主キーカラム名のリスト */
     private List<String> primaryKeys = new ArrayList<String>();
 
+    /** ユニークインデクスカラム名のセット */
+    private List<String> uniqueIndexColumns = new ArrayList<String>();
+
+    /** @return ユニークインデクスカラム名のセット */
+    public List<String> getUniqueIndexColumns() {
+        return uniqueIndexColumns;
+    }
+
+    /** @param p ユニークインデクスカラム名のセット */
+    public void setUniqueIndexColumns(final List<String> p) {
+        this.uniqueIndexColumns = p;
+    }
+
     /** 主キーでないカラム名のリスト */
     private List<String> nonPrimaryKeys = new ArrayList<String>();
 

@@ -72,6 +72,8 @@ public final class HtmlGenerator {
 
     /** 日付入力サフィックス */
     private static String[] inputDateSuffixs;
+    /** 8桁日付入力サフィックス */
+    private static String[] inputDate8Suffixs;
     /** 日時入力サフィックス */
     private static String[] inputDateTimeSuffixs;
     /** 年月入力サフィックス */
@@ -117,6 +119,7 @@ public final class HtmlGenerator {
         textareaSuffixs = bundle.getString("BeanGenerator.textarea.suffixs").split(",");
 
         inputDateSuffixs = bundle.getString("BeanGenerator.input.date.suffixs").split(",");
+        inputDate8Suffixs = bundle.getString("BeanGenerator.input.date8.suffixs").split(",");
         inputDateTimeSuffixs = bundle.getString("BeanGenerator.input.datetime.suffixs").split(",");
         inputMonthSuffixs = bundle.getString("BeanGenerator.input.month.suffixs").split(",");
         inputTimeSuffixs = bundle.getString("BeanGenerator.input.time.suffixs").split(",");
@@ -454,6 +457,8 @@ public final class HtmlGenerator {
             String css = "";
             if (columnInfo.isPk()) {
                 css = "primaryKey";
+            } else if (columnInfo.isUnique()) {
+                css = "uniqueKey";
             } else if (isInsertDt || isUpdateDt || isInsertBy || isUpdateBy) {
                 css = "metaInfo";
             }
@@ -491,6 +496,10 @@ public final class HtmlGenerator {
 
                 c = "Column.cell('" + field + "', " + name + ", " + width + ", '" + css + "', " + formatter + "),";
 
+            } else if (columnInfo.isUnique()) {
+
+                c = "Column.cell('" + field + "', " + name + ", " + width + ", '" + css + "', " + formatter + "),";
+
             } else if (isInsertDt || isUpdateDt || isInsertBy || isUpdateBy) {
 
                 c = "Column.cell('" + field + "', " + name + ", " + width + ", '" + css + "', " + formatter + "),";
@@ -502,6 +511,10 @@ public final class HtmlGenerator {
             } else if (StringUtil.endsWith(inputDateSuffixs, columnName)) {
 
                 c = "Column.date('" + field + "', " + name + ", " + width + ", '" + css + "', " + formatter + "),";
+
+            } else if (StringUtil.endsWith(inputDate8Suffixs, columnName)) {
+
+                c = "Column.date8('" + field + "', " + name + ", " + width + ", '" + css + "', " + formatter + "),";
 
             } else if (StringUtil.endsWith(inputDateTimeSuffixs, columnName)) {
 
@@ -727,7 +740,6 @@ public final class HtmlGenerator {
 
                 // 参照モデルの場合は参照リンクを出力（参照リンクは照会画面ではjsで非表示にする）
                 if (columnInfo.getReferInfo() != null) {
-
                     TableInfo referInfo = columnInfo.getReferInfo();
                     String referName = StringUtil.toPascalCase(referInfo.getTableName());
                     tag += "<a id=\"" + fieldId + "\" th:href=\"@{/model/" + referName
@@ -761,6 +773,8 @@ public final class HtmlGenerator {
                 String type = "text";
                 if (StringUtil.endsWith(inputDateSuffixs, columnName)) { // 日付項目
                     type = "date";
+                    //                } else if (StringUtil.endsWith(inputDate8Suffixs, columnName)) { // 8桁日付項目
+                    //                    type = "date";
                 } else if (StringUtil.endsWith(inputDateTimeSuffixs, columnName)) { // 日時項目
                     type = "datetime-local";
                 } else if (StringUtil.endsWith(inputMonthSuffixs, columnName)) { // 年月項目
@@ -778,6 +792,9 @@ public final class HtmlGenerator {
                 if (isDetail && columnInfo.isPk()) {
                     css = " class=\"primaryKey\"";
                     referCss = " class=\"refer primaryKey\"";
+                } else if (isDetail && columnInfo.isUnique()) {
+                    css = " class=\"uniqueKey\"";
+                    referCss = " class=\"refer uniqueKey\"";
                 }
 
                 if (!isDetail && StringUtil.endsWith(inputRangeSuffixs, columnName)) {
@@ -788,28 +805,9 @@ public final class HtmlGenerator {
                 } else if (columnInfo.getReferInfo() != null) {
                     // 参照モデルの場合
 
-                    String tag = "          ";
-                    tag += "<label for=\"" + fieldId + "\" th:text=\"#{" + fieldId + "}\">" + remarks + "</label>";
-
-                    TableInfo referInfo = columnInfo.getReferInfo();
-                    String referName = StringUtil.toPascalCase(referInfo.getTableName());
-                    String referDef = getReferDef(pascalTable, columnName, referInfo);
-                    tag += "<input type=\"" + type + "\" id=\"" + fieldId + "\" name=\"" + fieldId + "\" maxlength=\""
-                            + max + "\"" + css + referDef + "" + " />";
-
-                    tag += "<a id=\"" + fieldId + "\" th:href=\"@{/model/" + referName + "S.html}\" target=\"dialog\""
-                            + referCss + " th:text=\"#{common.refer}\" tabindex=\"-1\">...</a>";
-
-                    String meiColumnName = getMeiColumnName(columnName, referInfo);
-                    if (!tableInfo.getColumnInfos().containsKey(meiColumnName)) {
-                        String meiId = pascalTable + "." + StringUtil.toCamelCase(meiColumnName);
-                        tag += "<span id=\"" + meiId + "\"" + referCss + referDef + "></span>";
-                    }
-
-                    s.add(tag);
+                    s.add(htmlFieldsRefer(fieldId, type, max, css, tableInfo, columnInfo, referCss));
 
                 } else {
-
                     htmlFieldsInput(s, fieldId, remarks, type, max, css);
                 }
             }
@@ -819,13 +817,53 @@ public final class HtmlGenerator {
     }
 
     /**
+     * referタグ出力
+     * @param fieldId    入力項目のID
+     * @param type       タイプ
+     * @param max        最大文字数
+     * @param css        スタイル
+     * @param tableInfo
+     * @param columnInfo
+     * @param referCss
+     * @return referタグ
+     */
+    private static String htmlFieldsRefer(final String fieldId, final String type, final int max, final String css,
+            final TableInfo tableInfo, final ColumnInfo columnInfo, final String referCss) {
+
+        String tableName = tableInfo.getTableName();
+        String pascalTable = StringUtil.toPascalCase(tableName);
+        String columnName = columnInfo.getColumnName();
+        String remarks = columnInfo.getRemarks();
+
+        String tag = "          ";
+        tag += "<label for=\"" + fieldId + "\" th:text=\"#{" + fieldId + "}\">" + remarks + "</label>";
+
+        TableInfo referInfo = columnInfo.getReferInfo();
+        String referName = StringUtil.toPascalCase(referInfo.getTableName());
+        String referDef = getReferDef(pascalTable, columnName, referInfo);
+        tag += "<input type=\"" + type + "\" id=\"" + fieldId + "\" name=\"" + fieldId + "\" maxlength=\"" + max + "\""
+                + css + referDef + "" + " />";
+
+        tag += "<a id=\"" + fieldId + "\" th:href=\"@{/model/" + referName + "S.html}\" target=\"dialog\"" + referCss
+                + " th:text=\"#{common.refer}\" tabindex=\"-1\">...</a>";
+
+        String meiColumnName = getMeiColumnName(columnName, referInfo);
+        if (!tableInfo.getColumnInfos().containsKey(meiColumnName)) {
+            String meiId = pascalTable + "." + StringUtil.toCamelCase(meiColumnName);
+            tag += "<span id=\"" + meiId + "\"" + referCss + referDef + "></span>";
+        }
+
+        return tag;
+    }
+
+    /**
      * inputタグ出力
-     * @param s 出力文字列のリスト
-     * @param id 入力項目のID
+     * @param s       出力文字列のリスト
+     * @param id      入力項目のID
      * @param remarks コメント
-     * @param type タイプ
-     * @param max 最大文字数
-     * @param css スタイル
+     * @param type    タイプ
+     * @param max     最大文字数
+     * @param css     スタイル
      */
     private static void htmlFieldsInput(final List<String> s, final String id, final String remarks, final String type,
             final int max, final String css) {

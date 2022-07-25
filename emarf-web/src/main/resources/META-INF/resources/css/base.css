@@ -240,6 +240,10 @@ input.primaryKey, div.primaryKey {
 	background-color: pink;
 }
 
+input.uniqueKey, div.uniqueKey {
+	background-color: lightyellow;
+}
+
 .metaInfo {
 	background-color: gainsboro;
 }

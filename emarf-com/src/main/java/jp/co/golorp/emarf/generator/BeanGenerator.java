@@ -1653,10 +1653,11 @@ public final class BeanGenerator {
                 // フラグも除外
                 LOG.trace("skip NotBlank.");
 
-            } else if (columnInfo.getTypeName().equals("CHAR") && !StringUtil.isNullOrBlank(charNotNullSuffixs)
+            } else if (columnInfo.getTypeName().equals("CHAR") && !columnInfo.isPk()
+                    && !StringUtil.isNullOrBlank(charNotNullSuffixs)
                     && !StringUtil.endsWith(charNotNullSuffixs, columnInfo.getColumnName())) {
 
-                // CHARで参照モデルでない場合も除外（ホスト向け対応）
+                // 主キー以外のNOTNULL-CHARで、NULL必須サフィックス指定がありこれに含まれない場合も除外（ホスト向け対応）
                 LOG.trace("skip NotBlank.");
 
             } else {
