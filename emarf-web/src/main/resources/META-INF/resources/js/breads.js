@@ -30,7 +30,7 @@ $(function() {
 
 	// 現在パスが「html」でなければパンくずを初期化して終了
 	let pathname = window.document.location.pathname;
-	if (!pathname.endsWith('.html')) {
+	if (!pathname.match(/\.html$/)) {
 		sessionStorage['breads'] = JSON.stringify({});
 		return;
 	}

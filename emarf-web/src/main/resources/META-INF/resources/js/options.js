@@ -5,7 +5,7 @@ Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
 
-    http://www.apache.org/licenses/LICENSE-2.0
+	http://www.apache.org/licenses/LICENSE-2.0
 
 Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
@@ -91,24 +91,36 @@ let Options = {
 				let $element = $(this);
 
 				let isSearchForm = $element.closest('form').hasClass('search');
-
-				if (dataJson.length == 1) {
-					Options.check($element, itemName, dataJson, optionValue, optionLabel);
-				} else if (dataJson.length < 10) {
-					if (isSearchForm) {
+				if (isSearchForm) {
+					//検索フォームの場合
+					if (dataJson.length < 10) {
 						Options.check($element, itemName, dataJson, optionValue, optionLabel);
 					} else {
-						if (dataJson.length == 2 && dataJson[0][optionValue] == 0 && dataJson[1][optionValue] == 1) {
-							let omitted = JSON.parse(JSON.stringify(dataJson));
-							delete omitted[0];
-							Options.check($element, itemName, omitted, optionValue, optionLabel);
-						} else {
-							Options.radio($element, itemName, dataJson, optionValue, optionLabel);
-						}
+						Options.option($element, true, dataJson, optionValue, optionLabel);
 					}
 				} else {
+					//登録フォームの場合
 					Options.option($element, true, dataJson, optionValue, optionLabel);
-				};
+				}
+
+				//				if (dataJson.length == 1) {
+				//					//データ数が「1」の場合はチェックボックス
+				//					Options.check($element, itemName, dataJson, optionValue, optionLabel);
+				//				} else if (dataJson.length < 10) {
+				//					if (isSearchForm) {
+				//						Options.check($element, itemName, dataJson, optionValue, optionLabel);
+				//					} else {
+				//						if (dataJson.length == 2 && dataJson[0][optionValue] == 0 && dataJson[1][optionValue] == 1) {
+				//							let omitted = JSON.parse(JSON.stringify(dataJson));
+				//							delete omitted[0];
+				//							Options.check($element, itemName, omitted, optionValue, optionLabel);
+				//						} else {
+				//							Options.radio($element, itemName, dataJson, optionValue, optionLabel);
+				//						}
+				//					}
+				//				} else {
+				//					Options.option($element, true, dataJson, optionValue, optionLabel);
+				//				};
 			});
 			//		}
 			//		}, false);
@@ -180,7 +192,7 @@ let Options = {
 
 		for (let i in dataJson) {
 			let listSource = dataJson[i];
-			$element.append('<option value="' + listSource[valueName] + '">' + listSource[labelName] + '</option>');
+			$element.append('<option value="' + listSource[valueName] + '">' + listSource[valueName] + '：' + listSource[labelName] + '</option>');
 		}
 	}
 

@@ -181,9 +181,10 @@ public final class HtmlGenerator {
         // プレフィクス毎にグループ化
         Map<String, List<TableInfo>> navs = new LinkedHashMap<String, List<TableInfo>>();
         for (TableInfo tableInfo : tableInfos) {
-            if (tableInfo.getPrimaryKeys().size() > 1) {
-                continue;
-            }
+            // 単一ユニークキーでなくてもnav化するようにコメントアウト
+            //            if (tableInfo.getPrimaryKeys().size() > 1) {
+            //                continue;
+            //            }
             String tableName = tableInfo.getTableName();
             String prefix = tableName.replaceAll("_.+$", "");
             List<TableInfo> nav = null;
