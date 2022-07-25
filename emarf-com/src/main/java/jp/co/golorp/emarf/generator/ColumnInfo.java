@@ -47,6 +47,19 @@ public class ColumnInfo {
     /** 主キーならtrue */
     private boolean isPk;
 
+    /** ユニークインデクスならtrue */
+    private boolean isUnique;
+
+    /** @return ユニークインデクスならtrue */
+    public boolean isUnique() {
+        return isUnique;
+    }
+
+    /** @param p ユニークインデクスならtrue */
+    public void setUnique(final boolean p) {
+        this.isUnique = p;
+    }
+
     /** 採番キーならtrue */
     private boolean isNumbering;
 

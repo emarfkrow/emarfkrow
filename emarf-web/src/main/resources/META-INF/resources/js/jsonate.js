@@ -55,31 +55,48 @@ let Jsonate = {
 			let grid = Gridate.grids[gridId];
 			let gridData = grid.getData().getItems();
 
-			// 行選択指定の場合は、選択している行のみ
+			let postData = [];
+
 			if (isSelectRow) {
-				let tempData = [];
-				if (grid.getSelectedRows().length > 0) {
+				// 行選択指定の場合は、選択している行のみ
+				for (let r in gridData) {
+					// 選択有無のチェック
+					let selected = false;
 					for (let i in grid.getSelectedRows()) {
-						let r = grid.getSelectedRows()[i];
-						tempData.push(gridData[r]);
+						if (r == grid.getSelectedRows()[i]) {
+							selected = true;
+							postData.push(gridData[r]);
+							break;
+						}
+					}
+					// 選択なしなら空配列を追加（nullだとvalidatorが利かなくなる）
+					if (!selected) {
+						postData.push({});
 					}
 				}
-				gridData = tempData;
-			}
-
-			let tempData = [];
-			for (let r in gridData) {
-				if (!grid.orgData || !grid.orgData[r]) {
-					tempData.push(gridData[r]);
-				} else if (JSON.stringify(gridData[r]) != JSON.stringify(grid.orgData[r])) {
-					tempData.push(gridData[r]);
+			} else {
+				// 行選択指定でない場合は、変更している行のみ
+				for (let r in gridData) {
+					let updated = false;
+					if (!grid.orgData || !grid.orgData[r]) {
+						// 元データがない場合
+						updated = true;
+						postData.push(gridData[r]);
+					} else if (JSON.stringify(gridData[r]) != JSON.stringify(grid.orgData[r])) {
+						// 変更があった場合
+						updated = true;
+						postData.push(gridData[r]);
+					}
+					// 変更なしなら空配列を追加（nullだとvalidatorが利かなくなる）
+					if (!updated) {
+						postData.push({});
+					}
 				}
 			}
-			gridData = tempData;
 
 			let gridIds = gridId.split('.');
 			let gridName = gridIds[gridIds.length - 1];
-			formJson[gridName] = gridData;
+			formJson[gridName] = postData;
 		});
 
 		return formJson;

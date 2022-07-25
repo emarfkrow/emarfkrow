@@ -5,7 +5,7 @@ Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
 
-    http://www.apache.org/licenses/LICENSE-2.0
+	http://www.apache.org/licenses/LICENSE-2.0
 
 Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
@@ -248,6 +248,24 @@ let Dialogate = {
 
 					// 詳細画面の主キー項目の参照ボタンは、値が既にあれば非表示
 					$dialogDiv.find('[name$="RegistForm"] [target=dialog].refer.primaryKey').each(function() {
+						if ($('input[id="' + this.id + '"]').val() != '') {
+							$(this).hide();
+						} else {
+							$(this).show();
+						}
+					});
+
+					// 詳細画面のユニーク項目は、値が既にあれば読み取り専用
+					$dialogDiv.find('[name$="RegistForm"] input.uniqueKey').each(function() {
+						if ($(this).val() != '') {
+							$(this).attr('readonly', true).attr('tabindex', '-1').addClass('readonly');
+						} else {
+							$(this).removeAttr('readonly').removeClass('readonly').removeAttr('tabindex');
+						}
+					});
+
+					// 詳細画面のユニーク項目の参照ボタンは、値が既にあれば非表示
+					$dialogDiv.find('[name$="RegistForm"] [target=dialog].refer.uniqueKey').each(function() {
 						if ($('input[id="' + this.id + '"]').val() != '') {
 							$(this).hide();
 						} else {

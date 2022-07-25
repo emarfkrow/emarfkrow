@@ -1341,9 +1341,13 @@ public final class BeanGenerator {
             s.add("");
             s.add("        for (Map<String, Object> gridRow : gridData) {");
             s.add("");
+            s.add("            if (gridRow.isEmpty()) {");
+            s.add("                continue;");
+            s.add("            }");
+            s.add("");
             s.add("            // 主キーが不足していたらエラー");
-            for (String primaryKey : tableInfo.getPrimaryKeys()) {
-                s.add("            if (jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(gridRow.get(\"" + primaryKey
+            for (String pk : tableInfo.getPrimaryKeys()) {
+                s.add("            if (jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(gridRow.get(\"" + pk
                         + "\"))) {");
                 s.add("                throw new OptLockError(\"error.cant.delete\");");
                 s.add("            }");
@@ -1390,8 +1394,7 @@ public final class BeanGenerator {
         for (TableInfo tableInfo : tableInfos) {
             String tableName = tableInfo.getTableName();
             String remarks = tableInfo.getRemarks();
-
-            String entityName = StringUtil.toPascalCase(tableName);
+            String pascal = StringUtil.toPascalCase(tableName);
 
             List<String> s = new ArrayList<String>();
             s.add("package " + actionPackage + ";");
@@ -1401,7 +1404,7 @@ public final class BeanGenerator {
             s.add("import java.util.List;");
             s.add("import java.util.Map;");
             s.add("");
-            s.add("import " + entityPackage + "." + entityName + ";");
+            s.add("import " + entityPackage + "." + pascal + ";");
             s.add("");
             s.add("import jp.co.golorp.emarf.action.BaseAction;");
             s.add("import jp.co.golorp.emarf.exception.OptLockError;");
@@ -1413,7 +1416,7 @@ public final class BeanGenerator {
             s.add(" *");
             s.add(" * @author emarfkrow");
             s.add(" */");
-            s.add("public class " + entityName + "SRegistAction extends BaseAction {");
+            s.add("public class " + pascal + "SRegistAction extends BaseAction {");
             s.add("");
             s.add("    /** " + remarks + "一覧登録処理 */");
             s.add("    @Override");
@@ -1422,8 +1425,7 @@ public final class BeanGenerator {
             s.add("        Map<String, Object> map = new HashMap<String, Object>();");
             s.add("");
             s.add("        @SuppressWarnings(\"unchecked\")");
-            s.add("        List<Map<String, Object>> gridData = (List<Map<String, Object>>) postJson.get(\""
-                    + entityName
+            s.add("        List<Map<String, Object>> gridData = (List<Map<String, Object>>) postJson.get(\"" + pascal
                     + "Grid\");");
             s.add("");
             s.add("        if (gridData.size() == 0) {");
@@ -1433,14 +1435,17 @@ public final class BeanGenerator {
             s.add("");
             s.add("        for (Map<String, Object> gridRow : gridData) {");
             s.add("");
-            s.add("            " + entityName + " e = FormValidator.toBean(" + entityName
-                    + ".class.getName(), gridRow);");
+            s.add("            if (gridRow.isEmpty()) {");
+            s.add("                continue;");
+            s.add("            }");
+            s.add("");
+            s.add("            " + pascal + " e = FormValidator.toBean(" + pascal + ".class.getName(), gridRow);");
             s.add("");
             s.add("            // 主キーが不足していたらINSERT");
             s.add("            boolean isNew = false;");
             for (String primaryKey : tableInfo.getPrimaryKeys()) {
-                String pascal = StringUtil.toPascalCase(primaryKey);
-                s.add("            if (jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(e.get" + pascal + "())) {");
+                String pk = StringUtil.toPascalCase(primaryKey);
+                s.add("            if (jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(e.get" + pk + "())) {");
                 s.add("                isNew = true;");
                 s.add("            }");
             }
@@ -1465,8 +1470,8 @@ public final class BeanGenerator {
             s.add("");
             s.add("}");
 
-            String javaFilePath = packageDir + File.separator + entityName + "SRegistAction.java";
-            javaFilePaths.put(javaFilePath, actionPackage + "." + entityName + "SRegistAction");
+            String javaFilePath = packageDir + File.separator + pascal + "SRegistAction.java";
+            javaFilePaths.put(javaFilePath, actionPackage + "." + pascal + "SRegistAction");
 
             FileUtil.writeFile(javaFilePath, s);
         }
@@ -1648,10 +1653,11 @@ public final class BeanGenerator {
                 // フラグも除外
                 LOG.trace("skip NotBlank.");
 
-            } else if (columnInfo.getTypeName().equals("CHAR") && !StringUtil.isNullOrBlank(charNotNullSuffixs)
+            } else if (columnInfo.getTypeName().equals("CHAR") && !columnInfo.isPk()
+                    && !StringUtil.isNullOrBlank(charNotNullSuffixs)
                     && !StringUtil.endsWith(charNotNullSuffixs, columnInfo.getColumnName())) {
 
-                // CHARで参照モデルでない場合も除外（ホスト向け対応）
+                // 主キー以外のNOTNULL-CHARで、NULL必須サフィックス指定がありこれに含まれない場合も除外（ホスト向け対応）
                 LOG.trace("skip NotBlank.");
 
             } else {

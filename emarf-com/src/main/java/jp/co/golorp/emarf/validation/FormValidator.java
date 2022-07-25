@@ -289,9 +289,13 @@ public final class FormValidator {
                         @SuppressWarnings("unchecked")
                         List<Map<String, Object>> gridData = (List<Map<String, Object>>) list;
                         for (Map<String, Object> gridRow : gridData) {
-                            @SuppressWarnings("unchecked")
-                            T t = (T) toGridForm(gridClassName, gridRow);
-                            formList.add(t);
+                            if (gridRow.isEmpty()) {
+                                formList.add(null);
+                            } else {
+                                @SuppressWarnings("unchecked")
+                                T t = (T) toGridForm(gridClassName, gridRow);
+                                formList.add(t);
+                            }
                         }
 
                         value = formList;
