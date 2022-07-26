@@ -203,6 +203,21 @@ let Base = {
 
 	init: function() {
 
+		$('.datepicker').each(function() {
+			let format = 'yy-mm-dd';
+			let dataFormat = $(this).attr('data-format');
+			if (dataFormat) {
+				format = dataFormat;
+			}
+			$(this).datepicker({
+				dateFormat: format,
+				dayNamesMin: ['日', '月', '火', '水', '木', '金', '土'],
+				monthNames: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
+				showMonthAfterYear: true,
+				yearSuffix: '年',
+			});
+		});
+
 		// buttonスタイル適用
 		$('button, .nav a, .article a').button();
 		$('.article fieldset a').css('padding', 0);

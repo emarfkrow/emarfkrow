@@ -773,10 +773,11 @@ public final class HtmlGenerator {
                 String type = "text";
                 String format = "";
                 if (StringUtil.endsWith(inputDateSuffixs, columnName)) { // 日付項目
-                    type = "date";
+                    //type = "date";
+                    format = "";
                 } else if (StringUtil.endsWith(inputDate8Suffixs, columnName)) { // 8桁日付項目
-                    type = "date";
-                    format = "yyyyMMdd";
+                    //type = "date";
+                    format = "yymmdd";
                 } else if (StringUtil.endsWith(inputDateTimeSuffixs, columnName)) { // 日時項目
                     type = "datetime-local";
                 } else if (StringUtil.endsWith(inputMonthSuffixs, columnName)) { // 年月項目
@@ -788,27 +789,40 @@ public final class HtmlGenerator {
                 }
 
                 String css = "";
-                String referCss = " class=\"refer\"";
+                String referCss = "refer";
                 if (isDetail && columnInfo.isPk()) {
-                    css = " class=\"primaryKey\"";
-                    referCss = " class=\"refer primaryKey\"";
+                    //詳細画面の主キー
+                    css = " primaryKey";
+                    referCss = " primaryKey";
                 } else if (isDetail && columnInfo.isUnique()) {
-                    css = " class=\"uniqueKey\"";
-                    referCss = " class=\"refer uniqueKey\"";
+                    //詳細画面のユニークキー
+                    css = " uniqueKey";
+                    referCss = " uniqueKey";
                 }
+
+                if (StringUtil.endsWith(inputDateSuffixs, columnName)) { // 日付項目
+                    css += " datepicker";
+                } else if (StringUtil.endsWith(inputDate8Suffixs, columnName)) { // 8桁日付項目
+                    css += " datepicker";
+                }
+
+                if (!StringUtil.isNullOrBlank(css)) {
+                    css = " class=\"" + css + "\"";
+                }
+                referCss = " class=\"" + referCss + "\"";
 
                 if (!isDetail && StringUtil.endsWith(inputRangeSuffixs, columnName)) {
                     // 検索画面の範囲指定項目の場合
 
-                    htmlFieldsInputRange(s, fieldId, type, columnInfo, format);
+                    s.add(htmlFieldsInputRange(fieldId, type, css, columnInfo, format));
 
                 } else if (columnInfo.getReferInfo() != null) {
                     // 参照モデルの場合
 
-                    s.add(htmlFieldsRefer(fieldId, type, css, tableInfo, columnInfo, referCss, format));
+                    s.add(htmlFieldsRefer(fieldId, type, css, columnInfo, format, tableInfo, referCss));
 
                 } else {
-                    htmlFieldsInput(s, fieldId, type, css, columnInfo, format);
+                    s.add(htmlFieldsInput(fieldId, type, css, columnInfo, format));
                 }
             }
 
@@ -821,14 +835,14 @@ public final class HtmlGenerator {
      * @param fieldId    入力項目のID
      * @param type       タイプ
      * @param css        スタイル
-     * @param tableInfo
      * @param columnInfo
-     * @param referCss
      * @param format     フォーマット
+     * @param tableInfo
+     * @param referCss
      * @return referタグ
      */
     private static String htmlFieldsRefer(final String fieldId, final String type, final String css,
-            final TableInfo tableInfo, final ColumnInfo columnInfo, final String referCss, final String format) {
+            final ColumnInfo columnInfo, final String format, final TableInfo tableInfo, final String referCss) {
 
         String dataFormat = "";
         if (!StringUtil.isNullOrBlank(format)) {
@@ -864,15 +878,16 @@ public final class HtmlGenerator {
 
     /**
      * inputタグ出力
-     * @param s          出力文字列のリスト
      * @param id         入力項目のID
      * @param type       タイプ
      * @param css        スタイル
      * @param columnInfo 列情報
      * @param format     フォーマット
+     * @return タグ文字列
      */
-    private static void htmlFieldsInput(final List<String> s, final String id, final String type, final String css,
-            final ColumnInfo columnInfo, final String format) {
+    private static String htmlFieldsInput(final String id, final String type, final String css,
+            final ColumnInfo columnInfo,
+            final String format) {
 
         String dataFormat = "";
         if (!StringUtil.isNullOrBlank(format)) {
@@ -893,18 +908,19 @@ public final class HtmlGenerator {
             tag += "<input type=\"hidden\" id=\"" + id + "\" name=\"" + id + "\" disabled />";
         }
 
-        s.add(tag);
+        return tag;
     }
 
     /**
      * 範囲指定の入力項目出力
-     * @param s          出力文字列のリスト
      * @param id         項目ID
      * @param type       タイプ
+     * @param css        スタイル
      * @param columnInfo 列情報
      * @param format     フォーマット
+     * @return タグ文字列
      */
-    private static void htmlFieldsInputRange(final List<String> s, final String id, final String type,
+    private static String htmlFieldsInputRange(final String id, final String type, final String css,
             final ColumnInfo columnInfo, final String format) {
 
         String dataFormat = "";
@@ -917,12 +933,13 @@ public final class HtmlGenerator {
 
         String tag = "          ";
         tag += "<label for=\"" + id + "_1\" th:text=\"#{" + id + "}\">" + remarks + "</label>";
-        tag += "<input type=\"" + type + "\" id=\"" + id + "_1\" name=\"" + id + "_1\" maxlength=\"" + max + "\""
+        tag += "<input type=\"" + type + "\" id=\"" + id + "_1\" name=\"" + id + "_1\" maxlength=\"" + max + "\"" + css
                 + dataFormat + " />";
         tag += "～";
-        tag += "<input type=\"" + type + "\" id=\"" + id + "_2\" name=\"" + id + "_2\" maxlength=\"" + max + "\""
+        tag += "<input type=\"" + type + "\" id=\"" + id + "_2\" name=\"" + id + "_2\" maxlength=\"" + max + "\"" + css
                 + dataFormat + " />";
-        s.add(tag);
+
+        return tag;
     }
 
     /**
