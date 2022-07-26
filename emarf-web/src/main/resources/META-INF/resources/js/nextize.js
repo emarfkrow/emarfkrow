@@ -5,7 +5,7 @@ Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
 
-    http://www.apache.org/licenses/LICENSE-2.0
+	http://www.apache.org/licenses/LICENSE-2.0
 
 Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
@@ -27,7 +27,7 @@ $(function() {
 	let $container = $('body>div.article');
 	Nextize.first($container);
 
-	$(document).on('keypress', Nextize.selector, function(event) {
+	$(document).on('keypress', Nextize.srcSelector, function(event) {
 
 		// エンターキーでなければ終了
 		if (event.keyCode != 13) {
@@ -96,8 +96,8 @@ $(function() {
 		}
 
 		// 次要素にフォーカス
-		let $items = $(Nextize.selector);
-		let j = $items.index(entered) + 1;
+		let $items = $(Nextize.destSelector);
+		let j = $items.index(entered) + 1;// 読み専項目エンター時はここで止まる
 		let next = $items[j];
 		if (next) {
 			next.focus();
@@ -112,7 +112,13 @@ $(function() {
 
 let Nextize = {
 
-	selector: 'input[type!=button][type!=reset]:visible:enabled:not([readonly])[tabindex!=-1], ' +
+	srcSelector: 'input[type!=button][type!=reset]:visible:enabled, ' +
+		'a:visible:enabled, ' +
+		'select:visible:enabled, ' +
+		'textarea:visible:enabled, ' +
+		'button[type!=button][type!=reset]:visible:enabled',
+
+	destSelector: 'input[type!=button][type!=reset]:visible:enabled:not([readonly])[tabindex!=-1], ' +
 		'a:visible:enabled:not([readonly])[tabindex!=-1], ' +
 		'select:visible:enabled:not([readonly])[tabindex!=-1], ' +
 		'textarea:visible:enabled:not([readonly])[tabindex!=-1], ' +
@@ -122,7 +128,7 @@ let Nextize = {
 
 		Base.loaded(function() {
 
-			$container.find(Nextize.selector).each(function() {
+			$container.find(Nextize.destSelector).each(function() {
 
 				if ($(this).css('visibility') != 'hidden') {
 					let first = this;
