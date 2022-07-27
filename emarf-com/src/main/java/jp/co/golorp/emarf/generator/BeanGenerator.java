@@ -573,10 +573,17 @@ public final class BeanGenerator {
         s.add("        List<String> valueList = new ArrayList<String>();");
         for (Entry<String, ColumnInfo> e : tableInfo.getColumnInfos().entrySet()) {
             String columnName = e.getKey();
+            ColumnInfo columnInfo = e.getValue();
             String snake = StringUtil.toSnakeCase(columnName);
             String rightHand = ":" + snake;
             if (e.getValue().getDataType().equals("java.time.LocalDateTime")) {
                 rightHand = assist.toTimestamp(rightHand);
+            }
+            // 主キー以外のNOTNULL-CHARで、NULL必須サフィックス指定がありこれに含まれない場合、NULLならスペースにする（ホスト対応）
+            if (!columnInfo.isPk() && columnInfo.getTypeName().equals("CHAR")
+                    && !StringUtil.isNullOrBlank(charNotNullSuffixs)
+                    && !StringUtil.endsWith(charNotNullSuffixs, columnInfo.getColumnName())) {
+                rightHand = "NVL (" + rightHand + ", ' ')";
             }
             s.add("        valueList.add(\"" + rightHand + "\");");
         }
@@ -1653,7 +1660,7 @@ public final class BeanGenerator {
                 // フラグも除外
                 LOG.trace("skip NotBlank.");
 
-            } else if (columnInfo.getTypeName().equals("CHAR") && !columnInfo.isPk()
+            } else if (!columnInfo.isPk() && columnInfo.getTypeName().equals("CHAR")
                     && !StringUtil.isNullOrBlank(charNotNullSuffixs)
                     && !StringUtil.endsWith(charNotNullSuffixs, columnInfo.getColumnName())) {
 
