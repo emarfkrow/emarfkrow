@@ -73,6 +73,9 @@ public final class DataSources {
     /** 弟テーブルを設定しないテーブル名 */
     private static String[] onlychilds;
 
+    /** 子モデルに設定しないテーブル名 */
+    private static String[] foundlings;
+
     /** 列評価をスキップする列名 */
     private static String skipcolumn;
 
@@ -220,6 +223,7 @@ public final class DataSources {
         ignores = bundle.getString("BeanGenerator.ignores").split(",");
         eldests = bundle.getString("BeanGenerator.eldests").split(",");
         onlychilds = bundle.getString("BeanGenerator.onlychilds").split(",");
+        foundlings = bundle.getString("BeanGenerator.foundlings").split(",");
         skipcolumn = bundle.getString("BeanGenerator.skipcolumn");
         charNumberingSuffixs = bundle.getString("BeanGenerator.char.numbering.suffixs").split(",");
 
@@ -724,6 +728,18 @@ public final class DataSources {
 
                 // 比較元と同じならスキップ
                 if (srcInfo == destInfo) {
+                    continue;
+                }
+
+                // 弟を設定しないテーブルならスキップ
+                boolean isFoundling = false;
+                for (String foundling : foundlings) {
+                    if (foundling.equals(destInfo.getTableName())) {
+                        isFoundling = true;
+                        break;
+                    }
+                }
+                if (isFoundling) {
                     continue;
                 }
 
