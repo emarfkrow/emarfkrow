@@ -793,11 +793,11 @@ public final class HtmlGenerator {
                 if (isDetail && columnInfo.isPk()) {
                     //詳細画面の主キー
                     css = " primaryKey";
-                    referCss = " primaryKey";
+                    referCss += " primaryKey";
                 } else if (isDetail && columnInfo.isUnique()) {
                     //詳細画面のユニークキー
                     css = " uniqueKey";
-                    referCss = " uniqueKey";
+                    referCss += " uniqueKey";
                 }
 
                 if (StringUtil.endsWith(inputDateSuffixs, columnName)) { // 日付項目
