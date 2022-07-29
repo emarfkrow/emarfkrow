@@ -242,13 +242,11 @@ let Base = {
 				return;
 			}
 			let maxlength = $(this).attr('maxlength');
-			if (maxlength >= 30) {
-				maxlength /= 2;
-				if (maxlength > 30) {
-					maxlength = 30;
-				}
+			let width = maxlength * 0.6;
+			if (width > 30) {
+				width = 30;
 			}
-			$(this).css('width', maxlength + 'rem');
+			$(this).css('width', width + 'rem');
 		});
 
 		// 親画面の場合、登録フォーム内に子エンティティ追加リンクがあっても、自エンティティの主キーが揃っていなければ非活性
