@@ -547,6 +547,10 @@ public final class DataSources {
 
             dataType = "java.math.BigDecimal";
 
+            if (columnInfo.isPk() && columnInfo.getDecimalDigits() == 0) {
+                columnInfo.setNumbering(true);
+            }
+
         } else if (typeName.equals("DATE") || typeName.equals("TIME") || typeName.equals("DATETIME")
                 || typeName.equals("TIMESTAMP")) {
 
