@@ -67,13 +67,6 @@ public final class BeanGenerator {
     /** 更新者カラム名 */
     private static String updateBy;
 
-    /** options項目サフィックス */
-    private static String[] optionsSuffixs;
-
-    /** 範囲指定サフィックス */
-    private static String[] inputRangeSuffixs;
-    /** 部分一致サフィックス */
-    private static String[] inputLikeSuffixs;
     /** フラグサフィックス */
     private static String[] inputFlagSuffixs;
     /** ファイルサフィックス */
@@ -130,10 +123,6 @@ public final class BeanGenerator {
         updateDt = bundle.getString("BeanGenerator.update_dt");
         updateBy = bundle.getString("BeanGenerator.update_by");
 
-        optionsSuffixs = bundle.getString("BeanGenerator.options.suffixs").split(",");
-
-        inputRangeSuffixs = bundle.getString("BeanGenerator.input.range.suffixs").split(",");
-        inputLikeSuffixs = bundle.getString("BeanGenerator.input.like.suffixs").split(",");
         inputFlagSuffixs = bundle.getString("BeanGenerator.input.flag.suffixs").split(",");
         inputFileSuffixs = bundle.getString("BeanGenerator.input.file.suffixs").split(",");
 
@@ -184,7 +173,7 @@ public final class BeanGenerator {
         for (TableInfo tableInfo : tableInfos) {
 
             // 検索SQLを出力
-            sqlSearch(sqlDir, tableInfo);
+            SqlGenerator.sqlSearch(sqlDir, tableInfo);
         }
 
         LOG.info("success.");
@@ -336,7 +325,6 @@ public final class BeanGenerator {
 
         String tableName = tableInfo.getTableName();
         String remarks = tableInfo.getRemarks();
-
         String entityName = StringUtil.toPascalCase(tableName);
         String camelName = StringUtil.toCamelCase(tableName);
 
@@ -394,8 +382,26 @@ public final class BeanGenerator {
                 }
             }
         }
-
-        s.add("        String sql = \"SELECT * FROM " + tableName + " WHERE \" + String.join(\" AND \", whereList);");
+        DataSourcesAssist assist = DataSources.getAssist();
+        s.add("        String sql = \"\";");
+        s.add("        sql += \"SELECT \\n\";");
+        boolean isFirst = true;
+        for (ColumnInfo columnInfo : tableInfo.getColumnInfos().values()) {
+            String srcColumnName = columnInfo.getColumnName();
+            if (isFirst) {
+                s.add("        sql += \"      a." + assist.quoteEscaped(srcColumnName) + " \\n\";");
+            } else if (columnInfo.getTypeName().equals("CHAR")) {
+                s.add("        sql += \"    , RTRIM (RTRIM (a." + assist.quoteEscaped(srcColumnName) + "), '　') AS "
+                        + srcColumnName + " \\n\";");
+            } else {
+                s.add("        sql += \"    , a." + assist.quoteEscaped(srcColumnName) + " \\n\";");
+            }
+            isFirst = false;
+        }
+        s.add("        sql += \"FROM \\n\";");
+        s.add("        sql += \"    " + tableName + " a \\n\";");
+        s.add("        sql += \"WHERE \\n\";");
+        s.add("        sql += String.join(\" AND \\n\", whereList);");
         s.add("        Map<String, Object> map = new HashMap<String, Object>();");
 
         i = 0;
@@ -408,11 +414,8 @@ public final class BeanGenerator {
 
         s.add("        return Queries.get(sql, map, " + entityName + ".class);");
         s.add("    }");
-
         javaEntityCRUDInsert(tableInfo, s);
-
         javaEntityCRUDUpdate(tableInfo, s);
-
         s.add("");
         s.add("    /**");
         s.add("     * " + remarks + "削除");
@@ -786,6 +789,13 @@ public final class BeanGenerator {
                 String rightHand = ":" + snake;
                 if (columnInfo.getDataType().equals("java.time.LocalDateTime")) {
                     rightHand = assist.toTimestamp(rightHand);
+                }
+
+                // 主キー以外のNOTNULL-CHARで、NULL必須サフィックス指定がありこれに含まれない場合、NULLならスペースにする（ホスト対応）
+                if (!columnInfo.isPk() && columnInfo.getTypeName().equals("CHAR")
+                        && !StringUtil.isNullOrBlank(charNotNullSuffixs)
+                        && !StringUtil.endsWith(charNotNullSuffixs, columnInfo.getColumnName())) {
+                    rightHand = "NVL (" + rightHand + ", ' ')";
                 }
 
                 s.add("        setList.add(\"" + assist.quoteEscaped(columnName) + " = " + rightHand + "\");");
@@ -1676,12 +1686,12 @@ public final class BeanGenerator {
         int columnSize = columnInfo.getColumnSize();
 
         // 形式チェック
-        if (columnInfo.getTypeName().equals("DECIMAL")) {
+        if (columnInfo.getTypeName().equals("DECIMAL") || columnInfo.getTypeName().equals("NUMBER")) {
 
             // DECIMALの場合（整数桁・小数桁）
             int decimalDigits = columnInfo.getDecimalDigits();
             int integer = columnSize - decimalDigits;
-            String re = "[0-9]{0," + integer + "}\\\\.?[0-9]{0," + decimalDigits + "}?";
+            String re = "([0-9]{0," + integer + "}\\\\.?[0-9]{0," + decimalDigits + "}?)?";
             s.add("    @jakarta.validation.constraints.Pattern(regexp = \"" + re + "\")");
 
         } else {
@@ -1838,159 +1848,6 @@ public final class BeanGenerator {
         } catch (ClassNotFoundException e) {
             throw new SysError(e);
         }
-    }
-
-    /**
-     * 各モデルの検索SQL出力
-     * @param sqlDir SQLファイル出力ディレクトリ
-     * @param tableInfo テーブル情報
-     */
-    private static void sqlSearch(final String sqlDir, final TableInfo tableInfo) {
-
-        String tableName = tableInfo.getTableName();
-        String entityName = StringUtil.toPascalCase(tableName);
-
-        List<String> s = new ArrayList<String>();
-        s.add("SELECT");
-        s.add("      a.*");
-
-        // 参照モデルの名称解決
-        int i = 0;
-        for (ColumnInfo columnInfo : tableInfo.getColumnInfos().values()) {
-
-            // 参照元カラム名
-            String srcColumnName = columnInfo.getColumnName();
-
-            // 列の参照モデル情報
-            TableInfo referInfo = columnInfo.getReferInfo();
-
-            if (referInfo != null) {
-
-                ++i;
-
-                for (String[] e : referPairs) {
-                    String idSuffix = e[0];
-                    String meiSuffix = e[1];
-
-                    // カラム名が参照キーに合致しなければスキップ
-                    if (!srcColumnName.matches("(?i)^.*" + idSuffix + "$")) {
-                        continue;
-                    }
-
-                    // カラム名のIDサフィックスを名称サフィックスに置換して名称カラム名を取得
-                    String srcIdColumn = srcColumnName;
-                    String srcMeiColumn = srcIdColumn.replaceAll("(?i)" + idSuffix + "$", meiSuffix);
-
-                    // 参照先テーブルの全カラム名を確認して、末尾が合致するカラム名を、参照先のID・名称カラム名として取得
-                    String destIdColumn = null;
-                    String destMeiColumn = null;
-                    for (String destColumnName : referInfo.getColumnInfos().keySet()) {
-                        if (srcIdColumn.matches("^.*" + destColumnName + "$")) {
-                            destIdColumn = destColumnName;
-                        } else if (srcMeiColumn.matches("^.*" + destColumnName + "$")) {
-                            destMeiColumn = destColumnName;
-                        }
-                    }
-
-                    if (destIdColumn == null || destMeiColumn == null) {
-                        continue;
-                    }
-
-                    // 名称カラムがない場合はselect句に追加
-                    if (!tableInfo.getColumnInfos().containsKey(srcMeiColumn)) {
-
-                        String destColumnName = referInfo.getPrimaryKeys().get(0);
-                        String destColumnMei = destColumnName.replaceAll("(?i)" + idSuffix + "$", meiSuffix);
-
-                        String srcIdQuoted = DataSources.getAssist().quoted(srcIdColumn);
-                        String srcMeiQuoted = DataSources.getAssist().quoted(srcMeiColumn);
-                        String destIdQuoted = DataSources.getAssist().quoted(destColumnName);
-                        String destMeiQuoted = DataSources.getAssist().quoted(destColumnMei);
-
-                        s.add("    , (SELECT r" + i + "." + destMeiQuoted + " FROM " + referInfo.getTableName() + " r"
-                                + i + " WHERE r" + i + "." + destIdQuoted + " = a." + srcIdQuoted + ") AS "
-                                + srcMeiQuoted);
-                    }
-
-                    break;
-                }
-            }
-        }
-
-        s.add("FROM");
-        s.add("    " + tableName + " a ");
-
-        s.add("WHERE");
-        s.add("    1 = 1 ");
-        for (Entry<String, ColumnInfo> e : tableInfo.getColumnInfos().entrySet()) {
-
-            String columnName = e.getKey();
-            ColumnInfo columnInfo = e.getValue();
-
-            String snake = StringUtil.toSnakeCase(columnName);
-            boolean isInputLike = StringUtil.endsWith(inputLikeSuffixs, columnName);
-            boolean isInputFlag = StringUtil.endsWith(inputFlagSuffixs, columnName);
-            boolean isOption = StringUtil.endsWith(optionsSuffixs, columnName);
-
-            String quoted = DataSources.getAssist().quoted(columnName);
-
-            if (isInputLike) {
-
-                String[] array = new String[] { "'%'", ":" + snake, "'%'" };
-                String joined = DataSources.getAssist().join(array);
-                s.add("    AND a." + quoted + " LIKE " + joined + " ");
-
-            } else if (isInputFlag) {
-
-                s.add("    AND CASE WHEN a." + quoted + " IS NULL THEN '0' ELSE TO_CHAR (a." + quoted + ") END IN (:"
-                        + snake + ") ");
-
-            } else if (isOption) {
-
-                if (columnInfo.getTypeName().equals("CHAR")) {
-                    s.add("    AND TRIM (a." + quoted + ") IN (:" + snake + ") ");
-                } else {
-                    s.add("    AND a." + quoted + " IN (:" + snake + ") ");
-                }
-
-            } else if (columnInfo.getTypeName().equals("CHAR")) {
-
-                s.add("    AND TRIM (a." + quoted + ") = TRIM (:" + snake + ") ");
-
-            } else {
-
-                s.add("    AND a." + quoted + " = :" + snake + " ");
-            }
-
-            boolean isInputRange = StringUtil.endsWith(inputRangeSuffixs, columnName);
-
-            if (isInputRange) {
-                s.add("    AND a." + quoted + " >= :" + snake + "_1 ");
-                s.add("    AND a." + quoted + " <= :" + snake + "_2 ");
-            }
-        }
-
-        s.add("ORDER BY");
-        if (tableInfo.getPrimaryKeys().size() > 0) {
-            String orders = "";
-            for (String primaryKey : tableInfo.getPrimaryKeys()) {
-                if (orders.length() > 0) {
-                    orders += ", ";
-                }
-                orders += "a." + DataSources.getAssist().quoted(primaryKey);
-            }
-            s.add("    " + orders);
-        } else {
-            for (i = 1; i <= tableInfo.getColumnInfos().size(); i++) {
-                if (i == 1) {
-                    s.add("    " + i);
-                } else {
-                    s.add("    , " + i);
-                }
-            }
-        }
-
-        FileUtil.writeFile(sqlDir + File.separator + entityName + "Search.sql", s);
     }
 
 }
