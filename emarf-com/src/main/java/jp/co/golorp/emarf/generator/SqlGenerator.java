@@ -72,13 +72,15 @@ public final class SqlGenerator {
             // 参照元カラム名
             String srcColumnName = columnInfo.getColumnName();
 
+            String sql = "    , ";
             if (s.size() == 0) {
                 s.add("SELECT");
-                s.add("      a." + assist.quoted(srcColumnName));
-            } else if (columnInfo.getTypeName().equals("CHAR")) {
-                s.add("    , RTRIM (RTRIM (a." + assist.quoted(srcColumnName) + "), '　') AS " + srcColumnName);
+                sql = "      ";
+            }
+            if (columnInfo.getTypeName().equals("CHAR")) {
+                s.add(sql + "RTRIM (RTRIM (a." + assist.quoted(srcColumnName) + "), '　') AS " + srcColumnName);
             } else {
-                s.add("    , a." + assist.quoted(srcColumnName));
+                s.add(sql + "a." + assist.quoted(srcColumnName));
             }
 
             // 列の参照モデル情報

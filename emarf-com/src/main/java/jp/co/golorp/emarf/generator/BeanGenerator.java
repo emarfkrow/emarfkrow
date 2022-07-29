@@ -388,13 +388,15 @@ public final class BeanGenerator {
         boolean isFirst = true;
         for (ColumnInfo columnInfo : tableInfo.getColumnInfos().values()) {
             String srcColumnName = columnInfo.getColumnName();
+            String sql = "    , ";
             if (isFirst) {
-                s.add("        sql += \"      a." + assist.quoteEscaped(srcColumnName) + " \\n\";");
-            } else if (columnInfo.getTypeName().equals("CHAR")) {
-                s.add("        sql += \"    , RTRIM (RTRIM (a." + assist.quoteEscaped(srcColumnName) + "), '　') AS "
-                        + srcColumnName + " \\n\";");
+                sql = "      ";
+            }
+            if (columnInfo.getTypeName().equals("CHAR")) {
+                s.add("        sql += \"" + sql + "RTRIM (RTRIM (a." + assist.quoteEscaped(srcColumnName)
+                        + "), '　') AS " + srcColumnName + " \\n\";");
             } else {
-                s.add("        sql += \"    , a." + assist.quoteEscaped(srcColumnName) + " \\n\";");
+                s.add("        sql += \"" + sql + "a." + assist.quoteEscaped(srcColumnName) + " \\n\";");
             }
             isFirst = false;
         }
@@ -403,7 +405,6 @@ public final class BeanGenerator {
         s.add("        sql += \"WHERE \\n\";");
         s.add("        sql += String.join(\" AND \\n\", whereList);");
         s.add("        Map<String, Object> map = new HashMap<String, Object>();");
-
         i = 0;
         for (String primaryKey : tableInfo.getPrimaryKeys()) {
             if (primaryKey.length() > 0) {
@@ -411,7 +412,6 @@ public final class BeanGenerator {
                 s.add("        map.put(\"" + snake + "\", param" + ++i + ");");
             }
         }
-
         s.add("        return Queries.get(sql, map, " + entityName + ".class);");
         s.add("    }");
         javaEntityCRUDInsert(tableInfo, s);
