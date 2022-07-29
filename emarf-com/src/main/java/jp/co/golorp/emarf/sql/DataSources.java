@@ -836,11 +836,6 @@ public final class DataSources {
                 while (destIterator.hasNext()) {
                     TableInfo destInfo = destIterator.next();
 
-                    // 参照テーブル自体ならスキップ
-                    if (destInfo == srcInfo) {
-                        continue;
-                    }
-
                     // マスタ系が悉く参照モデルでなくなるので廃止
                     //                    // 比較先自体が参照マスタならスキップ
                     //                    boolean self = false;
@@ -879,6 +874,11 @@ public final class DataSources {
                             if (isEldest) {
                                 continue;
                             }
+                        }
+
+                        // 参照テーブル自体の主キー同士ならスキップ
+                        if (destInfo == srcInfo && destColumnInfo == srcIdInfo) {
+                            continue;
                         }
 
                         // データ型が異なるならスキップ
