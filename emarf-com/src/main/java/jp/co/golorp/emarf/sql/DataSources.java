@@ -73,6 +73,9 @@ public final class DataSources {
     /** 弟テーブルを設定しないテーブル名 */
     private static String[] onlychilds;
 
+    /** 子モデルに設定しないテーブル名 */
+    private static String[] foundlings;
+
     /** 列評価をスキップする列名 */
     private static String skipcolumn;
 
@@ -220,6 +223,7 @@ public final class DataSources {
         ignores = bundle.getString("BeanGenerator.ignores").split(",");
         eldests = bundle.getString("BeanGenerator.eldests").split(",");
         onlychilds = bundle.getString("BeanGenerator.onlychilds").split(",");
+        foundlings = bundle.getString("BeanGenerator.foundlings").split(",");
         skipcolumn = bundle.getString("BeanGenerator.skipcolumn");
         charNumberingSuffixs = bundle.getString("BeanGenerator.char.numbering.suffixs").split(",");
 
@@ -543,6 +547,10 @@ public final class DataSources {
 
             dataType = "java.math.BigDecimal";
 
+            if (columnInfo.isPk() && columnInfo.getDecimalDigits() == 0) {
+                columnInfo.setNumbering(true);
+            }
+
         } else if (typeName.equals("DATE") || typeName.equals("TIME") || typeName.equals("DATETIME")
                 || typeName.equals("TIMESTAMP")) {
 
@@ -727,6 +735,18 @@ public final class DataSources {
                     continue;
                 }
 
+                // 弟を設定しないテーブルならスキップ
+                boolean isFoundling = false;
+                for (String foundling : foundlings) {
+                    if (foundling.equals(destInfo.getTableName())) {
+                        isFoundling = true;
+                        break;
+                    }
+                }
+                if (isFoundling) {
+                    continue;
+                }
+
                 if (destInfo.getPrimaryKeys().size() == 0) {
                     continue;
                 }
@@ -820,11 +840,6 @@ public final class DataSources {
                 while (destIterator.hasNext()) {
                     TableInfo destInfo = destIterator.next();
 
-                    // 参照テーブル自体ならスキップ
-                    if (destInfo == srcInfo) {
-                        continue;
-                    }
-
                     // マスタ系が悉く参照モデルでなくなるので廃止
                     //                    // 比較先自体が参照マスタならスキップ
                     //                    boolean self = false;
@@ -863,6 +878,11 @@ public final class DataSources {
                             if (isEldest) {
                                 continue;
                             }
+                        }
+
+                        // 参照テーブル自体の主キー同士ならスキップ
+                        if (destInfo == srcInfo && destColumnInfo == srcIdInfo) {
+                            continue;
                         }
 
                         // データ型が異なるならスキップ

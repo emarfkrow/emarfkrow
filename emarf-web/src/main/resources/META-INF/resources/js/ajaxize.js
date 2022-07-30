@@ -76,11 +76,18 @@ $(function() {
 		let $label = $inputs.parent('label');
 		$label.removeClass('error').prop('title', '');
 
+		// グリッドのエラースタイルを解除
+		for (let gridId in Gridate.grids) {
+			let grid = Gridate.grids[gridId];
+			grid.removeCellCssStyles('error');
+		}
+
 		// formdataを取得
 		let formData = new FormData(this);
 
 		// フォーム内容をjsonに取得して、グリッドデータもformdataに追加
 		let formJson = Jsonate.toJson($form, $button.hasClass('selectRows'));
+
 		for (let k in formJson) {
 			let itemJson = formJson[k];
 			if (Array.isArray(itemJson)) {
@@ -208,12 +215,18 @@ let Ajaxize = {
 			url: action,
 		};
 
+		let logJson = formJson;
 		if (formJson instanceof FormData) {
 			// 送信値がformdataの場合
 
 			options['contentType'] = false; // contentTypeをfalseに指定
 			options['data'] = formJson;
 			options['processData'] = false; // Ajaxがdataを整形しない指定
+
+			logJson = {};
+			formJson.forEach(function(value, key) {
+				logJson[key] = value;
+			});
 
 		} else {
 			// 送信値がjsonの場合
@@ -235,7 +248,7 @@ let Ajaxize = {
 		}).done(function(data) {
 
 			console.info('action: ' + action);
-			console.info(formJson);
+			console.info(logJson);
 			console.info(data);
 			console.info('--------------------------------------------------');
 

@@ -175,7 +175,6 @@ public class LoginFilter implements Filter {
                     throw new SysError(e);
                 }
 
-                // TODO 職位順の対応
                 ses.setAttribute("AUTHN_KEY", map.get("AUTHN_KEY"));
                 ses.setAttribute("AUTHN_NAME", map.get("AUTHN_NAME"));
                 ses.setAttribute("AUTHN_INFO", map.get("AUTHN_INFO"));

@@ -238,11 +238,13 @@ let Dialogate = {
 					}
 
 					// 詳細画面の主キー項目は、値が既にあれば読み取り専用
+					let pkAll = true;
 					$dialogDiv.find('[name$="RegistForm"] input.primaryKey').each(function() {
 						if ($(this).val() != '') {
 							$(this).attr('readonly', true).attr('tabindex', '-1').addClass('readonly');
 						} else {
 							$(this).removeAttr('readonly').removeClass('readonly').removeAttr('tabindex');
+							pkAll = false;
 						}
 					});
 
@@ -257,7 +259,7 @@ let Dialogate = {
 
 					// 詳細画面のユニーク項目は、値が既にあれば読み取り専用
 					$dialogDiv.find('[name$="RegistForm"] input.uniqueKey').each(function() {
-						if ($(this).val() != '') {
+						if (pkAll) {
 							$(this).attr('readonly', true).attr('tabindex', '-1').addClass('readonly');
 						} else {
 							$(this).removeAttr('readonly').removeClass('readonly').removeAttr('tabindex');
@@ -266,7 +268,7 @@ let Dialogate = {
 
 					// 詳細画面のユニーク項目の参照ボタンは、値が既にあれば非表示
 					$dialogDiv.find('[name$="RegistForm"] [target=dialog].refer.uniqueKey').each(function() {
-						if ($('input[id="' + this.id + '"]').val() != '') {
+						if (pkAll) {
 							$(this).hide();
 						} else {
 							$(this).show();
