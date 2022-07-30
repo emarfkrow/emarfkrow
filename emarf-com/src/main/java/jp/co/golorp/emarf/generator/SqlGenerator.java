@@ -78,7 +78,9 @@ public final class SqlGenerator {
                 sql = "      ";
             }
             if (columnInfo.getTypeName().equals("CHAR")) {
-                s.add(sql + "RTRIM (RTRIM (a." + assist.quoted(srcColumnName) + "), '　') AS " + srcColumnName);
+                String quoted = assist.quoted(srcColumnName);
+                String trimed = assist.trimed("a." + quoted);
+                s.add(sql + trimed + " AS " + srcColumnName);
             } else {
                 s.add(sql + "a." + assist.quoted(srcColumnName));
             }
@@ -134,7 +136,6 @@ public final class SqlGenerator {
                 }
             }
         }
-
         s.add("FROM");
         s.add("    " + tableName + " a ");
         s.add("WHERE");
@@ -144,36 +145,30 @@ public final class SqlGenerator {
             ColumnInfo columnInfo = e.getValue();
             String snake = StringUtil.toSnakeCase(columnName);
             String quoted = assist.quoted(columnName);
-
             if (StringUtil.endsWith(inputLikeSuffixs, columnName)) {
                 String[] array = new String[] { "'%'", ":" + snake, "'%'" };
                 String joined = assist.join(array);
                 s.add("    AND a." + quoted + " LIKE " + joined + " ");
-
             } else if (StringUtil.endsWith(inputFlagSuffixs, columnName)) {
                 s.add("    AND CASE WHEN a." + quoted + " IS NULL THEN '0' ELSE TO_CHAR (a." + quoted + ") END IN (:"
                         + snake + ") ");
-
             } else if (StringUtil.endsWith(optionsSuffixs, columnName)) {
                 if (columnInfo.getTypeName().equals("CHAR")) {
                     s.add("    AND TRIM (a." + quoted + ") IN (:" + snake + ") ");
                 } else {
                     s.add("    AND a." + quoted + " IN (:" + snake + ") ");
                 }
-
             } else if (columnInfo.getTypeName().equals("CHAR")) {
                 s.add("    AND TRIM (a." + quoted + ") = TRIM (:" + snake + ") ");
 
             } else {
                 s.add("    AND a." + quoted + " = :" + snake + " ");
             }
-
             if (StringUtil.endsWith(inputRangeSuffixs, columnName)) {
                 s.add("    AND a." + quoted + " >= :" + snake + "_1 ");
                 s.add("    AND a." + quoted + " <= :" + snake + "_2 ");
             }
         }
-
         s.add("ORDER BY");
         if (tableInfo.getPrimaryKeys().size() > 0) {
             String orders = "";

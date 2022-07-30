@@ -82,4 +82,10 @@ public abstract class DataSourcesAssist {
      */
     public abstract String getPagedSql(String sql, Integer rows, Integer page);
 
+    /**
+     * @param columnName カラム名
+     * @return 全半角スペースのトリムSQL文字列
+     */
+    public abstract String trimed(String columnName);
+
 }

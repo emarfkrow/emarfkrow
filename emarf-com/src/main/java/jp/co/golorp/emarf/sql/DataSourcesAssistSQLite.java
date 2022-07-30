@@ -70,4 +70,9 @@ public final class DataSourcesAssistSQLite extends DataSourcesAssist {
         return null;
     }
 
+    @Override
+    public String trimed(final String columnName) {
+        return null;
+    }
+
 }
