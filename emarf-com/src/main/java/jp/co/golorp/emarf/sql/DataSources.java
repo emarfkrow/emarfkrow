@@ -67,17 +67,26 @@ public final class DataSources {
     /** テーブルを評価しないテーブル名 */
     private static String[] ignores;
 
-    /** 他のテーブルの兄弟テーブルにしないテーブル名 */
+    /** 兄を設定しないテーブル名 */
     private static String[] eldests;
 
-    /** 弟テーブルを設定しないテーブル名 */
-    private static String[] onlychilds;
+    /** 繰上りの弟モデルのテーブル名 */
+    private static String[] moveups;
 
-    /** 子モデルに設定しないテーブル名 */
-    private static String[] foundlings;
+    /** 弟を設定しないテーブル名 */
+    private static String[] youngests;
+
+    /** 子を設定しないテーブル名 */
+    private static String[] dinks;
+
+    /** 親を設定しないテーブル名 */
+    private static String[] orphans;
 
     /** 列評価をスキップする列名 */
     private static String skipcolumn;
+
+    /** 数値列で自動採番しないサフィックス */
+    private static String[] intNoNumberingSuffixs;
 
     /** 固定長列で自動採番のサフィックス */
     private static String[] charNumberingSuffixs;
@@ -222,9 +231,12 @@ public final class DataSources {
 
         ignores = bundle.getString("BeanGenerator.ignores").split(",");
         eldests = bundle.getString("BeanGenerator.eldests").split(",");
-        onlychilds = bundle.getString("BeanGenerator.onlychilds").split(",");
-        foundlings = bundle.getString("BeanGenerator.foundlings").split(",");
+        moveups = bundle.getString("BeanGenerator.moveups").split(",");
+        youngests = bundle.getString("BeanGenerator.youngests").split(",");
+        dinks = bundle.getString("BeanGenerator.dinks").split(",");
+        orphans = bundle.getString("BeanGenerator.orphans").split(",");
         skipcolumn = bundle.getString("BeanGenerator.skipcolumn");
+        intNoNumberingSuffixs = bundle.getString("BeanGenerator.int.nonumbering.suffixs").split(",");
         charNumberingSuffixs = bundle.getString("BeanGenerator.char.numbering.suffixs").split(",");
 
         // テーブル情報の取得
@@ -539,7 +551,9 @@ public final class DataSources {
             dataType = "Integer";
 
             if (columnInfo.isPk()) {
-                columnInfo.setNumbering(true);
+                if (!StringUtil.endsWith(intNoNumberingSuffixs, columnInfo.getColumnName())) {
+                    columnInfo.setNumbering(true);
+                }
             }
 
         } else if (typeName.equals("DECIMAL") || typeName.equals("DOUBLE") || typeName.equals("NUMBER")
@@ -548,7 +562,9 @@ public final class DataSources {
             dataType = "java.math.BigDecimal";
 
             if (columnInfo.isPk() && columnInfo.getDecimalDigits() == 0) {
-                columnInfo.setNumbering(true);
+                if (!StringUtil.endsWith(intNoNumberingSuffixs, columnInfo.getColumnName())) {
+                    columnInfo.setNumbering(true);
+                }
             }
 
         } else if (typeName.equals("DATE") || typeName.equals("TIME") || typeName.equals("DATETIME")
@@ -589,14 +605,14 @@ public final class DataSources {
             }
 
             // 弟を設定しないテーブルならスキップ
-            boolean isOnlyChild = false;
-            for (String onlychild : onlychilds) {
-                if (onlychild.equals(srcInfo.getTableName())) {
-                    isOnlyChild = true;
+            boolean isYoungest = false;
+            for (String youngest : youngests) {
+                if (youngest.equals(srcInfo.getTableName())) {
+                    isYoungest = true;
                     break;
                 }
             }
-            if (isOnlyChild) {
+            if (isYoungest) {
                 continue;
             }
 
@@ -618,7 +634,14 @@ public final class DataSources {
                         break;
                     }
                 }
-                if (isEldest) {
+                boolean isMoveUp = false;
+                for (String moveup : moveups) {
+                    if (moveup.equals(destInfo.getTableName())) {
+                        isMoveUp = true;
+                        break;
+                    }
+                }
+                if (isEldest || isMoveUp) {
                     continue;
                 }
 
@@ -722,6 +745,18 @@ public final class DataSources {
                 continue;
             }
 
+            // 子を設定しないテーブルならスキップ
+            boolean isDink = false;
+            for (String dink : dinks) {
+                if (dink.equals(srcInfo.getTableName())) {
+                    isDink = true;
+                    break;
+                }
+            }
+            if (isDink) {
+                continue;
+            }
+
             // 比較元の子テーブルリストを取得
             List<TableInfo> childInfos = srcInfo.getChildInfos();
 
@@ -735,15 +770,15 @@ public final class DataSources {
                     continue;
                 }
 
-                // 弟を設定しないテーブルならスキップ
-                boolean isFoundling = false;
-                for (String foundling : foundlings) {
-                    if (foundling.equals(destInfo.getTableName())) {
-                        isFoundling = true;
+                // 親を設定しないテーブルならスキップ
+                boolean isOrphan = false;
+                for (String orphan : orphans) {
+                    if (orphan.equals(destInfo.getTableName())) {
+                        isOrphan = true;
                         break;
                     }
                 }
-                if (isFoundling) {
+                if (isOrphan) {
                     continue;
                 }
 
@@ -798,6 +833,18 @@ public final class DataSources {
 
                 // 他のテーブルの弟ならスキップ
                 if (srcInfo.isBrother()) {
+                    continue;
+                }
+
+                // 繰上りの弟モデルならスキップ
+                boolean isMoveup = false;
+                for (String moveup : moveups) {
+                    if (moveup.equals(srcInfo.getTableName())) {
+                        isMoveup = true;
+                        break;
+                    }
+                }
+                if (isMoveup) {
                     continue;
                 }
 

@@ -242,9 +242,12 @@ let Base = {
 				return;
 			}
 			let maxlength = $(this).attr('maxlength');
-			let width = maxlength * 0.6;
-			if (width > 30) {
-				width = 30;
+			let width = maxlength * 1;
+			if (width > 3) {
+				width *= 0.6;
+				if (width > 30) {
+					width = 30;
+				}
 			}
 			$(this).css('width', width + 'rem');
 		});
@@ -321,6 +324,11 @@ let Base = {
 			$(this).find('~form.search').toggle(500, function() {
 				Base.resizeNav();
 			});
+		});
+		$('body>div>form.search button.search').on('click', function() {
+			if ($('[id="h2Toggle"]').hasClass('ui-icon-triangle-1-s')) {
+				$(this).closest('div.article').find('h2').click();
+			}
 		});
 
 		Base.resizeNav();
