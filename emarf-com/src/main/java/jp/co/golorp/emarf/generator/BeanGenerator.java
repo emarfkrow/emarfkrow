@@ -25,6 +25,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.ResourceBundle;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.tools.JavaCompiler;
 import javax.tools.ToolProvider;
@@ -1011,8 +1013,14 @@ public final class BeanGenerator {
                 if (pk.length() == 0) {
                     continue;
                 }
-                pk = pk.toLowerCase();
-                s.add("        whereList.add(\"" + pk + " = :" + pk + "\");");
+                //                pk = pk.toLowerCase();
+                //                s.add("        whereList.add(\"" + pk + " = :" + pk + "\");");
+                ColumnInfo primaryKeyInfo = tableInfo.getColumnInfos().get(pk);
+                if (primaryKeyInfo.getTypeName().equals("CHAR")) {
+                    s.add("        whereList.add(\"TRIM (" + pk + ") = TRIM (:" + pk.toLowerCase() + ")\");");
+                } else {
+                    s.add("        whereList.add(\"" + pk + " = :" + pk.toLowerCase() + "\");");
+                }
             }
             s.add("        String sql = \"SELECT * FROM " + childName
                     + " WHERE \" + String.join(\" AND \", whereList);");
@@ -1683,37 +1691,46 @@ public final class BeanGenerator {
             }
         }
 
-        int columnSize = columnInfo.getColumnSize();
+        String columnName = columnInfo.getColumnName();
 
-        // 形式チェック
-        if (columnInfo.getTypeName().equals("DECIMAL") || columnInfo.getTypeName().equals("NUMBER")) {
+        int matchLength = 0;
+        String validSuffix = null;
+        for (String suffix : validSuffixs) {
+            Pattern pattern = Pattern.compile("(?i).*(" + suffix + ")$");
+            Matcher matcher = pattern.matcher(columnName);
+            if (matcher.find()) {
+                String matched = matcher.group(1);
+                if (matchLength < matched.length()) {
+                    matchLength = matched.length();
+                    validSuffix = suffix;
+                }
+            }
+        }
 
-            // DECIMALの場合（整数桁・小数桁）
-            int decimalDigits = columnInfo.getDecimalDigits();
-            int integer = columnSize - decimalDigits;
-            String re = "([0-9]{0," + integer + "}\\\\.?[0-9]{0," + decimalDigits + "}?)?";
+        if (validSuffix != null) {
+            // Patternの指定がある場合
+
+            String re = bundle.getString("BeanGenerator.valid." + validSuffix);
             s.add("    @jakarta.validation.constraints.Pattern(regexp = \"" + re + "\")");
 
         } else {
-            // DECIMAL以外
+            // Patternの指定がない場合
 
-            String columnName = columnInfo.getColumnName();
+            int columnSize = columnInfo.getColumnSize();
 
-            String validSuffix = null;
-            for (String suffix : validSuffixs) {
-                if (columnName.matches("(?i).*" + suffix + "$")) {
-                    validSuffix = suffix;
-                    break;
-                }
-            }
+            // 形式チェック
+            if (columnInfo.getTypeName().equals("INT") || columnInfo.getTypeName().equals("DECIMAL")
+                    || columnInfo.getTypeName().equals("DOUBLE") || columnInfo.getTypeName().equals("NUMBER")
+                    || columnInfo.getTypeName().equals("NUMERIC")) {
 
-            if (validSuffix != null) {
-
-                // Patternの指定がある場合
-                String re = bundle.getString("BeanGenerator.valid." + validSuffix);
+                // DECIMALの場合（整数桁・小数桁）
+                int decimalDigits = columnInfo.getDecimalDigits();
+                int integer = columnSize - decimalDigits;
+                String re = "([0-9]{0," + integer + "}\\\\.?[0-9]{0," + decimalDigits + "}?)?";
                 s.add("    @jakarta.validation.constraints.Pattern(regexp = \"" + re + "\")");
 
             } else {
+                // DECIMAL以外
 
                 // 上記以外の場合は最大桁チェック
                 s.add("    @jakarta.validation.constraints.Size(max = " + columnSize + ")");

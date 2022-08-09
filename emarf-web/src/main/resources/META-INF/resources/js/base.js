@@ -243,7 +243,7 @@ let Base = {
 			}
 			let maxlength = $(this).attr('maxlength');
 			let width = maxlength * 1;
-			if (width > 3) {
+			if (width > 10) {
 				width *= 0.6;
 				if (width > 30) {
 					width = 30;

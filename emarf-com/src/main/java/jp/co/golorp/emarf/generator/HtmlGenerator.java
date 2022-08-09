@@ -512,7 +512,7 @@ public final class HtmlGenerator {
 
                 c = "Column.date('" + field + "', " + name + ", " + width + ", '" + css + "', " + formatter + "),";
 
-            } else if (StringUtil.endsWith(inputDate8Suffixs, columnName)) {
+            } else if (StringUtil.endsWith(inputDate8Suffixs, columnName) && columnInfo.getColumnSize() == 8) {
 
                 c = "Column.date8('" + field + "', " + name + ", " + width + ", '" + css + "', " + formatter + "),";
 
@@ -542,7 +542,9 @@ public final class HtmlGenerator {
 
                 c = "Column.longText('" + field + "', " + name + ", " + width + ", '" + css + "', " + formatter + "),";
 
-            } else if (columnInfo.getTypeName().equals("DECIMAL")) {
+            } else if (columnInfo.getTypeName().equals("INT") || columnInfo.getTypeName().equals("DECIMAL")
+                    || columnInfo.getTypeName().equals("DOUBLE") || columnInfo.getTypeName().equals("NUMBER")
+                    || columnInfo.getTypeName().equals("NUMERIC")) {
 
                 if (columnInfo.getDecimalDigits() == 3) {
                     c = "Column.dec3('" + field + "', " + name + ", " + width + ", '" + css + "', " + formatter + "),";
@@ -775,7 +777,7 @@ public final class HtmlGenerator {
                 if (StringUtil.endsWith(inputDateSuffixs, columnName)) { // 日付項目
                     //type = "date";
                     format = "";
-                } else if (StringUtil.endsWith(inputDate8Suffixs, columnName)) { // 8桁日付項目
+                } else if (StringUtil.endsWith(inputDate8Suffixs, columnName) && columnInfo.getColumnSize() == 8) { // 8桁日付項目
                     //type = "date";
                     format = "yymmdd";
                 } else if (StringUtil.endsWith(inputDateTimeSuffixs, columnName)) { // 日時項目
@@ -802,7 +804,7 @@ public final class HtmlGenerator {
 
                 if (StringUtil.endsWith(inputDateSuffixs, columnName)) { // 日付項目
                     css += " datepicker";
-                } else if (StringUtil.endsWith(inputDate8Suffixs, columnName)) { // 8桁日付項目
+                } else if (StringUtil.endsWith(inputDate8Suffixs, columnName) && columnInfo.getColumnSize() == 8) { // 8桁日付項目
                     css += " datepicker";
                 }
 
