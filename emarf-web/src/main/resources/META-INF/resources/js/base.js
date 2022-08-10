@@ -22,6 +22,19 @@ limitations under the License.
 console.trace = function() { }
 console.debug = function() { }
 
+String.prototype.bytes = function() {
+	var length = 0;
+	for (var i = 0; i < this.length; i++) {
+		var c = this.charCodeAt(i);
+		if ((c >= 0x0 && c < 0x81) || (c === 0xf8f0) || (c >= 0xff61 && c < 0xffa0) || (c >= 0xf8f1 && c < 0xf8f4)) {
+			length += 1;
+		} else {
+			length += 2;
+		}
+	}
+	return length;
+};
+
 // １．DOM構築後
 $(function() {
 

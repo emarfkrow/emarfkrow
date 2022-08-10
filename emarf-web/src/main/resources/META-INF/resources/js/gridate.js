@@ -89,6 +89,15 @@ $(function() {
 
 			var columns = $.extend(true, [], gridColumns);
 
+			let form = $(this).closest('form[name]')[0];
+			let authz = Base.getAuthz(form.name);
+			if (authz < 2) {
+				for (let i in columns) {
+					let column = columns[i];
+					column.editor = null;
+				}
+			}
+
 			let isDialog = $gridDiv.closest('[role=dialog]').length > 0;
 
 			let frozenColumnAdd = 0;
@@ -161,7 +170,7 @@ $(function() {
 
 			// 新規行有無
 			let addRow = $gridDiv.attr('data-addRow');
-			if (addRow) {
+			if (addRow && authz >= 2) {
 				options.enableAddRow = eval(addRow);
 			}
 

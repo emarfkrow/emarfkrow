@@ -407,8 +407,17 @@ public final class Queries {
                     // 数字の前の「_」を消して取ってみる
                     o = rs.getObject(snake.replaceAll("\\_([0-9]+)", "$1"));
                 } catch (Exception e1) {
-                    // ケバブケースでも取ってみる
-                    o = rs.getObject(snake.replaceAll("\\_", "-"));
+                    try {
+                        // 数字の後ろの「_」を消して取ってみる
+                        o = rs.getObject(snake.replaceAll("([0-9]+)\\_", "$1"));
+                    } catch (Exception e2) {
+                        try {
+                            // ケバブケースでも取ってみる
+                            o = rs.getObject(snake.replaceAll("\\_", "-"));
+                        } catch (Exception e3) {
+                            throw e;
+                        }
+                    }
                 }
             }
 

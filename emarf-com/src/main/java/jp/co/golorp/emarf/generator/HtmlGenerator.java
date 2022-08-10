@@ -42,10 +42,13 @@ public final class HtmlGenerator {
     private static ResourceBundle bundle;
 
     /** グリッド列幅ピクセル乗数 */
-    private static final int COLUMN_WIDTH_PX_MULTIPLIER = 10;
+    private static final int COLUMN_WIDTH_PX_MULTIPLIER = 15;
 
     /** ページ行数 */
     private static String rows;
+
+    /** 数値列で自動採番しないサフィックス */
+    private static String[] intNoNumberingSuffixs;
 
     /** 登録日時カラム名 */
     private static String insertDt;
@@ -61,11 +64,11 @@ public final class HtmlGenerator {
     /** データjson */
     private static String json;
     /** options項目キー */
-    private static String optionParamKey;
+    private static String optP;
     /** options項目値 */
-    private static String optionValue;
+    private static String optV;
     /** options項目ラベル */
-    private static String optionLabel;
+    private static String optL;
 
     /** テキストエリア項目サフィックス */
     private static String[] textareaSuffixs;
@@ -105,6 +108,8 @@ public final class HtmlGenerator {
 
         rows = bundle.getString("BeanGenerator.rows");
 
+        intNoNumberingSuffixs = bundle.getString("BeanGenerator.int.nonumbering.suffixs").split(",");
+
         insertDt = bundle.getString("BeanGenerator.insert_dt");
         insertBy = bundle.getString("BeanGenerator.insert_by");
         updateDt = bundle.getString("BeanGenerator.update_dt");
@@ -112,9 +117,9 @@ public final class HtmlGenerator {
 
         optionsSuffixs = bundle.getString("BeanGenerator.options.suffixs").split(",");
         json = bundle.getString("BeanGenerator.options.json");
-        optionParamKey = bundle.getString("BeanGenerator.options.paramkey");
-        optionValue = bundle.getString("BeanGenerator.options.value");
-        optionLabel = bundle.getString("BeanGenerator.options.label");
+        optP = bundle.getString("BeanGenerator.options.paramkey");
+        optV = bundle.getString("BeanGenerator.options.value");
+        optL = bundle.getString("BeanGenerator.options.label");
 
         textareaSuffixs = bundle.getString("BeanGenerator.textarea.suffixs").split(",");
 
@@ -338,7 +343,7 @@ public final class HtmlGenerator {
         s.add("        <button type=\"button\" th:text=\"#{common.reset}\" onClick=\"$('[id=&quot;Search" + pascal
                 + "&quot;]').click();\">reset</button>");
         s.add("        <a th:href=\"@{" + pascal + "Search.xlsx(baseMei=#{" + pascal + "S.h2})}\" id=\"" + pascal
-                + "Search.xlsx\" th:text=\"#{common.xlsx}\" tabindex=\"-1\">xlsx</a>");
+                + "Search.xlsx\" th:text=\"#{common.xlsx}\" target=\"_blank\" tabindex=\"-1\">xlsx</a>");
         s.add("        <button id=\"Delete" + pascal + "S\" class=\"delete selectRows\" data-action=\"" + pascal
                 + "SDelete.ajax\" th:text=\"#{common.delete}\" tabindex=\"-1\">削除</button>");
         s.add("      </div>");
@@ -435,6 +440,8 @@ public final class HtmlGenerator {
         s.add("");
         s.add("let " + entityName + "GridColumns = [");
 
+        String opt = "{ json: '" + json + "', paramkey: '" + optP + "', value: '" + optV + "', label: '" + optL + "' }";
+
         for (ColumnInfo columnInfo : tableInfo.getColumnInfos().values()) {
 
             String columnName = columnInfo.getColumnName();
@@ -445,6 +452,9 @@ public final class HtmlGenerator {
             String field = columnName;
 
             int width = columnInfo.getColumnSize() * COLUMN_WIDTH_PX_MULTIPLIER;
+            if (width < 30) {
+                width = 30;
+            }
             if (width > 300) {
                 width = 300;
             }
@@ -528,14 +538,13 @@ public final class HtmlGenerator {
             } else if (StringUtil.endsWith(inputFileSuffixs, columnName)) {
                 c = "Column.link('" + field + "', " + name + ", " + width + ", '" + css + "'),";
             } else if (StringUtil.endsWith(optionsSuffixs, columnName)) {
-                String options = "{ json: '" + json + "', paramkey: '" + optionParamKey + "', value: '" + optionValue
-                        + "', label: '" + optionLabel + "' }";
-                c = "Column.select('" + field + "', " + name + ", " + width + ", '" + css + "', " + options + "),";
+                c = "Column.select('" + field + "', " + name + ", " + width + ", '" + css + "', " + opt + "),";
             } else if (StringUtil.endsWith(textareaSuffixs, columnName)) {
                 c = "Column.longText('" + field + "', " + name + ", " + width + ", '" + css + "', " + formatter + "),";
-            } else if (columnInfo.getTypeName().equals("INT") || columnInfo.getTypeName().equals("DECIMAL")
+            } else if ((columnInfo.getTypeName().equals("INT") || columnInfo.getTypeName().equals("DECIMAL")
                     || columnInfo.getTypeName().equals("DOUBLE") || columnInfo.getTypeName().equals("NUMBER")
-                    || columnInfo.getTypeName().equals("NUMERIC")) {
+                    || columnInfo.getTypeName().equals("NUMERIC"))
+                    && !StringUtil.endsWith(intNoNumberingSuffixs, columnInfo.getColumnName())) {
 
                 if (columnInfo.getDecimalDigits() == 3) {
                     c = "Column.dec3('" + field + "', " + name + ", " + width + ", '" + css + "', " + formatter + "),";
@@ -648,7 +657,7 @@ public final class HtmlGenerator {
         s.add("      <div class=\"buttons\">");
         s.add("        <button type=\"button\" th:text=\"#{common.reset}\" onClick=\"Dialogate.refresh(event);\">reset</button>");
         s.add("        <a th:href=\"@{" + entityName + "Get.xlsx(baseMei=#{" + entityName + ".h2})}\" id=\""
-                + entityName + "Get.xlsx\" th:text=\"#{common.xlsx}\" tabindex=\"-1\">xlsx</a>");
+                + entityName + "Get.xlsx\" th:text=\"#{common.xlsx}\" target=\"_blank\" tabindex=\"-1\">xlsx</a>");
         s.add("        <button id=\"Delete" + entityName + "\" class=\"delete\" data-action=\"" + entityName
                 + "Delete.ajax\" th:text=\"#{common.delete}\" tabindex=\"-1\">削除</button>");
         s.add("      </div>");
@@ -959,9 +968,9 @@ public final class HtmlGenerator {
         if (!isPrimariKey) {
             primaryKey = "";
         }
-        s.add("          <fieldset id=\"" + id + "List\" data-options=\"" + json + "\" data-optionParams=\""
-                + optionParamKey + ":" + columnName + "\" data-optionValue=\"" + optionValue + "\" data-optionLabel=\""
-                + optionLabel + "\"" + primaryKey + ">");
+        s.add("          <fieldset id=\"" + id + "List\" data-options=\"" + json + "\" data-optionParams=\"" + optP
+                + ":" + columnName + "\" data-optionValue=\"" + optV + "\" data-optionLabel=\"" + optL + "\""
+                + primaryKey + ">");
         s.add("            <legend th:text=\"#{" + id + "}\">" + remarks + "</legend>");
         s.add("          </fieldset>");
     }

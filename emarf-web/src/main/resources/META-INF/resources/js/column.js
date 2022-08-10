@@ -177,8 +177,8 @@ let Column = {
 					let v = row[value];
 					let l = row[label];
 					options[v] = l;
-					if (column.width < l.length * 30) {
-						column.width = l.length * 30;
+					if (column.width < l.bytes() * 10) {
+						column.width = l.bytes() * 10;
 					}
 				}
 				//			}
