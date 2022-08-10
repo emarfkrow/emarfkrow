@@ -307,7 +307,8 @@ public final class HtmlGenerator {
         }
         if (numberingCount < 2) {
             s.add("        <a th:href=\"@{/model/" + pascal + ".html}\" id=\"" + pascal
-                    + "\" target=\"dialog\" th:text=\"#{" + pascal + ".add}\" tabindex=\"-1\">" + remarks + "</a>");
+                    + "\" class=\"anew\" target=\"dialog\" th:text=\"#{" + pascal + ".add}\" tabindex=\"-1\">" + remarks
+                    + "</a>");
         }
         s.add("      </div>");
         s.add("      <div class=\"submits\">");

@@ -241,6 +241,8 @@ let Base = {
 				$(this).find('button.delete, button.regist').hide();
 				if ($(this).hasClass('regist')) {
 					$(this).find('button.reset').hide();
+				} else {
+					$(this).find('a.anew').hide();
 				}
 			}
 		});
