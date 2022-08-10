@@ -23,6 +23,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -345,26 +346,58 @@ public final class DataSources {
         //参照モデルの評価
         addReferTable(tableInfos);
 
-        for (TableInfo tableInfo : tableInfos) {
-            if (tableInfo.getBrosInfos().size() == 0 && tableInfo.getChildInfos().size() == 0) {
+        log(tableInfos);
+
+        return tableInfos;
+    }
+
+    /**
+     * @param tableInfos
+     */
+    private static void log(final List<TableInfo> tableInfos) {
+
+        LOG.info("\t■RelationInfos:");
+
+        for (TableInfo t : tableInfos) {
+            if (t.getBrosInfos().size() == 0 && t.getChildInfos().size() == 0) {
                 continue;
             }
-            LOG.info(tableInfo.getTableName() + " " + tableInfo.getPrimaryKeys());
-            if (tableInfo.getBrosInfos().size() > 0) {
-                LOG.info("    BrosInfos:");
-                for (TableInfo brosInfo : tableInfo.getBrosInfos()) {
-                    LOG.info("        " + brosInfo.getTableName() + " " + brosInfo.getPrimaryKeys());
+            LOG.info("\t\t" + t.getTableName() + " " + t.getPrimaryKeys());
+            if (t.getBrosInfos().size() > 0) {
+                LOG.info("\t\t\tBrosInfos:");
+                for (TableInfo table : t.getBrosInfos()) {
+                    LOG.info("\t\t\t\t" + table.getTableName() + " " + table.getPrimaryKeys());
                 }
             }
-            if (tableInfo.getChildInfos().size() > 0) {
-                LOG.info("    ChildInfos:");
-                for (TableInfo childInfo : tableInfo.getChildInfos()) {
-                    LOG.info("        " + childInfo.getTableName() + " " + childInfo.getPrimaryKeys());
+            if (t.getChildInfos().size() > 0) {
+                LOG.info("\t\t\tChildInfos:");
+                for (TableInfo table : t.getChildInfos()) {
+                    LOG.info("\t\t\t\t" + table.getTableName() + " " + table.getPrimaryKeys());
                 }
             }
         }
 
-        return tableInfos;
+        LOG.info("\t■ReferInfos:");
+
+        for (TableInfo t : tableInfos) {
+            Map<String, TableInfo> referInfos = new LinkedHashMap<String, TableInfo>();
+            for (ColumnInfo columnInfo : t.getColumnInfos().values()) {
+                if (columnInfo.getReferInfo() != null) {
+                    referInfos.put(columnInfo.getColumnName(), columnInfo.getReferInfo());
+                }
+            }
+            if (referInfos.size() == 0) {
+                continue;
+            }
+            if (referInfos.size() > 0) {
+                LOG.info("\t\t" + t.getTableName());
+                for (Entry<String, TableInfo> e : referInfos.entrySet()) {
+                    String columnName = e.getKey();
+                    TableInfo table = e.getValue();
+                    LOG.info("\t\t\t" + columnName + " = " + table.getTableName() + " " + table.getPrimaryKeys());
+                }
+            }
+        }
     }
 
     /**

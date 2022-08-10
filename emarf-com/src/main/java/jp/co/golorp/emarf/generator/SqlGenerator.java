@@ -29,8 +29,7 @@ public final class SqlGenerator {
 
     /** 範囲指定サフィックス */
     private static String[] inputRangeSuffixs;
-    /** 部分一致サフィックス */
-    private static String[] inputLikeSuffixs;
+
     /** フラグサフィックス */
     private static String[] inputFlagSuffixs;
 
@@ -52,7 +51,6 @@ public final class SqlGenerator {
         bundle = ResourceBundles.getBundle(BeanGenerator.class);
         optionsSuffixs = bundle.getString("BeanGenerator.options.suffixs").split(",");
         inputRangeSuffixs = bundle.getString("BeanGenerator.input.range.suffixs").split(",");
-        inputLikeSuffixs = bundle.getString("BeanGenerator.input.like.suffixs").split(",");
         inputFlagSuffixs = bundle.getString("BeanGenerator.input.flag.suffixs").split(",");
         String[] pairs = bundle.getString("BeanGenerator.refer.pairs").split(",");
         for (String pair : pairs) {
@@ -145,29 +143,24 @@ public final class SqlGenerator {
             String snake = StringUtil.toSnakeCase(columnName);
             String quoted = assist.quoted(columnName);
 
-            if (StringUtil.endsWith(inputLikeSuffixs, columnName)) {
+            if (StringUtil.endsWith(inputFlagSuffixs, columnName)) {
+                // FLAG検索
+                s.add("    AND CASE WHEN TRIM (a." + quoted + ") IS NULL THEN '0' ELSE TO_CHAR (a." + quoted
+                        + ") END IN (:" + snake + ") ");
+            } else if (StringUtil.endsWith(optionsSuffixs, columnName)) {
+                // IN検索
+                s.add("    AND TRIM (a." + quoted + ") IN (:" + snake + ") ");
+            } else if (columnInfo.getDataType().equals("String")) {
+                // 文字列はTRIMしてLIKE検索
                 String[] array = new String[] { "'%'", ":" + snake, "'%'" };
                 String joined = assist.join(array);
-                s.add("    AND a." + quoted + " LIKE " + joined + " ");
-
-            } else if (StringUtil.endsWith(inputFlagSuffixs, columnName)) {
-                s.add("    AND CASE WHEN a." + quoted + " IS NULL THEN '0' ELSE TO_CHAR (a." + quoted + ") END IN (:"
-                        + snake + ") ");
-
-            } else if (StringUtil.endsWith(optionsSuffixs, columnName)) {
-                if (columnInfo.getTypeName().equals("CHAR")) {
-                    s.add("    AND TRIM (a." + quoted + ") IN (:" + snake + ") ");
-                } else {
-                    s.add("    AND a." + quoted + " IN (:" + snake + ") ");
-                }
-
-            } else if (columnInfo.getTypeName().equals("CHAR")) {
-                s.add("    AND TRIM (a." + quoted + ") = TRIM (:" + snake + ") ");
-
+                s.add("    AND TRIM (a." + quoted + ") LIKE " + joined + " ");
             } else {
+                // 以外は等値検索
                 s.add("    AND a." + quoted + " = :" + snake + " ");
             }
 
+            // 範囲検索
             if (StringUtil.endsWith(inputRangeSuffixs, columnName)) {
                 s.add("    AND a." + quoted + " >= :" + snake + "_1 ");
                 s.add("    AND a." + quoted + " <= :" + snake + "_2 ");

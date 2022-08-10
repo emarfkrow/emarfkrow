@@ -468,80 +468,71 @@ public final class HtmlGenerator {
                 formatter = "Slick.Formatters.Extends.DateTime";
             }
 
-            boolean isRefer = false;
+            // 名称列を参照先から参照するか
+            boolean isMeiRefer = false;
+
+            // 参照名の列名
             String referMei = null;
+
+            // 参照テーブルが設定されている場合
             TableInfo referInfo = columnInfo.getReferInfo();
             if (referInfo != null) {
+
+                isMeiRefer = true;
+
+                // カラム名が組み合わせキーのいずれかに合致する場合
                 if (StringUtil.endsWith(referPairs, columnName)) {
-                    referMei = columnName;
+
+                    // 参照設定の組み合わせでループ
                     for (String[] suffix : referPairs) {
-                        if (referMei.matches("(?i).+" + suffix[0] + "$")) {
-                            referMei = referMei.replaceAll("(?i)" + suffix[0] + "$", suffix[1]);
-                            break;
+                        String keySuffix = suffix[0];
+                        String meiSuffix = suffix[1];
+
+                        // カラム名がキー接尾辞に合致する場合
+                        if (columnName.matches("(?i).+" + keySuffix + "$")) {
+
+                            // カラム名の末尾を名称列サフィックスに変換
+                            referMei = columnName.replaceAll("(?i)" + keySuffix + "$", meiSuffix);
+
+                            // 名称列がテーブルに含まれていない場合は参照先から名称を取得する
+                            if (tableInfo.getColumnInfos().containsKey(referMei)) {
+                                isMeiRefer = false;
+                                break;
+                            }
                         }
-                    }
-                    referMei = StringUtil.toUpperCase(referMei);
-                    if (!tableInfo.getColumnInfos().containsKey(referMei)) {
-                        isRefer = true;
                     }
                 }
             }
 
             String c = "";
-            if (isRefer) {
-
+            if (isMeiRefer) {
                 c = "Column.refer('" + field + "', " + name + ", " + width + ", '" + css + "', '" + referMei + "'),";
-
             } else if (columnInfo.isPk()) {
-
                 c = "Column.cell('" + field + "', " + name + ", " + width + ", '" + css + "', " + formatter + "),";
-
             } else if (columnInfo.isUnique()) {
-
                 c = "Column.cell('" + field + "', " + name + ", " + width + ", '" + css + "', " + formatter + "),";
-
             } else if (isInsertDt || isUpdateDt || isInsertBy || isUpdateBy) {
-
                 c = "Column.cell('" + field + "', " + name + ", " + width + ", '" + css + "', " + formatter + "),";
-
             } else if (StringUtil.endsWith(inputFlagSuffixs, columnName)) {
-
                 c = "Column.check('" + field + "', " + name + ", " + width + ", '" + css + "'),";
-
             } else if (StringUtil.endsWith(inputDateSuffixs, columnName)) {
-
                 c = "Column.date('" + field + "', " + name + ", " + width + ", '" + css + "', " + formatter + "),";
-
             } else if (StringUtil.endsWith(inputDate8Suffixs, columnName) && columnInfo.getColumnSize() == 8) {
-
                 c = "Column.date8('" + field + "', " + name + ", " + width + ", '" + css + "', " + formatter + "),";
-
             } else if (StringUtil.endsWith(inputDateTimeSuffixs, columnName)) {
-
                 c = "Column.dateTime('" + field + "', " + name + ", " + width + ", '" + css + "'),";
-
             } else if (StringUtil.endsWith(inputMonthSuffixs, columnName)) {
-
                 c = "Column.month('" + field + "', " + name + ", " + width + ", '" + css + "', " + formatter + "),";
-
             } else if (StringUtil.endsWith(inputTimeSuffixs, columnName)) {
-
                 c = "Column.time('" + field + "', " + name + ", " + width + ", '" + css + "', " + formatter + "),";
-
             } else if (StringUtil.endsWith(inputFileSuffixs, columnName)) {
-
                 c = "Column.link('" + field + "', " + name + ", " + width + ", '" + css + "'),";
-
             } else if (StringUtil.endsWith(optionsSuffixs, columnName)) {
-
                 String options = "{ json: '" + json + "', paramkey: '" + optionParamKey + "', value: '" + optionValue
                         + "', label: '" + optionLabel + "' }";
                 c = "Column.select('" + field + "', " + name + ", " + width + ", '" + css + "', " + options + "),";
-
             } else if (StringUtil.endsWith(textareaSuffixs, columnName)) {
-
                 c = "Column.longText('" + field + "', " + name + ", " + width + ", '" + css + "', " + formatter + "),";
-
             } else if (columnInfo.getTypeName().equals("INT") || columnInfo.getTypeName().equals("DECIMAL")
                     || columnInfo.getTypeName().equals("DOUBLE") || columnInfo.getTypeName().equals("NUMBER")
                     || columnInfo.getTypeName().equals("NUMERIC")) {
@@ -557,7 +548,6 @@ public final class HtmlGenerator {
                 }
 
             } else {
-
                 c = "Column.text('" + field + "', " + name + ", " + width + ", '" + css + "', " + formatter + "),";
             }
 
