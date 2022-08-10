@@ -310,24 +310,30 @@ let Base = {
 		});
 
 		// 検索条件のトグル
-		let $h2 = $('body>div>form.search').parent().find('h2');
+		let $h2 = $('div.article>form.search').parent().find('h2');
 		$h2.html('<span id="h2Toggle" class="ui-accordion-header-icon ui-icon ui-icon-triangle-1-s"></span>' + $h2.html());
 		$h2.css('width', 'fit-content');
 		$(document).on('click', 'h2', function() {
-			if ($('[id="h2Toggle"]').hasClass('ui-icon-triangle-1-s')) {
-				$('[id="h2Toggle"]').addClass('ui-icon-triangle-1-e');
-				$('[id="h2Toggle"]').removeClass('ui-icon-triangle-1-s');
+			let $h2 = $(this);
+			let $h2Toggle = $h2.find('[id="h2Toggle"]');
+			if ($h2Toggle.hasClass('ui-icon-triangle-1-s')) {
+				$h2Toggle.addClass('ui-icon-triangle-1-e');
+				$h2Toggle.removeClass('ui-icon-triangle-1-s');
 			} else {
-				$('[id="h2Toggle"]').addClass('ui-icon-triangle-1-s');
-				$('[id="h2Toggle"]').removeClass('ui-icon-triangle-1-e');
+				$h2Toggle.addClass('ui-icon-triangle-1-s');
+				$h2Toggle.removeClass('ui-icon-triangle-1-e');
 			}
-			$(this).find('~form.search').toggle(500, function() {
+			$h2.find('~form.search').toggle(500, function() {
 				Base.resizeNav();
 			});
 		});
-		$('body>div>form.search button.search').on('click', function() {
-			if ($('[id="h2Toggle"]').hasClass('ui-icon-triangle-1-s')) {
-				$(this).closest('div.article').find('h2').click();
+		$('div.article>form.search button.search').on('click', function() {
+			let $button = $(this);
+			let $form = $button.closest('form');
+			let $h2 = $form.prev('h2');
+			let $h2Toggle = $h2.find('[id="h2Toggle"]');
+			if ($h2Toggle.hasClass('ui-icon-triangle-1-s')) {
+				$h2.click();
 			}
 		});
 
