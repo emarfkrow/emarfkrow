@@ -295,7 +295,8 @@ public final class HtmlGenerator {
         htmlFields(tableInfo, s, false, false);
         s.add("      </fieldset>");
         s.add("      <div class=\"buttons\">");
-        s.add("        <button type=\"reset\" th:text=\"#{common.reset}\">reset</button>");
+        s.add("        <button type=\"reset\" id=\"Reset" + pascal
+                + "\" th:text=\"#{common.reset}\" class=\"reset\">reset</button>");
         // 採番キーが２つ以上あれば新規ボタンは出力しない
         int numberingCount = 0;
         for (String primaryKey : tableInfo.getPrimaryKeys()) {
@@ -340,7 +341,8 @@ public final class HtmlGenerator {
                 + frozenColumn + "\" th:data-href=\"@{/model/" + pascal + ".html}\"></div>");
         s.add("      <div id=\"" + pascal + "Pager\"></div>");
         s.add("      <div class=\"buttons\">");
-        s.add("        <button type=\"button\" th:text=\"#{common.reset}\" onClick=\"$('[id=&quot;Search" + pascal
+        s.add("        <button type=\"button\" id=\"Reset" + pascal
+                + "S\" th:text=\"#{common.reset}\" class=\"reset\" onClick=\"$('[id=&quot;Search" + pascal
                 + "&quot;]').click();\">reset</button>");
         s.add("        <a th:href=\"@{" + pascal + "Search.xlsx(baseMei=#{" + pascal + "S.h2})}\" id=\"" + pascal
                 + "Search.xlsx\" th:text=\"#{common.xlsx}\" target=\"_blank\" tabindex=\"-1\">xlsx</a>");
@@ -655,7 +657,8 @@ public final class HtmlGenerator {
         }
 
         s.add("      <div class=\"buttons\">");
-        s.add("        <button type=\"button\" th:text=\"#{common.reset}\" onClick=\"Dialogate.refresh(event);\">reset</button>");
+        s.add("        <button type=\"button\" id=\"Reset" + entityName
+                + "\" th:text=\"#{common.reset}\" class=\"reset\" onClick=\"Dialogate.refresh(event);\">reset</button>");
         s.add("        <a th:href=\"@{" + entityName + "Get.xlsx(baseMei=#{" + entityName + ".h2})}\" id=\""
                 + entityName + "Get.xlsx\" th:text=\"#{common.xlsx}\" target=\"_blank\" tabindex=\"-1\">xlsx</a>");
         s.add("        <button id=\"Delete" + entityName + "\" class=\"delete\" data-action=\"" + entityName

@@ -239,6 +239,9 @@ let Base = {
 		$('form[name]').each(function() {
 			if (Base.getAuthz(this.name) < 2) {
 				$(this).find('button.delete, button.regist').hide();
+				if ($(this).hasClass('regist')) {
+					$(this).find('button.reset').hide();
+				}
 			}
 		});
 
@@ -323,21 +326,23 @@ let Base = {
 		});
 
 		// 検索条件のトグル
-		let $h2 = $('div.article>form.search').parent().find('h2');
-		$h2.html('<span id="h2Toggle" class="ui-accordion-header-icon ui-icon ui-icon-triangle-1-s"></span>' + $h2.html());
-		$h2.css('width', 'fit-content');
-		$(document).on('click', 'h2', function() {
+		let $h2s = $('div.article>form.search').parent().find('h2');
+		$h2s.each(function() {
 			let $h2 = $(this);
-			let $h2Toggle = $h2.find('[id="h2Toggle"]');
-			if ($h2Toggle.hasClass('ui-icon-triangle-1-s')) {
-				$h2Toggle.addClass('ui-icon-triangle-1-e');
-				$h2Toggle.removeClass('ui-icon-triangle-1-s');
-			} else {
-				$h2Toggle.addClass('ui-icon-triangle-1-s');
-				$h2Toggle.removeClass('ui-icon-triangle-1-e');
-			}
-			$h2.find('~form.search').toggle(500, function() {
-				Base.resizeNav();
+			$h2.html('<span id="h2Toggle" class="ui-accordion-header-icon ui-icon ui-icon-triangle-1-s"></span>' + $h2.html());
+			$h2.css('width', 'fit-content');
+			$h2.on('click', function() {
+				let $h2Toggle = $h2.find('[id="h2Toggle"]');
+				if ($h2Toggle.hasClass('ui-icon-triangle-1-s')) {
+					$h2Toggle.addClass('ui-icon-triangle-1-e');
+					$h2Toggle.removeClass('ui-icon-triangle-1-s');
+				} else {
+					$h2Toggle.addClass('ui-icon-triangle-1-s');
+					$h2Toggle.removeClass('ui-icon-triangle-1-e');
+				}
+				$h2.find('~form.search').toggle(500, function() {
+					Base.resizeNav();
+				});
 			});
 		});
 		$('div.article>form.search button.search').on('click', function() {

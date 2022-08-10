@@ -243,7 +243,7 @@ let Dialogate = {
 						if ($(this).val() != '') {
 							$(this).attr('readonly', true).attr('tabindex', '-1').addClass('readonly');
 						} else {
-							$(this).removeAttr('readonly').removeClass('readonly').removeAttr('tabindex');
+							$(this).removeAttr('readonly').removeAttr('tabindex').removeClass('readonly');
 							pkAll = false;
 						}
 					});
@@ -262,7 +262,7 @@ let Dialogate = {
 						if (pkAll) {
 							$(this).attr('readonly', true).attr('tabindex', '-1').addClass('readonly');
 						} else {
-							$(this).removeAttr('readonly').removeClass('readonly').removeAttr('tabindex');
+							$(this).removeAttr('readonly').removeAttr('tabindex').removeClass('readonly');
 						}
 					});
 
@@ -296,8 +296,12 @@ let Dialogate = {
 								Base.referMei($dialogDiv.find('span.refer'));
 							});
 						}
-					}
 
+						let authz = Base.getAuthz($registForm[0].name);
+						if (authz < 2) {
+							$registForm.find(':input').attr('readonly', true).attr('tabindex', '-1').addClass('readonly');
+						}
+					}
 
 					try {
 						eval(dialogId + 'Open()');

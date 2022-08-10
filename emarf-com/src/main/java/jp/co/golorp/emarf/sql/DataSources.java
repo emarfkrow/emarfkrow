@@ -66,7 +66,7 @@ public final class DataSources {
     private static Set<String[]> referPairs = new LinkedHashSet<String[]>();
 
     /** テーブルを評価しないテーブル名 */
-    private static String[] ignores;
+    private static String[] ignorePrefixs;
 
     /** 兄を設定しないテーブル名 */
     private static String[] eldests;
@@ -230,7 +230,7 @@ public final class DataSources {
             referPairs.add(kv);
         }
 
-        ignores = bundle.getString("BeanGenerator.ignores").split(",");
+        ignorePrefixs = bundle.getString("BeanGenerator.ignore.prefixs").split(",");
         eldests = bundle.getString("BeanGenerator.eldests").split(",");
         stepchilds = bundle.getString("BeanGenerator.stepchilds").split(",");
         youngests = bundle.getString("BeanGenerator.youngests").split(",");
@@ -485,8 +485,8 @@ public final class DataSources {
             String tableName = rs.getString("TABLE_NAME");
 
             boolean isIgnore = false;
-            for (String ignore : ignores) {
-                if (ignore.equals(tableName)) {
+            for (String ignorePrefix : ignorePrefixs) {
+                if (tableName.matches("^" + ignorePrefix + ".*$")) {
                     isIgnore = true;
                     break;
                 }
