@@ -71,4 +71,9 @@ public final class DataSourcesAssistPostgreSQL extends DataSourcesAssist {
         return sql + " limit " + rows + " offset " + firstRow;
     }
 
+    @Override
+    public String trimed(final String columnName) {
+        return null;
+    }
+
 }

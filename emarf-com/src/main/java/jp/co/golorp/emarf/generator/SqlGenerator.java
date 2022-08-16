@@ -76,7 +76,9 @@ public final class SqlGenerator {
                 sql = "      ";
             }
             if (columnInfo.getTypeName().equals("CHAR")) {
-                s.add(sql + "RTRIM (RTRIM (a." + assist.quoted(srcColumnName) + "), '　') AS " + srcColumnName);
+                String quoted = assist.quoted(srcColumnName);
+                String trimed = assist.trimed("a." + quoted);
+                s.add(sql + trimed + " AS " + srcColumnName);
             } else {
                 s.add(sql + "a." + assist.quoted(srcColumnName));
             }
@@ -132,7 +134,6 @@ public final class SqlGenerator {
                 }
             }
         }
-
         s.add("FROM");
         s.add("    " + tableName + " a ");
         s.add("WHERE");
@@ -166,7 +167,6 @@ public final class SqlGenerator {
                 s.add("    AND a." + quoted + " <= :" + snake + "_2 ");
             }
         }
-
         s.add("ORDER BY");
         if (tableInfo.getPrimaryKeys().size() > 0) {
             String orders = "";

@@ -73,4 +73,9 @@ public final class DataSourcesAssistMySQL extends DataSourcesAssist {
         return sql + " limit " + firstRow + ", " + rows;
     }
 
+    @Override
+    public String trimed(final String columnName) {
+        return "TRIM(TRAILING ' ' FROM " + columnName + ")";
+    }
+
 }

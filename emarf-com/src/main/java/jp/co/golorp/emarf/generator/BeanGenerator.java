@@ -395,8 +395,9 @@ public final class BeanGenerator {
                 sql = "      ";
             }
             if (columnInfo.getTypeName().equals("CHAR")) {
-                s.add("        sql += \"" + sql + "RTRIM (RTRIM (a." + assist.quoteEscaped(srcColumnName)
-                        + "), '　') AS " + srcColumnName + " \\n\";");
+                String quoteEscaped = assist.quoteEscaped(srcColumnName);
+                String trimed = assist.trimed("a." + quoteEscaped);
+                s.add("        sql += \"" + sql + trimed + " AS " + srcColumnName + " \\n\";");
             } else {
                 s.add("        sql += \"" + sql + "a." + assist.quoteEscaped(srcColumnName) + " \\n\";");
             }

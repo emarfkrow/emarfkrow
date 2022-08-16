@@ -168,4 +168,12 @@ public class DataSourcesAssistOracle extends DataSourcesAssist {
         return pagedSql;
     }
 
+    /**
+     * @param columnName カラム名
+     * @return 全半角スペースのトリム文字列
+     */
+    public String trimed(final String columnName) {
+        return "RTRIM (RTRIM (" + columnName + "), '　')";
+    }
+
 }
