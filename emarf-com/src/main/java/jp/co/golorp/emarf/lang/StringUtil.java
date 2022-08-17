@@ -53,10 +53,16 @@ public final class StringUtil {
         // password→password、EMAIL→EMAIL、sampleY_1→sample_Y_1、MUser→MUser）
         String snake = s.replaceAll("([0-9a-z])([A-Z])", "$1_$2");
 
+        // 小文字が含まれる場合、大文字が連続するなら「_」を挿入
+        if (snake.matches(".+[a-z].+")) {
+            snake = snake.replaceAll("([A-Z])([A-Z])", "$1_$2");
+        }
+
         // 直後に小文字が続く大文字の前に「_」を挿入
         // password→password、EMAIL→EMAIL、sampleY_1→sample_Y_1、MUser→M_User）
         snake = snake.replaceAll("([A-Z][a-z])", "_$1");
 
+        // 数字の連続の前に「_」を挿入
         snake = snake.replaceAll("([0-9]+)", "_$1");
 
         //先頭から続く「_」を除去。「_」が連続する場合は一つに。「-」は「_」に変更。
