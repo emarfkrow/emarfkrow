@@ -300,6 +300,7 @@ let Dialogate = {
 						let authz = Base.getAuthz($registForm[0].name);
 						if (authz < 2) {
 							$registForm.find(':input').attr('readonly', true).attr('tabindex', '-1').addClass('readonly');
+							$registForm.find('a.refer').hide();
 						}
 					}
 
