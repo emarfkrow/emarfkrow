@@ -121,16 +121,19 @@ $(function() {
 					++frozenColumnAdd;
 				} else {
 					// ダイアログでなければ（親画面なら）詳細リンク列を追加
-					columns.unshift({
-						id: 'link',
-						name: Messages['common.grid.link.title'],
-						field: 'field',
-						sortable: true,
-						width: Messages['common.grid.link.title'].length * 20,
-						label: Messages['common.grid.link.label'],
-						formatter: Slick.Formatters.Extends.Link
-					});
-					++frozenColumnAdd;
+					// 主キーが１つ以上ある場合のみ
+					if ($gridDiv.attr('data-frozenColumn') * 1 >= 0) {
+						columns.unshift({
+							id: 'link',
+							name: Messages['common.grid.link.title'],
+							field: 'field',
+							sortable: true,
+							width: Messages['common.grid.link.title'].length * 20,
+							label: Messages['common.grid.link.label'],
+							formatter: Slick.Formatters.Extends.Link
+						});
+						++frozenColumnAdd;
+					}
 				}
 
 				// checkbox指定で、ダイアログ内でないなら、最左列にチェックボックス列を追加
@@ -143,7 +146,7 @@ $(function() {
 			} else if (selectionMode == 'link') {
 				// リンクでの行選択の場合（詳細画面の場合）
 
-				// 最左列に詳細リンク列を追加
+				//最左列に詳細リンク列を追加
 				columns.unshift({
 					id: 'link',
 					name: Messages['common.grid.link.title'],
