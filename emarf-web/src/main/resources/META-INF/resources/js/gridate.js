@@ -86,9 +86,17 @@ $(function() {
 			//$.getScript('./' + divId + 'Columns.js', function() {
 
 			let gridColumns = eval(divId + 'Columns');
-
 			var columns = $.extend(true, [], gridColumns);
 
+			//主キー列かユニーク列ならエディタをクリア
+			for (let i in columns) {
+				let column = columns[i];
+				if (column.class == 'primaryKey' || column.class == 'uniqueKey') {
+					column.editor = null;
+				}
+			}
+
+			//登録権限なしなら列のエディタをクリア
 			let form = $(this).closest('form[name]')[0];
 			let authz = Base.getAuthz(form.name);
 			if (authz < 2) {

@@ -520,10 +520,10 @@ public final class HtmlGenerator {
             String c = "";
             if (isMeiRefer) {
                 c = "Column.refer('" + field + "', " + name + ", " + width + ", '" + css + "', '" + referMei + "'),";
-            } else if (columnInfo.isPk()) {
-                c = "Column.cell('" + field + "', " + name + ", " + width + ", '" + css + "', " + formatter + "),";
-            } else if (columnInfo.isUnique()) {
-                c = "Column.cell('" + field + "', " + name + ", " + width + ", '" + css + "', " + formatter + "),";
+                //            } else if (columnInfo.isPk()) {
+                //                c = "Column.cell('" + field + "', " + name + ", " + width + ", '" + css + "', " + formatter + "),";
+                //            } else if (columnInfo.isUnique()) {
+                //                c = "Column.cell('" + field + "', " + name + ", " + width + ", '" + css + "', " + formatter + "),";
             } else if (isInsertDt || isUpdateDt || isInsertBy || isUpdateBy) {
                 c = "Column.cell('" + field + "', " + name + ", " + width + ", '" + css + "', " + formatter + "),";
             } else if (StringUtil.endsWith(inputFlagSuffixs, columnName)) {
