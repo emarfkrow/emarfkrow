@@ -137,6 +137,8 @@ public final class FormValidator {
                     String reName = Messages.get(regexpMatcher.group(1));
                     if (reName != null && reName.length() > 0) {
                         message = message.replace(regexpMatcher.group(), reName);
+                    } else {
+                        message = message.replaceAll("\\~\\~\\((.+?)\\)\\?\\~\\~", "$1");
                     }
                 }
 

@@ -29,6 +29,18 @@ $(function() {
 
 	$(document).on('keypress', Nextize.srcSelector, function(event) {
 
+		// 検索フォームならCtrl+Enterで実行
+		if (event.keyCode == 10) {
+			let entered = event.target;
+			let $form = $(entered).closest('form');
+			if ($form.length > 0) {
+				if ($form.find('button.search').length > 0) {
+					$form.find('button.search')[0].click();
+				}
+			}
+			return true;
+		}
+
 		// エンターキーでなければ終了
 		if (event.keyCode != 13) {
 			return true;

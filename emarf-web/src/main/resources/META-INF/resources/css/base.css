@@ -211,7 +211,7 @@ input[type="datetime-local"] {
 }
 
 [role="dialog"] [id$="Grid"] {
-	height: 150px;
+	height: 300px;
 	width: 1210px;
 }
 
@@ -262,4 +262,8 @@ span.refer::before {
 
 .readonly {
 	border-style: none;
+	pointer-events: none;
+	-webkit-appearance: none;/* ベンダープレフィックス(Google Chrome、Safari用) */
+	-moz-appearance: none; /* ベンダープレフィックス(Firefox用) */
+	appearance: none; /* 標準のスタイルを無効にする */
 }

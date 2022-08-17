@@ -22,6 +22,19 @@ limitations under the License.
 console.trace = function() { }
 console.debug = function() { }
 
+String.prototype.bytes = function() {
+	var length = 0;
+	for (var i = 0; i < this.length; i++) {
+		var c = this.charCodeAt(i);
+		if ((c >= 0x0 && c < 0x81) || (c === 0xf8f0) || (c >= 0xff61 && c < 0xffa0) || (c >= 0xf8f1 && c < 0xf8f4)) {
+			length += 1;
+		} else {
+			length += 2;
+		}
+	}
+	return length;
+};
+
 // １．DOM構築後
 $(function() {
 
@@ -226,6 +239,11 @@ let Base = {
 		$('form[name]').each(function() {
 			if (Base.getAuthz(this.name) < 2) {
 				$(this).find('button.delete, button.regist').hide();
+				if ($(this).hasClass('regist')) {
+					$(this).find('button.reset').hide();
+				} else {
+					$(this).find('a.anew').hide();
+				}
 			}
 		});
 
@@ -242,9 +260,12 @@ let Base = {
 				return;
 			}
 			let maxlength = $(this).attr('maxlength');
-			let width = maxlength * 0.6;
-			if (width > 30) {
-				width = 30;
+			let width = maxlength * 1;
+			if (width > 10) {
+				width *= 0.6;
+				if (width > 30) {
+					width = 30;
+				}
 			}
 			$(this).css('width', width + 'rem');
 		});
@@ -307,20 +328,33 @@ let Base = {
 		});
 
 		// 検索条件のトグル
-		let $h2 = $('body>div>form.search').parent().find('h2');
-		$h2.html('<span id="h2Toggle" class="ui-accordion-header-icon ui-icon ui-icon-triangle-1-s"></span>' + $h2.html());
-		$h2.css('width', 'fit-content');
-		$(document).on('click', 'h2', function() {
-			if ($('[id="h2Toggle"]').hasClass('ui-icon-triangle-1-s')) {
-				$('[id="h2Toggle"]').addClass('ui-icon-triangle-1-e');
-				$('[id="h2Toggle"]').removeClass('ui-icon-triangle-1-s');
-			} else {
-				$('[id="h2Toggle"]').addClass('ui-icon-triangle-1-s');
-				$('[id="h2Toggle"]').removeClass('ui-icon-triangle-1-e');
-			}
-			$(this).find('~form.search').toggle(500, function() {
-				Base.resizeNav();
+		let $h2s = $('div.article>form.search').parent().find('h2');
+		$h2s.each(function() {
+			let $h2 = $(this);
+			$h2.html('<span id="h2Toggle" class="ui-accordion-header-icon ui-icon ui-icon-triangle-1-s"></span>' + $h2.html());
+			$h2.css('width', 'fit-content');
+			$h2.on('click', function() {
+				let $h2Toggle = $h2.find('[id="h2Toggle"]');
+				if ($h2Toggle.hasClass('ui-icon-triangle-1-s')) {
+					$h2Toggle.addClass('ui-icon-triangle-1-e');
+					$h2Toggle.removeClass('ui-icon-triangle-1-s');
+				} else {
+					$h2Toggle.addClass('ui-icon-triangle-1-s');
+					$h2Toggle.removeClass('ui-icon-triangle-1-e');
+				}
+				$h2.find('~form.search').toggle(500, function() {
+					Base.resizeNav();
+				});
 			});
+		});
+		$('div.article>form.search button.search').on('click', function() {
+			let $button = $(this);
+			let $form = $button.closest('form');
+			let $h2 = $form.prev('h2');
+			let $h2Toggle = $h2.find('[id="h2Toggle"]');
+			if ($h2Toggle.hasClass('ui-icon-triangle-1-s')) {
+				$h2.click();
+			}
 		});
 
 		Base.resizeNav();

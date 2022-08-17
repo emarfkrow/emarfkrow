@@ -42,10 +42,13 @@ public final class HtmlGenerator {
     private static ResourceBundle bundle;
 
     /** グリッド列幅ピクセル乗数 */
-    private static final int COLUMN_WIDTH_PX_MULTIPLIER = 10;
+    private static final int COLUMN_WIDTH_PX_MULTIPLIER = 15;
 
     /** ページ行数 */
     private static String rows;
+
+    /** 数値列で自動採番しないサフィックス */
+    private static String[] intNoNumberingSuffixs;
 
     /** 登録日時カラム名 */
     private static String insertDt;
@@ -61,11 +64,11 @@ public final class HtmlGenerator {
     /** データjson */
     private static String json;
     /** options項目キー */
-    private static String optionParamKey;
+    private static String optP;
     /** options項目値 */
-    private static String optionValue;
+    private static String optV;
     /** options項目ラベル */
-    private static String optionLabel;
+    private static String optL;
 
     /** テキストエリア項目サフィックス */
     private static String[] textareaSuffixs;
@@ -105,6 +108,8 @@ public final class HtmlGenerator {
 
         rows = bundle.getString("BeanGenerator.rows");
 
+        intNoNumberingSuffixs = bundle.getString("BeanGenerator.int.nonumbering.suffixs").split(",");
+
         insertDt = bundle.getString("BeanGenerator.insert_dt");
         insertBy = bundle.getString("BeanGenerator.insert_by");
         updateDt = bundle.getString("BeanGenerator.update_dt");
@@ -112,9 +117,9 @@ public final class HtmlGenerator {
 
         optionsSuffixs = bundle.getString("BeanGenerator.options.suffixs").split(",");
         json = bundle.getString("BeanGenerator.options.json");
-        optionParamKey = bundle.getString("BeanGenerator.options.paramkey");
-        optionValue = bundle.getString("BeanGenerator.options.value");
-        optionLabel = bundle.getString("BeanGenerator.options.label");
+        optP = bundle.getString("BeanGenerator.options.paramkey");
+        optV = bundle.getString("BeanGenerator.options.value");
+        optL = bundle.getString("BeanGenerator.options.label");
 
         textareaSuffixs = bundle.getString("BeanGenerator.textarea.suffixs").split(",");
 
@@ -290,7 +295,8 @@ public final class HtmlGenerator {
         htmlFields(tableInfo, s, false, false);
         s.add("      </fieldset>");
         s.add("      <div class=\"buttons\">");
-        s.add("        <button type=\"reset\" th:text=\"#{common.reset}\">reset</button>");
+        s.add("        <button type=\"reset\" id=\"Reset" + pascal
+                + "\" th:text=\"#{common.reset}\" class=\"reset\">reset</button>");
         // 採番キーが２つ以上あれば新規ボタンは出力しない
         int numberingCount = 0;
         for (String primaryKey : tableInfo.getPrimaryKeys()) {
@@ -301,7 +307,8 @@ public final class HtmlGenerator {
         }
         if (numberingCount < 2) {
             s.add("        <a th:href=\"@{/model/" + pascal + ".html}\" id=\"" + pascal
-                    + "\" target=\"dialog\" th:text=\"#{" + pascal + ".add}\" tabindex=\"-1\">" + remarks + "</a>");
+                    + "\" class=\"anew\" target=\"dialog\" th:text=\"#{" + pascal + ".add}\" tabindex=\"-1\">" + remarks
+                    + "</a>");
         }
         s.add("      </div>");
         s.add("      <div class=\"submits\">");
@@ -335,10 +342,11 @@ public final class HtmlGenerator {
                 + frozenColumn + "\" th:data-href=\"@{/model/" + pascal + ".html}\"></div>");
         s.add("      <div id=\"" + pascal + "Pager\"></div>");
         s.add("      <div class=\"buttons\">");
-        s.add("        <button type=\"button\" th:text=\"#{common.reset}\" onClick=\"$('[id=&quot;Search" + pascal
+        s.add("        <button type=\"button\" id=\"Reset" + pascal
+                + "S\" th:text=\"#{common.reset}\" class=\"reset\" onClick=\"$('[id=&quot;Search" + pascal
                 + "&quot;]').click();\">reset</button>");
         s.add("        <a th:href=\"@{" + pascal + "Search.xlsx(baseMei=#{" + pascal + "S.h2})}\" id=\"" + pascal
-                + "Search.xlsx\" th:text=\"#{common.xlsx}\" tabindex=\"-1\">xlsx</a>");
+                + "Search.xlsx\" th:text=\"#{common.xlsx}\" target=\"_blank\" tabindex=\"-1\">xlsx</a>");
         s.add("        <button id=\"Delete" + pascal + "S\" class=\"delete selectRows\" data-action=\"" + pascal
                 + "SDelete.ajax\" th:text=\"#{common.delete}\" tabindex=\"-1\">削除</button>");
         s.add("      </div>");
@@ -435,6 +443,8 @@ public final class HtmlGenerator {
         s.add("");
         s.add("let " + entityName + "GridColumns = [");
 
+        String opt = "{ json: '" + json + "', paramkey: '" + optP + "', value: '" + optV + "', label: '" + optL + "' }";
+
         for (ColumnInfo columnInfo : tableInfo.getColumnInfos().values()) {
 
             String columnName = columnInfo.getColumnName();
@@ -445,6 +455,9 @@ public final class HtmlGenerator {
             String field = columnName;
 
             int width = columnInfo.getColumnSize() * COLUMN_WIDTH_PX_MULTIPLIER;
+            if (width < 30) {
+                width = 30;
+            }
             if (width > 300) {
                 width = 300;
             }
@@ -468,81 +481,73 @@ public final class HtmlGenerator {
                 formatter = "Slick.Formatters.Extends.DateTime";
             }
 
-            boolean isRefer = false;
+            // 名称列を参照先から参照するか
+            boolean isMeiRefer = false;
+
+            // 参照名の列名
             String referMei = null;
+
+            // 参照テーブルが設定されている場合
             TableInfo referInfo = columnInfo.getReferInfo();
             if (referInfo != null) {
+
+                isMeiRefer = true;
+
+                // カラム名が組み合わせキーのいずれかに合致する場合
                 if (StringUtil.endsWith(referPairs, columnName)) {
-                    referMei = columnName;
+
+                    // 参照設定の組み合わせでループ
                     for (String[] suffix : referPairs) {
-                        if (referMei.matches("(?i).+" + suffix[0] + "$")) {
-                            referMei = referMei.replaceAll("(?i)" + suffix[0] + "$", suffix[1]);
-                            break;
+                        String keySuffix = suffix[0];
+                        String meiSuffix = suffix[1];
+
+                        // カラム名がキー接尾辞に合致する場合
+                        if (columnName.matches("(?i).+" + keySuffix + "$")) {
+
+                            // カラム名の末尾を名称列サフィックスに変換
+                            referMei = columnName.replaceAll("(?i)" + keySuffix + "$", meiSuffix);
+
+                            // 名称列がテーブルに含まれていない場合は参照先から名称を取得する
+                            if (tableInfo.getColumnInfos().containsKey(referMei)) {
+                                isMeiRefer = false;
+                                break;
+                            }
                         }
-                    }
-                    referMei = StringUtil.toUpperCase(referMei);
-                    if (!tableInfo.getColumnInfos().containsKey(referMei)) {
-                        isRefer = true;
                     }
                 }
             }
 
             String c = "";
-            if (isRefer) {
-
+            if (isMeiRefer) {
                 c = "Column.refer('" + field + "', " + name + ", " + width + ", '" + css + "', '" + referMei + "'),";
-
             } else if (columnInfo.isPk()) {
-
                 c = "Column.cell('" + field + "', " + name + ", " + width + ", '" + css + "', " + formatter + "),";
-
             } else if (columnInfo.isUnique()) {
-
                 c = "Column.cell('" + field + "', " + name + ", " + width + ", '" + css + "', " + formatter + "),";
-
             } else if (isInsertDt || isUpdateDt || isInsertBy || isUpdateBy) {
-
                 c = "Column.cell('" + field + "', " + name + ", " + width + ", '" + css + "', " + formatter + "),";
-
             } else if (StringUtil.endsWith(inputFlagSuffixs, columnName)) {
-
                 c = "Column.check('" + field + "', " + name + ", " + width + ", '" + css + "'),";
-
             } else if (StringUtil.endsWith(inputDateSuffixs, columnName)) {
-
                 c = "Column.date('" + field + "', " + name + ", " + width + ", '" + css + "', " + formatter + "),";
-
-            } else if (StringUtil.endsWith(inputDate8Suffixs, columnName)) {
-
+            } else if (StringUtil.endsWith(inputDate8Suffixs, columnName) && columnInfo.getColumnSize() == 8) {
                 c = "Column.date8('" + field + "', " + name + ", " + width + ", '" + css + "', " + formatter + "),";
-
             } else if (StringUtil.endsWith(inputDateTimeSuffixs, columnName)) {
-
                 c = "Column.dateTime('" + field + "', " + name + ", " + width + ", '" + css + "'),";
-
             } else if (StringUtil.endsWith(inputMonthSuffixs, columnName)) {
-
                 c = "Column.month('" + field + "', " + name + ", " + width + ", '" + css + "', " + formatter + "),";
-
             } else if (StringUtil.endsWith(inputTimeSuffixs, columnName)) {
-
                 c = "Column.time('" + field + "', " + name + ", " + width + ", '" + css + "', " + formatter + "),";
-
             } else if (StringUtil.endsWith(inputFileSuffixs, columnName)) {
-
                 c = "Column.link('" + field + "', " + name + ", " + width + ", '" + css + "'),";
-
             } else if (StringUtil.endsWith(optionsSuffixs, columnName)) {
-
-                String options = "{ json: '" + json + "', paramkey: '" + optionParamKey + "', value: '" + optionValue
-                        + "', label: '" + optionLabel + "' }";
-                c = "Column.select('" + field + "', " + name + ", " + width + ", '" + css + "', " + options + "),";
-
+                c = "Column.select('" + field + "', " + name + ", " + width + ", '" + css + "', " + opt + "),";
             } else if (StringUtil.endsWith(textareaSuffixs, columnName)) {
-
                 c = "Column.longText('" + field + "', " + name + ", " + width + ", '" + css + "', " + formatter + "),";
-
-            } else if (columnInfo.getTypeName().equals("DECIMAL")) {
+            } else if ((columnInfo.getTypeName().equals("INT") || columnInfo.getTypeName().equals("DECIMAL")
+                    || columnInfo.getTypeName().equals("DOUBLE") || columnInfo.getTypeName().equals("NUMBER")
+                    || columnInfo.getTypeName().equals("NUMERIC"))
+                    && !StringUtil.endsWith(intNoNumberingSuffixs, columnInfo.getColumnName())) {
 
                 if (columnInfo.getDecimalDigits() == 3) {
                     c = "Column.dec3('" + field + "', " + name + ", " + width + ", '" + css + "', " + formatter + "),";
@@ -555,7 +560,6 @@ public final class HtmlGenerator {
                 }
 
             } else {
-
                 c = "Column.text('" + field + "', " + name + ", " + width + ", '" + css + "', " + formatter + "),";
             }
 
@@ -654,9 +658,10 @@ public final class HtmlGenerator {
         }
 
         s.add("      <div class=\"buttons\">");
-        s.add("        <button type=\"button\" th:text=\"#{common.reset}\" onClick=\"Dialogate.refresh(event);\">reset</button>");
+        s.add("        <button type=\"button\" id=\"Reset" + entityName
+                + "\" th:text=\"#{common.reset}\" class=\"reset\" onClick=\"Dialogate.refresh(event);\">reset</button>");
         s.add("        <a th:href=\"@{" + entityName + "Get.xlsx(baseMei=#{" + entityName + ".h2})}\" id=\""
-                + entityName + "Get.xlsx\" th:text=\"#{common.xlsx}\" tabindex=\"-1\">xlsx</a>");
+                + entityName + "Get.xlsx\" th:text=\"#{common.xlsx}\" target=\"_blank\" tabindex=\"-1\">xlsx</a>");
         s.add("        <button id=\"Delete" + entityName + "\" class=\"delete\" data-action=\"" + entityName
                 + "Delete.ajax\" th:text=\"#{common.delete}\" tabindex=\"-1\">削除</button>");
         s.add("      </div>");
@@ -775,7 +780,7 @@ public final class HtmlGenerator {
                 if (StringUtil.endsWith(inputDateSuffixs, columnName)) { // 日付項目
                     //type = "date";
                     format = "";
-                } else if (StringUtil.endsWith(inputDate8Suffixs, columnName)) { // 8桁日付項目
+                } else if (StringUtil.endsWith(inputDate8Suffixs, columnName) && columnInfo.getColumnSize() == 8) { // 8桁日付項目
                     //type = "date";
                     format = "yymmdd";
                 } else if (StringUtil.endsWith(inputDateTimeSuffixs, columnName)) { // 日時項目
@@ -802,7 +807,7 @@ public final class HtmlGenerator {
 
                 if (StringUtil.endsWith(inputDateSuffixs, columnName)) { // 日付項目
                     css += " datepicker";
-                } else if (StringUtil.endsWith(inputDate8Suffixs, columnName)) { // 8桁日付項目
+                } else if (StringUtil.endsWith(inputDate8Suffixs, columnName) && columnInfo.getColumnSize() == 8) { // 8桁日付項目
                     css += " datepicker";
                 }
 
@@ -967,9 +972,9 @@ public final class HtmlGenerator {
         if (!isPrimariKey) {
             primaryKey = "";
         }
-        s.add("          <fieldset id=\"" + id + "List\" data-options=\"" + json + "\" data-optionParams=\""
-                + optionParamKey + ":" + columnName + "\" data-optionValue=\"" + optionValue + "\" data-optionLabel=\""
-                + optionLabel + "\"" + primaryKey + ">");
+        s.add("          <fieldset id=\"" + id + "List\" data-options=\"" + json + "\" data-optionParams=\"" + optP
+                + ":" + columnName + "\" data-optionValue=\"" + optV + "\" data-optionLabel=\"" + optL + "\""
+                + primaryKey + ">");
         s.add("            <legend th:text=\"#{" + id + "}\">" + remarks + "</legend>");
         s.add("          </fieldset>");
     }

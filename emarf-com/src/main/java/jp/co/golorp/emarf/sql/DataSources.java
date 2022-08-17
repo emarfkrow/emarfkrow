@@ -23,6 +23,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -65,19 +66,28 @@ public final class DataSources {
     private static Set<String[]> referPairs = new LinkedHashSet<String[]>();
 
     /** テーブルを評価しないテーブル名 */
-    private static String[] ignores;
+    private static String[] ignorePrefixs;
 
-    /** 他のテーブルの兄弟テーブルにしないテーブル名 */
+    /** 兄を設定しないテーブル名 */
     private static String[] eldests;
 
-    /** 弟テーブルを設定しないテーブル名 */
-    private static String[] onlychilds;
+    /** 繰上りの弟モデルのテーブル名 */
+    private static String[] stepchilds;
 
-    /** 子モデルに設定しないテーブル名 */
-    private static String[] foundlings;
+    /** 弟を設定しないテーブル名 */
+    private static String[] youngests;
+
+    /** 子を設定しないテーブル名 */
+    private static String[] dinks;
+
+    /** 親を設定しないテーブル名 */
+    private static String[] orphans;
 
     /** 列評価をスキップする列名 */
     private static String skipcolumn;
+
+    /** 数値列で自動採番しないサフィックス */
+    private static String[] intNoNumberingSuffixs;
 
     /** 固定長列で自動採番のサフィックス */
     private static String[] charNumberingSuffixs;
@@ -220,11 +230,14 @@ public final class DataSources {
             referPairs.add(kv);
         }
 
-        ignores = bundle.getString("BeanGenerator.ignores").split(",");
+        ignorePrefixs = bundle.getString("BeanGenerator.ignore.prefixs").split(",");
         eldests = bundle.getString("BeanGenerator.eldests").split(",");
-        onlychilds = bundle.getString("BeanGenerator.onlychilds").split(",");
-        foundlings = bundle.getString("BeanGenerator.foundlings").split(",");
+        stepchilds = bundle.getString("BeanGenerator.stepchilds").split(",");
+        youngests = bundle.getString("BeanGenerator.youngests").split(",");
+        dinks = bundle.getString("BeanGenerator.dinks").split(",");
+        orphans = bundle.getString("BeanGenerator.orphans").split(",");
         skipcolumn = bundle.getString("BeanGenerator.skipcolumn");
+        intNoNumberingSuffixs = bundle.getString("BeanGenerator.int.nonumbering.suffixs").split(",");
         charNumberingSuffixs = bundle.getString("BeanGenerator.char.numbering.suffixs").split(",");
 
         // テーブル情報の取得
@@ -252,27 +265,6 @@ public final class DataSources {
                 ResultSet columns = metaData.getColumns(null, null, tableInfo.getTableName(), null);
 
                 while (columns.next()) {
-
-                    //                    LOG.debug("TABLE_CAT: " + columns.getString("TABLE_CAT"));
-                    //                    LOG.debug("TABLE_SCHEM: " + columns.getString("TABLE_SCHEM"));
-                    //                    LOG.debug("TABLE_NAME: " + columns.getString("TABLE_NAME"));
-                    //                    LOG.debug("COLUMN_NAME: " + columns.getString("COLUMN_NAME"));
-                    //                    LOG.debug("DATA_TYPE: " + String.valueOf(columns.getInt("DATA_TYPE")));
-                    //                    LOG.debug("TYPE_NAME: " + columns.getString("TYPE_NAME"));
-                    //                    LOG.debug("COLUMN_SIZE: " + String.valueOf(columns.getInt("COLUMN_SIZE")));
-                    //                    LOG.debug("DECIMAL_DIGITS: " + String.valueOf(columns.getInt("DECIMAL_DIGITS")));
-                    //                    LOG.debug("NUM_PREC_RADIX: " + String.valueOf(columns.getInt("NUM_PREC_RADIX")));
-                    //                    LOG.debug("NULLABLE: " + String.valueOf(columns.getInt("NULLABLE")));
-                    //                    LOG.debug("REMARKS: " + columns.getString("REMARKS"));
-                    //                    LOG.debug("COLUMN_DEF: " + columns.getString("COLUMN_DEF"));
-                    //                    LOG.debug("CHAR_OCTET_LENGTH: " + String.valueOf(columns.getInt("CHAR_OCTET_LENGTH")));
-                    //                    LOG.debug("ORDINAL_POSITION: " + String.valueOf(columns.getInt("ORDINAL_POSITION")));
-                    //                    LOG.debug("IS_NULLABLE: " + columns.getString("IS_NULLABLE"));
-                    //                    LOG.debug("SCOPE_CATALOG: " + columns.getString("SCOPE_CATALOG"));
-                    //                    LOG.debug("SCOPE_SCHEMA: " + columns.getString("SCOPE_SCHEMA"));
-                    //                    LOG.debug("SCOPE_TABLE: " + columns.getString("SCOPE_TABLE"));
-                    //                    LOG.debug("SOURCE_DATA_TYPE: " + String.valueOf(columns.getShort("SOURCE_DATA_TYPE")));
-                    //                    LOG.debug("IS_AUTOINCREMENT: " + columns.getString("IS_AUTOINCREMENT"));
 
                     // カラム名が合致しなければスキップ
                     String columnName = columns.getString("COLUMN_NAME");
@@ -354,7 +346,58 @@ public final class DataSources {
         //参照モデルの評価
         addReferTable(tableInfos);
 
+        log(tableInfos);
+
         return tableInfos;
+    }
+
+    /**
+     * @param tableInfos
+     */
+    private static void log(final List<TableInfo> tableInfos) {
+
+        LOG.info("\t■RelationInfos:");
+
+        for (TableInfo t : tableInfos) {
+            if (t.getBrosInfos().size() == 0 && t.getChildInfos().size() == 0) {
+                continue;
+            }
+            LOG.info("\t\t" + t.getTableName() + " " + t.getPrimaryKeys());
+            if (t.getBrosInfos().size() > 0) {
+                LOG.info("\t\t\tBrosInfos:");
+                for (TableInfo table : t.getBrosInfos()) {
+                    LOG.info("\t\t\t\t" + table.getTableName() + " " + table.getPrimaryKeys());
+                }
+            }
+            if (t.getChildInfos().size() > 0) {
+                LOG.info("\t\t\tChildInfos:");
+                for (TableInfo table : t.getChildInfos()) {
+                    LOG.info("\t\t\t\t" + table.getTableName() + " " + table.getPrimaryKeys());
+                }
+            }
+        }
+
+        LOG.info("\t■ReferInfos:");
+
+        for (TableInfo t : tableInfos) {
+            Map<String, TableInfo> referInfos = new LinkedHashMap<String, TableInfo>();
+            for (ColumnInfo columnInfo : t.getColumnInfos().values()) {
+                if (columnInfo.getReferInfo() != null) {
+                    referInfos.put(columnInfo.getColumnName(), columnInfo.getReferInfo());
+                }
+            }
+            if (referInfos.size() == 0) {
+                continue;
+            }
+            if (referInfos.size() > 0) {
+                LOG.info("\t\t" + t.getTableName());
+                for (Entry<String, TableInfo> e : referInfos.entrySet()) {
+                    String columnName = e.getKey();
+                    TableInfo table = e.getValue();
+                    LOG.info("\t\t\t" + columnName + " = " + table.getTableName() + " " + table.getPrimaryKeys());
+                }
+            }
+        }
     }
 
     /**
@@ -422,49 +465,6 @@ public final class DataSources {
                     tableInfo.getPrimaryKeys().add(columnName);
                 }
             }
-
-            //            ResultSet rs2 = metaData.getIndexInfo(null, null, tableInfo.getTableName(), true, false);
-            //
-            //            while (rs2.next()) {
-            //
-            //                LOG.debug("■INDEX_NAME: " + rs2.getString("INDEX_NAME"));
-            //
-            //                LOG.debug("    TABLE_CAT: " + rs2.getString("TABLE_CAT"));
-            //                LOG.debug("    TABLE_SCHEM: " + rs2.getString("TABLE_SCHEM"));
-            //                LOG.debug("    TABLE_NAME: " + rs2.getString("TABLE_NAME"));
-            //                LOG.debug("    NON_UNIQUE: " + String.valueOf(rs2.getBoolean("NON_UNIQUE")));
-            //                LOG.debug("    INDEX_QUALIFIER: " + rs2.getString("INDEX_QUALIFIER"));
-            //                LOG.debug("    TYPE: " + String.valueOf(rs2.getShort("TYPE")));
-            //                LOG.debug("    ORDINAL_POSITION: " + String.valueOf(rs2.getShort("ORDINAL_POSITION")));
-            //                LOG.debug("    COLUMN_NAME: " + rs2.getString("COLUMN_NAME"));
-            //                LOG.debug("    ASC_OR_DESC: " + rs2.getString("ASC_OR_DESC"));
-            //                LOG.debug("    CARDINALITY: " + String.valueOf(rs2.getLong("CARDINALITY")));
-            //                LOG.debug("    PAGES: " + String.valueOf(rs2.getLong("PAGES")));
-            //                LOG.debug("    FILTER_CONDITION: " + rs2.getString("FILTER_CONDITION"));
-            //
-            //                String columnName = rs2.getString("COLUMN_NAME");
-            //
-            //                if (columnName.matches(skipcolumn) || !columnName.matches("^[0-9A-Za-z\\_\\-]+$")) {
-            //                    continue;
-            //                }
-            //
-            //                short keySeq = rs2.getShort("KEY_SEQ");
-            //
-            //                while (primaryKeys.size() <= keySeq) {
-            //                    primaryKeys.add("");
-            //                }
-            //
-            //                primaryKeys.set(keySeq, columnName);
-            //            }
-            //
-            //            rs2.close();
-            //
-            //            // 一部DBではKEY_SEQが「[1]origin」なので「[0]origin」に詰め替え
-            //            for (String primaryKey : primaryKeys) {
-            //                if (primaryKey.length() > 0) {
-            //                    tableInfo.getPrimaryKeys().add(primaryKey);
-            //                }
-            //            }
         }
     }
 
@@ -485,8 +485,8 @@ public final class DataSources {
             String tableName = rs.getString("TABLE_NAME");
 
             boolean isIgnore = false;
-            for (String ignore : ignores) {
-                if (ignore.equals(tableName)) {
+            for (String ignorePrefix : ignorePrefixs) {
+                if (tableName.matches("^" + ignorePrefix + ".*$")) {
                     isIgnore = true;
                     break;
                 }
@@ -539,7 +539,9 @@ public final class DataSources {
             dataType = "Integer";
 
             if (columnInfo.isPk()) {
-                columnInfo.setNumbering(true);
+                if (!StringUtil.endsWith(intNoNumberingSuffixs, columnInfo.getColumnName())) {
+                    columnInfo.setNumbering(true);
+                }
             }
 
         } else if (typeName.equals("DECIMAL") || typeName.equals("DOUBLE") || typeName.equals("NUMBER")
@@ -548,7 +550,9 @@ public final class DataSources {
             dataType = "java.math.BigDecimal";
 
             if (columnInfo.isPk() && columnInfo.getDecimalDigits() == 0) {
-                columnInfo.setNumbering(true);
+                if (!StringUtil.endsWith(intNoNumberingSuffixs, columnInfo.getColumnName())) {
+                    columnInfo.setNumbering(true);
+                }
             }
 
         } else if (typeName.equals("DATE") || typeName.equals("TIME") || typeName.equals("DATETIME")
@@ -573,12 +577,13 @@ public final class DataSources {
     }
 
     /**
-     * 各テーブル情報に兄弟モデルを設定
+     * 各テーブル情報に弟モデルを追加
+     *
      * @param tableInfos テーブル情報のリスト
      */
     private static void addBrotherTable(final List<TableInfo> tableInfos) {
 
-        // テーブル情報でループ（比較元）
+        // テーブル情報でループ（比較元は兄モデル）
         Iterator<TableInfo> srcIterator = tableInfos.iterator();
         while (srcIterator.hasNext()) {
             TableInfo srcInfo = srcIterator.next();
@@ -588,19 +593,21 @@ public final class DataSources {
                 continue;
             }
 
-            // 弟を設定しないテーブルならスキップ
-            boolean isOnlyChild = false;
-            for (String onlychild : onlychilds) {
-                if (onlychild.equals(srcInfo.getTableName())) {
-                    isOnlyChild = true;
-                    break;
-                }
-            }
-            if (isOnlyChild) {
-                continue;
-            }
+            //            // 弟を設定しないテーブルならスキップ
+            //            boolean isYoungest = false;
+            //            for (String youngest : youngests) {
+            //                if (youngest.equals(srcInfo.getTableName())) {
+            //                    isYoungest = true;
+            //                    break;
+            //                }
+            //            }
+            //            if (isYoungest) {
+            //                continue;
+            //            }
 
-            // テーブル情報でループ（比較先）
+            String srcPrimaryKeys = srcInfo.getPrimaryKeys().toString().replaceAll("[\\[\\]]", "");
+
+            // テーブル情報でループ（比較先は弟モデル）
             Iterator<TableInfo> destIterator = tableInfos.iterator();
             while (destIterator.hasNext()) {
                 TableInfo destInfo = destIterator.next();
@@ -610,35 +617,72 @@ public final class DataSources {
                     continue;
                 }
 
-                // 弟に設定しないテーブルならスキップ
-                boolean isEldest = false;
-                for (String eldest : eldests) {
-                    if (eldest.equals(destInfo.getTableName())) {
-                        isEldest = true;
-                        break;
-                    }
-                }
-                if (isEldest) {
-                    continue;
-                }
-
-                String srcPrimaryKeys = srcInfo.getPrimaryKeys().toString().replaceAll("[\\[\\]]", "");
-                String destPrimaryKeys = destInfo.getPrimaryKeys().toString().replaceAll("[\\[\\]]", "");
-
                 // 主キーが合致しなければスキップ
+                String destPrimaryKeys = destInfo.getPrimaryKeys().toString().replaceAll("[\\[\\]]", "");
                 if (!srcPrimaryKeys.equals(destPrimaryKeys)) {
                     continue;
                 }
 
-                // 比較元が既に比較先の弟ならスキップ
-                if (destInfo.getBrosInfos().contains(srcInfo)) {
-                    continue;
-                }
+                //                // 比較元が既に比較先の弟ならスキップ
+                //                if (destInfo.getBrosInfos().contains(srcInfo)) {
+                //                    continue;
+                //                }
 
                 // 比較元に弟を追加
                 destInfo.setBrother(true);
                 srcInfo.getBrosInfos().add(destInfo);
             }
+        }
+
+        for (TableInfo tableInfo : tableInfos) {
+
+            // １．弟情報から長兄モデルを削除
+            List<TableInfo> nonEldestInfos = new ArrayList<TableInfo>();
+            for (TableInfo brosInfo : tableInfo.getBrosInfos()) {
+                boolean isEldest = false;
+                for (String eldest : eldests) {
+                    if (eldest.equals(brosInfo.getTableName())) {
+                        brosInfo.setBrother(false);
+                        isEldest = true;
+                        break;
+                    }
+                }
+                if (!isEldest) {
+                    nonEldestInfos.add(brosInfo);
+                }
+            }
+            tableInfo.setBrosInfos(nonEldestInfos);
+
+            // ２．長兄モデルなら弟モデルの弟情報をクリア
+            boolean isEldest = false;
+            for (String eldest : eldests) {
+                if (eldest.equals(tableInfo.getTableName())) {
+                    tableInfo.setBrother(false);
+                    isEldest = true;
+                    break;
+                }
+            }
+            if (isEldest) {
+                for (TableInfo brosInfo : tableInfo.getBrosInfos()) {
+                    brosInfo.setBrosInfos(new ArrayList<TableInfo>());
+                }
+            }
+
+            // ３．弟情報から連れ子モデルを削除
+            List<TableInfo> nonStepchildInfos = new ArrayList<TableInfo>();
+            for (TableInfo brosInfo : tableInfo.getBrosInfos()) {
+                boolean isStepchild = false;
+                for (String stepchild : stepchilds) {
+                    if (stepchild.equals(brosInfo.getTableName())) {
+                        isStepchild = true;
+                        break;
+                    }
+                }
+                if (!isStepchild) {
+                    nonStepchildInfos.add(brosInfo);
+                }
+            }
+            tableInfo.setBrosInfos(nonStepchildInfos);
         }
     }
 
@@ -722,6 +766,18 @@ public final class DataSources {
                 continue;
             }
 
+            // 子を設定しないテーブルならスキップ
+            boolean isDink = false;
+            for (String dink : dinks) {
+                if (dink.equals(srcInfo.getTableName())) {
+                    isDink = true;
+                    break;
+                }
+            }
+            if (isDink) {
+                continue;
+            }
+
             // 比較元の子テーブルリストを取得
             List<TableInfo> childInfos = srcInfo.getChildInfos();
 
@@ -735,15 +791,15 @@ public final class DataSources {
                     continue;
                 }
 
-                // 弟を設定しないテーブルならスキップ
-                boolean isFoundling = false;
-                for (String foundling : foundlings) {
-                    if (foundling.equals(destInfo.getTableName())) {
-                        isFoundling = true;
+                // 親を設定しないテーブルならスキップ
+                boolean isOrphan = false;
+                for (String orphan : orphans) {
+                    if (orphan.equals(destInfo.getTableName())) {
+                        isOrphan = true;
                         break;
                     }
                 }
-                if (isFoundling) {
+                if (isOrphan) {
                     continue;
                 }
 
