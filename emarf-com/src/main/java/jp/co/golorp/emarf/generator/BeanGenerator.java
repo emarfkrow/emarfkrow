@@ -1018,9 +1018,9 @@ public final class BeanGenerator {
                 //                s.add("        whereList.add(\"" + pk + " = :" + pk + "\");");
                 ColumnInfo primaryKeyInfo = tableInfo.getColumnInfos().get(pk);
                 if (primaryKeyInfo.getTypeName().equals("CHAR")) {
-                    s.add("        whereList.add(\"TRIM (" + pk + ") = TRIM (:" + pk.toLowerCase() + ")\");");
+                    s.add("        whereList.add(\"TRIM (" + pk + ") = TRIM (:" + StringUtil.toSnakeCase(pk) + ")\");");
                 } else {
-                    s.add("        whereList.add(\"" + pk + " = :" + pk.toLowerCase() + "\");");
+                    s.add("        whereList.add(\"" + pk + " = :" + StringUtil.toSnakeCase(pk) + "\");");
                 }
             }
             s.add("        String sql = \"SELECT * FROM " + childName
@@ -1031,8 +1031,7 @@ public final class BeanGenerator {
                 if (pk.length() == 0) {
                     continue;
                 }
-                pk = pk.toLowerCase();
-                s.add("        map.put(\"" + pk + "\", param" + ++i + ");");
+                s.add("        map.put(\"" + StringUtil.toSnakeCase(pk) + "\", param" + ++i + ");");
             }
             s.add("        return Queries.select(sql, map, " + pascal + ".class, null, null);");
             s.add("    }");

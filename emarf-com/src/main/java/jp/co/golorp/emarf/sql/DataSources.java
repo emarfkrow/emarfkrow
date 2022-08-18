@@ -556,7 +556,7 @@ public final class DataSources {
             }
 
         } else if (typeName.equals("DATE") || typeName.equals("TIME") || typeName.equals("DATETIME")
-                || typeName.equals("TIMESTAMP")) {
+                || typeName.indexOf("TIMESTAMP") >= 0) {
 
             dataType = "java.time.LocalDateTime";
 

@@ -88,13 +88,16 @@ $(function() {
 			let gridColumns = eval(divId + 'Columns');
 			var columns = $.extend(true, [], gridColumns);
 
-			//主キー列かユニーク列ならエディタをクリア
-			for (let i in columns) {
-				let column = columns[i];
-				if (column.class == 'primaryKey' || column.class == 'uniqueKey') {
-					column.editor = null;
-				}
-			}
+			// 新規行を打てなくなるのでコメントアウト
+			//			//主キー列かユニーク列ならエディタをクリア
+			//			for (let i in columns) {
+			//				let column = columns[i];
+			//				if (column.cssClass) {
+			//					if (column.cssClass.indexOf('primaryKey') >= 0 || column.cssClass.indexOf('uniqueKey') >= 0) {
+			//						column.editor = null;
+			//					}
+			//				}
+			//			}
 
 			//登録権限なしなら列のエディタをクリア
 			let form = $(this).closest('form[name]')[0];
@@ -246,7 +249,8 @@ $(function() {
 				//				args.grid.render();
 				var dataView = grid.getData();
 				let data = dataView.getItems();
-				args.item['id'] = data.length;
+				args.item['id'] = data.length + 1;
+				args.item['isNew'] = true;
 				data.push(args.item);
 				dataView.beginUpdate();
 				dataView.setItems(data);
@@ -274,6 +278,28 @@ $(function() {
 				let c = args.cell;
 				let g = args.grid;
 
+				let item = g.getDataItem(r);
+				if (!item || item.isNew) {
+					//新規行の場合
+
+					//採番キーなら非活性
+					if (e.target.className.indexOf('numbering') >= 0) {
+						e.preventDefault();
+						e.stopPropagation();
+						e.stopImmediatePropagation();
+					}
+
+				} else {
+					//既存データの場合
+
+					//主キーとユニークキーは非活性
+					if (e.target.className.indexOf('primaryKey') >= 0 || e.target.className.indexOf('uniqueKey') >= 0) {
+						e.preventDefault();
+						e.stopPropagation();
+						e.stopImmediatePropagation();
+					}
+				}
+
 				if (e.target.className == 'gridButton') {
 					// グリッド行選択ボタン押下時
 
@@ -289,8 +315,8 @@ $(function() {
 
 					// 項目名の接頭辞を取得
 					let prefix = '';
-					let data = g.getData().getItems();
-					let item = data[r]; // DELETE_F: null, INSERT_BY: "1", INSERT_DT: 1649467076000, SANSHO1_ID: 2, SANSHO1_MEI: "テスト２", UPDATE_BY: "1", UPDATE_DT: 1649467081000
+					//let data = g.getData().getItems();
+					//let item = data[r]; // DELETE_F: null, INSERT_BY: "1", INSERT_DT: 1649467076000, SANSHO1_ID: 2, SANSHO1_MEI: "テスト２", UPDATE_BY: "1", UPDATE_DT: 1649467081000
 					for (let columnName in item) {
 						// DataView用の「id」列ならスキップ
 						if (columnName == 'id') {
@@ -337,7 +363,7 @@ $(function() {
 					if (e.target.id) {
 						let href = entityName + 'Download.link?name=' + e.target.id;
 
-						let item = g.getDataItem(r);
+						//let item = g.getDataItem(r);
 
 						// グリッド列定義でループ
 						for (let i in g.getColumns()) {

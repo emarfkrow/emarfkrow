@@ -322,11 +322,15 @@ public final class HtmlGenerator {
         s.add("      <h3 th:text=\"#{" + pascal + ".h3}\">h3</h3>");
         String gridId = pascal + "Grid";
         String addRow = "";
-        // 単一採番キーの場合は新規行あり
+        // 単一キーの場合は新規行あり
         if (tableInfo.getPrimaryKeys().size() == 1) {
             String uniqueKey = tableInfo.getPrimaryKeys().get(0);
             ColumnInfo uniqueKeyInfo = tableInfo.getColumnInfos().get(uniqueKey);
-            if (uniqueKeyInfo.isNumbering()) {
+            //            if (uniqueKeyInfo.isNumbering()) {
+            //                addRow = " data-addRow=\"true\"";
+            //            }
+            //採番キーでなくても、参照キーでなければ新規行を表示
+            if (uniqueKeyInfo.getReferInfo() == null) {
                 addRow = " data-addRow=\"true\"";
             }
         }
@@ -489,6 +493,9 @@ public final class HtmlGenerator {
         String css = "";
         if (columnInfo.isPk()) {
             css = "primaryKey";
+            if (columnInfo.isNumbering()) {
+                css += " numbering";
+            }
         } else if (columnInfo.isUnique()) {
             css = "uniqueKey";
         } else if (isInsertDt || isUpdateDt || isInsertBy || isUpdateBy) {
@@ -756,7 +763,7 @@ public final class HtmlGenerator {
 
                 String tag = "          ";
                 tag += "<label for=\"" + fieldId + "\" th:text=\"#{" + fieldId + "}\">" + remarks + "</label>";
-                tag += "<span id=\"" + fieldId + "\"></span>";
+                tag += "<span id=\"" + fieldId + "\" class=\"primaryKey\"></span>";
                 tag += "<input type=\"hidden\" id=\"" + fieldId + "\" name=\"" + fieldId + "\" class=\"primaryKey\" />";
 
                 // 参照モデルの場合は参照リンクを出力（参照リンクは照会画面ではjsで非表示にする）

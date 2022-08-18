@@ -112,10 +112,10 @@ public class DataSourcesAssistOracle extends DataSourcesAssist {
 
     /**
      * @param s カラム物理名
-     * @return タイムスタンプ変換SQL
+     * @return ミリ秒タイムスタンプ変換SQL
      */
     public String toTimestamp(final String s) {
-        return "TO_TIMESTAMP (" + s + ", 'YYYY-MM-DD\\\"T\\\"HH24:MI:SS.FF3')";
+        return "TO_TIMESTAMP (REPLACE (SUBSTR (" + s + ", 0, 23), 'T', ' '), 'YYYY-MM-DD HH24:MI:SS.FF3')";
     }
 
     /**

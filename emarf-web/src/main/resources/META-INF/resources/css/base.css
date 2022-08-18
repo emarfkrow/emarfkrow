@@ -236,7 +236,7 @@ button.regist {
 	font-size: medium;
 }
 
-input.primaryKey, div.primaryKey {
+input.primaryKey, div.primaryKey, span.primaryKey {
 	background-color: pink;
 }
 
