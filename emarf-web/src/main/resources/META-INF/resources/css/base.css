@@ -99,12 +99,9 @@ form>div {
 }
 
 form>div[id$=Pager] {
-	height: 1.5rem;
+	min-height: 1.5rem;
+	overflow-wrap: anywhere;
 	margin-top: 0px;
-}
-
-form>div[id$=Pager]>a {
-	margin-right: 0.5rem;
 }
 
 form>fieldset {
@@ -236,7 +233,7 @@ button.regist {
 	font-size: medium;
 }
 
-input.primaryKey, div.primaryKey, span.primaryKey {
+input.primaryKey, div.primaryKey, span.primaryKey, select.primaryKey {
 	background-color: pink;
 }
 

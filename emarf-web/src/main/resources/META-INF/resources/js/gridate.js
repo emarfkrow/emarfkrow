@@ -489,9 +489,9 @@ var Gridate = {
 			let html = '';
 			for (let i = 1; i <= maxPage; i++) {
 				if (i == currentPage) {
-					html += '<a>' + i + '</a>';
+					html += '<a>' + i + '</a>&nbsp;';
 				} else {
-					html += '<a href="javascript:void(0);" onclick="Gridate.paginate(\'' + gridId + '\',' + i + ')">' + i + '</a>';
+					html += '<a href="javascript:void(0);" onclick="Gridate.paginate(\'' + gridId + '\',' + i + ')">' + i + '</a>&nbsp;';
 				}
 			}
 			$pager.html(html);
