@@ -449,9 +449,11 @@ public final class HtmlGenerator {
 
         Map<String, ColumnInfo> columnMap = tableInfo.getColumnInfos();
 
+        //主キー列の出力
         for (String columnName : tableInfo.getPrimaryKeys()) {
             s.add("    " + htmlGridColumn(columnMap.get(columnName), entityName, columnMap));
         }
+        //非主キー列の出力
         for (String columnName : tableInfo.getNonPrimaryKeys()) {
             s.add("    " + htmlGridColumn(columnMap.get(columnName), entityName, columnMap));
         }
@@ -507,7 +509,7 @@ public final class HtmlGenerator {
             formatter = "Slick.Formatters.Extends.DateTime";
         }
 
-        // 名称列を参照先から参照するか
+        // 名称を参照先から取得するか
         boolean isMeiRefer = false;
 
         // 参照名の列名
@@ -531,11 +533,35 @@ public final class HtmlGenerator {
                     if (columnName.matches("(?i).+" + keySuffix + "$")) {
 
                         // カラム名の末尾を名称列サフィックスに変換
-                        referMei = columnName.replaceAll("(?i)" + keySuffix + "$", meiSuffix);
+                        String tempMei = columnName.replaceAll("(?i)" + keySuffix + "$", meiSuffix);
 
                         // 名称列がテーブルに含まれていない場合は参照先から名称を取得する
-                        if (columnMap.containsKey(referMei)) {
+                        if (columnMap.containsKey(tempMei)) {
+                            referMei = tempMei;
                             isMeiRefer = false;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            //名称を参照先から取得する場合
+            if (isMeiRefer) {
+
+                // 参照設定の組み合わせでループ
+                for (String[] suffix : referPairs) {
+                    String keySuffix = suffix[0];
+                    String meiSuffix = suffix[1];
+
+                    // カラム名がキー接尾辞に合致する場合
+                    if (columnName.matches("(?i).+" + keySuffix + "$")) {
+
+                        // カラム名の末尾を名称列サフィックスに変換
+                        String tempMei = columnName.replaceAll("(?i)" + keySuffix + "$", meiSuffix);
+
+                        // 名称列が参照先テーブルに含まれている場合は、取得する名称を決定する
+                        if (referInfo.getColumnInfos().containsKey(tempMei)) {
+                            referMei = tempMei;
                             break;
                         }
                     }
