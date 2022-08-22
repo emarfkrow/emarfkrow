@@ -364,22 +364,35 @@ let Base = {
 	},
 
 	resizeNav: function() {
+		
+		// navの高さを設定
 		$('html,body').css('height', '100%');
 		let header = $('.header').outerHeight(true);
 		let footer = $('.footer').outerHeight(true);
-		$('.nav').outerHeight(window.innerHeight - header - footer);
+		let navHeight = window.innerHeight - header - footer;
+		$('.nav').outerHeight(navHeight);
+		
+		//画面の主グリッドが一つだけなら高さ調整
 		let $rootGrids = $('body>div.article>form>div[id$="Grid"]');
 		if ($rootGrids.length == 1) {
+			
 			if ($('body')[0].scrollHeight != $('body').outerHeight()) {
+				
+				//ウィンドウにスクロールがある場合
 				$rootGrids.height($rootGrids.height() - ($('body')[0].scrollHeight - $('body').outerHeight()))
+				
 			} else {
-				$rootGrids.height($rootGrids.height() + ($('.nav').height() - $('.article').height() - $('.breads').height()))
+				
+				//ウィンドウにスクロールがない場合
+				$rootGrids.height($rootGrids.height() + ($('.nav').height() - $('.article').outerHeight() - $('.breads').outerHeight()))
 			}
+			
 			let grid = Gridate.grids[$rootGrids.prop('id')];
 			if (grid) {
 				grid.resizeCanvas();
 			}
 		}
+		
 		$(window).resize(function() {
 			Base.resizeNav();
 		});

@@ -48,7 +48,7 @@ public final class HtmlGenerator {
     private static String rows;
 
     /** 数値列で自動採番しないサフィックス */
-    private static String[] intNoNumberingSuffixs;
+    private static String[] intNoFormatSuffixs;
 
     /** 登録日時カラム名 */
     private static String insertDt;
@@ -108,7 +108,7 @@ public final class HtmlGenerator {
 
         rows = bundle.getString("BeanGenerator.rows");
 
-        intNoNumberingSuffixs = bundle.getString("BeanGenerator.int.nonumbering.suffixs").split(",");
+        intNoFormatSuffixs = bundle.getString("BeanGenerator.int.noformat.suffixs").split(",");
 
         insertDt = bundle.getString("BeanGenerator.insert_dt");
         insertBy = bundle.getString("BeanGenerator.insert_by");
@@ -322,11 +322,15 @@ public final class HtmlGenerator {
         s.add("      <h3 th:text=\"#{" + pascal + ".h3}\">h3</h3>");
         String gridId = pascal + "Grid";
         String addRow = "";
-        // 単一採番キーの場合は新規行あり
+        // 単一キーの場合は新規行あり
         if (tableInfo.getPrimaryKeys().size() == 1) {
             String uniqueKey = tableInfo.getPrimaryKeys().get(0);
             ColumnInfo uniqueKeyInfo = tableInfo.getColumnInfos().get(uniqueKey);
-            if (uniqueKeyInfo.isNumbering()) {
+            //            if (uniqueKeyInfo.isNumbering()) {
+            //                addRow = " data-addRow=\"true\"";
+            //            }
+            //採番キーでなくても、参照キーでなければ新規行を表示
+            if (uniqueKeyInfo.getReferInfo() == null) {
                 addRow = " data-addRow=\"true\"";
             }
         }
@@ -443,132 +447,177 @@ public final class HtmlGenerator {
         s.add("");
         s.add("let " + entityName + "GridColumns = [");
 
-        String opt = "{ json: '" + json + "', paramkey: '" + optP + "', value: '" + optV + "', label: '" + optL + "' }";
+        Map<String, ColumnInfo> columnMap = tableInfo.getColumnInfos();
 
-        for (ColumnInfo columnInfo : tableInfo.getColumnInfos().values()) {
-
-            String columnName = columnInfo.getColumnName();
-            //            String lower = columnName.toLowerCase();
-            String camel = StringUtil.toCamelCase(columnName);
-            String name = "Messages['" + entityName + "Grid." + camel + "']";
-            //            String field = lower.toUpperCase();
-            String field = columnName;
-
-            int width = columnInfo.getColumnSize() * COLUMN_WIDTH_PX_MULTIPLIER;
-            if (width < 30) {
-                width = 30;
-            }
-            if (width > 300) {
-                width = 300;
-            }
-
-            boolean isInsertDt = columnName.matches("(?i)^" + insertDt + "$");
-            boolean isUpdateDt = columnName.matches("(?i)^" + updateDt + "$");
-            boolean isInsertBy = columnName.matches("(?i)^" + insertBy + "$");
-            boolean isUpdateBy = columnName.matches("(?i)^" + updateBy + "$");
-
-            String css = "";
-            if (columnInfo.isPk()) {
-                css = "primaryKey";
-            } else if (columnInfo.isUnique()) {
-                css = "uniqueKey";
-            } else if (isInsertDt || isUpdateDt || isInsertBy || isUpdateBy) {
-                css = "metaInfo";
-            }
-
-            String formatter = "null";
-            if (columnInfo.getDataType().equals("java.time.LocalDateTime")) {
-                formatter = "Slick.Formatters.Extends.DateTime";
-            }
-
-            // 名称列を参照先から参照するか
-            boolean isMeiRefer = false;
-
-            // 参照名の列名
-            String referMei = null;
-
-            // 参照テーブルが設定されている場合
-            TableInfo referInfo = columnInfo.getReferInfo();
-            if (referInfo != null) {
-
-                isMeiRefer = true;
-
-                // カラム名が組み合わせキーのいずれかに合致する場合
-                if (StringUtil.endsWith(referPairs, columnName)) {
-
-                    // 参照設定の組み合わせでループ
-                    for (String[] suffix : referPairs) {
-                        String keySuffix = suffix[0];
-                        String meiSuffix = suffix[1];
-
-                        // カラム名がキー接尾辞に合致する場合
-                        if (columnName.matches("(?i).+" + keySuffix + "$")) {
-
-                            // カラム名の末尾を名称列サフィックスに変換
-                            referMei = columnName.replaceAll("(?i)" + keySuffix + "$", meiSuffix);
-
-                            // 名称列がテーブルに含まれていない場合は参照先から名称を取得する
-                            if (tableInfo.getColumnInfos().containsKey(referMei)) {
-                                isMeiRefer = false;
-                                break;
-                            }
-                        }
-                    }
-                }
-            }
-
-            String c = "";
-            if (isMeiRefer) {
-                c = "Column.refer('" + field + "', " + name + ", " + width + ", '" + css + "', '" + referMei + "'),";
-            } else if (columnInfo.isPk()) {
-                c = "Column.cell('" + field + "', " + name + ", " + width + ", '" + css + "', " + formatter + "),";
-            } else if (columnInfo.isUnique()) {
-                c = "Column.cell('" + field + "', " + name + ", " + width + ", '" + css + "', " + formatter + "),";
-            } else if (isInsertDt || isUpdateDt || isInsertBy || isUpdateBy) {
-                c = "Column.cell('" + field + "', " + name + ", " + width + ", '" + css + "', " + formatter + "),";
-            } else if (StringUtil.endsWith(inputFlagSuffixs, columnName)) {
-                c = "Column.check('" + field + "', " + name + ", " + width + ", '" + css + "'),";
-            } else if (StringUtil.endsWith(inputDateSuffixs, columnName)) {
-                c = "Column.date('" + field + "', " + name + ", " + width + ", '" + css + "', " + formatter + "),";
-            } else if (StringUtil.endsWith(inputDate8Suffixs, columnName) && columnInfo.getColumnSize() == 8) {
-                c = "Column.date8('" + field + "', " + name + ", " + width + ", '" + css + "', " + formatter + "),";
-            } else if (StringUtil.endsWith(inputDateTimeSuffixs, columnName)) {
-                c = "Column.dateTime('" + field + "', " + name + ", " + width + ", '" + css + "'),";
-            } else if (StringUtil.endsWith(inputMonthSuffixs, columnName)) {
-                c = "Column.month('" + field + "', " + name + ", " + width + ", '" + css + "', " + formatter + "),";
-            } else if (StringUtil.endsWith(inputTimeSuffixs, columnName)) {
-                c = "Column.time('" + field + "', " + name + ", " + width + ", '" + css + "', " + formatter + "),";
-            } else if (StringUtil.endsWith(inputFileSuffixs, columnName)) {
-                c = "Column.link('" + field + "', " + name + ", " + width + ", '" + css + "'),";
-            } else if (StringUtil.endsWith(optionsSuffixs, columnName)) {
-                c = "Column.select('" + field + "', " + name + ", " + width + ", '" + css + "', " + opt + "),";
-            } else if (StringUtil.endsWith(textareaSuffixs, columnName)) {
-                c = "Column.longText('" + field + "', " + name + ", " + width + ", '" + css + "', " + formatter + "),";
-            } else if ((columnInfo.getTypeName().equals("INT") || columnInfo.getTypeName().equals("DECIMAL")
-                    || columnInfo.getTypeName().equals("DOUBLE") || columnInfo.getTypeName().equals("NUMBER")
-                    || columnInfo.getTypeName().equals("NUMERIC"))
-                    && !StringUtil.endsWith(intNoNumberingSuffixs, columnInfo.getColumnName())) {
-
-                if (columnInfo.getDecimalDigits() == 3) {
-                    c = "Column.dec3('" + field + "', " + name + ", " + width + ", '" + css + "', " + formatter + "),";
-                } else if (columnInfo.getDecimalDigits() == 2) {
-                    c = "Column.dec2('" + field + "', " + name + ", " + width + ", '" + css + "', " + formatter + "),";
-                } else if (columnInfo.getDecimalDigits() == 1) {
-                    c = "Column.dec1('" + field + "', " + name + ", " + width + ", '" + css + "', " + formatter + "),";
-                } else {
-                    c = "Column.comma('" + field + "', " + name + ", " + width + ", '" + css + "', " + formatter + "),";
-                }
-
-            } else {
-                c = "Column.text('" + field + "', " + name + ", " + width + ", '" + css + "', " + formatter + "),";
-            }
-
-            s.add("    " + c);
+        //主キー列の出力
+        for (String columnName : tableInfo.getPrimaryKeys()) {
+            s.add("    " + htmlGridColumn(columnMap.get(columnName), entityName, columnMap));
+        }
+        //非主キー列の出力
+        for (String columnName : tableInfo.getNonPrimaryKeys()) {
+            s.add("    " + htmlGridColumn(columnMap.get(columnName), entityName, columnMap));
         }
 
         s.add("];");
 
         FileUtil.writeFile(gridDir + File.separator + entityName + "GridColumns.js", s);
+    }
+
+    /**
+     * @param columnInfo
+     * @param entityName
+     * @param columnMap
+     * @return 列定義文字列
+     */
+    private static String htmlGridColumn(final ColumnInfo columnInfo, final String entityName,
+            final Map<String, ColumnInfo> columnMap) {
+
+        String columnName = columnInfo.getColumnName();
+        //            String lower = columnName.toLowerCase();
+        String camel = StringUtil.toCamelCase(columnName);
+        String name = "Messages['" + entityName + "Grid." + camel + "']";
+        //            String field = lower.toUpperCase();
+        String field = columnName;
+
+        int width = columnInfo.getColumnSize() * COLUMN_WIDTH_PX_MULTIPLIER;
+        if (width < 30) {
+            width = 30;
+        }
+        if (width > 300) {
+            width = 300;
+        }
+
+        boolean isInsertDt = columnName.matches("(?i)^" + insertDt + "$");
+        boolean isUpdateDt = columnName.matches("(?i)^" + updateDt + "$");
+        boolean isInsertBy = columnName.matches("(?i)^" + insertBy + "$");
+        boolean isUpdateBy = columnName.matches("(?i)^" + updateBy + "$");
+
+        String css = "";
+        if (columnInfo.isPk()) {
+            css = "primaryKey";
+            if (columnInfo.isNumbering()) {
+                css += " numbering";
+            }
+        } else if (columnInfo.isUnique()) {
+            css = "uniqueKey";
+        } else if (isInsertDt || isUpdateDt || isInsertBy || isUpdateBy) {
+            css = "metaInfo";
+        }
+
+        String formatter = "null";
+        if (columnInfo.getDataType().equals("java.time.LocalDateTime")) {
+            formatter = "Slick.Formatters.Extends.DateTime";
+        }
+
+        // 名称を参照先から取得するか
+        boolean isMeiRefer = false;
+
+        // 参照名の列名
+        String referMei = null;
+
+        // 参照テーブルが設定されている場合
+        TableInfo referInfo = columnInfo.getReferInfo();
+        if (referInfo != null) {
+
+            isMeiRefer = true;
+
+            // カラム名が組み合わせキーのいずれかに合致する場合
+            if (StringUtil.endsWith(referPairs, columnName)) {
+
+                // 参照設定の組み合わせでループ
+                for (String[] suffix : referPairs) {
+                    String keySuffix = suffix[0];
+                    String meiSuffix = suffix[1];
+
+                    // カラム名がキー接尾辞に合致する場合
+                    if (columnName.matches("(?i).+" + keySuffix + "$")) {
+
+                        // カラム名の末尾を名称列サフィックスに変換
+                        String tempMei = columnName.replaceAll("(?i)" + keySuffix + "$", meiSuffix);
+
+                        // 名称列がテーブルに含まれていない場合は参照先から名称を取得する
+                        if (columnMap.containsKey(tempMei)) {
+                            referMei = tempMei;
+                            isMeiRefer = false;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            //名称を参照先から取得する場合
+            if (isMeiRefer) {
+
+                // 参照設定の組み合わせでループ
+                for (String[] suffix : referPairs) {
+                    String keySuffix = suffix[0];
+                    String meiSuffix = suffix[1];
+
+                    // カラム名がキー接尾辞に合致する場合
+                    if (columnName.matches("(?i).+" + keySuffix + "$")) {
+
+                        // カラム名の末尾を名称列サフィックスに変換
+                        String tempMei = columnName.replaceAll("(?i)" + keySuffix + "$", meiSuffix);
+
+                        // 名称列が参照先テーブルに含まれている場合は、取得する名称を決定する
+                        if (referInfo.getColumnInfos().containsKey(tempMei)) {
+                            referMei = tempMei;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        String opt = "{ json: '" + json + "', paramkey: '" + optP + "', value: '" + optV + "', label: '" + optL + "' }";
+
+        String c = "";
+        if (isMeiRefer) {
+            c = "Column.refer('" + field + "', " + name + ", " + width + ", '" + css + "', '" + referMei + "'),";
+            //            } else if (columnInfo.isPk()) {
+            //                c = "Column.cell('" + field + "', " + name + ", " + width + ", '" + css + "', " + formatter + "),";
+            //            } else if (columnInfo.isUnique()) {
+            //                c = "Column.cell('" + field + "', " + name + ", " + width + ", '" + css + "', " + formatter + "),";
+        } else if (isInsertDt || isUpdateDt || isInsertBy || isUpdateBy) {
+            c = "Column.cell('" + field + "', " + name + ", " + width + ", '" + css + "', " + formatter + "),";
+        } else if (StringUtil.endsWith(inputFlagSuffixs, columnName)) {
+            c = "Column.check('" + field + "', " + name + ", " + width + ", '" + css + "'),";
+        } else if (StringUtil.endsWith(inputDateSuffixs, columnName)) {
+            c = "Column.date('" + field + "', " + name + ", " + width + ", '" + css + "', " + formatter + "),";
+        } else if (StringUtil.endsWith(inputDate8Suffixs, columnName) && columnInfo.getColumnSize() == 8) {
+            c = "Column.date8('" + field + "', " + name + ", " + width + ", '" + css + "', " + formatter + "),";
+        } else if (StringUtil.endsWith(inputDateTimeSuffixs, columnName)) {
+            c = "Column.dateTime('" + field + "', " + name + ", " + width + ", '" + css + "'),";
+        } else if (StringUtil.endsWith(inputMonthSuffixs, columnName)) {
+            c = "Column.month('" + field + "', " + name + ", " + width + ", '" + css + "', " + formatter + "),";
+        } else if (StringUtil.endsWith(inputTimeSuffixs, columnName)) {
+            c = "Column.time('" + field + "', " + name + ", " + width + ", '" + css + "', " + formatter + "),";
+        } else if (StringUtil.endsWith(inputFileSuffixs, columnName)) {
+            c = "Column.link('" + field + "', " + name + ", " + width + ", '" + css + "'),";
+        } else if (StringUtil.endsWith(optionsSuffixs, columnName)) {
+            c = "Column.select('" + field + "', " + name + ", " + width + ", '" + css + "', " + opt + "),";
+        } else if (StringUtil.endsWith(textareaSuffixs, columnName)) {
+            c = "Column.longText('" + field + "', " + name + ", " + width + ", '" + css + "', " + formatter + "),";
+        } else if ((columnInfo.getTypeName().equals("INT") || columnInfo.getTypeName().equals("DECIMAL")
+                || columnInfo.getTypeName().equals("DOUBLE") || columnInfo.getTypeName().equals("NUMBER")
+                || columnInfo.getTypeName().equals("NUMERIC"))
+                && !StringUtil.endsWith(intNoFormatSuffixs, columnInfo.getColumnName())) {
+
+            if (columnInfo.getDecimalDigits() == 3) {
+                c = "Column.dec3('" + field + "', " + name + ", " + width + ", '" + css + "', " + formatter + "),";
+            } else if (columnInfo.getDecimalDigits() == 2) {
+                c = "Column.dec2('" + field + "', " + name + ", " + width + ", '" + css + "', " + formatter + "),";
+            } else if (columnInfo.getDecimalDigits() == 1) {
+                c = "Column.dec1('" + field + "', " + name + ", " + width + ", '" + css + "', " + formatter + "),";
+            } else {
+                c = "Column.comma('" + field + "', " + name + ", " + width + ", '" + css + "', " + formatter + "),";
+            }
+
+        } else {
+            c = "Column.text('" + field + "', " + name + ", " + width + ", '" + css + "', " + formatter + "),";
+        }
+
+        return c;
     }
 
     /**
@@ -740,7 +789,7 @@ public final class HtmlGenerator {
 
                 String tag = "          ";
                 tag += "<label for=\"" + fieldId + "\" th:text=\"#{" + fieldId + "}\">" + remarks + "</label>";
-                tag += "<span id=\"" + fieldId + "\"></span>";
+                tag += "<span id=\"" + fieldId + "\" class=\"primaryKey\"></span>";
                 tag += "<input type=\"hidden\" id=\"" + fieldId + "\" name=\"" + fieldId + "\" class=\"primaryKey\" />";
 
                 // 参照モデルの場合は参照リンクを出力（参照リンクは照会画面ではjsで非表示にする）

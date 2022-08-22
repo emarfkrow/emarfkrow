@@ -112,6 +112,9 @@ $(function() {
 						break;
 					}
 				}
+				if (gridId.indexOf('Dialog') < 0) {
+					Base.resizeNav();
+				}
 			};
 
 		} else {

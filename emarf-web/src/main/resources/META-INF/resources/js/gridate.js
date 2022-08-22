@@ -86,9 +86,20 @@ $(function() {
 			//$.getScript('./' + divId + 'Columns.js', function() {
 
 			let gridColumns = eval(divId + 'Columns');
-
 			var columns = $.extend(true, [], gridColumns);
 
+			// 新規行を打てなくなるのでコメントアウト
+			//			//主キー列かユニーク列ならエディタをクリア
+			//			for (let i in columns) {
+			//				let column = columns[i];
+			//				if (column.cssClass) {
+			//					if (column.cssClass.indexOf('primaryKey') >= 0 || column.cssClass.indexOf('uniqueKey') >= 0) {
+			//						column.editor = null;
+			//					}
+			//				}
+			//			}
+
+			//登録権限なしなら列のエディタをクリア
 			let form = $(this).closest('form[name]')[0];
 			let authz = Base.getAuthz(form.name);
 			if (authz < 2) {
@@ -121,16 +132,19 @@ $(function() {
 					++frozenColumnAdd;
 				} else {
 					// ダイアログでなければ（親画面なら）詳細リンク列を追加
-					columns.unshift({
-						id: 'link',
-						name: Messages['common.grid.link.title'],
-						field: 'field',
-						sortable: true,
-						width: Messages['common.grid.link.title'].length * 20,
-						label: Messages['common.grid.link.label'],
-						formatter: Slick.Formatters.Extends.Link
-					});
-					++frozenColumnAdd;
+					// 主キーが１つ以上ある場合のみ
+					if ($gridDiv.attr('data-frozenColumn') * 1 >= 0) {
+						columns.unshift({
+							id: 'link',
+							name: Messages['common.grid.link.title'],
+							field: 'field',
+							sortable: true,
+							width: Messages['common.grid.link.title'].length * 20,
+							label: Messages['common.grid.link.label'],
+							formatter: Slick.Formatters.Extends.Link
+						});
+						++frozenColumnAdd;
+					}
 				}
 
 				// checkbox指定で、ダイアログ内でないなら、最左列にチェックボックス列を追加
@@ -143,7 +157,7 @@ $(function() {
 			} else if (selectionMode == 'link') {
 				// リンクでの行選択の場合（詳細画面の場合）
 
-				// 最左列に詳細リンク列を追加
+				//最左列に詳細リンク列を追加
 				columns.unshift({
 					id: 'link',
 					name: Messages['common.grid.link.title'],
@@ -235,7 +249,8 @@ $(function() {
 				//				args.grid.render();
 				var dataView = grid.getData();
 				let data = dataView.getItems();
-				args.item['id'] = data.length;
+				args.item['id'] = data.length + 1;
+				args.item['isNew'] = true;
 				data.push(args.item);
 				dataView.beginUpdate();
 				dataView.setItems(data);
@@ -263,6 +278,28 @@ $(function() {
 				let c = args.cell;
 				let g = args.grid;
 
+				let item = g.getDataItem(r);
+				if (!item || item.isNew) {
+					//新規行の場合
+
+					//採番キーなら非活性
+					if (e.target.className.indexOf('numbering') >= 0) {
+						e.preventDefault();
+						e.stopPropagation();
+						e.stopImmediatePropagation();
+					}
+
+				} else {
+					//既存データの場合
+
+					//主キーとユニークキーは非活性
+					if (e.target.className.indexOf('primaryKey') >= 0 || e.target.className.indexOf('uniqueKey') >= 0) {
+						e.preventDefault();
+						e.stopPropagation();
+						e.stopImmediatePropagation();
+					}
+				}
+
 				if (e.target.className == 'gridButton') {
 					// グリッド行選択ボタン押下時
 
@@ -278,8 +315,8 @@ $(function() {
 
 					// 項目名の接頭辞を取得
 					let prefix = '';
-					let data = g.getData().getItems();
-					let item = data[r]; // DELETE_F: null, INSERT_BY: "1", INSERT_DT: 1649467076000, SANSHO1_ID: 2, SANSHO1_MEI: "テスト２", UPDATE_BY: "1", UPDATE_DT: 1649467081000
+					//let data = g.getData().getItems();
+					//let item = data[r]; // DELETE_F: null, INSERT_BY: "1", INSERT_DT: 1649467076000, SANSHO1_ID: 2, SANSHO1_MEI: "テスト２", UPDATE_BY: "1", UPDATE_DT: 1649467081000
 					for (let columnName in item) {
 						// DataView用の「id」列ならスキップ
 						if (columnName == 'id') {
@@ -326,7 +363,7 @@ $(function() {
 					if (e.target.id) {
 						let href = entityName + 'Download.link?name=' + e.target.id;
 
-						let item = g.getDataItem(r);
+						//let item = g.getDataItem(r);
 
 						// グリッド列定義でループ
 						for (let i in g.getColumns()) {
@@ -452,9 +489,9 @@ var Gridate = {
 			let html = '';
 			for (let i = 1; i <= maxPage; i++) {
 				if (i == currentPage) {
-					html += '<a>' + i + '</a>';
+					html += '<a>' + i + '</a>&nbsp;';
 				} else {
-					html += '<a href="javascript:void(0);" onclick="Gridate.paginate(\'' + gridId + '\',' + i + ')">' + i + '</a>';
+					html += '<a href="javascript:void(0);" onclick="Gridate.paginate(\'' + gridId + '\',' + i + ')">' + i + '</a>&nbsp;';
 				}
 			}
 			$pager.html(html);

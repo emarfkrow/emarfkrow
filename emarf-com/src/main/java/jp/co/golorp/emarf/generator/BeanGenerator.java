@@ -19,12 +19,10 @@ package jp.co.golorp.emarf.generator;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.ResourceBundle;
-import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -73,9 +71,6 @@ public final class BeanGenerator {
     private static String[] inputFlagSuffixs;
     /** ファイルサフィックス */
     private static String[] inputFileSuffixs;
-
-    /** 参照列名ペア */
-    private static Set<String[]> referPairs = new LinkedHashSet<String[]>();
 
     /** プロジェクトディレクトリ */
     private static String projectDir;
@@ -127,12 +122,6 @@ public final class BeanGenerator {
 
         inputFlagSuffixs = bundle.getString("BeanGenerator.input.flag.suffixs").split(",");
         inputFileSuffixs = bundle.getString("BeanGenerator.input.file.suffixs").split(",");
-
-        String[] pairs = bundle.getString("BeanGenerator.refer.pairs").split(",");
-        for (String pair : pairs) {
-            String[] kv = pair.split(":");
-            referPairs.add(kv);
-        }
 
         javaPath = bundle.getString("BeanGenerator.javaPath");
         entityPackage = bundle.getString("BeanGenerator.package.entity");
@@ -1018,9 +1007,9 @@ public final class BeanGenerator {
                 //                s.add("        whereList.add(\"" + pk + " = :" + pk + "\");");
                 ColumnInfo primaryKeyInfo = tableInfo.getColumnInfos().get(pk);
                 if (primaryKeyInfo.getTypeName().equals("CHAR")) {
-                    s.add("        whereList.add(\"TRIM (" + pk + ") = TRIM (:" + pk.toLowerCase() + ")\");");
+                    s.add("        whereList.add(\"TRIM (" + pk + ") = TRIM (:" + StringUtil.toSnakeCase(pk) + ")\");");
                 } else {
-                    s.add("        whereList.add(\"" + pk + " = :" + pk.toLowerCase() + "\");");
+                    s.add("        whereList.add(\"" + pk + " = :" + StringUtil.toSnakeCase(pk) + "\");");
                 }
             }
             s.add("        String sql = \"SELECT * FROM " + childName
@@ -1031,8 +1020,7 @@ public final class BeanGenerator {
                 if (pk.length() == 0) {
                     continue;
                 }
-                pk = pk.toLowerCase();
-                s.add("        map.put(\"" + pk + "\", param" + ++i + ");");
+                s.add("        map.put(\"" + StringUtil.toSnakeCase(pk) + "\", param" + ++i + ");");
             }
             s.add("        return Queries.select(sql, map, " + pascal + ".class, null, null);");
             s.add("    }");
