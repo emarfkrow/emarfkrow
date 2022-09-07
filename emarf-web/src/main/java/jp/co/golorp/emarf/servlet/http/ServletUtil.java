@@ -104,59 +104,50 @@ public final class ServletUtil {
 
         try {
 
-            // リクエストに則って取ってみる
+            // リクエストに則って、拡張アクションを取ってみる
             String className = pkg + String.join(".", servletPathes);
             a = (BaseAction) (Class.forName(className)).getDeclaredConstructor().newInstance();
-
         } catch (Exception e) {
-
             try {
 
-                // モデルパッケージからも取ってみる
+                // モデルパッケージからも、拡張アクションを取ってみる
                 String className = pkg + ".model." + actionName;
                 a = (BaseAction) (Class.forName(className)).getDeclaredConstructor().newInstance();
-
             } catch (Exception e1) {
-
-                // モデルのベースパッケージからも取ってみる
-
                 try {
 
+                    // モデルのベースパッケージからも、基底アクションを取ってみる
                     String className = pkg + ".model.base." + actionName;
-                    a = (BaseAction) (Class.forName(className)).getDeclaredConstructor()
-                            .newInstance();
-
+                    a = (BaseAction) (Class.forName(className)).getDeclaredConstructor().newInstance();
                 } catch (Exception e2) {
-
                     if (actionName.endsWith("SearchAction")) {
-
                         try {
+
+                            // 検索処理の基底クラスを取ってみる
                             String className = "jp.co.golorp.emarf.action.SearchAction";
                             a = (BaseAction) (Class.forName(className)).getDeclaredConstructor().newInstance();
                         } catch (Exception e3) {
                             throw new SysError(e);
                         }
-
                     } else if (actionName.endsWith("GetAction")) {
-
                         try {
+
+                            // 照会処理の基底クラスを取ってみる
                             String className = "jp.co.golorp.emarf.action.GetAction";
                             a = (BaseAction) (Class.forName(className)).getDeclaredConstructor().newInstance();
                         } catch (Exception e3) {
                             throw new SysError(e);
                         }
-
                     } else if (actionName.endsWith("DownloadAction")) {
-
                         try {
+
+                            // ダウンロード処理の基底クラスを取ってみる
                             String className = "jp.co.golorp.emarf.action.DownloadAction";
                             a = (BaseAction) (Class.forName(className)).getDeclaredConstructor().newInstance();
                         } catch (Exception e3) {
                             throw new SysError(e);
                         }
-
                     } else {
-
                         throw new SysError(e);
                     }
                 }
