@@ -478,7 +478,7 @@ public final class DataSources {
     private static void addTableInfos(final List<TableInfo> tableInfos, final DatabaseMetaData metaData,
             final String schemaPattern) throws SQLException {
 
-        ResultSet rs = metaData.getTables(null, schemaPattern.toUpperCase(), null, new String[] { "TABLE" });
+        ResultSet rs = metaData.getTables(null, schemaPattern.toUpperCase(), null, new String[] { "TABLE", "VIEW" });
 
         while (rs.next()) {
 

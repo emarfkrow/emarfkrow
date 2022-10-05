@@ -52,7 +52,7 @@ public class BeanGeneratorTestRehost {
      */
     @Test
     public final void testGenerate() {
-        String s = "C:\\Users\\KTC0966\\Downloads\\pleiades-2022-06-java-win-64bit-jre_20220619\\workspace\\rehost-com";
+        String s = "C:\\Users\\KTC0966\\git\\rehost\\rehost-com";
         ResourceBundles.getSrcPaths().add(s + File.separator + "src\\main\\resources");
         BeanGenerator.generate(s, true);
     }
