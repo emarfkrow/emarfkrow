@@ -74,8 +74,8 @@ public final class DataSources {
     /** 繰上りの弟モデルのテーブル名 */
     private static String[] stepchilds;
 
-    /** 弟を設定しないテーブル名 */
-    private static String[] youngests;
+    //    /** 弟を設定しないテーブル名 */
+    //    private static String[] youngests;
 
     /** 子を設定しないテーブル名 */
     private static String[] dinks;
@@ -233,7 +233,7 @@ public final class DataSources {
         ignorePrefixs = bundle.getString("BeanGenerator.ignore.prefixs").split(",");
         eldests = bundle.getString("BeanGenerator.eldests").split(",");
         stepchilds = bundle.getString("BeanGenerator.stepchilds").split(",");
-        youngests = bundle.getString("BeanGenerator.youngests").split(",");
+        //        youngests = bundle.getString("BeanGenerator.youngests").split(",");
         dinks = bundle.getString("BeanGenerator.dinks").split(",");
         orphans = bundle.getString("BeanGenerator.orphans").split(",");
         skipcolumn = bundle.getString("BeanGenerator.skipcolumn");
@@ -520,6 +520,9 @@ public final class DataSources {
                 remarks = tableName;
             }
             tableInfo.setRemarks(remarks);
+
+            String tableType = rs.getString("TABLE_TYPE");
+            tableInfo.setView(tableType.equals("VIEW"));
         }
 
         rs.close();
