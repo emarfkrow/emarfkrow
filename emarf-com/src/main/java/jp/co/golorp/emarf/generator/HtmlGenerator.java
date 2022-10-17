@@ -44,6 +44,9 @@ public final class HtmlGenerator {
     /** グリッド列幅ピクセル乗数 */
     private static final int COLUMN_WIDTH_PX_MULTIPLIER = 15;
 
+    /** VIEWの検索条件とするプレフィクス */
+    private static String[] searchPrefixes;
+
     /** ページ行数 */
     private static String rows;
 
@@ -105,6 +108,8 @@ public final class HtmlGenerator {
     static void generate(final String projectDir, final List<TableInfo> tableInfos) {
 
         bundle = ResourceBundles.getBundle(BeanGenerator.class);
+
+        searchPrefixes = bundle.getString("BeanGenerator.view.search.prefix").split(",");
 
         rows = bundle.getString("BeanGenerator.rows");
 
@@ -455,6 +460,12 @@ public final class HtmlGenerator {
         }
         //非主キー列の出力
         for (String columnName : tableInfo.getNonPrimaryKeys()) {
+
+            //VIEWなら「SEARCH_」を出力しない
+            if (tableInfo.isView() && StringUtil.startsWith(searchPrefixes, columnName)) {
+                continue;
+            }
+
             s.add("    " + htmlGridColumn(columnMap.get(columnName), entityName, columnMap));
         }
 
@@ -748,20 +759,21 @@ public final class HtmlGenerator {
                 continue;
             }
 
-            // 検索条件にはファイル項目を出力しない
             String columnName = columnInfo.getColumnName();
-            boolean isInputFile = StringUtil.endsWith(inputFileSuffixs, columnName);
-            if (!isDetail && isInputFile) {
+            if (tableInfo.isView() && !isDetail && !StringUtil.startsWith(searchPrefixes, columnName)) {
+                //VIEWの検索フォームには「SEARCH_」以外を出力しない
                 continue;
             }
-
+            boolean isInputFile = StringUtil.endsWith(inputFileSuffixs, columnName);
+            if (!isDetail && isInputFile) {
+                // 検索条件にはファイル項目を出力しない
+                continue;
+            }
             String remarks = columnInfo.getRemarks();
             String camelColumn = StringUtil.toCamelCase(columnName);
             String fieldId = pascalTable + "." + camelColumn;
 
-            // メタ情報の場合
-            // 検索画面の場合はスキップ（検索条件にはしない）
-            // 詳細画面の兄弟モデルは更新日時のみhiddenで出力
+            // メタ情報の場合（検索画面の場合はスキップ（検索条件にはしない）、詳細画面の兄弟モデルは更新日時のみhiddenで出力）
             boolean isInsertDt = columnName.matches("(?i)^" + insertDt + "$");
             boolean isUpdateDt = columnName.matches("(?i)^" + updateDt + "$");
             boolean isInsertBy = columnName.matches("(?i)^" + insertBy + "$");

@@ -74,6 +74,9 @@ public class TableInfo {
     //    /** 依存レベル */
     //    private int dependLevel;
 
+    /** VIEWならtrue */
+    private boolean isView;
+
     /**
      * @return テーブル名
      */
@@ -227,5 +230,19 @@ public class TableInfo {
     //    public void setDependLevel(final int p) {
     //        this.dependLevel = p;
     //    }
+
+    /**
+     * @return VIEWならtrue
+     */
+    public boolean isView() {
+        return isView;
+    }
+
+    /**
+     * @param p
+     */
+    public void setView(final boolean p) {
+        this.isView = p;
+    }
 
 }

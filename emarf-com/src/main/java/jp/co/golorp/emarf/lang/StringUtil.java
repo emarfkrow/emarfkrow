@@ -202,6 +202,32 @@ public final class StringUtil {
     }
 
     /**
+     * @param prefixes プレフィックスの配列
+     * @param s 検査文字列
+     * @return 検査文字列がプレフィックスの何れかに合致すればtrue
+     */
+    public static boolean startsWith(final String[] prefixes, final String s) {
+        for (String prefix : prefixes) {
+            if (startsWithIgnoreCase(prefix, s)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * @param prefix プレフィックス
+     * @param s 検査文字列
+     * @return 検査文字列がプレフィックスに合致すればtrue
+     */
+    public static boolean startsWithIgnoreCase(final String prefix, final String s) {
+        if (prefix.length() == 0) {
+            return false;
+        }
+        return s.matches("(?i)^" + prefix + ".*");
+    }
+
+    /**
      * @param suffixs サフィックスの配列
      * @param s 検査文字列
      * @return 検査文字列がサフィックスの何れかに合致すればtrue
