@@ -206,27 +206,29 @@ public final class BeanGenerator {
             s.add(" */");
             s.add("public class " + entityName + " implements IEntity {");
 
-            s.add("");
-            s.add("    /** SlickGridのDataView用ID */");
-            s.add("    private Integer id;");
-            s.add("");
-            s.add("    /**");
-            s.add("     * @return id");
-            s.add("     */");
-            s.add("    public final Integer getId() {");
-            s.add("        return id;");
-            s.add("    }");
-            s.add("");
-            s.add("    /**");
-            s.add("     * @param o セットする id");
-            s.add("     */");
-            s.add("    public final void setId(final Object o) {");
-            s.add("        if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {");
-            s.add("            this.id = Integer.valueOf(o.toString());");
-            s.add("        } else {");
-            s.add("            this.id = null;");
-            s.add("        }");
-            s.add("    }");
+            if (tableInfo.getColumnInfos().get("ID") == null) {
+                s.add("");
+                s.add("    /** SlickGridのDataView用ID */");
+                s.add("    private Integer id;");
+                s.add("");
+                s.add("    /**");
+                s.add("     * @return id");
+                s.add("     */");
+                s.add("    public final Integer getId() {");
+                s.add("        return id;");
+                s.add("    }");
+                s.add("");
+                s.add("    /**");
+                s.add("     * @param o セットする id");
+                s.add("     */");
+                s.add("    public final void setId(final Object o) {");
+                s.add("        if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {");
+                s.add("            this.id = Integer.valueOf(o.toString());");
+                s.add("        } else {");
+                s.add("            this.id = null;");
+                s.add("        }");
+                s.add("    }");
+            }
 
             // property
             for (ColumnInfo columnInfo : tableInfo.getColumnInfos().values()) {

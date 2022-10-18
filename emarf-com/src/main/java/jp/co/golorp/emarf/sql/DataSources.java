@@ -284,6 +284,9 @@ public final class DataSources {
 
                     // カラムサイズ
                     columnInfo.setColumnSize(columns.getInt("COLUMN_SIZE"));
+                    if (columnInfo.getColumnSize() == 0) {
+                        columnInfo.setColumnSize(5);
+                    }
 
                     // 小数桁数
                     columnInfo.setDecimalDigits(columns.getInt("DECIMAL_DIGITS"));
@@ -322,6 +325,15 @@ public final class DataSources {
                 }
 
                 columns.close();
+
+                if (tableInfo.getPrimaryKeys().size() == 0 && tableInfo.isView()) {
+                    ColumnInfo pkColumn = tableInfo.getColumnInfos().get("PK");
+                    if (pkColumn != null) {
+                        tableInfo.getPrimaryKeys().add("PK");
+                        pkColumn.setPk(true);
+                        tableInfo.getNonPrimaryKeys().remove("PK");
+                    }
+                }
             }
 
         } catch (Exception e) {
@@ -410,26 +422,24 @@ public final class DataSources {
 
         List<String> primaryKeys = new ArrayList<String>();
 
-        ResultSet rs = metaData.getPrimaryKeys(null, null, tableInfo.getTableName());
+        // テーブルの主キー情報でループ
+        try (ResultSet rs = metaData.getPrimaryKeys(null, null, tableInfo.getTableName())) {
+            while (rs.next()) {
 
-        while (rs.next()) {
+                // 対象外のカラム名ならスキップ
+                String columnName = rs.getString("COLUMN_NAME");
+                if (columnName.matches(skipcolumn) || !columnName.matches("^[0-9A-Za-z\\_\\-]+$")) {
+                    continue;
+                }
 
-            String columnName = rs.getString("COLUMN_NAME");
-
-            if (columnName.matches(skipcolumn) || !columnName.matches("^[0-9A-Za-z\\_\\-]+$")) {
-                continue;
+                // 主キー順でカラム名を退避
+                short keySeq = rs.getShort("KEY_SEQ");
+                while (primaryKeys.size() <= keySeq) {
+                    primaryKeys.add("");
+                }
+                primaryKeys.set(keySeq, columnName);
             }
-
-            short keySeq = rs.getShort("KEY_SEQ");
-
-            while (primaryKeys.size() <= keySeq) {
-                primaryKeys.add("");
-            }
-
-            primaryKeys.set(keySeq, columnName);
         }
-
-        rs.close();
 
         // 一部DBではKEY_SEQが「[1]origin」なので「[0]origin」に詰め替え
         for (String primaryKey : primaryKeys) {

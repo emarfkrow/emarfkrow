@@ -349,9 +349,11 @@ $(function() {
 				} else if (e.target.className == 'gridLink') {
 					// グリッド行選択リンク押下時
 
+					// グリッドの属性からエンティティ名を取得
 					//let entityName = gridId.replace(/[^\.]+\./, '').replace(/Grid$/, '');
 					let entityName = $gridDiv.attr('data-href').replace(/(^.+\/|\.html$)/g, '');
 
+					// 対象エンティティに参照権限がないならエラー
 					if (Base.getAuthz(entityName) < 1) {
 						e.preventDefault();
 						e.stopPropagation();
@@ -361,20 +363,19 @@ $(function() {
 					}
 
 					if (e.target.id) {
+						// ファイル列の場合
+
+						// ダウンロードURL
 						let href = entityName + 'Download.link?name=' + e.target.id;
 
 						//let item = g.getDataItem(r);
 
-						// グリッド列定義でループ
+						// グリッド列定義でループして、主キー列のみURL引数に設定
 						for (let i in g.getColumns()) {
 							let column = g.getColumns()[i];
-
-							// 主キー列でなければスキップ
 							if (column.cssClass != 'primaryKey') {
 								continue;
 							}
-
-							// 反映値を取得
 							let v = item[column.field];
 							href += '&' + column.id + '=' + v;
 						}
@@ -382,9 +383,12 @@ $(function() {
 						e.target.href = href;
 
 					} else {
+						// 詳細リンクの場合
+
 						e.preventDefault();
 						e.stopPropagation();
 						e.stopImmediatePropagation();
+
 						Gridate.openDetail($gridDiv.prop('id'), entityName, g.getColumns(), g.getDataItem(r));
 					}
 				}
