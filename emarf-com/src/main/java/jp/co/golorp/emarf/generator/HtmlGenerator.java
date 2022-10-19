@@ -466,6 +466,10 @@ public final class HtmlGenerator {
                 continue;
             }
 
+            if (columnName.matches("(?i)^table_name$")) {
+                continue;
+            }
+
             s.add("    " + htmlGridColumn(columnMap.get(columnName), entityName, columnMap));
         }
 

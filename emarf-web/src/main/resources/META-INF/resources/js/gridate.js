@@ -533,50 +533,104 @@ var Gridate = {
 		$page.val(0);
 	},
 
+	/**
+	 * 詳細画面起動
+	 * レコード内に「TABLE_NAME」列があればサブウィンドウ
+	 * なければentityNameのダイアログ
+	 * @param gridId     グリッドID
+	 * @param entityName ダイアログ用のエンティティ名
+	 * @param columns    グリッド列定義
+	 * @param item       グリッド行
+	 */
 	openDetail: function(gridId, entityName, columns, item) {
 
-		// グリッドIDからダイアログIDを取得
-		let dialogId = entityName + 'Dialog';
-
-		// グリッド列定義でループ
-		for (let i in columns) {
-			let column = columns[i];
-
-			// 主キー列でなければスキップ
-			//			if (column.cssClass != 'primaryKey') {
-			//				continue;
-			//			}
-
-			// 反映先の項目名を取得
-			let camel = Casing.toCamel(column.field);
-
-			// 反映値を取得
-			let v = item[column.field];
-
-			let $item = $('[id="' + dialogId + '"] [name="' + camel + '"]');
-			if ($item.length > 0) {
-				$item.val(v);
-				$('[id="' + dialogId + '"] span[id="' + camel + '"]').html(v);
-			} else {
-				$item = $('[id="' + dialogId + '"] [name="' + entityName + '.' + camel + '"]');
-				if ($item.length > 0) {
-					$item.val(v);
-					$('[id="' + dialogId + '"] span[id="' + entityName + '.' + camel + '"]').html(v);
-				}
-			}
-
-			//if ($item.hasClass('primaryKey')) {
-			//$item.attr('readonly', true).attr('tabindex', '-1').addClass('readonly');
-			//$item.next('a').hide();
-			//}
+		// TABLE_NAME列の検査
+		let tableName = null;
+		if (item["TABLE_NAME"]) {
+			tableName = item["TABLE_NAME"];
 		}
 
-		let $dialogDiv = $('div[id="' + dialogId + '"]');
+		if (tableName == null) {
 
-		// 呼び出し元
-		$dialogDiv.attr('data-caller', gridId);
+			// グリッドIDからダイアログIDを取得
+			let dialogId = entityName + 'Dialog';
 
-		$dialogDiv.dialog('open');
+			// グリッド列定義でループ
+			for (let i in columns) {
+				let column = columns[i];
+
+				// 主キー列でなければスキップ
+				//			if (column.cssClass != 'primaryKey') {
+				//				continue;
+				//			}
+
+				// 反映先の項目名を取得
+				let camel = Casing.toCamel(column.field);
+
+				// 反映値を取得
+				let v = item[column.field];
+
+				let $item = $('[id="' + dialogId + '"] [name="' + camel + '"]');
+				if ($item.length > 0) {
+					$item.val(v);
+					$('[id="' + dialogId + '"] span[id="' + camel + '"]').html(v);
+				} else {
+					$item = $('[id="' + dialogId + '"] [name="' + entityName + '.' + camel + '"]');
+					if ($item.length > 0) {
+						$item.val(v);
+						$('[id="' + dialogId + '"] span[id="' + entityName + '.' + camel + '"]').html(v);
+					}
+				}
+
+				//if ($item.hasClass('primaryKey')) {
+				//$item.attr('readonly', true).attr('tabindex', '-1').addClass('readonly');
+				//$item.next('a').hide();
+				//}
+			}
+
+			let $dialogDiv = $('div[id="' + dialogId + '"]');
+
+			// 呼び出し元
+			$dialogDiv.attr('data-caller', gridId);
+
+			$dialogDiv.dialog('open');
+
+		} else {
+
+			let primaryKey = '';
+			let queryString = '';
+
+			// グリッド列定義でループ
+			for (let i in columns) {
+				let column = columns[i];
+				let k = Casing.toCamel(column.field);
+				let v = item[column.field];
+
+				if (!v) {
+					continue;
+				}
+
+				// 主キー列でなければスキップ
+				if (column.cssClass != null && column.cssClass.indexOf('primaryKey') >= 0) {
+					if (primaryKey == '') {
+						primaryKey += '?';
+					} else {
+						primaryKey += '&';
+					}
+					primaryKey += k + '=' + v;
+				}
+
+				if (queryString == '') {
+					queryString += '?';
+				} else {
+					queryString += '&';
+				}
+				queryString += k + '=' + v;
+			}
+
+			entityName = Casing.toPascal(tableName);
+			window.open('./' + entityName + '.html' + queryString, entityName + primaryKey, 'width=1024,height=768');
+		}
 	},
 
 };

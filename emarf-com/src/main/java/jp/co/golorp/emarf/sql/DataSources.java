@@ -285,7 +285,7 @@ public final class DataSources {
                     // カラムサイズ
                     columnInfo.setColumnSize(columns.getInt("COLUMN_SIZE"));
                     if (columnInfo.getColumnSize() == 0) {
-                        columnInfo.setColumnSize(5);
+                        columnInfo.setColumnSize(3);
                     }
 
                     // 小数桁数
@@ -327,11 +327,11 @@ public final class DataSources {
                 columns.close();
 
                 if (tableInfo.getPrimaryKeys().size() == 0 && tableInfo.isView()) {
-                    ColumnInfo pkColumn = tableInfo.getColumnInfos().get("PK");
+                    ColumnInfo pkColumn = tableInfo.getColumnInfos().get("NO");
                     if (pkColumn != null) {
-                        tableInfo.getPrimaryKeys().add("PK");
+                        tableInfo.getPrimaryKeys().add("NO");
                         pkColumn.setPk(true);
-                        tableInfo.getNonPrimaryKeys().remove("PK");
+                        tableInfo.getNonPrimaryKeys().remove("NO");
                     }
                 }
             }
