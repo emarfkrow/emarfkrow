@@ -265,9 +265,15 @@ public final class Queries {
 
                 @SuppressWarnings("unchecked")
                 List<String> list = (List<String>) o;
-                String s = String.join(", ", list).replaceAll("'", "’");
-                rawSql = rawSql.replaceFirst(":" + parameterName, s);
-                logSql = logSql.replaceFirst(":" + parameterName, s);
+                String ss = "";
+                for (String s : list) {
+                    if (!ss.equals("")) {
+                        ss += ", ";
+                    }
+                    ss += "'" + s.replaceAll("'", "’") + "'";
+                }
+                rawSql = rawSql.replaceFirst(":" + parameterName, ss);
+                logSql = logSql.replaceFirst(":" + parameterName, ss);
 
             } else {
 
