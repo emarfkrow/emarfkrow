@@ -466,6 +466,10 @@ public final class HtmlGenerator {
                 continue;
             }
 
+            if (columnName.matches("(?i)^table_name$")) {
+                continue;
+            }
+
             s.add("    " + htmlGridColumn(columnMap.get(columnName), entityName, columnMap));
         }
 
@@ -760,9 +764,15 @@ public final class HtmlGenerator {
             }
 
             String columnName = columnInfo.getColumnName();
-            if (tableInfo.isView() && !isDetail && !StringUtil.startsWith(searchPrefixes, columnName)) {
-                //VIEWの検索フォームには「SEARCH_」以外を出力しない
-                continue;
+            if (tableInfo.isView()) {
+                if (!isDetail && !StringUtil.startsWith(searchPrefixes, columnName)) {
+                    //VIEWの検索フォームには「SEARCH_」以外を出力しない
+                    continue;
+                }
+                if (isDetail && StringUtil.startsWith(searchPrefixes, columnName)) {
+                    //VIEWの詳細フォームには「SEARCH_」を出力しない
+                    continue;
+                }
             }
             boolean isInputFile = StringUtil.endsWith(inputFileSuffixs, columnName);
             if (!isDetail && isInputFile) {
@@ -865,13 +875,11 @@ public final class HtmlGenerator {
                     css = " uniqueKey";
                     referCss += " uniqueKey";
                 }
-
                 if (StringUtil.endsWith(inputDateSuffixs, columnName)) { // 日付項目
                     css += " datepicker";
                 } else if (StringUtil.endsWith(inputDate8Suffixs, columnName) && columnInfo.getColumnSize() == 8) { // 8桁日付項目
                     css += " datepicker";
                 }
-
                 if (!StringUtil.isNullOrBlank(css)) {
                     css = " class=\"" + css + "\"";
                 }
@@ -879,14 +887,10 @@ public final class HtmlGenerator {
 
                 if (!isDetail && StringUtil.endsWith(inputRangeSuffixs, columnName)) {
                     // 検索画面の範囲指定項目の場合
-
                     s.add(htmlFieldsInputRange(fieldId, type, css, columnInfo, format));
-
                 } else if (columnInfo.getReferInfo() != null) {
                     // 参照モデルの場合
-
                     s.add(htmlFieldsRefer(fieldId, type, css, columnInfo, format, tableInfo, referCss));
-
                 } else {
                     s.add(htmlFieldsInput(fieldId, type, css, columnInfo, format));
                 }

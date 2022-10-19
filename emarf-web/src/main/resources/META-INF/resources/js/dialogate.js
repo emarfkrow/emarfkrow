@@ -286,16 +286,10 @@ let Dialogate = {
 
 					} else {
 
+						let $registForm = $container.find('[name$="RegistForm"]');
+
 						// ダイアログ内の登録フォームに、呼び出し元イベントで値が設定されている場合は、照会結果を初期表示
-						let $registForm = $dialogDiv.find('[name$="RegistForm"]');
-						let formJson = Jsonate.toValueJson($registForm);
-						if (JSON.stringify(formJson) != '{}') {
-							let getAction = $registForm.prop('action').replace('Regist', 'Get').replace(/\.form$/, '.ajax');
-							Ajaxize.ajaxPost(getAction, formJson, function(data) {
-								Jsonate.toForm(data, $registForm);
-								Base.referMei($dialogDiv.find('span.refer'));
-							});
-						}
+						Base.referRegistForm($registForm);
 
 						let authz = Base.getAuthz($registForm[0].name);
 						if (authz < 2) {

@@ -22,6 +22,9 @@ limitations under the License.
 console.trace = function() { }
 console.debug = function() { }
 
+/**
+ * バイト数計算
+ */
 String.prototype.bytes = function() {
 	var length = 0;
 	for (var i = 0; i < this.length; i++) {
@@ -51,8 +54,10 @@ $(function() {
 
 	// クエリストリングの取得
 	window.location.search.slice(1).split('&').forEach(function(s) {
-		var a = s.split('=');
-		Base.querystrings[a[0]] = a[1];
+		if (s != '') {
+			var a = s.split('=');
+			Base.querystrings[a[0]] = a[1];
+		}
 	});
 
 	// テキスト入力のオートコンプリート解除
@@ -61,6 +66,27 @@ $(function() {
 
 	// 画面にクライアントシステム日時を表示
 	$('.certification #timestamp').html(Formatter.YmdHmsS(new Date()));
+
+	// サブウィンドウならメインリンク・ログアウトボタン・ナビ非表示
+	if (window.opener) {
+		$('.header h1').hide();
+		$('button#logout').hide();
+		$('.nav dl').hide();
+	}
+
+	// 詳細画面で、URL引数に値が設定されている場合は、照会結果を初期表示
+	let $searchForm = $('.article [name$="SearchForm"]');
+	let $registForm = $('.article [name$="RegistForm"]');
+	if ($searchForm.length == 0 && $registForm.length > 0) {
+		for (let k in Base.querystrings) {
+			let v = Base.querystrings[k];
+		}
+		let entityName = href.replace(/\.html.+/, '').replace(/.+\//, '');
+		let data = {};
+		data[entityName] = Base.querystrings;
+		Jsonate.toForm(data, $registForm);
+		Base.referRegistForm($registForm);
+	}
 });
 
 // ２．DOM構築後
@@ -364,35 +390,35 @@ let Base = {
 	},
 
 	resizeNav: function() {
-		
+
 		// navの高さを設定
 		$('html,body').css('height', '100%');
 		let header = $('.header').outerHeight(true);
 		let footer = $('.footer').outerHeight(true);
 		let navHeight = window.innerHeight - header - footer;
 		$('.nav').outerHeight(navHeight);
-		
+
 		//画面の主グリッドが一つだけなら高さ調整
 		let $rootGrids = $('body>div.article>form>div[id$="Grid"]');
 		if ($rootGrids.length == 1) {
-			
+
 			if ($('body')[0].scrollHeight != $('body').outerHeight()) {
-				
+
 				//ウィンドウにスクロールがある場合
 				$rootGrids.height($rootGrids.height() - ($('body')[0].scrollHeight - $('body').outerHeight()))
-				
+
 			} else {
-				
+
 				//ウィンドウにスクロールがない場合
 				$rootGrids.height($rootGrids.height() + ($('.nav').height() - $('.article').outerHeight() - $('.breads').outerHeight()))
 			}
-			
+
 			let grid = Gridate.grids[$rootGrids.prop('id')];
 			if (grid) {
 				grid.resizeCanvas();
 			}
 		}
-		
+
 		$(window).resize(function() {
 			Base.resizeNav();
 		});
@@ -448,6 +474,20 @@ let Base = {
 				}
 			}
 		});
+	},
+
+	/**
+	 * サブウィンドウの登録画面の初期照会
+	 */
+	referRegistForm: function($registForm) {
+		let formJson = Jsonate.toValueJson($registForm);
+		if (JSON.stringify(formJson) != '{}') {
+			let getAction = $registForm.prop('action').replace('Regist', 'Get').replace(/\.form$/, '.ajax');
+			Ajaxize.ajaxPost(getAction, formJson, function(data) {
+				Jsonate.toForm(data, $registForm);
+				Base.referMei($registForm.find('span.refer'));
+			});
+		}
 	},
 
 };
