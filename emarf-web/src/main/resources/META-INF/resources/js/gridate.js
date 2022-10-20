@@ -610,7 +610,7 @@ var Gridate = {
 					continue;
 				}
 
-				// 主キー列でなければスキップ
+				// windowName用に主キーを退避
 				if (column.cssClass != null && column.cssClass.indexOf('primaryKey') >= 0) {
 					if (primaryKey == '') {
 						primaryKey += '?';
@@ -620,6 +620,7 @@ var Gridate = {
 					primaryKey += k + '=' + v;
 				}
 
+				// URL引数用に各列値を退避
 				if (queryString == '') {
 					queryString += '?';
 				} else {
