@@ -101,8 +101,7 @@ $(function() {
 
 			//登録権限なしなら列のエディタをクリア
 			let form = $(this).closest('form[name]')[0];
-			let authz = Base.getAuthz(form.name);
-			if (authz < 2) {
+			if (Base.getAuthz(form.name) < 3) {
 				for (let i in columns) {
 					let column = columns[i];
 					column.editor = null;
@@ -184,7 +183,7 @@ $(function() {
 
 			// 新規行有無
 			let addRow = $gridDiv.attr('data-addRow');
-			if (addRow && authz >= 2) {
+			if (addRow && Base.getAuthz(form.name) >= 3) {
 				options.enableAddRow = eval(addRow);
 			}
 

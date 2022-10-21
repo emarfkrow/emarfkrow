@@ -291,8 +291,10 @@ let Dialogate = {
 						// ダイアログ内の登録フォームに、呼び出し元イベントで値が設定されている場合は、照会結果を初期表示
 						Base.referRegistForm($registForm);
 
-						let authz = Base.getAuthz($registForm[0].name);
-						if (authz < 2) {
+						if (Base.getAuthz($registForm[0].name) < 2) {
+							$registForm.find('a.output').hide();
+						}
+						if (Base.getAuthz($registForm[0].name) < 3) {
 							$registForm.find(':input').attr('readonly', true).attr('tabindex', '-1').addClass('readonly');
 							$registForm.find('a.refer').hide();
 						}

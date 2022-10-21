@@ -272,6 +272,9 @@ let Base = {
 		// 画面の更新権限のチェック
 		$('form[name]').each(function() {
 			if (Base.getAuthz(this.name) < 2) {
+				$(this).find('a.output').hide();
+			}
+			if (Base.getAuthz(this.name) < 3) {
 				$(this).find('button.delete, button.regist').hide();
 				if ($(this).hasClass('regist')) {
 					$(this).find('button.reset').hide();
