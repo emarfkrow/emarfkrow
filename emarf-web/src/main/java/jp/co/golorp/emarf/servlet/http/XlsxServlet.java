@@ -64,22 +64,20 @@ public final class XlsxServlet extends HttpServlet {
     protected void doGet(final HttpServletRequest request, final HttpServletResponse response)
             throws ServletException, IOException {
 
+        // requestURIから検索アクションの実行結果を取得
         Map<String, Object> map = null;
-
         try {
-
             Map<String, Object> postJson = ServletUtil.getPostedJson(request);
             BaseAction action = ServletUtil.getAction(request);
             map = action.run(postJson);
-
         } catch (Exception e) {
-
             LOG.error(e.getMessage(), e);
             String referer = request.getHeader("referer").replaceAll("\\?.+$", "");
             response.sendRedirect(referer + "?FATAL=fatal");
             return;
         }
 
+        // requestURIからエクセルアクションの実行結果を取得
         BaseAction xlsxAction = null;
         String servletPath = request.getServletPath();
         String[] servletPathes = servletPath.split("/");
