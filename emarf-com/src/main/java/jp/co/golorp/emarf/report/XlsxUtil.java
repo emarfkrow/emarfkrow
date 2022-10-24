@@ -526,11 +526,15 @@ public final class XlsxUtil {
             // コピー対象の行数を取得
             int rownum = destRowIndex + r - range.getBoR();
 
-            // フッタありレイアウトのため、開始行から終了行までを１回だけ下にずらす
-            sheet.shiftRows(rownum, rownum, 1, true, true);
+            // コピー先の行を取得
+            Row destRow = sheet.getRow(rownum);
+            if (destRow != null) {
+                // 取れた場合はフッタありレイアウトのため、開始行から終了行までを１回だけ下にずらす
+                sheet.shiftRows(rownum, rownum, 1, true, true);
+            }
 
-            // コピー先行を取得
-            Row destRow = sheet.createRow(rownum);
+            // 改めてコピー先の行を作成
+            destRow = sheet.createRow(rownum);
 
             // コピー開始列から終了列までループして書式コピー
             for (int c = range.getBoC(); c <= range.getEoC(); c++) {
