@@ -148,7 +148,7 @@ public final class XlsxUtil {
                         dataItem = dataList.get(0);
                         l = "[[";
                         r = "]]";
-                    } else {
+                    } else if (sheetData instanceof Map) {
                         @SuppressWarnings("unchecked")
                         Map<String, Object> map = (Map<String, Object>) sheetData;
                         dataItem = map;
@@ -157,10 +157,12 @@ public final class XlsxUtil {
                     }
 
                     // 列情報を転記
-                    int c = 0;
-                    for (String columnName : dataItem.keySet()) {
-                        setCellValue(layoutSheet, 0, c, columnName);
-                        setCellValue(layoutSheet, 1, c++, l + columnName + r);
+                    if (dataItem != null) {
+                        int c = 0;
+                        for (String columnName : dataItem.keySet()) {
+                            setCellValue(layoutSheet, 0, c, columnName);
+                            setCellValue(layoutSheet, 1, c++, l + columnName + r);
+                        }
                     }
                 }
 
@@ -517,10 +519,20 @@ public final class XlsxUtil {
      * @param destRowIndex コピー先の行インデクス
      */
     private static void copyRange(final Sheet sheet, final Range range, final int destRowIndex) {
+
+        // 今回コピーする開始行から終了行までループ
         for (int r = range.getBoR(); r <= range.getEoR(); r++) {
+
+            // コピー対象の行数を取得
             int rownum = destRowIndex + r - range.getBoR();
+
+            // フッタありレイアウトのため、開始行から終了行までを１回だけ下にずらす
             sheet.shiftRows(rownum, rownum, 1, true, true);
+
+            // コピー先行を取得
             Row destRow = sheet.createRow(rownum);
+
+            // コピー開始列から終了列までループして書式コピー
             for (int c = range.getBoC(); c <= range.getEoC(); c++) {
                 Cell srcCell = sheet.getRow(r).getCell(c);
                 Cell destCell = destRow.createCell(c);
