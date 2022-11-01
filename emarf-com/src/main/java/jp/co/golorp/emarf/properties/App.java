@@ -16,8 +16,10 @@ limitations under the License.
 
 package jp.co.golorp.emarf.properties;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.Set;
@@ -115,6 +117,23 @@ public final class App {
         }
 
         return ret;
+    }
+
+    /**
+     * @param prefix 接頭辞
+     * @return キーに前方一致する値を取得。なくてもエラーにしない。
+     */
+    public static List<String> getStartWith(final String prefix) {
+
+        List<String> list = new ArrayList<String>();
+
+        for (String key : BUNDLE.keySet()) {
+            if (key.startsWith(prefix)) {
+                list.add(App.get(key));
+            }
+        }
+
+        return list;
     }
 
 }
