@@ -105,6 +105,7 @@ public class LoginFilter implements Filter {
         String contextPath = req.getContextPath() + "/";
 
         if (!AUTHN.equals("true")) {
+            // 認証なし
 
             LOG.trace("skip authentication.");
 
@@ -119,9 +120,9 @@ public class LoginFilter implements Filter {
         } else if (!requestURI.matches(LoginFilter.EXCLUDE_REGEXP)
                 && !requestURI.equals(contextPath + LoginFilter.PASSMAIL_PAGE)
                 && !requestURI.equals(contextPath + LoginFilter.PASSRESET_PAGE)) {
-            // ログインチェック除外URLでなく、
-            // パスワードリセットメール送信画面でもなく
-            // パスワードリセット画面でもない場合
+            // １．ログインチェック除外URLでない
+            // ２．パスワードリセットメール送信画面でない
+            // ３．パスワードリセット画面でない
 
             HttpSession ses = req.getSession();
 

@@ -35,6 +35,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -337,7 +338,7 @@ public final class Queries {
                     objectList.add(rs2Entity(rs, c));
                 } else {
                     // 戻り値の方指定がない場合
-                    Map<String, Object> map = new HashMap<String, Object>();
+                    Map<String, Object> map = new LinkedHashMap<String, Object>();
                     int columnCount = metaData.getColumnCount();
                     for (int i = 0; i < columnCount; i++) {
                         String columnName = metaData.getColumnName(i + 1);

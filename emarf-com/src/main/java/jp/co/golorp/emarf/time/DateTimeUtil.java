@@ -58,6 +58,16 @@ public final class DateTimeUtil {
     }
 
     /**
+     * @param format フォーマット
+     * @param localDateTime 日付
+     * @return フォーマットで指定した形式の現在日時
+     */
+    public static String format(final String format, final LocalDateTime localDateTime) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format);
+        return localDateTime.format(formatter);
+    }
+
+    /**
      * @return 現在日時の{@link Date}
      */
     public static Date date() {

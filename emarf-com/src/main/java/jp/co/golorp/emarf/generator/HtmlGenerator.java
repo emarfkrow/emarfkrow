@@ -355,7 +355,7 @@ public final class HtmlGenerator {
                 + "S\" th:text=\"#{common.reset}\" class=\"reset\" onClick=\"$('[id=&quot;Search" + pascal
                 + "&quot;]').click();\">reset</button>");
         s.add("        <a th:href=\"@{" + pascal + "Search.xlsx(baseMei=#{" + pascal + "S.h2})}\" id=\"" + pascal
-                + "Search.xlsx\" th:text=\"#{common.xlsx}\" target=\"_blank\" tabindex=\"-1\">xlsx</a>");
+                + "Search.xlsx\" th:text=\"#{common.xlsx}\" target=\"_blank\" class=\"output\" tabindex=\"-1\">xlsx</a>");
         s.add("        <button id=\"Delete" + pascal + "S\" class=\"delete selectRows\" data-action=\"" + pascal
                 + "SDelete.ajax\" th:text=\"#{common.delete}\" tabindex=\"-1\">削除</button>");
         s.add("      </div>");
@@ -725,7 +725,8 @@ public final class HtmlGenerator {
         s.add("        <button type=\"button\" id=\"Reset" + entityName
                 + "\" th:text=\"#{common.reset}\" class=\"reset\" onClick=\"Dialogate.refresh(event);\">reset</button>");
         s.add("        <a th:href=\"@{" + entityName + "Get.xlsx(baseMei=#{" + entityName + ".h2})}\" id=\""
-                + entityName + "Get.xlsx\" th:text=\"#{common.xlsx}\" target=\"_blank\" tabindex=\"-1\">xlsx</a>");
+                + entityName
+                + "Get.xlsx\" th:text=\"#{common.xlsx}\" target=\"_blank\" class=\"output\" tabindex=\"-1\">xlsx</a>");
         s.add("        <button id=\"Delete" + entityName + "\" class=\"delete\" data-action=\"" + entityName
                 + "Delete.ajax\" th:text=\"#{common.delete}\" tabindex=\"-1\">削除</button>");
         s.add("      </div>");

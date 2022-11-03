@@ -65,25 +65,32 @@ public final class XlsxUtil {
     public static String getGeneratedPath(final List<String> pathes, final String layoutFileName,
             final Map<String, Map<String, Map<String, Object>>> layoutSheetMap, final String baseMei) {
 
-        // テンプレートファイルのロック防止のため、テンプレートファイルを作業用ファイルにコピー
-        String layoutFilePath = App.get("context.path.layouts") + sep + String.join(sep, pathes) + sep + layoutFileName;
-        File layoutFile = FileUtil.get(layoutFilePath);
+        String extension = null;
+        File workFile = null;
 
+        // テンプレートファイルのロック防止のため、テンプレートファイルを作業用ファイルにコピー
+        String layoutDirPath = App.get("context.path.layouts");
+        String layoutFilePath = layoutDirPath + sep + String.join(sep, pathes) + sep + layoutFileName;
+        File layoutFile = FileUtil.get(layoutFilePath);
         if (!layoutFile.exists()) {
             if (pathes.size() > 0) {
                 pathes.remove(pathes.size() - 1);
                 return getGeneratedPath(pathes, layoutFileName, layoutSheetMap, baseMei);
             } else {
-                throw new SysError("error.notexist.file", layoutFileName);
+                //                throw new SysError("error.notexist.file", layoutFileName);
+                // なければエクセルファイルを作る
+                Workbook layoutBook = new XSSFWorkbook();
+                extension = layoutFileName.replaceAll("^.+\\.", "");
+                workFile = XlsxUtil.write(layoutBook, baseMei, extension);
             }
+        } else {
+            Workbook layoutBook = XlsxUtil.file2Workbook(layoutFile);
+            extension = layoutFile.getName().replaceAll("^.+\\.", "");
+            workFile = XlsxUtil.write(layoutBook, baseMei, extension);
         }
 
-        Workbook layoutBook = XlsxUtil.getWorkbook(layoutFile);
-        String extension = layoutFile.getName().replaceAll("^.+\\.", "");
-        File workFile = XlsxUtil.write(layoutBook, baseMei, extension);
-
         // 作業用ファイルをワークブックとして取得
-        Workbook workbook = XlsxUtil.getWorkbook(workFile);
+        Workbook workbook = XlsxUtil.file2Workbook(workFile);
         // シーケンシャルアクセス専用のチューニング
         // workbook = new SXSSFWorkbook((XSSFWorkbook) workbook);
 
@@ -118,6 +125,51 @@ public final class XlsxUtil {
 
         // レイアウトシートを取得
         Sheet layoutSheet = workbook.getSheet(layoutSheetName);
+
+        // レイアウトシートがない（テンプレートファイルがない）場合は作成
+        if (layoutSheet == null) {
+
+            // レイアウトシート追加
+            layoutSheet = workbook.createSheet(layoutSheetName);
+
+            // 追加シート情報でループ
+            for (Map<String, Object> addSheetData : addSheetMap.values()) {
+
+                for (Object sheetData : addSheetData.values()) {
+
+                    Map<String, Object> dataItem = null;
+                    String l = null;
+                    String r = null;
+
+                    if (sheetData instanceof List) {
+                        // シートデータがListの場合
+                        @SuppressWarnings("unchecked")
+                        List<Map<String, Object>> dataList = (List<Map<String, Object>>) sheetData;
+                        dataItem = dataList.get(0);
+                        l = "[[";
+                        r = "]]";
+                    } else if (sheetData instanceof Map) {
+                        @SuppressWarnings("unchecked")
+                        Map<String, Object> map = (Map<String, Object>) sheetData;
+                        dataItem = map;
+                        l = "{{";
+                        r = "}}";
+                    }
+
+                    // 列情報を転記
+                    if (dataItem != null) {
+                        int c = 0;
+                        for (String columnName : dataItem.keySet()) {
+                            setCellValue(layoutSheet, 0, c, columnName);
+                            setCellValue(layoutSheet, 1, c++, l + columnName + r);
+                        }
+                    }
+                }
+
+                //追加シートの１枚目だけ処理すればいい
+                break;
+            }
+        }
 
         // タイトル項目のプレースホルダのアドレスを初期化
         Map<String, CellAddress> titleAddresses = new HashMap<String, CellAddress>();
@@ -373,7 +425,7 @@ public final class XlsxUtil {
      * @param file ファイル
      * @return ファイルをワークブックとして取得
      */
-    private static Workbook getWorkbook(final File file) {
+    private static Workbook file2Workbook(final File file) {
         try {
             return new XSSFWorkbook(file);
         } catch (Exception e) {
@@ -431,7 +483,14 @@ public final class XlsxUtil {
      * @param o セルに設定する値
      */
     private static void setCellValue(final Sheet sheet, final int r, final int c, final Object o) {
-        Cell cell = sheet.getRow(r).getCell(c);
+        Row row = sheet.getRow(r);
+        if (row == null) {
+            row = sheet.createRow(r);
+        }
+        Cell cell = row.getCell(c);
+        if (cell == null) {
+            cell = row.createCell(c);
+        }
         setCellValue(cell, o);
     }
 
@@ -460,10 +519,24 @@ public final class XlsxUtil {
      * @param destRowIndex コピー先の行インデクス
      */
     private static void copyRange(final Sheet sheet, final Range range, final int destRowIndex) {
+
+        // 今回コピーする開始行から終了行までループ
         for (int r = range.getBoR(); r <= range.getEoR(); r++) {
+
+            // コピー対象の行数を取得
             int rownum = destRowIndex + r - range.getBoR();
-            sheet.shiftRows(rownum, rownum, 1, true, true);
-            Row destRow = sheet.createRow(rownum);
+
+            // コピー先の行を取得
+            Row destRow = sheet.getRow(rownum);
+            if (destRow != null) {
+                // 取れた場合はフッタありレイアウトのため、開始行から終了行までを１回だけ下にずらす
+                sheet.shiftRows(rownum, rownum, 1, true, true);
+            }
+
+            // 改めてコピー先の行を作成
+            destRow = sheet.createRow(rownum);
+
+            // コピー開始列から終了列までループして書式コピー
             for (int c = range.getBoC(); c <= range.getEoC(); c++) {
                 Cell srcCell = sheet.getRow(r).getCell(c);
                 Cell destCell = destRow.createCell(c);

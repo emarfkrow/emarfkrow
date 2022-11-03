@@ -78,12 +78,20 @@ $(function() {
 	let $searchForm = $('.article [name$="SearchForm"]');
 	let $registForm = $('.article [name$="RegistForm"]');
 	if ($searchForm.length == 0 && $registForm.length > 0) {
+		let querystrings = {};
 		for (let k in Base.querystrings) {
-			let v = Base.querystrings[k];
+			if (k.lastIndexOf('$') >= 0) {
+				let ks = k.split('$');
+				for (let i = 0; i < ks.length; i++) {
+					querystrings[ks[i]] = Base.querystrings[k];
+				}
+			} else {
+				querystrings[k] = Base.querystrings[k];
+			}
 		}
 		let entityName = href.replace(/\.html.+/, '').replace(/.+\//, '');
 		let data = {};
-		data[entityName] = Base.querystrings;
+		data[entityName] = querystrings;
 		Jsonate.toForm(data, $registForm);
 		Base.referRegistForm($registForm);
 	}
@@ -264,6 +272,9 @@ let Base = {
 		// 画面の更新権限のチェック
 		$('form[name]').each(function() {
 			if (Base.getAuthz(this.name) < 2) {
+				$(this).find('a.output').hide();
+			}
+			if (Base.getAuthz(this.name) < 3) {
 				$(this).find('button.delete, button.regist').hide();
 				if ($(this).hasClass('regist')) {
 					$(this).find('button.reset').hide();
