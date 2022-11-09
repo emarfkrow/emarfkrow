@@ -48,6 +48,7 @@ import jp.co.golorp.emarf.action.BaseAction;
 import jp.co.golorp.emarf.exception.SysError;
 import jp.co.golorp.emarf.lang.StringUtil;
 import jp.co.golorp.emarf.properties.App;
+import jp.co.golorp.emarf.servlet.LoginFilter;
 import jp.co.golorp.emarf.time.DateTimeUtil;
 
 /**
@@ -167,8 +168,8 @@ public final class ServletUtil {
 
         a.setRequestURI(request.getRequestURI());
 
-        if (ses.getAttribute("AUTHN_KEY") != null) {
-            a.setId(ses.getAttribute("AUTHN_KEY").toString());
+        if (ses.getAttribute(LoginFilter.AUTHN_KEY) != null) {
+            a.setId(ses.getAttribute(LoginFilter.AUTHN_KEY).toString());
         }
 
         return a;

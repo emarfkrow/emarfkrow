@@ -34,6 +34,7 @@ import jp.co.golorp.emarf.exception.SysError;
 import jp.co.golorp.emarf.lang.StringUtil;
 import jp.co.golorp.emarf.properties.App;
 import jp.co.golorp.emarf.report.XlsxUtil;
+import jp.co.golorp.emarf.servlet.LoginFilter;
 
 /**
  * Servlet implementation class XlsxServlet
@@ -107,7 +108,7 @@ public final class XlsxServlet extends HttpServlet {
 
         xlsxAction.setPathes(pathes);
         xlsxAction.setBaseName(baseName);
-        xlsxAction.setId(request.getSession().getAttribute("AUTHN_KEY").toString());
+        xlsxAction.setId(request.getSession().getAttribute(LoginFilter.AUTHN_KEY).toString());
         Map<String, Object> xlsxMap = xlsxAction.run(map);
 
         String layoutFileName = (String) xlsxMap.get("layoutFileName");
