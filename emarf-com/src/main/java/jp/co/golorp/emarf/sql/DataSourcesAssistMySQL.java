@@ -43,22 +43,27 @@ public final class DataSourcesAssistMySQL extends DataSourcesAssist {
     }
 
     @Override
-    public String join(final String[] array) {
+    public String joinedSQL(final String[] array) {
         return "CONCAT (" + String.join(", ", array) + ")";
     }
 
     @Override
-    public String toTimestamp(final String s) {
+    public String toTimestampSQL(final String s) {
         return s;
     }
 
     @Override
-    public String quoted(final String columnName) {
+    public String formatedSQL(final String s, final String format) {
+        return s;
+    }
+
+    @Override
+    public String quotedSQL(final String columnName) {
         return "`" + columnName + "`";
     }
 
     @Override
-    public String quoteEscaped(final String columnName) {
+    public String quoteEscapedSQL(final String columnName) {
         return "`" + columnName + "`";
     }
 
@@ -74,7 +79,7 @@ public final class DataSourcesAssistMySQL extends DataSourcesAssist {
     }
 
     @Override
-    public String trimed(final String columnName) {
+    public String trimedSQL(final String columnName) {
         return "TRIM(TRAILING ' ' FROM " + columnName + ")";
     }
 

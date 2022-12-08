@@ -41,22 +41,27 @@ public final class DataSourcesAssistPostgreSQL extends DataSourcesAssist {
     }
 
     @Override
-    public String join(final String[] array) {
+    public String joinedSQL(final String[] array) {
         return null;
     }
 
     @Override
-    public String toTimestamp(final String lowerColumn) {
+    public String toTimestampSQL(final String lowerColumn) {
         return null;
     }
 
     @Override
-    public String quoted(final String columnName) {
+    public String formatedSQL(final String s, final String format) {
+        return s;
+    }
+
+    @Override
+    public String quotedSQL(final String columnName) {
         return null;
     }
 
     @Override
-    public String quoteEscaped(final String columnName) {
+    public String quoteEscapedSQL(final String columnName) {
         return null;
     }
 
@@ -72,7 +77,7 @@ public final class DataSourcesAssistPostgreSQL extends DataSourcesAssist {
     }
 
     @Override
-    public String trimed(final String columnName) {
+    public String trimedSQL(final String columnName) {
         return null;
     }
 

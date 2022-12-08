@@ -64,6 +64,8 @@ public final class BeanGenerator {
     private static String insertBy;
     /** 更新日時カラム名 */
     private static String updateDt;
+    /** 更新日時フォーマット */
+    private static String updateDtFormat;
     /** 更新者カラム名 */
     private static String updateBy;
 
@@ -118,6 +120,7 @@ public final class BeanGenerator {
         insertDt = bundle.getString("BeanGenerator.insert_dt");
         insertBy = bundle.getString("BeanGenerator.insert_by");
         updateDt = bundle.getString("BeanGenerator.update_dt");
+        updateDtFormat = bundle.getString("BeanGenerator.update_dt.format");
         updateBy = bundle.getString("BeanGenerator.update_by");
 
         inputFlagSuffixs = bundle.getString("BeanGenerator.input.flag.suffixs").split(",");
@@ -353,7 +356,7 @@ public final class BeanGenerator {
                 isPrimaryKey = true;
                 String snake = StringUtil.toSnakeCase(primaryKey);
                 ColumnInfo primaryKeyInfo = tableInfo.getColumnInfos().get(primaryKey);
-                String columnName = DataSources.getAssist().quoteEscaped(primaryKey);
+                String columnName = DataSources.getAssist().quoteEscapedSQL(primaryKey);
                 if (primaryKeyInfo.getTypeName().equals("CHAR")) {
                     s.add("        whereList.add(\"TRIM (" + columnName + ") = TRIM (:" + snake + ")\");");
                 } else {
@@ -366,7 +369,7 @@ public final class BeanGenerator {
                 if (key.length() > 0) {
                     String snake = StringUtil.toSnakeCase(key);
                     ColumnInfo keyInfo = tableInfo.getColumnInfos().get(key);
-                    String columnName = DataSources.getAssist().quoteEscaped(key);
+                    String columnName = DataSources.getAssist().quoteEscapedSQL(key);
                     if (keyInfo.getTypeName().equals("CHAR")) {
                         s.add("        whereList.add(\"TRIM (" + columnName + ") = TRIM (:" + snake + ")\");");
                     } else {
@@ -386,11 +389,11 @@ public final class BeanGenerator {
                 sql = "      ";
             }
             if (columnInfo.getTypeName().equals("CHAR")) {
-                String quoteEscaped = assist.quoteEscaped(srcColumnName);
-                String trimed = assist.trimed("a." + quoteEscaped);
+                String quoteEscaped = assist.quoteEscapedSQL(srcColumnName);
+                String trimed = assist.trimedSQL("a." + quoteEscaped);
                 s.add("        sql += \"" + sql + trimed + " AS " + srcColumnName + " \\n\";");
             } else {
-                s.add("        sql += \"" + sql + "a." + assist.quoteEscaped(srcColumnName) + " \\n\";");
+                s.add("        sql += \"" + sql + "a." + assist.quoteEscapedSQL(srcColumnName) + " \\n\";");
             }
             isFirst = false;
         }
@@ -560,7 +563,7 @@ public final class BeanGenerator {
         s.add("        List<String> nameList = new ArrayList<String>();");
         for (String columnName : tableInfo.getColumnInfos().keySet()) {
             String snake = StringUtil.toSnakeCase(columnName);
-            s.add("        nameList.add(\"" + assist.quoteEscaped(columnName) + " -- :" + snake + "\");");
+            s.add("        nameList.add(\"" + assist.quoteEscapedSQL(columnName) + " -- :" + snake + "\");");
         }
         s.add("        return String.join(\"\\r\\n    , \", nameList);");
         s.add("    }");
@@ -574,7 +577,10 @@ public final class BeanGenerator {
             String snake = StringUtil.toSnakeCase(columnName);
             String rightHand = ":" + snake;
             if (e.getValue().getDataType().equals("java.time.LocalDateTime")) {
-                rightHand = assist.toTimestamp(rightHand);
+                rightHand = assist.toTimestampSQL(rightHand);
+            }
+            if (columnName.matches("(?i)^" + updateDt + "$") && !StringUtil.isNullOrBlank(updateDtFormat)) {
+                rightHand = assist.formatedSQL(rightHand, updateDtFormat);
             }
             // 主キー以外のNOTNULL-CHARで、NULL必須サフィックス指定がありこれに含まれない場合、NULLならスペースにする（ホスト対応）
             if (!columnInfo.isPk() && columnInfo.getTypeName().equals("CHAR")
@@ -608,7 +614,7 @@ public final class BeanGenerator {
         String camel = StringUtil.toCamelCase(keyName);
 
         DataSourcesAssist assist = DataSources.getAssist();
-        String quoted = assist.quoteEscaped(keyName);
+        String quoted = assist.quoteEscapedSQL(keyName);
 
         s.add("");
         s.add("    /** " + lastKeyInfo.getRemarks() + "の採番処理 */");
@@ -634,7 +640,7 @@ public final class BeanGenerator {
             // 一つ前までループ
             for (int j = 0; j < tableInfo.getPrimaryKeys().size() - 1; j++) {
                 String primaryKey = tableInfo.getPrimaryKeys().get(j);
-                String quotedKey = assist.quoteEscaped(primaryKey);
+                String quotedKey = assist.quoteEscapedSQL(primaryKey);
                 String snakeKey = StringUtil.toSnakeCase(primaryKey);
                 s.add("        whereList.add(\"e." + quotedKey + " = :" + snakeKey + "\");");
             }
@@ -688,7 +694,7 @@ public final class BeanGenerator {
             if (!childInfo.getColumnInfos().containsKey(updateDt)) {
                 List<String> childWhere = new ArrayList<String>();
                 for (String primaryKey : childInfo.getPrimaryKeys()) {
-                    String quoted = assist.quoteEscaped(primaryKey);
+                    String quoted = assist.quoteEscapedSQL(primaryKey);
                     String snake = StringUtil.toSnakeCase(primaryKey);
                     childWhere.add(quoted + " = :" + snake);
                 }
@@ -782,7 +788,11 @@ public final class BeanGenerator {
                 String snake = StringUtil.toSnakeCase(columnName);
                 String rightHand = ":" + snake;
                 if (columnInfo.getDataType().equals("java.time.LocalDateTime")) {
-                    rightHand = assist.toTimestamp(rightHand);
+                    rightHand = assist.toTimestampSQL(rightHand);
+                }
+
+                if (columnName.matches("(?i)^" + updateDt + "$") && !StringUtil.isNullOrBlank(updateDtFormat)) {
+                    rightHand = assist.formatedSQL(rightHand, updateDtFormat);
                 }
 
                 // 主キー以外のNOTNULL-CHARで、NULL必須サフィックス指定がありこれに含まれない場合、NULLならスペースにする（ホスト対応）
@@ -792,7 +802,7 @@ public final class BeanGenerator {
                     rightHand = "NVL (" + rightHand + ", ' ')";
                 }
 
-                s.add("        setList.add(\"" + assist.quoteEscaped(columnName) + " = " + rightHand + "\");");
+                s.add("        setList.add(\"" + assist.quoteEscapedSQL(columnName) + " = " + rightHand + "\");");
             }
         }
         s.add("        return String.join(\"\\r\\n    , \", setList);");
@@ -818,7 +828,7 @@ public final class BeanGenerator {
             if (primaryKey.length() == 0) {
                 continue;
             }
-            String quoted = assist.quoteEscaped(primaryKey);
+            String quoted = assist.quoteEscapedSQL(primaryKey);
             String snake = StringUtil.toSnakeCase(primaryKey);
             ColumnInfo primaryKeyInfo = tableInfo.getColumnInfos().get(primaryKey);
             if (primaryKeyInfo.getTypeName().equals("CHAR")) {
@@ -834,10 +844,10 @@ public final class BeanGenerator {
 
             String rightHand = "'\" + this." + StringUtil.toCamelCase(updateDt) + " + \"'";
             if (columnInfo.getDataType().equals("java.time.LocalDateTime")) {
-                rightHand = assist.toTimestamp(rightHand);
+                rightHand = assist.toTimestampSQL(rightHand);
             }
 
-            s.add("        whereList.add(\"" + assist.quoteEscaped(updateDt) + " = " + rightHand + "\");");
+            s.add("        whereList.add(\"" + assist.quoteEscapedSQL(updateDt) + " = " + rightHand + "\");");
         }
 
         s.add("        return String.join(\" AND \", whereList);");

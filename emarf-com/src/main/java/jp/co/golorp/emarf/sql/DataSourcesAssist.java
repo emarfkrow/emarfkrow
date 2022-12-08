@@ -48,25 +48,32 @@ public abstract class DataSourcesAssist {
      * @param array 文字列配列
      * @return 文字列を結合するSQL
      */
-    public abstract String join(String[] array);
+    public abstract String joinedSQL(String[] array);
 
     /**
      * @param s 対象文字列
      * @return yyyy/mm/dd hh:mm:ss.SSSにキャストするSQL
      */
-    public abstract String toTimestamp(String s);
+    public abstract String toTimestampSQL(String s);
+
+    /**
+     * @param s 対象文字列
+     * @param format フォーマット文字列
+     * @return フォーマットするSQL
+     */
+    public abstract String formatedSQL(String s, String format);
 
     /**
      * @param columnName カラム名
      * @return 引用符付きの文字列
      */
-    public abstract String quoted(String columnName);
+    public abstract String quotedSQL(String columnName);
 
     /**
      * @param columnName カラム名
      * @return エスケープ引用符付きの文字列
      */
-    public abstract String quoteEscaped(String columnName);
+    public abstract String quoteEscapedSQL(String columnName);
 
     /**
      * @param sql 発行するSQL
@@ -86,6 +93,6 @@ public abstract class DataSourcesAssist {
      * @param columnName カラム名
      * @return 全半角スペースのトリムSQL文字列
      */
-    public abstract String trimed(String columnName);
+    public abstract String trimedSQL(String columnName);
 
 }

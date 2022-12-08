@@ -106,7 +106,7 @@ public class DataSourcesAssistOracle extends DataSourcesAssist {
      * @param array 文字列配列
      * @return 結合後の文字列
      */
-    public String join(final String[] array) {
+    public String joinedSQL(final String[] array) {
         return String.join(" || ", array);
     }
 
@@ -114,15 +114,24 @@ public class DataSourcesAssistOracle extends DataSourcesAssist {
      * @param s カラム物理名
      * @return ミリ秒タイムスタンプ変換SQL
      */
-    public String toTimestamp(final String s) {
+    public String toTimestampSQL(final String s) {
         return "TO_TIMESTAMP (REPLACE (SUBSTR (" + s + ", 0, 23), 'T', ' '), 'YYYY-MM-DD HH24:MI:SS.FF3')";
+    }
+
+    /**
+     * @param s カラム物理名
+     * @param format フォーマット文字列
+     * @return フォーマットSQL
+     */
+    public String formatedSQL(final String s, final String format) {
+        return "TO_CHAR (" + toTimestampSQL(s) + ", '" + format + "')";
     }
 
     /**
      * @param columnName カラム物理名
      * @return 囲み後のSQL文字列
      */
-    public String quoted(final String columnName) {
+    public String quotedSQL(final String columnName) {
         return "\"" + columnName + "\"";
     }
 
@@ -130,7 +139,7 @@ public class DataSourcesAssistOracle extends DataSourcesAssist {
      * @param columnName カラム物理名
      * @return エスケープ済みで囲み後のSQL文字列
      */
-    public String quoteEscaped(final String columnName) {
+    public String quoteEscapedSQL(final String columnName) {
         return "\\\"" + columnName + "\\\"";
     }
 
@@ -172,7 +181,7 @@ public class DataSourcesAssistOracle extends DataSourcesAssist {
      * @param columnName カラム名
      * @return 全半角スペースのトリム文字列
      */
-    public String trimed(final String columnName) {
+    public String trimedSQL(final String columnName) {
         return "RTRIM (RTRIM (" + columnName + "), '　')";
     }
 
