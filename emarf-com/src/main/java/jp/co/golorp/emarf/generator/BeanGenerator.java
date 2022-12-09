@@ -579,12 +579,9 @@ public final class BeanGenerator {
             if (e.getValue().getDataType().equals("java.time.LocalDateTime")) {
                 rightHand = assist.toTimestampSQL(rightHand);
             }
-            if (columnName.matches("(?i)^" + updateDt + "$") && !StringUtil.isNullOrBlank(updateDtFormat)) {
-                rightHand = assist.formatedSQL(rightHand, updateDtFormat);
-            }
             // 主キー以外のNOTNULL-CHARで、NULL必須サフィックス指定がありこれに含まれない場合、NULLならスペースにする（ホスト対応）
             if (!columnInfo.isPk() && columnInfo.getTypeName().equals("CHAR")
-                    && !StringUtil.isNullOrBlank(charNotNullSuffixs)
+                    && !StringUtil.isNullOrBlank(String.join(",", charNotNullSuffixs))
                     && !StringUtil.endsWith(charNotNullSuffixs, columnInfo.getColumnName())) {
                 rightHand = "NVL (" + rightHand + ", ' ')";
             }
@@ -704,6 +701,9 @@ public final class BeanGenerator {
             }
 
             s.add("            for (" + pascal + " " + camel + " : this." + camel + "s) {");
+            s.add("                if (" + camel + " == null) {");
+            s.add("                    continue;");
+            s.add("                }");
             for (String primaryKey : tableInfo.getPrimaryKeys()) {
                 String camelKey = StringUtil.toCamelCase(primaryKey);
                 String pascalKey = StringUtil.toPascalCase(primaryKey);
@@ -720,8 +720,14 @@ public final class BeanGenerator {
                 s.add("            this.refer" + pascal + "s();");
                 s.add("            if (this." + camel + "s != null) {");
                 s.add("                for (" + pascal + " " + camel + " : this." + camel + "s) {");
-                s.add("                    if (!" + camel + ".get" + StringUtil.toPascalCase(updateDt)
-                        + "().equals(now)) {");
+                String updateDtNm = StringUtil.toPascalCase(updateDt);
+                if (childInfo.getColumnInfos().get(updateDt).getDataType().equals("java.time.LocalDateTime")) {
+                    s.add("                    if (!" + camel + ".get" + updateDtNm + "().equals(now)) {");
+                } else {
+                    s.add("                    if (!" + camel + ".get" + updateDtNm
+                            + "().toString().equals(jp.co.golorp.emarf.time.DateTimeUtil.format(\"" + updateDtFormat
+                            + "\", now))) {");
+                }
                 s.add("                        " + camel + ".delete();");
                 s.add("                    }");
                 s.add("                }");
@@ -791,13 +797,9 @@ public final class BeanGenerator {
                     rightHand = assist.toTimestampSQL(rightHand);
                 }
 
-                if (columnName.matches("(?i)^" + updateDt + "$") && !StringUtil.isNullOrBlank(updateDtFormat)) {
-                    rightHand = assist.formatedSQL(rightHand, updateDtFormat);
-                }
-
                 // 主キー以外のNOTNULL-CHARで、NULL必須サフィックス指定がありこれに含まれない場合、NULLならスペースにする（ホスト対応）
                 if (!columnInfo.isPk() && columnInfo.getTypeName().equals("CHAR")
-                        && !StringUtil.isNullOrBlank(charNotNullSuffixs)
+                        && !StringUtil.isNullOrBlank(String.join(",", charNotNullSuffixs))
                         && !StringUtil.endsWith(charNotNullSuffixs, columnInfo.getColumnName())) {
                     rightHand = "NVL (" + rightHand + ", ' ')";
                 }
@@ -876,7 +878,11 @@ public final class BeanGenerator {
         }
         s.add("        map.put(\"" + StringUtil.toSnakeCase(insertDt) + "\", now);");
         s.add("        map.put(\"" + StringUtil.toSnakeCase(insertBy) + "\", execId);");
-        s.add("        map.put(\"" + StringUtil.toSnakeCase(updateDt) + "\", now);");
+        String now = "now";
+        if (!StringUtil.isNullOrBlank(updateDtFormat)) {
+            now = "jp.co.golorp.emarf.time.DateTimeUtil.format(\"" + updateDtFormat + "\", now)";
+        }
+        s.add("        map.put(\"" + StringUtil.toSnakeCase(updateDt) + "\", " + now + ");");
         s.add("        map.put(\"" + StringUtil.toSnakeCase(updateBy) + "\", execId);");
         s.add("        return map;");
         s.add("    }");

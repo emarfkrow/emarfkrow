@@ -496,7 +496,7 @@ public final class DataSources {
 
             boolean isIgnore = false;
             for (String ignorePrefix : ignorePrefixs) {
-                if (tableName.matches("^" + ignorePrefix + ".*$")) {
+                if (!StringUtil.isNullOrBlank(ignorePrefix) && tableName.matches("^" + ignorePrefix + ".*$")) {
                     isIgnore = true;
                     break;
                 }
@@ -768,16 +768,19 @@ public final class DataSources {
         while (srcIterator.hasNext()) {
 
             TableInfo srcInfo = srcIterator.next();
+            LOG.debug("srcInfo: " + srcInfo.getTableName());
 
             // 主キーがなければスキップ
             if (srcInfo.getPrimaryKeys().size() == 0) {
+                LOG.debug("    skip: no primary keys.");
                 continue;
             }
 
-            // 弟モデルには子モデルを設定しない
-            if (srcInfo.isBrother()) {
-                continue;
-            }
+            //            // 弟モデルには子モデルを設定しない
+            //            if (srcInfo.isBrother()) {
+            //                LOG.debug("    skip: this is brother.");
+            //                continue;
+            //            }
 
             // 子を設定しないテーブルならスキップ
             boolean isDink = false;
@@ -788,6 +791,7 @@ public final class DataSources {
                 }
             }
             if (isDink) {
+                LOG.debug("    skip: this is dinks.");
                 continue;
             }
 
@@ -798,9 +802,11 @@ public final class DataSources {
             Iterator<TableInfo> destIterator = tableInfos.iterator();
             while (destIterator.hasNext()) {
                 TableInfo destInfo = destIterator.next();
+                LOG.debug("    destInfo: " + destInfo.getTableName());
 
                 // 比較元と同じならスキップ
                 if (srcInfo == destInfo) {
+                    LOG.debug("        skip: same entity.");
                     continue;
                 }
 
@@ -813,10 +819,12 @@ public final class DataSources {
                     }
                 }
                 if (isOrphan) {
+                    LOG.debug("        skip: this is orphan.");
                     continue;
                 }
 
                 if (destInfo.getPrimaryKeys().size() == 0) {
+                    LOG.debug("        skip: no primary keys.");
                     continue;
                 }
 
@@ -835,15 +843,22 @@ public final class DataSources {
                     }
                 }
                 if (!isPkMatch) {
+                    LOG.debug("        skip: primary keys not match.");
                     continue;
                 }
 
                 // 比較先の主キーが比較元の主キー＋一つの場合は子テーブルリストに追加
                 if (srcInfo.getPrimaryKeys().size() + 1 == destInfo.getPrimaryKeys().size()) {
                     // 履歴テーブルでも兄弟テーブルでもなければ追加
-                    if (!destInfo.isHistory() && !destInfo.isBrother()) {
+                    if (destInfo.isHistory()) {
+                        LOG.debug("        skip: this is history.");
+                        //                    } else if (destInfo.isBrother()) {
+                        //                        LOG.debug("        skip: this is brother.");
+                    } else {
                         childInfos.add(destInfo);
                     }
+                } else {
+                    LOG.debug("        skip: primary keys size not match.");
                 }
             }
         }
