@@ -687,8 +687,8 @@ public final class BeanGenerator {
             s.add("");
             s.add("        // " + childInfo.getRemarks() + "の登録");
             s.add("        if (this." + camel + "s != null) {");
-
-            if (!childInfo.getColumnInfos().containsKey(updateDt)) {
+            if (!childInfo.getColumnInfos().containsKey(updateDt.toLowerCase())
+                    && !childInfo.getColumnInfos().containsKey(updateDt.toUpperCase())) {
                 List<String> childWhere = new ArrayList<String>();
                 for (String primaryKey : childInfo.getPrimaryKeys()) {
                     String quoted = assist.quoteEscapedSQL(primaryKey);
@@ -715,13 +715,18 @@ public final class BeanGenerator {
             s.add("                    " + camel + ".update(now, execId);");
             s.add("                }");
             s.add("            }");
-            if (childInfo.getColumnInfos().containsKey(updateDt)) {
+            if (childInfo.getColumnInfos().containsKey(updateDt.toLowerCase())
+                    || childInfo.getColumnInfos().containsKey(updateDt.toUpperCase())) {
+                ColumnInfo updateDtInfo = childInfo.getColumnInfos().get(updateDt.toLowerCase());
+                if (updateDtInfo == null) {
+                    updateDtInfo = childInfo.getColumnInfos().get(updateDt.toUpperCase());
+                }
                 s.add("            this." + camel + "s = null;");
                 s.add("            this.refer" + pascal + "s();");
                 s.add("            if (this." + camel + "s != null) {");
                 s.add("                for (" + pascal + " " + camel + " : this." + camel + "s) {");
                 String updateDtNm = StringUtil.toPascalCase(updateDt);
-                if (childInfo.getColumnInfos().get(updateDt).getDataType().equals("java.time.LocalDateTime")) {
+                if (updateDtInfo.getDataType().equals("java.time.LocalDateTime")) {
                     s.add("                    if (!" + camel + ".get" + updateDtNm + "().equals(now)) {");
                 } else {
                     s.add("                    if (!" + camel + ".get" + updateDtNm
@@ -790,7 +795,6 @@ public final class BeanGenerator {
             boolean isInsertDt = columnName.matches("(?i)^" + insertDt + "$");
             boolean isInsertBy = columnName.matches("(?i)^" + insertBy + "$");
             if (!isInsertDt && !isInsertBy) {
-
                 String snake = StringUtil.toSnakeCase(columnName);
                 String rightHand = ":" + snake;
                 if (columnInfo.getDataType().equals("java.time.LocalDateTime")) {
@@ -803,7 +807,6 @@ public final class BeanGenerator {
                         && !StringUtil.endsWith(charNotNullSuffixs, columnInfo.getColumnName())) {
                     rightHand = "NVL (" + rightHand + ", ' ')";
                 }
-
                 s.add("        setList.add(\"" + assist.quoteEscapedSQL(columnName) + " = " + rightHand + "\");");
             }
         }

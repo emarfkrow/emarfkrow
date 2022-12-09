@@ -155,7 +155,9 @@ public final class SqlGenerator {
                 // 文字列はTRIMしてLIKE検索
                 String[] array = new String[] { "'%'", ":" + snake, "'%'" };
                 String joined = assist.joinedSQL(array);
-                s.add("    AND TRIM (a." + quoted + ") LIKE " + joined + " ");
+                String quoteEscaped = assist.quoteEscapedSQL(columnName);
+                String trimed = assist.trimedSQL("a." + quoteEscaped);
+                s.add("    AND " + trimed + " LIKE " + joined + " ");
             } else {
                 // 以外は等値検索
                 s.add("    AND a." + quoted + " = :" + snake + " ");
