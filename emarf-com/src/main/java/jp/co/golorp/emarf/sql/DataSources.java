@@ -368,48 +368,47 @@ public final class DataSources {
      */
     private static void log(final List<TableInfo> tableInfos) {
 
-        LOG.info("\t■RelationInfos:");
+        for (TableInfo tableInfo : tableInfos) {
 
-        for (TableInfo t : tableInfos) {
-            if (t.getBrosInfos().size() == 0 && t.getChildInfos().size() == 0) {
-                continue;
+            LOG.info("");
+            LOG.info("■" + tableInfo.getTableName());
+
+            if (tableInfo.getPrimaryKeys().size() > 0) {
+                LOG.info("    PrimaryKeys: " + tableInfo.getPrimaryKeys());
             }
-            LOG.info("\t\t" + t.getTableName() + " " + t.getPrimaryKeys());
-            if (t.getBrosInfos().size() > 0) {
-                LOG.info("\t\t\tBrosInfos:");
-                for (TableInfo table : t.getBrosInfos()) {
-                    LOG.info("\t\t\t\t" + table.getTableName() + " " + table.getPrimaryKeys());
+
+            if (tableInfo.getBrosInfos().size() > 0) {
+                LOG.info("    BrosInfos:");
+                for (TableInfo brosInfo : tableInfo.getBrosInfos()) {
+                    LOG.info("        " + brosInfo.getTableName() + " " + brosInfo.getPrimaryKeys());
                 }
             }
-            if (t.getChildInfos().size() > 0) {
-                LOG.info("\t\t\tChildInfos:");
-                for (TableInfo table : t.getChildInfos()) {
-                    LOG.info("\t\t\t\t" + table.getTableName() + " " + table.getPrimaryKeys());
+
+            if (tableInfo.getChildInfos().size() > 0) {
+                LOG.info("    ChildInfos:");
+                for (TableInfo childInfo : tableInfo.getChildInfos()) {
+                    LOG.info("        " + childInfo.getTableName() + " " + childInfo.getPrimaryKeys());
                 }
             }
-        }
 
-        LOG.info("\t■ReferInfos:");
-
-        for (TableInfo t : tableInfos) {
             Map<String, TableInfo> referInfos = new LinkedHashMap<String, TableInfo>();
-            for (ColumnInfo columnInfo : t.getColumnInfos().values()) {
+            for (ColumnInfo columnInfo : tableInfo.getColumnInfos().values()) {
                 if (columnInfo.getReferInfo() != null) {
                     referInfos.put(columnInfo.getColumnName(), columnInfo.getReferInfo());
                 }
             }
-            if (referInfos.size() == 0) {
-                continue;
-            }
             if (referInfos.size() > 0) {
-                LOG.info("\t\t" + t.getTableName());
+                LOG.info("    ReferInfos:");
                 for (Entry<String, TableInfo> e : referInfos.entrySet()) {
                     String columnName = e.getKey();
-                    TableInfo table = e.getValue();
-                    LOG.info("\t\t\t" + columnName + " = " + table.getTableName() + " " + table.getPrimaryKeys());
+                    TableInfo referInfo = e.getValue();
+                    LOG.info("        " + columnName + " = " + referInfo.getTableName() + " "
+                            + referInfo.getPrimaryKeys());
                 }
             }
         }
+
+        LOG.info("");
     }
 
     /**
@@ -768,19 +767,11 @@ public final class DataSources {
         while (srcIterator.hasNext()) {
 
             TableInfo srcInfo = srcIterator.next();
-            LOG.debug("srcInfo: " + srcInfo.getTableName());
 
             // 主キーがなければスキップ
             if (srcInfo.getPrimaryKeys().size() == 0) {
-                LOG.debug("    skip: no primary keys.");
                 continue;
             }
-
-            //            // 弟モデルには子モデルを設定しない
-            //            if (srcInfo.isBrother()) {
-            //                LOG.debug("    skip: this is brother.");
-            //                continue;
-            //            }
 
             // 子を設定しないテーブルならスキップ
             boolean isDink = false;
@@ -791,7 +782,6 @@ public final class DataSources {
                 }
             }
             if (isDink) {
-                LOG.debug("    skip: this is dinks.");
                 continue;
             }
 
@@ -802,11 +792,9 @@ public final class DataSources {
             Iterator<TableInfo> destIterator = tableInfos.iterator();
             while (destIterator.hasNext()) {
                 TableInfo destInfo = destIterator.next();
-                LOG.debug("    destInfo: " + destInfo.getTableName());
 
                 // 比較元と同じならスキップ
                 if (srcInfo == destInfo) {
-                    LOG.debug("        skip: same entity.");
                     continue;
                 }
 
@@ -819,12 +807,10 @@ public final class DataSources {
                     }
                 }
                 if (isOrphan) {
-                    LOG.debug("        skip: this is orphan.");
                     continue;
                 }
 
                 if (destInfo.getPrimaryKeys().size() == 0) {
-                    LOG.debug("        skip: no primary keys.");
                     continue;
                 }
 
@@ -843,7 +829,6 @@ public final class DataSources {
                     }
                 }
                 if (!isPkMatch) {
-                    LOG.debug("        skip: primary keys not match.");
                     continue;
                 }
 
@@ -851,14 +836,10 @@ public final class DataSources {
                 if (srcInfo.getPrimaryKeys().size() + 1 == destInfo.getPrimaryKeys().size()) {
                     // 履歴テーブルでも兄弟テーブルでもなければ追加
                     if (destInfo.isHistory()) {
-                        LOG.debug("        skip: this is history.");
-                        //                    } else if (destInfo.isBrother()) {
-                        //                        LOG.debug("        skip: this is brother.");
+                        continue;
                     } else {
                         childInfos.add(destInfo);
                     }
-                } else {
-                    LOG.debug("        skip: primary keys size not match.");
                 }
             }
         }
