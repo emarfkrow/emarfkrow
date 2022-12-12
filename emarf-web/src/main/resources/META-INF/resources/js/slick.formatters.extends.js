@@ -26,6 +26,8 @@ limitations under the License.
 			"Formatters": {
 				"Extends": {
 					"Button": ButtonFormatter,
+					"Choose": ChooseButtonFormatter,
+					"Delete": DeleteButtonFormatter,
 					"DateTime": DateTimeFormatter,
 					"Link": LinkFormatter,
 					"Select": SelectFormatter,
@@ -45,6 +47,20 @@ limitations under the License.
 			return '<input type="button" value="' + columnDef.label + '" class="gridButton" />';
 		}
 		return '<input type="button" value="' + columnDef.name + '" class="gridButton" />';
+	}
+
+	function ChooseButtonFormatter(row, cell, value, columnDef, dataContext) {
+		if (columnDef.label) {
+			return '<input type="button" value="' + columnDef.label + '" class="gridButton gridChoose" />';
+		}
+		return '<input type="button" value="' + columnDef.name + '" class="gridButton gridChoose" />';
+	}
+
+	function DeleteButtonFormatter(row, cell, value, columnDef, dataContext) {
+		if (columnDef.label) {
+			return '<input type="button" value="' + columnDef.label + '" class="gridButton gridDelete" />';
+		}
+		return '<input type="button" value="' + columnDef.name + '" class="gridButton gridDelete" />';
 	}
 
 	function DateTimeFormatter(row, cell, value, columnDef, dataContext) {
