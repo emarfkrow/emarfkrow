@@ -286,7 +286,7 @@ let Dialogate = {
 
 					} else {
 
-						let $registForm = $container.find('[name$="RegistForm"]');
+						let $registForm = $dialogDiv.find('[name$="RegistForm"]');
 
 						// ダイアログ内の登録フォームに、呼び出し元イベントで値が設定されている場合は、照会結果を初期表示
 						Base.referRegistForm($registForm);

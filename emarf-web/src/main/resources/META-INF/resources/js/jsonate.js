@@ -30,6 +30,9 @@ let Jsonate = {
 		+ 'select:enabled, '
 		+ 'textarea:enabled',
 
+	/**
+	 * フォームをJSON化
+	 */
 	toJson: function($form, isSelectRow) {
 
 		let formJson = {};
@@ -59,7 +62,9 @@ let Jsonate = {
 
 			if (isSelectRow) {
 				// 行選択指定の場合は、選択している行のみ
+				
 				for (let r in gridData) {
+					
 					// 選択有無のチェック
 					let selected = false;
 					for (let i in grid.getSelectedRows()) {
@@ -69,14 +74,19 @@ let Jsonate = {
 							break;
 						}
 					}
+					
 					// 選択なしなら空配列を追加（nullだとvalidatorが利かなくなる）
 					if (!selected) {
 						postData.push({});
 					}
 				}
+				
 			} else {
 				// 行選択指定でない場合は、変更している行のみ
+				
 				for (let r in gridData) {
+					
+					// 変更有無のチェック
 					let updated = false;
 					if (!grid.orgData || !grid.orgData[r]) {
 						// 元データがない場合
@@ -87,6 +97,7 @@ let Jsonate = {
 						updated = true;
 						postData.push(gridData[r]);
 					}
+					
 					// 変更なしなら空配列を追加（nullだとvalidatorが利かなくなる）
 					if (!updated) {
 						postData.push({});
@@ -102,35 +113,72 @@ let Jsonate = {
 		return formJson;
 	},
 
+	/**
+	 * 値のある項目のみJSON化
+	 * @param $form フォーム
+	 */
 	toValueJson: function($form) {
 
 		let formJson = {};
 
-		// フォーム内容
+		/*
+		 * フォーム内容
+		 */
 		$form.find(Jsonate.inputSelector).each(function() {
+
+			// 入力項目
 			let $input = $(this);
+
+			// JSONキー
 			let k = $input.prop('name');
+
+			// JSON値
 			let v = $input.val();
+
 			if (v != '') {
+				// JSON値が取れた場合
+
 				if (formJson[k]) {
+					// 取得済みのキーだった場合
+
+					// JSON値が配列でない場合は配列化
 					if (!Array.isArray(formJson[k])) {
 						formJson[k] = [formJson[k]];
 					}
+
+					// 配列の末尾に追加
 					formJson[k].push(v);
+
 				} else {
+
+					// JSON値を設定
 					formJson[k] = v;
 				}
 			}
 		});
 
-		// グリッド内容
+		/*
+		 * グリッド内容
+		 */
 		$form.find('[id$=Grid]').each(function() {
+
+			// グリッドID
 			let gridId = this.id;
+
+			// グリッド
 			let grid = Gridate.grids[gridId];
+
+			// グリッドデータ
 			let gridData = grid.getData().getItems();
+
 			if (gridData.length > 0) {
+				// グリッドデータが１件以上ある場合
+
+				// グリッドIDからグリッド名を取得
 				let gridIds = gridId.split('.');
 				let gridName = gridIds[gridIds.length - 1];
+
+				// グリッド名をキーにグリッド内容を取得
 				formJson[gridName] = gridData;
 			}
 		});
@@ -138,16 +186,26 @@ let Jsonate = {
 		return formJson;
 	},
 
+	/**
+	 * JSONをフォームに反映
+	 * @param data { entityName, { k: v}}
+	 * @param $form フォーム
+	 */
 	toForm: function(data, $form) {
 
+		// JSONのキー（エンティティ名）でループ
 		for (let entityName in data) {
+
+			// エンティティのJSONを取得
 			let json = data[entityName];
 
-			// 配列要素があれば再帰（gridを想定）
-			for (let v in json) {
-				if (json[v] != null && typeof (json[v]) == 'object' && !Array.isArray(json[v])) {
+			// JSONキーでループ
+			for (let k in json) {
+
+				// JSON値が、objectだが配列でなければ、grid項目とみなして再帰
+				if (json[k] != null && typeof (json[k]) == 'object' && !Array.isArray(json[k])) {
 					let nestData = {};
-					nestData[v] = json[v];
+					nestData[k] = json[k];
 					Jsonate.toForm(nestData, $form);
 				}
 			}

@@ -25,7 +25,7 @@ limitations under the License.
         <span id="timestamp">&nbsp;</span>
       </div>
       <div>
-        <span id="authNKey" th:text="${#session.getAttribute('AUTHN_KEY')}"></span>：<span id="authNName" th:text="${#session.getAttribute('AUTHN_NAME')}"></span>
+        <span id="authNKey" th:text="${#session.getAttribute('AUTHN_KEY')}"></span>：<span id="authNName" th:text="${#session.getAttribute('AUTHN_MEI')}"></span>
       </div>
       <form id="logout" method="post" th:action="@{/logout}">
         <button id="logout" th:text="#{header.logout}"></button>

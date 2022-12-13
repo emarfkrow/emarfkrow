@@ -368,48 +368,47 @@ public final class DataSources {
      */
     private static void log(final List<TableInfo> tableInfos) {
 
-        LOG.info("\t■RelationInfos:");
+        for (TableInfo tableInfo : tableInfos) {
 
-        for (TableInfo t : tableInfos) {
-            if (t.getBrosInfos().size() == 0 && t.getChildInfos().size() == 0) {
-                continue;
+            LOG.info("");
+            LOG.info("■" + tableInfo.getTableName());
+
+            if (tableInfo.getPrimaryKeys().size() > 0) {
+                LOG.info("    PrimaryKeys: " + tableInfo.getPrimaryKeys());
             }
-            LOG.info("\t\t" + t.getTableName() + " " + t.getPrimaryKeys());
-            if (t.getBrosInfos().size() > 0) {
-                LOG.info("\t\t\tBrosInfos:");
-                for (TableInfo table : t.getBrosInfos()) {
-                    LOG.info("\t\t\t\t" + table.getTableName() + " " + table.getPrimaryKeys());
+
+            if (tableInfo.getBrosInfos().size() > 0) {
+                LOG.info("    BrosInfos:");
+                for (TableInfo brosInfo : tableInfo.getBrosInfos()) {
+                    LOG.info("        " + brosInfo.getTableName() + " " + brosInfo.getPrimaryKeys());
                 }
             }
-            if (t.getChildInfos().size() > 0) {
-                LOG.info("\t\t\tChildInfos:");
-                for (TableInfo table : t.getChildInfos()) {
-                    LOG.info("\t\t\t\t" + table.getTableName() + " " + table.getPrimaryKeys());
+
+            if (tableInfo.getChildInfos().size() > 0) {
+                LOG.info("    ChildInfos:");
+                for (TableInfo childInfo : tableInfo.getChildInfos()) {
+                    LOG.info("        " + childInfo.getTableName() + " " + childInfo.getPrimaryKeys());
                 }
             }
-        }
 
-        LOG.info("\t■ReferInfos:");
-
-        for (TableInfo t : tableInfos) {
             Map<String, TableInfo> referInfos = new LinkedHashMap<String, TableInfo>();
-            for (ColumnInfo columnInfo : t.getColumnInfos().values()) {
+            for (ColumnInfo columnInfo : tableInfo.getColumnInfos().values()) {
                 if (columnInfo.getReferInfo() != null) {
                     referInfos.put(columnInfo.getColumnName(), columnInfo.getReferInfo());
                 }
             }
-            if (referInfos.size() == 0) {
-                continue;
-            }
             if (referInfos.size() > 0) {
-                LOG.info("\t\t" + t.getTableName());
+                LOG.info("    ReferInfos:");
                 for (Entry<String, TableInfo> e : referInfos.entrySet()) {
                     String columnName = e.getKey();
-                    TableInfo table = e.getValue();
-                    LOG.info("\t\t\t" + columnName + " = " + table.getTableName() + " " + table.getPrimaryKeys());
+                    TableInfo referInfo = e.getValue();
+                    LOG.info("        " + columnName + " = " + referInfo.getTableName() + " "
+                            + referInfo.getPrimaryKeys());
                 }
             }
         }
+
+        LOG.info("");
     }
 
     /**
@@ -496,7 +495,7 @@ public final class DataSources {
 
             boolean isIgnore = false;
             for (String ignorePrefix : ignorePrefixs) {
-                if (tableName.matches("^" + ignorePrefix + ".*$")) {
+                if (!StringUtil.isNullOrBlank(ignorePrefix) && tableName.matches("^" + ignorePrefix + ".*$")) {
                     isIgnore = true;
                     break;
                 }
@@ -774,11 +773,6 @@ public final class DataSources {
                 continue;
             }
 
-            // 弟モデルには子モデルを設定しない
-            if (srcInfo.isBrother()) {
-                continue;
-            }
-
             // 子を設定しないテーブルならスキップ
             boolean isDink = false;
             for (String dink : dinks) {
@@ -841,7 +835,9 @@ public final class DataSources {
                 // 比較先の主キーが比較元の主キー＋一つの場合は子テーブルリストに追加
                 if (srcInfo.getPrimaryKeys().size() + 1 == destInfo.getPrimaryKeys().size()) {
                     // 履歴テーブルでも兄弟テーブルでもなければ追加
-                    if (!destInfo.isHistory() && !destInfo.isBrother()) {
+                    if (destInfo.isHistory()) {
+                        continue;
+                    } else {
                         childInfos.add(destInfo);
                     }
                 }

@@ -50,10 +50,22 @@ import jp.co.golorp.emarf.util.Messages;
 @WebFilter("/*")
 public class LoginFilter implements Filter {
 
+    /** 認証されたキー */
+    public static final String AUTHN_KEY = "AUTHN_KEY";
+
+    /** 認証された名称のキー */
+    public static final String AUTHN_MEI = "AUTHN_MEI";
+
+    /** 認証情報のキー */
+    public static final String AUTHN_INFO = "AUTHN_INFO";
+
+    /** 認可情報のキー */
+    public static final String AUTHZ_INFO = "AUTHZ_INFO";
+
     /** ロガー */
     private static final Logger LOG = LoggerFactory.getLogger(LoginFilter.class);
 
-    /** ログイン画面 */
+    /** 認証処理使用有無 */
     private static final String AUTHN = App.get("loginfilter.authn");
 
     /** ログイン画面 */
@@ -113,9 +125,9 @@ public class LoginFilter implements Filter {
             authzMap.put("authz", "false");
 
             HttpSession ses = req.getSession();
-            ses.setAttribute("AUTHN_KEY", "anonymous");
-            ses.setAttribute("AUTHN_NAME", "anonymous");
-            ses.setAttribute("AUTHZ_INFO", authzMap);
+            ses.setAttribute(LoginFilter.AUTHN_KEY, "anonymous");
+            ses.setAttribute(LoginFilter.AUTHN_MEI, "anonymous");
+            ses.setAttribute(LoginFilter.AUTHZ_INFO, authzMap);
 
         } else if (!requestURI.matches(LoginFilter.EXCLUDE_REGEXP)
                 && !requestURI.equals(contextPath + LoginFilter.PASSMAIL_PAGE)
@@ -176,10 +188,10 @@ public class LoginFilter implements Filter {
                     throw new SysError(e);
                 }
 
-                ses.setAttribute("AUTHN_KEY", map.get("AUTHN_KEY"));
-                ses.setAttribute("AUTHN_NAME", map.get("AUTHN_NAME"));
-                ses.setAttribute("AUTHN_INFO", map.get("AUTHN_INFO"));
-                ses.setAttribute("AUTHZ_INFO", map.get("AUTHZ_INFO"));
+                ses.setAttribute(LoginFilter.AUTHN_KEY, map.get(LoginFilter.AUTHN_KEY));
+                ses.setAttribute(LoginFilter.AUTHN_MEI, map.get(LoginFilter.AUTHN_MEI));
+                ses.setAttribute(LoginFilter.AUTHN_INFO, map.get(LoginFilter.AUTHN_INFO));
+                ses.setAttribute(LoginFilter.AUTHZ_INFO, map.get(LoginFilter.AUTHZ_INFO));
 
                 String orgRequestURI = StringUtil.sanitize(request.getParameter("requestURI"));
                 if (!StringUtil.isNullOrBlank(orgRequestURI)) {
@@ -197,7 +209,7 @@ public class LoginFilter implements Filter {
                 res.sendRedirect(contextPath + LoginFilter.LOGIN_PAGE + "?INFO=info.logout");
                 return;
 
-            } else if (ses.getAttribute("AUTHN_KEY") == null) {
+            } else if (ses.getAttribute(LoginFilter.AUTHN_KEY) == null) {
                 // 認証用オブジェクトがセッションにない場合は、セッション破棄してログイン画面へリダイレクト
 
                 ses.invalidate();

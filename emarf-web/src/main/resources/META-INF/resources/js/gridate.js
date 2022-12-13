@@ -33,6 +33,7 @@ $(function() {
 		if ($target.closest('.slick-pane').length == 0) {
 			Slick.GlobalEditorLock.commitCurrentEdit();
 		}
+
 		//        // datepicker操作時は何もしない
 		//        if ($target.closest('.ui-datepicker-header').length > 0) {
 		//        }
@@ -43,36 +44,37 @@ $(function() {
 		// グリッドごとにループ
 		$('[id$=Grid]').each(function() {
 
-			// グリッドid
+			// 列定義を取得
+			let gridColumns = eval(this.id + 'Columns');
+
+			// グリッドdivを取得
 			let $gridDiv = $(this);
 
-			// グリッドdivのid
-			let divId = this.id;
-
-			// グリッドIDを取得
-			let gridId = divId;
-
+			// グリッドdiv直後のページャを取得
 			let $pager = $gridDiv.find('~[id$=Pager]');
+
+			// グリッドdivのidを、一旦グリッドIDとして退避
+			let gridId = this.id;
 
 			let $dialog = $gridDiv.parents('[role="dialog"]');
 			if ($dialog.length > 0) {
+				// ダイアログ内のグリッドの場合
+
+				// グリッドを配置したフォーム名から検索フォーム名に変換し、検索ボタンが取れれば、検索ボタンの対象グリッドIDも変更
 				let $gridForm = $gridDiv.parent('form');
 				let gridFormName = $gridForm.attr('name');
 				let searchFormName = gridFormName.replace(/SRegist/, 'Search');
 				let $searchForm = $dialog.find('form[name="' + searchFormName + '"]');
-				let $searchButton = $searchForm.find('[data-gridId="' + divId + '"]');
-
-				//ダイアログ内のグリッドならダイアログIDを接頭
-				gridId = $dialog.attr('aria-describedby') + '.' + divId;
-
-				//グリッドdivのidを変更
-				this.id = gridId
-
-				// 検索ボタンの対象グリッドIDも変更
+				let $searchButton = $searchForm.find('[data-gridId="' + this.id + '"]');
 				$searchButton.attr('data-gridId', gridId);
 
-				// ページャのIDも変更
-				$pager.attr('id', gridId.replace(/Grid$/, 'Pager'));
+				// ページャIDも「ダイアログID.ページャID」に変換
+				let pagerId = gridId.replace(/Grid$/, 'Pager');
+				$pager.attr('id', pagerId);
+
+				// 「ダイアログID.グリッドID」を正式なグリッドIDとして設定
+				gridId = $dialog.attr('aria-describedby') + '.' + this.id;
+				this.id = gridId
 			}
 
 			// divの属性からselectionModeを取得
@@ -85,7 +87,6 @@ $(function() {
 			//カラム定義を取得（パスが跨る時に動かないため廃止）
 			//$.getScript('./' + divId + 'Columns.js', function() {
 
-			let gridColumns = eval(divId + 'Columns');
 			var columns = $.extend(true, [], gridColumns);
 
 			// 新規行を打てなくなるのでコメントアウト
@@ -118,20 +119,23 @@ $(function() {
 				// チェックボックスでの行選択の場合（検索画面の場合）
 
 				if (isDialog) {
+
 					// ダイアログなら選択ボタンを追加
 					columns.unshift({
-						id: 'button',
-						name: Messages['common.grid.button.title'],
+						id: 'choose',
+						name: Messages['common.grid.choose.title'],
 						field: 'field',
 						sortable: true,
-						width: Messages['common.grid.button.title'].length * 20,
-						label: Messages['common.grid.button.label'],
-						formatter: Slick.Formatters.Extends.Button
+						width: Messages['common.grid.choose.title'].length * 20,
+						label: Messages['common.grid.choose.label'],
+						formatter: Slick.Formatters.Extends.Choose
 					});
 					++frozenColumnAdd;
+
 				} else {
-					// ダイアログでなければ（親画面なら）詳細リンク列を追加
-					// 主キーが１つ以上ある場合のみ
+					// ダイアログでな伊場合（親画面の場合）
+
+					// 固定列があれば（主キーが１つ以上あれば）詳細リンク列を追加
 					if ($gridDiv.attr('data-frozenColumn') * 1 >= 0) {
 						columns.unshift({
 							id: 'link',
@@ -165,6 +169,18 @@ $(function() {
 					width: Messages['common.grid.link.title'].length * 20,
 					label: Messages['common.grid.link.label'],
 					formatter: Slick.Formatters.Extends.Link
+				});
+				++frozenColumnAdd;
+
+				//最左列に削除ボタン列を追加
+				columns.unshift({
+					id: 'delete',
+					name: Messages['common.grid.delete.title'],
+					field: 'field',
+					sortable: true,
+					width: Messages['common.grid.delete.title'].length * 20,
+					label: Messages['common.grid.delete.label'],
+					formatter: Slick.Formatters.Extends.Delete
 				});
 				++frozenColumnAdd;
 			}
@@ -273,16 +289,18 @@ $(function() {
 			//				grid.onCellCssStylesChanged.subscribe(function(a, b, c, d, e, f, g) { });
 			grid.onClick.subscribe(function(e, args) {
 
+				let $clicked = $(e.target);
+
 				let r = args.row;
 				let c = args.cell;
 				let g = args.grid;
 
-				let item = g.getDataItem(r);
-				if (!item || item.isNew) {
+				let dataItem = g.getDataItem(r);
+				if (!dataItem || dataItem.isNew) {
 					//新規行の場合
 
 					//採番キーなら非活性
-					if (e.target.className.indexOf('numbering') >= 0) {
+					if ($clicked.hasClass('numbering')) {
 						e.preventDefault();
 						e.stopPropagation();
 						e.stopImmediatePropagation();
@@ -292,60 +310,105 @@ $(function() {
 					//既存データの場合
 
 					//主キーとユニークキーは非活性
-					if (e.target.className.indexOf('primaryKey') >= 0 || e.target.className.indexOf('uniqueKey') >= 0) {
+					if ($clicked.hasClass('primaryKey') || $clicked.hasClass('uniqueKey')) {
 						e.preventDefault();
 						e.stopPropagation();
 						e.stopImmediatePropagation();
 					}
 				}
 
-				if (e.target.className == 'gridButton') {
-					// グリッド行選択ボタン押下時
+				if ($clicked.hasClass('gridButton')) {
+					// グリッド行ボタン押下時
 
-					// 呼び出し元を取得
-					let $button = $(e.target);
-					let $dialog = $button.closest('[role="dialog"]');
-					let $dialogDiv = $dialog.find('[id$=Dialog]');
-					let caller = $dialogDiv.attr('data-caller');   // TEntityDialog.TEntityRegistForm.TEntity.betsuSansho1Id
-					let callers = caller.split('.');               // TEntityDialog, TEntityRegistForm, TEntity, betsuSansho1Id
+					if ($clicked.hasClass('gridChoose')) {
+						// グリッド行選択ボタン押下時
 
-					let parentDialogId = caller.match(/.+Dialog/); // TEntityDialog
-					let itemName = callers[callers.length - 1];    // betsuSansho1Id
+						// 呼び出し元ダイアログIDを取得
+						let $dialog = $clicked.closest('[role="dialog"]');
+						let $dialogDiv = $dialog.find('[id$=Dialog]');
+						let caller = $dialogDiv.attr('data-caller');   // TEntityDialog.TEntityRegistForm.TEntity.betsuSansho1Id
+						let callerDialogId = caller.match(/.+Dialog/); // TEntityDialog
 
-					// 項目名の接頭辞を取得
-					let prefix = '';
-					//let data = g.getData().getItems();
-					//let item = data[r]; // DELETE_F: null, INSERT_BY: "1", INSERT_DT: 1649467076000, SANSHO1_ID: 2, SANSHO1_MEI: "テスト２", UPDATE_BY: "1", UPDATE_DT: 1649467081000
-					for (let columnName in item) {
-						// DataView用の「id」列ならスキップ
-						if (columnName == 'id') {
-							continue;
+						// 呼び出し元項目名を取得
+						let callers = caller.split('.');               // TEntityDialog, TEntityRegistForm, TEntity, betsuSansho1Id
+						let callerItemName = callers[callers.length - 1];    // betsuSansho1Id
+
+						// 項目名の接頭辞を取得
+						let prefix = '';
+						for (let columnName in dataItem) {
+
+							// DataView用の「id」列ならスキップ
+							if (columnName == 'id') {
+								continue;
+							}
+
+							// 呼び出し元項目名が当該列名で終わる場合は、接頭辞を取得
+							let pascal = Casing.toPascal(columnName);
+							if (callerItemName.match(pascal + '$')) {
+								prefix = callerItemName.replace(new RegExp(pascal + '$'), ''); // betsu
+								break;
+							}
 						}
-						let pascal = Casing.toPascal(columnName);
-						if (itemName.match(pascal + '$')) {
-							prefix = itemName.replace(new RegExp(pascal + '$'), ''); // betsu
-							break;
+
+						// 返却先のセレクタを取得
+						let parentSelector = 'body>div.article';
+						if (callerDialogId != undefined && callerDialogId != '') {
+							parentSelector = 'div[id="' + callers[0] + '"] form[name="' + callers[1] + '"]';
 						}
+
+						for (let columnName in dataItem) {
+							// メタ情報以外の項目を親画面に反映
+							if (!columnName.match(Messages['column.meta.re'])) {
+								let camel = Casing.toCamel(prefix + columnName);
+								$(parentSelector + ' [name$="' + camel + '"]:not([readonly])').val(dataItem[columnName]);
+								$(parentSelector + ' span[id$="' + camel + '"]').html(dataItem[columnName]);
+							}
+						}
+
+						$dialogDiv.dialog('close');
+
+					} else if ($clicked.hasClass('gridDelete')) {
+
+						if (confirm(Messages['confirm.delete'])) {
+
+							// グリッドの属性からエンティティ名を取得
+							let entityName = $gridDiv.attr('data-href').replace(/(^.+\/|\.html$)/g, '');
+
+							// 対象エンティティに更新権限がないならエラー
+							if (Base.getAuthz(entityName) < 3) {
+								e.preventDefault();
+								e.stopPropagation();
+								e.stopImmediatePropagation();
+								alert(Messages['error.authz.edit']);
+								return;
+							}
+
+							let postJson = {};
+							for (let i in g.getColumns()) {
+								let column = g.getColumns()[i];
+								if (column.cssClass != 'primaryKey') {
+									continue;
+								}
+								let v = dataItem[column.field];
+								postJson[column.id] = v;
+							}
+
+							Ajaxize.ajaxPost(entityName + 'Delete.ajax', postJson, function(data) {
+								var dataView = g.getData();
+								let dataItems = dataView.getItems();
+								dataItems.splice(r, 1);
+								//g.invalidate();
+								dataView.beginUpdate();
+								dataView.setItems(dataItems);
+								dataView.endUpdate();
+							});
+						}
+
+					} else {
+						alert('not implemented.');
 					}
 
-					// 返却先のセレクタを取得
-					let parentSelector = 'body>div.article';
-					if (parentDialogId != undefined && parentDialogId != '') {
-						parentSelector = 'div[id="' + callers[0] + '"] form[name="' + callers[1] + '"]';
-					}
-
-					for (let columnName in item) {
-						// メタ情報以外の項目を親画面に反映
-						if (!columnName.match(Messages['column.meta.re'])) {
-							let camel = Casing.toCamel(prefix + columnName);
-							$(parentSelector + ' [name$="' + camel + '"]:not([readonly])').val(item[columnName]);
-							$(parentSelector + ' span[id$="' + camel + '"]').html(item[columnName]);
-						}
-					}
-
-					$dialogDiv.dialog('close');
-
-				} else if (e.target.className == 'gridLink') {
+				} else if ($clicked.hasClass('gridLink')) {
 					// グリッド行選択リンク押下時
 
 					// グリッドの属性からエンティティ名を取得
@@ -367,7 +430,7 @@ $(function() {
 						// ダウンロードURL
 						let href = entityName + 'Download.link?name=' + e.target.id;
 
-						//let item = g.getDataItem(r);
+						//let dataItem = g.getDataItem(r);
 
 						// グリッド列定義でループして、主キー列のみURL引数に設定
 						for (let i in g.getColumns()) {
@@ -375,7 +438,7 @@ $(function() {
 							if (column.cssClass != 'primaryKey') {
 								continue;
 							}
-							let v = item[column.field];
+							let v = dataItem[column.field];
 							href += '&' + column.id + '=' + v;
 						}
 

@@ -76,11 +76,11 @@ public final class SqlGenerator {
                 sql = "      ";
             }
             if (columnInfo.getTypeName().equals("CHAR")) {
-                String quoted = assist.quoted(srcColumnName);
-                String trimed = assist.trimed("a." + quoted);
+                String quoted = assist.quotedSQL(srcColumnName);
+                String trimed = assist.trimedSQL("a." + quoted);
                 s.add(sql + trimed + " AS " + srcColumnName);
             } else {
-                s.add(sql + "a." + assist.quoted(srcColumnName));
+                s.add(sql + "a." + assist.quotedSQL(srcColumnName));
             }
 
             // 列の参照モデル情報
@@ -121,10 +121,10 @@ public final class SqlGenerator {
                     if (!tableInfo.getColumnInfos().containsKey(srcMeiColumn)) {
                         String destColumnName = referInfo.getPrimaryKeys().get(0);
                         String destColumnMei = destColumnName.replaceAll("(?i)" + idSuffix + "$", meiSuffix);
-                        String srcIdQuoted = assist.quoted(srcIdColumn);
-                        String srcMeiQuoted = assist.quoted(srcMeiColumn);
-                        String destIdQuoted = assist.quoted(destColumnName);
-                        String destMeiQuoted = assist.quoted(destColumnMei);
+                        String srcIdQuoted = assist.quotedSQL(srcIdColumn);
+                        String srcMeiQuoted = assist.quotedSQL(srcMeiColumn);
+                        String destIdQuoted = assist.quotedSQL(destColumnName);
+                        String destMeiQuoted = assist.quotedSQL(destColumnMei);
                         s.add("    , (SELECT r" + i + "." + destMeiQuoted + " FROM " + referInfo.getTableName() + " r"
                                 + i + " WHERE r" + i + "." + destIdQuoted + " = a." + srcIdQuoted + ") AS "
                                 + srcMeiQuoted);
@@ -142,7 +142,7 @@ public final class SqlGenerator {
             String columnName = e.getKey();
             ColumnInfo columnInfo = e.getValue();
             String snake = StringUtil.toSnakeCase(columnName);
-            String quoted = assist.quoted(columnName);
+            String quoted = assist.quotedSQL(columnName);
 
             if (StringUtil.endsWith(inputFlagSuffixs, columnName)) {
                 // FLAG検索
@@ -154,8 +154,10 @@ public final class SqlGenerator {
             } else if (columnInfo.getDataType().equals("String")) {
                 // 文字列はTRIMしてLIKE検索
                 String[] array = new String[] { "'%'", ":" + snake, "'%'" };
-                String joined = assist.join(array);
-                s.add("    AND TRIM (a." + quoted + ") LIKE " + joined + " ");
+                String joined = assist.joinedSQL(array);
+                String quoteEscaped = assist.quotedSQL(columnName);
+                String trimed = assist.trimedSQL("a." + quoteEscaped);
+                s.add("    AND " + trimed + " LIKE " + joined + " ");
             } else {
                 // 以外は等値検索
                 s.add("    AND a." + quoted + " = :" + snake + " ");
@@ -174,7 +176,7 @@ public final class SqlGenerator {
                 if (orders.length() > 0) {
                     orders += ", ";
                 }
-                orders += "a." + assist.quoted(primaryKey);
+                orders += "a." + assist.quotedSQL(primaryKey);
             }
             s.add("    " + orders);
         } else {
