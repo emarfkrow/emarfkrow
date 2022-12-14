@@ -60,6 +60,9 @@ $(function() {
 			if ($dialog.length > 0) {
 				// ダイアログ内のグリッドの場合
 
+				// 「ダイアログID.グリッドID」を正式なグリッドIDとして取得
+				gridId = $dialog.attr('aria-describedby') + '.' + this.id;
+
 				// グリッドを配置したフォーム名から検索フォーム名に変換し、検索ボタンが取れれば、検索ボタンの対象グリッドIDも変更
 				let $gridForm = $gridDiv.parent('form');
 				let gridFormName = $gridForm.attr('name');
@@ -72,8 +75,7 @@ $(function() {
 				let pagerId = gridId.replace(/Grid$/, 'Pager');
 				$pager.attr('id', pagerId);
 
-				// 「ダイアログID.グリッドID」を正式なグリッドIDとして設定
-				gridId = $dialog.attr('aria-describedby') + '.' + this.id;
+				// グリッドIDを更新
 				this.id = gridId
 			}
 
@@ -131,6 +133,12 @@ $(function() {
 						formatter: Slick.Formatters.Extends.Choose
 					});
 					++frozenColumnAdd;
+
+					$dialog.find('button').each(function() {
+						if ($(this).hasClass('selectRows')) {
+							$(this).hide();
+						}
+					});
 
 				} else {
 					// ダイアログでな伊場合（親画面の場合）
