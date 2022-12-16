@@ -620,6 +620,10 @@ public final class Queries {
         } catch (SQLIntegrityConstraintViolationException e) {
             throw new OptLockError("error.cant.insert");
         } catch (Exception e) {
+            // Tibero対応
+            if (e.getMessage().contains("UNIQUE constraint violation")) {
+                throw new OptLockError("error.cant.insert");
+            }
             throw new SysError(e);
         }
     }

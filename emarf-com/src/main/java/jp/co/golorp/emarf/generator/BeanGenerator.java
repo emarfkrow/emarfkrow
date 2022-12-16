@@ -1233,7 +1233,8 @@ public final class BeanGenerator {
                 s.add("            isNew = true;");
                 s.add("        }");
             }
-            if (tableInfo.getColumnInfos().containsKey(updateDt)) {
+            if (tableInfo.getColumnInfos().containsKey(updateDt)
+                    || tableInfo.getColumnInfos().containsKey(updateDt.toUpperCase())) {
                 String pascal = StringUtil.toPascalCase(updateDt);
                 s.add("        // 楽観ロック値がなくてもINSERT");
                 s.add("        if (jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(e.get" + pascal + "())) {");
@@ -1444,7 +1445,8 @@ public final class BeanGenerator {
                 s.add("                isNew = true;");
                 s.add("            }");
             }
-            if (tableInfo.getColumnInfos().containsKey(updateDt)) {
+            if (tableInfo.getColumnInfos().containsKey(updateDt)
+                    || tableInfo.getColumnInfos().containsKey(updateDt.toUpperCase())) {
                 String pascal = StringUtil.toPascalCase(updateDt);
                 s.add("            // 楽観ロック値がなくてもINSERT");
                 s.add("            if (jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(e.get" + pascal + "())) {");
