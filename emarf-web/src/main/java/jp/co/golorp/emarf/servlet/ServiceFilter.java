@@ -31,6 +31,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,6 +57,9 @@ public class ServiceFilter implements Filter {
 
     /** アクションクラスパッケージ */
     private static final String ACTION_PACKAGE = App.get("package.action");
+
+    /** 除外URIの正規表現 */
+    private static final String EXCLUDE_REGEXP = App.get("servicefilter.exclude.regexp");
 
     /** 登録系URIの正規表現 */
     private static final String WRITE_URI_RE = App.get("servicefilter.write.uri.regexp");
@@ -84,57 +88,67 @@ public class ServiceFilter implements Filter {
         HttpServletResponse res = (HttpServletResponse) response;
 
         String requestURI = req.getRequestURI();
-        LOG.info("RequestURI: " + req.getRequestURI());
 
-        if (requestURI.matches(WRITE_URI_RE)) {
-            for (String kikanCron : DONT_WRITES) {
-                String[] kikanCrons = kikanCron.split("\\|");
-                if (!isService(kikanCrons[0], kikanCrons[1])) {
-                    // 登録サービス時間外
-                    Map<String, Object> map = null;
-                    map = new HashMap<String, Object>();
-                    map.put("ERROR", Messages.get("error.service.write"));
-                    ServletUtil.sendJson(res, map);
-                    return;
+        if (!requestURI.matches(EXCLUDE_REGEXP)) {
+
+            HttpSession ses = req.getSession();
+            String authnKey = "anonymous";
+            if (ses.getAttribute(LoginFilter.AUTHN_KEY) != null) {
+                authnKey = ses.getAttribute(LoginFilter.AUTHN_KEY).toString();
+            }
+            String remoteAddr = request.getRemoteAddr();
+            LOG.info("RequestURI: " + req.getRequestURI() + ", By: " + authnKey + ", From: " + remoteAddr);
+
+            if (requestURI.matches(WRITE_URI_RE)) {
+                for (String kikanCron : DONT_WRITES) {
+                    String[] kikanCrons = kikanCron.split("\\|");
+                    if (!isService(kikanCrons[0], kikanCrons[1])) {
+                        // 登録サービス時間外
+                        Map<String, Object> map = null;
+                        map = new HashMap<String, Object>();
+                        map.put("ERROR", Messages.get("error.service.write"));
+                        ServletUtil.sendJson(res, map);
+                        return;
+                    }
+                }
+            } else {
+                for (String kikanCron : DONT_READS) {
+                    String[] kikanCrons = kikanCron.split("\\|");
+                    if (!isService(kikanCrons[0], kikanCrons[1])) {
+                        // 照会サービス時間外
+                        throw new ReadServiceError();
+                    }
                 }
             }
-        } else {
-            for (String kikanCron : DONT_READS) {
-                String[] kikanCrons = kikanCron.split("\\|");
-                if (!isService(kikanCrons[0], kikanCrons[1])) {
-                    // 照会サービス時間外
-                    throw new ReadServiceError();
-                }
-            }
-        }
 
-        /*
-         * サービスアクションがあれば実行
-         */
+            /*
+             * サービスアクションがあれば実行
+             */
 
-        Class<?> c = null;
-        try {
-            c = Class.forName(ACTION_PACKAGE + ".ServiceAction");
-        } catch (ClassNotFoundException e) {
-            LOG.debug("ServiceAction is not found.");
-        }
-
-        if (c != null) {
+            Class<?> c = null;
             try {
-                BaseAction action = (BaseAction) c.getDeclaredConstructor().newInstance();
-                //                Map<String, Object> postJson = new HashMap<String, Object>();
-                Map<String, Object> map = action.run(null);
-                if ((boolean) map.get("DONT_WRITE")) {
-                    map = new HashMap<String, Object>();
-                    map.put("ERROR", Messages.get("error.service.write"));
-                    ServletUtil.sendJson(res, map);
-                    return;
+                c = Class.forName(ACTION_PACKAGE + ".ServiceAction");
+            } catch (ClassNotFoundException e) {
+                LOG.debug("ServiceAction is not found.");
+            }
+
+            if (c != null) {
+                try {
+                    BaseAction action = (BaseAction) c.getDeclaredConstructor().newInstance();
+                    //                Map<String, Object> postJson = new HashMap<String, Object>();
+                    Map<String, Object> map = action.run(null);
+                    if ((boolean) map.get("DONT_WRITE")) {
+                        map = new HashMap<String, Object>();
+                        map.put("ERROR", Messages.get("error.service.write"));
+                        ServletUtil.sendJson(res, map);
+                        return;
+                    }
+                    if ((boolean) map.get("DONT_READ")) {
+                        throw new ReadServiceError();
+                    }
+                } catch (Exception e) {
+                    throw new SysError(e);
                 }
-                if ((boolean) map.get("DONT_READ")) {
-                    throw new ReadServiceError();
-                }
-            } catch (Exception e) {
-                throw new SysError(e);
             }
         }
 
