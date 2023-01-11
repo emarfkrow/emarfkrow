@@ -173,7 +173,7 @@ public class DataSourcesAssistOracle extends DataSourcesAssist {
         pagedSql += "            ) A";
         pagedSql += "    ) B ";
         pagedSql += "WHERE ";
-        pagedSql += "    B.ROW_NUM BETWEEN " + firstRow + " AND " + (firstRow + rows - 1);
+        pagedSql += "    B.ROW_NUM BETWEEN " + firstRow + " AND " + (firstRow + rows);
         return pagedSql;
     }
 
