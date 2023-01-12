@@ -126,11 +126,12 @@ public abstract class BaseAction extends BaseProcess {
         if (this.baseName != null && this.getClass().getName().indexOf(this.baseName) < 0) {
             logBaseName = "[" + this.baseName + "]";
         }
-        String logPostJson = "";
-        if (postJson != null) {
-            logPostJson = " " + postJson.toString();
-        }
-        LOG.info("  " + this.getClass().getName() + logBaseName + " run." + logPostJson);
+        // 検索画面で件数が多いとログが大量になるためコメントアウト
+        //        String logPostJson = "";
+        //        if (postJson != null) {
+        //            logPostJson = " " + postJson.toString();
+        //        }
+        LOG.info("  " + this.getClass().getName() + logBaseName + " run."/* + logPostJson*/);
 
         // アクションクラス名からフォームクラス名を取得して検査
         Class<?> actionClass = this.getClass();
