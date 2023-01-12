@@ -25,6 +25,7 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -411,6 +412,9 @@ public final class ServletUtil {
      */
     public static void respond(final HttpServletResponse response, final String filePath, final String fileMei) {
 
+        Calendar begin = Calendar.getInstance();
+        LOG.info("Binary response start.");
+
         if (filePath.endsWith(".pdf")) {
             response.setContentType("application/pdf");
             response.setHeader("Content-Disposition", "inline;");
@@ -434,6 +438,10 @@ public final class ServletUtil {
         } catch (IOException e) {
             throw new SysError(e);
         }
+
+        Calendar end = Calendar.getInstance();
+        long millis = end.getTimeInMillis() - begin.getTimeInMillis();
+        LOG.info("Binary response end in " + millis + " millis.");
     }
 
     /**

@@ -18,6 +18,7 @@ package jp.co.golorp.emarf.report;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -33,6 +34,8 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellAddress;
 import org.apache.poi.ss.util.CellUtil;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import jp.co.golorp.emarf.exception.SysError;
 import jp.co.golorp.emarf.io.FileUtil;
@@ -47,6 +50,9 @@ import jp.co.golorp.emarf.util.Messages;
  * @author golorp
  */
 public final class XlsxUtil {
+
+    /** logger */
+    private static final Logger LOG = LoggerFactory.getLogger(XlsxUtil.class);
 
     /** セパレータ */
     private static String sep = File.separator;
@@ -89,6 +95,9 @@ public final class XlsxUtil {
             workFile = XlsxUtil.write(layoutBook, baseMei, extension);
         }
 
+        Calendar begin = Calendar.getInstance();
+        LOG.info("XLSX generate start.");
+
         // 作業用ファイルをワークブックとして取得
         Workbook workbook = XlsxUtil.file2Workbook(workFile);
         // シーケンシャルアクセス専用のチューニング
@@ -110,6 +119,10 @@ public final class XlsxUtil {
         // 作業用ファイルを別名で保管して作業用ファイルを削除
         File file = XlsxUtil.write(workbook, baseMei, extension);
         workFile.delete();
+
+        Calendar end = Calendar.getInstance();
+        long millis = end.getTimeInMillis() - begin.getTimeInMillis();
+        LOG.info("XLSX generate end in " + millis + " millis.");
 
         // 保管したファイルパスを返す
         return file.getAbsolutePath();
