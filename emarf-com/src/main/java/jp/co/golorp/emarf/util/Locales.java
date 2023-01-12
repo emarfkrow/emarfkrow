@@ -43,7 +43,7 @@ public final class Locales {
      */
     public static Locale get() {
         Locale locale = threadLocalLocale.get();
-        LOG.trace("locale get.    [" + locale + "]");
+        //        LOG.trace("locale get.    [" + locale + "]");
         return locale;
     }
 
@@ -52,7 +52,7 @@ public final class Locales {
      * @param locale {@link Locale}
      */
     public static void set(final Locale locale) {
-        LOG.trace("locale get.    [" + locale + "]");
+        LOG.trace("locale set.    [" + locale + "]");
         threadLocalLocale.set(locale);
     }
 

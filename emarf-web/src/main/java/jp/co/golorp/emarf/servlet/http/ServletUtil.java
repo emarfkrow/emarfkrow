@@ -326,7 +326,7 @@ public final class ServletUtil {
         }
 
         try {
-            LOG.debug("RequestJson: " + mapper.writerWithDefaultPrettyPrinter().writeValueAsString(map));
+            LOG.trace("RequestJson: " + mapper.writerWithDefaultPrettyPrinter().writeValueAsString(map));
         } catch (JsonProcessingException e) {
             throw new SysError(e);
         }
@@ -413,7 +413,7 @@ public final class ServletUtil {
     public static void respond(final HttpServletResponse response, final String filePath, final String fileMei) {
 
         Calendar begin = Calendar.getInstance();
-        LOG.info("Binary response start.");
+        LOG.debug("Binary response start.");
 
         if (filePath.endsWith(".pdf")) {
             response.setContentType("application/pdf");
@@ -441,7 +441,7 @@ public final class ServletUtil {
 
         Calendar end = Calendar.getInstance();
         long millis = end.getTimeInMillis() - begin.getTimeInMillis();
-        LOG.info("Binary response end in " + millis + " millis.");
+        LOG.debug("Binary response end in " + millis + " millis. [" + filePath + "]");
     }
 
     /**

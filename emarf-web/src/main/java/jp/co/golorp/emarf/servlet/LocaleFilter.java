@@ -17,6 +17,7 @@ limitations under the License.
 package jp.co.golorp.emarf.servlet;
 
 import java.io.IOException;
+import java.util.Locale;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -50,7 +51,10 @@ public class LocaleFilter implements Filter {
             throws IOException, ServletException {
 
         // messageのi18n対応
-        Locales.set(request.getLocale());
+        Locale locale = Locales.get();
+        if (!locale.getLanguage().equals(request.getLocale().getLanguage())) {
+            Locales.set(request.getLocale());
+        }
 
         chain.doFilter(request, response);
     }

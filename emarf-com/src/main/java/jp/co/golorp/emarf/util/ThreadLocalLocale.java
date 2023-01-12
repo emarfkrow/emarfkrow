@@ -33,14 +33,14 @@ public final class ThreadLocalLocale extends ThreadLocal<Locale> {
 
     @Override
     protected Locale initialValue() {
-        LOG.debug("ThreadLocalLocale initialized.");
+        LOG.trace("ThreadLocalLocale initialized.");
         return Locale.getDefault();
     }
 
     @Override
     public void remove() {
         super.remove();
-        LOG.debug("ThreadLocalLocale removed.");
+        LOG.trace("ThreadLocalLocale removed.");
     }
 
 }

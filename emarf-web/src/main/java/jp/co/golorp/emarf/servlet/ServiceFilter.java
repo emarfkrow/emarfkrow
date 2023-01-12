@@ -97,7 +97,8 @@ public class ServiceFilter implements Filter {
                 authnKey = ses.getAttribute(LoginFilter.AUTHN_KEY).toString();
             }
             String remoteAddr = request.getRemoteAddr();
-            LOG.info("RequestURI: " + req.getRequestURI() + ", By: " + authnKey + ", From: " + remoteAddr);
+            LOG.info(
+                    "RequestURI: " + req.getRequestURI() + ", RequestBY: " + authnKey + ", RequestFROM: " + remoteAddr);
 
             if (requestURI.matches(WRITE_URI_RE)) {
                 for (String kikanCron : DONT_WRITES) {
@@ -129,7 +130,7 @@ public class ServiceFilter implements Filter {
             try {
                 c = Class.forName(ACTION_PACKAGE + ".ServiceAction");
             } catch (ClassNotFoundException e) {
-                LOG.debug("ServiceAction is not found.");
+                LOG.trace("ServiceAction is not found.");
             }
 
             if (c != null) {

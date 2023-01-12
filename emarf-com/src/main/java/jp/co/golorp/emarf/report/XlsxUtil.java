@@ -96,7 +96,7 @@ public final class XlsxUtil {
         }
 
         Calendar begin = Calendar.getInstance();
-        LOG.info("XLSX generate start.");
+        LOG.debug("XLSX generate start.");
 
         // 作業用ファイルをワークブックとして取得
         Workbook workbook = XlsxUtil.file2Workbook(workFile);
@@ -122,7 +122,7 @@ public final class XlsxUtil {
 
         Calendar end = Calendar.getInstance();
         long millis = end.getTimeInMillis() - begin.getTimeInMillis();
-        LOG.info("XLSX generate end in " + millis + " millis.");
+        LOG.debug("XLSX generate end in " + millis + " millis. [" + file.getAbsolutePath() + "]");
 
         // 保管したファイルパスを返す
         return file.getAbsolutePath();

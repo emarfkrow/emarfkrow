@@ -123,10 +123,14 @@ public abstract class BaseAction extends BaseProcess {
         // 開始ログ
         Calendar begin = Calendar.getInstance();
         String logBaseName = "";
-        if (this.baseName != null) {
-            logBaseName = "(" + this.baseName + ")";
+        if (this.baseName != null && this.getClass().getName().indexOf(this.baseName) < 0) {
+            logBaseName = "[" + this.baseName + "]";
         }
-        LOG.info(">>run " + this.getClass().getName() + logBaseName);
+        String logPostJson = "";
+        if (postJson != null) {
+            logPostJson = " " + postJson.toString();
+        }
+        LOG.info("  " + this.getClass().getName() + logBaseName + " run." + logPostJson);
 
         // アクションクラス名からフォームクラス名を取得して検査
         Class<?> actionClass = this.getClass();
@@ -185,7 +189,7 @@ public abstract class BaseAction extends BaseProcess {
             // 終了ログ
             Calendar end = Calendar.getInstance();
             long millis = end.getTimeInMillis() - begin.getTimeInMillis();
-            LOG.info("<<end " + this.getClass().getName() + " in " + millis + " millis.");
+            LOG.info("  " + this.getClass().getName() + " end in " + millis + " millis.");
         }
     }
 
