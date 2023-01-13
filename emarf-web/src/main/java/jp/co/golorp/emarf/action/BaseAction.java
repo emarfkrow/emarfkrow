@@ -166,17 +166,27 @@ public abstract class BaseAction extends BaseProcess {
 
         } catch (OptLockError e) {
 
-            // 排他エラーの場合も、ロールバックしてエラーを投げる
+            // 排他エラーの場合、ロールバックしてそのままエラーを投げる
             Connections.rollback();
             throw e;
 
         } catch (AppError e) {
 
-            // アプリケーションエラーの場合は、ロールバックしてエラーを投げる
+            // アプリケーションエラーの場合、ロールバックしてそのままエラーを投げる
+            Connections.rollback();
+            throw e;
+
+        } catch (SysError e) {
+
+            sendErrorMail(e.getCause());
+
+            // システムエラーの場合、ロールバックしてそのままエラーを投げる
             Connections.rollback();
             throw e;
 
         } catch (Exception e) {
+
+            sendErrorMail(e);
 
             // 以外のエラーの場合は、ロールバックしてシステムエラーを投げる
             Connections.rollback();

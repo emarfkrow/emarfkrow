@@ -63,10 +63,14 @@ public abstract class BaseJob extends BaseProcess {
 
         } catch (SysError e) {
 
+            sendErrorMail(e.getCause());
+
             LOG.error(e.getMessage(), e);
             Connections.rollback();
 
         } catch (Exception e) {
+
+            sendErrorMail(e);
 
             LOG.error(e.getMessage(), e);
             Connections.rollback();
