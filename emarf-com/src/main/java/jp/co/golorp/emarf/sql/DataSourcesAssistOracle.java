@@ -158,7 +158,8 @@ public class DataSourcesAssistOracle extends DataSourcesAssist {
      * @return ページ繰りしたSQL
      */
     public String getPagedSql(final String sql, final Integer rows, final Integer page) {
-        int firstRow = (page - 1) * rows;
+        int firstRow = (page - 1) * rows + 1;
+        int lastRow = firstRow + rows - 1;
         String pagedSql = "";
         pagedSql += "SELECT ";
         pagedSql += "    B.* ";
@@ -173,7 +174,7 @@ public class DataSourcesAssistOracle extends DataSourcesAssist {
         pagedSql += "            ) A";
         pagedSql += "    ) B ";
         pagedSql += "WHERE ";
-        pagedSql += "    B.ROW_NUM BETWEEN " + firstRow + " AND " + (firstRow + rows - 1);
+        pagedSql += "    B.ROW_NUM BETWEEN " + firstRow + " AND " + lastRow;
         return pagedSql;
     }
 

@@ -592,6 +592,7 @@ var Gridate = {
 		//			grid.setData(data);
 		//			grid.invalidate();
 		//		}
+		grid.setSelectedRows([]);
 	},
 
 	paginate: function(gridId, page) {

@@ -337,36 +337,40 @@ public final class FormValidator {
     private static Class<?> forNameIf(final String className) {
 
         try {
+
+            // そのままとってみる
             return Class.forName(className);
+
         } catch (ClassNotFoundException e) {
-            LOG.trace(e.toString());
-        }
+            try {
 
-        // modelパッケージのフォームクラスなら、baseパッケージまで掘ってみる
-        try {
-            return Class.forName(className.replaceFirst("\\.model\\.", ".model.base."));
-        } catch (ClassNotFoundException e1) {
-            LOG.trace(e1.toString());
-        }
+                // modelパッケージのフォームクラスなら、baseパッケージまで掘ってみる
+                return Class.forName(className.replaceFirst("\\.model\\.", ".model.base."));
 
-        // ***GridFormなら、***RegistFormにしてみる
-        try {
-            return Class.forName(className.replaceFirst("Grid", "Regist"));
-        } catch (ClassNotFoundException e2) {
-            LOG.trace(e2.toString());
-        }
+            } catch (ClassNotFoundException e1) {
+                try {
 
-        // ***Gridなら、***RegistFormにしてみる
-        try {
-            return Class.forName(className.replaceFirst("Grid", "RegistForm"));
-        } catch (ClassNotFoundException e3) {
-            LOG.trace(e3.toString());
-        }
+                    // ***GridFormなら、***RegistFormにしてみる
+                    return Class.forName(className.replaceFirst("Grid", "Regist"));
 
-        try { // ***sなら、***にしてみる（カスタムフォームのグリッド本体用）
-            return Class.forName(className.replaceFirst("s$", ""));
-        } catch (ClassNotFoundException e4) {
-            LOG.trace(e4.toString());
+                } catch (ClassNotFoundException e2) {
+                    try {
+
+                        // ***Gridなら、***RegistFormにしてみる
+                        return Class.forName(className.replaceFirst("Grid", "RegistForm"));
+
+                    } catch (ClassNotFoundException e3) {
+                        try {
+
+                            // ***sなら、***にしてみる（カスタムフォームのグリッド本体用）
+                            return Class.forName(className.replaceFirst("s$", ""));
+
+                        } catch (ClassNotFoundException e4) {
+                            LOG.trace(e.toString());
+                        }
+                    }
+                }
+            }
         }
 
         return null;
