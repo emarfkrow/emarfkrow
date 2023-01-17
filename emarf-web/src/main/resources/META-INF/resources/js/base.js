@@ -497,8 +497,36 @@ let Base = {
 			Ajaxize.ajaxPost(getAction, formJson, function(data) {
 				Jsonate.toForm(data, $registForm);
 				Base.referMei($registForm.find('span.refer'));
+
+				//出力権限
+				if (Base.getAuthz($registForm[0].name) < 2) {
+					$registForm.find('a.output').hide();
+				}
+
+				//更新権限
+				if (Base.getAuthz($registForm[0].name) < 3) {
+					$registForm.find(':input').each(function() {
+						Base.readonly(this);
+					});
+					//$registForm.find(':input').attr('readonly', true).attr('tabindex', '-1').addClass('readonly');
+					$registForm.find('a.refer').hide();
+				}
 			});
 		}
+	},
+
+	/**
+	 * 読み取り専用
+	 */
+	readonly: function(item) {
+		$(item).attr('readonly', true).attr('tabindex', '-1').addClass('readonly');
+	},
+
+	/**
+	 * 書き込み可能
+	 */
+	writable: function(item) {
+		$(item).removeAttr('readonly').removeAttr('tabindex').removeClass('readonly');
 	},
 
 };

@@ -241,9 +241,11 @@ let Dialogate = {
 					let pkAll = true;
 					$dialogDiv.find('[name$="RegistForm"] input.primaryKey').each(function() {
 						if ($(this).val() != '') {
-							$(this).attr('readonly', true).attr('tabindex', '-1').addClass('readonly');
+							Base.readonly(this);
+							//$(this).attr('readonly', true).attr('tabindex', '-1').addClass('readonly');
 						} else {
-							$(this).removeAttr('readonly').removeAttr('tabindex').removeClass('readonly');
+							Base.writable(this);
+							//$(this).removeAttr('readonly').removeAttr('tabindex').removeClass('readonly');
 							pkAll = false;
 						}
 					});
@@ -260,9 +262,11 @@ let Dialogate = {
 					// 詳細画面のユニーク項目は、値が既にあれば読み取り専用
 					$dialogDiv.find('[name$="RegistForm"] input.uniqueKey').each(function() {
 						if (pkAll) {
-							$(this).attr('readonly', true).attr('tabindex', '-1').addClass('readonly');
+							Base.readonly(this);
+							//$(this).attr('readonly', true).attr('tabindex', '-1').addClass('readonly');
 						} else {
-							$(this).removeAttr('readonly').removeAttr('tabindex').removeClass('readonly');
+							Base.writable(this);
+							//$(this).removeAttr('readonly').removeAttr('tabindex').removeClass('readonly');
 						}
 					});
 
@@ -290,14 +294,6 @@ let Dialogate = {
 
 						// ダイアログ内の登録フォームに、呼び出し元イベントで値が設定されている場合は、照会結果を初期表示
 						Base.referRegistForm($registForm);
-
-						if (Base.getAuthz($registForm[0].name) < 2) {
-							$registForm.find('a.output').hide();
-						}
-						if (Base.getAuthz($registForm[0].name) < 3) {
-							$registForm.find(':input').attr('readonly', true).attr('tabindex', '-1').addClass('readonly');
-							$registForm.find('a.refer').hide();
-						}
 					}
 
 					try {
