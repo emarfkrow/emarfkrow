@@ -4,6 +4,8 @@
 package jp.co.golorp.emarf.generator;
 
 import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -52,7 +54,11 @@ public class BeanGeneratorTestExam {
      */
     @Test
     public final void testGenerate() {
-        String s = "C:\\Users\\KTC0966\\git\\exam\\exam-com";
+        Path currentPath = Paths.get("");
+        String absolutePath = currentPath.toAbsolutePath().toString();
+        int i = absolutePath.indexOf("\\git\\");
+        String s = absolutePath.substring(0, i + 5);
+        s += "exam\\exam-com";
         ResourceBundles.getSrcPaths().add(s + File.separator + "src\\main\\resources");
         BeanGenerator.generate(s, true);
     }
