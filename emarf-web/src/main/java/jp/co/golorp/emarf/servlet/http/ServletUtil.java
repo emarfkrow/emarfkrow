@@ -25,6 +25,7 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -325,7 +326,7 @@ public final class ServletUtil {
         }
 
         try {
-            LOG.debug("RequestJson: " + mapper.writerWithDefaultPrettyPrinter().writeValueAsString(map));
+            LOG.trace("RequestJson: " + mapper.writerWithDefaultPrettyPrinter().writeValueAsString(map));
         } catch (JsonProcessingException e) {
             throw new SysError(e);
         }
@@ -411,6 +412,9 @@ public final class ServletUtil {
      */
     public static void respond(final HttpServletResponse response, final String filePath, final String fileMei) {
 
+        Calendar begin = Calendar.getInstance();
+        LOG.debug("Binary response start.");
+
         if (filePath.endsWith(".pdf")) {
             response.setContentType("application/pdf");
             response.setHeader("Content-Disposition", "inline;");
@@ -434,6 +438,10 @@ public final class ServletUtil {
         } catch (IOException e) {
             throw new SysError(e);
         }
+
+        Calendar end = Calendar.getInstance();
+        long millis = end.getTimeInMillis() - begin.getTimeInMillis();
+        LOG.debug("Binary response end in " + millis + " millis. [" + filePath + "]");
     }
 
     /**

@@ -50,7 +50,10 @@ public class LocaleFilter implements Filter {
             throws IOException, ServletException {
 
         // messageのi18n対応
+        //        Locale locale = Locales.get();
+        //        if (!locale.getLanguage().equals(request.getLocale().getLanguage())) {
         Locales.set(request.getLocale());
+        //        }
 
         chain.doFilter(request, response);
     }

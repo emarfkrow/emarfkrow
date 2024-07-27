@@ -63,6 +63,9 @@ public final class DateTimeUtil {
      * @return フォーマットで指定した形式の現在日時
      */
     public static String format(final String format, final LocalDateTime localDateTime) {
+        if (localDateTime == null) {
+            return null;
+        }
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format);
         return localDateTime.format(formatter);
     }

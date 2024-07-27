@@ -24,8 +24,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.thymeleaf.exceptions.TemplateProcessingException;
 import org.thymeleaf.messageresolver.StandardMessageResolver;
 import org.thymeleaf.templateresource.ITemplateResource;
@@ -41,9 +39,6 @@ import jp.co.golorp.emarf.util.Locales;
  * @author golorp
  */
 public class MessageResolver extends StandardMessageResolver {
-
-    /** ロガー */
-    private static final Logger LOG = LoggerFactory.getLogger(MessageResolver.class);
 
     /** 空メッセージ */
     private static final Map<String, String> EMPTY_MESSAGES = Collections.emptyMap();
@@ -125,7 +120,7 @@ public class MessageResolver extends StandardMessageResolver {
                     }
                 }
             } catch (Exception e) {
-                LOG.trace(e.getMessage());
+                continue;
             }
         }
 

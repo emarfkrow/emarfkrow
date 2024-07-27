@@ -69,6 +69,8 @@ public final class XlsxServlet extends HttpServlet {
         Map<String, Object> map = null;
         try {
             Map<String, Object> postJson = ServletUtil.getPostedJson(request);
+            postJson.put("page", 0);
+            postJson.put("rows", 0);
             BaseAction action = ServletUtil.getAction(request);
             map = action.run(postJson);
         } catch (Exception e) {
