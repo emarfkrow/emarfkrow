@@ -271,9 +271,11 @@ let Base = {
 
 		// 画面の更新権限のチェック
 		$('form[name]').each(function() {
+			// 出力権限なし
 			if (Base.getAuthz(this.name) < 2) {
 				$(this).find('a.output').hide();
 			}
+			// 更新権限なし
 			if (Base.getAuthz(this.name) < 3) {
 				$(this).find('button.delete, button.regist').hide();
 				if ($(this).hasClass('regist')) {
@@ -281,6 +283,10 @@ let Base = {
 				} else {
 					$(this).find('a.anew').hide();
 				}
+			}
+			// 追加権限なし
+			if (Base.getAuthz(this.name) < 4) {
+				$(this).find('a.anew').hide();
 			}
 		});
 
