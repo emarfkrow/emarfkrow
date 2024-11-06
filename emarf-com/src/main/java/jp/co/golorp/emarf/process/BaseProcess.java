@@ -22,6 +22,9 @@ import java.util.List;
 import java.util.Map;
 
 import jp.co.golorp.emarf.lang.StringUtil;
+import jp.co.golorp.emarf.mail.MailInfo;
+import jp.co.golorp.emarf.mail.Mailer;
+import jp.co.golorp.emarf.properties.App;
 import jp.co.golorp.emarf.sql.Queries;
 import jp.co.golorp.emarf.util.MapList;
 import jp.co.golorp.emarf.util.Messages;
@@ -84,6 +87,30 @@ public class BaseProcess {
                 errors.put(formName + "." + itemName, Messages.get("error.notexist", itemMei));
             }
         }
+    }
+
+    /**
+     * @param e システムエラー
+     */
+    protected void sendErrorMail(final Throwable e) {
+
+        MailInfo mi = new MailInfo();
+
+        String toAddresses = App.get("errormail.toAddresses");
+        String[] addresses = toAddresses.split(",");
+        for (String address : addresses) {
+            mi.addTo(address, "");
+        }
+
+        mi.setSubject(e.getMessage());
+
+        StringBuilder sb = new StringBuilder();
+        for (StackTraceElement s : e.getStackTrace()) {
+            sb.append(s.toString() + "\n");
+        }
+        mi.addText(sb.toString());
+
+        Mailer.send(mi);
     }
 
 }

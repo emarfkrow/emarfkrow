@@ -18,6 +18,7 @@ package jp.co.golorp.emarf.report;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -429,6 +430,12 @@ public final class XlsxUtil {
             workbook.write(fos);
         } catch (Exception e) {
             throw new SysError(e);
+        } finally {
+            try {
+                workbook.close();
+            } catch (IOException e) {
+                throw new SysError(e);
+            }
         }
 
         return file;
