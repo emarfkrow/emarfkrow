@@ -100,7 +100,14 @@ let Options = {
 					}
 				} else {
 					//登録フォームの場合
-					Options.option($element, true, dataJson, optionValue, optionLabel);
+					if (dataJson.length == 2 && dataJson[0][optionValue] == '0' && dataJson[1][optionValue] == '1') {
+						//値が「0」「1」の場合はチェックボックス
+						Options.check($element, itemName, [dataJson[1]], optionValue, optionLabel);
+					} else if (dataJson.length < 10) {
+						Options.radio($element, itemName, dataJson, optionValue, optionLabel);
+					} else {
+						Options.option($element, true, dataJson, optionValue, optionLabel);
+					}
 				}
 
 				//				if (dataJson.length == 1) {

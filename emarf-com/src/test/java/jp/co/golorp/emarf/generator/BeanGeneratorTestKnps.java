@@ -4,6 +4,8 @@
 package jp.co.golorp.emarf.generator;
 
 import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -52,9 +54,18 @@ public class BeanGeneratorTestKnps {
      */
     @Test
     public final void testGenerate() {
-        String s = "C:\\Users\\toshiyuki\\git\\knps\\knps-com";
-        ResourceBundles.getSrcPaths().add(s + File.separator + "src\\main\\resources");
-        BeanGenerator.generate(s, true);
+
+        //プロジェクトパスを取得
+        Path currentPath = Paths.get("");
+
+        //パスの文字列を取得
+        String absolutePath = currentPath.toAbsolutePath().toString();
+
+        //ソースパスにプロジェクトパスのリソースフォルダを追加
+        ResourceBundles.getSrcPaths().add(absolutePath + File.separator + "src\\main\\resources");
+
+        //ジェネレータ起動
+        BeanGenerator.generate(absolutePath);
     }
 
 }

@@ -145,6 +145,21 @@ $(document).on('ready', function() {
 		//let href = document.location.href;
 		//document.location.href = href.replace(/\?.+$/, '');
 	}
+
+	let radioCancel = null;
+	$('input[type="radio"]').click(function() {
+		let name = $(this).prop('name');
+		radioCancel = true;
+		setTimeout(function() {
+			if (radioCancel) {
+				$('[name="' + name + '"]').prop('checked', false);
+			}
+		}, 50);
+	});
+
+	$('input[type="radio"]').change(function() {
+		radioCancel = false;
+	});
 });
 
 // ４．画像ファイル読み込み後
@@ -236,7 +251,7 @@ let Base = {
 			//認可情報のうち画面IDが最長でマッチする認可区分を返す
 			let matchLength = 0;
 			for (let gamenNm in authzInfo) {
-				if (gamenId.match('^' + gamenNm + '.*')) {
+				if (gamenId.match(gamenNm)) {
 					if (matchLength <= gamenNm.length) {
 						matchLength = gamenNm.length;
 						authz = authzInfo[gamenNm];

@@ -36,8 +36,30 @@ public final class SqlGenerator {
     /** 参照列名ペア */
     private static Set<String[]> referPairs = new LinkedHashSet<String[]>();
 
+    /** 参照キー */
+    private static String optionsKey;
+
     /** プライベートコンストラクタ */
     private SqlGenerator() {
+    }
+
+    /**
+     * SQL生成
+     * @param projectDir
+     * @param tableInfos
+     */
+    public static void generate(final String projectDir, final List<TableInfo> tableInfos) {
+
+        bundle = ResourceBundles.getBundle(BeanGenerator.class);
+
+        //SQLフォルダ
+        String sqlDir = projectDir + File.separator + bundle.getString("SqlGenerator.sqlPath");
+        FileUtil.reMkDir(sqlDir);
+
+        //検索SQL
+        for (TableInfo tableInfo : tableInfos) {
+            SqlGenerator.sqlSearch(sqlDir, tableInfo);
+        }
     }
 
     /**
@@ -52,11 +74,12 @@ public final class SqlGenerator {
         optionsSuffixs = bundle.getString("BeanGenerator.options.suffixs").split(",");
         inputRangeSuffixs = bundle.getString("BeanGenerator.input.range.suffixs").split(",");
         inputFlagSuffixs = bundle.getString("BeanGenerator.input.flag.suffixs").split(",");
-        String[] pairs = bundle.getString("BeanGenerator.refer.pairs").split(",");
+        String[] pairs = bundle.getString("DataSources.reration.refer.pairs").split(",");
         for (String pair : pairs) {
             String[] kv = pair.split(":");
             referPairs.add(kv);
         }
+        optionsKey = bundle.getString("BeanGenerator.options.paramkey");
 
         String tableName = tableInfo.getTableName();
         String entityName = StringUtil.toPascalCase(tableName);
@@ -86,9 +109,7 @@ public final class SqlGenerator {
             // 列の参照モデル情報
             TableInfo referInfo = columnInfo.getReferInfo();
             if (referInfo != null) {
-
                 ++i;
-
                 for (String[] e : referPairs) {
                     String idSuffix = e[0];
                     String meiSuffix = e[1];
@@ -152,12 +173,17 @@ public final class SqlGenerator {
                 // IN検索
                 s.add("    AND TRIM (a." + quoted + ") IN (:" + snake + ") ");
             } else if (columnInfo.getDataType().equals("String")) {
-                // 文字列はTRIMしてLIKE検索
-                String[] array = new String[] { "'%'", ":" + snake, "'%'" };
-                String joined = assist.joinedSQL(array);
+                // 文字列はTRIMして部分一致検索
                 String quoteEscaped = assist.quotedSQL(columnName);
                 String trimed = assist.trimedSQL("a." + quoteEscaped);
-                s.add("    AND " + trimed + " LIKE " + joined + " ");
+                if (columnName.toLowerCase().equals(optionsKey.toLowerCase())) {
+                    //参照キーの場合は後方一致で出力
+                    String[] array = new String[] { "'%'", trimed };
+                    s.add("    AND " + ":" + snake + " LIKE " + assist.joinedSQL(array) + " ");
+                } else {
+                    String[] array = new String[] { "'%'", ":" + snake, "'%'" };
+                    s.add("    AND " + trimed + " LIKE " + assist.joinedSQL(array) + " ");
+                }
             } else {
                 // 以外は等値検索
                 s.add("    AND a." + quoted + " = :" + snake + " ");

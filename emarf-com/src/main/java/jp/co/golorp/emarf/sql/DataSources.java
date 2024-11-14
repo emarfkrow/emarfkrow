@@ -65,32 +65,32 @@ public final class DataSources {
     /** 参照列名ペア */
     private static Set<String[]> referPairs = new LinkedHashSet<String[]>();
 
-    /** テーブルを評価しないテーブル名 */
-    private static String[] ignorePrefixs;
+    /** 評価対象としないテーブル名の正規表現 */
+    private static String ignoreRe;
 
-    /** 兄を設定しないテーブル名 */
-    private static String[] eldests;
+    /** 兄弟判定で、長兄とするテーブル名の正規表現 */
+    private static String eldestRe;
 
     /** 繰上りの弟モデルのテーブル名 */
-    private static String[] stepchilds;
+    private static String bastardRe;
 
-    //    /** 弟を設定しないテーブル名 */
-    //    private static String[] youngests;
+    /** 弟を設定しないテーブル名 */
+    private static String youngestRe;
 
     /** 子を設定しないテーブル名 */
-    private static String[] dinks;
+    private static String dinksRe;
 
     /** 親を設定しないテーブル名 */
-    private static String[] orphans;
+    private static String orphansRe;
 
     /** 列評価をスキップする列名 */
-    private static String skipcolumn;
+    private static String columnIgnoreRe;
 
     /** 数値列で自動採番しないサフィックス */
-    private static String[] intNoNumberingSuffixs;
+    private static String noNumberingIntRe;
 
     /** 固定長列で自動採番のサフィックス */
-    private static String[] charNumberingSuffixs;
+    private static String numberingCharRe;
 
     /** DataSourceのJNDI名 */
     private static final String JNDI_NAME = "JNDIName";
@@ -224,21 +224,21 @@ public final class DataSources {
         // 設定ファイル読み込み
         ResourceBundle bundle = ResourceBundles.getBundle(BeanGenerator.class);
 
-        String[] pairs = bundle.getString("BeanGenerator.refer.pairs").split(",");
+        String[] pairs = bundle.getString("DataSources.reration.refer.pairs").split(",");
         for (String pair : pairs) {
             String[] kv = pair.split(":");
             referPairs.add(kv);
         }
 
-        ignorePrefixs = bundle.getString("BeanGenerator.ignore.prefixs").split(",");
-        eldests = bundle.getString("BeanGenerator.eldests").split(",");
-        stepchilds = bundle.getString("BeanGenerator.stepchilds").split(",");
-        //        youngests = bundle.getString("BeanGenerator.youngests").split(",");
-        dinks = bundle.getString("BeanGenerator.dinks").split(",");
-        orphans = bundle.getString("BeanGenerator.orphans").split(",");
-        skipcolumn = bundle.getString("BeanGenerator.skipcolumn");
-        intNoNumberingSuffixs = bundle.getString("BeanGenerator.int.nonumbering.suffixs").split(",");
-        charNumberingSuffixs = bundle.getString("BeanGenerator.char.numbering.suffixs").split(",");
+        ignoreRe = bundle.getString("DataSources.relation.ignore.re");
+        eldestRe = bundle.getString("DataSources.relation.eldest.re");
+        bastardRe = bundle.getString("DataSources.relation.bastard.re");
+        youngestRe = bundle.getString("DataSources.relation.youngest.re");
+        dinksRe = bundle.getString("DataSources.relation.dinks.re");
+        orphansRe = bundle.getString("DataSources.relation.orphans.re");
+        columnIgnoreRe = bundle.getString("DataSources.column.ignore.re");
+        noNumberingIntRe = bundle.getString("DataSources.column.nonumbering.int.re");
+        numberingCharRe = bundle.getString("DataSources.column.numbering.char.re");
 
         // テーブル情報の取得
         List<TableInfo> tableInfos = new ArrayList<TableInfo>();
@@ -268,7 +268,12 @@ public final class DataSources {
 
                     // カラム名が合致しなければスキップ
                     String columnName = columns.getString("COLUMN_NAME");
-                    if (columnName.matches(skipcolumn) || !columnName.matches("^[\\$\\-0-9A-Z\\_a-z]+$")) {
+
+                    if (!columnName.matches("^[\\$\\-0-9A-Z\\_a-z]+$")) {
+                        continue;
+                    }
+
+                    if (columnName.matches(columnIgnoreRe)) {
                         continue;
                     }
 
@@ -391,6 +396,12 @@ public final class DataSources {
                 }
             }
 
+            if (tableInfo.getHistoryInfo() != null) {
+                LOG.info("    HistoryInfo:");
+                TableInfo historyInfo = tableInfo.getHistoryInfo();
+                LOG.info("        " + historyInfo.getTableName() + " " + historyInfo.getPrimaryKeys());
+            }
+
             Map<String, TableInfo> referInfos = new LinkedHashMap<String, TableInfo>();
             for (ColumnInfo columnInfo : tableInfo.getColumnInfos().values()) {
                 if (columnInfo.getReferInfo() != null) {
@@ -427,7 +438,12 @@ public final class DataSources {
 
                 // 対象外のカラム名ならスキップ
                 String columnName = rs.getString("COLUMN_NAME");
-                if (columnName.matches(skipcolumn) || !columnName.matches("^[0-9A-Za-z\\_\\-]+$")) {
+
+                if (!columnName.matches("^[0-9A-Za-z\\_\\-]+$")) {
+                    continue;
+                }
+
+                if (columnName.matches(columnIgnoreRe)) {
                     continue;
                 }
 
@@ -493,23 +509,13 @@ public final class DataSources {
 
             String tableName = rs.getString("TABLE_NAME");
 
-            boolean isIgnore = false;
-            for (String ignorePrefix : ignorePrefixs) {
-                if (!StringUtil.isNullOrBlank(ignorePrefix) && tableName.matches("^" + ignorePrefix + ".*$")) {
-                    isIgnore = true;
-                    break;
-                }
-            }
-            if (isIgnore) {
-                continue;
-            }
-
+            //半角文字でなければスキップ
             if (!tableName.matches("^[!-~]+$")) {
                 continue;
             }
 
-            if (tableName.equals("PLAN_TABLE") || tableName.startsWith("SYS_IMPORT_TABLE_")
-                    || tableName.contains("$")) {
+            //対象外のテーブル名ならスキップ
+            if (!StringUtil.isNullOrBlank(ignoreRe) && tableName.matches(ignoreRe)) {
                 continue;
             }
 
@@ -551,7 +557,7 @@ public final class DataSources {
             dataType = "Integer";
 
             if (columnInfo.isPk()) {
-                if (!StringUtil.endsWith(intNoNumberingSuffixs, columnInfo.getColumnName())) {
+                if (!columnInfo.getColumnName().matches(noNumberingIntRe)) {
                     columnInfo.setNumbering(true);
                 }
             }
@@ -562,7 +568,7 @@ public final class DataSources {
             dataType = "java.math.BigDecimal";
 
             if (columnInfo.isPk() && columnInfo.getDecimalDigits() == 0) {
-                if (!StringUtil.endsWith(intNoNumberingSuffixs, columnInfo.getColumnName())) {
+                if (!columnInfo.getColumnName().matches(noNumberingIntRe)) {
                     columnInfo.setNumbering(true);
                 }
             }
@@ -578,7 +584,7 @@ public final class DataSources {
 
             if (typeName.equals("CHAR")) {
                 if (columnInfo.isPk()) {
-                    if (StringUtil.endsWith(charNumberingSuffixs, columnInfo.getColumnName())) {
+                    if (columnInfo.getColumnName().matches(numberingCharRe)) {
                         columnInfo.setNumbering(true);
                     }
                 }
@@ -596,42 +602,35 @@ public final class DataSources {
     private static void addBrotherTable(final List<TableInfo> tableInfos) {
 
         // テーブル情報でループ（比較元は兄モデル）
-        Iterator<TableInfo> srcIterator = tableInfos.iterator();
-        while (srcIterator.hasNext()) {
-            TableInfo srcInfo = srcIterator.next();
+        Iterator<TableInfo> elders = tableInfos.iterator();
+        while (elders.hasNext()) {
+            TableInfo elder = elders.next();
 
             // 比較元に主キーがなければスキップ
-            if (srcInfo.getPrimaryKeys().size() == 0) {
+            if (elder.getPrimaryKeys().size() == 0) {
                 continue;
             }
 
-            //            // 弟を設定しないテーブルならスキップ
-            //            boolean isYoungest = false;
-            //            for (String youngest : youngests) {
-            //                if (youngest.equals(srcInfo.getTableName())) {
-            //                    isYoungest = true;
-            //                    break;
-            //                }
-            //            }
-            //            if (isYoungest) {
-            //                continue;
-            //            }
+            // 弟を設定しないテーブルならスキップ
+            if (elder.getTableName().matches(youngestRe)) {
+                continue;
+            }
 
-            String srcPrimaryKeys = srcInfo.getPrimaryKeys().toString().replaceAll("[\\[\\]]", "");
+            String elderPKs = elder.getPrimaryKeys().toString().replaceAll("[\\[\\]]", "");
 
             // テーブル情報でループ（比較先は弟モデル）
-            Iterator<TableInfo> destIterator = tableInfos.iterator();
-            while (destIterator.hasNext()) {
-                TableInfo destInfo = destIterator.next();
+            Iterator<TableInfo> youngers = tableInfos.iterator();
+            while (youngers.hasNext()) {
+                TableInfo younger = youngers.next();
 
                 // 比較元と同じならスキップ
-                if (srcInfo == destInfo) {
+                if (elder == younger) {
                     continue;
                 }
 
                 // 主キーが合致しなければスキップ
-                String destPrimaryKeys = destInfo.getPrimaryKeys().toString().replaceAll("[\\[\\]]", "");
-                if (!srcPrimaryKeys.equals(destPrimaryKeys)) {
+                String youngerPKs = younger.getPrimaryKeys().toString().replaceAll("[\\[\\]]", "");
+                if (!elderPKs.equals(youngerPKs)) {
                     continue;
                 }
 
@@ -641,60 +640,40 @@ public final class DataSources {
                 //                }
 
                 // 比較元に弟を追加
-                destInfo.setBrother(true);
-                srcInfo.getBrosInfos().add(destInfo);
+                younger.setBrother(true);
+                elder.getBrosInfos().add(younger);
             }
         }
 
-        for (TableInfo tableInfo : tableInfos) {
+        for (TableInfo elder : tableInfos) {
 
             // １．弟情報から長兄モデルを削除
             List<TableInfo> nonEldestInfos = new ArrayList<TableInfo>();
-            for (TableInfo brosInfo : tableInfo.getBrosInfos()) {
-                boolean isEldest = false;
-                for (String eldest : eldests) {
-                    if (eldest.equals(brosInfo.getTableName())) {
-                        brosInfo.setBrother(false);
-                        isEldest = true;
-                        break;
-                    }
-                }
-                if (!isEldest) {
-                    nonEldestInfos.add(brosInfo);
+            for (TableInfo younger : elder.getBrosInfos()) {
+                if (younger.getTableName().matches(eldestRe)) {
+                    younger.setBrother(false);
+                } else {
+                    nonEldestInfos.add(younger);
                 }
             }
-            tableInfo.setBrosInfos(nonEldestInfos);
+            elder.setBrosInfos(nonEldestInfos);
 
             // ２．長兄モデルなら弟モデルの弟情報をクリア
-            boolean isEldest = false;
-            for (String eldest : eldests) {
-                if (eldest.equals(tableInfo.getTableName())) {
-                    tableInfo.setBrother(false);
-                    isEldest = true;
-                    break;
-                }
-            }
-            if (isEldest) {
-                for (TableInfo brosInfo : tableInfo.getBrosInfos()) {
-                    brosInfo.setBrosInfos(new ArrayList<TableInfo>());
+            if (elder.getTableName().matches(eldestRe)) {
+                elder.setBrother(false);
+                for (TableInfo younger : elder.getBrosInfos()) {
+                    younger.setBrosInfos(new ArrayList<TableInfo>());
                 }
             }
 
-            // ３．弟情報から連れ子モデルを削除
-            List<TableInfo> nonStepchildInfos = new ArrayList<TableInfo>();
-            for (TableInfo brosInfo : tableInfo.getBrosInfos()) {
-                boolean isStepchild = false;
-                for (String stepchild : stepchilds) {
-                    if (stepchild.equals(brosInfo.getTableName())) {
-                        isStepchild = true;
-                        break;
-                    }
-                }
-                if (!isStepchild) {
-                    nonStepchildInfos.add(brosInfo);
+            // ３．弟情報から隠し子モデルを削除
+            List<TableInfo> youngers = new ArrayList<TableInfo>();
+            for (TableInfo younger : elder.getBrosInfos()) {
+                if (!younger.getTableName().matches(bastardRe)) {
+                    youngers.add(younger);
                 }
             }
-            tableInfo.setBrosInfos(nonStepchildInfos);
+            elder.setBrosInfos(youngers);
         }
     }
 
@@ -774,14 +753,7 @@ public final class DataSources {
             }
 
             // 子を設定しないテーブルならスキップ
-            boolean isDink = false;
-            for (String dink : dinks) {
-                if (dink.equals(srcInfo.getTableName())) {
-                    isDink = true;
-                    break;
-                }
-            }
-            if (isDink) {
+            if (srcInfo.getTableName().matches(dinksRe)) {
                 continue;
             }
 
@@ -799,14 +771,7 @@ public final class DataSources {
                 }
 
                 // 親を設定しないテーブルならスキップ
-                boolean isOrphan = false;
-                for (String orphan : orphans) {
-                    if (orphan.equals(destInfo.getTableName())) {
-                        isOrphan = true;
-                        break;
-                    }
-                }
-                if (isOrphan) {
+                if (destInfo.getTableName().matches(orphansRe)) {
                     continue;
                 }
 
@@ -933,14 +898,7 @@ public final class DataSources {
 
                         // 比較先がユニークキーで、弟に設定しないテーブルならスキップ
                         if (destColumnInfo.isPk() && destInfo.getPrimaryKeys().size() == 1) {
-                            boolean isEldest = false;
-                            for (String eldest : eldests) {
-                                if (eldest.equals(destInfo.getTableName())) {
-                                    isEldest = true;
-                                    break;
-                                }
-                            }
-                            if (isEldest) {
+                            if (destInfo.getTableName().matches(eldestRe)) {
                                 continue;
                             }
                         }

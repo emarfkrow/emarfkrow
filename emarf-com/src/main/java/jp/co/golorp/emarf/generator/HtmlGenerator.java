@@ -109,11 +109,11 @@ public final class HtmlGenerator {
 
         bundle = ResourceBundles.getBundle(BeanGenerator.class);
 
-        searchPrefixes = bundle.getString("BeanGenerator.view.search.prefix").split(",");
+        searchPrefixes = bundle.getString("HtmlGenerator.view.search.prefix").split(",");
 
-        rows = bundle.getString("BeanGenerator.rows");
+        rows = bundle.getString("HtmlGenerator.rows");
 
-        intNoFormatSuffixs = bundle.getString("BeanGenerator.int.noformat.suffixs").split(",");
+        intNoFormatSuffixs = bundle.getString("HtmlGenerator.int.noformat.suffixs").split(",");
 
         insertDt = bundle.getString("BeanGenerator.insert_dt");
         insertBy = bundle.getString("BeanGenerator.insert_by");
@@ -137,18 +137,18 @@ public final class HtmlGenerator {
         inputFlagSuffixs = bundle.getString("BeanGenerator.input.flag.suffixs").split(",");
         inputFileSuffixs = bundle.getString("BeanGenerator.input.file.suffixs").split(",");
 
-        String[] pairs = bundle.getString("BeanGenerator.refer.pairs").split(",");
+        String[] pairs = bundle.getString("DataSources.reration.refer.pairs").split(",");
         for (String pair : pairs) {
             String[] kv = pair.split(":");
             referPairs.add(kv);
         }
 
         // 出力フォルダを再作成
-        String htmlDir = projectDir + File.separator + bundle.getString("BeanGenerator.htmlPath");
+        String htmlDir = projectDir + File.separator + bundle.getString("HtmlGenerator.htmlPath");
         FileUtil.reMkDir(htmlDir);
         FileUtil.reMkDir(htmlDir + File.separator + ".." + File.separator + "common");
 
-        String gridDir = projectDir + File.separator + bundle.getString("BeanGenerator.gridPath");
+        String gridDir = projectDir + File.separator + bundle.getString("HtmlGenerator.gridPath");
         FileUtil.reMkDir(gridDir);
 
         for (TableInfo tableInfo : tableInfos) {

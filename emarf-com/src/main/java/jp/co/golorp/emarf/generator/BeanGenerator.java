@@ -35,6 +35,7 @@ import org.slf4j.LoggerFactory;
 import jp.co.golorp.emarf.exception.SysError;
 import jp.co.golorp.emarf.io.FileUtil;
 import jp.co.golorp.emarf.lang.StringUtil;
+import jp.co.golorp.emarf.properties.App;
 import jp.co.golorp.emarf.sql.DataSources;
 import jp.co.golorp.emarf.sql.DataSourcesAssist;
 import jp.co.golorp.emarf.util.ResourceBundles;
@@ -55,11 +56,14 @@ public final class BeanGenerator {
     /** BeanGenerator.properties */
     private static ResourceBundle bundle;
 
+    /** コンパイルまでするか */
+    private static boolean isCompile;
+
     /** validサフィックス */
     private static List<String> validSuffixs;
 
     /** NOTNULL-CHARのNULLABLE化の対象外にするサフィックス */
-    private static String[] charNotNullSuffixs;
+    private static String charNotNullRe;
 
     /** 登録日時カラム名 */
     private static String insertDt;
@@ -95,22 +99,26 @@ public final class BeanGenerator {
     /**
      * 各ファイル出力 主処理
      * @param dir プロジェクトのディレクトリ
-     * @param isManual 手動実行フラグ
      */
-    public static void generate(final String dir, final boolean isManual) {
-
-        projectDir = dir;
-
-        /* 設定ファイル読み込み */
-        bundle = ResourceBundles.getBundle(BeanGenerator.class);
-
-        String isGenerate = bundle.getString("BeanGenerator.autogenerate");
-        if (!isManual && !isGenerate.toLowerCase().equals("true")) {
-            return;
-        }
+    public static void generate(final String dir) {
 
         LOG.info("start.");
 
+        //プロジェクトディレクトリを退避
+        projectDir = dir;
+
+        /*
+         * BeanGenerator.properties読み込み
+         */
+
+        bundle = ResourceBundles.getBundle(BeanGenerator.class);
+
+        //webからの自動生成ならコンパイルまで行う
+        if (App.get("EmarfListener.autogenerate") != null) {
+            isCompile = App.get("EmarfListener.autogenerate").toLowerCase().equals("true");
+        }
+
+        //validator正規表現の接尾辞を取得
         validSuffixs = new ArrayList<String>();
         for (String key : bundle.keySet()) {
             if (key.startsWith("BeanGenerator.valid.")) {
@@ -118,8 +126,10 @@ public final class BeanGenerator {
             }
         }
 
-        charNotNullSuffixs = bundle.getString("BeanGenerator.char.notnull.suffixs").split(",");
+        //NOTNULLで必須項目として扱うCHARの列名リスト（ホストの△対応）
+        charNotNullRe = bundle.getString("BeanGenerator.char.notnull.re");
 
+        //登録情報・更新情報の列名
         insertDt = bundle.getString("BeanGenerator.insert_dt");
         insertBy = bundle.getString("BeanGenerator.insert_by");
         updateDt = bundle.getString("BeanGenerator.update_dt");
@@ -129,49 +139,56 @@ public final class BeanGenerator {
         inputFlagSuffixs = bundle.getString("BeanGenerator.input.flag.suffixs").split(",");
         inputFileSuffixs = bundle.getString("BeanGenerator.input.file.suffixs").split(",");
 
-        javaPath = bundle.getString("BeanGenerator.javaPath");
-        entityPackage = bundle.getString("BeanGenerator.package.entity");
-        actionPackage = bundle.getString("BeanGenerator.package.action");
-        formPackage = bundle.getString("BeanGenerator.package.form");
+        javaPath = bundle.getString("BeanGenerator.java.path");
+        entityPackage = bundle.getString("BeanGenerator.java.package.entity");
+        actionPackage = bundle.getString("BeanGenerator.java.package.action");
+        formPackage = bundle.getString("BeanGenerator.java.package.form");
 
-        // テーブル情報を取得
-        List<TableInfo> tableInfos = DataSources.getTableInfos();
+        /*
+         * 出力フォルダ再作成
+         */
 
-        // 出力フォルダを再作成
+        //エンティティフォルダ
         String entityPackagePath = entityPackage.replace(".", File.separator);
         String entityPackageDir = projectDir + File.separator + javaPath + File.separator + entityPackagePath;
         FileUtil.reMkDir(entityPackageDir);
 
-        // 出力フォルダを再作成
+        //アクションフォルダ
         String actionPackagePath = actionPackage.replace(".", File.separator);
         String actionPackageDir = projectDir + File.separator + javaPath + File.separator + actionPackagePath;
         FileUtil.reMkDir(actionPackageDir);
 
-        // 出力フォルダを再作成
+        //フォームフォルダ
         String formPackagePath = formPackage.replace(".", File.separator);
         String formPackageDir = projectDir + File.separator + javaPath + File.separator + formPackagePath;
         FileUtil.reMkDir(formPackageDir);
 
-        // javaファイルを出力
+        /*
+         * データベースから自動生成
+         */
+
+        // テーブル情報を取得
+        List<TableInfo> tableInfos = DataSources.getTableInfos();
+
+        //エンティティクラス
         BeanGenerator.javaEntity(tableInfos);
+
+        //アクションクラス
         BeanGenerator.javaActionDetailGet(tableInfos);
         BeanGenerator.javaActionDetailDelete(tableInfos);
         BeanGenerator.javaActionDetailRegist(tableInfos);
         BeanGenerator.javaActionIndexRegist(tableInfos);
         BeanGenerator.javaActionIndexDelete(tableInfos);
+
+        //フォームクラス
         BeanGenerator.javaFormDetailRegist(tableInfos);
         BeanGenerator.javaFormIndexRegist(tableInfos);
 
+        //HTMLファイル
         HtmlGenerator.generate(projectDir, tableInfos);
 
-        String sqlDir = projectDir + File.separator + bundle.getString("BeanGenerator.sqlPath");
-        FileUtil.reMkDir(sqlDir);
-
-        for (TableInfo tableInfo : tableInfos) {
-
-            // 検索SQLを出力
-            SqlGenerator.sqlSearch(sqlDir, tableInfo);
-        }
+        //検索SQLファイル
+        SqlGenerator.generate(projectDir, tableInfos);
 
         LOG.info("success.");
     }
@@ -307,8 +324,7 @@ public final class BeanGenerator {
             javaFilePaths.put(javaFilePath, entityPackage + "." + entityName);
         }
 
-        String isCompile = bundle.getString("BeanGenerator.compile");
-        if (isCompile.toLowerCase().equals("true")) {
+        if (isCompile) {
             for (Entry<String, String> e : javaFilePaths.entrySet()) {
                 BeanGenerator.javaCompile(e.getKey(), e.getValue());
             }
@@ -576,11 +592,14 @@ public final class BeanGenerator {
             if (e.getValue().getDataType().equals("java.time.LocalDateTime")) {
                 rightHand = assist.toTimestampSQL(rightHand);
             }
-            // 主キー以外のNOTNULL-CHARで、NULL必須サフィックス指定がありこれに含まれない場合、NULLならスペースにする（ホスト対応）
-            if (!columnInfo.isPk() && columnInfo.getTypeName().equals("CHAR")
-                    && !StringUtil.isNullOrBlank(String.join(",", charNotNullSuffixs))
-                    && !StringUtil.endsWith(charNotNullSuffixs, columnInfo.getColumnName())) {
-                rightHand = "NVL (" + rightHand + ", ' ')";
+            // 必須CHAR正規表現が設定済みの場合
+            if (!StringUtil.isNullOrBlank(charNotNullRe)) {
+                //主キー以外、CHAR、必須CHAR正規表現に合致しない場合、NULLならスペースを補填する
+                if (!columnInfo.isPk()
+                        && columnInfo.getTypeName().equals("CHAR")
+                        && !columnInfo.getColumnName().matches(charNotNullRe)) {
+                    rightHand = "NVL (" + rightHand + ", ' ')";
+                }
             }
             s.add("        valueList.add(\"" + rightHand + "\");");
         }
@@ -755,11 +774,14 @@ public final class BeanGenerator {
                     rightHand = assist.toTimestampSQL(rightHand);
                 }
 
-                // 主キー以外のNOTNULL-CHARで、NULL必須サフィックス指定がありこれに含まれない場合、NULLならスペースにする（ホスト対応）
-                if (!columnInfo.isPk() && columnInfo.getTypeName().equals("CHAR")
-                        && !StringUtil.isNullOrBlank(String.join(",", charNotNullSuffixs))
-                        && !StringUtil.endsWith(charNotNullSuffixs, column)) {
-                    rightHand = "NVL (" + rightHand + ", ' ')";
+                // 必須CHAR正規表現が設定済みの場合
+                if (!StringUtil.isNullOrBlank(charNotNullRe)) {
+                    //主キー以外、CHAR、必須CHAR正規表現に合致しない場合、NULLならスペースを補填する
+                    if (!columnInfo.isPk()
+                            && columnInfo.getTypeName().equals("CHAR")
+                            && !columnInfo.getColumnName().matches(charNotNullRe)) {
+                        rightHand = "NVL (" + rightHand + ", ' ')";
+                    }
                 }
 
                 s.add("        setList.add(\"" + assist.quoteEscapedSQL(column) + " = " + rightHand + "\");");
@@ -1079,8 +1101,7 @@ public final class BeanGenerator {
             FileUtil.writeFile(javaFilePath, s);
         }
 
-        String isCompile = bundle.getString("BeanGenerator.compile");
-        if (isCompile.toLowerCase().equals("true")) {
+        if (isCompile) {
             for (Entry<String, String> e : javaFilePaths.entrySet()) {
                 BeanGenerator.javaCompile(e.getKey(), e.getValue());
             }
@@ -1170,8 +1191,7 @@ public final class BeanGenerator {
             FileUtil.writeFile(javaFilePath, s);
         }
 
-        String isCompile = bundle.getString("BeanGenerator.compile");
-        if (isCompile.toLowerCase().equals("true")) {
+        if (isCompile) {
             for (Entry<String, String> e : javaFilePaths.entrySet()) {
                 BeanGenerator.javaCompile(e.getKey(), e.getValue());
             }
@@ -1272,8 +1292,7 @@ public final class BeanGenerator {
             FileUtil.writeFile(javaFilePath, s);
         }
 
-        String isCompile = bundle.getString("BeanGenerator.compile");
-        if (isCompile.toLowerCase().equals("true")) {
+        if (isCompile) {
             for (Entry<String, String> e : javaFilePaths.entrySet()) {
                 BeanGenerator.javaCompile(e.getKey(), e.getValue());
             }
@@ -1367,8 +1386,7 @@ public final class BeanGenerator {
             FileUtil.writeFile(javaFilePath, s);
         }
 
-        String isCompile = bundle.getString("BeanGenerator.compile");
-        if (isCompile.toLowerCase().equals("true")) {
+        if (isCompile) {
             for (Entry<String, String> e : javaFilePaths.entrySet()) {
                 BeanGenerator.javaCompile(e.getKey(), e.getValue());
             }
@@ -1480,8 +1498,7 @@ public final class BeanGenerator {
             FileUtil.writeFile(javaFilePath, s);
         }
 
-        String isCompile = bundle.getString("BeanGenerator.compile");
-        if (isCompile.toLowerCase().equals("true")) {
+        if (isCompile) {
             for (Entry<String, String> e : javaFilePaths.entrySet()) {
                 BeanGenerator.javaCompile(e.getKey(), e.getValue());
             }
@@ -1627,8 +1644,7 @@ public final class BeanGenerator {
             FileUtil.writeFile(javaFilePath, s);
         }
 
-        String isCompile = bundle.getString("BeanGenerator.compile");
-        if (isCompile.toLowerCase().equals("true")) {
+        if (isCompile) {
             for (Entry<String, String> e : javaFilePaths.entrySet()) {
                 BeanGenerator.javaCompile(e.getKey(), e.getValue());
             }
@@ -1648,24 +1664,18 @@ public final class BeanGenerator {
         if (columnInfo.getNullable() == 0) {
 
             if (columnInfo.isNumbering()) {
-
                 // 主キーは親モデルから植え付けるか採番するので除外
                 LOG.trace("skip NotBlank.");
-
-            } else if (StringUtil.endsWith(inputFlagSuffixs, columnInfo.getColumnName())) {
-
-                // フラグも除外
-                LOG.trace("skip NotBlank.");
-
-            } else if (!columnInfo.isPk() && columnInfo.getTypeName().equals("CHAR")
-                    && !StringUtil.isNullOrBlank(charNotNullSuffixs)
-                    && !StringUtil.endsWith(charNotNullSuffixs, columnInfo.getColumnName())) {
-
+                //            } else if (StringUtil.endsWith(inputFlagSuffixs, columnInfo.getColumnName())) {
+                //                // フラグも除外
+                //                LOG.trace("skip NotBlank.");
+            } else if (!StringUtil.isNullOrBlank(charNotNullRe)
+                    && !columnInfo.isPk()
+                    && columnInfo.getTypeName().equals("CHAR")
+                    && !columnInfo.getColumnName().matches(charNotNullRe)) {
                 // 主キー以外のNOTNULL-CHARで、NULL必須サフィックス指定がありこれに含まれない場合も除外（ホスト向け対応）
                 LOG.trace("skip NotBlank.");
-
             } else {
-
                 s.add("    @jakarta.validation.constraints.NotBlank");
             }
         }
@@ -1791,8 +1801,7 @@ public final class BeanGenerator {
             FileUtil.writeFile(javaFilePath, s);
         }
 
-        String isCompile = bundle.getString("BeanGenerator.compile");
-        if (isCompile.toLowerCase().equals("true")) {
+        if (isCompile) {
             for (Entry<String, String> e : javaFilePaths.entrySet()) {
                 BeanGenerator.javaCompile(e.getKey(), e.getValue());
             }

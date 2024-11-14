@@ -38,6 +38,7 @@ import javax.servlet.http.HttpSessionListener;
 
 import jp.co.golorp.emarf.generator.BeanGenerator;
 import jp.co.golorp.emarf.io.FileUtil;
+import jp.co.golorp.emarf.properties.App;
 
 /**
  * Application Lifecycle Listener implementation class EmarfListener
@@ -50,7 +51,7 @@ public class EmarfListener implements ServletContextListener, ServletContextAttr
         ServletRequestListener, ServletRequestAttributeListener, AsyncListener {
 
     /** プロジェクトディレクトリ */
-    private String projectDir;
+    private String contextRealPath;
 
     /**
      * Default constructor.
@@ -202,8 +203,15 @@ public class EmarfListener implements ServletContextListener, ServletContextAttr
      */
     public void requestInitialized(final ServletRequestEvent sre) {
 
-        if (projectDir == null) {
+        //リクエスト時にプロジェクトパスが未取得なら実行
+        //起動後初回アクセス時のみという事
+        //時間内にサーブレットが起動しないとエラーになるため
+        if (contextRealPath == null) {
 
+            //プロジェクトパスを取得（「実行済み」のフラグとする）
+            contextRealPath = sre.getServletContext().getRealPath("");
+
+            //サーブレットURLを退避
             ServletRequest sr = sre.getServletRequest();
             String schema = sr.getScheme();
             String serverName = sr.getServerName();
@@ -211,11 +219,14 @@ public class EmarfListener implements ServletContextListener, ServletContextAttr
             String contextPath = sre.getServletContext().getContextPath();
             ServletUtil.setServletUrl(schema + "://" + serverName + ":" + serverPort + contextPath);
 
-            projectDir = sre.getServletContext().getRealPath("");
+            //実フォルダパスを退避
+            FileUtil.setContextDir(contextRealPath);
 
-            BeanGenerator.generate(projectDir, false);
-
-            FileUtil.setContextDir(projectDir);
+            //自動生成を実行
+            String isGenerate = App.get("EmarfListener.autogenerate");
+            if (isGenerate.toLowerCase().equals("true")) {
+                BeanGenerator.generate(contextRealPath);
+            }
         }
     }
 
