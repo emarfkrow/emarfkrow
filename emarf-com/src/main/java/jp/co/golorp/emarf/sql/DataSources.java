@@ -262,7 +262,8 @@ public final class DataSources {
             for (TableInfo tableInfo : tableInfos) {
 
                 // テーブルのカラム情報を取得してループ
-                ResultSet columns = metaData.getColumns(null, null, tableInfo.getTableName(), null);
+                ResultSet columns = metaData.getColumns(null, schemaPattern.toUpperCase(), tableInfo.getTableName(),
+                        null);
 
                 while (columns.next()) {
 
@@ -433,7 +434,8 @@ public final class DataSources {
         List<String> primaryKeys = new ArrayList<String>();
 
         // テーブルの主キー情報でループ
-        try (ResultSet rs = metaData.getPrimaryKeys(null, null, tableInfo.getTableName())) {
+        String schemaPattern = BUNDLE.getString("username");
+        try (ResultSet rs = metaData.getPrimaryKeys(null, schemaPattern.toUpperCase(), tableInfo.getTableName())) {
             while (rs.next()) {
 
                 // 対象外のカラム名ならスキップ
@@ -722,8 +724,8 @@ public final class DataSources {
                 if (destPrimaryKeys.replaceAll(srcPrimaryKeys + ", ", "").split(",").length != 1) {
                     continue;
                 }
-                ColumnInfo lastPKInfo = destInfo.getColumnInfos()
-                        .get(destInfo.getPrimaryKeys().get(destInfo.getPrimaryKeys().size() - 1));
+                String destLastKey = destInfo.getPrimaryKeys().get(destInfo.getPrimaryKeys().size() - 1);
+                ColumnInfo lastPKInfo = destInfo.getColumnInfos().get(destLastKey);
                 if (!lastPKInfo.isNumbering() || lastPKInfo.getTypeName().equals("CHAR")) {
                     continue;
                 }

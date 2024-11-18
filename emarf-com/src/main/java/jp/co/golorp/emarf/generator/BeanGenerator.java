@@ -62,8 +62,10 @@ public final class BeanGenerator {
     /** validサフィックス */
     private static List<String> validSuffixs;
 
-    /** NOTNULL-CHARのNULLABLE化の対象外にするサフィックス */
+    /** 必須CHAR列の指定 */
     private static String charNotNullRe;
+    /** 非必須INT列の指定 */
+    private static String numberNullableRe;
 
     /** 登録日時カラム名 */
     private static String insertDt;
@@ -128,6 +130,8 @@ public final class BeanGenerator {
 
         //NOTNULLで必須項目として扱うCHARの列名リスト（ホストの△対応）
         charNotNullRe = bundle.getString("BeanGenerator.char.notnull.re");
+        //NOTNULLのINT列で「0」を補填する列名指定
+        numberNullableRe = bundle.getString("BeanGenerator.number.nullable.re");
 
         //登録情報・更新情報の列名
         insertDt = bundle.getString("BeanGenerator.insert_dt");
@@ -592,14 +596,17 @@ public final class BeanGenerator {
             if (e.getValue().getDataType().equals("java.time.LocalDateTime")) {
                 rightHand = assist.toTimestampSQL(rightHand);
             }
-            // 必須CHAR正規表現が設定済みの場合
-            if (!StringUtil.isNullOrBlank(charNotNullRe)) {
-                //主キー以外、CHAR、必須CHAR正規表現に合致しない場合、NULLならスペースを補填する
-                if (!columnInfo.isPk()
-                        && columnInfo.getTypeName().equals("CHAR")
-                        && !columnInfo.getColumnName().matches(charNotNullRe)) {
-                    rightHand = "NVL (" + rightHand + ", ' ')";
-                }
+            //主キー以外のCHAR列で、必須CHAR指定に合致しない場合、NULLならスペースを補填する
+            if (!columnInfo.isPk() && columnInfo.getTypeName().equals("CHAR")
+                    && !StringUtil.isNullOrBlank(charNotNullRe)
+                    && !columnInfo.getColumnName().matches(charNotNullRe)) {
+                rightHand = "NVL (" + rightHand + ", ' ')";
+            }
+            //主キー以外のNUMBER列で、非必須INT指定に合致する場合、NULLなら「0」を補填する
+            if (!columnInfo.isPk() && columnInfo.getTypeName().equals("NUMBER")
+                    && !StringUtil.isNullOrBlank(numberNullableRe)
+                    && columnInfo.getColumnName().matches(numberNullableRe)) {
+                rightHand = "NVL (" + rightHand + ", 0)";
             }
             s.add("        valueList.add(\"" + rightHand + "\");");
         }
@@ -774,14 +781,18 @@ public final class BeanGenerator {
                     rightHand = assist.toTimestampSQL(rightHand);
                 }
 
-                // 必須CHAR正規表現が設定済みの場合
-                if (!StringUtil.isNullOrBlank(charNotNullRe)) {
-                    //主キー以外、CHAR、必須CHAR正規表現に合致しない場合、NULLならスペースを補填する
-                    if (!columnInfo.isPk()
-                            && columnInfo.getTypeName().equals("CHAR")
-                            && !columnInfo.getColumnName().matches(charNotNullRe)) {
-                        rightHand = "NVL (" + rightHand + ", ' ')";
-                    }
+                //主キー以外のCHAR列で、必須CHAR指定に合致しない場合、NULLならスペースを補填する
+                if (!columnInfo.isPk() && columnInfo.getTypeName().equals("CHAR")
+                        && !StringUtil.isNullOrBlank(charNotNullRe)
+                        && !columnInfo.getColumnName().matches(charNotNullRe)) {
+                    rightHand = "NVL (" + rightHand + ", ' ')";
+                }
+
+                //主キー以外のNUMBER列で、非必須INT指定に合致する場合、NULLなら「0」を補填する
+                if (!columnInfo.isPk() && columnInfo.getTypeName().equals("NUMBER")
+                        && !StringUtil.isNullOrBlank(numberNullableRe)
+                        && columnInfo.getColumnName().matches(numberNullableRe)) {
+                    rightHand = "NVL (" + rightHand + ", 0)";
                 }
 
                 s.add("        setList.add(\"" + assist.quoteEscapedSQL(column) + " = " + rightHand + "\");");
@@ -1669,11 +1680,15 @@ public final class BeanGenerator {
                 //            } else if (StringUtil.endsWith(inputFlagSuffixs, columnInfo.getColumnName())) {
                 //                // フラグも除外
                 //                LOG.trace("skip NotBlank.");
-            } else if (!StringUtil.isNullOrBlank(charNotNullRe)
-                    && !columnInfo.isPk()
-                    && columnInfo.getTypeName().equals("CHAR")
+            } else if (!columnInfo.isPk() && columnInfo.getTypeName().equals("CHAR")
+                    && !StringUtil.isNullOrBlank(charNotNullRe)
                     && !columnInfo.getColumnName().matches(charNotNullRe)) {
-                // 主キー以外のNOTNULL-CHARで、NULL必須サフィックス指定がありこれに含まれない場合も除外（ホスト向け対応）
+                //主キー以外のCHAR列で、必須CHAR指定に合致しない場合、NULLならスペースを補填する
+                LOG.trace("skip NotBlank.");
+            } else if (!columnInfo.isPk() && columnInfo.getTypeName().equals("NUMBER")
+                    && !StringUtil.isNullOrBlank(numberNullableRe)
+                    && columnInfo.getColumnName().matches(numberNullableRe)) {
+                //主キー以外のNUMBER列で、非必須INT指定に合致する場合、NULLなら「0」を補填する
                 LOG.trace("skip NotBlank.");
             } else {
                 s.add("    @jakarta.validation.constraints.NotBlank");
