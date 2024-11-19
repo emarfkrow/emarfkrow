@@ -351,17 +351,24 @@ public final class HtmlGenerator {
                 + frozenColumn + "\" th:data-href=\"@{/model/" + pascal + ".html}\"></div>");
         s.add("      <div id=\"" + pascal + "Pager\"></div>");
         s.add("      <div class=\"buttons\">");
-        s.add("        <button type=\"button\" id=\"Reset" + pascal
-                + "S\" th:text=\"#{common.reset}\" class=\"reset\" onClick=\"$('[id=&quot;Search" + pascal
-                + "&quot;]').click();\">reset</button>");
+        if (!tableInfo.isHistory()) {
+            s.add("        <button type=\"button\" id=\"Reset" + pascal
+                    + "S\" th:text=\"#{common.reset}\" class=\"reset\" onClick=\"$('[id=&quot;Search" + pascal
+                    + "&quot;]').click();\">reset</button>");
+        }
         s.add("        <a th:href=\"@{" + pascal + "Search.xlsx(baseMei=#{" + pascal + "S.h2})}\" id=\"" + pascal
                 + "Search.xlsx\" th:text=\"#{common.xlsx}\" class=\"output\" tabindex=\"-1\">xlsx</a>");
-        s.add("        <button id=\"Delete" + pascal + "S\" class=\"delete selectRows\" data-action=\"" + pascal
-                + "SDelete.ajax\" th:text=\"#{common.delete}\" tabindex=\"-1\">削除</button>");
+        if (!tableInfo.isHistory()) {
+            s.add("        <button id=\"Delete" + pascal + "S\" class=\"delete selectRows\" data-action=\"" + pascal
+                    + "SDelete.ajax\" th:text=\"#{common.delete}\" tabindex=\"-1\">削除</button>");
+        }
         s.add("      </div>");
         s.add("      <div class=\"submits\">");
-        s.add("        <button id=\"Regist" + pascal
-                + "S\" class=\"regist\" th:text=\"#{common.regist}\">submit</button>");
+        if (!tableInfo.isHistory()) {
+            //履歴モデルは変更不可
+            s.add("        <button id=\"Regist" + pascal
+                    + "S\" class=\"regist\" th:text=\"#{common.regist}\">submit</button>");
+        }
         s.add("      </div>");
         s.add("    </form>");
         s.add("  </div>");
@@ -456,8 +463,9 @@ public final class HtmlGenerator {
 
         //主キー列の出力
         for (String columnName : tableInfo.getPrimaryKeys()) {
-            s.add("    " + htmlGridColumn(columnMap.get(columnName), entityName, columnMap));
+            s.add("    " + htmlGridColumn(columnMap.get(columnName), entityName, columnMap, tableInfo.isHistory()));
         }
+
         //非主キー列の出力
         for (String columnName : tableInfo.getNonPrimaryKeys()) {
 
@@ -466,11 +474,12 @@ public final class HtmlGenerator {
                 continue;
             }
 
+            //カラム名が「table_name」なら出力しない
             if (columnName.matches("(?i)^table_name$")) {
                 continue;
             }
 
-            s.add("    " + htmlGridColumn(columnMap.get(columnName), entityName, columnMap));
+            s.add("    " + htmlGridColumn(columnMap.get(columnName), entityName, columnMap, tableInfo.isHistory()));
         }
 
         s.add("];");
@@ -482,10 +491,11 @@ public final class HtmlGenerator {
      * @param columnInfo
      * @param entityName
      * @param columnMap
+     * @param isHistory
      * @return 列定義文字列
      */
     private static String htmlGridColumn(final ColumnInfo columnInfo, final String entityName,
-            final Map<String, ColumnInfo> columnMap) {
+            final Map<String, ColumnInfo> columnMap, final boolean isHistory) {
 
         String columnName = columnInfo.getColumnName();
         //            String lower = columnName.toLowerCase();
@@ -593,7 +603,7 @@ public final class HtmlGenerator {
             //                c = "Column.cell('" + field + "', " + name + ", " + width + ", '" + css + "', " + formatter + "),";
             //            } else if (columnInfo.isUnique()) {
             //                c = "Column.cell('" + field + "', " + name + ", " + width + ", '" + css + "', " + formatter + "),";
-        } else if (isInsertDt || isUpdateDt || isInsertBy || isUpdateBy) {
+        } else if (isInsertDt || isUpdateDt || isInsertBy || isUpdateBy || isHistory) {
             c = "Column.cell('" + field + "', " + name + ", " + width + ", '" + css + "', " + formatter + "),";
         } else if (StringUtil.endsWith(inputFlagSuffixs, columnName)) {
             c = "Column.check('" + field + "', " + name + ", " + width + ", '" + css + "'),";
@@ -722,17 +732,23 @@ public final class HtmlGenerator {
         }
 
         s.add("      <div class=\"buttons\">");
-        s.add("        <button type=\"button\" id=\"Reset" + entityName
-                + "\" th:text=\"#{common.reset}\" class=\"reset\" onClick=\"Dialogate.refresh(event);\">reset</button>");
+        if (!tableInfo.isHistory()) {
+            s.add("        <button type=\"button\" id=\"Reset" + entityName
+                    + "\" th:text=\"#{common.reset}\" class=\"reset\" onClick=\"Dialogate.refresh(event);\">reset</button>");
+        }
         s.add("        <a th:href=\"@{" + entityName + "Get.xlsx(baseMei=#{" + entityName + ".h2})}\" id=\""
                 + entityName
                 + "Get.xlsx\" th:text=\"#{common.xlsx}\" class=\"output\" tabindex=\"-1\">xlsx</a>");
-        s.add("        <button id=\"Delete" + entityName + "\" class=\"delete\" data-action=\"" + entityName
-                + "Delete.ajax\" th:text=\"#{common.delete}\" tabindex=\"-1\">削除</button>");
+        if (!tableInfo.isHistory()) {
+            s.add("        <button id=\"Delete" + entityName + "\" class=\"delete\" data-action=\"" + entityName
+                    + "Delete.ajax\" th:text=\"#{common.delete}\" tabindex=\"-1\">削除</button>");
+        }
         s.add("      </div>");
         s.add("      <div class=\"submits\">");
-        s.add("        <button id=\"Regist" + entityName
-                + "\" class=\"regist\" th:text=\"#{common.regist}\">登録</button>");
+        if (!tableInfo.isHistory()) {
+            s.add("        <button id=\"Regist" + entityName
+                    + "\" class=\"regist\" th:text=\"#{common.regist}\">登録</button>");
+        }
         s.add("      </div>");
         s.add("    </form>");
         s.add("  </div>");
@@ -802,7 +818,7 @@ public final class HtmlGenerator {
 
             s.add("        <div id=\"" + camelColumn + "\">");
 
-            if (isInsertDt || isInsertBy || isUpdateDt || isUpdateBy) {
+            if (isInsertDt || isInsertBy || isUpdateDt || isUpdateBy || (isDetail && tableInfo.isHistory())) {
                 // メタ情報の場合は表示項目（編集画面の自モデルのみここに到達する）
 
                 htmlFieldsMeta(s, fieldId, remarks);
