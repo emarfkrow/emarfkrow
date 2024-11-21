@@ -1674,8 +1674,9 @@ public final class BeanGenerator {
         // 必須チェック
         if (columnInfo.getNullable() == 0) {
 
-            if (columnInfo.isNumbering()) {
-                // 主キーは親モデルから植え付けるか採番するので除外
+            if (columnInfo.isNumbering()
+                    && columnInfo.getColumnName().equals(primaryKeys.get(primaryKeys.size() - 1))) {
+                // 最終キーが採番キーなら除外
                 LOG.trace("skip NotBlank.");
                 //            } else if (StringUtil.endsWith(inputFlagSuffixs, columnInfo.getColumnName())) {
                 //                // フラグも除外
