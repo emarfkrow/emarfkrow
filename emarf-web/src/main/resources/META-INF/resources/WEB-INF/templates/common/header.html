@@ -20,12 +20,12 @@ limitations under the License.
     <h1>
       <a th:href="@{/}" th:text="#{header.h1}"></a>
     </h1>
-    <div class="certification" th:if="${#session != null && #session.getAttribute('AUTHN_KEY') != null}">
+    <div class="certification" th:if="${#ctx.session != null && #ctx.session.get('AUTHN_KEY') != null}">
       <div>
         <span id="timestamp">&nbsp;</span>
       </div>
       <div>
-        <span id="authNKey" th:text="${#session.getAttribute('AUTHN_KEY')}"></span>：<span id="authNName" th:text="${#session.getAttribute('AUTHN_MEI')}"></span>
+        <span id="authNKey" th:text="${#ctx.session.get('AUTHN_KEY')}"></span>：<span id="authNName" th:text="${#ctx.session.get('AUTHN_MEI')}"></span>
       </div>
       <form id="logout" method="post" th:action="@{/logout}">
         <button id="logout" th:text="#{header.logout}"></button>

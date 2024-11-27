@@ -21,18 +21,19 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.nio.charset.StandardCharsets;
 
-import javax.servlet.ServletConfig;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.ServletConfig;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 import org.thymeleaf.templatemode.TemplateMode;
-import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
+import org.thymeleaf.templateresolver.WebApplicationTemplateResolver;
+import org.thymeleaf.web.IWebExchange;
+import org.thymeleaf.web.servlet.JakartaServletWebApplication;
 
 import jp.co.golorp.emarf.messageresolver.MessageResolver;
 import jp.co.golorp.emarf.properties.App;
@@ -67,10 +68,12 @@ public final class HtmlServlet extends HttpServlet {
         super.init(config);
 
         // サーブレットコンテキスト取得
-        ServletContext servletContext = config.getServletContext();
+        //ServletContext servletContext = config.getServletContext();
 
         // 公開ディレクトリ基準のTemplateResolverを取得
-        ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver(servletContext);
+        JakartaServletWebApplication application = JakartaServletWebApplication
+                .buildApplication(this.getServletContext());
+        WebApplicationTemplateResolver templateResolver = new WebApplicationTemplateResolver(application);
         templateResolver.setPrefix(App.get("thymeleaf.prefix"));
         templateResolver.setSuffix(App.get("thymeleaf.suffix"));
         templateResolver.setTemplateMode(TemplateMode.HTML);
@@ -101,7 +104,12 @@ public final class HtmlServlet extends HttpServlet {
             template = servletPath.replaceFirst("\\.html$", "");
         }
 
-        WebContext context = new WebContext(request, response, this.getServletContext(), request.getLocale());
+        //WebContext context = new WebContext(request, response, this.getServletContext(), request.getLocale());
+
+        JakartaServletWebApplication application = JakartaServletWebApplication
+                .buildApplication(this.getServletContext());
+        IWebExchange exchange = application.buildExchange(request, response);
+        WebContext context = new WebContext(exchange, request.getLocale());
 
         Writer writer = new OutputStreamWriter(response.getOutputStream(), StandardCharsets.UTF_8);
 

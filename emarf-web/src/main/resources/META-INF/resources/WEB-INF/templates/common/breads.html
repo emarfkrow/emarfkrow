@@ -16,7 +16,7 @@ limitations under the License.
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
 <body>
-  <div class="breads" layout:fragment="breads" th:if="${#session != null && #session.getAttribute('AUTHN_KEY') != null}">
+  <div class="breads" layout:fragment="breads" th:if="${#ctx.session != null && #ctx.session.get('AUTHN_KEY') != null}">
     <ul id="breads"></ul>
   </div>
 </body>

@@ -20,7 +20,7 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpSession;
 
 import jp.co.golorp.emarf.sql.Queries;
 import jp.co.golorp.emarf.util.MapList;

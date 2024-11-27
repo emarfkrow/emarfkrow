@@ -214,7 +214,7 @@ public final class HtmlGenerator {
         s.add("<!DOCTYPE html>");
         s.add("<html xmlns:th=\"http://www.thymeleaf.org\" xmlns:layout=\"http://www.ultraq.net.nz/web/thymeleaf/layout\">");
         s.add("<body>");
-        s.add("  <div class=\"nav\" layout:fragment=\"nav\" th:if=\"${#session != null && #session.getAttribute('AUTHN_KEY') != null}\">");
+        s.add("  <div class=\"nav\" layout:fragment=\"nav\" th:if=\"${#ctx.session != null && #ctx.session.get('AUTHN_KEY') != null}\">");
         s.add("    <dl>");
         for (Entry<String, List<TableInfo>> nav : navs.entrySet()) {
             String t = nav.getKey();

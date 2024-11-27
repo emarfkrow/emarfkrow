@@ -69,12 +69,11 @@ limitations under the License.
 <!-- application js -->
 <script th:src="@{/messages.json}"></script>
 <!-- <script layout:replace="~{common/gridColumns::gridColumns}"></script> -->
-<script th:inline="javascript" th:if="${#session != null && #session.getAttribute('AUTHZ_INFO') != null}">
+<script th:inline="javascript" th:if="${#ctx.session != null && #ctx.session.get('AUTHZ_INFO') != null}">
 	let breads = sessionStorage['breads'];
 	let navs = sessionStorage['navs'];
 	sessionStorage.clear();
-	sessionStorage['authzInfo'] = JSON
-			.stringify(/*[[${#session.getAttribute('AUTHZ_INFO')}]]*/);
+	sessionStorage['authzInfo'] = JSON.stringify(/*[[${#ctx.session.get('AUTHZ_INFO')}]]*/);
 	if (breads) {
 		sessionStorage['breads'] = breads;
 	}
