@@ -35,6 +35,23 @@ public class ColumnInfo {
     /** サイズ */
     private int columnSize;
 
+    /** 桁数制限 */
+    private Integer maxLength;
+
+    /**
+     * @return maxLength
+     */
+    public Integer getMaxLength() {
+        return maxLength;
+    }
+
+    /**
+     * @param p
+     */
+    public void setMaxLength(final Integer p) {
+        this.maxLength = p;
+    }
+
     /** 小数桁数 */
     private int decimalDigits;
 

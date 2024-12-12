@@ -275,6 +275,8 @@ public final class BeanGenerator {
                     // フラグを外した際、何も送信されず更新もかからないため、フラグ項目には初期値を設定しておく
                     if (dataType.equals("java.math.BigDecimal")) {
                         s.add("    private " + dataType + " " + camel + " = new " + dataType + "(0);");
+                    } else if (dataType.equals("Integer")) {
+                        s.add("    private " + dataType + " " + camel + " = 0;");
                     } else {
                         s.add("    private " + dataType + " " + camel + " = \"0\";");
                     }

@@ -95,6 +95,15 @@ public final class DataSources {
     /** DataSourceのJNDI名 */
     private static final String JNDI_NAME = "JNDIName";
 
+    /** 日付入力サフィックス */
+    private static String[] inputDateSuffixs;
+
+    /** 日時入力サフィックス */
+    private static String[] inputDateTimeSuffixs;
+
+    /** 時刻入力サフィックス */
+    private static String[] inputTimeSuffixs;
+
     /**
      * データベース名列挙子
      * @author golorp
@@ -223,13 +232,11 @@ public final class DataSources {
 
         // 設定ファイル読み込み
         ResourceBundle bundle = ResourceBundles.getBundle(BeanGenerator.class);
-
         String[] pairs = bundle.getString("DataSources.reration.refer.pairs").split(",");
         for (String pair : pairs) {
             String[] kv = pair.split(":");
             referPairs.add(kv);
         }
-
         ignoreRe = bundle.getString("DataSources.relation.ignore.re");
         eldestRe = bundle.getString("DataSources.relation.eldest.re");
         bastardRe = bundle.getString("DataSources.relation.bastard.re");
@@ -239,13 +246,14 @@ public final class DataSources {
         columnIgnoreRe = bundle.getString("DataSources.column.ignore.re");
         noNumberingIntRe = bundle.getString("DataSources.column.nonumbering.int.re");
         numberingCharRe = bundle.getString("DataSources.column.numbering.char.re");
+        inputDateSuffixs = bundle.getString("BeanGenerator.input.date.suffixs").split(",");
+        inputDateTimeSuffixs = bundle.getString("BeanGenerator.input.datetime.suffixs").split(",");
+        inputTimeSuffixs = bundle.getString("BeanGenerator.input.time.suffixs").split(",");
 
         // テーブル情報の取得
         List<TableInfo> tableInfos = new ArrayList<TableInfo>();
-
-        // データベースからテーブル情報を取得してループ
         try {
-
+            // データベースからテーブル情報を取得してループ
             Connection cn = Connections.get();
             DatabaseMetaData metaData = cn.getMetaData();
 
@@ -294,6 +302,15 @@ public final class DataSources {
                         columnInfo.setColumnSize(3);
                     }
 
+                    // 桁制限
+                    if (StringUtil.endsWith(inputDateSuffixs, columnName)) {
+                        columnInfo.setMaxLength(10);
+                    } else if (StringUtil.endsWith(inputDateTimeSuffixs, columnName)) {
+                        columnInfo.setMaxLength(19);
+                    } else if (StringUtil.endsWith(inputTimeSuffixs, columnName)) {
+                        columnInfo.setMaxLength(5);
+                    }
+
                     // 小数桁数
                     columnInfo.setDecimalDigits(columns.getInt("DECIMAL_DIGITS"));
 
@@ -310,10 +327,6 @@ public final class DataSources {
                     }
                     columnInfo.setRemarks(remarks);
 
-                    /*
-                     * 拡張情報
-                     */
-
                     // 主キー
                     if (tableInfo.getPrimaryKeys().contains(columnName)) {
                         columnInfo.setPk(true);
@@ -325,8 +338,7 @@ public final class DataSources {
                     }
 
                     // typeNameをjavaデータ型に変換
-                    String typeName = columns.getString("TYPE_NAME").toUpperCase();
-                    String dataType = getDataType(typeName, columnInfo);
+                    String dataType = getDataType(columnInfo);
                     columnInfo.setDataType(dataType);
                 }
 
@@ -343,12 +355,9 @@ public final class DataSources {
             }
 
         } catch (Exception e) {
-
             LOG.error(e.getMessage(), e);
             throw new SysError(e);
-
         } finally {
-
             Connections.close();
         }
 
@@ -546,15 +555,17 @@ public final class DataSources {
     }
 
     /**
-     * @param typeName   メタ情報から取得したデータ型
      * @param columnInfo 対象のカラム情報
      * @return javaデータ型に変換した文字列
      */
-    private static String getDataType(final String typeName, final ColumnInfo columnInfo) {
+    private static String getDataType(final ColumnInfo columnInfo) {
 
+        String typeName = columnInfo.getTypeName().toUpperCase();
         String dataType = typeName;
 
-        if (typeName.equals("INT")) {
+        if (typeName.equals("INT")
+                || (typeName.equals("NUMBER") && columnInfo.getColumnSize() <= 10
+                        && columnInfo.getDecimalDigits() == 0)) {
 
             dataType = "Integer";
 

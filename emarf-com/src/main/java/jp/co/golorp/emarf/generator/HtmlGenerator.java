@@ -498,13 +498,14 @@ public final class HtmlGenerator {
             final Map<String, ColumnInfo> columnMap, final boolean isHistory) {
 
         String columnName = columnInfo.getColumnName();
-        //            String lower = columnName.toLowerCase();
         String camel = StringUtil.toCamelCase(columnName);
         String name = "Messages['" + entityName + "Grid." + camel + "']";
-        //            String field = lower.toUpperCase();
         String field = columnName;
 
         int width = columnInfo.getColumnSize() * COLUMN_WIDTH_PX_MULTIPLIER;
+        if (columnInfo.getMaxLength() != null) {
+            width = columnInfo.getMaxLength() * COLUMN_WIDTH_PX_MULTIPLIER;
+        }
         if (width < 30) {
             width = 30;
         }
@@ -595,7 +596,6 @@ public final class HtmlGenerator {
         }
 
         String opt = "{ json: '" + json + "', paramkey: '" + optP + "', value: '" + optV + "', label: '" + optL + "' }";
-
         String c = "";
         if (isMeiRefer) {
             c = "Column.refer('" + field + "', " + name + ", " + width + ", '" + css + "', '" + referMei + "'),";
@@ -820,12 +820,10 @@ public final class HtmlGenerator {
 
             if (isInsertDt || isInsertBy || isUpdateDt || isUpdateBy || (isDetail && tableInfo.isHistory())) {
                 // メタ情報の場合は表示項目（編集画面の自モデルのみここに到達する）
-
                 htmlFieldsMeta(s, fieldId, remarks);
 
             } else if (isDetail && columnInfo.isNumbering()) {
                 // 編集画面の採番キーは表示項目
-
                 String tag = "          ";
                 tag += "<label for=\"" + fieldId + "\" th:text=\"#{" + fieldId + "}\">" + remarks + "</label>";
                 tag += "<span id=\"" + fieldId + "\" class=\"primaryKey\"></span>";
@@ -851,18 +849,15 @@ public final class HtmlGenerator {
 
             } else if (StringUtil.endsWith(optionsSuffixs, columnName) && columnInfo.getReferInfo() == null) {
                 // 選択項目の場合（サフィックスが合致しても参照モデルなら除外）
-
                 boolean isPrimaryKey = isDetail && columnInfo.isPk();
                 htmlFieldsOptions(s, fieldId, columnName, remarks, isPrimaryKey);
 
             } else if (isDetail && StringUtil.endsWith(textareaSuffixs, columnName)) {
                 // テキストエリア項目の場合
-
                 htmlFieldsTextarea(s, fieldId, remarks);
 
             } else {
                 // 上記以外の場合
-
                 String type = "text";
                 String format = "";
                 if (StringUtil.endsWith(inputDateSuffixs, columnName)) { // 日付項目
@@ -904,7 +899,7 @@ public final class HtmlGenerator {
 
                 if (!isDetail && StringUtil.endsWith(inputRangeSuffixs, columnName)) {
                     // 検索画面の範囲指定項目の場合
-                    s.add(htmlFieldsInputRange(fieldId, type, css, columnInfo, format));
+                    s.add(htmlFieldsRange(fieldId, type, css, columnInfo, format));
                 } else if (columnInfo.getReferInfo() != null) {
                     // 参照モデルの場合
                     s.add(htmlFieldsRefer(fieldId, type, css, columnInfo, format, tableInfo, referCss));
@@ -973,8 +968,7 @@ public final class HtmlGenerator {
      * @return タグ文字列
      */
     private static String htmlFieldsInput(final String id, final String type, final String css,
-            final ColumnInfo columnInfo,
-            final String format) {
+            final ColumnInfo columnInfo, final String format) {
 
         String dataFormat = "";
         if (!StringUtil.isNullOrBlank(format)) {
@@ -983,6 +977,9 @@ public final class HtmlGenerator {
 
         String remarks = columnInfo.getRemarks();
         int max = columnInfo.getColumnSize();
+        if (columnInfo.getMaxLength() != null) {
+            max = columnInfo.getMaxLength();
+        }
 
         String tag = "          ";
         tag += "<label for=\"" + id + "\" th:text=\"#{" + id + "}\">" + remarks + "</label>";
@@ -1007,7 +1004,7 @@ public final class HtmlGenerator {
      * @param format     フォーマット
      * @return タグ文字列
      */
-    private static String htmlFieldsInputRange(final String id, final String type, final String css,
+    private static String htmlFieldsRange(final String id, final String type, final String css,
             final ColumnInfo columnInfo, final String format) {
 
         String dataFormat = "";
@@ -1017,6 +1014,9 @@ public final class HtmlGenerator {
 
         String remarks = columnInfo.getRemarks();
         int max = columnInfo.getColumnSize();
+        if (columnInfo.getMaxLength() != null) {
+            max = columnInfo.getMaxLength();
+        }
 
         String tag = "          ";
         tag += "<label for=\"" + id + "_1\" th:text=\"#{" + id + "}\">" + remarks + "</label>";

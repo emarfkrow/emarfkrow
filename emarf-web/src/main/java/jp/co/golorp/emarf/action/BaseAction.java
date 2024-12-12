@@ -178,7 +178,11 @@ public abstract class BaseAction extends BaseProcess {
 
         } catch (SysError e) {
 
-            sendErrorMail(e.getCause());
+            if (e.getCause() != null) {
+                sendErrorMail(e.getCause());
+            } else {
+                sendErrorMail(e);
+            }
 
             // システムエラーの場合、ロールバックしてそのままエラーを投げる
             Connections.rollback();
