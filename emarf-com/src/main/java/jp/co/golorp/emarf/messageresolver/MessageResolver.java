@@ -19,10 +19,12 @@ package jp.co.golorp.emarf.messageresolver;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.Set;
 
 import org.thymeleaf.exceptions.TemplateProcessingException;
 import org.thymeleaf.messageresolver.StandardMessageResolver;
@@ -50,7 +52,10 @@ public class MessageResolver extends StandardMessageResolver {
     private static final int COMBINED_MESSAGES = 20;
 
     /** ロケールのマップ */
-    private static Map<Locale, Map<String, String>> localeMap = new HashMap<Locale, Map<String, String>>();
+    private static Map<Locale, Map<String, String>> localesMap = new HashMap<Locale, Map<String, String>>();
+
+    /** テンプレートのセット */
+    private static Set<String> templatesSet = new HashSet<String>();
 
     /**
      * @param template 対象の画面名
@@ -61,7 +66,11 @@ public class MessageResolver extends StandardMessageResolver {
     protected Map<String, String> resolveMessagesForTemplate(final String template,
             final ITemplateResource templateResource, final Locale locale) {
 
-        Map<String, String> map = localeMap.get(locale);
+        if (templatesSet.contains(template)) {
+            return localesMap.get(locale);
+        }
+
+        Map<String, String> map = localesMap.get(locale);
         if (map == null) {
             map = new HashMap<String, String>();
         }
@@ -70,33 +79,46 @@ public class MessageResolver extends StandardMessageResolver {
         path = path.replaceFirst("S\\.html", ".html");
         ReflectUtil.set(templateResource, "path", path);
 
+        // テンプレートのプロパティファイル
         Map<String, String> templateMap = super.resolveMessagesForTemplate(template, templateResource, locale);
         if (!templateMap.isEmpty()) {
             map.putAll(templateMap);
         }
 
         // プロジェクトでメンテするプロパティファイル
-        Map<String, String> contextMap = getMessages();
+        Map<String, String> contextMap = MessageResolver.getContextMap(locale);
         if (!contextMap.isEmpty()) {
             map.putAll(contextMap);
         }
 
-        localeMap.put(locale, map);
+        //退避
+        localesMap.put(locale, map);
+        templatesSet.add(template);
 
         return map;
     }
 
     /**
-     * @return クラスパスのmessages.propertiesのマップ
+     * @return ロケール全体のメッセージと、クラスパスのmessages.propertiesのマップ
      */
     public static Map<String, String> getMessages() {
 
         Locale locale = Locales.get();
 
-        Map<String, String> map = localeMap.get(locale);
-        if (map != null && !map.isEmpty()) {
-            return map;
-        }
+        Map<String, String> localeMap = localesMap.get(locale);
+
+        Map<String, String> contextMap = MessageResolver.getContextMap(locale);
+
+        localeMap.putAll(contextMap);
+
+        return localeMap;
+    }
+
+    /**
+     * @param locale
+     * @return クラスパスのmessages.propertiesのマップ
+     */
+    private static Map<String, String> getContextMap(final Locale locale) {
 
         String resourceBaseName = App.get("thymeleaf.messageresolver.basename");
         if (resourceBaseName == null || resourceBaseName.length() == 0) {
