@@ -322,10 +322,10 @@ let Base = {
             }
             let maxlength = $(this).attr('maxlength');
             let width = maxlength * 1;
-            if (width > 10) {
+            if (width > 8) {
                 width *= 0.6;
-                if (width > 30) {
-                    width = 30;
+                if (width > 20) {
+                    width = 20;
                 }
             }
             $(this).css('width', width + 'rem');

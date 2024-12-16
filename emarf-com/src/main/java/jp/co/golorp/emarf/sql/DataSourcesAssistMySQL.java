@@ -48,6 +48,11 @@ public final class DataSourcesAssistMySQL extends DataSourcesAssist {
     }
 
     @Override
+    public String toDateSQL(final String s) {
+        return s;
+    }
+
+    @Override
     public String toTimestampSQL(final String s) {
         return s;
     }

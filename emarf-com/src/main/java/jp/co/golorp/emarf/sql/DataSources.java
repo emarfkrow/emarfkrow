@@ -289,46 +289,35 @@ public final class DataSources {
                     // カラム情報を追加
                     ColumnInfo columnInfo = new ColumnInfo();
                     tableInfo.getColumnInfos().put(columnName, columnInfo);
-
-                    // カラム物理名
-                    columnInfo.setColumnName(columnName);
-
-                    // DBデータ型
-                    columnInfo.setTypeName(columns.getString("TYPE_NAME"));
-
-                    // カラムサイズ
-                    columnInfo.setColumnSize(columns.getInt("COLUMN_SIZE"));
+                    columnInfo.setColumnName(columnName); // カラム物理名
+                    columnInfo.setTypeName(columns.getString("TYPE_NAME")); // DBデータ型
+                    columnInfo.setColumnSize(columns.getInt("COLUMN_SIZE")); // カラムサイズ
                     if (columnInfo.getColumnSize() == 0) {
                         columnInfo.setColumnSize(3);
                     }
-
-                    // 桁制限
-                    if (StringUtil.endsWith(inputDateSuffixs, columnName)) {
+                    if (StringUtil.endsWith(inputDateSuffixs, columnName)) { // 桁制限
                         columnInfo.setMaxLength(10);
                     } else if (StringUtil.endsWith(inputDateTimeSuffixs, columnName)) {
                         columnInfo.setMaxLength(19);
                     } else if (StringUtil.endsWith(inputTimeSuffixs, columnName)) {
                         columnInfo.setMaxLength(5);
                     }
-
-                    // 小数桁数
-                    columnInfo.setDecimalDigits(columns.getInt("DECIMAL_DIGITS"));
-
-                    // NULL可否
-                    columnInfo.setNullable(columns.getInt("NULLABLE"));
-
-                    // カラム論理名
-                    String remarks = columns.getString("REMARKS");
+                    columnInfo.setDecimalDigits(columns.getInt("DECIMAL_DIGITS")); // 小数桁数
+                    columnInfo.setNullable(columns.getInt("NULLABLE")); // NULL可否
+                    String remarks = columns.getString("REMARKS"); // カラム論理名
                     if (remarks == null || remarks.length() == 0) {
-                        remarks = assist.getColumnComment(tableInfo.getTableName(), columnName);
+                        String comment = assist.getColumnComment(tableInfo.getTableName(), columnName);
+                        if (comment.contains(":")) {
+                            int i = comment.indexOf(":");
+                            comment = comment.substring(0, i);
+                        }
+                        remarks = comment;
                     }
                     if (remarks == null || remarks.length() == 0) {
                         remarks = columnName;
                     }
                     columnInfo.setRemarks(remarks);
-
-                    // 主キー
-                    if (tableInfo.getPrimaryKeys().contains(columnName)) {
+                    if (tableInfo.getPrimaryKeys().contains(columnName)) { // 主キー
                         columnInfo.setPk(true);
                     } else {
                         if (tableInfo.getUniqueIndexColumns().contains(columnName)) {
@@ -585,6 +574,14 @@ public final class DataSources {
                     columnInfo.setNumbering(true);
                 }
             }
+
+        } else if (StringUtil.endsWith(inputDateSuffixs, columnInfo.getColumnName())) {
+
+            dataType = "java.time.LocalDate";
+
+        } else if (StringUtil.endsWith(inputTimeSuffixs, columnInfo.getColumnName())) {
+
+            dataType = "java.time.LocalTime";
 
         } else if (typeName.equals("DATE") || typeName.equals("TIME") || typeName.equals("DATETIME")
                 || typeName.indexOf("TIMESTAMP") >= 0) {

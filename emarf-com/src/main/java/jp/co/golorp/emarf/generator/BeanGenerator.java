@@ -266,6 +266,10 @@ public final class BeanGenerator {
                 String dataType = columnInfo.getDataType();
                 s.add("");
                 s.add("    /** " + mei + " */");
+                if (dataType.equals("java.time.LocalDate")) {
+                    s.add("    @com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer.class)");
+                    s.add("    @com.fasterxml.jackson.databind.annotation.JsonSerialize(using = com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer.class)");
+                }
                 if (dataType.equals("java.time.LocalDateTime")) {
                     s.add("    @com.fasterxml.jackson.annotation.JsonFormat(pattern = \"yyyy-MM-dd'T'HH:mm:ss.SSS\")");
                     s.add("    @com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer.class)");
@@ -307,9 +311,14 @@ public final class BeanGenerator {
                     s.add("        if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {");
                     s.add("            this." + camel + " = new java.math.BigDecimal(o.toString());");
                 } else if (dataType.equals("String")) {
-                    //Stringなら空文字も認める
                     s.add("        if (o != null) {");
                     s.add("            this." + camel + " = o.toString();");
+                } else if (dataType.equals("java.time.LocalDate")) {
+                    s.add("        if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {");
+                    s.add("            this." + camel + " = " + dataType + ".parse(o.toString().substring(0, 10));");
+                } else if (dataType.equals("java.time.LocalTime")) {
+                    s.add("        if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {");
+                    s.add("            this." + camel + " = " + dataType + ".parse(o.toString().substring(10));");
                 } else {
                     s.add("        if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {");
                     s.add("            this." + camel + " = " + dataType + ".valueOf(o.toString());");
@@ -595,6 +604,9 @@ public final class BeanGenerator {
             ColumnInfo columnInfo = e.getValue();
             String snake = StringUtil.toSnakeCase(columnName);
             String rightHand = ":" + snake;
+            if (e.getValue().getDataType().equals("java.time.LocalDate")) {
+                rightHand = assist.toDateSQL(rightHand);
+            }
             if (e.getValue().getDataType().equals("java.time.LocalDateTime")) {
                 rightHand = assist.toTimestampSQL(rightHand);
             }
@@ -779,6 +791,9 @@ public final class BeanGenerator {
             if (!column.matches("(?i)^" + insertDt + "$") && !column.matches("(?i)^" + insertBy + "$")) {
 
                 String rightHand = ":" + StringUtil.toSnakeCase(column);
+                if (columnInfo.getDataType().equals("java.time.LocalDate")) {
+                    rightHand = assist.toDateSQL(rightHand);
+                }
                 if (columnInfo.getDataType().equals("java.time.LocalDateTime")) {
                     rightHand = assist.toTimestampSQL(rightHand);
                 }

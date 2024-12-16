@@ -112,6 +112,14 @@ public class DataSourcesAssistOracle extends DataSourcesAssist {
 
     /**
      * @param s カラム物理名
+     * @return 日付変換SQL
+     */
+    public String toDateSQL(final String s) {
+        return "TO_DATE (SUBSTR (" + s + ", 0, 10), 'YYYY-MM-DD')";
+    }
+
+    /**
+     * @param s カラム物理名
      * @return ミリ秒タイムスタンプ変換SQL
      */
     public String toTimestampSQL(final String s) {

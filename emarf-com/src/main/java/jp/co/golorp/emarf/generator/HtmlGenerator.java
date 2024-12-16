@@ -194,10 +194,10 @@ public final class HtmlGenerator {
         // プレフィクス毎にグループ化
         Map<String, List<TableInfo>> navs = new LinkedHashMap<String, List<TableInfo>>();
         for (TableInfo tableInfo : tableInfos) {
-            // 単一ユニークキーでなくてもnav化するようにコメントアウト
-            //            if (tableInfo.getPrimaryKeys().size() > 1) {
-            //                continue;
-            //            }
+            // 単一ユニークキーでなければスキップ
+            if (tableInfo.getPrimaryKeys().size() > 1) {
+                continue;
+            }
             String tableName = tableInfo.getTableName();
             String prefix = tableName.replaceAll("_.+$", "");
             List<TableInfo> nav = null;
@@ -891,6 +891,9 @@ public final class HtmlGenerator {
                     css += " datepicker";
                 } else if (StringUtil.endsWith(inputDate8Suffixs, columnName) && columnInfo.getColumnSize() == 8) { // 8桁日付項目
                     css += " datepicker";
+                }
+                if (isDetail && columnInfo.getNullable() == 0) {
+                    css += " notblank";
                 }
                 if (!StringUtil.isNullOrBlank(css)) {
                     css = " class=\"" + css + "\"";

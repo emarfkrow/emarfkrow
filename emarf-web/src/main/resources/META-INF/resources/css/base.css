@@ -241,6 +241,10 @@ input.uniqueKey, div.uniqueKey {
 	background-color: lightyellow;
 }
 
+input.notblank, div.notblank {
+    background-color: lavenderblush
+}
+
 .metaInfo {
 	background-color: gainsboro;
 }

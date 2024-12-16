@@ -643,12 +643,12 @@ var Gridate = {
 
 				let $item = $('[id="' + dialogId + '"] [name="' + camel + '"]');
 				if ($item.length > 0) {
-					$item.val(v);
+					$item.val([v]);
 					$('[id="' + dialogId + '"] span[id="' + camel + '"]').html(v);
 				} else {
 					$item = $('[id="' + dialogId + '"] [name="' + entityName + '.' + camel + '"]');
 					if ($item.length > 0) {
-						$item.val(v);
+						$item.val([v]);
 						$('[id="' + dialogId + '"] span[id="' + entityName + '.' + camel + '"]').html(v);
 					}
 				}
