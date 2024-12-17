@@ -56,6 +56,23 @@ public class TableInfo {
     /** カラム名：カラム情報のマップ */
     private Map<String, ColumnInfo> columnInfos = new LinkedHashMap<String, ColumnInfo>();
 
+    /** 親テーブルのリスト */
+    private List<TableInfo> parentInfos = new ArrayList<TableInfo>();
+
+    /**
+     * @return 親テーブルのリスト
+     */
+    public List<TableInfo> getParentInfos() {
+        return parentInfos;
+    }
+
+    /**
+     * @param p
+     */
+    public void setParentInfos(final List<TableInfo> p) {
+        this.parentInfos = p;
+    }
+
     /** 子テーブルのリスト */
     private List<TableInfo> childInfos = new ArrayList<TableInfo>();
 

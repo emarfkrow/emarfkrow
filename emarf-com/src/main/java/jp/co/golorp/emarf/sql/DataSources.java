@@ -95,11 +95,14 @@ public final class DataSources {
     /** DataSourceのJNDI名 */
     private static final String JNDI_NAME = "JNDIName";
 
-    /** 日付入力サフィックス */
-    private static String[] inputDateSuffixs;
+    /** タイムスタンプサフィックス */
+    private static String[] inputTimestampSuffixs;
 
     /** 日時入力サフィックス */
     private static String[] inputDateTimeSuffixs;
+
+    /** 日付入力サフィックス */
+    private static String[] inputDateSuffixs;
 
     /** 時刻入力サフィックス */
     private static String[] inputTimeSuffixs;
@@ -194,6 +197,9 @@ public final class DataSources {
 
                         assist = new DataSourcesAssistOracle();
 
+                        // oracle.sql.TIMESTAMPをoracle.sql.TIMESTAMPで扱えるようにする
+                        System.setProperty("oracle.jdbc.J2EE13Compliant", "true");
+
                     } else if (databaseName == DatabaseNames.tibero) {
 
                         assist = new DataSourcesAssistTibero();
@@ -246,8 +252,9 @@ public final class DataSources {
         columnIgnoreRe = bundle.getString("DataSources.column.ignore.re");
         noNumberingIntRe = bundle.getString("DataSources.column.nonumbering.int.re");
         numberingCharRe = bundle.getString("DataSources.column.numbering.char.re");
-        inputDateSuffixs = bundle.getString("BeanGenerator.input.date.suffixs").split(",");
+        inputTimestampSuffixs = bundle.getString("BeanGenerator.input.timestamp.suffixs").split(",");
         inputDateTimeSuffixs = bundle.getString("BeanGenerator.input.datetime.suffixs").split(",");
+        inputDateSuffixs = bundle.getString("BeanGenerator.input.date.suffixs").split(",");
         inputTimeSuffixs = bundle.getString("BeanGenerator.input.time.suffixs").split(",");
 
         // テーブル情報の取得
@@ -297,10 +304,12 @@ public final class DataSources {
                     }
                     if (StringUtil.endsWith(inputDateSuffixs, columnName)) { // 桁制限
                         columnInfo.setMaxLength(10);
-                    } else if (StringUtil.endsWith(inputDateTimeSuffixs, columnName)) {
-                        columnInfo.setMaxLength(19);
                     } else if (StringUtil.endsWith(inputTimeSuffixs, columnName)) {
                         columnInfo.setMaxLength(5);
+                    } else if (StringUtil.endsWith(inputDateTimeSuffixs, columnName)) {
+                        columnInfo.setMaxLength(19);
+                    } else if (StringUtil.endsWith(inputTimestampSuffixs, columnName)) {
+                        columnInfo.setMaxLength(23);
                     }
                     columnInfo.setDecimalDigits(columns.getInt("DECIMAL_DIGITS")); // 小数桁数
                     columnInfo.setNullable(columns.getInt("NULLABLE")); // NULL可否
@@ -379,6 +388,13 @@ public final class DataSources {
 
             if (tableInfo.getPrimaryKeys().size() > 0) {
                 LOG.info("    PrimaryKeys: " + tableInfo.getPrimaryKeys());
+            }
+
+            if (tableInfo.getParentInfos().size() > 0) {
+                LOG.info("    ParentInfos:");
+                for (TableInfo parentInfo : tableInfo.getParentInfos()) {
+                    LOG.info("        " + parentInfo.getTableName() + " " + parentInfo.getPrimaryKeys());
+                }
             }
 
             if (tableInfo.getBrosInfos().size() > 0) {
@@ -807,13 +823,18 @@ public final class DataSources {
                     continue;
                 }
 
-                // 比較先の主キーが比較元の主キー＋一つの場合は子テーブルリストに追加
+                // 比較先の主キーが「比較元の主キー＋一つ」の場合は子テーブルリストに追加
                 if (srcInfo.getPrimaryKeys().size() + 1 == destInfo.getPrimaryKeys().size()) {
                     // 履歴テーブルでも兄弟テーブルでもなければ追加
                     if (destInfo.isHistory()) {
                         continue;
                     } else {
+
+                        //比較元の子モデルに比較先を追加
                         childInfos.add(destInfo);
+
+                        //比較先の親モデルに比較元を追加
+                        destInfo.getParentInfos().add(srcInfo);
                     }
                 }
             }

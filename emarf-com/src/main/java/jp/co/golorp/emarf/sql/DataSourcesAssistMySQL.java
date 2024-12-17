@@ -53,6 +53,11 @@ public final class DataSourcesAssistMySQL extends DataSourcesAssist {
     }
 
     @Override
+    public String toDateTimeSQL(final String s) {
+        return s;
+    }
+
+    @Override
     public String toTimestampSQL(final String s) {
         return s;
     }
@@ -86,6 +91,21 @@ public final class DataSourcesAssistMySQL extends DataSourcesAssist {
     @Override
     public String trimedSQL(final String columnName) {
         return "TRIM(TRAILING ' ' FROM " + columnName + ")";
+    }
+
+    @Override
+    public String date2CharSQL(final String s) {
+        return s;
+    }
+
+    @Override
+    public String dateTime2CharSQL(final String s) {
+        return s;
+    }
+
+    @Override
+    public String timestamp2CharSQL(final String s) {
+        return s;
     }
 
 }

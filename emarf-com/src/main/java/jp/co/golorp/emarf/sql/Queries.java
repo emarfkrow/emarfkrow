@@ -611,7 +611,11 @@ public final class Queries {
 
             // パラメータを設定
             for (int i = 0; i < args.size(); i++) {
-                ps.setObject(i + 1, args.get(i));
+                if (args.get(i) instanceof java.time.LocalDate) {
+                    ps.setObject(i + 1, args.get(i).toString());
+                } else {
+                    ps.setObject(i + 1, args.get(i));
+                }
             }
 
             // SQLを発行して登録件数を取得

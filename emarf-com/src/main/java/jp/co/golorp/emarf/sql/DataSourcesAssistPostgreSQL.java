@@ -51,6 +51,11 @@ public final class DataSourcesAssistPostgreSQL extends DataSourcesAssist {
     }
 
     @Override
+    public String toDateTimeSQL(final String s) {
+        return s;
+    }
+
+    @Override
     public String toTimestampSQL(final String lowerColumn) {
         return null;
     }
@@ -84,6 +89,21 @@ public final class DataSourcesAssistPostgreSQL extends DataSourcesAssist {
     @Override
     public String trimedSQL(final String columnName) {
         return null;
+    }
+
+    @Override
+    public String date2CharSQL(final String s) {
+        return s;
+    }
+
+    @Override
+    public String dateTime2CharSQL(final String s) {
+        return s;
+    }
+
+    @Override
+    public String timestamp2CharSQL(final String s) {
+        return s;
     }
 
 }

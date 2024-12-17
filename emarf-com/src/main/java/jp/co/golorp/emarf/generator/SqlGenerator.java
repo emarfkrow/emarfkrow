@@ -27,6 +27,15 @@ public final class SqlGenerator {
     /** options項目サフィックス */
     private static String[] optionsSuffixs;
 
+    /** 日付入力サフィックス */
+    private static String[] inputDateSuffixs;
+
+    /** 日時入力サフィックス */
+    private static String[] inputDateTimeSuffixs;
+
+    /** タイムスタンプサフィックス */
+    private static String[] inputTimestampSuffixs;
+
     /** 範囲指定サフィックス */
     private static String[] inputRangeSuffixs;
 
@@ -72,6 +81,9 @@ public final class SqlGenerator {
         /* 設定ファイル読み込み */
         bundle = ResourceBundles.getBundle(BeanGenerator.class);
         optionsSuffixs = bundle.getString("BeanGenerator.options.suffixs").split(",");
+        inputDateSuffixs = bundle.getString("BeanGenerator.input.date.suffixs").split(",");
+        inputDateTimeSuffixs = bundle.getString("BeanGenerator.input.datetime.suffixs").split(",");
+        inputTimestampSuffixs = bundle.getString("BeanGenerator.input.timestamp.suffixs").split(",");
         inputRangeSuffixs = bundle.getString("BeanGenerator.input.range.suffixs").split(",");
         inputFlagSuffixs = bundle.getString("BeanGenerator.input.flag.suffixs").split(",");
         String[] pairs = bundle.getString("DataSources.reration.refer.pairs").split(",");
@@ -98,13 +110,9 @@ public final class SqlGenerator {
                 s.add("SELECT");
                 sql = "      ";
             }
-            if (columnInfo.getTypeName().equals("CHAR")) {
-                String quoted = assist.quotedSQL(srcColumnName);
-                String trimed = assist.trimedSQL("a." + quoted);
-                s.add(sql + trimed + " AS " + srcColumnName);
-            } else {
-                s.add(sql + "a." + assist.quotedSQL(srcColumnName));
-            }
+
+            String quoted = getQuoted(assist, columnInfo);
+            s.add(sql + quoted);
 
             // 列の参照モデル情報
             TableInfo referInfo = columnInfo.getReferInfo();
@@ -216,6 +224,38 @@ public final class SqlGenerator {
         }
 
         FileUtil.writeFile(sqlDir + File.separator + entityName + "Search.sql", s);
+    }
+
+    /**
+     * @param assist
+     * @param columnInfo
+     * @return quoted
+     */
+    private static String getQuoted(final DataSourcesAssist assist, final ColumnInfo columnInfo) {
+
+        String columnName = columnInfo.getColumnName();
+
+        String quoted = "a." + assist.quotedSQL(columnName);
+
+        if (columnInfo.getTypeName().equals("CHAR")) {
+
+            String trimed = assist.trimedSQL(quoted);
+            quoted = trimed + " AS " + columnName;
+
+        } else if (StringUtil.endsWith(inputDateSuffixs, columnInfo.getColumnName())) {
+
+            quoted = assist.date2CharSQL(quoted) + " AS " + columnName;
+
+        } else if (StringUtil.endsWith(inputDateTimeSuffixs, columnInfo.getColumnName())) {
+
+            quoted = assist.dateTime2CharSQL(quoted) + " AS " + columnName;
+
+        } else if (StringUtil.endsWith(inputTimestampSuffixs, columnInfo.getColumnName())) {
+
+            quoted = assist.timestamp2CharSQL(quoted) + " AS " + columnName;
+        }
+
+        return quoted;
     }
 
 }

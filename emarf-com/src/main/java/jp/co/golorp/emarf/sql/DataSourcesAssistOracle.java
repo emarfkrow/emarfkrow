@@ -122,6 +122,14 @@ public class DataSourcesAssistOracle extends DataSourcesAssist {
      * @param s カラム物理名
      * @return ミリ秒タイムスタンプ変換SQL
      */
+    public String toDateTimeSQL(final String s) {
+        return "TO_TIMESTAMP (REPLACE (SUBSTR (" + s + ", 0, 19), 'T', ' '), 'YYYY-MM-DD HH24:MI:SS')";
+    }
+
+    /**
+     * @param s カラム物理名
+     * @return ミリ秒タイムスタンプ変換SQL
+     */
     public String toTimestampSQL(final String s) {
         return "TO_TIMESTAMP (REPLACE (SUBSTR (" + s + ", 0, 23), 'T', ' '), 'YYYY-MM-DD HH24:MI:SS.FF3')";
     }
@@ -192,6 +200,24 @@ public class DataSourcesAssistOracle extends DataSourcesAssist {
      */
     public String trimedSQL(final String columnName) {
         return "RTRIM (RTRIM (" + columnName + "), '　')";
+    }
+
+    /** */
+    @Override
+    public String date2CharSQL(final String s) {
+        return "TO_CHAR (" + s + ", 'YYYY-MM-DD')";
+    }
+
+    /** */
+    @Override
+    public String dateTime2CharSQL(final String s) {
+        return "TO_CHAR (" + s + ", 'YYYY-MM-DD HH24:MI:SS')";
+    }
+
+    /** */
+    @Override
+    public String timestamp2CharSQL(final String s) {
+        return "TO_CHAR (" + s + ", 'YYYY-MM-DD HH24:MI:SS.FF3')";
     }
 
 }

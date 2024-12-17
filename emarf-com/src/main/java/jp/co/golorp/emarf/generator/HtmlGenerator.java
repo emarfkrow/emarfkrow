@@ -42,7 +42,7 @@ public final class HtmlGenerator {
     private static ResourceBundle bundle;
 
     /** グリッド列幅ピクセル乗数 */
-    private static final int COLUMN_WIDTH_PX_MULTIPLIER = 15;
+    private static final int COLUMN_WIDTH_PX_MULTIPLIER = 8;
 
     /** VIEWの検索条件とするプレフィクス */
     private static String[] searchPrefixes;
@@ -80,10 +80,12 @@ public final class HtmlGenerator {
     private static String[] inputDateSuffixs;
     /** 8桁日付入力サフィックス */
     private static String[] inputDate8Suffixs;
+    /** タイムスタンプサフィックス */
+    private static String[] inputTimestampSuffixs;
     /** 日時入力サフィックス */
     private static String[] inputDateTimeSuffixs;
     /** 年月入力サフィックス */
-    private static String[] inputMonthSuffixs;
+    private static String[] inputYMSuffixs;
     /** 時刻入力サフィックス */
     private static String[] inputTimeSuffixs;
     /** 範囲指定サフィックス */
@@ -128,10 +130,11 @@ public final class HtmlGenerator {
 
         textareaSuffixs = bundle.getString("BeanGenerator.textarea.suffixs").split(",");
 
-        inputDateSuffixs = bundle.getString("BeanGenerator.input.date.suffixs").split(",");
+        inputYMSuffixs = bundle.getString("BeanGenerator.input.ym.suffixs").split(",");
         inputDate8Suffixs = bundle.getString("BeanGenerator.input.date8.suffixs").split(",");
+        inputTimestampSuffixs = bundle.getString("BeanGenerator.input.timestamp.suffixs").split(",");
         inputDateTimeSuffixs = bundle.getString("BeanGenerator.input.datetime.suffixs").split(",");
-        inputMonthSuffixs = bundle.getString("BeanGenerator.input.month.suffixs").split(",");
+        inputDateSuffixs = bundle.getString("BeanGenerator.input.date.suffixs").split(",");
         inputTimeSuffixs = bundle.getString("BeanGenerator.input.time.suffixs").split(",");
         inputRangeSuffixs = bundle.getString("BeanGenerator.input.range.suffixs").split(",");
         inputFlagSuffixs = bundle.getString("BeanGenerator.input.flag.suffixs").split(",");
@@ -194,8 +197,8 @@ public final class HtmlGenerator {
         // プレフィクス毎にグループ化
         Map<String, List<TableInfo>> navs = new LinkedHashMap<String, List<TableInfo>>();
         for (TableInfo tableInfo : tableInfos) {
-            // 単一ユニークキーでなければスキップ
-            if (tableInfo.getPrimaryKeys().size() > 1) {
+            // 親モデルがあればスキップ
+            if (tableInfo.getParentInfos().size() > 0) {
                 continue;
             }
             String tableName = tableInfo.getTableName();
@@ -531,7 +534,11 @@ public final class HtmlGenerator {
         }
 
         String formatter = "null";
-        if (columnInfo.getDataType().equals("java.time.LocalDateTime")) {
+        if (columnInfo.getDataType().equals("java.time.LocalDate")) {
+            formatter = "Slick.Formatters.Extends.Date";
+        } else if (StringUtil.endsWith(inputTimestampSuffixs, columnInfo.getColumnName())) {
+            formatter = "Slick.Formatters.Extends.Timestamp";
+        } else if (columnInfo.getDataType().equals("java.time.LocalDateTime")) {
             formatter = "Slick.Formatters.Extends.DateTime";
         }
 
@@ -557,10 +564,8 @@ public final class HtmlGenerator {
 
                     // カラム名がキー接尾辞に合致する場合
                     if (columnName.matches("(?i).+" + keySuffix + "$")) {
-
                         // カラム名の末尾を名称列サフィックスに変換
                         String tempMei = columnName.replaceAll("(?i)" + keySuffix + "$", meiSuffix);
-
                         // 名称列がテーブルに含まれていない場合は参照先から名称を取得する
                         if (columnMap.containsKey(tempMei)) {
                             referMei = tempMei;
@@ -573,7 +578,6 @@ public final class HtmlGenerator {
 
             //名称を参照先から取得する場合
             if (isMeiRefer) {
-
                 // 参照設定の組み合わせでループ
                 for (String[] suffix : referPairs) {
                     String keySuffix = suffix[0];
@@ -613,7 +617,7 @@ public final class HtmlGenerator {
             c = "Column.date8('" + field + "', " + name + ", " + width + ", '" + css + "', " + formatter + "),";
         } else if (StringUtil.endsWith(inputDateTimeSuffixs, columnName)) {
             c = "Column.dateTime('" + field + "', " + name + ", " + width + ", '" + css + "'),";
-        } else if (StringUtil.endsWith(inputMonthSuffixs, columnName)) {
+        } else if (StringUtil.endsWith(inputYMSuffixs, columnName)) {
             c = "Column.month('" + field + "', " + name + ", " + width + ", '" + css + "', " + formatter + "),";
         } else if (StringUtil.endsWith(inputTimeSuffixs, columnName)) {
             c = "Column.time('" + field + "', " + name + ", " + width + ", '" + css + "', " + formatter + "),";
@@ -868,7 +872,7 @@ public final class HtmlGenerator {
                     format = "yymmdd";
                 } else if (StringUtil.endsWith(inputDateTimeSuffixs, columnName)) { // 日時項目
                     type = "datetime-local";
-                } else if (StringUtil.endsWith(inputMonthSuffixs, columnName)) { // 年月項目
+                } else if (StringUtil.endsWith(inputYMSuffixs, columnName)) { // 年月項目
                     type = "month";
                 } else if (StringUtil.endsWith(inputTimeSuffixs, columnName)) { // 時刻項目
                     type = "time";

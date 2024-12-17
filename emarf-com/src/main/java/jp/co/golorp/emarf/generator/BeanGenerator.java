@@ -78,6 +78,13 @@ public final class BeanGenerator {
     /** 更新者カラム名 */
     private static String updateBy;
 
+    /** 日付け入力サフィックス */
+    private static String[] inputDateSuffixs;
+    /** 日時入力サフィックス */
+    private static String[] inputDateTimeSuffixs;
+    /** タイムスタンプサフィックス */
+    private static String[] inputTimestampSuffixs;
+
     /** フラグサフィックス */
     private static String[] inputFlagSuffixs;
     /** ファイルサフィックス */
@@ -139,6 +146,10 @@ public final class BeanGenerator {
         updateDt = bundle.getString("BeanGenerator.update_dt");
         updateDtFormat = bundle.getString("BeanGenerator.update_dt.format");
         updateBy = bundle.getString("BeanGenerator.update_by");
+
+        inputDateSuffixs = bundle.getString("BeanGenerator.input.date.suffixs").split(",");
+        inputDateTimeSuffixs = bundle.getString("BeanGenerator.input.datetime.suffixs").split(",");
+        inputTimestampSuffixs = bundle.getString("BeanGenerator.input.timestamp.suffixs").split(",");
 
         inputFlagSuffixs = bundle.getString("BeanGenerator.input.flag.suffixs").split(",");
         inputFileSuffixs = bundle.getString("BeanGenerator.input.file.suffixs").split(",");
@@ -266,12 +277,17 @@ public final class BeanGenerator {
                 String dataType = columnInfo.getDataType();
                 s.add("");
                 s.add("    /** " + mei + " */");
+
                 if (dataType.equals("java.time.LocalDate")) {
+                    s.add("    @com.fasterxml.jackson.annotation.JsonFormat(pattern = \"yyyy-MM-dd\")");
                     s.add("    @com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer.class)");
                     s.add("    @com.fasterxml.jackson.databind.annotation.JsonSerialize(using = com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer.class)");
-                }
-                if (dataType.equals("java.time.LocalDateTime")) {
+                } else if (StringUtil.endsWith(inputTimestampSuffixs, columnInfo.getColumnName())) {
                     s.add("    @com.fasterxml.jackson.annotation.JsonFormat(pattern = \"yyyy-MM-dd'T'HH:mm:ss.SSS\")");
+                    s.add("    @com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer.class)");
+                    s.add("    @com.fasterxml.jackson.databind.annotation.JsonSerialize(using = com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer.class)");
+                } else if (StringUtil.endsWith(inputDateTimeSuffixs, columnInfo.getColumnName())) {
+                    s.add("    @com.fasterxml.jackson.annotation.JsonFormat(pattern = \"yyyy-MM-dd'T'HH:mm:ss\")");
                     s.add("    @com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer.class)");
                     s.add("    @com.fasterxml.jackson.databind.annotation.JsonSerialize(using = com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer.class)");
                 }
@@ -306,19 +322,20 @@ public final class BeanGenerator {
                     s.add("            this." + camel
                             + " = java.time.LocalDateTime.ofInstant(d.toInstant(), java.time.ZoneId.systemDefault());");
                     s.add("        } else if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {");
-                    s.add("            this." + camel + " = " + dataType + ".parse(o.toString());");
-                } else if (dataType.equals("java.math.BigDecimal")) {
-                    s.add("        if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {");
-                    s.add("            this." + camel + " = new java.math.BigDecimal(o.toString());");
-                } else if (dataType.equals("String")) {
-                    s.add("        if (o != null) {");
-                    s.add("            this." + camel + " = o.toString();");
+                    s.add("            this." + camel + " = " + dataType
+                            + ".parse(o.toString().replace(\" \", \"T\"));");
                 } else if (dataType.equals("java.time.LocalDate")) {
                     s.add("        if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {");
                     s.add("            this." + camel + " = " + dataType + ".parse(o.toString().substring(0, 10));");
                 } else if (dataType.equals("java.time.LocalTime")) {
                     s.add("        if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {");
                     s.add("            this." + camel + " = " + dataType + ".parse(o.toString().substring(10));");
+                } else if (dataType.equals("java.math.BigDecimal")) {
+                    s.add("        if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {");
+                    s.add("            this." + camel + " = new java.math.BigDecimal(o.toString());");
+                } else if (dataType.equals("String")) {
+                    s.add("        if (o != null) {");
+                    s.add("            this." + camel + " = o.toString();");
                 } else {
                     s.add("        if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {");
                     s.add("            this." + camel + " = " + dataType + ".valueOf(o.toString());");
@@ -416,18 +433,12 @@ public final class BeanGenerator {
         s.add("        sql += \"SELECT \\n\";");
         boolean isFirst = true;
         for (ColumnInfo columnInfo : tableInfo.getColumnInfos().values()) {
-            String srcColumnName = columnInfo.getColumnName();
             String sql = "    , ";
             if (isFirst) {
                 sql = "      ";
             }
-            if (columnInfo.getTypeName().equals("CHAR")) {
-                String quoteEscaped = assist.quoteEscapedSQL(srcColumnName);
-                String trimed = assist.trimedSQL("a." + quoteEscaped);
-                s.add("        sql += \"" + sql + trimed + " AS " + srcColumnName + " \\n\";");
-            } else {
-                s.add("        sql += \"" + sql + "a." + assist.quoteEscapedSQL(srcColumnName) + " \\n\";");
-            }
+            String quoteEscaped = getQuoteEscaped(columnInfo);
+            s.add("        sql += \"" + sql + quoteEscaped + " \\n\";");
             isFirst = false;
         }
         s.add("        sql += \"FROM \\n\";");
@@ -499,6 +510,38 @@ public final class BeanGenerator {
         s.add("        String sql = \"DELETE FROM " + tableName + " WHERE \" + getWhere();");
         s.add("        return Queries.regist(sql, toMap(null, null));");
         s.add("    }");
+    }
+
+    /**
+     * @param columnInfo
+     * @return quoteEscaped
+     */
+    private static String getQuoteEscaped(final ColumnInfo columnInfo) {
+
+        String columnName = columnInfo.getColumnName();
+
+        String quoteEscaped = "a." + assist.quoteEscapedSQL(columnName);
+
+        if (columnInfo.getTypeName().equals("CHAR")) {
+
+            String trimed = assist.trimedSQL(quoteEscaped);
+            quoteEscaped = trimed + " AS " + columnName;
+
+        } else if (StringUtil.endsWith(inputDateSuffixs, columnInfo.getColumnName())) {
+
+            quoteEscaped = assist.date2CharSQL(quoteEscaped) + " AS " + columnName;
+
+        } else if (StringUtil.endsWith(inputDateTimeSuffixs, columnInfo.getColumnName())) {
+
+            quoteEscaped = assist.dateTime2CharSQL(quoteEscaped) + " AS " + columnName;
+
+        } else if (StringUtil.endsWith(inputTimestampSuffixs, columnInfo.getColumnName())) {
+
+            quoteEscaped = assist.timestamp2CharSQL(quoteEscaped) + " AS " + columnName;
+
+        }
+
+        return quoteEscaped;
     }
 
     /**

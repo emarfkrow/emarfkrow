@@ -58,9 +58,33 @@ public abstract class DataSourcesAssist {
 
     /**
      * @param s 対象文字列
+     * @return yyyy/mm/dd hh:mm:ssにキャストするSQL
+     */
+    public abstract String toDateTimeSQL(String s);
+
+    /**
+     * @param s 対象文字列
      * @return yyyy/mm/dd hh:mm:ss.SSSにキャストするSQL
      */
     public abstract String toTimestampSQL(String s);
+
+    /**
+     * @param s 対象文字列
+     * @return yyyy/mm/ddを文字列にキャストするSQL
+     */
+    public abstract String date2CharSQL(String s);
+
+    /**
+     * @param s 対象文字列
+     * @return yyyy/mm/dd hh:mm:ssを文字列にキャストするSQL
+     */
+    public abstract String dateTime2CharSQL(String s);
+
+    /**
+     * @param s 対象文字列
+     * @return yyyy/mm/dd hh:mm:ss.SSSを文字列にキャストするSQL
+     */
+    public abstract String timestamp2CharSQL(String s);
 
     /**
      * @param s 対象文字列
