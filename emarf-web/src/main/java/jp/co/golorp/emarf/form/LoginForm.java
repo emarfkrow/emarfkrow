@@ -72,6 +72,23 @@ public class LoginForm implements IForm {
         this.authnMei = p;
     }
 
+    /** */
+    private String email;
+
+    /**
+     * @return email
+     */
+    public String getEmail() {
+        return email;
+    }
+
+    /**
+     * @param p
+     */
+    public void setEmail(final String p) {
+        this.email = p;
+    }
+
     /**
      * 認証情報
      */

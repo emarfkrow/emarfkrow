@@ -53,8 +53,8 @@ public final class StringUtil {
         // password→password、EMAIL→EMAIL、sampleY_1→sample_Y_1、MUser→MUser）
         String snake = s.replaceAll("([0-9a-z])([A-Z])", "$1_$2");
 
-        // 小文字が含まれる場合、大文字が連続するなら「_」を挿入
-        if (snake.matches(".+[a-z].+")) {
+        // 大文字の直後に小文字が含まれる場合、大文字が連続するなら「_」を挿入
+        if (snake.matches(".+[A-Z][a-z].+")) {
             snake = snake.replaceAll("([A-Z])([A-Z])", "$1_$2");
         }
 

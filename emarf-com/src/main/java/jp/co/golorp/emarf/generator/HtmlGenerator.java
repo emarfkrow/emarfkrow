@@ -511,8 +511,7 @@ public final class HtmlGenerator {
         }
         if (width < 30) {
             width = 30;
-        }
-        if (width > 300) {
+        } else if (width > 300) {
             width = 300;
         }
 
@@ -531,6 +530,8 @@ public final class HtmlGenerator {
             css = "uniqueKey";
         } else if (isInsertDt || isUpdateDt || isInsertBy || isUpdateBy) {
             css = "metaInfo";
+        } else if (columnInfo.getNullable() == 0) {
+            css = "notblank";
         }
 
         String formatter = "null";
@@ -544,7 +545,6 @@ public final class HtmlGenerator {
 
         // 名称を参照先から取得するか
         boolean isMeiRefer = false;
-
         // 参照名の列名
         String referMei = null;
 

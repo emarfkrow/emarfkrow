@@ -1,9 +1,10 @@
-package jp.co.golorp.emarf.action;
+package jp.co.golorp.emarf.action.base;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
+import jp.co.golorp.emarf.action.BaseAction;
 import jp.co.golorp.emarf.exception.AppError;
 import jp.co.golorp.emarf.form.LoginForm;
 import jp.co.golorp.emarf.lang.StringUtil;
