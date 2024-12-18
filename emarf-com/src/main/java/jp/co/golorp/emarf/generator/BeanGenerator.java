@@ -78,6 +78,8 @@ public final class BeanGenerator {
     /** 更新者カラム名 */
     private static String updateBy;
 
+    /** 年月入力サフィックス */
+    private static String[] inputYMSuffixs;
     /** 日付け入力サフィックス */
     private static String[] inputDateSuffixs;
     /** 日時入力サフィックス */
@@ -147,6 +149,7 @@ public final class BeanGenerator {
         updateDtFormat = bundle.getString("BeanGenerator.update_dt.format");
         updateBy = bundle.getString("BeanGenerator.update_by");
 
+        inputYMSuffixs = bundle.getString("BeanGenerator.input.ym.suffixs").split(",");
         inputDateSuffixs = bundle.getString("BeanGenerator.input.date.suffixs").split(",");
         inputDateTimeSuffixs = bundle.getString("BeanGenerator.input.datetime.suffixs").split(",");
         inputTimestampSuffixs = bundle.getString("BeanGenerator.input.timestamp.suffixs").split(",");
@@ -217,7 +220,6 @@ public final class BeanGenerator {
         // 出力フォルダを再作成
         String packagePath = entityPackage.replace(".", File.separator);
         String packageDir = projectDir + File.separator + javaPath + File.separator + packagePath;
-
         Map<String, String> javaFilePaths = new LinkedHashMap<String, String>();
 
         for (TableInfo tableInfo : tableInfos) {
@@ -243,7 +245,6 @@ public final class BeanGenerator {
             s.add(" * @author emarfkrow");
             s.add(" */");
             s.add("public class " + entityName + " implements IEntity {");
-
             if (tableInfo.getColumnInfos().get("ID") == null) {
                 s.add("");
                 s.add("    /** SlickGridのDataView用ID */");
@@ -267,7 +268,6 @@ public final class BeanGenerator {
                 s.add("        }");
                 s.add("    }");
             }
-
             // property
             for (ColumnInfo columnInfo : tableInfo.getColumnInfos().values()) {
                 String columnName = columnInfo.getColumnName();
@@ -277,7 +277,6 @@ public final class BeanGenerator {
                 String dataType = columnInfo.getDataType();
                 s.add("");
                 s.add("    /** " + mei + " */");
-
                 if (dataType.equals("java.time.LocalDate")) {
                     s.add("    @com.fasterxml.jackson.annotation.JsonFormat(pattern = \"yyyy-MM-dd\")");
                     s.add("    @com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer.class)");
@@ -323,16 +322,20 @@ public final class BeanGenerator {
                             + " = java.time.LocalDateTime.ofInstant(d.toInstant(), java.time.ZoneId.systemDefault());");
                     s.add("        } else if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {");
                     s.add("            this." + camel + " = " + dataType
-                            + ".parse(o.toString().replace(\" \", \"T\"));");
+                            + ".parse(o.toString().replace(\" \", \"T\").replace(\"/\", \"-\"));");
                 } else if (dataType.equals("java.time.LocalDate")) {
                     s.add("        if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {");
                     s.add("            this." + camel + " = " + dataType + ".parse(o.toString().substring(0, 10));");
                 } else if (dataType.equals("java.time.LocalTime")) {
                     s.add("        if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {");
-                    s.add("            this." + camel + " = " + dataType + ".parse(o.toString().substring(10));");
+                    s.add("            this." + camel + " = " + dataType + ".parse(o.toString());");
                 } else if (dataType.equals("java.math.BigDecimal")) {
                     s.add("        if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {");
                     s.add("            this." + camel + " = new java.math.BigDecimal(o.toString());");
+                } else if (StringUtil.endsWith(inputYMSuffixs, columnName)) {
+                    s.add("        if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {");
+                    s.add("            this." + camel + " = " + dataType
+                            + ".valueOf(o.toString().replace(\"-\", \"\"));");
                 } else if (dataType.equals("String")) {
                     s.add("        if (o != null) {");
                     s.add("            this." + camel + " = o.toString();");
