@@ -63,6 +63,14 @@ limitations under the License.
 <script th:src="@{/js/gridate.js}"></script>
 <script th:src="@{/js/jsonate.js}"></script>
 <script th:src="@{/js/nextize.js}"></script>
+<script th:inline="javascript">
+	let searchOptionsSize = 0;
+	let detailOptionsSize = 0;
+	$(function(){
+		searchOptionsSize = $('[name="searchOptionsSize"]').val();
+		detailOptionsSize = $('[name="detailOptionsSize"]').val();
+	});
+</script>
 <script th:src="@{/js/options.js}"></script>
 <script th:src="@{/js/slick.editors.extends.js}"></script>
 <script th:src="@{/js/slick.formatters.extends.js}"></script>
@@ -83,6 +91,8 @@ limitations under the License.
 </script>
 </head>
 <body>
+  <input type="hidden" name="searchOptionsSize" th:value="#{options.size.search}" />
+  <input type="hidden" name="detailOptionsSize" th:value="#{options.size.detail}" />
   <script th:src="@{/js/loading.js}"></script>
   <div layout:replace="~{common/header::header}"></div>
   <div layout:replace="~{common/nav::nav}"></div>

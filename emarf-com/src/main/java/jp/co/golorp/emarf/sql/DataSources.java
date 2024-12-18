@@ -315,12 +315,11 @@ public final class DataSources {
                     columnInfo.setNullable(columns.getInt("NULLABLE")); // NULL可否
                     String remarks = columns.getString("REMARKS"); // カラム論理名
                     if (remarks == null || remarks.length() == 0) {
-                        String comment = assist.getColumnComment(tableInfo.getTableName(), columnName);
-                        if (comment.contains(":")) {
-                            int i = comment.indexOf(":");
-                            comment = comment.substring(0, i);
-                        }
-                        remarks = comment;
+                        remarks = assist.getColumnComment(tableInfo.getTableName(), columnName);
+                    }
+                    if (remarks.contains(":")) {
+                        int i = remarks.indexOf(":");
+                        remarks = remarks.substring(0, i);
                     }
                     if (remarks == null || remarks.length() == 0) {
                         remarks = columnName;

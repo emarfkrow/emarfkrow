@@ -93,7 +93,7 @@ let Options = {
 				let isSearchForm = $element.closest('form').hasClass('search');
 				if (isSearchForm) {
 					//検索フォームの場合
-					if (dataJson.length < 10) {
+					if (dataJson.length < searchOptionsSize) {
 						Options.check($element, itemName, dataJson, optionValue, optionLabel);
 					} else {
 						Options.option($element, true, dataJson, optionValue, optionLabel);
@@ -103,7 +103,7 @@ let Options = {
 					if (dataJson.length == 2 && dataJson[0][optionValue] == '0' && dataJson[1][optionValue] == '1') {
 						//値が「0」「1」の場合はチェックボックス
 						Options.check($element, itemName, [dataJson[1]], optionValue, optionLabel);
-					} else if (dataJson.length < 10) {
+					} else if (dataJson.length < detailOptionsSize) {
 						Options.radio($element, itemName, dataJson, optionValue, optionLabel);
 					} else {
 						Options.option($element, true, dataJson, optionValue, optionLabel);
