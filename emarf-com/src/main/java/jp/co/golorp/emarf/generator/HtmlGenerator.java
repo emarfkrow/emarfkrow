@@ -313,7 +313,7 @@ public final class HtmlGenerator {
                 ++numberingCount;
             }
         }
-        if (numberingCount < 2) {
+        if (!tableInfo.isView() && numberingCount < 2) {
             s.add("        <a th:href=\"@{/model/" + pascal + ".html}\" id=\"" + pascal
                     + "\" class=\"anew\" target=\"dialog\" th:text=\"#{" + pascal + ".add}\" tabindex=\"-1\">" + remarks
                     + "</a>");
@@ -361,13 +361,13 @@ public final class HtmlGenerator {
         }
         s.add("        <a th:href=\"@{" + pascal + "Search.xlsx(baseMei=#{" + pascal + "S.h2})}\" id=\"" + pascal
                 + "Search.xlsx\" th:text=\"#{common.xlsx}\" class=\"output\" tabindex=\"-1\">xlsx</a>");
-        if (!tableInfo.isHistory()) {
+        if (!tableInfo.isHistory() && !tableInfo.isView()) {
             s.add("        <button id=\"Delete" + pascal + "S\" class=\"delete selectRows\" data-action=\"" + pascal
                     + "SDelete.ajax\" th:text=\"#{common.delete}\" tabindex=\"-1\">削除</button>");
         }
         s.add("      </div>");
         s.add("      <div class=\"submits\">");
-        if (!tableInfo.isHistory()) {
+        if (!tableInfo.isHistory() && !tableInfo.isView()) {
             //履歴モデルは変更不可
             s.add("        <button id=\"Regist" + pascal
                     + "S\" class=\"regist\" th:text=\"#{common.regist}\">submit</button>");
@@ -743,13 +743,13 @@ public final class HtmlGenerator {
         s.add("        <a th:href=\"@{" + entityName + "Get.xlsx(baseMei=#{" + entityName + ".h2})}\" id=\""
                 + entityName
                 + "Get.xlsx\" th:text=\"#{common.xlsx}\" class=\"output\" tabindex=\"-1\">xlsx</a>");
-        if (!tableInfo.isHistory()) {
+        if (!tableInfo.isHistory() && !tableInfo.isView()) {
             s.add("        <button id=\"Delete" + entityName + "\" class=\"delete\" data-action=\"" + entityName
                     + "Delete.ajax\" th:text=\"#{common.delete}\" tabindex=\"-1\">削除</button>");
         }
         s.add("      </div>");
         s.add("      <div class=\"submits\">");
-        if (!tableInfo.isHistory()) {
+        if (!tableInfo.isHistory() && !tableInfo.isView()) {
             s.add("        <button id=\"Regist" + entityName
                     + "\" class=\"regist\" th:text=\"#{common.regist}\">登録</button>");
         }
