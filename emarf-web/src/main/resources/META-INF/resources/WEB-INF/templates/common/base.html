@@ -15,6 +15,7 @@ limitations under the License.
 -->
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
+
 <head>
 <meta charset="UTF-8">
 <!-- <meta http-equiv="Pragma" content="no-cache"> -->
@@ -66,9 +67,13 @@ limitations under the License.
 <script th:inline="javascript">
 	let searchOptionsSize = 0;
 	let detailOptionsSize = 0;
-	$(function(){
+	let gridOpeVisibleColumn = null;
+	let gridViewDetailColumn = null;
+	$(function() {
 		searchOptionsSize = $('[name="searchOptionsSize"]').val();
 		detailOptionsSize = $('[name="detailOptionsSize"]').val();
+		gridOpeVisibleColumn = $('[name="gridOpeVisibleColumn"]').val();
+		gridViewDetailColumn = $('[name="gridViewDetailColumn"]').val();
 	});
 </script>
 <script th:src="@{/js/options.js}"></script>
@@ -81,7 +86,8 @@ limitations under the License.
 	let breads = sessionStorage['breads'];
 	let navs = sessionStorage['navs'];
 	sessionStorage.clear();
-	sessionStorage['authzInfo'] = JSON.stringify(/*[[${#ctx.session.get('AUTHZ_INFO')}]]*/);
+	sessionStorage['authzInfo'] = JSON
+			.stringify(/*[[${#ctx.session.get('AUTHZ_INFO')}]]*/);
 	if (breads) {
 		sessionStorage['breads'] = breads;
 	}
@@ -90,9 +96,12 @@ limitations under the License.
 	}
 </script>
 </head>
+
 <body>
   <input type="hidden" name="searchOptionsSize" th:value="#{options.size.search}" />
   <input type="hidden" name="detailOptionsSize" th:value="#{options.size.detail}" />
+  <input type="hidden" name="gridOpeVisibleColumn" th:value="#{grid.ope.visible.column}" />
+  <input type="hidden" name="gridViewDetailColumn" th:value="#{grid.view.detail.column}" />
   <script th:src="@{/js/loading.js}"></script>
   <div layout:replace="~{common/header::header}"></div>
   <div layout:replace="~{common/nav::nav}"></div>
@@ -100,4 +109,5 @@ limitations under the License.
   <div layout:fragment="article" class="article"></div>
   <div layout:replace="~{common/footer::footer}"></div>
 </body>
+
 </html>

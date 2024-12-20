@@ -59,10 +59,13 @@ limitations under the License.
     }
 
     function DeleteButtonFormatter(row, cell, value, columnDef, dataContext) {
-        if (columnDef.label) {
-            return '<input type="button" value="' + columnDef.label + '" class="gridButton gridDelete" />';
+        if (dataContext[gridOpeVisibleColumn]) {
+            if (columnDef.label) {
+                return '<input type="button" value="' + columnDef.label + '" class="gridButton gridDelete" />';
+            }
+            return '<input type="button" value="' + columnDef.name + '" class="gridButton gridDelete" />';
         }
-        return '<input type="button" value="' + columnDef.name + '" class="gridButton gridDelete" />';
+        return null;
     }
 
     function DateFormatter(row, cell, value, columnDef, dataContext) {
@@ -90,7 +93,10 @@ limitations under the License.
         if (value) {
             return '<a id=\"' + columnDef.id + '\" href="" class="gridLink" target="blank">' + Messages['common.download'] + '</a>';
         }
-        return '<a href="" class="gridLink">' + columnDef.name + '</a>';
+        if (dataContext[gridOpeVisibleColumn]) {
+            return '<a href="" class="gridLink">' + columnDef.name + '</a>';
+        }
+        return null;
     }
 
     function SelectFormatter(row, cell, value, columnDef, dataContext) {

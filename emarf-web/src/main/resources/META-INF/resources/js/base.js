@@ -519,22 +519,25 @@ let Base = {
         if (JSON.stringify(formJson) != '{}') {
             let getAction = $registForm.prop('action').replace('Regist', 'Get').replace(/\.form$/, '.ajax');
             Ajaxize.ajaxPost(getAction, formJson, function(data) {
-                Jsonate.toForm(data, $registForm);
-                Base.referMei($registForm.find('span.refer'));
+                // VIEWの場合、グリッド生成前にデータを反映してエラーになるため、ロード後まで遅らせる
+                Base.loaded(function() {
+                    Jsonate.toForm(data, $registForm);
+                    Base.referMei($registForm.find('span.refer'));
 
-                //出力権限
-                if (Base.getAuthz($registForm[0].name) < 2) {
-                    $registForm.find('a.output').hide();
-                }
+                    //出力権限
+                    if (Base.getAuthz($registForm[0].name) < 2) {
+                        $registForm.find('a.output').hide();
+                    }
 
-                //更新権限
-                if (Base.getAuthz($registForm[0].name) < 3) {
-                    $registForm.find(':input').each(function() {
-                        Base.readonly(this);
-                    });
-                    //$registForm.find(':input').attr('readonly', true).attr('tabindex', '-1').addClass('readonly');
-                    $registForm.find('a.refer').hide();
-                }
+                    //更新権限
+                    if (Base.getAuthz($registForm[0].name) < 3) {
+                        $registForm.find(':input').each(function() {
+                            Base.readonly(this);
+                        });
+                        //$registForm.find(':input').attr('readonly', true).attr('tabindex', '-1').addClass('readonly');
+                        $registForm.find('a.refer').hide();
+                    }
+                })
             });
         }
     },

@@ -648,26 +648,7 @@ public final class BeanGenerator {
         for (Entry<String, ColumnInfo> e : tableInfo.getColumnInfos().entrySet()) {
             String columnName = e.getKey();
             ColumnInfo columnInfo = e.getValue();
-            String snake = StringUtil.toSnakeCase(columnName);
-            String rightHand = ":" + snake;
-            if (e.getValue().getDataType().equals("java.time.LocalDate")) {
-                rightHand = assist.toDateSQL(rightHand);
-            }
-            if (e.getValue().getDataType().equals("java.time.LocalDateTime")) {
-                rightHand = assist.toTimestampSQL(rightHand);
-            }
-            //主キー以外のCHAR列で、必須CHAR指定に合致しない場合、NULLならスペースを補填する
-            if (!columnInfo.isPk() && columnInfo.getTypeName().equals("CHAR")
-                    && !StringUtil.isNullOrBlank(charNotNullRe)
-                    && !columnInfo.getColumnName().matches(charNotNullRe)) {
-                rightHand = "NVL (" + rightHand + ", ' ')";
-            }
-            //主キー以外のNUMBER列で、非必須INT指定に合致する場合、NULLなら「0」を補填する
-            if (!columnInfo.isPk() && columnInfo.getTypeName().equals("NUMBER")
-                    && !StringUtil.isNullOrBlank(numberNullableRe)
-                    && columnInfo.getColumnName().matches(numberNullableRe)) {
-                rightHand = "NVL (" + rightHand + ", 0)";
-            }
+            String rightHand = getRightHand(columnName, columnInfo);
             s.add("        valueList.add(\"" + rightHand + "\");");
         }
         s.add("        return String.join(\"\\r\\n    , \", valueList);");
@@ -676,6 +657,37 @@ public final class BeanGenerator {
         if (lastKeyInfo != null && lastKeyInfo.isNumbering()) {
             javaEntityCRUDInsertNumbering(tableInfo, s, lastKeyInfo);
         }
+    }
+
+    /**
+     * @param columnName
+     * @param columnInfo
+     * @return rightHand
+     */
+    public static String getRightHand(final String columnName, final ColumnInfo columnInfo) {
+
+        String rightHand = ":" + StringUtil.toSnakeCase(columnName);
+
+        if (columnInfo.getDataType().equals("java.time.LocalDate")) {
+            rightHand = assist.toDateSQL(rightHand);
+
+        } else if (columnInfo.getDataType().equals("java.time.LocalDateTime")) {
+            rightHand = assist.toTimestampSQL(rightHand);
+
+        } else if (!columnInfo.isPk() && columnInfo.getTypeName().equals("CHAR")
+                && !StringUtil.isNullOrBlank(charNotNullRe)
+                && !columnInfo.getColumnName().matches(charNotNullRe)) {
+            //主キー以外のCHAR列で、必須CHAR指定に合致しない場合、NULLならスペースを補填する
+            rightHand = "NVL (" + rightHand + ", ' ')";
+
+        } else if (!columnInfo.isPk() && columnInfo.getTypeName().equals("NUMBER")
+                && !StringUtil.isNullOrBlank(numberNullableRe)
+                && columnInfo.getColumnName().matches(numberNullableRe)) {
+            //主キー以外のNUMBER列で、非必須INT指定に合致する場合、NULLなら「0」を補填する
+            rightHand = "NVL (" + rightHand + ", 0)";
+        }
+
+        return rightHand;
     }
 
     /**
@@ -829,37 +841,16 @@ public final class BeanGenerator {
         s.add("        List<String> setList = new ArrayList<String>();");
 
         for (Entry<String, ColumnInfo> e : tableInfo.getColumnInfos().entrySet()) {
-
-            String column = e.getKey();
+            String columnName = e.getKey();
             ColumnInfo columnInfo = e.getValue();
 
-            // 追加時のメタ情報でない場合
-            if (!column.matches("(?i)^" + insertDt + "$") && !column.matches("(?i)^" + insertBy + "$")) {
-
-                String rightHand = ":" + StringUtil.toSnakeCase(column);
-                if (columnInfo.getDataType().equals("java.time.LocalDate")) {
-                    rightHand = assist.toDateSQL(rightHand);
-                }
-                if (columnInfo.getDataType().equals("java.time.LocalDateTime")) {
-                    rightHand = assist.toTimestampSQL(rightHand);
-                }
-
-                //主キー以外のCHAR列で、必須CHAR指定に合致しない場合、NULLならスペースを補填する
-                if (!columnInfo.isPk() && columnInfo.getTypeName().equals("CHAR")
-                        && !StringUtil.isNullOrBlank(charNotNullRe)
-                        && !columnInfo.getColumnName().matches(charNotNullRe)) {
-                    rightHand = "NVL (" + rightHand + ", ' ')";
-                }
-
-                //主キー以外のNUMBER列で、非必須INT指定に合致する場合、NULLなら「0」を補填する
-                if (!columnInfo.isPk() && columnInfo.getTypeName().equals("NUMBER")
-                        && !StringUtil.isNullOrBlank(numberNullableRe)
-                        && columnInfo.getColumnName().matches(numberNullableRe)) {
-                    rightHand = "NVL (" + rightHand + ", 0)";
-                }
-
-                s.add("        setList.add(\"" + assist.quoteEscapedSQL(column) + " = " + rightHand + "\");");
+            // 追加時のメタ情報ならスキップ
+            if (columnName.matches("(?i)^" + insertDt + "$") || columnName.matches("(?i)^" + insertBy + "$")) {
+                continue;
             }
+
+            String rightHand = getRightHand(columnName, columnInfo);
+            s.add("        setList.add(\"" + assist.quoteEscapedSQL(columnName) + " = " + rightHand + "\");");
         }
         s.add("        return String.join(\"\\r\\n    , \", setList);");
         s.add("    }");
@@ -1463,6 +1454,12 @@ public final class BeanGenerator {
             }
             s.add("");
             s.add("            " + pascal + " e = FormValidator.toBean(" + pascal + ".class.getName(), gridRow);");
+
+            List<TableInfo> childInfos = tableInfo.getChildInfos();
+            for (TableInfo childInfo : childInfos) {
+                s.add("            //" + childInfo.getTableName() + " parents:" + childInfo.getParentInfos().size());
+            }
+
             s.add("            if (e.delete() != 1) {");
             s.add("                throw new OptLockError(\"error.cant.delete\");");
             s.add("            }");

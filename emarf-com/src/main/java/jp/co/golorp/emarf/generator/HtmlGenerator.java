@@ -46,6 +46,8 @@ public final class HtmlGenerator {
 
     /** VIEWの検索条件とするプレフィクス */
     private static String[] searchPrefixes;
+    /** VIEWの詳細画面にするテーブル名 */
+    private static String detailColumn;
 
     /** ページ行数 */
     private static String rows;
@@ -112,6 +114,7 @@ public final class HtmlGenerator {
         bundle = ResourceBundles.getBundle(BeanGenerator.class);
 
         searchPrefixes = bundle.getString("HtmlGenerator.view.search.prefix").split(",");
+        detailColumn = bundle.getString("HtmlGenerator.view.detail.column");
 
         rows = bundle.getString("HtmlGenerator.rows");
 
@@ -466,7 +469,11 @@ public final class HtmlGenerator {
 
         //主キー列の出力
         for (String columnName : tableInfo.getPrimaryKeys()) {
-            s.add("    " + htmlGridColumn(columnMap.get(columnName), entityName, columnMap, tableInfo.isHistory()));
+            String gridColumn = htmlGridColumn(columnMap.get(columnName), entityName, columnMap, tableInfo.isHistory(),
+                    tableInfo.isView());
+            if (gridColumn != null) {
+                s.add("    " + gridColumn);
+            }
         }
 
         //非主キー列の出力
@@ -477,12 +484,16 @@ public final class HtmlGenerator {
                 continue;
             }
 
-            //カラム名が「table_name」なら出力しない
-            if (columnName.matches("(?i)^table_name$")) {
+            //カラム名が「ENTITY_NAME」なら出力しない
+            if (columnName.matches("(?i)^" + detailColumn + "$")) {
                 continue;
             }
 
-            s.add("    " + htmlGridColumn(columnMap.get(columnName), entityName, columnMap, tableInfo.isHistory()));
+            String gridColumn = htmlGridColumn(columnMap.get(columnName), entityName, columnMap, tableInfo.isHistory(),
+                    tableInfo.isView());
+            if (gridColumn != null) {
+                s.add("    " + gridColumn);
+            }
         }
 
         s.add("];");
@@ -495,10 +506,11 @@ public final class HtmlGenerator {
      * @param entityName
      * @param columnMap
      * @param isHistory
+     * @param isView
      * @return 列定義文字列
      */
     private static String htmlGridColumn(final ColumnInfo columnInfo, final String entityName,
-            final Map<String, ColumnInfo> columnMap, final boolean isHistory) {
+            final Map<String, ColumnInfo> columnMap, final boolean isHistory, final boolean isView) {
 
         String columnName = columnInfo.getColumnName();
         String camel = StringUtil.toCamelCase(columnName);
@@ -519,19 +531,24 @@ public final class HtmlGenerator {
         boolean isUpdateDt = columnName.matches("(?i)^" + updateDt + "$");
         boolean isInsertBy = columnName.matches("(?i)^" + insertBy + "$");
         boolean isUpdateBy = columnName.matches("(?i)^" + updateBy + "$");
+        if (isInsertDt || isUpdateDt || isInsertBy || isUpdateBy) {
+            return null;
+        }
 
         String css = "";
-        if (columnInfo.isPk()) {
-            css = "primaryKey";
-            if (columnInfo.isNumbering()) {
-                css += " numbering";
+        if (!isView) {
+            if (columnInfo.isPk()) {
+                css = "primaryKey";
+                if (columnInfo.isNumbering()) {
+                    css += " numbering";
+                }
+            } else if (columnInfo.isUnique()) {
+                css = "uniqueKey";
+            } else if (isInsertDt || isUpdateDt || isInsertBy || isUpdateBy) {
+                css = "metaInfo";
+            } else if (columnInfo.getNullable() == 0) {
+                css = "notblank";
             }
-        } else if (columnInfo.isUnique()) {
-            css = "uniqueKey";
-        } else if (isInsertDt || isUpdateDt || isInsertBy || isUpdateBy) {
-            css = "metaInfo";
-        } else if (columnInfo.getNullable() == 0) {
-            css = "notblank";
         }
 
         String formatter = "null";
@@ -547,21 +564,16 @@ public final class HtmlGenerator {
         boolean isMeiRefer = false;
         // 参照名の列名
         String referMei = null;
-
         // 参照テーブルが設定されている場合
         TableInfo referInfo = columnInfo.getReferInfo();
         if (referInfo != null) {
-
             isMeiRefer = true;
-
             // カラム名が組み合わせキーのいずれかに合致する場合
             if (StringUtil.endsWith(referPairs, columnName)) {
-
                 // 参照設定の組み合わせでループ
                 for (String[] suffix : referPairs) {
                     String keySuffix = suffix[0];
                     String meiSuffix = suffix[1];
-
                     // カラム名がキー接尾辞に合致する場合
                     if (columnName.matches("(?i).+" + keySuffix + "$")) {
                         // カラム名の末尾を名称列サフィックスに変換
@@ -575,23 +587,24 @@ public final class HtmlGenerator {
                     }
                 }
             }
-
             //名称を参照先から取得する場合
             if (isMeiRefer) {
                 // 参照設定の組み合わせでループ
                 for (String[] suffix : referPairs) {
                     String keySuffix = suffix[0];
                     String meiSuffix = suffix[1];
-
                     // カラム名がキー接尾辞に合致する場合
                     if (columnName.matches("(?i).+" + keySuffix + "$")) {
-
                         // カラム名の末尾を名称列サフィックスに変換
                         String tempMei = columnName.replaceAll("(?i)" + keySuffix + "$", meiSuffix);
-
                         // 名称列が参照先テーブルに含まれている場合は、取得する名称を決定する
-                        if (referInfo.getColumnInfos().containsKey(tempMei)) {
-                            referMei = tempMei;
+                        for (ColumnInfo referColumnInfo : referInfo.getColumnInfos().values()) {
+                            if (tempMei.endsWith(referColumnInfo.getColumnName())) {
+                                referMei = tempMei;
+                                break;
+                            }
+                        }
+                        if (referMei != null) {
                             break;
                         }
                     }
@@ -603,11 +616,7 @@ public final class HtmlGenerator {
         String c = "";
         if (isMeiRefer) {
             c = "Column.refer('" + field + "', " + name + ", " + width + ", '" + css + "', '" + referMei + "'),";
-            //            } else if (columnInfo.isPk()) {
-            //                c = "Column.cell('" + field + "', " + name + ", " + width + ", '" + css + "', " + formatter + "),";
-            //            } else if (columnInfo.isUnique()) {
-            //                c = "Column.cell('" + field + "', " + name + ", " + width + ", '" + css + "', " + formatter + "),";
-        } else if (isInsertDt || isUpdateDt || isInsertBy || isUpdateBy || isHistory) {
+        } else if (isInsertDt || isUpdateDt || isInsertBy || isUpdateBy || isHistory || isView) {
             c = "Column.cell('" + field + "', " + name + ", " + width + ", '" + css + "', " + formatter + "),";
         } else if (StringUtil.endsWith(inputFlagSuffixs, columnName)) {
             c = "Column.check('" + field + "', " + name + ", " + width + ", '" + css + "'),";
@@ -812,20 +821,22 @@ public final class HtmlGenerator {
             if (isInsertDt || isInsertBy || isUpdateDt || isUpdateBy) {
                 if (!isDetail) {
                     continue;
-                } else if (isBrother) {
-                    if (isUpdateDt) {
-                        s.add("        <input type=\"hidden\" name=\"" + fieldId + "\" />");
-                    }
-                    continue;
                 }
+                //                if (isBrother) {
+                if (isUpdateDt) {
+                    s.add("        <input type=\"hidden\" name=\"" + fieldId + "\" />");
+                }
+                continue;
+                //                }
             }
 
             s.add("        <div id=\"" + camelColumn + "\">");
-
-            if (isInsertDt || isInsertBy || isUpdateDt || isUpdateBy || (isDetail && tableInfo.isHistory())) {
+            if (isInsertDt || isInsertBy || isUpdateDt || isUpdateBy) {
                 // メタ情報の場合は表示項目（編集画面の自モデルのみここに到達する）
                 htmlFieldsMeta(s, fieldId, remarks);
-
+            } else if (isDetail && (tableInfo.isHistory() || tableInfo.isView())) {
+                // 履歴モデルかビューの詳細画面
+                htmlFieldsMeta(s, fieldId, remarks);
             } else if (isDetail && columnInfo.isNumbering()) {
                 // 編集画面の採番キーは表示項目
                 String tag = "          ";

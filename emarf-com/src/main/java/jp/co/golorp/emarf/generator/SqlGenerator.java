@@ -170,16 +170,16 @@ public final class SqlGenerator {
         for (Entry<String, ColumnInfo> e : tableInfo.getColumnInfos().entrySet()) {
             String columnName = e.getKey();
             ColumnInfo columnInfo = e.getValue();
-            String snake = StringUtil.toSnakeCase(columnName);
             String quoted = assist.quotedSQL(columnName);
+            String rightHand = BeanGenerator.getRightHand(columnName, columnInfo);
 
             if (StringUtil.endsWith(inputFlagSuffixs, columnName)) {
                 // FLAG検索
                 s.add("    AND CASE WHEN TRIM (a." + quoted + ") IS NULL THEN '0' ELSE TO_CHAR (a." + quoted
-                        + ") END IN (:" + snake + ") ");
+                        + ") END IN (" + rightHand + ") ");
             } else if (StringUtil.endsWith(optionsSuffixs, columnName)) {
                 // IN検索
-                s.add("    AND TRIM (a." + quoted + ") IN (:" + snake + ") ");
+                s.add("    AND TRIM (a." + quoted + ") IN (" + rightHand + ") ");
             } else if (columnInfo.getDataType().equals("String")) {
                 // 文字列はTRIMして部分一致検索
                 String quoteEscaped = assist.quotedSQL(columnName);
@@ -187,20 +187,20 @@ public final class SqlGenerator {
                 if (columnName.toLowerCase().equals(optionsKey.toLowerCase())) {
                     //参照キーの場合は後方一致で出力
                     String[] array = new String[] { "'%'", trimed };
-                    s.add("    AND " + ":" + snake + " LIKE " + assist.joinedSQL(array) + " ");
+                    s.add("    AND " + rightHand + " LIKE " + assist.joinedSQL(array) + " ");
                 } else {
-                    String[] array = new String[] { "'%'", ":" + snake, "'%'" };
+                    String[] array = new String[] { "'%'", rightHand, "'%'" };
                     s.add("    AND " + trimed + " LIKE " + assist.joinedSQL(array) + " ");
                 }
             } else {
                 // 以外は等値検索
-                s.add("    AND a." + quoted + " = :" + snake + " ");
+                s.add("    AND a." + quoted + " = " + rightHand + " ");
             }
 
             // 範囲検索
             if (StringUtil.endsWith(inputRangeSuffixs, columnName)) {
-                s.add("    AND a." + quoted + " >= :" + snake + "_1 ");
-                s.add("    AND a." + quoted + " <= :" + snake + "_2 ");
+                s.add("    AND a." + quoted + " >= " + BeanGenerator.getRightHand(columnName + "_1 ", columnInfo));
+                s.add("    AND a." + quoted + " <= " + BeanGenerator.getRightHand(columnName + "_2 ", columnInfo));
             }
         }
         s.add("ORDER BY");
