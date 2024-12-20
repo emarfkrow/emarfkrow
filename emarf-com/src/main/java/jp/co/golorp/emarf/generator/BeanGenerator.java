@@ -1454,12 +1454,9 @@ public final class BeanGenerator {
             }
             s.add("");
             s.add("            " + pascal + " e = FormValidator.toBean(" + pascal + ".class.getName(), gridRow);");
-
             List<TableInfo> childInfos = tableInfo.getChildInfos();
-            for (TableInfo childInfo : childInfos) {
-                s.add("            //" + childInfo.getTableName() + " parents:" + childInfo.getParentInfos().size());
-            }
-
+            getDeleteChilds(s, "e", childInfos, 0);
+            s.add("");
             s.add("            if (e.delete() != 1) {");
             s.add("                throw new OptLockError(\"error.cant.delete\");");
             s.add("            }");
@@ -1480,6 +1477,41 @@ public final class BeanGenerator {
         if (isCompile) {
             for (Entry<String, String> e : javaFilePaths.entrySet()) {
                 BeanGenerator.javaCompile(e.getKey(), e.getValue());
+            }
+        }
+    }
+
+    /**
+     * 一覧画面の一括削除処理
+     * @param s
+     * @param parentCamel
+     * @param childInfos
+     * @param indent
+     */
+    private static void getDeleteChilds(final List<String> s, final String parentCamel,
+            final List<TableInfo> childInfos, final int indent) {
+        String space = "    ".repeat(indent);
+        for (TableInfo childInfo : childInfos) {
+            s.add("");
+            String childPascal = StringUtil.toPascalCase(childInfo.getTableName());
+            String childCamel = StringUtil.toCamelCase(childInfo.getTableName());
+            if (childInfo.getParentInfos().size() == 1) {
+                s.add(space + "            java.util.List<" + entityPackage + "." + childPascal + "> " + childCamel
+                        + "s = " + parentCamel + ".refer" + childPascal + "s();");
+                s.add(space + "            for (" + entityPackage + "." + childPascal + " " + childCamel + " : "
+                        + childCamel
+                        + "s) {");
+                if (childInfo.getChildInfos().size() > 0) {
+                    getDeleteChilds(s, childCamel, childInfo.getChildInfos(), indent + 1);
+                }
+                s.add("");
+                s.add(space + "                if (" + childCamel + ".delete() != 1) {");
+                s.add(space + "                    throw new OptLockError(\"error.cant.delete\");");
+                s.add(space + "                }");
+                s.add(space + "            }");
+            } else {
+                s.add(space + "            // child:" + childInfo.getTableName() + ", parents:"
+                        + childInfo.getParentInfos().size());
             }
         }
     }
