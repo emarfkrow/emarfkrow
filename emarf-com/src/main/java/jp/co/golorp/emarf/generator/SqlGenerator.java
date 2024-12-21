@@ -92,28 +92,22 @@ public final class SqlGenerator {
             referPairs.add(kv);
         }
         optionsKey = bundle.getString("BeanGenerator.options.paramkey");
-
         String tableName = tableInfo.getTableName();
         String entityName = StringUtil.toPascalCase(tableName);
         DataSourcesAssist assist = DataSources.getAssist();
-
         // 参照モデルの名称解決
         List<String> s = new ArrayList<String>();
         int i = 0;
         for (ColumnInfo columnInfo : tableInfo.getColumnInfos().values()) {
-
             // 参照元カラム名
             String srcColumnName = columnInfo.getColumnName();
-
             String sql = "    , ";
             if (s.size() == 0) {
                 s.add("SELECT");
                 sql = "      ";
             }
-
             String quoted = getQuoted(assist, columnInfo);
             s.add(sql + quoted);
-
             // 列の参照モデル情報
             TableInfo referInfo = columnInfo.getReferInfo();
             if (referInfo != null) {
