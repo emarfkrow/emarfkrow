@@ -1123,9 +1123,9 @@ public final class HtmlGenerator {
                 String destIdColumn = null;
                 String destMeiColumn = null;
                 for (String destColumnName : referInfo.getColumnInfos().keySet()) {
-                    if (srcIdColumn.matches("^.*" + destColumnName + "$")) {
+                    if (srcIdColumn.matches("(?i)^.*" + destColumnName + "$")) {
                         destIdColumn = destColumnName;
-                    } else if (srcMeiColumn.matches("^.*" + destColumnName + "$")) {
+                    } else if (srcMeiColumn.matches("(?i)^.*" + destColumnName + "$")) {
                         destMeiColumn = destColumnName;
                     }
                     if (destIdColumn != null && destMeiColumn != null) {
@@ -1180,9 +1180,9 @@ public final class HtmlGenerator {
                 String destIdColumn = null;
                 String destMeiColumn = null;
                 for (String destColumnName : referInfo.getColumnInfos().keySet()) {
-                    if (srcIdColumn.matches("^.*" + destColumnName + "$")) {
+                    if (srcIdColumn.matches("(?i)^.*" + destColumnName + "$")) {
                         destIdColumn = destColumnName;
-                    } else if (srcMeiColumn.matches("^.*" + destColumnName + "$")) {
+                    } else if (srcMeiColumn.matches("(?i)^.*" + destColumnName + "$")) {
                         destMeiColumn = destColumnName;
                     }
                 }

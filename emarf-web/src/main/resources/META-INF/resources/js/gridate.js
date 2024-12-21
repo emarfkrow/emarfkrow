@@ -618,8 +618,11 @@ var Gridate = {
 
         // ENTITY_NAME列の検査
         let tableName = null;
-        if (item[gridViewDetailColumn]) {
-            tableName = item[gridViewDetailColumn];
+        for (let columnName in item) {
+            if (columnName.toUpperCase() == gridViewDetailColumn.toUpperCase()) {
+                tableName = item[columnName];
+                break;
+            }
         }
 
         if (tableName == null) {
@@ -678,7 +681,7 @@ var Gridate = {
                 let k = Casing.toCamel(column.field);
                 let v = item[column.field];
 
-                if (!v) {
+                if (v == null) {
                     continue;
                 }
 

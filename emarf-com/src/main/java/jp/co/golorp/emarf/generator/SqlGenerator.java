@@ -135,9 +135,9 @@ public final class SqlGenerator {
                     String destIdColumn = null;
                     String destMeiColumn = null;
                     for (String destColumnName : referInfo.getColumnInfos().keySet()) {
-                        if (srcIdColumn.matches("^.*" + destColumnName + "$")) {
+                        if (srcIdColumn.matches("(?i)^.*" + destColumnName + "$")) {
                             destIdColumn = destColumnName;
-                        } else if (srcMeiColumn.matches("^.*" + destColumnName + "$")) {
+                        } else if (srcMeiColumn.matches("(?i)^.*" + destColumnName + "$")) {
                             destMeiColumn = destColumnName;
                         }
                     }
@@ -147,7 +147,14 @@ public final class SqlGenerator {
                     }
 
                     // 名称カラムがない場合はselect句に追加
-                    if (!tableInfo.getColumnInfos().containsKey(srcMeiColumn)) {
+                    boolean isContainsKey = false;
+                    for (String columnName : tableInfo.getColumnInfos().keySet()) {
+                        if (columnName.toUpperCase().equals(srcMeiColumn.toUpperCase())) {
+                            isContainsKey = true;
+                            break;
+                        }
+                    }
+                    if (!isContainsKey) {
                         String destColumnName = referInfo.getPrimaryKeys().get(0);
                         String destColumnMei = destColumnName.replaceAll("(?i)" + idSuffix + "$", meiSuffix);
                         String srcIdQuoted = assist.quotedSQL(srcIdColumn);

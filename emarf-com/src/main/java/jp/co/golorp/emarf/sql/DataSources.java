@@ -317,7 +317,7 @@ public final class DataSources {
                     if (remarks == null || remarks.length() == 0) {
                         remarks = assist.getColumnComment(tableInfo.getTableName(), columnName);
                     }
-                    if (remarks.contains(":")) {
+                    if (remarks != null && remarks.contains(":")) {
                         int i = remarks.indexOf(":");
                         remarks = remarks.substring(0, i);
                     }
