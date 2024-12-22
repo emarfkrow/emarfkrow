@@ -705,7 +705,8 @@ var Gridate = {
             }
 
             entityName = Casing.toPascal(tableName);
-            window.open('./' + entityName + '.html' + queryString, entityName + primaryKey, 'width=1024,height=768');
+            //別ウィンドウにするためwidth/heightを指定
+            window.open('./' + entityName + '.html' + queryString, entityName + primaryKey, 'width=' + window.outerWidth + 'px,height=' + window.outerHeight + '%');
         }
     },
 

@@ -840,7 +840,7 @@ public final class HtmlGenerator {
             } else if (isDetail && columnInfo.isNumbering()) {
                 // 編集画面の採番キーは表示項目
                 String tag = "          ";
-                tag += "<label for=\"" + fieldId + "\" th:text=\"#{" + fieldId + "}\">" + remarks + "</label>";
+                tag += "<label th:text=\"#{" + fieldId + "}\">" + remarks + "</label>";
                 tag += "<span id=\"" + fieldId + "\" class=\"primaryKey\"></span>";
                 tag += "<input type=\"hidden\" id=\"" + fieldId + "\" name=\"" + fieldId + "\" class=\"primaryKey\" />";
 
@@ -1088,7 +1088,7 @@ public final class HtmlGenerator {
     private static void htmlFieldsMeta(final List<String> s, final String id, final String remarks) {
 
         String tag = "          ";
-        tag += "<label for=\"" + id + "\" th:text=\"#{" + id + "}\">" + remarks + "</label>";
+        tag += "<label th:text=\"#{" + id + "}\">" + remarks + "</label>";
         tag += "<span id=\"" + id + "\"></span>";
         tag += "<input type=\"hidden\" id=\"" + id + "\" name=\"" + id + "\" />";
         s.add(tag);
