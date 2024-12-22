@@ -1169,6 +1169,9 @@ public final class BeanGenerator {
             }
             s.add("");
             s.add("        " + entityName + " e = FormValidator.toBean(" + entityName + ".class.getName(), postJson);");
+            List<TableInfo> childInfos = tableInfo.getChildInfos();
+            getDeleteChilds(s, "e", childInfos, 0);
+            s.add("");
             s.add("        if (e.delete() != 1) {");
             s.add("            throw new OptLockError(\"error.cant.delete\");");
             s.add("        }");
@@ -1455,7 +1458,7 @@ public final class BeanGenerator {
             s.add("");
             s.add("            " + pascal + " e = FormValidator.toBean(" + pascal + ".class.getName(), gridRow);");
             List<TableInfo> childInfos = tableInfo.getChildInfos();
-            getDeleteChilds(s, "e", childInfos, 0);
+            getDeleteChilds(s, "e", childInfos, 1);
             s.add("");
             s.add("            if (e.delete() != 1) {");
             s.add("                throw new OptLockError(\"error.cant.delete\");");
@@ -1496,11 +1499,11 @@ public final class BeanGenerator {
             String childPascal = StringUtil.toPascalCase(childInfo.getTableName());
             String childCamel = StringUtil.toCamelCase(childInfo.getTableName());
             if (childInfo.getParentInfos().size() == 1) {
-                s.add(space + "            java.util.List<" + entityPackage + "." + childPascal + "> " + childCamel
+                s.add(space + "        java.util.List<" + entityPackage + "." + childPascal + "> " + childCamel
                         + "s = " + parentCamel + ".refer" + childPascal + "s();");
+                s.add(space + "        if (" + childCamel + "s != null) {");
                 s.add(space + "            for (" + entityPackage + "." + childPascal + " " + childCamel + " : "
-                        + childCamel
-                        + "s) {");
+                        + childCamel + "s) {");
                 if (childInfo.getChildInfos().size() > 0) {
                     getDeleteChilds(s, childCamel, childInfo.getChildInfos(), indent + 1);
                 }
@@ -1509,6 +1512,7 @@ public final class BeanGenerator {
                 s.add(space + "                    throw new OptLockError(\"error.cant.delete\");");
                 s.add(space + "                }");
                 s.add(space + "            }");
+                s.add(space + "        }");
             } else {
                 s.add(space + "            // child:" + childInfo.getTableName() + ", parents:"
                         + childInfo.getParentInfos().size());
