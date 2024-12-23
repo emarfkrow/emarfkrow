@@ -596,10 +596,10 @@ public final class HtmlGenerator {
                     // カラム名がキー接尾辞に合致する場合
                     if (columnName.matches("(?i).+" + keySuffix + "$")) {
                         // カラム名の末尾を名称列サフィックスに変換
-                        String tempMei = columnName.replaceAll("(?i)" + keySuffix + "$", meiSuffix);
+                        String tempMei = columnName.replaceAll("(?i)" + keySuffix + "$", meiSuffix).toUpperCase();
                         // 名称列が参照先テーブルに含まれている場合は、取得する名称を決定する
                         for (ColumnInfo referColumnInfo : referInfo.getColumnInfos().values()) {
-                            if (tempMei.endsWith(referColumnInfo.getColumnName())) {
+                            if (tempMei.matches("(?i).*" + referColumnInfo.getColumnName() + "$")) {
                                 referMei = tempMei;
                                 break;
                             }

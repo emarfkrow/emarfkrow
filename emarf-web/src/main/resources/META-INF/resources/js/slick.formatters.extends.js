@@ -59,13 +59,10 @@ limitations under the License.
     }
 
     function DeleteButtonFormatter(row, cell, value, columnDef, dataContext) {
-        if (dataContext[gridOpeVisibleColumn]) {
-            if (columnDef.label) {
-                return '<input type="button" value="' + columnDef.label + '" class="gridButton gridDelete" />';
-            }
-            return '<input type="button" value="' + columnDef.name + '" class="gridButton gridDelete" />';
+        if (columnDef.label) {
+            return '<input type="button" value="' + columnDef.label + '" class="gridButton gridDelete" />';
         }
-        return null;
+        return '<input type="button" value="' + columnDef.name + '" class="gridButton gridDelete" />';
     }
 
     function DateFormatter(row, cell, value, columnDef, dataContext) {

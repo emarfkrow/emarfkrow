@@ -123,7 +123,7 @@ public final class SqlGenerator {
 
                     // カラム名のIDサフィックスを名称サフィックスに置換して名称カラム名を取得
                     String srcIdColumn = srcColumnName;
-                    String srcMeiColumn = srcIdColumn.replaceAll("(?i)" + idSuffix + "$", meiSuffix);
+                    String srcMeiColumn = srcIdColumn.replaceAll("(?i)" + idSuffix + "$", meiSuffix).toUpperCase();
 
                     // 参照先テーブルの全カラム名を確認して、末尾が合致するカラム名を、参照先のID・名称カラム名として取得
                     String destIdColumn = null;
@@ -135,7 +135,6 @@ public final class SqlGenerator {
                             destMeiColumn = destColumnName;
                         }
                     }
-
                     if (destIdColumn == null || destMeiColumn == null) {
                         continue;
                     }
@@ -150,7 +149,8 @@ public final class SqlGenerator {
                     }
                     if (!isContainsKey) {
                         String destColumnName = referInfo.getPrimaryKeys().get(0);
-                        String destColumnMei = destColumnName.replaceAll("(?i)" + idSuffix + "$", meiSuffix);
+                        String destColumnMei = destColumnName.replaceAll("(?i)" + idSuffix + "$", meiSuffix)
+                                .toUpperCase();
                         String srcIdQuoted = assist.quotedSQL(srcIdColumn);
                         String srcMeiQuoted = assist.quotedSQL(srcMeiColumn);
                         String destIdQuoted = assist.quotedSQL(destColumnName);

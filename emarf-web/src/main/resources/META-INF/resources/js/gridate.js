@@ -291,10 +291,20 @@ $(function() {
             //				grid.onBeforeHeaderRowCellDestroy.subscribe(function(a, b, c, d, e, f, g) { });
             //				grid.onBeforeSetColumns.subscribe(function(a, b, c, d, e, f, g) { });
             //				grid.onBeforeSort.subscribe(function(a, b, c, d, e, f, g) { });
-            //				grid.onCellChange.subscribe(function(e, args) {
-            //					console.debug(e);
-            //					console.debug(args);
-            //				});
+            grid.onCellChange.subscribe(function(e, args) {
+                let cell = args.cell;
+                let column = args.column;
+                let command = args.command;
+                let grid = args.grid;
+                let item = args.item;
+                let row = args.row;
+                let field = args.column.field;
+                if (field.toUpperCase() == gridOpeEffectColumn.toUpperCase()) {
+                    console.log(e);
+                    console.log(args);
+                    $(grid.getActiveCellNode()).closest('form').prop('name');
+                }
+            });
             //				grid.onCellCssStylesChanged.subscribe(function(a, b, c, d, e, f, g) { });
             grid.onClick.subscribe(function(e, args) {
 
@@ -392,25 +402,31 @@ $(function() {
                                 return;
                             }
 
-                            let postJson = {};
-                            for (let i in g.getColumns()) {
-                                let column = g.getColumns()[i];
-                                if (!column.cssClass || column.cssClass.indexOf('primaryKey') < 0) {
-                                    continue;
+                            if (dataItem.isNew) {
+                                //未登録なら画面上で消去
+                                dataView.deleteItem(dataItem.id);
+                            } else {
+                                //登録済みなら物理削除
+                                let postJson = {};
+                                for (let i in g.getColumns()) {
+                                    let column = g.getColumns()[i];
+                                    if (!column.cssClass || column.cssClass.indexOf('primaryKey') < 0) {
+                                        continue;
+                                    }
+                                    let v = dataItem[column.field];
+                                    postJson[column.id] = v;
                                 }
-                                let v = dataItem[column.field];
-                                postJson[column.id] = v;
-                            }
 
-                            Ajaxize.ajaxPost(entityName + 'Delete.ajax', postJson, function(data) {
-                                var dataView = g.getData();
-                                let dataItems = dataView.getItems();
-                                dataItems.splice(r, 1);
-                                //g.invalidate();
-                                dataView.beginUpdate();
-                                dataView.setItems(dataItems);
-                                dataView.endUpdate();
-                            });
+                                Ajaxize.ajaxPost(entityName + 'Delete.ajax', postJson, function(data) {
+                                    var dataView = g.getData();
+                                    let dataItems = dataView.getItems();
+                                    dataItems.splice(r, 1);
+                                    //g.invalidate();
+                                    dataView.beginUpdate();
+                                    dataView.setItems(dataItems);
+                                    dataView.endUpdate();
+                                });
+                            }
                         }
 
                     } else {

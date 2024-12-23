@@ -68,11 +68,13 @@ limitations under the License.
 	let searchOptionsSize = 0;
 	let detailOptionsSize = 0;
 	let gridOpeVisibleColumn = null;
+	let gridOpeEffectColumn = null;
 	let gridViewDetailColumn = null;
 	$(function() {
 		searchOptionsSize = $('[name="searchOptionsSize"]').val();
 		detailOptionsSize = $('[name="detailOptionsSize"]').val();
 		gridOpeVisibleColumn = $('[name="gridOpeVisibleColumn"]').val();
+		gridOpeEffectColumn = $('[name="gridOpeEffectColumn"]').val();
 		gridViewDetailColumn = $('[name="gridViewDetailColumn"]').val();
 	});
 </script>
@@ -101,6 +103,7 @@ limitations under the License.
   <input type="hidden" name="searchOptionsSize" th:value="#{options.size.search}" />
   <input type="hidden" name="detailOptionsSize" th:value="#{options.size.detail}" />
   <input type="hidden" name="gridOpeVisibleColumn" th:value="#{grid.ope.visible.column}" />
+  <input type="hidden" name="gridOpeEffectColumn" th:value="#{grid.ope.effect.column}" />
   <input type="hidden" name="gridViewDetailColumn" th:value="#{grid.view.detail.column}" />
   <script th:src="@{/js/loading.js}"></script>
   <div layout:replace="~{common/header::header}"></div>

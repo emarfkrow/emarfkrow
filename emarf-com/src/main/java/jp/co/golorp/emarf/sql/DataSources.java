@@ -841,45 +841,42 @@ public final class DataSources {
     }
 
     /**
-     * 参照先のマスタテーブルから、植え付け先を探す
+     * マスタテーブル（参照先）から、植え付け先（参照元）を探す
      * @param tableInfos テーブル情報のリスト
      */
     private static void addReferTable(final List<TableInfo> tableInfos) {
 
         // 参照IDサフィックスと参照名称サフィックスの組み合わせでループ（定義した順に優先）
         for (String[] referPair : referPairs) {
-            String referIdSuffix = referPair[0];
+            String referKeySuffix = referPair[0];
             String referMeiSuffix = referPair[1];
 
-            // 比較元テーブル（参照先マスタ）情報でループ
+            // 比較元テーブル情報でループ（マスタ候補）
             Iterator<TableInfo> srcIterator = tableInfos.iterator();
             while (srcIterator.hasNext()) {
-                TableInfo srcInfo = srcIterator.next();
+                TableInfo master = srcIterator.next();
 
                 // 他のテーブルの弟ならスキップ
-                if (srcInfo.isBrother()) {
+                if (master.isBrother()) {
                     continue;
                 }
 
                 // 複合キーならスキップ
-                if (srcInfo.getPrimaryKeys().size() != 1) {
+                if (master.getPrimaryKeys().size() != 1) {
                     continue;
                 }
 
                 // ユニークキーが参照キーの何れにも合致しなければスキップ
-                String srcId = srcInfo.getPrimaryKeys().get(0);
-                if (!StringUtil.endsWithIgnoreCase(referIdSuffix, srcId)) {
+                String uniqueKey = master.getPrimaryKeys().get(0);
+                if (!StringUtil.endsWithIgnoreCase(referKeySuffix, uniqueKey)) {
                     continue;
                 }
 
                 // 参照名称サフィックスに合致するカラムがなければスキップ
-                String srcMei = srcId.replaceAll("(?i)" + referIdSuffix + "$", referMeiSuffix);
-                //                if (!srcInfo.getColumnInfos().containsKey(srcMei)) {
-                //                    continue;
-                //                }
+                String referMei = uniqueKey.replaceAll("(?i)" + referKeySuffix + "$", referMeiSuffix);
                 boolean b = false;
-                for (String k : srcInfo.getColumnInfos().keySet()) {
-                    if (k.matches("(?i)^" + srcMei + "$")) {
+                for (String k : master.getColumnInfos().keySet()) {
+                    if (k.matches("(?i)^" + referMei + "$")) {
                         b = true;
                         break;
                     }
@@ -889,7 +886,7 @@ public final class DataSources {
                 }
 
                 // 参照マスタのユニークキー情報
-                ColumnInfo srcIdInfo = srcInfo.getColumnInfos().get(srcId);
+                ColumnInfo uniqueKeyInfo = master.getColumnInfos().get(uniqueKey);
 
                 /*
                  * 比較先（参照元テーブル）の探索
@@ -898,7 +895,7 @@ public final class DataSources {
                 // テーブル情報でループ（比較先）
                 Iterator<TableInfo> destIterator = tableInfos.iterator();
                 while (destIterator.hasNext()) {
-                    TableInfo destInfo = destIterator.next();
+                    TableInfo table = destIterator.next();
 
                     // マスタ系が悉く参照モデルでなくなるので廃止
                     //                    // 比較先自体が参照マスタならスキップ
@@ -922,40 +919,45 @@ public final class DataSources {
                     //                    }
 
                     // 比較先のカラム情報でループして比較元のユニークキーがあれば参照テーブルリストに追加
-                    for (Entry<String, ColumnInfo> destColumnInfos : destInfo.getColumnInfos().entrySet()) {
-                        String destColumnName = destColumnInfos.getKey();
-                        ColumnInfo destColumnInfo = destColumnInfos.getValue();
+                    for (Entry<String, ColumnInfo> columnInfos : table.getColumnInfos().entrySet()) {
+                        String columnName = columnInfos.getKey();
+                        ColumnInfo columnInfo = columnInfos.getValue();
 
                         // 比較先がユニークキーで、弟に設定しないテーブルならスキップ
-                        if (destColumnInfo.isPk() && destInfo.getPrimaryKeys().size() == 1) {
-                            if (destInfo.getTableName().matches(eldestRe)) {
+                        if (columnInfo.isPk() && table.getPrimaryKeys().size() == 1) {
+                            if (table.getTableName().matches(eldestRe)) {
                                 continue;
                             }
                         }
 
                         // 参照テーブル自体の主キー同士ならスキップ
-                        if (destInfo == srcInfo && destColumnInfo == srcIdInfo) {
+                        if (table == master && columnInfo == uniqueKeyInfo) {
                             continue;
                         }
 
                         // データ型が異なるならスキップ
-                        if (!destColumnInfo.getTypeName().equals(srcIdInfo.getTypeName())) {
+                        if (!columnInfo.getTypeName().equals(uniqueKeyInfo.getTypeName())) {
                             continue;
                         }
 
                         // データサイズが異なるならスキップ
-                        if (destColumnInfo.getColumnSize() != srcIdInfo.getColumnSize()) {
+                        if (columnInfo.getColumnSize() != uniqueKeyInfo.getColumnSize()) {
                             continue;
                         }
 
                         // 小数桁数が異なるならスキップ
-                        if (destColumnInfo.getDecimalDigits() != srcIdInfo.getDecimalDigits()) {
+                        if (columnInfo.getDecimalDigits() != uniqueKeyInfo.getDecimalDigits()) {
                             continue;
                         }
 
                         // 比較先カラム名の末尾が比較元カラム名と合致していて、参照モデルが登録済みでなければ、比較元を参照モデルに設定
-                        if (destColumnName.endsWith(srcId) && destColumnInfo.getReferInfo() == null) {
-                            destColumnInfo.setReferInfo(srcInfo);
+                        if (columnName.matches("(?i)^.*" + uniqueKey + "$") && columnInfo.getReferInfo() == null) {
+                            columnInfo.setReferInfo(master);
+                            //最終キーなら採番フラグオフ
+                            if (table.getPrimaryKeys().size() > 1 && columnInfo.getColumnName()
+                                    .equals(table.getPrimaryKeys().get(table.getPrimaryKeys().size() - 1))) {
+                                columnInfo.setNumbering(false);
+                            }
                         }
                     }
                 }
