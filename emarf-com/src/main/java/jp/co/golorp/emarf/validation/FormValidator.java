@@ -25,13 +25,14 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import jp.co.golorp.emarf.entity.IEntity;
 import jp.co.golorp.emarf.exception.SysError;
 import jp.co.golorp.emarf.lang.StringUtil;
@@ -157,7 +158,7 @@ public final class FormValidator {
      * @return 指定クラスのインスタンス
      */
     public static <T> T toBean(final String className, final Map<String, Object> postJson) {
-        return toBean(className, postJson, false);
+        return toBean(className, postJson, false, false);
     }
 
     /**
@@ -168,26 +169,26 @@ public final class FormValidator {
      * @return 指定クラスのインスタンス
      */
     public static <T> T toGridForm(final String className, final Map<String, Object> postJson) {
-        return toBean(className, postJson, true);
+        return toBean(className, postJson, true, false);
     }
 
     /**
      * マップをインスタンス化
      * @param <T> 返却クラス
-     * @param className クラス名
+     * @param className jsonを変換するクラス名
      * @param postJson 送信値のマップ
      * @param isGrid グリッドフォームならtrue
+     * @param isNested 兄弟モデルの無限ループ防止
      * @return 指定クラスのインスタンス
      */
-    public static <T> T toBean(final String className, final Map<String, Object> postJson, final boolean isGrid) {
+    private static <T> T toBean(final String className, final Map<String, Object> postJson, final boolean isGrid,
+            final boolean isNested) {
 
-        // クラスを取得
+        // 変換後のフォームクラスインスタンスを取得
         Class<?> clazz = forNameIf(className);
         if (clazz == null) {
             return null;
         }
-
-        // インスタンス取得
         Object o = null;
         try {
             o = clazz.getDeclaredConstructor().newInstance();
@@ -195,11 +196,9 @@ public final class FormValidator {
             throw new SysError(e);
         }
 
-        // Formインスタンスのプロパティでループ
+        // フォームクラスインスタンスのセッターでループ
         Method[] methods = clazz.getMethods();
         for (Method method : methods) {
-
-            // セッターでなければスキップ
             String methodName = method.getName();
             if (!methodName.startsWith("set")) {
                 continue;
@@ -210,10 +209,12 @@ public final class FormValidator {
 
             Class<?>[] parameterTypes = method.getParameterTypes();
             Class<?>[] interfaces = parameterTypes[0].getInterfaces();
-            if (interfaces.length > 0 && (interfaces[0] == IEntity.class || interfaces[0] == IForm.class) && !isGrid) {
+            if (!isGrid && !isNested && interfaces.length > 0
+                    && (interfaces[0] == IEntity.class || interfaces[0] == IForm.class)) {
 
+                //Gridフォームなく、ネスト済でなく、EntityインタフェースかFormインタフェースを持つ場合はネスト
                 String nestName = parameterTypes[0].getName();
-                value = toBean(nestName, postJson, false);
+                value = toBean(nestName, postJson, false, true);
 
             } else {
 
@@ -222,13 +223,11 @@ public final class FormValidator {
 
                 // 送信値をfieldNameで取得してみる
                 value = postJson.get(fieldName);
-
                 // entityName付きでも取得してみる
                 if (value == null) {
                     String entityName = clazz.getSimpleName().replaceAll("RegistForm$", "");
                     value = postJson.get(entityName + "." + fieldName);
                 }
-
                 // 他のエンティティで同名のfieldNameで取得してみる（兄弟モデルの主キー用）
                 if (value == null) {
                     for (Entry<String, Object> e : postJson.entrySet()) {
@@ -240,32 +239,26 @@ public final class FormValidator {
                         }
                     }
                 }
-
                 // パスカルでも取得してみる（グリッド本体用）
                 if (value == null) {
                     value = postJson.get(StringUtil.toPascalCase(fieldName));
                 }
-
                 // 最後の「s」を「Grid」にしたパスカルでも取得してみる（カスタムフォームのグリッド本体用）
                 if (value == null) {
                     value = postJson.get(StringUtil.toPascalCase(fieldName).replaceAll("s$", "Grid"));
                 }
-
                 // アッパーでも取得してみる（グリッド行用）
                 if (value == null) {
                     value = postJson.get(StringUtil.toUpperCase(fieldName));
                 }
-
                 // 数字の前の「_」を消して、アッパーでも取得してみる（グリッド行用）
                 if (value == null) {
                     value = postJson.get(StringUtil.toUpperCase(fieldName).replaceAll("\\_([0-9]+)", "$1"));
                 }
-
                 // ケバブでも取得してみる（グリッド行用）
                 if (value == null) {
                     value = postJson.get(StringUtil.toKebabCase(fieldName));
                 }
-
                 // アッパーケバブでも取得してみる（グリッド行用）
                 if (value == null) {
                     value = postJson.get(StringUtil.toUpperKebabCase(fieldName));
@@ -277,6 +270,11 @@ public final class FormValidator {
 
                 if (value instanceof List) {
                     // 送信値がListの場合
+
+                    // 兄弟モデルには子モデルを付けない
+                    if (isNested) {
+                        continue;
+                    }
 
                     List<?> list = (List<?>) value;
                     if (list.size() > 0 && list.get(0) instanceof Map) {

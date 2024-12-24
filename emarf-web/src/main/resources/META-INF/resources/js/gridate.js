@@ -39,6 +39,57 @@ $(function() {
         //        }
     });
 
+    if (gridOpeEffectColumn != null) {
+
+        let camel = Casing.toCamel(gridOpeEffectColumn);
+        let upper = gridOpeEffectColumn.toUpperCase();
+
+        /* 削除フラグの反映 */
+        $(document).on('change', '.article>form.regist>fieldset>div#' + camel + ' [name$="' + camel + '"]', function(a, b, c, d, e) {
+
+            let checked = $(this).prop('checked');
+
+            let $form = $(this).closest('form');
+
+            if ($form.find('[name$="' + camel + '"]')[0] == this) {
+                //一番目の項目の場合
+
+                //兄弟モデルに反映
+                $form.find('[name$="' + camel + '"]').prop('checked', checked);
+
+                //子モデルに反映
+                let $grids = $form.children('[id$="Grid"]');
+                for (let i = 0; i < $grids.length; i++) {
+                    if ($($grids[i]).prop('id')) {
+                        let gridId = $($grids[i]).prop('id');
+                        let grid = Gridate.grids[gridId];
+                        var dataView = grid.getData();
+                        let data = dataView.getItems();
+                        for (let r in data) {
+                            let row = data[r];
+                            for (let columnName in row) {
+                                if (columnName == upper) {
+                                    row[upper] = checked * 1;
+                                }
+                            }
+                        }
+                        dataView.beginUpdate();
+                        dataView.setItems(data);
+                        dataView.endUpdate();
+                        grid.invalidate();
+                    }
+                }
+            } else {
+                //二番目以降の項目の場合
+
+                //外した場合は一番目も外す
+                if (!checked) {
+                    $($form.find('[name$="' + camel + '"]')[0]).prop('checked', checked);
+                }
+            }
+        });
+    }
+
     Base.loaded(function() {
 
         // グリッドごとにループ
@@ -299,10 +350,15 @@ $(function() {
                 let item = args.item;
                 let row = args.row;
                 let field = args.column.field;
-                if (field.toUpperCase() == gridOpeEffectColumn.toUpperCase()) {
-                    console.log(e);
-                    console.log(args);
-                    $(grid.getActiveCellNode()).closest('form').prop('name');
+                if (gridOpeEffectColumn != null) {
+                    let camel = Casing.toCamel(gridOpeEffectColumn);
+                    let upper = gridOpeEffectColumn.toUpperCase();
+                    if (field.toUpperCase() == upper) {
+                        let val = item[upper];
+                        if (!val) {
+                            $($(grid.getActiveCellNode()).closest('form').find('[name$="' + camel + '"]')[0]).prop('checked', false);
+                        }
+                    }
                 }
             });
             //				grid.onCellCssStylesChanged.subscribe(function(a, b, c, d, e, f, g) { });

@@ -80,6 +80,7 @@ $(function() {
     if ($searchForm.length == 0 && $registForm.length > 0) {
         let querystrings = {};
         for (let k in Base.querystrings) {
+            // 「$」区切りのパラメータがもしあれば、各名称に分割（UNIONしたVIEWの対応）
             if (k.lastIndexOf('$') >= 0) {
                 let ks = k.split('$');
                 for (let i = 0; i < ks.length; i++) {
@@ -258,7 +259,9 @@ let Base = {
                 //                    }
                 //                }
                 if (gamenId.match('^' + gamenNm + '$')) {
-                    authz = authzInfo[gamenNm];
+                    if (authz < authzInfo[gamenNm]) {
+                        authz = authzInfo[gamenNm];
+                    }
                 }
             }
         }

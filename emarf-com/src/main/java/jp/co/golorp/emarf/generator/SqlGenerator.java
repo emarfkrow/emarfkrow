@@ -91,7 +91,7 @@ public final class SqlGenerator {
             String[] kv = pair.split(":");
             referPairs.add(kv);
         }
-        optionsKey = bundle.getString("BeanGenerator.options.paramkey");
+        optionsKey = bundle.getString("BeanGenerator.options.paramkey").toUpperCase();
         String tableName = tableInfo.getTableName();
         String entityName = StringUtil.toPascalCase(tableName);
         DataSourcesAssist assist = DataSources.getAssist();
@@ -185,7 +185,7 @@ public final class SqlGenerator {
                 // 文字列はTRIMして部分一致検索
                 String quoteEscaped = assist.quotedSQL(columnName);
                 String trimed = assist.trimedSQL("a." + quoteEscaped);
-                if (columnName.toLowerCase().equals(optionsKey.toLowerCase())) {
+                if (columnName.toUpperCase().equals(optionsKey)) {
                     //参照キーの場合は後方一致で出力
                     String[] array = new String[] { "'%'", trimed };
                     s.add("    AND " + rightHand + " LIKE " + assist.joinedSQL(array) + " ");

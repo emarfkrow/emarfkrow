@@ -23,4 +23,9 @@ package jp.co.golorp.emarf.sql;
  */
 public final class DataSourcesAssistTibero extends DataSourcesAssistOracle {
 
+    @Override
+    public String toDateSQL(final String s) {
+        return s;
+    }
+
 }

@@ -127,9 +127,9 @@ public final class HtmlGenerator {
 
         optionsSuffixs = bundle.getString("BeanGenerator.options.suffixs").split(",");
         json = bundle.getString("BeanGenerator.options.json");
-        optP = bundle.getString("BeanGenerator.options.paramkey");
-        optV = bundle.getString("BeanGenerator.options.value");
-        optL = bundle.getString("BeanGenerator.options.label");
+        optP = bundle.getString("BeanGenerator.options.paramkey").toUpperCase();
+        optV = bundle.getString("BeanGenerator.options.value").toUpperCase();
+        optL = bundle.getString("BeanGenerator.options.label").toUpperCase();
 
         textareaSuffixs = bundle.getString("BeanGenerator.textarea.suffixs").split(",");
 
