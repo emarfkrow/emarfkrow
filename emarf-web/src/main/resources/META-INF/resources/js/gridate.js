@@ -371,34 +371,11 @@ $(function() {
                 let g = args.grid;
 
                 let dataItem = g.getDataItem(r);
-                if (!dataItem || dataItem.isNew) {
-                    //新規行の場合
 
-                    //採番キーなら非活性
-                    if ($clicked.hasClass('numbering')) {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        e.stopImmediatePropagation();
-                    }
-
-                } else {
-                    //既存データの場合
-
-                    //主キーとユニークキーは非活性
-                    if ($clicked.hasClass('primaryKey') || $clicked.hasClass('uniqueKey')) {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        e.stopImmediatePropagation();
-                    }
-
-                    //ステータス区分列なら非活性
-                    if (grid.getColumns()[c].field == gridOpeReadonlyColumn) {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        e.stopImmediatePropagation();
-                    }
-
-                    //ステータス区分が「1」以上なら非活性
+                if (Gridate.isReadonly($clicked, dataItem, grid, r, c)) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    e.stopImmediatePropagation();
                 }
 
                 if ($clicked.hasClass('gridButton')) {
@@ -551,10 +528,22 @@ $(function() {
             //				grid.onColumnsResized.subscribe(function(a, b, c, d, e, f, g) { });
             //				grid.onCompositeEditorChange.subscribe(function(a, b, c, d, e, f, g) { });
             //				grid.onContextMenu.subscribe(function(a, b, c, d, e, f, g) { });
-            //				grid.onDblClick.subscribe(function(e, args) {
-            //					console.debug(e);
-            //					console.debug(args);
-            //				});
+            grid.onDblClick.subscribe(function(e, args) {
+
+                let $clicked = $(e.target);
+
+                let r = args.row;
+                let c = args.cell;
+                let g = args.grid;
+
+                let dataItem = g.getDataItem(r);
+
+                if (Gridate.isReadonly($clicked, dataItem, grid, r, c)) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    e.stopImmediatePropagation();
+                }
+            });
             //				grid.onDrag.subscribe(function(a, b, c, d, e, f, g) { });
             //				grid.onDragEnd.subscribe(function(a, b, c, d, e, f, g) { });
             //				grid.onDragInit.subscribe(function(a, b, c, d, e, f, g) { });
@@ -789,6 +778,46 @@ var Gridate = {
             //別ウィンドウにするためwidth/heightを指定
             window.open('./' + entityName + '.html' + queryString, entityName + primaryKey, 'width=' + window.outerWidth + 'px,height=' + window.outerHeight + '%');
         }
+    },
+
+    /**
+     * 読み取り専用セルか評価
+     * @param $clicked
+     * @param dataItem
+     * @param grid
+     * @param r
+     * @param c
+     */
+    isReadonly: function($clicked, dataItem, grid, r, c) {
+
+        //ステータス区分列なら非活性
+        if (grid.getColumns()[c].field == gridOpeReadonlyColumn) {
+            return true;
+        }
+
+        if (!dataItem || dataItem.isNew) {
+            //新規行の場合
+
+            //採番キーなら非活性
+            if ($clicked.hasClass('numbering')) {
+                return true;
+            }
+
+        } else {
+            //既存データの場合
+
+            //主キーとユニークキーは非活性
+            if ($clicked.hasClass('primaryKey') || $clicked.hasClass('uniqueKey')) {
+                return true;
+            }
+
+            //ステータス区分が「1」以上なら非活性
+            if (dataItem[gridOpeReadonlyColumn] >= 1) {
+                return true;
+            }
+        }
+
+        return false;
     },
 
 };
