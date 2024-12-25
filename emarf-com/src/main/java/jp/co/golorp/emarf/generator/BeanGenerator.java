@@ -23,8 +23,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.ResourceBundle;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javax.tools.JavaCompiler;
 import javax.tools.ToolProvider;
@@ -59,9 +57,6 @@ public final class BeanGenerator {
     /** コンパイルまでするか */
     private static boolean isCompile;
 
-    /** validサフィックス */
-    private static List<String> validSuffixs;
-
     /** 必須CHAR列の指定 */
     private static String charNotNullRe;
     /** 非必須INT列の指定 */
@@ -86,7 +81,6 @@ public final class BeanGenerator {
     private static String[] inputDateTimeSuffixs;
     /** タイムスタンプサフィックス */
     private static String[] inputTimestampSuffixs;
-
     /** フラグサフィックス */
     private static String[] inputFlagSuffixs;
     /** ファイルサフィックス */
@@ -100,8 +94,6 @@ public final class BeanGenerator {
     private static String entityPackage;
     /** actionパッケージ */
     private static String actionPackage;
-    /** formパッケージ */
-    private static String formPackage;
 
     /** プライベートコンストラクタ */
     private BeanGenerator() {
@@ -118,23 +110,12 @@ public final class BeanGenerator {
         //プロジェクトディレクトリを退避
         projectDir = dir;
 
-        /*
-         * BeanGenerator.properties読み込み
-         */
-
+        // BeanGenerator.properties読み込み
         bundle = ResourceBundles.getBundle(BeanGenerator.class);
 
         //webからの自動生成ならコンパイルまで行う
         if (App.get("EmarfListener.autogenerate") != null) {
             isCompile = App.get("EmarfListener.autogenerate").toLowerCase().equals("true");
-        }
-
-        //validator正規表現の接尾辞を取得
-        validSuffixs = new ArrayList<String>();
-        for (String key : bundle.keySet()) {
-            if (key.startsWith("BeanGenerator.valid.")) {
-                validSuffixs.add(key.replaceFirst("BeanGenerator.valid.", ""));
-            }
         }
 
         //NOTNULLで必須項目として扱うCHARの列名リスト（ホストの△対応）
@@ -160,7 +141,6 @@ public final class BeanGenerator {
         javaPath = bundle.getString("BeanGenerator.java.path");
         entityPackage = bundle.getString("BeanGenerator.java.package.entity");
         actionPackage = bundle.getString("BeanGenerator.java.package.action");
-        formPackage = bundle.getString("BeanGenerator.java.package.form");
 
         /*
          * 出力フォルダ再作成
@@ -176,11 +156,6 @@ public final class BeanGenerator {
         String actionPackageDir = projectDir + File.separator + javaPath + File.separator + actionPackagePath;
         FileUtil.reMkDir(actionPackageDir);
 
-        //フォームフォルダ
-        String formPackagePath = formPackage.replace(".", File.separator);
-        String formPackageDir = projectDir + File.separator + javaPath + File.separator + formPackagePath;
-        FileUtil.reMkDir(formPackageDir);
-
         /*
          * データベースから自動生成
          */
@@ -191,16 +166,19 @@ public final class BeanGenerator {
         //エンティティクラス
         BeanGenerator.javaEntity(tableInfos);
 
-        //アクションクラス
+        //詳細画面アクションクラス
         BeanGenerator.javaActionDetailGet(tableInfos);
         BeanGenerator.javaActionDetailDelete(tableInfos);
         BeanGenerator.javaActionDetailRegist(tableInfos);
-        BeanGenerator.javaActionIndexRegist(tableInfos);
+
+        //検索画面アクションクラス
         BeanGenerator.javaActionIndexDelete(tableInfos);
+        BeanGenerator.javaActionIndexRegist(tableInfos);
+        BeanGenerator.javaActionIndexPermit(tableInfos);
+        BeanGenerator.javaActionIndexForbid(tableInfos);
 
         //フォームクラス
-        BeanGenerator.javaFormDetailRegist(tableInfos);
-        BeanGenerator.javaFormIndexRegist(tableInfos);
+        FormGenerator.generate(projectDir, tableInfos);
 
         //HTMLファイル
         HtmlGenerator.generate(projectDir, tableInfos);
@@ -1433,15 +1411,11 @@ public final class BeanGenerator {
             s.add("");
             s.add("        Map<String, Object> map = new HashMap<String, Object>();");
             s.add("");
+            s.add("        int count = 0;");
+            s.add("");
             s.add("        @SuppressWarnings(\"unchecked\")");
             s.add("        List<Map<String, Object>> gridData = (List<Map<String, Object>>) postJson.get(\"" + pascal
                     + "Grid\");");
-            s.add("");
-            s.add("        if (gridData.size() == 0) {");
-            s.add("            map.put(\"ERROR\", Messages.get(\"error.nopost\"));");
-            s.add("            return map;");
-            s.add("        }");
-            s.add("");
             s.add("        for (Map<String, Object> gridRow : gridData) {");
             s.add("");
             s.add("            if (gridRow.isEmpty()) {");
@@ -1463,6 +1437,12 @@ public final class BeanGenerator {
             s.add("            if (e.delete() != 1) {");
             s.add("                throw new OptLockError(\"error.cant.delete\");");
             s.add("            }");
+            s.add("            ++count;");
+            s.add("        }");
+            s.add("");
+            s.add("        if (count == 0) {");
+            s.add("            map.put(\"ERROR\", Messages.get(\"error.nopost\"));");
+            s.add("            return map;");
             s.add("        }");
             s.add("");
             s.add("        map.put(\"INFO\", Messages.get(\"info.delete\"));");
@@ -1495,17 +1475,18 @@ public final class BeanGenerator {
             final List<TableInfo> childInfos, final int indent) {
         String space = "    ".repeat(indent);
         for (TableInfo childInfo : childInfos) {
-            s.add("");
             String childPascal = StringUtil.toPascalCase(childInfo.getTableName());
             String childCamel = StringUtil.toCamelCase(childInfo.getTableName());
+            s.add("");
             if (childInfo.getParentInfos().size() == 1) {
-                s.add(space + "        java.util.List<" + entityPackage + "." + childPascal + "> " + childCamel
-                        + "s = " + parentCamel + ".refer" + childPascal + "s();");
+                s.add(space + "        java.util.List<" + entityPackage + "." + childPascal + "> " + childCamel + "s = "
+                        + parentCamel + ".refer" + childPascal + "s();");
                 s.add(space + "        if (" + childCamel + "s != null) {");
                 s.add(space + "            for (" + entityPackage + "." + childPascal + " " + childCamel + " : "
                         + childCamel + "s) {");
                 if (childInfo.getChildInfos().size() > 0) {
-                    getDeleteChilds(s, childCamel, childInfo.getChildInfos(), indent + 1);
+                    // forでもう一段降りているから「+2」
+                    getDeleteChilds(s, childCamel, childInfo.getChildInfos(), indent + 2);
                 }
                 s.add("");
                 s.add(space + "                if (" + childCamel + ".delete() != 1) {");
@@ -1514,7 +1495,7 @@ public final class BeanGenerator {
                 s.add(space + "            }");
                 s.add(space + "        }");
             } else {
-                s.add(space + "            // child:" + childInfo.getTableName() + ", parents:"
+                s.add(space + "        // child:" + childInfo.getTableName() + ", parents:"
                         + childInfo.getParentInfos().size());
             }
         }
@@ -1565,15 +1546,11 @@ public final class BeanGenerator {
             s.add("");
             s.add("        Map<String, Object> map = new HashMap<String, Object>();");
             s.add("");
+            s.add("        int count = 0;");
+            s.add("");
             s.add("        @SuppressWarnings(\"unchecked\")");
             s.add("        List<Map<String, Object>> gridData = (List<Map<String, Object>>) postJson.get(\"" + entity
                     + "Grid\");");
-            s.add("");
-            s.add("        if (gridData.size() == 0) {");
-            s.add("            map.put(\"ERROR\", Messages.get(\"error.nopost\"));");
-            s.add("            return map;");
-            s.add("        }");
-            s.add("");
             s.add("        for (Map<String, Object> gridRow : gridData) {");
             s.add("");
             s.add("            if (gridRow.isEmpty()) {");
@@ -1604,13 +1581,20 @@ public final class BeanGenerator {
             s.add("                if (e.insert(now, execId) != 1) {");
             s.add("                    throw new OptLockError(\"error.cant.insert\");");
             s.add("                }");
+            s.add("                ++count;");
             s.add("");
             s.add("            } else {");
             s.add("");
             s.add("                if (e.update(now, execId) != 1) {");
             s.add("                    throw new OptLockError(\"error.cant.update\");");
             s.add("                }");
+            s.add("                ++count;");
             s.add("            }");
+            s.add("        }");
+            s.add("");
+            s.add("        if (count == 0) {");
+            s.add("            map.put(\"ERROR\", Messages.get(\"error.nopost\"));");
+            s.add("            return map;");
             s.add("        }");
             s.add("");
             s.add("        map.put(\"INFO\", Messages.get(\"info.regist\"));");
@@ -1633,13 +1617,13 @@ public final class BeanGenerator {
     }
 
     /**
-     * 詳細画面 フォーム出力
+     * 検索画面 承認処理出力
      * @param tableInfos テーブル情報のリスト
      */
-    private static void javaFormDetailRegist(final List<TableInfo> tableInfos) {
+    private static void javaActionIndexPermit(final List<TableInfo> tableInfos) {
 
         // 出力フォルダを再作成
-        String packagePath = formPackage.replace(".", File.separator);
+        String packagePath = actionPackage.replace(".", File.separator);
         String packageDir = projectDir + File.separator + javaPath + File.separator + packagePath;
 
         Map<String, String> javaFilePaths = new LinkedHashMap<String, String>();
@@ -1647,126 +1631,67 @@ public final class BeanGenerator {
         for (TableInfo tableInfo : tableInfos) {
             String tableName = tableInfo.getTableName();
             String remarks = tableInfo.getRemarks();
-
-            String entityName = StringUtil.toPascalCase(tableName);
+            String entity = StringUtil.toPascalCase(tableName);
 
             List<String> s = new ArrayList<String>();
-            s.add("package " + formPackage + ";");
+            s.add("package " + actionPackage + ";");
             s.add("");
-            if (tableInfo.getChildInfos().size() > 0) {
-                s.add("import java.util.List;");
-            }
+            s.add("import java.time.LocalDateTime;");
+            s.add("import java.util.HashMap;");
+            s.add("import java.util.List;");
             s.add("import java.util.Map;");
             s.add("");
-            s.add("import org.slf4j.Logger;");
-            s.add("import org.slf4j.LoggerFactory;");
+            s.add("import " + entityPackage + "." + entity + ";");
             s.add("");
-            s.add("import jp.co.golorp.emarf.process.BaseProcess;");
-            s.add("import jp.co.golorp.emarf.validation.IForm;");
+            s.add("import jp.co.golorp.emarf.action.BaseAction;");
+            s.add("import jp.co.golorp.emarf.exception.OptLockError;");
+            s.add("import jp.co.golorp.emarf.util.Messages;");
+            s.add("import jp.co.golorp.emarf.validation.FormValidator;");
             s.add("");
             s.add("/**");
-            s.add(" * " + remarks + "登録フォーム");
+            s.add(" * " + remarks + "一覧承認");
             s.add(" *");
             s.add(" * @author emarfkrow");
             s.add(" */");
-            s.add("public class " + entityName + "RegistForm implements IForm {");
+            s.add("public class " + entity + "SPermitAction extends BaseAction {");
             s.add("");
-            s.add("    /** logger */");
-            s.add("    private static final Logger LOG = LoggerFactory.getLogger(" + entityName + "RegistForm.class);");
-            for (ColumnInfo columnInfo : tableInfo.getColumnInfos().values()) {
-
-                String columnName = columnInfo.getColumnName();
-
-                // レコードメタデータならスキップ
-                boolean isInsertDt = columnName.matches("(?i)^" + insertDt + "$");
-                boolean isUpdateDt = columnName.matches("(?i)^" + updateDt + "$");
-                boolean isInsertBy = columnName.matches("(?i)^" + insertBy + "$");
-                boolean isUpdateBy = columnName.matches("(?i)^" + updateBy + "$");
-                if (isInsertDt || isInsertBy || isUpdateDt || isUpdateBy) {
-                    continue;
-                }
-
-                String camel = StringUtil.toCamelCase(columnName);
-                String pascal = StringUtil.toPascalCase(columnName);
-
-                s.add("");
-                s.add("    /** " + columnInfo.getRemarks() + " */");
-                javaFormDetailRegistChecks(tableInfo.getPrimaryKeys(), columnInfo, s);
-                s.add("    private String " + camel + ";");
-                s.add("");
-                s.add("    /**");
-                s.add("     * @return " + columnInfo.getRemarks());
-                s.add("     */");
-                s.add("    public String get" + pascal + "() {");
-                s.add("        return " + camel + ";");
-                s.add("    }");
-                s.add("");
-                s.add("    /**");
-                s.add("     * @param p " + columnInfo.getRemarks());
-                s.add("     */");
-                s.add("    public void set" + pascal + "(final String p) {");
-                s.add("        this." + camel + " = p;");
-                s.add("    }");
-            }
-            // 兄弟モデル
-            for (TableInfo brosInfo : tableInfo.getBrosInfos()) {
-                String brosName = brosInfo.getTableName();
-                String camel = StringUtil.toCamelCase(brosName);
-                String pascal = StringUtil.toPascalCase(brosName);
-                s.add("");
-                s.add("    /** " + brosInfo.getRemarks() + " */");
-                s.add("    @jakarta.validation.Valid");
-                s.add("    private " + pascal + "RegistForm " + camel + "RegistForm;");
-                s.add("");
-                s.add("    /**");
-                s.add("     * @return " + pascal + "RegistForm");
-                s.add("     */");
-                s.add("    public " + pascal + "RegistForm get" + pascal + "RegistForm() {");
-                s.add("        return " + camel + "RegistForm;");
-                s.add("    }");
-                s.add("");
-                s.add("    /**");
-                s.add("     * @param p");
-                s.add("     */");
-                s.add("    public void set" + pascal + "RegistForm(final " + pascal + "RegistForm p) {");
-                s.add("        this." + camel + "RegistForm = p;");
-                s.add("    }");
-            }
-            // 子モデル
-            for (TableInfo childInfo : tableInfo.getChildInfos()) {
-                String childName = childInfo.getTableName();
-                String camel = StringUtil.toCamelCase(childName);
-                String pascal = StringUtil.toPascalCase(childName);
-                s.add("");
-                s.add("    /** " + childInfo.getRemarks() + " */");
-                s.add("    @jakarta.validation.Valid");
-                s.add("    private List<" + pascal + "RegistForm> " + camel + "Grid;");
-                s.add("");
-                s.add("    /**");
-                s.add("     * @return " + childInfo.getRemarks());
-                s.add("     */");
-                s.add("    public List<" + pascal + "RegistForm> get" + pascal + "Grid() {");
-                s.add("        return " + camel + "Grid;");
-                s.add("    }");
-                s.add("");
-                s.add("    /**");
-                s.add("     * @param p");
-                s.add("     */");
-                s.add("    public void set" + pascal + "Grid(final List<" + pascal + "RegistForm> p) {");
-                s.add("        this." + camel + "Grid = p;");
-                s.add("    }");
-            }
-            s.add("");
-            s.add("    /** 関連チェック */");
+            s.add("    /** " + remarks + "一覧承認処理 */");
             s.add("    @Override");
-            s.add("    public void validate(final Map<String, String> errors, final BaseProcess baseProcess) {");
-            s.add("        LOG.trace(\"validate() not overridden in subclasses.\");");
+            s.add("    public Map<String, Object> running(final LocalDateTime now, final String execId, final Map<String, Object> postJson) {");
+            s.add("");
+            s.add("        Map<String, Object> map = new HashMap<String, Object>();");
+            s.add("");
+            s.add("        int count = 0;");
+            s.add("");
+            s.add("        @SuppressWarnings(\"unchecked\")");
+            s.add("        List<Map<String, Object>> gridData = (List<Map<String, Object>>) postJson.get(\"" + entity
+                    + "Grid\");");
+            s.add("        for (Map<String, Object> gridRow : gridData) {");
+            s.add("");
+            s.add("            if (gridRow.isEmpty()) {");
+            s.add("                continue;");
+            s.add("            }");
+            s.add("");
+            s.add("            " + entity + " e = FormValidator.toBean(" + entity + ".class.getName(), gridRow);");
+            s.add("            if (e.update(now, execId) != 1) {");
+            s.add("                throw new OptLockError(\"error.cant.update\");");
+            s.add("            }");
+            s.add("            ++count;");
+            s.add("        }");
+            s.add("");
+            s.add("        if (count == 0) {");
+            s.add("            map.put(\"ERROR\", Messages.get(\"error.nopost\"));");
+            s.add("            return map;");
+            s.add("        }");
+            s.add("");
+            s.add("        map.put(\"INFO\", Messages.get(\"info.permit\"));");
+            s.add("        return map;");
             s.add("    }");
             s.add("");
             s.add("}");
 
-            String javaFilePath = packageDir + File.separator + entityName + "RegistForm.java";
-            javaFilePaths.put(javaFilePath, formPackage + "." + entityName + "RegistForm");
+            String javaFilePath = packageDir + File.separator + entity + "SPermitAction.java";
+            javaFilePaths.put(javaFilePath, actionPackage + "." + entity + "SPermitAction");
 
             FileUtil.writeFile(javaFilePath, s);
         }
@@ -1779,100 +1704,13 @@ public final class BeanGenerator {
     }
 
     /**
-     * 詳細画面 フォームチェック追加
-     * @param pks 主キー情報のリスト
-     * @param ci カラム情報
-     * @param s 出力文字列のリスト
-     */
-    private static void javaFormDetailRegistChecks(final List<String> pks, final ColumnInfo ci, final List<String> s) {
-
-        // 必須チェック
-        if (ci.getNullable() == 0) {
-
-            if (ci.isNumbering() /*&& ci.getColumnName().equals(pks.get(pks.size() - 1)) 一旦、採番キーならスキップに戻す*/) {
-
-                // 最終キーが採番キーなら除外
-                LOG.trace("skip NotBlank.");
-
-                // フラグでも必須チェックを掛ける
-                //            } else if (StringUtil.endsWith(inputFlagSuffixs, ci.getColumnName())) {
-                //
-                //                // フラグも除外
-                //                LOG.trace("skip NotBlank.");
-
-            } else if (!ci.isPk() && ci.getTypeName().equals("CHAR")
-                    && !StringUtil.isNullOrBlank(charNotNullRe) && !ci.getColumnName().matches(charNotNullRe)) {
-
-                // 主キー以外のCHAR列で、必須CHAR指定に合致しない場合、NULLならスペースを補填する
-                LOG.trace("skip NotBlank.");
-
-            } else if (!ci.isPk() && ci.getTypeName().equals("NUMBER")
-                    && !StringUtil.isNullOrBlank(numberNullableRe) && ci.getColumnName().matches(numberNullableRe)) {
-
-                // 主キー以外のNUMBER列で、非必須INT指定に合致する場合、NULLなら「0」を補填する
-                LOG.trace("skip NotBlank.");
-
-            } else {
-
-                s.add("    @jakarta.validation.constraints.NotBlank");
-            }
-        }
-
-        String columnName = ci.getColumnName();
-
-        int matchLength = 0;
-        String validSuffix = null;
-        for (String suffix : validSuffixs) {
-            Pattern pattern = Pattern.compile("(?i).*(" + suffix + ")$");
-            Matcher matcher = pattern.matcher(columnName);
-            if (matcher.find()) {
-                String matched = matcher.group(1);
-                if (matchLength < matched.length()) {
-                    matchLength = matched.length();
-                    validSuffix = suffix;
-                }
-            }
-        }
-
-        if (validSuffix != null) {
-            // Patternの指定がある場合
-
-            String re = bundle.getString("BeanGenerator.valid." + validSuffix);
-            s.add("    @jakarta.validation.constraints.Pattern(regexp = \"" + re + "\")");
-
-        } else {
-            // Patternの指定がない場合
-
-            int columnSize = ci.getColumnSize();
-
-            // 形式チェック
-            if (ci.getTypeName().equals("INT") || ci.getTypeName().equals("DECIMAL")
-                    || ci.getTypeName().equals("DOUBLE") || ci.getTypeName().equals("NUMBER")
-                    || ci.getTypeName().equals("NUMERIC")) {
-
-                // DECIMALの場合（整数桁・小数桁）
-                int decimalDigits = ci.getDecimalDigits();
-                int integer = columnSize - decimalDigits;
-                String re = "([0-9]{0," + integer + "}\\\\.?[0-9]{0," + decimalDigits + "}?)?";
-                s.add("    @jakarta.validation.constraints.Pattern(regexp = \"" + re + "\")");
-
-            } else {
-                // DECIMAL以外
-
-                // 上記以外の場合は最大桁チェック
-                s.add("    @jakarta.validation.constraints.Size(max = " + columnSize + ")");
-            }
-        }
-    }
-
-    /**
-     * 検索画面 フォーム出力
+     * 検索画面 否認処理出力
      * @param tableInfos テーブル情報のリスト
      */
-    private static void javaFormIndexRegist(final List<TableInfo> tableInfos) {
+    private static void javaActionIndexForbid(final List<TableInfo> tableInfos) {
 
         // 出力フォルダを再作成
-        String packagePath = formPackage.replace(".", File.separator);
+        String packagePath = actionPackage.replace(".", File.separator);
         String packageDir = projectDir + File.separator + javaPath + File.separator + packagePath;
 
         Map<String, String> javaFilePaths = new LinkedHashMap<String, String>();
@@ -1880,61 +1718,67 @@ public final class BeanGenerator {
         for (TableInfo tableInfo : tableInfos) {
             String tableName = tableInfo.getTableName();
             String remarks = tableInfo.getRemarks();
-
-            String camel = StringUtil.toCamelCase(tableName);
-            String pascal = StringUtil.toPascalCase(tableName);
+            String entity = StringUtil.toPascalCase(tableName);
 
             List<String> s = new ArrayList<String>();
-            s.add("package " + formPackage + ";");
+            s.add("package " + actionPackage + ";");
             s.add("");
+            s.add("import java.time.LocalDateTime;");
+            s.add("import java.util.HashMap;");
             s.add("import java.util.List;");
             s.add("import java.util.Map;");
             s.add("");
-            s.add("import org.slf4j.Logger;");
-            s.add("import org.slf4j.LoggerFactory;");
+            s.add("import " + entityPackage + "." + entity + ";");
             s.add("");
-            s.add("import jakarta.validation.Valid;");
-            s.add("import jp.co.golorp.emarf.process.BaseProcess;");
-            s.add("import jp.co.golorp.emarf.validation.IForm;");
+            s.add("import jp.co.golorp.emarf.action.BaseAction;");
+            s.add("import jp.co.golorp.emarf.exception.OptLockError;");
+            s.add("import jp.co.golorp.emarf.util.Messages;");
+            s.add("import jp.co.golorp.emarf.validation.FormValidator;");
             s.add("");
             s.add("/**");
-            s.add(" * " + remarks + "一覧登録フォーム");
+            s.add(" * " + remarks + "一覧承認");
             s.add(" *");
             s.add(" * @author emarfkrow");
             s.add(" */");
-            s.add("public class " + pascal + "SRegistForm implements IForm {");
+            s.add("public class " + entity + "SForbidAction extends BaseAction {");
             s.add("");
-            s.add("    /** logger */");
-            s.add("    private static final Logger LOG = LoggerFactory.getLogger(" + pascal + "RegistForm.class);");
-            s.add("");
-            s.add("    /** " + tableInfo.getRemarks() + "登録フォームのリスト */");
-            s.add("    @Valid");
-            s.add("    private List<" + pascal + "RegistForm> " + camel + "Grid;");
-            s.add("");
-            s.add("    /**");
-            s.add("     * @return " + tableInfo.getRemarks() + "登録フォームのリスト");
-            s.add("     */");
-            s.add("    public List<" + pascal + "RegistForm> get" + pascal + "Grid() {");
-            s.add("        return " + camel + "Grid;");
-            s.add("    }");
-            s.add("");
-            s.add("    /**");
-            s.add("     * @param p " + tableInfo.getRemarks() + "登録フォームのリスト");
-            s.add("     */");
-            s.add("    public void set" + pascal + "Grid(final List<" + pascal + "RegistForm> p) {");
-            s.add("        this." + camel + "Grid = p;");
-            s.add("    }");
-            s.add("");
-            s.add("    /** 関連チェック */");
+            s.add("    /** " + remarks + "一覧承認処理 */");
             s.add("    @Override");
-            s.add("    public void validate(final Map<String, String> errors, final BaseProcess baseProcess) {");
-            s.add("        LOG.debug(\"validate() not overridden in subclasses.\");");
+            s.add("    public Map<String, Object> running(final LocalDateTime now, final String execId, final Map<String, Object> postJson) {");
+            s.add("");
+            s.add("        Map<String, Object> map = new HashMap<String, Object>();");
+            s.add("");
+            s.add("        int count = 0;");
+            s.add("");
+            s.add("        @SuppressWarnings(\"unchecked\")");
+            s.add("        List<Map<String, Object>> gridData = (List<Map<String, Object>>) postJson.get(\"" + entity
+                    + "Grid\");");
+            s.add("        for (Map<String, Object> gridRow : gridData) {");
+            s.add("");
+            s.add("            if (gridRow.isEmpty()) {");
+            s.add("                continue;");
+            s.add("            }");
+            s.add("");
+            s.add("            " + entity + " e = FormValidator.toBean(" + entity + ".class.getName(), gridRow);");
+            s.add("            if (e.update(now, execId) != 1) {");
+            s.add("                throw new OptLockError(\"error.cant.update\");");
+            s.add("            }");
+            s.add("            ++count;");
+            s.add("        }");
+            s.add("");
+            s.add("        if (count == 0) {");
+            s.add("            map.put(\"ERROR\", Messages.get(\"error.nopost\"));");
+            s.add("            return map;");
+            s.add("        }");
+            s.add("");
+            s.add("        map.put(\"INFO\", Messages.get(\"info.forbid\"));");
+            s.add("        return map;");
             s.add("    }");
             s.add("");
             s.add("}");
 
-            String javaFilePath = packageDir + File.separator + pascal + "SRegistForm.java";
-            javaFilePaths.put(javaFilePath, formPackage + "." + pascal + "SRegistForm");
+            String javaFilePath = packageDir + File.separator + entity + "SForbidAction.java";
+            javaFilePaths.put(javaFilePath, actionPackage + "." + entity + "SForbidAction");
 
             FileUtil.writeFile(javaFilePath, s);
         }
@@ -1951,7 +1795,7 @@ public final class BeanGenerator {
      * @param javaFilePath javaファイルパス
      * @param className クラス名
      */
-    private static void javaCompile(final String javaFilePath, final String className) {
+    public static void javaCompile(final String javaFilePath, final String className) {
 
         // 出力ディレクトリ
         String dstDir = projectDir + File.separator + javaPath;

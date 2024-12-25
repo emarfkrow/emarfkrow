@@ -51,6 +51,26 @@ $(function() {
 			}
 		}
 
+        // 承認ボタンだった場合は実行確認
+        if ($button.hasClass('permit')) {
+            if (!confirm(Messages['confirm.permit'])) {
+                event.preventDefault();
+                event.stopPropagation();
+                event.stopImmediatePropagation();
+                return false;
+            }
+        }
+
+        // 否認ボタンだった場合は実行確認
+        if ($button.hasClass('forbid')) {
+            if (!confirm(Messages['confirm.forbid'])) {
+                event.preventDefault();
+                event.stopPropagation();
+                event.stopImmediatePropagation();
+                return false;
+            }
+        }
+
 		// 送信先を取得
 		let $form = $(this);
 		let action = $form.prop('action');

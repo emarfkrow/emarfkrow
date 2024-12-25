@@ -68,11 +68,11 @@ public final class HtmlGenerator {
     private static String[] optionsSuffixs;
     /** データjson */
     private static String json;
-    /** options項目キー */
-    private static String optP;
-    /** options項目値 */
+    /** 区分カラム */
+    private static String optK;
+    /** 区分値カラム */
     private static String optV;
-    /** options項目ラベル */
+    /** 区分値名カラム */
     private static String optL;
 
     /** テキストエリア項目サフィックス */
@@ -127,7 +127,7 @@ public final class HtmlGenerator {
 
         optionsSuffixs = bundle.getString("BeanGenerator.options.suffixs").split(",");
         json = bundle.getString("BeanGenerator.options.json");
-        optP = bundle.getString("BeanGenerator.options.paramkey").toUpperCase();
+        optK = bundle.getString("BeanGenerator.options.key").toUpperCase();
         optV = bundle.getString("BeanGenerator.options.value").toUpperCase();
         optL = bundle.getString("BeanGenerator.options.label").toUpperCase();
 
@@ -367,6 +367,10 @@ public final class HtmlGenerator {
         if (!tableInfo.isHistory() && !tableInfo.isView()) {
             s.add("        <button id=\"Delete" + pascal + "S\" class=\"delete selectRows\" data-action=\"" + pascal
                     + "SDelete.ajax\" th:text=\"#{common.delete}\" tabindex=\"-1\">削除</button>");
+            s.add("        <button id=\"Permit" + pascal + "S\" class=\"permit selectRows\" data-action=\"" + pascal
+                    + "SPermit.ajax\" th:text=\"#{common.permit}\" tabindex=\"-1\">承認</button>");
+            s.add("        <button id=\"Forbid" + pascal + "S\" class=\"forbid selectRows\" data-action=\"" + pascal
+                    + "SForbid.ajax\" th:text=\"#{common.forbid}\" tabindex=\"-1\">否認</button>");
         }
         s.add("      </div>");
         s.add("      <div class=\"submits\">");
@@ -612,7 +616,7 @@ public final class HtmlGenerator {
             }
         }
 
-        String opt = "{ json: '" + json + "', paramkey: '" + optP + "', value: '" + optV + "', label: '" + optL + "' }";
+        String opt = "{ json: '" + json + "', paramkey: '" + optK + "', value: '" + optV + "', label: '" + optL + "' }";
         String c = "";
         if (isMeiRefer) {
             c = "Column.refer('" + field + "', " + name + ", " + width + ", '" + css + "', '" + referMei + "'),";
@@ -759,6 +763,10 @@ public final class HtmlGenerator {
         s.add("      </div>");
         s.add("      <div class=\"submits\">");
         if (!tableInfo.isHistory() && !tableInfo.isView()) {
+            s.add("        <button id=\"Permit" + entityName + "\" class=\"permit\" data-action=\"" + entityName
+                    + "Permit.ajax\" th:text=\"#{common.permit}\" tabindex=\"-1\">承認</button>");
+            s.add("        <button id=\"Forbid" + entityName + "\" class=\"forbid\" data-action=\"" + entityName
+                    + "Forbid.ajax\" th:text=\"#{common.forbid}\" tabindex=\"-1\">否認</button>");
             s.add("        <button id=\"Regist" + entityName
                     + "\" class=\"regist\" th:text=\"#{common.regist}\">登録</button>");
         }
@@ -1072,7 +1080,7 @@ public final class HtmlGenerator {
         if (!isPrimariKey) {
             primaryKey = "";
         }
-        s.add("          <fieldset id=\"" + id + "List\" data-options=\"" + json + "\" data-optionParams=\"" + optP
+        s.add("          <fieldset id=\"" + id + "List\" data-options=\"" + json + "\" data-optionParams=\"" + optK
                 + ":" + columnName + "\" data-optionValue=\"" + optV + "\" data-optionLabel=\"" + optL + "\""
                 + primaryKey + ">");
         s.add("            <legend th:text=\"#{" + id + "}\">" + remarks + "</legend>");

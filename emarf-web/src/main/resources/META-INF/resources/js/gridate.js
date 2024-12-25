@@ -390,6 +390,15 @@ $(function() {
                         e.stopPropagation();
                         e.stopImmediatePropagation();
                     }
+
+                    //ステータス区分列なら非活性
+                    if (grid.getColumns()[c].field == gridOpeReadonlyColumn) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        e.stopImmediatePropagation();
+                    }
+
+                    //ステータス区分が「1」以上なら非活性
                 }
 
                 if ($clicked.hasClass('gridButton')) {

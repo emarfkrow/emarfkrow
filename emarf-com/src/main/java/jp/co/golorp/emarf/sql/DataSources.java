@@ -522,7 +522,7 @@ public final class DataSources {
 
         while (rs.next()) {
 
-            String tableName = rs.getString("TABLE_NAME");
+            String tableName = rs.getString("TABLE_NAME").toUpperCase();
 
             //半角文字でなければスキップ
             if (!tableName.matches("^[!-~]+$")) {

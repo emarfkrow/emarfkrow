@@ -217,20 +217,35 @@ button#logout {
 }
 
 button.search {
-	background-color: lightgreen;
-	font-size: medium;
+/*	background-color: lightgreen;*/
+	font-size: large;
 }
 
 button.delete {
 	background-color: pink;
-	font-size: medium;
+	font-size: large;
 	margin-left: 2rem;
-	margin-right: 2rem;
 }
 
 button.regist {
 	background-color: lightblue;
-	font-size: medium;
+	font-size: large;
+}
+
+button.permit {
+    background-color: teal;
+    color: white;
+    font-size: large;
+    font-weight: bold;
+    margin-left: 2rem;
+}
+
+button.forbid {
+    background-color: tomato;
+    color: white;
+    font-size: large;
+    font-weight: bold;
+    margin-right: 2rem;
 }
 
 input.primaryKey, div.primaryKey, span.primaryKey, select.primaryKey {
@@ -238,11 +253,11 @@ input.primaryKey, div.primaryKey, span.primaryKey, select.primaryKey {
 }
 
 input.uniqueKey, div.uniqueKey {
-	background-color: lightyellow;
+    background-color: lavenderblush
 }
 
 input.notblank, div.notblank {
-    background-color: lavenderblush
+	background-color: lightyellow;
 }
 
 .metaInfo {

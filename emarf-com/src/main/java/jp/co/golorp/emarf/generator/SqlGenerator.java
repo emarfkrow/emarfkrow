@@ -45,8 +45,8 @@ public final class SqlGenerator {
     /** 参照列名ペア */
     private static Set<String[]> referPairs = new LinkedHashSet<String[]>();
 
-    /** 参照キー */
-    private static String optionsKey;
+    /** 区分カラム */
+    private static String optK;
 
     /** プライベートコンストラクタ */
     private SqlGenerator() {
@@ -59,7 +59,22 @@ public final class SqlGenerator {
      */
     public static void generate(final String projectDir, final List<TableInfo> tableInfos) {
 
+        /* 設定ファイル読み込み */
         bundle = ResourceBundles.getBundle(BeanGenerator.class);
+        optionsSuffixs = bundle.getString("BeanGenerator.options.suffixs").split(",");
+        inputDateSuffixs = bundle.getString("BeanGenerator.input.date.suffixs").split(",");
+        inputDateTimeSuffixs = bundle.getString("BeanGenerator.input.datetime.suffixs").split(",");
+        inputTimestampSuffixs = bundle.getString("BeanGenerator.input.timestamp.suffixs").split(",");
+        inputRangeSuffixs = bundle.getString("BeanGenerator.input.range.suffixs").split(",");
+        inputFlagSuffixs = bundle.getString("BeanGenerator.input.flag.suffixs").split(",");
+
+        String[] pairs = bundle.getString("DataSources.reration.refer.pairs").split(",");
+        for (String pair : pairs) {
+            String[] kv = pair.split(":");
+            referPairs.add(kv);
+        }
+
+        optK = bundle.getString("BeanGenerator.options.key").toUpperCase();
 
         //SQLフォルダ
         String sqlDir = projectDir + File.separator + bundle.getString("SqlGenerator.sqlPath");
@@ -76,38 +91,30 @@ public final class SqlGenerator {
      * @param sqlDir SQLファイル出力ディレクトリ
      * @param tableInfo テーブル情報
      */
-    public static void sqlSearch(final String sqlDir, final TableInfo tableInfo) {
+    private static void sqlSearch(final String sqlDir, final TableInfo tableInfo) {
 
-        /* 設定ファイル読み込み */
-        bundle = ResourceBundles.getBundle(BeanGenerator.class);
-        optionsSuffixs = bundle.getString("BeanGenerator.options.suffixs").split(",");
-        inputDateSuffixs = bundle.getString("BeanGenerator.input.date.suffixs").split(",");
-        inputDateTimeSuffixs = bundle.getString("BeanGenerator.input.datetime.suffixs").split(",");
-        inputTimestampSuffixs = bundle.getString("BeanGenerator.input.timestamp.suffixs").split(",");
-        inputRangeSuffixs = bundle.getString("BeanGenerator.input.range.suffixs").split(",");
-        inputFlagSuffixs = bundle.getString("BeanGenerator.input.flag.suffixs").split(",");
-        String[] pairs = bundle.getString("DataSources.reration.refer.pairs").split(",");
-        for (String pair : pairs) {
-            String[] kv = pair.split(":");
-            referPairs.add(kv);
-        }
-        optionsKey = bundle.getString("BeanGenerator.options.paramkey").toUpperCase();
+        DataSourcesAssist assist = DataSources.getAssist();
+
         String tableName = tableInfo.getTableName();
         String entityName = StringUtil.toPascalCase(tableName);
-        DataSourcesAssist assist = DataSources.getAssist();
+
         // 参照モデルの名称解決
         List<String> s = new ArrayList<String>();
         int i = 0;
         for (ColumnInfo columnInfo : tableInfo.getColumnInfos().values()) {
+
             // 参照元カラム名
             String srcColumnName = columnInfo.getColumnName();
+
             String sql = "    , ";
             if (s.size() == 0) {
                 s.add("SELECT");
                 sql = "      ";
             }
+
             String quoted = getQuoted(assist, columnInfo);
             s.add(sql + quoted);
+
             // 列の参照モデル情報
             TableInfo referInfo = columnInfo.getReferInfo();
             if (referInfo != null) {
@@ -185,7 +192,7 @@ public final class SqlGenerator {
                 // 文字列はTRIMして部分一致検索
                 String quoteEscaped = assist.quotedSQL(columnName);
                 String trimed = assist.trimedSQL("a." + quoteEscaped);
-                if (columnName.toUpperCase().equals(optionsKey)) {
+                if (columnName.toUpperCase().equals(optK)) {
                     //参照キーの場合は後方一致で出力
                     String[] array = new String[] { "'%'", trimed };
                     s.add("    AND " + rightHand + " LIKE " + assist.joinedSQL(array) + " ");
