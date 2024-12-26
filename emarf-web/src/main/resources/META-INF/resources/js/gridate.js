@@ -311,11 +311,8 @@ $(function() {
              * subscribe
              */
 
-            //				grid.onActiveCellChanged.subscribe(function(e, args) {
-            //					console.debug(e);
-            //					console.debug(args);
-            //				});
-            //              grid.onActiveCellPositionChanged.subscribe(function(a,b,c,d,e,f,g) {});
+            //            grid.onActiveCellChanged.subscribe(function(e, args) { });
+            //            grid.onActiveCellPositionChanged.subscribe(function(a, b, c, d, e, f, g) { });
             grid.onAddNewRow.subscribe(function(e, args) {
                 //				let data = args.grid.getData();
                 //				data.push(args.item);
@@ -336,7 +333,23 @@ $(function() {
             //				grid.onBeforeCellEditorDestroy.subscribe(function(a, b, c, d, e, f, g) { });
             //				grid.onBeforeColumnsResize.subscribe(function(a, b, c, d, e, f, g) { });
             //				grid.onBeforeDestroy.subscribe(function(a, b, c, d, e, f, g) { });
-            //				grid.onBeforeEditCell.subscribe(function(a, b, c, d, e, f, g) { });
+            grid.onBeforeEditCell.subscribe(function(e, args) {
+
+                let $clicked = $(e.target);
+
+                let r = args.row;
+                let c = args.cell;
+                let g = args.grid;
+
+                let dataItem = g.getDataItem(r);
+
+                if (Gridate.isReadonly($clicked, dataItem, grid, r, c)) {
+                    //                    e.preventDefault();
+                    //                    e.stopPropagation();
+                    //                    e.stopImmediatePropagation();
+                    return false;
+                }
+            });
             //				grid.onBeforeFooterRowCellDestroy.subscribe(function(a, b, c, d, e, f, g) { });
             //				grid.onBeforeHeaderCellDestroy.subscribe(function(a, b, c, d, e, f, g) { });
             //				grid.onBeforeHeaderRowCellDestroy.subscribe(function(a, b, c, d, e, f, g) { });
@@ -587,7 +600,6 @@ $(function() {
             });
             //				grid.onValidationError.subscribe(function(a, b, c, d, e, f, g) { });
             //				grid.onViewportChanged.subscribe(function(a, b, c, d, e, f, g) { });
-            //});
         });
     });
 });

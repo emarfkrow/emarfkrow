@@ -64,8 +64,6 @@ $(function() {
     $('input[type="text"]').prop('autocomplete', 'off');
     $('input[type="password"]').prop('autocomplete', 'new-password').prop('aria-autocomplete', 'none');
 
-    Base.readonly($('form.regist [name$="' + Casing.toCamel(gridOpeReadonlyColumn) + '"]'));
-
     // 画面にクライアントシステム日時を表示
     $('.certification #timestamp').html(Formatter.YmdHmsS(new Date()));
 

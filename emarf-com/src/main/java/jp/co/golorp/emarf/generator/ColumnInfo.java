@@ -38,20 +38,6 @@ public class ColumnInfo {
     /** 桁数制限 */
     private Integer maxLength;
 
-    /**
-     * @return maxLength
-     */
-    public Integer getMaxLength() {
-        return maxLength;
-    }
-
-    /**
-     * @param p
-     */
-    public void setMaxLength(final Integer p) {
-        this.maxLength = p;
-    }
-
     /** 小数桁数 */
     private int decimalDigits;
 
@@ -67,18 +53,11 @@ public class ColumnInfo {
     /** ユニークインデクスならtrue */
     private boolean isUnique;
 
-    /** @return ユニークインデクスならtrue */
-    public boolean isUnique() {
-        return isUnique;
-    }
-
-    /** @param p ユニークインデクスならtrue */
-    public void setUnique(final boolean p) {
-        this.isUnique = p;
-    }
-
     /** 採番キーならtrue */
     private boolean isNumbering;
+
+    /** 転生キーならtrue */
+    private boolean isReborn;
 
     /** 参照先テーブル */
     private TableInfo referInfo;
@@ -140,6 +119,20 @@ public class ColumnInfo {
     }
 
     /**
+     * @return maxLength
+     */
+    public Integer getMaxLength() {
+        return maxLength;
+    }
+
+    /**
+     * @param p
+     */
+    public void setMaxLength(final Integer p) {
+        this.maxLength = p;
+    }
+
+    /**
      * @return 小数桁数
      */
     public int getDecimalDigits() {
@@ -195,6 +188,16 @@ public class ColumnInfo {
         this.isPk = p;
     }
 
+    /** @return ユニークインデクスならtrue */
+    public boolean isUnique() {
+        return isUnique;
+    }
+
+    /** @param p ユニークインデクスならtrue */
+    public void setUnique(final boolean p) {
+        this.isUnique = p;
+    }
+
     /**
      * @return 採番キーならtrue
      */
@@ -207,6 +210,20 @@ public class ColumnInfo {
      */
     public void setNumbering(final boolean p) {
         this.isNumbering = p;
+    }
+
+    /**
+     * @return boolean
+     */
+    public boolean isReborn() {
+        return isReborn;
+    }
+
+    /**
+     * @param p
+     */
+    public void setReborn(final boolean p) {
+        this.isReborn = p;
     }
 
     /**

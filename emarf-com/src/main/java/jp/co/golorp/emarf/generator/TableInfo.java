@@ -40,16 +40,6 @@ public class TableInfo {
     /** ユニークインデクスカラム名のセット */
     private List<String> uniqueIndexColumns = new ArrayList<String>();
 
-    /** @return ユニークインデクスカラム名のセット */
-    public List<String> getUniqueIndexColumns() {
-        return uniqueIndexColumns;
-    }
-
-    /** @param p ユニークインデクスカラム名のセット */
-    public void setUniqueIndexColumns(final List<String> p) {
-        this.uniqueIndexColumns = p;
-    }
-
     /** 主キーでないカラム名のリスト */
     private List<String> nonPrimaryKeys = new ArrayList<String>();
 
@@ -58,20 +48,6 @@ public class TableInfo {
 
     /** 親テーブルのリスト */
     private List<TableInfo> parentInfos = new ArrayList<TableInfo>();
-
-    /**
-     * @return 親テーブルのリスト
-     */
-    public List<TableInfo> getParentInfos() {
-        return parentInfos;
-    }
-
-    /**
-     * @param p
-     */
-    public void setParentInfos(final List<TableInfo> p) {
-        this.parentInfos = p;
-    }
 
     /** 子テーブルのリスト */
     private List<TableInfo> childInfos = new ArrayList<TableInfo>();
@@ -93,6 +69,9 @@ public class TableInfo {
 
     /** VIEWならtrue */
     private boolean isView;
+
+    /** 転生先テーブル */
+    private TableInfo rebornInfo;
 
     /**
      * @return テーブル名
@@ -136,6 +115,16 @@ public class TableInfo {
         this.primaryKeys = p;
     }
 
+    /** @return ユニークインデクスカラム名のセット */
+    public List<String> getUniqueIndexColumns() {
+        return uniqueIndexColumns;
+    }
+
+    /** @param p ユニークインデクスカラム名のセット */
+    public void setUniqueIndexColumns(final List<String> p) {
+        this.uniqueIndexColumns = p;
+    }
+
     /**
      * @return 主キーでないカラム名のリスト
      */
@@ -162,6 +151,20 @@ public class TableInfo {
      */
     public void setColumnInfos(final Map<String, ColumnInfo> p) {
         this.columnInfos = p;
+    }
+
+    /**
+     * @return 親テーブルのリスト
+     */
+    public List<TableInfo> getParentInfos() {
+        return parentInfos;
+    }
+
+    /**
+     * @param p
+     */
+    public void setParentInfos(final List<TableInfo> p) {
+        this.parentInfos = p;
     }
 
     /**
@@ -260,6 +263,20 @@ public class TableInfo {
      */
     public void setView(final boolean p) {
         this.isView = p;
+    }
+
+    /**
+     * @return TableInfo
+     */
+    public TableInfo getRebornInfo() {
+        return rebornInfo;
+    }
+
+    /**
+     * @param p
+     */
+    public void setRebornInfo(final TableInfo p) {
+        this.rebornInfo = p;
     }
 
 }

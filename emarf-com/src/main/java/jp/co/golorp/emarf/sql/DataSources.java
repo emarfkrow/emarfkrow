@@ -22,6 +22,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
@@ -370,6 +371,9 @@ public final class DataSources {
         //参照モデルの評価
         addReferTable(tableInfos);
 
+        //転生モデルの評価
+        addRebornTable(tableInfos);
+
         log(tableInfos);
 
         return tableInfos;
@@ -430,6 +434,12 @@ public final class DataSources {
                     LOG.info("        " + columnName + " = " + referInfo.getTableName() + " "
                             + referInfo.getPrimaryKeys());
                 }
+            }
+
+            if (tableInfo.getRebornInfo() != null) {
+                LOG.info("    RebornInfo:");
+                TableInfo rebornInfo = tableInfo.getRebornInfo();
+                LOG.info("        " + rebornInfo.getTableName() + " " + rebornInfo.getPrimaryKeys());
             }
         }
 
@@ -965,4 +975,136 @@ public final class DataSources {
         }
     }
 
+    /**
+     * ユニークキーテーブル（転生元）から、植え付け先（転生先）を探す
+     * @param tableInfos テーブル情報のリスト
+     */
+    private static void addRebornTable(final List<TableInfo> tableInfos) {
+
+        // テーブル情報でループ（転生元）
+        Iterator<TableInfo> srcs = tableInfos.iterator();
+        while (srcs.hasNext()) {
+            TableInfo src = srcs.next();
+
+            if (src.isHistory() || src.isView()) {
+                continue;
+            }
+
+            // 単一キーの場合、参照サフィックスセットに合致すればスキップ（定義した順に優先）
+            if (src.getPrimaryKeys().size() == 1) {
+
+                String pk = src.getPrimaryKeys().get(0);
+
+                boolean b = false;
+                for (String[] referPair : referPairs) {
+                    String referKeySuffix = referPair[0];
+                    String referMeiSuffix = referPair[1];
+
+                    // 単一キーが参照キーサフィックスに合致する場合
+                    if (StringUtil.endsWithIgnoreCase(referKeySuffix, pk)) {
+
+                        // 参照名称サフィックスに合致するカラムがある場合
+                        String referMei = pk.replaceAll("(?i)" + referKeySuffix + "$", referMeiSuffix);
+                        for (String k : src.getColumnInfos().keySet()) {
+                            if (k.matches("(?i)^" + referMei + "$")) {
+                                b = true;
+                                break;
+                            }
+                        }
+                    }
+                    if (b) {
+                        break;
+                    }
+                }
+                if (b) {
+                    continue;
+                }
+            }
+
+            /*
+             * 比較先（参照元テーブル）の探索
+             */
+
+            // テーブル情報でループ（転生先）
+            Iterator<TableInfo> dests = tableInfos.iterator();
+            while (dests.hasNext()) {
+                TableInfo dest = dests.next();
+
+                if (dest.isHistory() || dest.isView()) {
+                    continue;
+                }
+
+                // 比較元の主キーが全て外部キーとして含まれるか
+                Set<String> fks = new HashSet<String>();
+                for (String pk : src.getPrimaryKeys()) {
+                    ColumnInfo pkCol = src.getColumnInfos().get(pk);
+
+                    // 比較先のカラム情報でループして比較元のユニークキーがあれば参照テーブルリストに追加
+                    for (Entry<String, ColumnInfo> destCols : dest.getColumnInfos().entrySet()) {
+                        String fk = destCols.getKey();
+                        ColumnInfo fkCol = destCols.getValue();
+
+                        // 比較先が主キーならスキップ
+                        if (fkCol.isPk()) {
+                            continue;
+                        }
+
+                        // データ型が異なるならスキップ
+                        if (!fkCol.getTypeName().equals(pkCol.getTypeName())) {
+                            continue;
+                        }
+
+                        // データサイズが異なるならスキップ
+                        if (fkCol.getColumnSize() != pkCol.getColumnSize()) {
+                            continue;
+                        }
+
+                        // 小数桁数が異なるならスキップ
+                        if (fkCol.getDecimalDigits() != pkCol.getDecimalDigits()) {
+                            continue;
+                        }
+
+                        // 比較先カラム名が比較元カラム名と合致するなら比較先を転生モデルに設定
+                        if (fk.matches("(?i)^" + pk + "$")) {
+                            fks.add(fk);
+                        }
+                    }
+                }
+
+                if (src.getPrimaryKeys().size() == fks.size()) {
+
+                    boolean b = true;
+
+                    Iterator<TableInfo> pasts = tableInfos.iterator();
+                    while (pasts.hasNext()) {
+                        TableInfo past = pasts.next();
+
+                        TableInfo pastReborn = past.getRebornInfo();
+                        if (pastReborn == null) {
+                            continue;
+                        }
+
+                        if (!pastReborn.getTableName().equals(dest.getTableName())) {
+                            continue;
+                        }
+
+                        if (past.getPrimaryKeys().size() < src.getPrimaryKeys().size()) {
+                            past.setRebornInfo(null);
+                        }
+
+                        if (src.getPrimaryKeys().size() < past.getPrimaryKeys().size()) {
+                            b = false;
+                        }
+                    }
+
+                    if (b) {
+                        src.setRebornInfo(dest);
+                        for (String fk : fks) {
+                            dest.getColumnInfos().get(fk).setReborn(true);
+                        }
+                    }
+                }
+            }
+        }
+    }
 }

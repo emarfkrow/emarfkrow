@@ -669,10 +669,9 @@ public final class HtmlGenerator {
      */
     private static void htmlDetail(final String htmlDir, final TableInfo tableInfo) {
 
-        String tableName = tableInfo.getTableName();
-        String entityName = StringUtil.toPascalCase(tableName);
-        String formName = entityName + "RegistForm";
-        String action = entityName + "Regist.ajax";
+        String entity = StringUtil.toPascalCase(tableInfo.getTableName());
+        String formName = entity + "RegistForm";
+        String action = entity + "Regist.ajax";
         String remarks = tableInfo.getRemarks();
 
         List<String> s = new ArrayList<String>();
@@ -680,23 +679,23 @@ public final class HtmlGenerator {
         s.add("<html xmlns:th=\"http://www.thymeleaf.org\" xmlns:layout=\"http://www.ultraq.net.nz/web/thymeleaf/layout\" layout:decorate=\"~{common/base}\">");
         s.add("<head>");
         s.add("<meta charset=\"UTF-8\">");
-        s.add("<title th:text=\"#{" + entityName + ".title}\">" + remarks + "</title>");
+        s.add("<title th:text=\"#{" + entity + ".title}\">" + remarks + "</title>");
         s.add("<style type=\"text/css\">");
         s.add("</style>");
         s.add("<script type=\"text/javascript\">");
         s.add("");
         s.add("</script>");
-        s.add("<script th:src=\"@{/model/" + entityName + "GridColumns.js}\"></script>");
+        s.add("<script th:src=\"@{/model/" + entity + "GridColumns.js}\"></script>");
         Set<TableInfo> added = new HashSet<TableInfo>();
         added.add(tableInfo);
         htmlNestGrid(tableInfo, s, added);
         s.add("</head>");
         s.add("<body>");
         s.add("  <div layout:fragment=\"article\">");
-        s.add("    <h2 th:text=\"#{" + entityName + ".h2}\">h2</h2>");
+        s.add("    <h2 th:text=\"#{" + entity + ".h2}\">h2</h2>");
         s.add("    <form name=\"" + formName + "\" action=\"" + action + "\" class=\"regist\">");
         s.add("      <fieldset>");
-        s.add("        <legend th:text=\"#{" + entityName + ".legend}\">legend</legend>");
+        s.add("        <legend th:text=\"#{" + entity + ".legend}\">legend</legend>");
         htmlFields(tableInfo, s, true, false);
         s.add("      </fieldset>");
 
@@ -714,12 +713,10 @@ public final class HtmlGenerator {
 
         //子テーブルリスト
         for (TableInfo childInfo : tableInfo.getChildInfos()) {
-
-            String childName = childInfo.getTableName();
-            String pascal = StringUtil.toPascalCase(childName);
-            s.add("      <h3 th:text=\"#{" + pascal + ".h3}\">h3</h3>");
-            s.add("      <a th:href=\"@{/model/" + pascal + ".html}\" id=\"" + pascal
-                    + "\" target=\"dialog\" th:text=\"#{" + pascal + ".add}\" class=\"addChild\" tabindex=\"-1\">"
+            String child = StringUtil.toPascalCase(childInfo.getTableName());
+            s.add("      <h3 th:text=\"#{" + child + ".h3}\">h3</h3>");
+            s.add("      <a th:href=\"@{/model/" + child + ".html}\" id=\"" + child
+                    + "\" target=\"dialog\" th:text=\"#{" + child + ".add}\" class=\"addChild\" tabindex=\"-1\">"
                     + childInfo.getRemarks() + "</a>");
 
             // ファイル列がある場合は新規行を取消
@@ -742,32 +739,34 @@ public final class HtmlGenerator {
             }
 
             String frozen = String.valueOf(tableInfo.getPrimaryKeys().size());
-
-            s.add("      <div id=\"" + pascal
-                    + "Grid\" data-selectionMode=\"link\"" + addRow + " data-frozenColumn=\"" + frozen
-                    + "\" th:data-href=\"@{/model/" + pascal + ".html}\"></div>");
+            s.add("      <div id=\"" + child + "Grid\" data-selectionMode=\"link\"" + addRow + " data-frozenColumn=\""
+                    + frozen + "\" th:data-href=\"@{/model/" + child + ".html}\"></div>");
         }
 
         s.add("      <div class=\"buttons\">");
-        if (!tableInfo.isHistory()) {
-            s.add("        <button type=\"button\" id=\"Reset" + entityName
+        if (!tableInfo.isHistory() && !tableInfo.isView()) {
+            s.add("        <button type=\"button\" id=\"Reset" + entity
                     + "\" th:text=\"#{common.reset}\" class=\"reset\" onClick=\"Dialogate.refresh(event);\">reset</button>");
         }
-        s.add("        <a th:href=\"@{" + entityName + "Get.xlsx(baseMei=#{" + entityName + ".h2})}\" id=\""
-                + entityName
-                + "Get.xlsx\" th:text=\"#{common.xlsx}\" class=\"output\" tabindex=\"-1\">xlsx</a>");
-        if (!tableInfo.isHistory() && !tableInfo.isView()) {
-            s.add("        <button id=\"Delete" + entityName + "\" class=\"delete\" data-action=\"" + entityName
-                    + "Delete.ajax\" th:text=\"#{common.delete}\" tabindex=\"-1\">削除</button>");
+        s.add("        <a th:href=\"@{" + entity + "Get.xlsx(baseMei=#{" + entity + ".h2})}\" id=\""
+                + entity + "Get.xlsx\" th:text=\"#{common.xlsx}\" class=\"output\" tabindex=\"-1\">xlsx</a>");
+        if (tableInfo.getRebornInfo() != null) {
+            TableInfo rebornInfo = tableInfo.getRebornInfo();
+            String reborn = StringUtil.toPascalCase(rebornInfo.getTableName());
+            s.add("        <a th:href=\"@{/model/" + reborn + ".html}\" id=\"" + reborn
+                    + "\" target=\"dialog\" th:text=\"#{" + reborn + ".add}\" class=\"reborn\" tabindex=\"-1\">"
+                    + rebornInfo.getRemarks() + "</a>");
         }
         s.add("      </div>");
         s.add("      <div class=\"submits\">");
         if (!tableInfo.isHistory() && !tableInfo.isView()) {
-            s.add("        <button id=\"Permit" + entityName + "\" class=\"permit\" data-action=\"" + entityName
+            s.add("        <button id=\"Delete" + entity + "\" class=\"delete\" data-action=\"" + entity
+                    + "Delete.ajax\" th:text=\"#{common.delete}\" tabindex=\"-1\">削除</button>");
+            s.add("        <button id=\"Permit" + entity + "\" class=\"permit\" data-action=\"" + entity
                     + "Permit.ajax\" th:text=\"#{common.permit}\" tabindex=\"-1\">承認</button>");
-            s.add("        <button id=\"Forbid" + entityName + "\" class=\"forbid\" data-action=\"" + entityName
+            s.add("        <button id=\"Forbid" + entity + "\" class=\"forbid\" data-action=\"" + entity
                     + "Forbid.ajax\" th:text=\"#{common.forbid}\" tabindex=\"-1\">否認</button>");
-            s.add("        <button id=\"Regist" + entityName
+            s.add("        <button id=\"Regist" + entity
                     + "\" class=\"regist\" th:text=\"#{common.regist}\">登録</button>");
         }
         s.add("      </div>");
@@ -776,7 +775,7 @@ public final class HtmlGenerator {
         s.add("</body>");
         s.add("</html>");
 
-        FileUtil.writeFile(htmlDir + File.separator + entityName + ".html", s);
+        FileUtil.writeFile(htmlDir + File.separator + entity + ".html", s);
     }
 
     /**
@@ -842,7 +841,7 @@ public final class HtmlGenerator {
             if (isInsertDt || isInsertBy || isUpdateDt || isUpdateBy) {
                 // メタ情報の場合は表示項目（編集画面の自モデルのみここに到達する）
                 htmlFieldsMeta(s, fieldId, remarks);
-            } else if (isDetail && (tableInfo.isHistory() || tableInfo.isView())) {
+            } else if (isDetail && (tableInfo.isHistory() || tableInfo.isView() || columnInfo.isReborn())) {
                 // 履歴モデルかビューの詳細画面
                 htmlFieldsMeta(s, fieldId, remarks);
             } else if (isDetail && columnInfo.isNumbering()) {
@@ -1258,6 +1257,14 @@ public final class HtmlGenerator {
                 String camel = StringUtil.toCamelCase(columnInfo.getColumnName());
                 s.add(pascal + "Grid." + camel + " " + columnInfo.getRemarks());
             }
+        }
+        if (tableInfo.getRebornInfo() != null) {
+            TableInfo childInfo = tableInfo.getRebornInfo();
+            String childName = childInfo.getTableName();
+            String pascal = StringUtil.toPascalCase(childName);
+            String childMei = childInfo.getRemarks();
+            s.add("");
+            s.add(pascal + ".add " + childMei + "追加");
         }
 
         FileUtil.writeFile(htmlDir + File.separator + entityName + ".properties", s);

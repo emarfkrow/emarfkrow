@@ -232,9 +232,9 @@ button.regist {
 	font-size: large;
 }
 
-button.permit {
+a.reborn, button.permit {
     background-color: teal;
-    color: white;
+    color: white !important;
     font-size: large;
     font-weight: bold;
     margin-left: 2rem;
