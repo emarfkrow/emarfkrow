@@ -39,7 +39,8 @@ public final class DataSourcesAssistMySQL extends DataSourcesAssist {
 
     @Override
     protected MapList getUniqueIndexes(final String tableName) {
-        return null;
+        MapList mapList = Queries.select("show index from " + tableName, null, null);
+        return mapList;
     }
 
     @Override

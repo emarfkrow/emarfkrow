@@ -145,8 +145,11 @@ public final class Queries {
         String sql = convRawSql(namedSql, newParams, args, rows, page);
 
         // id列を付与（SlickGridのDataView対応）
-        DataSourcesAssist assist = DataSources.getAssist();
-        String idSql = assist.addIdColumn(sql);
+        String idSql = sql;
+        if (sql.startsWith("SELECT")) {
+            DataSourcesAssist assist = DataSources.getAssist();
+            idSql = assist.addIdColumn(sql);
+        }
 
         if (rows != null && rows > 0) {
 
@@ -157,6 +160,7 @@ public final class Queries {
             params.put("totalRows", totalRows);
 
             // ページング
+            DataSourcesAssist assist = DataSources.getAssist();
             idSql = assist.getPagedSql(idSql, rows, page);
         }
 

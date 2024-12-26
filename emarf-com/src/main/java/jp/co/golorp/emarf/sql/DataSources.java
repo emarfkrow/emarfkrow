@@ -492,7 +492,12 @@ public final class DataSources {
         if (uniqueIndexColumns != null) {
 
             for (Map<String, Object> uniqueIndexColumn : uniqueIndexColumns) {
-                String columnName = uniqueIndexColumn.get("COLUMN_NAME").toString();
+                String columnName = null;
+                if (uniqueIndexColumn.get("COLUMN_NAME") != null) {
+                    columnName = uniqueIndexColumn.get("COLUMN_NAME").toString();
+                } else if (uniqueIndexColumn.get("Column_name") != null) {
+                    columnName = uniqueIndexColumn.get("Column_name").toString();
+                }
                 if (!tableInfo.getUniqueIndexColumns().contains(columnName)) {
                     tableInfo.getUniqueIndexColumns().add(columnName);
                 }
@@ -501,17 +506,28 @@ public final class DataSources {
             if (tableInfo.getPrimaryKeys().size() == 0) {
 
                 // 最初にとれたユニークインデクスを主キー扱いにする
+                String indexName = null;
                 String preIndexName = null;
                 for (Map<String, Object> uniqueIndexColumn : uniqueIndexColumns) {
                     //                    LOG.info(uniqueIndexColumn.get("TABLE_NAME") + "\t" + uniqueIndexColumn.get("INDEX_NAME") + "\t"
                     //                            + uniqueIndexColumn.get("COLUMN_POSITION") + "\t" + uniqueIndexColumn.get("COLUMN_NAME"));
-                    if (preIndexName == null) {
-                        preIndexName = uniqueIndexColumn.get("INDEX_NAME").toString();
+                    if (uniqueIndexColumn.get("INDEX_NAME") != null) {
+                        indexName = uniqueIndexColumn.get("INDEX_NAME").toString();
+                    } else if (uniqueIndexColumn.get("Key_name") != null) {
+                        indexName = uniqueIndexColumn.get("Key_name").toString();
                     }
-                    if (!preIndexName.equals(uniqueIndexColumn.get("INDEX_NAME").toString())) {
+                    if (preIndexName == null) {
+                        preIndexName = indexName;
+                    }
+                    if (!preIndexName.equals(indexName)) {
                         break;
                     }
-                    String columnName = uniqueIndexColumn.get("COLUMN_NAME").toString();
+                    String columnName = null;
+                    if (uniqueIndexColumn.get("COLUMN_NAME") != null) {
+                        columnName = uniqueIndexColumn.get("COLUMN_NAME").toString();
+                    } else if (uniqueIndexColumn.get("Column_name") != null) {
+                        columnName = uniqueIndexColumn.get("Column_name").toString();
+                    }
                     tableInfo.getPrimaryKeys().add(columnName);
                 }
             }
