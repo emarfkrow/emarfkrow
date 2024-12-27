@@ -232,12 +232,10 @@ public final class DataSources {
     }
 
     /**
-     * スキーマのメタ情報取得
-     * @return List<TableInfo>
+     * プロパティファイルロード
      */
-    public static List<TableInfo> getTableInfos() {
+    private static void loadBundle() {
 
-        // 設定ファイル読み込み
         ResourceBundle bundle = ResourceBundles.getBundle(BeanGenerator.class);
         String[] pairs = bundle.getString("DataSources.reration.refer.pairs").split(",");
         for (String pair : pairs) {
@@ -257,6 +255,16 @@ public final class DataSources {
         inputDateTimeSuffixs = bundle.getString("BeanGenerator.input.datetime.suffixs").split(",");
         inputDateSuffixs = bundle.getString("BeanGenerator.input.date.suffixs").split(",");
         inputTimeSuffixs = bundle.getString("BeanGenerator.input.time.suffixs").split(",");
+    }
+
+    /**
+     * スキーマのメタ情報取得
+     * @return List<TableInfo>
+     */
+    public static List<TableInfo> getTableInfos() {
+
+        // 設定ファイル読み込み
+        loadBundle();
 
         // テーブル情報の取得
         List<TableInfo> tableInfos = new ArrayList<TableInfo>();
@@ -275,48 +283,59 @@ public final class DataSources {
             }
 
             // テーブル毎にカラム情報を取得
-            for (TableInfo tableInfo : tableInfos) {
+            for (TableInfo table : tableInfos) {
 
                 // テーブルのカラム情報を取得してループ
-                ResultSet columns = metaData.getColumns(null, schemaPattern.toUpperCase(), tableInfo.getTableName(),
-                        null);
+                ResultSet columns = metaData.getColumns(null, schemaPattern.toUpperCase(), table.getTableName(), null);
 
                 while (columns.next()) {
 
                     // カラム名が合致しなければスキップ
                     String columnName = columns.getString("COLUMN_NAME");
-
                     if (!columnName.matches("^[\\$\\-0-9A-Z\\_a-z]+$")) {
                         continue;
                     }
-
                     if (columnName.matches(columnIgnoreRe)) {
                         continue;
                     }
 
                     // カラム情報を追加
-                    ColumnInfo columnInfo = new ColumnInfo();
-                    tableInfo.getColumnInfos().put(columnName, columnInfo);
-                    columnInfo.setColumnName(columnName); // カラム物理名
-                    columnInfo.setTypeName(columns.getString("TYPE_NAME")); // DBデータ型
-                    columnInfo.setColumnSize(columns.getInt("COLUMN_SIZE")); // カラムサイズ
-                    if (columnInfo.getColumnSize() == 0) {
-                        columnInfo.setColumnSize(3);
+                    ColumnInfo column = new ColumnInfo();
+                    table.getColumnInfos().put(columnName, column);
+
+                    // カラム物理名
+                    column.setColumnName(columnName);
+
+                    // DBデータ型
+                    column.setTypeName(columns.getString("TYPE_NAME"));
+
+                    // カラムサイズ
+                    column.setColumnSize(columns.getInt("COLUMN_SIZE"));
+                    if (column.getColumnSize() == 0) {
+                        column.setColumnSize(3);
                     }
-                    if (StringUtil.endsWith(inputDateSuffixs, columnName)) { // 桁制限
-                        columnInfo.setMaxLength(10);
+
+                    // 桁制限
+                    if (StringUtil.endsWith(inputDateSuffixs, columnName)) {
+                        column.setMaxLength(10);
                     } else if (StringUtil.endsWith(inputTimeSuffixs, columnName)) {
-                        columnInfo.setMaxLength(5);
+                        column.setMaxLength(5);
                     } else if (StringUtil.endsWith(inputDateTimeSuffixs, columnName)) {
-                        columnInfo.setMaxLength(19);
+                        column.setMaxLength(19);
                     } else if (StringUtil.endsWith(inputTimestampSuffixs, columnName)) {
-                        columnInfo.setMaxLength(23);
+                        column.setMaxLength(23);
                     }
-                    columnInfo.setDecimalDigits(columns.getInt("DECIMAL_DIGITS")); // 小数桁数
-                    columnInfo.setNullable(columns.getInt("NULLABLE")); // NULL可否
-                    String remarks = columns.getString("REMARKS"); // カラム論理名
+
+                    // 小数桁数
+                    column.setDecimalDigits(columns.getInt("DECIMAL_DIGITS"));
+
+                    // NULL可否
+                    column.setNullable(columns.getInt("NULLABLE"));
+
+                    // カラム論理名
+                    String remarks = columns.getString("REMARKS");
                     if (remarks == null || remarks.length() == 0) {
-                        remarks = assist.getColumnComment(tableInfo.getTableName(), columnName);
+                        remarks = assist.getColumnComment(table.getTableName(), columnName);
                     }
                     if (remarks != null && remarks.contains(":")) {
                         int i = remarks.indexOf(":");
@@ -325,29 +344,32 @@ public final class DataSources {
                     if (remarks == null || remarks.length() == 0) {
                         remarks = columnName;
                     }
-                    columnInfo.setRemarks(remarks);
-                    if (tableInfo.getPrimaryKeys().contains(columnName)) { // 主キー
-                        columnInfo.setPk(true);
+                    column.setRemarks(remarks);
+
+                    // 主キー
+                    if (table.getPrimaryKeys().contains(columnName)) {
+                        column.setPk(true);
                     } else {
-                        if (tableInfo.getUniqueIndexColumns().contains(columnName)) {
-                            columnInfo.setUnique(true);
+                        if (table.getUniqueIndexColumns().contains(columnName)) {
+                            column.setUnique(true);
                         }
-                        tableInfo.getNonPrimaryKeys().add(columnName);
+                        table.getNonPrimaryKeys().add(columnName);
                     }
 
                     // typeNameをjavaデータ型に変換
-                    String dataType = getDataType(columnInfo);
-                    columnInfo.setDataType(dataType);
+                    String dataType = getDataType(column);
+                    column.setDataType(dataType);
                 }
 
                 columns.close();
 
-                if (tableInfo.getPrimaryKeys().size() == 0 && tableInfo.isView()) {
-                    ColumnInfo pkColumn = tableInfo.getColumnInfos().get("NO");
-                    if (pkColumn != null) {
-                        tableInfo.getPrimaryKeys().add("NO");
-                        pkColumn.setPk(true);
-                        tableInfo.getNonPrimaryKeys().remove("NO");
+                if (table.getPrimaryKeys().size() == 0 && table.isView()) {
+                    ColumnInfo noCol = table.getColumnInfos().get("NO");
+                    if (noCol != null) {
+                        //viewの場合、「NO」列があれば主キーとする
+                        table.getPrimaryKeys().add("NO");
+                        noCol.setPk(true);
+                        table.getNonPrimaryKeys().remove("NO");
                     }
                 }
             }
@@ -361,18 +383,16 @@ public final class DataSources {
 
         //兄弟モデルの評価
         addBrotherTable(tableInfos);
-
         //履歴モデルの評価
         addHistoryTable(tableInfos);
-
         //子モデルの評価
         addChildTables(tableInfos);
-
         //参照モデルの評価
         addReferTable(tableInfos);
-
         //転生モデルの評価
         addRebornTable(tableInfos);
+        //対応表の評価
+        addComboTable(tableInfos);
 
         log(tableInfos);
 
@@ -384,44 +404,44 @@ public final class DataSources {
      */
     private static void log(final List<TableInfo> tableInfos) {
 
-        for (TableInfo tableInfo : tableInfos) {
+        for (TableInfo table : tableInfos) {
 
             LOG.info("");
-            LOG.info("■" + tableInfo.getTableName());
+            LOG.info("■" + table.getTableName());
 
-            if (tableInfo.getPrimaryKeys().size() > 0) {
-                LOG.info("    PrimaryKeys: " + tableInfo.getPrimaryKeys());
+            if (table.getPrimaryKeys().size() > 0) {
+                LOG.info("    PrimaryKeys: " + table.getPrimaryKeys());
             }
 
-            if (tableInfo.getParentInfos().size() > 0) {
+            if (table.getParentInfos().size() > 0) {
                 LOG.info("    ParentInfos:");
-                for (TableInfo parentInfo : tableInfo.getParentInfos()) {
+                for (TableInfo parentInfo : table.getParentInfos()) {
                     LOG.info("        " + parentInfo.getTableName() + " " + parentInfo.getPrimaryKeys());
                 }
             }
 
-            if (tableInfo.getBrosInfos().size() > 0) {
+            if (table.getBrosInfos().size() > 0) {
                 LOG.info("    BrosInfos:");
-                for (TableInfo brosInfo : tableInfo.getBrosInfos()) {
+                for (TableInfo brosInfo : table.getBrosInfos()) {
                     LOG.info("        " + brosInfo.getTableName() + " " + brosInfo.getPrimaryKeys());
                 }
             }
 
-            if (tableInfo.getChildInfos().size() > 0) {
+            if (table.getChildInfos().size() > 0) {
                 LOG.info("    ChildInfos:");
-                for (TableInfo childInfo : tableInfo.getChildInfos()) {
+                for (TableInfo childInfo : table.getChildInfos()) {
                     LOG.info("        " + childInfo.getTableName() + " " + childInfo.getPrimaryKeys());
                 }
             }
 
-            if (tableInfo.getHistoryInfo() != null) {
+            if (table.getHistoryInfo() != null) {
                 LOG.info("    HistoryInfo:");
-                TableInfo historyInfo = tableInfo.getHistoryInfo();
+                TableInfo historyInfo = table.getHistoryInfo();
                 LOG.info("        " + historyInfo.getTableName() + " " + historyInfo.getPrimaryKeys());
             }
 
             Map<String, TableInfo> referInfos = new LinkedHashMap<String, TableInfo>();
-            for (ColumnInfo columnInfo : tableInfo.getColumnInfos().values()) {
+            for (ColumnInfo columnInfo : table.getColumnInfos().values()) {
                 if (columnInfo.getReferInfo() != null) {
                     referInfos.put(columnInfo.getColumnName(), columnInfo.getReferInfo());
                 }
@@ -429,17 +449,22 @@ public final class DataSources {
             if (referInfos.size() > 0) {
                 LOG.info("    ReferInfos:");
                 for (Entry<String, TableInfo> e : referInfos.entrySet()) {
-                    String columnName = e.getKey();
-                    TableInfo referInfo = e.getValue();
-                    LOG.info("        " + columnName + " = " + referInfo.getTableName() + " "
-                            + referInfo.getPrimaryKeys());
+                    String column = e.getKey();
+                    TableInfo refer = e.getValue();
+                    LOG.info("        " + column + " = " + refer.getTableName() + " " + refer.getPrimaryKeys());
                 }
             }
 
-            if (tableInfo.getRebornInfo() != null) {
+            if (table.getRebornInfo() != null) {
                 LOG.info("    RebornInfo:");
-                TableInfo rebornInfo = tableInfo.getRebornInfo();
+                TableInfo rebornInfo = table.getRebornInfo();
                 LOG.info("        " + rebornInfo.getTableName() + " " + rebornInfo.getPrimaryKeys());
+            }
+
+            if (table.getComboInfo() != null) {
+                LOG.info("    ComboInfo:");
+                TableInfo comboInfo = table.getComboInfo();
+                LOG.info("        " + comboInfo.getTableName() + " " + comboInfo.getPrimaryKeys());
             }
         }
 
@@ -1119,6 +1144,88 @@ public final class DataSources {
                             dest.getColumnInfos().get(fk).setReborn(true);
                         }
                     }
+                }
+            }
+        }
+    }
+
+    /**
+     * 対応表の評価
+     * @param tableInfos テーブル情報のリスト
+     */
+    private static void addComboTable(final List<TableInfo> tableInfos) {
+
+        // テーブル情報でループ（対応表候補）
+        Iterator<TableInfo> srcs = tableInfos.iterator();
+        while (srcs.hasNext()) {
+            TableInfo src = srcs.next();
+
+            // 兄弟モデル・履歴モデル・viewならスキップ
+            if (src.isBrother() || src.isHistory() || src.isView()) {
+                continue;
+            }
+
+            // 複合キーでなければスキップ
+            if (src.getPrimaryKeys().size() <= 1) {
+                continue;
+            }
+
+            // 参照キー以外が含まれるならスキップ
+            boolean isRefer = true;
+            for (String pk : src.getPrimaryKeys()) {
+                //TODO 開始日考慮
+                if (pk.equals("KAISHI_BI")) {
+                    continue;
+                }
+                ColumnInfo column = src.getColumnInfos().get(pk);
+                TableInfo refer = column.getReferInfo();
+                if (refer == null) {
+                    isRefer = false;
+                }
+            }
+            if (!isRefer) {
+                continue;
+            }
+
+            /*
+             * 比較先（対応付けテーブル）の探索
+             */
+
+            // テーブル情報でループ
+            Iterator<TableInfo> dests = tableInfos.iterator();
+            while (dests.hasNext()) {
+                TableInfo dest = dests.next();
+
+                // 兄弟モデル・履歴モデル・viewならスキップ
+                if (dest.isBrother() || dest.isHistory() || dest.isView()) {
+                    continue;
+                }
+
+                // 単一キーでなければスキップ
+                if (dest.getPrimaryKeys().size() != 1) {
+                    continue;
+                }
+
+                // 採番キーでなければスキップ
+                String pkDest = dest.getPrimaryKeys().get(0);
+                ColumnInfo primaryKey = dest.getColumnInfos().get(pkDest);
+                if (!primaryKey.isNumbering()) {
+                    continue;
+                }
+
+                // 比較先の単一キーが比較元の第２主キー以降に含まれるなら対応表
+                boolean isCombo = false;
+                for (int i = 1; i < src.getPrimaryKeys().size(); i++) {
+                    String pkSrc = src.getPrimaryKeys().get(i);
+                    if (pkDest.equals(pkSrc)) {
+                        isCombo = true;
+                        break;
+                    }
+                }
+
+                if (isCombo) {
+                    dest.setComboInfo(src);
+                    primaryKey.setCombo(true);
                 }
             }
         }

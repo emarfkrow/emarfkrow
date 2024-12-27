@@ -172,7 +172,7 @@ public final class HtmlGenerator {
             HtmlGenerator.htmlProperties(htmlDir, tableInfo);
         }
 
-        htmlNav(htmlDir, tableInfos);
+        HtmlGenerator.htmlNav(htmlDir, tableInfos);
 
         //        List<String> s = new ArrayList<String>();
         //        s.add("<!DOCTYPE html>");
@@ -191,147 +191,69 @@ public final class HtmlGenerator {
     }
 
     /**
-     * navファイル出力
-     * @param htmlDir HTMLファイル出力ディレクトリ
-     * @param tableInfos テーブル情報のリスト
-     */
-    private static void htmlNav(final String htmlDir, final List<TableInfo> tableInfos) {
-
-        // プレフィクス毎にグループ化
-        Map<String, List<TableInfo>> navs = new LinkedHashMap<String, List<TableInfo>>();
-        for (TableInfo tableInfo : tableInfos) {
-            // 親モデルがあればスキップ
-            if (tableInfo.getParentInfos().size() > 0) {
-                continue;
-            }
-            String tableName = tableInfo.getTableName();
-            String prefix = tableName.replaceAll("_.+$", "");
-            List<TableInfo> nav = null;
-            if (navs.containsKey(prefix)) {
-                nav = navs.get(prefix);
-            } else {
-                nav = new ArrayList<TableInfo>();
-                navs.put(prefix, nav);
-            }
-            nav.add(tableInfo);
-        }
-
-        List<String> s = new ArrayList<String>();
-        s.add("<!DOCTYPE html>");
-        s.add("<html xmlns:th=\"http://www.thymeleaf.org\" xmlns:layout=\"http://www.ultraq.net.nz/web/thymeleaf/layout\">");
-        s.add("<body>");
-        s.add("  <div class=\"nav\" layout:fragment=\"nav\" th:if=\"${#ctx.session != null && #ctx.session.get('AUTHN_KEY') != null}\">");
-        s.add("    <dl>");
-        for (Entry<String, List<TableInfo>> nav : navs.entrySet()) {
-            String t = nav.getKey();
-            s.add("      <dt id=\"" + t + "\" th:text=\"#{nav.dt." + t + "}\">" + t + "</dt>");
-            s.add("      <dd>");
-            s.add("        <ul>");
-            List<TableInfo> navInfos = nav.getValue();
-            for (TableInfo tableInfo : navInfos) {
-                String tableName = tableInfo.getTableName();
-                String remarks = tableInfo.getRemarks();
-                String pascal = StringUtil.toPascalCase(tableName);
-                String pageName = pascal + "S";
-                s.add("          <li><a id=\"" + pascal + "\" th:href=\"@{/model/" + pageName
-                        + ".html}\" th:text=\"#{nav." + pageName + "}\">" + remarks + "</a></li>");
-            }
-            s.add("        </ul>");
-            s.add("      </dd>");
-        }
-        s.add("    </dl>");
-        s.add("  </div>");
-        s.add("</body>");
-        s.add("</html>");
-
-        String sep = File.separator;
-        FileUtil.writeFile(htmlDir + sep + ".." + sep + "common" + sep + "nav.html", s);
-
-        s = new ArrayList<String>();
-        for (Entry<String, List<TableInfo>> nav : navs.entrySet()) {
-            String t = nav.getKey();
-            s.add("nav.dt." + t + " " + t);
-
-            List<TableInfo> navInfos = nav.getValue();
-            for (TableInfo tableInfo : navInfos) {
-                String tableName = tableInfo.getTableName();
-                String remarks = tableInfo.getRemarks();
-                String pascal = StringUtil.toPascalCase(tableName);
-                String pageName = pascal + "S";
-                s.add("nav." + pageName + " " + remarks);
-            }
-        }
-
-        FileUtil.writeFile(htmlDir + sep + ".." + sep + "common" + sep + "nav.properties", s);
-    }
-
-    /**
      * 検索画面 HTML出力
      * @param htmlDir HTMLファイル出力ディレクトリ
      * @param tableInfo テーブル情報
      */
     private static void htmlIndex(final String htmlDir, final TableInfo tableInfo) {
 
-        String tableName = tableInfo.getTableName();
+        String entity = StringUtil.toPascalCase(tableInfo.getTableName());
+        String index = entity + "S";
         String remarks = tableInfo.getRemarks();
-        String pascal = StringUtil.toPascalCase(tableName);
-        String pageName = pascal + "S";
 
         List<String> s = new ArrayList<String>();
         s.add("<!DOCTYPE html>");
         s.add("<html xmlns:th=\"http://www.thymeleaf.org\" xmlns:layout=\"http://www.ultraq.net.nz/web/thymeleaf/layout\" layout:decorate=\"~{common/base}\">");
         s.add("<head>");
         s.add("<meta charset=\"UTF-8\">");
-        s.add("<title th:text=\"#{" + pageName + ".title}\">" + remarks + "</title>");
+        s.add("<title th:text=\"#{" + index + ".title}\">" + remarks + "</title>");
         s.add("<style type=\"text/css\">");
         s.add("</style>");
         s.add("<script type=\"text/javascript\">");
         s.add("");
         s.add("</script>");
-        s.add("<script th:src=\"@{/model/" + pascal + "GridColumns.js}\"></script>");
+        s.add("<script th:src=\"@{/model/" + entity + "GridColumns.js}\"></script>");
         Set<TableInfo> added = new HashSet<TableInfo>();
         added.add(tableInfo);
         htmlNestGrid(tableInfo, s, added);
         s.add("</head>");
         s.add("<body>");
         s.add("  <div layout:fragment=\"article\">");
-        s.add("    <h2 th:text=\"#{" + pageName + ".h2}\">h2</h2>");
-
-        /* 検索フォーム */
-        s.add("    <form name=\"" + pascal + "SearchForm\" action=\"" + pascal + "Search.ajax\" class=\"search\">");
+        s.add("    <h2 th:text=\"#{" + index + ".h2}\">h2</h2>");
+        s.add("    <!-- 検索フォーム -->");
+        s.add("    <form name=\"" + entity + "SearchForm\" action=\"" + entity + "Search.ajax\" class=\"search\">");
         s.add("      <input type=\"hidden\" name=\"rows\" value=\"" + rows + "\" />");
         s.add("      <input type=\"hidden\" name=\"page\" value=\"0\" />");
         s.add("      <fieldset>");
-        s.add("        <legend th:text=\"#{" + pageName + ".legend}\">legend</legend>");
+        s.add("        <legend th:text=\"#{" + index + ".legend}\">legend</legend>");
         htmlFields(tableInfo, s, false, false);
         s.add("      </fieldset>");
         s.add("      <div class=\"buttons\">");
-        s.add("        <button type=\"reset\" id=\"Reset" + pascal
+        s.add("        <button type=\"reset\" id=\"Reset" + entity
                 + "\" th:text=\"#{common.reset}\" class=\"reset\">reset</button>");
         // 採番キーが２つ以上あれば新規ボタンは出力しない
         int numberingCount = 0;
-        for (String primaryKey : tableInfo.getPrimaryKeys()) {
-            ColumnInfo primaryKeyInfo = tableInfo.getColumnInfos().get(primaryKey);
-            if (primaryKeyInfo != null && primaryKeyInfo.isNumbering() && primaryKeyInfo.getReferInfo() == null) {
+        for (String pk : tableInfo.getPrimaryKeys()) {
+            ColumnInfo pkCol = tableInfo.getColumnInfos().get(pk);
+            if (pkCol != null && pkCol.isNumbering() && pkCol.getReferInfo() == null) {
                 ++numberingCount;
             }
         }
-        if (!tableInfo.isView() && numberingCount < 2) {
-            s.add("        <a th:href=\"@{/model/" + pascal + ".html}\" id=\"" + pascal
-                    + "\" class=\"anew\" target=\"dialog\" th:text=\"#{" + pascal + ".add}\" tabindex=\"-1\">" + remarks
+        if (numberingCount == 1) {
+            s.add("        <a th:href=\"@{/model/" + entity + ".html}\" id=\"" + entity
+                    + "\" class=\"anew\" target=\"dialog\" th:text=\"#{" + entity + ".add}\" tabindex=\"-1\">" + remarks
                     + "</a>");
         }
         s.add("      </div>");
         s.add("      <div class=\"submits\">");
-        s.add("        <button id=\"Search" + pascal + "\" class=\"search\" data-gridId=\"" + pascal
+        s.add("        <button id=\"Search" + entity + "\" class=\"search\" data-gridId=\"" + entity
                 + "Grid\" th:text=\"#{common.search}\">submit</button>");
         s.add("      </div>");
         s.add("    </form>");
-
-        /* 一覧フォーム */
-        s.add("    <form name=\"" + pascal + "SRegistForm\" action=\"" + pascal + "SRegist.ajax\" class=\"regist\">");
-        s.add("      <h3 th:text=\"#{" + pascal + ".h3}\">h3</h3>");
-        String gridId = pascal + "Grid";
+        s.add("    <!-- 一覧フォーム -->");
+        s.add("    <form name=\"" + entity + "SRegistForm\" action=\"" + entity + "SRegist.ajax\" class=\"regist\">");
+        s.add("      <h3 th:text=\"#{" + entity + ".h3}\">h3</h3>");
+        String gridId = entity + "Grid";
         String addRow = "";
         // 単一キーの場合は新規行あり
         if (tableInfo.getPrimaryKeys().size() == 1) {
@@ -354,29 +276,29 @@ public final class HtmlGenerator {
         }
         int frozenColumn = tableInfo.getPrimaryKeys().size() - 1;
         s.add("      <div id=\"" + gridId + "\" data-selectionMode=\"checkbox\"" + addRow + " data-frozenColumn=\""
-                + frozenColumn + "\" th:data-href=\"@{/model/" + pascal + ".html}\"></div>");
-        s.add("      <div id=\"" + pascal + "Pager\"></div>");
+                + frozenColumn + "\" th:data-href=\"@{/model/" + entity + ".html}\"></div>");
+        s.add("      <div id=\"" + entity + "Pager\"></div>");
         s.add("      <div class=\"buttons\">");
         if (!tableInfo.isHistory()) {
-            s.add("        <button type=\"button\" id=\"Reset" + pascal
-                    + "S\" th:text=\"#{common.reset}\" class=\"reset\" onClick=\"$('[id=&quot;Search" + pascal
+            s.add("        <button type=\"button\" id=\"Reset" + entity
+                    + "S\" th:text=\"#{common.reset}\" class=\"reset\" onClick=\"$('[id=&quot;Search" + entity
                     + "&quot;]').click();\">reset</button>");
         }
-        s.add("        <a th:href=\"@{" + pascal + "Search.xlsx(baseMei=#{" + pascal + "S.h2})}\" id=\"" + pascal
+        s.add("        <a th:href=\"@{" + entity + "Search.xlsx(baseMei=#{" + entity + "S.h2})}\" id=\"" + entity
                 + "Search.xlsx\" th:text=\"#{common.xlsx}\" class=\"output\" tabindex=\"-1\">xlsx</a>");
         if (!tableInfo.isHistory() && !tableInfo.isView()) {
-            s.add("        <button id=\"Delete" + pascal + "S\" class=\"delete selectRows\" data-action=\"" + pascal
+            s.add("        <button id=\"Delete" + entity + "S\" class=\"delete selectRows\" data-action=\"" + entity
                     + "SDelete.ajax\" th:text=\"#{common.delete}\" tabindex=\"-1\">削除</button>");
-            s.add("        <button id=\"Permit" + pascal + "S\" class=\"permit selectRows\" data-action=\"" + pascal
+            s.add("        <button id=\"Permit" + entity + "S\" class=\"permit selectRows\" data-action=\"" + entity
                     + "SPermit.ajax\" th:text=\"#{common.permit}\" tabindex=\"-1\">承認</button>");
-            s.add("        <button id=\"Forbid" + pascal + "S\" class=\"forbid selectRows\" data-action=\"" + pascal
+            s.add("        <button id=\"Forbid" + entity + "S\" class=\"forbid selectRows\" data-action=\"" + entity
                     + "SForbid.ajax\" th:text=\"#{common.forbid}\" tabindex=\"-1\">否認</button>");
         }
         s.add("      </div>");
         s.add("      <div class=\"submits\">");
         if (!tableInfo.isHistory() && !tableInfo.isView()) {
             //履歴モデルは変更不可
-            s.add("        <button id=\"Regist" + pascal
+            s.add("        <button id=\"Regist" + entity
                     + "S\" class=\"regist\" th:text=\"#{common.regist}\">submit</button>");
         }
         s.add("      </div>");
@@ -385,71 +307,7 @@ public final class HtmlGenerator {
         s.add("</body>");
         s.add("</html>");
 
-        FileUtil.writeFile(htmlDir + File.separator + pageName + ".html", s);
-    }
-
-    /**
-     * ネストした兄弟モデル・子モデル・参照モデルのgrid定義出力
-     * @param tableInfo テーブル情報
-     * @param s 出力文字列のリスト
-     * @param added 出力済みテーブル情報のリスト
-     */
-    private static void htmlNestGrid(final TableInfo tableInfo, final List<String> s, final Set<TableInfo> added) {
-
-        for (TableInfo childInfo : tableInfo.getChildInfos()) {
-
-            if (added.contains(childInfo)) {
-                continue;
-            }
-
-            String childName = childInfo.getTableName();
-            String pascalChild = StringUtil.toPascalCase(childName);
-            s.add("<script th:src=\"@{/model/" + pascalChild + "GridColumns.js}\"></script>");
-            added.add(childInfo);
-
-            htmlNestGrid(childInfo, s, added);
-        }
-
-        for (ColumnInfo columnInfo : tableInfo.getColumnInfos().values()) {
-
-            TableInfo referInfo = columnInfo.getReferInfo();
-
-            if (referInfo != null) {
-
-                if (added.contains(referInfo)) {
-                    continue;
-                }
-
-                String referName = referInfo.getTableName();
-                String pascalRefer = StringUtil.toPascalCase(referName);
-                s.add("<script th:src=\"@{/model/" + pascalRefer + "GridColumns.js}\"></script>");
-                added.add(referInfo);
-
-                htmlNestGrid(referInfo, s, added);
-            }
-        }
-
-        for (TableInfo brosInfo : tableInfo.getBrosInfos()) {
-
-            for (ColumnInfo columnInfo : brosInfo.getColumnInfos().values()) {
-
-                TableInfo referInfo = columnInfo.getReferInfo();
-
-                if (referInfo != null) {
-
-                    if (added.contains(referInfo)) {
-                        continue;
-                    }
-
-                    String referName = referInfo.getTableName();
-                    String pascalRefer = StringUtil.toPascalCase(referName);
-                    s.add("<script th:src=\"@{/model/" + pascalRefer + "GridColumns.js}\"></script>");
-                    added.add(referInfo);
-
-                    htmlNestGrid(referInfo, s, added);
-                }
-            }
-        }
+        FileUtil.writeFile(htmlDir + File.separator + index + ".html", s);
     }
 
     /**
@@ -503,163 +361,6 @@ public final class HtmlGenerator {
         s.add("];");
 
         FileUtil.writeFile(gridDir + File.separator + entityName + "GridColumns.js", s);
-    }
-
-    /**
-     * @param columnInfo
-     * @param entityName
-     * @param columnMap
-     * @param isHistory
-     * @param isView
-     * @return 列定義文字列
-     */
-    private static String htmlGridColumn(final ColumnInfo columnInfo, final String entityName,
-            final Map<String, ColumnInfo> columnMap, final boolean isHistory, final boolean isView) {
-
-        String columnName = columnInfo.getColumnName();
-        String camel = StringUtil.toCamelCase(columnName);
-        String name = "Messages['" + entityName + "Grid." + camel + "']";
-        String field = columnName;
-
-        int width = columnInfo.getColumnSize() * COLUMN_WIDTH_PX_MULTIPLIER;
-        if (columnInfo.getMaxLength() != null) {
-            width = columnInfo.getMaxLength() * COLUMN_WIDTH_PX_MULTIPLIER;
-        }
-        if (width < 30) {
-            width = 30;
-        } else if (width > 300) {
-            width = 300;
-        }
-
-        boolean isInsertDt = columnName.matches("(?i)^" + insertDt + "$");
-        boolean isUpdateDt = columnName.matches("(?i)^" + updateDt + "$");
-        boolean isInsertBy = columnName.matches("(?i)^" + insertBy + "$");
-        boolean isUpdateBy = columnName.matches("(?i)^" + updateBy + "$");
-        if (isInsertDt || isUpdateDt || isInsertBy || isUpdateBy) {
-            return null;
-        }
-
-        String css = "";
-        if (!isView) {
-            if (columnInfo.isPk()) {
-                css = "primaryKey";
-                if (columnInfo.isNumbering()) {
-                    css += " numbering";
-                }
-            } else if (columnInfo.isUnique()) {
-                css = "uniqueKey";
-            } else if (isInsertDt || isUpdateDt || isInsertBy || isUpdateBy) {
-                css = "metaInfo";
-            } else if (columnInfo.getNullable() == 0) {
-                css = "notblank";
-            }
-        }
-
-        String formatter = "null";
-        if (columnInfo.getDataType().equals("java.time.LocalDate")) {
-            formatter = "Slick.Formatters.Extends.Date";
-        } else if (StringUtil.endsWith(inputTimestampSuffixs, columnInfo.getColumnName())) {
-            formatter = "Slick.Formatters.Extends.Timestamp";
-        } else if (columnInfo.getDataType().equals("java.time.LocalDateTime")) {
-            formatter = "Slick.Formatters.Extends.DateTime";
-        }
-
-        // 名称を参照先から取得するか
-        boolean isMeiRefer = false;
-        // 参照名の列名
-        String referMei = null;
-        // 参照テーブルが設定されている場合
-        TableInfo referInfo = columnInfo.getReferInfo();
-        if (referInfo != null) {
-            isMeiRefer = true;
-            // カラム名が組み合わせキーのいずれかに合致する場合
-            if (StringUtil.endsWith(referPairs, columnName)) {
-                // 参照設定の組み合わせでループ
-                for (String[] suffix : referPairs) {
-                    String keySuffix = suffix[0];
-                    String meiSuffix = suffix[1];
-                    // カラム名がキー接尾辞に合致する場合
-                    if (columnName.matches("(?i).+" + keySuffix + "$")) {
-                        // カラム名の末尾を名称列サフィックスに変換
-                        String tempMei = columnName.replaceAll("(?i)" + keySuffix + "$", meiSuffix);
-                        // 名称列がテーブルに含まれていない場合は参照先から名称を取得する
-                        if (columnMap.containsKey(tempMei)) {
-                            referMei = tempMei;
-                            isMeiRefer = false;
-                            break;
-                        }
-                    }
-                }
-            }
-            //名称を参照先から取得する場合
-            if (isMeiRefer) {
-                // 参照設定の組み合わせでループ
-                for (String[] suffix : referPairs) {
-                    String keySuffix = suffix[0];
-                    String meiSuffix = suffix[1];
-                    // カラム名がキー接尾辞に合致する場合
-                    if (columnName.matches("(?i).+" + keySuffix + "$")) {
-                        // カラム名の末尾を名称列サフィックスに変換
-                        String tempMei = columnName.replaceAll("(?i)" + keySuffix + "$", meiSuffix).toUpperCase();
-                        // 名称列が参照先テーブルに含まれている場合は、取得する名称を決定する
-                        for (ColumnInfo referColumnInfo : referInfo.getColumnInfos().values()) {
-                            if (tempMei.matches("(?i).*" + referColumnInfo.getColumnName() + "$")) {
-                                referMei = tempMei;
-                                break;
-                            }
-                        }
-                        if (referMei != null) {
-                            break;
-                        }
-                    }
-                }
-            }
-        }
-
-        String opt = "{ json: '" + json + "', paramkey: '" + optK + "', value: '" + optV + "', label: '" + optL + "' }";
-        String c = "";
-        if (isMeiRefer) {
-            c = "Column.refer('" + field + "', " + name + ", " + width + ", '" + css + "', '" + referMei + "'),";
-        } else if (isInsertDt || isUpdateDt || isInsertBy || isUpdateBy || isHistory || isView) {
-            c = "Column.cell('" + field + "', " + name + ", " + width + ", '" + css + "', " + formatter + "),";
-        } else if (StringUtil.endsWith(inputFlagSuffixs, columnName)) {
-            c = "Column.check('" + field + "', " + name + ", " + width + ", '" + css + "'),";
-        } else if (StringUtil.endsWith(inputDateSuffixs, columnName)) {
-            c = "Column.date('" + field + "', " + name + ", " + width + ", '" + css + "', " + formatter + "),";
-        } else if (StringUtil.endsWith(inputDate8Suffixs, columnName) && columnInfo.getColumnSize() == 8) {
-            c = "Column.date8('" + field + "', " + name + ", " + width + ", '" + css + "', " + formatter + "),";
-        } else if (StringUtil.endsWith(inputDateTimeSuffixs, columnName)) {
-            c = "Column.dateTime('" + field + "', " + name + ", " + width + ", '" + css + "'),";
-        } else if (StringUtil.endsWith(inputYMSuffixs, columnName)) {
-            c = "Column.month('" + field + "', " + name + ", " + width + ", '" + css + "', " + formatter + "),";
-        } else if (StringUtil.endsWith(inputTimeSuffixs, columnName)) {
-            c = "Column.time('" + field + "', " + name + ", " + width + ", '" + css + "', " + formatter + "),";
-        } else if (StringUtil.endsWith(inputFileSuffixs, columnName)) {
-            c = "Column.link('" + field + "', " + name + ", " + width + ", '" + css + "'),";
-        } else if (StringUtil.endsWith(optionsSuffixs, columnName)) {
-            c = "Column.select('" + field + "', " + name + ", " + width + ", '" + css + "', " + opt + "),";
-        } else if (StringUtil.endsWith(textareaSuffixs, columnName)) {
-            c = "Column.longText('" + field + "', " + name + ", " + width + ", '" + css + "', " + formatter + "),";
-        } else if ((columnInfo.getTypeName().equals("INT") || columnInfo.getTypeName().equals("DECIMAL")
-                || columnInfo.getTypeName().equals("DOUBLE") || columnInfo.getTypeName().equals("NUMBER")
-                || columnInfo.getTypeName().equals("NUMERIC"))
-                && !StringUtil.endsWith(intNoFormatSuffixs, columnInfo.getColumnName())) {
-
-            if (columnInfo.getDecimalDigits() == 3) {
-                c = "Column.dec3('" + field + "', " + name + ", " + width + ", '" + css + "', " + formatter + "),";
-            } else if (columnInfo.getDecimalDigits() == 2) {
-                c = "Column.dec2('" + field + "', " + name + ", " + width + ", '" + css + "', " + formatter + "),";
-            } else if (columnInfo.getDecimalDigits() == 1) {
-                c = "Column.dec1('" + field + "', " + name + ", " + width + ", '" + css + "', " + formatter + "),";
-            } else {
-                c = "Column.comma('" + field + "', " + name + ", " + width + ", '" + css + "', " + formatter + "),";
-            }
-
-        } else {
-            c = "Column.text('" + field + "', " + name + ", " + width + ", '" + css + "', " + formatter + "),";
-        }
-
-        return c;
     }
 
     /**
@@ -779,6 +480,377 @@ public final class HtmlGenerator {
     }
 
     /**
+     * 各モデルのプロパティファイル出力
+     * @param htmlDir HTMLファイル出力ディレクトリ
+     * @param tableInfo テーブル情報
+     */
+    private static void htmlProperties(final String htmlDir, final TableInfo tableInfo) {
+
+        String tableName = tableInfo.getTableName();
+        String entityName = StringUtil.toPascalCase(tableName);
+        String remarks = tableInfo.getRemarks();
+
+        List<String> s = new ArrayList<String>();
+        s.add(entityName + "S.title   " + remarks + "検索");
+        s.add(entityName + "S.h2      " + remarks + "検索");
+        s.add(entityName + "S.legend  " + remarks + "検索");
+        s.add(entityName + ".add      " + remarks + "追加");
+        s.add(entityName + ".title    " + remarks + "詳細");
+        s.add(entityName + ".h2       " + remarks + "詳細");
+        s.add(entityName + ".legend   " + remarks + "詳細");
+        s.add(entityName + ".h3       " + remarks + "一覧");
+        s.add("");
+        for (ColumnInfo columnInfo : tableInfo.getColumnInfos().values()) {
+            String camel = StringUtil.toCamelCase(columnInfo.getColumnName());
+            s.add(entityName + "." + camel + " " + columnInfo.getRemarks());
+        }
+        s.add("");
+        for (ColumnInfo columnInfo : tableInfo.getColumnInfos().values()) {
+            String camel = StringUtil.toCamelCase(columnInfo.getColumnName());
+            s.add(entityName + "Grid." + camel + " " + columnInfo.getRemarks());
+        }
+        for (TableInfo brosInfo : tableInfo.getBrosInfos()) {
+            String brosName = brosInfo.getTableName();
+            String pascal = StringUtil.toPascalCase(brosName);
+            String brosMei = brosInfo.getRemarks();
+            s.add("");
+            s.add(pascal + ".legend   " + brosMei + "詳細");
+            for (ColumnInfo columnInfo : brosInfo.getColumnInfos().values()) {
+                String camel = StringUtil.toCamelCase(columnInfo.getColumnName());
+                s.add(pascal + "." + camel + " " + columnInfo.getRemarks());
+            }
+        }
+        for (TableInfo childInfo : tableInfo.getChildInfos()) {
+            String childName = childInfo.getTableName();
+            String pascal = StringUtil.toPascalCase(childName);
+            String childMei = childInfo.getRemarks();
+            s.add("");
+            s.add(pascal + ".h3  " + childMei + "一覧");
+            s.add(pascal + ".add " + childMei + "追加");
+            for (ColumnInfo columnInfo : childInfo.getColumnInfos().values()) {
+                String camel = StringUtil.toCamelCase(columnInfo.getColumnName());
+                s.add(pascal + "Grid." + camel + " " + columnInfo.getRemarks());
+            }
+        }
+        if (tableInfo.getRebornInfo() != null) {
+            TableInfo childInfo = tableInfo.getRebornInfo();
+            String childName = childInfo.getTableName();
+            String pascal = StringUtil.toPascalCase(childName);
+            String childMei = childInfo.getRemarks();
+            s.add("");
+            s.add(pascal + ".add " + childMei + "追加");
+        }
+
+        FileUtil.writeFile(htmlDir + File.separator + entityName + ".properties", s);
+    }
+
+    /**
+     * navファイル出力
+     * @param htmlDir HTMLファイル出力ディレクトリ
+     * @param tableInfos テーブル情報のリスト
+     */
+    private static void htmlNav(final String htmlDir, final List<TableInfo> tableInfos) {
+
+        // プレフィクス毎にグループ化
+        Map<String, List<TableInfo>> navs = new LinkedHashMap<String, List<TableInfo>>();
+        for (TableInfo tableInfo : tableInfos) {
+            // 親モデルがあればスキップ
+            if (tableInfo.getParentInfos().size() > 0) {
+                continue;
+            }
+            String tableName = tableInfo.getTableName();
+            String prefix = tableName.replaceAll("_.+$", "");
+            List<TableInfo> nav = null;
+            if (navs.containsKey(prefix)) {
+                nav = navs.get(prefix);
+            } else {
+                nav = new ArrayList<TableInfo>();
+                navs.put(prefix, nav);
+            }
+            nav.add(tableInfo);
+        }
+
+        List<String> s = new ArrayList<String>();
+        s.add("<!DOCTYPE html>");
+        s.add("<html xmlns:th=\"http://www.thymeleaf.org\" xmlns:layout=\"http://www.ultraq.net.nz/web/thymeleaf/layout\">");
+        s.add("<body>");
+        s.add("  <div class=\"nav\" layout:fragment=\"nav\" th:if=\"${#ctx.session != null && #ctx.session.get('AUTHN_KEY') != null}\">");
+        s.add("    <dl>");
+        for (Entry<String, List<TableInfo>> nav : navs.entrySet()) {
+            String t = nav.getKey();
+            s.add("      <dt id=\"" + t + "\" th:text=\"#{nav.dt." + t + "}\">" + t + "</dt>");
+            s.add("      <dd>");
+            s.add("        <ul>");
+            List<TableInfo> navInfos = nav.getValue();
+            for (TableInfo tableInfo : navInfos) {
+                String tableName = tableInfo.getTableName();
+                String remarks = tableInfo.getRemarks();
+                String pascal = StringUtil.toPascalCase(tableName);
+                String pageName = pascal + "S";
+                s.add("          <li><a id=\"" + pascal + "\" th:href=\"@{/model/" + pageName
+                        + ".html}\" th:text=\"#{nav." + pageName + "}\">" + remarks + "</a></li>");
+            }
+            s.add("        </ul>");
+            s.add("      </dd>");
+        }
+        s.add("    </dl>");
+        s.add("  </div>");
+        s.add("</body>");
+        s.add("</html>");
+
+        String sep = File.separator;
+        FileUtil.writeFile(htmlDir + sep + ".." + sep + "common" + sep + "nav.html", s);
+
+        s = new ArrayList<String>();
+        for (Entry<String, List<TableInfo>> nav : navs.entrySet()) {
+            String t = nav.getKey();
+            s.add("nav.dt." + t + " " + t);
+
+            List<TableInfo> navInfos = nav.getValue();
+            for (TableInfo tableInfo : navInfos) {
+                String tableName = tableInfo.getTableName();
+                String remarks = tableInfo.getRemarks();
+                String pascal = StringUtil.toPascalCase(tableName);
+                String pageName = pascal + "S";
+                s.add("nav." + pageName + " " + remarks);
+            }
+        }
+
+        FileUtil.writeFile(htmlDir + sep + ".." + sep + "common" + sep + "nav.properties", s);
+    }
+
+    /**
+     * ネストした兄弟モデル・子モデル・参照モデルのgrid定義出力
+     * @param tableInfo テーブル情報
+     * @param s 出力文字列のリスト
+     * @param added 出力済みテーブル情報のリスト
+     */
+    private static void htmlNestGrid(final TableInfo tableInfo, final List<String> s, final Set<TableInfo> added) {
+
+        //参照モデル
+        for (ColumnInfo columnInfo : tableInfo.getColumnInfos().values()) {
+
+            TableInfo referInfo = columnInfo.getReferInfo();
+
+            if (referInfo != null) {
+
+                if (added.contains(referInfo)) {
+                    continue;
+                }
+
+                String referName = referInfo.getTableName();
+                String pascalRefer = StringUtil.toPascalCase(referName);
+                s.add("<script th:src=\"@{/model/" + pascalRefer + "GridColumns.js}\"></script>");
+                added.add(referInfo);
+
+                htmlNestGrid(referInfo, s, added);
+            }
+        }
+
+        //兄弟モデルの参照モデル
+        for (TableInfo brosInfo : tableInfo.getBrosInfos()) {
+
+            for (ColumnInfo columnInfo : brosInfo.getColumnInfos().values()) {
+
+                TableInfo referInfo = columnInfo.getReferInfo();
+
+                if (referInfo != null) {
+
+                    if (added.contains(referInfo)) {
+                        continue;
+                    }
+
+                    String referName = referInfo.getTableName();
+                    String pascalRefer = StringUtil.toPascalCase(referName);
+                    s.add("<script th:src=\"@{/model/" + pascalRefer + "GridColumns.js}\"></script>");
+                    added.add(referInfo);
+
+                    htmlNestGrid(referInfo, s, added);
+                }
+            }
+        }
+
+        //子モデル
+        for (TableInfo childInfo : tableInfo.getChildInfos()) {
+
+            if (added.contains(childInfo)) {
+                continue;
+            }
+
+            String childName = childInfo.getTableName();
+            String pascalChild = StringUtil.toPascalCase(childName);
+            s.add("<script th:src=\"@{/model/" + pascalChild + "GridColumns.js}\"></script>");
+            added.add(childInfo);
+
+            htmlNestGrid(childInfo, s, added);
+        }
+
+        //転生モデル
+        TableInfo reborn = tableInfo.getRebornInfo();
+        if (reborn != null) {
+            htmlNestGrid(reborn, s, added);
+        }
+    }
+
+    /**
+     * @param columnInfo
+     * @param entityName
+     * @param columnMap
+     * @param isHistory
+     * @param isView
+     * @return 列定義文字列
+     */
+    private static String htmlGridColumn(final ColumnInfo columnInfo, final String entityName,
+            final Map<String, ColumnInfo> columnMap, final boolean isHistory, final boolean isView) {
+
+        String columnName = columnInfo.getColumnName();
+        String camel = StringUtil.toCamelCase(columnName);
+        String name = "Messages['" + entityName + "Grid." + camel + "']";
+        String field = columnName;
+
+        int width = columnInfo.getColumnSize() * COLUMN_WIDTH_PX_MULTIPLIER;
+        if (columnInfo.getMaxLength() != null) {
+            width = columnInfo.getMaxLength() * COLUMN_WIDTH_PX_MULTIPLIER;
+        }
+        if (width < 30) {
+            width = 30;
+        } else if (width > 300) {
+            width = 300;
+        }
+
+        boolean isInsertDt = columnName.matches("(?i)^" + insertDt + "$");
+        boolean isUpdateDt = columnName.matches("(?i)^" + updateDt + "$");
+        boolean isInsertBy = columnName.matches("(?i)^" + insertBy + "$");
+        boolean isUpdateBy = columnName.matches("(?i)^" + updateBy + "$");
+        if (isInsertDt /*|| isUpdateDt*/ || isInsertBy || isUpdateBy) {
+            return null;
+        }
+
+        String css = "";
+        if (!isView) {
+            if (columnInfo.isPk()) {
+                css = "primaryKey";
+                if (columnInfo.isNumbering()) {
+                    css += " numbering";
+                }
+            } else if (columnInfo.isUnique()) {
+                css = "uniqueKey";
+            } else if (isInsertDt || isUpdateDt || isInsertBy || isUpdateBy) {
+                css = "metaInfo";
+            } else if (columnInfo.getNullable() == 0) {
+                css = "notblank";
+            }
+        }
+
+        String formatter = "null";
+        if (columnInfo.getDataType().equals("java.time.LocalDate")) {
+            formatter = "Slick.Formatters.Extends.Date";
+        } else if (StringUtil.endsWith(inputTimestampSuffixs, columnInfo.getColumnName())) {
+            formatter = "Slick.Formatters.Extends.Timestamp";
+        } else if (columnInfo.getDataType().equals("java.time.LocalDateTime")) {
+            formatter = "Slick.Formatters.Extends.DateTime";
+        }
+
+        // 名称を参照先から取得するか
+        boolean isMeiRefer = false;
+        // 参照名の列名
+        String referMei = null;
+        // 参照テーブルが設定されている場合
+        TableInfo referInfo = columnInfo.getReferInfo();
+        if (referInfo != null) {
+            isMeiRefer = true;
+            // カラム名が組み合わせキーのいずれかに合致する場合
+            if (StringUtil.endsWith(referPairs, columnName)) {
+                // 参照設定の組み合わせでループ
+                for (String[] suffix : referPairs) {
+                    String keySuffix = suffix[0];
+                    String meiSuffix = suffix[1];
+                    // カラム名がキー接尾辞に合致する場合
+                    if (columnName.matches("(?i).+" + keySuffix + "$")) {
+                        // カラム名の末尾を名称列サフィックスに変換
+                        String tempMei = columnName.replaceAll("(?i)" + keySuffix + "$", meiSuffix);
+                        // 名称列がテーブルに含まれていない場合は参照先から名称を取得する
+                        if (columnMap.containsKey(tempMei)) {
+                            referMei = tempMei;
+                            isMeiRefer = false;
+                            break;
+                        }
+                    }
+                }
+            }
+            //名称を参照先から取得する場合
+            if (isMeiRefer) {
+                // 参照設定の組み合わせでループ
+                for (String[] suffix : referPairs) {
+                    String keySuffix = suffix[0];
+                    String meiSuffix = suffix[1];
+                    // カラム名がキー接尾辞に合致する場合
+                    if (columnName.matches("(?i).+" + keySuffix + "$")) {
+                        // カラム名の末尾を名称列サフィックスに変換
+                        String tempMei = columnName.replaceAll("(?i)" + keySuffix + "$", meiSuffix).toUpperCase();
+                        // 名称列が参照先テーブルに含まれている場合は、取得する名称を決定する
+                        for (ColumnInfo referColumnInfo : referInfo.getColumnInfos().values()) {
+                            if (tempMei.matches("(?i).*" + referColumnInfo.getColumnName() + "$")) {
+                                referMei = tempMei;
+                                break;
+                            }
+                        }
+                        if (referMei != null) {
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        String opt = "{ json: '" + json + "', paramkey: '" + optK + "', value: '" + optV + "', label: '" + optL + "' }";
+        String c = "";
+        if (isMeiRefer) {
+            c = "Column.refer('" + field + "', " + name + ", " + width + ", '" + css + "', '" + referMei + "'),";
+        } else if (isInsertDt || isUpdateDt || isInsertBy || isUpdateBy || isHistory || isView
+                || columnInfo.isReborn()) {
+            c = "Column.cell('" + field + "', " + name + ", " + width + ", '" + css + "', " + formatter + "),";
+        } else if (StringUtil.endsWith(inputFlagSuffixs, columnName)) {
+            c = "Column.check('" + field + "', " + name + ", " + width + ", '" + css + "'),";
+        } else if (StringUtil.endsWith(inputDateSuffixs, columnName)) {
+            c = "Column.date('" + field + "', " + name + ", " + width + ", '" + css + "', " + formatter + "),";
+        } else if (StringUtil.endsWith(inputDate8Suffixs, columnName) && columnInfo.getColumnSize() == 8) {
+            c = "Column.date8('" + field + "', " + name + ", " + width + ", '" + css + "', " + formatter + "),";
+        } else if (StringUtil.endsWith(inputDateTimeSuffixs, columnName)) {
+            c = "Column.dateTime('" + field + "', " + name + ", " + width + ", '" + css + "'),";
+        } else if (StringUtil.endsWith(inputYMSuffixs, columnName)) {
+            c = "Column.month('" + field + "', " + name + ", " + width + ", '" + css + "', " + formatter + "),";
+        } else if (StringUtil.endsWith(inputTimeSuffixs, columnName)) {
+            c = "Column.time('" + field + "', " + name + ", " + width + ", '" + css + "', " + formatter + "),";
+        } else if (StringUtil.endsWith(inputFileSuffixs, columnName)) {
+            c = "Column.link('" + field + "', " + name + ", " + width + ", '" + css + "'),";
+        } else if (StringUtil.endsWith(optionsSuffixs, columnName)) {
+            c = "Column.select('" + field + "', " + name + ", " + width + ", '" + css + "', " + opt + "),";
+        } else if (StringUtil.endsWith(textareaSuffixs, columnName)) {
+            c = "Column.longText('" + field + "', " + name + ", " + width + ", '" + css + "', " + formatter + "),";
+        } else if ((columnInfo.getTypeName().equals("INT") || columnInfo.getTypeName().equals("DECIMAL")
+                || columnInfo.getTypeName().equals("DOUBLE") || columnInfo.getTypeName().equals("NUMBER")
+                || columnInfo.getTypeName().equals("NUMERIC"))
+                && !StringUtil.endsWith(intNoFormatSuffixs, columnInfo.getColumnName())) {
+
+            if (columnInfo.getDecimalDigits() == 3) {
+                c = "Column.dec3('" + field + "', " + name + ", " + width + ", '" + css + "', " + formatter + "),";
+            } else if (columnInfo.getDecimalDigits() == 2) {
+                c = "Column.dec2('" + field + "', " + name + ", " + width + ", '" + css + "', " + formatter + "),";
+            } else if (columnInfo.getDecimalDigits() == 1) {
+                c = "Column.dec1('" + field + "', " + name + ", " + width + ", '" + css + "', " + formatter + "),";
+            } else {
+                c = "Column.comma('" + field + "', " + name + ", " + width + ", '" + css + "', " + formatter + "),";
+            }
+
+        } else {
+            c = "Column.text('" + field + "', " + name + ", " + width + ", '" + css + "', " + formatter + "),";
+        }
+
+        return c;
+    }
+
+    /**
      * htmlにフィールド追加
      * @param tableInfo テーブル情報
      * @param s 出力文字列のリスト
@@ -827,14 +899,17 @@ public final class HtmlGenerator {
             boolean isUpdateBy = columnName.matches("(?i)^" + updateBy + "$");
             if (isInsertDt || isInsertBy || isUpdateDt || isUpdateBy) {
                 if (!isDetail) {
+                    //検索画面ならスキップ
                     continue;
                 }
-                //                if (isBrother) {
-                if (isUpdateDt) {
-                    s.add("        <input type=\"hidden\" name=\"" + fieldId + "\" />");
+                if (isBrother) {
+                    //兄弟モデルの場合
+                    if (isUpdateDt) {
+                        // 更新日時なら楽観ロック用に出力
+                        s.add("        <input type=\"hidden\" name=\"" + fieldId + "\" />");
+                    }
+                    continue;
                 }
-                continue;
-                //                }
             }
 
             s.add("        <div id=\"" + camelColumn + "\">");
@@ -843,21 +918,19 @@ public final class HtmlGenerator {
                 htmlFieldsMeta(s, fieldId, remarks);
             } else if (isDetail && (tableInfo.isHistory() || tableInfo.isView() || columnInfo.isReborn())) {
                 // 履歴モデルかビューの詳細画面
-                htmlFieldsMeta(s, fieldId, remarks);
+                htmlFieldsSpan(s, fieldId, remarks);
             } else if (isDetail && columnInfo.isNumbering()) {
                 // 編集画面の採番キーは表示項目
                 String tag = "          ";
                 tag += "<label th:text=\"#{" + fieldId + "}\">" + remarks + "</label>";
                 tag += "<span id=\"" + fieldId + "\" class=\"primaryKey\"></span>";
                 tag += "<input type=\"hidden\" id=\"" + fieldId + "\" name=\"" + fieldId + "\" class=\"primaryKey\" />";
-
                 // 参照モデルの場合は参照リンクを出力（参照リンクは照会画面ではjsで非表示にする）
                 if (columnInfo.getReferInfo() != null) {
                     TableInfo referInfo = columnInfo.getReferInfo();
                     String referName = StringUtil.toPascalCase(referInfo.getTableName());
                     tag += "<a id=\"" + fieldId + "\" th:href=\"@{/model/" + referName
                             + "S.html}\" target=\"dialog\" class=\"primaryKey refer\" th:text=\"#{common.refer}\" tabindex=\"-1\">...</a>";
-
                     // 名称項目がなければspanも出力
                     String meiColumnName = getMeiColumnName(columnName, referInfo);
                     if (!tableInfo.getColumnInfos().containsKey(meiColumnName)) {
@@ -866,18 +939,14 @@ public final class HtmlGenerator {
                         tag += "<span id=\"" + meiId + "\" class=\"refer\"" + referDef + "></span>";
                     }
                 }
-
                 s.add(tag);
-
             } else if (StringUtil.endsWith(optionsSuffixs, columnName) && columnInfo.getReferInfo() == null) {
                 // 選択項目の場合（サフィックスが合致しても参照モデルなら除外）
                 boolean isPrimaryKey = isDetail && columnInfo.isPk();
                 htmlFieldsOptions(s, fieldId, columnName, remarks, isPrimaryKey);
-
             } else if (isDetail && StringUtil.endsWith(textareaSuffixs, columnName)) {
                 // テキストエリア項目の場合
                 htmlFieldsTextarea(s, fieldId, remarks);
-
             } else {
                 // 上記以外の場合
                 String type = "text";
@@ -897,7 +966,6 @@ public final class HtmlGenerator {
                 } else if (isInputFile) { // ファイル
                     type = "file";
                 }
-
                 String css = "";
                 String referCss = "refer";
                 if (isDetail && columnInfo.isPk()) {
@@ -921,7 +989,6 @@ public final class HtmlGenerator {
                     css = " class=\"" + css + "\"";
                 }
                 referCss = " class=\"" + referCss + "\"";
-
                 if (!isDetail && StringUtil.endsWith(inputRangeSuffixs, columnName)) {
                     // 検索画面の範囲指定項目の場合
                     s.add(htmlFieldsRange(fieldId, type, css, columnInfo, format));
@@ -932,7 +999,6 @@ public final class HtmlGenerator {
                     s.add(htmlFieldsInput(fieldId, type, css, columnInfo, format));
                 }
             }
-
             s.add("        </div>");
         }
     }
@@ -1093,7 +1159,20 @@ public final class HtmlGenerator {
      * @param remarks コメント
      */
     private static void htmlFieldsMeta(final List<String> s, final String id, final String remarks) {
+        String tag = "          ";
+        tag += "<label th:text=\"#{" + id + "}\" class=\"meta\">" + remarks + "</label>";
+        tag += "<span id=\"" + id + "\"></span>";
+        tag += "<input type=\"hidden\" id=\"" + id + "\" name=\"" + id + "\" />";
+        s.add(tag);
+    }
 
+    /**
+     * 表示項目の出力
+     * @param s 出力文字列のリスト
+     * @param id 項目ID
+     * @param remarks コメント
+     */
+    private static void htmlFieldsSpan(final List<String> s, final String id, final String remarks) {
         String tag = "          ";
         tag += "<label th:text=\"#{" + id + "}\">" + remarks + "</label>";
         tag += "<span id=\"" + id + "\"></span>";
@@ -1203,71 +1282,6 @@ public final class HtmlGenerator {
         }
 
         return "";
-    }
-
-    /**
-     * 各モデルのプロパティファイル出力
-     * @param htmlDir HTMLファイル出力ディレクトリ
-     * @param tableInfo テーブル情報
-     */
-    private static void htmlProperties(final String htmlDir, final TableInfo tableInfo) {
-
-        String tableName = tableInfo.getTableName();
-        String entityName = StringUtil.toPascalCase(tableName);
-        String remarks = tableInfo.getRemarks();
-
-        List<String> s = new ArrayList<String>();
-        s.add(entityName + "S.title   " + remarks + "検索");
-        s.add(entityName + "S.h2      " + remarks + "検索");
-        s.add(entityName + "S.legend  " + remarks + "検索");
-        s.add(entityName + ".add      " + remarks + "追加");
-        s.add(entityName + ".title    " + remarks + "詳細");
-        s.add(entityName + ".h2       " + remarks + "詳細");
-        s.add(entityName + ".legend   " + remarks + "詳細");
-        s.add(entityName + ".h3       " + remarks + "一覧");
-        s.add("");
-        for (ColumnInfo columnInfo : tableInfo.getColumnInfos().values()) {
-            String camel = StringUtil.toCamelCase(columnInfo.getColumnName());
-            s.add(entityName + "." + camel + " " + columnInfo.getRemarks());
-        }
-        s.add("");
-        for (ColumnInfo columnInfo : tableInfo.getColumnInfos().values()) {
-            String camel = StringUtil.toCamelCase(columnInfo.getColumnName());
-            s.add(entityName + "Grid." + camel + " " + columnInfo.getRemarks());
-        }
-        for (TableInfo brosInfo : tableInfo.getBrosInfos()) {
-            String brosName = brosInfo.getTableName();
-            String pascal = StringUtil.toPascalCase(brosName);
-            String brosMei = brosInfo.getRemarks();
-            s.add("");
-            s.add(pascal + ".legend   " + brosMei + "詳細");
-            for (ColumnInfo columnInfo : brosInfo.getColumnInfos().values()) {
-                String camel = StringUtil.toCamelCase(columnInfo.getColumnName());
-                s.add(pascal + "." + camel + " " + columnInfo.getRemarks());
-            }
-        }
-        for (TableInfo childInfo : tableInfo.getChildInfos()) {
-            String childName = childInfo.getTableName();
-            String pascal = StringUtil.toPascalCase(childName);
-            String childMei = childInfo.getRemarks();
-            s.add("");
-            s.add(pascal + ".h3  " + childMei + "一覧");
-            s.add(pascal + ".add " + childMei + "追加");
-            for (ColumnInfo columnInfo : childInfo.getColumnInfos().values()) {
-                String camel = StringUtil.toCamelCase(columnInfo.getColumnName());
-                s.add(pascal + "Grid." + camel + " " + columnInfo.getRemarks());
-            }
-        }
-        if (tableInfo.getRebornInfo() != null) {
-            TableInfo childInfo = tableInfo.getRebornInfo();
-            String childName = childInfo.getTableName();
-            String pascal = StringUtil.toPascalCase(childName);
-            String childMei = childInfo.getRemarks();
-            s.add("");
-            s.add(pascal + ".add " + childMei + "追加");
-        }
-
-        FileUtil.writeFile(htmlDir + File.separator + entityName + ".properties", s);
     }
 
 }

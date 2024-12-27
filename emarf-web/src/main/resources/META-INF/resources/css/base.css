@@ -185,6 +185,10 @@ div.submits {
 	float: right;
 }
 
+label.meta {
+    background-color: aliceblue;
+}
+
 input[type="date"] {
 	width: 9rem;
 }

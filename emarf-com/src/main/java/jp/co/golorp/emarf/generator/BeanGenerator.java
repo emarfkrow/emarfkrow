@@ -1327,6 +1327,10 @@ public final class BeanGenerator {
                 s.add("            isNew = true;");
                 s.add("        }");
             }
+            if (!tableInfo.isView()) {
+                s.add("");
+                s.add("        e.setStatusKb(0);");
+            }
             s.add("");
             s.add("        if (isNew) {");
             s.add("");

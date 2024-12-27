@@ -73,6 +73,9 @@ public class TableInfo {
     /** 転生先テーブル */
     private TableInfo rebornInfo;
 
+    /** 対応表テーブル */
+    private TableInfo comboInfo;
+
     /**
      * @return テーブル名
      */
@@ -277,6 +280,20 @@ public class TableInfo {
      */
     public void setRebornInfo(final TableInfo p) {
         this.rebornInfo = p;
+    }
+
+    /**
+     * @return TableInfo
+     */
+    public TableInfo getComboInfo() {
+        return comboInfo;
+    }
+
+    /**
+     * @param p
+     */
+    public void setComboInfo(final TableInfo p) {
+        this.comboInfo = p;
     }
 
 }
