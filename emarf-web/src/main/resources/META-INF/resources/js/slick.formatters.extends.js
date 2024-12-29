@@ -52,6 +52,9 @@ limitations under the License.
     }
 
     function ChooseButtonFormatter(row, cell, value, columnDef, dataContext) {
+        if (!dataContext[gridOpeVisibleColumn]) {
+            return null;
+        }
         if (columnDef.label) {
             return '<input type="button" value="' + columnDef.label + '" class="gridButton gridChoose" />';
         }

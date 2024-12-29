@@ -872,19 +872,16 @@ public final class HtmlGenerator {
             }
 
             String columnName = column.getColumnName();
-            if (tableInfo.isView()) {
-                if (!isDetail && !StringUtil.startsWith(searchPrefixes, columnName)) {
-                    //VIEWの検索フォームには「SEARCH_」以外を出力しない
-                    continue;
-                }
-                if (isDetail && StringUtil.startsWith(searchPrefixes, columnName)) {
-                    //VIEWの詳細フォームには「SEARCH_」を出力しない
-                    continue;
-                }
-            }
 
-            boolean isInputFile = StringUtil.endsWith(inputFileSuffixs, columnName);
-            if (!isDetail && isInputFile) {
+            if (tableInfo.isView() && !isDetail && !StringUtil.startsWith(searchPrefixes, columnName)) {
+                //VIEWの検索フォームには「SEARCH_」以外を出力しない
+                continue;
+            }
+            if (tableInfo.isView() && isDetail && StringUtil.startsWith(searchPrefixes, columnName)) {
+                //VIEWの詳細フォームには「SEARCH_」を出力しない
+                continue;
+            }
+            if (!isDetail && StringUtil.endsWith(inputFileSuffixs, columnName)) {
                 // 検索条件にはファイル項目を出力しない
                 continue;
             }
@@ -928,16 +925,12 @@ public final class HtmlGenerator {
                 tag += "<label th:text=\"#{" + fieldId + "}\">" + remarks + "</label>";
                 tag += "<span id=\"" + fieldId + "\" class=\"primaryKey\"></span>";
                 tag += "<input type=\"hidden\" id=\"" + fieldId + "\" name=\"" + fieldId + "\" class=\"primaryKey\" />";
-
                 // 参照モデルの場合は参照リンクを出力（参照リンクは照会画面ではjsで非表示にする）
                 if (column.getReferInfo() != null) {
                     TableInfo refer = column.getReferInfo();
-
-                    //ここは要らんかも
                     //                    String referName = StringUtil.toPascalCase(refer.getTableName());
                     //                    tag += "<a id=\"" + fieldId + "\" th:href=\"@{/model/" + referName + "S.html?action=" + referName
                     //                            + "Correct.ajax}\" target=\"dialog\" class=\"primaryKey refer\" th:text=\"#{common.correct}\" tabindex=\"-1\">...</a>";
-
                     // 名称項目がなければspanも出力
                     String meiColumnName = getMeiColumnName(columnName, refer);
                     if (!tableInfo.getColumnInfos().containsKey(meiColumnName)) {
@@ -971,7 +964,7 @@ public final class HtmlGenerator {
                     type = "month";
                 } else if (StringUtil.endsWith(inputTimeSuffixs, columnName)) { // 時刻項目
                     type = "time";
-                } else if (isInputFile) { // ファイル
+                } else if (StringUtil.endsWith(inputFileSuffixs, columnName)) { // ファイル
                     type = "file";
                 }
                 String css = "";
@@ -1050,10 +1043,12 @@ public final class HtmlGenerator {
                 + css + referDef + dataFormat + " />";
 
         if (referCss.contains("correct")) {
+            //選択リンク
             tag += "<a id=\"" + fieldId + "\" th:href=\"@{/model/" + referName + "S.html?action=" + referName
                     + "Correct.ajax}\" target=\"dialog\"" + referCss
                     + " th:text=\"#{common.correct}\" tabindex=\"-1\">...</a>";
         } else {
+            //参照リンク
             tag += "<a id=\"" + fieldId + "\" th:href=\"@{/model/" + referName + "S.html}\" target=\"dialog\""
                     + referCss + " th:text=\"#{common.refer}\" tabindex=\"-1\">...</a>";
         }

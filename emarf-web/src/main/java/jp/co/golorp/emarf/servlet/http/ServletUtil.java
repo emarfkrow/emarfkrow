@@ -131,6 +131,15 @@ public final class ServletUtil {
                         } catch (Exception e3) {
                             throw new SysError(e);
                         }
+                    } else if (actionName.endsWith("CorrectAction")) {
+                        try {
+
+                            // 選択検索処理の基底クラスを取ってみる
+                            String className = "jp.co.golorp.emarf.action.CorrectAction";
+                            a = (BaseAction) (Class.forName(className)).getDeclaredConstructor().newInstance();
+                        } catch (Exception e3) {
+                            throw new SysError(e);
+                        }
                     } else if (actionName.endsWith("GetAction")) {
                         try {
 

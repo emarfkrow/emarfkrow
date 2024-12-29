@@ -214,19 +214,18 @@ public final class SqlGenerator {
     /**
      * 各モデルの検索SQL出力
      * @param sqlDir SQLファイル出力ディレクトリ
-     * @param tableInfo テーブル情報
+     * @param table テーブル情報
      */
-    private static void sqlCorrect(final String sqlDir, final TableInfo tableInfo) {
+    private static void sqlCorrect(final String sqlDir, final TableInfo table) {
 
         //テーブル名・エンティティ名
-        String tableName = tableInfo.getTableName();
-        String entityName = StringUtil.toPascalCase(tableName);
+        String entityName = StringUtil.toPascalCase(table.getTableName());
 
         //参照モデルの番号
         int refNo = 0;
 
         List<String> sql = new ArrayList<String>();
-        for (ColumnInfo column : tableInfo.getColumnInfos().values()) {
+        for (ColumnInfo column : table.getColumnInfos().values()) {
 
             //カラム行追加
             String prefix = "    , ";
@@ -280,7 +279,7 @@ public final class SqlGenerator {
 
                     // 生成した参照元名称カラムが、参照元に既存でない場合はselect句に追加
                     boolean isSrcMei = false;
-                    for (String columnName : tableInfo.getColumnInfos().keySet()) {
+                    for (String columnName : table.getColumnInfos().keySet()) {
                         if (columnName.matches("(?i)^" + srcMei + "$")) {
                             isSrcMei = true;
                             break;
@@ -301,15 +300,19 @@ public final class SqlGenerator {
             }
         }
         sql.add("FROM");
-        sql.add("    " + tableName + " a ");
-        if (tableInfo.getComboInfo() != null) {
-            TableInfo combo = tableInfo.getComboInfo();
+        sql.add("    " + table.getTableName() + " a ");
+        if (table.getComboInfo() != null) {
+            TableInfo combo = table.getComboInfo();
             sql.add("    INNER JOIN " + combo.getTableName() + " c ");
             //TODO 削除フラグ・開始日・終了日 考慮
             sql.add("        ON IFNULL (c.delete_f, 0) != 1 ");
-            sql.add("        AND IFNULL (c.kaishi_bi, sysdate()) <= sysdate() ");
-            sql.add("        AND date_add(IFNULL (c.shuryo_bi, sysdate()), INTERVAL 1 DAY) >= sysdate()");
-            String primaryKey = tableInfo.getPrimaryKeys().get(0);
+            if (combo.getColumnInfos().containsKey("KAISHI_BI") || combo.getColumnInfos().containsKey("kaishi_bi")) {
+                sql.add("        AND IFNULL (c.kaishi_bi, sysdate()) <= sysdate() ");
+            }
+            if (combo.getColumnInfos().containsKey("SHURYO_BI") || combo.getColumnInfos().containsKey("shuryo_bi")) {
+                sql.add("        AND date_add(IFNULL (c.shuryo_bi, sysdate()), INTERVAL 1 DAY) >= sysdate()");
+            }
+            String primaryKey = table.getPrimaryKeys().get(0);
             for (String pk : combo.getPrimaryKeys()) {
                 //TODO 開始日考慮
                 if (pk.equals("KAISHI_BI")) {
@@ -324,15 +327,19 @@ public final class SqlGenerator {
         }
         sql.add("WHERE");
         sql.add("    IFNULL (a.delete_f, 0) != 1 ");
-        sql.add("    AND IFNULL (a.kaishi_bi, sysdate()) <= sysdate() ");
-        sql.add("    AND date_add(IFNULL (u.shuryo_bi, sysdate()), INTERVAL 1 DAY) >= sysdate() ");
-        for (Entry<String, ColumnInfo> e : tableInfo.getColumnInfos().entrySet()) {
+        if (table.getColumnInfos().containsKey("KAISHI_BI") || table.getColumnInfos().containsKey("kaishi_bi")) {
+            sql.add("    AND IFNULL (a.kaishi_bi, sysdate()) <= sysdate() ");
+        }
+        if (table.getColumnInfos().containsKey("SHURYO_BI") || table.getColumnInfos().containsKey("shuryo_bi")) {
+            sql.add("    AND date_add(IFNULL (u.shuryo_bi, sysdate()), INTERVAL 1 DAY) >= sysdate() ");
+        }
+        for (Entry<String, ColumnInfo> e : table.getColumnInfos().entrySet()) {
             addWhere(sql, e.getValue());
         }
         sql.add("ORDER BY");
-        if (tableInfo.getPrimaryKeys().size() > 0) {
+        if (table.getPrimaryKeys().size() > 0) {
             String orders = "";
-            for (String pk : tableInfo.getPrimaryKeys()) {
+            for (String pk : table.getPrimaryKeys()) {
                 if (orders.length() > 0) {
                     orders += ", ";
                 }
@@ -340,7 +347,7 @@ public final class SqlGenerator {
             }
             sql.add("    " + orders);
         } else {
-            for (int i = 1; i <= tableInfo.getColumnInfos().size(); i++) {
+            for (int i = 1; i <= table.getColumnInfos().size(); i++) {
                 if (i == 1) {
                     sql.add("    " + i);
                 } else {

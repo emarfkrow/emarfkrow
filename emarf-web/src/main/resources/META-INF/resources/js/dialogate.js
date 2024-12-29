@@ -296,6 +296,20 @@ let Dialogate = {
                     let $searchForm = $dialogDiv.find('[name$="SearchForm"]');
                     if ($searchForm.length > 0) {
 
+                        let href = $link.prop('href');
+                        let i = href.indexOf('?');
+                        if (i >= 0) {
+                            let querystring = href.substring(i + 1);
+                            let querystrings = querystring.split('&');
+                            for (let i in querystrings) {
+                                let getParams = querystrings[i].split('=');
+                                if (getParams[0] == 'action') {
+                                    $searchForm.prop('action', getParams[1]);
+                                    break;
+                                }
+                            }
+                        }
+
                         // ダイアログ内に検索フォームがあり、呼び出し元イベントで検索項目が設定されている場合は、検索結果を初期表示
                         let formJson = Jsonate.toValueJson($searchForm);
                         if (JSON.stringify(formJson) != '{}') {
