@@ -861,18 +861,17 @@ public final class HtmlGenerator {
             final boolean isBrother) {
 
         //エンティティ名を取得
-        String tableName = tableInfo.getTableName();
-        String pascalTable = StringUtil.toPascalCase(tableName);
+        String entity = StringUtil.toPascalCase(tableInfo.getTableName());
 
         // カラム情報でループ
-        for (ColumnInfo columnInfo : tableInfo.getColumnInfos().values()) {
+        for (ColumnInfo column : tableInfo.getColumnInfos().values()) {
 
             // 兄弟モデルの主キーは出力しない
-            if (isBrother && columnInfo.isPk()) {
+            if (isBrother && column.isPk()) {
                 continue;
             }
 
-            String columnName = columnInfo.getColumnName();
+            String columnName = column.getColumnName();
             if (tableInfo.isView()) {
                 if (!isDetail && !StringUtil.startsWith(searchPrefixes, columnName)) {
                     //VIEWの検索フォームには「SEARCH_」以外を出力しない
@@ -883,14 +882,15 @@ public final class HtmlGenerator {
                     continue;
                 }
             }
+
             boolean isInputFile = StringUtil.endsWith(inputFileSuffixs, columnName);
             if (!isDetail && isInputFile) {
                 // 検索条件にはファイル項目を出力しない
                 continue;
             }
-            String remarks = columnInfo.getRemarks();
-            String camelColumn = StringUtil.toCamelCase(columnName);
-            String fieldId = pascalTable + "." + camelColumn;
+
+            String property = StringUtil.toCamelCase(columnName);
+            String fieldId = entity + "." + property;
 
             // メタ情報の場合（検索画面の場合はスキップ（検索条件にはしない）、詳細画面の兄弟モデルは更新日時のみhiddenで出力）
             boolean isInsertDt = columnName.matches("(?i)^" + insertDt + "$");
@@ -903,46 +903,54 @@ public final class HtmlGenerator {
                     continue;
                 }
                 if (isBrother) {
-                    //兄弟モデルの場合
+                    //兄弟モデルならスキップ（更新日時のみ楽観ロック用に出力）
                     if (isUpdateDt) {
-                        // 更新日時なら楽観ロック用に出力
                         s.add("        <input type=\"hidden\" name=\"" + fieldId + "\" />");
                     }
                     continue;
                 }
             }
 
-            s.add("        <div id=\"" + camelColumn + "\">");
+            String remarks = column.getRemarks();
+
+            s.add("        <div id=\"" + property + "\">");
             if (isInsertDt || isInsertBy || isUpdateDt || isUpdateBy) {
                 // メタ情報の場合は表示項目（編集画面の自モデルのみここに到達する）
                 htmlFieldsMeta(s, fieldId, remarks);
-            } else if (isDetail && (tableInfo.isHistory() || tableInfo.isView() || columnInfo.isReborn())) {
+
+            } else if (isDetail && (tableInfo.isHistory() || tableInfo.isView() || column.isReborn())) {
                 // 履歴モデルかビューの詳細画面
                 htmlFieldsSpan(s, fieldId, remarks);
-            } else if (isDetail && columnInfo.isNumbering()) {
+
+            } else if (isDetail && column.isNumbering()) {
                 // 編集画面の採番キーは表示項目
                 String tag = "          ";
                 tag += "<label th:text=\"#{" + fieldId + "}\">" + remarks + "</label>";
                 tag += "<span id=\"" + fieldId + "\" class=\"primaryKey\"></span>";
                 tag += "<input type=\"hidden\" id=\"" + fieldId + "\" name=\"" + fieldId + "\" class=\"primaryKey\" />";
+
                 // 参照モデルの場合は参照リンクを出力（参照リンクは照会画面ではjsで非表示にする）
-                if (columnInfo.getReferInfo() != null) {
-                    TableInfo referInfo = columnInfo.getReferInfo();
-                    String referName = StringUtil.toPascalCase(referInfo.getTableName());
-                    tag += "<a id=\"" + fieldId + "\" th:href=\"@{/model/" + referName
-                            + "S.html}\" target=\"dialog\" class=\"primaryKey refer\" th:text=\"#{common.refer}\" tabindex=\"-1\">...</a>";
+                if (column.getReferInfo() != null) {
+                    TableInfo refer = column.getReferInfo();
+
+                    //ここは要らんかも
+                    //                    String referName = StringUtil.toPascalCase(refer.getTableName());
+                    //                    tag += "<a id=\"" + fieldId + "\" th:href=\"@{/model/" + referName + "S.html?action=" + referName
+                    //                            + "Correct.ajax}\" target=\"dialog\" class=\"primaryKey refer\" th:text=\"#{common.correct}\" tabindex=\"-1\">...</a>";
+
                     // 名称項目がなければspanも出力
-                    String meiColumnName = getMeiColumnName(columnName, referInfo);
+                    String meiColumnName = getMeiColumnName(columnName, refer);
                     if (!tableInfo.getColumnInfos().containsKey(meiColumnName)) {
-                        String meiId = pascalTable + "." + StringUtil.toCamelCase(meiColumnName);
-                        String referDef = getReferDef(pascalTable, columnName, referInfo);
+                        String meiId = entity + "." + StringUtil.toCamelCase(meiColumnName);
+                        String referDef = getReferDef(entity, columnName, refer);
                         tag += "<span id=\"" + meiId + "\" class=\"refer\"" + referDef + "></span>";
                     }
                 }
                 s.add(tag);
-            } else if (StringUtil.endsWith(optionsSuffixs, columnName) && columnInfo.getReferInfo() == null) {
+
+            } else if (StringUtil.endsWith(optionsSuffixs, columnName) && column.getReferInfo() == null) {
                 // 選択項目の場合（サフィックスが合致しても参照モデルなら除外）
-                boolean isPrimaryKey = isDetail && columnInfo.isPk();
+                boolean isPrimaryKey = isDetail && column.isPk();
                 htmlFieldsOptions(s, fieldId, columnName, remarks, isPrimaryKey);
             } else if (isDetail && StringUtil.endsWith(textareaSuffixs, columnName)) {
                 // テキストエリア項目の場合
@@ -954,7 +962,7 @@ public final class HtmlGenerator {
                 if (StringUtil.endsWith(inputDateSuffixs, columnName)) { // 日付項目
                     //type = "date";
                     format = "";
-                } else if (StringUtil.endsWith(inputDate8Suffixs, columnName) && columnInfo.getColumnSize() == 8) { // 8桁日付項目
+                } else if (StringUtil.endsWith(inputDate8Suffixs, columnName) && column.getColumnSize() == 8) { // 8桁日付項目
                     //type = "date";
                     format = "yymmdd";
                 } else if (StringUtil.endsWith(inputDateTimeSuffixs, columnName)) { // 日時項目
@@ -968,21 +976,25 @@ public final class HtmlGenerator {
                 }
                 String css = "";
                 String referCss = "refer";
-                if (isDetail && columnInfo.isPk()) {
+                if (isDetail && column.isPk()) {
                     //詳細画面の主キー
                     css = " primaryKey";
                     referCss += " primaryKey";
-                } else if (isDetail && columnInfo.isUnique()) {
+                } else if (isDetail && column.isUnique()) {
                     //詳細画面のユニークキー
                     css = " uniqueKey";
                     referCss += " uniqueKey";
+                } else if (isDetail && column.getReferInfo() != null) {
+                    //詳細画面の参照キー
+                    css = " correct";
+                    referCss += " correct";
                 }
                 if (StringUtil.endsWith(inputDateSuffixs, columnName)) { // 日付項目
                     css += " datepicker";
-                } else if (StringUtil.endsWith(inputDate8Suffixs, columnName) && columnInfo.getColumnSize() == 8) { // 8桁日付項目
+                } else if (StringUtil.endsWith(inputDate8Suffixs, columnName) && column.getColumnSize() == 8) { // 8桁日付項目
                     css += " datepicker";
                 }
-                if (isDetail && columnInfo.getNullable() == 0) {
+                if (isDetail && column.getNullable() == 0) {
                     css += " notblank";
                 }
                 if (!StringUtil.isNullOrBlank(css)) {
@@ -991,12 +1003,12 @@ public final class HtmlGenerator {
                 referCss = " class=\"" + referCss + "\"";
                 if (!isDetail && StringUtil.endsWith(inputRangeSuffixs, columnName)) {
                     // 検索画面の範囲指定項目の場合
-                    s.add(htmlFieldsRange(fieldId, type, css, columnInfo, format));
-                } else if (columnInfo.getReferInfo() != null) {
+                    s.add(htmlFieldsRange(fieldId, type, css, column, format));
+                } else if (column.getReferInfo() != null) {
                     // 参照モデルの場合
-                    s.add(htmlFieldsRefer(fieldId, type, css, columnInfo, format, tableInfo, referCss));
+                    s.add(htmlFieldsRefer(fieldId, type, css, column, format, tableInfo, referCss));
                 } else {
-                    s.add(htmlFieldsInput(fieldId, type, css, columnInfo, format));
+                    s.add(htmlFieldsInput(fieldId, type, css, column, format));
                 }
             }
             s.add("        </div>");
@@ -1008,14 +1020,14 @@ public final class HtmlGenerator {
      * @param fieldId    入力項目のID
      * @param type       タイプ
      * @param css        スタイル
-     * @param columnInfo
+     * @param column
      * @param format     フォーマット
      * @param tableInfo
      * @param referCss
      * @return referタグ
      */
     private static String htmlFieldsRefer(final String fieldId, final String type, final String css,
-            final ColumnInfo columnInfo, final String format, final TableInfo tableInfo, final String referCss) {
+            final ColumnInfo column, final String format, final TableInfo tableInfo, final String referCss) {
 
         String dataFormat = "";
         if (!StringUtil.isNullOrBlank(format)) {
@@ -1024,21 +1036,27 @@ public final class HtmlGenerator {
 
         String tableName = tableInfo.getTableName();
         String pascalTable = StringUtil.toPascalCase(tableName);
-        String columnName = columnInfo.getColumnName();
-        String remarks = columnInfo.getRemarks();
-        int max = columnInfo.getColumnSize();
+        String columnName = column.getColumnName();
+        String remarks = column.getRemarks();
+        int max = column.getColumnSize();
 
         String tag = "          ";
         tag += "<label for=\"" + fieldId + "\" th:text=\"#{" + fieldId + "}\">" + remarks + "</label>";
 
-        TableInfo referInfo = columnInfo.getReferInfo();
+        TableInfo referInfo = column.getReferInfo();
         String referName = StringUtil.toPascalCase(referInfo.getTableName());
         String referDef = getReferDef(pascalTable, columnName, referInfo);
         tag += "<input type=\"" + type + "\" id=\"" + fieldId + "\" name=\"" + fieldId + "\" maxlength=\"" + max + "\""
                 + css + referDef + dataFormat + " />";
 
-        tag += "<a id=\"" + fieldId + "\" th:href=\"@{/model/" + referName + "S.html}\" target=\"dialog\"" + referCss
-                + " th:text=\"#{common.refer}\" tabindex=\"-1\">...</a>";
+        if (referCss.contains("correct")) {
+            tag += "<a id=\"" + fieldId + "\" th:href=\"@{/model/" + referName + "S.html?action=" + referName
+                    + "Correct.ajax}\" target=\"dialog\"" + referCss
+                    + " th:text=\"#{common.correct}\" tabindex=\"-1\">...</a>";
+        } else {
+            tag += "<a id=\"" + fieldId + "\" th:href=\"@{/model/" + referName + "S.html}\" target=\"dialog\""
+                    + referCss + " th:text=\"#{common.refer}\" tabindex=\"-1\">...</a>";
+        }
 
         String meiColumnName = getMeiColumnName(columnName, referInfo);
         if (!tableInfo.getColumnInfos().containsKey(meiColumnName)) {
