@@ -105,4 +105,22 @@ public final class DataSourcesAssistSQLite extends DataSourcesAssist {
         return s;
     }
 
+    @Override
+    public String dateAdd(final String columnName, final int d) {
+        // TODO 自動生成されたメソッド・スタブ
+        return null;
+    }
+
+    @Override
+    public String nvlSysdate(final String columnName) {
+        // TODO 自動生成されたメソッド・スタブ
+        return null;
+    }
+
+    @Override
+    public String nvlZero(final String columnName) {
+        // TODO 自動生成されたメソッド・スタブ
+        return null;
+    }
+
 }

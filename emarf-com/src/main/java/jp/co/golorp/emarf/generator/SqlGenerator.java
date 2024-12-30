@@ -317,13 +317,13 @@ public final class SqlGenerator {
             sql.add("    INNER JOIN " + combo.getTableName() + " c ");
             sql.add("        ON 1 = 1 ");
             if (combo.getColumnInfos().containsKey(deleteF)) {
-                sql.add("        AND IFNULL (c." + deleteF + ", 0) != 1 ");
+                sql.add("        AND " + assist.nvlZero(deleteF) + " != 1 ");
             }
             if (combo.getColumnInfos().containsKey(kaishiBi)) {
-                sql.add("        AND IFNULL (c." + kaishiBi + ", sysdate()) <= sysdate() ");
+                sql.add("        AND " + assist.nvlSysdate(kaishiBi) + " <= sysdate() ");
             }
             if (combo.getColumnInfos().containsKey(shuryoBi)) {
-                sql.add("        AND date_add(IFNULL (c." + shuryoBi + ", sysdate()), INTERVAL 1 DAY) >= sysdate()");
+                sql.add("        AND " + assist.dateAdd(assist.nvlSysdate(shuryoBi), 1) + " >= sysdate()");
             }
             String primaryKey = table.getPrimaryKeys().get(0);
             for (String pk : combo.getPrimaryKeys()) {
@@ -340,13 +340,13 @@ public final class SqlGenerator {
         sql.add("WHERE");
         sql.add("    1= 1 ");
         if (table.getColumnInfos().containsKey(deleteF)) {
-            sql.add("    AND IFNULL (a." + deleteF + ", 0) != 1 ");
+            sql.add("    AND " + assist.nvlZero(deleteF) + " != 1 ");
         }
         if (table.getColumnInfos().containsKey(kaishiBi)) {
-            sql.add("    AND IFNULL (a." + kaishiBi + ", sysdate()) <= sysdate() ");
+            sql.add("    AND " + assist.nvlSysdate(kaishiBi) + " <= sysdate() ");
         }
         if (table.getColumnInfos().containsKey(shuryoBi)) {
-            sql.add("    AND date_add(IFNULL (u." + shuryoBi + ", sysdate()), INTERVAL 1 DAY) >= sysdate() ");
+            sql.add("    AND " + assist.dateAdd(assist.nvlSysdate(shuryoBi), 1) + " >= sysdate() ");
         }
         for (Entry<String, ColumnInfo> e : table.getColumnInfos().entrySet()) {
             addWhere(sql, e.getValue());

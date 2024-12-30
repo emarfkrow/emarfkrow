@@ -125,4 +125,23 @@ public abstract class DataSourcesAssist {
      */
     public abstract String trimedSQL(String columnName);
 
+    /**
+     * @param columnName
+     * @param d
+     * @return String
+     */
+    public abstract String dateAdd(String columnName, int d);
+
+    /**
+     * @param columnName
+     * @return String
+     */
+    public abstract String nvlSysdate(String columnName);
+
+    /**
+     * @param columnName
+     * @return String
+     */
+    public abstract String nvlZero(String columnName);
+
 }

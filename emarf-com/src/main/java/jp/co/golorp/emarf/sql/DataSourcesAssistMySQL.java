@@ -26,6 +26,21 @@ import jp.co.golorp.emarf.util.MapList;
 public final class DataSourcesAssistMySQL extends DataSourcesAssist {
 
     @Override
+    public String dateAdd(final String columnName, final int d) {
+        return "date_add(" + columnName + ", INTERVAL " + d + " DAY)";
+    }
+
+    @Override
+    public String nvlSysdate(final String columnName) {
+        return "IFNULL (c." + columnName + ", sysdate())";
+    }
+
+    @Override
+    public String nvlZero(final String columnName) {
+        return "IFNULL (c." + columnName + ", 0)";
+    }
+
+    @Override
     protected String getTableComment(final String tableName) {
         String sql = "show table status where name = '" + tableName + "'";
         MapList mapList = Queries.select(sql, null, null);

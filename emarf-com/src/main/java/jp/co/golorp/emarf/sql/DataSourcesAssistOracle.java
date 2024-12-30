@@ -27,6 +27,21 @@ import jp.co.golorp.emarf.util.MapList;
  */
 public class DataSourcesAssistOracle extends DataSourcesAssist {
 
+    @Override
+    public final String dateAdd(final String columnName, final int d) {
+        return "date_add(" + columnName + ", INTERVAL " + d + " DAY)";
+    }
+
+    @Override
+    public final String nvlSysdate(final String columnName) {
+        return "IFNULL (c." + columnName + ", sysdate())";
+    }
+
+    @Override
+    public final String nvlZero(final String columnName) {
+        return "IFNULL (c." + columnName + ", 0)";
+    }
+
     /**
      * @param tableName テーブル名
      * @return テーブルコメント

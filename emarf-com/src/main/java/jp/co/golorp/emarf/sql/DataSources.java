@@ -1175,7 +1175,7 @@ public final class DataSources {
                 continue;
             }
 
-            // 参照キー以外が含まれるならスキップ
+            // 参照キー以外が含まれるならスキップ（開始日は対象外）
             boolean isRefer = true;
             for (String pk : src.getPrimaryKeys()) {
                 if (pk.equals(kaishiBi)) {
