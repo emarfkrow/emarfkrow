@@ -90,13 +90,13 @@ limitations under the License.
     }
 
     function LinkFormatter(row, cell, value, columnDef, dataContext) {
+        if (!dataContext[gridOpeVisibleColumn]) {
+            return null;
+        }
         if (value) {
             return '<a id=\"' + columnDef.id + '\" href="" class="gridLink" target="blank">' + Messages['common.download'] + '</a>';
         }
-        if (dataContext[gridOpeVisibleColumn]) {
-            return '<a href="" class="gridLink">' + columnDef.name + '</a>';
-        }
-        return null;
+        return '<a href="" class="gridLink">' + columnDef.name + '</a>';
     }
 
     function SelectFormatter(row, cell, value, columnDef, dataContext) {

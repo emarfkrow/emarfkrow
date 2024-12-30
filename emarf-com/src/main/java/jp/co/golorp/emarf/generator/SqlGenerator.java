@@ -48,6 +48,13 @@ public final class SqlGenerator {
     /** 区分カラム */
     private static String optK;
 
+    /** 削除フラグ */
+    private static String deleteF;
+    /** 開始日 */
+    private static String kaishiBi;
+    /** 終了日 */
+    private static String shuryoBi;
+
     /** DataSourcesAssist */
     private static DataSourcesAssist assist;
 
@@ -78,6 +85,10 @@ public final class SqlGenerator {
         }
 
         optK = bundle.getString("BeanGenerator.options.key").toUpperCase();
+
+        deleteF = bundle.getString("SqlGenerator.deleteF").toUpperCase();
+        kaishiBi = bundle.getString("SqlGenerator.kaishiBi").toUpperCase();
+        shuryoBi = bundle.getString("SqlGenerator.shuryoBi").toUpperCase();
 
         assist = DataSources.getAssist();
 
@@ -304,18 +315,19 @@ public final class SqlGenerator {
         if (table.getComboInfo() != null) {
             TableInfo combo = table.getComboInfo();
             sql.add("    INNER JOIN " + combo.getTableName() + " c ");
-            //TODO 削除フラグ・開始日・終了日 考慮
-            sql.add("        ON IFNULL (c.delete_f, 0) != 1 ");
-            if (combo.getColumnInfos().containsKey("KAISHI_BI") || combo.getColumnInfos().containsKey("kaishi_bi")) {
-                sql.add("        AND IFNULL (c.kaishi_bi, sysdate()) <= sysdate() ");
+            sql.add("        ON 1 = 1 ");
+            if (combo.getColumnInfos().containsKey(deleteF)) {
+                sql.add("        AND IFNULL (c." + deleteF + ", 0) != 1 ");
             }
-            if (combo.getColumnInfos().containsKey("SHURYO_BI") || combo.getColumnInfos().containsKey("shuryo_bi")) {
-                sql.add("        AND date_add(IFNULL (c.shuryo_bi, sysdate()), INTERVAL 1 DAY) >= sysdate()");
+            if (combo.getColumnInfos().containsKey(kaishiBi)) {
+                sql.add("        AND IFNULL (c." + kaishiBi + ", sysdate()) <= sysdate() ");
+            }
+            if (combo.getColumnInfos().containsKey(shuryoBi)) {
+                sql.add("        AND date_add(IFNULL (c." + shuryoBi + ", sysdate()), INTERVAL 1 DAY) >= sysdate()");
             }
             String primaryKey = table.getPrimaryKeys().get(0);
             for (String pk : combo.getPrimaryKeys()) {
-                //TODO 開始日考慮
-                if (pk.equals("KAISHI_BI")) {
+                if (pk.equals(kaishiBi)) {
                     continue;
                 }
                 if (pk.equals(primaryKey)) {
@@ -326,12 +338,15 @@ public final class SqlGenerator {
             }
         }
         sql.add("WHERE");
-        sql.add("    IFNULL (a.delete_f, 0) != 1 ");
-        if (table.getColumnInfos().containsKey("KAISHI_BI") || table.getColumnInfos().containsKey("kaishi_bi")) {
-            sql.add("    AND IFNULL (a.kaishi_bi, sysdate()) <= sysdate() ");
+        sql.add("    1= 1 ");
+        if (table.getColumnInfos().containsKey(deleteF)) {
+            sql.add("    AND IFNULL (a." + deleteF + ", 0) != 1 ");
         }
-        if (table.getColumnInfos().containsKey("SHURYO_BI") || table.getColumnInfos().containsKey("shuryo_bi")) {
-            sql.add("    AND date_add(IFNULL (u.shuryo_bi, sysdate()), INTERVAL 1 DAY) >= sysdate() ");
+        if (table.getColumnInfos().containsKey(kaishiBi)) {
+            sql.add("    AND IFNULL (a." + kaishiBi + ", sysdate()) <= sysdate() ");
+        }
+        if (table.getColumnInfos().containsKey(shuryoBi)) {
+            sql.add("    AND date_add(IFNULL (u." + shuryoBi + ", sysdate()), INTERVAL 1 DAY) >= sysdate() ");
         }
         for (Entry<String, ColumnInfo> e : table.getColumnInfos().entrySet()) {
             addWhere(sql, e.getValue());

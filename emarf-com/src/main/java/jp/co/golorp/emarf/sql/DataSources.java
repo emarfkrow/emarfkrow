@@ -108,6 +108,9 @@ public final class DataSources {
     /** 時刻入力サフィックス */
     private static String[] inputTimeSuffixs;
 
+    /** 開始日 */
+    private static String kaishiBi;
+
     /**
      * データベース名列挙子
      * @author golorp
@@ -255,6 +258,8 @@ public final class DataSources {
         inputDateTimeSuffixs = bundle.getString("BeanGenerator.input.datetime.suffixs").split(",");
         inputDateSuffixs = bundle.getString("BeanGenerator.input.date.suffixs").split(",");
         inputTimeSuffixs = bundle.getString("BeanGenerator.input.time.suffixs").split(",");
+
+        kaishiBi = bundle.getString("SqlGenerator.kaishiBi").toUpperCase();
     }
 
     /**
@@ -1173,8 +1178,7 @@ public final class DataSources {
             // 参照キー以外が含まれるならスキップ
             boolean isRefer = true;
             for (String pk : src.getPrimaryKeys()) {
-                //TODO 開始日考慮
-                if (pk.equals("KAISHI_BI")) {
+                if (pk.equals(kaishiBi)) {
                     continue;
                 }
                 ColumnInfo column = src.getColumnInfos().get(pk);
