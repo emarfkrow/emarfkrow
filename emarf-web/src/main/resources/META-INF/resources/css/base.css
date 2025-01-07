@@ -252,16 +252,16 @@ button.forbid {
     margin-right: 2rem;
 }
 
+input.notblank, div.notblank {
+    background-color: lightyellow;
+}
+
 input.primaryKey, div.primaryKey, span.primaryKey, select.primaryKey {
 	background-color: pink;
 }
 
 input.uniqueKey, div.uniqueKey {
     background-color: lavenderblush
-}
-
-input.notblank, div.notblank {
-	background-color: lightyellow;
 }
 
 .metaInfo {

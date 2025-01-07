@@ -59,9 +59,6 @@ public class ColumnInfo {
     /** 転生キーならtrue */
     private boolean isReborn;
 
-    /** 対応表対象の単一キーならtrue */
-    private boolean isCombo;
-
     /** 参照先テーブル */
     private TableInfo referInfo;
 
@@ -227,20 +224,6 @@ public class ColumnInfo {
      */
     public void setReborn(final boolean p) {
         this.isReborn = p;
-    }
-
-    /**
-     * @return boolean
-     */
-    public boolean isCombo() {
-        return isCombo;
-    }
-
-    /**
-     * @param p
-     */
-    public void setCombo(final boolean p) {
-        this.isCombo = p;
     }
 
     /**

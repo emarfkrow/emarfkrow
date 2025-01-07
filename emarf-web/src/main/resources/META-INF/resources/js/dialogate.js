@@ -242,10 +242,10 @@ let Dialogate = {
                     $dialogDiv.find('[name$="RegistForm"] input.primaryKey').each(function() {
                         if ($(this).val() != '') {
                             Base.readonly(this);
-                            //$(this).attr('readonly', true).attr('tabindex', '-1').addClass('readonly');
+                        } else if ($(this).hasClass('numbering')) {
+                            Base.readonly(this);
                         } else {
                             Base.writable(this);
-                            //$(this).removeAttr('readonly').removeAttr('tabindex').removeClass('readonly');
                             pkAll = false;
                         }
                     });

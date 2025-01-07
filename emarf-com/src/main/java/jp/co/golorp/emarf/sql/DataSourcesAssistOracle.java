@@ -29,17 +29,17 @@ public class DataSourcesAssistOracle extends DataSourcesAssist {
 
     @Override
     public final String dateAdd(final String columnName, final int d) {
-        return "date_add(" + columnName + ", INTERVAL " + d + " DAY)";
+        return columnName + " + " + d;
     }
 
     @Override
     public final String nvlSysdate(final String columnName) {
-        return "IFNULL (c." + columnName + ", sysdate())";
+        return "NVL (" + columnName + ", SYSDATE)";
     }
 
     @Override
     public final String nvlZero(final String columnName) {
-        return "IFNULL (c." + columnName + ", 0)";
+        return "NVL (" + columnName + ", 0)";
     }
 
     /**
@@ -233,6 +233,12 @@ public class DataSourcesAssistOracle extends DataSourcesAssist {
     @Override
     public String timestamp2CharSQL(final String s) {
         return "TO_CHAR (" + s + ", 'YYYY-MM-DD HH24:MI:SS.FF3')";
+    }
+
+    /** */
+    @Override
+    public String sysDate() {
+        return "SYSDATE";
     }
 
 }

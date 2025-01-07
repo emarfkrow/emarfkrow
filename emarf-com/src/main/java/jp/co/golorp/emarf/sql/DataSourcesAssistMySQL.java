@@ -27,17 +27,17 @@ public final class DataSourcesAssistMySQL extends DataSourcesAssist {
 
     @Override
     public String dateAdd(final String columnName, final int d) {
-        return "date_add(" + columnName + ", INTERVAL " + d + " DAY)";
+        return "DATE_ADD(" + columnName + ", INTERVAL " + d + " DAY)";
     }
 
     @Override
     public String nvlSysdate(final String columnName) {
-        return "IFNULL (c." + columnName + ", sysdate())";
+        return "IFNULL (" + columnName + ", sysdate())";
     }
 
     @Override
     public String nvlZero(final String columnName) {
-        return "IFNULL (c." + columnName + ", 0)";
+        return "IFNULL (" + columnName + ", 0)";
     }
 
     @Override
@@ -122,6 +122,11 @@ public final class DataSourcesAssistMySQL extends DataSourcesAssist {
     @Override
     public String timestamp2CharSQL(final String s) {
         return s;
+    }
+
+    @Override
+    public String sysDate() {
+        return "sysdate()";
     }
 
 }

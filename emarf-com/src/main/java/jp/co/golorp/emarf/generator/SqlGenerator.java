@@ -2,8 +2,10 @@ package jp.co.golorp.emarf.generator;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.ResourceBundle;
 import java.util.Set;
@@ -229,10 +231,7 @@ public final class SqlGenerator {
      */
     private static void sqlCorrect(final String sqlDir, final TableInfo table) {
 
-        //テーブル名・エンティティ名
-        String entityName = StringUtil.toPascalCase(table.getTableName());
-
-        //参照モデルの番号
+        //参照モデルの連番
         int refNo = 0;
 
         List<String> sql = new ArrayList<String>();
@@ -246,9 +245,7 @@ public final class SqlGenerator {
             }
             sql.add(prefix + SqlGenerator.getQuoted(column));
 
-            // カラム名
-
-            // 列の参照モデル情報
+            // 列の参照モデル情報があればカラム名の補完
             if (column.getReferInfo() != null) {
 
                 ++refNo;
@@ -312,41 +309,48 @@ public final class SqlGenerator {
         }
         sql.add("FROM");
         sql.add("    " + table.getTableName() + " a ");
-        if (table.getComboInfo() != null) {
-            TableInfo combo = table.getComboInfo();
-            sql.add("    INNER JOIN " + combo.getTableName() + " c ");
-            sql.add("        ON 1 = 1 ");
-            if (combo.getColumnInfos().containsKey(deleteF)) {
-                sql.add("        AND " + assist.nvlZero(deleteF) + " != 1 ");
+
+        Map<String, TableInfo> combos = new LinkedHashMap<String, TableInfo>();
+        for (String pk : table.getPrimaryKeys()) {
+            ColumnInfo primaryKey = table.getColumnInfos().get(pk);
+            if (primaryKey.getReferInfo() != null) {
+                combos.put(primaryKey.getColumnName(), primaryKey.getReferInfo());
             }
-            if (combo.getColumnInfos().containsKey(kaishiBi)) {
-                sql.add("        AND " + assist.nvlSysdate(kaishiBi) + " <= sysdate() ");
-            }
-            if (combo.getColumnInfos().containsKey(shuryoBi)) {
-                sql.add("        AND " + assist.dateAdd(assist.nvlSysdate(shuryoBi), 1) + " >= sysdate()");
-            }
-            String primaryKey = table.getPrimaryKeys().get(0);
-            for (String pk : combo.getPrimaryKeys()) {
-                if (pk.equals(kaishiBi)) {
-                    continue;
+        }
+        if (combos.size() > 0) {
+            int i = 0;
+            for (TableInfo combo : combos.values()) {
+                ++i;
+                sql.add("    INNER JOIN " + combo.getTableName() + " c" + i + " ");
+                sql.add("        ON 1 = 1 ");
+                if (combo.getColumnInfos().containsKey(deleteF)) {
+                    sql.add("        AND " + assist.nvlZero("c" + i + "." + deleteF) + " != 1 ");
                 }
-                if (pk.equals(primaryKey)) {
-                    sql.add("        AND c." + pk + " = a." + pk + " ");
-                } else {
-                    sql.add("        AND c." + pk + " = :" + pk + " ");
+                if (combo.getColumnInfos().containsKey(kaishiBi)) {
+                    sql.add("        AND " + assist.nvlSysdate("c" + i + "." + kaishiBi) + " <= " + assist.sysDate()
+                            + " ");
+                }
+                if (combo.getColumnInfos().containsKey(shuryoBi)) {
+                    sql.add("        AND " + assist.dateAdd(assist.nvlSysdate("c" + i + "." + shuryoBi), 1) + " > "
+                            + assist.sysDate());
+                }
+                for (String pk : combo.getPrimaryKeys()) {
+                    sql.add("        AND c" + i + "." + pk + " = a." + pk + " ");
                 }
             }
         }
+
         sql.add("WHERE");
-        sql.add("    1= 1 ");
+        sql.add("    1 = 1 ");
         if (table.getColumnInfos().containsKey(deleteF)) {
-            sql.add("    AND " + assist.nvlZero(deleteF) + " != 1 ");
+            sql.add("    AND " + assist.nvlZero("a." + deleteF) + " != 1 ");
         }
         if (table.getColumnInfos().containsKey(kaishiBi)) {
-            sql.add("    AND " + assist.nvlSysdate(kaishiBi) + " <= sysdate() ");
+            sql.add("    AND " + assist.nvlSysdate("a." + kaishiBi) + " <= " + assist.sysDate() + " ");
         }
         if (table.getColumnInfos().containsKey(shuryoBi)) {
-            sql.add("    AND " + assist.dateAdd(assist.nvlSysdate(shuryoBi), 1) + " >= sysdate() ");
+            sql.add("    AND " + assist.dateAdd(assist.nvlSysdate("a." + shuryoBi), 1) + " > " + assist.sysDate()
+                    + " ");
         }
         for (Entry<String, ColumnInfo> e : table.getColumnInfos().entrySet()) {
             addWhere(sql, e.getValue());
@@ -371,7 +375,8 @@ public final class SqlGenerator {
             }
         }
 
-        FileUtil.writeFile(sqlDir + File.separator + entityName + "Correct.sql", sql);
+        String entity = StringUtil.toPascalCase(table.getTableName());
+        FileUtil.writeFile(sqlDir + File.separator + entity + "Correct.sql", sql);
     }
 
     /**

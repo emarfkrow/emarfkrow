@@ -70,11 +70,11 @@ public class TableInfo {
     /** VIEWならtrue */
     private boolean isView;
 
+    /** 組合せモデルならtrue */
+    private boolean isCombo;
+
     /** 転生先テーブル */
     private TableInfo rebornInfo;
-
-    /** 対応表テーブル */
-    private TableInfo comboInfo;
 
     /**
      * @return テーブル名
@@ -283,17 +283,17 @@ public class TableInfo {
     }
 
     /**
-     * @return TableInfo
+     * @return boolean
      */
-    public TableInfo getComboInfo() {
-        return comboInfo;
+    public boolean isCombo() {
+        return isCombo;
     }
 
     /**
      * @param p
      */
-    public void setComboInfo(final TableInfo p) {
-        this.comboInfo = p;
+    public void setCombo(final boolean p) {
+        this.isCombo = p;
     }
 
 }

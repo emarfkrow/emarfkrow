@@ -144,4 +144,9 @@ public abstract class DataSourcesAssist {
      */
     public abstract String nvlZero(String columnName);
 
+    /**
+     * @return String
+     */
+    public abstract String sysDate();
+
 }

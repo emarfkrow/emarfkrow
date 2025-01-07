@@ -123,4 +123,10 @@ public final class DataSourcesAssistSQLite extends DataSourcesAssist {
         return null;
     }
 
+    @Override
+    public String sysDate() {
+        // TODO 自動生成されたメソッド・スタブ
+        return null;
+    }
+
 }
