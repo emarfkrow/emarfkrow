@@ -2,10 +2,8 @@ package jp.co.golorp.emarf.generator;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Map.Entry;
 import java.util.ResourceBundle;
 import java.util.Set;
@@ -235,6 +233,7 @@ public final class SqlGenerator {
         int refNo = 0;
 
         List<String> sql = new ArrayList<String>();
+
         for (ColumnInfo column : table.getColumnInfos().values()) {
 
             //カラム行追加
@@ -247,7 +246,6 @@ public final class SqlGenerator {
 
             // 列の参照モデル情報があればカラム名の補完
             if (column.getReferInfo() != null) {
-
                 ++refNo;
                 TableInfo refer = column.getReferInfo();
 
@@ -265,7 +263,7 @@ public final class SqlGenerator {
                     String srcKey = column.getColumnName();
                     String srcMei = srcKey.replaceAll("(?i)" + keySuf + "$", meiSuf).toUpperCase();
 
-                    // 参照先の全カラム名を確認して、末尾が合致するカラム名を、参照先のID・名称カラム名として取得
+                    // 参照先でID・名称のサフィックスに合致するカラムを取得し、両方取得できなければスキップ
                     String destKey = null;
                     String destMei = null;
                     for (String columnName : refer.getColumnInfos().keySet()) {
@@ -279,8 +277,6 @@ public final class SqlGenerator {
                             break;
                         }
                     }
-
-                    // 参照先に、キーと名称に合致するカラムがなければスキップ
                     if (destKey == null || destMei == null) {
                         continue;
                     }
@@ -294,13 +290,12 @@ public final class SqlGenerator {
                         }
                     }
                     if (!isSrcMei) {
-                        String srcKeyQuoted = assist.quotedSQL(srcKey);
-                        String srcMeiQuoted = assist.quotedSQL(srcMei);
-                        String destKeyQuoted = assist.quotedSQL(destKey);
-                        String destMeiQuoted = assist.quotedSQL(destMei);
-                        sql.add("    , (SELECT r" + refNo + "." + destMeiQuoted + " FROM " + refer.getTableName()
-                                + " r" + refNo + " WHERE r" + refNo + "." + destKeyQuoted + " = a." + srcKeyQuoted
-                                + ") AS " + srcMeiQuoted);
+                        String srcKeyQ = assist.quotedSQL(srcKey);
+                        String srcMeiQ = assist.quotedSQL(srcMei);
+                        String destKeyQ = assist.quotedSQL(destKey);
+                        String destMeiQ = assist.quotedSQL(destMei);
+                        sql.add("    , (SELECT r" + refNo + "." + destMeiQ + " FROM " + refer.getTableName() + " r"
+                                + refNo + " WHERE r" + refNo + "." + destKeyQ + " = a." + srcKeyQ + ") AS " + srcMeiQ);
                     }
 
                     break;
@@ -310,34 +305,9 @@ public final class SqlGenerator {
         sql.add("FROM");
         sql.add("    " + table.getTableName() + " a ");
 
-        Map<String, TableInfo> combos = new LinkedHashMap<String, TableInfo>();
-        for (String pk : table.getPrimaryKeys()) {
-            ColumnInfo primaryKey = table.getColumnInfos().get(pk);
-            if (primaryKey.getReferInfo() != null) {
-                combos.put(primaryKey.getColumnName(), primaryKey.getReferInfo());
-            }
-        }
-        if (combos.size() > 0) {
-            int i = 0;
-            for (TableInfo combo : combos.values()) {
-                ++i;
-                sql.add("    INNER JOIN " + combo.getTableName() + " c" + i + " ");
-                sql.add("        ON 1 = 1 ");
-                if (combo.getColumnInfos().containsKey(deleteF)) {
-                    sql.add("        AND " + assist.nvlZero("c" + i + "." + deleteF) + " != 1 ");
-                }
-                if (combo.getColumnInfos().containsKey(kaishiBi)) {
-                    sql.add("        AND " + assist.nvlSysdate("c" + i + "." + kaishiBi) + " <= " + assist.sysDate()
-                            + " ");
-                }
-                if (combo.getColumnInfos().containsKey(shuryoBi)) {
-                    sql.add("        AND " + assist.dateAdd(assist.nvlSysdate("c" + i + "." + shuryoBi), 1) + " > "
-                            + assist.sysDate());
-                }
-                for (String pk : combo.getPrimaryKeys()) {
-                    sql.add("        AND c" + i + "." + pk + " = a." + pk + " ");
-                }
-            }
+        //組合せモデル
+        if (table.getComboInfos().size() > 0) {
+            addComboSql(sql, table);
         }
 
         sql.add("WHERE");
@@ -355,6 +325,12 @@ public final class SqlGenerator {
         for (Entry<String, ColumnInfo> e : table.getColumnInfos().entrySet()) {
             addWhere(sql, e.getValue());
         }
+
+        //相方モデル
+        if (table.getPartnerInfo() != null) {
+            addPartnerSql(sql, table);
+        }
+
         sql.add("ORDER BY");
         if (table.getPrimaryKeys().size() > 0) {
             String orders = "";
@@ -377,6 +353,85 @@ public final class SqlGenerator {
 
         String entity = StringUtil.toPascalCase(table.getTableName());
         FileUtil.writeFile(sqlDir + File.separator + entity + "Correct.sql", sql);
+    }
+
+    /**
+     * @param sql
+     * @param table
+     */
+    private static void addPartnerSql(final List<String> sql, final TableInfo table) {
+
+        TableInfo partner = table.getPartnerInfo();
+
+        String anotherKey = "";
+        for (String pk : partner.getPrimaryKeys()) {
+            if (pk.equals(kaishiBi)) {
+                continue;
+            }
+            if (!pk.equals(table.getPrimaryKeys().get(0))) {
+                anotherKey = pk;
+                break;
+            }
+        }
+
+        sql.add("    AND EXISTS ( ");
+        sql.add("        SELECT");
+        sql.add("              * ");
+        sql.add("        FROM");
+        sql.add("            " + partner.getTableName() + " p ");
+        sql.add("        WHERE");
+        sql.add("            1 = 1 ");
+        if (partner.getColumnInfos().containsKey(deleteF)) {
+            sql.add("            AND " + assist.nvlZero("p." + deleteF) + " != 1 ");
+        }
+        if (partner.getColumnInfos().containsKey(kaishiBi)) {
+            sql.add("            AND " + assist.nvlSysdate("p." + kaishiBi) + " <= " + assist.sysDate()
+                    + " ");
+        }
+        if (partner.getColumnInfos().containsKey(shuryoBi)) {
+            sql.add("            AND " + assist.dateAdd(assist.nvlSysdate("p." + shuryoBi), 1) + " > "
+                    + assist.sysDate());
+        }
+        for (String pk : partner.getPrimaryKeys()) {
+            if (pk.equals(kaishiBi)) {
+                continue;
+            }
+            if (pk.equals(anotherKey)) {
+                sql.add("            AND p." + pk + " = :" + pk + " ");
+            } else {
+                sql.add("            AND p." + pk + " = a." + pk + " ");
+            }
+        }
+        sql.add("    ) ");
+    }
+
+    /**
+     * @param sql
+     * @param table
+     */
+    private static void addComboSql(final List<String> sql, final TableInfo table) {
+
+        int i = 0;
+
+        for (TableInfo combo : table.getComboInfos()) {
+            ++i;
+            sql.add("    INNER JOIN " + combo.getTableName() + " c" + i + " ");
+            sql.add("        ON 1 = 1 ");
+            if (combo.getColumnInfos().containsKey(deleteF)) {
+                sql.add("        AND " + assist.nvlZero("c" + i + "." + deleteF) + " != 1 ");
+            }
+            if (combo.getColumnInfos().containsKey(kaishiBi)) {
+                sql.add("        AND " + assist.nvlSysdate("c" + i + "." + kaishiBi) + " <= " + assist.sysDate()
+                        + " ");
+            }
+            if (combo.getColumnInfos().containsKey(shuryoBi)) {
+                sql.add("        AND " + assist.dateAdd(assist.nvlSysdate("c" + i + "." + shuryoBi), 1) + " > "
+                        + assist.sysDate());
+            }
+            for (String pk : combo.getPrimaryKeys()) {
+                sql.add("        AND c" + i + "." + pk + " = a." + pk + " ");
+            }
+        }
     }
 
     /**

@@ -177,7 +177,7 @@ public final class BeanGenerator {
         BeanGenerator.javaActionDetailForbid(tableInfos);
 
         //検索画面アクションクラス
-        IndexGenerator.generate(projectDir, tableInfos);
+        IndexActionGenerator.generate(projectDir, tableInfos);
 
         //フォームクラス
         FormGenerator.generate(projectDir, tableInfos);
@@ -203,10 +203,9 @@ public final class BeanGenerator {
         Map<String, String> javaFilePaths = new LinkedHashMap<String, String>();
 
         for (TableInfo tableInfo : tableInfos) {
-            String tableName = tableInfo.getTableName();
-            String remarks = tableInfo.getRemarks();
 
-            String entityName = StringUtil.toPascalCase(tableName);
+            String entityName = StringUtil.toPascalCase(tableInfo.getTableName());
+            String remarks = tableInfo.getRemarks();
 
             List<String> s = new ArrayList<String>();
             s.add("package " + entityPackage + ";");
@@ -1187,11 +1186,11 @@ public final class BeanGenerator {
         Map<String, String> javaFilePaths = new LinkedHashMap<String, String>();
 
         for (TableInfo tableInfo : tableInfos) {
-            String tableName = tableInfo.getTableName();
-            String remarks = tableInfo.getRemarks();
 
-            String camelTable = StringUtil.toCamelCase(tableName);
-            String pascalTable = StringUtil.toPascalCase(tableName);
+            String tableName = tableInfo.getTableName();
+            String entity = StringUtil.toPascalCase(tableName);
+            String instance = StringUtil.toCamelCase(tableName);
+            String remarks = tableInfo.getRemarks();
 
             List<String> s = new ArrayList<String>();
             s.add("package " + actionPackage + ";");
@@ -1200,7 +1199,7 @@ public final class BeanGenerator {
             s.add("import java.util.HashMap;");
             s.add("import java.util.Map;");
             s.add("");
-            s.add("import " + entityPackage + "." + pascalTable + ";");
+            s.add("import " + entityPackage + "." + entity + ";");
             s.add("");
             s.add("import jp.co.golorp.emarf.action.BaseAction;");
             s.add("");
@@ -1209,7 +1208,7 @@ public final class BeanGenerator {
             s.add(" *");
             s.add(" * @author emarfkrow");
             s.add(" */");
-            s.add("public class " + pascalTable + "GetAction extends BaseAction {");
+            s.add("public class " + entity + "GetAction extends BaseAction {");
             s.add("");
             s.add("    /** " + remarks + "照会処理 */");
             s.add("    @Override");
@@ -1218,41 +1217,53 @@ public final class BeanGenerator {
             s.add("        Map<String, Object> map = new HashMap<String, Object>();");
             s.add("");
             s.add("        // 主キーが不足していたら終了");
-            String params = "";
-            for (String primaryKey : tableInfo.getPrimaryKeys()) {
-                String camel = StringUtil.toCamelCase(primaryKey);
-                s.add("        Object " + camel + " = postJson.get(\"" + camel + "\");");
-                s.add("        if (" + camel + " == null) {");
-                s.add("            " + camel + " = postJson.get(\"" + pascalTable + "." + camel + "\");");
+            String pks = "";
+            for (int i = 0; i < tableInfo.getPrimaryKeys().size(); i++) {
+                String pk = tableInfo.getPrimaryKeys().get(i);
+                String property = StringUtil.toCamelCase(pk);
+                s.add("        Object " + property + " = postJson.get(\"" + property + "\");");
+                s.add("        if (" + property + " == null) {");
+                s.add("            " + property + " = postJson.get(\"" + entity + "." + property + "\");");
                 s.add("        }");
-                s.add("        if (" + camel + " == null) {");
+                s.add("        if (" + property + " == null) {");
                 s.add("            return map;");
                 s.add("        }");
-                if (params.length() > 0) {
-                    params += ", ";
+                if (pks.length() > 0) {
+                    pks += ", ";
                 }
-                params += camel;
+                pks += property;
+                //親モデルの取得
+                if (i == tableInfo.getPrimaryKeys().size() - 2) {
+                    if (tableInfo.getParentInfos().size() > 0) {
+                        for (TableInfo parent : tableInfo.getParentInfos()) {
+                            String parentEntity = StringUtil.toPascalCase(parent.getTableName());
+                            String parentInstance = StringUtil.toCamelCase(parent.getTableName());
+                            s.add("        " + entityPackage + "." + parentEntity + " " + parentInstance + " = "
+                                    + entityPackage + "." + parentEntity + ".get(" + pks + ");");
+                            s.add("        map.put(\"" + parentEntity + "\", " + parentInstance + ");");
+                            s.add("");
+                        }
+                    }
+                }
             }
-
             s.add("");
-            s.add("        " + pascalTable + " " + camelTable + " = " + pascalTable + ".get(" + params + ");");
-            for (TableInfo brosInfo : tableInfo.getBrosInfos()) {
-                String brosName = brosInfo.getTableName();
-                String pascalBros = StringUtil.toPascalCase(brosName);
-                s.add("        " + camelTable + ".refer" + pascalBros + "();");
+            s.add("        " + entity + " " + instance + " = " + entity + ".get(" + pks + ");");
+            for (TableInfo bros : tableInfo.getBrosInfos()) {
+                String brosEntity = StringUtil.toPascalCase(bros.getTableName());
+                s.add("        " + instance + ".refer" + brosEntity + "();");
             }
-            for (TableInfo childInfo : tableInfo.getChildInfos()) {
-                String pascal = StringUtil.toPascalCase(childInfo.getTableName());
-                s.add("        " + camelTable + ".refer" + pascal + "s();");
+            for (TableInfo child : tableInfo.getChildInfos()) {
+                String pascal = StringUtil.toPascalCase(child.getTableName());
+                s.add("        " + instance + ".refer" + pascal + "s();");
             }
-            s.add("        map.put(\"" + pascalTable + "\", " + camelTable + ");");
+            s.add("        map.put(\"" + entity + "\", " + instance + ");");
             s.add("        return map;");
             s.add("    }");
             s.add("");
             s.add("}");
 
-            String javaFilePath = packageDir + File.separator + pascalTable + "GetAction.java";
-            javaFilePaths.put(javaFilePath, actionPackage + "." + pascalTable + "GetAction");
+            String javaFilePath = packageDir + File.separator + entity + "GetAction.java";
+            javaFilePaths.put(javaFilePath, actionPackage + "." + entity + "GetAction");
 
             FileUtil.writeFile(javaFilePath, s);
         }

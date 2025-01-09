@@ -101,13 +101,13 @@ $(function() {
             let sendItemName = this.name;                                                 // TEntity.betsuSansho1Id
             let sendValue = $(this).val();
 
+            // そのままの項目名でヒットする場合（詳細リンク、追加リンクの親モデル）
             let $dialogItem = $dialogDiv.find('[name="' + sendItemName + '"]');
-
-            // そのままの項目名でヒットする場合（詳細リンク）
             if ($dialogItem.length > 0) {
                 $dialogItem.val(sendValue);
                 $dialogDiv.find('span[id="' + sendItemName + '"]').html(sendValue);
-                return;
+                //追加リンクの親モデル用にコメントアウト
+                //                return;
             }
 
             // 以下、参照リンク、検索画面の追加リンク、詳細画面の追加リンク
@@ -127,8 +127,7 @@ $(function() {
                 let dialogEntityName = dialogInputNames[0];                               // MSansho1
                 let dialogFieldName = dialogInputNames[1];                                // sansho1Id
                 if (dialogFormEntityName == dialogEntityName && sendFieldName.match(new RegExp('^' + prefix + dialogFieldName + '$', 'i'))) {
-                    $dialogItem = $(this);
-                    $dialogItem.val([sendValue]);
+                    $(this).val([sendValue]);
                     $dialogDiv.find('span[id="' + dialogInputName + '"]').html(sendValue);
                 }
             });
@@ -242,7 +241,7 @@ let Dialogate = {
                     $dialogDiv.find('[name$="RegistForm"] input.primaryKey').each(function() {
                         if ($(this).val() != '') {
                             Base.readonly(this);
-                        } else if ($(this).hasClass('numbering')) {
+                        } else if ($(this).hasClass('numbering') && !$(this).hasClass('refer') && !$(this).hasClass('correct')) {
                             Base.readonly(this);
                         } else {
                             Base.writable(this);

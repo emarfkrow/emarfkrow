@@ -16,7 +16,7 @@ import jp.co.golorp.emarf.util.ResourceBundles;
 /**
  * 検索画面アクション出力
  */
-public final class IndexGenerator {
+public final class IndexActionGenerator {
 
     /** プロジェクトディレクトリ */
     private static String projectDir;
@@ -45,7 +45,7 @@ public final class IndexGenerator {
     /**
      * プライベートコンストラクタ
      */
-    private IndexGenerator() {
+    private IndexActionGenerator() {
     }
 
     /**
@@ -76,17 +76,17 @@ public final class IndexGenerator {
 
         statusKb = bundle.getString("BeanGenerator.status_kb");
 
-        IndexGenerator.javaActionIndexDelete(tableInfos);
-        IndexGenerator.javaActionIndexRegist(tableInfos);
-        IndexGenerator.javaActionIndexPermit(tableInfos);
-        IndexGenerator.javaActionIndexForbid(tableInfos);
+        IndexActionGenerator.deleteAction(tableInfos);
+        IndexActionGenerator.registAction(tableInfos);
+        IndexActionGenerator.permitAction(tableInfos);
+        IndexActionGenerator.forbidAction(tableInfos);
     }
 
     /**
      * 検索画面 登録処理出力
      * @param tableInfos テーブル情報のリスト
      */
-    private static void javaActionIndexDelete(final List<TableInfo> tableInfos) {
+    private static void deleteAction(final List<TableInfo> tableInfos) {
 
         // 出力フォルダを再作成
         String packagePath = actionPackage.replace(".", File.separator);
@@ -185,7 +185,7 @@ public final class IndexGenerator {
      * 検索画面 登録処理出力
      * @param tableInfos テーブル情報のリスト
      */
-    private static void javaActionIndexRegist(final List<TableInfo> tableInfos) {
+    private static void registAction(final List<TableInfo> tableInfos) {
 
         // 出力フォルダを再作成
         String packagePath = actionPackage.replace(".", File.separator);
@@ -303,7 +303,7 @@ public final class IndexGenerator {
      * 検索画面 承認処理出力
      * @param tableInfos テーブル情報のリスト
      */
-    private static void javaActionIndexPermit(final List<TableInfo> tableInfos) {
+    private static void permitAction(final List<TableInfo> tableInfos) {
 
         // 出力フォルダを再作成
         String packagePath = actionPackage.replace(".", File.separator);
@@ -414,7 +414,7 @@ public final class IndexGenerator {
      * 検索画面 否認処理出力
      * @param tableInfos テーブル情報のリスト
      */
-    private static void javaActionIndexForbid(final List<TableInfo> tableInfos) {
+    private static void forbidAction(final List<TableInfo> tableInfos) {
 
         // 出力フォルダを再作成
         String packagePath = actionPackage.replace(".", File.separator);

@@ -107,6 +107,8 @@ public final class DataSources {
 
     /** 時刻入力サフィックス */
     private static String[] inputTimeSuffixs;
+    /** 開始日 */
+    private static String kaishiBi;
 
     /**
      * データベース名列挙子
@@ -255,6 +257,7 @@ public final class DataSources {
         inputDateTimeSuffixs = bundle.getString("BeanGenerator.input.datetime.suffixs").split(",");
         inputDateSuffixs = bundle.getString("BeanGenerator.input.date.suffixs").split(",");
         inputTimeSuffixs = bundle.getString("BeanGenerator.input.time.suffixs").split(",");
+        kaishiBi = bundle.getString("SqlGenerator.kaishiBi").toUpperCase();
     }
 
     /**
@@ -391,6 +394,8 @@ public final class DataSources {
         addReferTable(tableInfos);
         //転生モデルの評価
         addRebornTable(tableInfos);
+        //組合せモデルの評価
+        addCombo(tableInfos);
 
         log(tableInfos);
 
@@ -459,25 +464,86 @@ public final class DataSources {
                 LOG.info("        " + reborn.getTableName() + " " + reborn.getPrimaryKeys());
             }
 
-            Map<String, TableInfo> combos = new LinkedHashMap<String, TableInfo>();
-            for (String pk : table.getPrimaryKeys()) {
-                ColumnInfo primaryKey = table.getColumnInfos().get(pk);
-                if (primaryKey.getReferInfo() != null) {
-                    combos.put(primaryKey.getColumnName(), primaryKey.getReferInfo());
+            if (table.getComboInfos().size() > 1) {
+                LOG.info("    ComboInfos:");
+                for (TableInfo combo : table.getComboInfos()) {
+                    LOG.info("        " + combo.getTableName() + " " + combo.getPrimaryKeys());
                 }
             }
-            if (combos.size() > 1) {
-                table.setCombo(true);
-                LOG.info("    ComboInfo:");
-                for (Entry<String, TableInfo> e : combos.entrySet()) {
-                    String columnName = e.getKey();
-                    TableInfo refer = e.getValue();
-                    LOG.info("        " + columnName + " = " + refer.getTableName() + " " + refer.getPrimaryKeys());
-                }
+
+            if (table.getPartnerInfo() != null) {
+                LOG.info("    PartnerInfo:");
+                TableInfo partner = table.getPartnerInfo();
+                LOG.info("        " + partner.getTableName() + " " + partner.getPrimaryKeys());
             }
         }
 
         LOG.info("");
+    }
+
+    /**
+     * @param tables
+     */
+    private static void addCombo(final List<TableInfo> tables) {
+
+        for (TableInfo table : tables) {
+
+            //複合キー内の参照モデルを探索
+            Set<String> done = new HashSet<String>();
+            Set<TableInfo> combos = new LinkedHashSet<TableInfo>();
+            for (String pk : table.getPrimaryKeys()) {
+                ColumnInfo primaryKey = table.getColumnInfos().get(pk);
+                if (primaryKey.getReferInfo() != null) {
+                    String referName = primaryKey.getReferInfo().getTableName();
+                    if (!done.contains(referName)) {
+                        done.add(referName);
+                        combos.add(primaryKey.getReferInfo());
+                    }
+                }
+            }
+
+            //複合キー内の参照モデルが２以上あれば組合せモデルに設定
+            if (combos.size() > 1) {
+                for (TableInfo combo : combos) {
+                    table.getComboInfos().add(combo);
+                }
+            }
+
+            //組合せモデル数が２の場合
+            if (table.getComboInfos().size() == 2) {
+
+                //自テーブルの主キーが各単一キーと開始日のみで、各テーブルの主キーが自テーブルの第二キー以降の場合は、各テーブルに相方モデルを設定
+                boolean b = true;
+                for (String pk : table.getPrimaryKeys()) {
+                    if (pk.matches(kaishiBi)) {
+                        continue;
+                    }
+                    ColumnInfo primaryKey = table.getColumnInfos().get(pk);
+                    TableInfo combo = primaryKey.getReferInfo();
+                    if (combo != null && combo.getPrimaryKeys().size() == 1) {
+                        continue;
+                    }
+                    b = false;
+                    break;
+                }
+                if (!b) {
+                    continue;
+                }
+
+                for (TableInfo combo : table.getComboInfos()) {
+                    //組合せの第一キーなら相方設定なし
+                    if (table.getPrimaryKeys().get(0).equals(combo.getPrimaryKeys().get(0))) {
+                        continue;
+                    }
+                    //相方モデルが２以上あれば消し込み
+                    if (combo.getPartnerInfo() != null) {
+                        combo.setPartnerInfo(null);
+                        break;
+                    }
+                    combo.setPartnerInfo(table);
+                }
+            }
+        }
     }
 
     /**
@@ -619,23 +685,22 @@ public final class DataSources {
     }
 
     /**
-     * @param columnInfo 対象のカラム情報
+     * @param column 対象のカラム情報
      * @return javaデータ型に変換した文字列
      */
-    private static String getDataType(final ColumnInfo columnInfo) {
+    private static String getDataType(final ColumnInfo column) {
 
-        String typeName = columnInfo.getTypeName().toUpperCase();
+        String typeName = column.getTypeName().toUpperCase();
         String dataType = typeName;
 
         if (typeName.equals("INT")
-                || (typeName.equals("NUMBER") && columnInfo.getColumnSize() <= 10
-                        && columnInfo.getDecimalDigits() == 0)) {
+                || (typeName.equals("NUMBER") && column.getColumnSize() <= 10 && column.getDecimalDigits() == 0)) {
 
             dataType = "Integer";
 
-            if (columnInfo.isPk()) {
-                if (!columnInfo.getColumnName().matches(noNumberingIntRe)) {
-                    columnInfo.setNumbering(true);
+            if (column.isPk()) {
+                if (!column.getColumnName().matches(noNumberingIntRe)) {
+                    column.setNumbering(true);
                 }
             }
 
@@ -644,17 +709,17 @@ public final class DataSources {
 
             dataType = "java.math.BigDecimal";
 
-            if (columnInfo.isPk() && columnInfo.getDecimalDigits() == 0) {
-                if (!columnInfo.getColumnName().matches(noNumberingIntRe)) {
-                    columnInfo.setNumbering(true);
+            if (column.isPk() && column.getDecimalDigits() == 0) {
+                if (!column.getColumnName().matches(noNumberingIntRe)) {
+                    column.setNumbering(true);
                 }
             }
 
-        } else if (StringUtil.endsWith(inputDateSuffixs, columnInfo.getColumnName())) {
+        } else if (StringUtil.endsWith(inputDateSuffixs, column.getColumnName())) {
 
             dataType = "java.time.LocalDate";
 
-        } else if (StringUtil.endsWith(inputTimeSuffixs, columnInfo.getColumnName())) {
+        } else if (StringUtil.endsWith(inputTimeSuffixs, column.getColumnName())) {
 
             dataType = "java.time.LocalTime";
 
@@ -668,9 +733,9 @@ public final class DataSources {
             dataType = "String";
 
             if (typeName.equals("CHAR")) {
-                if (columnInfo.isPk()) {
-                    if (columnInfo.getColumnName().matches(numberingCharRe)) {
-                        columnInfo.setNumbering(true);
+                if (column.isPk()) {
+                    if (column.getColumnName().matches(numberingCharRe)) {
+                        column.setNumbering(true);
                     }
                 }
             }

@@ -226,7 +226,7 @@ public final class HtmlGenerator {
         s.add("      <input type=\"hidden\" name=\"page\" value=\"0\" />");
         s.add("      <fieldset>");
         s.add("        <legend th:text=\"#{" + index + ".legend}\">legend</legend>");
-        htmlFields(table, s, false, false);
+        htmlFields(table, s, false, false, false);
         s.add("      </fieldset>");
         s.add("      <div class=\"buttons\">");
         s.add("        <button type=\"reset\" id=\"Reset" + entity
@@ -239,7 +239,7 @@ public final class HtmlGenerator {
             }
         }
         // 採番キーが１つか、組合せモデルなら新規ボタンを出力
-        if (numberingCount == 1 || table.isCombo()) {
+        if (numberingCount == 1 || table.getComboInfos().size() > 1) {
             s.add("        <a th:href=\"@{/model/" + entity + ".html}\" id=\"" + entity
                     + "\" class=\"anew\" target=\"dialog\" th:text=\"#{" + entity + ".add}\" tabindex=\"-1\">" + remarks
                     + "</a>");
@@ -399,9 +399,18 @@ public final class HtmlGenerator {
         s.add("  <div layout:fragment=\"article\">");
         s.add("    <h2 th:text=\"#{" + entity + ".h2}\">h2</h2>");
         s.add("    <form name=\"" + formName + "\" action=\"" + action + "\" class=\"regist\">");
+        // 親モデル
+        for (TableInfo parent : table.getParentInfos()) {
+            String parentEntity = StringUtil.toPascalCase(parent.getTableName());
+            s.add("      <fieldset>");
+            s.add("        <legend th:text=\"#{" + parentEntity + ".legend}\">legend</legend>");
+            htmlFields(parent, s, true, false, true);
+            s.add("      </fieldset>");
+        }
+        // 本体
         s.add("      <fieldset>");
         s.add("        <legend th:text=\"#{" + entity + ".legend}\">legend</legend>");
-        htmlFields(table, s, true, false);
+        htmlFields(table, s, true, false, table.isView());
         s.add("      </fieldset>");
 
         // 兄弟モデル
@@ -411,7 +420,7 @@ public final class HtmlGenerator {
                 String broName = StringUtil.toPascalCase(bro.getTableName());
                 s.add("      <fieldset>");
                 s.add("        <legend th:text=\"#{" + broName + ".legend}\">legend</legend>");
-                htmlFields(bro, s, true, true);
+                htmlFields(bro, s, true, true, table.isView());
                 s.add("      </fieldset>");
             }
         }
@@ -873,17 +882,19 @@ public final class HtmlGenerator {
      * @param s 出力文字列のリスト
      * @param isDetail 詳細画面ならtrue
      * @param isBrother 兄弟モデルならtrue
+     * @param isView viewか親モデルならtrue
      */
     private static void htmlFields(final TableInfo table, final List<String> s, final boolean isDetail,
-            final boolean isBrother) {
+            final boolean isBrother, final boolean isView) {
 
         //エンティティ名を取得
         String entity = StringUtil.toPascalCase(table.getTableName());
 
         // カラム情報でループ
         for (ColumnInfo column : table.getColumnInfos().values()) {
-
             String columnName = column.getColumnName();
+            String property = StringUtil.toCamelCase(columnName);
+            String fieldId = entity + "." + property;
 
             // 兄弟モデルの主キーは出力しない
             if (isBrother && column.isPk()) {
@@ -901,10 +912,6 @@ public final class HtmlGenerator {
             if (!isDetail && StringUtil.endsWith(inputFileSuffixs, columnName)) {
                 continue;
             }
-
-            String property = StringUtil.toCamelCase(columnName);
-            String fieldId = entity + "." + property;
-
             // メタ情報の場合（検索画面の場合はスキップ（検索条件にはしない）、詳細画面の兄弟モデルは更新日時のみhiddenで出力）
             boolean isInsertDt = columnName.matches("(?i)^" + insertDt + "$");
             boolean isUpdateDt = columnName.matches("(?i)^" + updateDt + "$");
@@ -925,14 +932,13 @@ public final class HtmlGenerator {
             }
 
             String remarks = column.getRemarks();
-
             s.add("        <div id=\"" + property + "\">");
             if (isInsertDt || isUpdateDt || isInsertBy || isUpdateBy) {
                 // メタ情報の場合は表示項目（編集画面の自モデルのみここに到達する）
                 htmlFieldsMeta(s, fieldId, remarks);
                 addMeiSpan(s, table, column);
 
-            } else if (isDetail && (table.isHistory() || table.isView() || column.isReborn())) {
+            } else if (isDetail && (table.isHistory() || isView || column.isReborn())) {
                 // 履歴モデルかビューの詳細画面
                 htmlFieldsSpan(s, fieldId, remarks);
                 addMeiSpan(s, table, column);
@@ -971,8 +977,7 @@ public final class HtmlGenerator {
                 //inputのclass指定
                 String css = "";
                 //リンクのclass指定
-                String referCss = "refer";
-
+                String referCss = "";
                 // 詳細画面の必須項目
                 if (isDetail && column.getNullable() == 0) {
                     css += " notblank";
@@ -993,8 +998,14 @@ public final class HtmlGenerator {
                 }
                 // 詳細画面の参照キー
                 if (isDetail && column.getReferInfo() != null) {
-                    css += " correct";
-                    referCss += " correct";
+                    css += " refer";
+                    referCss += " refer";
+                    TableInfo refer = column.getReferInfo();
+                    TableInfo partner = refer.getPartnerInfo();
+                    if (partner != null && !table.getTableName().equals(partner.getTableName())) {
+                        css += " correct";
+                        referCss += " correct";
+                    }
                 }
                 // 日付項目
                 if (StringUtil.endsWith(inputDateSuffixs, columnName)) {
@@ -1004,7 +1015,6 @@ public final class HtmlGenerator {
                 if (StringUtil.endsWith(inputDate8Suffixs, columnName) && column.getColumnSize() == 8) {
                     css += " datepicker";
                 }
-
                 if (!StringUtil.isNullOrBlank(css)) {
                     css = " class=\"" + css + "\"";
                 }

@@ -71,10 +71,13 @@ public class TableInfo {
     private boolean isView;
 
     /** 組合せモデルならtrue */
-    private boolean isCombo;
+    private List<TableInfo> comboInfos = new ArrayList<TableInfo>();
 
     /** 転生先テーブル */
     private TableInfo rebornInfo;
+
+    /** 相方テーブル */
+    private TableInfo partnerInfo;
 
     /**
      * @return テーブル名
@@ -283,17 +286,31 @@ public class TableInfo {
     }
 
     /**
-     * @return boolean
+     * @return 組合せテーブルのリスト
      */
-    public boolean isCombo() {
-        return isCombo;
+    public List<TableInfo> getComboInfos() {
+        return comboInfos;
     }
 
     /**
-     * @param p
+     * @param p 組合せテーブルのリスト
      */
-    public void setCombo(final boolean p) {
-        this.isCombo = p;
+    public void setComboInfos(final List<TableInfo> p) {
+        this.comboInfos = p;
+    }
+
+    /**
+     * @return partnerInfo
+     */
+    public TableInfo getPartnerInfo() {
+        return partnerInfo;
+    }
+
+    /**
+     * @param p セットする partnerInfo
+     */
+    public void setPartnerInfo(final TableInfo p) {
+        this.partnerInfo = p;
     }
 
 }
