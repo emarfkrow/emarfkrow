@@ -326,9 +326,9 @@ public final class SqlGenerator {
             addWhere(sql, e.getValue());
         }
 
-        //相方モデル
-        if (table.getPartnerInfo() != null) {
-            addPartnerSql(sql, table);
+        //制約モデル
+        if (table.getStintInfo() != null) {
+            addStintSql(sql, table);
         }
 
         sql.add("ORDER BY");
@@ -359,12 +359,12 @@ public final class SqlGenerator {
      * @param sql
      * @param table
      */
-    private static void addPartnerSql(final List<String> sql, final TableInfo table) {
+    private static void addStintSql(final List<String> sql, final TableInfo table) {
 
-        TableInfo partner = table.getPartnerInfo();
+        TableInfo stint = table.getStintInfo();
 
         String anotherKey = "";
-        for (String pk : partner.getPrimaryKeys()) {
+        for (String pk : stint.getPrimaryKeys()) {
             if (pk.equals(kaishiBi)) {
                 continue;
             }
@@ -378,26 +378,27 @@ public final class SqlGenerator {
         sql.add("        SELECT");
         sql.add("              * ");
         sql.add("        FROM");
-        sql.add("            " + partner.getTableName() + " p ");
+        sql.add("            " + stint.getTableName() + " p ");
         sql.add("        WHERE");
         sql.add("            1 = 1 ");
-        if (partner.getColumnInfos().containsKey(deleteF)) {
+        if (stint.getColumnInfos().containsKey(deleteF)) {
             sql.add("            AND " + assist.nvlZero("p." + deleteF) + " != 1 ");
         }
-        if (partner.getColumnInfos().containsKey(kaishiBi)) {
+        if (stint.getColumnInfos().containsKey(kaishiBi)) {
             sql.add("            AND " + assist.nvlSysdate("p." + kaishiBi) + " <= " + assist.sysDate()
                     + " ");
         }
-        if (partner.getColumnInfos().containsKey(shuryoBi)) {
+        if (stint.getColumnInfos().containsKey(shuryoBi)) {
             sql.add("            AND " + assist.dateAdd(assist.nvlSysdate("p." + shuryoBi), 1) + " > "
                     + assist.sysDate());
         }
-        for (String pk : partner.getPrimaryKeys()) {
+        for (String pk : stint.getPrimaryKeys()) {
             if (pk.equals(kaishiBi)) {
                 continue;
             }
             if (pk.equals(anotherKey)) {
-                sql.add("            AND p." + pk + " = :" + pk + " ");
+                String snake = StringUtil.toSnakeCase(pk);
+                sql.add("            AND p." + pk + " = :" + snake + " ");
             } else {
                 sql.add("            AND p." + pk + " = a." + pk + " ");
             }

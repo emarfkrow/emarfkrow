@@ -76,8 +76,8 @@ public class TableInfo {
     /** 転生先テーブル */
     private TableInfo rebornInfo;
 
-    /** 相方テーブル */
-    private TableInfo partnerInfo;
+    /** 制約テーブル */
+    private TableInfo stintInfo;
 
     /**
      * @return テーブル名
@@ -300,17 +300,17 @@ public class TableInfo {
     }
 
     /**
-     * @return partnerInfo
+     * @return stintInfo
      */
-    public TableInfo getPartnerInfo() {
-        return partnerInfo;
+    public TableInfo getStintInfo() {
+        return stintInfo;
     }
 
     /**
-     * @param p セットする partnerInfo
+     * @param p セットする stintInfo
      */
-    public void setPartnerInfo(final TableInfo p) {
-        this.partnerInfo = p;
+    public void setStintInfo(final TableInfo p) {
+        this.stintInfo = p;
     }
 
 }

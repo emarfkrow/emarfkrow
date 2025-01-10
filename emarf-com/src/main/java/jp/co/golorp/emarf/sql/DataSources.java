@@ -471,10 +471,10 @@ public final class DataSources {
                 }
             }
 
-            if (table.getPartnerInfo() != null) {
-                LOG.info("    PartnerInfo:");
-                TableInfo partner = table.getPartnerInfo();
-                LOG.info("        " + partner.getTableName() + " " + partner.getPrimaryKeys());
+            if (table.getStintInfo() != null) {
+                LOG.info("    StintInfo:");
+                TableInfo stint = table.getStintInfo();
+                LOG.info("        " + stint.getTableName() + " " + stint.getPrimaryKeys());
             }
         }
 
@@ -512,7 +512,7 @@ public final class DataSources {
             //組合せモデル数が２の場合
             if (table.getComboInfos().size() == 2) {
 
-                //自テーブルの主キーが各単一キーと開始日のみで、各テーブルの主キーが自テーブルの第二キー以降の場合は、各テーブルに相方モデルを設定
+                //自テーブルの主キーが各単一キーと開始日のみで、各テーブルの主キーが自テーブルの第二キー以降の場合は、各テーブルに制約モデルを設定
                 boolean b = true;
                 for (String pk : table.getPrimaryKeys()) {
                     if (pk.matches(kaishiBi)) {
@@ -531,16 +531,16 @@ public final class DataSources {
                 }
 
                 for (TableInfo combo : table.getComboInfos()) {
-                    //組合せの第一キーなら相方設定なし
+                    //組合せの第一キーなら制約設定なし
                     if (table.getPrimaryKeys().get(0).equals(combo.getPrimaryKeys().get(0))) {
                         continue;
                     }
-                    //相方モデルが２以上あれば消し込み
-                    if (combo.getPartnerInfo() != null) {
-                        combo.setPartnerInfo(null);
+                    //制約モデルが２以上あれば消し込み
+                    if (combo.getStintInfo() != null) {
+                        combo.setStintInfo(null);
                         break;
                     }
-                    combo.setPartnerInfo(table);
+                    combo.setStintInfo(table);
                 }
             }
         }

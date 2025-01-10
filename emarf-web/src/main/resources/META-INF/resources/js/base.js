@@ -482,9 +482,12 @@ let Base = {
                 for (let i in srcDefs) {
                     var src = srcDefs[i];
                     var srcs = src.split(':');
-                    let v = $form.find('[name$="' + srcs[1] + '"]').val().trim();
-                    if (v != '') {
-                        postJson[srcs[0]] = v;
+                    let v = $form.find('[name$="' + srcs[1] + '"]').val();
+                    if (v) {
+                        v = v.trim();
+                        if (v != '') {
+                            postJson[srcs[0]] = v;
+                        }
                     }
                 }
 

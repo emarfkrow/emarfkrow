@@ -64,8 +64,13 @@ $(function() {
 
         // 表示するダイアログを取得
         let href = $link.attr('href');
-        let dialogId = href.replace(/(^.+\/|\.html$)/g, '') + 'Dialog';
+        let dialogId = href.replace(/(^.+\/|\.html(\?.+)?$)/g, '') + 'Dialog';
         let $dialogDiv = $('div[id="' + dialogId + '"]');
+
+        //correctならstintを表示
+        if ($link.hasClass('correct')) {
+            $dialogDiv.find('div.stint').show();
+        }
 
         // 参照ダイアログの場合、リンクのIDとダイアログ内の項目のIDを比較し、呼び出し元での接頭辞を評価
         let prefix = '';
@@ -133,6 +138,17 @@ $(function() {
             });
         });
 
+        //呼び出し先の制約項目があれば、呼び出し元から取得
+        let stints = $dialogDiv.find('span.stint,input.stint');
+        for (let i = 0; i < stints.length; i++) {
+            let stint = stints[i];
+            let names = stint.id.split('.');
+            let name = names[names.length - 1];
+            let parentVal = $form.find('[name$="' + name + '"]').val();
+            $(stint).html(parentVal);
+            $(stint).val(parentVal);
+        }
+
         // 呼び出し元を設定
         $dialogDiv.attr('data-caller', $link.attr('id'));
 
@@ -164,7 +180,7 @@ let Dialogate = {
         console.debug('Dialogate load [' + href + '].');
 
         // hrefからdialogIdを取得。作成済みならスキップ。
-        let dialogId = href.replace(/(^.+\/|\.html$)/g, '') + 'Dialog';
+        let dialogId = href.replace(/(^.+\/|\.html(\?.+)?$)/g, '') + 'Dialog';
         if ($('div[id="' + dialogId + '"]').length > 0) {
             return;
         }
@@ -295,6 +311,7 @@ let Dialogate = {
                     let $searchForm = $dialogDiv.find('[name$="SearchForm"]');
                     if ($searchForm.length > 0) {
 
+                        //クエリストリングにaction指定があれば設定
                         let href = $link.prop('href');
                         let i = href.indexOf('?');
                         if (i >= 0) {

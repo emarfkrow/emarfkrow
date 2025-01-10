@@ -887,6 +887,11 @@ public final class HtmlGenerator {
     private static void htmlFields(final TableInfo table, final List<String> s, final boolean isDetail,
             final boolean isBrother, final boolean isView) {
 
+        //検索画面の場合は制約モデルの参照キーを出力
+        if (!isDetail && table.getStintInfo() != null) {
+            htmlFieldsStint(table, s);
+        }
+
         //エンティティ名を取得
         String entity = StringUtil.toPascalCase(table.getTableName());
 
@@ -937,23 +942,17 @@ public final class HtmlGenerator {
                 // メタ情報の場合は表示項目（編集画面の自モデルのみここに到達する）
                 htmlFieldsMeta(s, fieldId, remarks);
                 addMeiSpan(s, table, column);
-
             } else if (isDetail && (table.isHistory() || isView || column.isReborn())) {
                 // 履歴モデルかビューの詳細画面
-                htmlFieldsSpan(s, fieldId, remarks);
+                htmlFieldsSpan(s, fieldId, remarks, "");
                 addMeiSpan(s, table, column);
-
             } else if (StringUtil.endsWith(optionsSuffixs, columnName) && column.getReferInfo() == null) {
                 // 選択項目の場合（サフィックスが合致しても参照モデルなら除外）
-                boolean isPrimaryKey = isDetail && column.isPk();
-                htmlFieldsOptions(s, fieldId, columnName, remarks, isPrimaryKey);
-
+                htmlFieldsOptions(s, fieldId, columnName, remarks, isDetail && column.isPk());
             } else if (isDetail && StringUtil.endsWith(textareaSuffixs, columnName)) {
                 // テキストエリア項目の場合
                 htmlFieldsTextarea(s, fieldId, remarks);
-
             } else {
-                // 上記以外の場合はinputタグ
 
                 // HTMLのinputタイプかdatepickerのフォーマット
                 String type = "text";
@@ -974,9 +973,8 @@ public final class HtmlGenerator {
                     type = "file";
                 }
 
-                //inputのclass指定
+                //inputのclass指定とリンクのclass指定
                 String css = "";
-                //リンクのclass指定
                 String referCss = "";
                 // 詳細画面の必須項目
                 if (isDetail && column.getNullable() == 0) {
@@ -1001,18 +999,16 @@ public final class HtmlGenerator {
                     css += " refer";
                     referCss += " refer";
                     TableInfo refer = column.getReferInfo();
-                    TableInfo partner = refer.getPartnerInfo();
-                    if (partner != null && !table.getTableName().equals(partner.getTableName())) {
+                    TableInfo stint = refer.getStintInfo();
+                    if (stint != null && !table.getTableName().equals(stint.getTableName())) {
                         css += " correct";
                         referCss += " correct";
                     }
                 }
-                // 日付項目
+                // 日付項目および8桁日付項目
                 if (StringUtil.endsWith(inputDateSuffixs, columnName)) {
                     css += " datepicker";
-                }
-                // 8桁日付項目
-                if (StringUtil.endsWith(inputDate8Suffixs, columnName) && column.getColumnSize() == 8) {
+                } else if (StringUtil.endsWith(inputDate8Suffixs, columnName) && column.getColumnSize() == 8) {
                     css += " datepicker";
                 }
                 if (!StringUtil.isNullOrBlank(css)) {
@@ -1033,6 +1029,31 @@ public final class HtmlGenerator {
                 }
             }
             s.add("        </div>");
+        }
+    }
+
+    /**
+     * @param table
+     * @param s
+     */
+    private static void htmlFieldsStint(final TableInfo table, final List<String> s) {
+        TableInfo stint = table.getStintInfo();
+        for (String pk : stint.getPrimaryKeys()) {
+            if (!pk.equals(table.getPrimaryKeys().get(0))) {
+                ColumnInfo column = stint.getColumnInfos().get(pk);
+                if (column.getReferInfo() != null) {
+                    TableInfo refer = column.getReferInfo();
+                    String entity = StringUtil.toPascalCase(refer.getTableName());
+                    String columnName = column.getColumnName();
+                    String property = StringUtil.toCamelCase(columnName);
+                    String fieldId = entity + "." + property;
+                    s.add("        <div id=\"" + property + "\" class=\"stint\" style=\"display: none;\">");
+                    //                    s.add(htmlFieldsRefer(fieldId, "text", "refer", column, "", table, "refer"));
+                    htmlFieldsSpan(s, fieldId, column.getRemarks(), "stint");
+                    addMeiSpan(s, table, column);
+                    s.add("        </div>");
+                }
+            }
         }
     }
 
@@ -1231,12 +1252,20 @@ public final class HtmlGenerator {
      * @param s 出力文字列のリスト
      * @param id 項目ID
      * @param remarks コメント
+     * @param cssClass
      */
-    private static void htmlFieldsSpan(final List<String> s, final String id, final String remarks) {
+    private static void htmlFieldsSpan(final List<String> s, final String id, final String remarks,
+            final String cssClass) {
+
+        String css = "";
+        if (!StringUtil.isNullOrBlank(cssClass)) {
+            css = " class=\"" + cssClass + "\"";
+        }
+
         String tag = "          ";
         tag += "<label th:text=\"#{" + id + "}\">" + remarks + "</label>";
-        tag += "<span id=\"" + id + "\"></span>";
-        tag += "<input type=\"hidden\" id=\"" + id + "\" name=\"" + id + "\" />";
+        tag += "<span id=\"" + id + "\"" + css + "></span>";
+        tag += "<input type=\"hidden\" id=\"" + id + "\" name=\"" + id + "\"" + css + " />";
         s.add(tag);
     }
 
