@@ -95,6 +95,7 @@ $(function() {
         data[entityName] = querystrings;
         Jsonate.toForm(data, $registForm);
         Base.referRegistForm($registForm);
+
     }
 });
 
@@ -521,14 +522,41 @@ let Base = {
      * サブウィンドウの登録画面の初期照会
      */
     referRegistForm: function($registForm) {
+
         let formJson = Jsonate.toValueJson($registForm);
         if (JSON.stringify(formJson) != '{}') {
+
             let getAction = $registForm.prop('action').replace('Regist', 'Get').replace(/\.form$/, '.ajax');
             Ajaxize.ajaxPost(getAction, formJson, function(data) {
+
                 // VIEWの場合、グリッド生成前にデータを反映してエラーになるため、ロード後まで遅らせる
                 Base.loaded(function() {
+
+                    //一旦、読取専用も外す
+                    let $readonlys = $registForm.find('[name$="' + Casing.toCamel(gridOpeReadonlyColumn) + '"]');
+                    Base.writable($readonlys);
+                    for (let i = 0; i < $readonlys.length; i++) {
+                        let $readonly = $($readonlys[i]);
+                        if ($readonly.prop('type') == 'radio') {
+                            $readonly.closest('label').css('display', 'inherit');
+                        }
+                    }
+
                     Jsonate.toForm(data, $registForm);
                     Base.referMei($registForm.find('span.refer'));
+
+                    // 詳細画面のステータス区分は選択項目名のみ表示
+                    Base.readonly($readonlys);
+                    for (let i = 0; i < $readonlys.length; i++) {
+                        let $readonly = $($readonlys[i]);
+                        if ($readonly.prop('type') == 'radio') {
+                            if (!$readonly.prop('checked')) {
+                                $readonly.closest('label').css('display', 'none');
+                            } else {
+                                $readonly.closest('label').css('display', 'inherit');
+                            }
+                        }
+                    }
 
                     //出力権限
                     if (Base.getAuthz($registForm[0].name) < 2) {

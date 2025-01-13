@@ -275,6 +275,7 @@ let Jsonate = {
                         $('input[type="hidden"][id="' + this.id + '"]').prop("disabled", false).val([v]);
 
                     } else {
+                        console.log($(this).prop('name') + ' [' + k + ' = ' + v + ']');
                         $input.val([v]);
                     }
                 }

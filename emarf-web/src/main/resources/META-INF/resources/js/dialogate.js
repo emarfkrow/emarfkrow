@@ -294,20 +294,6 @@ let Dialogate = {
                         }
                     });
 
-                    // 詳細画面のステータス区分は読み取り専用
-                    let $readonlys = $dialogDiv.find('form.regist [name$="' + Casing.toCamel(gridOpeReadonlyColumn) + '"]');
-                    Base.readonly($readonlys);
-                    for (let i = 0; i < $readonlys.length; i++) {
-                        let $readonly = $($readonlys[i]);
-                        if ($readonly.prop('type') == 'radio') {
-                            if (!$readonly.prop('checked')) {
-                                $readonly.closest('label').css('display', 'none');
-                            } else {
-                                $readonly.closest('label').css('display', 'inherit');
-                            }
-                        }
-                    }
-
                     let $searchForm = $dialogDiv.find('[name$="SearchForm"]');
                     if ($searchForm.length > 0) {
 
@@ -404,20 +390,22 @@ let Dialogate = {
 
     refreshById: function(dialogId) {
 
+        let $dialogDiv = $('[id$="' + dialogId + '"]');
+
         // ダイアログの主キー情報を退避
         let primaryKeys = {};
-        $('[id="' + dialogId + '"]').find('input.primaryKey').each(function() {
+        $dialogDiv.find('input.primaryKey').each(function() {
             primaryKeys[this.name] = $(this).val();
         });
 
         // ダイアログを一旦閉じる
-        $('[id$="' + dialogId + '"]').dialog('close');
+        $dialogDiv.dialog('close');
 
         // ダイアログに主キー情報を復帰して開く
         for (let name in primaryKeys) {
-            $('[id$="' + dialogId + '"] [name="' + name + '"]').val(primaryKeys[name]);
+            $dialogDiv.find('[name="' + name + '"]').val(primaryKeys[name]);
         }
-        $('[id$="' + dialogId + '"]').dialog('open');
+        $dialogDiv.dialog('open');
 
     },
 

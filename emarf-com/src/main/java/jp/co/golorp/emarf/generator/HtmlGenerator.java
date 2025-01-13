@@ -226,7 +226,7 @@ public final class HtmlGenerator {
         s.add("      <input type=\"hidden\" name=\"page\" value=\"0\" />");
         s.add("      <fieldset>");
         s.add("        <legend th:text=\"#{" + index + ".legend}\">legend</legend>");
-        htmlFields(table, s, false, false, false);
+        htmlFields(table, s, false, false);
         s.add("      </fieldset>");
         s.add("      <div class=\"buttons\">");
         s.add("        <button type=\"reset\" id=\"Reset" + entity
@@ -402,15 +402,19 @@ public final class HtmlGenerator {
         // 親モデル
         for (TableInfo parent : table.getParentInfos()) {
             String parentEntity = StringUtil.toPascalCase(parent.getTableName());
-            s.add("      <fieldset>");
+            s.add("      <fieldset class=\"parent\">");
             s.add("        <legend th:text=\"#{" + parentEntity + ".legend}\">legend</legend>");
-            htmlFields(parent, s, true, false, true);
+            htmlFields(parent, s, true, false);
             s.add("      </fieldset>");
         }
         // 本体
-        s.add("      <fieldset>");
+        String css = "";
+        if (table.isView()) {
+            css = " class=\"view\"";
+        }
+        s.add("      <fieldset" + css + ">");
         s.add("        <legend th:text=\"#{" + entity + ".legend}\">legend</legend>");
-        htmlFields(table, s, true, false, table.isView());
+        htmlFields(table, s, true, false);
         s.add("      </fieldset>");
 
         // 兄弟モデル
@@ -420,7 +424,7 @@ public final class HtmlGenerator {
                 String broName = StringUtil.toPascalCase(bro.getTableName());
                 s.add("      <fieldset>");
                 s.add("        <legend th:text=\"#{" + broName + ".legend}\">legend</legend>");
-                htmlFields(bro, s, true, true, table.isView());
+                htmlFields(bro, s, true, true);
                 s.add("      </fieldset>");
             }
         }
@@ -881,11 +885,10 @@ public final class HtmlGenerator {
      * @param table テーブル情報
      * @param s 出力文字列のリスト
      * @param isDetail 詳細画面ならtrue
-     * @param isBrother 兄弟モデルならtrue
-     * @param isView viewか親モデルならtrue
+     * @param isBro 兄弟モデルならtrue
      */
     private static void htmlFields(final TableInfo table, final List<String> s, final boolean isDetail,
-            final boolean isBrother, final boolean isView) {
+            final boolean isBro) {
 
         //検索画面の場合は制約モデルの参照キーを出力
         if (!isDetail && table.getStintInfo() != null) {
@@ -902,7 +905,7 @@ public final class HtmlGenerator {
             String fieldId = entity + "." + property;
 
             // 兄弟モデルの主キーは出力しない
-            if (isBrother && column.isPk()) {
+            if (isBro && column.isPk()) {
                 continue;
             }
             // VIEWの検索フォームには「SEARCH_」以外を出力しない
@@ -928,7 +931,7 @@ public final class HtmlGenerator {
                     continue;
                 }
                 //兄弟モデルならスキップ（更新日時のみ楽観ロック用に出力）
-                if (isBrother) {
+                if (isBro) {
                     if (isUpdateDt) {
                         s.add("        <input type=\"hidden\" name=\"" + fieldId + "\" />");
                     }
@@ -942,7 +945,7 @@ public final class HtmlGenerator {
                 // メタ情報の場合は表示項目（編集画面の自モデルのみここに到達する）
                 htmlFieldsMeta(s, fieldId, remarks);
                 addMeiSpan(s, table, column);
-            } else if (isDetail && (table.isHistory() || isView || column.isReborn())) {
+            } else if (isDetail && (table.isHistory() || column.isReborn())) {
                 // 履歴モデルかビューの詳細画面
                 htmlFieldsSpan(s, fieldId, remarks, "");
                 addMeiSpan(s, table, column);
