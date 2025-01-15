@@ -19,8 +19,8 @@ limitations under the License.
  * @author golorp
  */
 
-console.trace = function() { }
-console.debug = function() { }
+//console.trace = function() { }
+//console.debug = function() { }
 
 /**
  * バイト数計算
@@ -41,7 +41,7 @@ String.prototype.bytes = function() {
 // １．DOM構築後
 $(function() {
 
-    //console.debug('$(function() {});');
+    console.debug('base-1: $(function() {});');
 
     console.debug('Base init.');
 
@@ -101,12 +101,12 @@ $(function() {
 
 // ２．DOM構築後
 $(document).ready(function() {
-    //console.debug('$(document).ready(function() {});');
+    console.debug('base-2: $(document).ready(function() {});');
 });
 
 // ３．DOM構築後
 $(document).on('ready', function() {
-    //console.debug('$(document).on(\'ready\', function() {});');
+    console.debug('base-3: $(document).on(\'ready\', function() {});');
 
     // 画面初期化
     if (typeof Loading != 'undefined') {
@@ -166,12 +166,12 @@ $(document).on('ready', function() {
 
 // ４．画像ファイル読み込み後
 $(window).load(function() {
-    //console.debug('$(window).load(function() {});');
+    console.debug('base-4: $(window).load(function() {});');
 });
 
 // ５．画像ファイル読み込み後
 $(window).on('load', function() {
-    //console.debug('$(window).on(\'load\', function() {});');
+    console.debug('base-5: $(window).on(\'load\', function() {});');
 });
 
 let Base = {
@@ -182,6 +182,7 @@ let Base = {
      * Loading終了を待って実行
      */
     loaded: function(func) {
+
         if (typeof Loading != 'undefined') {
             // Loadingをロード済みなら終了を待つ
             Loading.fadeIn();
@@ -203,6 +204,7 @@ let Base = {
             Loading.fadeOut();
         } else {
             // Loadingがロードされていなければ即実行
+            console.debug('Base.loaded(function() {});');
             func();
         }
     },

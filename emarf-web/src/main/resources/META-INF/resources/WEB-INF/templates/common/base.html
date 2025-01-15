@@ -57,15 +57,15 @@ limitations under the License.
 <script th:inline="javascript">
 	let searchOptionsSize = 0;
 	let detailOptionsSize = 0;
-    let gridOpeReadonlyColumn = null;
-    let gridOpeVisibleColumn = null;
+	let gridOpeReadonlyColumn = null;
+	let gridOpeVisibleColumn = null;
 	let gridOpeEffectColumn = null;
 	let gridViewDetailColumn = null;
 	$(function() {
 		searchOptionsSize = $('[name="searchOptionsSize"]').val();
 		detailOptionsSize = $('[name="detailOptionsSize"]').val();
-        gridOpeReadonlyColumn = $('[name="gridOpeReadonlyColumn"]').val();
-        gridOpeVisibleColumn = $('[name="gridOpeVisibleColumn"]').val();
+		gridOpeReadonlyColumn = $('[name="gridOpeReadonlyColumn"]').val();
+		gridOpeVisibleColumn = $('[name="gridOpeVisibleColumn"]').val();
 		gridOpeEffectColumn = $('[name="gridOpeEffectColumn"]').val();
 		gridViewDetailColumn = $('[name="gridViewDetailColumn"]').val();
 	});
@@ -77,6 +77,21 @@ limitations under the License.
 <script th:src="@{/js/column.js}"></script>
 <script th:src="@{/js/dialogate.js}"></script>
 <script th:src="@{/js/formatter.js}"></script>
+<script th:inline="javascript">
+	//grid列名が取れない事があるのでonloadまで遅らせる
+	let Messages = {};
+	$(function() {
+		$.ajax({
+			async : false,
+			url : 'messages.json',
+			dataType : 'text',
+			success : function(data) {
+				Messages = JSON.parse(data.substr(15));
+			}
+		});
+		console.log(Messages);
+	});
+</script>
 <script th:src="@{/js/gridate.js}"></script>
 <script th:src="@{/js/jsonate.js}"></script>
 <script th:src="@{/js/nextize.js}"></script>
@@ -84,7 +99,7 @@ limitations under the License.
 <script th:src="@{/js/slick.editors.extends.js}"></script>
 <script th:src="@{/js/slick.formatters.extends.js}"></script>
 <!-- application js -->
-<script th:src="@{/messages.json}"></script>
+<!-- <script th:src="@{/messages.json}"></script> -->
 <!-- <script layout:replace="~{common/gridColumns::gridColumns}"></script> -->
 <script th:inline="javascript" th:if="${#ctx.session != null && #ctx.session.get('AUTHZ_INFO') != null}">
 	let breads = sessionStorage['breads'];

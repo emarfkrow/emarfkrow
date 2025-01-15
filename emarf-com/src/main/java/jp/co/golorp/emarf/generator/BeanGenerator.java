@@ -193,20 +193,18 @@ public final class BeanGenerator {
 
     /**
      * エンティティ出力
-     * @param tableInfos テーブル情報のリスト
+     * @param tables テーブル情報のリスト
      */
-    private static void javaEntity(final List<TableInfo> tableInfos) {
+    private static void javaEntity(final List<TableInfo> tables) {
 
         // 出力フォルダを再作成
         String packagePath = entityPackage.replace(".", File.separator);
         String packageDir = projectDir + File.separator + javaPath + File.separator + packagePath;
-        Map<String, String> javaFilePaths = new LinkedHashMap<String, String>();
+        Map<String, String> javaPaths = new LinkedHashMap<String, String>();
 
-        for (TableInfo tableInfo : tableInfos) {
-
-            String entityName = StringUtil.toPascalCase(tableInfo.getTableName());
-            String remarks = tableInfo.getRemarks();
-
+        for (TableInfo table : tables) {
+            String e = StringUtil.toPascalCase(table.getTableName());
+            String r = table.getRemarks();
             List<String> s = new ArrayList<String>();
             s.add("package " + entityPackage + ";");
             s.add("");
@@ -220,11 +218,11 @@ public final class BeanGenerator {
             s.add("import jp.co.golorp.emarf.sql.Queries;");
             s.add("");
             s.add("/**");
-            s.add(" * " + remarks + "");
+            s.add(" * " + r + "");
             s.add(" * @author emarfkrow");
             s.add(" */");
-            s.add("public class " + entityName + " implements IEntity {");
-            if (tableInfo.getColumnInfos().get("ID") == null) {
+            s.add("public class " + e + " implements IEntity {");
+            if (table.getColumnInfos().get("ID") == null) {
                 s.add("");
                 s.add("    /** SlickGridのDataView用ID */");
                 s.add("    private Integer id;");
@@ -248,101 +246,140 @@ public final class BeanGenerator {
                 s.add("    }");
             }
             // property
-            for (ColumnInfo columnInfo : tableInfo.getColumnInfos().values()) {
-                String columnName = columnInfo.getColumnName();
-                String mei = columnInfo.getRemarks();
-                String camel = StringUtil.toCamelCase(columnName);
-                String pascal = StringUtil.toPascalCase(columnName);
-                String dataType = columnInfo.getDataType();
+            for (ColumnInfo column : table.getColumnInfos().values()) {
+                String n = column.getColumnName();
+                String m = column.getRemarks();
+                String p = StringUtil.toCamelCase(n);
+                String a = StringUtil.toPascalCase(n);
+                String t = column.getDataType();
                 s.add("");
-                s.add("    /** " + mei + " */");
-                if (dataType.equals("java.time.LocalDate")) {
+                s.add("    /** " + m + " */");
+                if (t.equals("java.time.LocalDate")) {
                     s.add("    @com.fasterxml.jackson.annotation.JsonFormat(pattern = \"yyyy-MM-dd\")");
                     s.add("    @com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer.class)");
                     s.add("    @com.fasterxml.jackson.databind.annotation.JsonSerialize(using = com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer.class)");
-                } else if (StringUtil.endsWith(inputTimestampSuffixs, columnInfo.getColumnName())) {
+                } else if (StringUtil.endsWith(inputTimestampSuffixs, n)) {
                     s.add("    @com.fasterxml.jackson.annotation.JsonFormat(pattern = \"yyyy-MM-dd'T'HH:mm:ss.SSS\")");
                     s.add("    @com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer.class)");
                     s.add("    @com.fasterxml.jackson.databind.annotation.JsonSerialize(using = com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer.class)");
-                } else if (StringUtil.endsWith(inputDateTimeSuffixs, columnInfo.getColumnName())) {
+                } else if (StringUtil.endsWith(inputDateTimeSuffixs, n)) {
                     s.add("    @com.fasterxml.jackson.annotation.JsonFormat(pattern = \"yyyy-MM-dd'T'HH:mm:ss\")");
                     s.add("    @com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer.class)");
                     s.add("    @com.fasterxml.jackson.databind.annotation.JsonSerialize(using = com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer.class)");
                 }
-                if (StringUtil.endsWith(inputFlagSuffixs, columnName)) {
+                if (StringUtil.endsWith(inputFlagSuffixs, n)) {
                     // フラグを外した際、何も送信されず更新もかからないため、フラグ項目には初期値を設定しておく
-                    if (dataType.equals("java.math.BigDecimal")) {
-                        s.add("    private " + dataType + " " + camel + " = new " + dataType + "(0);");
-                    } else if (dataType.equals("Integer")) {
-                        s.add("    private " + dataType + " " + camel + " = 0;");
+                    if (t.equals("java.math.BigDecimal")) {
+                        s.add("    private " + t + " " + p + " = new " + t + "(0);");
+                    } else if (t.equals("Integer")) {
+                        s.add("    private " + t + " " + p + " = 0;");
                     } else {
-                        s.add("    private " + dataType + " " + camel + " = \"0\";");
+                        s.add("    private " + t + " " + p + " = \"0\";");
                     }
                 } else {
-                    s.add("    private " + dataType + " " + camel + ";");
+                    s.add("    private " + t + " " + p + ";");
                 }
                 s.add("");
-                s.add("    /** @return " + mei + " */");
-                s.add("    @com.fasterxml.jackson.annotation.JsonProperty(\"" + columnName + "\")");
-                s.add("    public " + dataType + " get" + pascal + "() {");
-                s.add("        return this." + camel + ";");
+                s.add("    /** @return " + m + " */");
+                s.add("    @com.fasterxml.jackson.annotation.JsonProperty(\"" + n + "\")");
+                s.add("    public " + t + " get" + a + "() {");
+                s.add("        return this." + p + ";");
                 s.add("    }");
                 s.add("");
-                s.add("    /** @param o " + mei + " */");
-                s.add("    public void set" + pascal + "(final Object o) {");
-                if (dataType.equals("java.time.LocalDateTime")) {
+                s.add("    /** @param o " + m + " */");
+                s.add("    public void set" + a + "(final Object o) {");
+                if (t.equals("java.time.LocalDateTime")) {
                     s.add("        if (o != null && o instanceof Long) {");
                     s.add("            java.util.Date d = new java.util.Date((Long) o);");
-                    s.add("            this." + camel
+                    s.add("            this." + p
                             + " = java.time.LocalDateTime.ofInstant(d.toInstant(), java.time.ZoneId.systemDefault());");
                     s.add("        } else if (o != null && o.toString().matches(\"^[0-9]+\")) {");
                     s.add("            java.util.Date d = new java.util.Date(Long.valueOf(o.toString()));");
-                    s.add("            this." + camel
+                    s.add("            this." + p
                             + " = java.time.LocalDateTime.ofInstant(d.toInstant(), java.time.ZoneId.systemDefault());");
                     s.add("        } else if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {");
-                    s.add("            this." + camel + " = " + dataType
+                    s.add("            this." + p + " = " + t
                             + ".parse(o.toString().replace(\" \", \"T\").replace(\"/\", \"-\"));");
-                } else if (dataType.equals("java.time.LocalDate")) {
+                } else if (t.equals("java.time.LocalDate")) {
                     s.add("        if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {");
-                    s.add("            this." + camel + " = " + dataType + ".parse(o.toString().substring(0, 10));");
-                } else if (dataType.equals("java.time.LocalTime")) {
+                    s.add("            this." + p + " = " + t + ".parse(o.toString().substring(0, 10));");
+                } else if (t.equals("java.time.LocalTime")) {
                     s.add("        if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {");
-                    s.add("            this." + camel + " = " + dataType + ".parse(o.toString());");
-                } else if (dataType.equals("java.math.BigDecimal")) {
+                    s.add("            this." + p + " = " + t + ".parse(o.toString());");
+                } else if (t.equals("java.math.BigDecimal")) {
                     s.add("        if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {");
-                    s.add("            this." + camel + " = new java.math.BigDecimal(o.toString());");
-                } else if (StringUtil.endsWith(inputYMSuffixs, columnName)) {
+                    s.add("            this." + p + " = new java.math.BigDecimal(o.toString());");
+                } else if (StringUtil.endsWith(inputYMSuffixs, n)) {
                     s.add("        if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {");
-                    s.add("            this." + camel + " = " + dataType
-                            + ".valueOf(o.toString().replace(\"-\", \"\"));");
-                } else if (dataType.equals("String")) {
+                    s.add("            this." + p + " = " + t + ".valueOf(o.toString().replace(\"-\", \"\"));");
+                } else if (t.equals("String")) {
                     s.add("        if (o != null) {");
-                    s.add("            this." + camel + " = o.toString();");
+                    s.add("            this." + p + " = o.toString();");
                 } else {
                     s.add("        if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {");
-                    s.add("            this." + camel + " = " + dataType + ".valueOf(o.toString());");
+                    s.add("            this." + p + " = " + t + ".valueOf(o.toString());");
                 }
                 s.add("        } else {");
-                s.add("            this." + camel + " = null;");
+                s.add("            this." + p + " = null;");
                 s.add("        }");
                 s.add("    }");
+                //子モデルgridで補填用の参照名
+                if (column.getReferInfo() != null) {
+                    addSanshoMei(s, table, column);
+                }
             }
-            javaEntityCRUD(tableInfo, s);
-            javaEntityUtil(tableInfo, s);
-            javaEntityBros(tableInfo, s);
-            javaEntityChild(tableInfo, s);
+            javaEntityCRUD(table, s);
+            javaEntityUtil(table, s);
+            javaEntityBros(table, s);
+            javaEntityChild(table, s);
             s.add("}");
-
-            String javaFilePath = packageDir + File.separator + entityName + ".java";
+            String javaFilePath = packageDir + File.separator + e + ".java";
             FileUtil.writeFile(javaFilePath, s);
-            javaFilePaths.put(javaFilePath, entityPackage + "." + entityName);
+            javaPaths.put(javaFilePath, entityPackage + "." + e);
         }
 
         if (isCompile) {
-            for (Entry<String, String> e : javaFilePaths.entrySet()) {
+            for (Entry<String, String> e : javaPaths.entrySet()) {
                 BeanGenerator.javaCompile(e.getKey(), e.getValue());
             }
         }
+    }
+
+    /**
+     * @param s
+     * @param table
+     * @param column
+     */
+    private static void addSanshoMei(final List<String> s, final TableInfo table, final ColumnInfo column) {
+
+        String columnMei = column.getRemarks();
+
+        //参照ペアを取得
+        String meiSql = SqlGenerator.getMeiSql(0, table, column);
+        int i = meiSql.lastIndexOf(" AS ") + 4;
+
+        //参照ペアがあるが名称カラムがなければ追加
+        String meiColumnName = meiSql.substring(i).replaceAll("[ \"]", "");
+        String meiProperty = StringUtil.toCamelCase(meiColumnName);
+        String meiAccessor = StringUtil.toPascalCase(meiColumnName);
+        s.add("");
+        s.add("    /** " + columnMei + "参照 */");
+        s.add("    private String " + meiProperty + ";");
+        s.add("");
+        s.add("    /** @return " + columnMei + "参照 */");
+        s.add("    @com.fasterxml.jackson.annotation.JsonProperty(\"" + meiColumnName + "\")");
+        s.add("    public String get" + meiAccessor + "() {");
+        s.add("        return this." + meiProperty + ";");
+        s.add("    }");
+        s.add("");
+        s.add("    /** @param o " + columnMei + "参照 */");
+        s.add("    public void set" + meiAccessor + "(final Object o) {");
+        s.add("        if (o != null) {");
+        s.add("            this." + meiProperty + " = o.toString();");
+        s.add("        } else {");
+        s.add("            this." + meiProperty + " = null;");
+        s.add("        }");
+        s.add("    }");
     }
 
     /**
@@ -963,16 +1000,15 @@ public final class BeanGenerator {
 
     /**
      * エンティティに子モデル追加
-     * @param tableInfo テーブル情報
+     * @param table テーブル情報
      * @param s 出力文字列のリスト
      */
-    private static void javaEntityChild(final TableInfo tableInfo, final List<String> s) {
+    private static void javaEntityChild(final TableInfo table, final List<String> s) {
 
-        String tableName = tableInfo.getTableName();
-        String entityName = StringUtil.toPascalCase(tableName);
+        String parent = StringUtil.toPascalCase(table.getTableName());
 
         String params = "";
-        for (String pk : tableInfo.getPrimaryKeys()) {
+        for (String pk : table.getPrimaryKeys()) {
             if (pk.length() > 0) {
                 if (params.length() > 0) {
                     params += ", ";
@@ -981,106 +1017,126 @@ public final class BeanGenerator {
             }
         }
 
-        for (TableInfo childInfo : tableInfo.getChildInfos()) {
-            String childName = childInfo.getTableName();
-            String camel = StringUtil.toCamelCase(childName);
-            String pascal = StringUtil.toPascalCase(childName);
+        for (TableInfo child : table.getChildInfos()) {
+            String name = child.getTableName();
+            String entity = StringUtil.toPascalCase(name);
+            String instance = StringUtil.toCamelCase(name);
 
             // childList
             s.add("");
-            s.add("    /** " + childInfo.getRemarks() + "のリスト */");
-            s.add("    private List<" + pascal + "> " + camel + "s;");
+            s.add("    /** " + child.getRemarks() + "のリスト */");
+            s.add("    private List<" + entity + "> " + instance + "s;");
             s.add("");
-            s.add("    /** @return " + childInfo.getRemarks() + "のリスト */");
-            s.add("    @com.fasterxml.jackson.annotation.JsonProperty(\"" + pascal + "s\")");
-            s.add("    public List<" + pascal + "> get" + pascal + "s() {");
-            s.add("        return this." + camel + "s;");
+            s.add("    /** @return " + child.getRemarks() + "のリスト */");
+            s.add("    @com.fasterxml.jackson.annotation.JsonProperty(\"" + entity + "s\")");
+            s.add("    public List<" + entity + "> get" + entity + "s() {");
+            s.add("        return this." + instance + "s;");
             s.add("    }");
             s.add("");
-            s.add("    /** @param list " + childInfo.getRemarks() + "のリスト */");
-            s.add("    public void set" + pascal + "s(final List<" + pascal + "> list) {");
-            s.add("        this." + camel + "s = list;");
+            s.add("    /** @param list " + child.getRemarks() + "のリスト */");
+            s.add("    public void set" + entity + "s(final List<" + entity + "> list) {");
+            s.add("        this." + instance + "s = list;");
             s.add("    }");
             s.add("");
-            s.add("    /** @param " + camel + " */");
-            s.add("    public void add" + pascal + "s(final " + pascal + " " + camel + ") {");
-            s.add("        if (this." + camel + "s == null) {");
-            s.add("            this." + camel + "s = new ArrayList<" + pascal + ">();");
+            s.add("    /** @param " + instance + " */");
+            s.add("    public void add" + entity + "s(final " + entity + " " + instance + ") {");
+            s.add("        if (this." + instance + "s == null) {");
+            s.add("            this." + instance + "s = new ArrayList<" + entity + ">();");
             s.add("        }");
-            s.add("        this." + camel + "s.add(" + camel + ");");
+            s.add("        this." + instance + "s.add(" + instance + ");");
             s.add("    }");
             s.add("");
-            s.add("    /** @return " + childInfo.getRemarks() + "のリスト */");
-            s.add("    public List<" + pascal + "> refer" + pascal + "s() {");
-            s.add("        this." + camel + "s = " + entityName + ".refer" + pascal + "s(" + params + ");");
-            s.add("        return this." + camel + "s;");
+            s.add("    /** @return " + child.getRemarks() + "のリスト */");
+            s.add("    public List<" + entity + "> refer" + entity + "s() {");
+            s.add("        this." + instance + "s = " + parent + ".refer" + entity + "s(" + params + ");");
+            s.add("        return this." + instance + "s;");
             s.add("    }");
 
             // search
             s.add("");
             s.add("    /**");
             int i = 0;
-            String getParams = "";
-            for (String pk : tableInfo.getPrimaryKeys()) {
+            String pks = "";
+            for (String pk : table.getPrimaryKeys()) {
                 if (pk.length() == 0) {
                     continue;
                 }
-                String primaryKey = StringUtil.toCamelCase(pk);
-                s.add("     * @param param" + ++i + " " + primaryKey);
-                if (getParams.length() > 0) {
-                    getParams += ", ";
+                String property = StringUtil.toCamelCase(pk);
+                s.add("     * @param param" + ++i + " " + property);
+                if (pks.length() > 0) {
+                    pks += ", ";
                 }
-                ColumnInfo columnInfo = tableInfo.getColumnInfos().get(pk);
-                getParams += "final " + columnInfo.getDataType() + " param" + i;
+                ColumnInfo column = table.getColumnInfos().get(pk);
+                pks += "final " + column.getDataType() + " param" + i;
             }
-            s.add("     * @return List<" + pascal + ">");
+            s.add("     * @return List<" + entity + ">");
             s.add("     */");
-            s.add("    public static List<" + pascal + "> refer" + pascal + "s(" + getParams + ") {");
+            s.add("    public static List<" + entity + "> refer" + entity + "s(" + pks + ") {");
             s.add("        List<String> whereList = new ArrayList<String>();");
-            for (String pk : tableInfo.getPrimaryKeys()) {
+            for (String pk : table.getPrimaryKeys()) {
                 if (pk.length() == 0) {
                     continue;
                 }
                 //                pk = pk.toLowerCase();
                 //                s.add("        whereList.add(\"" + pk + " = :" + pk + "\");");
-                ColumnInfo primaryKeyInfo = tableInfo.getColumnInfos().get(pk);
-                if (primaryKeyInfo.getTypeName().equals("CHAR")) {
+                ColumnInfo primaryKey = table.getColumnInfos().get(pk);
+                if (primaryKey.getTypeName().equals("CHAR")) {
                     s.add("        whereList.add(\"TRIM (" + pk + ") = TRIM (:" + StringUtil.toSnakeCase(pk) + ")\");");
                 } else {
                     s.add("        whereList.add(\"" + pk + " = :" + StringUtil.toSnakeCase(pk) + "\");");
                 }
             }
-            s.add("        String sql = \"SELECT * FROM " + childName
-                    + " WHERE \" + String.join(\" AND \", whereList);");
+
+            //カラム名を列挙
+            //            s.add("        String sql = \"SELECT * FROM " + name + " WHERE \" + String.join(\" AND \", whereList);");
+            s.add("        String sql = \"SELECT \";");
+            int cols = 0;
+            int refs = 0;
+            for (ColumnInfo column : child.getColumnInfos().values()) {
+                if (cols == 0) {
+                    s.add("        sql += \"" + column.getColumnName() + "\";");
+                } else {
+                    s.add("        sql += \", " + column.getColumnName() + "\";");
+                }
+                ++cols;
+                // 列の参照モデル情報があればカラム名の補完
+                if (column.getReferInfo() != null) {
+                    String meiSql = SqlGenerator.getMeiSql(refs, table, column);
+                    if (meiSql != null) {
+                        ++refs;
+                        meiSql = meiSql.replaceAll("\"", "\\\\\"");
+                        s.add("        sql += \"" + meiSql + "\";");
+                    }
+                }
+            }
+            s.add("        sql += \" FROM " + name + " a WHERE \" + String.join(\" AND \", whereList);");
             s.add("        sql += \" ORDER BY \";");
-            if (childInfo.getPrimaryKeys().size() > 0) {
-                String orders = "";
-                for (String primaryKey : childInfo.getPrimaryKeys()) {
+            String orders = "";
+            if (child.getPrimaryKeys().size() > 0) {
+                for (String pk : child.getPrimaryKeys()) {
                     if (orders.length() > 0) {
                         orders += ", ";
                     }
-                    orders += primaryKey;
+                    orders += pk;
                 }
-                s.add("        sql += \"" + orders + "\";");
             } else {
-                String orders = "";
-                for (i = 1; i <= childInfo.getColumnInfos().size(); i++) {
+                for (i = 1; i <= child.getColumnInfos().size(); i++) {
                     if (i == 1) {
                         orders += ", ";
                     }
                     orders += i;
                 }
-                s.add("        sql += \"" + orders + "\";");
             }
+            s.add("        sql += \"" + orders + "\";");
             s.add("        Map<String, Object> map = new HashMap<String, Object>();");
             i = 0;
-            for (String pk : tableInfo.getPrimaryKeys()) {
+            for (String pk : table.getPrimaryKeys()) {
                 if (pk.length() == 0) {
                     continue;
                 }
                 s.add("        map.put(\"" + StringUtil.toSnakeCase(pk) + "\", param" + ++i + ");");
             }
-            s.add("        return Queries.select(sql, map, " + pascal + ".class, null, null);");
+            s.add("        return Queries.select(sql, map, " + entity + ".class, null, null);");
             s.add("    }");
         }
     }

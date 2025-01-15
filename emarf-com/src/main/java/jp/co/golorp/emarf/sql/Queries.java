@@ -426,7 +426,7 @@ public final class Queries {
                             // ケバブケースでも取ってみる
                             o = rs.getObject(snake.replaceAll("\\_", "-"));
                         } catch (Exception e3) {
-                            throw e;
+                            LOG.trace(e.getMessage() + "[" + snake + "]");
                         }
                     }
                 }

@@ -359,6 +359,8 @@ let Dialogate = {
                         $dialogDiv.find('button.permit').css('visibility', 'hidden');
                         $dialogDiv.find('button.forbid').css('visibility', 'hidden');
                     }
+
+                    Base.readonly($dialogDiv.find('.parent').find('a,input,select,textarea'));
                 },
 
                 /*

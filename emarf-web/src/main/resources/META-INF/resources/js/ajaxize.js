@@ -273,7 +273,7 @@ let Ajaxize = {
 			console.info('action: ' + action);
 			console.info(logJson);
 			console.info(data);
-			console.info('--------------------------------------------------');
+			//console.info('--------------------------------------------------');
 
 			// システムエラー
 			if (data.FATAL) {

@@ -16,173 +16,176 @@ limitations under the License.
 @charset "UTF-8";
 
 * {
-	font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN",
-		"Hiragino Sans", Meiryo, sans-serif;
-	font-size: small;
-	margin: 0;
-	padding: 0;
+    font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN",
+        "Hiragino Sans", Meiryo, sans-serif;
+    font-size: small;
+    margin: 0;
+    padding: 0;
 }
 
 body {
-	background-color: honeydew;
+    background-color: honeydew;
 }
 
 a:visited {
-	color: mediumblue;
+    color: mediumblue;
 }
 
-input, select, textarea {
-	padding: revert;
+input,
+select,
+textarea {
+    padding: revert;
 }
 
 .header {
-	background-color: white;
-	display: flow-root;
-	left: 0;
-	padding: 0.5rem;
+    background-color: white;
+    display: flow-root;
+    left: 0;
+    padding: 0.5rem;
 }
 
 .header h1 {
-	float: left;
+    float: left;
 }
 
 .certification {
-	float: right;
-	text-align: right;
+    float: right;
+    text-align: right;
 }
 
 .certification>* {
-	display: inline-block;
-	margin-left: 1rem;
+    display: inline-block;
+    margin-left: 1rem;
 }
 
 .nav {
-	float: left;
-	padding: 0.5rem;
-	overflow: auto;
+    float: left;
+    padding: 0.5rem;
+    overflow: auto;
 }
 
 .nav dt {
-	margin-top: 1rem;
+    margin-top: 1rem;
 }
 
 .breads {
-	background-color: seagreen;
-	color: white;
-	display: grid;
+    background-color: seagreen;
+    color: white;
+    display: grid;
 }
 
 .breads a {
-	color: white;
+    color: white;
 }
 
 .article {
-	display: grid;
-	padding: 0.5rem;
+    display: grid;
+    padding: 0.5rem;
 }
 
 .footer {
-	background-color: seagreen;
-	clear: both;
-	color: white;
-	text-align: center;
+    background-color: seagreen;
+    clear: both;
+    color: white;
+    text-align: center;
 }
 
 h3 {
-	float: left;
-	margin-right: 1rem;
-	margin-top: 1rem;
+    float: left;
+    margin-right: 1rem;
+    margin-top: 1rem;
 }
 
 form>div {
-	margin-top: 0.5rem;
+    margin-top: 0.5rem;
 }
 
 form>div[id$=Pager] {
-	min-height: 1.5rem;
-	overflow-wrap: anywhere;
-	margin-top: 0px;
+    min-height: 1.5rem;
+    overflow-wrap: anywhere;
+    margin-top: 0px;
 }
 
 form>fieldset {
-	border-color: lightblue;
-	border-radius: 10px;
-	border-style: solid;
-	border-width: 3px;
-	margin-top: 0.5rem;
-	padding: 0.5rem;
+    border-color: lightblue;
+    border-radius: 10px;
+    border-style: solid;
+    border-width: 3px;
+    margin-top: 0.5rem;
+    padding: 0.5rem;
 }
 
-form.search>fieldset {
-	border-style: none;
+form.search>fieldset,
+form>fieldset.parent {
+    border-style: none;
 }
 
 form>fieldset>div {
-	display: inline-block;
-	margin-right: 0.5rem;
-	min-height: 2rem;
-	min-width: 22rem;
-	vertical-align: top;
+    display: inline-block;
+    margin-right: 0.5rem;
+    min-height: 2rem;
+    min-width: 22rem;
+    vertical-align: top;
 }
 
 form.search>fieldset>div {
-	border-bottom: solid 2px lightgreen;
-	padding-top: 0.3rem;
+    border-bottom: solid 2px lightgreen;
+    padding-top: 0.3rem;
 }
 
 form>fieldset>div>label {
-	background-color: lightblue;
-	display: inline-block;
-	margin-right: 0.5rem;
-	text-align: right;
-	min-width: 11rem;
+    background-color: lightblue;
+    display: inline-block;
+    margin-right: 0.5rem;
+    text-align: right;
+    min-width: 11rem;
 }
 
 form.search>fieldset>div>label {
-	background-color: inherit;
+    background-color: inherit;
 }
 
 form>fieldset>div>label::after {
-	content: '：';
+    content: '：';
 }
 
 form>fieldset>div>textarea {
-	vertical-align: top;
+    vertical-align: top;
 }
 
 form>fieldset>div>fieldset {
-	border-style: none;
-	display: inline-block;
+    border-style: none;
+    display: inline-block;
 }
 
 form>fieldset>div>fieldset>legend {
-	background-color: lightblue;
-	float: left;
-	margin-right: 0.5rem;
-	text-align: right;
-	min-width: 11rem;
+    background-color: lightblue;
+    float: left;
+    margin-right: 0.5rem;
+    text-align: right;
+    min-width: 11rem;
 }
 
 form.search>fieldset>div>fieldset>legend {
-	background-color: inherit;
+    background-color: inherit;
 }
 
 form>fieldset>div>fieldset>legend::after {
-	content: '：';
+    content: '：';
 }
 
 form>fieldset>div>fieldset>div {
-	display: inline-block;
-	margin-right: 0.5rem;
-	vertical-align: -webkit-baseline-middle;
+    display: inline-block;
+    margin-right: 0.5rem;
+    vertical-align: -webkit-baseline-middle;
 }
 
 div.buttons {
-	float: left;
+    float: left;
 }
 
 div.submits {
-	float: right;
+    float: right;
 }
 
 label.meta {
@@ -190,53 +193,54 @@ label.meta {
 }
 
 input[type="date"] {
-	width: 9rem;
+    width: 9rem;
 }
 
 input[type="month"] {
-	width: 8rem;
+    width: 8rem;
 }
 
 input[type="datetime-local"] {
-	width: 12rem;
+    width: 12rem;
 }
 
 [id$="Grid"] {
-	background-color: #ccc;
-	clear: both;
-	height: 300px;
+    background-color: #ccc;
+    clear: both;
+    height: 300px;
 }
 
 [role="dialog"] form>fieldset {
-	width: 1190px;
+    width: 1190px;
 }
 
 [role="dialog"] [id$="Grid"] {
-	height: 300px;
-	width: 1210px;
+    height: 300px;
+    width: 1210px;
 }
 
 button#logout {
-	font-size: xx-small;
+    font-size: xx-small;
 }
 
 button.search {
-/*	background-color: lightgreen;*/
-	font-size: large;
+    /*	background-color: lightgreen;*/
+    font-size: large;
 }
 
 button.delete {
-	background-color: pink;
-	font-size: large;
-	margin-left: 2rem;
+    background-color: pink;
+    font-size: large;
+    margin-left: 2rem;
 }
 
 button.regist {
-	background-color: lightblue;
-	font-size: large;
+    background-color: lightblue;
+    font-size: large;
 }
 
-a.reborn, button.permit {
+a.reborn,
+button.permit {
     background-color: teal;
     color: white !important;
     font-size: large;
@@ -252,38 +256,50 @@ button.forbid {
     margin-right: 2rem;
 }
 
-input.notblank, div.notblank {
+input.notblank,
+div.notblank {
     background-color: lightyellow;
 }
 
-input.primaryKey, div.primaryKey, span.primaryKey, select.primaryKey {
-	background-color: pink;
+input.primaryKey,
+div.primaryKey,
+span.primaryKey,
+select.primaryKey {
+    background-color: pink;
 }
 
-input.uniqueKey, div.uniqueKey {
+input.uniqueKey,
+div.uniqueKey {
     background-color: lavenderblush
 }
 
 .metaInfo {
-	background-color: gainsboro;
+    background-color: gainsboro;
 }
 
 .error {
-	background-color: #f22 !important;
+    background-color: #f22 !important;
 }
 
 .right {
-	text-align: right;
+    text-align: right;
 }
 
 span.refer::before {
-	content: '：';
+    content: '：';
 }
 
 .readonly {
-	border-style: none;
-	pointer-events: none;
-	-webkit-appearance: none;/* ベンダープレフィックス(Google Chrome、Safari用) */
-	-moz-appearance: none; /* ベンダープレフィックス(Firefox用) */
-	appearance: none; /* 標準のスタイルを無効にする */
+    border-style: none;
+    pointer-events: none;
+    -webkit-appearance: none;
+    /* ベンダープレフィックス(Google Chrome、Safari用) */
+    -moz-appearance: none;
+    /* ベンダープレフィックス(Firefox用) */
+    appearance: none;
+    /* 標準のスタイルを無効にする */
+}
+
+a.readonly {
+    display: none;
 }

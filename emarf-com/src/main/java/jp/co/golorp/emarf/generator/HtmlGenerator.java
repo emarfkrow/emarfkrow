@@ -266,10 +266,10 @@ public final class HtmlGenerator {
                 if (column.getColumnName().matches("(?i)^" + updateBy + "$")) {
                     continue;
                 }
-                if (column.getReferInfo() != null && column.getNullable() == 0) {
-                    isRefer = true;
-                    break;
-                }
+                //                if (column.getReferInfo() != null && column.getNullable() == 0) {
+                //                    isRefer = true;
+                //                    break;
+                //                }
                 if (StringUtil.endsWith(inputFileSuffixs, column.getColumnName())) {
                     isRefer = true;
                     break;
@@ -329,7 +329,11 @@ public final class HtmlGenerator {
         s.add(" * " + table.getRemarks() + "グリッド定義");
         s.add(" */");
         s.add("");
-        s.add("let " + entityName + "GridColumns = [");
+        //grid列名が取れない事があるのでonloadまで遅らせる
+        s.add("let " + entityName + "GridColumns = [];");
+        s.add("");
+        s.add("$(function() {");
+        s.add("    " + entityName + "GridColumns = [");
 
         Map<String, ColumnInfo> columnMap = table.getColumnInfos();
 
@@ -338,7 +342,7 @@ public final class HtmlGenerator {
             ColumnInfo primaryKey = columnMap.get(pk);
             String gridColumn = htmlGridColumn(primaryKey, entityName, columnMap, table.isHistory(), table.isView());
             if (gridColumn != null) {
-                s.add("    " + gridColumn);
+                s.add("        " + gridColumn);
             }
         }
 
@@ -358,11 +362,12 @@ public final class HtmlGenerator {
             ColumnInfo column = columnMap.get(columnName);
             String gridColumn = htmlGridColumn(column, entityName, columnMap, table.isHistory(), table.isView());
             if (gridColumn != null) {
-                s.add("    " + gridColumn);
+                s.add("        " + gridColumn);
             }
         }
 
-        s.add("];");
+        s.add("    ];");
+        s.add("});");
 
         FileUtil.writeFile(gridDir + File.separator + entityName + "GridColumns.js", s);
     }
@@ -456,23 +461,23 @@ public final class HtmlGenerator {
                 }
             }
 
-            //メタ情報以外で必須の参照モデルが含まれていれば新規行を取消
-            boolean isRefer = false;
-            for (ColumnInfo column : table.getColumnInfos().values()) {
-                if (column.getColumnName().matches("(?i)^" + insertBy + "$")) {
-                    continue;
-                }
-                if (column.getColumnName().matches("(?i)^" + updateBy + "$")) {
-                    continue;
-                }
-                if (column.getReferInfo() != null && column.getNullable() == 0) {
-                    isRefer = true;
-                    break;
-                }
-            }
-            if (isRefer) {
-                addRow = "";
-            }
+            //            //メタ情報以外で必須の参照モデルが含まれていれば新規行を取消
+            //            boolean isRefer = false;
+            //            for (ColumnInfo column : table.getColumnInfos().values()) {
+            //                if (column.getColumnName().matches("(?i)^" + insertBy + "$")) {
+            //                    continue;
+            //                }
+            //                if (column.getColumnName().matches("(?i)^" + updateBy + "$")) {
+            //                    continue;
+            //                }
+            //                if (column.getReferInfo() != null && column.getNullable() == 0) {
+            //                    isRefer = true;
+            //                    break;
+            //                }
+            //            }
+            //            if (isRefer) {
+            //                addRow = "";
+            //            }
 
             String frozen = String.valueOf(table.getPrimaryKeys().size());
             s.add("      <div id=\"" + childName + "Grid\" data-selectionMode=\"link\"" + addRow

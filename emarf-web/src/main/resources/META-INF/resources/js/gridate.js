@@ -275,11 +275,11 @@ $(function() {
             let grid = new Slick.Grid($gridDiv, dataView, columns, options);
             Gridate.grids[gridId] = grid;
 
-            //new Slick.Controls.Pager(dataView, grid, $pager, {
-            //				showAllText: Messages['common.grid.showAllText'],
-            //				showPageText: Messages['common.grid.showPageText'],
-            //				showCountText: Messages['common.grid.showCountText']
-            //});
+            //            new Slick.Controls.Pager(dataView, grid, $pager, {
+            //                showAllText: Messages['common.grid.showAllText'],
+            //                showPageText: Messages['common.grid.showPageText'],
+            //                showCountText: Messages['common.grid.showCountText']
+            //            });
 
             dataView.onRowCountChanged.subscribe(function(e, args) {
                 grid.updateRowCount();
@@ -311,7 +311,24 @@ $(function() {
              * subscribe
              */
 
-            //            grid.onActiveCellChanged.subscribe(function(e, args) { });
+            /* セル移動 */
+            grid.onActiveCellChanged.subscribe(function(e, args) {
+                let r = args.row;
+                let c = args.cell;
+                let g = args.grid;
+
+                let gridId = g.getContainerNode().id;
+                console.log(gridId);
+                let modelNm = gridId.replace(/^.+\.|Grid$/g, '');
+
+                if (c) {
+                    let column = g.getColumns()[c];
+                    if (column.referField) {
+                        console.log(column);
+                        $('[id="' + modelNm + 'Dialog.' + modelNm + 'RegistForm.' + modelNm + '.' + column.id + '"]').click();
+                    }
+                }
+            });
             //            grid.onActiveCellPositionChanged.subscribe(function(a, b, c, d, e, f, g) { });
             grid.onAddNewRow.subscribe(function(e, args) {
                 //				let data = args.grid.getData();
@@ -355,6 +372,7 @@ $(function() {
             //				grid.onBeforeHeaderRowCellDestroy.subscribe(function(a, b, c, d, e, f, g) { });
             //				grid.onBeforeSetColumns.subscribe(function(a, b, c, d, e, f, g) { });
             //				grid.onBeforeSort.subscribe(function(a, b, c, d, e, f, g) { });
+            /* セル値変更 */
             grid.onCellChange.subscribe(function(e, args) {
                 let cell = args.cell;
                 let column = args.column;

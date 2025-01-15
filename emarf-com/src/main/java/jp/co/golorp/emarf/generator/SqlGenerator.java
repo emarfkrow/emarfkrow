@@ -22,7 +22,7 @@ import jp.co.golorp.emarf.util.ResourceBundles;
 public final class SqlGenerator {
 
     /** BeanGenerator.properties */
-    private static ResourceBundle bundle;
+    private static ResourceBundle bundle = ResourceBundles.getBundle(BeanGenerator.class);
 
     /** options項目サフィックス */
     private static String[] optionsSuffixs;
@@ -70,7 +70,6 @@ public final class SqlGenerator {
     public static void generate(final String projectDir, final List<TableInfo> tableInfos) {
 
         /* 設定ファイル読み込み */
-        bundle = ResourceBundles.getBundle(BeanGenerator.class);
         optionsSuffixs = bundle.getString("BeanGenerator.options.suffixs").split(",");
         inputDateSuffixs = bundle.getString("BeanGenerator.input.date.suffixs").split(",");
         inputDateTimeSuffixs = bundle.getString("BeanGenerator.input.datetime.suffixs").split(",");
@@ -106,19 +105,19 @@ public final class SqlGenerator {
     /**
      * 各モデルの検索SQL出力
      * @param sqlDir SQLファイル出力ディレクトリ
-     * @param tableInfo テーブル情報
+     * @param table テーブル情報
      */
-    private static void sqlSearch(final String sqlDir, final TableInfo tableInfo) {
+    private static void sqlSearch(final String sqlDir, final TableInfo table) {
 
         //テーブル名・エンティティ名
-        String tableName = tableInfo.getTableName();
+        String tableName = table.getTableName();
         String entityName = StringUtil.toPascalCase(tableName);
 
         //参照モデルの番号
-        int refNo = 0;
+        int refs = 0;
 
         List<String> sql = new ArrayList<String>();
-        for (ColumnInfo column : tableInfo.getColumnInfos().values()) {
+        for (ColumnInfo column : table.getColumnInfos().values()) {
 
             //カラム行追加
             String prefix = "    , ";
@@ -128,67 +127,12 @@ public final class SqlGenerator {
             }
             sql.add(prefix + SqlGenerator.getQuoted(column));
 
-            // カラム名
-
-            // 列の参照モデル情報
+            // 列の参照モデル情報があればカラム名の補完
             if (column.getReferInfo() != null) {
-
-                ++refNo;
-                TableInfo refer = column.getReferInfo();
-
-                //IDと名称のサフィックスペアでループ
-                for (String[] e : referPairs) {
-                    String keySuf = e[0];
-                    String meiSuf = e[1];
-
-                    // 参照元カラム名が参照キーに合致しなければスキップ
-                    if (!column.getColumnName().matches("(?i)^.*" + keySuf + "$")) {
-                        continue;
-                    }
-
-                    // 参照元カラム名のIDサフィックスを名称サフィックスに置換して、参照元の名称カラム名を取得
-                    String srcKey = column.getColumnName();
-                    String srcMei = srcKey.replaceAll("(?i)" + keySuf + "$", meiSuf).toUpperCase();
-
-                    // 参照先の全カラム名を確認して、末尾が合致するカラム名を、参照先のID・名称カラム名として取得
-                    String destKey = null;
-                    String destMei = null;
-                    for (String columnName : refer.getColumnInfos().keySet()) {
-                        if (srcKey.matches("(?i)^.*" + columnName + "$")) {
-                            destKey = columnName;
-                        }
-                        if (srcMei.matches("(?i)^.*" + columnName + "$")) {
-                            destMei = columnName;
-                        }
-                        if (destKey != null && destMei != null) {
-                            break;
-                        }
-                    }
-
-                    // 参照先に、キーと名称に合致するカラムがなければスキップ
-                    if (destKey == null || destMei == null) {
-                        continue;
-                    }
-
-                    // 生成した参照元名称カラムが、参照元に既存でない場合はselect句に追加
-                    boolean isSrcMei = false;
-                    for (String columnName : tableInfo.getColumnInfos().keySet()) {
-                        if (columnName.matches("(?i)^" + srcMei + "$")) {
-                            isSrcMei = true;
-                            break;
-                        }
-                    }
-                    if (!isSrcMei) {
-                        String srcKeyQuoted = assist.quotedSQL(srcKey);
-                        String srcMeiQuoted = assist.quotedSQL(srcMei);
-                        String destKeyQuoted = assist.quotedSQL(destKey);
-                        String destMeiQuoted = assist.quotedSQL(destMei);
-                        sql.add("    , (SELECT r" + refNo + "." + destMeiQuoted + " FROM " + refer.getTableName()
-                                + " r" + refNo + " WHERE r" + refNo + "." + destKeyQuoted + " = a." + srcKeyQuoted
-                                + ") AS " + srcMeiQuoted);
-                    }
-
-                    break;
+                String meiSql = getMeiSql(refs, table, column);
+                if (meiSql != null) {
+                    ++refs;
+                    sql.add("    " + meiSql);
                 }
             }
         }
@@ -196,13 +140,13 @@ public final class SqlGenerator {
         sql.add("    " + tableName + " a ");
         sql.add("WHERE");
         sql.add("    1 = 1 ");
-        for (Entry<String, ColumnInfo> e : tableInfo.getColumnInfos().entrySet()) {
+        for (Entry<String, ColumnInfo> e : table.getColumnInfos().entrySet()) {
             addWhere(sql, e.getValue());
         }
         sql.add("ORDER BY");
-        if (tableInfo.getPrimaryKeys().size() > 0) {
+        if (table.getPrimaryKeys().size() > 0) {
             String orders = "";
-            for (String pk : tableInfo.getPrimaryKeys()) {
+            for (String pk : table.getPrimaryKeys()) {
                 if (orders.length() > 0) {
                     orders += ", ";
                 }
@@ -210,7 +154,7 @@ public final class SqlGenerator {
             }
             sql.add("    " + orders);
         } else {
-            for (int i = 1; i <= tableInfo.getColumnInfos().size(); i++) {
+            for (int i = 1; i <= table.getColumnInfos().size(); i++) {
                 if (i == 1) {
                     sql.add("    " + i);
                 } else {
@@ -223,6 +167,81 @@ public final class SqlGenerator {
     }
 
     /**
+     * @param refs
+     * @param table
+     * @param column
+     * @return String
+     */
+    public static String getMeiSql(final int refs, final TableInfo table, final ColumnInfo column) {
+
+        TableInfo refer = column.getReferInfo();
+
+        //BeanGeneratorの子モデル処理時にはnullかも知れない
+        if (referPairs.size() == 0) {
+            String[] pairs = bundle.getString("DataSources.reration.refer.pairs").split(",");
+            for (String pair : pairs) {
+                String[] kv = pair.split(":");
+                referPairs.add(kv);
+            }
+        }
+        if (assist == null) {
+            assist = DataSources.getAssist();
+        }
+
+        //IDと名称のサフィックスペアでループ
+        for (String[] e : referPairs) {
+            String keySuf = e[0];
+            String meiSuf = e[1];
+
+            // 参照元カラム名が参照キーに合致しなければスキップ
+            if (!column.getColumnName().matches("(?i)^.*" + keySuf + "$")) {
+                continue;
+            }
+
+            // 参照元カラム名のIDサフィックスを名称サフィックスに置換して、参照元の名称カラム名を取得
+            String srcKey = column.getColumnName();
+            String srcMei = srcKey.replaceAll("(?i)" + keySuf + "$", meiSuf).toUpperCase();
+
+            // 参照先でID・名称のサフィックスに合致するカラムを取得し、両方取得できなければスキップ
+            String destKey = null;
+            String destMei = null;
+            for (String columnName : refer.getColumnInfos().keySet()) {
+                if (srcKey.matches("(?i)^.*" + columnName + "$")) {
+                    destKey = columnName;
+                }
+                if (srcMei.matches("(?i)^.*" + columnName + "$")) {
+                    destMei = columnName;
+                }
+                if (destKey != null && destMei != null) {
+                    break;
+                }
+            }
+            if (destKey == null || destMei == null) {
+                continue;
+            }
+
+            // 生成した参照元名称カラムが、参照元に既存でない場合はselect句に追加
+            boolean isSrcMei = false;
+            for (String columnName : table.getColumnInfos().keySet()) {
+                if (columnName.matches("(?i)^" + srcMei + "$")) {
+                    isSrcMei = true;
+                    break;
+                }
+            }
+            if (!isSrcMei) {
+                String srcK = assist.quotedSQL(srcKey);
+                String srcM = assist.quotedSQL(srcMei);
+                String destK = assist.quotedSQL(destKey);
+                String destM = assist.quotedSQL(destMei);
+                return ", (SELECT r" + refs + "." + destM + " FROM " + refer.getTableName() + " r" + refs + " WHERE r"
+                        + refs + "." + destK + " = a." + srcK + ") AS " + srcM;
+            }
+        }
+
+        return null;
+    }
+
+    /**
      * 各モデルの検索SQL出力
      * @param sqlDir SQLファイル出力ディレクトリ
      * @param table テーブル情報
@@ -230,7 +249,7 @@ public final class SqlGenerator {
     private static void sqlCorrect(final String sqlDir, final TableInfo table) {
 
         //参照モデルの連番
-        int refNo = 0;
+        int refs = 0;
 
         List<String> sql = new ArrayList<String>();
 
@@ -246,59 +265,10 @@ public final class SqlGenerator {
 
             // 列の参照モデル情報があればカラム名の補完
             if (column.getReferInfo() != null) {
-                ++refNo;
-                TableInfo refer = column.getReferInfo();
-
-                //IDと名称のサフィックスペアでループ
-                for (String[] e : referPairs) {
-                    String keySuf = e[0];
-                    String meiSuf = e[1];
-
-                    // 参照元カラム名が参照キーに合致しなければスキップ
-                    if (!column.getColumnName().matches("(?i)^.*" + keySuf + "$")) {
-                        continue;
-                    }
-
-                    // 参照元カラム名のIDサフィックスを名称サフィックスに置換して、参照元の名称カラム名を取得
-                    String srcKey = column.getColumnName();
-                    String srcMei = srcKey.replaceAll("(?i)" + keySuf + "$", meiSuf).toUpperCase();
-
-                    // 参照先でID・名称のサフィックスに合致するカラムを取得し、両方取得できなければスキップ
-                    String destKey = null;
-                    String destMei = null;
-                    for (String columnName : refer.getColumnInfos().keySet()) {
-                        if (srcKey.matches("(?i)^.*" + columnName + "$")) {
-                            destKey = columnName;
-                        }
-                        if (srcMei.matches("(?i)^.*" + columnName + "$")) {
-                            destMei = columnName;
-                        }
-                        if (destKey != null && destMei != null) {
-                            break;
-                        }
-                    }
-                    if (destKey == null || destMei == null) {
-                        continue;
-                    }
-
-                    // 生成した参照元名称カラムが、参照元に既存でない場合はselect句に追加
-                    boolean isSrcMei = false;
-                    for (String columnName : table.getColumnInfos().keySet()) {
-                        if (columnName.matches("(?i)^" + srcMei + "$")) {
-                            isSrcMei = true;
-                            break;
-                        }
-                    }
-                    if (!isSrcMei) {
-                        String srcKeyQ = assist.quotedSQL(srcKey);
-                        String srcMeiQ = assist.quotedSQL(srcMei);
-                        String destKeyQ = assist.quotedSQL(destKey);
-                        String destMeiQ = assist.quotedSQL(destMei);
-                        sql.add("    , (SELECT r" + refNo + "." + destMeiQ + " FROM " + refer.getTableName() + " r"
-                                + refNo + " WHERE r" + refNo + "." + destKeyQ + " = a." + srcKeyQ + ") AS " + srcMeiQ);
-                    }
-
-                    break;
+                String meiSql = getMeiSql(refs, table, column);
+                if (meiSql != null) {
+                    ++refs;
+                    sql.add("    " + meiSql);
                 }
             }
         }
