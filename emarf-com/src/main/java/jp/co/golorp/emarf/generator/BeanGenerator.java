@@ -365,7 +365,7 @@ public final class BeanGenerator {
             int i = meiSql.lastIndexOf(" AS ") + 4;
 
             //参照ペアがあるが名称カラムがなければ追加
-            String meiColumnName = meiSql.substring(i).replaceAll("[ \"]", "");
+            String meiColumnName = meiSql.substring(i).replaceAll("[ \"`]", "");
             String meiProperty = StringUtil.toCamelCase(meiColumnName);
             String meiAccessor = StringUtil.toPascalCase(meiColumnName);
             s.add("");
