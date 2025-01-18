@@ -54,6 +54,8 @@ $(function() {
      */
     $(document).on('click', 'a[target="dialog"]', function(event) {
 
+        console.log('Dialogate ancher on click.');
+
         // イベントキャンセル
         event.preventDefault();
         event.stopPropagation();
@@ -237,6 +239,8 @@ let Dialogate = {
                  * ダイアログオープン
                  */
                 open: function(event) {
+
+                    console.log('Dialogate open.');
 
                     // ダイアログdiv
                     let $dialogDiv = $(event.target);

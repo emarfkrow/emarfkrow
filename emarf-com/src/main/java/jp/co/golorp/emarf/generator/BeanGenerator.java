@@ -18,6 +18,7 @@ package jp.co.golorp.emarf.generator;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -72,6 +73,8 @@ public final class BeanGenerator {
     private static String updateDtFormat;
     /** 更新者カラム名 */
     private static String updateBy;
+    /** 削除フラグ */
+    private static String deleteF;
     /** ステータス区分 */
     private static String statusKb;
 
@@ -93,9 +96,9 @@ public final class BeanGenerator {
     /** javaファイル出力ルートパス */
     private static String javaPath;
     /** entityパッケージ */
-    private static String entityPackage;
+    private static String pE;
     /** actionパッケージ */
-    private static String actionPackage;
+    private static String pkgAction;
 
     /** プライベートコンストラクタ */
     private BeanGenerator() {
@@ -131,6 +134,7 @@ public final class BeanGenerator {
         updateDt = bundle.getString("BeanGenerator.update_dt");
         updateDtFormat = bundle.getString("BeanGenerator.update_dt.format");
         updateBy = bundle.getString("BeanGenerator.update_by");
+        deleteF = bundle.getString("SqlGenerator.deleteF");
         statusKb = bundle.getString("BeanGenerator.status_kb");
 
         inputYMSuffixs = bundle.getString("BeanGenerator.input.ym.suffixs").split(",");
@@ -142,20 +146,20 @@ public final class BeanGenerator {
         inputFileSuffixs = bundle.getString("BeanGenerator.input.file.suffixs").split(",");
 
         javaPath = bundle.getString("BeanGenerator.java.path");
-        entityPackage = bundle.getString("BeanGenerator.java.package.entity");
-        actionPackage = bundle.getString("BeanGenerator.java.package.action");
+        pE = bundle.getString("BeanGenerator.java.package.entity");
+        pkgAction = bundle.getString("BeanGenerator.java.package.action");
 
         /*
          * 出力フォルダ再作成
          */
 
         //エンティティフォルダ
-        String entityPackagePath = entityPackage.replace(".", File.separator);
+        String entityPackagePath = pE.replace(".", File.separator);
         String entityPackageDir = projectDir + File.separator + javaPath + File.separator + entityPackagePath;
         FileUtil.reMkDir(entityPackageDir);
 
         //アクションフォルダ
-        String actionPackagePath = actionPackage.replace(".", File.separator);
+        String actionPackagePath = pkgAction.replace(".", File.separator);
         String actionPackageDir = projectDir + File.separator + javaPath + File.separator + actionPackagePath;
         FileUtil.reMkDir(actionPackageDir);
 
@@ -198,7 +202,7 @@ public final class BeanGenerator {
     private static void javaEntity(final List<TableInfo> tables) {
 
         // 出力フォルダを再作成
-        String packagePath = entityPackage.replace(".", File.separator);
+        String packagePath = pE.replace(".", File.separator);
         String packageDir = projectDir + File.separator + javaPath + File.separator + packagePath;
         Map<String, String> javaPaths = new LinkedHashMap<String, String>();
 
@@ -206,7 +210,7 @@ public final class BeanGenerator {
             String e = StringUtil.toPascalCase(table.getTableName());
             String r = table.getRemarks();
             List<String> s = new ArrayList<String>();
-            s.add("package " + entityPackage + ";");
+            s.add("package " + pE + ";");
             s.add("");
             s.add("import java.time.LocalDateTime;");
             s.add("import java.util.ArrayList;");
@@ -335,7 +339,7 @@ public final class BeanGenerator {
             s.add("}");
             String javaFilePath = packageDir + File.separator + e + ".java";
             FileUtil.writeFile(javaFilePath, s);
-            javaPaths.put(javaFilePath, entityPackage + "." + e);
+            javaPaths.put(javaFilePath, pE + "." + e);
         }
 
         if (isCompile) {
@@ -1148,7 +1152,7 @@ public final class BeanGenerator {
     private static void javaActionDetailDelete(final List<TableInfo> tableInfos) {
 
         // 出力フォルダを再作成
-        String packagePath = actionPackage.replace(".", File.separator);
+        String packagePath = pkgAction.replace(".", File.separator);
         String packageDir = projectDir + File.separator + javaPath + File.separator + packagePath;
 
         Map<String, String> javaFilePaths = new LinkedHashMap<String, String>();
@@ -1160,13 +1164,13 @@ public final class BeanGenerator {
             String entityName = StringUtil.toPascalCase(tableName);
 
             List<String> s = new ArrayList<String>();
-            s.add("package " + actionPackage + ";");
+            s.add("package " + pkgAction + ";");
             s.add("");
             s.add("import java.time.LocalDateTime;");
             s.add("import java.util.HashMap;");
             s.add("import java.util.Map;");
             s.add("");
-            s.add("import " + entityPackage + "." + entityName + ";");
+            s.add("import " + pE + "." + entityName + ";");
             s.add("");
             s.add("import jp.co.golorp.emarf.action.BaseAction;");
             s.add("import jp.co.golorp.emarf.exception.OptLockError;");
@@ -1217,7 +1221,7 @@ public final class BeanGenerator {
             s.add("}");
 
             String javaFilePath = packageDir + File.separator + entityName + "DeleteAction.java";
-            javaFilePaths.put(javaFilePath, actionPackage + "." + entityName + "DeleteAction");
+            javaFilePaths.put(javaFilePath, pkgAction + "." + entityName + "DeleteAction");
 
             FileUtil.writeFile(javaFilePath, s);
         }
@@ -1231,31 +1235,31 @@ public final class BeanGenerator {
 
     /**
      * 詳細画面 登録処理出力
-     * @param tableInfos テーブル情報のリスト
+     * @param tables テーブル情報のリスト
      */
-    private static void javaActionDetailGet(final List<TableInfo> tableInfos) {
+    private static void javaActionDetailGet(final List<TableInfo> tables) {
 
         // 出力フォルダを再作成
-        String packagePath = actionPackage.replace(".", File.separator);
+        String packagePath = pkgAction.replace(".", File.separator);
         String packageDir = projectDir + File.separator + javaPath + File.separator + packagePath;
 
         Map<String, String> javaFilePaths = new LinkedHashMap<String, String>();
 
-        for (TableInfo tableInfo : tableInfos) {
+        for (TableInfo table : tables) {
 
-            String tableName = tableInfo.getTableName();
+            String tableName = table.getTableName();
             String entity = StringUtil.toPascalCase(tableName);
             String instance = StringUtil.toCamelCase(tableName);
-            String remarks = tableInfo.getRemarks();
+            String remarks = table.getRemarks();
 
             List<String> s = new ArrayList<String>();
-            s.add("package " + actionPackage + ";");
+            s.add("package " + pkgAction + ";");
             s.add("");
             s.add("import java.time.LocalDateTime;");
             s.add("import java.util.HashMap;");
             s.add("import java.util.Map;");
             s.add("");
-            s.add("import " + entityPackage + "." + entity + ";");
+            s.add("import " + pE + "." + entity + ";");
             s.add("");
             s.add("import jp.co.golorp.emarf.action.BaseAction;");
             s.add("");
@@ -1274,14 +1278,17 @@ public final class BeanGenerator {
             s.add("");
             s.add("        // 主キーが不足していたら終了");
             String pks = "";
-            for (int i = 0; i < tableInfo.getPrimaryKeys().size(); i++) {
-                String pk = tableInfo.getPrimaryKeys().get(i);
+            for (int i = 0; i < table.getPrimaryKeys().size(); i++) {
+                String pk = table.getPrimaryKeys().get(i);
                 String property = StringUtil.toCamelCase(pk);
                 s.add("        Object " + property + " = postJson.get(\"" + property + "\");");
                 s.add("        if (" + property + " == null) {");
                 s.add("            " + property + " = postJson.get(\"" + entity + "." + property + "\");");
                 s.add("        }");
                 s.add("        if (" + property + " == null) {");
+                if (i == 0) {
+                    addRebornee(s, table, tables);
+                }
                 s.add("            return map;");
                 s.add("        }");
                 if (pks.length() > 0) {
@@ -1289,13 +1296,13 @@ public final class BeanGenerator {
                 }
                 pks += property;
                 //親モデルの取得
-                if (i == tableInfo.getPrimaryKeys().size() - 2) {
-                    if (tableInfo.getParentInfos().size() > 0) {
-                        for (TableInfo parent : tableInfo.getParentInfos()) {
+                if (i == table.getPrimaryKeys().size() - 2) {
+                    if (table.getParentInfos().size() > 0) {
+                        for (TableInfo parent : table.getParentInfos()) {
                             String parentEntity = StringUtil.toPascalCase(parent.getTableName());
                             String parentInstance = StringUtil.toCamelCase(parent.getTableName());
-                            s.add("        " + entityPackage + "." + parentEntity + " " + parentInstance + " = "
-                                    + entityPackage + "." + parentEntity + ".get(" + pks + ");");
+                            s.add("        " + pE + "." + parentEntity + " " + parentInstance + " = "
+                                    + pE + "." + parentEntity + ".get(" + pks + ");");
                             s.add("        map.put(\"" + parentEntity + "\", " + parentInstance + ");");
                             s.add("");
                         }
@@ -1304,11 +1311,11 @@ public final class BeanGenerator {
             }
             s.add("");
             s.add("        " + entity + " " + instance + " = " + entity + ".get(" + pks + ");");
-            for (TableInfo bros : tableInfo.getBrosInfos()) {
+            for (TableInfo bros : table.getBrosInfos()) {
                 String brosEntity = StringUtil.toPascalCase(bros.getTableName());
                 s.add("        " + instance + ".refer" + brosEntity + "();");
             }
-            for (TableInfo child : tableInfo.getChildInfos()) {
+            for (TableInfo child : table.getChildInfos()) {
                 String pascal = StringUtil.toPascalCase(child.getTableName());
                 s.add("        " + instance + ".refer" + pascal + "s();");
             }
@@ -1319,7 +1326,7 @@ public final class BeanGenerator {
             s.add("}");
 
             String javaFilePath = packageDir + File.separator + entity + "GetAction.java";
-            javaFilePaths.put(javaFilePath, actionPackage + "." + entity + "GetAction");
+            javaFilePaths.put(javaFilePath, pkgAction + "." + entity + "GetAction");
 
             FileUtil.writeFile(javaFilePath, s);
         }
@@ -1332,13 +1339,121 @@ public final class BeanGenerator {
     }
 
     /**
+     * @param s
+     * @param table
+     * @param tables
+     */
+    private static void addRebornee(final List<String> s, final TableInfo table, final List<TableInfo> tables) {
+
+        String tN = table.getTableName();
+        String tE = StringUtil.toPascalCase(tN);
+        String tI = StringUtil.toCamelCase(tN);
+
+        for (Iterator<TableInfo> iTable = tables.iterator(); iTable.hasNext();) {
+            TableInfo f = iTable.next();
+            if (f.getRebornInfo() == null) {
+                continue;
+            }
+            if (!f.getRebornInfo().getTableName().equals(tN)) {
+                continue;
+            }
+
+            s.add("");
+            s.add("            //転生先になる場合は転生元から情報をコピー");
+
+            String fN = f.getTableName();
+            String fE = StringUtil.toPascalCase(fN);
+            String fI = StringUtil.toCamelCase(fN);
+            String fPs = "";
+
+            for (String fK : f.getPrimaryKeys()) {
+                String fP = StringUtil.toCamelCase(fK);
+                s.add("            Object " + fP + " = postJson.get(\"" + fP + "\");");
+                s.add("            if (" + fP + " == null) {");
+                s.add("                " + fP + " = postJson.get(\"" + tE + "." + fP + "\");");
+                s.add("            }");
+                s.add("            if (" + fP + " == null) {");
+                s.add("                return map;");
+                s.add("            }");
+                if (!fPs.equals("")) {
+                    fPs += ", ";
+                }
+                fPs += fP;
+            }
+
+            s.add("");
+            s.add("            " + pE + "." + fE + " " + fI + " = " + pE + "." + fE + ".get(" + fPs + ");");
+            s.add("            " + tE + " " + tI + " = new " + tE + "();");
+            for (String columnName : f.getColumnInfos().keySet()) {
+                boolean isInsertDt = columnName.matches("(?i)^" + insertDt + "$");
+                boolean isInsertBy = columnName.matches("(?i)^" + insertBy + "$");
+                boolean isUpdateDt = columnName.matches("(?i)^" + updateDt + "$");
+                boolean isUpdateBy = columnName.matches("(?i)^" + updateBy + "$");
+                boolean isDeleteF = columnName.matches("(?i)^" + deleteF + "$");
+                boolean isStatusKb = columnName.matches("(?i)^" + statusKb + "$");
+                if (isInsertDt || isInsertBy || isUpdateDt || isUpdateBy || isDeleteF || isStatusKb) {
+                    continue;
+                }
+                if (table.getColumnInfos().containsKey(columnName)) {
+                    String a = StringUtil.toPascalCase(columnName);
+                    s.add("            " + tI + ".set" + a + "(" + fI + ".get" + a + "());");
+                }
+            }
+            s.add("");
+
+            for (TableInfo fC : f.getChildInfos()) {
+                String fCName = fC.getTableName();
+                if (!fCName.startsWith(fN)) {
+                    continue;
+                }
+                for (TableInfo tC : table.getChildInfos()) {
+                    String tCName = tC.getTableName();
+                    if (!tCName.startsWith(tN)) {
+                        continue;
+                    }
+                    String fCE = StringUtil.toPascalCase(fCName);
+                    String fCI = StringUtil.toCamelCase(fCName);
+                    String tCE = StringUtil.toPascalCase(tCName);
+                    String tCI = StringUtil.toCamelCase(tCName);
+                    s.add("            " + fI + ".refer" + StringUtil.toPascalCase(fCName) + "s();");
+                    s.add("            " + tI + ".set" + tCE + "s(new java.util.ArrayList<" + pE + "." + tCE + ">());");
+                    s.add("            for (" + pE + "." + fCE + " " + fCI + " : " + fI + ".refer" + fCE + "s()) {");
+                    s.add("                " + pE + "." + tCE + " " + tCI + " = new " + pE + "." + tCE + "();");
+
+                    for (String columnName : fC.getColumnInfos().keySet()) {
+                        boolean isInsertDt = columnName.matches("(?i)^" + insertDt + "$");
+                        boolean isInsertBy = columnName.matches("(?i)^" + insertBy + "$");
+                        boolean isUpdateDt = columnName.matches("(?i)^" + updateDt + "$");
+                        boolean isUpdateBy = columnName.matches("(?i)^" + updateBy + "$");
+                        boolean isDeleteF = columnName.matches("(?i)^" + deleteF + "$");
+                        boolean isStatusKb = columnName.matches("(?i)^" + statusKb + "$");
+                        if (isInsertDt || isInsertBy || isUpdateDt || isUpdateBy || isDeleteF || isStatusKb) {
+                            continue;
+                        }
+                        if (tC.getColumnInfos().containsKey(columnName)) {
+                            String a = StringUtil.toPascalCase(columnName);
+                            s.add("                " + tCI + ".set" + a + "(" + fCI + ".get" + a + "());");
+                        }
+                    }
+                    s.add("                " + tI + ".get" + tCE + "s().add(" + tCI + ");");
+                    s.add("            }");
+                    s.add("            map.put(\"" + tE + "\", " + tI + ");");
+                    s.add("");
+                }
+            }
+
+            break;
+        }
+    }
+
+    /**
      * 詳細画面 登録処理出力
      * @param tableInfos テーブル情報のリスト
      */
     private static void javaActionDetailRegist(final List<TableInfo> tableInfos) {
 
         // 出力フォルダを再作成
-        String packagePath = actionPackage.replace(".", File.separator);
+        String packagePath = pkgAction.replace(".", File.separator);
         String packageDir = projectDir + File.separator + javaPath + File.separator + packagePath;
 
         Map<String, String> javaFilePaths = new LinkedHashMap<String, String>();
@@ -1350,13 +1465,13 @@ public final class BeanGenerator {
             String entity = StringUtil.toPascalCase(tableName);
 
             List<String> s = new ArrayList<String>();
-            s.add("package " + actionPackage + ";");
+            s.add("package " + pkgAction + ";");
             s.add("");
             s.add("import java.time.LocalDateTime;");
             s.add("import java.util.HashMap;");
             s.add("import java.util.Map;");
             s.add("");
-            s.add("import " + entityPackage + "." + entity + ";");
+            s.add("import " + pE + "." + entity + ";");
             s.add("");
             s.add("import jp.co.golorp.emarf.action.BaseAction;");
             s.add("import jp.co.golorp.emarf.exception.OptLockError;");
@@ -1424,7 +1539,7 @@ public final class BeanGenerator {
             s.add("}");
 
             String javaFilePath = packageDir + File.separator + entity + "RegistAction.java";
-            javaFilePaths.put(javaFilePath, actionPackage + "." + entity + "RegistAction");
+            javaFilePaths.put(javaFilePath, pkgAction + "." + entity + "RegistAction");
 
             FileUtil.writeFile(javaFilePath, s);
         }
@@ -1443,7 +1558,7 @@ public final class BeanGenerator {
     private static void javaActionDetailPermit(final List<TableInfo> tableInfos) {
 
         // 出力フォルダを再作成
-        String packagePath = actionPackage.replace(".", File.separator);
+        String packagePath = pkgAction.replace(".", File.separator);
         String packageDir = projectDir + File.separator + javaPath + File.separator + packagePath;
 
         Map<String, String> javaFilePaths = new LinkedHashMap<String, String>();
@@ -1458,13 +1573,13 @@ public final class BeanGenerator {
             String remarks = tableInfo.getRemarks();
 
             List<String> s = new ArrayList<String>();
-            s.add("package " + actionPackage + ";");
+            s.add("package " + pkgAction + ";");
             s.add("");
             s.add("import java.time.LocalDateTime;");
             s.add("import java.util.HashMap;");
             s.add("import java.util.Map;");
             s.add("");
-            s.add("import " + entityPackage + "." + entity + ";");
+            s.add("import " + pE + "." + entity + ";");
             s.add("");
             s.add("import jp.co.golorp.emarf.action.BaseAction;");
             s.add("import jp.co.golorp.emarf.exception.OptLockError;");
@@ -1518,7 +1633,7 @@ public final class BeanGenerator {
             s.add("}");
 
             String javaFilePath = packageDir + File.separator + entity + "PermitAction.java";
-            javaFilePaths.put(javaFilePath, actionPackage + "." + entity + "PermitAction");
+            javaFilePaths.put(javaFilePath, pkgAction + "." + entity + "PermitAction");
 
             FileUtil.writeFile(javaFilePath, s);
         }
@@ -1537,7 +1652,7 @@ public final class BeanGenerator {
     private static void javaActionDetailForbid(final List<TableInfo> tableInfos) {
 
         // 出力フォルダを再作成
-        String packagePath = actionPackage.replace(".", File.separator);
+        String packagePath = pkgAction.replace(".", File.separator);
         String packageDir = projectDir + File.separator + javaPath + File.separator + packagePath;
 
         Map<String, String> javaFilePaths = new LinkedHashMap<String, String>();
@@ -1552,13 +1667,13 @@ public final class BeanGenerator {
             String remarks = tableInfo.getRemarks();
 
             List<String> s = new ArrayList<String>();
-            s.add("package " + actionPackage + ";");
+            s.add("package " + pkgAction + ";");
             s.add("");
             s.add("import java.time.LocalDateTime;");
             s.add("import java.util.HashMap;");
             s.add("import java.util.Map;");
             s.add("");
-            s.add("import " + entityPackage + "." + entity + ";");
+            s.add("import " + pE + "." + entity + ";");
             s.add("");
             s.add("import jp.co.golorp.emarf.action.BaseAction;");
             s.add("import jp.co.golorp.emarf.exception.OptLockError;");
@@ -1612,7 +1727,7 @@ public final class BeanGenerator {
             s.add("}");
 
             String javaFilePath = packageDir + File.separator + entity + "ForbidAction.java";
-            javaFilePaths.put(javaFilePath, actionPackage + "." + entity + "ForbidAction");
+            javaFilePaths.put(javaFilePath, pkgAction + "." + entity + "ForbidAction");
 
             FileUtil.writeFile(javaFilePath, s);
         }
@@ -1640,10 +1755,10 @@ public final class BeanGenerator {
             s.add("");
             int parents = childInfo.getParentInfos().size();
             if (parents == 1) {
-                s.add(space + "        java.util.List<" + entityPackage + "." + child + "> " + camel + "s = "
+                s.add(space + "        java.util.List<" + pE + "." + child + "> " + camel + "s = "
                         + parent + ".refer" + child + "s();");
                 s.add(space + "        if (" + camel + "s != null) {");
-                s.add(space + "            for (" + entityPackage + "." + child + " " + camel + " : " + camel + "s) {");
+                s.add(space + "            for (" + pE + "." + child + " " + camel + " : " + camel + "s) {");
                 if (childInfo.getChildInfos().size() > 0) {
                     // forでもう一段降りているから「+2」
                     getDeleteChilds(s, camel, childInfo.getChildInfos(), indent + 2);
@@ -1676,10 +1791,10 @@ public final class BeanGenerator {
             s.add("");
             int parents = childInfo.getParentInfos().size();
             if (parents == 1) {
-                s.add(space + "        java.util.List<" + entityPackage + "." + child + "> " + camel + "s = "
+                s.add(space + "        java.util.List<" + pE + "." + child + "> " + camel + "s = "
                         + parent + ".refer" + child + "s();");
                 s.add(space + "        if (" + camel + "s != null) {");
-                s.add(space + "            for (" + entityPackage + "." + child + " " + camel + " : " + camel + "s) {");
+                s.add(space + "            for (" + pE + "." + child + " " + camel + " : " + camel + "s) {");
                 if (childInfo.getChildInfos().size() > 0) {
                     // forでもう一段降りているから「+2」
                     getPermitChilds(s, camel, childInfo.getChildInfos(), indent + 2);
@@ -1713,10 +1828,10 @@ public final class BeanGenerator {
             s.add("");
             int parents = childInfo.getParentInfos().size();
             if (parents == 1) {
-                s.add(space + "        java.util.List<" + entityPackage + "." + child + "> " + camel + "s = "
+                s.add(space + "        java.util.List<" + pE + "." + child + "> " + camel + "s = "
                         + parent + ".refer" + child + "s();");
                 s.add(space + "        if (" + camel + "s != null) {");
-                s.add(space + "            for (" + entityPackage + "." + child + " " + camel + " : " + camel + "s) {");
+                s.add(space + "            for (" + pE + "." + child + " " + camel + " : " + camel + "s) {");
                 if (childInfo.getChildInfos().size() > 0) {
                     // forでもう一段降りているから「+2」
                     getForbidChilds(s, camel, childInfo.getChildInfos(), indent + 2);

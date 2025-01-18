@@ -292,6 +292,29 @@ public final class HtmlGenerator {
         s.add("        <a th:href=\"@{" + entity + "Search.xlsx(baseMei=#{" + entity + "S.h2})}\" id=\"" + entity
                 + "Search.xlsx\" th:text=\"#{common.xlsx}\" class=\"output\" tabindex=\"-1\">xlsx</a>");
         if (!table.isHistory() && !table.isView()) {
+            for (ColumnInfo column : table.getColumnInfos().values()) {
+                if (column.getReferInfo() != null) {
+                    String columnName = column.getColumnName();
+                    boolean isInsertBy = columnName.matches("(?i)^" + insertBy + "$");
+                    boolean isUpdateBy = columnName.matches("(?i)^" + updateBy + "$");
+                    if (isInsertBy || isUpdateBy) {
+                        continue;
+                    }
+                    String property = StringUtil.toCamelCase(column.getColumnName());
+                    TableInfo refer = column.getReferInfo();
+                    String referEntity = StringUtil.toPascalCase(refer.getTableName());
+                    String action = "";
+                    String css = "";
+                    if (refer.getStintInfo() != null) {
+                        action = "?action=" + referEntity + "Correct.ajax";
+                        css = " correct";
+                    }
+                    s.add("        <a id=\"" + entity + "Grid." + property + "\" th:href=\"@{/model/" + referEntity
+                            + "S.html" + action + "}\" target=\"dialog\" class=\"refer" + css + "\" th:text=\"'"
+                            + refer.getRemarks()
+                            + "' + #{common.refer}\" tabindex=\"-1\" style=\"display: none;\">...</a>");
+                }
+            }
             s.add("        <button id=\"Delete" + entity + "S\" class=\"delete selectRows\" data-action=\"" + entity
                     + "SDelete.ajax\" th:text=\"#{common.delete}\" tabindex=\"-1\">削除</button>");
             s.add("        <button id=\"Permit" + entity + "S\" class=\"permit selectRows\" data-action=\"" + entity
@@ -302,7 +325,6 @@ public final class HtmlGenerator {
         s.add("      </div>");
         s.add("      <div class=\"submits\">");
         if (!table.isHistory() && !table.isView()) {
-            //履歴モデルは変更不可
             s.add("        <button id=\"Regist" + entity
                     + "S\" class=\"regist\" th:text=\"#{common.regist}\">submit</button>");
         }
@@ -461,27 +483,32 @@ public final class HtmlGenerator {
                 }
             }
 
-            //            //メタ情報以外で必須の参照モデルが含まれていれば新規行を取消
-            //            boolean isRefer = false;
-            //            for (ColumnInfo column : table.getColumnInfos().values()) {
-            //                if (column.getColumnName().matches("(?i)^" + insertBy + "$")) {
-            //                    continue;
-            //                }
-            //                if (column.getColumnName().matches("(?i)^" + updateBy + "$")) {
-            //                    continue;
-            //                }
-            //                if (column.getReferInfo() != null && column.getNullable() == 0) {
-            //                    isRefer = true;
-            //                    break;
-            //                }
-            //            }
-            //            if (isRefer) {
-            //                addRow = "";
-            //            }
-
             String frozen = String.valueOf(table.getPrimaryKeys().size());
             s.add("      <div id=\"" + childName + "Grid\" data-selectionMode=\"link\"" + addRow
                     + " data-frozenColumn=\"" + frozen + "\" th:data-href=\"@{/model/" + childName + ".html}\"></div>");
+            for (ColumnInfo column : child.getColumnInfos().values()) {
+                if (column.getReferInfo() != null) {
+                    String columnName = column.getColumnName();
+                    boolean isInsertBy = columnName.matches("(?i)^" + insertBy + "$");
+                    boolean isUpdateBy = columnName.matches("(?i)^" + updateBy + "$");
+                    if (isInsertBy || isUpdateBy) {
+                        continue;
+                    }
+                    String property = StringUtil.toCamelCase(column.getColumnName());
+                    TableInfo refer = column.getReferInfo();
+                    String referEntity = StringUtil.toPascalCase(refer.getTableName());
+                    String childAction = "";
+                    String childCss = "";
+                    if (refer.getStintInfo() != null) {
+                        childAction = "?action=" + referEntity + "Correct.ajax";
+                        childCss = " correct";
+                    }
+                    s.add("        <a id=\"" + childName + "Grid." + property + "\" th:href=\"@{/model/" + referEntity
+                            + "S.html" + childAction + "}\" target=\"dialog\" class=\"refer" + childCss
+                            + "\" th:text=\"'" + refer.getRemarks()
+                            + "' + #{common.refer}\" tabindex=\"-1\" style=\"display: none;\">...</a>");
+                }
+            }
         }
 
         s.add("      <div class=\"buttons\">");

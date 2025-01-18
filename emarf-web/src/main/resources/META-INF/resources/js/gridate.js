@@ -313,19 +313,21 @@ $(function() {
 
             /* セル移動 */
             grid.onActiveCellChanged.subscribe(function(e, args) {
+                console.log('Gridate active cell change.');
                 let r = args.row;
                 let c = args.cell;
                 let g = args.grid;
-
-                let gridId = g.getContainerNode().id;
-                console.log(gridId);
-                let modelNm = gridId.replace(/^.+\.|Grid$/g, '');
-
                 if (c) {
                     let column = g.getColumns()[c];
                     if (column.referField) {
+                        let gridNode = g.getContainerNode();
+                        let gridId = gridNode.id;
+                        console.log('gridId: ' + gridId);
                         console.log(column);
-                        $('[id="' + modelNm + 'Dialog.' + modelNm + 'RegistForm.' + modelNm + '.' + column.id + '"]').click();
+                        let form = $(gridNode).closest('form');
+                        let modelNm = gridId.replace(/^.+\.|Grid$/g, '');
+                        let $link = $('[id$="' + $(form).prop('name') + '.' + modelNm + 'Grid.' + column.id + '"]');
+                        $link.click();
                     }
                 }
             });
@@ -415,15 +417,18 @@ $(function() {
                     if ($clicked.hasClass('gridChoose')) {
                         // グリッド行選択ボタン押下時
 
+                        console.log('Gridate gridChoose click.');
+
                         // 呼び出し元ダイアログIDを取得
                         let $dialog = $clicked.closest('[role="dialog"]');
                         let $dialogDiv = $dialog.find('[id$=Dialog]');
-                        let caller = $dialogDiv.attr('data-caller');   // TEntityDialog.TEntityRegistForm.TEntity.betsuSansho1Id
-                        let callerDialogId = caller.match(/.+Dialog/); // TEntityDialog
+                        let caller = $dialogDiv.attr('data-caller');             // TEntityDialog.TEntityRegistForm.TEntity.betsuSansho1Id
+                        console.log('caller: ' + caller);
 
-                        // 呼び出し元項目名を取得
-                        let callers = caller.split('.');               // TEntityDialog, TEntityRegistForm, TEntity, betsuSansho1Id
-                        let callerItemName = callers[callers.length - 1];    // betsuSansho1Id
+                        let callerDialogId = caller.match(/.+Dialog/);           // TEntityDialog
+                        let callerFormName = caller.match(/[^\.]+Form/);         // TEntityRegistForm
+                        let callerGridName = caller.match(/[^\.]+Grid/);         // TEntityGrid
+                        let callerItemName = caller.match(/[^\.]+$/).toString(); // betsuSansho1Id
 
                         // 項目名の接頭辞を取得
                         let prefix = '';
@@ -436,7 +441,7 @@ $(function() {
 
                             // 呼び出し元項目名が当該列名で終わる場合は、接頭辞を取得
                             let pascal = Casing.toPascal(columnName);
-                            if (callerItemName.match(pascal + '$')) {
+                            if (callerItemName.match(pascal + '$')) {                          //      Sansho1Id$
                                 prefix = callerItemName.replace(new RegExp(pascal + '$'), ''); // betsu
                                 break;
                             }
@@ -445,21 +450,56 @@ $(function() {
                         // 返却先のセレクタを取得
                         let parentSelector = 'body>div.article';
                         if (callerDialogId != undefined && callerDialogId != '') {
-                            parentSelector = 'div[id="' + callers[0] + '"] form[name="' + callers[1] + '"]';
+                            parentSelector = 'div[id="' + callerDialogId + '"] form[name="' + callerFormName + '"]';
+                        } else if (callerFormName != undefined && callerFormName != '') {
+                            parentSelector = 'form[name="' + callerFormName + '"]';
+                        }
+
+                        let callerGrid = null;
+                        let callerR = 0;
+                        if (callerGridName != undefined && callerGridName != '') {
+                            let gridId = callerGridName.toString();
+                            if (callerDialogId != undefined && callerDialogId != '') {
+                                gridId = callerDialogId + '.' + callerGridName;
+                            }
+                            console.log(gridId);
+                            callerGrid = Gridate.grids[gridId];
+                            if (callerGrid.getActiveCell() != null) {
+                                callerR = callerGrid.getActiveCell().row;
+                            } else {
+                                callerR = callerGrid.getDataLength();
+                            }
                         }
 
                         for (let columnName in dataItem) {
                             // メタ情報以外の項目を親画面に反映
                             if (!columnName.match(Messages['column.meta.re'])) {
                                 let camel = Casing.toCamel(prefix + columnName);
-                                $(parentSelector + ' [name$="' + camel + '"]:not([readonly])').val(dataItem[columnName]);
-                                $(parentSelector + ' span[id$="' + camel + '"]').html(dataItem[columnName]);
+                                if (callerGridName != undefined && callerGridName != '') {
+                                    var dataView = callerGrid.getData();
+                                    let data = dataView.getItems();
+                                    if (!data[callerR]) {
+                                        data[callerR] = { id: callerR + 1 };
+                                    }
+                                    let callerColumnName = Casing.toUpper(camel);
+                                    data[callerR][callerColumnName] = dataItem[columnName];
+                                    dataView.beginUpdate();
+                                    dataView.setItems(data);
+                                    dataView.endUpdate();
+                                    callerGrid.invalidate();
+                                } else {
+                                    console.log(parentSelector + ' [name$="' + camel + '"]:not([readonly])');
+                                    $(parentSelector + ' [name$="' + camel + '"]:not([readonly])').val(dataItem[columnName]);
+                                    $(parentSelector + ' span[id$="' + camel + '"]').html(dataItem[columnName]);
+                                }
                             }
                         }
 
                         $dialogDiv.dialog('close');
 
                     } else if ($clicked.hasClass('gridDelete')) {
+
+                        console.log('Gridate gridDelete click.');
 
                         if (confirm(Messages['confirm.delete'])) {
 
@@ -508,6 +548,8 @@ $(function() {
 
                 } else if ($clicked.hasClass('gridLink')) {
                     // グリッド行選択リンク押下時
+
+                    console.log('Gridate gridLink click.');
 
                     // グリッドの属性からエンティティ名を取得
                     //let entityName = gridId.replace(/[^\.]+\./, '').replace(/Grid$/, '');
@@ -715,6 +757,8 @@ var Gridate = {
      * @param item       グリッド行
      */
     openDetail: function(gridId, entityName, columns, item) {
+
+        console.log('Gridate.openDetail(' + gridId + ', ' + entityName + ', ' + columns + ', ' + item + ');');
 
         // ENTITY_NAME列の検査
         let tableName = null;
