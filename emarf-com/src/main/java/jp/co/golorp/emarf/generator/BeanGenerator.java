@@ -360,30 +360,33 @@ public final class BeanGenerator {
 
         //参照ペアを取得
         String meiSql = SqlGenerator.getMeiSql(0, table, column);
-        int i = meiSql.lastIndexOf(" AS ") + 4;
+        if (meiSql != null) {
 
-        //参照ペアがあるが名称カラムがなければ追加
-        String meiColumnName = meiSql.substring(i).replaceAll("[ \"]", "");
-        String meiProperty = StringUtil.toCamelCase(meiColumnName);
-        String meiAccessor = StringUtil.toPascalCase(meiColumnName);
-        s.add("");
-        s.add("    /** " + columnMei + "参照 */");
-        s.add("    private String " + meiProperty + ";");
-        s.add("");
-        s.add("    /** @return " + columnMei + "参照 */");
-        s.add("    @com.fasterxml.jackson.annotation.JsonProperty(\"" + meiColumnName + "\")");
-        s.add("    public String get" + meiAccessor + "() {");
-        s.add("        return this." + meiProperty + ";");
-        s.add("    }");
-        s.add("");
-        s.add("    /** @param o " + columnMei + "参照 */");
-        s.add("    public void set" + meiAccessor + "(final Object o) {");
-        s.add("        if (o != null) {");
-        s.add("            this." + meiProperty + " = o.toString();");
-        s.add("        } else {");
-        s.add("            this." + meiProperty + " = null;");
-        s.add("        }");
-        s.add("    }");
+            int i = meiSql.lastIndexOf(" AS ") + 4;
+
+            //参照ペアがあるが名称カラムがなければ追加
+            String meiColumnName = meiSql.substring(i).replaceAll("[ \"]", "");
+            String meiProperty = StringUtil.toCamelCase(meiColumnName);
+            String meiAccessor = StringUtil.toPascalCase(meiColumnName);
+            s.add("");
+            s.add("    /** " + columnMei + "参照 */");
+            s.add("    private String " + meiProperty + ";");
+            s.add("");
+            s.add("    /** @return " + columnMei + "参照 */");
+            s.add("    @com.fasterxml.jackson.annotation.JsonProperty(\"" + meiColumnName + "\")");
+            s.add("    public String get" + meiAccessor + "() {");
+            s.add("        return this." + meiProperty + ";");
+            s.add("    }");
+            s.add("");
+            s.add("    /** @param o " + columnMei + "参照 */");
+            s.add("    public void set" + meiAccessor + "(final Object o) {");
+            s.add("        if (o != null) {");
+            s.add("            this." + meiProperty + " = o.toString();");
+            s.add("        } else {");
+            s.add("            this." + meiProperty + " = null;");
+            s.add("        }");
+            s.add("    }");
+        }
     }
 
     /**
