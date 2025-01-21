@@ -220,6 +220,10 @@ let Jsonate = {
             $form.find(Jsonate.inputSelector + ', input[type=checkbox]:enabled, input[type=radio]:enabled').each(function() {
                 let $input = $(this);
                 let k = $input.prop('name');
+                //チェックボックス・ラジオボタン用の対応
+                if (k.lastIndexOf(entityName) > 0) {
+                    k = k.substr(k.lastIndexOf(entityName));
+                }
 
                 // 入力項目のnameで値を取得してみる
                 let v = json[k];
@@ -246,6 +250,8 @@ let Jsonate = {
 
                 // 値があれば反映
                 if (v != null) {
+
+                    console.debug('#' + $(this).prop('id') + ' [' + k + ' = ' + v + ']');
 
                     // もしファイルタグならリンクに変換
                     if ($input.attr('type') == 'file') {
@@ -279,7 +285,6 @@ let Jsonate = {
                         $('input[type="hidden"][id="' + this.id + '"]').prop("disabled", false).val([v]);
 
                     } else {
-                        console.log('#' + $(this).prop('id') + ' [' + k + ' = ' + v + ']');
                         $input.val([v]);
                     }
                 }

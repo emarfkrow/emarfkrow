@@ -107,8 +107,8 @@ public final class DataSources {
 
     /** 時刻入力サフィックス */
     private static String[] inputTimeSuffixs;
-    /** 開始日 */
-    private static String kaishiBi;
+    /** 適用日 */
+    private static String tekiyoBi;
 
     /**
      * データベース名列挙子
@@ -257,7 +257,7 @@ public final class DataSources {
         inputDateTimeSuffixs = bundle.getString("BeanGenerator.input.datetime.suffixs").split(",");
         inputDateSuffixs = bundle.getString("BeanGenerator.input.date.suffixs").split(",");
         inputTimeSuffixs = bundle.getString("BeanGenerator.input.time.suffixs").split(",");
-        kaishiBi = bundle.getString("SqlGenerator.kaishiBi").toUpperCase();
+        tekiyoBi = bundle.getString("SqlGenerator.tekiyoBi").toUpperCase();
     }
 
     /**
@@ -512,10 +512,10 @@ public final class DataSources {
             //組合せモデル数が２の場合
             if (table.getComboInfos().size() == 2) {
 
-                //自テーブルの主キーが各単一キーと開始日のみで、各テーブルの主キーが自テーブルの第二キー以降の場合は、各テーブルに制約モデルを設定
+                //自テーブルの主キーが各単一キーと適用日のみで、各テーブルの主キーが自テーブルの第二キー以降の場合は、各テーブルに制約モデルを設定
                 boolean b = true;
                 for (String pk : table.getPrimaryKeys()) {
-                    if (pk.matches(kaishiBi)) {
+                    if (pk.matches(tekiyoBi)) {
                         continue;
                     }
                     ColumnInfo primaryKey = table.getColumnInfos().get(pk);

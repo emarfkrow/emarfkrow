@@ -27,7 +27,7 @@ limitations under the License.
       <div>
         <span id="authNKey" th:text="${#ctx.session.get('AUTHN_KEY')}"></span>：<span id="authNName" th:text="${#ctx.session.get('AUTHN_MEI')}"></span>
       </div>
-      <form id="logout" method="post" th:action="@{/logout}">
+      <form id="logoutForm" method="post" th:action="@{/logout}">
         <button id="logout" th:text="#{header.logout}"></button>
       </form>
     </div>

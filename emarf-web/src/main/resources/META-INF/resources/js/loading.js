@@ -54,7 +54,7 @@ var Loading = {
 	fadeIn: function() {
 		if (Loading.stack == 0) {
 			$('#loading').fadeIn();
-			console.debug('Loading fadeIn');
+			console.info('Loading fadeIn');
 		}
 		++Loading.stack;
 		console.debug('    ++Loading.stack = ' + Loading.stack);
@@ -65,7 +65,7 @@ var Loading = {
 		console.debug('    --Loading.stack = ' + Loading.stack);
 		if (Loading.stack <= 0) {
 			$("#loading").fadeOut();
-			console.debug('Loading fadeOut');
+			console.info('Loading fadeOut');
 		}
 	},
 
@@ -78,7 +78,7 @@ for (let i = 1; i < pathlevel; i++) {
 	dir += '../';
 }
 
-console.debug('Loading init.');
+console.info('Loading init.');
 let dialogDiv2 = document.createElement('div');
 dialogDiv2.id = 'loading';
 dialogDiv2.style.backgroundColor = '#eee';
@@ -94,5 +94,5 @@ dialogDiv2.style.opacity = '1';
 dialogDiv2.style.zIndex = '999';
 window.document.body.appendChild(dialogDiv2);
 ++Loading.stack;
-console.debug('Loading fadeIn');
+console.info('Loading fadeIn');
 console.debug('    ++Loading.stack = ' + Loading.stack);

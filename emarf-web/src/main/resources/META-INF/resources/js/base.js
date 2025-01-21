@@ -43,7 +43,7 @@ $(function() {
 
     console.debug('base-1: $(function() {});');
 
-    console.debug('Base init.');
+    console.info('Base init.');
 
     // 画面の参照権限のチェック
     let href = window.document.location.href;
@@ -204,7 +204,7 @@ let Base = {
             Loading.fadeOut();
         } else {
             // Loadingがロードされていなければ即実行
-            console.debug('Base.loaded(function() {});');
+            console.info('Base.loaded(function() {});');
             func();
         }
     },
@@ -525,6 +525,13 @@ let Base = {
      */
     referRegistForm: function($registForm) {
 
+        $registForm.find('a.output').css('visibility', 'hidden');
+        $registForm.find('a.reborn').css('visibility', 'hidden');
+        $registForm.find('button.delete').css('visibility', 'hidden');
+        $registForm.find('button.permit').css('visibility', 'hidden');
+        $registForm.find('button.forbid').css('visibility', 'hidden');
+        $registForm.find('button.regist').css('visibility', 'inherit');
+
         let formJson = Jsonate.toValueJson($registForm);
         if (JSON.stringify(formJson) != '{}') {
 
@@ -547,7 +554,7 @@ let Base = {
                     Jsonate.toForm(data, $registForm);
                     Base.referMei($registForm.find('span.refer'));
 
-                    // 詳細画面のステータス区分は選択項目名のみ表示
+                    // 詳細画面のステータス区分は選択項目名のみ表示（既存画面用に読み専解除しているため再度読み専制御）
                     Base.readonly($readonlys);
                     for (let i = 0; i < $readonlys.length; i++) {
                         let $readonly = $($readonlys[i]);
@@ -573,8 +580,45 @@ let Base = {
                         //$registForm.find(':input').attr('readonly', true).attr('tabindex', '-1').addClass('readonly');
                         $registForm.find('a.refer').hide();
                     }
+
+                    let $statusKb = $registForm.find('fieldset:nth-child(1)').find('[name$="statusKb"]:checked');
+                    if ($statusKb.val() == 0) {
+                        $registForm.find('a.output').css('visibility', 'inherit');
+                        $registForm.find('a.reborn').css('visibility', 'hidden');
+                        $registForm.find('button.delete').css('visibility', 'inherit');
+                        $registForm.find('button.permit').css('visibility', 'inherit');
+                        $registForm.find('button.forbid').css('visibility', 'inherit');
+                        $registForm.find('button.regist').css('visibility', 'inherit');
+                    } else if ($statusKb.val() == 1) {
+                        $registForm.find('a.output').css('visibility', 'inherit');
+                        $registForm.find('a.reborn').css('visibility', 'inherit');
+                        $registForm.find('button.delete').css('visibility', 'hidden');
+                        $registForm.find('button.permit').css('visibility', 'hidden');
+                        $registForm.find('button.forbid').css('visibility', 'hidden');
+                        $registForm.find('button.regist').css('visibility', 'hidden');
+                    } else if ($statusKb.val() == -1) {
+                        $registForm.find('a.output').css('visibility', 'inherit');
+                        $registForm.find('button.permit').css('visibility', 'hidden');
+                        $registForm.find('button.forbid').css('visibility', 'hidden');
+                    }
                 })
             });
+
+        } else {
+
+            // 詳細画面のステータス区分は選択項目名のみ表示（新規画面用に一旦やっておく）
+            let $readonlys = $registForm.find('[name$="' + Casing.toCamel(gridOpeReadonlyColumn) + '"]');
+            Base.readonly($readonlys);
+            for (let i = 0; i < $readonlys.length; i++) {
+                let $readonly = $($readonlys[i]);
+                if ($readonly.prop('type') == 'radio') {
+                    if (!$readonly.prop('checked')) {
+                        $readonly.closest('label').css('display', 'none');
+                    } else {
+                        $readonly.closest('label').css('display', 'inherit');
+                    }
+                }
+            }
         }
     },
 

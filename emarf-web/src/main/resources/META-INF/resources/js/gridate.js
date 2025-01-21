@@ -21,7 +21,7 @@ limitations under the License.
 
 $(function() {
 
-    console.debug('Gridate init.');
+    console.info('Gridate init.');
 
     // グリッドからフォーカスアウト時はグリッドを確定
     $(document).on('click', '*', function(event) {
@@ -313,17 +313,18 @@ $(function() {
 
             /* セル移動 */
             grid.onActiveCellChanged.subscribe(function(e, args) {
-                console.log('Gridate active cell change.');
+                console.debug('Gridate active cell change.');
                 let r = args.row;
                 let c = args.cell;
                 let g = args.grid;
                 if (c) {
+                    //参照モデルなら隠しリンク押下
                     let column = g.getColumns()[c];
                     if (column.referField) {
                         let gridNode = g.getContainerNode();
                         let gridId = gridNode.id;
-                        console.log('gridId: ' + gridId);
-                        console.log(column);
+                        console.debug('gridId: ' + gridId);
+                        console.debug(column);
                         let form = $(gridNode).closest('form');
                         let modelNm = gridId.replace(/^.+\.|Grid$/g, '');
                         let $link = $('[id$="' + $(form).prop('name') + '.' + modelNm + 'Grid.' + column.id + '"]');
@@ -331,13 +332,17 @@ $(function() {
                     }
                 }
             });
-            //            grid.onActiveCellPositionChanged.subscribe(function(a, b, c, d, e, f, g) { });
+            grid.onActiveCellPositionChanged.subscribe(function(a, b, c, d, e, f, g) {
+                console.debug('Gridate active cell position changed.');
+            });
             grid.onAddNewRow.subscribe(function(e, args) {
                 //				let data = args.grid.getData();
                 //				data.push(args.item);
                 //				args.grid.invalidateRow(data.length - 1);
                 //				args.grid.updateRowCount();
                 //				args.grid.render();
+
+                //新規行追加
                 var dataView = grid.getData();
                 let data = dataView.getItems();
                 args.item['id'] = data.length + 1;
@@ -346,26 +351,36 @@ $(function() {
                 dataView.beginUpdate();
                 dataView.setItems(data);
                 dataView.endUpdate();
+
+                let g = args.grid;
+                let r = g.getActiveCell().row;
+                let c = g.getActiveCell().cell;
+                let column = g.getColumns()[c]
+                let columnName = Casing.toPascal(column.id);
+                try {
+                    eval(columnName + 'OnChange(g, r, c)');
+                } catch (e) {
+                    console.debug(e.message);
+                }
             });
             //				grid.onAutosizeColumns.subscribe(function(a, b, c, d, e, f, g) { });
             //				grid.onBeforeAppendCell.subscribe(function(a, b, c, d, e, f, g) { });
-            //				grid.onBeforeCellEditorDestroy.subscribe(function(a, b, c, d, e, f, g) { });
+            grid.onBeforeCellEditorDestroy.subscribe(function(e, args) {
+                console.debug('Gridate before cell editor destroy.');
+                let editor = args.editor;
+                let g = args.grid;
+            });
             //				grid.onBeforeColumnsResize.subscribe(function(a, b, c, d, e, f, g) { });
             //				grid.onBeforeDestroy.subscribe(function(a, b, c, d, e, f, g) { });
             grid.onBeforeEditCell.subscribe(function(e, args) {
-
-                let $clicked = $(e.target);
-
+                console.debug('Gridate before edit cell.');
+                //                let $clicked = $(e.target);
                 let r = args.row;
                 let c = args.cell;
                 let g = args.grid;
-
+                let $clicked = $(g.getActiveCellNode());
                 let dataItem = g.getDataItem(r);
-
                 if (Gridate.isReadonly($clicked, dataItem, grid, r, c)) {
-                    //                    e.preventDefault();
-                    //                    e.stopPropagation();
-                    //                    e.stopImmediatePropagation();
                     return false;
                 }
             });
@@ -376,26 +391,37 @@ $(function() {
             //				grid.onBeforeSort.subscribe(function(a, b, c, d, e, f, g) { });
             /* セル値変更 */
             grid.onCellChange.subscribe(function(e, args) {
-                let cell = args.cell;
+                console.debug('Gridate on cell change.');
+                let c = args.cell;
                 let column = args.column;
                 let command = args.command;
-                let grid = args.grid;
+                let g = args.grid;
                 let item = args.item;
-                let row = args.row;
+                let r = args.row;
                 let field = args.column.field;
+                //削除フラグオフの親伝播
                 if (gridOpeEffectColumn != null) {
                     let camel = Casing.toCamel(gridOpeEffectColumn);
                     let upper = gridOpeEffectColumn.toUpperCase();
                     if (field.toUpperCase() == upper) {
                         let val = item[upper];
                         if (!val) {
-                            $($(grid.getActiveCellNode()).closest('form').find('[name$="' + camel + '"]')[0]).prop('checked', false);
+                            $($(g.getActiveCellNode()).closest('form').find('[name$="' + camel + '"]')[0]).prop('checked', false);
                         }
                     }
+                }
+                //フック済みならイベント発火
+                let columnName = Casing.toPascal(column.id);
+                try {
+                    eval(columnName + 'OnChange(g, r, c)');
+                } catch (e) {
+                    console.debug(e.message);
                 }
             });
             //				grid.onCellCssStylesChanged.subscribe(function(a, b, c, d, e, f, g) { });
             grid.onClick.subscribe(function(e, args) {
+
+                console.debug('Gridate on click cell.');
 
                 let $clicked = $(e.target);
 
@@ -417,13 +443,13 @@ $(function() {
                     if ($clicked.hasClass('gridChoose')) {
                         // グリッド行選択ボタン押下時
 
-                        console.log('Gridate gridChoose click.');
+                        console.info('Gridate gridChoose click.');
 
                         // 呼び出し元ダイアログIDを取得
                         let $dialog = $clicked.closest('[role="dialog"]');
                         let $dialogDiv = $dialog.find('[id$=Dialog]');
                         let caller = $dialogDiv.attr('data-caller');             // TEntityDialog.TEntityRegistForm.TEntity.betsuSansho1Id
-                        console.log('caller: ' + caller);
+                        console.debug('caller: ' + caller);
 
                         let callerDialogId = caller.match(/.+Dialog/);           // TEntityDialog
                         let callerFormName = caller.match(/[^\.]+Form/);         // TEntityRegistForm
@@ -462,7 +488,7 @@ $(function() {
                             if (callerDialogId != undefined && callerDialogId != '') {
                                 gridId = callerDialogId + '.' + callerGridName;
                             }
-                            console.log(gridId);
+                            console.debug(gridId);
                             callerGrid = Gridate.grids[gridId];
                             if (callerGrid.getActiveCell() != null) {
                                 callerR = callerGrid.getActiveCell().row;
@@ -488,7 +514,7 @@ $(function() {
                                     dataView.endUpdate();
                                     callerGrid.invalidate();
                                 } else {
-                                    console.log(parentSelector + ' [name$="' + camel + '"]:not([readonly])');
+                                    console.debug(parentSelector + ' [name$="' + camel + '"]:not([readonly])');
                                     $(parentSelector + ' [name$="' + camel + '"]:not([readonly])').val(dataItem[columnName]);
                                     $(parentSelector + ' span[id$="' + camel + '"]').html(dataItem[columnName]);
                                 }
@@ -499,7 +525,7 @@ $(function() {
 
                     } else if ($clicked.hasClass('gridDelete')) {
 
-                        console.log('Gridate gridDelete click.');
+                        console.info('Gridate gridDelete click.');
 
                         if (confirm(Messages['confirm.delete'])) {
 
@@ -549,7 +575,7 @@ $(function() {
                 } else if ($clicked.hasClass('gridLink')) {
                     // グリッド行選択リンク押下時
 
-                    console.log('Gridate gridLink click.');
+                    console.info('Gridate gridLink click.');
 
                     // グリッドの属性からエンティティ名を取得
                     //let entityName = gridId.replace(/[^\.]+\./, '').replace(/Grid$/, '');
@@ -599,9 +625,13 @@ $(function() {
             //				grid.onColumnsReordered.subscribe(function(a, b, c, d, e, f, g) { });
             //				grid.onColumnsResizeDblClick.subscribe(function(a, b, c, d, e, f, g) { });
             //				grid.onColumnsResized.subscribe(function(a, b, c, d, e, f, g) { });
-            //				grid.onCompositeEditorChange.subscribe(function(a, b, c, d, e, f, g) { });
+            grid.onCompositeEditorChange.subscribe(function(a, b, c, d, e, f, g) {
+                console.debug('Gridate on composite editor change.');
+            });
             //				grid.onContextMenu.subscribe(function(a, b, c, d, e, f, g) { });
             grid.onDblClick.subscribe(function(e, args) {
+
+                console.debug('Gridate on double click cell.');
 
                 let $clicked = $(e.target);
 
@@ -758,7 +788,7 @@ var Gridate = {
      */
     openDetail: function(gridId, entityName, columns, item) {
 
-        console.log('Gridate.openDetail(' + gridId + ', ' + entityName + ', ' + columns + ', ' + item + ');');
+        console.info('Gridate.openDetail(' + gridId + ', ' + entityName + ', ' + columns + ', ' + item + ');');
 
         // ENTITY_NAME列の検査
         let tableName = null;

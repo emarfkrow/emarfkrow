@@ -50,8 +50,8 @@ public final class SqlGenerator {
 
     /** 削除フラグ */
     private static String deleteF;
-    /** 開始日 */
-    private static String kaishiBi;
+    /** 適用日 */
+    private static String tekiyoBi;
     /** 終了日 */
     private static String shuryoBi;
 
@@ -86,7 +86,7 @@ public final class SqlGenerator {
         optK = bundle.getString("BeanGenerator.options.key").toUpperCase();
 
         deleteF = bundle.getString("SqlGenerator.deleteF").toUpperCase();
-        kaishiBi = bundle.getString("SqlGenerator.kaishiBi").toUpperCase();
+        tekiyoBi = bundle.getString("SqlGenerator.tekiyoBi").toUpperCase();
         shuryoBi = bundle.getString("SqlGenerator.shuryoBi").toUpperCase();
 
         assist = DataSources.getAssist();
@@ -285,8 +285,8 @@ public final class SqlGenerator {
         if (table.getColumnInfos().containsKey(deleteF)) {
             sql.add("    AND " + assist.nvlZero("a." + deleteF) + " != 1 ");
         }
-        if (table.getColumnInfos().containsKey(kaishiBi)) {
-            sql.add("    AND " + assist.nvlSysdate("a." + kaishiBi) + " <= " + assist.sysDate() + " ");
+        if (table.getColumnInfos().containsKey(tekiyoBi)) {
+            sql.add("    AND " + assist.nvlSysdate("a." + tekiyoBi) + " <= " + assist.sysDate() + " ");
         }
         if (table.getColumnInfos().containsKey(shuryoBi)) {
             sql.add("    AND " + assist.dateAdd(assist.nvlSysdate("a." + shuryoBi), 1) + " > " + assist.sysDate()
@@ -335,7 +335,7 @@ public final class SqlGenerator {
 
         String anotherKey = "";
         for (String pk : stint.getPrimaryKeys()) {
-            if (pk.equals(kaishiBi)) {
+            if (pk.equals(tekiyoBi)) {
                 continue;
             }
             if (!pk.equals(table.getPrimaryKeys().get(0))) {
@@ -354,8 +354,8 @@ public final class SqlGenerator {
         if (stint.getColumnInfos().containsKey(deleteF)) {
             sql.add("            AND " + assist.nvlZero("p." + deleteF) + " != 1 ");
         }
-        if (stint.getColumnInfos().containsKey(kaishiBi)) {
-            sql.add("            AND " + assist.nvlSysdate("p." + kaishiBi) + " <= " + assist.sysDate()
+        if (stint.getColumnInfos().containsKey(tekiyoBi)) {
+            sql.add("            AND " + assist.nvlSysdate("p." + tekiyoBi) + " <= " + assist.sysDate()
                     + " ");
         }
         if (stint.getColumnInfos().containsKey(shuryoBi)) {
@@ -363,7 +363,7 @@ public final class SqlGenerator {
                     + assist.sysDate());
         }
         for (String pk : stint.getPrimaryKeys()) {
-            if (pk.equals(kaishiBi)) {
+            if (pk.equals(tekiyoBi)) {
                 continue;
             }
             if (pk.equals(anotherKey)) {
@@ -391,8 +391,8 @@ public final class SqlGenerator {
             if (combo.getColumnInfos().containsKey(deleteF)) {
                 sql.add("        AND " + assist.nvlZero("c" + i + "." + deleteF) + " != 1 ");
             }
-            if (combo.getColumnInfos().containsKey(kaishiBi)) {
-                sql.add("        AND " + assist.nvlSysdate("c" + i + "." + kaishiBi) + " <= " + assist.sysDate()
+            if (combo.getColumnInfos().containsKey(tekiyoBi)) {
+                sql.add("        AND " + assist.nvlSysdate("c" + i + "." + tekiyoBi) + " <= " + assist.sysDate()
                         + " ");
             }
             if (combo.getColumnInfos().containsKey(shuryoBi)) {

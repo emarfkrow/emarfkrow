@@ -21,7 +21,7 @@ limitations under the License.
 
 $(function() {
 
-	console.debug('Ajaxize init.');
+	console.info('Ajaxize init.');
 
 	/*
 	 * 「.ajax」のフォーム送信を横取り

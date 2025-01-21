@@ -21,7 +21,7 @@ limitations under the License.
 
 $(function() {
 
-	console.debug('Nextize init.');
+	console.info('Nextize init.');
 
 	// article内の一つ目の対象項目にフォーカス
 	let $container = $('body>div.article');

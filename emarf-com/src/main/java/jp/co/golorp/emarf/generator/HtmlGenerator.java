@@ -513,7 +513,7 @@ public final class HtmlGenerator {
 
         s.add("      <div class=\"buttons\">");
         if (!table.isHistory() && !table.isView()) {
-            s.add("        <button type=\"button\" id=\"Reset" + entity
+            s.add("        <button type=\"button\" id=\"Refresh" + entity
                     + "\" th:text=\"#{common.reset}\" class=\"reset\" onClick=\"Dialogate.refresh(event);\">reset</button>");
         }
         s.add("        <a th:href=\"@{" + entity + "Get.xlsx(baseMei=#{" + entity + ".h2})}\" id=\""

@@ -21,7 +21,7 @@ limitations under the License.
 
 $(function() {
 
-    console.debug('Dialogate init.');
+    console.info('Dialogate init.');
 
     // 親画面に複数のフォームがある場合に、IDが重複しないよう、ID項目にフォーム名を接頭
     $('[id]').each(function() {
@@ -30,11 +30,12 @@ $(function() {
             let $form = $me.closest('form');
             let id = $form.prop('name') + '.' + this.id;
             $me.prop('id', id);
+            //labelのfor属性も更新
             if ($me.prev().length > 0 && $me.prev()[0].tagName == 'LABEL') {
                 $me.prev().prop('for', id);
             }
         }
-        if (this.tagName == 'A') {
+        if (this.tagName == 'A' || this.tagName == 'FIELDSET') {
             let $me = $(this);
             let $form = $me.closest('form');
             let id = $form.prop('name') + '.' + this.id;
@@ -54,7 +55,7 @@ $(function() {
      */
     $(document).on('click', 'a[target="dialog"]', function(event) {
 
-        console.log('Dialogate ancher on click.');
+        console.info('Dialogate ancher on click.');
 
         // イベントキャンセル
         event.preventDefault();
@@ -220,7 +221,7 @@ let Dialogate = {
                     $me.prop('id', id);
                     $me.prev().prop('for', id);
                 }
-                if (this.tagName == 'A') {
+                if (this.tagName == 'A' || this.tagName == 'FIELDSET') {
                     let $me = $(this);
                     let $form = $me.closest('form');
                     let id = $dialogDiv.prop('id') + '.' + $form.prop('name') + '.' + this.id;
@@ -240,7 +241,7 @@ let Dialogate = {
                  */
                 open: function(event) {
 
-                    console.log('Dialogate open.');
+                    console.info('Dialogate open.');
 
                     // ダイアログdiv
                     let $dialogDiv = $(event.target);
@@ -338,32 +339,7 @@ let Dialogate = {
 
                     Nextize.first($dialogDiv);
 
-                    $dialogDiv.find('a.output').css('visibility', 'hidden');
-                    $dialogDiv.find('a.reborn').css('visibility', 'hidden');
-                    $dialogDiv.find('button.delete').css('visibility', 'hidden');
-                    $dialogDiv.find('button.permit').css('visibility', 'hidden');
-                    $dialogDiv.find('button.forbid').css('visibility', 'hidden');
-                    $dialogDiv.find('button.regist').css('visibility', 'inherit');
-                    if ($dialogDiv.find('form>fieldset:nth-child(1)').find('[name$="statusKb"]:checked').val() == 0) {
-                        $dialogDiv.find('a.output').css('visibility', 'inherit');
-                        $dialogDiv.find('a.reborn').css('visibility', 'hidden');
-                        $dialogDiv.find('button.delete').css('visibility', 'inherit');
-                        $dialogDiv.find('button.permit').css('visibility', 'inherit');
-                        $dialogDiv.find('button.forbid').css('visibility', 'inherit');
-                        $dialogDiv.find('button.regist').css('visibility', 'inherit');
-                    } else if ($dialogDiv.find('form>fieldset:nth-child(1)').find('[name$="statusKb"]:checked').val() == 1) {
-                        $dialogDiv.find('a.output').css('visibility', 'inherit');
-                        $dialogDiv.find('a.reborn').css('visibility', 'inherit');
-                        $dialogDiv.find('button.delete').css('visibility', 'hidden');
-                        $dialogDiv.find('button.permit').css('visibility', 'hidden');
-                        $dialogDiv.find('button.forbid').css('visibility', 'hidden');
-                        $dialogDiv.find('button.regist').css('visibility', 'hidden');
-                    } else if ($dialogDiv.find('form>fieldset:nth-child(1)').find('[name$="statusKb"]:checked').val() == -1) {
-                        $dialogDiv.find('a.output').css('visibility', 'inherit');
-                        $dialogDiv.find('button.permit').css('visibility', 'hidden');
-                        $dialogDiv.find('button.forbid').css('visibility', 'hidden');
-                    }
-
+                    //親モデルを読み取り専用
                     Base.readonly($dialogDiv.find('.parent').find('a,input,select,textarea'));
                 },
 

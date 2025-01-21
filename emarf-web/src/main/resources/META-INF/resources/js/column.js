@@ -30,7 +30,7 @@ let Column = {
         if (width) { column.width = width; }
         if (cssClass) { column.cssClass = cssClass; }
         if (formatter) { column.formatter = formatter; }
-        console.log('Messages[' + column.id + ']: ' + fieldMei);
+        console.debug('Messages[' + column.id + ']: ' + fieldMei);
         return column;
     },
 

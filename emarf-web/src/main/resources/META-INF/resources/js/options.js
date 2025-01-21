@@ -23,7 +23,7 @@ limitations under the License.
  */
 $(function() {
 
-	console.debug('Options init.');
+	console.info('Options init.');
 
 	$('[data-options]').each(function() {
 		Options.get(this);

@@ -21,7 +21,7 @@ limitations under the License.
 
 $(function() {
 
-	console.debug('Breads init.');
+	console.info('Breads init.');
 
 	// サブウィンドウなら終了
 	if (window.opener) {
