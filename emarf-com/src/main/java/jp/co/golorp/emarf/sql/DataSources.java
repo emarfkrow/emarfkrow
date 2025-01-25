@@ -675,6 +675,9 @@ public final class DataSources {
             if (remarks == null || remarks.length() == 0) {
                 remarks = tableName;
             }
+            if (remarks.indexOf(":") > 0) {
+                remarks = remarks.substring(0, remarks.indexOf(":"));
+            }
             tableInfo.setRemarks(remarks);
 
             String tableType = rs.getString("TABLE_TYPE");
@@ -1187,26 +1190,32 @@ public final class DataSources {
                 }
 
                 if (src.getPrimaryKeys().size() == fks.size()) {
+                    //比較元の主キー数が比較先の外部キー数と一致する場合
 
                     boolean b = true;
 
+                    //処理済み情報
                     Iterator<TableInfo> pasts = tableInfos.iterator();
                     while (pasts.hasNext()) {
                         TableInfo past = pasts.next();
 
+                        //処理済みの転生先情報がなければスキップ
                         TableInfo pastReborn = past.getRebornInfo();
                         if (pastReborn == null) {
                             continue;
                         }
 
+                        //処理済みの転生先情報があっても、今回の転生先でなければスキップ
                         if (!pastReborn.getTableName().equals(dest.getTableName())) {
                             continue;
                         }
 
+                        //今回の転生先が既に使用済みでも、今回の転生元の方がキー数が多ければ、処理済みをクリア
                         if (past.getPrimaryKeys().size() < src.getPrimaryKeys().size()) {
                             past.setRebornInfo(null);
                         }
 
+                        //今回の転生先が既に使用済みで、今回の転生元の方がキー数が少なければ、転生先としない
                         if (src.getPrimaryKeys().size() < past.getPrimaryKeys().size()) {
                             b = false;
                         }

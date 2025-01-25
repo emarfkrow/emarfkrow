@@ -39,7 +39,7 @@ import jp.co.golorp.emarf.util.ResourceBundles;
 public final class HtmlGenerator {
 
     /** properties */
-    private static ResourceBundle bundle;
+    private static ResourceBundle bundle = ResourceBundles.getBundle(BeanGenerator.class);
 
     /** グリッド列幅ピクセル乗数 */
     private static final int COLUMN_WIDTH_PX_MULTIPLIER = 8;
@@ -107,11 +107,9 @@ public final class HtmlGenerator {
     /**
      * HTMLファイル出力
      * @param projectDir プロジェクトディレクトリ
-     * @param tableInfos テーブル情報のリスト
+     * @param tables テーブル情報のリスト
      */
-    static void generate(final String projectDir, final List<TableInfo> tableInfos) {
-
-        bundle = ResourceBundles.getBundle(BeanGenerator.class);
+    static void generate(final String projectDir, final List<TableInfo> tables) {
 
         searchPrefixes = bundle.getString("HtmlGenerator.view.search.prefix").split(",");
         detailColumn = bundle.getString("HtmlGenerator.view.detail.column");
@@ -157,22 +155,22 @@ public final class HtmlGenerator {
         String gridDir = projectDir + File.separator + bundle.getString("HtmlGenerator.gridPath");
         FileUtil.reMkDir(gridDir);
 
-        for (TableInfo tableInfo : tableInfos) {
+        for (TableInfo table : tables) {
 
             // 検索画面のHTMLを出力
-            HtmlGenerator.htmlIndex(htmlDir, tableInfo);
+            HtmlGenerator.htmlIndex(htmlDir, table, tables);
 
             // 検索画面のGridColumnを出力
-            HtmlGenerator.htmlGridColumns(gridDir, tableInfo);
+            HtmlGenerator.htmlGridColumns(gridDir, table);
 
             // 単画面を出力
-            HtmlGenerator.htmlDetail(htmlDir, tableInfo);
+            HtmlGenerator.htmlDetail(htmlDir, table);
 
             // thymeleafのプロパティファイルを出力
-            HtmlGenerator.htmlProperties(htmlDir, tableInfo);
+            HtmlGenerator.htmlProperties(htmlDir, table);
         }
 
-        HtmlGenerator.htmlNav(htmlDir, tableInfos);
+        HtmlGenerator.htmlNav(htmlDir, tables);
 
         //        List<String> s = new ArrayList<String>();
         //        s.add("<!DOCTYPE html>");
@@ -194,13 +192,12 @@ public final class HtmlGenerator {
      * 検索画面 HTML出力
      * @param htmlDir HTMLファイル出力ディレクトリ
      * @param table テーブル情報
+     * @param tables テーブル情報
      */
-    private static void htmlIndex(final String htmlDir, final TableInfo table) {
-
+    private static void htmlIndex(final String htmlDir, final TableInfo table, final List<TableInfo> tables) {
         String entity = StringUtil.toPascalCase(table.getTableName());
         String index = entity + "S";
         String remarks = table.getRemarks();
-
         List<String> s = new ArrayList<String>();
         s.add("<!DOCTYPE html>");
         s.add("<html xmlns:th=\"http://www.thymeleaf.org\" xmlns:layout=\"http://www.ultraq.net.nz/web/thymeleaf/layout\" layout:decorate=\"~{common/base}\">");
@@ -260,16 +257,11 @@ public final class HtmlGenerator {
             //メタ情報以外の必須の参照モデル、および、ファイル列が含まれていなければ新規行を表示
             boolean isRefer = false;
             for (ColumnInfo column : table.getColumnInfos().values()) {
-                if (column.getColumnName().matches("(?i)^" + insertBy + "$")) {
+                if (column.getColumnName().matches("(?i)^" + insertBy + "$")
+                        || column.getColumnName().matches("(?i)^" + updateBy + "$")) {
                     continue;
                 }
-                if (column.getColumnName().matches("(?i)^" + updateBy + "$")) {
-                    continue;
-                }
-                //                if (column.getReferInfo() != null && column.getNullable() == 0) {
-                //                    isRefer = true;
-                //                    break;
-                //                }
+                // if (column.getReferInfo() != null && column.getNullable() == 0) { isRefer = true; break; }
                 if (StringUtil.endsWith(inputFileSuffixs, column.getColumnName())) {
                     isRefer = true;
                     break;
@@ -291,13 +283,29 @@ public final class HtmlGenerator {
         }
         s.add("        <a th:href=\"@{" + entity + "Search.xlsx(baseMei=#{" + entity + "S.h2})}\" id=\"" + entity
                 + "Search.xlsx\" th:text=\"#{common.xlsx}\" class=\"output\" tabindex=\"-1\">xlsx</a>");
+        //各モデルから自モデルに一致する転生モデルを抽出
+        List<TableInfo> rebornSrcs = new ArrayList<TableInfo>();
+        for (TableInfo src : tables) {
+            if (src.getRebornInfo() != null) {
+                if (table.getTableName().equals(src.getRebornInfo().getTableName())) {
+                    rebornSrcs.add(src);
+                }
+            }
+        }
+        //抽出した転生モデルが１つだった場合は集約用のリンク追加
+        if (rebornSrcs.size() == 1) {
+            TableInfo rebornSrc = rebornSrcs.get(0);
+            String srcEntity = StringUtil.toPascalCase(rebornSrc.getTableName());
+            s.add("        <a th:href=\"@{/model/" + srcEntity + ".html}\" id=\"" + srcEntity
+                    + "\" target=\"dialog\" th:text=\"#{" + srcEntity + ".add}\" class=\"reborn\" tabindex=\"-1\">"
+                    + rebornSrc.getRemarks() + "</a>");
+        }
         if (!table.isHistory() && !table.isView()) {
             for (ColumnInfo column : table.getColumnInfos().values()) {
+                //グリッド用の非表示の参照ボタン
                 if (column.getReferInfo() != null) {
                     String columnName = column.getColumnName();
-                    boolean isInsertBy = columnName.matches("(?i)^" + insertBy + "$");
-                    boolean isUpdateBy = columnName.matches("(?i)^" + updateBy + "$");
-                    if (isInsertBy || isUpdateBy) {
+                    if (columnName.matches("(?i)^" + insertBy + "$") || columnName.matches("(?i)^" + updateBy + "$")) {
                         continue;
                     }
                     String property = StringUtil.toCamelCase(column.getColumnName());
@@ -333,7 +341,6 @@ public final class HtmlGenerator {
         s.add("  </div>");
         s.add("</body>");
         s.add("</html>");
-
         FileUtil.writeFile(htmlDir + File.separator + index + ".html", s);
     }
 
@@ -518,6 +525,7 @@ public final class HtmlGenerator {
         }
         s.add("        <a th:href=\"@{" + entity + "Get.xlsx(baseMei=#{" + entity + ".h2})}\" id=\""
                 + entity + "Get.xlsx\" th:text=\"#{common.xlsx}\" class=\"output\" tabindex=\"-1\">xlsx</a>");
+        //転生先がある場合は追加ボタンを表示
         if (table.getRebornInfo() != null) {
             TableInfo rebornInfo = table.getRebornInfo();
             String reborn = StringUtil.toPascalCase(rebornInfo.getTableName());

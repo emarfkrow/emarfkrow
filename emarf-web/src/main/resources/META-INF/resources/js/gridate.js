@@ -313,10 +313,10 @@ $(function() {
 
             /* セル移動 */
             grid.onActiveCellChanged.subscribe(function(e, args) {
-                console.debug('Gridate active cell change.');
                 let r = args.row;
                 let c = args.cell;
                 let g = args.grid;
+                console.debug('Gridate active cell change.[r:' + r + ', c:' + c + ']');
                 if (c) {
                     //参照モデルなら隠しリンク押下
                     let column = g.getColumns()[c];
@@ -922,6 +922,18 @@ var Gridate = {
         }
 
         return false;
+    },
+
+    /**
+     * グリッドの編集状態確定
+     */
+    fix: function() {
+
+        // 現在のスコープの全SlickGridを確定する
+        Slick.GlobalEditorLock.commitCurrentEdit();
+
+        // SlickGridに設定済みのvalidatorがエラーでなければ、編集状態が確定され、isActiveがfalseになる
+        return Slick.GlobalEditorLock.isActive() != true;
     },
 
 };

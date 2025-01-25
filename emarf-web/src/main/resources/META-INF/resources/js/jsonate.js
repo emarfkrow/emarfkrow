@@ -96,8 +96,8 @@ let Jsonate = {
                         // 変更があった場合
                         updated = true;
                         postData.push(gridData[r]);
-                    } else if (gridData[r]['id'] == null) {
-                        // idがNULLの場合（転生時など）
+                    } else if (gridData[r][gridOpeVisibleColumn] == null) {
+                        // INSERT_TSがNULLの場合（転生時など）
                         updated = true;
                         postData.push(gridData[r]);
                     }

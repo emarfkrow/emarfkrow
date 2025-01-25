@@ -18,7 +18,6 @@ package jp.co.golorp.emarf.generator;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -96,7 +95,7 @@ public final class BeanGenerator {
     /** javaファイル出力ルートパス */
     private static String javaPath;
     /** entityパッケージ */
-    private static String pE;
+    private static String pkgEntity;
     /** actionパッケージ */
     private static String pkgAction;
 
@@ -146,7 +145,7 @@ public final class BeanGenerator {
         inputFileSuffixs = bundle.getString("BeanGenerator.input.file.suffixs").split(",");
 
         javaPath = bundle.getString("BeanGenerator.java.path");
-        pE = bundle.getString("BeanGenerator.java.package.entity");
+        pkgEntity = bundle.getString("BeanGenerator.java.package.entity");
         pkgAction = bundle.getString("BeanGenerator.java.package.action");
 
         /*
@@ -154,7 +153,7 @@ public final class BeanGenerator {
          */
 
         //エンティティフォルダ
-        String entityPackagePath = pE.replace(".", File.separator);
+        String entityPackagePath = pkgEntity.replace(".", File.separator);
         String entityPackageDir = projectDir + File.separator + javaPath + File.separator + entityPackagePath;
         FileUtil.reMkDir(entityPackageDir);
 
@@ -202,7 +201,7 @@ public final class BeanGenerator {
     private static void javaEntity(final List<TableInfo> tables) {
 
         // 出力フォルダを再作成
-        String packagePath = pE.replace(".", File.separator);
+        String packagePath = pkgEntity.replace(".", File.separator);
         String packageDir = projectDir + File.separator + javaPath + File.separator + packagePath;
         Map<String, String> javaPaths = new LinkedHashMap<String, String>();
 
@@ -210,7 +209,7 @@ public final class BeanGenerator {
             String e = StringUtil.toPascalCase(table.getTableName());
             String r = table.getRemarks();
             List<String> s = new ArrayList<String>();
-            s.add("package " + pE + ";");
+            s.add("package " + pkgEntity + ";");
             s.add("");
             s.add("import java.time.LocalDateTime;");
             s.add("import java.util.ArrayList;");
@@ -339,7 +338,7 @@ public final class BeanGenerator {
             s.add("}");
             String javaFilePath = packageDir + File.separator + e + ".java";
             FileUtil.writeFile(javaFilePath, s);
-            javaPaths.put(javaFilePath, pE + "." + e);
+            javaPaths.put(javaFilePath, pkgEntity + "." + e);
         }
 
         if (isCompile) {
@@ -608,10 +607,12 @@ public final class BeanGenerator {
             s.add("        // " + childInfo.getRemarks() + "の登録");
             s.add("        if (this." + camel + "s != null) {");
             s.add("            for (" + pascal + " " + camel + " : this." + camel + "s) {");
+            s.add("                if (" + camel + " != null) {");
             for (String primaryKey : tableInfo.getPrimaryKeys()) {
                 String pascalKey = StringUtil.toPascalCase(primaryKey);
-                s.add("                " + camel + ".set" + pascalKey + "(this.get" + pascalKey + "());");
+                s.add("                    " + camel + ".set" + pascalKey + "(this.get" + pascalKey + "());");
             }
+            s.add("                }");
             s.add("                " + camel + ".insert(now, execId);");
             s.add("            }");
             s.add("        }");
@@ -1173,7 +1174,7 @@ public final class BeanGenerator {
             s.add("import java.util.HashMap;");
             s.add("import java.util.Map;");
             s.add("");
-            s.add("import " + pE + "." + entityName + ";");
+            s.add("import " + pkgEntity + "." + entityName + ";");
             s.add("");
             s.add("import jp.co.golorp.emarf.action.BaseAction;");
             s.add("import jp.co.golorp.emarf.exception.OptLockError;");
@@ -1262,7 +1263,7 @@ public final class BeanGenerator {
             s.add("import java.util.HashMap;");
             s.add("import java.util.Map;");
             s.add("");
-            s.add("import " + pE + "." + entity + ";");
+            s.add("import " + pkgEntity + "." + entity + ";");
             s.add("");
             s.add("import jp.co.golorp.emarf.action.BaseAction;");
             s.add("");
@@ -1304,8 +1305,8 @@ public final class BeanGenerator {
                         for (TableInfo parent : table.getParentInfos()) {
                             String parentEntity = StringUtil.toPascalCase(parent.getTableName());
                             String parentInstance = StringUtil.toCamelCase(parent.getTableName());
-                            s.add("        " + pE + "." + parentEntity + " " + parentInstance + " = "
-                                    + pE + "." + parentEntity + ".get(" + pks + ");");
+                            s.add("        " + pkgEntity + "." + parentEntity + " " + parentInstance + " = "
+                                    + pkgEntity + "." + parentEntity + ".get(" + pks + ");");
                             s.add("        map.put(\"" + parentEntity + "\", " + parentInstance + ");");
                             s.add("");
                         }
@@ -1348,99 +1349,99 @@ public final class BeanGenerator {
      */
     private static void addRebornee(final List<String> s, final TableInfo table, final List<TableInfo> tables) {
 
-        String tN = table.getTableName();
-        String tE = StringUtil.toPascalCase(tN);
-        String tI = StringUtil.toCamelCase(tN);
+        String tableName = table.getTableName();
+        String entity = StringUtil.toPascalCase(tableName);
+        String instance = StringUtil.toCamelCase(tableName);
 
-        for (Iterator<TableInfo> iTable = tables.iterator(); iTable.hasNext();) {
-            TableInfo f = iTable.next();
-            if (f.getRebornInfo() == null) {
+        for (TableInfo fromTable : tables) {
+            if (fromTable.getRebornInfo() == null) {
                 continue;
             }
-            if (!f.getRebornInfo().getTableName().equals(tN)) {
+            if (!fromTable.getRebornInfo().getTableName().equals(tableName)) {
                 continue;
             }
-
             s.add("");
             s.add("            //転生先になる場合は転生元から情報をコピー");
-
-            String fN = f.getTableName();
-            String fE = StringUtil.toPascalCase(fN);
-            String fI = StringUtil.toCamelCase(fN);
-            String fPs = "";
-
-            for (String fK : f.getPrimaryKeys()) {
-                String fP = StringUtil.toCamelCase(fK);
-                s.add("            Object " + fP + " = postJson.get(\"" + fP + "\");");
-                s.add("            if (" + fP + " == null) {");
-                s.add("                " + fP + " = postJson.get(\"" + tE + "." + fP + "\");");
+            String fromKeys = "";
+            for (String pk : fromTable.getPrimaryKeys()) {
+                String key = StringUtil.toCamelCase(pk);
+                s.add("            Object " + key + " = postJson.get(\"" + key + "\");");
+                s.add("            if (" + key + " == null) {");
+                s.add("                " + key + " = postJson.get(\"" + entity + "." + key + "\");");
                 s.add("            }");
-                s.add("            if (" + fP + " == null) {");
+                s.add("            if (" + key + " == null) {");
                 s.add("                return map;");
                 s.add("            }");
-                if (!fPs.equals("")) {
-                    fPs += ", ";
+                if (!fromKeys.equals("")) {
+                    fromKeys += ", ";
                 }
-                fPs += fP;
+                fromKeys += key;
             }
-
             s.add("");
-            s.add("            " + pE + "." + fE + " " + fI + " = " + pE + "." + fE + ".get(" + fPs + ");");
-            s.add("            " + tE + " " + tI + " = new " + tE + "();");
-            for (String columnName : f.getColumnInfos().keySet()) {
-                boolean isInsertDt = columnName.matches("(?i)^" + insertDt + "$");
-                boolean isInsertBy = columnName.matches("(?i)^" + insertBy + "$");
-                boolean isUpdateDt = columnName.matches("(?i)^" + updateDt + "$");
-                boolean isUpdateBy = columnName.matches("(?i)^" + updateBy + "$");
-                boolean isDeleteF = columnName.matches("(?i)^" + deleteF + "$");
-                boolean isStatusKb = columnName.matches("(?i)^" + statusKb + "$");
+            String fromName = fromTable.getTableName();
+            String fromEntity = StringUtil.toPascalCase(fromName);
+            String fromInstance = StringUtil.toCamelCase(fromName);
+            s.add("            " + pkgEntity + "." + fromEntity + " " + fromInstance + " = " + pkgEntity + "."
+                    + fromEntity + ".get(" + fromKeys + ");");
+            s.add("            " + entity + " " + instance + " = new " + entity + "();");
+            for (String fromColumnName : fromTable.getColumnInfos().keySet()) {
+                boolean isInsertDt = fromColumnName.matches("(?i)^" + insertDt + "$");
+                boolean isInsertBy = fromColumnName.matches("(?i)^" + insertBy + "$");
+                boolean isUpdateDt = fromColumnName.matches("(?i)^" + updateDt + "$");
+                boolean isUpdateBy = fromColumnName.matches("(?i)^" + updateBy + "$");
+                boolean isDeleteF = fromColumnName.matches("(?i)^" + deleteF + "$");
+                boolean isStatusKb = fromColumnName.matches("(?i)^" + statusKb + "$");
                 if (isInsertDt || isInsertBy || isUpdateDt || isUpdateBy || isDeleteF || isStatusKb) {
                     continue;
                 }
-                if (table.getColumnInfos().containsKey(columnName)) {
-                    String a = StringUtil.toPascalCase(columnName);
-                    s.add("            " + tI + ".set" + a + "(" + fI + ".get" + a + "());");
+                if (table.getColumnInfos().containsKey(fromColumnName)) {
+                    String a = StringUtil.toPascalCase(fromColumnName);
+                    s.add("            " + instance + ".set" + a + "(" + fromInstance + ".get" + a + "());");
                 }
             }
             s.add("");
 
-            for (TableInfo fC : f.getChildInfos()) {
-                String fCName = fC.getTableName();
-                if (!fCName.startsWith(fN)) {
+            for (TableInfo fromChild : fromTable.getChildInfos()) {
+                String fromChildName = fromChild.getTableName();
+                if (!fromChildName.startsWith(fromName)) {
                     continue;
                 }
-                for (TableInfo tC : table.getChildInfos()) {
-                    String tCName = tC.getTableName();
-                    if (!tCName.startsWith(tN)) {
+                for (TableInfo child : table.getChildInfos()) {
+                    String childName = child.getTableName();
+                    if (!childName.startsWith(tableName)) {
                         continue;
                     }
-                    String fCE = StringUtil.toPascalCase(fCName);
-                    String fCI = StringUtil.toCamelCase(fCName);
-                    String tCE = StringUtil.toPascalCase(tCName);
-                    String tCI = StringUtil.toCamelCase(tCName);
-                    s.add("            " + fI + ".refer" + StringUtil.toPascalCase(fCName) + "s();");
-                    s.add("            " + tI + ".set" + tCE + "s(new java.util.ArrayList<" + pE + "." + tCE + ">());");
-                    s.add("            for (" + pE + "." + fCE + " " + fCI + " : " + fI + ".refer" + fCE + "s()) {");
-                    s.add("                " + pE + "." + tCE + " " + tCI + " = new " + pE + "." + tCE + "();");
-
-                    for (String columnName : fC.getColumnInfos().keySet()) {
-                        boolean isInsertDt = columnName.matches("(?i)^" + insertDt + "$");
-                        boolean isInsertBy = columnName.matches("(?i)^" + insertBy + "$");
-                        boolean isUpdateDt = columnName.matches("(?i)^" + updateDt + "$");
-                        boolean isUpdateBy = columnName.matches("(?i)^" + updateBy + "$");
-                        boolean isDeleteF = columnName.matches("(?i)^" + deleteF + "$");
-                        boolean isStatusKb = columnName.matches("(?i)^" + statusKb + "$");
+                    String fromChildEntity = StringUtil.toPascalCase(fromChildName);
+                    String fromChildInstance = StringUtil.toCamelCase(fromChildName);
+                    String childEntity = StringUtil.toPascalCase(childName);
+                    String childInstance = StringUtil.toCamelCase(childName);
+                    s.add("            " + fromInstance + ".refer" + StringUtil.toPascalCase(fromChildName) + "s();");
+                    s.add("            " + instance + ".set" + childEntity + "s(new java.util.ArrayList<" + pkgEntity
+                            + "." + childEntity + ">());");
+                    s.add("            for (" + pkgEntity + "." + fromChildEntity + " " + fromChildInstance + " : "
+                            + fromInstance + ".refer" + fromChildEntity + "s()) {");
+                    s.add("                " + pkgEntity + "." + childEntity + " " + childInstance + " = new "
+                            + pkgEntity + "." + childEntity + "();");
+                    s.add("                " + childInstance + ".setId(" + fromChildInstance + ".getId());");
+                    for (String fromChildColumnName : fromChild.getColumnInfos().keySet()) {
+                        boolean isInsertDt = fromChildColumnName.matches("(?i)^" + insertDt + "$");
+                        boolean isInsertBy = fromChildColumnName.matches("(?i)^" + insertBy + "$");
+                        boolean isUpdateDt = fromChildColumnName.matches("(?i)^" + updateDt + "$");
+                        boolean isUpdateBy = fromChildColumnName.matches("(?i)^" + updateBy + "$");
+                        boolean isDeleteF = fromChildColumnName.matches("(?i)^" + deleteF + "$");
+                        boolean isStatusKb = fromChildColumnName.matches("(?i)^" + statusKb + "$");
                         if (isInsertDt || isInsertBy || isUpdateDt || isUpdateBy || isDeleteF || isStatusKb) {
                             continue;
                         }
-                        if (tC.getColumnInfos().containsKey(columnName)) {
-                            String a = StringUtil.toPascalCase(columnName);
-                            s.add("                " + tCI + ".set" + a + "(" + fCI + ".get" + a + "());");
+                        if (child.getColumnInfos().containsKey(fromChildColumnName)) {
+                            String a = StringUtil.toPascalCase(fromChildColumnName);
+                            s.add("                " + childInstance + ".set" + a + "(" + fromChildInstance + ".get" + a
+                                    + "());");
                         }
                     }
-                    s.add("                " + tI + ".get" + tCE + "s().add(" + tCI + ");");
+                    s.add("                " + instance + ".get" + childEntity + "s().add(" + childInstance + ");");
                     s.add("            }");
-                    s.add("            map.put(\"" + tE + "\", " + tI + ");");
+                    s.add("            map.put(\"" + entity + "\", " + instance + ");");
                     s.add("");
                 }
             }
@@ -1474,7 +1475,7 @@ public final class BeanGenerator {
             s.add("import java.util.HashMap;");
             s.add("import java.util.Map;");
             s.add("");
-            s.add("import " + pE + "." + entity + ";");
+            s.add("import " + pkgEntity + "." + entity + ";");
             s.add("");
             s.add("import jp.co.golorp.emarf.action.BaseAction;");
             s.add("import jp.co.golorp.emarf.exception.OptLockError;");
@@ -1582,7 +1583,7 @@ public final class BeanGenerator {
             s.add("import java.util.HashMap;");
             s.add("import java.util.Map;");
             s.add("");
-            s.add("import " + pE + "." + entity + ";");
+            s.add("import " + pkgEntity + "." + entity + ";");
             s.add("");
             s.add("import jp.co.golorp.emarf.action.BaseAction;");
             s.add("import jp.co.golorp.emarf.exception.OptLockError;");
@@ -1676,7 +1677,7 @@ public final class BeanGenerator {
             s.add("import java.util.HashMap;");
             s.add("import java.util.Map;");
             s.add("");
-            s.add("import " + pE + "." + entity + ";");
+            s.add("import " + pkgEntity + "." + entity + ";");
             s.add("");
             s.add("import jp.co.golorp.emarf.action.BaseAction;");
             s.add("import jp.co.golorp.emarf.exception.OptLockError;");
@@ -1758,10 +1759,10 @@ public final class BeanGenerator {
             s.add("");
             int parents = childInfo.getParentInfos().size();
             if (parents == 1) {
-                s.add(space + "        java.util.List<" + pE + "." + child + "> " + camel + "s = "
+                s.add(space + "        java.util.List<" + pkgEntity + "." + child + "> " + camel + "s = "
                         + parent + ".refer" + child + "s();");
                 s.add(space + "        if (" + camel + "s != null) {");
-                s.add(space + "            for (" + pE + "." + child + " " + camel + " : " + camel + "s) {");
+                s.add(space + "            for (" + pkgEntity + "." + child + " " + camel + " : " + camel + "s) {");
                 if (childInfo.getChildInfos().size() > 0) {
                     // forでもう一段降りているから「+2」
                     getDeleteChilds(s, camel, childInfo.getChildInfos(), indent + 2);
@@ -1794,10 +1795,10 @@ public final class BeanGenerator {
             s.add("");
             int parents = childInfo.getParentInfos().size();
             if (parents == 1) {
-                s.add(space + "        java.util.List<" + pE + "." + child + "> " + camel + "s = "
+                s.add(space + "        java.util.List<" + pkgEntity + "." + child + "> " + camel + "s = "
                         + parent + ".refer" + child + "s();");
                 s.add(space + "        if (" + camel + "s != null) {");
-                s.add(space + "            for (" + pE + "." + child + " " + camel + " : " + camel + "s) {");
+                s.add(space + "            for (" + pkgEntity + "." + child + " " + camel + " : " + camel + "s) {");
                 if (childInfo.getChildInfos().size() > 0) {
                     // forでもう一段降りているから「+2」
                     getPermitChilds(s, camel, childInfo.getChildInfos(), indent + 2);
@@ -1831,10 +1832,10 @@ public final class BeanGenerator {
             s.add("");
             int parents = childInfo.getParentInfos().size();
             if (parents == 1) {
-                s.add(space + "        java.util.List<" + pE + "." + child + "> " + camel + "s = "
+                s.add(space + "        java.util.List<" + pkgEntity + "." + child + "> " + camel + "s = "
                         + parent + ".refer" + child + "s();");
                 s.add(space + "        if (" + camel + "s != null) {");
-                s.add(space + "            for (" + pE + "." + child + " " + camel + " : " + camel + "s) {");
+                s.add(space + "            for (" + pkgEntity + "." + child + " " + camel + " : " + camel + "s) {");
                 if (childInfo.getChildInfos().size() > 0) {
                     // forでもう一段降りているから「+2」
                     getForbidChilds(s, camel, childInfo.getChildInfos(), indent + 2);
