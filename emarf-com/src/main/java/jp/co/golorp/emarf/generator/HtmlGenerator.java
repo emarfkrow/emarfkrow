@@ -266,6 +266,11 @@ public final class HtmlGenerator {
                     isRefer = true;
                     break;
                 }
+                //転生先が必須なら新規行を取消
+                if (column.isReborn() && column.getNullable() != 1) {
+                    isRefer = true;
+                    break;
+                }
             }
             if (!isRefer) {
                 addRow = " data-addRow=\"true\"";
@@ -473,8 +478,8 @@ public final class HtmlGenerator {
 
             // ファイル列がある場合は新規行を取消
             String addRow = " data-addRow=\"true\"";
-            for (ColumnInfo columnInfo : child.getColumnInfos().values()) {
-                if (StringUtil.endsWith(inputFileSuffixs, columnInfo.getColumnName())) {
+            for (ColumnInfo column : child.getColumnInfos().values()) {
+                if (StringUtil.endsWith(inputFileSuffixs, column.getColumnName())) {
                     addRow = "";
                     break;
                 }
