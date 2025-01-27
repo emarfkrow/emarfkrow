@@ -1452,9 +1452,9 @@ public final class BeanGenerator {
 
     /**
      * 詳細画面 登録処理出力
-     * @param tableInfos テーブル情報のリスト
+     * @param tables テーブル情報のリスト
      */
-    private static void javaActionDetailRegist(final List<TableInfo> tableInfos) {
+    private static void javaActionDetailRegist(final List<TableInfo> tables) {
 
         // 出力フォルダを再作成
         String packagePath = pkgAction.replace(".", File.separator);
@@ -1462,12 +1462,10 @@ public final class BeanGenerator {
 
         Map<String, String> javaFilePaths = new LinkedHashMap<String, String>();
 
-        for (TableInfo tableInfo : tableInfos) {
-            String tableName = tableInfo.getTableName();
-            String remarks = tableInfo.getRemarks();
-
+        for (TableInfo table : tables) {
+            String tableName = table.getTableName();
             String entity = StringUtil.toPascalCase(tableName);
-
+            String remarks = table.getRemarks();
             List<String> s = new ArrayList<String>();
             s.add("package " + pkgAction + ";");
             s.add("");
@@ -1499,21 +1497,21 @@ public final class BeanGenerator {
             s.add("");
             s.add("        // 主キーが不足していたらINSERT");
             s.add("        boolean isNew = false;");
-            for (String primaryKey : tableInfo.getPrimaryKeys()) {
+            for (String primaryKey : table.getPrimaryKeys()) {
                 String pascal = StringUtil.toPascalCase(primaryKey);
                 s.add("        if (jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(e.get" + pascal + "())) {");
                 s.add("            isNew = true;");
                 s.add("        }");
             }
-            if (tableInfo.getColumnInfos().containsKey(updateDt)
-                    || tableInfo.getColumnInfos().containsKey(updateDt.toUpperCase())) {
+            if (table.getColumnInfos().containsKey(updateDt)
+                    || table.getColumnInfos().containsKey(updateDt.toUpperCase())) {
                 String pascal = StringUtil.toPascalCase(updateDt);
                 s.add("        // 楽観ロック値がなくてもINSERT");
                 s.add("        if (jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(e.get" + pascal + "())) {");
                 s.add("            isNew = true;");
                 s.add("        }");
             }
-            if (!tableInfo.isView()) {
+            if (!table.isView()) {
                 s.add("");
                 s.add("        e.setStatusKb(0);");
             }
@@ -1523,6 +1521,34 @@ public final class BeanGenerator {
             s.add("            if (e.insert(now, execId) != 1) {");
             s.add("                throw new OptLockError(\"error.cant.insert\");");
             s.add("            }");
+            if (table.getRebornInfo() != null) {
+                TableInfo reborner = table.getRebornInfo();
+                if (reborner.getPrimaryKeys().size() == 1) {
+                    String rebornEntity = StringUtil.toPascalCase(reborner.getTableName());
+                    String rebornInstance = StringUtil.toCamelCase(reborner.getTableName());
+                    String pk = reborner.getPrimaryKeys().get(0);
+                    String property = StringUtil.toCamelCase(pk);
+                    s.add("");
+                    s.add("            //転生先からの集約の場合は、転生先に主キーを反映");
+                    s.add("            String rebornerKey = postJson.get(\"" + rebornEntity + "." + property
+                            + "\").toString();");
+                    s.add("            if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(rebornerKey)) {");
+                    s.add("                String[] rebornerKeys = rebornerKey.trim().split(\",\");");
+                    s.add("                for (String pk : rebornerKeys) {");
+                    s.add("                    " + pkgEntity + "." + rebornEntity + " " + rebornInstance + " = "
+                            + pkgEntity + "." + rebornEntity + ".get(pk);");
+                    for (String fk : table.getPrimaryKeys()) {
+                        String accessor = StringUtil.toPascalCase(fk);
+                        s.add("                    " + rebornInstance + ".set" + accessor + "(e.get" + accessor
+                                + "());");
+                    }
+                    s.add("                    if (" + rebornInstance + ".update(now, execId) != 1) {");
+                    s.add("                        throw new OptLockError(\"error.cant.insert\");");
+                    s.add("                    }");
+                    s.add("                }");
+                    s.add("            }");
+                }
+            }
             s.add("");
             s.add("            map.put(\"INFO\", Messages.get(\"info.insert\"));");
             s.add("");

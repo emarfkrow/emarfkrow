@@ -70,7 +70,7 @@ $(function() {
         let dialogId = href.replace(/(^.+\/|\.html(\?.+)?$)/g, '') + 'Dialog';
         let $dialogDiv = $('div[id="' + dialogId + '"]');
 
-        //correctならstintを表示
+        //選択サブなら制約条件を表示
         if ($link.hasClass('correct')) {
             $dialogDiv.find('div.stint').show();
         }
@@ -150,6 +150,41 @@ $(function() {
             let parentVal = $form.find('[name$="' + name + '"]').val();
             $(stint).html(parentVal);
             $(stint).val(parentVal);
+        }
+
+        //転生元（集約先）
+        let isRebornee = $link.hasClass('rebornee');
+        if (isRebornee) {
+            let $gridDiv = $form.find('[id$="Grid"]');
+            let gridId = $gridDiv.prop('id');
+            let grid = Gridate.grids[gridId]
+            let columns = grid.getColumns();
+            let id = '';
+            let field = '';
+            for (let i = 0; i < columns.length; i++) {
+                let column = columns[i];
+                let isPK = column.cssClass != null && column.cssClass.indexOf('primaryKey') >= 0;
+                if (isPK) {
+                    if (id != '') {
+                        id += ', ';
+                        field += ', ';
+                    }
+                    id += column.id;
+                    field += column.field;
+                }
+            }
+            let view = grid.getData();
+            let items = view.getItems();
+            let vals = '';
+            for (let i in grid.getSelectedRows()) {
+                let item = items[i];
+                if (vals != '') {
+                    vals += ', ';
+                }
+                vals += item[field];
+            }
+            $dialogDiv.find('[id$="' + id + '"]').html(vals);
+            $dialogDiv.find('[name$="' + id + '"]').val(vals);
         }
 
         // 呼び出し元を設定

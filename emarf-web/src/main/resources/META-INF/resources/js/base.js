@@ -526,7 +526,7 @@ let Base = {
     referRegistForm: function($registForm) {
 
         $registForm.find('a.output').css('visibility', 'hidden');
-        $registForm.find('a.reborn').css('visibility', 'hidden');
+        $registForm.find('a.reborner').css('visibility', 'hidden');
         $registForm.find('button.delete').css('visibility', 'hidden');
         $registForm.find('button.permit').css('visibility', 'hidden');
         $registForm.find('button.forbid').css('visibility', 'hidden');
@@ -584,14 +584,14 @@ let Base = {
                     let $statusKb = $registForm.find('fieldset:nth-child(1)').find('[name$="statusKb"]:checked');
                     if ($statusKb.val() == 0) {
                         $registForm.find('a.output').css('visibility', 'inherit');
-                        $registForm.find('a.reborn').css('visibility', 'hidden');
+                        $registForm.find('a.reborner').css('visibility', 'hidden');
                         $registForm.find('button.delete').css('visibility', 'inherit');
                         $registForm.find('button.permit').css('visibility', 'inherit');
                         $registForm.find('button.forbid').css('visibility', 'inherit');
                         $registForm.find('button.regist').css('visibility', 'inherit');
                     } else if ($statusKb.val() == 1) {
                         $registForm.find('a.output').css('visibility', 'inherit');
-                        $registForm.find('a.reborn').css('visibility', 'inherit');
+                        $registForm.find('a.reborner').css('visibility', 'inherit');
                         $registForm.find('button.delete').css('visibility', 'hidden');
                         $registForm.find('button.permit').css('visibility', 'hidden');
                         $registForm.find('button.forbid').css('visibility', 'hidden');

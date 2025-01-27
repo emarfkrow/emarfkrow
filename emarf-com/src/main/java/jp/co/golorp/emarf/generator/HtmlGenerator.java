@@ -164,10 +164,10 @@ public final class HtmlGenerator {
             HtmlGenerator.htmlGridColumns(gridDir, table);
 
             // 単画面を出力
-            HtmlGenerator.htmlDetail(htmlDir, table);
+            HtmlGenerator.htmlDetail(htmlDir, table, tables);
 
             // thymeleafのプロパティファイルを出力
-            HtmlGenerator.htmlProperties(htmlDir, table);
+            HtmlGenerator.htmlProperties(htmlDir, table, tables);
         }
 
         HtmlGenerator.htmlNav(htmlDir, tables);
@@ -212,7 +212,7 @@ public final class HtmlGenerator {
         s.add("<script th:src=\"@{/model/" + entity + "GridColumns.js}\"></script>");
         Set<TableInfo> added = new HashSet<TableInfo>();
         added.add(table);
-        htmlNestGrid(table, s, added);
+        htmlNestGrid(s, table, tables, added);
         s.add("</head>");
         s.add("<body>");
         s.add("  <div layout:fragment=\"article\">");
@@ -288,22 +288,13 @@ public final class HtmlGenerator {
         }
         s.add("        <a th:href=\"@{" + entity + "Search.xlsx(baseMei=#{" + entity + "S.h2})}\" id=\"" + entity
                 + "Search.xlsx\" th:text=\"#{common.xlsx}\" class=\"output\" tabindex=\"-1\">xlsx</a>");
-        //各モデルから自モデルに一致する転生モデルを抽出
-        List<TableInfo> rebornSrcs = new ArrayList<TableInfo>();
-        for (TableInfo src : tables) {
-            if (src.getRebornInfo() != null) {
-                if (table.getTableName().equals(src.getRebornInfo().getTableName())) {
-                    rebornSrcs.add(src);
-                }
-            }
-        }
-        //抽出した転生モデルが１つだった場合は集約用のリンク追加
-        if (rebornSrcs.size() == 1) {
-            TableInfo rebornSrc = rebornSrcs.get(0);
-            String srcEntity = StringUtil.toPascalCase(rebornSrc.getTableName());
-            s.add("        <a th:href=\"@{/model/" + srcEntity + ".html}\" id=\"" + srcEntity
-                    + "\" target=\"dialog\" th:text=\"#{" + srcEntity + ".add}\" class=\"reborn\" tabindex=\"-1\">"
-                    + rebornSrc.getRemarks() + "</a>");
+        //転生元リンク
+        TableInfo rebornee = getRebornee(table, tables);
+        if (rebornee != null) {
+            String reborneeEntity = StringUtil.toPascalCase(rebornee.getTableName());
+            s.add("        <a th:href=\"@{/model/" + reborneeEntity + ".html}\" id=\"" + reborneeEntity
+                    + "\" target=\"dialog\" th:text=\"#{" + reborneeEntity
+                    + ".add}\" class=\"rebornee\" tabindex=\"-1\">" + rebornee.getRemarks() + "</a>");
         }
         if (!table.isHistory() && !table.isView()) {
             for (ColumnInfo column : table.getColumnInfos().values()) {
@@ -347,6 +338,30 @@ public final class HtmlGenerator {
         s.add("</body>");
         s.add("</html>");
         FileUtil.writeFile(htmlDir + File.separator + index + ".html", s);
+    }
+
+    /**
+     * @param table
+     * @param tables
+     * @return TableInfo
+     */
+    private static TableInfo getRebornee(final TableInfo table, final List<TableInfo> tables) {
+        //自モデルが転生先となる、別モデルを抽出
+        List<TableInfo> rebornees = new ArrayList<TableInfo>();
+        for (TableInfo rebornee : tables) {
+            if (rebornee.getRebornInfo() != null) {
+                if (table.getTableName().equals(rebornee.getRebornInfo().getTableName())) {
+                    rebornees.add(rebornee);
+                }
+            }
+        }
+
+        //抽出した転生元モデルが１つだった場合は集約用のリンク追加
+        TableInfo rebornee = null;
+        if (rebornees.size() == 1) {
+            rebornee = rebornees.get(0);
+        }
+        return rebornee;
     }
 
     /**
@@ -410,20 +425,18 @@ public final class HtmlGenerator {
      * 詳細画面 HTML出力
      * @param htmlDir HTMLファイル出力ディレクトリ
      * @param table テーブル情報
+     * @param tables
      */
-    private static void htmlDetail(final String htmlDir, final TableInfo table) {
-
+    private static void htmlDetail(final String htmlDir, final TableInfo table, final List<TableInfo> tables) {
         String entity = StringUtil.toPascalCase(table.getTableName());
         String formName = entity + "RegistForm";
         String action = entity + "Regist.ajax";
-        String remarks = table.getRemarks();
-
         List<String> s = new ArrayList<String>();
         s.add("<!DOCTYPE html>");
         s.add("<html xmlns:th=\"http://www.thymeleaf.org\" xmlns:layout=\"http://www.ultraq.net.nz/web/thymeleaf/layout\" layout:decorate=\"~{common/base}\">");
         s.add("<head>");
         s.add("<meta charset=\"UTF-8\">");
-        s.add("<title th:text=\"#{" + entity + ".title}\">" + remarks + "</title>");
+        s.add("<title th:text=\"#{" + entity + ".title}\">" + table.getRemarks() + "</title>");
         s.add("<style type=\"text/css\">");
         s.add("</style>");
         s.add("<script type=\"text/javascript\">");
@@ -432,7 +445,7 @@ public final class HtmlGenerator {
         s.add("<script th:src=\"@{/model/" + entity + "GridColumns.js}\"></script>");
         Set<TableInfo> added = new HashSet<TableInfo>();
         added.add(table);
-        htmlNestGrid(table, s, added);
+        htmlNestGrid(s, table, tables, added);
         s.add("</head>");
         s.add("<body>");
         s.add("  <div layout:fragment=\"article\">");
@@ -455,36 +468,32 @@ public final class HtmlGenerator {
         s.add("        <legend th:text=\"#{" + entity + ".legend}\">legend</legend>");
         htmlFields(table, s, true, false);
         s.add("      </fieldset>");
-
         // 兄弟モデル
         List<TableInfo> bros = table.getBrosInfos();
         if (bros != null) {
             for (TableInfo bro : bros) {
-                String broName = StringUtil.toPascalCase(bro.getTableName());
+                String broEntity = StringUtil.toPascalCase(bro.getTableName());
                 s.add("      <fieldset>");
-                s.add("        <legend th:text=\"#{" + broName + ".legend}\">legend</legend>");
+                s.add("        <legend th:text=\"#{" + broEntity + ".legend}\">legend</legend>");
                 htmlFields(bro, s, true, true);
                 s.add("      </fieldset>");
             }
         }
-
         //子テーブルリスト
         for (TableInfo child : table.getChildInfos()) {
-            String childName = StringUtil.toPascalCase(child.getTableName());
-            s.add("      <h3 th:text=\"#{" + childName + ".h3}\">h3</h3>");
-            s.add("      <a th:href=\"@{/model/" + childName + ".html}\" id=\"" + childName
-                    + "\" target=\"dialog\" th:text=\"#{" + childName + ".add}\" class=\"addChild\" tabindex=\"-1\">"
+            String childEntity = StringUtil.toPascalCase(child.getTableName());
+            s.add("      <h3 th:text=\"#{" + childEntity + ".h3}\">h3</h3>");
+            s.add("      <a th:href=\"@{/model/" + childEntity + ".html}\" id=\"" + childEntity
+                    + "\" target=\"dialog\" th:text=\"#{" + childEntity + ".add}\" class=\"addChild\" tabindex=\"-1\">"
                     + child.getRemarks() + "</a>");
-
-            // ファイル列がある場合は新規行を取消
             String addRow = " data-addRow=\"true\"";
+            // ファイル列がある場合は新規行を取消
             for (ColumnInfo column : child.getColumnInfos().values()) {
                 if (StringUtil.endsWith(inputFileSuffixs, column.getColumnName())) {
                     addRow = "";
                     break;
                 }
             }
-
             // 最終キーが採番キーでなければ新規行を取消
             int size = child.getPrimaryKeys().size();
             if (size > 0) {
@@ -494,16 +503,14 @@ public final class HtmlGenerator {
                     addRow = "";
                 }
             }
-
             String frozen = String.valueOf(table.getPrimaryKeys().size());
-            s.add("      <div id=\"" + childName + "Grid\" data-selectionMode=\"link\"" + addRow
-                    + " data-frozenColumn=\"" + frozen + "\" th:data-href=\"@{/model/" + childName + ".html}\"></div>");
+            s.add("      <div id=\"" + childEntity + "Grid\" data-selectionMode=\"link\"" + addRow
+                    + " data-frozenColumn=\"" + frozen + "\" th:data-href=\"@{/model/" + childEntity
+                    + ".html}\"></div>");
             for (ColumnInfo column : child.getColumnInfos().values()) {
                 if (column.getReferInfo() != null) {
                     String columnName = column.getColumnName();
-                    boolean isInsertBy = columnName.matches("(?i)^" + insertBy + "$");
-                    boolean isUpdateBy = columnName.matches("(?i)^" + updateBy + "$");
-                    if (isInsertBy || isUpdateBy) {
+                    if (columnName.matches("(?i)^" + insertBy + "$") || columnName.matches("(?i)^" + updateBy + "$")) {
                         continue;
                     }
                     String property = StringUtil.toCamelCase(column.getColumnName());
@@ -515,14 +522,13 @@ public final class HtmlGenerator {
                         childAction = "?action=" + referEntity + "Correct.ajax";
                         childCss = " correct";
                     }
-                    s.add("        <a id=\"" + childName + "Grid." + property + "\" th:href=\"@{/model/" + referEntity
+                    s.add("        <a id=\"" + childEntity + "Grid." + property + "\" th:href=\"@{/model/" + referEntity
                             + "S.html" + childAction + "}\" target=\"dialog\" class=\"refer" + childCss
                             + "\" th:text=\"'" + refer.getRemarks()
                             + "' + #{common.refer}\" tabindex=\"-1\" style=\"display: none;\">...</a>");
                 }
             }
         }
-
         s.add("      <div class=\"buttons\">");
         if (!table.isHistory() && !table.isView()) {
             s.add("        <button type=\"button\" id=\"Refresh" + entity
@@ -530,13 +536,25 @@ public final class HtmlGenerator {
         }
         s.add("        <a th:href=\"@{" + entity + "Get.xlsx(baseMei=#{" + entity + ".h2})}\" id=\""
                 + entity + "Get.xlsx\" th:text=\"#{common.xlsx}\" class=\"output\" tabindex=\"-1\">xlsx</a>");
-        //転生先がある場合は追加ボタンを表示
+        //転生先がある場合
         if (table.getRebornInfo() != null) {
-            TableInfo rebornInfo = table.getRebornInfo();
-            String reborn = StringUtil.toPascalCase(rebornInfo.getTableName());
-            s.add("        <a th:href=\"@{/model/" + reborn + ".html}\" id=\"" + reborn
-                    + "\" target=\"dialog\" th:text=\"#{" + reborn + ".add}\" class=\"reborn\" tabindex=\"-1\">"
-                    + rebornInfo.getRemarks() + "</a>");
+            TableInfo reborn = table.getRebornInfo();
+            String rebornEntity = StringUtil.toPascalCase(reborn.getTableName());
+            //追加ボタン
+            s.add("        <a th:href=\"@{/model/" + rebornEntity + ".html}\" id=\"" + rebornEntity
+                    + "\" target=\"dialog\" th:text=\"#{" + rebornEntity + ".add}\" class=\"reborner\" tabindex=\"-1\">"
+                    + reborn.getRemarks() + "</a>");
+            // 転生先の主キー
+            for (String pk : reborn.getPrimaryKeys()) {
+                ColumnInfo primaryKey = reborn.getColumnInfos().get(pk);
+                String property = StringUtil.toCamelCase(pk);
+                s.add("        <div>");
+                s.add("          <label>" + primaryKey.getRemarks() + "</label>");
+                s.add("          <span id=\"" + rebornEntity + "." + property + "\"></span>");
+                s.add("          <input type=\"hidden\" id=\"" + rebornEntity + "." + property + "\" name=\""
+                        + rebornEntity + "." + property + "\"/>");
+                s.add("        </div>");
+            }
         }
         s.add("      </div>");
         s.add("      <div class=\"submits\">");
@@ -555,7 +573,6 @@ public final class HtmlGenerator {
         s.add("  </div>");
         s.add("</body>");
         s.add("</html>");
-
         FileUtil.writeFile(htmlDir + File.separator + entity + ".html", s);
     }
 
@@ -563,8 +580,9 @@ public final class HtmlGenerator {
      * 各モデルのプロパティファイル出力
      * @param htmlDir HTMLファイル出力ディレクトリ
      * @param table テーブル情報
+     * @param tables
      */
-    private static void htmlProperties(final String htmlDir, final TableInfo table) {
+    private static void htmlProperties(final String htmlDir, final TableInfo table, final List<TableInfo> tables) {
 
         String entity = StringUtil.toPascalCase(table.getTableName());
         String remarks = table.getRemarks();
@@ -614,6 +632,13 @@ public final class HtmlGenerator {
             String rebornMei = reborn.getRemarks();
             s.add("");
             s.add(rebornName + ".add " + rebornMei + "追加");
+        }
+
+        TableInfo rebornee = getRebornee(table, tables);
+        if (rebornee != null) {
+            String reborneeEntity = StringUtil.toPascalCase(rebornee.getTableName());
+            s.add("");
+            s.add(reborneeEntity + ".add " + rebornee.getRemarks() + "集約");
         }
 
         FileUtil.writeFile(htmlDir + File.separator + entity + ".properties", s);
@@ -696,74 +721,90 @@ public final class HtmlGenerator {
 
     /**
      * ネストした兄弟モデル・子モデル・参照モデルのgrid定義出力
-     * @param tableInfo テーブル情報
      * @param s 出力文字列のリスト
+     * @param table テーブル情報
+     * @param tables
      * @param added 出力済みテーブル情報のリスト
      */
-    private static void htmlNestGrid(final TableInfo tableInfo, final List<String> s, final Set<TableInfo> added) {
+    private static void htmlNestGrid(final List<String> s, final TableInfo table, final List<TableInfo> tables,
+            final Set<TableInfo> added) {
 
         //参照モデル
-        for (ColumnInfo columnInfo : tableInfo.getColumnInfos().values()) {
+        for (ColumnInfo column : table.getColumnInfos().values()) {
 
-            TableInfo referInfo = columnInfo.getReferInfo();
+            TableInfo refer = column.getReferInfo();
 
-            if (referInfo != null) {
+            if (refer != null) {
 
-                if (added.contains(referInfo)) {
+                if (added.contains(refer)) {
                     continue;
                 }
 
-                String referName = referInfo.getTableName();
-                String pascalRefer = StringUtil.toPascalCase(referName);
-                s.add("<script th:src=\"@{/model/" + pascalRefer + "GridColumns.js}\"></script>");
-                added.add(referInfo);
+                String referName = refer.getTableName();
+                String entity = StringUtil.toPascalCase(referName);
+                s.add("<script th:src=\"@{/model/" + entity + "GridColumns.js}\"></script>");
+                added.add(refer);
 
-                htmlNestGrid(referInfo, s, added);
+                htmlNestGrid(s, refer, tables, added);
             }
         }
 
         //兄弟モデルの参照モデル
-        for (TableInfo brosInfo : tableInfo.getBrosInfos()) {
+        for (TableInfo bro : table.getBrosInfos()) {
 
-            for (ColumnInfo columnInfo : brosInfo.getColumnInfos().values()) {
+            for (ColumnInfo column : bro.getColumnInfos().values()) {
 
-                TableInfo referInfo = columnInfo.getReferInfo();
+                TableInfo refer = column.getReferInfo();
 
-                if (referInfo != null) {
+                if (refer != null) {
 
-                    if (added.contains(referInfo)) {
+                    if (added.contains(refer)) {
                         continue;
                     }
 
-                    String referName = referInfo.getTableName();
-                    String pascalRefer = StringUtil.toPascalCase(referName);
-                    s.add("<script th:src=\"@{/model/" + pascalRefer + "GridColumns.js}\"></script>");
-                    added.add(referInfo);
+                    String referName = refer.getTableName();
+                    String entity = StringUtil.toPascalCase(referName);
+                    s.add("<script th:src=\"@{/model/" + entity + "GridColumns.js}\"></script>");
+                    added.add(refer);
 
-                    htmlNestGrid(referInfo, s, added);
+                    htmlNestGrid(s, refer, tables, added);
                 }
             }
         }
 
         //子モデル
-        for (TableInfo childInfo : tableInfo.getChildInfos()) {
+        for (TableInfo child : table.getChildInfos()) {
 
-            if (added.contains(childInfo)) {
+            if (added.contains(child)) {
                 continue;
             }
 
-            String childName = childInfo.getTableName();
-            String pascalChild = StringUtil.toPascalCase(childName);
-            s.add("<script th:src=\"@{/model/" + pascalChild + "GridColumns.js}\"></script>");
-            added.add(childInfo);
+            String childName = child.getTableName();
+            String entity = StringUtil.toPascalCase(childName);
+            s.add("<script th:src=\"@{/model/" + entity + "GridColumns.js}\"></script>");
+            added.add(child);
 
-            htmlNestGrid(childInfo, s, added);
+            htmlNestGrid(s, child, tables, added);
         }
 
-        //転生モデル
-        TableInfo reborn = tableInfo.getRebornInfo();
+        //転生先モデル
+        TableInfo reborn = table.getRebornInfo();
         if (reborn != null) {
-            htmlNestGrid(reborn, s, added);
+            if (!added.contains(reborn)) {
+                added.add(reborn);
+                htmlNestGrid(s, reborn, tables, added);
+            }
+        }
+
+        //転生元モデル
+        TableInfo rebornee = getRebornee(table, tables);
+        if (rebornee != null) {
+            if (!added.contains(rebornee)) {
+                String entity = StringUtil.toPascalCase(rebornee.getTableName());
+                s.add("<script th:src=\"@{/model/" + entity + "GridColumns.js}\"></script>");
+                added.add(rebornee);
+                htmlNestGrid(s, rebornee, tables, added);
+            }
         }
     }
 

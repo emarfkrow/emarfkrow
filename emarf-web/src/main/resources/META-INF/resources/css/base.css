@@ -239,7 +239,15 @@ button.regist {
     font-size: large;
 }
 
-a.reborn,
+a.reborner,
+a.rebornee {
+    background-color: steelblue;
+    color: white !important;
+    font-size: large;
+    font-weight: bold;
+    margin-left: 2rem;
+}
+
 button.permit {
     background-color: teal;
     color: white !important;
