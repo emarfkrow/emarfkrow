@@ -66,6 +66,8 @@ public final class HtmlGenerator {
 
     /** options項目サフィックス */
     private static String[] optionsSuffixs;
+    /** pulldown項目サフィックス */
+    private static String[] pulldownSuffixs;
     /** データjson */
     private static String json;
     /** 区分カラム */
@@ -124,6 +126,7 @@ public final class HtmlGenerator {
         updateBy = bundle.getString("BeanGenerator.update_by");
 
         optionsSuffixs = bundle.getString("BeanGenerator.options.suffixs").split(",");
+        pulldownSuffixs = bundle.getString("BeanGenerator.pulldown.suffixs").split(",");
         json = bundle.getString("BeanGenerator.options.json");
         optK = bundle.getString("BeanGenerator.options.key").toUpperCase();
         optV = bundle.getString("BeanGenerator.options.value").toUpperCase();
@@ -1339,9 +1342,14 @@ public final class HtmlGenerator {
             css = " class=\"primaryKey\"";
         }
 
+        String forcePulldown = "";
+        if (StringUtil.endsWith(pulldownSuffixs, columnName)) {
+            forcePulldown = " data-force-pulldown=\"1\"";
+        }
+
         s.add("          <fieldset id=\"" + id + "List\" data-options=\"" + json + "\" data-optionParams=\"" + optK
                 + ":" + columnName + "\" data-optionValue=\"" + optV + "\" data-optionLabel=\"" + optL + "\""
-                + css + ">");
+                + css + forcePulldown + ">");
         s.add("            <legend th:text=\"#{" + id + "}\">" + remarks + "</legend>");
         s.add("          </fieldset>");
     }
