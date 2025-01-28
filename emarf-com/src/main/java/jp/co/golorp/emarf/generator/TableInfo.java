@@ -76,6 +76,9 @@ public class TableInfo {
     /** 転生先テーブル */
     private TableInfo rebornInfo;
 
+    /** 集約先テーブル */
+    private TableInfo summaryInfo;
+
     /** 制約テーブル */
     private TableInfo stintInfo;
 
@@ -283,6 +286,20 @@ public class TableInfo {
      */
     public void setRebornInfo(final TableInfo p) {
         this.rebornInfo = p;
+    }
+
+    /**
+     * @return summaryInfo
+     */
+    public TableInfo getSummaryInfo() {
+        return summaryInfo;
+    }
+
+    /**
+     * @param p セットする summaryInfo
+     */
+    public void setSummaryInfo(final TableInfo p) {
+        this.summaryInfo = p;
     }
 
     /**

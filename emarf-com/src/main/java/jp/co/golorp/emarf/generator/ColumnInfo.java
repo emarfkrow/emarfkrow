@@ -59,6 +59,9 @@ public class ColumnInfo {
     /** 転生キーならtrue */
     private boolean isReborn;
 
+    /** 集約キーならtrue */
+    private boolean isSummary;
+
     /** 参照先テーブル */
     private TableInfo referInfo;
 
@@ -224,6 +227,20 @@ public class ColumnInfo {
      */
     public void setReborn(final boolean p) {
         this.isReborn = p;
+    }
+
+    /**
+     * @return isSummary
+     */
+    public boolean isSummary() {
+        return isSummary;
+    }
+
+    /**
+     * @param p セットする isSummary
+     */
+    public void setSummary(final boolean p) {
+        this.isSummary = p;
     }
 
     /**

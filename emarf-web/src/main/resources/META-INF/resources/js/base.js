@@ -360,16 +360,17 @@ let Base = {
         let $dts = $('.nav>dl>dt');
         $dts.each(function() {
             let $dt = $(this);
-            $dt.html('<span id="navToggle" class="ui-accordion-header-icon ui-icon"></span>' + $dt.html());
+            let id = 'navToggle' + this.id;
+            $dt.html('<span id="' + id + '" class="ui-accordion-header-icon ui-icon"></span>' + $dt.html());
             let isNavs = 0;
             if (sessionStorage['navs']) {
                 navs = JSON.parse(sessionStorage['navs']);
                 isNavs = navs[this.id];
             }
             if (isNavs) {
-                $dt.find('span[id="navToggle"]').addClass('ui-icon-triangle-1-s');
+                $dt.find('span[id="' + id + '"]').addClass('ui-icon-triangle-1-s');
             } else {
-                $dt.find('span[id="navToggle"]').addClass('ui-icon-triangle-1-e');
+                $dt.find('span[id="' + id + '"]').addClass('ui-icon-triangle-1-e');
                 $dt.next('dd').hide();
             }
         });
@@ -378,7 +379,7 @@ let Base = {
             if (sessionStorage['navs']) {
                 navs = JSON.parse(sessionStorage['navs']);
             }
-            let $toggle = $(this).find('span[id="navToggle"]');
+            let $toggle = $(this).find('span[id^="navToggle"]');
             if ($toggle.hasClass('ui-icon-triangle-1-s')) {
                 // 閉じる
                 $toggle.addClass('ui-icon-triangle-1-e');

@@ -270,7 +270,7 @@ public final class DataSources {
         loadBundle();
 
         // テーブル情報の取得
-        List<TableInfo> tableInfos = new ArrayList<TableInfo>();
+        List<TableInfo> tables = new ArrayList<TableInfo>();
         try {
             // データベースからテーブル情報を取得してループ
             Connection cn = Connections.get();
@@ -278,15 +278,15 @@ public final class DataSources {
 
             // テーブル情報を取得
             String schemaPattern = BUNDLE.getString("username");
-            addTableInfos(tableInfos, metaData, schemaPattern);
+            addTableInfos(tables, metaData, schemaPattern);
 
             // テーブル毎に主キー情報を取得
-            for (TableInfo tableInfo : tableInfos) {
-                addPrimaryKeys(metaData, tableInfo);
+            for (TableInfo table : tables) {
+                addPrimaryKeys(metaData, table);
             }
 
             // テーブル毎にカラム情報を取得
-            for (TableInfo table : tableInfos) {
+            for (TableInfo table : tables) {
 
                 // テーブルのカラム情報を取得してループ
                 ResultSet columns = metaData.getColumns(null, schemaPattern.toUpperCase(), table.getTableName(), null);
@@ -385,21 +385,21 @@ public final class DataSources {
         }
 
         //兄弟モデルの評価
-        addBrotherTable(tableInfos);
+        addBrotherTable(tables);
         //履歴モデルの評価
-        addHistoryTable(tableInfos);
+        addHistoryTable(tables);
         //子モデルの評価
-        addChildTables(tableInfos);
+        addChildTables(tables);
         //参照モデルの評価
-        addReferTable(tableInfos);
+        addReferTable(tables);
         //転生モデルの評価
-        addRebornTable(tableInfos);
+        addRebornTable(tables);
         //組合せモデルの評価
-        addCombo(tableInfos);
+        addCombo(tables);
 
-        log(tableInfos);
+        log(tables);
 
-        return tableInfos;
+        return tables;
     }
 
     /**
@@ -462,6 +462,12 @@ public final class DataSources {
                 LOG.info("    RebornInfo:");
                 TableInfo reborn = table.getRebornInfo();
                 LOG.info("        " + reborn.getTableName() + " " + reborn.getPrimaryKeys());
+            }
+
+            if (table.getSummaryInfo() != null) {
+                LOG.info("    SummaryInfo:");
+                TableInfo summary = table.getSummaryInfo();
+                LOG.info("        " + summary.getTableName() + " " + summary.getPrimaryKeys());
             }
 
             if (table.getComboInfos().size() > 1) {
@@ -836,53 +842,66 @@ public final class DataSources {
      */
     private static void addHistoryTable(final List<TableInfo> tableInfos) {
 
-        // テーブル情報でループ（比較元）
-        Iterator<TableInfo> srcIterator = tableInfos.iterator();
-        while (srcIterator.hasNext()) {
-            TableInfo srcInfo = srcIterator.next();
+        // 比較元でループ
+        Iterator<TableInfo> srcs = tableInfos.iterator();
+        while (srcs.hasNext()) {
+            TableInfo src = srcs.next();
 
-            if (srcInfo.getPrimaryKeys().size() == 0) {
+            //主キーがなければスキップ
+            if (src.getPrimaryKeys().size() == 0) {
                 continue;
             }
 
-            // テーブル情報でループ（比較先）
-            Iterator<TableInfo> destIterator = tableInfos.iterator();
-            while (destIterator.hasNext()) {
-                TableInfo destInfo = destIterator.next();
+            String srcPKCsv = src.getPrimaryKeys().toString().replaceAll("[\\[\\]]", "");
+            String srcColCsv = src.getNonPrimaryKeys().toString().replaceAll("[\\[\\]]", "");
 
-                // 比較元と同じならスキップ
-                if (srcInfo == destInfo) {
+            // 比較先でループ
+            Iterator<TableInfo> dests = tableInfos.iterator();
+            while (dests.hasNext()) {
+                TableInfo dest = dests.next();
+
+                // 比較元と比較先が同じならスキップ
+                if (src == dest) {
                     continue;
                 }
 
-                String srcPrimaryKeys = srcInfo.getPrimaryKeys().toString().replaceAll("[\\[\\]]", "");
-                String destPrimaryKeys = destInfo.getPrimaryKeys().toString().replaceAll("[\\[\\]]", "");
-                String srcNonPrimaryKeys = srcInfo.getNonPrimaryKeys().toString().replaceAll("[\\[\\]]", "");
-                String destNonPrimaryKeys = destInfo.getNonPrimaryKeys().toString().replaceAll("[\\[\\]]", "");
+                String destPKCsv = dest.getPrimaryKeys().toString().replaceAll("[\\[\\]]", "");
+                String destColCsv = dest.getNonPrimaryKeys().toString().replaceAll("[\\[\\]]", "");
+
+                // キーが合致するならスキップ
+                if (srcPKCsv.equals(destPKCsv)) {
+                    continue;
+                }
 
                 // キー以外が合致しなければスキップ
-                if (!srcNonPrimaryKeys.equals(destNonPrimaryKeys)) {
+                if (!srcColCsv.equals(destColCsv)) {
                     continue;
                 }
-                // 比較先が比較元の主キーと同じ組み合わせならスキップ
-                if (destPrimaryKeys.equals(srcPrimaryKeys)) {
-                    continue;
-                }
+
                 // 比較先が比較元の主キーと同じ組み合わせでスタートしなければスキップ
-                if (!destPrimaryKeys.startsWith(srcPrimaryKeys)) {
+                if (!destPKCsv.startsWith(srcPKCsv)) {
                     continue;
                 }
-                if (destPrimaryKeys.replaceAll(srcPrimaryKeys + ", ", "").split(",").length != 1) {
+
+                // 比較先が比較元の主キー＋１キーでなければスキップ
+                if (destPKCsv.replaceAll(srcPKCsv + ", ", "").split(",").length != 1) {
                     continue;
                 }
-                String destLastKey = destInfo.getPrimaryKeys().get(destInfo.getPrimaryKeys().size() - 1);
-                ColumnInfo lastPKInfo = destInfo.getColumnInfos().get(destLastKey);
+
+                // 比較先の最終キーが採番キーでないか文字列ならスキップ
+                String destLastKey = dest.getPrimaryKeys().get(dest.getPrimaryKeys().size() - 1);
+                ColumnInfo lastPKInfo = dest.getColumnInfos().get(destLastKey);
                 if (!lastPKInfo.isNumbering() || lastPKInfo.getTypeName().equals("CHAR")) {
                     continue;
                 }
 
-                destInfo.setHistory(true);
-                srcInfo.setHistoryInfo(destInfo);
+                // 比較先が比較元に前方一致しないならスキップ
+                if (!dest.getTableName().matches("(?i)^" + src.getTableName() + ".+$")) {
+                    continue;
+                }
+
+                dest.setHistory(true);
+                src.setHistoryInfo(dest);
             }
         }
     }
@@ -952,17 +971,17 @@ public final class DataSources {
 
                 // 比較先の主キーが「比較元の主キー＋一つ」の場合は子テーブルリストに追加
                 if (srcInfo.getPrimaryKeys().size() + 1 == destInfo.getPrimaryKeys().size()) {
-                    // 履歴テーブルでも兄弟テーブルでもなければ追加
+
+                    // 履歴テーブルならスキップ
                     if (destInfo.isHistory()) {
                         continue;
-                    } else {
-
-                        //比較元の子モデルに比較先を追加
-                        childInfos.add(destInfo);
-
-                        //比較先の親モデルに比較元を追加
-                        destInfo.getParentInfos().add(srcInfo);
                     }
+
+                    //比較元の子モデルに比較先を追加
+                    childInfos.add(destInfo);
+
+                    //比較先の親モデルに比較元を追加
+                    destInfo.getParentInfos().add(srcInfo);
                 }
             }
         }
@@ -970,122 +989,102 @@ public final class DataSources {
 
     /**
      * マスタテーブル（参照先）から、植え付け先（参照元）を探す
-     * @param tableInfos テーブル情報のリスト
+     * @param tables テーブル情報のリスト
      */
-    private static void addReferTable(final List<TableInfo> tableInfos) {
+    private static void addReferTable(final List<TableInfo> tables) {
 
-        // 参照IDサフィックスと参照名称サフィックスの組み合わせでループ（定義した順に優先）
-        for (String[] referPair : referPairs) {
-            String referKeySuffix = referPair[0];
-            String referMeiSuffix = referPair[1];
+        // 参照先としてループ
+        Iterator<TableInfo> sanshosakis = tables.iterator();
+        while (sanshosakis.hasNext()) {
+            TableInfo sanshosaki = sanshosakis.next();
 
-            // 比較元テーブル情報でループ（マスタ候補）
-            Iterator<TableInfo> srcIterator = tableInfos.iterator();
-            while (srcIterator.hasNext()) {
-                TableInfo master = srcIterator.next();
+            // 参照先が複合キーならスキップ
+            if (sanshosaki.getPrimaryKeys().size() != 1) {
+                continue;
+            }
 
-                // 他のテーブルの弟ならスキップ
-                if (master.isBrother()) {
+            // 参照先が他のテーブルの弟ならスキップ
+            if (sanshosaki.isBrother()) {
+                continue;
+            }
+
+            String pk = sanshosaki.getPrimaryKeys().get(0);
+
+            // 参照先が参照キー・参照名のいずれにも合致しなければ次のテーブルを検証
+            boolean isRefer = false;
+            for (String[] referPair : referPairs) {
+                String keySuffix = referPair[0];
+                String meiSuffix = referPair[1];
+
+                // 参照キーに合致しなければ次の参照キーを検証
+                if (!StringUtil.endsWithIgnoreCase(keySuffix, pk)) {
                     continue;
                 }
 
-                // 複合キーならスキップ
-                if (master.getPrimaryKeys().size() != 1) {
-                    continue;
-                }
-
-                // ユニークキーが参照キーの何れにも合致しなければスキップ
-                String uniqueKey = master.getPrimaryKeys().get(0);
-                if (!StringUtil.endsWithIgnoreCase(referKeySuffix, uniqueKey)) {
-                    continue;
-                }
-
-                // 参照名称サフィックスに合致するカラムがなければスキップ
-                String referMei = uniqueKey.replaceAll("(?i)" + referKeySuffix + "$", referMeiSuffix);
-                boolean b = false;
-                for (String k : master.getColumnInfos().keySet()) {
-                    if (k.matches("(?i)^" + referMei + "$")) {
-                        b = true;
+                // 参照名に合致するカラムがあれば終了
+                String referMei = pk.replaceAll("(?i)" + keySuffix + "$", meiSuffix);
+                for (String columnName : sanshosaki.getColumnInfos().keySet()) {
+                    if (columnName.matches("(?i)^" + referMei + "$")) {
+                        isRefer = true;
                         break;
                     }
                 }
-                if (!b) {
-                    continue;
+                if (isRefer) {
+                    break;
                 }
+            }
+            if (!isRefer) {
+                continue;
+            }
 
-                // 参照マスタのユニークキー情報
-                ColumnInfo uniqueKeyInfo = master.getColumnInfos().get(uniqueKey);
+            // 参照先のユニークキー情報
+            ColumnInfo primaryKey = sanshosaki.getColumnInfos().get(pk);
 
-                /*
-                 * 比較先（参照元テーブル）の探索
-                 */
+            // 参照元としてループ
+            Iterator<TableInfo> sanshomotos = tables.iterator();
+            while (sanshomotos.hasNext()) {
+                TableInfo sanshomoto = sanshomotos.next();
+                List<String> pks = sanshomoto.getPrimaryKeys();
 
-                // テーブル情報でループ（比較先）
-                Iterator<TableInfo> destIterator = tableInfos.iterator();
-                while (destIterator.hasNext()) {
-                    TableInfo table = destIterator.next();
+                // 比較先のカラム情報でループして比較元のユニークキーがあれば参照テーブルリストに追加
+                for (Entry<String, ColumnInfo> e : sanshomoto.getColumnInfos().entrySet()) {
+                    String columnName = e.getKey();
+                    ColumnInfo column = e.getValue();
 
-                    // マスタ系が悉く参照モデルでなくなるので廃止
-                    //                    // 比較先自体が参照マスタならスキップ
-                    //                    boolean self = false;
-                    //                    if (tableInfo.getPrimaryKeys().size() == 1) {
-                    //                        String primaryKey = tableInfo.getPrimaryKeys().get(0);
-                    //                        for (String[] pair : referPairs) {
-                    //                            String idSuffix = pair[0];
-                    //                            String meiSuffix = pair[1];
-                    //                            if (StringUtil.endsWithIgnoreCase(idSuffix, primaryKey)) {
-                    //                                String meiColumnName = primaryKey.replaceAll("(?i)" + idSuffix + "$", meiSuffix);
-                    //                                if (tableInfo.getColumnInfos().containsKey(meiColumnName)) {
-                    //                                    self = true;
-                    //                                    break;
-                    //                                }
-                    //                            }
-                    //                        }
-                    //                    }
-                    //                    if (self) {
-                    //                        continue;
-                    //                    }
+                    // 参照テーブル自体の主キー自体ならスキップ
+                    if (sanshomoto == sanshosaki && column == primaryKey) {
+                        continue;
+                    }
 
-                    // 比較先のカラム情報でループして比較元のユニークキーがあれば参照テーブルリストに追加
-                    for (Entry<String, ColumnInfo> columnInfos : table.getColumnInfos().entrySet()) {
-                        String columnName = columnInfos.getKey();
-                        ColumnInfo columnInfo = columnInfos.getValue();
+                    // データ型が異なるならスキップ
+                    if (!column.getTypeName().equals(primaryKey.getTypeName())) {
+                        continue;
+                    }
 
-                        // 比較先がユニークキーで、弟に設定しないテーブルならスキップ
-                        if (columnInfo.isPk() && table.getPrimaryKeys().size() == 1) {
-                            if (table.getTableName().matches(eldestRe)) {
-                                continue;
-                            }
-                        }
+                    // データサイズが異なるならスキップ
+                    if (column.getColumnSize() != primaryKey.getColumnSize()) {
+                        continue;
+                    }
 
-                        // 参照テーブル自体の主キー同士ならスキップ
-                        if (table == master && columnInfo == uniqueKeyInfo) {
+                    // 小数桁数が異なるならスキップ
+                    if (column.getDecimalDigits() != primaryKey.getDecimalDigits()) {
+                        continue;
+                    }
+
+                    // 比較先もユニークキーで、他テーブルの弟にしないテーブルならスキップ
+                    if (column.isPk() && pks.size() == 1) {
+                        if (sanshomoto.getTableName().matches(eldestRe)) {
                             continue;
                         }
+                    }
 
-                        // データ型が異なるならスキップ
-                        if (!columnInfo.getTypeName().equals(uniqueKeyInfo.getTypeName())) {
-                            continue;
-                        }
+                    // 参照元カラム名の末尾が参照先カラム名と合致し、参照モデルが未登録なら、カラムに参照モデルを設定
+                    if (columnName.matches("(?i)^.*" + pk + "$") && column.getReferInfo() == null) {
+                        column.setReferInfo(sanshosaki);
 
-                        // データサイズが異なるならスキップ
-                        if (columnInfo.getColumnSize() != uniqueKeyInfo.getColumnSize()) {
-                            continue;
-                        }
-
-                        // 小数桁数が異なるならスキップ
-                        if (columnInfo.getDecimalDigits() != uniqueKeyInfo.getDecimalDigits()) {
-                            continue;
-                        }
-
-                        // 比較先カラム名の末尾が比較元カラム名と合致していて、参照モデルが登録済みでなければ、比較元を参照モデルに設定
-                        if (columnName.matches("(?i)^.*" + uniqueKey + "$") && columnInfo.getReferInfo() == null) {
-                            columnInfo.setReferInfo(master);
-                            //最終キーなら採番フラグオフ
-                            if (table.getPrimaryKeys().size() > 1 && columnInfo.getColumnName()
-                                    .equals(table.getPrimaryKeys().get(table.getPrimaryKeys().size() - 1))) {
-                                columnInfo.setNumbering(false);
-                            }
+                        // 参照元の複合キーの最終キーなら、サブ画面で選択するため採番フラグをオフ
+                        if (pks.size() > 1 && columnName.equals(pks.get(pks.size() - 1))) {
+                            column.setNumbering(false);
                         }
                     }
                 }
@@ -1099,31 +1098,28 @@ public final class DataSources {
      */
     private static void addRebornTable(final List<TableInfo> tableInfos) {
 
-        // テーブル情報でループ（転生元）
-        Iterator<TableInfo> srcs = tableInfos.iterator();
-        while (srcs.hasNext()) {
-            TableInfo src = srcs.next();
+        // 転生元としてループ
+        Iterator<TableInfo> tenseimotos = tableInfos.iterator();
+        while (tenseimotos.hasNext()) {
+            TableInfo tenseimoto = tenseimotos.next();
 
-            if (src.isHistory() || src.isView()) {
+            // 履歴モデルかビューなら除外
+            if (tenseimoto.isHistory() || tenseimoto.isView()) {
                 continue;
             }
 
-            // 単一キーの場合、参照サフィックスセットに合致すればスキップ（定義した順に優先）
-            if (src.getPrimaryKeys().size() == 1) {
-
-                String pk = src.getPrimaryKeys().get(0);
-
+            // 単一キーの場合、参照モデルなら除外（参照サフィックスセットに合致すれば除外）
+            if (tenseimoto.getPrimaryKeys().size() == 1) {
+                String motoKey = tenseimoto.getPrimaryKeys().get(0);
                 boolean b = false;
                 for (String[] referPair : referPairs) {
-                    String referKeySuffix = referPair[0];
-                    String referMeiSuffix = referPair[1];
-
-                    // 単一キーが参照キーサフィックスに合致する場合
-                    if (StringUtil.endsWithIgnoreCase(referKeySuffix, pk)) {
-
-                        // 参照名称サフィックスに合致するカラムがある場合
-                        String referMei = pk.replaceAll("(?i)" + referKeySuffix + "$", referMeiSuffix);
-                        for (String k : src.getColumnInfos().keySet()) {
+                    String keySuffix = referPair[0];
+                    String meiSuffix = referPair[1];
+                    String referMei = motoKey.replaceAll("(?i)" + keySuffix + "$", meiSuffix);
+                    // 単一キーが参照キーである場合
+                    if (StringUtil.endsWithIgnoreCase(keySuffix, motoKey)) {
+                        // 参照名にも合致する場合は除外
+                        for (String k : tenseimoto.getColumnInfos().keySet()) {
                             if (k.matches("(?i)^" + referMei + "$")) {
                                 b = true;
                                 break;
@@ -1144,52 +1140,53 @@ public final class DataSources {
              */
 
             // テーブル情報でループ（転生先）
-            Iterator<TableInfo> dests = tableInfos.iterator();
-            while (dests.hasNext()) {
-                TableInfo dest = dests.next();
+            Iterator<TableInfo> tenseisakis = tableInfos.iterator();
+            while (tenseisakis.hasNext()) {
+                TableInfo tenseisaki = tenseisakis.next();
 
-                if (dest.isHistory() || dest.isView()) {
+                //履歴モデルかビューなら除外
+                if (tenseisaki.isHistory() || tenseisaki.isView()) {
                     continue;
                 }
 
                 // 比較元の主キーが全て外部キーとして含まれるか
-                Set<String> fks = new HashSet<String>();
-                for (String pk : src.getPrimaryKeys()) {
-                    ColumnInfo pkCol = src.getColumnInfos().get(pk);
+                Set<String> tenseisakiFKs = new HashSet<String>();
+                for (String tenseimotoPK : tenseimoto.getPrimaryKeys()) {
+                    ColumnInfo tenseimotoKey = tenseimoto.getColumnInfos().get(tenseimotoPK);
 
                     // 比較先のカラム情報でループして比較元のユニークキーがあれば参照テーブルリストに追加
-                    for (Entry<String, ColumnInfo> destCols : dest.getColumnInfos().entrySet()) {
-                        String fk = destCols.getKey();
-                        ColumnInfo fkCol = destCols.getValue();
+                    for (Entry<String, ColumnInfo> tenseisakiCols : tenseisaki.getColumnInfos().entrySet()) {
+                        String sakiColName = tenseisakiCols.getKey();
+                        ColumnInfo sakiCol = tenseisakiCols.getValue();
 
                         // 比較先が主キーならスキップ
-                        if (fkCol.isPk()) {
+                        if (sakiCol.isPk()) {
                             continue;
                         }
 
                         // データ型が異なるならスキップ
-                        if (!fkCol.getTypeName().equals(pkCol.getTypeName())) {
+                        if (!sakiCol.getTypeName().equals(tenseimotoKey.getTypeName())) {
                             continue;
                         }
 
                         // データサイズが異なるならスキップ
-                        if (fkCol.getColumnSize() != pkCol.getColumnSize()) {
+                        if (sakiCol.getColumnSize() != tenseimotoKey.getColumnSize()) {
                             continue;
                         }
 
                         // 小数桁数が異なるならスキップ
-                        if (fkCol.getDecimalDigits() != pkCol.getDecimalDigits()) {
+                        if (sakiCol.getDecimalDigits() != tenseimotoKey.getDecimalDigits()) {
                             continue;
                         }
 
                         // 比較先カラム名が比較元カラム名と合致するなら比較先を転生モデルに設定
-                        if (fk.matches("(?i)^" + pk + "$")) {
-                            fks.add(fk);
+                        if (sakiColName.matches("(?i)^" + tenseimotoPK + "$")) {
+                            tenseisakiFKs.add(sakiColName);
                         }
                     }
                 }
 
-                if (src.getPrimaryKeys().size() == fks.size()) {
+                if (tenseimoto.getPrimaryKeys().size() == tenseisakiFKs.size()) {
                     //比較元の主キー数が比較先の外部キー数と一致する場合
 
                     boolean b = true;
@@ -1206,25 +1203,41 @@ public final class DataSources {
                         }
 
                         //処理済みの転生先情報があっても、今回の転生先でなければスキップ
-                        if (!pastReborn.getTableName().equals(dest.getTableName())) {
+                        if (!pastReborn.getTableName().equals(tenseisaki.getTableName())) {
                             continue;
                         }
 
                         //今回の転生先が既に使用済みでも、今回の転生元の方がキー数が多ければ、処理済みをクリア
-                        if (past.getPrimaryKeys().size() < src.getPrimaryKeys().size()) {
+                        if (past.getPrimaryKeys().size() < tenseimoto.getPrimaryKeys().size()) {
                             past.setRebornInfo(null);
                         }
 
                         //今回の転生先が既に使用済みで、今回の転生元の方がキー数が少なければ、転生先としない
-                        if (src.getPrimaryKeys().size() < past.getPrimaryKeys().size()) {
+                        if (tenseimoto.getPrimaryKeys().size() < past.getPrimaryKeys().size()) {
                             b = false;
                         }
                     }
 
                     if (b) {
-                        src.setRebornInfo(dest);
-                        for (String fk : fks) {
-                            dest.getColumnInfos().get(fk).setReborn(true);
+                        boolean isReborn = true;
+                        for (String fk : tenseisakiFKs) {
+                            if (tenseisaki.getColumnInfos().get(fk).getNullable() == 1) {
+                                isReborn = false;
+                                break;
+                            }
+                        }
+                        if (isReborn) {
+                            //転生モデル
+                            tenseimoto.setRebornInfo(tenseisaki);
+                            for (String fk : tenseisakiFKs) {
+                                tenseisaki.getColumnInfos().get(fk).setReborn(true);
+                            }
+                        } else {
+                            //集約モデル
+                            tenseimoto.setSummaryInfo(tenseisaki);
+                            for (String fk : tenseisakiFKs) {
+                                tenseisaki.getColumnInfos().get(fk).setSummary(true);
+                            }
                         }
                         break;
                     }

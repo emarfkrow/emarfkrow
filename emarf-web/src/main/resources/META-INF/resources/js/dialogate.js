@@ -153,8 +153,8 @@ $(function() {
         }
 
         //転生元（集約先）
-        let isRebornee = $link.hasClass('rebornee');
-        if (isRebornee) {
+        let isSummary = $link.hasClass('summary');
+        if (isSummary) {
             let $gridDiv = $form.find('[id$="Grid"]');
             let gridId = $gridDiv.prop('id');
             let grid = Gridate.grids[gridId]

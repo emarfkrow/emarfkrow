@@ -1354,10 +1354,20 @@ public final class BeanGenerator {
         String instance = StringUtil.toCamelCase(tableName);
 
         for (TableInfo fromTable : tables) {
-            if (fromTable.getRebornInfo() == null) {
+            //転生元も集約先もなければスキップ
+            TableInfo reborn = fromTable.getRebornInfo();
+            TableInfo summary = fromTable.getSummaryInfo();
+            if (reborn == null && summary == null) {
                 continue;
             }
-            if (!fromTable.getRebornInfo().getTableName().equals(tableName)) {
+            //転生先で集約元でもなければスキップ
+            String toTableName = null;
+            if (reborn != null) {
+                toTableName = reborn.getTableName();
+            } else if (summary != null) {
+                toTableName = summary.getTableName();
+            }
+            if (!toTableName.equals(tableName)) {
                 continue;
             }
             s.add("");
@@ -1521,28 +1531,28 @@ public final class BeanGenerator {
             s.add("            if (e.insert(now, execId) != 1) {");
             s.add("                throw new OptLockError(\"error.cant.insert\");");
             s.add("            }");
-            if (table.getRebornInfo() != null) {
-                TableInfo reborner = table.getRebornInfo();
-                if (reborner.getPrimaryKeys().size() == 1) {
-                    String rebornEntity = StringUtil.toPascalCase(reborner.getTableName());
-                    String rebornInstance = StringUtil.toCamelCase(reborner.getTableName());
-                    String pk = reborner.getPrimaryKeys().get(0);
+            if (table.getSummaryInfo() != null) {
+                TableInfo summary = table.getSummaryInfo();
+                if (summary.getPrimaryKeys().size() == 1) {
+                    String summaryEntity = StringUtil.toPascalCase(summary.getTableName());
+                    String summaryInstance = StringUtil.toCamelCase(summary.getTableName());
+                    String pk = summary.getPrimaryKeys().get(0);
                     String property = StringUtil.toCamelCase(pk);
                     s.add("");
-                    s.add("            //転生先からの集約の場合は、転生先に主キーを反映");
-                    s.add("            String rebornerKey = postJson.get(\"" + rebornEntity + "." + property
+                    s.add("            //集約の場合は、集約元に主キーを反映");
+                    s.add("            String summaryKey = postJson.get(\"" + summaryEntity + "." + property
                             + "\").toString();");
-                    s.add("            if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(rebornerKey)) {");
-                    s.add("                String[] rebornerKeys = rebornerKey.trim().split(\",\");");
-                    s.add("                for (String pk : rebornerKeys) {");
-                    s.add("                    " + pkgEntity + "." + rebornEntity + " " + rebornInstance + " = "
-                            + pkgEntity + "." + rebornEntity + ".get(pk);");
+                    s.add("            if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(summaryKey)) {");
+                    s.add("                String[] summaryKeys = summaryKey.trim().split(\",\");");
+                    s.add("                for (String pk : summaryKeys) {");
+                    s.add("                    " + pkgEntity + "." + summaryEntity + " " + summaryInstance + " = "
+                            + pkgEntity + "." + summaryEntity + ".get(pk);");
                     for (String fk : table.getPrimaryKeys()) {
                         String accessor = StringUtil.toPascalCase(fk);
-                        s.add("                    " + rebornInstance + ".set" + accessor + "(e.get" + accessor
+                        s.add("                    " + summaryInstance + ".set" + accessor + "(e.get" + accessor
                                 + "());");
                     }
-                    s.add("                    if (" + rebornInstance + ".update(now, execId) != 1) {");
+                    s.add("                    if (" + summaryInstance + ".update(now, execId) != 1) {");
                     s.add("                        throw new OptLockError(\"error.cant.insert\");");
                     s.add("                    }");
                     s.add("                }");
