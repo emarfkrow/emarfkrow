@@ -95,7 +95,6 @@ $(function() {
         data[entityName] = querystrings;
         Jsonate.toForm(data, $registForm);
         Base.referRegistForm($registForm);
-
     }
 });
 
@@ -525,6 +524,48 @@ let Base = {
      * サブウィンドウの登録画面の初期照会
      */
     referRegistForm: function($registForm) {
+
+        // 詳細画面の主キー項目は、値が既にあれば読み取り専用
+        let pkAll = true;
+        $registForm.find('input.primaryKey').each(function() {
+            if ($(this).val() != '') {
+                Base.readonly(this);
+            } else if ($(this).hasClass('numbering') && !$(this).hasClass('refer') && !$(this).hasClass('correct')) {
+                Base.readonly(this);
+            } else {
+                Base.writable(this);
+                pkAll = false;
+            }
+        });
+
+        // 詳細画面の主キー項目の参照ボタンは、値が既にあれば非表示
+        $registForm.find('[target=dialog].refer.primaryKey').each(function() {
+            if ($('input[id="' + this.id + '"]').val() != '') {
+                $(this).hide();
+            } else {
+                $(this).show();
+            }
+        });
+
+        // 詳細画面のユニーク項目は、値が既にあれば読み取り専用
+        $registForm.find('input.uniqueKey').each(function() {
+            if (pkAll) {
+                Base.readonly(this);
+                //$(this).attr('readonly', true).attr('tabindex', '-1').addClass('readonly');
+            } else {
+                Base.writable(this);
+                //$(this).removeAttr('readonly').removeAttr('tabindex').removeClass('readonly');
+            }
+        });
+
+        // 詳細画面のユニーク項目の参照ボタンは、値が既にあれば非表示
+        $registForm.find('[target=dialog].refer.uniqueKey').each(function() {
+            if (pkAll) {
+                $(this).hide();
+            } else {
+                $(this).show();
+            }
+        });
 
         $registForm.find('a.output').css('visibility', 'hidden');
         $registForm.find('a.reborner').css('visibility', 'hidden');

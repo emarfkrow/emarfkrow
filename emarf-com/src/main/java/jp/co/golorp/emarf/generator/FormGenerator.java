@@ -57,6 +57,8 @@ public final class FormGenerator {
     private static String charNotNullRe;
     /** 非必須INT列の指定 */
     private static String numberNullableRe;
+    /** タイムスタンプサフィックス */
+    private static String[] inputTimestampSuffixs;
 
     /**
      * プライベートコンストラクタ
@@ -99,6 +101,8 @@ public final class FormGenerator {
         charNotNullRe = bundle.getString("BeanGenerator.char.notnull.re");
         //NOTNULLのINT列で「0」を補填する列名指定
         numberNullableRe = bundle.getString("BeanGenerator.number.nullable.re");
+        //タイムスタンプサフィックス
+        inputTimestampSuffixs = bundle.getString("BeanGenerator.input.timestamp.suffixs").split(",");
 
         //フォームフォルダ
         String formPackagePath = formPackage.replace(".", File.separator);
@@ -257,16 +261,19 @@ public final class FormGenerator {
 
     /**
      * 詳細画面 フォームチェック追加
-     * @param pks 主キー情報のリスト
-     * @param ci カラム情報
+     * @param keys 主キー情報のリスト
+     * @param column カラム情報
      * @param s 出力文字列のリスト
      */
-    private static void javaFormDetailRegistChecks(final List<String> pks, final ColumnInfo ci, final List<String> s) {
+    private static void javaFormDetailRegistChecks(final List<String> keys, final ColumnInfo column,
+            final List<String> s) {
+
+        String colName = column.getColumnName();
 
         // 必須チェック
-        if (ci.getNullable() == 0) {
+        if (column.getNullable() == 0) {
 
-            if (ci.isNumbering() /*&& ci.getColumnName().equals(pks.get(pks.size() - 1)) 一旦、採番キーならスキップに戻す*/) {
+            if (column.isNumbering() /*&& ci.getColumnName().equals(pks.get(pks.size() - 1)) 一旦、採番キーならスキップに戻す*/) {
 
                 // 最終キーが採番キーなら除外
                 LOG.trace("skip NotBlank.");
@@ -277,16 +284,21 @@ public final class FormGenerator {
                 //                // フラグも除外
                 //                LOG.trace("skip NotBlank.");
 
-            } else if (!ci.isPk() && ci.getTypeName().equals("CHAR")
-                    && !StringUtil.isNullOrBlank(charNotNullRe) && !ci.getColumnName().matches(charNotNullRe)) {
+            } else if (!column.isPk() && column.getTypeName().equals("CHAR") && !StringUtil.isNullOrBlank(charNotNullRe)
+                    && !colName.matches(charNotNullRe)) {
 
                 // 主キー以外のCHAR列で、必須CHAR指定に合致しない場合、NULLならスペースを補填する
                 LOG.trace("skip NotBlank.");
 
-            } else if (!ci.isPk() && ci.getTypeName().equals("NUMBER")
-                    && !StringUtil.isNullOrBlank(numberNullableRe) && ci.getColumnName().matches(numberNullableRe)) {
+            } else if (!column.isPk() && column.getTypeName().equals("NUMBER")
+                    && !StringUtil.isNullOrBlank(numberNullableRe) && colName.matches(numberNullableRe)) {
 
                 // 主キー以外のNUMBER列で、非必須INT指定に合致する場合、NULLなら「0」を補填する
+                LOG.trace("skip NotBlank.");
+
+            } else if (StringUtil.endsWith(inputTimestampSuffixs, colName)) {
+
+                // タイムスタンプならスキップ
                 LOG.trace("skip NotBlank.");
 
             } else {
@@ -295,13 +307,11 @@ public final class FormGenerator {
             }
         }
 
-        String columnName = ci.getColumnName();
-
         int matchLength = 0;
         String validSuffix = null;
         for (String suffix : validSuffixs) {
             Pattern pattern = Pattern.compile("(?i).*(" + suffix + ")$");
-            Matcher matcher = pattern.matcher(columnName);
+            Matcher matcher = pattern.matcher(colName);
             if (matcher.find()) {
                 String matched = matcher.group(1);
                 if (matchLength < matched.length()) {
@@ -320,15 +330,15 @@ public final class FormGenerator {
         } else {
             // Patternの指定がない場合
 
-            int columnSize = ci.getColumnSize();
+            int columnSize = column.getColumnSize();
 
             // 形式チェック
-            if (ci.getTypeName().equals("INT") || ci.getTypeName().equals("DECIMAL")
-                    || ci.getTypeName().equals("DOUBLE") || ci.getTypeName().equals("NUMBER")
-                    || ci.getTypeName().equals("NUMERIC")) {
+            if (column.getTypeName().equals("INT") || column.getTypeName().equals("DECIMAL")
+                    || column.getTypeName().equals("DOUBLE") || column.getTypeName().equals("NUMBER")
+                    || column.getTypeName().equals("NUMERIC")) {
 
                 // DECIMALの場合（整数桁・小数桁）
-                int decimalDigits = ci.getDecimalDigits();
+                int decimalDigits = column.getDecimalDigits();
                 int integer = columnSize - decimalDigits;
                 String re = "([0-9]{0," + integer + "}\\\\.?[0-9]{0," + decimalDigits + "}?)?";
                 s.add("    @jakarta.validation.constraints.Pattern(regexp = \"" + re + "\")");

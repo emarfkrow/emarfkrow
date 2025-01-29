@@ -411,7 +411,7 @@ public final class HtmlGenerator {
                 continue;
             }
 
-            //カラム名が「ENTITY_NAME」なら出力しない
+            //カラム名が「TABLE_NAME」なら出力しない
             if (columnName.matches("(?i)^" + detailColumn + "$")) {
                 continue;
             }
@@ -1008,29 +1008,31 @@ public final class HtmlGenerator {
             htmlFieldsStint(table, s);
         }
 
-        //エンティティ名を取得
         String entity = StringUtil.toPascalCase(table.getTableName());
 
         // カラム情報でループ
         for (ColumnInfo column : table.getColumnInfos().values()) {
-            String columnName = column.getColumnName();
-            String property = StringUtil.toCamelCase(columnName);
-            String fieldId = entity + "." + property;
-
             // 兄弟モデルの主キーは出力しない
             if (isBro && column.isPk()) {
                 continue;
             }
-            // VIEWの検索フォームには「SEARCH_」以外を出力しない
-            if (table.isView() && !isDetail && !StringUtil.startsWith(searchPrefixes, columnName)) {
-                continue;
-            }
+            String columnName = column.getColumnName();
+            //            // VIEWの検索フォームには「SEARCH_」以外を出力しない
+            //            if (table.isView() && !isDetail && !StringUtil.startsWith(searchPrefixes, columnName)) {
+            //                continue;
+            //            }
             // VIEWの詳細フォームには「SEARCH_」を出力しない
             if (table.isView() && isDetail && StringUtil.startsWith(searchPrefixes, columnName)) {
                 continue;
             }
+            String property = StringUtil.toCamelCase(columnName);
+            String fieldId = entity + "." + property;
             // 検索条件にはファイル項目を出力しない
             if (!isDetail && StringUtil.endsWith(inputFileSuffixs, columnName)) {
+                continue;
+            }
+            // 検索条件のタイムスタンプはスキップ
+            if (!isDetail && StringUtil.endsWith(inputTimestampSuffixs, columnName)) {
                 continue;
             }
             // メタ情報の場合（検索画面の場合はスキップ（検索条件にはしない）、詳細画面の兄弟モデルは更新日時のみhiddenで出力）
@@ -1051,7 +1053,6 @@ public final class HtmlGenerator {
                     continue;
                 }
             }
-
             String remarks = column.getRemarks();
             s.add("        <div id=\"" + property + "\">");
             if (isInsertDt || isUpdateDt || isInsertBy || isUpdateBy) {
@@ -1062,6 +1063,9 @@ public final class HtmlGenerator {
                 // 履歴モデルかビューの詳細画面
                 htmlFieldsSpan(s, fieldId, remarks, "");
                 addMeiSpan(s, table, column);
+            } else if (StringUtil.endsWith(inputTimestampSuffixs, columnName)) {
+                // タイムスタンプの場合
+                htmlFieldsSpan(s, fieldId, remarks, "");
             } else if (StringUtil.endsWith(optionsSuffixs, columnName) && column.getReferInfo() == null) {
                 // 選択項目の場合（サフィックスが合致しても参照モデルなら除外）
                 htmlFieldsOptions(s, fieldId, columnName, remarks, isDetail && column.isPk());

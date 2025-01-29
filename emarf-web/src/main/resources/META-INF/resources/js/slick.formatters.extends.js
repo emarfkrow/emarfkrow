@@ -90,7 +90,7 @@ limitations under the License.
     }
 
     function LinkFormatter(row, cell, value, columnDef, dataContext) {
-        if (!dataContext[gridOpeVisibleColumn]) {
+        if (!dataContext[gridOpeVisibleColumn] && !dataContext[gridViewDetailColumn]) {
             return null;
         }
         if (value) {

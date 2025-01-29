@@ -779,7 +779,7 @@ var Gridate = {
 
     /**
      * 詳細画面起動
-     * レコード内に「ENTITY_NAME」列があればサブウィンドウ
+     * レコード内に「TABLE_NAME」列があればサブウィンドウ
      * なければentityNameのダイアログ
      * @param gridId     グリッドID
      * @param entityName ダイアログ用のエンティティ名
@@ -790,7 +790,7 @@ var Gridate = {
 
         console.info('Gridate.openDetail(' + gridId + ', ' + entityName + ', ' + columns + ', ' + item + ');');
 
-        // ENTITY_NAME列の検査
+        // TABLE_NAME列の検査
         let tableName = null;
         for (let columnName in item) {
             if (columnName.toUpperCase() == gridViewDetailColumn.toUpperCase()) {
