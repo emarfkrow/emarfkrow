@@ -70,6 +70,9 @@ public class ServiceFilter implements Filter {
     /** 読み取り禁止期間 */
     public static final List<String> DONT_READS = App.getStartWith("servicefilter.dontread");
 
+    /** サービスエラーページ */
+    private static final String ERROR_PAGE = App.get("servicefilter.error.page");
+
     @Override
     public void init(final FilterConfig filterConfig) throws ServletException {
 
@@ -117,6 +120,8 @@ public class ServiceFilter implements Filter {
                     String[] kikanCrons = kikanCron.split("\\|");
                     if (!isService(kikanCrons[0], kikanCrons[1])) {
                         // 照会サービス時間外
+                        String contextPath = req.getContextPath() + "/";
+                        res.sendRedirect(contextPath + ServiceFilter.ERROR_PAGE);
                         throw new ReadServiceError();
                     }
                 }
@@ -145,7 +150,10 @@ public class ServiceFilter implements Filter {
                         return;
                     }
                     if ((boolean) map.get("DONT_READ")) {
-                        throw new ReadServiceError();
+                        //                        throw new ReadServiceError();
+                        String contextPath = req.getContextPath() + "/";
+                        res.sendRedirect(contextPath + ServiceFilter.ERROR_PAGE);
+                        return;
                     }
                 } catch (Exception e) {
                     throw new SysError(e);
