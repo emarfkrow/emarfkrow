@@ -285,7 +285,12 @@ let Jsonate = {
                         $('input[type="hidden"][id="' + this.id + '"]').prop("disabled", false).val([v]);
 
                     } else {
-                        $input.val([v]);
+                        if ($input[0].type == 'datetime-local') {
+                            //                            $input.val([v.toISOString().slice(0, -1)]);
+                            $input.val(v.replace('%20', 'T'));
+                        } else {
+                            $input.val([v]);
+                        }
                     }
                 }
             });

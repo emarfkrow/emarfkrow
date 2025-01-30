@@ -788,7 +788,9 @@ var Gridate = {
      */
     openDetail: function(gridId, entityName, columns, item) {
 
-        console.info('Gridate.openDetail(' + gridId + ', ' + entityName + ', ' + columns + ', ' + item + ');');
+        console.info('Gridate.openDetail ' + gridId + ', ' + entityName);
+        console.debug('Gridate.openDetail columns = ' + JSON.stringify(columns));
+        console.debug('Gridate.openDetail item = ' + JSON.stringify(item));
 
         // TABLE_NAME列の検査
         let tableName = null;
