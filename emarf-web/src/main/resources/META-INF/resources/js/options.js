@@ -80,7 +80,9 @@ let Options = {
             let dataJson = JSON.parse(sessionStorage[k]);
 
             //		Ajaxize.ajaxPost(action, postJson, function(data) {
-            let itemName = listId.replaceAll(/List$/g, '');
+            let itemName = listId.replaceAll(/^.+Dialog\./g, '');
+            itemName = itemName.replaceAll(/^.+Form\./g, '');
+            itemName = itemName.replaceAll(/List$/g, '');
             //		let dataJson = data[action.replaceAll(/\.json/g, '')];
             //
             //		// 取得データ数によって表示替え
@@ -192,7 +194,11 @@ let Options = {
             $element = $parent.find('select[id="' + $element.prop('id') + '"]');
         }
 
-        $element.prop('name', $element.prop('id').replace(/List$/, ''));
+        let itemId = $element.prop('id');
+        let itemName = itemId.replace(/^.+Dialog\./, '');
+        itemName = itemName.replace(/^.+Form\./, '');
+        itemName = itemName.replace(/List$/, '');
+        $element.prop('name', itemName);
         $element.find('option').remove();
 
         if (isBlank) {
