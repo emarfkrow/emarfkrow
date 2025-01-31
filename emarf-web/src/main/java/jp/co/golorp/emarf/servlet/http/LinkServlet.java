@@ -74,7 +74,7 @@ public final class LinkServlet extends HttpServlet {
             throw e;
         }
 
-        ServletUtil.respond(response, map.get("filePath").toString(), map.get("fileMei").toString());
+        ServletUtil.respond(response, map.get("filePath"), map.get("fileMei"));
     }
 
     /**

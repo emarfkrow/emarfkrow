@@ -143,22 +143,25 @@ public final class SqlGenerator {
         for (Entry<String, ColumnInfo> e : table.getColumnInfos().entrySet()) {
             addWhere(sql, e.getValue());
         }
-        sql.add("ORDER BY");
-        if (table.getPrimaryKeys().size() > 0) {
-            String orders = "";
-            for (String pk : table.getPrimaryKeys()) {
-                if (orders.length() > 0) {
-                    orders += ", ";
+
+        if (!table.isView()) {
+            sql.add("ORDER BY");
+            if (table.getPrimaryKeys().size() > 0) {
+                String orders = "";
+                for (String pk : table.getPrimaryKeys()) {
+                    if (orders.length() > 0) {
+                        orders += ", ";
+                    }
+                    orders += "a." + assist.quotedSQL(pk);
                 }
-                orders += "a." + assist.quotedSQL(pk);
-            }
-            sql.add("    " + orders);
-        } else {
-            for (int i = 1; i <= table.getColumnInfos().size(); i++) {
-                if (i == 1) {
-                    sql.add("    " + i);
-                } else {
-                    sql.add("    , " + i);
+                sql.add("    " + orders);
+            } else {
+                for (int i = 1; i <= table.getColumnInfos().size(); i++) {
+                    if (i == 1) {
+                        sql.add("    " + i);
+                    } else {
+                        sql.add("    , " + i);
+                    }
                 }
             }
         }
@@ -301,22 +304,24 @@ public final class SqlGenerator {
             addStintSql(sql, table);
         }
 
-        sql.add("ORDER BY");
-        if (table.getPrimaryKeys().size() > 0) {
-            String orders = "";
-            for (String pk : table.getPrimaryKeys()) {
-                if (orders.length() > 0) {
-                    orders += ", ";
+        if (!table.isView()) {
+            sql.add("ORDER BY");
+            if (table.getPrimaryKeys().size() > 0) {
+                String orders = "";
+                for (String pk : table.getPrimaryKeys()) {
+                    if (orders.length() > 0) {
+                        orders += ", ";
+                    }
+                    orders += "a." + assist.quotedSQL(pk);
                 }
-                orders += "a." + assist.quotedSQL(pk);
-            }
-            sql.add("    " + orders);
-        } else {
-            for (int i = 1; i <= table.getColumnInfos().size(); i++) {
-                if (i == 1) {
-                    sql.add("    " + i);
-                } else {
-                    sql.add("    , " + i);
+                sql.add("    " + orders);
+            } else {
+                for (int i = 1; i <= table.getColumnInfos().size(); i++) {
+                    if (i == 1) {
+                        sql.add("    " + i);
+                    } else {
+                        sql.add("    , " + i);
+                    }
                 }
             }
         }

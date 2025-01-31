@@ -200,7 +200,6 @@ public final class BeanGenerator {
      */
     private static void javaEntity(final List<TableInfo> tables) {
 
-        // 出力フォルダを再作成
         String packagePath = pkgEntity.replace(".", File.separator);
         String packageDir = projectDir + File.separator + javaPath + File.separator + packagePath;
         Map<String, String> javaPaths = new LinkedHashMap<String, String>();
@@ -248,7 +247,6 @@ public final class BeanGenerator {
                 s.add("        }");
                 s.add("    }");
             }
-            // property
             for (ColumnInfo column : table.getColumnInfos().values()) {
                 String n = column.getColumnName();
                 String m = column.getRemarks();
@@ -261,6 +259,10 @@ public final class BeanGenerator {
                     s.add("    @com.fasterxml.jackson.annotation.JsonFormat(pattern = \"yyyy-MM-dd\")");
                     s.add("    @com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer.class)");
                     s.add("    @com.fasterxml.jackson.databind.annotation.JsonSerialize(using = com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer.class)");
+                } else if (t.equals("java.time.LocalTime")) {
+                    s.add("    @com.fasterxml.jackson.annotation.JsonFormat(pattern = \"hh:mm\")");
+                    s.add("    @com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.fasterxml.jackson.datatype.jsr310.deser.LocalTimeDeserializer.class)");
+                    s.add("    @com.fasterxml.jackson.databind.annotation.JsonSerialize(using = com.fasterxml.jackson.datatype.jsr310.ser.LocalTimeSerializer.class)");
                 } else if (StringUtil.endsWith(inputTimestampSuffixs, n)) {
                     s.add("    @com.fasterxml.jackson.annotation.JsonFormat(pattern = \"yyyy-MM-dd'T'HH:mm:ss.SSS\")");
                     s.add("    @com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer.class)");
@@ -340,7 +342,6 @@ public final class BeanGenerator {
             FileUtil.writeFile(javaFilePath, s);
             javaPaths.put(javaFilePath, pkgEntity + "." + e);
         }
-
         if (isCompile) {
             for (Entry<String, String> e : javaPaths.entrySet()) {
                 BeanGenerator.javaCompile(e.getKey(), e.getValue());

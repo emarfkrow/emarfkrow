@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{OutOfService.title}">サービス時間外エラー</title>
+</head>
+<body>
+  <div layout:fragment="article">
+    <h2 th:text="#{OutOfService.h2}">サービス時間外エラー</h2>
+    <span th:text="#{OutOfService.msg}">サービス時間外です</span>
+  </div>
+</body>
+</html>

@@ -419,18 +419,20 @@ public final class ServletUtil {
      * @param filePath
      * @param fileMei
      */
-    public static void respond(final HttpServletResponse response, final String filePath, final String fileMei) {
+    public static void respond(final HttpServletResponse response, final Object filePath, final Object fileMei) {
 
         Calendar begin = Calendar.getInstance();
         LOG.debug("Binary response start.");
 
-        if (filePath.endsWith(".pdf")) {
+        String path = filePath.toString();
+
+        if (path.endsWith(".pdf")) {
             response.setContentType("application/pdf");
             response.setHeader("Content-Disposition", "inline;");
         } else {
-            String downloadFileMei = fileMei;
-            if (downloadFileMei == null) {
-                downloadFileMei = new File(filePath).getName();
+            String downloadFileMei = new File(path).getName();
+            if (fileMei != null) {
+                downloadFileMei = fileMei.toString();
             }
             try {
                 downloadFileMei = URLEncoder.encode(downloadFileMei, StandardCharsets.UTF_8.name());
@@ -442,7 +444,7 @@ public final class ServletUtil {
         }
 
         try {
-            Files.copy(new File(filePath).toPath(), response.getOutputStream());
+            Files.copy(new File(path).toPath(), response.getOutputStream());
             response.getOutputStream().close();
         } catch (IOException e) {
             throw new SysError(e);

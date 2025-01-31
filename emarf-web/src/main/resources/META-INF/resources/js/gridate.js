@@ -847,6 +847,7 @@ var Gridate = {
             $dialogDiv.dialog('open');
 
         } else {
+            //TABLE_NAME列があった場合（VIEWの場合）
 
             let primaryKey = '';
             let queryString = '';

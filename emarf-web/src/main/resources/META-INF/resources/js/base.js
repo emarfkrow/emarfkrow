@@ -73,29 +73,6 @@ $(function() {
         $('button#logout').hide();
         $('.nav dl').hide();
     }
-
-    // 詳細画面で、URL引数に値が設定されている場合は、照会結果を初期表示
-    let $searchForm = $('.article [name$="SearchForm"]');
-    let $registForm = $('.article [name$="RegistForm"]');
-    if ($searchForm.length == 0 && $registForm.length > 0) {
-        let querystrings = {};
-        for (let k in Base.querystrings) {
-            // 「$」区切りのパラメータがもしあれば、各名称に分割（UNIONしたVIEWの対応）
-            if (k.lastIndexOf('$') >= 0) {
-                let ks = k.split('$');
-                for (let i = 0; i < ks.length; i++) {
-                    querystrings[ks[i]] = Base.querystrings[k];
-                }
-            } else {
-                querystrings[k] = Base.querystrings[k];
-            }
-        }
-        let entityName = href.replace(/\.html.+/, '').replace(/.+\//, '');
-        let data = {};
-        data[entityName] = querystrings;
-        Jsonate.toForm(data, $registForm);
-        Base.referRegistForm($registForm);
-    }
 });
 
 // ２．DOM構築後
@@ -161,6 +138,30 @@ $(document).on('ready', function() {
     $('input[type="radio"]').change(function() {
         radioCancel = false;
     });
+
+    // 詳細画面で、URL引数に値が設定されている場合は、照会結果を初期表示
+    let href = window.document.location.href;
+    let $searchForm = $('body>.article [name$="SearchForm"]');
+    let $registForm = $('body>.article [name$="RegistForm"]');
+    if ($searchForm.length == 0 && $registForm.length > 0) {
+        let querystrings = {};
+        for (let k in Base.querystrings) {
+            // 「$」区切りのパラメータがもしあれば、各名称に分割（UNIONしたVIEWの対応）
+            if (k.lastIndexOf('$') >= 0) {
+                let ks = k.split('$');
+                for (let i = 0; i < ks.length; i++) {
+                    querystrings[ks[i]] = Base.querystrings[k];
+                }
+            } else {
+                querystrings[k] = Base.querystrings[k];
+            }
+        }
+        let entityName = href.replace(/\.html.+/, '').replace(/.+\//, '');
+        let data = {};
+        data[entityName] = querystrings;
+        Jsonate.toForm(data, $registForm);
+        Base.referRegistForm($registForm);
+    }
 });
 
 // ４．画像ファイル読み込み後

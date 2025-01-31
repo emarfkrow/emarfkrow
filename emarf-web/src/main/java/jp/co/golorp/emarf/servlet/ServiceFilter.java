@@ -37,7 +37,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import jp.co.golorp.emarf.action.BaseAction;
-import jp.co.golorp.emarf.exception.ReadServiceError;
 import jp.co.golorp.emarf.exception.SysError;
 import jp.co.golorp.emarf.properties.App;
 import jp.co.golorp.emarf.servlet.http.ServletUtil;
@@ -59,7 +58,7 @@ public class ServiceFilter implements Filter {
     private static final String ACTION_PACKAGE = App.get("package.action");
 
     /** 除外URIの正規表現 */
-    private static final String EXCLUDE_REGEXP = App.get("servicefilter.exclude.regexp");
+    public static final String EXCLUDE_REGEXP = App.get("servicefilter.exclude.regexp");
 
     /** 登録系URIの正規表現 */
     private static final String WRITE_URI_RE = App.get("servicefilter.write.uri.regexp");
@@ -120,9 +119,10 @@ public class ServiceFilter implements Filter {
                     String[] kikanCrons = kikanCron.split("\\|");
                     if (!isService(kikanCrons[0], kikanCrons[1])) {
                         // 照会サービス時間外
+                        //                        throw new ReadServiceError();
                         String contextPath = req.getContextPath() + "/";
                         res.sendRedirect(contextPath + ServiceFilter.ERROR_PAGE);
-                        throw new ReadServiceError();
+                        return;
                     }
                 }
             }
