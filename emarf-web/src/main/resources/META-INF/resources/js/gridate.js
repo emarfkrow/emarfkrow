@@ -822,14 +822,26 @@ var Gridate = {
                 let v = item[column.field];
 
                 let $item = $('[id="' + dialogId + '"] [name="' + camel + '"]');
-                if ($item.length > 0 && $item[0].type != 'file') {
-                    $item.val([v]);
-                    $('[id="' + dialogId + '"] span[id="' + camel + '"]').html(v);
+                if ($item.length > 0) {
+
+                    for (let i = 0; i < $item.length; i++) {
+                        if ($item[i].type != 'file') {
+                            $($item[i]).val([v]);
+                            $('[id="' + dialogId + '"] span[id="' + camel + '"]').html(v);
+                        }
+                    }
+
                 } else {
+
                     $item = $('[id="' + dialogId + '"] [name="' + entityName + '.' + camel + '"]');
-                    if ($item.length > 0 && $item[0].type != 'file') {
-                        $item.val([v]);
-                        $('[id="' + dialogId + '"] span[id="' + entityName + '.' + camel + '"]').html(v);
+                    if ($item.length > 0) {
+
+                        for (let i = 0; i < $item.length; i++) {
+                            if ($item[i].type != 'file') {
+                                $($item[i]).val([v]);
+                                $('[id="' + dialogId + '"] span[id="' + entityName + '.' + camel + '"]').html(v);
+                            }
+                        }
                     }
                 }
 

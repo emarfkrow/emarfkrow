@@ -62,8 +62,8 @@ public final class ServletUtil {
     /** logger */
     private static final Logger LOG = LoggerFactory.getLogger(ServletUtil.class);
 
-    /** アップロードファイル名称のサフィックス */
-    private static String uploadMeiSuffix = App.get("context.upload.mei.suffix");
+    //    /** アップロードファイル名称のサフィックス */
+    //    private static String uploadMeiSuffix = App.get("context.upload.mei.suffix");
 
     /** servletUrl */
     private static String servletUrl;
@@ -262,8 +262,8 @@ public final class ServletUtil {
                         }
 
                         // ファイル名と保管パスを返す
-                        map.put(partName + uploadMeiSuffix, fileName);
-                        map.put(partName, uploadPath);
+                        //                        map.put(partName + uploadMeiSuffix, fileName);
+                        map.put(partName, fileName + "|" + uploadPath);
                     }
 
                 } else {

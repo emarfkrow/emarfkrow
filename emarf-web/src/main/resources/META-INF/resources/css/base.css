@@ -293,6 +293,11 @@ div.uniqueKey {
     text-align: right;
 }
 
+.imageLink {
+    height: 100px;
+    width: 100px;
+}
+
 span.refer::before {
     content: '：';
 }

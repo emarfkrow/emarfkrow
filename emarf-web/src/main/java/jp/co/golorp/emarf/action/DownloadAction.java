@@ -21,7 +21,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import jp.co.golorp.emarf.lang.StringUtil;
-import jp.co.golorp.emarf.properties.App;
 import jp.co.golorp.emarf.sql.Queries;
 import jp.co.golorp.emarf.util.MapList;
 import jp.co.golorp.emarf.util.Messages;
@@ -50,10 +49,15 @@ public class DownloadAction extends BaseAction {
         } else {
             Map<String, Object> row = list.get(0);
             String name = postJson.get("name").toString();
-            String filePathColumnName = StringUtil.toUpperCase(name);
-            String fileMeiColumnName = StringUtil.toUpperCase(name + App.get("context.upload.mei.suffix"));
-            map.put("filePath", row.get(filePathColumnName));
-            map.put("fileMei", row.get(fileMeiColumnName));
+            //            String filePathColumnName = StringUtil.toUpperCase(name);
+            //            String fileMeiColumnName = StringUtil.toUpperCase(name + App.get("context.upload.mei.suffix"));
+            //            map.put("filePath", row.get(filePathColumnName));
+            //            map.put("fileMei", row.get(fileMeiColumnName));
+            String fileColumnName = StringUtil.toUpperCase(name);
+            String fileInfo = row.get(fileColumnName).toString();
+            String[] fileInfos = fileInfo.split("\\|");
+            map.put("fileMei", fileInfos[0]);
+            map.put("filePath", fileInfos[1]);
         }
 
         return map;

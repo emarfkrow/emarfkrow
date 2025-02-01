@@ -256,8 +256,8 @@ let Jsonate = {
                     // もしファイルタグならリンクに変換
                     if ($input.attr('type') == 'file') {
 
-                        // ファイルタグを非表示
-                        $input.prop('disabled', true).hide();
+                        //                        // ファイルタグを非表示
+                        //                        $input.prop('disabled', true).hide();
 
                         // ダウンロードリンクを表示
                         let $link = $('a[id="' + this.id + '"]');
@@ -279,7 +279,13 @@ let Jsonate = {
                             let val = $primaryKey.val();
                             params += '&' + names[names.length - 1] + '=' + val;
                         }
-                        $link.prop('href', entityName + 'Download.link' + params);
+                        let href = entityName + 'Download.link' + params;
+                        $link.prop('href', href);
+                        if (v.endsWith('.bmp') || v.endsWith('.gif') || v.endsWith('.jpg') || v.endsWith('.jpeg') || v.endsWith('.png')) {
+                            $link.html('<img id="' + this.id + 'Img" class="imageLink" src="' + href + '" />');
+                        } else {
+                            $link.html(v.split('|')[0]);
+                        }
 
                         // ファイルパスのhiddenタグを活性
                         $('input[type="hidden"][id="' + this.id + '"]').prop("disabled", false).val([v]);

@@ -1253,22 +1253,23 @@ public final class HtmlGenerator {
      * @param id         入力項目のID
      * @param type       タイプ
      * @param css        スタイル
-     * @param columnInfo 列情報
+     * @param column 列情報
      * @param format     フォーマット
      * @return タグ文字列
      */
-    private static String htmlFieldsInput(final String id, final String type, final String css,
-            final ColumnInfo columnInfo, final String format) {
+    private static String htmlFieldsInput(final String id, final String type, final String css, final ColumnInfo column,
+            final String format) {
 
         String dataFormat = "";
         if (!StringUtil.isNullOrBlank(format)) {
             dataFormat = " data-format=\"" + format + "\"";
         }
 
-        String remarks = columnInfo.getRemarks();
-        int max = columnInfo.getColumnSize();
-        if (columnInfo.getMaxLength() != null) {
-            max = columnInfo.getMaxLength();
+        String remarks = column.getRemarks();
+
+        int max = column.getColumnSize();
+        if (column.getMaxLength() != null) {
+            max = column.getMaxLength();
         }
 
         String tag = "          ";
@@ -1277,8 +1278,7 @@ public final class HtmlGenerator {
                 + dataFormat + " />";
 
         if (type.equals("file")) {
-            tag += "<a id=\"" + id
-                    + "\" target=\"blank\" style=\"display: none;\" th:text=\"#{common.download}\">ダウンロード</a>";
+            tag += "<a id=\"" + id + "\" target=\"blank\" style=\"display: none;\"></a>";
             tag += "<input type=\"hidden\" id=\"" + id + "\" name=\"" + id + "\" disabled />";
         }
 

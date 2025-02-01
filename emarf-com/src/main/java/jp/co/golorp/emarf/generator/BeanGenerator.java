@@ -199,11 +199,9 @@ public final class BeanGenerator {
      * @param tables テーブル情報のリスト
      */
     private static void javaEntity(final List<TableInfo> tables) {
-
         String packagePath = pkgEntity.replace(".", File.separator);
         String packageDir = projectDir + File.separator + javaPath + File.separator + packagePath;
         Map<String, String> javaPaths = new LinkedHashMap<String, String>();
-
         for (TableInfo table : tables) {
             String e = StringUtil.toPascalCase(table.getTableName());
             String r = table.getRemarks();
@@ -220,7 +218,7 @@ public final class BeanGenerator {
             s.add("import jp.co.golorp.emarf.sql.Queries;");
             s.add("");
             s.add("/**");
-            s.add(" * " + r + "");
+            s.add(" * " + r);
             s.add(" * @author emarfkrow");
             s.add(" */");
             s.add("public class " + e + " implements IEntity {");
@@ -229,16 +227,12 @@ public final class BeanGenerator {
                 s.add("    /** SlickGridのDataView用ID */");
                 s.add("    private Integer id;");
                 s.add("");
-                s.add("    /**");
-                s.add("     * @return id");
-                s.add("     */");
+                s.add("    /** @return id */");
                 s.add("    public final Integer getId() {");
                 s.add("        return id;");
                 s.add("    }");
                 s.add("");
-                s.add("    /**");
-                s.add("     * @param o セットする id");
-                s.add("     */");
+                s.add("    /** @param o id */");
                 s.add("    public final void setId(final Object o) {");
                 s.add("        if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {");
                 s.add("            this.id = Integer.valueOf(o.toString());");
@@ -288,6 +282,11 @@ public final class BeanGenerator {
                 s.add("    /** @return " + m + " */");
                 s.add("    @com.fasterxml.jackson.annotation.JsonProperty(\"" + n + "\")");
                 s.add("    public " + t + " get" + a + "() {");
+                if (StringUtil.endsWith(inputYMSuffixs, n)) {
+                    s.add("        if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(this." + p + ")) {");
+                    s.add("            return this." + p + ".substring(0, 4) + \"-\" + this." + p + ".substring(4);");
+                    s.add("        }");
+                }
                 s.add("        return this." + p + ";");
                 s.add("    }");
                 s.add("");
