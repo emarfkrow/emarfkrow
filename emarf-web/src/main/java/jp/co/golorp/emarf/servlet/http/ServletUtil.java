@@ -28,10 +28,12 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -238,6 +240,8 @@ public final class ServletUtil {
         if (parts != null) {
             // 「enctype="multipart/form-data"」の場合
 
+            Set<String> submittedFileNames = new HashSet<String>();
+
             // multipartでループ
             for (Part part : parts) {
 
@@ -264,9 +268,14 @@ public final class ServletUtil {
                         // ファイル名と保管パスを返す
                         //                        map.put(partName + uploadMeiSuffix, fileName);
                         map.put(partName, fileName + "|" + uploadPath);
+                        submittedFileNames.add(partName);
                     }
 
                 } else {
+
+                    if (submittedFileNames.contains(partName)) {
+                        continue;
+                    }
 
                     // 送信値を読み取り
                     String v = "";

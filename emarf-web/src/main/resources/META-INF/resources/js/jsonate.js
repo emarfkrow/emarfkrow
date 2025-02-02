@@ -282,7 +282,7 @@ let Jsonate = {
                         let href = entityName + 'Download.link' + params;
                         $link.prop('href', href);
                         if (v.endsWith('.bmp') || v.endsWith('.gif') || v.endsWith('.jpg') || v.endsWith('.jpeg') || v.endsWith('.png')) {
-                            $link.html('<img id="' + this.id + 'Img" class="imageLink" src="' + href + '" />');
+                            $link.html('<img id="' + this.id + 'Img" class="imageLink" src="' + href + '&' + Date.now() + '" />');
                         } else {
                             $link.html(v.split('|')[0]);
                         }
