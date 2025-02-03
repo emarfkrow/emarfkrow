@@ -394,6 +394,8 @@ public final class DataSources {
         addReferTable(tables);
         //転生モデルの評価
         addRebornTable(tables);
+        //集約モデルの評価
+        addSummaryTable(tables);
         //組合せモデルの評価
         addCombo(tables);
 
@@ -1232,14 +1234,156 @@ public final class DataSources {
                             for (String fk : tenseisakiFKs) {
                                 tenseisaki.getColumnInfos().get(fk).setReborn(true);
                             }
-                        } else {
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * ユニークキーテーブル（集約元）から、植え付け先（集約先）を探す
+     * @param tableInfos テーブル情報のリスト
+     */
+    private static void addSummaryTable(final List<TableInfo> tableInfos) {
+
+        // 集約元としてループ
+        Iterator<TableInfo> tenseimotos = tableInfos.iterator();
+        while (tenseimotos.hasNext()) {
+            TableInfo tenseimoto = tenseimotos.next();
+
+            // 履歴モデルかビューなら除外
+            if (tenseimoto.isHistory() || tenseimoto.isView()) {
+                continue;
+            }
+
+            // 単一キーの場合、参照モデルなら除外（参照サフィックスセットに合致すれば除外）
+            if (tenseimoto.getPrimaryKeys().size() == 1) {
+                String motoKey = tenseimoto.getPrimaryKeys().get(0);
+                boolean b = false;
+                for (String[] referPair : referPairs) {
+                    String keySuffix = referPair[0];
+                    String meiSuffix = referPair[1];
+                    String referMei = motoKey.replaceAll("(?i)" + keySuffix + "$", meiSuffix);
+                    // 単一キーが参照キーである場合
+                    if (StringUtil.endsWithIgnoreCase(keySuffix, motoKey)) {
+                        // 参照名にも合致する場合は除外
+                        for (String k : tenseimoto.getColumnInfos().keySet()) {
+                            if (k.matches("(?i)^" + referMei + "$")) {
+                                b = true;
+                                break;
+                            }
+                        }
+                    }
+                    if (b) {
+                        break;
+                    }
+                }
+                if (b) {
+                    continue;
+                }
+            }
+
+            /*
+             * 比較先（参照元テーブル）の探索
+             */
+
+            // テーブル情報でループ（集約先）
+            Iterator<TableInfo> tenseisakis = tableInfos.iterator();
+            while (tenseisakis.hasNext()) {
+                TableInfo tenseisaki = tenseisakis.next();
+
+                //履歴モデルかビューなら除外
+                if (tenseisaki.isHistory() || tenseisaki.isView()) {
+                    continue;
+                }
+
+                // 比較元の主キーが全て外部キーとして含まれるか
+                Set<String> tenseisakiFKs = new HashSet<String>();
+                for (String tenseimotoPK : tenseimoto.getPrimaryKeys()) {
+                    ColumnInfo tenseimotoKey = tenseimoto.getColumnInfos().get(tenseimotoPK);
+
+                    // 比較先のカラム情報でループして比較元のユニークキーがあれば参照テーブルリストに追加
+                    for (Entry<String, ColumnInfo> tenseisakiCols : tenseisaki.getColumnInfos().entrySet()) {
+                        String sakiColName = tenseisakiCols.getKey();
+                        ColumnInfo sakiCol = tenseisakiCols.getValue();
+
+                        // 比較先が主キーならスキップ
+                        if (sakiCol.isPk()) {
+                            continue;
+                        }
+
+                        // データ型が異なるならスキップ
+                        if (!sakiCol.getTypeName().equals(tenseimotoKey.getTypeName())) {
+                            continue;
+                        }
+
+                        // データサイズが異なるならスキップ
+                        if (sakiCol.getColumnSize() != tenseimotoKey.getColumnSize()) {
+                            continue;
+                        }
+
+                        // 小数桁数が異なるならスキップ
+                        if (sakiCol.getDecimalDigits() != tenseimotoKey.getDecimalDigits()) {
+                            continue;
+                        }
+
+                        // 比較先カラム名が比較元カラム名と合致するなら比較先を集約モデルに設定
+                        if (sakiColName.matches("(?i)^" + tenseimotoPK + "$")) {
+                            tenseisakiFKs.add(sakiColName);
+                        }
+                    }
+                }
+
+                if (tenseimoto.getPrimaryKeys().size() == tenseisakiFKs.size()) {
+                    //比較元の主キー数が比較先の外部キー数と一致する場合
+
+                    boolean b = true;
+
+                    //処理済み情報
+                    Iterator<TableInfo> pasts = tableInfos.iterator();
+                    while (pasts.hasNext()) {
+                        TableInfo past = pasts.next();
+
+                        //処理済みの集約先情報がなければスキップ
+                        TableInfo pastSummary = past.getSummaryInfo();
+                        if (pastSummary == null) {
+                            continue;
+                        }
+
+                        //処理済みの集約先情報があっても、今回の集約先でなければスキップ
+                        if (!pastSummary.getTableName().equals(tenseisaki.getTableName())) {
+                            continue;
+                        }
+
+                        //今回の集約先が既に使用済みでも、今回の集約元の方がキー数が多ければ、処理済みをクリア
+                        if (past.getPrimaryKeys().size() < tenseimoto.getPrimaryKeys().size()) {
+                            past.setSummaryInfo(null);
+                        }
+
+                        //今回の集約先が既に使用済みで、今回の集約元の方がキー数が少なければ、集約先としない
+                        if (tenseimoto.getPrimaryKeys().size() < past.getPrimaryKeys().size()) {
+                            b = false;
+                        }
+                    }
+
+                    if (b) {
+                        boolean isSummary = true;
+                        for (String fk : tenseisakiFKs) {
+                            if (tenseisaki.getColumnInfos().get(fk).getNullable() != 1) {
+                                isSummary = false;
+                                break;
+                            }
+                        }
+                        if (isSummary) {
                             //集約モデル
                             tenseimoto.setSummaryInfo(tenseisaki);
                             for (String fk : tenseisakiFKs) {
                                 tenseisaki.getColumnInfos().get(fk).setSummary(true);
                             }
+                            break;
                         }
-                        break;
                     }
                 }
             }
