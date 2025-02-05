@@ -221,13 +221,20 @@ public final class Queries {
             } else if (snakes.get(parameterName) == null) {
                 // パラメータ値がない場合
 
-                // ブロック削除
-                rawSql = p.matcher(rawSql).replaceFirst("");
-                logSql = p.matcher(logSql).replaceFirst("");
+                String simplesql = rawSql.replaceAll("/(\\/\\*.+\\*\\/|--[^\\r\\n]+)/", "").toUpperCase();
+                int insertIndex = simplesql.indexOf("INSERT");
+                int updateIndex = simplesql.indexOf("UPDATE");
+                int deleteIndex = simplesql.indexOf("DELETE");
+                if (insertIndex < 0 && updateIndex < 0 && deleteIndex < 0) {
 
-                // １行削除
-                rawSql = rawSql.replaceFirst(".*:" + parameterName + "[^_]?[^\r\n]*([\r\n]+|$)", "");
-                logSql = logSql.replaceFirst(".*:" + parameterName + "[^_]?[^\r\n]*([\r\n]+|$)", "");
+                    // ブロック削除
+                    rawSql = p.matcher(rawSql).replaceFirst("");
+                    logSql = p.matcher(logSql).replaceFirst("");
+
+                    // １行削除
+                    rawSql = rawSql.replaceFirst(".*:" + parameterName + "[^_]?[^\r\n]*([\r\n]+|$)", "");
+                    logSql = logSql.replaceFirst(".*:" + parameterName + "[^_]?[^\r\n]*([\r\n]+|$)", "");
+                }
             }
         }
 
@@ -284,7 +291,11 @@ public final class Queries {
 
                 // 実行用SQLとログ用SQLの名前付きパラメータ「:***」をプレースホルダ「?」に置換
                 rawSql = rawSql.replaceFirst(":" + parameterName, "?");
-                logSql = logSql.replaceFirst(":" + parameterName, "'" + o.toString() + "'");
+                if (o == null) {
+                    logSql = logSql.replaceFirst(":" + parameterName, "''");
+                } else {
+                    logSql = logSql.replaceFirst(":" + parameterName, "'" + o.toString() + "'");
+                }
 
                 // LocalDateTimeのまま渡すと日付リテラルエラーを起こす
                 if (o instanceof LocalDateTime) {

@@ -1451,10 +1451,10 @@ public final class BeanGenerator {
                     }
                     s.add("                " + instance + ".get" + childEntity + "s().add(" + childInstance + ");");
                     s.add("            }");
-                    s.add("            map.put(\"" + entity + "\", " + instance + ");");
                     s.add("");
                 }
             }
+            s.add("            map.put(\"" + entity + "\", " + instance + ");");
 
             break;
         }

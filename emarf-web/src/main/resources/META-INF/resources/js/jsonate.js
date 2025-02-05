@@ -218,8 +218,13 @@ let Jsonate = {
 
             // 入力項目でループ
             $form.find(Jsonate.inputSelector + ', input[type=checkbox]:enabled, input[type=radio]:enabled').each(function() {
+
+                // 画面上の入力項目
                 let $input = $(this);
+
+                // 入力項目のname
                 let k = $input.prop('name');
+
                 //チェックボックス・ラジオボタン用の対応
                 if (k.lastIndexOf(entityName) > 0) {
                     k = k.substr(k.lastIndexOf(entityName));
@@ -228,24 +233,26 @@ let Jsonate = {
                 // 入力項目のnameで値を取得してみる
                 let v = json[k];
 
+                let i = k.lastIndexOf('.');
+
                 // entityNameなしでも取得してみる
                 if (v == null) {
-                    v = json[k.replace(entityName + '.', '')];
+                    v = json[k.substr(i + 1)];
                 }
 
                 // UPPER_CASEでも取得してみる
                 if (v == null) {
-                    v = json[Casing.toUpper(k.replace(entityName + '.', ''))];
+                    v = json[Casing.toUpper(k.substr(i + 1))];
                 }
 
                 // kebab-caseでも取得してみる
                 if (v == null) {
-                    v = json[Casing.toKebab(k.replace(entityName + '.', ''))];
+                    v = json[Casing.toKebab(k.substr(i + 1))];
                 }
 
                 // UPPER-KEBAB-CASEでも取得してみる
                 if (v == null) {
-                    v = json[Casing.toUpperKebab(k.replace(entityName + '.', ''))];
+                    v = json[Casing.toUpperKebab(k.substr(i + 1))];
                 }
 
                 // 値があれば反映
@@ -296,6 +303,7 @@ let Jsonate = {
                             $input.val(v.replace('%20', 'T'));
                         } else {
                             $input.val([v]);
+                            $('span[id="' + k + '"]').html(v);
                         }
                     }
                 }
