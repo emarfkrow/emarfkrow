@@ -56,7 +56,7 @@ $(function() {
     window.location.search.slice(1).split('&').forEach(function(s) {
         if (s != '') {
             var a = s.split('=');
-            Base.querystrings[a[0]] = a[1];
+            Base.querystrings[a[0]] = decodeURIComponent(a[1]);
         }
     });
 
@@ -103,7 +103,7 @@ $(document).on('ready', function() {
     if (Base.querystrings['ERROR']) {
         alert(Messages[Base.querystrings['ERROR']]);
         if (Base.querystrings['errors']) {
-            sessionStorage.setItem('errors', decodeURIComponent(Base.querystrings['errors']));
+            sessionStorage.setItem('errors', Base.querystrings['errors']);
         }
         //let href = document.location.href;
         //document.location.href = href.replace(/\?.+$/, '');

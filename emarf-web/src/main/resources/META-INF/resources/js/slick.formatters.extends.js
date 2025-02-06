@@ -90,7 +90,10 @@ limitations under the License.
     }
 
     function LinkFormatter(row, cell, value, columnDef, dataContext) {
-        if (!dataContext[gridOpeVisibleColumn] && !dataContext[gridViewDetailColumn]) {
+        if (!dataContext[gridOpeVisibleColumn.toLowerCase()] &&
+            !dataContext[gridOpeVisibleColumn.toUpperCase()] &&
+            !dataContext[gridViewDetailColumn.toLowerCase()] &&
+            !dataContext[gridViewDetailColumn.toUpperCase()]) {
             return null;
         }
         if (value) {
