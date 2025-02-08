@@ -87,6 +87,9 @@ public final class DataSources {
     /** 列評価をスキップする列名 */
     private static String columnIgnoreRe;
 
+    /** VIEWで変換先を指定する列名 */
+    private static String viewDetailColumn;
+
     /** 数値列で自動採番しないサフィックス */
     private static String noNumberingIntRe;
 
@@ -251,6 +254,7 @@ public final class DataSources {
         dinksRe = bundle.getString("DataSources.relation.dinks.re");
         orphansRe = bundle.getString("DataSources.relation.orphans.re");
         columnIgnoreRe = bundle.getString("DataSources.column.ignore.re");
+        viewDetailColumn = bundle.getString("HtmlGenerator.view.detail.column");
         noNumberingIntRe = bundle.getString("DataSources.column.nonumbering.int.re");
         numberingCharRe = bundle.getString("DataSources.column.numbering.char.re");
         inputTimestampSuffixs = bundle.getString("BeanGenerator.input.timestamp.suffixs").split(",");
@@ -264,7 +268,7 @@ public final class DataSources {
      * スキーマのメタ情報取得
      * @return List<TableInfo>
      */
-    public static List<TableInfo> getTableInfos() {
+    public static List<TableInfo> getTables() {
 
         // 設定ファイル読み込み
         loadBundle();
@@ -278,7 +282,7 @@ public final class DataSources {
 
             // テーブル情報を取得
             String schemaPattern = BUNDLE.getString("username");
-            addTableInfos(tables, metaData, schemaPattern);
+            addTables(tables, metaData, schemaPattern);
 
             // テーブル毎に主キー情報を取得
             for (TableInfo table : tables) {
@@ -289,7 +293,7 @@ public final class DataSources {
             for (TableInfo table : tables) {
 
                 // テーブルのカラム情報を取得してループ
-                ResultSet columns = metaData.getColumns(null, schemaPattern.toUpperCase(), table.getTableName(), null);
+                ResultSet columns = metaData.getColumns(null, schemaPattern.toUpperCase(), table.getName(), null);
 
                 while (columns.next()) {
 
@@ -300,6 +304,11 @@ public final class DataSources {
                     }
                     if (columnName.matches(columnIgnoreRe)) {
                         continue;
+                    }
+
+                    // 変換ビューならtrue
+                    if (columnName.toUpperCase().equals(viewDetailColumn.toUpperCase())) {
+                        table.setConvView(true);
                     }
 
                     // カラム情報を追加
@@ -338,7 +347,7 @@ public final class DataSources {
                     // カラム論理名
                     String remarks = columns.getString("REMARKS");
                     if (remarks == null || remarks.length() == 0) {
-                        remarks = assist.getColumnComment(table.getTableName(), columnName);
+                        remarks = assist.getColumnComment(table.getName(), columnName);
                     }
                     if (remarks != null && remarks.contains(":")) {
                         int i = remarks.indexOf(":");
@@ -412,7 +421,7 @@ public final class DataSources {
         for (TableInfo table : tableInfos) {
 
             LOG.info("");
-            LOG.info("■" + table.getTableName());
+            LOG.info("■" + table.getName());
 
             if (table.getPrimaryKeys().size() > 0) {
                 LOG.info("    PrimaryKeys: " + table.getPrimaryKeys());
@@ -421,28 +430,28 @@ public final class DataSources {
             if (table.getParentInfos().size() > 0) {
                 LOG.info("    ParentInfos:");
                 for (TableInfo parent : table.getParentInfos()) {
-                    LOG.info("        " + parent.getTableName() + " " + parent.getPrimaryKeys());
+                    LOG.info("        " + parent.getName() + " " + parent.getPrimaryKeys());
                 }
             }
 
             if (table.getBrosInfos().size() > 0) {
                 LOG.info("    BrosInfos:");
                 for (TableInfo bros : table.getBrosInfos()) {
-                    LOG.info("        " + bros.getTableName() + " " + bros.getPrimaryKeys());
+                    LOG.info("        " + bros.getName() + " " + bros.getPrimaryKeys());
                 }
             }
 
             if (table.getChildInfos().size() > 0) {
                 LOG.info("    ChildInfos:");
                 for (TableInfo child : table.getChildInfos()) {
-                    LOG.info("        " + child.getTableName() + " " + child.getPrimaryKeys());
+                    LOG.info("        " + child.getName() + " " + child.getPrimaryKeys());
                 }
             }
 
             if (table.getHistoryInfo() != null) {
                 LOG.info("    HistoryInfo:");
                 TableInfo history = table.getHistoryInfo();
-                LOG.info("        " + history.getTableName() + " " + history.getPrimaryKeys());
+                LOG.info("        " + history.getName() + " " + history.getPrimaryKeys());
             }
 
             Map<String, TableInfo> refers = new LinkedHashMap<String, TableInfo>();
@@ -456,33 +465,33 @@ public final class DataSources {
                 for (Entry<String, TableInfo> e : refers.entrySet()) {
                     String columnName = e.getKey();
                     TableInfo refer = e.getValue();
-                    LOG.info("        " + columnName + " = " + refer.getTableName() + " " + refer.getPrimaryKeys());
+                    LOG.info("        " + columnName + " = " + refer.getName() + " " + refer.getPrimaryKeys());
                 }
             }
 
             if (table.getRebornInfo() != null) {
                 LOG.info("    RebornInfo:");
                 TableInfo reborn = table.getRebornInfo();
-                LOG.info("        " + reborn.getTableName() + " " + reborn.getPrimaryKeys());
+                LOG.info("        " + reborn.getName() + " " + reborn.getPrimaryKeys());
             }
 
             if (table.getSummaryInfo() != null) {
                 LOG.info("    SummaryInfo:");
                 TableInfo summary = table.getSummaryInfo();
-                LOG.info("        " + summary.getTableName() + " " + summary.getPrimaryKeys());
+                LOG.info("        " + summary.getName() + " " + summary.getPrimaryKeys());
             }
 
             if (table.getComboInfos().size() > 1) {
                 LOG.info("    ComboInfos:");
                 for (TableInfo combo : table.getComboInfos()) {
-                    LOG.info("        " + combo.getTableName() + " " + combo.getPrimaryKeys());
+                    LOG.info("        " + combo.getName() + " " + combo.getPrimaryKeys());
                 }
             }
 
             if (table.getStintInfo() != null) {
                 LOG.info("    StintInfo:");
                 TableInfo stint = table.getStintInfo();
-                LOG.info("        " + stint.getTableName() + " " + stint.getPrimaryKeys());
+                LOG.info("        " + stint.getName() + " " + stint.getPrimaryKeys());
             }
         }
 
@@ -502,7 +511,7 @@ public final class DataSources {
             for (String pk : table.getPrimaryKeys()) {
                 ColumnInfo primaryKey = table.getColumnInfos().get(pk);
                 if (primaryKey.getReferInfo() != null) {
-                    String referName = primaryKey.getReferInfo().getTableName();
+                    String referName = primaryKey.getReferInfo().getName();
                     if (!done.contains(referName)) {
                         done.add(referName);
                         combos.add(primaryKey.getReferInfo());
@@ -566,7 +575,7 @@ public final class DataSources {
 
         // テーブルの主キー情報でループ
         String schemaPattern = BUNDLE.getString("username");
-        try (ResultSet rs = metaData.getPrimaryKeys(null, schemaPattern.toUpperCase(), tableInfo.getTableName())) {
+        try (ResultSet rs = metaData.getPrimaryKeys(null, schemaPattern.toUpperCase(), tableInfo.getName())) {
             while (rs.next()) {
 
                 // 対象外のカラム名ならスキップ
@@ -596,7 +605,7 @@ public final class DataSources {
             }
         }
 
-        MapList uniqueIndexColumns = assist.getUniqueIndexes(tableInfo.getTableName());
+        MapList uniqueIndexColumns = assist.getUniqueIndexes(tableInfo.getName());
         if (uniqueIndexColumns != null) {
 
             for (Map<String, Object> uniqueIndexColumn : uniqueIndexColumns) {
@@ -644,12 +653,12 @@ public final class DataSources {
 
     /**
      * テーブル情報のリストに各テーブルを追加
-     * @param tableInfos テーブル情報のリスト
+     * @param tables テーブル情報のリスト
      * @param metaData メタデータ
      * @param schemaPattern スキーマ名
      * @throws SQLException
      */
-    private static void addTableInfos(final List<TableInfo> tableInfos, final DatabaseMetaData metaData,
+    private static void addTables(final List<TableInfo> tables, final DatabaseMetaData metaData,
             final String schemaPattern) throws SQLException {
 
         ResultSet rs = metaData.getTables(null, schemaPattern.toUpperCase(), null, new String[] { "TABLE", "VIEW" });
@@ -669,11 +678,11 @@ public final class DataSources {
             }
 
             // テーブル情報を追加
-            TableInfo tableInfo = new TableInfo();
-            tableInfos.add(tableInfo);
+            TableInfo table = new TableInfo();
+            tables.add(table);
 
             // テーブル物理名
-            tableInfo.setTableName(tableName);
+            table.setName(tableName);
 
             // テーブル論理名
             String remarks = rs.getString("REMARKS");
@@ -686,10 +695,10 @@ public final class DataSources {
             if (remarks.indexOf(":") > 0) {
                 remarks = remarks.substring(0, remarks.indexOf(":"));
             }
-            tableInfo.setRemarks(remarks);
+            table.setRemarks(remarks);
 
             String tableType = rs.getString("TABLE_TYPE");
-            tableInfo.setView(tableType.equals("VIEW"));
+            table.setView(tableType.equals("VIEW"));
         }
 
         rs.close();
@@ -773,7 +782,7 @@ public final class DataSources {
             }
 
             // 弟を設定しないテーブルならスキップ
-            if (elder.getTableName().matches(youngestRe)) {
+            if (elder.getName().matches(youngestRe)) {
                 continue;
             }
 
@@ -811,7 +820,7 @@ public final class DataSources {
             // １．弟情報から長兄モデルを削除
             List<TableInfo> nonEldestInfos = new ArrayList<TableInfo>();
             for (TableInfo younger : elder.getBrosInfos()) {
-                if (younger.getTableName().matches(eldestRe)) {
+                if (younger.getName().matches(eldestRe)) {
                     younger.setBrother(false);
                 } else {
                     nonEldestInfos.add(younger);
@@ -820,7 +829,7 @@ public final class DataSources {
             elder.setBrosInfos(nonEldestInfos);
 
             // ２．長兄モデルなら弟モデルの弟情報をクリア
-            if (elder.getTableName().matches(eldestRe)) {
+            if (elder.getName().matches(eldestRe)) {
                 elder.setBrother(false);
                 for (TableInfo younger : elder.getBrosInfos()) {
                     younger.setBrosInfos(new ArrayList<TableInfo>());
@@ -830,7 +839,7 @@ public final class DataSources {
             // ３．弟情報から隠し子モデルを削除
             List<TableInfo> youngers = new ArrayList<TableInfo>();
             for (TableInfo younger : elder.getBrosInfos()) {
-                if (!younger.getTableName().matches(bastardRe)) {
+                if (!younger.getName().matches(bastardRe)) {
                     youngers.add(younger);
                 }
             }
@@ -898,7 +907,7 @@ public final class DataSources {
                 }
 
                 // 比較先が比較元に前方一致しないならスキップ
-                if (!dest.getTableName().matches("(?i)^" + src.getTableName() + ".+$")) {
+                if (!dest.getName().matches("(?i)^" + src.getName() + ".+$")) {
                     continue;
                 }
 
@@ -927,7 +936,7 @@ public final class DataSources {
             }
 
             // 子を設定しないテーブルならスキップ
-            if (srcInfo.getTableName().matches(dinksRe)) {
+            if (srcInfo.getName().matches(dinksRe)) {
                 continue;
             }
 
@@ -945,7 +954,7 @@ public final class DataSources {
                 }
 
                 // 親を設定しないテーブルならスキップ
-                if (destInfo.getTableName().matches(orphansRe)) {
+                if (destInfo.getName().matches(orphansRe)) {
                     continue;
                 }
 
@@ -1075,7 +1084,7 @@ public final class DataSources {
 
                     // 比較先もユニークキーで、他テーブルの弟にしないテーブルならスキップ
                     if (column.isPk() && pks.size() == 1) {
-                        if (sanshomoto.getTableName().matches(eldestRe)) {
+                        if (sanshomoto.getName().matches(eldestRe)) {
                             continue;
                         }
                     }
@@ -1185,7 +1194,7 @@ public final class DataSources {
                         }
 
                         // 転生先を設定済みでも、今回の転生先と重複していなければスキップ
-                        if (!other.getRebornInfo().getTableName().equals(dest.getTableName())) {
+                        if (!other.getRebornInfo().getName().equals(dest.getName())) {
                             continue;
                         }
 
@@ -1352,7 +1361,7 @@ public final class DataSources {
                         }
 
                         // 集約元を設定済みでも、今回の集約元と重複していなければスキップ
-                        if (!other.getSummaryInfo().getTableName().equals(dest.getTableName())) {
+                        if (!other.getSummaryInfo().getName().equals(dest.getName())) {
                             continue;
                         }
 

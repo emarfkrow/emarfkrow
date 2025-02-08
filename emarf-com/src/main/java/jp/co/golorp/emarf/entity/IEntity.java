@@ -16,11 +16,27 @@ limitations under the License.
 
 package jp.co.golorp.emarf.entity;
 
+import java.time.LocalDateTime;
+
 /**
  * エンティティのマーカー
  *
  * @author golorp
  */
 public interface IEntity {
+
+    /**
+     * @param now
+     * @param execId
+     * @return 追加件数
+     */
+    int insert(LocalDateTime now, String execId);
+
+    /**
+     * @param now
+     * @param execId
+     * @return 更新件数
+     */
+    int update(LocalDateTime now, String execId);
 
 }

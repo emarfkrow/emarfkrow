@@ -198,38 +198,37 @@ public final class HtmlGenerator {
      * @param tables テーブル情報
      */
     private static void htmlIndex(final String htmlDir, final TableInfo table, final List<TableInfo> tables) {
-        String entity = StringUtil.toPascalCase(table.getTableName());
-        String index = entity + "S";
+        String e = StringUtil.toPascalCase(table.getName());
         String remarks = table.getRemarks();
         List<String> s = new ArrayList<String>();
         s.add("<!DOCTYPE html>");
         s.add("<html xmlns:th=\"http://www.thymeleaf.org\" xmlns:layout=\"http://www.ultraq.net.nz/web/thymeleaf/layout\" layout:decorate=\"~{common/base}\">");
         s.add("<head>");
         s.add("<meta charset=\"UTF-8\">");
-        s.add("<title th:text=\"#{" + index + ".title}\">" + remarks + "</title>");
+        s.add("<title th:text=\"#{" + e + "S.title}\">" + remarks + "</title>");
         s.add("<style type=\"text/css\">");
         s.add("</style>");
         s.add("<script type=\"text/javascript\">");
         s.add("");
         s.add("</script>");
-        s.add("<script th:src=\"@{/model/" + entity + "GridColumns.js}\"></script>");
+        s.add("<script th:src=\"@{/model/" + e + "GridColumns.js}\"></script>");
         Set<TableInfo> added = new HashSet<TableInfo>();
         added.add(table);
         htmlNestGrid(s, table, tables, added);
         s.add("</head>");
         s.add("<body>");
         s.add("  <div layout:fragment=\"article\">");
-        s.add("    <h2 th:text=\"#{" + index + ".h2}\">h2</h2>");
+        s.add("    <h2 th:text=\"#{" + e + "S.h2}\">h2</h2>");
         s.add("    <!-- 検索フォーム -->");
-        s.add("    <form name=\"" + entity + "SearchForm\" action=\"" + entity + "Search.ajax\" class=\"search\">");
+        s.add("    <form name=\"" + e + "SearchForm\" action=\"" + e + "Search.ajax\" class=\"search\">");
         s.add("      <input type=\"hidden\" name=\"rows\" value=\"" + rows + "\" />");
         s.add("      <input type=\"hidden\" name=\"page\" value=\"0\" />");
         s.add("      <fieldset>");
-        s.add("        <legend th:text=\"#{" + index + ".legend}\">legend</legend>");
+        s.add("        <legend th:text=\"#{" + e + "S.legend}\">legend</legend>");
         htmlFields(table, s, false, false);
         s.add("      </fieldset>");
         s.add("      <div class=\"buttons\">");
-        s.add("        <button type=\"reset\" id=\"Reset" + entity
+        s.add("        <button type=\"reset\" id=\"Reset" + e
                 + "\" th:text=\"#{common.reset}\" class=\"reset\">reset</button>");
         int numberingCount = 0;
         for (String pk : table.getPrimaryKeys()) {
@@ -240,20 +239,20 @@ public final class HtmlGenerator {
         }
         // 採番キーが１つか、組合せモデルなら新規ボタンを出力
         if (numberingCount == 1 || table.getComboInfos().size() > 1) {
-            s.add("        <a th:href=\"@{/model/" + entity + ".html}\" id=\"" + entity
-                    + "\" class=\"anew\" target=\"dialog\" th:text=\"#{" + entity + ".add}\" tabindex=\"-1\">" + remarks
+            s.add("        <a th:href=\"@{/model/" + e + ".html}\" id=\"" + e
+                    + "\" class=\"anew\" target=\"dialog\" th:text=\"#{" + e + ".add}\" tabindex=\"-1\">" + remarks
                     + "</a>");
         }
         s.add("      </div>");
         s.add("      <div class=\"submits\">");
-        s.add("        <button id=\"Search" + entity + "\" type=\"submit\" class=\"search\" data-gridId=\"" + entity
+        s.add("        <button id=\"Search" + e + "\" type=\"submit\" class=\"search\" data-gridId=\"" + e
                 + "Grid\" th:text=\"#{common.search}\">submit</button>");
         s.add("      </div>");
         s.add("    </form>");
         s.add("    <!-- 一覧フォーム -->");
-        s.add("    <form name=\"" + entity + "SRegistForm\" action=\"" + entity + "SRegist.ajax\" class=\"regist\">");
-        s.add("      <h3 th:text=\"#{" + entity + ".h3}\">h3</h3>");
-        String gridId = entity + "Grid";
+        s.add("    <form name=\"" + e + "SRegistForm\" action=\"" + e + "SRegist.ajax\" class=\"regist\">");
+        s.add("      <h3 th:text=\"#{" + e + ".h3}\">h3</h3>");
+        String gridId = e + "Grid";
         String addRow = "";
         // 単一キーの場合は新規行あり
         if (table.getPrimaryKeys().size() == 1) {
@@ -281,25 +280,25 @@ public final class HtmlGenerator {
         }
         int frozenColumn = table.getPrimaryKeys().size() - 1;
         s.add("      <div id=\"" + gridId + "\" data-selectionMode=\"checkbox\"" + addRow + " data-frozenColumn=\""
-                + frozenColumn + "\" th:data-href=\"@{/model/" + entity + ".html}\"></div>");
-        s.add("      <div id=\"" + entity + "Pager\"></div>");
+                + frozenColumn + "\" th:data-href=\"@{/model/" + e + ".html}\"></div>");
+        s.add("      <div id=\"" + e + "Pager\"></div>");
         s.add("      <div class=\"buttons\">");
-        if (!table.isHistory() && !table.isView()) {
-            s.add("        <button type=\"button\" id=\"Reset" + entity
-                    + "S\" th:text=\"#{common.reset}\" class=\"reset\" onClick=\"$('[id=&quot;Search" + entity
+        if (!table.isHistory() && (!table.isView() || table.isConvView())) {
+            s.add("        <button type=\"button\" id=\"Reset" + e
+                    + "S\" th:text=\"#{common.reset}\" class=\"reset\" onClick=\"$('[id=&quot;Search" + e
                     + "&quot;]').click();\">reset</button>");
         }
-        s.add("        <a th:href=\"@{" + entity + "Search.xlsx(baseMei=#{" + entity + "S.h2})}\" id=\"" + entity
+        s.add("        <a th:href=\"@{" + e + "Search.xlsx(baseMei=#{" + e + "S.h2})}\" id=\"" + e
                 + "Search.xlsx\" th:text=\"#{common.xlsx}\" class=\"output\" tabindex=\"-1\">xlsx</a>");
         //集約先リンク
         TableInfo summary = getSummary(table, tables);
         if (summary != null) {
-            String summaryEntity = StringUtil.toPascalCase(summary.getTableName());
+            String summaryEntity = StringUtil.toPascalCase(summary.getName());
             s.add("        <a th:href=\"@{/model/" + summaryEntity + ".html}\" id=\"" + summaryEntity
                     + "\" target=\"dialog\" th:text=\"#{" + summaryEntity
                     + ".sum}\" class=\"summary\" tabindex=\"-1\">" + summary.getRemarks() + "</a>");
         }
-        if (!table.isHistory() && !table.isView()) {
+        if (!table.isHistory() && (!table.isView() || table.isConvView())) {
             for (ColumnInfo column : table.getColumnInfos().values()) {
                 //グリッド用の非表示の参照ボタン
                 if (column.getReferInfo() != null) {
@@ -309,33 +308,35 @@ public final class HtmlGenerator {
                     }
                     String property = StringUtil.toCamelCase(column.getColumnName());
                     TableInfo refer = column.getReferInfo();
-                    String referEntity = StringUtil.toPascalCase(refer.getTableName());
+                    String referEntity = StringUtil.toPascalCase(refer.getName());
                     String action = "";
                     String css = "";
                     if (refer.getStintInfo() != null) {
                         action = "?action=" + referEntity + "Correct.ajax";
                         css = " correct";
                     }
-                    s.add("        <a id=\"" + entity + "Grid." + property + "\" th:href=\"@{/model/" + referEntity
+                    s.add("        <a id=\"" + e + "Grid." + property + "\" th:href=\"@{/model/" + referEntity
                             + "S.html" + action + "}\" target=\"dialog\" class=\"refer" + css + "\" th:text=\"'"
                             + refer.getRemarks()
                             + "' + #{common.refer}\" tabindex=\"-1\" style=\"display: none;\">...</a>");
                 }
             }
-            s.add("        <button id=\"Delete" + entity
-                    + "S\" type=\"submit\" class=\"delete selectRows\" data-action=\"" + entity
-                    + "SDelete.ajax\" th:text=\"#{common.delete}\" tabindex=\"-1\">削除</button>");
-            s.add("        <button id=\"Permit" + entity
-                    + "S\" type=\"submit\" class=\"permit selectRows\" data-action=\"" + entity
-                    + "SPermit.ajax\" th:text=\"#{common.permit}\" tabindex=\"-1\">承認</button>");
-            s.add("        <button id=\"Forbid" + entity
-                    + "S\" type=\"submit\" class=\"forbid selectRows\" data-action=\"" + entity
-                    + "SForbid.ajax\" th:text=\"#{common.forbid}\" tabindex=\"-1\">否認</button>");
+            if (!table.isView()) {
+                s.add("        <button id=\"Delete" + e
+                        + "S\" type=\"submit\" class=\"delete selectRows\" data-action=\"" + e
+                        + "SDelete.ajax\" th:text=\"#{common.delete}\" tabindex=\"-1\">削除</button>");
+                s.add("        <button id=\"Permit" + e
+                        + "S\" type=\"submit\" class=\"permit selectRows\" data-action=\"" + e
+                        + "SPermit.ajax\" th:text=\"#{common.permit}\" tabindex=\"-1\">承認</button>");
+                s.add("        <button id=\"Forbid" + e
+                        + "S\" type=\"submit\" class=\"forbid selectRows\" data-action=\"" + e
+                        + "SForbid.ajax\" th:text=\"#{common.forbid}\" tabindex=\"-1\">否認</button>");
+            }
         }
         s.add("      </div>");
         s.add("      <div class=\"submits\">");
-        if (!table.isHistory() && !table.isView()) {
-            s.add("        <button id=\"Regist" + entity
+        if (!table.isHistory() && (!table.isView() || table.isConvView())) {
+            s.add("        <button id=\"Regist" + e
                     + "S\" type=\"submit\" class=\"regist\" th:text=\"#{common.regist}\">submit</button>");
         }
         s.add("      </div>");
@@ -343,7 +344,7 @@ public final class HtmlGenerator {
         s.add("  </div>");
         s.add("</body>");
         s.add("</html>");
-        FileUtil.writeFile(htmlDir + File.separator + index + ".html", s);
+        FileUtil.writeFile(htmlDir + File.separator + e + "S.html", s);
     }
 
     /**
@@ -357,7 +358,7 @@ public final class HtmlGenerator {
         List<TableInfo> summarys = new ArrayList<TableInfo>();
         for (TableInfo summary : tables) {
             if (summary.getSummaryInfo() != null) {
-                if (table.getTableName().equals(summary.getSummaryInfo().getTableName())) {
+                if (table.getName().equals(summary.getSummaryInfo().getName())) {
                     summarys.add(summary);
                 }
             }
@@ -379,7 +380,7 @@ public final class HtmlGenerator {
      */
     private static void htmlGridColumns(final String gridDir, final TableInfo table) {
 
-        String entityName = StringUtil.toPascalCase(table.getTableName());
+        String entityName = StringUtil.toPascalCase(table.getName());
 
         List<String> s = new ArrayList<String>();
         s.add("/**");
@@ -436,7 +437,7 @@ public final class HtmlGenerator {
      * @param tables
      */
     private static void htmlDetail(final String htmlDir, final TableInfo table, final List<TableInfo> tables) {
-        String entity = StringUtil.toPascalCase(table.getTableName());
+        String entity = StringUtil.toPascalCase(table.getName());
         List<String> s = new ArrayList<String>();
         s.add("<!DOCTYPE html>");
         s.add("<html xmlns:th=\"http://www.thymeleaf.org\" xmlns:layout=\"http://www.ultraq.net.nz/web/thymeleaf/layout\" layout:decorate=\"~{common/base}\">");
@@ -459,7 +460,7 @@ public final class HtmlGenerator {
         s.add("    <form name=\"" + entity + "RegistForm\" action=\"" + entity + "Regist.ajax\" class=\"regist\">");
         // 親モデル
         for (TableInfo parent : table.getParentInfos()) {
-            String e = StringUtil.toPascalCase(parent.getTableName());
+            String e = StringUtil.toPascalCase(parent.getName());
             s.add("      <fieldset class=\"parent\">");
             s.add("        <legend th:text=\"#{" + e + ".legend}\">legend</legend>");
             htmlFields(parent, s, true, false);
@@ -478,7 +479,7 @@ public final class HtmlGenerator {
         List<TableInfo> bros = table.getBrosInfos();
         if (bros != null) {
             for (TableInfo bro : bros) {
-                String e = StringUtil.toPascalCase(bro.getTableName());
+                String e = StringUtil.toPascalCase(bro.getName());
                 s.add("      <fieldset>");
                 s.add("        <legend th:text=\"#{" + e + ".legend}\">legend</legend>");
                 htmlFields(bro, s, true, true);
@@ -487,7 +488,7 @@ public final class HtmlGenerator {
         }
         //子テーブルリスト
         for (TableInfo child : table.getChildInfos()) {
-            String e = StringUtil.toPascalCase(child.getTableName());
+            String e = StringUtil.toPascalCase(child.getName());
             s.add("      <h3 th:text=\"#{" + e + ".h3}\">h3</h3>");
             s.add("      <a th:href=\"@{/model/" + e + ".html}\" id=\"" + e + "\" target=\"dialog\" th:text=\"#{" + e
                     + ".add}\" class=\"addChild\" tabindex=\"-1\">" + child.getRemarks() + "</a>");
@@ -519,7 +520,7 @@ public final class HtmlGenerator {
                     }
                     String p = StringUtil.toCamelCase(column.getColumnName());
                     TableInfo refer = column.getReferInfo();
-                    String referE = StringUtil.toPascalCase(refer.getTableName());
+                    String referE = StringUtil.toPascalCase(refer.getName());
                     String action = "";
                     String childCss = "";
                     if (refer.getStintInfo() != null) {
@@ -542,14 +543,14 @@ public final class HtmlGenerator {
         // 転生先がある場合は追加ボタンを出力
         if (table.getRebornInfo() != null) {
             TableInfo reborn = table.getRebornInfo();
-            String e = StringUtil.toPascalCase(reborn.getTableName());
+            String e = StringUtil.toPascalCase(reborn.getName());
             s.add("        <a th:href=\"@{/model/" + e + ".html}\" id=\"" + e + "\" target=\"dialog\" th:text=\"#{" + e
                     + ".add}\" class=\"reborner\" tabindex=\"-1\">" + reborn.getRemarks() + "</a>");
         }
         // 集約元がある場合は主キー項目を出力
         if (table.getSummaryInfo() != null) {
             TableInfo summary = table.getSummaryInfo();
-            String e = StringUtil.toPascalCase(summary.getTableName());
+            String e = StringUtil.toPascalCase(summary.getName());
             s.add("        <a th:href=\"@{/model/" + e + ".html}\" id=\"" + e + "\" target=\"dialog\" th:text=\"#{" + e
                     + ".add}\" class=\"reborner\" tabindex=\"-1\">" + summary.getRemarks() + "</a>");
             for (String pk : summary.getPrimaryKeys()) {
@@ -591,7 +592,7 @@ public final class HtmlGenerator {
     private static void htmlProperties(final String htmlDir, final TableInfo table, final List<TableInfo> tables) {
 
         List<String> s = new ArrayList<String>();
-        String entity = StringUtil.toPascalCase(table.getTableName());
+        String entity = StringUtil.toPascalCase(table.getName());
         String remarks = table.getRemarks();
         s.add(entity + "S.title   " + remarks + "検索");
         s.add(entity + "S.h2      " + remarks + "検索");
@@ -615,7 +616,7 @@ public final class HtmlGenerator {
 
         }
         for (TableInfo bros : table.getBrosInfos()) {
-            String e = StringUtil.toPascalCase(bros.getTableName());
+            String e = StringUtil.toPascalCase(bros.getName());
             s.add("");
             s.add(e + ".legend   " + bros.getRemarks());
             for (ColumnInfo column : bros.getColumnInfos().values()) {
@@ -625,7 +626,7 @@ public final class HtmlGenerator {
         }
 
         for (TableInfo child : table.getChildInfos()) {
-            String e = StringUtil.toPascalCase(child.getTableName());
+            String e = StringUtil.toPascalCase(child.getName());
             String mei = child.getRemarks();
             s.add("");
             s.add(e + ".h3  " + mei + "一覧");
@@ -638,21 +639,21 @@ public final class HtmlGenerator {
 
         if (table.getRebornInfo() != null) {
             TableInfo reborn = table.getRebornInfo();
-            String e = StringUtil.toPascalCase(reborn.getTableName());
+            String e = StringUtil.toPascalCase(reborn.getName());
             s.add("");
             s.add(e + ".add " + reborn.getRemarks() + "追加");
         }
 
         if (table.getSummaryInfo() != null) {
             TableInfo summary = table.getSummaryInfo();
-            String e = StringUtil.toPascalCase(summary.getTableName());
+            String e = StringUtil.toPascalCase(summary.getName());
             s.add("");
             s.add(e + ".add " + summary.getRemarks() + "追加");
         }
 
         TableInfo summary = getSummary(table, tables);
         if (summary != null) {
-            String e = StringUtil.toPascalCase(summary.getTableName());
+            String e = StringUtil.toPascalCase(summary.getName());
             s.add("");
             s.add(e + ".sum " + summary.getRemarks() + "集約");
         }
@@ -674,7 +675,7 @@ public final class HtmlGenerator {
             if (tableInfo.getParentInfos().size() > 0) {
                 continue;
             }
-            String tableName = tableInfo.getTableName();
+            String tableName = tableInfo.getName();
             String prefix = tableName.replaceAll("_.+$", "");
             List<TableInfo> nav = null;
             if (navs.containsKey(prefix)) {
@@ -699,7 +700,7 @@ public final class HtmlGenerator {
             s.add("        <ul>");
             List<TableInfo> navInfos = nav.getValue();
             for (TableInfo tableInfo : navInfos) {
-                String tableName = tableInfo.getTableName();
+                String tableName = tableInfo.getName();
                 String remarks = tableInfo.getRemarks();
                 String pascal = StringUtil.toPascalCase(tableName);
                 String pageName = pascal + "S";
@@ -724,7 +725,7 @@ public final class HtmlGenerator {
 
             List<TableInfo> navInfos = nav.getValue();
             for (TableInfo tableInfo : navInfos) {
-                String tableName = tableInfo.getTableName();
+                String tableName = tableInfo.getName();
                 String remarks = tableInfo.getRemarks();
                 String pascal = StringUtil.toPascalCase(tableName);
                 String pageName = pascal + "S";
@@ -756,7 +757,7 @@ public final class HtmlGenerator {
                     continue;
                 }
 
-                String referName = refer.getTableName();
+                String referName = refer.getName();
                 String entity = StringUtil.toPascalCase(referName);
                 s.add("<script th:src=\"@{/model/" + entity + "GridColumns.js}\"></script>");
                 added.add(refer);
@@ -778,7 +779,7 @@ public final class HtmlGenerator {
                         continue;
                     }
 
-                    String referName = refer.getTableName();
+                    String referName = refer.getName();
                     String entity = StringUtil.toPascalCase(referName);
                     s.add("<script th:src=\"@{/model/" + entity + "GridColumns.js}\"></script>");
                     added.add(refer);
@@ -795,7 +796,7 @@ public final class HtmlGenerator {
                 continue;
             }
 
-            String childName = child.getTableName();
+            String childName = child.getName();
             String entity = StringUtil.toPascalCase(childName);
             s.add("<script th:src=\"@{/model/" + entity + "GridColumns.js}\"></script>");
             added.add(child);
@@ -816,7 +817,7 @@ public final class HtmlGenerator {
         if (table.getSummaryInfo() != null) {
             TableInfo summary = table.getSummaryInfo();
             if (!added.contains(summary)) {
-                String entity = StringUtil.toPascalCase(summary.getTableName());
+                String entity = StringUtil.toPascalCase(summary.getName());
                 s.add("<script th:src=\"@{/model/" + entity + "GridColumns.js}\"></script>");
                 added.add(summary);
                 htmlNestGrid(s, summary, tables, added);
@@ -827,7 +828,7 @@ public final class HtmlGenerator {
         TableInfo summary = getSummary(table, tables);
         if (summary != null) {
             if (!added.contains(summary)) {
-                String entity = StringUtil.toPascalCase(summary.getTableName());
+                String entity = StringUtil.toPascalCase(summary.getName());
                 s.add("<script th:src=\"@{/model/" + entity + "GridColumns.js}\"></script>");
                 added.add(summary);
                 htmlNestGrid(s, summary, tables, added);
@@ -1008,7 +1009,7 @@ public final class HtmlGenerator {
             htmlFieldsStint(table, s);
         }
 
-        String entity = StringUtil.toPascalCase(table.getTableName());
+        String entity = StringUtil.toPascalCase(table.getName());
 
         // カラム情報でループ
         for (ColumnInfo column : table.getColumnInfos().values()) {
@@ -1120,7 +1121,7 @@ public final class HtmlGenerator {
                     referCss += " refer";
                     TableInfo refer = column.getReferInfo();
                     TableInfo stint = refer.getStintInfo();
-                    if (stint != null && !table.getTableName().equals(stint.getTableName())) {
+                    if (stint != null && !table.getName().equals(stint.getName())) {
                         css += " correct";
                         referCss += " correct";
                     }
@@ -1163,7 +1164,7 @@ public final class HtmlGenerator {
                 ColumnInfo column = stint.getColumnInfos().get(pk);
                 if (column.getReferInfo() != null) {
                     TableInfo refer = column.getReferInfo();
-                    String entity = StringUtil.toPascalCase(refer.getTableName());
+                    String entity = StringUtil.toPascalCase(refer.getName());
                     String columnName = column.getColumnName();
                     String property = StringUtil.toCamelCase(columnName);
                     String fieldId = entity + "." + property;
@@ -1183,7 +1184,7 @@ public final class HtmlGenerator {
      * @param column
      */
     private static void addMeiSpan(final List<String> s, final TableInfo table, final ColumnInfo column) {
-        String entity = StringUtil.toPascalCase(table.getTableName());
+        String entity = StringUtil.toPascalCase(table.getName());
         if (column.getReferInfo() != null) {
             TableInfo refer = column.getReferInfo();
             String meiColumnName = getMeiColumnName(column.getColumnName(), refer);
@@ -1214,7 +1215,7 @@ public final class HtmlGenerator {
             dataFormat = " data-format=\"" + format + "\"";
         }
 
-        String entity = StringUtil.toPascalCase(tableInfo.getTableName());
+        String entity = StringUtil.toPascalCase(tableInfo.getName());
         String columnName = column.getColumnName();
         String remarks = column.getRemarks();
         int max = column.getColumnSize();
@@ -1223,7 +1224,7 @@ public final class HtmlGenerator {
         tag += "<label for=\"" + fieldId + "\" th:text=\"#{" + fieldId + "}\">" + remarks + "</label>";
 
         TableInfo refer = column.getReferInfo();
-        String referName = StringUtil.toPascalCase(refer.getTableName());
+        String referName = StringUtil.toPascalCase(refer.getName());
         String referDef = getReferDef(entity, columnName, refer);
         tag += "<input type=\"" + type + "\" id=\"" + fieldId + "\" name=\"" + fieldId + "\" maxlength=\"" + max + "\""
                 + css + referDef + dataFormat + " />";
@@ -1437,7 +1438,7 @@ public final class HtmlGenerator {
                     continue;
                 }
 
-                String referName = StringUtil.toPascalCase(referInfo.getTableName());
+                String referName = StringUtil.toPascalCase(referInfo.getName());
                 String srcIdName = entityName + "." + StringUtil.toCamelCase(srcIdColumn);
                 String srcMeiName = entityName + "." + StringUtil.toCamelCase(srcMeiColumn);
 

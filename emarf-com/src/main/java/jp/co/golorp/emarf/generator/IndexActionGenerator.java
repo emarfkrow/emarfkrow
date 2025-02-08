@@ -95,7 +95,7 @@ public final class IndexActionGenerator {
         Map<String, String> javaFilePaths = new LinkedHashMap<String, String>();
 
         for (TableInfo tableInfo : tableInfos) {
-            String tableName = tableInfo.getTableName();
+            String tableName = tableInfo.getName();
             String remarks = tableInfo.getRemarks();
 
             String pascal = StringUtil.toPascalCase(tableName);
@@ -194,7 +194,7 @@ public final class IndexActionGenerator {
         Map<String, String> javaFilePaths = new LinkedHashMap<String, String>();
 
         for (TableInfo table : tableInfos) {
-            String entity = StringUtil.toPascalCase(table.getTableName());
+            String entity = StringUtil.toPascalCase(table.getName());
             String remarks = table.getRemarks();
 
             List<String> s = new ArrayList<String>();
@@ -236,7 +236,14 @@ public final class IndexActionGenerator {
             s.add("                continue;");
             s.add("            }");
             s.add("");
-            s.add("            " + entity + " e = FormValidator.toBean(" + entity + ".class.getName(), gridRow);");
+            s.add("            String className = " + entity + ".class.getName();");
+            if (table.isConvView()) {
+                s.add("            // 変換ビューの場合");
+                s.add("            className = \"" + entityPackage + ".\" + gridRow.get(\"TABLE_NAME\").toString();");
+                s.add("            jp.co.golorp.emarf.entity.IEntity e = FormValidator.toBean(className, gridRow);");
+            } else {
+                s.add("            " + entity + " e = FormValidator.toBean(className, gridRow);");
+            }
             s.add("");
             s.add("            // 主キーが不足していたらINSERT");
             s.add("            boolean isNew = false;");
@@ -317,7 +324,7 @@ public final class IndexActionGenerator {
                 continue;
             }
 
-            String entity = StringUtil.toPascalCase(table.getTableName());
+            String entity = StringUtil.toPascalCase(table.getName());
             String remarks = table.getRemarks();
 
             List<String> s = new ArrayList<String>();
@@ -428,7 +435,7 @@ public final class IndexActionGenerator {
                 continue;
             }
 
-            String entity = StringUtil.toPascalCase(table.getTableName());
+            String entity = StringUtil.toPascalCase(table.getName());
             String remarks = table.getRemarks();
 
             List<String> s = new ArrayList<String>();

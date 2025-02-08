@@ -167,7 +167,7 @@ public final class BeanGenerator {
          */
 
         // テーブル情報を取得
-        List<TableInfo> tableInfos = DataSources.getTableInfos();
+        List<TableInfo> tableInfos = DataSources.getTables();
 
         //エンティティクラス
         BeanGenerator.javaEntity(tableInfos);
@@ -203,7 +203,7 @@ public final class BeanGenerator {
         String packageDir = projectDir + File.separator + javaPath + File.separator + packagePath;
         Map<String, String> javaPaths = new LinkedHashMap<String, String>();
         for (TableInfo table : tables) {
-            String e = StringUtil.toPascalCase(table.getTableName());
+            String e = StringUtil.toPascalCase(table.getName());
             String r = table.getRemarks();
             List<String> s = new ArrayList<String>();
             s.add("package " + pkgEntity + ";");
@@ -395,7 +395,7 @@ public final class BeanGenerator {
      */
     private static void javaEntityCRUD(final TableInfo tableInfo, final List<String> s) {
 
-        String tableName = tableInfo.getTableName();
+        String tableName = tableInfo.getName();
         String remarks = tableInfo.getRemarks();
         String entityName = StringUtil.toPascalCase(tableName);
         String camelName = StringUtil.toCamelCase(tableName);
@@ -489,7 +489,7 @@ public final class BeanGenerator {
         s.add("     */");
         s.add("    public int delete() {");
         for (TableInfo childInfo : tableInfo.getChildInfos()) {
-            String childName = childInfo.getTableName();
+            String childName = childInfo.getName();
             String pascal = StringUtil.toPascalCase(childName);
             String camel = StringUtil.toCamelCase(childName);
             s.add("");
@@ -501,7 +501,7 @@ public final class BeanGenerator {
             s.add("        }");
         }
         for (TableInfo brosInfo : tableInfo.getBrosInfos()) {
-            String brosName = brosInfo.getTableName();
+            String brosName = brosInfo.getName();
             String camel = StringUtil.toCamelCase(brosName);
             s.add("");
             s.add("        // " + brosInfo.getRemarks() + "の削除");
@@ -600,7 +600,7 @@ public final class BeanGenerator {
 
         // 子モデル
         for (TableInfo childInfo : tableInfo.getChildInfos()) {
-            String childName = childInfo.getTableName();
+            String childName = childInfo.getName();
             String camel = StringUtil.toCamelCase(childName);
             String pascal = StringUtil.toPascalCase(childName);
             s.add("");
@@ -620,7 +620,7 @@ public final class BeanGenerator {
 
         // 兄弟モデル
         for (TableInfo brosInfo : tableInfo.getBrosInfos()) {
-            String brosName = brosInfo.getTableName();
+            String brosName = brosInfo.getName();
             String camel = StringUtil.toCamelCase(brosName);
             s.add("");
             s.add("        // " + brosInfo.getRemarks() + "の登録");
@@ -635,7 +635,7 @@ public final class BeanGenerator {
 
         // 履歴モデル
         if (tableInfo.getHistoryInfo() != null) {
-            String historyName = tableInfo.getHistoryInfo().getTableName();
+            String historyName = tableInfo.getHistoryInfo().getName();
             String camel = StringUtil.toCamelCase(historyName);
             String pascal = StringUtil.toPascalCase(historyName);
             s.add("");
@@ -651,7 +651,7 @@ public final class BeanGenerator {
 
         s.add("");
         s.add("        // " + tableInfo.getRemarks() + "の登録");
-        s.add("        String sql = \"INSERT INTO " + tableInfo.getTableName()
+        s.add("        String sql = \"INSERT INTO " + tableInfo.getName()
                 + "(\\r\\n      \" + names() + \"\\r\\n) VALUES (\\r\\n      \" + values() + \"\\r\\n)\";");
         s.add("        return Queries.regist(sql, toMap(now, execId));");
         s.add("    }");
@@ -723,7 +723,7 @@ public final class BeanGenerator {
     private static void javaEntityCRUDInsertNumbering(final TableInfo tableInfo, final List<String> s,
             final ColumnInfo lastKeyInfo) {
 
-        String tableName = tableInfo.getTableName();
+        String tableName = tableInfo.getName();
 
         String keyName = lastKeyInfo.getColumnName();
 
@@ -794,7 +794,7 @@ public final class BeanGenerator {
 
         // 子モデル
         for (TableInfo childInfo : tableInfo.getChildInfos()) {
-            String childName = childInfo.getTableName();
+            String childName = childInfo.getName();
             String child = StringUtil.toCamelCase(childName);
             String childType = StringUtil.toPascalCase(childName);
             s.add("");
@@ -820,7 +820,7 @@ public final class BeanGenerator {
 
         // 兄弟モデル
         for (TableInfo brosInfo : tableInfo.getBrosInfos()) {
-            String brosType = StringUtil.toCamelCase(brosInfo.getTableName());
+            String brosType = StringUtil.toCamelCase(brosInfo.getName());
             s.add("");
             s.add("        // " + brosInfo.getRemarks() + "の登録");
             s.add("        if (this." + brosType + " != null) {");
@@ -839,7 +839,7 @@ public final class BeanGenerator {
         // 履歴モデル
         TableInfo historyInfo = tableInfo.getHistoryInfo();
         if (historyInfo != null) {
-            String historyName = historyInfo.getTableName();
+            String historyName = historyInfo.getName();
             String history = StringUtil.toCamelCase(historyName);
             String historyType = StringUtil.toPascalCase(historyName);
             s.add("");
@@ -855,7 +855,7 @@ public final class BeanGenerator {
 
         s.add("");
         s.add("        // " + tableInfo.getRemarks() + "の登録");
-        s.add("        String sql = \"UPDATE " + tableInfo.getTableName()
+        s.add("        String sql = \"UPDATE " + tableInfo.getName()
                 + "\\r\\nSET\\r\\n      \" + getSet() + \"\\r\\nWHERE\\r\\n    \" + getWhere();");
         s.add("        return Queries.regist(sql, toMap(now, execId));");
         s.add("    }");
@@ -974,7 +974,7 @@ public final class BeanGenerator {
         }
 
         for (TableInfo brosInfo : tableInfo.getBrosInfos()) {
-            String brosName = brosInfo.getTableName();
+            String brosName = brosInfo.getName();
             String camel = StringUtil.toCamelCase(brosName);
             String pascal = StringUtil.toPascalCase(brosName);
 
@@ -1013,7 +1013,7 @@ public final class BeanGenerator {
      */
     private static void javaEntityChild(final TableInfo table, final List<String> s) {
 
-        String parent = StringUtil.toPascalCase(table.getTableName());
+        String parent = StringUtil.toPascalCase(table.getName());
 
         String params = "";
         for (String pk : table.getPrimaryKeys()) {
@@ -1026,7 +1026,7 @@ public final class BeanGenerator {
         }
 
         for (TableInfo child : table.getChildInfos()) {
-            String name = child.getTableName();
+            String name = child.getName();
             String entity = StringUtil.toPascalCase(name);
             String instance = StringUtil.toCamelCase(name);
 
@@ -1162,7 +1162,7 @@ public final class BeanGenerator {
         Map<String, String> javaFilePaths = new LinkedHashMap<String, String>();
 
         for (TableInfo tableInfo : tableInfos) {
-            String tableName = tableInfo.getTableName();
+            String tableName = tableInfo.getName();
             String remarks = tableInfo.getRemarks();
 
             String entityName = StringUtil.toPascalCase(tableName);
@@ -1251,7 +1251,7 @@ public final class BeanGenerator {
 
         for (TableInfo table : tables) {
 
-            String tableName = table.getTableName();
+            String tableName = table.getName();
             String entity = StringUtil.toPascalCase(tableName);
             String instance = StringUtil.toCamelCase(tableName);
             String remarks = table.getRemarks();
@@ -1303,8 +1303,8 @@ public final class BeanGenerator {
                 if (i == table.getPrimaryKeys().size() - 2) {
                     if (table.getParentInfos().size() > 0) {
                         for (TableInfo parent : table.getParentInfos()) {
-                            String parentEntity = StringUtil.toPascalCase(parent.getTableName());
-                            String parentInstance = StringUtil.toCamelCase(parent.getTableName());
+                            String parentEntity = StringUtil.toPascalCase(parent.getName());
+                            String parentInstance = StringUtil.toCamelCase(parent.getName());
                             s.add("        " + pkgEntity + "." + parentEntity + " " + parentInstance + " = "
                                     + pkgEntity + "." + parentEntity + ".get(" + pks + ");");
                             s.add("        map.put(\"" + parentEntity + "\", " + parentInstance + ");");
@@ -1316,11 +1316,11 @@ public final class BeanGenerator {
             s.add("");
             s.add("        " + entity + " " + instance + " = " + entity + ".get(" + pks + ");");
             for (TableInfo bros : table.getBrosInfos()) {
-                String brosEntity = StringUtil.toPascalCase(bros.getTableName());
+                String brosEntity = StringUtil.toPascalCase(bros.getName());
                 s.add("        " + instance + ".refer" + brosEntity + "();");
             }
             for (TableInfo child : table.getChildInfos()) {
-                String pascal = StringUtil.toPascalCase(child.getTableName());
+                String pascal = StringUtil.toPascalCase(child.getName());
                 s.add("        " + instance + ".refer" + pascal + "s();");
             }
             s.add("        map.put(\"" + entity + "\", " + instance + ");");
@@ -1349,7 +1349,7 @@ public final class BeanGenerator {
      */
     private static void addRebornee(final List<String> s, final TableInfo table, final List<TableInfo> tables) {
 
-        String tableName = table.getTableName();
+        String tableName = table.getName();
         String entity = StringUtil.toPascalCase(tableName);
         String instance = StringUtil.toCamelCase(tableName);
 
@@ -1363,9 +1363,9 @@ public final class BeanGenerator {
             //転生先で集約元でもなければスキップ
             String toTableName = null;
             if (reborn != null) {
-                toTableName = reborn.getTableName();
+                toTableName = reborn.getName();
             } else if (summary != null) {
-                toTableName = summary.getTableName();
+                toTableName = summary.getName();
             }
             if (!toTableName.equals(tableName)) {
                 continue;
@@ -1388,7 +1388,7 @@ public final class BeanGenerator {
                 fromKeys += key;
             }
             s.add("");
-            String fromName = fromTable.getTableName();
+            String fromName = fromTable.getName();
             String fromEntity = StringUtil.toPascalCase(fromName);
             String fromInstance = StringUtil.toCamelCase(fromName);
             s.add("            " + pkgEntity + "." + fromEntity + " " + fromInstance + " = " + pkgEntity + "."
@@ -1412,12 +1412,12 @@ public final class BeanGenerator {
             s.add("");
 
             for (TableInfo fromChild : fromTable.getChildInfos()) {
-                String fromChildName = fromChild.getTableName();
+                String fromChildName = fromChild.getName();
                 if (!fromChildName.startsWith(fromName)) {
                     continue;
                 }
                 for (TableInfo child : table.getChildInfos()) {
-                    String childName = child.getTableName();
+                    String childName = child.getName();
                     if (!childName.startsWith(tableName)) {
                         continue;
                     }
@@ -1473,7 +1473,7 @@ public final class BeanGenerator {
         Map<String, String> javaFilePaths = new LinkedHashMap<String, String>();
 
         for (TableInfo table : tables) {
-            String tableName = table.getTableName();
+            String tableName = table.getName();
             String entity = StringUtil.toPascalCase(tableName);
             String remarks = table.getRemarks();
             List<String> s = new ArrayList<String>();
@@ -1534,8 +1534,8 @@ public final class BeanGenerator {
             if (table.getSummaryInfo() != null) {
                 TableInfo summary = table.getSummaryInfo();
                 if (summary.getPrimaryKeys().size() == 1) {
-                    String summaryEntity = StringUtil.toPascalCase(summary.getTableName());
-                    String summaryInstance = StringUtil.toCamelCase(summary.getTableName());
+                    String summaryEntity = StringUtil.toPascalCase(summary.getName());
+                    String summaryInstance = StringUtil.toCamelCase(summary.getName());
                     String pk = summary.getPrimaryKeys().get(0);
                     String property = StringUtil.toCamelCase(pk);
                     s.add("");
@@ -1609,7 +1609,7 @@ public final class BeanGenerator {
                 continue;
             }
 
-            String entity = StringUtil.toPascalCase(table.getTableName());
+            String entity = StringUtil.toPascalCase(table.getName());
             String remarks = table.getRemarks();
 
             List<String> s = new ArrayList<String>();
@@ -1703,7 +1703,7 @@ public final class BeanGenerator {
                 continue;
             }
 
-            String entity = StringUtil.toPascalCase(table.getTableName());
+            String entity = StringUtil.toPascalCase(table.getName());
             String remarks = table.getRemarks();
 
             List<String> s = new ArrayList<String>();
@@ -1790,8 +1790,8 @@ public final class BeanGenerator {
             final List<TableInfo> childInfos, final int indent) {
         String space = "    ".repeat(indent);
         for (TableInfo childInfo : childInfos) {
-            String child = StringUtil.toPascalCase(childInfo.getTableName());
-            String camel = StringUtil.toCamelCase(childInfo.getTableName());
+            String child = StringUtil.toPascalCase(childInfo.getName());
+            String camel = StringUtil.toCamelCase(childInfo.getName());
             s.add("");
             int parents = childInfo.getParentInfos().size();
             if (parents == 1) {
@@ -1826,8 +1826,8 @@ public final class BeanGenerator {
             final int indent) {
         String space = "    ".repeat(indent);
         for (TableInfo childInfo : childInfos) {
-            String child = StringUtil.toPascalCase(childInfo.getTableName());
-            String camel = StringUtil.toCamelCase(childInfo.getTableName());
+            String child = StringUtil.toPascalCase(childInfo.getName());
+            String camel = StringUtil.toCamelCase(childInfo.getName());
             s.add("");
             int parents = childInfo.getParentInfos().size();
             if (parents == 1) {
@@ -1863,8 +1863,8 @@ public final class BeanGenerator {
             final List<TableInfo> childInfos, final int indent) {
         String space = "    ".repeat(indent);
         for (TableInfo childInfo : childInfos) {
-            String child = StringUtil.toPascalCase(childInfo.getTableName());
-            String camel = StringUtil.toCamelCase(childInfo.getTableName());
+            String child = StringUtil.toPascalCase(childInfo.getName());
+            String camel = StringUtil.toCamelCase(childInfo.getName());
             s.add("");
             int parents = childInfo.getParentInfos().size();
             if (parents == 1) {

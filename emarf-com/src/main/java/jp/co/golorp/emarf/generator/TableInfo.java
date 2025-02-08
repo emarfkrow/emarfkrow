@@ -29,7 +29,7 @@ import java.util.Map;
 public class TableInfo {
 
     /** テーブル名 */
-    private String tableName;
+    private String name;
 
     /** コメント */
     private String remarks;
@@ -70,6 +70,23 @@ public class TableInfo {
     /** VIEWならtrue */
     private boolean isView;
 
+    /** 変換VIEWならtrue */
+    private boolean isConvView;
+
+    /**
+     * @return boolean
+     */
+    public boolean isConvView() {
+        return isConvView;
+    }
+
+    /**
+     * @param p
+     */
+    public void setConvView(final boolean p) {
+        this.isConvView = p;
+    }
+
     /** 組合せモデルならtrue */
     private List<TableInfo> comboInfos = new ArrayList<TableInfo>();
 
@@ -85,15 +102,15 @@ public class TableInfo {
     /**
      * @return テーブル名
      */
-    public String getTableName() {
-        return tableName;
+    public String getName() {
+        return name;
     }
 
     /**
      * @param p テーブル名
      */
-    public void setTableName(final String p) {
-        this.tableName = p;
+    public void setName(final String p) {
+        this.name = p;
     }
 
     /**

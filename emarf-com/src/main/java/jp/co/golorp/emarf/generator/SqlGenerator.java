@@ -110,7 +110,7 @@ public final class SqlGenerator {
     private static void sqlSearch(final String sqlDir, final TableInfo table) {
 
         //テーブル名・エンティティ名
-        String tableName = table.getTableName();
+        String tableName = table.getName();
         String entityName = StringUtil.toPascalCase(tableName);
 
         //参照モデルの番号
@@ -236,7 +236,7 @@ public final class SqlGenerator {
                 String srcM = assist.quotedSQL(srcMei);
                 String destK = assist.quotedSQL(destKey);
                 String destM = assist.quotedSQL(destMei);
-                return ", (SELECT r" + refs + "." + destM + " FROM " + refer.getTableName() + " r" + refs + " WHERE r"
+                return ", (SELECT r" + refs + "." + destM + " FROM " + refer.getName() + " r" + refs + " WHERE r"
                         + refs + "." + destK + " = a." + srcK + ") AS " + srcM;
             }
         }
@@ -276,7 +276,7 @@ public final class SqlGenerator {
             }
         }
         sql.add("FROM");
-        sql.add("    " + table.getTableName() + " a ");
+        sql.add("    " + table.getName() + " a ");
 
         //組合せモデル
         if (table.getComboInfos().size() > 0) {
@@ -326,7 +326,7 @@ public final class SqlGenerator {
             }
         }
 
-        String entity = StringUtil.toPascalCase(table.getTableName());
+        String entity = StringUtil.toPascalCase(table.getName());
         FileUtil.writeFile(sqlDir + File.separator + entity + "Correct.sql", sql);
     }
 
@@ -353,7 +353,7 @@ public final class SqlGenerator {
         sql.add("        SELECT");
         sql.add("              * ");
         sql.add("        FROM");
-        sql.add("            " + stint.getTableName() + " p ");
+        sql.add("            " + stint.getName() + " p ");
         sql.add("        WHERE");
         sql.add("            1 = 1 ");
         if (stint.getColumnInfos().containsKey(deleteF)) {
@@ -391,7 +391,7 @@ public final class SqlGenerator {
 
         for (TableInfo combo : table.getComboInfos()) {
             ++i;
-            sql.add("    INNER JOIN " + combo.getTableName() + " c" + i + " ");
+            sql.add("    INNER JOIN " + combo.getName() + " c" + i + " ");
             sql.add("        ON 1 = 1 ");
             if (combo.getColumnInfos().containsKey(deleteF)) {
                 sql.add("        AND " + assist.nvlZero("c" + i + "." + deleteF) + " != 1 ");

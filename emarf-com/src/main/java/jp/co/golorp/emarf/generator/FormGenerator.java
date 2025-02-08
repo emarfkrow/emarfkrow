@@ -126,7 +126,7 @@ public final class FormGenerator {
         Map<String, String> javaFilePaths = new LinkedHashMap<String, String>();
 
         for (TableInfo tableInfo : tableInfos) {
-            String tableName = tableInfo.getTableName();
+            String tableName = tableInfo.getName();
             String remarks = tableInfo.getRemarks();
 
             String entityName = StringUtil.toPascalCase(tableName);
@@ -191,7 +191,7 @@ public final class FormGenerator {
             }
             // 兄弟モデル
             for (TableInfo brosInfo : tableInfo.getBrosInfos()) {
-                String brosName = brosInfo.getTableName();
+                String brosName = brosInfo.getName();
                 String camel = StringUtil.toCamelCase(brosName);
                 String pascal = StringUtil.toPascalCase(brosName);
                 s.add("");
@@ -215,7 +215,7 @@ public final class FormGenerator {
             }
             // 子モデル
             for (TableInfo childInfo : tableInfo.getChildInfos()) {
-                String childName = childInfo.getTableName();
+                String childName = childInfo.getName();
                 String camel = StringUtil.toCamelCase(childName);
                 String pascal = StringUtil.toPascalCase(childName);
                 s.add("");
@@ -365,7 +365,7 @@ public final class FormGenerator {
         Map<String, String> javaFilePaths = new LinkedHashMap<String, String>();
 
         for (TableInfo tableInfo : tableInfos) {
-            String tableName = tableInfo.getTableName();
+            String tableName = tableInfo.getName();
             String remarks = tableInfo.getRemarks();
 
             String camel = StringUtil.toCamelCase(tableName);
