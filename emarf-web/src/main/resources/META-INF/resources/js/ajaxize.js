@@ -112,6 +112,19 @@ $(function() {
             let itemJson = formJson[k];
             if (Array.isArray(itemJson)) {
                 if (k.match(/Grid$/)) {
+
+                    if (gridViewDetailColumn && gridViewDetailColumn != '') {
+                        let tableNameColumn = itemJson[0][gridViewDetailColumn];
+                        if (!tableNameColumn) {
+                            tableNameColumn = itemJson[0][gridViewDetailColumn.toLowerCase()];
+                        }
+                        if (tableNameColumn) {
+                            let entityName = Casing.toPascal(tableNameColumn);
+                            action = './' + entityName + 'SRegist.ajax';
+                            k = entityName + 'Grid';
+                        }
+                    }
+
                     formData.append(k, JSON.stringify(itemJson));
                 }
             }

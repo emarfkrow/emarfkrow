@@ -220,7 +220,6 @@ public final class FormValidator {
 
                 // fieldName（フィールド名か、兄弟モデルか、グリッドID）
                 fieldName = StringUtil.toCamelCase(methodName.replaceFirst("^set", ""));
-
                 // 送信値をfieldNameで取得してみる
                 value = postJson.get(fieldName);
                 // entityName付きでも取得してみる
@@ -246,6 +245,14 @@ public final class FormValidator {
                 // 最後の「s」を「Grid」にしたパスカルでも取得してみる（カスタムフォームのグリッド本体用）
                 if (value == null) {
                     value = postJson.get(StringUtil.toPascalCase(fieldName).replaceAll("s$", "Grid"));
+                }
+                // スネークでも取得してみる（グリッド行用）
+                if (value == null) {
+                    value = postJson.get(StringUtil.toSnakeCase(fieldName));
+                }
+                // 数字の前の「_」を消して、スネークでも取得してみる（グリッド行用）
+                if (value == null) {
+                    value = postJson.get(StringUtil.toSnakeCase(fieldName).replaceAll("\\_([0-9]+)", "$1"));
                 }
                 // アッパーでも取得してみる（グリッド行用）
                 if (value == null) {
@@ -285,7 +292,6 @@ public final class FormValidator {
                         String gridClassName = packageName + "." + gridId;
 
                         List<T> formList = new ArrayList<T>();
-
                         @SuppressWarnings("unchecked")
                         List<Map<String, Object>> gridData = (List<Map<String, Object>>) list;
                         for (Map<String, Object> gridRow : gridData) {

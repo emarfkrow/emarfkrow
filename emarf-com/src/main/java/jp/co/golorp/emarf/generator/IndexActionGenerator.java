@@ -237,13 +237,13 @@ public final class IndexActionGenerator {
             s.add("            }");
             s.add("");
             s.add("            String className = " + entity + ".class.getName();");
-            if (table.isConvView()) {
-                s.add("            // 変換ビューの場合");
-                s.add("            className = \"" + entityPackage + ".\" + gridRow.get(\"TABLE_NAME\").toString();");
-                s.add("            jp.co.golorp.emarf.entity.IEntity e = FormValidator.toBean(className, gridRow);");
-            } else {
-                s.add("            " + entity + " e = FormValidator.toBean(className, gridRow);");
-            }
+            //            if (table.isConvView()) {
+            //                s.add("            // 変換ビューの場合");
+            //                s.add("            className = \"" + entityPackage + ".\" + gridRow.get(\"TABLE_NAME\").toString();");
+            //                s.add("            jp.co.golorp.emarf.entity.IEntity e = FormValidator.toBean(className, gridRow);");
+            //            } else {
+            s.add("            " + entity + " e = FormValidator.toBean(className, gridRow);");
+            //            }
             s.add("");
             s.add("            // 主キーが不足していたらINSERT");
             s.add("            boolean isNew = false;");
