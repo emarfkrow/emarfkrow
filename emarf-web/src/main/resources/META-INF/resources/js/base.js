@@ -644,7 +644,7 @@ let Base = {
                         $registForm.find('button.permit').css('visibility', 'hidden');
                         $registForm.find('button.forbid').css('visibility', 'hidden');
                     }
-                })
+                });
             });
 
         } else {

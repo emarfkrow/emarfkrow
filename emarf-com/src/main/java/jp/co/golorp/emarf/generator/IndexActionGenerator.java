@@ -193,9 +193,9 @@ public final class IndexActionGenerator {
 
         Map<String, String> javaFilePaths = new LinkedHashMap<String, String>();
 
-        for (TableInfo tableInfo : tableInfos) {
-            String entity = StringUtil.toPascalCase(tableInfo.getTableName());
-            String remarks = tableInfo.getRemarks();
+        for (TableInfo table : tableInfos) {
+            String entity = StringUtil.toPascalCase(table.getTableName());
+            String remarks = table.getRemarks();
 
             List<String> s = new ArrayList<String>();
             s.add("package " + actionPackage + ";");
@@ -240,21 +240,21 @@ public final class IndexActionGenerator {
             s.add("");
             s.add("            // 主キーが不足していたらINSERT");
             s.add("            boolean isNew = false;");
-            for (String primaryKey : tableInfo.getPrimaryKeys()) {
+            for (String primaryKey : table.getPrimaryKeys()) {
                 String accessor = StringUtil.toPascalCase(primaryKey);
                 s.add("            if (jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(e.get" + accessor + "())) {");
                 s.add("                isNew = true;");
                 s.add("            }");
             }
-            if (tableInfo.getColumnInfos().containsKey(updateDt)
-                    || tableInfo.getColumnInfos().containsKey(updateDt.toUpperCase())) {
+            if (table.getColumnInfos().containsKey(updateDt)
+                    || table.getColumnInfos().containsKey(updateDt.toUpperCase())) {
                 String accessor = StringUtil.toPascalCase(updateDt);
                 s.add("            // 楽観ロック値がなくてもINSERT");
                 s.add("            if (jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(e.get" + accessor + "())) {");
                 s.add("                isNew = true;");
                 s.add("            }");
             }
-            if (!tableInfo.isView()) {
+            if (!table.isView()) {
                 s.add("");
                 s.add("            e.setStatusKb(0);");
             }
@@ -311,14 +311,14 @@ public final class IndexActionGenerator {
 
         Map<String, String> javaFilePaths = new LinkedHashMap<String, String>();
 
-        for (TableInfo tableInfo : tableInfos) {
+        for (TableInfo table : tableInfos) {
 
-            if (tableInfo.isView()) {
+            if (table.isView()) {
                 continue;
             }
 
-            String entity = StringUtil.toPascalCase(tableInfo.getTableName());
-            String remarks = tableInfo.getRemarks();
+            String entity = StringUtil.toPascalCase(table.getTableName());
+            String remarks = table.getRemarks();
 
             List<String> s = new ArrayList<String>();
             s.add("package " + actionPackage + ";");
@@ -363,7 +363,7 @@ public final class IndexActionGenerator {
             s.add("");
             s.add("            // 主キーが不足していたらエラー");
             String params = "";
-            for (String primaryKey : tableInfo.getPrimaryKeys()) {
+            for (String primaryKey : table.getPrimaryKeys()) {
                 String property = StringUtil.toCamelCase(primaryKey);
                 String accessor = StringUtil.toPascalCase(primaryKey);
                 s.add("            Object " + property + " = e.get" + accessor + "();");
@@ -375,7 +375,7 @@ public final class IndexActionGenerator {
                 }
                 params += property;
             }
-            List<TableInfo> childInfos = tableInfo.getChildInfos();
+            List<TableInfo> childInfos = table.getChildInfos();
             BeanGenerator.getPermitChilds(s, "e", childInfos, 1);
             s.add("");
             s.add("            " + entity + " f = " + entity + ".get(" + params + ");");
@@ -422,14 +422,14 @@ public final class IndexActionGenerator {
 
         Map<String, String> javaFilePaths = new LinkedHashMap<String, String>();
 
-        for (TableInfo tableInfo : tableInfos) {
+        for (TableInfo table : tableInfos) {
 
-            if (tableInfo.isView()) {
+            if (table.isView()) {
                 continue;
             }
 
-            String entity = StringUtil.toPascalCase(tableInfo.getTableName());
-            String remarks = tableInfo.getRemarks();
+            String entity = StringUtil.toPascalCase(table.getTableName());
+            String remarks = table.getRemarks();
 
             List<String> s = new ArrayList<String>();
             s.add("package " + actionPackage + ";");
@@ -474,7 +474,7 @@ public final class IndexActionGenerator {
             s.add("");
             s.add("            // 主キーが不足していたらエラー");
             String params = "";
-            for (String primaryKey : tableInfo.getPrimaryKeys()) {
+            for (String primaryKey : table.getPrimaryKeys()) {
                 String property = StringUtil.toCamelCase(primaryKey);
                 String accessor = StringUtil.toPascalCase(primaryKey);
                 s.add("            Object " + property + " = e.get" + accessor + "();");
@@ -486,7 +486,7 @@ public final class IndexActionGenerator {
                 }
                 params += property;
             }
-            List<TableInfo> childInfos = tableInfo.getChildInfos();
+            List<TableInfo> childInfos = table.getChildInfos();
             BeanGenerator.getForbidChilds(s, "e", childInfos, 1);
             s.add("");
             s.add("            " + entity + " f = " + entity + ".get(" + params + ");");

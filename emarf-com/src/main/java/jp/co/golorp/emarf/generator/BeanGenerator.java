@@ -1603,14 +1603,14 @@ public final class BeanGenerator {
 
         Map<String, String> javaFilePaths = new LinkedHashMap<String, String>();
 
-        for (TableInfo tableInfo : tableInfos) {
+        for (TableInfo table : tableInfos) {
 
-            if (tableInfo.isView()) {
+            if (table.isView()) {
                 continue;
             }
 
-            String entity = StringUtil.toPascalCase(tableInfo.getTableName());
-            String remarks = tableInfo.getRemarks();
+            String entity = StringUtil.toPascalCase(table.getTableName());
+            String remarks = table.getRemarks();
 
             List<String> s = new ArrayList<String>();
             s.add("package " + pkgAction + ";");
@@ -1639,7 +1639,7 @@ public final class BeanGenerator {
             s.add("");
             s.add("        // 主キーが不足していたらエラー");
             String params = "";
-            for (String primaryKey : tableInfo.getPrimaryKeys()) {
+            for (String primaryKey : table.getPrimaryKeys()) {
                 String property = StringUtil.toCamelCase(primaryKey);
                 String accessor = StringUtil.toPascalCase(primaryKey);
                 s.add("        Object " + property + " = postJson.get(\"" + property + "\");");
@@ -1656,7 +1656,7 @@ public final class BeanGenerator {
             }
             s.add("");
             s.add("        " + entity + " e = FormValidator.toBean(" + entity + ".class.getName(), postJson);");
-            List<TableInfo> childInfos = tableInfo.getChildInfos();
+            List<TableInfo> childInfos = table.getChildInfos();
             getPermitChilds(s, "e", childInfos, 0);
             s.add("");
             s.add("        " + entity + " f = " + entity + ".get(" + params + ");");
@@ -1697,14 +1697,14 @@ public final class BeanGenerator {
 
         Map<String, String> javaFilePaths = new LinkedHashMap<String, String>();
 
-        for (TableInfo tableInfo : tableInfos) {
+        for (TableInfo table : tableInfos) {
 
-            if (tableInfo.isView()) {
+            if (table.isView()) {
                 continue;
             }
 
-            String entity = StringUtil.toPascalCase(tableInfo.getTableName());
-            String remarks = tableInfo.getRemarks();
+            String entity = StringUtil.toPascalCase(table.getTableName());
+            String remarks = table.getRemarks();
 
             List<String> s = new ArrayList<String>();
             s.add("package " + pkgAction + ";");
@@ -1733,7 +1733,7 @@ public final class BeanGenerator {
             s.add("");
             s.add("        // 主キーが不足していたらエラー");
             String params = "";
-            for (String primaryKey : tableInfo.getPrimaryKeys()) {
+            for (String primaryKey : table.getPrimaryKeys()) {
                 String property = StringUtil.toCamelCase(primaryKey);
                 String accessor = StringUtil.toPascalCase(primaryKey);
                 s.add("        Object " + property + " = postJson.get(\"" + property + "\");");
@@ -1750,7 +1750,7 @@ public final class BeanGenerator {
             }
             s.add("");
             s.add("        " + entity + " e = FormValidator.toBean(" + entity + ".class.getName(), postJson);");
-            List<TableInfo> childInfos = tableInfo.getChildInfos();
+            List<TableInfo> childInfos = table.getChildInfos();
             getForbidChilds(s, "e", childInfos, 0);
             s.add("");
             s.add("        " + entity + " f = " + entity + ".get(" + params + ");");
