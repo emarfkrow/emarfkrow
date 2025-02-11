@@ -37,7 +37,7 @@ import jp.co.golorp.emarf.properties.App;
 public class EncodingFilter implements Filter {
 
     /** 文字コード */
-    public static final String CHARSET = App.get("response.contenttype.charset");
+    public static final String ENCODING = App.get("characterEncoding");
 
     @Override
     public void init(final FilterConfig filterConfig) throws ServletException {
@@ -52,8 +52,8 @@ public class EncodingFilter implements Filter {
      */
     public void doFilter(final ServletRequest request, final ServletResponse response, final FilterChain chain)
             throws IOException, ServletException {
-        request.setCharacterEncoding(CHARSET);
-        response.setCharacterEncoding(CHARSET);
+        request.setCharacterEncoding(ENCODING);
+        response.setCharacterEncoding(ENCODING);
         chain.doFilter(request, response);
     }
 

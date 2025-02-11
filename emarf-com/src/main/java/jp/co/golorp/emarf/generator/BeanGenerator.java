@@ -143,7 +143,7 @@ public final class BeanGenerator {
 
         javaPath = bundle.getString("BeanGenerator.java.path");
         pkgEntity = bundle.getString("BeanGenerator.java.package.entity");
-        pkgAction = bundle.getString("BeanGenerator.java.package.action");
+        pkgAction = bundle.getString("BeanGenerator.java.package.action") + ".model.base";
 
         /*
          * 出力フォルダ再作成

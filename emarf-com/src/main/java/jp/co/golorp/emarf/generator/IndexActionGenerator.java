@@ -58,7 +58,7 @@ public final class IndexActionGenerator {
         //プロジェクトディレクトリを退避
         projectDir = dir;
 
-        actionPackage = bundle.getString("BeanGenerator.java.package.action");
+        actionPackage = bundle.getString("BeanGenerator.java.package.action") + ".model.base";
 
         entityPackage = bundle.getString("BeanGenerator.java.package.entity");
 

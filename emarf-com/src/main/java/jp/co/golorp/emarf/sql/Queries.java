@@ -64,6 +64,9 @@ public final class Queries {
     /** logger */
     private static final Logger LOG = LoggerFactory.getLogger(Queries.class);
 
+    /** セパレータ */
+    private static final String SEP = File.separator;
+
     /** プライベートコンストラクタ */
     private Queries() {
     }
@@ -529,9 +532,9 @@ public final class Queries {
 
         String[] packages = packageName.split("\\.");
 
-        String packagePath = String.join(File.separator, packages);
+        String packagePath = String.join(SEP, packages);
 
-        String resourcePath = "sql" + File.separator + packagePath + File.separator + sqlName + ".sql";
+        String resourcePath = "sql" + SEP + packagePath + SEP + sqlName + ".sql";
 
         URL url = cl.getResource(resourcePath);
 
@@ -578,9 +581,8 @@ public final class Queries {
      */
     private static File seekSqlFile(final List<String> sqlPathes, final String sqlName) {
 
-        String sqlPath = String.join(File.separator, sqlPathes);
-        String filePath = App.get("context.path.sql") + File.separator + sqlPath + File.separator + sqlName
-                + ".sql";
+        String sqlPath = String.join(SEP, sqlPathes);
+        String filePath = App.get("sqlVirtualDir") + SEP + sqlPath + SEP + sqlName + ".sql";
         File file = FileUtil.get(filePath);
 
         if (!file.exists() && sqlPathes.size() > 0) {

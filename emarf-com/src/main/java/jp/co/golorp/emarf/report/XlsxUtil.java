@@ -76,8 +76,7 @@ public final class XlsxUtil {
         File workFile = null;
 
         // テンプレートファイルのロック防止のため、テンプレートファイルを作業用ファイルにコピー
-        String layoutDirPath = App.get("context.path.layouts");
-        String layoutFilePath = layoutDirPath + sep + String.join(sep, pathes) + sep + layoutFileName;
+        String layoutFilePath = App.get("layoutsVirtualDir") + sep + String.join(sep, pathes) + sep + layoutFileName;
         File layoutFile = FileUtil.get(layoutFilePath);
         if (!layoutFile.exists()) {
             if (pathes.size() > 0) {
@@ -419,10 +418,9 @@ public final class XlsxUtil {
     private static File write(final Workbook workbook, final String fileBaseMei, final String extension) {
 
         // 保存ファイルパス
-        String saveDir = App.get("context.path.temp");
         String timestamp = DateTimeUtil.ymdhmsS();
         String writeFileName = fileBaseMei + "." + timestamp + "." + extension;
-        String writeFilePath = saveDir + File.separator + writeFileName;
+        String writeFilePath = App.get("tempVirtualDir") + sep + writeFileName;
         File file = FileUtil.get(writeFilePath);
 
         // エクセルファイルを保管

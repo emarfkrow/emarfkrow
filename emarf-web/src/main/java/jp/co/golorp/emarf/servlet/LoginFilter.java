@@ -19,6 +19,7 @@ package jp.co.golorp.emarf.servlet;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.ResourceBundle;
 
 import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
@@ -37,10 +38,12 @@ import org.slf4j.LoggerFactory;
 import jp.co.golorp.emarf.action.BaseAction;
 import jp.co.golorp.emarf.exception.AppError;
 import jp.co.golorp.emarf.exception.SysError;
+import jp.co.golorp.emarf.generator.BeanGenerator;
 import jp.co.golorp.emarf.lang.StringUtil;
 import jp.co.golorp.emarf.properties.App;
 import jp.co.golorp.emarf.servlet.http.ServletUtil;
 import jp.co.golorp.emarf.util.Messages;
+import jp.co.golorp.emarf.util.ResourceBundles;
 
 /**
  * 認証・認可フィルタ
@@ -49,6 +52,9 @@ import jp.co.golorp.emarf.util.Messages;
  */
 @WebFilter("/*")
 public class LoginFilter implements Filter {
+
+    /** BeanGenerator.properties */
+    private static ResourceBundle bundle = ResourceBundles.getBundle(BeanGenerator.class);
 
     /** 認証されたキー */
     public static final String AUTHN_KEY = "AUTHN_KEY";
@@ -91,9 +97,6 @@ public class LoginFilter implements Filter {
 
     /** パスワードリセット処理URI */
     private static final String PASSRESET_URI = App.get("loginfilter.passreset.uri");
-
-    /** アクションクラスパッケージ */
-    private static final String ACTION_PACKAGE = App.get("package.action");
 
     @Override
     public void init(final FilterConfig filterConfig) throws ServletException {
@@ -164,7 +167,7 @@ public class LoginFilter implements Filter {
 
                 Class<?> c = null;
                 try {
-                    c = Class.forName(ACTION_PACKAGE + ".LoginAction");
+                    c = Class.forName(bundle.getString("BeanGenerator.java.package.action") + ".LoginAction");
                 } catch (ClassNotFoundException e) {
                     throw new SysError(e);
                 }
@@ -251,7 +254,7 @@ public class LoginFilter implements Filter {
 
         Class<?> c = null;
         try {
-            c = Class.forName(ACTION_PACKAGE + "." + actionName);
+            c = Class.forName(bundle.getString("BeanGenerator.java.package.action") + "." + actionName);
         } catch (ClassNotFoundException e) {
             throw new SysError(e);
         }

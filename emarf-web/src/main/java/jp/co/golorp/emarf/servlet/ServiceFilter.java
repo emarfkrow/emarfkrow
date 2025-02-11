@@ -21,6 +21,7 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.ResourceBundle;
 
 import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
@@ -38,10 +39,12 @@ import org.slf4j.LoggerFactory;
 
 import jp.co.golorp.emarf.action.BaseAction;
 import jp.co.golorp.emarf.exception.SysError;
+import jp.co.golorp.emarf.generator.BeanGenerator;
 import jp.co.golorp.emarf.properties.App;
 import jp.co.golorp.emarf.servlet.http.ServletUtil;
 import jp.co.golorp.emarf.time.DateTimeUtil;
 import jp.co.golorp.emarf.util.Messages;
+import jp.co.golorp.emarf.util.ResourceBundles;
 
 /**
  * サービス時間フィルタ
@@ -54,8 +57,8 @@ public class ServiceFilter implements Filter {
     /** ロガー */
     private static final Logger LOG = LoggerFactory.getLogger(ServiceFilter.class);
 
-    /** アクションクラスパッケージ */
-    private static final String ACTION_PACKAGE = App.get("package.action");
+    /** BeanGenerator.properties */
+    private static ResourceBundle bundle = ResourceBundles.getBundle(BeanGenerator.class);
 
     /** 除外URIの正規表現 */
     public static final String EXCLUDE_REGEXP = App.get("servicefilter.exclude.regexp");
@@ -119,7 +122,6 @@ public class ServiceFilter implements Filter {
                     String[] kikanCrons = kikanCron.split("\\|");
                     if (!isService(kikanCrons[0], kikanCrons[1])) {
                         // 照会サービス時間外
-                        //                        throw new ReadServiceError();
                         String contextPath = req.getContextPath() + "/";
                         res.sendRedirect(contextPath + ServiceFilter.ERROR_PAGE);
                         return;
@@ -133,7 +135,7 @@ public class ServiceFilter implements Filter {
 
             Class<?> c = null;
             try {
-                c = Class.forName(ACTION_PACKAGE + ".ServiceAction");
+                c = Class.forName(bundle.getString("BeanGenerator.java.package.action") + ".ServiceAction");
             } catch (ClassNotFoundException e) {
                 LOG.trace("ServiceAction is not found.");
             }
@@ -150,7 +152,6 @@ public class ServiceFilter implements Filter {
                         return;
                     }
                     if ((boolean) map.get("DONT_READ")) {
-                        //                        throw new ReadServiceError();
                         String contextPath = req.getContextPath() + "/";
                         res.sendRedirect(contextPath + ServiceFilter.ERROR_PAGE);
                         return;

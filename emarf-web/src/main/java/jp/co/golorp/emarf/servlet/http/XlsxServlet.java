@@ -19,6 +19,7 @@ package jp.co.golorp.emarf.servlet.http;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.ResourceBundle;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -31,10 +32,11 @@ import org.slf4j.LoggerFactory;
 
 import jp.co.golorp.emarf.action.BaseAction;
 import jp.co.golorp.emarf.exception.SysError;
+import jp.co.golorp.emarf.generator.BeanGenerator;
 import jp.co.golorp.emarf.lang.StringUtil;
-import jp.co.golorp.emarf.properties.App;
 import jp.co.golorp.emarf.report.XlsxUtil;
 import jp.co.golorp.emarf.servlet.LoginFilter;
+import jp.co.golorp.emarf.util.ResourceBundles;
 
 /**
  * Servlet implementation class XlsxServlet
@@ -48,6 +50,9 @@ public final class XlsxServlet extends HttpServlet {
 
     /** logger */
     private static final Logger LOG = LoggerFactory.getLogger(XlsxServlet.class);
+
+    /** BeanGenerator.properties */
+    private static ResourceBundle bundle = ResourceBundles.getBundle(BeanGenerator.class);
 
     /**
      * @see HttpServlet#HttpServlet()
@@ -87,7 +92,7 @@ public final class XlsxServlet extends HttpServlet {
         String lastPath = servletPathes[servletPathes.length - 1];
         String actionName = lastPath.replaceFirst(".[a-z]+$", "") + "XlsxAction";
         servletPathes[servletPathes.length - 1] = actionName;
-        String className = App.get("package.action") + String.join(".", servletPathes);
+        String className = bundle.getString("BeanGenerator.java.package.action") + String.join(".", servletPathes);
         try {
             Class<?> c = Class.forName(className);
             xlsxAction = (BaseAction) c.getDeclaredConstructor().newInstance();

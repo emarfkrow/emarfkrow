@@ -33,6 +33,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.ResourceBundle;
 import java.util.Set;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -49,10 +50,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jp.co.golorp.emarf.action.BaseAction;
 import jp.co.golorp.emarf.exception.SysError;
+import jp.co.golorp.emarf.generator.BeanGenerator;
 import jp.co.golorp.emarf.lang.StringUtil;
 import jp.co.golorp.emarf.properties.App;
 import jp.co.golorp.emarf.servlet.LoginFilter;
 import jp.co.golorp.emarf.time.DateTimeUtil;
+import jp.co.golorp.emarf.util.ResourceBundles;
 
 /**
  * サーブレット用ユーティリティ
@@ -66,6 +69,9 @@ public final class ServletUtil {
 
     //    /** アップロードファイル名称のサフィックス */
     //    private static String uploadMeiSuffix = App.get("context.upload.mei.suffix");
+
+    /** BeanGenerator.properties */
+    private static ResourceBundle bundle = ResourceBundles.getBundle(BeanGenerator.class);
 
     /** servletUrl */
     private static String servletUrl;
@@ -103,7 +109,7 @@ public final class ServletUtil {
         String actionName = lastPath.replaceFirst(".[a-z]+$", "") + "Action";
         servletPathes[servletPathes.length - 1] = actionName;
 
-        String pkg = App.get("package.action");
+        String pkg = bundle.getString("BeanGenerator.java.package.action");
         BaseAction a = null;
 
         try {
@@ -255,10 +261,9 @@ public final class ServletUtil {
                         // アップロードファイル名がある場合
 
                         // アップロードフォルダに保管
-                        String uploadDir = App.get("context.upload.dir");
                         String ext = fileName.replaceFirst("^.+\\.", "");
                         String saveName = partName + "." + DateTimeUtil.ymdhmsS() + "." + ext;
-                        String uploadPath = uploadDir + File.separator + saveName;
+                        String uploadPath = App.get("uploadFolderPath") + File.separator + saveName;
                         try {
                             part.write(uploadPath);
                         } catch (IOException e) {
@@ -482,7 +487,7 @@ public final class ServletUtil {
         ServletUtil.respond(response, filePath, fileMei);
 
         // ファイル削除
-        if (App.get("xlsxutil.delete.responded").equals("1")) {
+        if (App.get("deleteRespondedXlsx").equals("1")) {
             new File(filePath).delete();
         }
     }
