@@ -27,7 +27,7 @@ public final class FormGenerator {
     private static final Logger LOG = LoggerFactory.getLogger(FormGenerator.class);
 
     /** BeanGenerator.properties */
-    private static ResourceBundle bundle;
+    private static ResourceBundle bundle = ResourceBundles.getBundle(BeanGenerator.class);
 
     /** formパッケージ */
     private static String formPackage;
@@ -47,8 +47,8 @@ public final class FormGenerator {
     /** 更新者カラム名 */
     private static String updateBy;
 
-    /** コンパイルまでするか */
-    private static boolean isCompile;
+    /** 起動時の自動生成か */
+    private static boolean isGenerateAtStartup;
 
     /** validサフィックス */
     private static List<String> validSuffixs;
@@ -73,9 +73,6 @@ public final class FormGenerator {
      */
     public static void generate(final String dir, final List<TableInfo> tableInfos) {
 
-        // BeanGenerator.properties読み込み
-        bundle = ResourceBundles.getBundle(BeanGenerator.class);
-
         formPackage = bundle.getString("BeanGenerator.java.package.form");
         javaPath = bundle.getString("BeanGenerator.java.path");
         projectDir = dir;
@@ -85,8 +82,8 @@ public final class FormGenerator {
         updateBy = bundle.getString("BeanGenerator.update_by");
 
         //webからの自動生成ならコンパイルまで行う
-        if (App.get("EmarfListener.autogenerate") != null) {
-            isCompile = App.get("EmarfListener.autogenerate").toLowerCase().equals("true");
+        if (App.get("generateAtStartup") != null) {
+            isGenerateAtStartup = App.get("generateAtStartup").toLowerCase().equals("true");
         }
 
         //validator正規表現の接尾辞を取得
@@ -252,7 +249,7 @@ public final class FormGenerator {
             FileUtil.writeFile(javaFilePath, s);
         }
 
-        if (isCompile) {
+        if (isGenerateAtStartup) {
             for (Entry<String, String> e : javaFilePaths.entrySet()) {
                 BeanGenerator.javaCompile(e.getKey(), e.getValue());
             }
@@ -426,7 +423,7 @@ public final class FormGenerator {
             FileUtil.writeFile(javaFilePath, s);
         }
 
-        if (isCompile) {
+        if (isGenerateAtStartup) {
             for (Entry<String, String> e : javaFilePaths.entrySet()) {
                 BeanGenerator.javaCompile(e.getKey(), e.getValue());
             }

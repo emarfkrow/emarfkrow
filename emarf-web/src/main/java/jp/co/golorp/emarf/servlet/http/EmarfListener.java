@@ -223,8 +223,8 @@ public class EmarfListener implements ServletContextListener, ServletContextAttr
             FileUtil.setContextDir(contextRealPath);
 
             //自動生成を実行
-            String isGenerate = App.get("EmarfListener.autogenerate");
-            if (isGenerate.toLowerCase().equals("true")) {
+            String isGenerateAtStartup = App.get("generateAtStartup");
+            if (isGenerateAtStartup.toLowerCase().equals("true")) {
                 BeanGenerator.generate(contextRealPath);
             }
         }

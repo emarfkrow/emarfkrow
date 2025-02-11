@@ -52,10 +52,10 @@ public final class BeanGenerator {
     private static DataSourcesAssist assist = DataSources.getAssist();
 
     /** BeanGenerator.properties */
-    private static ResourceBundle bundle;
+    private static ResourceBundle bundle = ResourceBundles.getBundle(BeanGenerator.class);
 
-    /** コンパイルまでするか */
-    private static boolean isCompile;
+    /** 起動時の自動生成か */
+    private static boolean isGenerateAtStartup;
 
     /** 必須CHAR列の指定 */
     private static String charNotNullRe;
@@ -114,12 +114,9 @@ public final class BeanGenerator {
         //プロジェクトディレクトリを退避
         projectDir = dir;
 
-        // BeanGenerator.properties読み込み
-        bundle = ResourceBundles.getBundle(BeanGenerator.class);
-
         //webからの自動生成ならコンパイルまで行う
-        if (App.get("EmarfListener.autogenerate") != null) {
-            isCompile = App.get("EmarfListener.autogenerate").toLowerCase().equals("true");
+        if (App.get("generateAtStartup") != null) {
+            isGenerateAtStartup = App.get("generateAtStartup").toLowerCase().equals("true");
         }
 
         //NOTNULLで必須項目として扱うCHARの列名リスト（ホストの△対応）
@@ -341,7 +338,7 @@ public final class BeanGenerator {
             FileUtil.writeFile(javaFilePath, s);
             javaPaths.put(javaFilePath, pkgEntity + "." + e);
         }
-        if (isCompile) {
+        if (isGenerateAtStartup) {
             for (Entry<String, String> e : javaPaths.entrySet()) {
                 BeanGenerator.javaCompile(e.getKey(), e.getValue());
             }
@@ -1230,7 +1227,7 @@ public final class BeanGenerator {
             FileUtil.writeFile(javaFilePath, s);
         }
 
-        if (isCompile) {
+        if (isGenerateAtStartup) {
             for (Entry<String, String> e : javaFilePaths.entrySet()) {
                 BeanGenerator.javaCompile(e.getKey(), e.getValue());
             }
@@ -1335,7 +1332,7 @@ public final class BeanGenerator {
             FileUtil.writeFile(javaFilePath, s);
         }
 
-        if (isCompile) {
+        if (isGenerateAtStartup) {
             for (Entry<String, String> e : javaFilePaths.entrySet()) {
                 BeanGenerator.javaCompile(e.getKey(), e.getValue());
             }
@@ -1584,7 +1581,7 @@ public final class BeanGenerator {
             FileUtil.writeFile(javaFilePath, s);
         }
 
-        if (isCompile) {
+        if (isGenerateAtStartup) {
             for (Entry<String, String> e : javaFilePaths.entrySet()) {
                 BeanGenerator.javaCompile(e.getKey(), e.getValue());
             }
@@ -1678,7 +1675,7 @@ public final class BeanGenerator {
             FileUtil.writeFile(javaFilePath, s);
         }
 
-        if (isCompile) {
+        if (isGenerateAtStartup) {
             for (Entry<String, String> e : javaFilePaths.entrySet()) {
                 BeanGenerator.javaCompile(e.getKey(), e.getValue());
             }
@@ -1772,7 +1769,7 @@ public final class BeanGenerator {
             FileUtil.writeFile(javaFilePath, s);
         }
 
-        if (isCompile) {
+        if (isGenerateAtStartup) {
             for (Entry<String, String> e : javaFilePaths.entrySet()) {
                 BeanGenerator.javaCompile(e.getKey(), e.getValue());
             }

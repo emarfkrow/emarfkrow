@@ -96,10 +96,10 @@ public class BaseProcess {
 
         MailInfo mi = new MailInfo();
 
-        String toAddresses = App.get("errormail.toAddresses");
-        String[] addresses = toAddresses.split(",");
-        for (String address : addresses) {
-            mi.addTo(address, "");
+        String errorMailToCsv = App.get("errorMailToCsv");
+        String[] errorMailTos = errorMailToCsv.split(",");
+        for (String errorMailTo : errorMailTos) {
+            mi.addTo(errorMailTo, "");
         }
 
         mi.setSubject(e.getMessage());
