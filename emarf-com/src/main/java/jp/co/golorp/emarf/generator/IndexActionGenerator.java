@@ -58,20 +58,20 @@ public final class IndexActionGenerator {
         //プロジェクトディレクトリを退避
         projectDir = dir;
 
-        actionPackage = bundle.getString("BeanGenerator.java.package.action") + ".model.base";
+        actionPackage = bundle.getString("java.package.action") + ".model.base";
 
-        entityPackage = bundle.getString("BeanGenerator.java.package.entity");
+        entityPackage = bundle.getString("java.package.entity");
 
-        javaPath = bundle.getString("BeanGenerator.java.path");
+        javaPath = bundle.getString("dir.java");
 
         //webからの自動生成ならコンパイルまで行う
         if (App.get("generateAtStartup") != null) {
             isGenerateAtStartup = App.get("generateAtStartup").toLowerCase().equals("true");
         }
 
-        updateDt = bundle.getString("BeanGenerator.update_dt");
+        updateDt = bundle.getString("column.update.timestamp");
 
-        statusKb = bundle.getString("BeanGenerator.status_kb");
+        statusKb = bundle.getString("column.status");
 
         IndexActionGenerator.deleteAction(tableInfos);
         IndexActionGenerator.registAction(tableInfos);
@@ -91,11 +91,15 @@ public final class IndexActionGenerator {
 
         Map<String, String> javaFilePaths = new LinkedHashMap<String, String>();
 
-        for (TableInfo tableInfo : tableInfos) {
-            String tableName = tableInfo.getName();
-            String remarks = tableInfo.getRemarks();
+        for (TableInfo table : tableInfos) {
 
-            String pascal = StringUtil.toPascalCase(tableName);
+            if (table.isHistory() || table.isView()) {
+                continue;
+            }
+
+            String tableName = table.getName();
+            String remarks = table.getRemarks();
+            String entity = StringUtil.toPascalCase(tableName);
 
             List<String> s = new ArrayList<String>();
             s.add("package " + actionPackage + ";");
@@ -105,7 +109,7 @@ public final class IndexActionGenerator {
             s.add("import java.util.List;");
             s.add("import java.util.Map;");
             s.add("");
-            s.add("import " + entityPackage + "." + pascal + ";");
+            s.add("import " + entityPackage + "." + entity + ";");
             s.add("");
             s.add("import jp.co.golorp.emarf.action.BaseAction;");
             s.add("import jp.co.golorp.emarf.exception.OptLockError;");
@@ -117,7 +121,7 @@ public final class IndexActionGenerator {
             s.add(" *");
             s.add(" * @author emarfkrow");
             s.add(" */");
-            s.add("public class " + pascal + "SDeleteAction extends BaseAction {");
+            s.add("public class " + entity + "SDeleteAction extends BaseAction {");
             s.add("");
             s.add("    /** " + remarks + "一覧削除処理 */");
             s.add("    @Override");
@@ -128,7 +132,7 @@ public final class IndexActionGenerator {
             s.add("        int count = 0;");
             s.add("");
             s.add("        @SuppressWarnings(\"unchecked\")");
-            s.add("        List<Map<String, Object>> gridData = (List<Map<String, Object>>) postJson.get(\"" + pascal
+            s.add("        List<Map<String, Object>> gridData = (List<Map<String, Object>>) postJson.get(\"" + entity
                     + "Grid\");");
             s.add("        for (Map<String, Object> gridRow : gridData) {");
             s.add("");
@@ -137,15 +141,15 @@ public final class IndexActionGenerator {
             s.add("            }");
             s.add("");
             s.add("            // 主キーが不足していたらエラー");
-            for (String pk : tableInfo.getPrimaryKeys()) {
+            for (String pk : table.getPrimaryKeys()) {
                 s.add("            if (jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(gridRow.get(\"" + pk
                         + "\"))) {");
                 s.add("                throw new OptLockError(\"error.cant.delete\");");
                 s.add("            }");
             }
             s.add("");
-            s.add("            " + pascal + " e = FormValidator.toBean(" + pascal + ".class.getName(), gridRow);");
-            List<TableInfo> childInfos = tableInfo.getChildInfos();
+            s.add("            " + entity + " e = FormValidator.toBean(" + entity + ".class.getName(), gridRow);");
+            List<TableInfo> childInfos = table.getChildInfos();
             BeanGenerator.getDeleteChilds(s, "e", childInfos, 1);
             s.add("");
             s.add("            if (e.delete() != 1) {");
@@ -165,8 +169,8 @@ public final class IndexActionGenerator {
             s.add("");
             s.add("}");
 
-            String javaFilePath = packageDir + File.separator + pascal + "SDeleteAction.java";
-            javaFilePaths.put(javaFilePath, actionPackage + "." + pascal + "SDeleteAction");
+            String javaFilePath = packageDir + File.separator + entity + "SDeleteAction.java";
+            javaFilePaths.put(javaFilePath, actionPackage + "." + entity + "SDeleteAction");
 
             FileUtil.writeFile(javaFilePath, s);
         }
@@ -191,6 +195,11 @@ public final class IndexActionGenerator {
         Map<String, String> javaFilePaths = new LinkedHashMap<String, String>();
 
         for (TableInfo table : tableInfos) {
+
+            if (table.isHistory() || table.isView()) {
+                continue;
+            }
+
             String entity = StringUtil.toPascalCase(table.getName());
             String remarks = table.getRemarks();
 
@@ -318,7 +327,7 @@ public final class IndexActionGenerator {
 
         for (TableInfo table : tableInfos) {
 
-            if (table.isView()) {
+            if (table.isHistory() || table.isView()) {
                 continue;
             }
 
@@ -429,7 +438,7 @@ public final class IndexActionGenerator {
 
         for (TableInfo table : tableInfos) {
 
-            if (table.isView()) {
+            if (table.isHistory() || table.isView()) {
                 continue;
             }
 

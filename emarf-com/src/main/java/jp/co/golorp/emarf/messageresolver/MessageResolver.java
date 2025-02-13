@@ -31,9 +31,11 @@ import org.thymeleaf.messageresolver.StandardMessageResolver;
 import org.thymeleaf.templateresource.ITemplateResource;
 import org.thymeleaf.util.StringUtils;
 
+import jp.co.golorp.emarf.generator.BeanGenerator;
 import jp.co.golorp.emarf.lang.ReflectUtil;
 import jp.co.golorp.emarf.properties.App;
 import jp.co.golorp.emarf.util.Locales;
+import jp.co.golorp.emarf.util.ResourceBundles;
 
 /**
  * Thymeleafのメッセージ拡張
@@ -56,6 +58,9 @@ public class MessageResolver extends StandardMessageResolver {
 
     /** テンプレートのセット */
     private static Set<String> templatesSet = new HashSet<String>();
+
+    /** BeanGenerator.properties */
+    private static ResourceBundle bundle = ResourceBundles.getBundle(BeanGenerator.class);
 
     /**
      * @param template 対象の画面名
@@ -148,6 +153,10 @@ public class MessageResolver extends StandardMessageResolver {
 
         if (combinedMessages == null) {
             return EMPTY_MESSAGES;
+        }
+
+        for (String key : bundle.keySet()) {
+            combinedMessages.put(key, bundle.getString(key));
         }
 
         return Collections.unmodifiableMap(combinedMessages);

@@ -113,49 +113,49 @@ public final class HtmlGenerator {
      */
     static void generate(final String projectDir, final List<TableInfo> tables) {
 
-        searchPrefixes = bundle.getString("HtmlGenerator.view.search.prefix").split(",");
-        detailColumn = bundle.getString("HtmlGenerator.view.detail.column");
+        searchPrefixes = bundle.getString("view.criteria.prefix").split(",");
+        detailColumn = bundle.getString("view.detail");
 
-        rows = bundle.getString("HtmlGenerator.rows");
+        rows = bundle.getString("grid.rows");
 
-        intNoFormatSuffixs = bundle.getString("HtmlGenerator.int.noformat.suffixs").split(",");
+        intNoFormatSuffixs = bundle.getString("column.int.noformat.suffixs").split(",");
 
-        insertDt = bundle.getString("BeanGenerator.insert_dt");
-        insertBy = bundle.getString("BeanGenerator.insert_by");
-        updateDt = bundle.getString("BeanGenerator.update_dt");
-        updateBy = bundle.getString("BeanGenerator.update_by");
+        insertDt = bundle.getString("column.insert.timestamp");
+        insertBy = bundle.getString("column.insert.id");
+        updateDt = bundle.getString("column.update.timestamp");
+        updateBy = bundle.getString("column.update.id");
 
-        optionsSuffixs = bundle.getString("BeanGenerator.options.suffixs").split(",");
-        pulldownSuffixs = bundle.getString("BeanGenerator.pulldown.suffixs").split(",");
-        json = bundle.getString("BeanGenerator.options.json");
-        optK = bundle.getString("BeanGenerator.options.key").toUpperCase();
-        optV = bundle.getString("BeanGenerator.options.value").toUpperCase();
-        optL = bundle.getString("BeanGenerator.options.label").toUpperCase();
+        optionsSuffixs = bundle.getString("input.options.suffixs").split(",");
+        pulldownSuffixs = bundle.getString("input.pulldown.suffixs").split(",");
+        json = bundle.getString("options.json");
+        optK = bundle.getString("options.key").toUpperCase();
+        optV = bundle.getString("options.value").toUpperCase();
+        optL = bundle.getString("options.label").toUpperCase();
 
-        textareaSuffixs = bundle.getString("BeanGenerator.textarea.suffixs").split(",");
+        textareaSuffixs = bundle.getString("input.textarea.suffixs").split(",");
 
-        inputYMSuffixs = bundle.getString("BeanGenerator.input.ym.suffixs").split(",");
-        inputDate8Suffixs = bundle.getString("BeanGenerator.input.date8.suffixs").split(",");
-        inputTimestampSuffixs = bundle.getString("BeanGenerator.input.timestamp.suffixs").split(",");
-        inputDateTimeSuffixs = bundle.getString("BeanGenerator.input.datetime.suffixs").split(",");
-        inputDateSuffixs = bundle.getString("BeanGenerator.input.date.suffixs").split(",");
-        inputTimeSuffixs = bundle.getString("BeanGenerator.input.time.suffixs").split(",");
-        inputRangeSuffixs = bundle.getString("BeanGenerator.input.range.suffixs").split(",");
-        inputFlagSuffixs = bundle.getString("BeanGenerator.input.flag.suffixs").split(",");
-        inputFileSuffixs = bundle.getString("BeanGenerator.input.file.suffixs").split(",");
+        inputYMSuffixs = bundle.getString("input.ym.suffixs").split(",");
+        inputDate8Suffixs = bundle.getString("input.date8.suffixs").split(",");
+        inputTimestampSuffixs = bundle.getString("input.timestamp.suffixs").split(",");
+        inputDateTimeSuffixs = bundle.getString("input.datetime.suffixs").split(",");
+        inputDateSuffixs = bundle.getString("input.date.suffixs").split(",");
+        inputTimeSuffixs = bundle.getString("input.time.suffixs").split(",");
+        inputRangeSuffixs = bundle.getString("input.range.suffixs").split(",");
+        inputFlagSuffixs = bundle.getString("input.flag.suffixs").split(",");
+        inputFileSuffixs = bundle.getString("input.file.suffixs").split(",");
 
-        String[] pairs = bundle.getString("DataSources.reration.refer.pairs").split(",");
+        String[] pairs = bundle.getString("relation.refer.pairs").split(",");
         for (String pair : pairs) {
             String[] kv = pair.split(":");
             referPairs.add(kv);
         }
 
         // 出力フォルダを再作成
-        String htmlDir = projectDir + File.separator + bundle.getString("HtmlGenerator.htmlPath");
+        String htmlDir = projectDir + File.separator + bundle.getString("dir.html");
         FileUtil.reMkDir(htmlDir);
         FileUtil.reMkDir(htmlDir + File.separator + ".." + File.separator + "common");
 
-        String gridDir = projectDir + File.separator + bundle.getString("HtmlGenerator.gridPath");
+        String gridDir = projectDir + File.separator + bundle.getString("dir.grid");
         FileUtil.reMkDir(gridDir);
 
         for (TableInfo table : tables) {

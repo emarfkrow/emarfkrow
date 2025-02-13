@@ -135,7 +135,7 @@ public class ServiceFilter implements Filter {
 
             Class<?> c = null;
             try {
-                c = Class.forName(bundle.getString("BeanGenerator.java.package.action") + ".ServiceAction");
+                c = Class.forName(bundle.getString("java.package.action") + ".ServiceAction");
             } catch (ClassNotFoundException e) {
                 LOG.trace("ServiceAction is not found.");
             }

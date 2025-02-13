@@ -242,26 +242,26 @@ public final class DataSources {
     private static void loadBundle() {
 
         ResourceBundle bundle = ResourceBundles.getBundle(BeanGenerator.class);
-        String[] pairs = bundle.getString("DataSources.reration.refer.pairs").split(",");
+        String[] pairs = bundle.getString("relation.refer.pairs").split(",");
         for (String pair : pairs) {
             String[] kv = pair.split(":");
             referPairs.add(kv);
         }
-        ignoreRe = bundle.getString("DataSources.relation.ignore.re");
-        eldestRe = bundle.getString("DataSources.relation.eldest.re");
-        bastardRe = bundle.getString("DataSources.relation.bastard.re");
-        youngestRe = bundle.getString("DataSources.relation.youngest.re");
-        dinksRe = bundle.getString("DataSources.relation.dinks.re");
-        orphansRe = bundle.getString("DataSources.relation.orphans.re");
-        columnIgnoreRe = bundle.getString("DataSources.column.ignore.re");
-        viewDetailColumn = bundle.getString("HtmlGenerator.view.detail.column");
-        noNumberingIntRe = bundle.getString("DataSources.column.nonumbering.int.re");
-        numberingCharRe = bundle.getString("DataSources.column.numbering.char.re");
-        inputTimestampSuffixs = bundle.getString("BeanGenerator.input.timestamp.suffixs").split(",");
-        inputDateTimeSuffixs = bundle.getString("BeanGenerator.input.datetime.suffixs").split(",");
-        inputDateSuffixs = bundle.getString("BeanGenerator.input.date.suffixs").split(",");
-        inputTimeSuffixs = bundle.getString("BeanGenerator.input.time.suffixs").split(",");
-        tekiyoBi = bundle.getString("SqlGenerator.tekiyoBi").toUpperCase();
+        ignoreRe = bundle.getString("relation.ignore.re");
+        eldestRe = bundle.getString("relation.eldest.re");
+        bastardRe = bundle.getString("relation.bastard.re");
+        youngestRe = bundle.getString("relation.youngest.re");
+        dinksRe = bundle.getString("relation.dinks.re");
+        orphansRe = bundle.getString("relation.orphans.re");
+        columnIgnoreRe = bundle.getString("column.ignore.re");
+        viewDetailColumn = bundle.getString("view.detail");
+        noNumberingIntRe = bundle.getString("column.int.nonumbering.re");
+        numberingCharRe = bundle.getString("column.char.numbering.re");
+        inputTimestampSuffixs = bundle.getString("input.timestamp.suffixs").split(",");
+        inputDateTimeSuffixs = bundle.getString("input.datetime.suffixs").split(",");
+        inputDateSuffixs = bundle.getString("input.date.suffixs").split(",");
+        inputTimeSuffixs = bundle.getString("input.time.suffixs").split(",");
+        tekiyoBi = bundle.getString("column.start").toUpperCase();
     }
 
     /**

@@ -57,15 +57,15 @@ limitations under the License.
 <script th:inline="javascript">
 	let searchOptionsSize = 0;
 	let detailOptionsSize = 0;
-	let gridOpeReadonlyColumn = null;
 	let gridOpeVisibleColumn = null;
+	let gridOpeReadonlyColumn = null;
 	let gridOpeEffectColumn = null;
 	let gridViewDetailColumn = null;
 	$(function() {
 		searchOptionsSize = $('[name="searchOptionsSize"]').val();
 		detailOptionsSize = $('[name="detailOptionsSize"]').val();
-		gridOpeReadonlyColumn = $('[name="gridOpeReadonlyColumn"]').val();
 		gridOpeVisibleColumn = $('[name="gridOpeVisibleColumn"]').val();
+		gridOpeReadonlyColumn = $('[name="gridOpeReadonlyColumn"]').val();
 		gridOpeEffectColumn = $('[name="gridOpeEffectColumn"]').val();
 		gridViewDetailColumn = $('[name="gridViewDetailColumn"]').val();
 	});
@@ -120,10 +120,10 @@ limitations under the License.
 <body>
   <input type="hidden" name="searchOptionsSize" th:value="#{options.size.search}" />
   <input type="hidden" name="detailOptionsSize" th:value="#{options.size.detail}" />
-  <input type="hidden" name="gridOpeReadonlyColumn" th:value="#{grid.ope.readonly.column}" />
-  <input type="hidden" name="gridOpeVisibleColumn" th:value="#{grid.ope.visible.column}" />
-  <input type="hidden" name="gridOpeEffectColumn" th:value="#{grid.ope.effect.column}" />
-  <input type="hidden" name="gridViewDetailColumn" th:value="#{grid.view.detail.column}" />
+  <input type="hidden" name="gridOpeVisibleColumn" th:value="#{column.insert.timestamp}" />
+  <input type="hidden" name="gridOpeReadonlyColumn" th:value="#{column.status}" />
+  <input type="hidden" name="gridOpeEffectColumn" th:value="#{column.delete}" />
+  <input type="hidden" name="gridViewDetailColumn" th:value="#{view.detail}" />
   <script th:src="@{/js/loading.js}"></script>
   <div layout:replace="~{common/header::header}"></div>
   <div layout:replace="~{common/nav::nav}"></div>

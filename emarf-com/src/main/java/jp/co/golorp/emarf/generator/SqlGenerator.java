@@ -70,29 +70,29 @@ public final class SqlGenerator {
     public static void generate(final String projectDir, final List<TableInfo> tableInfos) {
 
         /* 設定ファイル読み込み */
-        optionsSuffixs = bundle.getString("BeanGenerator.options.suffixs").split(",");
-        inputDateSuffixs = bundle.getString("BeanGenerator.input.date.suffixs").split(",");
-        inputDateTimeSuffixs = bundle.getString("BeanGenerator.input.datetime.suffixs").split(",");
-        inputTimestampSuffixs = bundle.getString("BeanGenerator.input.timestamp.suffixs").split(",");
-        inputRangeSuffixs = bundle.getString("BeanGenerator.input.range.suffixs").split(",");
-        inputFlagSuffixs = bundle.getString("BeanGenerator.input.flag.suffixs").split(",");
+        optionsSuffixs = bundle.getString("input.options.suffixs").split(",");
+        inputDateSuffixs = bundle.getString("input.date.suffixs").split(",");
+        inputDateTimeSuffixs = bundle.getString("input.datetime.suffixs").split(",");
+        inputTimestampSuffixs = bundle.getString("input.timestamp.suffixs").split(",");
+        inputRangeSuffixs = bundle.getString("input.range.suffixs").split(",");
+        inputFlagSuffixs = bundle.getString("input.flag.suffixs").split(",");
 
-        String[] pairs = bundle.getString("DataSources.reration.refer.pairs").split(",");
+        String[] pairs = bundle.getString("relation.refer.pairs").split(",");
         for (String pair : pairs) {
             String[] kv = pair.split(":");
             referPairs.add(kv);
         }
 
-        optK = bundle.getString("BeanGenerator.options.key").toUpperCase();
+        optK = bundle.getString("options.key").toUpperCase();
 
-        deleteF = bundle.getString("SqlGenerator.deleteF").toUpperCase();
-        tekiyoBi = bundle.getString("SqlGenerator.tekiyoBi").toUpperCase();
-        shuryoBi = bundle.getString("SqlGenerator.shuryoBi").toUpperCase();
+        deleteF = bundle.getString("column.delete").toUpperCase();
+        tekiyoBi = bundle.getString("column.start").toUpperCase();
+        shuryoBi = bundle.getString("column.until").toUpperCase();
 
         assist = DataSources.getAssist();
 
         //SQLフォルダ
-        String sqlDir = projectDir + File.separator + bundle.getString("SqlGenerator.sqlPath");
+        String sqlDir = projectDir + File.separator + bundle.getString("dir.sql");
         FileUtil.reMkDir(sqlDir);
 
         //検索SQL
@@ -181,7 +181,7 @@ public final class SqlGenerator {
 
         //BeanGeneratorの子モデル処理時にはnullかも知れない
         if (referPairs.size() == 0) {
-            String[] pairs = bundle.getString("DataSources.reration.refer.pairs").split(",");
+            String[] pairs = bundle.getString("relation.refer.pairs").split(",");
             for (String pair : pairs) {
                 String[] kv = pair.split(":");
                 referPairs.add(kv);

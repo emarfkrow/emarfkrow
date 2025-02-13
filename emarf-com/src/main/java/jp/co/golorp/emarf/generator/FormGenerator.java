@@ -30,10 +30,10 @@ public final class FormGenerator {
     private static ResourceBundle bundle = ResourceBundles.getBundle(BeanGenerator.class);
 
     /** formパッケージ */
-    private static String formPackage;
+    private static String pkgForm;
 
     /** javaファイル出力ルートパス */
-    private static String javaPath;
+    private static String javaDir;
 
     /** プロジェクトディレクトリ */
     private static String projectDir;
@@ -69,45 +69,46 @@ public final class FormGenerator {
     /**
      * 各ファイル出力 主処理
      * @param dir プロジェクトのディレクトリ
-     * @param tableInfos
+     * @param tables
      */
-    public static void generate(final String dir, final List<TableInfo> tableInfos) {
+    public static void generate(final String dir, final List<TableInfo> tables) {
 
-        formPackage = bundle.getString("BeanGenerator.java.package.form");
-        javaPath = bundle.getString("BeanGenerator.java.path");
         projectDir = dir;
-        insertDt = bundle.getString("BeanGenerator.insert_dt");
-        insertBy = bundle.getString("BeanGenerator.insert_by");
-        updateDt = bundle.getString("BeanGenerator.update_dt");
-        updateBy = bundle.getString("BeanGenerator.update_by");
 
         //webからの自動生成ならコンパイルまで行う
         if (App.get("generateAtStartup") != null) {
             isGenerateAtStartup = App.get("generateAtStartup").toLowerCase().equals("true");
         }
 
+        pkgForm = bundle.getString("java.package.form") + ".model.base";
+        javaDir = bundle.getString("dir.java");
+        insertDt = bundle.getString("column.insert.timestamp");
+        insertBy = bundle.getString("column.insert.id");
+        updateDt = bundle.getString("column.update.timestamp");
+        updateBy = bundle.getString("column.update.id");
+
         //validator正規表現の接尾辞を取得
         validSuffixs = new ArrayList<String>();
         for (String key : bundle.keySet()) {
-            if (key.startsWith("BeanGenerator.valid.")) {
-                validSuffixs.add(key.replaceFirst("BeanGenerator.valid.", ""));
+            if (key.startsWith("valid.")) {
+                validSuffixs.add(key.replaceFirst("valid.", ""));
             }
         }
 
         //NOTNULLで必須項目として扱うCHARの列名リスト（ホストの△対応）
-        charNotNullRe = bundle.getString("BeanGenerator.char.notnull.re");
+        charNotNullRe = bundle.getString("column.char.notnull.re");
         //NOTNULLのINT列で「0」を補填する列名指定
-        numberNullableRe = bundle.getString("BeanGenerator.number.nullable.re");
+        numberNullableRe = bundle.getString("column.number.nullable.re");
         //タイムスタンプサフィックス
-        inputTimestampSuffixs = bundle.getString("BeanGenerator.input.timestamp.suffixs").split(",");
+        inputTimestampSuffixs = bundle.getString("input.timestamp.suffixs").split(",");
 
         //フォームフォルダ
-        String formPackagePath = formPackage.replace(".", File.separator);
-        String formPackageDir = projectDir + File.separator + javaPath + File.separator + formPackagePath;
-        FileUtil.reMkDir(formPackageDir);
+        String pkgFormPath = pkgForm.replace(".", File.separator);
+        String pkgFormDir = projectDir + File.separator + javaDir + File.separator + pkgFormPath;
+        FileUtil.reMkDir(pkgFormDir);
 
-        FormGenerator.javaFormDetailRegist(tableInfos);
-        FormGenerator.javaFormIndexRegist(tableInfos);
+        FormGenerator.javaFormDetailRegist(tables);
+        FormGenerator.javaFormIndexRegist(tables);
     }
 
     /**
@@ -117,21 +118,25 @@ public final class FormGenerator {
     private static void javaFormDetailRegist(final List<TableInfo> tableInfos) {
 
         // 出力フォルダを再作成
-        String packagePath = formPackage.replace(".", File.separator);
-        String packageDir = projectDir + File.separator + javaPath + File.separator + packagePath;
+        String packagePath = pkgForm.replace(".", File.separator);
+        String packageDir = projectDir + File.separator + javaDir + File.separator + packagePath;
 
         Map<String, String> javaFilePaths = new LinkedHashMap<String, String>();
 
-        for (TableInfo tableInfo : tableInfos) {
-            String tableName = tableInfo.getName();
-            String remarks = tableInfo.getRemarks();
+        for (TableInfo table : tableInfos) {
 
-            String entityName = StringUtil.toPascalCase(tableName);
+            if (table.isHistory() || table.isView()) {
+                continue;
+            }
+
+            String tableName = table.getName();
+            String remarks = table.getRemarks();
+            String entity = StringUtil.toPascalCase(tableName);
 
             List<String> s = new ArrayList<String>();
-            s.add("package " + formPackage + ";");
+            s.add("package " + pkgForm + ";");
             s.add("");
-            if (tableInfo.getChildInfos().size() > 0) {
+            if (table.getChildInfos().size() > 0) {
                 s.add("import java.util.List;");
             }
             s.add("import java.util.Map;");
@@ -147,13 +152,13 @@ public final class FormGenerator {
             s.add(" *");
             s.add(" * @author emarfkrow");
             s.add(" */");
-            s.add("public class " + entityName + "RegistForm implements IForm {");
+            s.add("public class " + entity + "RegistForm implements IForm {");
             s.add("");
             s.add("    /** logger */");
-            s.add("    private static final Logger LOG = LoggerFactory.getLogger(" + entityName + "RegistForm.class);");
-            for (ColumnInfo columnInfo : tableInfo.getColumnInfos().values()) {
+            s.add("    private static final Logger LOG = LoggerFactory.getLogger(" + entity + "RegistForm.class);");
+            for (ColumnInfo column : table.getColumnInfos().values()) {
 
-                String columnName = columnInfo.getColumnName();
+                String columnName = column.getColumnName();
 
                 // レコードメタデータならスキップ
                 boolean isInsertDt = columnName.matches("(?i)^" + insertDt + "$");
@@ -168,26 +173,26 @@ public final class FormGenerator {
                 String pascal = StringUtil.toPascalCase(columnName);
 
                 s.add("");
-                s.add("    /** " + columnInfo.getRemarks() + " */");
-                javaFormDetailRegistChecks(tableInfo.getPrimaryKeys(), columnInfo, s);
+                s.add("    /** " + column.getRemarks() + " */");
+                javaFormDetailRegistChecks(table.getPrimaryKeys(), column, s);
                 s.add("    private String " + camel + ";");
                 s.add("");
                 s.add("    /**");
-                s.add("     * @return " + columnInfo.getRemarks());
+                s.add("     * @return " + column.getRemarks());
                 s.add("     */");
                 s.add("    public String get" + pascal + "() {");
                 s.add("        return " + camel + ";");
                 s.add("    }");
                 s.add("");
                 s.add("    /**");
-                s.add("     * @param p " + columnInfo.getRemarks());
+                s.add("     * @param p " + column.getRemarks());
                 s.add("     */");
                 s.add("    public void set" + pascal + "(final String p) {");
                 s.add("        this." + camel + " = p;");
                 s.add("    }");
             }
             // 兄弟モデル
-            for (TableInfo brosInfo : tableInfo.getBrosInfos()) {
+            for (TableInfo brosInfo : table.getBrosInfos()) {
                 String brosName = brosInfo.getName();
                 String camel = StringUtil.toCamelCase(brosName);
                 String pascal = StringUtil.toPascalCase(brosName);
@@ -211,7 +216,7 @@ public final class FormGenerator {
                 s.add("    }");
             }
             // 子モデル
-            for (TableInfo childInfo : tableInfo.getChildInfos()) {
+            for (TableInfo childInfo : table.getChildInfos()) {
                 String childName = childInfo.getName();
                 String camel = StringUtil.toCamelCase(childName);
                 String pascal = StringUtil.toPascalCase(childName);
@@ -243,8 +248,8 @@ public final class FormGenerator {
             s.add("");
             s.add("}");
 
-            String javaFilePath = packageDir + File.separator + entityName + "RegistForm.java";
-            javaFilePaths.put(javaFilePath, formPackage + "." + entityName + "RegistForm");
+            String javaFilePath = packageDir + File.separator + entity + "RegistForm.java";
+            javaFilePaths.put(javaFilePath, pkgForm + "." + entity + "RegistForm");
 
             FileUtil.writeFile(javaFilePath, s);
         }
@@ -321,7 +326,7 @@ public final class FormGenerator {
         if (validSuffix != null) {
             // Patternの指定がある場合
 
-            String re = bundle.getString("BeanGenerator.valid." + validSuffix);
+            String re = bundle.getString("valid." + validSuffix);
             s.add("    @jakarta.validation.constraints.Pattern(regexp = \"" + re + "\")");
 
         } else {
@@ -356,20 +361,24 @@ public final class FormGenerator {
     private static void javaFormIndexRegist(final List<TableInfo> tableInfos) {
 
         // 出力フォルダを再作成
-        String packagePath = formPackage.replace(".", File.separator);
-        String packageDir = projectDir + File.separator + javaPath + File.separator + packagePath;
+        String packagePath = pkgForm.replace(".", File.separator);
+        String packageDir = projectDir + File.separator + javaDir + File.separator + packagePath;
 
         Map<String, String> javaFilePaths = new LinkedHashMap<String, String>();
 
-        for (TableInfo tableInfo : tableInfos) {
-            String tableName = tableInfo.getName();
-            String remarks = tableInfo.getRemarks();
+        for (TableInfo table : tableInfos) {
 
-            String camel = StringUtil.toCamelCase(tableName);
-            String pascal = StringUtil.toPascalCase(tableName);
+            if (table.isHistory() || table.isView()) {
+                continue;
+            }
+
+            String tableName = table.getName();
+            String remarks = table.getRemarks();
+            String entity = StringUtil.toPascalCase(tableName);
+            String instance = StringUtil.toCamelCase(tableName);
 
             List<String> s = new ArrayList<String>();
-            s.add("package " + formPackage + ";");
+            s.add("package " + pkgForm + ";");
             s.add("");
             s.add("import java.util.List;");
             s.add("import java.util.Map;");
@@ -386,27 +395,27 @@ public final class FormGenerator {
             s.add(" *");
             s.add(" * @author emarfkrow");
             s.add(" */");
-            s.add("public class " + pascal + "SRegistForm implements IForm {");
+            s.add("public class " + entity + "SRegistForm implements IForm {");
             s.add("");
             s.add("    /** logger */");
-            s.add("    private static final Logger LOG = LoggerFactory.getLogger(" + pascal + "RegistForm.class);");
+            s.add("    private static final Logger LOG = LoggerFactory.getLogger(" + entity + "RegistForm.class);");
             s.add("");
-            s.add("    /** " + tableInfo.getRemarks() + "登録フォームのリスト */");
+            s.add("    /** " + table.getRemarks() + "登録フォームのリスト */");
             s.add("    @Valid");
-            s.add("    private List<" + pascal + "RegistForm> " + camel + "Grid;");
+            s.add("    private List<" + entity + "RegistForm> " + instance + "Grid;");
             s.add("");
             s.add("    /**");
-            s.add("     * @return " + tableInfo.getRemarks() + "登録フォームのリスト");
+            s.add("     * @return " + table.getRemarks() + "登録フォームのリスト");
             s.add("     */");
-            s.add("    public List<" + pascal + "RegistForm> get" + pascal + "Grid() {");
-            s.add("        return " + camel + "Grid;");
+            s.add("    public List<" + entity + "RegistForm> get" + entity + "Grid() {");
+            s.add("        return " + instance + "Grid;");
             s.add("    }");
             s.add("");
             s.add("    /**");
-            s.add("     * @param p " + tableInfo.getRemarks() + "登録フォームのリスト");
+            s.add("     * @param p " + table.getRemarks() + "登録フォームのリスト");
             s.add("     */");
-            s.add("    public void set" + pascal + "Grid(final List<" + pascal + "RegistForm> p) {");
-            s.add("        this." + camel + "Grid = p;");
+            s.add("    public void set" + entity + "Grid(final List<" + entity + "RegistForm> p) {");
+            s.add("        this." + instance + "Grid = p;");
             s.add("    }");
             s.add("");
             s.add("    /** 関連チェック */");
@@ -417,8 +426,8 @@ public final class FormGenerator {
             s.add("");
             s.add("}");
 
-            String javaFilePath = packageDir + File.separator + pascal + "SRegistForm.java";
-            javaFilePaths.put(javaFilePath, formPackage + "." + pascal + "SRegistForm");
+            String javaFilePath = packageDir + File.separator + entity + "SRegistForm.java";
+            javaFilePaths.put(javaFilePath, pkgForm + "." + entity + "SRegistForm");
 
             FileUtil.writeFile(javaFilePath, s);
         }

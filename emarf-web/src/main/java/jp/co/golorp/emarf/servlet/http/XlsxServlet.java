@@ -92,7 +92,7 @@ public final class XlsxServlet extends HttpServlet {
         String lastPath = servletPathes[servletPathes.length - 1];
         String actionName = lastPath.replaceFirst(".[a-z]+$", "") + "XlsxAction";
         servletPathes[servletPathes.length - 1] = actionName;
-        String className = bundle.getString("BeanGenerator.java.package.action") + String.join(".", servletPathes);
+        String className = bundle.getString("java.package.action") + String.join(".", servletPathes);
         try {
             Class<?> c = Class.forName(className);
             xlsxAction = (BaseAction) c.getDeclaredConstructor().newInstance();

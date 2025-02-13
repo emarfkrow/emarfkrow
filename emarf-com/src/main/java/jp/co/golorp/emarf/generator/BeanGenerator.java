@@ -51,25 +51,20 @@ public final class BeanGenerator {
     /** DB方言クラス */
     private static DataSourcesAssist assist = DataSources.getAssist();
 
-    /** BeanGenerator.properties */
-    private static ResourceBundle bundle = ResourceBundles.getBundle(BeanGenerator.class);
-
     /** 起動時の自動生成か */
     private static boolean isGenerateAtStartup;
 
-    /** 必須CHAR列の指定 */
-    private static String charNotNullRe;
-    /** 非必須INT列の指定 */
-    private static String numberNullableRe;
+    /** プロジェクトディレクトリ */
+    private static String projectDir;
 
+    /** BeanGenerator.properties */
+    private static ResourceBundle bundle = ResourceBundles.getBundle(BeanGenerator.class);
     /** 登録日時カラム名 */
     private static String insertDt;
     /** 登録者カラム名 */
     private static String insertBy;
     /** 更新日時カラム名 */
     private static String updateDt;
-    /** 更新日時フォーマット */
-    private static String updateDtFormat;
     /** 更新者カラム名 */
     private static String updateBy;
     /** 削除フラグ */
@@ -77,27 +72,33 @@ public final class BeanGenerator {
     /** ステータス区分 */
     private static String statusKb;
 
+    /** javaファイル出力ルートパス */
+    private static String javaDir;
+
+    /** actionパッケージ */
+    private static String pkgAction;
+    /** entityパッケージ */
+    private static String pkgEntity;
+
+    /** 必須CHAR列の指定 */
+    private static String charNotNullRe;
+    /** 非必須INT列の指定 */
+    private static String numberNullableRe;
+    /** 更新日時フォーマット */
+    private static String updateDtFormat;
+
     /** 年月入力サフィックス */
     private static String[] inputYMSuffixs;
-    /** 日付け入力サフィックス */
-    private static String[] inputDateSuffixs;
-    /** 日時入力サフィックス */
-    private static String[] inputDateTimeSuffixs;
     /** タイムスタンプサフィックス */
     private static String[] inputTimestampSuffixs;
+    /** 日時入力サフィックス */
+    private static String[] inputDateTimeSuffixs;
+    /** 日付け入力サフィックス */
+    private static String[] inputDateSuffixs;
     /** フラグサフィックス */
     private static String[] inputFlagSuffixs;
     /** ファイルサフィックス */
     private static String[] inputFileSuffixs;
-
-    /** プロジェクトディレクトリ */
-    private static String projectDir;
-    /** javaファイル出力ルートパス */
-    private static String javaPath;
-    /** entityパッケージ */
-    private static String pkgEntity;
-    /** actionパッケージ */
-    private static String pkgAction;
 
     /** プライベートコンストラクタ */
     private BeanGenerator() {
@@ -111,39 +112,39 @@ public final class BeanGenerator {
 
         LOG.info("start.");
 
-        //プロジェクトディレクトリを退避
-        projectDir = dir;
-
         //webからの自動生成ならコンパイルまで行う
         if (App.get("generateAtStartup") != null) {
             isGenerateAtStartup = App.get("generateAtStartup").toLowerCase().equals("true");
         }
 
+        //プロジェクトディレクトリを退避
+        projectDir = dir;
+
+        insertDt = bundle.getString("column.insert.timestamp");
+        insertBy = bundle.getString("column.insert.id");
+        updateDt = bundle.getString("column.update.timestamp");
+        updateBy = bundle.getString("column.update.id");
+        deleteF = bundle.getString("column.delete");
+        statusKb = bundle.getString("column.status");
+
+        javaDir = bundle.getString("dir.java");
+
+        pkgAction = bundle.getString("java.package.action") + ".model.base";
+        pkgEntity = bundle.getString("java.package.entity");
+
         //NOTNULLで必須項目として扱うCHARの列名リスト（ホストの△対応）
-        charNotNullRe = bundle.getString("BeanGenerator.char.notnull.re");
+        charNotNullRe = bundle.getString("column.char.notnull.re");
         //NOTNULLのINT列で「0」を補填する列名指定
-        numberNullableRe = bundle.getString("BeanGenerator.number.nullable.re");
-
+        numberNullableRe = bundle.getString("column.number.nullable.re");
         //登録情報・更新情報の列名
-        insertDt = bundle.getString("BeanGenerator.insert_dt");
-        insertBy = bundle.getString("BeanGenerator.insert_by");
-        updateDt = bundle.getString("BeanGenerator.update_dt");
-        updateDtFormat = bundle.getString("BeanGenerator.update_dt.format");
-        updateBy = bundle.getString("BeanGenerator.update_by");
-        deleteF = bundle.getString("SqlGenerator.deleteF");
-        statusKb = bundle.getString("BeanGenerator.status_kb");
+        updateDtFormat = bundle.getString("column.update.timestamp.format");
 
-        inputYMSuffixs = bundle.getString("BeanGenerator.input.ym.suffixs").split(",");
-        inputDateSuffixs = bundle.getString("BeanGenerator.input.date.suffixs").split(",");
-        inputDateTimeSuffixs = bundle.getString("BeanGenerator.input.datetime.suffixs").split(",");
-        inputTimestampSuffixs = bundle.getString("BeanGenerator.input.timestamp.suffixs").split(",");
-
-        inputFlagSuffixs = bundle.getString("BeanGenerator.input.flag.suffixs").split(",");
-        inputFileSuffixs = bundle.getString("BeanGenerator.input.file.suffixs").split(",");
-
-        javaPath = bundle.getString("BeanGenerator.java.path");
-        pkgEntity = bundle.getString("BeanGenerator.java.package.entity");
-        pkgAction = bundle.getString("BeanGenerator.java.package.action") + ".model.base";
+        inputYMSuffixs = bundle.getString("input.ym.suffixs").split(",");
+        inputTimestampSuffixs = bundle.getString("input.timestamp.suffixs").split(",");
+        inputDateTimeSuffixs = bundle.getString("input.datetime.suffixs").split(",");
+        inputDateSuffixs = bundle.getString("input.date.suffixs").split(",");
+        inputFlagSuffixs = bundle.getString("input.flag.suffixs").split(",");
+        inputFileSuffixs = bundle.getString("input.file.suffixs").split(",");
 
         /*
          * 出力フォルダ再作成
@@ -151,12 +152,12 @@ public final class BeanGenerator {
 
         //エンティティフォルダ
         String entityPackagePath = pkgEntity.replace(".", File.separator);
-        String entityPackageDir = projectDir + File.separator + javaPath + File.separator + entityPackagePath;
+        String entityPackageDir = projectDir + File.separator + javaDir + File.separator + entityPackagePath;
         FileUtil.reMkDir(entityPackageDir);
 
         //アクションフォルダ
         String actionPackagePath = pkgAction.replace(".", File.separator);
-        String actionPackageDir = projectDir + File.separator + javaPath + File.separator + actionPackagePath;
+        String actionPackageDir = projectDir + File.separator + javaDir + File.separator + actionPackagePath;
         FileUtil.reMkDir(actionPackageDir);
 
         /*
@@ -164,29 +165,29 @@ public final class BeanGenerator {
          */
 
         // テーブル情報を取得
-        List<TableInfo> tableInfos = DataSources.getTables();
+        List<TableInfo> tables = DataSources.getTables();
 
         //エンティティクラス
-        BeanGenerator.javaEntity(tableInfos);
+        BeanGenerator.javaEntity(tables);
 
         //詳細画面アクションクラス
-        BeanGenerator.javaActionDetailGet(tableInfos);
-        BeanGenerator.javaActionDetailDelete(tableInfos);
-        BeanGenerator.javaActionDetailRegist(tableInfos);
-        BeanGenerator.javaActionDetailPermit(tableInfos);
-        BeanGenerator.javaActionDetailForbid(tableInfos);
+        BeanGenerator.javaActionDetailGet(tables);
+        BeanGenerator.javaActionDetailDelete(tables);
+        BeanGenerator.javaActionDetailRegist(tables);
+        BeanGenerator.javaActionDetailPermit(tables);
+        BeanGenerator.javaActionDetailForbid(tables);
 
         //検索画面アクションクラス
-        IndexActionGenerator.generate(projectDir, tableInfos);
+        IndexActionGenerator.generate(projectDir, tables);
 
         //フォームクラス
-        FormGenerator.generate(projectDir, tableInfos);
+        FormGenerator.generate(projectDir, tables);
 
         //HTMLファイル
-        HtmlGenerator.generate(projectDir, tableInfos);
+        HtmlGenerator.generate(projectDir, tables);
 
         //検索SQLファイル
-        SqlGenerator.generate(projectDir, tableInfos);
+        SqlGenerator.generate(projectDir, tables);
 
         LOG.info("success.");
     }
@@ -196,9 +197,10 @@ public final class BeanGenerator {
      * @param tables テーブル情報のリスト
      */
     private static void javaEntity(final List<TableInfo> tables) {
-        String packagePath = pkgEntity.replace(".", File.separator);
-        String packageDir = projectDir + File.separator + javaPath + File.separator + packagePath;
-        Map<String, String> javaPaths = new LinkedHashMap<String, String>();
+
+        String pkgPath = pkgEntity.replace(".", File.separator);
+        String pkgDir = projectDir + File.separator + javaDir + File.separator + pkgPath;
+        Map<String, String> paths = new LinkedHashMap<String, String>();
         for (TableInfo table : tables) {
             String e = StringUtil.toPascalCase(table.getName());
             String r = table.getRemarks();
@@ -334,12 +336,12 @@ public final class BeanGenerator {
             javaEntityBros(table, s);
             javaEntityChild(table, s);
             s.add("}");
-            String javaFilePath = packageDir + File.separator + e + ".java";
-            FileUtil.writeFile(javaFilePath, s);
-            javaPaths.put(javaFilePath, pkgEntity + "." + e);
+            String path = pkgDir + File.separator + e + ".java";
+            FileUtil.writeFile(path, s);
+            paths.put(path, pkgEntity + "." + e);
         }
         if (isGenerateAtStartup) {
-            for (Entry<String, String> e : javaPaths.entrySet()) {
+            for (Entry<String, String> e : paths.entrySet()) {
                 BeanGenerator.javaCompile(e.getKey(), e.getValue());
             }
         }
@@ -1154,15 +1156,19 @@ public final class BeanGenerator {
 
         // 出力フォルダを再作成
         String packagePath = pkgAction.replace(".", File.separator);
-        String packageDir = projectDir + File.separator + javaPath + File.separator + packagePath;
+        String packageDir = projectDir + File.separator + javaDir + File.separator + packagePath;
 
         Map<String, String> javaFilePaths = new LinkedHashMap<String, String>();
 
-        for (TableInfo tableInfo : tableInfos) {
-            String tableName = tableInfo.getName();
-            String remarks = tableInfo.getRemarks();
+        for (TableInfo table : tableInfos) {
 
-            String entityName = StringUtil.toPascalCase(tableName);
+            if (table.isHistory() || table.isView()) {
+                continue;
+            }
+
+            String tableName = table.getName();
+            String remarks = table.getRemarks();
+            String entity = StringUtil.toPascalCase(tableName);
 
             List<String> s = new ArrayList<String>();
             s.add("package " + pkgAction + ";");
@@ -1171,7 +1177,7 @@ public final class BeanGenerator {
             s.add("import java.util.HashMap;");
             s.add("import java.util.Map;");
             s.add("");
-            s.add("import " + pkgEntity + "." + entityName + ";");
+            s.add("import " + pkgEntity + "." + entity + ";");
             s.add("");
             s.add("import jp.co.golorp.emarf.action.BaseAction;");
             s.add("import jp.co.golorp.emarf.exception.OptLockError;");
@@ -1183,7 +1189,7 @@ public final class BeanGenerator {
             s.add(" *");
             s.add(" * @author emarfkrow");
             s.add(" */");
-            s.add("public class " + entityName + "DeleteAction extends BaseAction {");
+            s.add("public class " + entity + "DeleteAction extends BaseAction {");
             s.add("");
             s.add("    /** " + remarks + "削除処理 */");
             s.add("    @Override");
@@ -1191,11 +1197,11 @@ public final class BeanGenerator {
             s.add("");
             s.add("        // 主キーが不足していたらエラー");
             String params = "";
-            for (String primaryKey : tableInfo.getPrimaryKeys()) {
+            for (String primaryKey : table.getPrimaryKeys()) {
                 String camel = StringUtil.toCamelCase(primaryKey);
                 s.add("        Object " + camel + " = postJson.get(\"" + camel + "\");");
                 s.add("        if (" + camel + " == null) {");
-                s.add("            " + camel + " = postJson.get(\"" + entityName + "." + camel + "\");");
+                s.add("            " + camel + " = postJson.get(\"" + entity + "." + camel + "\");");
                 s.add("        }");
                 s.add("        if (" + camel + " == null) {");
                 s.add("            throw new OptLockError(\"error.cant.delete\");");
@@ -1206,8 +1212,8 @@ public final class BeanGenerator {
                 params += camel;
             }
             s.add("");
-            s.add("        " + entityName + " e = FormValidator.toBean(" + entityName + ".class.getName(), postJson);");
-            List<TableInfo> childInfos = tableInfo.getChildInfos();
+            s.add("        " + entity + " e = FormValidator.toBean(" + entity + ".class.getName(), postJson);");
+            List<TableInfo> childInfos = table.getChildInfos();
             getDeleteChilds(s, "e", childInfos, 0);
             s.add("");
             s.add("        if (e.delete() != 1) {");
@@ -1221,8 +1227,8 @@ public final class BeanGenerator {
             s.add("");
             s.add("}");
 
-            String javaFilePath = packageDir + File.separator + entityName + "DeleteAction.java";
-            javaFilePaths.put(javaFilePath, pkgAction + "." + entityName + "DeleteAction");
+            String javaFilePath = packageDir + File.separator + entity + "DeleteAction.java";
+            javaFilePaths.put(javaFilePath, pkgAction + "." + entity + "DeleteAction");
 
             FileUtil.writeFile(javaFilePath, s);
         }
@@ -1242,7 +1248,7 @@ public final class BeanGenerator {
 
         // 出力フォルダを再作成
         String packagePath = pkgAction.replace(".", File.separator);
-        String packageDir = projectDir + File.separator + javaPath + File.separator + packagePath;
+        String packageDir = projectDir + File.separator + javaDir + File.separator + packagePath;
 
         Map<String, String> javaFilePaths = new LinkedHashMap<String, String>();
 
@@ -1465,11 +1471,16 @@ public final class BeanGenerator {
 
         // 出力フォルダを再作成
         String packagePath = pkgAction.replace(".", File.separator);
-        String packageDir = projectDir + File.separator + javaPath + File.separator + packagePath;
+        String packageDir = projectDir + File.separator + javaDir + File.separator + packagePath;
 
         Map<String, String> javaFilePaths = new LinkedHashMap<String, String>();
 
         for (TableInfo table : tables) {
+
+            if (table.isHistory() || table.isView()) {
+                continue;
+            }
+
             String tableName = table.getName();
             String entity = StringUtil.toPascalCase(tableName);
             String remarks = table.getRemarks();
@@ -1596,13 +1607,13 @@ public final class BeanGenerator {
 
         // 出力フォルダを再作成
         String packagePath = pkgAction.replace(".", File.separator);
-        String packageDir = projectDir + File.separator + javaPath + File.separator + packagePath;
+        String packageDir = projectDir + File.separator + javaDir + File.separator + packagePath;
 
         Map<String, String> javaFilePaths = new LinkedHashMap<String, String>();
 
         for (TableInfo table : tableInfos) {
 
-            if (table.isView()) {
+            if (table.isHistory() || table.isView()) {
                 continue;
             }
 
@@ -1690,13 +1701,13 @@ public final class BeanGenerator {
 
         // 出力フォルダを再作成
         String packagePath = pkgAction.replace(".", File.separator);
-        String packageDir = projectDir + File.separator + javaPath + File.separator + packagePath;
+        String packageDir = projectDir + File.separator + javaDir + File.separator + packagePath;
 
         Map<String, String> javaFilePaths = new LinkedHashMap<String, String>();
 
         for (TableInfo table : tableInfos) {
 
-            if (table.isView()) {
+            if (table.isHistory() || table.isView()) {
                 continue;
             }
 
@@ -1894,7 +1905,7 @@ public final class BeanGenerator {
     public static void javaCompile(final String javaFilePath, final String className) {
 
         // 出力ディレクトリ
-        String dstDir = projectDir + File.separator + javaPath;
+        String dstDir = projectDir + File.separator + javaDir;
 
         // クラスパス
         String classPath = System.getProperty("java.class.path", null);

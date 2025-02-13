@@ -109,7 +109,7 @@ public final class ServletUtil {
         String actionName = lastPath.replaceFirst(".[a-z]+$", "") + "Action";
         servletPathes[servletPathes.length - 1] = actionName;
 
-        String pkg = bundle.getString("BeanGenerator.java.package.action");
+        String pkg = bundle.getString("java.package.action");
         BaseAction a = null;
 
         try {

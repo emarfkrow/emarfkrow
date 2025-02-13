@@ -167,7 +167,7 @@ public class LoginFilter implements Filter {
 
                 Class<?> c = null;
                 try {
-                    c = Class.forName(bundle.getString("BeanGenerator.java.package.action") + ".LoginAction");
+                    c = Class.forName(bundle.getString("java.package.action") + ".LoginAction");
                 } catch (ClassNotFoundException e) {
                     throw new SysError(e);
                 }
@@ -254,7 +254,7 @@ public class LoginFilter implements Filter {
 
         Class<?> c = null;
         try {
-            c = Class.forName(bundle.getString("BeanGenerator.java.package.action") + "." + actionName);
+            c = Class.forName(bundle.getString("java.package.action") + "." + actionName);
         } catch (ClassNotFoundException e) {
             throw new SysError(e);
         }
