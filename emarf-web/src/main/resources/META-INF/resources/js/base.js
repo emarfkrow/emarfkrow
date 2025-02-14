@@ -585,7 +585,7 @@ let Base = {
                 Base.loaded(function() {
 
                     //一旦、読取専用も外す
-                    let $readonlys = $registForm.find('[name$="' + Casing.toCamel(gridOpeReadonlyColumn) + '"]');
+                    let $readonlys = $registForm.find('[name$="' + Casing.toCamel(columnStatus) + '"]');
                     Base.writable($readonlys);
                     for (let i = 0; i < $readonlys.length; i++) {
                         let $readonly = $($readonlys[i]);
@@ -650,7 +650,7 @@ let Base = {
         } else {
 
             // 詳細画面のステータス区分は選択項目名のみ表示（新規画面用に一旦やっておく）
-            let $readonlys = $registForm.find('[name$="' + Casing.toCamel(gridOpeReadonlyColumn) + '"]');
+            let $readonlys = $registForm.find('[name$="' + Casing.toCamel(columnStatus) + '"]');
             Base.readonly($readonlys);
             for (let i = 0; i < $readonlys.length; i++) {
                 let $readonly = $($readonlys[i]);

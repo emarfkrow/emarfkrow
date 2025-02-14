@@ -95,7 +95,7 @@ let Options = {
                 let isSearchForm = $element.closest('form').hasClass('search');
                 if (isSearchForm) {
                     //検索フォームの場合
-                    if (dataJson.length < searchOptionsSize) {
+                    if (dataJson.length < optionsSizeSearch) {
                         Options.check($element, itemName, dataJson, optionValue, optionLabel);
                     } else {
                         Options.option($element, true, dataJson, optionValue, optionLabel);
@@ -107,7 +107,7 @@ let Options = {
                         Options.check($element, itemName, [dataJson[1]], optionValue, optionLabel);
                     } else if ($element.attr('data-force-pulldown') == '1') {
                         Options.option($element, true, dataJson, optionValue, optionLabel);
-                    } else if (dataJson.length < detailOptionsSize) {
+                    } else if (dataJson.length < optionsSizeDetail) {
                         Options.radio($element, itemName, dataJson, optionValue, optionLabel);
                     } else {
                         Options.option($element, true, dataJson, optionValue, optionLabel);

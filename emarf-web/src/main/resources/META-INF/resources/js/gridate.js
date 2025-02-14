@@ -39,10 +39,10 @@ $(function() {
         //        }
     });
 
-    if (gridOpeEffectColumn != null) {
+    if (columnDelete != null) {
 
-        let camel = Casing.toCamel(gridOpeEffectColumn);
-        let upper = gridOpeEffectColumn.toUpperCase();
+        let camel = Casing.toCamel(columnDelete);
+        let upper = columnDelete.toUpperCase();
 
         /* 削除フラグの反映 */
         $(document).on('change', '.article>form.regist>fieldset>div#' + camel + ' [name$="' + camel + '"]', function(a, b, c, d, e) {
@@ -400,9 +400,9 @@ $(function() {
                 let r = args.row;
                 let field = args.column.field;
                 //削除フラグオフの親伝播
-                if (gridOpeEffectColumn != null) {
-                    let camel = Casing.toCamel(gridOpeEffectColumn);
-                    let upper = gridOpeEffectColumn.toUpperCase();
+                if (columnDelete != null) {
+                    let camel = Casing.toCamel(columnDelete);
+                    let upper = columnDelete.toUpperCase();
                     if (field.toUpperCase() == upper) {
                         let val = item[upper];
                         if (!val) {
@@ -498,8 +498,18 @@ $(function() {
                         }
 
                         for (let columnName in dataItem) {
-                            // メタ情報以外の項目を親画面に反映
-                            if (!columnName.match(Messages['column.meta.re'])) {
+                            if (!columnName.match(new RegExp('^' + Messages['column.start'] + '$', 'i')) &&
+                                !columnName.match(new RegExp('^' + Messages['column.until'] + '$', 'i')) &&
+                                !columnName.match(new RegExp('^' + Messages['column.insert.timestamp'] + '$', 'i')) &&
+                                !columnName.match(new RegExp('^' + Messages['column.insert.id'] + '$', 'i')) &&
+                                !columnName.match(new RegExp('^' + Messages['column.insert.mei'] + '$', 'i')) &&
+                                !columnName.match(new RegExp('^' + Messages['column.update.timestamp'] + '$', 'i')) &&
+                                !columnName.match(new RegExp('^' + Messages['column.update.id'] + '$', 'i')) &&
+                                !columnName.match(new RegExp('^' + Messages['column.update.mei'] + '$', 'i')) &&
+                                !columnName.match(new RegExp('^' + Messages['column.delete'] + '$', 'i')) &&
+                                !columnName.match(new RegExp('^' + Messages['column.status'] + '$', 'i'))) {
+                                // メタ情報以外の項目を親画面に反映
+
                                 let camel = Casing.toCamel(prefix + columnName);
                                 if (callerGridName != undefined && callerGridName != '') {
                                     var dataView = callerGrid.getData();
@@ -795,7 +805,7 @@ var Gridate = {
         // TABLE_NAME列の検査
         let tableName = null;
         for (let columnName in item) {
-            if (columnName.toUpperCase() == gridViewDetailColumn.toUpperCase()) {
+            if (columnName.toUpperCase() == columnDetail.toUpperCase()) {
                 tableName = item[columnName];
                 break;
             }
@@ -910,7 +920,7 @@ var Gridate = {
     isReadonly: function($clicked, dataItem, grid, r, c) {
 
         //ステータス区分列なら非活性
-        if (grid.getColumns()[c].field == gridOpeReadonlyColumn) {
+        if (grid.getColumns()[c].field == columnStatus.toLowerCase() || grid.getColumns()[c].field == columnStatus.toUpperCase()) {
             return true;
         }
 
@@ -931,7 +941,7 @@ var Gridate = {
             }
 
             //ステータス区分が「1」以上なら非活性
-            if (dataItem[gridOpeReadonlyColumn] >= 1) {
+            if (dataItem[columnStatus.toLowerCase()] >= 1 || dataItem[columnStatus.toUpperCase()] >= 1) {
                 return true;
             }
         }

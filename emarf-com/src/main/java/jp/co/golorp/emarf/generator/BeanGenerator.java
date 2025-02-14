@@ -174,8 +174,10 @@ public final class BeanGenerator {
         BeanGenerator.javaActionDetailGet(tables);
         BeanGenerator.javaActionDetailDelete(tables);
         BeanGenerator.javaActionDetailRegist(tables);
-        BeanGenerator.javaActionDetailPermit(tables);
-        BeanGenerator.javaActionDetailForbid(tables);
+        if (!StringUtil.isNullOrBlank(statusKb)) {
+            BeanGenerator.javaActionDetailPermit(tables);
+            BeanGenerator.javaActionDetailForbid(tables);
+        }
 
         //検索画面アクションクラス
         IndexActionGenerator.generate(projectDir, tables);
@@ -281,7 +283,7 @@ public final class BeanGenerator {
                 s.add("    /** @return " + m + " */");
                 s.add("    @com.fasterxml.jackson.annotation.JsonProperty(\"" + n + "\")");
                 s.add("    public " + t + " get" + a + "() {");
-                if (StringUtil.endsWith(inputYMSuffixs, n)) {
+                if (t.equals("String") && StringUtil.endsWith(inputYMSuffixs, n)) {
                     s.add("        if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(this." + p + ")) {");
                     s.add("            return this." + p + ".substring(0, 4) + \"-\" + this." + p + ".substring(4);");
                     s.add("        }");
@@ -1215,7 +1217,6 @@ public final class BeanGenerator {
             s.add("        " + entity + " e = FormValidator.toBean(" + entity + ".class.getName(), postJson);");
             List<TableInfo> childInfos = table.getChildInfos();
             getDeleteChilds(s, "e", childInfos, 0);
-            s.add("");
             s.add("        if (e.delete() != 1) {");
             s.add("            throw new OptLockError(\"error.cant.delete\");");
             s.add("        }");
@@ -1302,16 +1303,15 @@ public final class BeanGenerator {
                     pks += ", ";
                 }
                 pks += property;
-                //親モデルの取得
                 if (i == table.getPrimaryKeys().size() - 2) {
                     if (table.getParentInfos().size() > 0) {
+                        s.add("        // 親モデルの取得");
                         for (TableInfo parent : table.getParentInfos()) {
-                            String parentEntity = StringUtil.toPascalCase(parent.getName());
-                            String parentInstance = StringUtil.toCamelCase(parent.getName());
-                            s.add("        " + pkgEntity + "." + parentEntity + " " + parentInstance + " = "
-                                    + pkgEntity + "." + parentEntity + ".get(" + pks + ");");
-                            s.add("        map.put(\"" + parentEntity + "\", " + parentInstance + ");");
-                            s.add("");
+                            String parentE = StringUtil.toPascalCase(parent.getName());
+                            String parentI = StringUtil.toCamelCase(parent.getName());
+                            s.add("        " + pkgEntity + "." + parentE + " " + parentI + " = " + pkgEntity + "."
+                                    + parentE + ".get(" + pks + ");");
+                            s.add("        map.put(\"" + parentE + "\", " + parentI + ");");
                         }
                     }
                 }
@@ -1529,9 +1529,9 @@ public final class BeanGenerator {
                 s.add("            isNew = true;");
                 s.add("        }");
             }
-            if (!table.isView()) {
+            if (!table.isView() && !StringUtil.isNullOrBlank(statusKb)) {
                 s.add("");
-                s.add("        e.setStatusKb(0);");
+                s.add("        e.set" + StringUtil.toPascalCase(statusKb) + "(0);");
             }
             s.add("");
             s.add("        if (isNew) {");
@@ -1820,6 +1820,7 @@ public final class BeanGenerator {
             } else {
                 s.add(space + "        // child:" + child + ", parents:" + parents);
             }
+            s.add("");
         }
     }
 

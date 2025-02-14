@@ -27,6 +27,9 @@ import java.util.Map.Entry;
 import java.util.ResourceBundle;
 import java.util.Set;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import jp.co.golorp.emarf.io.FileUtil;
 import jp.co.golorp.emarf.lang.StringUtil;
 import jp.co.golorp.emarf.util.ResourceBundles;
@@ -37,6 +40,9 @@ import jp.co.golorp.emarf.util.ResourceBundles;
  * @author golorp
  */
 public final class HtmlGenerator {
+
+    /** logger */
+    private static final Logger LOG = LoggerFactory.getLogger(HtmlGenerator.class);
 
     /** properties */
     private static ResourceBundle bundle = ResourceBundles.getBundle(BeanGenerator.class);
@@ -63,6 +69,10 @@ public final class HtmlGenerator {
     private static String updateDt;
     /** 更新者カラム名 */
     private static String updateBy;
+    /** ステータス区分 */
+    private static String statusKb;
+    /** 必須CHAR列の指定 */
+    private static String charNotNullRe;
 
     /** options項目サフィックス */
     private static String[] optionsSuffixs;
@@ -124,6 +134,8 @@ public final class HtmlGenerator {
         insertBy = bundle.getString("column.insert.id");
         updateDt = bundle.getString("column.update.timestamp");
         updateBy = bundle.getString("column.update.id");
+        statusKb = bundle.getString("column.status");
+        charNotNullRe = bundle.getString("column.char.notnull.re");
 
         optionsSuffixs = bundle.getString("input.options.suffixs").split(",");
         pulldownSuffixs = bundle.getString("input.pulldown.suffixs").split(",");
@@ -252,7 +264,6 @@ public final class HtmlGenerator {
         s.add("    <!-- 一覧フォーム -->");
         s.add("    <form name=\"" + e + "SRegistForm\" action=\"" + e + "SRegist.ajax\" class=\"regist\">");
         s.add("      <h3 th:text=\"#{" + e + ".h3}\">h3</h3>");
-        String gridId = e + "Grid";
         String addRow = "";
         // 単一キーの場合は新規行あり
         if (table.getPrimaryKeys().size() == 1) {
@@ -279,7 +290,7 @@ public final class HtmlGenerator {
             }
         }
         int frozenColumn = table.getPrimaryKeys().size() - 1;
-        s.add("      <div id=\"" + gridId + "\" data-selectionMode=\"checkbox\"" + addRow + " data-frozenColumn=\""
+        s.add("      <div id=\"" + e + "Grid\" data-selectionMode=\"checkbox\"" + addRow + " data-frozenColumn=\""
                 + frozenColumn + "\" th:data-href=\"@{/model/" + e + ".html}\"></div>");
         s.add("      <div id=\"" + e + "Pager\"></div>");
         s.add("      <div class=\"buttons\">");
@@ -325,12 +336,14 @@ public final class HtmlGenerator {
                 s.add("        <button id=\"Delete" + e
                         + "S\" type=\"submit\" class=\"delete selectRows\" data-action=\"" + e
                         + "SDelete.ajax\" th:text=\"#{common.delete}\" tabindex=\"-1\">削除</button>");
-                s.add("        <button id=\"Permit" + e
-                        + "S\" type=\"submit\" class=\"permit selectRows\" data-action=\"" + e
-                        + "SPermit.ajax\" th:text=\"#{common.permit}\" tabindex=\"-1\">承認</button>");
-                s.add("        <button id=\"Forbid" + e
-                        + "S\" type=\"submit\" class=\"forbid selectRows\" data-action=\"" + e
-                        + "SForbid.ajax\" th:text=\"#{common.forbid}\" tabindex=\"-1\">否認</button>");
+                if (!StringUtil.isNullOrBlank(statusKb)) {
+                    s.add("        <button id=\"Permit" + e
+                            + "S\" type=\"submit\" class=\"permit selectRows\" data-action=\"" + e
+                            + "SPermit.ajax\" th:text=\"#{common.permit}\" tabindex=\"-1\">承認</button>");
+                    s.add("        <button id=\"Forbid" + e
+                            + "S\" type=\"submit\" class=\"forbid selectRows\" data-action=\"" + e
+                            + "SForbid.ajax\" th:text=\"#{common.forbid}\" tabindex=\"-1\">否認</button>");
+                }
             }
         }
         s.add("      </div>");
@@ -568,10 +581,12 @@ public final class HtmlGenerator {
         if (!table.isHistory() && !table.isView()) {
             s.add("        <button id=\"Delete" + entity + "\" type=\"submit\" class=\"delete\" data-action=\"" + entity
                     + "Delete.ajax\" th:text=\"#{common.delete}\" tabindex=\"-1\">削除</button>");
-            s.add("        <button id=\"Permit" + entity + "\" type=\"submit\" class=\"permit\" data-action=\"" + entity
-                    + "Permit.ajax\" th:text=\"#{common.permit}\" tabindex=\"-1\">承認</button>");
-            s.add("        <button id=\"Forbid" + entity + "\" type=\"submit\" class=\"forbid\" data-action=\"" + entity
-                    + "Forbid.ajax\" th:text=\"#{common.forbid}\" tabindex=\"-1\">否認</button>");
+            if (!StringUtil.isNullOrBlank(statusKb)) {
+                s.add("        <button id=\"Permit" + entity + "\" type=\"submit\" class=\"permit\" data-action=\""
+                        + entity + "Permit.ajax\" th:text=\"#{common.permit}\" tabindex=\"-1\">承認</button>");
+                s.add("        <button id=\"Forbid" + entity + "\" type=\"submit\" class=\"forbid\" data-action=\""
+                        + entity + "Forbid.ajax\" th:text=\"#{common.forbid}\" tabindex=\"-1\">否認</button>");
+            }
             s.add("        <button id=\"Regist" + entity
                     + "\" type=\"submit\" class=\"regist\" th:text=\"#{common.regist}\">登録</button>");
         }
@@ -847,10 +862,10 @@ public final class HtmlGenerator {
     private static String htmlGridColumn(final ColumnInfo column, final String entityName,
             final Map<String, ColumnInfo> columnMap, final boolean isHistory, final boolean isView) {
 
-        String columnName = column.getColumnName();
-        String camel = StringUtil.toCamelCase(columnName);
+        String colName = column.getColumnName();
+        String camel = StringUtil.toCamelCase(colName);
         String name = "Messages['" + entityName + "Grid." + camel + "']";
-        String field = columnName;
+        String field = colName;
 
         int width = column.getColumnSize() * COLUMN_WIDTH_PX_MULTIPLIER;
         if (column.getMaxLength() != null) {
@@ -862,10 +877,10 @@ public final class HtmlGenerator {
             width = 300;
         }
 
-        boolean isInsertDt = columnName.matches("(?i)^" + insertDt + "$");
-        boolean isUpdateDt = columnName.matches("(?i)^" + updateDt + "$");
-        boolean isInsertBy = columnName.matches("(?i)^" + insertBy + "$");
-        boolean isUpdateBy = columnName.matches("(?i)^" + updateBy + "$");
+        boolean isInsertDt = colName.matches("(?i)^" + insertDt + "$");
+        boolean isUpdateDt = colName.matches("(?i)^" + updateDt + "$");
+        boolean isInsertBy = colName.matches("(?i)^" + insertBy + "$");
+        boolean isUpdateBy = colName.matches("(?i)^" + updateBy + "$");
         if (isInsertDt /*|| isUpdateDt*/ || isInsertBy || isUpdateBy) {
             return null;
         }
@@ -882,7 +897,12 @@ public final class HtmlGenerator {
             } else if (isInsertDt || isUpdateDt || isInsertBy || isUpdateBy) {
                 css = "metaInfo";
             } else if (column.getNullable() == 0) {
-                css = "notblank";
+                if (!column.isPk() && column.getTypeName().equals("CHAR")
+                        && !StringUtil.isNullOrBlank(charNotNullRe) && !colName.matches(charNotNullRe)) {
+                    LOG.trace("skip NotBlank.");
+                } else {
+                    css = "notblank";
+                }
             }
         }
 
@@ -904,15 +924,15 @@ public final class HtmlGenerator {
         if (referInfo != null) {
             isMeiRefer = true;
             // カラム名が組み合わせキーのいずれかに合致する場合
-            if (StringUtil.endsWith(referPairs, columnName)) {
+            if (StringUtil.endsWith(referPairs, colName)) {
                 // 参照設定の組み合わせでループ
                 for (String[] suffix : referPairs) {
                     String keySuffix = suffix[0];
                     String meiSuffix = suffix[1];
                     // カラム名がキー接尾辞に合致する場合
-                    if (columnName.matches("(?i).+" + keySuffix + "$")) {
+                    if (colName.matches("(?i).+" + keySuffix + "$")) {
                         // カラム名の末尾を名称列サフィックスに変換
-                        String tempMei = columnName.replaceAll("(?i)" + keySuffix + "$", meiSuffix);
+                        String tempMei = colName.replaceAll("(?i)" + keySuffix + "$", meiSuffix);
                         // 名称列がテーブルに含まれていない場合は参照先から名称を取得する
                         if (columnMap.containsKey(tempMei)) {
                             referMei = tempMei;
@@ -929,9 +949,9 @@ public final class HtmlGenerator {
                     String keySuffix = suffix[0];
                     String meiSuffix = suffix[1];
                     // カラム名がキー接尾辞に合致する場合
-                    if (columnName.matches("(?i).+" + keySuffix + "$")) {
+                    if (colName.matches("(?i).+" + keySuffix + "$")) {
                         // カラム名の末尾を名称列サフィックスに変換
-                        String tempMei = columnName.replaceAll("(?i)" + keySuffix + "$", meiSuffix).toUpperCase();
+                        String tempMei = colName.replaceAll("(?i)" + keySuffix + "$", meiSuffix).toUpperCase();
                         // 名称列が参照先テーブルに含まれている場合は、取得する名称を決定する
                         for (ColumnInfo referColumnInfo : referInfo.getColumnInfos().values()) {
                             if (tempMei.matches("(?i).*" + referColumnInfo.getColumnName() + "$")) {
@@ -954,29 +974,28 @@ public final class HtmlGenerator {
         } else if (isInsertDt || isUpdateDt || isInsertBy || isUpdateBy || isHistory || isView
                 || column.isReborn()) {
             c = "Column.cell('" + field + "', " + name + ", " + width + ", '" + css + "', " + formatter + "),";
-        } else if (StringUtil.endsWith(inputFlagSuffixs, columnName)) {
+        } else if (StringUtil.endsWith(inputFlagSuffixs, colName)) {
             c = "Column.check('" + field + "', " + name + ", " + width + ", '" + css + "'),";
-        } else if (StringUtil.endsWith(inputDateSuffixs, columnName)) {
+        } else if (StringUtil.endsWith(inputDateSuffixs, colName)) {
             c = "Column.date('" + field + "', " + name + ", " + width + ", '" + css + "', " + formatter + "),";
-        } else if (StringUtil.endsWith(inputDate8Suffixs, columnName) && column.getColumnSize() == 8) {
+        } else if (StringUtil.endsWith(inputDate8Suffixs, colName) && column.getColumnSize() == 8) {
             c = "Column.date8('" + field + "', " + name + ", " + width + ", '" + css + "', " + formatter + "),";
-        } else if (StringUtil.endsWith(inputDateTimeSuffixs, columnName)) {
+        } else if (StringUtil.endsWith(inputDateTimeSuffixs, colName)) {
             c = "Column.dateTime('" + field + "', " + name + ", " + width + ", '" + css + "'),";
-        } else if (StringUtil.endsWith(inputYMSuffixs, columnName)) {
+        } else if (StringUtil.endsWith(inputYMSuffixs, colName)) {
             c = "Column.month('" + field + "', " + name + ", " + width + ", '" + css + "', " + formatter + "),";
-        } else if (StringUtil.endsWith(inputTimeSuffixs, columnName)) {
+        } else if (StringUtil.endsWith(inputTimeSuffixs, colName)) {
             c = "Column.time('" + field + "', " + name + ", " + width + ", '" + css + "', " + formatter + "),";
-        } else if (StringUtil.endsWith(inputFileSuffixs, columnName)) {
+        } else if (StringUtil.endsWith(inputFileSuffixs, colName)) {
             c = "Column.link('" + field + "', " + name + ", " + width + ", '" + css + "'),";
-        } else if (StringUtil.endsWith(optionsSuffixs, columnName)) {
+        } else if (StringUtil.endsWith(optionsSuffixs, colName)) {
             c = "Column.select('" + field + "', " + name + ", " + width + ", '" + css + "', " + opt + "),";
-        } else if (StringUtil.endsWith(textareaSuffixs, columnName)) {
+        } else if (StringUtil.endsWith(textareaSuffixs, colName)) {
             c = "Column.longText('" + field + "', " + name + ", " + width + ", '" + css + "', " + formatter + "),";
         } else if ((column.getTypeName().equals("INT") || column.getTypeName().equals("DECIMAL")
                 || column.getTypeName().equals("DOUBLE") || column.getTypeName().equals("NUMBER")
                 || column.getTypeName().equals("NUMERIC"))
                 && !StringUtil.endsWith(intNoFormatSuffixs, column.getColumnName())) {
-
             if (column.getDecimalDigits() == 3) {
                 c = "Column.dec3('" + field + "', " + name + ", " + width + ", '" + css + "', " + formatter + "),";
             } else if (column.getDecimalDigits() == 2) {
@@ -986,11 +1005,9 @@ public final class HtmlGenerator {
             } else {
                 c = "Column.comma('" + field + "', " + name + ", " + width + ", '" + css + "', " + formatter + "),";
             }
-
         } else {
             c = "Column.text('" + field + "', " + name + ", " + width + ", '" + css + "', " + formatter + "),";
         }
-
         return c;
     }
 
@@ -1003,44 +1020,41 @@ public final class HtmlGenerator {
      */
     private static void htmlFields(final TableInfo table, final List<String> s, final boolean isDetail,
             final boolean isBro) {
-
         //検索画面の場合は制約モデルの参照キーを出力
         if (!isDetail && table.getStintInfo() != null) {
             htmlFieldsStint(table, s);
         }
-
         String entity = StringUtil.toPascalCase(table.getName());
-
         // カラム情報でループ
         for (ColumnInfo column : table.getColumnInfos().values()) {
             // 兄弟モデルの主キーは出力しない
             if (isBro && column.isPk()) {
                 continue;
             }
-            String columnName = column.getColumnName();
+            String colName = column.getColumnName();
             //            // VIEWの検索フォームには「SEARCH_」以外を出力しない
             //            if (table.isView() && !isDetail && !StringUtil.startsWith(searchPrefixes, columnName)) {
             //                continue;
             //            }
             // VIEWの詳細フォームには「SEARCH_」を出力しない
-            if (table.isView() && isDetail && StringUtil.startsWith(searchPrefixes, columnName)) {
+            if (table.isView() && isDetail && StringUtil.startsWith(searchPrefixes, colName)) {
                 continue;
             }
-            String property = StringUtil.toCamelCase(columnName);
+            String property = StringUtil.toCamelCase(colName);
             String fieldId = entity + "." + property;
             // 検索条件にはファイル項目を出力しない
-            if (!isDetail && StringUtil.endsWith(inputFileSuffixs, columnName)) {
+            if (!isDetail && StringUtil.endsWith(inputFileSuffixs, colName)) {
                 continue;
             }
             // 検索条件のタイムスタンプはスキップ
-            if (!isDetail && StringUtil.endsWith(inputTimestampSuffixs, columnName)) {
+            if (!isDetail && StringUtil.endsWith(inputTimestampSuffixs, colName)) {
                 continue;
             }
             // メタ情報の場合（検索画面の場合はスキップ（検索条件にはしない）、詳細画面の兄弟モデルは更新日時のみhiddenで出力）
-            boolean isInsertDt = columnName.matches("(?i)^" + insertDt + "$");
-            boolean isUpdateDt = columnName.matches("(?i)^" + updateDt + "$");
-            boolean isInsertBy = columnName.matches("(?i)^" + insertBy + "$");
-            boolean isUpdateBy = columnName.matches("(?i)^" + updateBy + "$");
+            boolean isInsertDt = colName.matches("(?i)^" + insertDt + "$");
+            boolean isUpdateDt = colName.matches("(?i)^" + updateDt + "$");
+            boolean isInsertBy = colName.matches("(?i)^" + insertBy + "$");
+            boolean isUpdateBy = colName.matches("(?i)^" + updateBy + "$");
             if (isInsertDt || isInsertBy || isUpdateDt || isUpdateBy) {
                 //検索画面ならスキップ
                 if (!isDetail) {
@@ -1064,42 +1078,45 @@ public final class HtmlGenerator {
                 // 履歴モデルかビューの詳細画面
                 htmlFieldsSpan(s, fieldId, remarks, "");
                 addMeiSpan(s, table, column);
-            } else if (StringUtil.endsWith(inputTimestampSuffixs, columnName)) {
+            } else if (StringUtil.endsWith(inputTimestampSuffixs, colName)) {
                 // タイムスタンプの場合
                 htmlFieldsSpan(s, fieldId, remarks, "");
-            } else if (StringUtil.endsWith(optionsSuffixs, columnName) && column.getReferInfo() == null) {
+            } else if (StringUtil.endsWith(optionsSuffixs, colName) && column.getReferInfo() == null) {
                 // 選択項目の場合（サフィックスが合致しても参照モデルなら除外）
-                htmlFieldsOptions(s, fieldId, columnName, remarks, isDetail && column.isPk());
-            } else if (isDetail && StringUtil.endsWith(textareaSuffixs, columnName)) {
+                htmlFieldsOptions(s, fieldId, colName, remarks, isDetail && column.isPk());
+            } else if (isDetail && StringUtil.endsWith(textareaSuffixs, colName)) {
                 // テキストエリア項目の場合
                 htmlFieldsTextarea(s, fieldId, remarks);
             } else {
-
                 // HTMLのinputタイプかdatepickerのフォーマット
                 String type = "text";
                 String format = "";
-                if (StringUtil.endsWith(inputDateSuffixs, columnName)) { // 日付項目
+                if (StringUtil.endsWith(inputDateSuffixs, colName)) { // 日付項目
                     //type = "date"; datepickerを使う
                     format = "";
-                } else if (StringUtil.endsWith(inputDate8Suffixs, columnName) && column.getColumnSize() == 8) { // 8桁日付項目
+                } else if (StringUtil.endsWith(inputDate8Suffixs, colName) && column.getColumnSize() == 8) { // 8桁日付項目
                     //type = "date"; datepickerを使う
                     format = "yymmdd";
-                } else if (StringUtil.endsWith(inputDateTimeSuffixs, columnName)) { // 日時項目
+                } else if (StringUtil.endsWith(inputDateTimeSuffixs, colName)) { // 日時項目
                     type = "datetime-local";
-                } else if (StringUtil.endsWith(inputYMSuffixs, columnName)) { // 年月項目
+                } else if (StringUtil.endsWith(inputYMSuffixs, colName)) { // 年月項目
                     type = "month";
-                } else if (StringUtil.endsWith(inputTimeSuffixs, columnName)) { // 時刻項目
+                } else if (StringUtil.endsWith(inputTimeSuffixs, colName)) { // 時刻項目
                     type = "time";
-                } else if (StringUtil.endsWith(inputFileSuffixs, columnName)) { // ファイル
+                } else if (StringUtil.endsWith(inputFileSuffixs, colName)) { // ファイル
                     type = "file";
                 }
-
                 //inputのclass指定とリンクのclass指定
                 String css = "";
                 String referCss = "";
                 // 詳細画面の必須項目
                 if (isDetail && column.getNullable() == 0) {
-                    css += " notblank";
+                    if (!column.isPk() && column.getTypeName().equals("CHAR")
+                            && !StringUtil.isNullOrBlank(charNotNullRe) && !colName.matches(charNotNullRe)) {
+                        LOG.trace("skip NotBlank.");
+                    } else {
+                        css += " notblank";
+                    }
                 }
                 // 詳細画面のユニークキー
                 if (isDetail && column.isUnique()) {
@@ -1127,9 +1144,9 @@ public final class HtmlGenerator {
                     }
                 }
                 // 日付項目および8桁日付項目
-                if (StringUtil.endsWith(inputDateSuffixs, columnName)) {
+                if (StringUtil.endsWith(inputDateSuffixs, colName)) {
                     css += " datepicker";
-                } else if (StringUtil.endsWith(inputDate8Suffixs, columnName) && column.getColumnSize() == 8) {
+                } else if (StringUtil.endsWith(inputDate8Suffixs, colName) && column.getColumnSize() == 8) {
                     css += " datepicker";
                 }
                 if (!StringUtil.isNullOrBlank(css)) {
@@ -1139,7 +1156,7 @@ public final class HtmlGenerator {
                     referCss = " class=\"" + referCss + "\"";
                 }
 
-                if (!isDetail && StringUtil.endsWith(inputRangeSuffixs, columnName)) {
+                if (!isDetail && StringUtil.endsWith(inputRangeSuffixs, colName)) {
                     // 検索画面の範囲指定項目の場合
                     s.add(htmlFieldsRange(fieldId, type, css, column, format));
                 } else if (column.getReferInfo() != null) {

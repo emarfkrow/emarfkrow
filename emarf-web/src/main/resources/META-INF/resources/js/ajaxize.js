@@ -113,10 +113,10 @@ $(function() {
             if (Array.isArray(itemJson)) {
                 if (k.match(/Grid$/)) {
 
-                    if (gridViewDetailColumn && gridViewDetailColumn != '') {
-                        let tableNameColumn = itemJson[0][gridViewDetailColumn];
+                    if (columnDetail && columnDetail != '') {
+                        let tableNameColumn = itemJson[0][columnDetail.toUpperCase()];
                         if (!tableNameColumn) {
-                            tableNameColumn = itemJson[0][gridViewDetailColumn.toLowerCase()];
+                            tableNameColumn = itemJson[0][columnDetail.toLowerCase()];
                         }
                         if (tableNameColumn) {
                             let entityName = Casing.toPascal(tableNameColumn);

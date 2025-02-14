@@ -96,7 +96,7 @@ let Jsonate = {
                         // 変更があった場合
                         updated = true;
                         postData.push(gridData[r]);
-                    } else if (gridData[r][gridOpeVisibleColumn] == null) {
+                    } else if (gridData[r][columnInsertTs.toLowerCase()] == null && gridData[r][columnInsertTs.toUpperCase()] == null) {
                         // INSERT_TSがNULLの場合（転生時など）
                         updated = true;
                         postData.push(gridData[r]);

@@ -52,7 +52,7 @@ limitations under the License.
     }
 
     function ChooseButtonFormatter(row, cell, value, columnDef, dataContext) {
-        if (!dataContext[gridOpeVisibleColumn]) {
+        if (!dataContext[columnInsertTs.toLowerCase()] && !dataContext[columnInsertTs.toUpperCase()]) {
             return null;
         }
         if (columnDef.label) {
@@ -90,10 +90,8 @@ limitations under the License.
     }
 
     function LinkFormatter(row, cell, value, columnDef, dataContext) {
-        if (!dataContext[gridOpeVisibleColumn.toLowerCase()] &&
-            !dataContext[gridOpeVisibleColumn.toUpperCase()] &&
-            !dataContext[gridViewDetailColumn.toLowerCase()] &&
-            !dataContext[gridViewDetailColumn.toUpperCase()]) {
+        if (!dataContext[columnInsertTs.toLowerCase()] && !dataContext[columnInsertTs.toUpperCase()] &&
+            !dataContext[columnDetail.toLowerCase()] && !dataContext[columnDetail.toUpperCase()]) {
             return null;
         }
         if (value) {

@@ -55,31 +55,14 @@ limitations under the License.
 <script th:src="@{/js/plugins/SlickGrid-2.4.44/controls/slick.columnpicker.js}"></script>
 <!-- original js -->
 <script th:inline="javascript">
-	let searchOptionsSize = 0;
-	let detailOptionsSize = 0;
-	let gridOpeVisibleColumn = null;
-	let gridOpeReadonlyColumn = null;
-	let gridOpeEffectColumn = null;
-	let gridViewDetailColumn = null;
-	$(function() {
-		searchOptionsSize = $('[name="searchOptionsSize"]').val();
-		detailOptionsSize = $('[name="detailOptionsSize"]').val();
-		gridOpeVisibleColumn = $('[name="gridOpeVisibleColumn"]').val();
-		gridOpeReadonlyColumn = $('[name="gridOpeReadonlyColumn"]').val();
-		gridOpeEffectColumn = $('[name="gridOpeEffectColumn"]').val();
-		gridViewDetailColumn = $('[name="gridViewDetailColumn"]').val();
-	});
-</script>
-<script th:src="@{/js/ajaxize.js}"></script>
-<script th:src="@{/js/base.js}"></script>
-<script th:src="@{/js/breads.js}"></script>
-<script th:src="@{/js/casing.js}"></script>
-<script th:src="@{/js/column.js}"></script>
-<script th:src="@{/js/dialogate.js}"></script>
-<script th:src="@{/js/formatter.js}"></script>
-<script th:inline="javascript">
 	//grid列名が取れない事があるのでonloadまで遅らせる
 	let Messages = {};
+	let optionsSizeSearch = 0;
+	let optionsSizeDetail = 0;
+	let columnInsertTs = null;
+	let columnStatus = null;
+	let columnDelete = null;
+	let columnDetail = null;
 	$(function() {
 		$.ajax({
 			async : false,
@@ -90,8 +73,22 @@ limitations under the License.
 			}
 		});
 		console.debug(Messages);
+
+		optionsSizeSearch = Messages['options.size.search'];
+		optionsSizeDetail = Messages['options.size.detail'];
+		columnInsertTs = Messages['column.insert.timestamp'];
+		columnStatus = Messages['column.status'];
+		columnDelete = Messages['column.delete'];
+		columnDetail = Messages['view.detail'];
 	});
 </script>
+<script th:src="@{/js/ajaxize.js}"></script>
+<script th:src="@{/js/base.js}"></script>
+<script th:src="@{/js/breads.js}"></script>
+<script th:src="@{/js/casing.js}"></script>
+<script th:src="@{/js/column.js}"></script>
+<script th:src="@{/js/dialogate.js}"></script>
+<script th:src="@{/js/formatter.js}"></script>
 <script th:src="@{/js/gridate.js}"></script>
 <script th:src="@{/js/jsonate.js}"></script>
 <script th:src="@{/js/nextize.js}"></script>
@@ -118,12 +115,6 @@ limitations under the License.
 </head>
 
 <body>
-  <input type="hidden" name="searchOptionsSize" th:value="#{options.size.search}" />
-  <input type="hidden" name="detailOptionsSize" th:value="#{options.size.detail}" />
-  <input type="hidden" name="gridOpeVisibleColumn" th:value="#{column.insert.timestamp}" />
-  <input type="hidden" name="gridOpeReadonlyColumn" th:value="#{column.status}" />
-  <input type="hidden" name="gridOpeEffectColumn" th:value="#{column.delete}" />
-  <input type="hidden" name="gridViewDetailColumn" th:value="#{view.detail}" />
   <script th:src="@{/js/loading.js}"></script>
   <div layout:replace="~{common/header::header}"></div>
   <div layout:replace="~{common/nav::nav}"></div>

@@ -286,8 +286,8 @@ public final class FormGenerator {
                 //                // フラグも除外
                 //                LOG.trace("skip NotBlank.");
 
-            } else if (!column.isPk() && column.getTypeName().equals("CHAR") && !StringUtil.isNullOrBlank(charNotNullRe)
-                    && !colName.matches(charNotNullRe)) {
+            } else if (!column.isPk() && column.getTypeName().equals("CHAR")
+                    && !StringUtil.isNullOrBlank(charNotNullRe) && !colName.matches(charNotNullRe)) {
 
                 // 主キー以外のCHAR列で、必須CHAR指定に合致しない場合、NULLならスペースを補填する
                 LOG.trace("skip NotBlank.");

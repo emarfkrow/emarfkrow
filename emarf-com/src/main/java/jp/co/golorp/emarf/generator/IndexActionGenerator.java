@@ -75,8 +75,10 @@ public final class IndexActionGenerator {
 
         IndexActionGenerator.deleteAction(tableInfos);
         IndexActionGenerator.registAction(tableInfos);
-        IndexActionGenerator.permitAction(tableInfos);
-        IndexActionGenerator.forbidAction(tableInfos);
+        if (!StringUtil.isNullOrBlank(statusKb)) {
+            IndexActionGenerator.permitAction(tableInfos);
+            IndexActionGenerator.forbidAction(tableInfos);
+        }
     }
 
     /**
@@ -151,7 +153,6 @@ public final class IndexActionGenerator {
             s.add("            " + entity + " e = FormValidator.toBean(" + entity + ".class.getName(), gridRow);");
             List<TableInfo> childInfos = table.getChildInfos();
             BeanGenerator.getDeleteChilds(s, "e", childInfos, 1);
-            s.add("");
             s.add("            if (e.delete() != 1) {");
             s.add("                throw new OptLockError(\"error.cant.delete\");");
             s.add("            }");
@@ -268,9 +269,9 @@ public final class IndexActionGenerator {
                 s.add("                isNew = true;");
                 s.add("            }");
             }
-            if (!table.isView()) {
+            if (!table.isView() && !StringUtil.isNullOrBlank(statusKb)) {
                 s.add("");
-                s.add("            e.setStatusKb(0);");
+                s.add("            e.set" + StringUtil.toPascalCase(statusKb) + "(0);");
             }
             s.add("");
             s.add("            if (isNew) {");
