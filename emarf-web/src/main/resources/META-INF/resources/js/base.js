@@ -312,6 +312,14 @@ let Base = {
             if (Base.getAuthz(this.name) < 4) {
                 $(this).find('a.anew').hide();
             }
+            // 承認権限なし
+            if (Base.getAuthz(this.name) < 5) {
+                $(this).find('button.permit').hide();
+            }
+            // 否認権限なし
+            if (Base.getAuthz(this.name) < 6) {
+                $(this).find('button.forbid').hide();
+            }
         });
 
         // リンクの認可処理
@@ -677,6 +685,12 @@ let Base = {
      */
     writable: function(item) {
         $(item).removeAttr('readonly').removeAttr('tabindex').removeClass('readonly');
+    },
+
+    listReset: function(e) {
+        if (Gridate.grids[e + 'Grid'].getDataLength() > 0) {
+            $('[id="Search' + e + '"]').click();
+        }
     },
 
 };

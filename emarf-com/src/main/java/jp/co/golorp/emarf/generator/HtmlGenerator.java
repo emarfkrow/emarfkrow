@@ -296,8 +296,8 @@ public final class HtmlGenerator {
         s.add("      <div class=\"buttons\">");
         if (!table.isHistory() && (!table.isView() || table.isConvView())) {
             s.add("        <button type=\"button\" id=\"Reset" + e
-                    + "S\" th:text=\"#{common.reset}\" class=\"reset\" onClick=\"$('[id=&quot;Search" + e
-                    + "&quot;]').click();\">reset</button>");
+                    + "S\" th:text=\"#{common.reset}\" class=\"reset\" onClick=\"Base.listReset('" + e
+                    + "');\">reset</button>");
         }
         s.add("        <a th:href=\"@{" + e + "Search.xlsx(baseMei=#{" + e + "S.h2})}\" id=\"" + e
                 + "Search.xlsx\" th:text=\"#{common.xlsx}\" class=\"output\" tabindex=\"-1\">xlsx</a>");

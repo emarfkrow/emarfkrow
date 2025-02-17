@@ -194,8 +194,9 @@ $(function() {
                 } else {
                     // ダイアログでない場合（親画面の場合）
 
-                    //                    // 固定列があれば（主キーが１つ以上あれば）詳細リンク列を追加
+                    //                    // 固定列がある場合（主キーが１つ以上ある場合）
                     //                    if ($gridDiv.attr('data-frozenColumn') * 1 >= 0) {
+                    // 詳細リンク列を追加
                     columns.unshift({
                         id: 'link',
                         name: Messages['common.grid.link.title'],
@@ -207,13 +208,34 @@ $(function() {
                     });
                     ++frozenColumnAdd;
                     //                    }
-
                 }
 
                 // checkbox指定で、ダイアログ内でないなら、最左列にチェックボックス列を追加
                 if (!isDialog && $gridDiv.attr('data-frozenColumn') * 1 >= 0) {
-                    checkboxSelectColumn = new Slick.CheckboxSelectColumn();
+                    checkboxSelectColumn = new Slick.CheckboxSelectColumn({
+                        selectableOverride: function(row, dataContext, grid) {
+                            let dataItem = dataContext;
+                            if (dataItem[columnInsertTs.toLowerCase()] || dataItem[columnInsertTs.toUpperCase()]) {
+                                var UID = Math.round(10000000 * Math.random()) + row;
+                                return dataContext
+                                    ? "<input id='selector" + UID + "' type='checkbox' checked='checked'><label for='selector" + UID + "'></label>"
+                                    : "<input id='selector" + UID + "' type='checkbox'><label for='selector" + UID + "'></label>";
+                            }
+                        }
+                    });
                     columns.unshift(checkboxSelectColumn.getColumnDefinition());
+                    ++frozenColumnAdd;
+
+                    //最左列に削除ボタン列を追加
+                    columns.unshift({
+                        id: 'delete',
+                        name: Messages['common.grid.delete.title'],
+                        field: 'field',
+                        sortable: true,
+                        width: Messages['common.grid.delete.title'].length * 20,
+                        label: Messages['common.grid.delete.label'],
+                        formatter: Slick.Formatters.Extends.Delete
+                    });
                     ++frozenColumnAdd;
                 }
 
@@ -325,9 +347,15 @@ $(function() {
                         let gridId = gridNode.id;
                         console.debug('gridId: ' + gridId);
                         console.debug(column);
-                        let form = $(gridNode).closest('form');
+                        let $dialog = $(gridNode).closest('[name$="Dialog"]');
+                        let $form = $(gridNode).closest('form');
                         let modelNm = gridId.replace(/^.+\.|Grid$/g, '');
-                        let $link = $('[id$="' + $(form).prop('name') + '.' + modelNm + 'Grid.' + column.id + '"]');
+                        let id = '';
+                        if ($dialog.length) {
+                            id = $dialog[0].id + '.';
+                        }
+                        id += $form.prop('name') + '.' + modelNm + 'Grid.' + column.id;
+                        let $link = $('[id="' + id + '"]');
                         $link.click();
                     }
                 }
@@ -346,7 +374,7 @@ $(function() {
                 var dataView = grid.getData();
                 let data = dataView.getItems();
                 args.item['id'] = data.length + 1;
-                args.item['isNew'] = true;
+                //                args.item['isNew'] = true; 初期表示の１行目や選択サブで効かなくなる
                 data.push(args.item);
                 dataView.beginUpdate();
                 dataView.setItems(data);
@@ -551,7 +579,9 @@ $(function() {
                                 return;
                             }
 
-                            if (dataItem.isNew) {
+                            let dataView = g.getData();
+                            //                            if (dataItem.isNew) { 初期表示の１行目や選択サブで効かなくなる
+                            if (!dataItem[columnInsertTs.toLowerCase()] && !dataItem[columnInsertTs.toUpperCase()]) {
                                 //未登録なら画面上で消去
                                 dataView.deleteItem(dataItem.id);
                             } else {
@@ -567,7 +597,6 @@ $(function() {
                                 }
 
                                 Ajaxize.ajaxPost(entityName + 'Delete.ajax', postJson, function(data) {
-                                    var dataView = g.getData();
                                     let dataItems = dataView.getItems();
                                     dataItems.splice(r, 1);
                                     //g.invalidate();
@@ -924,7 +953,8 @@ var Gridate = {
             return true;
         }
 
-        if (!dataItem || dataItem.isNew) {
+        //        if (!dataItem || dataItem.isNew) { 初期表示の１行目や選択サブで効かなくなる
+        if (!dataItem || (!dataItem[columnInsertTs.toLowerCase()] && !dataItem[columnInsertTs.toUpperCase()])) {
             //新規行の場合
 
             //採番キーなら非活性
