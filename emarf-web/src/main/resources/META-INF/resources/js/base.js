@@ -47,9 +47,12 @@ $(function() {
 
     // 画面の参照権限のチェック
     let href = window.document.location.href;
-    if (Base.getAuthz(href) < 1) {
-        alert(Messages['error.authz.view']);
-        window.document.location.href = '../';
+    let home = Messages['index.home'].replace(/^[\.\/]+/, '');
+    if (!href.match(home)) {
+        if (Base.getAuthz(href) < 1) {
+            alert(Messages['error.authz.view']);
+            window.document.location.href = '../';
+        }
     }
 
     // クエリストリングの取得
@@ -261,7 +264,7 @@ let Base = {
                 //                        authz = authzInfo[gamenNm];
                 //                    }
                 //                }
-                if (gamenId.match('^' + gamenNm + '$')) {
+                if (gamenId.match(new RegExp('^' + gamenNm + '$', 'i'))) {
                     if (authz < authzInfo[gamenNm]) {
                         authz = authzInfo[gamenNm];
                     }

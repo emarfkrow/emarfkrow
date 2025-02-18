@@ -76,6 +76,12 @@ public abstract class DataSourcesAssist {
 
     /**
      * @param s 対象文字列
+     * @return 1970/01/01 HH24:MI:SS.sssを文字列にキャストするSQL
+     */
+    public abstract String time2CharSQL(String s);
+
+    /**
+     * @param s 対象文字列
      * @return yyyy/mm/dd hh:mm:ssを文字列にキャストするSQL
      */
     public abstract String dateTime2CharSQL(String s);

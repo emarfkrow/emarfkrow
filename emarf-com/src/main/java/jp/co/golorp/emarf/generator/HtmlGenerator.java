@@ -265,23 +265,19 @@ public final class HtmlGenerator {
         s.add("    <form name=\"" + e + "SRegistForm\" action=\"" + e + "SRegist.ajax\" class=\"regist\">");
         s.add("      <h3 th:text=\"#{" + e + ".h3}\">h3</h3>");
         String addRow = "";
-        // 単一キーの場合は新規行あり
-        if (table.getPrimaryKeys().size() == 1) {
-            //メタ情報以外の必須の参照モデル、および、ファイル列が含まれていなければ新規行を表示
-            boolean isRefer = false;
+        if (table.getPrimaryKeys().size() == 1) { // 単一キーの場合は新規行あり
+            boolean isRefer = false; //メタ情報以外の必須の参照モデル、および、ファイル列が含まれていなければ新規行を表示
             for (ColumnInfo column : table.getColumnInfos().values()) {
                 if (column.getColumnName().matches("(?i)^" + insertBy + "$")
                         || column.getColumnName().matches("(?i)^" + updateBy + "$")) {
                     continue;
                 }
-                // if (column.getReferInfo() != null && column.getNullable() == 0) { isRefer = true; break; }
                 if (StringUtil.endsWith(inputFileSuffixs, column.getColumnName())) {
                     isRefer = true;
                     break;
                 }
-                //転生先が必須なら新規行を取消
                 if (column.isReborn() && column.getNullable() != 1) {
-                    isRefer = true;
+                    isRefer = true; //転生先が必須なら新規行を取消
                     break;
                 }
             }
@@ -290,8 +286,12 @@ public final class HtmlGenerator {
             }
         }
         int frozenColumn = table.getPrimaryKeys().size() - 1;
+        String editable = "";
+        if (table.isHistory()/* || table.isView()*/) {
+            editable = "data-editable=\"false\" ";
+        }
         s.add("      <div id=\"" + e + "Grid\" data-selectionMode=\"checkbox\"" + addRow + " data-frozenColumn=\""
-                + frozenColumn + "\" th:data-href=\"@{/model/" + e + ".html}\"></div>");
+                + frozenColumn + "\" " + editable + "th:data-href=\"@{/model/" + e + ".html}\"></div>");
         s.add("      <div id=\"" + e + "Pager\"></div>");
         s.add("      <div class=\"buttons\">");
         if (!table.isHistory() && (!table.isView() || table.isConvView())) {
@@ -301,8 +301,7 @@ public final class HtmlGenerator {
         }
         s.add("        <a th:href=\"@{" + e + "Search.xlsx(baseMei=#{" + e + "S.h2})}\" id=\"" + e
                 + "Search.xlsx\" th:text=\"#{common.xlsx}\" class=\"output\" tabindex=\"-1\">xlsx</a>");
-        //集約先リンク
-        TableInfo summary = getSummary(table, tables);
+        TableInfo summary = getSummary(table, tables); //集約先リンク
         if (summary != null) {
             String summaryEntity = StringUtil.toPascalCase(summary.getName());
             s.add("        <a th:href=\"@{/model/" + summaryEntity + ".html}\" id=\"" + summaryEntity

@@ -96,6 +96,11 @@ public final class DataSourcesAssistSQLite extends DataSourcesAssist {
     }
 
     @Override
+    public String time2CharSQL(final String s) {
+        return s;
+    }
+
+    @Override
     public String dateTime2CharSQL(final String s) {
         return s;
     }

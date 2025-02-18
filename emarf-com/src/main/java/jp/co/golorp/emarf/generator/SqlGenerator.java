@@ -4,7 +4,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Map.Entry;
 import java.util.ResourceBundle;
 import java.util.Set;
 
@@ -24,39 +23,36 @@ public final class SqlGenerator {
     /** BeanGenerator.properties */
     private static ResourceBundle bundle = ResourceBundles.getBundle(BeanGenerator.class);
 
-    /** options項目サフィックス */
-    private static String[] optionsSuffixs;
+    /** 参照列名ペア */
+    private static Set<String[]> referPairs = new LinkedHashSet<String[]>();
 
-    /** 日付入力サフィックス */
-    private static String[] inputDateSuffixs;
-
-    /** 日時入力サフィックス */
-    private static String[] inputDateTimeSuffixs;
+    /** 適用日 */
+    private static String start;
+    /** 終了日 */
+    private static String until;
+    /** 削除フラグ */
+    private static String delete;
+    /** 表示順サフィックス */
+    private static String[] orderSuffixs;
 
     /** タイムスタンプサフィックス */
     private static String[] inputTimestampSuffixs;
-
+    /** 日時入力サフィックス */
+    private static String[] inputDateTimeSuffixs;
+    /** 日付入力サフィックス */
+    private static String[] inputDateSuffixs;
     /** 範囲指定サフィックス */
     private static String[] inputRangeSuffixs;
-
     /** フラグサフィックス */
     private static String[] inputFlagSuffixs;
-
-    /** 参照列名ペア */
-    private static Set<String[]> referPairs = new LinkedHashSet<String[]>();
+    /** options項目サフィックス */
+    private static String[] inputOptionsSuffixs;
 
     /** 区分カラム */
     private static String optK;
 
-    /** 削除フラグ */
-    private static String deleteF;
-    /** 適用日 */
-    private static String tekiyoBi;
-    /** 終了日 */
-    private static String shuryoBi;
-
     /** DataSourcesAssist */
-    private static DataSourcesAssist assist;
+    private static DataSourcesAssist assist = DataSources.getAssist();
 
     /** プライベートコンストラクタ */
     private SqlGenerator() {
@@ -70,26 +66,25 @@ public final class SqlGenerator {
     public static void generate(final String projectDir, final List<TableInfo> tableInfos) {
 
         /* 設定ファイル読み込み */
-        optionsSuffixs = bundle.getString("input.options.suffixs").split(",");
-        inputDateSuffixs = bundle.getString("input.date.suffixs").split(",");
-        inputDateTimeSuffixs = bundle.getString("input.datetime.suffixs").split(",");
-        inputTimestampSuffixs = bundle.getString("input.timestamp.suffixs").split(",");
-        inputRangeSuffixs = bundle.getString("input.range.suffixs").split(",");
-        inputFlagSuffixs = bundle.getString("input.flag.suffixs").split(",");
-
         String[] pairs = bundle.getString("relation.refer.pairs").split(",");
         for (String pair : pairs) {
             String[] kv = pair.split(":");
             referPairs.add(kv);
         }
 
+        start = bundle.getString("column.start").toUpperCase();
+        until = bundle.getString("column.until").toUpperCase();
+        delete = bundle.getString("column.delete").toUpperCase();
+        orderSuffixs = bundle.getString("column.order.suffixs").split(",");
+
+        inputTimestampSuffixs = bundle.getString("input.timestamp.suffixs").split(",");
+        inputDateTimeSuffixs = bundle.getString("input.datetime.suffixs").split(",");
+        inputDateSuffixs = bundle.getString("input.date.suffixs").split(",");
+        inputRangeSuffixs = bundle.getString("input.range.suffixs").split(",");
+        inputFlagSuffixs = bundle.getString("input.flag.suffixs").split(",");
+        inputOptionsSuffixs = bundle.getString("input.options.suffixs").split(",");
+
         optK = bundle.getString("options.key").toUpperCase();
-
-        deleteF = bundle.getString("column.delete").toUpperCase();
-        tekiyoBi = bundle.getString("column.start").toUpperCase();
-        shuryoBi = bundle.getString("column.until").toUpperCase();
-
-        assist = DataSources.getAssist();
 
         //SQLフォルダ
         String sqlDir = projectDir + File.separator + bundle.getString("dir.sql");
@@ -110,63 +105,89 @@ public final class SqlGenerator {
     private static void sqlSearch(final String sqlDir, final TableInfo table) {
 
         //テーブル名・エンティティ名
-        String tableName = table.getName();
-        String entityName = StringUtil.toPascalCase(tableName);
+        String entity = StringUtil.toPascalCase(table.getName());
 
         //参照モデルの番号
         int refs = 0;
 
-        List<String> sql = new ArrayList<String>();
+        List<String> s = new ArrayList<String>();
         for (ColumnInfo column : table.getColumnInfos().values()) {
 
             //カラム行追加
             String prefix = "    , ";
-            if (sql.size() == 0) {
-                sql.add("SELECT");
+            if (s.size() == 0) {
+                s.add("SELECT");
                 prefix = "      ";
             }
-            sql.add(prefix + SqlGenerator.getQuoted(column));
+            s.add(prefix + SqlGenerator.getQuoted(column));
 
             // 列の参照モデル情報があればカラム名の補完
             if (column.getReferInfo() != null) {
                 String meiSql = getMeiSql(refs, table, column);
                 if (meiSql != null) {
                     ++refs;
-                    sql.add("    " + meiSql);
+                    s.add("    " + meiSql);
                 }
             }
         }
-        sql.add("FROM");
-        sql.add("    " + tableName + " a ");
-        sql.add("WHERE");
-        sql.add("    1 = 1 ");
-        for (Entry<String, ColumnInfo> e : table.getColumnInfos().entrySet()) {
-            addWhere(sql, e.getValue());
+        s.add("FROM");
+        s.add("    " + table.getName() + " a ");
+
+        s.add("WHERE");
+        s.add("    1 = 1 ");
+        for (ColumnInfo column : table.getColumnInfos().values()) {
+            addWhere(s, column);
         }
 
         if (!table.isView()) {
-            sql.add("ORDER BY");
+            s.add("ORDER BY");
             if (table.getPrimaryKeys().size() > 0) {
                 String orders = "";
+                if (table.getPrimaryKeys().size() == 1) {
+                    for (ColumnInfo column : table.getColumnInfos().values()) {
+                        if (StringUtil.endsWith(orderSuffixs, column.getColumnName())) {
+                            if (orders.length() > 0) {
+                                orders += "    , ";
+                            } else {
+                                orders += "    ";
+                            }
+                            orders += "a." + assist.quotedSQL(column.getColumnName()) + "\r\n";
+                        }
+                    }
+                }
                 for (String pk : table.getPrimaryKeys()) {
                     if (orders.length() > 0) {
-                        orders += ", ";
+                        orders += "    , ";
+                    } else {
+                        orders += "    ";
                     }
-                    orders += "a." + assist.quotedSQL(pk);
+                    orders += "a." + assist.quotedSQL(pk) + "\r\n";
                 }
-                sql.add("    " + orders);
+                if (table.getPrimaryKeys().size() > 1) {
+                    for (ColumnInfo column : table.getColumnInfos().values()) {
+                        if (StringUtil.endsWith(orderSuffixs, column.getColumnName())) {
+                            if (orders.length() > 0) {
+                                orders += "    , ";
+                            } else {
+                                orders += "    ";
+                            }
+                            orders += "a." + assist.quotedSQL(column.getColumnName()) + "\r\n";
+                        }
+                    }
+                }
+                s.add(orders.replaceFirst("\r\n$", ""));
             } else {
                 for (int i = 1; i <= table.getColumnInfos().size(); i++) {
                     if (i == 1) {
-                        sql.add("    " + i);
+                        s.add("    " + i);
                     } else {
-                        sql.add("    , " + i);
+                        s.add("    , " + i);
                     }
                 }
             }
         }
 
-        FileUtil.writeFile(sqlDir + File.separator + entityName + "Search.sql", sql);
+        FileUtil.writeFile(sqlDir + File.separator + entity + "Search.sql", s);
     }
 
     /**
@@ -254,80 +275,107 @@ public final class SqlGenerator {
         //参照モデルの連番
         int refs = 0;
 
-        List<String> sql = new ArrayList<String>();
+        List<String> s = new ArrayList<String>();
 
         for (ColumnInfo column : table.getColumnInfos().values()) {
 
             //カラム行追加
             String prefix = "    , ";
-            if (sql.size() == 0) {
-                sql.add("SELECT");
+            if (s.size() == 0) {
+                s.add("SELECT");
                 prefix = "      ";
             }
-            sql.add(prefix + SqlGenerator.getQuoted(column));
+            s.add(prefix + SqlGenerator.getQuoted(column));
 
             // 列の参照モデル情報があればカラム名の補完
             if (column.getReferInfo() != null) {
                 String meiSql = getMeiSql(refs, table, column);
                 if (meiSql != null) {
                     ++refs;
-                    sql.add("    " + meiSql);
+                    s.add("    " + meiSql);
                 }
             }
         }
-        sql.add("FROM");
-        sql.add("    " + table.getName() + " a ");
+
+        s.add("FROM");
+        s.add("    " + table.getName() + " a ");
 
         //組合せモデル
         if (table.getComboInfos().size() > 0) {
-            addComboSql(sql, table);
+            addComboSql(s, table);
         }
 
-        sql.add("WHERE");
-        sql.add("    1 = 1 ");
-        if (table.getColumnInfos().containsKey(deleteF)) {
-            sql.add("    AND " + assist.nvlZero("a." + deleteF) + " != 1 ");
+        s.add("WHERE");
+        s.add("    1 = 1 ");
+        if (table.getColumnInfos().containsKey(delete)) {
+            s.add("    AND " + assist.nvlZero("a." + delete) + " != 1 ");
         }
-        if (table.getColumnInfos().containsKey(tekiyoBi)) {
-            sql.add("    AND " + assist.nvlSysdate("a." + tekiyoBi) + " <= " + assist.sysDate() + " ");
+        if (table.getColumnInfos().containsKey(start)) {
+            s.add("    AND " + assist.nvlSysdate("a." + start) + " <= " + assist.sysDate() + " ");
         }
-        if (table.getColumnInfos().containsKey(shuryoBi)) {
-            sql.add("    AND " + assist.dateAdd(assist.nvlSysdate("a." + shuryoBi), 1) + " > " + assist.sysDate()
+        if (table.getColumnInfos().containsKey(until)) {
+            s.add("    AND " + assist.dateAdd(assist.nvlSysdate("a." + until), 1) + " > " + assist.sysDate()
                     + " ");
         }
-        for (Entry<String, ColumnInfo> e : table.getColumnInfos().entrySet()) {
-            addWhere(sql, e.getValue());
+        for (ColumnInfo column : table.getColumnInfos().values()) {
+            addWhere(s, column);
         }
 
         //制約モデル
         if (table.getStintInfo() != null) {
-            addStintSql(sql, table);
+            addStintSql(s, table);
         }
 
         if (!table.isView()) {
-            sql.add("ORDER BY");
+            s.add("ORDER BY");
             if (table.getPrimaryKeys().size() > 0) {
                 String orders = "";
+                if (table.getPrimaryKeys().size() == 1) {
+                    for (ColumnInfo column : table.getColumnInfos().values()) {
+                        if (StringUtil.endsWith(orderSuffixs, column.getColumnName())) {
+                            if (orders.length() > 0) {
+                                orders += "    , ";
+                            } else {
+                                orders += "    ";
+                            }
+                            orders += "a." + assist.quotedSQL(column.getColumnName()) + "\r\n";
+                        }
+                    }
+                }
                 for (String pk : table.getPrimaryKeys()) {
                     if (orders.length() > 0) {
-                        orders += ", ";
+                        orders += "    , ";
+                    } else {
+                        orders += "    ";
                     }
-                    orders += "a." + assist.quotedSQL(pk);
+                    orders += "a." + assist.quotedSQL(pk) + "\r\n";
                 }
-                sql.add("    " + orders);
+                if (table.getPrimaryKeys().size() > 1) {
+                    for (ColumnInfo column : table.getColumnInfos().values()) {
+                        if (StringUtil.endsWith(orderSuffixs, column.getColumnName())) {
+                            if (orders.length() > 0) {
+                                orders += "    , ";
+                            } else {
+                                orders += "    ";
+                            }
+                            orders += "a." + assist.quotedSQL(column.getColumnName()) + "\r\n";
+                        }
+                    }
+                }
+                s.add(orders.replaceFirst("\r\n$", ""));
             } else {
                 for (int i = 1; i <= table.getColumnInfos().size(); i++) {
                     if (i == 1) {
-                        sql.add("    " + i);
+                        s.add("    " + i);
                     } else {
-                        sql.add("    , " + i);
+                        s.add("    , " + i);
                     }
                 }
             }
         }
 
         String entity = StringUtil.toPascalCase(table.getName());
-        FileUtil.writeFile(sqlDir + File.separator + entity + "Correct.sql", sql);
+        FileUtil.writeFile(sqlDir + File.separator + entity + "Correct.sql", s);
     }
 
     /**
@@ -340,7 +388,7 @@ public final class SqlGenerator {
 
         String anotherKey = "";
         for (String pk : stint.getPrimaryKeys()) {
-            if (pk.equals(tekiyoBi)) {
+            if (pk.equals(start)) {
                 continue;
             }
             if (!pk.equals(table.getPrimaryKeys().get(0))) {
@@ -356,19 +404,19 @@ public final class SqlGenerator {
         sql.add("            " + stint.getName() + " p ");
         sql.add("        WHERE");
         sql.add("            1 = 1 ");
-        if (stint.getColumnInfos().containsKey(deleteF)) {
-            sql.add("            AND " + assist.nvlZero("p." + deleteF) + " != 1 ");
+        if (stint.getColumnInfos().containsKey(delete)) {
+            sql.add("            AND " + assist.nvlZero("p." + delete) + " != 1 ");
         }
-        if (stint.getColumnInfos().containsKey(tekiyoBi)) {
-            sql.add("            AND " + assist.nvlSysdate("p." + tekiyoBi) + " <= " + assist.sysDate()
+        if (stint.getColumnInfos().containsKey(start)) {
+            sql.add("            AND " + assist.nvlSysdate("p." + start) + " <= " + assist.sysDate()
                     + " ");
         }
-        if (stint.getColumnInfos().containsKey(shuryoBi)) {
-            sql.add("            AND " + assist.dateAdd(assist.nvlSysdate("p." + shuryoBi), 1) + " > "
+        if (stint.getColumnInfos().containsKey(until)) {
+            sql.add("            AND " + assist.dateAdd(assist.nvlSysdate("p." + until), 1) + " > "
                     + assist.sysDate());
         }
         for (String pk : stint.getPrimaryKeys()) {
-            if (pk.equals(tekiyoBi)) {
+            if (pk.equals(start)) {
                 continue;
             }
             if (pk.equals(anotherKey)) {
@@ -393,15 +441,15 @@ public final class SqlGenerator {
             ++i;
             sql.add("    INNER JOIN " + combo.getName() + " c" + i + " ");
             sql.add("        ON 1 = 1 ");
-            if (combo.getColumnInfos().containsKey(deleteF)) {
-                sql.add("        AND " + assist.nvlZero("c" + i + "." + deleteF) + " != 1 ");
+            if (combo.getColumnInfos().containsKey(delete)) {
+                sql.add("        AND " + assist.nvlZero("c" + i + "." + delete) + " != 1 ");
             }
-            if (combo.getColumnInfos().containsKey(tekiyoBi)) {
-                sql.add("        AND " + assist.nvlSysdate("c" + i + "." + tekiyoBi) + " <= " + assist.sysDate()
+            if (combo.getColumnInfos().containsKey(start)) {
+                sql.add("        AND " + assist.nvlSysdate("c" + i + "." + start) + " <= " + assist.sysDate()
                         + " ");
             }
-            if (combo.getColumnInfos().containsKey(shuryoBi)) {
-                sql.add("        AND " + assist.dateAdd(assist.nvlSysdate("c" + i + "." + shuryoBi), 1) + " > "
+            if (combo.getColumnInfos().containsKey(until)) {
+                sql.add("        AND " + assist.dateAdd(assist.nvlSysdate("c" + i + "." + until), 1) + " > "
                         + assist.sysDate());
             }
             for (String pk : combo.getPrimaryKeys()) {
@@ -426,7 +474,7 @@ public final class SqlGenerator {
             sql.add("    AND CASE WHEN TRIM (a." + quoted + ") IS NULL THEN '0' ELSE TO_CHAR (a." + quoted
                     + ") END IN (" + param + ") ");
 
-        } else if (StringUtil.endsWith(optionsSuffixs, columnName)) {
+        } else if (StringUtil.endsWith(inputOptionsSuffixs, columnName)) {
             // IN検索
             sql.add("    AND TRIM (a." + quoted + ") IN (" + param + ") ");
 

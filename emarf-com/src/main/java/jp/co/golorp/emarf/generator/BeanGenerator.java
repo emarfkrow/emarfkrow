@@ -95,6 +95,8 @@ public final class BeanGenerator {
     private static String[] inputDateTimeSuffixs;
     /** 日付け入力サフィックス */
     private static String[] inputDateSuffixs;
+    /** 時間入力サフィックス */
+    private static String[] inputTimeSuffixs;
     /** フラグサフィックス */
     private static String[] inputFlagSuffixs;
     /** ファイルサフィックス */
@@ -143,6 +145,7 @@ public final class BeanGenerator {
         inputTimestampSuffixs = bundle.getString("input.timestamp.suffixs").split(",");
         inputDateTimeSuffixs = bundle.getString("input.datetime.suffixs").split(",");
         inputDateSuffixs = bundle.getString("input.date.suffixs").split(",");
+        inputTimeSuffixs = bundle.getString("input.time.suffixs").split(",");
         inputFlagSuffixs = bundle.getString("input.flag.suffixs").split(",");
         inputFileSuffixs = bundle.getString("input.file.suffixs").split(",");
 
@@ -1102,10 +1105,22 @@ public final class BeanGenerator {
             int cols = 0;
             int refs = 0;
             for (ColumnInfo column : child.getColumnInfos().values()) {
+                String colName = column.getColumnName();
+                String quoteEscaped = assist.quoteEscapedSQL(colName);
+                //時間サフィックスに合致する場合、データソースがOracleならTO_CHAR
+                if (StringUtil.endsWith(inputDateSuffixs, colName)) {
+                    quoteEscaped = assist.date2CharSQL(quoteEscaped) + " AS " + colName;
+                } else if (StringUtil.endsWith(inputTimeSuffixs, colName)) {
+                    quoteEscaped = assist.time2CharSQL(quoteEscaped) + " AS " + colName;
+                } else if (StringUtil.endsWith(inputDateTimeSuffixs, colName)) {
+                    quoteEscaped = assist.dateTime2CharSQL(quoteEscaped) + " AS " + colName;
+                } else if (StringUtil.endsWith(inputTimestampSuffixs, colName)) {
+                    quoteEscaped = assist.timestamp2CharSQL(quoteEscaped) + " AS " + colName;
+                }
                 if (cols == 0) {
-                    s.add("        sql += \"" + column.getColumnName() + "\";");
+                    s.add("        sql += \"" + quoteEscaped + "\";");
                 } else {
-                    s.add("        sql += \", " + column.getColumnName() + "\";");
+                    s.add("        sql += \", " + quoteEscaped + "\";");
                 }
                 ++cols;
                 // 列の参照モデル情報があればカラム名の補完

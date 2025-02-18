@@ -115,6 +115,11 @@ public final class DataSourcesAssistMySQL extends DataSourcesAssist {
     }
 
     @Override
+    public String time2CharSQL(final String s) {
+        return s;
+    }
+
+    @Override
     public String dateTime2CharSQL(final String s) {
         return s;
     }

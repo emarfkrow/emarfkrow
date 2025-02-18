@@ -101,6 +101,28 @@ $(function() {
             // グリッドdivを取得
             let $gridDiv = $(this);
 
+            let isDialog = $gridDiv.closest('[role=dialog]').length > 0;
+
+            let form = $(this).closest('form[name]')[0];
+
+            /*
+             * options
+             */
+
+            let options = $.extend(true, {}, Gridate.options);
+
+            // 編集可否
+            let editable = $gridDiv.attr('data-editable');
+            if (editable) {
+                options.editable = eval(editable);
+            }
+
+            // 新規行有無
+            let addRow = $gridDiv.attr('data-addRow');
+            if (addRow && Base.getAuthz(form.name) >= 3) {
+                options.enableAddRow = eval(addRow);
+            }
+
             // グリッドdiv直後のページャを取得
             let $pager = $gridDiv.find('~[id$=Pager]');
 
@@ -154,15 +176,12 @@ $(function() {
             //			}
 
             //登録権限なしなら列のエディタをクリア
-            let form = $(this).closest('form[name]')[0];
             if (Base.getAuthz(form.name) < 3) {
                 for (let i in columns) {
                     let column = columns[i];
                     column.editor = null;
                 }
             }
-
-            let isDialog = $gridDiv.closest('[role=dialog]').length > 0;
 
             let frozenColumnAdd = 0;
 
@@ -226,17 +245,21 @@ $(function() {
                     columns.unshift(checkboxSelectColumn.getColumnDefinition());
                     ++frozenColumnAdd;
 
-                    //最左列に削除ボタン列を追加
-                    columns.unshift({
-                        id: 'delete',
-                        name: Messages['common.grid.delete.title'],
-                        field: 'field',
-                        sortable: true,
-                        width: Messages['common.grid.delete.title'].length * 20,
-                        label: Messages['common.grid.delete.label'],
-                        formatter: Slick.Formatters.Extends.Delete
-                    });
-                    ++frozenColumnAdd;
+                    //更新権限以上なら最左列に削除ボタン列を追加
+                    if (options.editable) {
+                        if (Base.getAuthz(form.name) >= 3) {
+                            columns.unshift({
+                                id: 'delete',
+                                name: Messages['common.grid.delete.title'],
+                                field: 'field',
+                                sortable: true,
+                                width: Messages['common.grid.delete.title'].length * 20,
+                                label: Messages['common.grid.delete.label'],
+                                formatter: Slick.Formatters.Extends.Delete
+                            });
+                            ++frozenColumnAdd;
+                        }
+                    }
                 }
 
             } else if (selectionMode == 'link') {
@@ -254,35 +277,21 @@ $(function() {
                 });
                 ++frozenColumnAdd;
 
-                //最左列に削除ボタン列を追加
-                columns.unshift({
-                    id: 'delete',
-                    name: Messages['common.grid.delete.title'],
-                    field: 'field',
-                    sortable: true,
-                    width: Messages['common.grid.delete.title'].length * 20,
-                    label: Messages['common.grid.delete.label'],
-                    formatter: Slick.Formatters.Extends.Delete
-                });
-                ++frozenColumnAdd;
-            }
-
-            /*
-             * options
-             */
-
-            let options = $.extend(true, {}, Gridate.options);
-
-            // 新規行有無
-            let editable = $gridDiv.attr('data-editable');
-            if (editable) {
-                options.editable = eval(editable);
-            }
-
-            // 新規行有無
-            let addRow = $gridDiv.attr('data-addRow');
-            if (addRow && Base.getAuthz(form.name) >= 3) {
-                options.enableAddRow = eval(addRow);
+                //更新権限以上なら最左列に削除ボタン列を追加
+                if (options.editable) {
+                    if (Base.getAuthz(form.name) >= 3) {
+                        columns.unshift({
+                            id: 'delete',
+                            name: Messages['common.grid.delete.title'],
+                            field: 'field',
+                            sortable: true,
+                            width: Messages['common.grid.delete.title'].length * 20,
+                            label: Messages['common.grid.delete.label'],
+                            formatter: Slick.Formatters.Extends.Delete
+                        });
+                        ++frozenColumnAdd;
+                    }
+                }
             }
 
             // 固定列（ダイアログ内で固定すると崩れる）
