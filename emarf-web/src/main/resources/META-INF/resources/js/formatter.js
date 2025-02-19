@@ -63,6 +63,18 @@ let Formatter = {
         return '';
     },
 
+    YmdHm: function(date) {
+        if (date && !isNaN(date.getFullYear())) {
+            let y = date.getFullYear();
+            let m = ('0' + (date.getMonth() + 1)).slice(-2);
+            let d = ('0' + date.getDate()).slice(-2);
+            let h = ('0' + date.getHours()).slice(-2);
+            let mm = ('0' + date.getMinutes()).slice(-2);
+            return y + '-' + m + '-' + d + ' ' + h + ':' + mm;
+        }
+        return '';
+    },
+
     YmdHms: function(date) {
         if (date && !isNaN(date.getFullYear())) {
             let y = date.getFullYear();

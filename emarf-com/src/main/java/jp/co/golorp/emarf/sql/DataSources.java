@@ -849,12 +849,12 @@ public final class DataSources {
 
     /**
      * 各テーブル情報に履歴モデルを設定
-     * @param tableInfos テーブル情報のリスト
+     * @param tables テーブル情報のリスト
      */
-    private static void addHistoryTable(final List<TableInfo> tableInfos) {
+    private static void addHistoryTable(final List<TableInfo> tables) {
 
         // 比較元でループ
-        Iterator<TableInfo> srcs = tableInfos.iterator();
+        Iterator<TableInfo> srcs = tables.iterator();
         while (srcs.hasNext()) {
             TableInfo src = srcs.next();
 
@@ -867,7 +867,7 @@ public final class DataSources {
             String srcColCsv = src.getNonPrimaryKeys().toString().replaceAll("[\\[\\]]", "");
 
             // 比較先でループ
-            Iterator<TableInfo> dests = tableInfos.iterator();
+            Iterator<TableInfo> dests = tables.iterator();
             while (dests.hasNext()) {
                 TableInfo dest = dests.next();
 
@@ -919,57 +919,62 @@ public final class DataSources {
 
     /**
      * 各テーブル情報に子モデルを設定
-     * @param tableInfos テーブル情報のリスト
+     * @param tables テーブル情報のリスト
      */
-    private static void addChildTables(final List<TableInfo> tableInfos) {
+    private static void addChildTables(final List<TableInfo> tables) {
 
         // テーブル情報でループ（比較元）
-        Iterator<TableInfo> srcIterator = tableInfos.iterator();
+        Iterator<TableInfo> srcs = tables.iterator();
 
-        while (srcIterator.hasNext()) {
+        while (srcs.hasNext()) {
 
-            TableInfo srcInfo = srcIterator.next();
+            TableInfo table = srcs.next();
 
             // 主キーがなければスキップ
-            if (srcInfo.getPrimaryKeys().size() == 0) {
+            if (table.getPrimaryKeys().size() == 0) {
                 continue;
             }
 
             // 子を設定しないテーブルならスキップ
-            if (srcInfo.getName().matches(dinksRe)) {
+            if (table.getName().matches(dinksRe)) {
                 continue;
             }
 
             // 比較元の子テーブルリストを取得
-            List<TableInfo> childInfos = srcInfo.getChildInfos();
+            List<TableInfo> childs = table.getChildInfos();
 
             // テーブル情報でループ（比較先）
-            Iterator<TableInfo> destIterator = tableInfos.iterator();
-            while (destIterator.hasNext()) {
-                TableInfo destInfo = destIterator.next();
+            Iterator<TableInfo> dests = tables.iterator();
+            while (dests.hasNext()) {
+                TableInfo child = dests.next();
 
                 // 比較元と同じならスキップ
-                if (srcInfo == destInfo) {
+                if (table == child) {
+                    continue;
+                }
+
+                // 比較元の履歴モデルと同じならスキップ
+                if (table.getHistoryInfo() == child) {
                     continue;
                 }
 
                 // 親を設定しないテーブルならスキップ
-                if (destInfo.getName().matches(orphansRe)) {
+                if (child.getName().matches(orphansRe)) {
                     continue;
                 }
 
-                if (destInfo.getPrimaryKeys().size() == 0) {
+                if (child.getPrimaryKeys().size() == 0) {
                     continue;
                 }
 
                 boolean isPkMatch = true;
-                for (int i = 0; i < srcInfo.getPrimaryKeys().size(); i++) {
-                    if (destInfo.getPrimaryKeys().size() <= i) {
+                for (int i = 0; i < table.getPrimaryKeys().size(); i++) {
+                    if (child.getPrimaryKeys().size() <= i) {
                         isPkMatch = false;
                         break;
                     }
-                    String src = srcInfo.getPrimaryKeys().get(i);
-                    String dest = destInfo.getPrimaryKeys().get(i);
+                    String src = table.getPrimaryKeys().get(i);
+                    String dest = child.getPrimaryKeys().get(i);
                     //                    if (!dest.endsWith(src)) {
                     if (!dest.equals(src)) {
                         isPkMatch = false;
@@ -981,18 +986,18 @@ public final class DataSources {
                 }
 
                 // 比較先の主キーが「比較元の主キー＋一つ」の場合は子テーブルリストに追加
-                if (srcInfo.getPrimaryKeys().size() + 1 == destInfo.getPrimaryKeys().size()) {
+                if (table.getPrimaryKeys().size() + 1 == child.getPrimaryKeys().size()) {
 
                     // 履歴テーブルならスキップ
-                    if (destInfo.isHistory()) {
+                    if (child.isHistory()) {
                         continue;
                     }
 
                     //比較元の子モデルに比較先を追加
-                    childInfos.add(destInfo);
+                    childs.add(child);
 
                     //比較先の親モデルに比較元を追加
-                    destInfo.getParentInfos().add(srcInfo);
+                    child.getParentInfos().add(table);
                 }
             }
         }

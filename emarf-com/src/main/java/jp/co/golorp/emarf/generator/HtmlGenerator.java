@@ -50,56 +50,43 @@ public final class HtmlGenerator {
     /** グリッド列幅ピクセル乗数 */
     private static final int COLUMN_WIDTH_PX_MULTIPLIER = 8;
 
-    /** VIEWの検索条件とするプレフィクス */
-    private static String[] searchPrefixes;
-    /** VIEWの詳細画面にするテーブル名 */
-    private static String detailColumn;
+    /** 参照列名ペア */
+    private static Set<String[]> referPairs = new LinkedHashSet<String[]>();
 
-    /** ページ行数 */
-    private static String rows;
+    /** 登録日時カラム名 */
+    private static String insertTs;
+    /** 登録者カラム名 */
+    private static String insertId;
+    /** 更新日時カラム名 */
+    private static String updateTs;
+    /** 更新者カラム名 */
+    private static String updateId;
+    /** ステータス区分 */
+    private static String status;
 
     /** 数値列で自動採番しないサフィックス */
     private static String[] intNoFormatSuffixs;
-
-    /** 登録日時カラム名 */
-    private static String insertDt;
-    /** 登録者カラム名 */
-    private static String insertBy;
-    /** 更新日時カラム名 */
-    private static String updateDt;
-    /** 更新者カラム名 */
-    private static String updateBy;
-    /** ステータス区分 */
-    private static String statusKb;
     /** 必須CHAR列の指定 */
     private static String charNotNullRe;
 
-    /** options項目サフィックス */
-    private static String[] optionsSuffixs;
-    /** pulldown項目サフィックス */
-    private static String[] pulldownSuffixs;
-    /** データjson */
-    private static String json;
-    /** 区分カラム */
-    private static String optK;
-    /** 区分値カラム */
-    private static String optV;
-    /** 区分値名カラム */
-    private static String optL;
+    /** ページ行数 */
+    private static String gridRows;
 
-    /** テキストエリア項目サフィックス */
-    private static String[] textareaSuffixs;
+    /** VIEWの検索条件とするプレフィクス */
+    private static String[] viewCriteriaPrefixs;
+    /** VIEWの詳細画面にするテーブル名 */
+    private static String viewDetail;
 
-    /** 日付入力サフィックス */
-    private static String[] inputDateSuffixs;
+    /** 年月入力サフィックス */
+    private static String[] inputYMSuffixs;
     /** 8桁日付入力サフィックス */
     private static String[] inputDate8Suffixs;
     /** タイムスタンプサフィックス */
     private static String[] inputTimestampSuffixs;
     /** 日時入力サフィックス */
     private static String[] inputDateTimeSuffixs;
-    /** 年月入力サフィックス */
-    private static String[] inputYMSuffixs;
+    /** 日付入力サフィックス */
+    private static String[] inputDateSuffixs;
     /** 時刻入力サフィックス */
     private static String[] inputTimeSuffixs;
     /** 範囲指定サフィックス */
@@ -108,9 +95,21 @@ public final class HtmlGenerator {
     private static String[] inputFlagSuffixs;
     /** ファイルサフィックス */
     private static String[] inputFileSuffixs;
+    /** options項目サフィックス */
+    private static String[] optionsSuffixs;
+    /** pulldown項目サフィックス */
+    private static String[] pulldownSuffixs;
+    /** テキストエリア項目サフィックス */
+    private static String[] textareaSuffixs;
 
-    /** 参照列名ペア */
-    private static Set<String[]> referPairs = new LinkedHashSet<String[]>();
+    /** データjson */
+    private static String json;
+    /** 区分カラム */
+    private static String optK;
+    /** 区分値カラム */
+    private static String optV;
+    /** 区分値名カラム */
+    private static String optL;
 
     /** プライベートコンストラクタ */
     private HtmlGenerator() {
@@ -123,28 +122,25 @@ public final class HtmlGenerator {
      */
     static void generate(final String projectDir, final List<TableInfo> tables) {
 
-        searchPrefixes = bundle.getString("view.criteria.prefix").split(",");
-        detailColumn = bundle.getString("view.detail");
+        String[] pairs = bundle.getString("relation.refer.pairs").split(",");
+        for (String pair : pairs) {
+            String[] kv = pair.split(":");
+            referPairs.add(kv);
+        }
 
-        rows = bundle.getString("grid.rows");
+        insertTs = bundle.getString("column.insert.timestamp");
+        insertId = bundle.getString("column.insert.id");
+        updateTs = bundle.getString("column.update.timestamp");
+        updateId = bundle.getString("column.update.id");
+        status = bundle.getString("column.status");
 
         intNoFormatSuffixs = bundle.getString("column.int.noformat.suffixs").split(",");
-
-        insertDt = bundle.getString("column.insert.timestamp");
-        insertBy = bundle.getString("column.insert.id");
-        updateDt = bundle.getString("column.update.timestamp");
-        updateBy = bundle.getString("column.update.id");
-        statusKb = bundle.getString("column.status");
         charNotNullRe = bundle.getString("column.char.notnull.re");
 
-        optionsSuffixs = bundle.getString("input.options.suffixs").split(",");
-        pulldownSuffixs = bundle.getString("input.pulldown.suffixs").split(",");
-        json = bundle.getString("options.json");
-        optK = bundle.getString("options.key").toUpperCase();
-        optV = bundle.getString("options.value").toUpperCase();
-        optL = bundle.getString("options.label").toUpperCase();
+        gridRows = bundle.getString("grid.rows");
 
-        textareaSuffixs = bundle.getString("input.textarea.suffixs").split(",");
+        viewCriteriaPrefixs = bundle.getString("view.criteria.prefix").split(",");
+        viewDetail = bundle.getString("view.detail");
 
         inputYMSuffixs = bundle.getString("input.ym.suffixs").split(",");
         inputDate8Suffixs = bundle.getString("input.date8.suffixs").split(",");
@@ -155,12 +151,14 @@ public final class HtmlGenerator {
         inputRangeSuffixs = bundle.getString("input.range.suffixs").split(",");
         inputFlagSuffixs = bundle.getString("input.flag.suffixs").split(",");
         inputFileSuffixs = bundle.getString("input.file.suffixs").split(",");
+        optionsSuffixs = bundle.getString("input.options.suffixs").split(",");
+        pulldownSuffixs = bundle.getString("input.pulldown.suffixs").split(",");
+        textareaSuffixs = bundle.getString("input.textarea.suffixs").split(",");
 
-        String[] pairs = bundle.getString("relation.refer.pairs").split(",");
-        for (String pair : pairs) {
-            String[] kv = pair.split(":");
-            referPairs.add(kv);
-        }
+        json = bundle.getString("options.json");
+        optK = bundle.getString("options.key").toUpperCase();
+        optV = bundle.getString("options.value").toUpperCase();
+        optL = bundle.getString("options.label").toUpperCase();
 
         // 出力フォルダを再作成
         String htmlDir = projectDir + File.separator + bundle.getString("dir.html");
@@ -233,7 +231,7 @@ public final class HtmlGenerator {
         s.add("    <h2 th:text=\"#{" + e + "S.h2}\">h2</h2>");
         s.add("    <!-- 検索フォーム -->");
         s.add("    <form name=\"" + e + "SearchForm\" action=\"" + e + "Search.ajax\" class=\"search\">");
-        s.add("      <input type=\"hidden\" name=\"rows\" value=\"" + rows + "\" />");
+        s.add("      <input type=\"hidden\" name=\"rows\" value=\"" + gridRows + "\" />");
         s.add("      <input type=\"hidden\" name=\"page\" value=\"0\" />");
         s.add("      <fieldset>");
         s.add("        <legend th:text=\"#{" + e + "S.legend}\">legend</legend>");
@@ -268,8 +266,8 @@ public final class HtmlGenerator {
         if (table.getPrimaryKeys().size() == 1) { // 単一キーの場合は新規行あり
             boolean isRefer = false; //メタ情報以外の必須の参照モデル、および、ファイル列が含まれていなければ新規行を表示
             for (ColumnInfo column : table.getColumnInfos().values()) {
-                if (column.getColumnName().matches("(?i)^" + insertBy + "$")
-                        || column.getColumnName().matches("(?i)^" + updateBy + "$")) {
+                if (column.getColumnName().matches("(?i)^" + insertId + "$")
+                        || column.getColumnName().matches("(?i)^" + updateId + "$")) {
                     continue;
                 }
                 if (StringUtil.endsWith(inputFileSuffixs, column.getColumnName())) {
@@ -287,7 +285,7 @@ public final class HtmlGenerator {
         }
         int frozenColumn = table.getPrimaryKeys().size() - 1;
         String editable = "";
-        if (table.isHistory()/* || table.isView()*/) {
+        if (table.isHistory() || table.getChildInfos().size() > 0/* || table.isView()*/) {
             editable = "data-editable=\"false\" ";
         }
         s.add("      <div id=\"" + e + "Grid\" data-selectionMode=\"checkbox\"" + addRow + " data-frozenColumn=\""
@@ -308,12 +306,12 @@ public final class HtmlGenerator {
                     + "\" target=\"dialog\" th:text=\"#{" + summaryEntity
                     + ".sum}\" class=\"summary\" tabindex=\"-1\">" + summary.getRemarks() + "</a>");
         }
-        if (!table.isHistory() && (!table.isView() || table.isConvView())) {
+        if (!table.isHistory() && (!table.isView() || table.isConvView()) && table.getChildInfos().size() == 0) {
             for (ColumnInfo column : table.getColumnInfos().values()) {
                 //グリッド用の非表示の参照ボタン
                 if (column.getReferInfo() != null) {
                     String columnName = column.getColumnName();
-                    if (columnName.matches("(?i)^" + insertBy + "$") || columnName.matches("(?i)^" + updateBy + "$")) {
+                    if (columnName.matches("(?i)^" + insertId + "$") || columnName.matches("(?i)^" + updateId + "$")) {
                         continue;
                     }
                     String property = StringUtil.toCamelCase(column.getColumnName());
@@ -335,7 +333,7 @@ public final class HtmlGenerator {
                 s.add("        <button id=\"Delete" + e
                         + "S\" type=\"submit\" class=\"delete selectRows\" data-action=\"" + e
                         + "SDelete.ajax\" th:text=\"#{common.delete}\" tabindex=\"-1\">削除</button>");
-                if (!StringUtil.isNullOrBlank(statusKb)) {
+                if (!StringUtil.isNullOrBlank(status)) {
                     s.add("        <button id=\"Permit" + e
                             + "S\" type=\"submit\" class=\"permit selectRows\" data-action=\"" + e
                             + "SPermit.ajax\" th:text=\"#{common.permit}\" tabindex=\"-1\">承認</button>");
@@ -347,7 +345,7 @@ public final class HtmlGenerator {
         }
         s.add("      </div>");
         s.add("      <div class=\"submits\">");
-        if (!table.isHistory() && (!table.isView() || table.isConvView())) {
+        if (!table.isHistory() && (!table.isView() || table.isConvView()) && table.getChildInfos().size() == 0) {
             s.add("        <button id=\"Regist" + e
                     + "S\" type=\"submit\" class=\"regist\" th:text=\"#{common.regist}\">submit</button>");
         }
@@ -420,12 +418,12 @@ public final class HtmlGenerator {
         for (String columnName : table.getNonPrimaryKeys()) {
 
             //VIEWなら「SEARCH_」を出力しない
-            if (table.isView() && StringUtil.startsWith(searchPrefixes, columnName)) {
+            if (table.isView() && StringUtil.startsWith(viewCriteriaPrefixs, columnName)) {
                 continue;
             }
 
             //カラム名が「TABLE_NAME」なら出力しない
-            if (columnName.matches("(?i)^" + detailColumn + "$")) {
+            if (columnName.matches("(?i)^" + viewDetail + "$")) {
                 continue;
             }
 
@@ -527,7 +525,7 @@ public final class HtmlGenerator {
             for (ColumnInfo column : child.getColumnInfos().values()) {
                 if (column.getReferInfo() != null) {
                     String columnName = column.getColumnName();
-                    if (columnName.matches("(?i)^" + insertBy + "$") || columnName.matches("(?i)^" + updateBy + "$")) {
+                    if (columnName.matches("(?i)^" + insertId + "$") || columnName.matches("(?i)^" + updateId + "$")) {
                         continue;
                     }
                     String p = StringUtil.toCamelCase(column.getColumnName());
@@ -580,7 +578,7 @@ public final class HtmlGenerator {
         if (!table.isHistory() && !table.isView()) {
             s.add("        <button id=\"Delete" + entity + "\" type=\"submit\" class=\"delete\" data-action=\"" + entity
                     + "Delete.ajax\" th:text=\"#{common.delete}\" tabindex=\"-1\">削除</button>");
-            if (!StringUtil.isNullOrBlank(statusKb)) {
+            if (!StringUtil.isNullOrBlank(status)) {
                 s.add("        <button id=\"Permit" + entity + "\" type=\"submit\" class=\"permit\" data-action=\""
                         + entity + "Permit.ajax\" th:text=\"#{common.permit}\" tabindex=\"-1\">承認</button>");
                 s.add("        <button id=\"Forbid" + entity + "\" type=\"submit\" class=\"forbid\" data-action=\""
@@ -876,10 +874,10 @@ public final class HtmlGenerator {
             width = 300;
         }
 
-        boolean isInsertDt = colName.matches("(?i)^" + insertDt + "$");
-        boolean isUpdateDt = colName.matches("(?i)^" + updateDt + "$");
-        boolean isInsertBy = colName.matches("(?i)^" + insertBy + "$");
-        boolean isUpdateBy = colName.matches("(?i)^" + updateBy + "$");
+        boolean isInsertDt = colName.matches("(?i)^" + insertTs + "$");
+        boolean isUpdateDt = colName.matches("(?i)^" + updateTs + "$");
+        boolean isInsertBy = colName.matches("(?i)^" + insertId + "$");
+        boolean isUpdateBy = colName.matches("(?i)^" + updateId + "$");
         if (isInsertDt /*|| isUpdateDt*/ || isInsertBy || isUpdateBy) {
             return null;
         }
@@ -917,7 +915,7 @@ public final class HtmlGenerator {
         // 名称を参照先から取得するか
         boolean isMeiRefer = false;
         // 参照名の列名
-        String referMei = null;
+        String mei = null;
         // 参照テーブルが設定されている場合
         TableInfo referInfo = column.getReferInfo();
         if (referInfo != null) {
@@ -929,12 +927,12 @@ public final class HtmlGenerator {
                     String keySuffix = suffix[0];
                     String meiSuffix = suffix[1];
                     // カラム名がキー接尾辞に合致する場合
-                    if (colName.matches("(?i).+" + keySuffix + "$")) {
+                    if (colName.matches("(?i).*" + keySuffix + "$")) {
                         // カラム名の末尾を名称列サフィックスに変換
                         String tempMei = colName.replaceAll("(?i)" + keySuffix + "$", meiSuffix);
                         // 名称列がテーブルに含まれていない場合は参照先から名称を取得する
                         if (columnMap.containsKey(tempMei)) {
-                            referMei = tempMei;
+                            mei = tempMei;
                             isMeiRefer = false;
                             break;
                         }
@@ -948,17 +946,17 @@ public final class HtmlGenerator {
                     String keySuffix = suffix[0];
                     String meiSuffix = suffix[1];
                     // カラム名がキー接尾辞に合致する場合
-                    if (colName.matches("(?i).+" + keySuffix + "$")) {
+                    if (colName.matches("(?i).*" + keySuffix + "$")) {
                         // カラム名の末尾を名称列サフィックスに変換
                         String tempMei = colName.replaceAll("(?i)" + keySuffix + "$", meiSuffix).toUpperCase();
                         // 名称列が参照先テーブルに含まれている場合は、取得する名称を決定する
                         for (ColumnInfo referColumnInfo : referInfo.getColumnInfos().values()) {
                             if (tempMei.matches("(?i).*" + referColumnInfo.getColumnName() + "$")) {
-                                referMei = tempMei;
+                                mei = tempMei;
                                 break;
                             }
                         }
-                        if (referMei != null) {
+                        if (mei != null) {
                             break;
                         }
                     }
@@ -969,7 +967,7 @@ public final class HtmlGenerator {
         String opt = "{ json: '" + json + "', paramkey: '" + optK + "', value: '" + optV + "', label: '" + optL + "' }";
         String c = "";
         if (isMeiRefer) {
-            c = "Column.refer('" + field + "', " + name + ", " + width + ", '" + css + "', '" + referMei + "'),";
+            c = "Column.refer('" + field + "', " + name + ", " + width + ", '" + css + "', '" + mei.toString() + "'),";
         } else if (isInsertDt || isUpdateDt || isInsertBy || isUpdateBy || isHistory || isView
                 || column.isReborn()) {
             c = "Column.cell('" + field + "', " + name + ", " + width + ", '" + css + "', " + formatter + "),";
@@ -1036,7 +1034,7 @@ public final class HtmlGenerator {
             //                continue;
             //            }
             // VIEWの詳細フォームには「SEARCH_」を出力しない
-            if (table.isView() && isDetail && StringUtil.startsWith(searchPrefixes, colName)) {
+            if (table.isView() && isDetail && StringUtil.startsWith(viewCriteriaPrefixs, colName)) {
                 continue;
             }
             String property = StringUtil.toCamelCase(colName);
@@ -1050,10 +1048,10 @@ public final class HtmlGenerator {
                 continue;
             }
             // メタ情報の場合（検索画面の場合はスキップ（検索条件にはしない）、詳細画面の兄弟モデルは更新日時のみhiddenで出力）
-            boolean isInsertDt = colName.matches("(?i)^" + insertDt + "$");
-            boolean isUpdateDt = colName.matches("(?i)^" + updateDt + "$");
-            boolean isInsertBy = colName.matches("(?i)^" + insertBy + "$");
-            boolean isUpdateBy = colName.matches("(?i)^" + updateBy + "$");
+            boolean isInsertDt = colName.matches("(?i)^" + insertTs + "$");
+            boolean isUpdateDt = colName.matches("(?i)^" + updateTs + "$");
+            boolean isInsertBy = colName.matches("(?i)^" + insertId + "$");
+            boolean isUpdateBy = colName.matches("(?i)^" + updateId + "$");
             if (isInsertDt || isInsertBy || isUpdateDt || isUpdateBy) {
                 //検索画面ならスキップ
                 if (!isDetail) {

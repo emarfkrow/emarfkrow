@@ -356,7 +356,7 @@ $(function() {
                         let gridId = gridNode.id;
                         console.debug('gridId: ' + gridId);
                         console.debug(column);
-                        let $dialog = $(gridNode).closest('[name$="Dialog"]');
+                        let $dialog = $(gridNode).closest('[id$="Dialog"]');
                         let $form = $(gridNode).closest('form');
                         let modelNm = gridId.replace(/^.+\.|Grid$/g, '');
                         let id = '';
@@ -520,6 +520,7 @@ $(function() {
 
                         let callerGrid = null;
                         let callerR = 0;
+                        let callerC = 0;
                         if (callerGridName != undefined && callerGridName != '') {
                             let gridId = callerGridName.toString();
                             if (callerDialogId != undefined && callerDialogId != '') {
@@ -529,13 +530,15 @@ $(function() {
                             callerGrid = Gridate.grids[gridId];
                             if (callerGrid.getActiveCell() != null) {
                                 callerR = callerGrid.getActiveCell().row;
+                                callerC = callerGrid.getActiveCell().cell;
                             } else {
                                 callerR = callerGrid.getDataLength();
                             }
                         }
 
                         for (let columnName in dataItem) {
-                            if (!columnName.match(new RegExp('^' + Messages['column.start'] + '$', 'i')) &&
+                            if (columnName != 'ROW_NUM' && columnName != 'id' &&
+                                !columnName.match(new RegExp('^' + Messages['column.start'] + '$', 'i')) &&
                                 !columnName.match(new RegExp('^' + Messages['column.until'] + '$', 'i')) &&
                                 !columnName.match(new RegExp('^' + Messages['column.insert.timestamp'] + '$', 'i')) &&
                                 !columnName.match(new RegExp('^' + Messages['column.insert.id'] + '$', 'i')) &&
@@ -549,6 +552,7 @@ $(function() {
 
                                 let camel = Casing.toCamel(prefix + columnName);
                                 if (callerGridName != undefined && callerGridName != '') {
+                                    //グリッドの場合
                                     var dataView = callerGrid.getData();
                                     let data = dataView.getItems();
                                     if (!data[callerR]) {
@@ -560,7 +564,15 @@ $(function() {
                                     dataView.setItems(data);
                                     dataView.endUpdate();
                                     callerGrid.invalidate();
+
+                                    try {
+                                        let fieldName = Casing.toPascal(callerColumnName);
+                                        eval(fieldName + 'OnChange(callerGrid, callerR, callerC)');
+                                    } catch (e) {
+                                        console.debug(e.message);
+                                    }
                                 } else {
+                                    //フォームの場合
                                     console.debug(parentSelector + ' [name$="' + camel + '"]:not([readonly])');
                                     $(parentSelector + ' [name$="' + camel + '"]:not([readonly])').val(dataItem[columnName]);
                                     $(parentSelector + ' span[id$="' + camel + '"]').html(dataItem[columnName]);
