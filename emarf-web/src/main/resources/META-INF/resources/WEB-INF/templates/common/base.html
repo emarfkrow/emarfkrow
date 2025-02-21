@@ -55,6 +55,9 @@ limitations under the License.
 <script th:src="@{/js/plugins/SlickGrid-2.4.44/controls/slick.columnpicker.js}"></script>
 <!-- original js -->
 <script th:inline="javascript">
+// 	document.oncontextmenu = function() {
+// 		return false;
+// 	}
 	//grid列名が取れない事があるのでonloadまで遅らせる
 	let Messages = {};
 	let optionsSizeSearch = 0;

@@ -175,6 +175,16 @@ $(window).load(function() {
 // ５．画像ファイル読み込み後
 $(window).on('load', function() {
     console.debug('base-5: $(window).on(\'load\', function() {});');
+
+    if (window.opener) {
+        let href = window.document.location.href;
+        let entityName = href.replace(/\.html.+/, '').replace(/.+\//, '');
+        try {
+            eval(entityName + 'DialogOpen()');
+        } catch (e) {
+            console.debug(e.message);
+        }
+    }
 });
 
 let Base = {
@@ -598,28 +608,12 @@ let Base = {
                     //一旦、読取専用も外す
                     let $readonlys = $registForm.find('[name$="' + Casing.toCamel(columnStatus) + '"]');
                     Base.writable($readonlys);
-                    for (let i = 0; i < $readonlys.length; i++) {
-                        let $readonly = $($readonlys[i]);
-                        if ($readonly.prop('type') == 'radio') {
-                            $readonly.closest('label').css('display', 'inherit');
-                        }
-                    }
 
                     Jsonate.toForm(data, $registForm);
                     Base.referMei($registForm.find('span.refer'));
 
                     // 詳細画面のステータス区分は選択項目名のみ表示（既存画面用に読み専解除しているため再度読み専制御）
                     Base.readonly($readonlys);
-                    for (let i = 0; i < $readonlys.length; i++) {
-                        let $readonly = $($readonlys[i]);
-                        if ($readonly.prop('type') == 'radio') {
-                            if (!$readonly.prop('checked')) {
-                                $readonly.closest('label').css('display', 'none');
-                            } else {
-                                $readonly.closest('label').css('display', 'inherit');
-                            }
-                        }
-                    }
 
                     //出力権限
                     if (Base.getAuthz($registForm[0].name) < 2) {
@@ -663,16 +657,6 @@ let Base = {
             // 詳細画面のステータス区分は選択項目名のみ表示（新規画面用に一旦やっておく）
             let $readonlys = $registForm.find('[name$="' + Casing.toCamel(columnStatus) + '"]');
             Base.readonly($readonlys);
-            for (let i = 0; i < $readonlys.length; i++) {
-                let $readonly = $($readonlys[i]);
-                if ($readonly.prop('type') == 'radio') {
-                    if (!$readonly.prop('checked')) {
-                        $readonly.closest('label').css('display', 'none');
-                    } else {
-                        $readonly.closest('label').css('display', 'inherit');
-                    }
-                }
-            }
         }
     },
 
@@ -680,14 +664,32 @@ let Base = {
      * 読み取り専用
      */
     readonly: function(item) {
-        $(item).attr('readonly', true).attr('tabindex', '-1').addClass('readonly');
+        let $readonlys = $(item);
+        $readonlys.attr('readonly', true).attr('tabindex', '-1').addClass('readonly');
+        for (let i = 0; i < $readonlys.length; i++) {
+            let $readonly = $($readonlys[i]);
+            if ($readonly.prop('type') == 'radio') {
+                if (!$readonly.prop('checked')) {
+                    $readonly.closest('label').css('display', 'none');
+                } else {
+                    $readonly.closest('label').css('display', 'inherit');
+                }
+            }
+        }
     },
 
     /**
      * 書き込み可能
      */
     writable: function(item) {
-        $(item).removeAttr('readonly').removeAttr('tabindex').removeClass('readonly');
+        let $readonlys = $(item);
+        $readonlys.removeAttr('readonly').removeAttr('tabindex').removeClass('readonly');
+        for (let i = 0; i < $readonlys.length; i++) {
+            let $readonly = $($readonlys[i]);
+            if ($readonly.prop('type') == 'radio') {
+                $readonly.closest('label').css('display', 'inherit');
+            }
+        }
     },
 
     listReset: function(e) {

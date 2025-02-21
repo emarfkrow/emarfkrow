@@ -110,7 +110,7 @@ $(function() {
 
         for (let k in formJson) {
             let itemJson = formJson[k];
-            if (Array.isArray(itemJson)) {
+            if (Array.isArray(itemJson) && itemJson.length > 0) {
                 if (k.match(/Grid$/)) {
 
                     if (columnDetail && columnDetail != '') {
@@ -385,37 +385,40 @@ let Ajaxize = {
                     }
                 }
 
-                // グリッドのエラースタイルを作成
-                var gridColumns = grid.getColumns();
-                for (var colIndex in gridColumns) {
-                    var column = gridColumns[colIndex];
-                    if (column['id'] == fieldName) {
+                if (grid) {
 
-                        let rowStyles = gridStyles[gridId];
-                        if (!rowStyles) {
-                            rowStyles = {};
+                    // グリッドのエラースタイルを作成
+                    var gridColumns = grid.getColumns();
+                    for (var colIndex in gridColumns) {
+                        var column = gridColumns[colIndex];
+                        if (column['id'] == fieldName) {
+
+                            let rowStyles = gridStyles[gridId];
+                            if (!rowStyles) {
+                                rowStyles = {};
+                            }
+
+                            var cellStyles = rowStyles[rowIndex];
+                            if (!cellStyles) {
+                                cellStyles = {};
+                            }
+
+                            cellStyles[fieldName] = 'error';
+                            rowStyles[rowIndex] = cellStyles;
+                            gridStyles[gridId] = rowStyles;
+
+                            cell = colIndex;
+
+                            break;
                         }
-
-                        var cellStyles = rowStyles[rowIndex];
-                        if (!cellStyles) {
-                            cellStyles = {};
-                        }
-
-                        cellStyles[fieldName] = 'error';
-                        rowStyles[rowIndex] = cellStyles;
-                        gridStyles[gridId] = rowStyles;
-
-                        cell = colIndex;
-
-                        break;
                     }
-                }
 
-                try {
-                    grid.getCellNode(rowIndex, cell).title = errors[k];
-                } catch (e) {
-                    // グリッドが横に長すぎるとcellnodeが取れない時がある
-                    console.error(e);
+                    try {
+                        grid.getCellNode(rowIndex, cell).title = errors[k];
+                    } catch (e) {
+                        // グリッドが横に長すぎるとcellnodeが取れない時がある
+                        console.error(e);
+                    }
                 }
             }
         }

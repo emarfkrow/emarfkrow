@@ -16,6 +16,8 @@ limitations under the License.
 
 package jp.co.golorp.emarf.sql;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Map;
 
 import jp.co.golorp.emarf.util.MapList;
@@ -245,6 +247,16 @@ public class DataSourcesAssistOracle extends DataSourcesAssist {
     @Override
     public String sysDate() {
         return "SYSDATE";
+    }
+
+    /** */
+    @Override
+    public int getColumnSize(final ResultSet columns) throws SQLException {
+        // viewで「NUMBER（桁指定なし）」になった場合、BigDecimalにするため「11」以上にする
+        if (columns.getString("TYPE_NAME").equals("NUMBER") && columns.getInt("COLUMN_SIZE") == 38) {
+            return 11;
+        }
+        return columns.getInt("COLUMN_SIZE");
     }
 
 }

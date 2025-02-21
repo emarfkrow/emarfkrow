@@ -16,6 +16,9 @@ limitations under the License.
 
 package jp.co.golorp.emarf.sql;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 import jp.co.golorp.emarf.util.MapList;
 
 /**
@@ -133,6 +136,11 @@ public final class DataSourcesAssistPostgreSQL extends DataSourcesAssist {
     public String sysDate() {
         // TODO 自動生成されたメソッド・スタブ
         return null;
+    }
+
+    @Override
+    public int getColumnSize(final ResultSet columns) throws SQLException {
+        return columns.getInt("COLUMN_SIZE");
     }
 
 }

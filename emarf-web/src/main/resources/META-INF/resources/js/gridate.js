@@ -351,7 +351,7 @@ $(function() {
                 if (c) {
                     //参照モデルなら隠しリンク押下
                     let column = g.getColumns()[c];
-                    if (column.referField) {
+                    if (column.referField && g.getOptions().editable == true) {
                         let gridNode = g.getContainerNode();
                         let gridId = gridNode.id;
                         console.debug('gridId: ' + gridId);
@@ -954,6 +954,7 @@ var Gridate = {
             }
 
             entityName = Casing.toPascal(tableName);
+
             //別ウィンドウにするためwidth/heightを指定
             window.open('./' + entityName + '.html' + queryString, entityName + primaryKey, 'width=' + window.outerWidth + 'px,height=' + window.outerHeight + '%');
         }

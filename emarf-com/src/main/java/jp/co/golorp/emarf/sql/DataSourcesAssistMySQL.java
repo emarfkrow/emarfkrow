@@ -16,6 +16,9 @@ limitations under the License.
 
 package jp.co.golorp.emarf.sql;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 import jp.co.golorp.emarf.util.MapList;
 
 /**
@@ -132,6 +135,11 @@ public final class DataSourcesAssistMySQL extends DataSourcesAssist {
     @Override
     public String sysDate() {
         return "sysdate()";
+    }
+
+    @Override
+    public int getColumnSize(final ResultSet columns) throws SQLException {
+        return columns.getInt("COLUMN_SIZE");
     }
 
 }

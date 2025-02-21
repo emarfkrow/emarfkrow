@@ -322,7 +322,7 @@ public final class DataSources {
                     column.setTypeName(columns.getString("TYPE_NAME"));
 
                     // カラムサイズ
-                    column.setColumnSize(columns.getInt("COLUMN_SIZE"));
+                    column.setColumnSize(assist.getColumnSize(columns));
                     if (column.getColumnSize() == 0) {
                         column.setColumnSize(3);
                     }
