@@ -55,9 +55,9 @@ limitations under the License.
 <script th:src="@{/js/plugins/SlickGrid-2.4.44/controls/slick.columnpicker.js}"></script>
 <!-- original js -->
 <script th:inline="javascript">
-// 	document.oncontextmenu = function() {
-// 		return false;
-// 	}
+	// 	document.oncontextmenu = function() {
+	// 		return false;
+	// 	}
 	//grid列名が取れない事があるのでonloadまで遅らせる
 	let Messages = {};
 	let optionsSizeSearch = 0;
@@ -66,6 +66,7 @@ limitations under the License.
 	let columnStatus = null;
 	let columnDelete = null;
 	let columnDetail = null;
+	let columnHistoryReason = null;
 	$(function() {
 		$.ajax({
 			async : false,
@@ -83,6 +84,7 @@ limitations under the License.
 		columnStatus = Messages['column.status'];
 		columnDelete = Messages['column.delete'];
 		columnDetail = Messages['view.detail'];
+		columnHistoryReason = Messages['column.history.reason'];
 	});
 </script>
 <script th:src="@{/js/ajaxize.js}"></script>

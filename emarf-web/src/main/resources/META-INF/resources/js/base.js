@@ -698,4 +698,16 @@ let Base = {
         }
     },
 
+    historyReason: function(me) {
+
+        let reason = prompt('変更理由を入力してください。');
+        if (reason) {
+            let $form = $(me).closest('form');
+            let name = Casing.toCamel(columnHistoryReason);
+            $form.find('[name="' + name + '"]').remove();
+            $form.append('<input type=\"hidden\" name=\"' + name + '\" value=\"' + reason + '\">');
+        }
+        return reason;
+    },
+
 };

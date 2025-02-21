@@ -87,6 +87,9 @@ public final class DataSources {
     /** 列評価をスキップする列名 */
     private static String columnIgnoreRe;
 
+    /** 変更理由 */
+    private static String reason;
+
     /** VIEWで変換先を指定する列名 */
     private static String viewDetailColumn;
 
@@ -254,6 +257,7 @@ public final class DataSources {
         dinksRe = bundle.getString("relation.dinks.re");
         orphansRe = bundle.getString("relation.orphans.re");
         columnIgnoreRe = bundle.getString("column.ignore.re");
+        reason = bundle.getString("column.history.reason");
         viewDetailColumn = bundle.getString("view.detail");
         noNumberingIntRe = bundle.getString("column.int.nonumbering.re");
         numberingCharRe = bundle.getString("column.char.numbering.re");
@@ -358,10 +362,11 @@ public final class DataSources {
                     }
                     column.setRemarks(remarks);
 
-                    // 主キー
                     if (table.getPrimaryKeys().contains(columnName)) {
+                        // 主キー
                         column.setPk(true);
                     } else {
+                        // 変更理由でない場合
                         if (table.getUniqueIndexColumns().contains(columnName)) {
                             column.setUnique(true);
                         }
@@ -877,7 +882,11 @@ public final class DataSources {
                 }
 
                 String destPKCsv = dest.getPrimaryKeys().toString().replaceAll("[\\[\\]]", "");
-                String destColCsv = dest.getNonPrimaryKeys().toString().replaceAll("[\\[\\]]", "");
+                List<String> nonPrimaryKeys = new ArrayList<String>(dest.getNonPrimaryKeys());
+                if (!StringUtil.isNullOrBlank(reason) && nonPrimaryKeys.contains(reason)) {
+                    nonPrimaryKeys.remove(reason);
+                }
+                String destColCsv = nonPrimaryKeys.toString().replaceAll("[\\[\\]]", "");
 
                 // キーが合致するならスキップ
                 if (srcPKCsv.equals(destPKCsv)) {

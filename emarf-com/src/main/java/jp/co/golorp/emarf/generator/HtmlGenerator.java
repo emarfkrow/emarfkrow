@@ -63,6 +63,8 @@ public final class HtmlGenerator {
     private static String updateId;
     /** ステータス区分 */
     private static String status;
+    /** 変更理由 */
+    private static String reason;
 
     /** 数値列で自動採番しないサフィックス */
     private static String[] intNoFormatSuffixs;
@@ -133,6 +135,7 @@ public final class HtmlGenerator {
         updateTs = bundle.getString("column.update.timestamp");
         updateId = bundle.getString("column.update.id");
         status = bundle.getString("column.status");
+        reason = bundle.getString("column.history.reason");
 
         intNoFormatSuffixs = bundle.getString("column.int.noformat.suffixs").split(",");
         charNotNullRe = bundle.getString("column.char.notnull.re");
@@ -460,8 +463,7 @@ public final class HtmlGenerator {
         s.add("  <div layout:fragment=\"article\">");
         s.add("    <h2 th:text=\"#{" + entity + ".h2}\">h2</h2>");
         s.add("    <form name=\"" + entity + "RegistForm\" action=\"" + entity + "Regist.ajax\" class=\"regist\">");
-        // 親モデル
-        for (TableInfo parent : table.getParentInfos()) {
+        for (TableInfo parent : table.getParentInfos()) { // 親モデル
             String e = StringUtil.toPascalCase(parent.getName());
             s.add("      <fieldset class=\"parent\">");
             s.add("        <legend th:text=\"#{" + e + ".legend}\">legend</legend>");
@@ -477,8 +479,7 @@ public final class HtmlGenerator {
         s.add("        <legend th:text=\"#{" + entity + ".legend}\">legend</legend>");
         htmlFields(table, s, true, false);
         s.add("      </fieldset>");
-        // 兄弟モデル
-        List<TableInfo> bros = table.getBrosInfos();
+        List<TableInfo> bros = table.getBrosInfos(); // 兄弟モデル
         if (bros != null) {
             for (TableInfo bro : bros) {
                 String e = StringUtil.toPascalCase(bro.getName());
@@ -576,8 +577,12 @@ public final class HtmlGenerator {
                 s.add("        <button id=\"Forbid" + entity + "\" type=\"submit\" class=\"forbid\" data-action=\""
                         + entity + "Forbid.ajax\" th:text=\"#{common.forbid}\" tabindex=\"-1\">否認</button>");
             }
+            String onclick = "";
+            if (table.getHistoryInfo() != null && !StringUtil.isNullOrBlank(reason)) {
+                onclick = " onclick=\"if (!Base.historyReason(this)) { return false; }\"";
+            }
             s.add("        <button id=\"Regist" + entity
-                    + "\" type=\"submit\" class=\"regist\" th:text=\"#{common.regist}\">登録</button>");
+                    + "\" type=\"submit\" class=\"regist\" th:text=\"#{common.regist}\"" + onclick + ">登録</button>");
         }
         s.add("      </div>");
         s.add("    </form>");
