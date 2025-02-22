@@ -341,8 +341,13 @@ public final class HtmlGenerator {
         s.add("      </div>");
         s.add("      <div class=\"submits\">");
         if (!table.isHistory() && (!table.isView() || table.isConvView()) && table.getChildInfos().size() == 0) {
+            String onclick = "";
+            if (table.getHistoryInfo() != null && !StringUtil.isNullOrBlank(reason)) {
+                onclick = " onclick=\"if (!Base.historyReason(this)) { return false; }\"";
+            }
             s.add("        <button id=\"Regist" + e
-                    + "S\" type=\"submit\" class=\"regist\" th:text=\"#{common.regist}\">submit</button>");
+                    + "S\" type=\"submit\" class=\"regist\" th:text=\"#{common.regist}\"" + onclick
+                    + ">submit</button>");
         }
         s.add("      </div>");
         s.add("    </form>");

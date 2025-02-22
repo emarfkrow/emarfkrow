@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -35,8 +36,10 @@ import org.slf4j.LoggerFactory;
 
 import jp.co.golorp.emarf.entity.IEntity;
 import jp.co.golorp.emarf.exception.SysError;
+import jp.co.golorp.emarf.generator.BeanGenerator;
 import jp.co.golorp.emarf.lang.StringUtil;
 import jp.co.golorp.emarf.util.Messages;
+import jp.co.golorp.emarf.util.ResourceBundles;
 
 /**
  * フォームバリデータ
@@ -53,6 +56,9 @@ public final class FormValidator {
 
     /** ~に囲まれたパターン（正規表現部の名称変換用） */
     private static Pattern regexpPattern = Pattern.compile("\\~\\~(.+?)\\~\\~");
+
+    /** BeanGenerator.properties */
+    private static ResourceBundle bundle = ResourceBundles.getBundle(BeanGenerator.class);
 
     /** プライベートコンストラクタ */
     private FormValidator() {
@@ -196,6 +202,8 @@ public final class FormValidator {
             throw new SysError(e);
         }
 
+        String reason = bundle.getString("column.history.reason");
+
         // フォームクラスインスタンスのセッターでループ
         Method[] methods = clazz.getMethods();
         for (Method method : methods) {
@@ -206,7 +214,6 @@ public final class FormValidator {
 
             String fieldName = null;
             Object value = null;
-
             Class<?>[] parameterTypes = method.getParameterTypes();
             Class<?>[] interfaces = parameterTypes[0].getInterfaces();
             if (!isGrid && !isNested && interfaces.length > 0
@@ -271,18 +278,14 @@ public final class FormValidator {
                     value = postJson.get(StringUtil.toUpperKebabCase(fieldName));
                 }
             }
-
             if (value != null) {
                 // 送信値がある場合
-
                 if (value instanceof List) {
                     // 送信値がListの場合
-
-                    // 兄弟モデルには子モデルを付けない
                     if (isNested) {
+                        // 兄弟モデルには子モデルを付けない
                         continue;
                     }
-
                     List<?> list = (List<?>) value;
                     if (list.size() > 0 && list.get(0) instanceof Map) {
                         // 送信値の一つ目がMapの場合（何らかのクラスであるという事）
@@ -298,15 +301,19 @@ public final class FormValidator {
                             if (gridRow.isEmpty()) {
                                 formList.add(null);
                             } else {
+                                if (!StringUtil.isNullOrBlank(reason)) {
+                                    String reasonName = StringUtil.toCamelCase(reason);
+                                    if (!StringUtil.isNullOrBlank(postJson.get(reasonName))) {
+                                        gridRow.put(reason, postJson.get(reasonName));
+                                    }
+                                }
                                 @SuppressWarnings("unchecked")
                                 T t = (T) toGridForm(gridClassName, gridRow);
                                 formList.add(t);
                             }
                         }
-
                         value = formList;
                     }
-
                     try {
                         method.invoke(o, value);
                     } catch (Exception e) {
@@ -327,7 +334,6 @@ public final class FormValidator {
                 }
             }
         }
-
         @SuppressWarnings("unchecked")
         T t = (T) o;
         return t;
