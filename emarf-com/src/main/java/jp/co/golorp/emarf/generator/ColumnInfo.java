@@ -24,7 +24,7 @@ package jp.co.golorp.emarf.generator;
 public class ColumnInfo {
 
     /** カラム名 */
-    private String columnName;
+    private String name;
 
     /** 取得したタイプ名 */
     private String typeName;
@@ -68,15 +68,15 @@ public class ColumnInfo {
     /**
      * @return カラム名
      */
-    public String getColumnName() {
-        return columnName;
+    public String getName() {
+        return name;
     }
 
     /**
      * @param p カラム名
      */
-    public void setColumnName(final String p) {
-        this.columnName = p;
+    public void setName(final String p) {
+        this.name = p;
     }
 
     /**

@@ -158,7 +158,7 @@ public final class FormGenerator {
             s.add("    private static final Logger LOG = LoggerFactory.getLogger(" + entity + "RegistForm.class);");
             for (ColumnInfo column : table.getColumnInfos().values()) {
 
-                String columnName = column.getColumnName();
+                String columnName = column.getName();
 
                 // レコードメタデータならスキップ
                 boolean isInsertDt = columnName.matches("(?i)^" + insertDt + "$");
@@ -270,7 +270,7 @@ public final class FormGenerator {
     private static void javaFormDetailRegistChecks(final List<String> keys, final ColumnInfo column,
             final List<String> s) {
 
-        String colName = column.getColumnName();
+        String colName = column.getName();
 
         // 必須チェック
         if (column.getNullable() == 0) {

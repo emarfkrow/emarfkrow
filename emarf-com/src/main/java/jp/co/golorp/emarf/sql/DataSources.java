@@ -320,7 +320,7 @@ public final class DataSources {
                     table.getColumnInfos().put(columnName, column);
 
                     // カラム物理名
-                    column.setColumnName(columnName);
+                    column.setName(columnName);
 
                     // DBデータ型
                     column.setTypeName(columns.getString("TYPE_NAME"));
@@ -462,7 +462,7 @@ public final class DataSources {
             Map<String, TableInfo> refers = new LinkedHashMap<String, TableInfo>();
             for (ColumnInfo column : table.getColumnInfos().values()) {
                 if (column.getReferInfo() != null) {
-                    refers.put(column.getColumnName(), column.getReferInfo());
+                    refers.put(column.getName(), column.getReferInfo());
                 }
             }
             if (refers.size() > 0) {
@@ -724,7 +724,7 @@ public final class DataSources {
             dataType = "Integer";
 
             if (column.isPk()) {
-                if (!column.getColumnName().matches(noNumberingIntRe)) {
+                if (!column.getName().matches(noNumberingIntRe)) {
                     column.setNumbering(true);
                 }
             }
@@ -735,16 +735,16 @@ public final class DataSources {
             dataType = "java.math.BigDecimal";
 
             if (column.isPk() && column.getDecimalDigits() == 0) {
-                if (!column.getColumnName().matches(noNumberingIntRe)) {
+                if (!column.getName().matches(noNumberingIntRe)) {
                     column.setNumbering(true);
                 }
             }
 
-        } else if (StringUtil.endsWith(inputDateSuffixs, column.getColumnName())) {
+        } else if (StringUtil.endsWith(inputDateSuffixs, column.getName())) {
 
             dataType = "java.time.LocalDate";
 
-        } else if (StringUtil.endsWith(inputTimeSuffixs, column.getColumnName())) {
+        } else if (StringUtil.endsWith(inputTimeSuffixs, column.getName())) {
 
             dataType = "java.time.LocalTime";
 
@@ -759,7 +759,7 @@ public final class DataSources {
 
             if (typeName.equals("CHAR")) {
                 if (column.isPk()) {
-                    if (column.getColumnName().matches(numberingCharRe)) {
+                    if (column.getName().matches(numberingCharRe)) {
                         column.setNumbering(true);
                     }
                 }

@@ -145,13 +145,13 @@ public final class SqlGenerator {
                 String orders = "";
                 if (table.getPrimaryKeys().size() == 1) {
                     for (ColumnInfo column : table.getColumnInfos().values()) {
-                        if (StringUtil.endsWith(orderSuffixs, column.getColumnName())) {
+                        if (StringUtil.endsWith(orderSuffixs, column.getName())) {
                             if (orders.length() > 0) {
                                 orders += "    , ";
                             } else {
                                 orders += "    ";
                             }
-                            orders += "a." + assist.quotedSQL(column.getColumnName()) + "\r\n";
+                            orders += "a." + assist.quotedSQL(column.getName()) + "\r\n";
                         }
                     }
                 }
@@ -165,13 +165,13 @@ public final class SqlGenerator {
                 }
                 if (table.getPrimaryKeys().size() > 1) {
                     for (ColumnInfo column : table.getColumnInfos().values()) {
-                        if (StringUtil.endsWith(orderSuffixs, column.getColumnName())) {
+                        if (StringUtil.endsWith(orderSuffixs, column.getName())) {
                             if (orders.length() > 0) {
                                 orders += "    , ";
                             } else {
                                 orders += "    ";
                             }
-                            orders += "a." + assist.quotedSQL(column.getColumnName()) + "\r\n";
+                            orders += "a." + assist.quotedSQL(column.getName()) + "\r\n";
                         }
                     }
                 }
@@ -218,12 +218,12 @@ public final class SqlGenerator {
             String meiSuf = e[1];
 
             // 参照元カラム名が参照キーに合致しなければスキップ
-            if (!column.getColumnName().matches("(?i)^.*" + keySuf + "$")) {
+            if (!column.getName().matches("(?i)^.*" + keySuf + "$")) {
                 continue;
             }
 
             // 参照元カラム名のIDサフィックスを名称サフィックスに置換して、参照元の名称カラム名を取得
-            String srcKey = column.getColumnName();
+            String srcKey = column.getName();
             String srcMei = srcKey.replaceAll("(?i)" + keySuf + "$", meiSuf).toUpperCase();
 
             // 参照先でID・名称のサフィックスに合致するカラムを取得し、両方取得できなければスキップ
@@ -332,13 +332,13 @@ public final class SqlGenerator {
                 String orders = "";
                 if (table.getPrimaryKeys().size() == 1) {
                     for (ColumnInfo column : table.getColumnInfos().values()) {
-                        if (StringUtil.endsWith(orderSuffixs, column.getColumnName())) {
+                        if (StringUtil.endsWith(orderSuffixs, column.getName())) {
                             if (orders.length() > 0) {
                                 orders += "    , ";
                             } else {
                                 orders += "    ";
                             }
-                            orders += "a." + assist.quotedSQL(column.getColumnName()) + "\r\n";
+                            orders += "a." + assist.quotedSQL(column.getName()) + "\r\n";
                         }
                     }
                 }
@@ -352,13 +352,13 @@ public final class SqlGenerator {
                 }
                 if (table.getPrimaryKeys().size() > 1) {
                     for (ColumnInfo column : table.getColumnInfos().values()) {
-                        if (StringUtil.endsWith(orderSuffixs, column.getColumnName())) {
+                        if (StringUtil.endsWith(orderSuffixs, column.getName())) {
                             if (orders.length() > 0) {
                                 orders += "    , ";
                             } else {
                                 orders += "    ";
                             }
-                            orders += "a." + assist.quotedSQL(column.getColumnName()) + "\r\n";
+                            orders += "a." + assist.quotedSQL(column.getName()) + "\r\n";
                         }
                     }
                 }
@@ -464,7 +464,7 @@ public final class SqlGenerator {
      */
     private static void addWhere(final List<String> sql, final ColumnInfo column) {
 
-        String columnName = column.getColumnName();
+        String columnName = column.getName();
 
         String quoted = assist.quotedSQL(columnName);
         String param = BeanGenerator.getRightHand(columnName, column);
@@ -509,7 +509,7 @@ public final class SqlGenerator {
      */
     private static String getQuoted(final ColumnInfo columnInfo) {
 
-        String columnName = columnInfo.getColumnName();
+        String columnName = columnInfo.getName();
 
         String quoted = "a." + assist.quotedSQL(columnName);
 
@@ -518,15 +518,15 @@ public final class SqlGenerator {
             String trimed = assist.trimedSQL(quoted);
             quoted = trimed + " AS " + columnName;
 
-        } else if (StringUtil.endsWith(inputDateSuffixs, columnInfo.getColumnName())) {
+        } else if (StringUtil.endsWith(inputDateSuffixs, columnInfo.getName())) {
 
             quoted = assist.date2CharSQL(quoted) + " AS " + columnName;
 
-        } else if (StringUtil.endsWith(inputDateTimeSuffixs, columnInfo.getColumnName())) {
+        } else if (StringUtil.endsWith(inputDateTimeSuffixs, columnInfo.getName())) {
 
             quoted = assist.dateTime2CharSQL(quoted) + " AS " + columnName;
 
-        } else if (StringUtil.endsWith(inputTimestampSuffixs, columnInfo.getColumnName())) {
+        } else if (StringUtil.endsWith(inputTimestampSuffixs, columnInfo.getName())) {
 
             quoted = assist.timestamp2CharSQL(quoted) + " AS " + columnName;
         }

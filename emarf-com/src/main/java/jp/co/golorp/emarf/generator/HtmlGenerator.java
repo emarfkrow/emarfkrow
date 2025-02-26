@@ -243,8 +243,8 @@ public final class HtmlGenerator {
         s.add("      <div class=\"buttons\">");
         s.add("        <button type=\"reset\" id=\"Reset" + e
                 + "\" th:text=\"#{common.reset}\" class=\"reset\">reset</button>");
-        // 履歴モデルでなく、主キーが１つか組合せモデルなら新規ボタンを出力
-        if (!table.isHistory() && (table.getPrimaryKeys().size() == 1 || table.getComboInfos().size() > 1)) {
+        boolean isAnew = isAnew(table);
+        if (isAnew) {
             s.add("        <a th:href=\"@{/model/" + e + ".html}\" target=\"dialog\" id=\"" + e
                     + "\" class=\"anew\" th:text=\"#{" + e + ".add}\" tabindex=\"-1\">" + remarks + "</a>");
         }
@@ -258,14 +258,14 @@ public final class HtmlGenerator {
         s.add("    <form name=\"" + e + "SRegistForm\" action=\"" + e + "SRegist.ajax\" class=\"regist\">");
         s.add("      <h3 th:text=\"#{" + e + ".h3}\">h3</h3>");
         String addRow = "";
-        if (table.getPrimaryKeys().size() == 1) { // 単一キーの場合は新規行あり
+        if (isAnew) { // 単一キーの場合は新規行あり
             boolean isRefer = false; //メタ情報以外の必須の参照モデル、および、ファイル列が含まれていなければ新規行を表示
             for (ColumnInfo column : table.getColumnInfos().values()) {
-                if (column.getColumnName().matches("(?i)^" + insertId + "$")
-                        || column.getColumnName().matches("(?i)^" + updateId + "$")) {
+                if (column.getName().matches("(?i)^" + insertId + "$")
+                        || column.getName().matches("(?i)^" + updateId + "$")) {
                     continue;
                 }
-                if (StringUtil.endsWith(inputFileSuffixs, column.getColumnName())) {
+                if (StringUtil.endsWith(inputFileSuffixs, column.getName())) {
                     isRefer = true;
                     break;
                 }
@@ -305,11 +305,11 @@ public final class HtmlGenerator {
             for (ColumnInfo column : table.getColumnInfos().values()) {
                 //グリッド用の非表示の参照ボタン
                 if (column.getReferInfo() != null) {
-                    String columnName = column.getColumnName();
+                    String columnName = column.getName();
                     if (columnName.matches("(?i)^" + insertId + "$") || columnName.matches("(?i)^" + updateId + "$")) {
                         continue;
                     }
-                    String property = StringUtil.toCamelCase(column.getColumnName());
+                    String property = StringUtil.toCamelCase(column.getName());
                     TableInfo refer = column.getReferInfo();
                     String referEntity = StringUtil.toPascalCase(refer.getName());
                     String action = "";
@@ -359,6 +359,28 @@ public final class HtmlGenerator {
 
     /**
      * @param table
+     * @return boolean
+     */
+    private static boolean isAnew(final TableInfo table) {
+
+        boolean isAllNonNumberingKey = true;
+        for (String pk : table.getPrimaryKeys()) {
+            ColumnInfo primaryKey = table.getColumnInfos().get(pk);
+            if (primaryKey.isNumbering()) {
+                isAllNonNumberingKey = false;
+                break;
+            }
+        }
+
+        //履歴モデルでない
+        //ビューでない
+        //主キーが一つ か 組合せモデル か 主キーが２つ以上で全て採番キーでない
+        return !table.isHistory() && !table.isView()
+                && (table.getPrimaryKeys().size() == 1 || table.getComboInfos().size() > 1 || isAllNonNumberingKey);
+    }
+
+    /**
+     * @param table
      * @param tables
      * @return TableInfo
      */
@@ -390,7 +412,7 @@ public final class HtmlGenerator {
      */
     private static void htmlGridColumns(final String gridDir, final TableInfo table) {
 
-        String entityName = StringUtil.toPascalCase(table.getName());
+        String entity = StringUtil.toPascalCase(table.getName());
 
         List<String> s = new ArrayList<String>();
         s.add("/**");
@@ -398,17 +420,15 @@ public final class HtmlGenerator {
         s.add(" */");
         s.add("");
         //grid列名が取れない事があるのでonloadまで遅らせる
-        s.add("let " + entityName + "GridColumns = [];");
+        s.add("let " + entity + "GridColumns = [];");
         s.add("");
         s.add("$(function() {");
-        s.add("    " + entityName + "GridColumns = [");
-
-        Map<String, ColumnInfo> columnMap = table.getColumnInfos();
+        s.add("    " + entity + "GridColumns = [");
 
         //主キー列の出力
         for (String pk : table.getPrimaryKeys()) {
-            ColumnInfo primaryKey = columnMap.get(pk);
-            String gridColumn = htmlGridColumn(primaryKey, entityName, columnMap, table.isHistory(), table.isView());
+            ColumnInfo primaryKey = table.getColumnInfos().get(pk);
+            String gridColumn = htmlGridColumn(table, primaryKey);
             if (gridColumn != null) {
                 s.add("        " + gridColumn);
             }
@@ -427,8 +447,8 @@ public final class HtmlGenerator {
                 continue;
             }
 
-            ColumnInfo column = columnMap.get(columnName);
-            String gridColumn = htmlGridColumn(column, entityName, columnMap, table.isHistory(), table.isView());
+            ColumnInfo column = table.getColumnInfos().get(columnName);
+            String gridColumn = htmlGridColumn(table, column);
             if (gridColumn != null) {
                 s.add("        " + gridColumn);
             }
@@ -437,7 +457,7 @@ public final class HtmlGenerator {
         s.add("    ];");
         s.add("});");
 
-        FileUtil.writeFile(gridDir + File.separator + entityName + "GridColumns.js", s);
+        FileUtil.writeFile(gridDir + File.separator + entity + "GridColumns.js", s);
     }
 
     /**
@@ -503,7 +523,7 @@ public final class HtmlGenerator {
             String addRow = " data-addRow=\"true\"";
             // ファイル列がある場合は新規行を取消
             for (ColumnInfo column : child.getColumnInfos().values()) {
-                if (StringUtil.endsWith(inputFileSuffixs, column.getColumnName())) {
+                if (StringUtil.endsWith(inputFileSuffixs, column.getName())) {
                     addRow = "";
                     break;
                 }
@@ -522,11 +542,11 @@ public final class HtmlGenerator {
                     + frozen + "\" th:data-href=\"@{/model/" + e + ".html}\"></div>");
             for (ColumnInfo column : child.getColumnInfos().values()) {
                 if (column.getReferInfo() != null) {
-                    String columnName = column.getColumnName();
+                    String columnName = column.getName();
                     if (columnName.matches("(?i)^" + insertId + "$") || columnName.matches("(?i)^" + updateId + "$")) {
                         continue;
                     }
-                    String p = StringUtil.toCamelCase(column.getColumnName());
+                    String p = StringUtil.toCamelCase(column.getName());
                     TableInfo refer = column.getReferInfo();
                     String referE = StringUtil.toPascalCase(refer.getName());
                     String action = "";
@@ -619,13 +639,13 @@ public final class HtmlGenerator {
 
         s.add("");
         for (ColumnInfo column : table.getColumnInfos().values()) {
-            String property = StringUtil.toCamelCase(column.getColumnName());
+            String property = StringUtil.toCamelCase(column.getName());
             s.add(entity + "." + property + " " + column.getRemarks());
         }
 
         s.add("");
         for (ColumnInfo column : table.getColumnInfos().values()) {
-            String property = StringUtil.toCamelCase(column.getColumnName());
+            String property = StringUtil.toCamelCase(column.getName());
             s.add(entity + "Grid." + property + " " + column.getRemarks());
 
         }
@@ -634,7 +654,7 @@ public final class HtmlGenerator {
             s.add("");
             s.add(e + ".legend   " + bros.getRemarks());
             for (ColumnInfo column : bros.getColumnInfos().values()) {
-                String property = StringUtil.toCamelCase(column.getColumnName());
+                String property = StringUtil.toCamelCase(column.getName());
                 s.add(e + "." + property + " " + column.getRemarks());
             }
         }
@@ -646,7 +666,7 @@ public final class HtmlGenerator {
             s.add(e + ".h3  " + mei + "一覧");
             s.add(e + ".add " + mei + "追加");
             for (ColumnInfo column : child.getColumnInfos().values()) {
-                String property = StringUtil.toCamelCase(column.getColumnName());
+                String property = StringUtil.toCamelCase(column.getName());
                 s.add(e + "Grid." + property + " " + column.getRemarks());
             }
         }
@@ -851,17 +871,14 @@ public final class HtmlGenerator {
     }
 
     /**
+     * @param table
      * @param column
-     * @param entity
-     * @param columnMap
-     * @param isHis
-     * @param isV
      * @return 列定義文字列
      */
-    private static String htmlGridColumn(final ColumnInfo column, final String entity,
-            final Map<String, ColumnInfo> columnMap, final boolean isHis, final boolean isV) {
+    private static String htmlGridColumn(final TableInfo table, final ColumnInfo column) {
 
-        String name = column.getColumnName();
+        String entity = StringUtil.toPascalCase(table.getName());
+        String name = column.getName();
         String mei = "Messages['" + entity + "Grid." + StringUtil.toCamelCase(name) + "']";
 
         int w = column.getColumnSize() * COLUMN_WIDTH_PX_MULTIPLIER;
@@ -883,11 +900,20 @@ public final class HtmlGenerator {
         }
 
         String css = "";
-        if (!isV) {
+        if (!table.isView()) {
             if (column.isPk()) {
                 css = "primaryKey";
-                if (column.isNumbering()) {
-                    css += " numbering";
+                boolean isParentKey = false;
+                if (table.getParentInfos() != null) {
+                    for (TableInfo parent : table.getParentInfos()) {
+                        if (parent.getPrimaryKeys().contains(name)) {
+                            isParentKey = true;
+                            break;
+                        }
+                    }
+                }
+                if ((column.isNumbering() && column.getReferInfo() == null) || isParentKey) {
+                    css += " numbering"; //採番キー かつ 参照キーでない か 親モデルのキー
                 }
             } else if (column.isUnique()) {
                 css = "uniqueKey";
@@ -906,7 +932,7 @@ public final class HtmlGenerator {
         String format = "null";
         if (column.getDataType().equals("java.time.LocalDate")) {
             format = "Slick.Formatters.Extends.Date";
-        } else if (StringUtil.endsWith(inputTimestampSuffixs, column.getColumnName())) {
+        } else if (StringUtil.endsWith(inputTimestampSuffixs, column.getName())) {
             format = "Slick.Formatters.Extends.Timestamp";
         } else if (column.getDataType().equals("java.time.LocalDateTime")) {
             format = "Slick.Formatters.Extends.DateTime";
@@ -931,7 +957,7 @@ public final class HtmlGenerator {
                         // カラム名の末尾を名称列サフィックスに変換
                         String tempMei = name.replaceAll("(?i)" + keySuffix + "$", meiSuffix);
                         // 名称列がテーブルに含まれていない場合は参照先から名称を取得する
-                        if (columnMap.containsKey(tempMei)) {
+                        if (table.getColumnInfos().containsKey(tempMei)) {
                             referMei = tempMei;
                             isMeiRefer = false;
                             break;
@@ -946,11 +972,10 @@ public final class HtmlGenerator {
                     String keySuffix = suffix[0];
                     String meiSuffix = suffix[1];
                     if (name.matches("(?i).*" + keySuffix + "$")) {
-
                         // カラム名の末尾を名称列サフィックスに変換して、名称列が参照先テーブルに含まれている場合は、取得する名称を決定する
                         String tempMei = name.replaceAll("(?i)" + keySuffix + "$", meiSuffix).toUpperCase();
                         for (ColumnInfo referColumnInfo : referInfo.getColumnInfos().values()) {
-                            if (tempMei.matches("(?i).*" + referColumnInfo.getColumnName() + "$")) {
+                            if (tempMei.matches("(?i).*" + referColumnInfo.getName() + "$")) {
                                 referMei = tempMei;
                                 break;
                             }
@@ -992,7 +1017,7 @@ public final class HtmlGenerator {
         } else if ((column.getTypeName().equals("INT") || column.getTypeName().equals("DECIMAL")
                 || column.getTypeName().equals("DOUBLE") || column.getTypeName().equals("NUMBER")
                 || column.getTypeName().equals("NUMERIC"))
-                && !StringUtil.endsWith(intNoFormatSuffixs, column.getColumnName())) {
+                && !StringUtil.endsWith(intNoFormatSuffixs, column.getName())) {
             c = getNumericColumn(column, name, mei, w, css, format);
         } else {
             c = "Column.text('" + name + "', " + mei + ", " + w + ", '" + css + "', " + format + "),";
@@ -1049,7 +1074,7 @@ public final class HtmlGenerator {
             if (isBro && column.isPk()) {
                 continue;
             }
-            String colName = column.getColumnName();
+            String colName = column.getName();
             if (colName.matches("(?i)^" + viewDetail + "$")) {
                 continue;
             }
@@ -1199,7 +1224,7 @@ public final class HtmlGenerator {
                 if (column.getReferInfo() != null) {
                     TableInfo refer = column.getReferInfo();
                     String entity = StringUtil.toPascalCase(refer.getName());
-                    String columnName = column.getColumnName();
+                    String columnName = column.getName();
                     String property = StringUtil.toCamelCase(columnName);
                     String fieldId = entity + "." + property;
                     s.add("        <div id=\"" + property + "\" class=\"stint\" style=\"display: none;\">");
@@ -1221,10 +1246,10 @@ public final class HtmlGenerator {
         String entity = StringUtil.toPascalCase(table.getName());
         if (column.getReferInfo() != null) {
             TableInfo refer = column.getReferInfo();
-            String meiColumnName = getMeiColumnName(column.getColumnName(), refer);
+            String meiColumnName = getMeiColumnName(column.getName(), refer);
             if (!table.getColumnInfos().containsKey(meiColumnName)) {
                 String meiId = entity + "." + StringUtil.toCamelCase(meiColumnName);
-                String referDef = getReferDef(entity, column.getColumnName(), refer);
+                String referDef = getReferDef(entity, column.getName(), refer);
                 s.add("          <span id=\"" + meiId + "\" class=\"refer\"" + referDef + "></span>");
             }
         }
@@ -1250,7 +1275,7 @@ public final class HtmlGenerator {
         }
 
         String entity = StringUtil.toPascalCase(tableInfo.getName());
-        String columnName = column.getColumnName();
+        String columnName = column.getName();
         String remarks = column.getRemarks();
         int max = column.getColumnSize();
 

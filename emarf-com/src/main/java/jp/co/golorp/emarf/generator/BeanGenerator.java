@@ -237,7 +237,7 @@ public final class BeanGenerator {
                 s.add("    }");
             }
             for (ColumnInfo column : table.getColumnInfos().values()) {
-                String n = column.getColumnName();
+                String n = column.getName();
                 String m = column.getRemarks();
                 String p = StringUtil.toCamelCase(n);
                 String a = StringUtil.toPascalCase(n);
@@ -592,7 +592,7 @@ public final class BeanGenerator {
      */
     private static String getQuoteEscaped(final ColumnInfo columnInfo) {
 
-        String columnName = columnInfo.getColumnName();
+        String columnName = columnInfo.getName();
 
         String quoteEscaped = "a." + assist.quoteEscapedSQL(columnName);
 
@@ -601,15 +601,15 @@ public final class BeanGenerator {
             String trimed = assist.trimedSQL(quoteEscaped);
             quoteEscaped = trimed + " AS " + columnName;
 
-        } else if (StringUtil.endsWith(inputDateSuffixs, columnInfo.getColumnName())) {
+        } else if (StringUtil.endsWith(inputDateSuffixs, columnInfo.getName())) {
 
             quoteEscaped = assist.date2CharSQL(quoteEscaped) + " AS " + columnName;
 
-        } else if (StringUtil.endsWith(inputDateTimeSuffixs, columnInfo.getColumnName())) {
+        } else if (StringUtil.endsWith(inputDateTimeSuffixs, columnInfo.getName())) {
 
             quoteEscaped = assist.dateTime2CharSQL(quoteEscaped) + " AS " + columnName;
 
-        } else if (StringUtil.endsWith(inputTimestampSuffixs, columnInfo.getColumnName())) {
+        } else if (StringUtil.endsWith(inputTimestampSuffixs, columnInfo.getName())) {
 
             quoteEscaped = assist.timestamp2CharSQL(quoteEscaped) + " AS " + columnName;
 
@@ -754,13 +754,13 @@ public final class BeanGenerator {
 
         } else if (!columnInfo.isPk() && columnInfo.getTypeName().equals("CHAR")
                 && !StringUtil.isNullOrBlank(charNotNullRe)
-                && !columnInfo.getColumnName().matches(charNotNullRe)) {
+                && !columnInfo.getName().matches(charNotNullRe)) {
             //主キー以外のCHAR列で、必須CHAR指定に合致しない場合、NULLならスペースを補填する
             rightHand = "NVL (" + rightHand + ", ' ')";
 
         } else if (!columnInfo.isPk() && columnInfo.getTypeName().equals("NUMBER")
                 && !StringUtil.isNullOrBlank(numberNullableRe)
-                && columnInfo.getColumnName().matches(numberNullableRe)) {
+                && columnInfo.getName().matches(numberNullableRe)) {
             //主キー以外のNUMBER列で、非必須INT指定に合致する場合、NULLなら「0」を補填する
             rightHand = "NVL (" + rightHand + ", 0)";
         }
@@ -779,7 +779,7 @@ public final class BeanGenerator {
 
         String tableName = tableInfo.getName();
 
-        String keyName = lastKeyInfo.getColumnName();
+        String keyName = lastKeyInfo.getName();
 
         String camel = StringUtil.toCamelCase(keyName);
 
@@ -1160,7 +1160,7 @@ public final class BeanGenerator {
             int cols = 0;
             int refs = 0;
             for (ColumnInfo column : child.getColumnInfos().values()) {
-                String colName = column.getColumnName();
+                String colName = column.getName();
                 String quoteEscaped = assist.quoteEscapedSQL(colName);
                 //時間サフィックスに合致する場合、データソースがOracleならTO_CHAR
                 if (StringUtil.endsWith(inputDateSuffixs, colName)) {

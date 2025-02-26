@@ -152,12 +152,16 @@ $(function() {
             $(stint).val(parentVal);
         }
 
-        //転生元（集約先）
+        // 集約先追加の場合
         let isSummary = $link.hasClass('summary');
         if (isSummary) {
+
+            // グリッド取得
             let $gridDiv = $form.find('[id$="Grid"]');
             let gridId = $gridDiv.prop('id');
             let grid = Gridate.grids[gridId]
+
+            // グリッド列から主キーのIDとカラム名をCSVで取得（？）
             let columns = grid.getColumns();
             let id = '';
             let field = '';
@@ -173,8 +177,12 @@ $(function() {
                     field += column.field;
                 }
             }
+
+            // グリッドデータ
             let view = grid.getData();
             let items = view.getItems();
+
+            // 主キーの値もCSVで取得してダイアログに反映
             let vals = '';
             for (let i in grid.getSelectedRows()) {
                 let item = items[i];
@@ -185,6 +193,44 @@ $(function() {
             }
             $dialogDiv.find('[id$="' + id + '"]').html(vals);
             $dialogDiv.find('[name$="' + id + '"]').val(vals);
+
+            // 全ての選択行で一致するカラム名と値を取得
+            let eqs = {};
+            for (let i in grid.getSelectedRows()) {
+                let item = items[i];
+                for (let colName in item) {
+                    if (colName != 'ROW_NUM' && colName != 'id' &&
+                        !colName.match(new RegExp('^' + Messages['column.start'] + '$', 'i')) &&
+                        !colName.match(new RegExp('^' + Messages['column.until'] + '$', 'i')) &&
+                        !colName.match(new RegExp('^' + Messages['column.insert.timestamp'] + '$', 'i')) &&
+                        !colName.match(new RegExp('^' + Messages['column.insert.id'] + '$', 'i')) &&
+                        !colName.match(new RegExp('^' + Messages['column.insert.mei'] + '$', 'i')) &&
+                        !colName.match(new RegExp('^' + Messages['column.update.timestamp'] + '$', 'i')) &&
+                        !colName.match(new RegExp('^' + Messages['column.update.id'] + '$', 'i')) &&
+                        !colName.match(new RegExp('^' + Messages['column.update.mei'] + '$', 'i')) &&
+                        !colName.match(new RegExp('^' + Messages['column.delete'] + '$', 'i')) &&
+                        !colName.match(new RegExp('^' + Messages['column.status'] + '$', 'i'))) {
+                        // メタ情報以外の項目を親画面に反映
+
+                        let val = item[colName];
+                        if (!eqs[colName]) {
+                            eqs[colName] = val;
+                        } else if (eqs[colName] != val) {
+                            eqs[colName] = ''
+                        }
+                    }
+                }
+            }
+
+            for (let colName in eqs) {
+                let eq = eqs[colName];
+                if (eq == '') {
+                    continue;
+                }
+                let property = Casing.toCamel(colName);
+                $dialogDiv.find('span[id$="' + property + '"]').html(eqs[colName]);
+                $dialogDiv.find('[name$="' + property + '"]').val(eqs[colName]);
+            }
         }
 
         // 呼び出し元を設定
