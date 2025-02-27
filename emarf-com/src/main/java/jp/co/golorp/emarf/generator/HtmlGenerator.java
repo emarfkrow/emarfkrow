@@ -258,23 +258,19 @@ public final class HtmlGenerator {
         s.add("    <form name=\"" + e + "SRegistForm\" action=\"" + e + "SRegist.ajax\" class=\"regist\">");
         s.add("      <h3 th:text=\"#{" + e + ".h3}\">h3</h3>");
         String addRow = "";
-        if (isAnew) { // 単一キーの場合は新規行あり
-            boolean isRefer = false; //メタ情報以外の必須の参照モデル、および、ファイル列が含まれていなければ新規行を表示
+        if (isAnew) {
+            boolean isNotAddRow = false;
             for (ColumnInfo column : table.getColumnInfos().values()) {
                 if (column.getName().matches("(?i)^" + insertId + "$")
                         || column.getName().matches("(?i)^" + updateId + "$")) {
-                    continue;
+                    continue; //メタ情報ならスキップ
                 }
                 if (StringUtil.endsWith(inputFileSuffixs, column.getName())) {
-                    isRefer = true;
-                    break;
-                }
-                if (column.isReborn() && column.getNullable() != 1) {
-                    isRefer = true; //転生先が必須なら新規行を取消
+                    isNotAddRow = true; //ファイル列があれば新規行なし
                     break;
                 }
             }
-            if (!isRefer && table.getChildInfos().size() == 0) {
+            if (!isNotAddRow && table.getChildInfos().size() == 0) {
                 addRow = " data-addRow=\"true\"";
             }
         }
@@ -358,11 +354,23 @@ public final class HtmlGenerator {
     }
 
     /**
+     * 履歴モデルでない かつ ビューでない かつ 転生元が必須でない<br>
+     * 主キーが一つ か 組合せモデル か 主キーが２つ以上で全て採番キーでない
      * @param table
      * @return boolean
      */
     private static boolean isAnew(final TableInfo table) {
 
+        // 転生元が必須か
+        boolean isReborneeNotNull = false;
+        for (ColumnInfo column : table.getColumnInfos().values()) {
+            if (column.isReborn() && column.getNullable() != 1) {
+                isReborneeNotNull = true;
+                break;
+            }
+        }
+
+        // 主キーが全て採番キーでないか
         boolean isAllNonNumberingKey = true;
         for (String pk : table.getPrimaryKeys()) {
             ColumnInfo primaryKey = table.getColumnInfos().get(pk);
@@ -372,10 +380,7 @@ public final class HtmlGenerator {
             }
         }
 
-        //履歴モデルでない
-        //ビューでない
-        //主キーが一つ か 組合せモデル か 主キーが２つ以上で全て採番キーでない
-        return !table.isHistory() && !table.isView()
+        return !table.isHistory() && !table.isView() && !isReborneeNotNull
                 && (table.getPrimaryKeys().size() == 1 || table.getComboInfos().size() > 1 || isAllNonNumberingKey);
     }
 
@@ -495,7 +500,6 @@ public final class HtmlGenerator {
             htmlFields(parent, s, true, false);
             s.add("      </fieldset>");
         }
-        // 本体
         String css = "";
         if (table.isView()) {
             css = " class=\"view\"";
@@ -520,23 +524,16 @@ public final class HtmlGenerator {
             s.add("      <h3 th:text=\"#{" + e + ".h3}\">h3</h3>");
             s.add("      <a th:href=\"@{/model/" + e + ".html}\" id=\"" + e + "\" target=\"dialog\" th:text=\"#{" + e
                     + ".add}\" class=\"addChild\" tabindex=\"-1\">" + child.getRemarks() + "</a>");
-            String addRow = " data-addRow=\"true\"";
+
             // ファイル列がある場合は新規行を取消
+            String addRow = " data-addRow=\"true\"";
             for (ColumnInfo column : child.getColumnInfos().values()) {
                 if (StringUtil.endsWith(inputFileSuffixs, column.getName())) {
                     addRow = "";
                     break;
                 }
             }
-            // 最終キーが採番キーでなければ新規行を取消
-            int size = child.getPrimaryKeys().size();
-            if (size > 0) {
-                String key = child.getPrimaryKeys().get(size - 1);
-                ColumnInfo lastKey = child.getColumnInfos().get(key);
-                if (!lastKey.isNumbering()) {
-                    addRow = "";
-                }
-            }
+
             String frozen = String.valueOf(table.getPrimaryKeys().size());
             s.add("      <div id=\"" + e + "Grid\" data-selectionMode=\"link\"" + addRow + " data-frozenColumn=\""
                     + frozen + "\" th:data-href=\"@{/model/" + e + ".html}\"></div>");
