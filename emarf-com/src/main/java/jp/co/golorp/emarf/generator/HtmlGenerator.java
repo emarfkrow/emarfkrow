@@ -1086,16 +1086,13 @@ public final class HtmlGenerator {
                 continue;
             }
 
-            String property = StringUtil.toCamelCase(colName);
-            // 検索条件にはファイル項目を出力しない
-            if (!isD && StringUtil.endsWith(inputFileSuffixs, colName)) {
+            // 検索条件にはファイル項目とタイムスタンプを出力しない
+            if (!isD && (StringUtil.endsWith(inputFileSuffixs, colName)
+                    || StringUtil.endsWith(inputTimestampSuffixs, colName))) {
                 continue;
             }
 
-            // 検索条件のタイムスタンプはスキップ
-            if (!isD && StringUtil.endsWith(inputTimestampSuffixs, colName)) {
-                continue;
-            }
+            String property = StringUtil.toCamelCase(colName);
 
             // メタ情報の場合（検索画面の場合はスキップ（検索条件にはしない）、詳細画面の兄弟モデルは更新日時のみhiddenで出力）
             boolean isInsertDt = colName.matches("(?i)^" + insertTs + "$");
@@ -1119,40 +1116,29 @@ public final class HtmlGenerator {
             s.add("        <div id=\"" + property + "\">");
 
             String fieldId = entity + "." + property;
-            if (isInsertDt || isUpdateDt || isInsertBy || isUpdateBy) {
-                // メタ情報の場合は表示項目（編集画面の自モデルのみここに到達する）
+
+            if (isInsertDt || isUpdateDt || isInsertBy || isUpdateBy) { // メタ情報の場合は表示項目（編集画面の自モデルのみここに到達する）
                 htmlFieldsMeta(s, fieldId, column.getRemarks());
                 addMeiSpan(s, table, column);
-
-            } else if (isD && (table.isHistory() || column.isReborn())) {
-                // 履歴モデルかビューの詳細画面
+            } else if (isD && (table.isHistory() || column.isReborn())) { // 履歴モデルかビューの詳細画面
                 String cssClass = "";
                 if (column.isReborn()) {
                     cssClass = "rebornee";
                 }
                 htmlFieldsSpan(s, fieldId, column.getRemarks(), cssClass);
                 addMeiSpan(s, table, column);
-
-            } else if (StringUtil.endsWith(inputTimestampSuffixs, colName)) {
-                // タイムスタンプの場合
+            } else if (StringUtil.endsWith(inputTimestampSuffixs, colName)) { // タイムスタンプの場合
                 htmlFieldsSpan(s, fieldId, column.getRemarks(), "");
-
-            } else if (StringUtil.endsWith(optionsSuffixs, colName) && column.getReferInfo() == null) {
-                // 選択項目の場合（サフィックスが合致しても参照モデルなら除外）
+            } else if (StringUtil.endsWith(optionsSuffixs, colName) && column.getReferInfo() == null) { // 選択項目の場合（サフィックスが合致しても参照モデルなら除外）
                 htmlFieldsOptions(s, fieldId, colName, column.getRemarks(), isD && column.isPk());
-
-            } else if (isD && StringUtil.endsWith(textareaSuffixs, colName)) {
-                // テキストエリア項目の場合
+            } else if (isD && StringUtil.endsWith(textareaSuffixs, colName)) { // テキストエリア項目の場合
                 htmlFieldsTextarea(s, fieldId, column.getRemarks());
-
-            } else {
-                // inputの場合
+            } else { // inputの場合
 
                 String type = getInputType(colName);
-
-                //inputのclass指定とリンクのclass指定
                 String inputCss = "";
                 String referCss = "";
+
                 // 詳細画面の必須項目
                 if (isD && column.getNullable() == 0) {
                     if (!column.isPk() && column.getTypeName().equals("CHAR")
@@ -1210,16 +1196,15 @@ public final class HtmlGenerator {
                     format = "yymmdd";
                 }
 
-                if (!isD && StringUtil.endsWith(inputRangeSuffixs, colName)) {
-                    // 検索画面の範囲指定項目の場合
+                if (!isD && StringUtil.endsWith(inputRangeSuffixs, colName)) { // 検索画面の範囲指定項目の場合
                     s.add(htmlFieldsRange(fieldId, type, inputCss, column, format));
-                } else if (column.getReferInfo() != null) {
-                    // 参照モデルの場合
+                } else if (column.getReferInfo() != null) { // 参照モデルの場合
                     s.add(htmlFieldsRefer(fieldId, type, inputCss, column, format, table, referCss));
                 } else {
                     s.add(htmlFieldsInput(fieldId, type, inputCss, column, format));
                 }
             }
+
             s.add("        </div>");
         }
     }
