@@ -286,7 +286,7 @@ public final class StringUtil {
      * @return 特定の記号を変換
      */
     public static String sanitize(final String s) {
-        return s.replaceAll("<", "＜").replaceAll(">", "＞");
+        return s.replaceAll("<", "＜").replaceAll(">", "＞").replaceAll(";", "；");
     }
 
     /**

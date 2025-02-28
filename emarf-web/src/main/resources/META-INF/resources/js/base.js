@@ -543,9 +543,19 @@ let Base = {
     },
 
     /**
-     * サブウィンドウの登録画面の初期照会
+     * 登録フォームの初期照会
      */
     referRegistForm: function($registForm) {
+
+        $registForm.find('input, select, textarea').each(function() {
+            Base.writable(this);
+        });
+        $registForm.find('fieldset a.refer, input[type="button"].gridDelete').show();
+        let gridDivs = $registForm.find('[id$=Grid]');
+        for (let i = 0; i < gridDivs.length; i++) {
+            let gridId = gridDivs[i].id;
+            Gridate.grids[gridId].getOptions()['editable'] = true;
+        }
 
         // 詳細画面の主キー項目は、値が既にあれば読み取り専用
         let pkAll = true;
@@ -589,12 +599,12 @@ let Base = {
             }
         });
 
-        $registForm.find('a.output').css('visibility', 'hidden');
-        $registForm.find('a.reborner').css('visibility', 'hidden');
-        $registForm.find('button.delete').css('visibility', 'hidden');
-        $registForm.find('button.permit').css('visibility', 'hidden');
-        $registForm.find('button.forbid').css('visibility', 'hidden');
-        $registForm.find('button.regist').css('visibility', 'inherit');
+        $registForm.find('a.output').button('option', 'disabled', true);
+        $registForm.find('a.reborner').button('option', 'disabled', true);
+        $registForm.find('button.delete').button('option', 'disabled', true);
+        $registForm.find('button.permit').button('option', 'disabled', true);
+        $registForm.find('button.forbid').button('option', 'disabled', true);
+        $registForm.find('button.regist').button('option', 'disabled', false);
 
         let formJson = Jsonate.toValueJson($registForm);
         if (JSON.stringify(formJson) != '{}') {
@@ -605,49 +615,54 @@ let Base = {
                 // VIEWの場合、グリッド生成前にデータを反映してエラーになるため、ロード後まで遅らせる
                 Base.loaded(function() {
 
-                    //一旦、読取専用も外す
-                    let $readonlys = $registForm.find('[name$="' + Casing.toCamel(columnStatus) + '"]');
-                    Base.writable($readonlys);
-
+                    // ステータス区分の読み専を外してから、フォームに項目移送し、再度ステータスを読み専
+                    // 詳細画面のステータス区分は選択項目名のみ表示（既存画面用に読み専解除しているため再度読み専制御）
+                    let $status = $registForm.find('[name$="' + Casing.toCamel(columnStatus) + '"]');
+                    Base.writable($status);
                     Jsonate.toForm(data, $registForm);
                     Base.referMei($registForm.find('span.refer'));
+                    Base.readonly($status);
 
-                    // 詳細画面のステータス区分は選択項目名のみ表示（既存画面用に読み専解除しているため再度読み専制御）
-                    Base.readonly($readonlys);
+                    // ステータスによるボタン制御
+                    let $statusKb = $registForm.find('fieldset:nth-child(1)').find('[name$="statusKb"]:checked');
+                    if ($statusKb.val() == 0) {//登録
+                        $registForm.find('button.delete').button('option', 'disabled', false);
+                        $registForm.find('button.permit').button('option', 'disabled', false);
+                        $registForm.find('button.forbid').button('option', 'disabled', false);
+                    } else if ($statusKb.val() == 1) {//承認
+                        $registForm.find('input, select, textarea').each(function() {
+                            Base.readonly(this);
+                        });
+                        $registForm.find('fieldset a.refer, input[type="button"].gridDelete').hide();
+                        let gridDivs = $registForm.find('[id$=Grid]');
+                        for (let i = 0; i < gridDivs.length; i++) {
+                            let gridId = gridDivs[i].id;
+                            Gridate.grids[gridId].getOptions()['editable'] = false;
+                        }
+                        $registForm.find('a.reborner').button('option', 'disabled', false);
+                        $registForm.find('button.forbid').button('option', 'disabled', false);
+                        $registForm.find('button.regist').button('option', 'disabled', true);
+                        $registForm.find('a.addChild').button('option', 'disabled', true);
+                    } else if ($statusKb.val() == -1) {//否認
+                        $registForm.find('button.delete').button('option', 'disabled', false);
+                    }
 
                     //出力権限
-                    if (Base.getAuthz($registForm[0].name) < 2) {
-                        $registForm.find('a.output').hide();
+                    if (Base.getAuthz($registForm[0].name) >= 2) {
+                        $registForm.find('a.output').button('option', 'disabled', false);
                     }
 
                     //更新権限
                     if (Base.getAuthz($registForm[0].name) < 3) {
-                        $registForm.find(':input').each(function() {
+                        $registForm.find('input, select, textarea').each(function() {
                             Base.readonly(this);
                         });
-                        //$registForm.find(':input').attr('readonly', true).attr('tabindex', '-1').addClass('readonly');
-                        $registForm.find('a.refer').hide();
-                    }
-
-                    let $statusKb = $registForm.find('fieldset:nth-child(1)').find('[name$="statusKb"]:checked');
-                    if ($statusKb.val() == 0) {
-                        $registForm.find('a.output').css('visibility', 'inherit');
-                        $registForm.find('a.reborner').css('visibility', 'hidden');
-                        $registForm.find('button.delete').css('visibility', 'inherit');
-                        $registForm.find('button.permit').css('visibility', 'inherit');
-                        $registForm.find('button.forbid').css('visibility', 'inherit');
-                        $registForm.find('button.regist').css('visibility', 'inherit');
-                    } else if ($statusKb.val() == 1) {
-                        $registForm.find('a.output').css('visibility', 'inherit');
-                        $registForm.find('a.reborner').css('visibility', 'inherit');
-                        $registForm.find('button.delete').css('visibility', 'hidden');
-                        $registForm.find('button.permit').css('visibility', 'hidden');
-                        $registForm.find('button.forbid').css('visibility', 'hidden');
-                        $registForm.find('button.regist').css('visibility', 'hidden');
-                    } else if ($statusKb.val() == -1) {
-                        $registForm.find('a.output').css('visibility', 'inherit');
-                        $registForm.find('button.permit').css('visibility', 'hidden');
-                        $registForm.find('button.forbid').css('visibility', 'hidden');
+                        $registForm.find('fieldset a.refer, input[type="button"].gridDelete').hide();
+                        let gridDivs = $registForm.find('[id$=Grid]');
+                        for (let i = 0; i < gridDivs.length; i++) {
+                            let gridId = gridDivs[i].id;
+                            Gridate.grids[gridId].getOptions()['editable'] = false;
+                        }
                     }
                 });
             });
@@ -664,8 +679,10 @@ let Base = {
      * 読み取り専用
      */
     readonly: function(item) {
+
         let $readonlys = $(item);
         $readonlys.attr('readonly', true).attr('tabindex', '-1').addClass('readonly');
+
         for (let i = 0; i < $readonlys.length; i++) {
             let $readonly = $($readonlys[i]);
             if ($readonly.prop('type') == 'radio') {
