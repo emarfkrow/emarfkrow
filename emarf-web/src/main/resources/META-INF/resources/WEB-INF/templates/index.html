@@ -23,7 +23,10 @@ limitations under the License.
 		sessionStorage['breads'] = JSON.stringify({});
 
 		// home画面に遷移
-		window.document.location.href = $('[name="home"]').val();
+		let home = $('[name="home"]').val();
+		if (home.indexOf('index.home') < 0) {
+			window.document.location.href = home;
+		}
 	});
 </script>
 </head>

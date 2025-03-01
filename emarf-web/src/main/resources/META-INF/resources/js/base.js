@@ -47,11 +47,14 @@ $(function() {
 
     // 画面の参照権限のチェック
     let href = window.document.location.href;
-    let home = Messages['index.home'].replace(/^[\.\/]+/, '');
-    if (!href.match(home)) {
-        if (Base.getAuthz(href) < 1) {
-            alert(Messages['error.authz.view']);
-            window.document.location.href = '../';
+    let home = Messages['index.home'];
+    if (home) {
+        home = home.replace(/^[\.\/]+/, '');
+        if (!href.match(home)) {
+            if (Base.getAuthz(href) < 1) {
+                alert(Messages['error.authz.view']);
+                window.document.location.href = '../';
+            }
         }
     }
 
