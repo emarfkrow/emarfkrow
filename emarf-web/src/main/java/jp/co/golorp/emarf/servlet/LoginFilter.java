@@ -119,7 +119,7 @@ public class LoginFilter implements Filter {
 
         String contextPath = req.getContextPath() + "/";
 
-        if (!AUTHN.equals("true")) {
+        if (AUTHN == null || !AUTHN.equals("true")) {
             // 認証なし
 
             LOG.trace("skip authentication.");

@@ -224,7 +224,7 @@ public class EmarfListener implements ServletContextListener, ServletContextAttr
 
             //自動生成を実行
             String isGenerateAtStartup = App.get("generateAtStartup");
-            if (isGenerateAtStartup.toLowerCase().equals("true")) {
+            if (isGenerateAtStartup != null && isGenerateAtStartup.toLowerCase().equals("true")) {
                 BeanGenerator.generate(contextRealPath);
             }
         }

@@ -94,7 +94,7 @@ public class ServiceFilter implements Filter {
 
         String requestURI = req.getRequestURI();
 
-        if (!requestURI.matches(EXCLUDE_REGEXP)) {
+        if (EXCLUDE_REGEXP != null && !requestURI.matches(EXCLUDE_REGEXP)) {
 
             HttpSession ses = req.getSession();
             String authnKey = "anonymous";

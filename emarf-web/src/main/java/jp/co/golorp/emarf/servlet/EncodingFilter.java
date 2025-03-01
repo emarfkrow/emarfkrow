@@ -52,8 +52,12 @@ public class EncodingFilter implements Filter {
      */
     public void doFilter(final ServletRequest request, final ServletResponse response, final FilterChain chain)
             throws IOException, ServletException {
-        request.setCharacterEncoding(ENCODING);
-        response.setCharacterEncoding(ENCODING);
+
+        if (ENCODING != null) {
+            request.setCharacterEncoding(ENCODING);
+            response.setCharacterEncoding(ENCODING);
+        }
+
         chain.doFilter(request, response);
     }
 
