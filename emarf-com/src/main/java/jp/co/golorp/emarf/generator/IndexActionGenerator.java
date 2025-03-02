@@ -40,7 +40,7 @@ public final class IndexActionGenerator {
     private static String updateDt;
 
     /** ステータス区分 */
-    private static String statusKb;
+    private static String status;
 
     /**
      * プライベートコンストラクタ
@@ -71,11 +71,11 @@ public final class IndexActionGenerator {
 
         updateDt = bundle.getString("column.update.timestamp");
 
-        statusKb = bundle.getString("column.status");
+        status = bundle.getString("column.status");
 
         IndexActionGenerator.deleteAction(tableInfos);
         IndexActionGenerator.registAction(tableInfos);
-        if (!StringUtil.isNullOrBlank(statusKb)) {
+        if (!StringUtil.isNullOrBlank(status)) {
             IndexActionGenerator.permitAction(tableInfos);
             IndexActionGenerator.forbidAction(tableInfos);
         }
@@ -269,9 +269,9 @@ public final class IndexActionGenerator {
                 s.add("                isNew = true;");
                 s.add("            }");
             }
-            if (!table.isView() && !StringUtil.isNullOrBlank(statusKb)) {
+            if (!table.isView() && !StringUtil.isNullOrBlank(status) && table.getColumnInfos().containsKey(status)) {
                 s.add("");
-                s.add("            e.set" + StringUtil.toPascalCase(statusKb) + "(0);");
+                s.add("            e.set" + StringUtil.toPascalCase(status) + "(0);");
             }
             s.add("");
             s.add("            if (isNew) {");
@@ -316,9 +316,9 @@ public final class IndexActionGenerator {
 
     /**
      * 検索画面 承認処理出力
-     * @param tableInfos テーブル情報のリスト
+     * @param tables テーブル情報のリスト
      */
-    private static void permitAction(final List<TableInfo> tableInfos) {
+    private static void permitAction(final List<TableInfo> tables) {
 
         // 出力フォルダを再作成
         String packagePath = actionPackage.replace(".", File.separator);
@@ -326,9 +326,9 @@ public final class IndexActionGenerator {
 
         Map<String, String> javaFilePaths = new LinkedHashMap<String, String>();
 
-        for (TableInfo table : tableInfos) {
+        for (TableInfo table : tables) {
 
-            if (table.isHistory() || table.isView()) {
+            if (table.isHistory() || table.isView() || !table.getColumnInfos().containsKey(status)) {
                 continue;
             }
 
@@ -394,7 +394,9 @@ public final class IndexActionGenerator {
             BeanGenerator.getPermitChilds(s, "e", childInfos, 1);
             s.add("");
             s.add("            " + entity + " f = " + entity + ".get(" + params + ");");
-            s.add("            f.set" + StringUtil.toPascalCase(statusKb) + "(1);");
+            if (table.getColumnInfos().containsKey(status)) {
+                s.add("            f.set" + StringUtil.toPascalCase(status) + "(1);");
+            }
             s.add("            if (f.update(now, execId) != 1) {");
             s.add("                throw new OptLockError(\"error.cant.permit\");");
             s.add("            }");
@@ -427,9 +429,9 @@ public final class IndexActionGenerator {
 
     /**
      * 検索画面 否認処理出力
-     * @param tableInfos テーブル情報のリスト
+     * @param tables テーブル情報のリスト
      */
-    private static void forbidAction(final List<TableInfo> tableInfos) {
+    private static void forbidAction(final List<TableInfo> tables) {
 
         // 出力フォルダを再作成
         String packagePath = actionPackage.replace(".", File.separator);
@@ -437,9 +439,9 @@ public final class IndexActionGenerator {
 
         Map<String, String> javaFilePaths = new LinkedHashMap<String, String>();
 
-        for (TableInfo table : tableInfos) {
+        for (TableInfo table : tables) {
 
-            if (table.isHistory() || table.isView()) {
+            if (table.isHistory() || table.isView() || !table.getColumnInfos().containsKey(status)) {
                 continue;
             }
 
@@ -505,7 +507,9 @@ public final class IndexActionGenerator {
             BeanGenerator.getForbidChilds(s, "e", childInfos, 1);
             s.add("");
             s.add("            " + entity + " f = " + entity + ".get(" + params + ");");
-            s.add("            f.set" + StringUtil.toPascalCase(statusKb) + "(-1);");
+            if (table.getColumnInfos().containsKey(status)) {
+                s.add("            f.set" + StringUtil.toPascalCase(status) + "(-1);");
+            }
             s.add("            if (f.update(now, execId) != 1) {");
             s.add("                throw new OptLockError(\"error.cant.forbid\");");
             s.add("            }");

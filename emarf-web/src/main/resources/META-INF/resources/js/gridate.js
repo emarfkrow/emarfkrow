@@ -246,7 +246,7 @@ $(function() {
                     checkboxSelectColumn = new Slick.CheckboxSelectColumn({
                         selectableOverride: function(row, dataContext, grid) {
                             let dataItem = dataContext;
-                            if (dataItem[columnInsertTs.toLowerCase()] || dataItem[columnInsertTs.toUpperCase()]) {
+                            if (dataItem[columnRegistTs.toLowerCase()] || dataItem[columnRegistTs.toUpperCase()]) {
                                 var UID = Math.round(10000000 * Math.random()) + row;
                                 return dataContext
                                     ? "<input id='selector" + UID + "' type='checkbox' checked='checked'><label for='selector" + UID + "'></label>"
@@ -621,7 +621,7 @@ $(function() {
 
                             let dataView = g.getData();
                             //                            if (dataItem.isNew) { 初期表示の１行目や選択サブで効かなくなる
-                            if (!dataItem[columnInsertTs.toLowerCase()] && !dataItem[columnInsertTs.toUpperCase()]) {
+                            if (!dataItem[columnRegistTs.toLowerCase()] && !dataItem[columnRegistTs.toUpperCase()]) {
                                 //未登録なら画面上で消去
                                 dataView.deleteItem(dataItem.id);
                             } else {
@@ -995,7 +995,7 @@ var Gridate = {
         }
 
         //        if (!dataItem || dataItem.isNew) { 初期表示の１行目や選択サブで効かなくなる
-        if (!dataItem || (!dataItem[columnInsertTs.toLowerCase()] && !dataItem[columnInsertTs.toUpperCase()])) {
+        if (!dataItem || (!dataItem[columnRegistTs.toLowerCase()] && !dataItem[columnRegistTs.toUpperCase()])) {
             //新規行の場合
 
             //採番キーなら非活性

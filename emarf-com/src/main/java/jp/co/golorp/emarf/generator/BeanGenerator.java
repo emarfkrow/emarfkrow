@@ -67,6 +67,8 @@ public final class BeanGenerator {
     private static String updateDt;
     /** 更新者カラム名 */
     private static String updateBy;
+    /** ステータス区分 */
+    private static String status;
     /** 変更理由 */
     private static String reason;
 
@@ -76,7 +78,7 @@ public final class BeanGenerator {
     /** actionパッケージ */
     private static String pkgAction;
     /** entityパッケージ */
-    private static String pkgEntity;
+    private static String pkgE;
 
     /** 必須CHAR列の指定 */
     private static String charNotNullRe;
@@ -124,12 +126,13 @@ public final class BeanGenerator {
         insertBy = bundle.getString("column.insert.id");
         updateDt = bundle.getString("column.update.timestamp");
         updateBy = bundle.getString("column.update.id");
+        status = bundle.getString("column.status");
         reason = bundle.getString("column.history.reason");
 
         javaDir = bundle.getString("dir.java");
 
         pkgAction = bundle.getString("java.package.action") + ".model.base";
-        pkgEntity = bundle.getString("java.package.entity");
+        pkgE = bundle.getString("java.package.entity");
 
         //NOTNULLで必須項目として扱うCHARの列名リスト（ホストの△対応）
         charNotNullRe = bundle.getString("column.char.notnull.re");
@@ -151,7 +154,7 @@ public final class BeanGenerator {
          */
 
         //エンティティフォルダ
-        String entityPackagePath = pkgEntity.replace(".", File.separator);
+        String entityPackagePath = pkgE.replace(".", File.separator);
         String entityPackageDir = projectDir + File.separator + javaDir + File.separator + entityPackagePath;
         FileUtil.reMkDir(entityPackageDir);
 
@@ -194,14 +197,14 @@ public final class BeanGenerator {
      */
     private static void javaEntity(final List<TableInfo> tables) {
 
-        String pkgPath = pkgEntity.replace(".", File.separator);
+        String pkgPath = pkgE.replace(".", File.separator);
         String pkgDir = projectDir + File.separator + javaDir + File.separator + pkgPath;
         Map<String, String> paths = new LinkedHashMap<String, String>();
         for (TableInfo table : tables) {
             String e = StringUtil.toPascalCase(table.getName());
             String r = table.getRemarks();
             List<String> s = new ArrayList<String>();
-            s.add("package " + pkgEntity + ";");
+            s.add("package " + pkgE + ";");
             s.add("");
             s.add("import java.time.LocalDateTime;");
             s.add("import java.util.ArrayList;");
@@ -329,7 +332,7 @@ public final class BeanGenerator {
             s.add("}");
             String path = pkgDir + File.separator + e + ".java";
             FileUtil.writeFile(path, s);
-            paths.put(path, pkgEntity + "." + e);
+            paths.put(path, pkgE + "." + e);
         }
         if (isGenerateAtStartup) {
             for (Entry<String, String> e : paths.entrySet()) {
@@ -439,27 +442,26 @@ public final class BeanGenerator {
 
     /**
      * エンティティにCRUD追加
-     * @param tableInfo テーブル情報
+     * @param table テーブル情報
      * @param s 出力文字列のリスト
      */
-    private static void javaEntityCRUD(final TableInfo tableInfo, final List<String> s) {
+    private static void javaEntityCRUD(final TableInfo table, final List<String> s) {
 
-        String tableName = tableInfo.getName();
-        String remarks = tableInfo.getRemarks();
-        String entityName = StringUtil.toPascalCase(tableName);
-        String camelName = StringUtil.toCamelCase(tableName);
+        String remarks = table.getRemarks();
+        String entityName = StringUtil.toPascalCase(table.getName());
+        String camelName = StringUtil.toCamelCase(table.getName());
 
         s.add("");
         s.add("    /**");
         s.add("     * " + remarks + "照会");
         int i = 0;
         String getParams = "";
-        for (String pk : tableInfo.getPrimaryKeys()) {
+        for (String pk : table.getPrimaryKeys()) {
             if (pk.length() > 0) {
                 String columnRemarks = "";
-                if (tableInfo.getColumnInfos() != null && tableInfo.getColumnInfos().size() > 0) {
-                    if (tableInfo.getColumnInfos().containsKey(pk)) {
-                        columnRemarks = " " + tableInfo.getColumnInfos().get(pk).getRemarks();
+                if (table.getColumnInfos() != null && table.getColumnInfos().size() > 0) {
+                    if (table.getColumnInfos().containsKey(pk)) {
+                        columnRemarks = " " + table.getColumnInfos().get(pk).getRemarks();
                     }
                 }
                 s.add("     * @param param" + ++i + columnRemarks);
@@ -476,29 +478,37 @@ public final class BeanGenerator {
 
         // 主キー条件
         boolean isPrimaryKey = false;
-        for (String primaryKey : tableInfo.getPrimaryKeys()) {
-            if (primaryKey.length() > 0) {
+        for (String pk : table.getPrimaryKeys()) {
+            if (pk.length() > 0) {
                 isPrimaryKey = true;
-                String snake = StringUtil.toSnakeCase(primaryKey);
-                ColumnInfo primaryKeyInfo = tableInfo.getColumnInfos().get(primaryKey);
-                String columnName = DataSources.getAssist().quoteEscapedSQL(primaryKey);
-                if (primaryKeyInfo.getTypeName().equals("CHAR")) {
-                    s.add("        whereList.add(\"TRIM (" + columnName + ") = TRIM (:" + snake + ")\");");
+
+                // quoted
+                String q = DataSources.getAssist().quoteEscapedSQL(pk);
+                // param
+                String p = ":" + StringUtil.toSnakeCase(pk);
+
+                ColumnInfo primaryKey = table.getColumnInfos().get(pk);
+                if (primaryKey.getTypeName().equals("CHAR")) {
+                    s.add("        whereList.add(\"" + assist.trimedSQL(q) + " = " + assist.trimedSQL(p) + "\");");
                 } else {
-                    s.add("        whereList.add(\"" + columnName + " = :" + snake + "\");");
+                    s.add("        whereList.add(\"" + q + " = :" + p + "\");");
                 }
             }
         }
         if (!isPrimaryKey) {
-            for (String key : tableInfo.getColumnInfos().keySet()) {
+            for (String key : table.getColumnInfos().keySet()) {
                 if (key.length() > 0) {
-                    String snake = StringUtil.toSnakeCase(key);
-                    ColumnInfo keyInfo = tableInfo.getColumnInfos().get(key);
-                    String columnName = DataSources.getAssist().quoteEscapedSQL(key);
-                    if (keyInfo.getTypeName().equals("CHAR")) {
-                        s.add("        whereList.add(\"TRIM (" + columnName + ") = TRIM (:" + snake + ")\");");
+
+                    // quoted
+                    String q = DataSources.getAssist().quoteEscapedSQL(key);
+                    // param
+                    String p = ":" + StringUtil.toSnakeCase(key);
+
+                    ColumnInfo column = table.getColumnInfos().get(key);
+                    if (column.getTypeName().equals("CHAR")) {
+                        s.add("        whereList.add(\"" + assist.trimedSQL(q) + " = " + assist.trimedSQL(p) + "\");");
                     } else {
-                        s.add("        whereList.add(\"" + columnName + " = :" + snake + "\");");
+                        s.add("        whereList.add(\"" + q + " = :" + p + "\");");
                     }
                 }
             }
@@ -506,7 +516,7 @@ public final class BeanGenerator {
         s.add("        String sql = \"\";");
         s.add("        sql += \"SELECT \\n\";");
         boolean isFirst = true;
-        for (ColumnInfo columnInfo : tableInfo.getColumnInfos().values()) {
+        for (ColumnInfo columnInfo : table.getColumnInfos().values()) {
             String sql = "    , ";
             if (isFirst) {
                 sql = "      ";
@@ -516,12 +526,12 @@ public final class BeanGenerator {
             isFirst = false;
         }
         s.add("        sql += \"FROM \\n\";");
-        s.add("        sql += \"    " + tableName + " a \\n\";");
+        s.add("        sql += \"    " + table.getName() + " a \\n\";");
         s.add("        sql += \"WHERE \\n\";");
         s.add("        sql += String.join(\" AND \\n\", whereList);");
         s.add("        Map<String, Object> map = new HashMap<String, Object>();");
         i = 0;
-        for (String primaryKey : tableInfo.getPrimaryKeys()) {
+        for (String primaryKey : table.getPrimaryKeys()) {
             if (primaryKey.length() > 0) {
                 String snake = StringUtil.toSnakeCase(primaryKey);
                 s.add("        map.put(\"" + snake + "\", param" + ++i + ");");
@@ -529,15 +539,15 @@ public final class BeanGenerator {
         }
         s.add("        return Queries.get(sql, map, " + entityName + ".class);");
         s.add("    }");
-        javaEntityCRUDInsert(tableInfo, s);
-        javaEntityCRUDUpdate(tableInfo, s);
+        javaEntityCRUDInsert(table, s);
+        javaEntityCRUDUpdate(table, s);
         s.add("");
         s.add("    /**");
         s.add("     * " + remarks + "削除");
         s.add("     * @return 削除件数");
         s.add("     */");
         s.add("    public int delete() {");
-        for (TableInfo childInfo : tableInfo.getChildInfos()) {
+        for (TableInfo childInfo : table.getChildInfos()) {
             String childName = childInfo.getName();
             String pascal = StringUtil.toPascalCase(childName);
             String camel = StringUtil.toCamelCase(childName);
@@ -549,7 +559,7 @@ public final class BeanGenerator {
             s.add("            }");
             s.add("        }");
         }
-        for (TableInfo brosInfo : tableInfo.getBrosInfos()) {
+        for (TableInfo brosInfo : table.getBrosInfos()) {
             String brosName = brosInfo.getName();
             String camel = StringUtil.toCamelCase(brosName);
             s.add("");
@@ -559,10 +569,10 @@ public final class BeanGenerator {
             s.add("        }");
         }
         // ファイル列がある場合
-        for (String columnName : tableInfo.getColumnInfos().keySet()) {
+        for (String columnName : table.getColumnInfos().keySet()) {
             if (StringUtil.endsWith(inputFileSuffixs, columnName)) {
                 String params = "";
-                for (String primaryKey : tableInfo.getPrimaryKeys()) {
+                for (String primaryKey : table.getPrimaryKeys()) {
                     String camel = StringUtil.toCamelCase(primaryKey);
                     if (params.length() > 0) {
                         params += ", ";
@@ -581,7 +591,7 @@ public final class BeanGenerator {
         }
         s.add("");
         s.add("        // " + remarks + "の削除");
-        s.add("        String sql = \"DELETE FROM " + tableName + " WHERE \" + getWhere();");
+        s.add("        String sql = \"DELETE FROM " + table.getName() + " WHERE \" + getWhere();");
         s.add("        return Queries.regist(sql, toMap(null, null));");
         s.add("    }");
     }
@@ -953,16 +963,21 @@ public final class BeanGenerator {
 
         // 主キー条件
         for (String primaryKey : tableInfo.getPrimaryKeys()) {
+
             if (primaryKey.length() == 0) {
                 continue;
             }
-            String quoted = assist.quoteEscapedSQL(primaryKey);
-            String snake = StringUtil.toSnakeCase(primaryKey);
+
+            // quoted
+            String q = assist.quoteEscapedSQL(primaryKey);
+            // param
+            String p = ":" + StringUtil.toSnakeCase(primaryKey);
+
             ColumnInfo primaryKeyInfo = tableInfo.getColumnInfos().get(primaryKey);
             if (primaryKeyInfo.getTypeName().equals("CHAR")) {
-                s.add("        whereList.add(\"TRIM (" + quoted + ") = TRIM (:" + snake + ")\");");
+                s.add("        whereList.add(\"" + assist.trimedSQL(q) + " = " + assist.trimedSQL(p) + "\");");
             } else {
-                s.add("        whereList.add(\"" + quoted + " = :" + snake + "\");");
+                s.add("        whereList.add(\"" + q + " = :" + p + "\");");
             }
         }
 
@@ -1085,9 +1100,8 @@ public final class BeanGenerator {
         }
 
         for (TableInfo child : table.getChildInfos()) {
-            String name = child.getName();
-            String entity = StringUtil.toPascalCase(name);
-            String instance = StringUtil.toCamelCase(name);
+            String entity = StringUtil.toPascalCase(child.getName());
+            String instance = StringUtil.toCamelCase(child.getName());
 
             // childList
             s.add("");
@@ -1141,16 +1155,18 @@ public final class BeanGenerator {
             s.add("    public static List<" + entity + "> refer" + entity + "s(" + pks + ") {");
             s.add("        List<String> whereList = new ArrayList<String>();");
             for (String pk : table.getPrimaryKeys()) {
+
                 if (pk.length() == 0) {
                     continue;
                 }
-                //                pk = pk.toLowerCase();
-                //                s.add("        whereList.add(\"" + pk + " = :" + pk + "\");");
+
+                String p = ":" + StringUtil.toSnakeCase(pk);
+
                 ColumnInfo primaryKey = table.getColumnInfos().get(pk);
                 if (primaryKey.getTypeName().equals("CHAR")) {
-                    s.add("        whereList.add(\"TRIM (" + pk + ") = TRIM (:" + StringUtil.toSnakeCase(pk) + ")\");");
+                    s.add("        whereList.add(\"" + assist.trimedSQL(pk) + " = " + assist.trimedSQL(p) + "\");");
                 } else {
-                    s.add("        whereList.add(\"" + pk + " = :" + StringUtil.toSnakeCase(pk) + "\");");
+                    s.add("        whereList.add(\"" + pk + " = " + p + "\");");
                 }
             }
 
@@ -1188,7 +1204,7 @@ public final class BeanGenerator {
                     }
                 }
             }
-            s.add("        sql += \" FROM " + name + " a WHERE \" + String.join(\" AND \", whereList);");
+            s.add("        sql += \" FROM " + child.getName() + " a WHERE \" + String.join(\" AND \", whereList);");
             s.add("        sql += \" ORDER BY \";");
             String orders = "";
             if (child.getPrimaryKeys().size() > 0) {
@@ -1236,10 +1252,10 @@ public final class BeanGenerator {
             s.add("");
             int parents = childInfo.getParentInfos().size();
             if (parents == 1) {
-                s.add(space + "        java.util.List<" + pkgEntity + "." + child + "> " + camel + "s = "
+                s.add(space + "        java.util.List<" + pkgE + "." + child + "> " + camel + "s = "
                         + parent + ".refer" + child + "s();");
                 s.add(space + "        if (" + camel + "s != null) {");
-                s.add(space + "            for (" + pkgEntity + "." + child + " " + camel + " : " + camel + "s) {");
+                s.add(space + "            for (" + pkgE + "." + child + " " + camel + " : " + camel + "s) {");
                 if (childInfo.getChildInfos().size() > 0) {
                     // forでもう一段降りているから「+2」
                     getDeleteChilds(s, camel, childInfo.getChildInfos(), indent + 2);
@@ -1261,36 +1277,48 @@ public final class BeanGenerator {
      * 一覧画面の一括承認処理
      * @param s
      * @param parent
-     * @param childInfos
+     * @param childs
      * @param indent
      */
-    public static void getPermitChilds(final List<String> s, final String parent, final List<TableInfo> childInfos,
+    public static void getPermitChilds(final List<String> s, final String parent, final List<TableInfo> childs,
             final int indent) {
-        String space = "    ".repeat(indent);
-        for (TableInfo childInfo : childInfos) {
-            String child = StringUtil.toPascalCase(childInfo.getName());
-            String camel = StringUtil.toCamelCase(childInfo.getName());
+
+        // indent
+        String p = "    ".repeat(indent);
+
+        for (TableInfo child : childs) {
+
+            // entity
+            String e = StringUtil.toPascalCase(child.getName());
+
+            // instance
+            String i = StringUtil.toCamelCase(child.getName());
+
             s.add("");
-            int parents = childInfo.getParentInfos().size();
-            if (parents == 1) {
-                s.add(space + "        java.util.List<" + pkgEntity + "." + child + "> " + camel + "s = "
-                        + parent + ".refer" + child + "s();");
-                s.add(space + "        if (" + camel + "s != null) {");
-                s.add(space + "            for (" + pkgEntity + "." + child + " " + camel + " : " + camel + "s) {");
-                if (childInfo.getChildInfos().size() > 0) {
-                    // forでもう一段降りているから「+2」
-                    getPermitChilds(s, camel, childInfo.getChildInfos(), indent + 2);
-                }
-                s.add("");
-                s.add(space + "                " + camel + ".setStatusKb(1);");
-                s.add(space + "                if (" + camel + ".update(now, execId) != 1) {");
-                s.add(space + "                    throw new OptLockError(\"error.cant.permit\");");
-                s.add(space + "                }");
-                s.add(space + "            }");
-                s.add(space + "        }");
-            } else {
-                s.add(space + "        // child:" + child + ", parents:" + parents);
+
+            int parents = child.getParentInfos().size();
+
+            if (parents > 1) {
+                s.add(p + "        // child:" + e + ", parents:" + parents);
+                continue;
             }
+
+            s.add(p + "        java.util.List<" + pkgE + "." + e + "> " + i + "s = " + parent + ".refer" + e + "s();");
+            s.add(p + "        if (" + i + "s != null) {");
+            s.add(p + "            for (" + pkgE + "." + e + " " + i + " : " + i + "s) {");
+            if (child.getChildInfos().size() > 0) {
+                // forでもう一段降りているから「+2」
+                getPermitChilds(s, i, child.getChildInfos(), indent + 2);
+            }
+            s.add("");
+            if (child.getColumnInfos().containsKey(status)) {
+                s.add(p + "                " + i + ".set" + StringUtil.toPascalCase(status) + "(1);");
+            }
+            s.add(p + "                if (" + i + ".update(now, execId) != 1) {");
+            s.add(p + "                    throw new OptLockError(\"error.cant.permit\");");
+            s.add(p + "                }");
+            s.add(p + "            }");
+            s.add(p + "        }");
         }
     }
 
@@ -1298,36 +1326,47 @@ public final class BeanGenerator {
      * 一覧画面の一括否認処理
      * @param s
      * @param parent
-     * @param childInfos
+     * @param childs
      * @param indent
      */
     public static void getForbidChilds(final List<String> s, final String parent,
-            final List<TableInfo> childInfos, final int indent) {
-        String space = "    ".repeat(indent);
-        for (TableInfo childInfo : childInfos) {
-            String child = StringUtil.toPascalCase(childInfo.getName());
-            String camel = StringUtil.toCamelCase(childInfo.getName());
+            final List<TableInfo> childs, final int indent) {
+
+        // indent
+        String p = "    ".repeat(indent);
+
+        for (TableInfo child : childs) {
+
+            // entity
+            String e = StringUtil.toPascalCase(child.getName());
+
+            // instance
+            String i = StringUtil.toCamelCase(child.getName());
+
             s.add("");
-            int parents = childInfo.getParentInfos().size();
-            if (parents == 1) {
-                s.add(space + "        java.util.List<" + pkgEntity + "." + child + "> " + camel + "s = "
-                        + parent + ".refer" + child + "s();");
-                s.add(space + "        if (" + camel + "s != null) {");
-                s.add(space + "            for (" + pkgEntity + "." + child + " " + camel + " : " + camel + "s) {");
-                if (childInfo.getChildInfos().size() > 0) {
-                    // forでもう一段降りているから「+2」
-                    getForbidChilds(s, camel, childInfo.getChildInfos(), indent + 2);
-                }
-                s.add("");
-                s.add(space + "                " + camel + ".setStatusKb(-1);");
-                s.add(space + "                if (" + camel + ".update(now, execId) != 1) {");
-                s.add(space + "                    throw new OptLockError(\"error.cant.forbid\");");
-                s.add(space + "                }");
-                s.add(space + "            }");
-                s.add(space + "        }");
-            } else {
-                s.add(space + "        // child:" + child + ", parents:" + parents);
+
+            int parents = child.getParentInfos().size();
+            if (parents > 1) {
+                s.add(p + "        // child:" + e + ", parents:" + parents);
+                continue;
             }
+
+            s.add(p + "        java.util.List<" + pkgE + "." + e + "> " + i + "s = " + parent + ".refer" + e + "s();");
+            s.add(p + "        if (" + i + "s != null) {");
+            s.add(p + "            for (" + pkgE + "." + e + " " + i + " : " + i + "s) {");
+            if (child.getChildInfos().size() > 0) {
+                // forでもう一段降りているから「+2」
+                getForbidChilds(s, i, child.getChildInfos(), indent + 2);
+            }
+            s.add("");
+            if (child.getColumnInfos().containsKey(status)) {
+                s.add(p + "                " + i + ".set" + StringUtil.toPascalCase(status) + "(-1);");
+            }
+            s.add(p + "                if (" + i + ".update(now, execId) != 1) {");
+            s.add(p + "                    throw new OptLockError(\"error.cant.forbid\");");
+            s.add(p + "                }");
+            s.add(p + "            }");
+            s.add(p + "        }");
         }
     }
 

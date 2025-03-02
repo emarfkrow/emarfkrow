@@ -321,15 +321,15 @@ public final class HtmlGenerator {
                 }
             }
             if (!table.isView()) {
-                s.add("        <button id=\"Delete" + e
-                        + "S\" type=\"submit\" class=\"delete selectRows\" data-action=\"" + e
+                s.add("        <button type=\"submit\" id=\"Delete" + e
+                        + "S\" class=\"delete selectRows\" data-action=\"" + e
                         + "SDelete.ajax\" th:text=\"#{common.delete}\" tabindex=\"-1\">削除</button>");
-                if (!StringUtil.isNullOrBlank(status)) {
-                    s.add("        <button id=\"Permit" + e
-                            + "S\" type=\"submit\" class=\"permit selectRows\" data-action=\"" + e
+                if (!StringUtil.isNullOrBlank(status) && table.getColumnInfos().containsKey(status)) {
+                    s.add("        <button type=\"submit\" id=\"Permit" + e
+                            + "S\" class=\"permit selectRows\" data-action=\"" + e
                             + "SPermit.ajax\" th:text=\"#{common.permit}\" tabindex=\"-1\">承認</button>");
-                    s.add("        <button id=\"Forbid" + e
-                            + "S\" type=\"submit\" class=\"forbid selectRows\" data-action=\"" + e
+                    s.add("        <button type=\"submit\" id=\"Forbid" + e
+                            + "S\" class=\"forbid selectRows\" data-action=\"" + e
                             + "SForbid.ajax\" th:text=\"#{common.forbid}\" tabindex=\"-1\">否認</button>");
                 }
             }
@@ -593,7 +593,7 @@ public final class HtmlGenerator {
         if (!table.isHistory() && !table.isView()) {
             s.add("        <button id=\"Delete" + entity + "\" type=\"submit\" class=\"delete\" data-action=\"" + entity
                     + "Delete.ajax\" th:text=\"#{common.delete}\" tabindex=\"-1\">削除</button>");
-            if (!StringUtil.isNullOrBlank(status)) {
+            if (!StringUtil.isNullOrBlank(status) && table.getColumnInfos().containsKey(status)) {
                 s.add("        <button id=\"Permit" + entity + "\" type=\"submit\" class=\"permit\" data-action=\""
                         + entity + "Permit.ajax\" th:text=\"#{common.permit}\" tabindex=\"-1\">承認</button>");
                 s.add("        <button id=\"Forbid" + entity + "\" type=\"submit\" class=\"forbid\" data-action=\""

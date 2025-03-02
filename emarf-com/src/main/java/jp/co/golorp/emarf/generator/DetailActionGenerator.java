@@ -37,7 +37,7 @@ public final class DetailActionGenerator {
     /** 削除フラグ */
     private static String deleteF;
     /** ステータス区分 */
-    private static String statusKb;
+    private static String status;
 
     /** javaファイル出力ルートパス */
     private static String javaDir;
@@ -71,7 +71,7 @@ public final class DetailActionGenerator {
         updateDt = bundle.getString("column.update.timestamp");
         updateBy = bundle.getString("column.update.id");
         deleteF = bundle.getString("column.delete");
-        statusKb = bundle.getString("column.status");
+        status = bundle.getString("column.status");
 
         javaDir = bundle.getString("dir.java");
 
@@ -81,7 +81,7 @@ public final class DetailActionGenerator {
         javaActionDetailRegist(tables);
         javaActionDetailGet(tables);
         javaActionDetailDelete(tables);
-        if (!StringUtil.isNullOrBlank(statusKb)) {
+        if (!StringUtil.isNullOrBlank(status)) {
             javaActionDetailPermit(tables);
             javaActionDetailForbid(tables);
         }
@@ -153,9 +153,9 @@ public final class DetailActionGenerator {
                 s.add("            isNew = true;");
                 s.add("        }");
             }
-            if (!table.isView() && !StringUtil.isNullOrBlank(statusKb)) {
+            if (!table.isView() && !StringUtil.isNullOrBlank(status) && table.getColumnInfos().containsKey(status)) {
                 s.add("");
-                s.add("        e.set" + StringUtil.toPascalCase(statusKb) + "(0);");
+                s.add("        e.set" + StringUtil.toPascalCase(status) + "(0);");
             }
             s.add("");
             s.add("        if (isNew) {");
@@ -420,9 +420,9 @@ public final class DetailActionGenerator {
 
     /**
      * 詳細画面 承認処理出力
-     * @param tableInfos テーブル情報のリスト
+     * @param tables テーブル情報のリスト
      */
-    private static void javaActionDetailPermit(final List<TableInfo> tableInfos) {
+    private static void javaActionDetailPermit(final List<TableInfo> tables) {
 
         // 出力フォルダを再作成
         String packagePath = pkgAction.replace(".", File.separator);
@@ -430,9 +430,9 @@ public final class DetailActionGenerator {
 
         Map<String, String> javaFilePaths = new LinkedHashMap<String, String>();
 
-        for (TableInfo table : tableInfos) {
+        for (TableInfo table : tables) {
 
-            if (table.isHistory() || table.isView()) {
+            if (table.isHistory() || table.isView() || !table.getColumnInfos().containsKey(status)) {
                 continue;
             }
 
@@ -487,7 +487,9 @@ public final class DetailActionGenerator {
             BeanGenerator.getPermitChilds(s, "e", childInfos, 0);
             s.add("");
             s.add("        " + entity + " f = " + entity + ".get(" + params + ");");
-            s.add("        f.set" + StringUtil.toPascalCase(statusKb) + "(1);");
+            if (table.getColumnInfos().containsKey(status)) {
+                s.add("        f.set" + StringUtil.toPascalCase(status) + "(1);");
+            }
             s.add("        if (f.update(now, execId) != 1) {");
             s.add("            throw new OptLockError(\"error.cant.permit\");");
             s.add("        }");
@@ -514,9 +516,9 @@ public final class DetailActionGenerator {
 
     /**
      * 詳細画面 否認処理出力
-     * @param tableInfos テーブル情報のリスト
+     * @param tables テーブル情報のリスト
      */
-    private static void javaActionDetailForbid(final List<TableInfo> tableInfos) {
+    private static void javaActionDetailForbid(final List<TableInfo> tables) {
 
         // 出力フォルダを再作成
         String packagePath = pkgAction.replace(".", File.separator);
@@ -524,9 +526,9 @@ public final class DetailActionGenerator {
 
         Map<String, String> javaFilePaths = new LinkedHashMap<String, String>();
 
-        for (TableInfo table : tableInfos) {
+        for (TableInfo table : tables) {
 
-            if (table.isHistory() || table.isView()) {
+            if (table.isHistory() || table.isView() || !table.getColumnInfos().containsKey(status)) {
                 continue;
             }
 
@@ -581,7 +583,9 @@ public final class DetailActionGenerator {
             BeanGenerator.getForbidChilds(s, "e", childInfos, 0);
             s.add("");
             s.add("        " + entity + " f = " + entity + ".get(" + params + ");");
-            s.add("        f.set" + StringUtil.toPascalCase(statusKb) + "(-1);");
+            if (table.getColumnInfos().containsKey(status)) {
+                s.add("        f.set" + StringUtil.toPascalCase(status) + "(-1);");
+            }
             s.add("        if (f.update(now, execId) != 1) {");
             s.add("            throw new OptLockError(\"error.cant.forbid\");");
             s.add("        }");
@@ -664,7 +668,7 @@ public final class DetailActionGenerator {
                 boolean isUpdateDt = fromColumnName.matches("(?i)^" + updateDt + "$");
                 boolean isUpdateBy = fromColumnName.matches("(?i)^" + updateBy + "$");
                 boolean isDeleteF = fromColumnName.matches("(?i)^" + deleteF + "$");
-                boolean isStatusKb = fromColumnName.matches("(?i)^" + statusKb + "$");
+                boolean isStatusKb = fromColumnName.matches("(?i)^" + status + "$");
                 if (isInsertDt || isInsertBy || isUpdateDt || isUpdateBy || isDeleteF || isStatusKb) {
                     continue;
                 }
@@ -703,7 +707,7 @@ public final class DetailActionGenerator {
                         boolean isUpdateDt = fromChildColumnName.matches("(?i)^" + updateDt + "$");
                         boolean isUpdateBy = fromChildColumnName.matches("(?i)^" + updateBy + "$");
                         boolean isDeleteF = fromChildColumnName.matches("(?i)^" + deleteF + "$");
-                        boolean isStatusKb = fromChildColumnName.matches("(?i)^" + statusKb + "$");
+                        boolean isStatusKb = fromChildColumnName.matches("(?i)^" + status + "$");
                         if (isInsertDt || isInsertBy || isUpdateDt || isUpdateBy || isDeleteF || isStatusKb) {
                             continue;
                         }

@@ -52,7 +52,7 @@ limitations under the License.
     }
 
     function ChooseButtonFormatter(row, cell, value, columnDef, dataContext) {
-        if (!dataContext[columnInsertTs.toLowerCase()] && !dataContext[columnInsertTs.toUpperCase()]) {
+        if (!dataContext[columnRegistTs.toLowerCase()] && !dataContext[columnRegistTs.toUpperCase()]) {
             return null;
         }
         if (columnDef.label) {
@@ -90,7 +90,7 @@ limitations under the License.
     }
 
     function LinkFormatter(row, cell, value, columnDef, dataContext) {
-        if (!dataContext[columnInsertTs.toLowerCase()] && !dataContext[columnInsertTs.toUpperCase()] &&
+        if (!dataContext[columnRegistTs.toLowerCase()] && !dataContext[columnRegistTs.toUpperCase()] &&
             !dataContext[columnDetail.toLowerCase()] && !dataContext[columnDetail.toUpperCase()]) {
             return null;
         }

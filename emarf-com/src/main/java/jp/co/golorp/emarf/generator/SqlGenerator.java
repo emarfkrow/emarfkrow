@@ -464,42 +464,47 @@ public final class SqlGenerator {
      */
     private static void addWhere(final List<String> sql, final ColumnInfo column) {
 
-        String columnName = column.getName();
+        String name = column.getName();
 
-        String quoted = assist.quotedSQL(columnName);
-        String param = BeanGenerator.getRightHand(columnName, column);
+        // quoted
+        String q = assist.quotedSQL(name);
 
-        if (StringUtil.endsWith(inputFlagSuffixs, columnName)) {
+        // parameters
+        String p = BeanGenerator.getRightHand(name, column);
+
+        // trimed
+        String t = assist.trimedSQL("a." + q);
+
+        if (StringUtil.endsWith(inputFlagSuffixs, name)) {
+
             // FLAG検索
-            sql.add("    AND CASE WHEN TRIM (a." + quoted + ") IS NULL THEN '0' ELSE TO_CHAR (a." + quoted
-                    + ") END IN (" + param + ") ");
+            sql.add("    AND CASE WHEN " + t + " IS NULL THEN '0' ELSE TO_CHAR (a." + q + ") END IN (" + p + ") ");
 
-        } else if (StringUtil.endsWith(inputOptionsSuffixs, columnName)) {
+        } else if (StringUtil.endsWith(inputOptionsSuffixs, name)) {
+
             // IN検索
-            sql.add("    AND TRIM (a." + quoted + ") IN (" + param + ") ");
+            sql.add("    AND " + t + " IN (" + p + ") ");
 
         } else if (column.getDataType().equals("String")) {
 
-            String trimed = assist.trimedSQL("a." + quoted);
-
-            if (columnName.toUpperCase().equals(optK)) {
+            if (name.toUpperCase().equals(optK)) {
                 //参照キーの場合は、パラメータをデータで後方一致
-                sql.add("    AND " + param + " LIKE " + assist.joinedSQL(new String[] { "'%'", trimed }) + " ");
+                sql.add("    AND " + p + " LIKE " + assist.joinedSQL(new String[] { "'%'", t }) + " ");
 
             } else {
                 //以外の文字列は、データをパラメータで部分一致
-                sql.add("    AND " + trimed + " LIKE " + assist.joinedSQL(new String[] { "'%'", param, "'%'" }) + " ");
+                sql.add("    AND " + t + " LIKE " + assist.joinedSQL(new String[] { "'%'", p, "'%'" }) + " ");
             }
 
         } else {
             // 以外は等値検索
-            sql.add("    AND a." + quoted + " = " + param + " ");
+            sql.add("    AND a." + q + " = " + p + " ");
         }
 
         // 範囲検索なら追加
-        if (StringUtil.endsWith(inputRangeSuffixs, columnName)) {
-            sql.add("    AND a." + quoted + " >= " + BeanGenerator.getRightHand(columnName + "_1 ", column));
-            sql.add("    AND a." + quoted + " <= " + BeanGenerator.getRightHand(columnName + "_2 ", column));
+        if (StringUtil.endsWith(inputRangeSuffixs, name)) {
+            sql.add("    AND a." + q + " >= " + BeanGenerator.getRightHand(name + "_1 ", column));
+            sql.add("    AND a." + q + " <= " + BeanGenerator.getRightHand(name + "_2 ", column));
         }
     }
 
