@@ -39,6 +39,9 @@ public class BaseProcess {
     /** 処理のパス構成 */
     private List<String> pathes = new ArrayList<String>();
 
+    /** エラーメール送信先 */
+    private String errorMailToCsv = App.get("errorMailToCsv");
+
     /**
      * @return 処理のパス構成
      */
@@ -94,23 +97,25 @@ public class BaseProcess {
      */
     protected void sendErrorMail(final Throwable e) {
 
-        MailInfo mi = new MailInfo();
+        if (!StringUtil.isNullOrBlank(errorMailToCsv)) {
 
-        String errorMailToCsv = App.get("errorMailToCsv");
-        String[] errorMailTos = errorMailToCsv.split(",");
-        for (String errorMailTo : errorMailTos) {
-            mi.addTo(errorMailTo, "");
+            MailInfo mi = new MailInfo();
+
+            String[] errorMailTos = errorMailToCsv.split(",");
+            for (String errorMailTo : errorMailTos) {
+                mi.addTo(errorMailTo, "");
+            }
+
+            mi.setSubject(e.getMessage());
+
+            StringBuilder sb = new StringBuilder();
+            for (StackTraceElement s : e.getStackTrace()) {
+                sb.append(s.toString() + "\n");
+            }
+            mi.addText(sb.toString());
+
+            Mailer.send(mi);
         }
-
-        mi.setSubject(e.getMessage());
-
-        StringBuilder sb = new StringBuilder();
-        for (StackTraceElement s : e.getStackTrace()) {
-            sb.append(s.toString() + "\n");
-        }
-        mi.addText(sb.toString());
-
-        Mailer.send(mi);
     }
 
 }

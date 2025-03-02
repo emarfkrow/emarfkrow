@@ -128,7 +128,7 @@ public class LoginFilter implements Filter {
             authzMap.put("authz", "false");
 
             HttpSession ses = req.getSession();
-            ses.setAttribute(LoginFilter.AUTHN_KEY, "anonymous");
+            ses.setAttribute(LoginFilter.AUTHN_KEY, "-1");
             ses.setAttribute(LoginFilter.AUTHN_MEI, "anonymous");
             ses.setAttribute(LoginFilter.AUTHZ_INFO, authzMap);
 

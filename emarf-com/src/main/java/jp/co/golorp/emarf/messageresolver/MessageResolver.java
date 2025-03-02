@@ -62,6 +62,9 @@ public class MessageResolver extends StandardMessageResolver {
     /** BeanGenerator.properties */
     private static ResourceBundle bundle = ResourceBundles.getBundle(BeanGenerator.class);
 
+    /** messages */
+    private static String resourceBaseName = "messages";
+
     /**
      * @param template 対象の画面名
      * @param templateResource 対象画面のリソース
@@ -111,6 +114,9 @@ public class MessageResolver extends StandardMessageResolver {
         Locale locale = Locales.get();
 
         Map<String, String> localeMap = localesMap.get(locale);
+        if (localeMap == null) {
+            localeMap = new HashMap<String, String>();
+        }
 
         Map<String, String> contextMap = MessageResolver.getContextMap(locale);
 
@@ -125,7 +131,10 @@ public class MessageResolver extends StandardMessageResolver {
      */
     private static Map<String, String> getContextMap(final Locale locale) {
 
-        String resourceBaseName = App.get("thymeleaf.messageresolver.basename");
+        if (App.get("thymeleaf.messageresolver.basename") != null) {
+            resourceBaseName = App.get("thymeleaf.messageresolver.basename");
+        }
+
         if (resourceBaseName == null || resourceBaseName.length() == 0) {
             return EMPTY_MESSAGES;
         }
@@ -152,7 +161,7 @@ public class MessageResolver extends StandardMessageResolver {
         }
 
         if (combinedMessages == null) {
-            return EMPTY_MESSAGES;
+            combinedMessages = new HashMap<String, String>();
         }
 
         for (String key : bundle.keySet()) {
@@ -164,11 +173,11 @@ public class MessageResolver extends StandardMessageResolver {
 
     /**
      * StandardMessageResolutionUtils.computeMessageResourceNamesFromBaseがprivateのため移植
-     * @param resourceBaseName プロパティファイルの名称
+     * @param resourceName プロパティファイルの名称
      * @param locale ロケール
      * @return プロパティファイル名の候補リスト
      */
-    private static List<String> computeMessageResourceNamesFromBase(final String resourceBaseName,
+    private static List<String> computeMessageResourceNamesFromBase(final String resourceName,
             final Locale locale) {
 
         final List<String> resourceNames = new ArrayList<String>(5);
@@ -181,16 +190,16 @@ public class MessageResolver extends StandardMessageResolver {
             throw new TemplateProcessingException(message);
         }
 
-        resourceNames.add(resourceBaseName + EXT);
+        resourceNames.add(resourceName + EXT);
 
-        resourceNames.add(resourceBaseName + "_" + lang + EXT);
+        resourceNames.add(resourceName + "_" + lang + EXT);
 
         if (!StringUtils.isEmptyOrWhitespace(country)) {
-            resourceNames.add(resourceBaseName + "_" + lang + "_" + country + EXT);
+            resourceNames.add(resourceName + "_" + lang + "_" + country + EXT);
         }
 
         if (!StringUtils.isEmptyOrWhitespace(locale.getVariant())) {
-            resourceNames.add(resourceBaseName + "_" + lang + "_" + country + "-" + locale.getVariant() + EXT);
+            resourceNames.add(resourceName + "_" + lang + "_" + country + "-" + locale.getVariant() + EXT);
         }
 
         return resourceNames;

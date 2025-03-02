@@ -192,13 +192,19 @@ $(function() {
 
                 if (isDialog) {
 
+                    let gridChooseTitle = Messages['common.grid.choose.title'];
+                    let gridChooseTitleWidth = 0;
+                    if (gridChooseTitle) {
+                        gridChooseTitleWidth = gridChooseTitle.length * 20;
+                    }
+
                     // ダイアログなら選択ボタンを追加
                     columns.unshift({
                         id: 'choose',
-                        name: Messages['common.grid.choose.title'],
+                        name: gridChooseTitle,
                         field: 'field',
                         sortable: true,
-                        width: Messages['common.grid.choose.title'].length * 20,
+                        width: gridChooseTitleWidth,
                         label: Messages['common.grid.choose.label'],
                         formatter: Slick.Formatters.Extends.Choose
                     });
@@ -213,15 +219,21 @@ $(function() {
                 } else {
                     // ダイアログでない場合（親画面の場合）
 
+                    let gridLinkTitle = Messages['common.grid.link.title'];
+                    let gridLinkTitleWidth = 0;
+                    if (gridLinkTitle) {
+                        gridLinkTitleWidth = gridLinkTitle.length * 20;
+                    }
+
                     //                    // 固定列がある場合（主キーが１つ以上ある場合）
                     //                    if ($gridDiv.attr('data-frozenColumn') * 1 >= 0) {
                     // 詳細リンク列を追加
                     columns.unshift({
                         id: 'link',
-                        name: Messages['common.grid.link.title'],
+                        name: gridLinkTitle,
                         field: 'field',
                         sortable: true,
-                        width: Messages['common.grid.link.title'].length * 20,
+                        width: gridLinkTitleWidth,
                         label: Messages['common.grid.link.label'],
                         formatter: Slick.Formatters.Extends.Link
                     });
@@ -248,12 +260,19 @@ $(function() {
                     //更新権限以上なら最左列に削除ボタン列を追加
                     if (options.editable) {
                         if (Base.getAuthz(form.name) >= 3) {
+
+                            let gridDeleteTitle = Messages['common.grid.delete.title'];
+                            let gridDeleteTitleWidth = 0;
+                            if (gridDeleteTitle) {
+                                gridDeleteTitleWidth = gridDeleteTitle.length * 20;
+                            }
+
                             columns.unshift({
                                 id: 'delete',
-                                name: Messages['common.grid.delete.title'],
+                                name: gridDeleteTitle,
                                 field: 'field',
                                 sortable: true,
-                                width: Messages['common.grid.delete.title'].length * 20,
+                                width: gridDeleteTitleWidth,
                                 label: Messages['common.grid.delete.label'],
                                 formatter: Slick.Formatters.Extends.Delete
                             });
