@@ -20,11 +20,15 @@ limitations under the License.
 	$(window).on('load', function() {
 
 		// パンくずクリア
-		sessionStorage['breads'] = JSON.stringify({});
+		let pathname = window.document.location.pathname;
+		let breads = {};
+		breads[pathname] = 'home';
+		sessionStorage['breads'] = JSON.stringify(breads);
 
 		// home画面に遷移
 		let home = $('[name="home"]').val();
 		if (home.indexOf('index.home') < 0) {
+			sessionStorage['breads'] = JSON.stringify({});
 			window.document.location.href = home;
 		}
 	});
