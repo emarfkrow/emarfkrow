@@ -491,7 +491,7 @@ public final class BeanGenerator {
                 if (primaryKey.getTypeName().equals("CHAR")) {
                     s.add("        whereList.add(\"" + assist.trimedSQL(q) + " = " + assist.trimedSQL(p) + "\");");
                 } else {
-                    s.add("        whereList.add(\"" + q + " = :" + p + "\");");
+                    s.add("        whereList.add(\"" + q + " = " + p + "\");");
                 }
             }
         }
@@ -508,7 +508,7 @@ public final class BeanGenerator {
                     if (column.getTypeName().equals("CHAR")) {
                         s.add("        whereList.add(\"" + assist.trimedSQL(q) + " = " + assist.trimedSQL(p) + "\");");
                     } else {
-                        s.add("        whereList.add(\"" + q + " = :" + p + "\");");
+                        s.add("        whereList.add(\"" + q + " = " + p + "\");");
                     }
                 }
             }
@@ -977,7 +977,7 @@ public final class BeanGenerator {
             if (primaryKeyInfo.getTypeName().equals("CHAR")) {
                 s.add("        whereList.add(\"" + assist.trimedSQL(q) + " = " + assist.trimedSQL(p) + "\");");
             } else {
-                s.add("        whereList.add(\"" + q + " = :" + p + "\");");
+                s.add("        whereList.add(\"" + q + " = " + p + "\");");
             }
         }
 
@@ -1297,7 +1297,6 @@ public final class BeanGenerator {
             s.add("");
 
             int parents = child.getParentInfos().size();
-
             if (parents > 1) {
                 s.add(p + "        // child:" + e + ", parents:" + parents);
                 continue;
@@ -1311,7 +1310,8 @@ public final class BeanGenerator {
                 getPermitChilds(s, i, child.getChildInfos(), indent + 2);
             }
             s.add("");
-            if (child.getColumnInfos().containsKey(status)) {
+            if (child.getColumnInfos().containsKey(status.toLowerCase())
+                    || child.getColumnInfos().containsKey(status.toUpperCase())) {
                 s.add(p + "                " + i + ".set" + StringUtil.toPascalCase(status) + "(1);");
             }
             s.add(p + "                if (" + i + ".update(now, execId) != 1) {");
@@ -1359,7 +1359,8 @@ public final class BeanGenerator {
                 getForbidChilds(s, i, child.getChildInfos(), indent + 2);
             }
             s.add("");
-            if (child.getColumnInfos().containsKey(status)) {
+            if (child.getColumnInfos().containsKey(status.toLowerCase())
+                    || child.getColumnInfos().containsKey(status.toUpperCase())) {
                 s.add(p + "                " + i + ".set" + StringUtil.toPascalCase(status) + "(-1);");
             }
             s.add(p + "                if (" + i + ".update(now, execId) != 1) {");

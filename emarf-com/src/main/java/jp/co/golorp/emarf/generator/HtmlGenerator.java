@@ -324,7 +324,8 @@ public final class HtmlGenerator {
                 s.add("        <button type=\"submit\" id=\"Delete" + e
                         + "S\" class=\"delete selectRows\" data-action=\"" + e
                         + "SDelete.ajax\" th:text=\"#{common.delete}\" tabindex=\"-1\">削除</button>");
-                if (!StringUtil.isNullOrBlank(status) && table.getColumnInfos().containsKey(status)) {
+                if (!StringUtil.isNullOrBlank(status) && (table.getColumnInfos().containsKey(status.toLowerCase())
+                        || table.getColumnInfos().containsKey(status.toUpperCase()))) {
                     s.add("        <button type=\"submit\" id=\"Permit" + e
                             + "S\" class=\"permit selectRows\" data-action=\"" + e
                             + "SPermit.ajax\" th:text=\"#{common.permit}\" tabindex=\"-1\">承認</button>");
@@ -593,7 +594,8 @@ public final class HtmlGenerator {
         if (!table.isHistory() && !table.isView()) {
             s.add("        <button id=\"Delete" + entity + "\" type=\"submit\" class=\"delete\" data-action=\"" + entity
                     + "Delete.ajax\" th:text=\"#{common.delete}\" tabindex=\"-1\">削除</button>");
-            if (!StringUtil.isNullOrBlank(status) && table.getColumnInfos().containsKey(status)) {
+            if (!StringUtil.isNullOrBlank(status) && (table.getColumnInfos().containsKey(status.toLowerCase())
+                    || table.getColumnInfos().containsKey(status.toUpperCase()))) {
                 s.add("        <button id=\"Permit" + entity + "\" type=\"submit\" class=\"permit\" data-action=\""
                         + entity + "Permit.ajax\" th:text=\"#{common.permit}\" tabindex=\"-1\">承認</button>");
                 s.add("        <button id=\"Forbid" + entity + "\" type=\"submit\" class=\"forbid\" data-action=\""
@@ -989,7 +991,7 @@ public final class HtmlGenerator {
         String c = "";
         if (isMeiRefer) {
             c = "Column.refer('" + name + "', " + mei + ", " + w + ", '" + css + "', '" + referMei.toString() + "'),";
-        } else if (isInsTs || isUpdTs || isInsBy || isUpdBy || column.isReborn()) {
+        } else if (isInsTs || isUpdTs || isInsBy || isUpdBy || column.isReborn() || column.isSummary()) {
             c = "Column.cell('" + name + "', " + mei + ", " + w + ", '" + css + "', " + format + "),";
         } else if (StringUtil.endsWith(inputFlagSuffixs, name)) {
             c = "Column.check('" + name + "', " + mei + ", " + w + ", '" + css + "'),";
@@ -1070,26 +1072,22 @@ public final class HtmlGenerator {
         // カラム情報でループ
         for (ColumnInfo column : table.getColumnInfos().values()) {
 
-            // 兄弟モデルの主キーは出力しない
             if (isB && column.isPk()) {
-                continue;
+                continue; // 兄弟モデルの主キーは出力しない
             }
 
-            // VIEWのテーブル名なら出力しない
             String colName = column.getName();
             if (colName.matches("(?i)^" + viewDetail + "$")) {
-                continue;
+                continue; // VIEWのテーブル名なら出力しない
             }
 
-            // VIEWの詳細フォームには「SEARCH_」を出力しない
             if (table.isView() && isD && StringUtil.startsWith(viewCriteriaPrefixs, colName)) {
-                continue;
+                continue; // VIEWの詳細フォームには「SEARCH_」を出力しない
             }
 
-            // 検索条件にはファイル項目とタイムスタンプを出力しない
             if (!isD && (StringUtil.endsWith(inputFileSuffixs, colName)
                     || StringUtil.endsWith(inputTimestampSuffixs, colName))) {
-                continue;
+                continue; // 検索条件にはファイル項目とタイムスタンプを出力しない
             }
 
             String property = StringUtil.toCamelCase(colName);
@@ -1100,16 +1098,14 @@ public final class HtmlGenerator {
             boolean isInsertBy = colName.matches("(?i)^" + insertId + "$");
             boolean isUpdateBy = colName.matches("(?i)^" + updateId + "$");
             if (isInsertDt || isInsertBy || isUpdateDt || isUpdateBy) {
-                //検索画面ならスキップ
                 if (!isD) {
-                    continue;
+                    continue; // 検索画面ならスキップ
                 }
-                //兄弟モデルならスキップ（更新日時のみ楽観ロック用に出力）
                 if (isB) {
                     if (isUpdateDt) {
                         s.add("        <input type=\"hidden\" name=\"" + entity + "." + property + "\" />");
                     }
-                    continue;
+                    continue; // 兄弟モデルならスキップ（更新日時のみ楽観ロック用に出力）
                 }
             }
 
@@ -1120,13 +1116,13 @@ public final class HtmlGenerator {
             if (isInsertDt || isUpdateDt || isInsertBy || isUpdateBy) { // メタ情報の場合は表示項目（編集画面の自モデルのみここに到達する）
                 htmlFieldsMeta(s, fieldId, column.getRemarks());
                 addMeiSpan(s, table, column);
-            } else if (isD && (table.isHistory() || column.isReborn())) { // 履歴モデルかビューの詳細画面
-                String cssClass = "";
-                if (column.isReborn()) {
-                    cssClass = "rebornee";
-                }
-                htmlFieldsSpan(s, fieldId, column.getRemarks(), cssClass);
+            } else if (isD && table.isHistory()) { // 履歴モデルの詳細画面
+                htmlFieldsSpan(s, fieldId, column.getRemarks(), "");
                 addMeiSpan(s, table, column);
+            } else if (isD && column.isReborn()) { // 詳細画面の転生元外部キー
+                htmlFieldsSpan(s, fieldId, column.getRemarks(), "rebornee");
+            } else if (isD && column.isSummary()) { // 詳細画面の集約先外部キー
+                htmlFieldsSpan(s, fieldId, column.getRemarks(), "summary");
             } else if (StringUtil.endsWith(inputTimestampSuffixs, colName)) { // タイムスタンプの場合
                 htmlFieldsSpan(s, fieldId, column.getRemarks(), "");
             } else if (StringUtil.endsWith(optionsSuffixs, colName) && column.getReferInfo() == null) { // 選択項目の場合（サフィックスが合致しても参照モデルなら除外）

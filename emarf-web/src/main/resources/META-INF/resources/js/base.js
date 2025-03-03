@@ -166,7 +166,8 @@ $(document).on('ready', function() {
         let data = {};
         data[entityName] = querystrings;
         Jsonate.toForm(data, $registForm);
-        Base.referRegistForm($registForm);
+        // サブウィンドウの際に初期化が間に合わないため遅らせる
+        Base.loaded(function() { Base.referRegistForm($registForm) });
     }
 });
 
@@ -688,7 +689,7 @@ let Base = {
 
         for (let i = 0; i < $readonlys.length; i++) {
             let $readonly = $($readonlys[i]);
-            if ($readonly.prop('type') == 'radio') {
+            if ($readonly.prop('type') == 'checkbox' || $readonly.prop('type') == 'radio') {
                 if (!$readonly.prop('checked')) {
                     $readonly.closest('label').css('display', 'none');
                 } else {
@@ -706,7 +707,7 @@ let Base = {
         $readonlys.removeAttr('readonly').removeAttr('tabindex').removeClass('readonly');
         for (let i = 0; i < $readonlys.length; i++) {
             let $readonly = $($readonlys[i]);
-            if ($readonly.prop('type') == 'radio') {
+            if ($readonly.prop('type') == 'checkbox' || $readonly.prop('type') == 'radio') {
                 $readonly.closest('label').css('display', 'inherit');
             }
         }

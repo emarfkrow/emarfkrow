@@ -1119,12 +1119,12 @@ public final class DataSources {
 
     /**
      * ユニークキーテーブル（転生元）から、植え付け先（転生先）を探す
-     * @param tableInfos テーブル情報のリスト
+     * @param tables テーブル情報のリスト
      */
-    private static void addRebornTable(final List<TableInfo> tableInfos) {
+    private static void addRebornTable(final List<TableInfo> tables) {
 
         // 転生元として、テーブル情報をループ
-        Iterator<TableInfo> srcs = tableInfos.iterator();
+        Iterator<TableInfo> srcs = tables.iterator();
         while (srcs.hasNext()) {
             TableInfo src = srcs.next();
 
@@ -1141,7 +1141,7 @@ public final class DataSources {
             int rebornCount = 0;
 
             // 転生先として、テーブル情報をループ
-            Iterator<TableInfo> dests = tableInfos.iterator();
+            Iterator<TableInfo> dests = tables.iterator();
             while (dests.hasNext()) {
                 TableInfo dest = dests.next();
 
@@ -1198,7 +1198,7 @@ public final class DataSources {
                     boolean isRebornElse = false;
 
                     // 処理済み情報
-                    Iterator<TableInfo> others = tableInfos.iterator();
+                    Iterator<TableInfo> others = tables.iterator();
                     while (others.hasNext()) {
                         TableInfo other = others.next();
 
