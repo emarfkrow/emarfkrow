@@ -79,6 +79,10 @@ $(function() {
         $('button#logout').hide();
         $('.nav dl').hide();
     }
+
+    if ($('#authNName').html() == 'anonymous') {
+        $('button#logout').hide();
+    }
 });
 
 // ２．DOM構築後
