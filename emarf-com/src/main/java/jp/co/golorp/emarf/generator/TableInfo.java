@@ -93,6 +93,9 @@ public class TableInfo {
     /** 転生先テーブル */
     private TableInfo rebornInfo;
 
+    /** 派生先テーブル */
+    private List<TableInfo> deriveInfos = new ArrayList<TableInfo>();
+
     /** 集約先テーブル */
     private TableInfo summaryInfo;
 
@@ -303,6 +306,20 @@ public class TableInfo {
      */
     public void setRebornInfo(final TableInfo p) {
         this.rebornInfo = p;
+    }
+
+    /**
+     * @return List<TableInfo>
+     */
+    public List<TableInfo> getDeriveInfos() {
+        return deriveInfos;
+    }
+
+    /**
+     * @param p
+     */
+    public void setDeriveInfos(final List<TableInfo> p) {
+        this.deriveInfos = p;
     }
 
     /**

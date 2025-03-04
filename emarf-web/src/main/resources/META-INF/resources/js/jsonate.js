@@ -203,143 +203,144 @@ let Jsonate = {
         for (let entityName in data) {
 
             // エンティティのJSONを取得
-            let json = data[entityName];
+            let entity = data[entityName];
 
-            // JSONキーでループ
-            for (let k in json) {
-
-                // JSON値が、objectだが配列でなければ、grid項目とみなして再帰
-                if (json[k] != null && typeof (json[k]) == 'object' && !Array.isArray(json[k])) {
+            // 「valueがobject」かつ「value配列でない」なら子モデルを再帰（子モデルは配列になるので、多分ここはもう動かない）
+            for (let k in entity) {
+                let v = entity[k];
+                if (v != null && typeof (v) == 'object' && !Array.isArray(v)) {
                     let nestData = {};
-                    nestData[k] = json[k];
+                    nestData[k] = v;
                     Jsonate.toForm(nestData, $form);
                 }
             }
 
             // 入力項目でループ
-            $form.find(Jsonate.inputSelector + ', input[type=checkbox]:enabled, input[type=radio]:enabled').each(function() {
+            $form
+                .find('[name*="' + entityName + '."]')
+                .filter(Jsonate.inputSelector + ', input[type=checkbox]:enabled, input[type=radio]:enabled')
+                .each(function() {
 
-                // 画面上の入力項目
-                let $input = $(this);
+                    // 画面上の入力項目
+                    let $input = $(this);
 
-                // 入力項目のname
-                let k = $input.prop('name');
+                    // 入力項目のname
+                    let inputName = $input.prop('name');
 
-                //チェックボックス・ラジオボタン用の対応
-                if (k.lastIndexOf(entityName) > 0) {
-                    k = k.substr(k.lastIndexOf(entityName));
-                }
+                    // チェックボックス・ラジオボタン用の対応（nameにdialogIdが接頭する時？陳腐化？）
+                    if (inputName.lastIndexOf(entityName) > 0) {
+                        inputName = inputName.substr(inputName.lastIndexOf(entityName));
+                    }
 
-                // 入力項目のnameで値を取得してみる
-                let v = json[k];
+                    // 入力項目のnameで値を取得してみる
+                    let v = entity[inputName];
 
-                let i = k.lastIndexOf('.');
-
-                // entityNameなしでも取得してみる
-                if (v == null) {
-                    v = json[k.substr(i + 1)];
-                }
-
-                // UPPER_CASEでも取得してみる
-                if (v == null) {
-                    v = json[Casing.toUpper(k.substr(i + 1))];
-                }
-
-                // kebab-caseでも取得してみる
-                if (v == null) {
-                    v = json[Casing.toKebab(k.substr(i + 1))];
-                }
-
-                // UPPER-KEBAB-CASEでも取得してみる
-                if (v == null) {
-                    v = json[Casing.toUpperKebab(k.substr(i + 1))];
-                }
-
-                // 値があれば反映
-                if (v != null) {
-
-                    console.debug('#' + $(this).prop('id') + ' [' + k + ' = ' + v + ']');
-
-                    // もしファイルタグならリンクに変換
-                    if ($input.attr('type') == 'file') {
-
-                        //                        // ファイルタグを非表示
-                        //                        $input.prop('disabled', true).hide();
-
-                        // ダウンロードリンクを表示
-                        let $link = $('a[id="' + this.id + '"]');
-                        $link.show();
-
-                        // ダウンロードリンクのhrefを設定
-                        let $form = $input.closest('form');
-                        let entityName = $form.prop('name').replace(/(Search|Regist)Form/, '');
-
-                        let inputName = $input.prop('name');
-                        let inputNames = inputName.split('.');
-                        let params = '?name=' + inputNames[inputNames.length - 1];
-
-                        let $primaryKeys = $form.find('input.primaryKey');
-                        for (let i = 0; i < $primaryKeys.length; i++) {
-                            let $primaryKey = $($primaryKeys[i]);
-                            let name = $primaryKey.prop('name');
-                            let names = name.split('.');
-                            let val = $primaryKey.val();
-                            params += '&' + names[names.length - 1] + '=' + val;
-                        }
-                        let href = entityName + 'Download.link' + params;
-                        $link.prop('href', href);
-                        if (v.endsWith('.bmp') || v.endsWith('.gif') || v.endsWith('.jpg') || v.endsWith('.jpeg') || v.endsWith('.png')) {
-                            $link.html('<img id="' + this.id + 'Img" class="imageLink" src="' + href + '&' + Date.now() + '" />');
-                        } else {
-                            $link.html(v.split('|')[0]);
-                        }
-
-                        // ファイルパスのhiddenタグを活性
-                        $('input[type="hidden"][id="' + this.id + '"]').prop("disabled", false).val([v]);
-
-                    } else {
-                        if ($input[0].type == 'datetime-local') {
-                            //                            $input.val([v.toISOString().slice(0, -1)]);
-                            $input.val(v.replace('%20', 'T'));
-                        } else {
-                            $input.val([v]);
-                            $('span[id="' + k + '"]').html(v);
+                    // プロパティ名だけで取得してみる
+                    if (v == null) {
+                        let i = inputName.lastIndexOf('.');
+                        let property = inputName.substr(i + 1);
+                        v = entity[property];
+                        // UPPER_CASEでも取得してみる
+                        if (v == null) {
+                            v = entity[Casing.toUpper(property)];
+                            // kebab-caseでも取得してみる
+                            if (v == null) {
+                                v = entity[Casing.toKebab(property)];
+                                // UPPER-KEBAB-CASEでも取得してみる
+                                if (v == null) {
+                                    v = entity[Casing.toUpperKebab(property)];
+                                }
+                            }
                         }
                     }
-                }
-            });
+
+                    // 値があれば反映
+                    if (v != null) {
+
+                        console.debug('#' + $(this).prop('id') + ' [' + inputName + ' = ' + v + ']');
+
+                        // もしファイルタグならリンクに変換
+                        if ($input.attr('type') == 'file') {
+
+                            //                        // ファイルタグを非表示
+                            //                        $input.prop('disabled', true).hide();
+
+                            // ダウンロードリンクを表示
+                            let $link = $('a[id="' + this.id + '"]');
+                            $link.show();
+
+                            // ダウンロードリンクのhrefを設定
+                            let $form = $input.closest('form');
+                            let entityName = $form.prop('name').replace(/(Search|Regist)Form/, '');
+
+                            let inputName = $input.prop('name');
+                            let inputNames = inputName.split('.');
+                            let params = '?name=' + inputNames[inputNames.length - 1];
+
+                            let $primaryKeys = $form.find('input.primaryKey');
+                            for (let i = 0; i < $primaryKeys.length; i++) {
+                                let $primaryKey = $($primaryKeys[i]);
+                                let name = $primaryKey.prop('name');
+                                let names = name.split('.');
+                                let val = $primaryKey.val();
+                                params += '&' + names[names.length - 1] + '=' + val;
+                            }
+                            let href = entityName + 'Download.link' + params;
+                            $link.prop('href', href);
+                            if (v.endsWith('.bmp') || v.endsWith('.gif') || v.endsWith('.jpg') || v.endsWith('.jpeg') || v.endsWith('.png')) {
+                                $link.html('<img id="' + this.id + 'Img" class="imageLink" src="' + href + '&' + Date.now() + '" />');
+                            } else {
+                                $link.html(v.split('|')[0]);
+                            }
+
+                            // ファイルパスのhiddenタグを活性
+                            $('input[type="hidden"][id="' + this.id + '"]').prop("disabled", false).val([v]);
+
+                        } else {
+                            if ($input[0].type == 'datetime-local') {
+                                //                            $input.val([v.toISOString().slice(0, -1)]);
+                                $input.val(v.replace('%20', 'T'));
+                            } else {
+                                $input.val([v]);
+                                $('span[id="' + inputName + '"]').html(v);
+                            }
+                        }
+                    }
+                });
 
             // 表示項目でループ
-            $form.find('span[id]').each(function() {
+            $form.find('span[id*="' + entityName + '."]').each(function() {
+
                 let $span = $(this);
 
                 // 入力項目のidで値を取得してみる
-                let k = $span.prop('id');
-                let v = json[k];
+                let spanId = $span.prop('id');
+                let v = entity[spanId];
 
                 // entityNameなしでも取得してみる
                 if (!v) {
-                    v = json[k.replace(entityName + '.', '')];
-                }
-
-                // upperでも取得してみる
-                if (!v) {
-                    v = json[Casing.toUpper(k.replace(entityName + '.', ''))];
+                    let property = spanId.replace(entityName + '.', '');
+                    v = entity[property];
+                    // UPPER_CASEでも取得してみる
+                    if (!v) {
+                        v = entity[Casing.toUpper(property)];
+                    }
                 }
 
                 // 値があれば反映
                 if (v) {
+                    console.debug('#' + $(this).prop('id') + ' [' + spanId + ' = ' + v + ']');
                     $span.html(v);
                 }
             });
 
             // グリッド内容
-            $form.find('[id$=Grid]').each(function() {
+            $form.find('[id$="Grid"]').each(function() {
                 let gridId = this.id;                         // TSosenDialog.TOyaGrid
                 let gridIds = gridId.split(".");              // TSosenDialog, TOyaGrid
                 let lastId = gridIds[gridIds.length - 1];     // TOyaGrid
                 let fieldName = lastId.replace(/Grid$/, 's'); // TOyas
-                let childList = json[fieldName];
+                let childList = entity[fieldName];
                 if (childList) {
                     let gridData = [];
                     for (let i in childList) {

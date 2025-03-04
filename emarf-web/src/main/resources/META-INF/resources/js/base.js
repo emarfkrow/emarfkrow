@@ -633,11 +633,16 @@ let Base = {
 
                     // ステータスによるボタン制御
                     let $statusKb = $registForm.find('fieldset:nth-child(1)').find('[name$="statusKb"]:checked');
-                    if ($statusKb.val() == 0) {//登録
+                    if ($statusKb.val() == 0) {
+                        //登録
+                        if (Base.getAuthz($registForm[0].name) >= 2) { // 出力権限
+                            $registForm.find('a.output').button('option', 'disabled', false);
+                        }
                         $registForm.find('button.delete').button('option', 'disabled', false);
                         $registForm.find('button.permit').button('option', 'disabled', false);
                         $registForm.find('button.forbid').button('option', 'disabled', false);
-                    } else if ($statusKb.val() == 1) {//承認
+                    } else if ($statusKb.val() == 1) {
+                        //承認
                         $registForm.find('input, select, textarea').each(function() {
                             Base.readonly(this);
                         });
@@ -647,17 +652,19 @@ let Base = {
                             let gridId = gridDivs[i].id;
                             Gridate.grids[gridId].getOptions()['editable'] = false;
                         }
+                        if (Base.getAuthz($registForm[0].name) >= 2) { // 出力権限
+                            $registForm.find('a.output').button('option', 'disabled', false);
+                        }
                         $registForm.find('a.reborner').button('option', 'disabled', false);
                         $registForm.find('button.forbid').button('option', 'disabled', false);
                         $registForm.find('button.regist').button('option', 'disabled', true);
                         $registForm.find('a.addChild').button('option', 'disabled', true);
-                    } else if ($statusKb.val() == -1) {//否認
+                    } else if ($statusKb.val() == -1) {
+                        //否認
+                        if (Base.getAuthz($registForm[0].name) >= 2) { // 出力権限
+                            $registForm.find('a.output').button('option', 'disabled', false);
+                        }
                         $registForm.find('button.delete').button('option', 'disabled', false);
-                    }
-
-                    //出力権限
-                    if (Base.getAuthz($registForm[0].name) >= 2) {
-                        $registForm.find('a.output').button('option', 'disabled', false);
                     }
 
                     //更新権限

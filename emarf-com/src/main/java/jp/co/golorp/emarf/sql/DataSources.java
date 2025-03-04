@@ -1236,8 +1236,10 @@ public final class DataSources {
                             if (src.getRebornInfo() != null) {
                                 TableInfo reborn = src.getRebornInfo();
                                 src.setRebornInfo(null);
+                                src.getDeriveInfos().add(reborn);
                                 for (ColumnInfo column : reborn.getColumnInfos().values()) {
                                     column.setReborn(false);
+                                    column.setDerive(true);
                                 }
                             }
                             continue;

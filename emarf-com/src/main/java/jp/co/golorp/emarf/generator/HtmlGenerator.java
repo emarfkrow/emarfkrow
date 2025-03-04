@@ -365,7 +365,7 @@ public final class HtmlGenerator {
         // 転生元が必須か
         boolean isReborneeNotNull = false;
         for (ColumnInfo column : table.getColumnInfos().values()) {
-            if (column.isReborn() && column.getNullable() != 1) {
+            if ((column.isReborn() || column.isDerive()) && column.getNullable() != 1) {
                 isReborneeNotNull = true;
                 break;
             }
@@ -577,8 +577,11 @@ public final class HtmlGenerator {
         if (table.getSummaryInfo() != null) {
             TableInfo summary = table.getSummaryInfo();
             String e = StringUtil.toPascalCase(summary.getName());
-            s.add("        <a th:href=\"@{/model/" + e + ".html}\" id=\"" + e + "\" target=\"dialog\" th:text=\"#{" + e
-                    + ".add}\" class=\"reborner\" tabindex=\"-1\">" + summary.getRemarks() + "</a>");
+            if (table.getRebornInfo() == null) {
+                // 転生先（自主キーが必須の外部キーになっている）がなければ追加ボタンを出力
+                s.add("        <a th:href=\"@{/model/" + e + ".html}\" id=\"" + e + "\" target=\"dialog\" th:text=\"#{"
+                        + e + ".add}\" class=\"reborner\" tabindex=\"-1\">" + summary.getRemarks() + "</a>");
+            }
             for (String pk : summary.getPrimaryKeys()) {
                 ColumnInfo primaryKey = summary.getColumnInfos().get(pk);
                 String p = StringUtil.toCamelCase(pk);
@@ -1121,6 +1124,8 @@ public final class HtmlGenerator {
                 addMeiSpan(s, table, column);
             } else if (isD && column.isReborn()) { // 詳細画面の転生元外部キー
                 htmlFieldsSpan(s, fieldId, column.getRemarks(), "rebornee");
+            } else if (isD && column.isDerive()) { // 詳細画面の派生元外部キー
+                htmlFieldsSpan(s, fieldId, column.getRemarks(), "derivee");
             } else if (isD && column.isSummary()) { // 詳細画面の集約先外部キー
                 htmlFieldsSpan(s, fieldId, column.getRemarks(), "summary");
             } else if (StringUtil.endsWith(inputTimestampSuffixs, colName)) { // タイムスタンプの場合

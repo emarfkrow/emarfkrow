@@ -213,7 +213,7 @@ $(function() {
                         // メタ情報以外の項目を親画面に反映
 
                         let val = item[colName];
-                        if (!eqs[colName]) {
+                        if (!eqs[colName] && eqs[colName] != '') {
                             eqs[colName] = val;
                         } else if (eqs[colName] != val) {
                             eqs[colName] = ''

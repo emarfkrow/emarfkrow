@@ -59,6 +59,9 @@ public class ColumnInfo {
     /** 転生キーならtrue */
     private boolean isReborn;
 
+    /** 派生キーならtrue */
+    private boolean isDerive;
+
     /** 集約キーならtrue */
     private boolean isSummary;
 
@@ -227,6 +230,20 @@ public class ColumnInfo {
      */
     public void setReborn(final boolean p) {
         this.isReborn = p;
+    }
+
+    /**
+     * @return boolean
+     */
+    public boolean isDerive() {
+        return isDerive;
+    }
+
+    /**
+     * @param p
+     */
+    public void setDerive(final boolean p) {
+        this.isDerive = p;
     }
 
     /**
