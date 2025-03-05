@@ -293,6 +293,10 @@ div.uniqueKey {
     text-align: right;
 }
 
+.minus {
+    color: red;
+}
+
 .imageLink {
     height: 100px;
     width: 100px;

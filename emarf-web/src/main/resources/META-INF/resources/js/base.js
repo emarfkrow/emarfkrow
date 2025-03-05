@@ -591,10 +591,8 @@ let Base = {
         $registForm.find('input.uniqueKey').each(function() {
             if (pkAll) {
                 Base.readonly(this);
-                //$(this).attr('readonly', true).attr('tabindex', '-1').addClass('readonly');
             } else {
                 Base.writable(this);
-                //$(this).removeAttr('readonly').removeAttr('tabindex').removeClass('readonly');
             }
         });
 
@@ -605,6 +603,14 @@ let Base = {
             } else {
                 $(this).show();
             }
+        });
+
+        // 詳細画面の選択項目は、履歴モデル・転生元外部キー・派生元外部キー・集約先外部キーなら読み取り専用
+        $registForm.find('fieldset.history, fieldset.rebornee, fieldset.derivee, fieldset.summary').each(function() {
+            let $fieldset = $(this);
+            $fieldset.find('input[type="checkbox"],input[type="radio"],select').each(function() {
+                Base.readonly(this);
+            });
         });
 
         $registForm.find('a.output').button('option', 'disabled', true);

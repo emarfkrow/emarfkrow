@@ -53,7 +53,11 @@ let Column = {
         if (validator) { column.validator = validator; }
         column.editor = Slick.Editors.Extends.Comma;
         column.formatter = Slick.Formatters.Extends.Comma;
-        column.cssClass += ' right';
+        if (cssClass) {
+            column.cssClass += ' right';
+        } else {
+            column.cssClass = ' right';
+        }
         return column;
     },
 
@@ -62,7 +66,11 @@ let Column = {
         if (validator) { column.validator = validator; }
         column.editor = Slick.Editors.Extends.Dec1;
         column.formatter = Slick.Formatters.Extends.Dec1;
-        column.cssClass += ' right';
+        if (cssClass) {
+            column.cssClass += ' right';
+        } else {
+            column.cssClass = ' right';
+        }
         return column;
     },
 
@@ -71,7 +79,11 @@ let Column = {
         if (validator) { column.validator = validator; }
         column.editor = Slick.Editors.Extends.Dec2;
         column.formatter = Slick.Formatters.Extends.Dec2;
-        column.cssClass += ' right';
+        if (cssClass) {
+            column.cssClass += ' right';
+        } else {
+            column.cssClass = ' right';
+        }
         return column;
     },
 
@@ -80,7 +92,11 @@ let Column = {
         if (validator) { column.validator = validator; }
         column.editor = Slick.Editors.Extends.Dec3;
         column.formatter = Slick.Formatters.Extends.Dec3;
-        column.cssClass += ' right';
+        if (cssClass) {
+            column.cssClass += ' right';
+        } else {
+            column.cssClass = ' right';
+        }
         return column;
     },
 

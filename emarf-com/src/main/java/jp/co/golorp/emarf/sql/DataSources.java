@@ -32,6 +32,7 @@ import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.ResourceBundle;
 import java.util.Set;
+import java.util.TreeMap;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -474,6 +475,13 @@ public final class DataSources {
                 }
             }
 
+            if (table.getDeriveInfos().size() > 1) {
+                LOG.info("    DeriveInfos:");
+                for (TableInfo derive : table.getDeriveInfos()) {
+                    LOG.info("        " + derive.getName() + " " + derive.getPrimaryKeys());
+                }
+            }
+
             if (table.getRebornInfo() != null) {
                 LOG.info("    RebornInfo:");
                 TableInfo reborn = table.getRebornInfo();
@@ -666,6 +674,8 @@ public final class DataSources {
     private static void addTables(final List<TableInfo> tables, final DatabaseMetaData metaData,
             final String schemaPattern) throws SQLException {
 
+        Map<String, TableInfo> tree = new TreeMap<String, TableInfo>();
+
         ResultSet rs = metaData.getTables(null, schemaPattern.toUpperCase(), null, new String[] { "TABLE", "VIEW" });
 
         while (rs.next()) {
@@ -684,7 +694,6 @@ public final class DataSources {
 
             // テーブル情報を追加
             TableInfo table = new TableInfo();
-            tables.add(table);
 
             // テーブル物理名
             table.setName(tableName);
@@ -704,9 +713,15 @@ public final class DataSources {
 
             String tableType = rs.getString("TABLE_TYPE");
             table.setView(tableType.equals("VIEW"));
+
+            tree.put(tableName, table);
         }
 
         rs.close();
+
+        for (TableInfo table : tree.values()) {
+            tables.add(table);
+        }
     }
 
     /**
@@ -1234,13 +1249,17 @@ public final class DataSources {
                         // ２回以上ここに来る＝転生先が複数存在しうる＝転生登録しない
                         if (rebornCount > 0) {
                             if (src.getRebornInfo() != null) {
-                                TableInfo reborn = src.getRebornInfo();
+                                TableInfo reborn = src.getRebornInfo(); // 転生先を派生先に追加
                                 src.setRebornInfo(null);
                                 src.getDeriveInfos().add(reborn);
-                                for (ColumnInfo column : reborn.getColumnInfos().values()) {
-                                    column.setReborn(false);
-                                    column.setDerive(true);
+                                for (String fk : destFKs) {
+                                    reborn.getColumnInfos().get(fk).setReborn(false);
+                                    reborn.getColumnInfos().get(fk).setDerive(true);
                                 }
+                            }
+                            src.getDeriveInfos().add(dest);
+                            for (String fk : destFKs) {
+                                dest.getColumnInfos().get(fk).setDerive(true);
                             }
                             continue;
                         }

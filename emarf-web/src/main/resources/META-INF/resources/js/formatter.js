@@ -23,9 +23,16 @@ let Formatter = {
 
     comma: function(v) {
         if (v === undefined || v === null || v === '') { return ''; }
+        // 整数と小数に分割
         var values = v.toString().split('.');
+        // 整数部をフォーマット
         var s = values[0].replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1,');
+        // 小数があれば結合
         if (values.length > 1) { s += '.' + values[1]; }
+        // マイナスならクラス設定
+        if (v < 0) {
+            return '<span class="minus">' + s + '</span>';
+        }
         return s;
     },
 

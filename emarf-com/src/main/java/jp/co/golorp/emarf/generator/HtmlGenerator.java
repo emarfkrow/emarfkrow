@@ -1119,26 +1119,50 @@ public final class HtmlGenerator {
             if (isInsertDt || isUpdateDt || isInsertBy || isUpdateBy) { // メタ情報の場合は表示項目（編集画面の自モデルのみここに到達する）
                 htmlFieldsMeta(s, fieldId, column.getRemarks());
                 addMeiSpan(s, table, column);
+
+            } else if (StringUtil.endsWith(optionsSuffixs, colName) && column.getReferInfo() == null) {
+                // 選択項目の場合（サフィックスが合致しても参照モデルなら除外）
+
+                String css = "";
+                if (isD && column.isPk()) { // 詳細画面の主キー
+                    css += " primaryKey";
+                }
+                if (isD && table.isHistory()) { // 履歴モデルの詳細画面
+                    css += " history";
+                } else if (isD && column.isReborn()) { // 詳細画面の転生元外部キー
+                    css += " rebornee";
+                } else if (isD && column.isDerive()) { // 詳細画面の派生元外部キー
+                    css += " derivee";
+                } else if (isD && column.isSummary()) { // 詳細画面の集約先外部キー
+                    css += " summary";
+                }
+
+                htmlFieldsOptions(s, fieldId, colName, column.getRemarks(), css);
+
             } else if (isD && table.isHistory()) { // 履歴モデルの詳細画面
-                htmlFieldsSpan(s, fieldId, column.getRemarks(), "");
+                htmlFieldsSpan(s, fieldId, column.getRemarks(), "history");
                 addMeiSpan(s, table, column);
+
             } else if (isD && column.isReborn()) { // 詳細画面の転生元外部キー
                 htmlFieldsSpan(s, fieldId, column.getRemarks(), "rebornee");
+
             } else if (isD && column.isDerive()) { // 詳細画面の派生元外部キー
                 htmlFieldsSpan(s, fieldId, column.getRemarks(), "derivee");
+
             } else if (isD && column.isSummary()) { // 詳細画面の集約先外部キー
                 htmlFieldsSpan(s, fieldId, column.getRemarks(), "summary");
+
             } else if (StringUtil.endsWith(inputTimestampSuffixs, colName)) { // タイムスタンプの場合
                 htmlFieldsSpan(s, fieldId, column.getRemarks(), "");
-            } else if (StringUtil.endsWith(optionsSuffixs, colName) && column.getReferInfo() == null) { // 選択項目の場合（サフィックスが合致しても参照モデルなら除外）
-                htmlFieldsOptions(s, fieldId, colName, column.getRemarks(), isD && column.isPk());
+
             } else if (isD && StringUtil.endsWith(textareaSuffixs, colName)) { // テキストエリア項目の場合
                 htmlFieldsTextarea(s, fieldId, column.getRemarks());
+
             } else { // inputの場合
 
                 String type = getInputType(colName);
-                String inputCss = "";
-                String referCss = "";
+
+                String inputCss = addCssByRelation(isD, table, column);
 
                 // 詳細画面の必須項目
                 if (isD && column.getNullable() == 0) {
@@ -1147,34 +1171,6 @@ public final class HtmlGenerator {
                         LOG.trace("skip NotBlank.");
                     } else {
                         inputCss += " notblank";
-                    }
-                }
-
-                // 詳細画面のユニークキー
-                if (isD && column.isUnique()) {
-                    inputCss += " uniqueKey";
-                    referCss += " uniqueKey";
-                }
-
-                // 詳細画面の主キー
-                if (isD && column.isPk()) {
-                    inputCss += " primaryKey";
-                    referCss += " primaryKey";
-                    if (column.isNumbering()) {
-                        inputCss += " numbering";
-                        referCss += " numbering";
-                    }
-                }
-
-                // 詳細画面の参照キー
-                if (isD && column.getReferInfo() != null) {
-                    inputCss += " refer";
-                    referCss += " refer";
-                    TableInfo refer = column.getReferInfo();
-                    TableInfo stint = refer.getStintInfo();
-                    if (stint != null && !table.getName().equals(stint.getName())) {
-                        inputCss += " correct";
-                        referCss += " correct";
                     }
                 }
 
@@ -1188,6 +1184,8 @@ public final class HtmlGenerator {
                 if (!StringUtil.isNullOrBlank(inputCss)) {
                     inputCss = " class=\"" + inputCss + "\"";
                 }
+
+                String referCss = addCssByRelation(isD, table, column);
                 if (!StringUtil.isNullOrBlank(referCss)) {
                     referCss = " class=\"" + referCss + "\"";
                 }
@@ -1208,6 +1206,46 @@ public final class HtmlGenerator {
 
             s.add("        </div>");
         }
+    }
+
+    /**
+     * @param isD
+     * @param table
+     * @param column
+     * @return cssClass
+     */
+    private static String addCssByRelation(final boolean isD, final TableInfo table, final ColumnInfo column) {
+
+        String css = "";
+
+        // 詳細画面のユニークキー
+        if (isD && column.isUnique()) {
+            css += " uniqueKey";
+        }
+
+        // 詳細画面の主キー
+        if (isD && column.isPk()) {
+            css += " primaryKey";
+
+            // 詳細画面の採番キー
+            if (column.isNumbering()) {
+                css += " numbering";
+            }
+        }
+
+        // 詳細画面の参照キー
+        if (isD && column.getReferInfo() != null) {
+            css += " refer";
+
+            // 詳細画面の制約キー
+            TableInfo refer = column.getReferInfo();
+            TableInfo stint = refer.getStintInfo();
+            if (stint != null && !table.getName().equals(stint.getName())) {
+                css += " correct";
+            }
+        }
+
+        return css;
     }
 
     /**
@@ -1267,13 +1305,18 @@ public final class HtmlGenerator {
      * @param column
      */
     private static void addMeiSpan(final List<String> s, final TableInfo table, final ColumnInfo column) {
-        String entity = StringUtil.toPascalCase(table.getName());
+
         if (column.getReferInfo() != null) {
             TableInfo refer = column.getReferInfo();
+
+            String entity = StringUtil.toPascalCase(table.getName());
             String meiColumnName = getMeiColumnName(column.getName(), refer);
+
             if (!table.getColumnInfos().containsKey(meiColumnName)) {
+
                 String meiId = entity + "." + StringUtil.toCamelCase(meiColumnName);
                 String referDef = getReferDef(entity, column.getName(), refer);
+
                 s.add("          <span id=\"" + meiId + "\" class=\"refer\"" + referDef + "></span>");
             }
         }
@@ -1418,26 +1461,26 @@ public final class HtmlGenerator {
      * 選択項目の出力
      * @param s 出力文字列のリスト
      * @param id 項目ID
-     * @param columnName カラム名
+     * @param colName カラム名
      * @param remarks コメント
-     * @param isPrimaryKey 主キーならtrue
+     * @param css css
      */
-    private static void htmlFieldsOptions(final List<String> s, final String id, final String columnName,
-            final String remarks, final boolean isPrimaryKey) {
+    private static void htmlFieldsOptions(final List<String> s, final String id, final String colName,
+            final String remarks, final String css) {
 
-        String css = "";
-        if (isPrimaryKey) {
-            css = " class=\"primaryKey\"";
+        String cssClass = "";
+        if (!StringUtil.isNullOrBlank(css)) {
+            cssClass = " class=\"" + css + "\"";
         }
 
         String forcePulldown = "";
-        if (StringUtil.endsWith(pulldownSuffixs, columnName)) {
+        if (StringUtil.endsWith(pulldownSuffixs, colName)) {
             forcePulldown = " data-force-pulldown=\"1\"";
         }
 
         s.add("          <fieldset id=\"" + id + "List\" data-options=\"" + json + "\" data-optionParams=\"" + optK
-                + ":" + columnName + "\" data-optionValue=\"" + optV + "\" data-optionLabel=\"" + optL + "\""
-                + css + forcePulldown + ">");
+                + ":" + colName + "\" data-optionValue=\"" + optV + "\" data-optionLabel=\"" + optL + "\""
+                + cssClass + forcePulldown + ">");
         s.add("            <legend th:text=\"#{" + id + "}\">" + remarks + "</legend>");
         s.add("          </fieldset>");
     }
