@@ -170,8 +170,11 @@ $(document).on('ready', function() {
         let data = {};
         data[entityName] = querystrings;
         Jsonate.toForm(data, $registForm);
-        // サブウィンドウの際に初期化が間に合わないため遅らせる
-        Base.loaded(function() { Base.referRegistForm($registForm) });
+
+        // サブウィンドウの際にBase.init()が間に合わないため遅らせる
+        Base.loaded(function() {
+            Base.referRegistForm($registForm);
+        });
     }
 });
 
@@ -188,6 +191,7 @@ $(window).on('load', function() {
         let href = window.document.location.href;
         let entityName = href.replace(/\.html.+/, '').replace(/.+\//, '');
         try {
+            console.info(entityName + 'DialogOpen();');
             eval(entityName + 'DialogOpen()');
         } catch (e) {
             console.debug(e.message);
@@ -555,15 +559,7 @@ let Base = {
      */
     referRegistForm: function($registForm) {
 
-        $registForm.find('input, select, textarea').each(function() {
-            Base.writable(this);
-        });
-        $registForm.find('fieldset a.refer, input[type="button"].gridDelete').show();
-        let gridDivs = $registForm.find('[id$=Grid]');
-        for (let i = 0; i < gridDivs.length; i++) {
-            let gridId = gridDivs[i].id;
-            Gridate.grids[gridId].getOptions()['editable'] = true;
-        }
+        console.info('Base.referRegistForm();');
 
         // 詳細画面の主キー項目は、値が既にあれば読み取り専用
         let pkAll = true;

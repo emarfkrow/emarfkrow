@@ -366,11 +366,23 @@ let Dialogate = {
 
                         let $registForm = $dialogDiv.find('[name$="RegistForm"]');
 
+                        // ダイアログの場合だけ初期化すればいいのでBase.referRegistForm()から移動
+                        $registForm.find('a, input, select, textarea').each(function() {
+                            Base.writable(this);
+                        });
+                        $registForm.find('fieldset a.refer, input[type="button"].gridDelete').show();
+                        let gridDivs = $registForm.find('[id$=Grid]');
+                        for (let i = 0; i < gridDivs.length; i++) {
+                            let gridId = gridDivs[i].id;
+                            Gridate.grids[gridId].getOptions()['editable'] = true;
+                        }
+
                         // ダイアログ内の登録フォームに、呼び出し元イベントで値が設定されている場合は、照会結果を初期表示
                         Base.referRegistForm($registForm);
                     }
 
                     try {
+                        console.info(dialogId + 'Open();');
                         eval(dialogId + 'Open()');
                     } catch (e) {
                         console.debug(e.message);

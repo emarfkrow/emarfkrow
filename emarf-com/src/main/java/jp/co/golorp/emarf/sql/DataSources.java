@@ -1210,6 +1210,8 @@ public final class DataSources {
                 if (src.getPrimaryKeys().size() == destFKs.size()) {
                     // 比較元の主キーと、比較先の外部キーの、数が一致する場合
 
+                    LOG.debug(src.getName() + " : " + dest.getName() + " = " + destFKs);
+
                     boolean isRebornElse = false;
 
                     // 処理済み情報
@@ -1246,7 +1248,7 @@ public final class DataSources {
                     // 今回の比較先が、他モデルの転生先でなければ、比較元の転生先に設定
                     if (!isRebornElse) {
 
-                        // ２回以上ここに来る＝転生先が複数存在しうる＝転生登録しない
+                        // ２回以上ここに来る＝転生先が複数存在しうる＝転生モデルでなく派生モデルにする
                         if (rebornCount > 0) {
                             if (src.getRebornInfo() != null) {
                                 TableInfo reborn = src.getRebornInfo(); // 転生先を派生先に追加

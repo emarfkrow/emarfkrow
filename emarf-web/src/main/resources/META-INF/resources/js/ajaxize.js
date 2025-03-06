@@ -294,8 +294,8 @@ let Ajaxize = {
         }).done(function(data) {
 
             console.info('action: ' + action);
-            console.info(logJson);
-            console.info(data);
+            console.debug(logJson);
+            console.debug(data);
             //console.info('--------------------------------------------------');
 
             // システムエラー
