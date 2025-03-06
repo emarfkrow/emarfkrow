@@ -1438,6 +1438,17 @@ public final class DataSources {
                         for (String fk : destFKs) {
                             dest.getColumnInfos().get(fk).setSummary(true);
                         }
+
+                        // summaryならrebornを外す
+                        if (src.getRebornInfo() != null) {
+                            TableInfo reborn = src.getRebornInfo();
+                            for (ColumnInfo column : reborn.getColumnInfos().values()) {
+                                if (column.isReborn()) {
+                                    column.setReborn(false);
+                                }
+                            }
+                            src.setRebornInfo(null);
+                        }
                     }
                 }
             }
