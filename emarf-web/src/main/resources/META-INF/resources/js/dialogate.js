@@ -185,7 +185,8 @@ $(function() {
             // 主キーの値もCSVで取得してダイアログに反映
             let vals = '';
             for (let i in grid.getSelectedRows()) {
-                let item = items[i];
+                let r = grid.getSelectedRows()[i];
+                let item = items[r];
                 if (vals != '') {
                     vals += ', ';
                 }
@@ -197,7 +198,8 @@ $(function() {
             // 全ての選択行で一致するカラム名と値を取得
             let eqs = {};
             for (let i in grid.getSelectedRows()) {
-                let item = items[i];
+                let r = grid.getSelectedRows()[i];
+                let item = items[r];
                 for (let colName in item) {
                     if (colName != 'ROW_NUM' && colName != 'id' &&
                         !colName.match(new RegExp('^' + Messages['column.start'] + '$', 'i')) &&
@@ -264,7 +266,8 @@ let Dialogate = {
         console.debug('Dialogate load [' + href + '].');
 
         // hrefからdialogIdを取得。作成済みならスキップ。
-        let dialogId = href.replace(/(^.+\/|\.html(\?.+)?$)/g, '') + 'Dialog';
+        let entity = href.replace(/(^.+\/|\.html(\?.+)?$)/g, '');
+        let dialogId = entity + 'Dialog';
         if ($('div[id="' + dialogId + '"]').length > 0) {
             return;
         }
@@ -382,8 +385,8 @@ let Dialogate = {
                     }
 
                     try {
-                        console.info(dialogId + 'Open();');
-                        eval(dialogId + 'Open()');
+                        console.info(entity + 'Open();');
+                        eval(entity + 'Open()');
                     } catch (e) {
                         console.debug(e.message);
                     }

@@ -187,16 +187,17 @@ $(window).load(function() {
 $(window).on('load', function() {
     console.debug('base-5: $(window).on(\'load\', function() {});');
 
-    if (window.opener) {
-        let href = window.document.location.href;
-        let entityName = href.replace(/\.html.+/, '').replace(/.+\//, '');
-        try {
-            console.info(entityName + 'DialogOpen();');
-            eval(entityName + 'DialogOpen()');
-        } catch (e) {
-            console.debug(e.message);
-        }
+    //    if (window.opener) {
+    let href = window.document.location.href;
+    // 「.html」以降を除去。「～/」を除去。
+    let entity = href.replace(/\.html.*/, '').replace(/.+\//, '');
+    try {
+        console.info(entity + 'Open();');
+        eval(entity + 'Open()');
+    } catch (e) {
+        console.debug(e.message);
     }
+    //    }
 });
 
 let Base = {

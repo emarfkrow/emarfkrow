@@ -45,7 +45,7 @@ public final class DetailActionGenerator {
     /** actionパッケージ */
     private static String pkgAction;
     /** entityパッケージ */
-    private static String pkgEntity;
+    private static String pkgE;
 
     /** プライベートコンストラクタ */
     private DetailActionGenerator() {
@@ -76,7 +76,7 @@ public final class DetailActionGenerator {
         javaDir = bundle.getString("dir.java");
 
         pkgAction = bundle.getString("java.package.action") + ".model.base";
-        pkgEntity = bundle.getString("java.package.entity");
+        pkgE = bundle.getString("java.package.entity");
 
         javaActionDetailRegist(tables);
         javaActionDetailGet(tables);
@@ -115,7 +115,7 @@ public final class DetailActionGenerator {
             s.add("import java.util.HashMap;");
             s.add("import java.util.Map;");
             s.add("");
-            s.add("import " + pkgEntity + "." + entity + ";");
+            s.add("import " + pkgE + "." + entity + ";");
             s.add("");
             s.add("import jp.co.golorp.emarf.action.BaseAction;");
             s.add("import jp.co.golorp.emarf.exception.OptLockError;");
@@ -168,25 +168,35 @@ public final class DetailActionGenerator {
             if (table.getSummaryInfo() != null) {
                 TableInfo summary = table.getSummaryInfo();
                 if (summary.getPrimaryKeys().size() == 1) {
-                    String summaryEntity = StringUtil.toPascalCase(summary.getName());
-                    String summaryInstance = StringUtil.toCamelCase(summary.getName());
+                    String e = StringUtil.toPascalCase(summary.getName());
+                    String i = StringUtil.toCamelCase(summary.getName());
                     String pk = summary.getPrimaryKeys().get(0);
-                    String property = StringUtil.toCamelCase(pk);
+                    String prop = StringUtil.toCamelCase(pk);
                     s.add("");
                     s.add("            //集約の場合は、集約元に主キーを反映");
-                    s.add("            String summaryKey = postJson.get(\"" + summaryEntity + "." + property
-                            + "\").toString();");
+                    s.add("            String summaryKey = postJson.get(\"" + e + "." + prop + "\").toString();");
                     s.add("            if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(summaryKey)) {");
                     s.add("                String[] summaryKeys = summaryKey.trim().split(\",\");");
                     s.add("                for (String pk : summaryKeys) {");
-                    s.add("                    " + pkgEntity + "." + summaryEntity + " " + summaryInstance + " = "
-                            + pkgEntity + "." + summaryEntity + ".get(pk);");
-                    for (String fk : table.getPrimaryKeys()) {
-                        String accessor = StringUtil.toPascalCase(fk);
-                        s.add("                    " + summaryInstance + ".set" + accessor + "(e.get" + accessor
-                                + "());");
+                    s.add("                    " + pkgE + "." + e + " " + i + " = " + pkgE + "." + e + ".get(pk);");
+                    if (!StringUtil.isNullOrBlank(status) && (summary.getColumnInfos().containsKey(status.toLowerCase())
+                            || summary.getColumnInfos().containsKey(status.toUpperCase()))) {
+                        String acc = StringUtil.toPascalCase(status);
+                        s.add("                    //承認済みでなければエラー");
+                        s.add("                    if (!" + i + ".get" + acc + "().equals(\"1\")) {");
+                        s.add("                        throw new OptLockError(\"error.nopermit.summary\");");
+                        s.add("                    }");
                     }
-                    s.add("                    if (" + summaryInstance + ".update(now, execId) != 1) {");
+                    for (String fk : table.getPrimaryKeys()) {
+                        String acc = StringUtil.toPascalCase(fk);
+                        s.add("                    //集約済みならエラー");
+                        s.add("                    if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(" + i + ".get"
+                                + acc + "())) {");
+                        s.add("                        throw new OptLockError(\"error.already.summary\");");
+                        s.add("                    }");
+                        s.add("                    " + i + ".set" + acc + "(e.get" + acc + "());");
+                    }
+                    s.add("                    if (" + i + ".update(now, execId) != 1) {");
                     s.add("                        throw new OptLockError(\"error.cant.insert\");");
                     s.add("                    }");
                     s.add("                }");
@@ -251,7 +261,7 @@ public final class DetailActionGenerator {
             s.add("import java.util.HashMap;");
             s.add("import java.util.Map;");
             s.add("");
-            s.add("import " + pkgEntity + "." + entity + ";");
+            s.add("import " + pkgE + "." + entity + ";");
             s.add("");
             s.add("import jp.co.golorp.emarf.action.BaseAction;");
             s.add("");
@@ -293,7 +303,7 @@ public final class DetailActionGenerator {
                         for (TableInfo parent : table.getParentInfos()) {
                             String parentE = StringUtil.toPascalCase(parent.getName());
                             String parentI = StringUtil.toCamelCase(parent.getName());
-                            s.add("        " + pkgEntity + "." + parentE + " " + parentI + " = " + pkgEntity + "."
+                            s.add("        " + pkgE + "." + parentE + " " + parentI + " = " + pkgE + "."
                                     + parentE + ".get(" + pks + ");");
                             s.add("        map.put(\"" + parentE + "\", " + parentI + ");");
                         }
@@ -358,7 +368,7 @@ public final class DetailActionGenerator {
             s.add("import java.util.HashMap;");
             s.add("import java.util.Map;");
             s.add("");
-            s.add("import " + pkgEntity + "." + entity + ";");
+            s.add("import " + pkgE + "." + entity + ";");
             s.add("");
             s.add("import jp.co.golorp.emarf.action.BaseAction;");
             s.add("import jp.co.golorp.emarf.exception.OptLockError;");
@@ -449,7 +459,7 @@ public final class DetailActionGenerator {
             s.add("import java.util.HashMap;");
             s.add("import java.util.Map;");
             s.add("");
-            s.add("import " + pkgEntity + "." + entity + ";");
+            s.add("import " + pkgE + "." + entity + ";");
             s.add("");
             s.add("import jp.co.golorp.emarf.action.BaseAction;");
             s.add("import jp.co.golorp.emarf.exception.OptLockError;");
@@ -547,7 +557,7 @@ public final class DetailActionGenerator {
             s.add("import java.util.HashMap;");
             s.add("import java.util.Map;");
             s.add("");
-            s.add("import " + pkgEntity + "." + entity + ";");
+            s.add("import " + pkgE + "." + entity + ";");
             s.add("");
             s.add("import jp.co.golorp.emarf.action.BaseAction;");
             s.add("import jp.co.golorp.emarf.exception.OptLockError;");
@@ -636,16 +646,19 @@ public final class DetailActionGenerator {
             }
             //転生先で集約元でもなければスキップ
             String toTableName = null;
+            String toTableKind = null;
             if (reborn != null) {
                 toTableName = reborn.getName();
+                toTableKind = "転生";
             } else if (summary != null) {
                 toTableName = summary.getName();
+                toTableKind = "集約";
             }
             if (!toTableName.equals(tableName)) {
                 continue;
             }
             s.add("");
-            s.add("            //転生先になる場合は転生元から情報をコピー");
+            s.add("            //" + toTableKind + "先になる場合は" + toTableKind + "元から情報をコピー");
             String fromKeys = "";
             for (String pk : fromTable.getPrimaryKeys()) {
                 String key = StringUtil.toCamelCase(pk);
@@ -665,7 +678,7 @@ public final class DetailActionGenerator {
             String fromName = fromTable.getName();
             String fromEntity = StringUtil.toPascalCase(fromName);
             String fromInstance = StringUtil.toCamelCase(fromName);
-            s.add("            " + pkgEntity + "." + fromEntity + " " + fromInstance + " = " + pkgEntity + "."
+            s.add("            " + pkgE + "." + fromEntity + " " + fromInstance + " = " + pkgE + "."
                     + fromEntity + ".get(" + fromKeys + ");");
             s.add("            " + entity + " " + instance + " = new " + entity + "();");
             for (String fromColumnName : fromTable.getColumnInfos().keySet()) {
@@ -700,12 +713,12 @@ public final class DetailActionGenerator {
                     String childEntity = StringUtil.toPascalCase(childName);
                     String childInstance = StringUtil.toCamelCase(childName);
                     s.add("            " + fromInstance + ".refer" + StringUtil.toPascalCase(fromChildName) + "s();");
-                    s.add("            " + instance + ".set" + childEntity + "s(new java.util.ArrayList<" + pkgEntity
+                    s.add("            " + instance + ".set" + childEntity + "s(new java.util.ArrayList<" + pkgE
                             + "." + childEntity + ">());");
-                    s.add("            for (" + pkgEntity + "." + fromChildEntity + " " + fromChildInstance + " : "
+                    s.add("            for (" + pkgE + "." + fromChildEntity + " " + fromChildInstance + " : "
                             + fromInstance + ".refer" + fromChildEntity + "s()) {");
-                    s.add("                " + pkgEntity + "." + childEntity + " " + childInstance + " = new "
-                            + pkgEntity + "." + childEntity + "();");
+                    s.add("                " + pkgE + "." + childEntity + " " + childInstance + " = new "
+                            + pkgE + "." + childEntity + "();");
                     s.add("                " + childInstance + ".setId(" + fromChildInstance + ".getId());");
                     for (String fromChildColumnName : fromChild.getColumnInfos().keySet()) {
                         boolean isInsertDt = fromChildColumnName.matches("(?i)^" + insertDt + "$");

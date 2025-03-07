@@ -1210,7 +1210,7 @@ public final class DataSources {
                 if (src.getPrimaryKeys().size() == destFKs.size()) {
                     // 比較元の主キーと、比較先の外部キーの、数が一致する場合
 
-                    LOG.debug(src.getName() + " : " + dest.getName() + " = " + destFKs);
+                    LOG.debug("Reborn? " + src.getName() + " to " + dest.getName() + " [" + destFKs + "]");
 
                     boolean isRebornElse = false;
 

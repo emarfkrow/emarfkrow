@@ -579,6 +579,7 @@ public final class HtmlGenerator {
             String e = StringUtil.toPascalCase(summary.getName());
             if (table.getRebornInfo() == null) {
                 // 転生先（自主キーが必須の外部キーになっている）がなければ追加ボタンを出力
+                // 任意の転生先に準ずるため
                 s.add("        <a th:href=\"@{/model/" + e + ".html}\" id=\"" + e + "\" target=\"dialog\" th:text=\"#{"
                         + e + ".add}\" class=\"reborner\" tabindex=\"-1\">" + summary.getRemarks() + "</a>");
             }
@@ -700,19 +701,23 @@ public final class HtmlGenerator {
     /**
      * navファイル出力
      * @param htmlDir HTMLファイル出力ディレクトリ
-     * @param tableInfos テーブル情報のリスト
+     * @param tables テーブル情報のリスト
      */
-    private static void htmlNav(final String htmlDir, final List<TableInfo> tableInfos) {
+    private static void htmlNav(final String htmlDir, final List<TableInfo> tables) {
 
         // プレフィクス毎にグループ化
         Map<String, List<TableInfo>> navs = new LinkedHashMap<String, List<TableInfo>>();
-        for (TableInfo tableInfo : tableInfos) {
+
+        for (TableInfo table : tables) {
+
             // 親モデルがあればスキップ
-            if (tableInfo.getParentInfos().size() > 0) {
+            if (table.getParentInfos().size() > 0) {
                 continue;
             }
-            String tableName = tableInfo.getName();
-            String prefix = tableName.replaceAll("_.+$", "");
+
+            String name = table.getName();
+            String prefix = name.replaceAll("_.+$", "");
+
             List<TableInfo> nav = null;
             if (navs.containsKey(prefix)) {
                 nav = navs.get(prefix);
@@ -720,7 +725,8 @@ public final class HtmlGenerator {
                 nav = new ArrayList<TableInfo>();
                 navs.put(prefix, nav);
             }
-            nav.add(tableInfo);
+
+            nav.add(table);
         }
 
         List<String> s = new ArrayList<String>();
@@ -730,18 +736,20 @@ public final class HtmlGenerator {
         s.add("  <div class=\"nav\" layout:fragment=\"nav\" th:if=\"${#ctx.session != null && #ctx.session.get('AUTHN_KEY') != null}\">");
         s.add("    <dl>");
         for (Entry<String, List<TableInfo>> nav : navs.entrySet()) {
-            String t = nav.getKey();
-            s.add("      <dt id=\"" + t + "\" th:text=\"#{nav.dt." + t + "}\">" + t + "</dt>");
+            String category = nav.getKey();
+            s.add("      <dt id=\"" + category + "\" th:text=\"#{nav.dt." + category + "}\">" + category + "</dt>");
             s.add("      <dd>");
             s.add("        <ul>");
-            List<TableInfo> navInfos = nav.getValue();
-            for (TableInfo tableInfo : navInfos) {
-                String tableName = tableInfo.getName();
-                String remarks = tableInfo.getRemarks();
-                String pascal = StringUtil.toPascalCase(tableName);
-                String pageName = pascal + "S";
-                s.add("          <li><a id=\"" + pascal + "\" th:href=\"@{/model/" + pageName
-                        + ".html}\" th:text=\"#{nav." + pageName + "}\">" + remarks + "</a></li>");
+            for (TableInfo table : nav.getValue()) {
+                String name = table.getName();
+                String remarks = table.getRemarks();
+                String e = StringUtil.toPascalCase(name);
+                String css = " class=\"table\"";
+                if (table.isView()) {
+                    css = " class=\"view\"";
+                }
+                s.add("          <li><a id=\"" + e + "\" th:href=\"@{/model/" + e + "S.html}\" th:text=\"#{nav." + e
+                        + "S}\"" + css + ">" + remarks + "</a></li>");
             }
             s.add("        </ul>");
             s.add("      </dd>");
@@ -756,16 +764,13 @@ public final class HtmlGenerator {
 
         s = new ArrayList<String>();
         for (Entry<String, List<TableInfo>> nav : navs.entrySet()) {
-            String t = nav.getKey();
-            s.add("nav.dt." + t + " " + t);
-
-            List<TableInfo> navInfos = nav.getValue();
-            for (TableInfo tableInfo : navInfos) {
-                String tableName = tableInfo.getName();
-                String remarks = tableInfo.getRemarks();
-                String pascal = StringUtil.toPascalCase(tableName);
-                String pageName = pascal + "S";
-                s.add("nav." + pageName + " " + remarks);
+            String category = nav.getKey();
+            s.add("nav.dt." + category + " " + category);
+            for (TableInfo table : nav.getValue()) {
+                String name = table.getName();
+                String remarks = table.getRemarks();
+                String e = StringUtil.toPascalCase(name);
+                s.add("nav." + e + "S " + remarks);
             }
         }
 
