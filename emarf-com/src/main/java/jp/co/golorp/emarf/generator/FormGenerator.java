@@ -174,7 +174,7 @@ public final class FormGenerator {
 
                 s.add("");
                 s.add("    /** " + column.getRemarks() + " */");
-                javaFormDetailRegistChecks(table.getPrimaryKeys(), column, s);
+                javaFormDetailRegistChecks(s, table, column);
                 s.add("    private String " + camel + ";");
                 s.add("");
                 s.add("    /**");
@@ -263,12 +263,14 @@ public final class FormGenerator {
 
     /**
      * 詳細画面 フォームチェック追加
-     * @param keys 主キー情報のリスト
-     * @param column カラム情報
      * @param s 出力文字列のリスト
+     * @param table テーブル情報
+     * @param column カラム情報
      */
-    private static void javaFormDetailRegistChecks(final List<String> keys, final ColumnInfo column,
-            final List<String> s) {
+    private static void javaFormDetailRegistChecks(final List<String> s, final TableInfo table,
+            final ColumnInfo column) {
+
+        List<String> keys = table.getPrimaryKeys();
 
         String colName = column.getName();
 
@@ -277,7 +279,7 @@ public final class FormGenerator {
 
             if (column.isNumbering() /*&& ci.getColumnName().equals(pks.get(pks.size() - 1)) 一旦、採番キーならスキップに戻す*/) {
 
-                // 最終キーが採番キーなら除外
+                // 採番キーなら除外
                 LOG.trace("skip NotBlank.");
 
                 // フラグでも必須チェックを掛ける
@@ -285,6 +287,12 @@ public final class FormGenerator {
                 //
                 //                // フラグも除外
                 //                LOG.trace("skip NotBlank.");
+
+            } else if (column.isPk() && table.getParentInfos().size() > 0
+                    && !column.getName().equals(keys.get(keys.size() - 1))) {
+
+                // 最終キーでなければ、親から取得するはずなので除外
+                LOG.trace("skip NotBlank.");
 
             } else if (!column.isPk() && column.getTypeName().equals("CHAR")
                     && !StringUtil.isNullOrBlank(charNotNullRe) && !colName.matches(charNotNullRe)) {
