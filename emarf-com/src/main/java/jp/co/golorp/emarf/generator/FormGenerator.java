@@ -354,7 +354,7 @@ public final class FormGenerator {
                 // DECIMALの場合（整数桁・小数桁）
                 int decimalDigits = column.getDecimalDigits();
                 int integer = columnSize - decimalDigits;
-                String re = "([0-9]{0," + integer + "}\\\\.?[0-9]{0," + decimalDigits + "}?)?";
+                String re = "-?([0-9]{0," + integer + "}\\\\.?[0-9]{0," + decimalDigits + "}?)?";
                 s.add("    @jakarta.validation.constraints.Pattern(regexp = \"" + re + "\")");
 
             } else {

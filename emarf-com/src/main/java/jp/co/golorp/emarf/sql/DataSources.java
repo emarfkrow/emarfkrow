@@ -1328,6 +1328,11 @@ public final class DataSources {
                 continue;
             }
 
+            // 比較元が派生元を設定済みならスキップ
+            if (src.getDeriveInfos().size() > 0) {
+                continue;
+            }
+
             int summaryCount = 0;
 
             // 集約元として、テーブル情報をループ

@@ -489,11 +489,11 @@ public final class SqlGenerator {
 
             if (name.toUpperCase().equals(optK)) {
                 //参照キーの場合は、パラメータをデータで後方一致
-                sql.add("    AND " + p + " LIKE " + assist.joinedSQL(new String[] { "'%'", t }) + " ");
+                sql.add("    AND UPPER (" + p + ") LIKE UPPER (" + assist.joinedSQL(new String[] { "'%'", t }) + ") ");
 
             } else {
                 //以外の文字列は、データをパラメータで部分一致
-                sql.add("    AND " + t + " LIKE " + assist.joinedSQL(new String[] { "'%'", p, "'%'" }) + " ");
+                sql.add("    AND UPPER (" + t + ") LIKE UPPER (" + assist.joinedSQL(new String[] { "'%'", p, "'%'" }) + ") ");
             }
 
         } else {
