@@ -217,8 +217,8 @@ let Jsonate = {
 
             // 入力項目でループ
             $form
-                .find('[name*="' + entityName + '."]')
-                .filter(Jsonate.inputSelector + ', input[type=checkbox]:enabled, input[type=radio]:enabled')
+                // .find('[name*="' + entityName + '."]') // form内の兄弟モデルに同じメンバ名があると誤爆するため TODO 代替案
+                .find(Jsonate.inputSelector + ', input[type=checkbox]:enabled, input[type=radio]:enabled')
                 .each(function() {
 
                     // 画面上の入力項目
@@ -232,22 +232,21 @@ let Jsonate = {
                         inputName = inputName.substr(inputName.lastIndexOf(entityName));
                     }
 
-                    // 入力項目のnameで値を取得してみる
+                    // 入力項目のentity.propertyで値を取得してみる
                     let v = entity[inputName];
-
-                    // プロパティ名だけで取得してみる
                     if (v == null) {
+                        // プロパティ名だけで取得してみる
                         let i = inputName.lastIndexOf('.');
                         let property = inputName.substr(i + 1);
                         v = entity[property];
-                        // UPPER_CASEでも取得してみる
                         if (v == null) {
+                            // UPPER_CASEでも取得してみる
                             v = entity[Casing.toUpper(property)];
-                            // kebab-caseでも取得してみる
                             if (v == null) {
+                                // kebab-caseでも取得してみる
                                 v = entity[Casing.toKebab(property)];
-                                // UPPER-KEBAB-CASEでも取得してみる
                                 if (v == null) {
+                                    // UPPER-KEBAB-CASEでも取得してみる
                                     v = entity[Casing.toUpperKebab(property)];
                                 }
                             }
