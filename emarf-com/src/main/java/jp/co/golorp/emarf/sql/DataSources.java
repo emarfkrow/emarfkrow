@@ -1308,92 +1308,89 @@ public final class DataSources {
     }
 
     /**
-     * ユニークキーテーブル（集約元）から、植え付け先（集約先）を探す
-     * @param tableInfos テーブル情報のリスト
+     * 集約先の主キーから、集約元の外部キーを探す
+     * @param tables テーブル情報のリスト
      */
-    private static void addSummaryTable(final List<TableInfo> tableInfos) {
+    private static void addSummaryTable(final List<TableInfo> tables) {
 
         // 集約先として、テーブル情報をループ
-        Iterator<TableInfo> srcs = tableInfos.iterator();
-        while (srcs.hasNext()) {
-            TableInfo src = srcs.next();
+        Iterator<TableInfo> sakis = tables.iterator();
+        while (sakis.hasNext()) {
+            TableInfo saki = sakis.next();
 
-            // 比較元が、履歴モデルかビューならスキップ
-            if (src.isHistory() || src.isView()) {
+            // 履歴モデルとビューは集約先としない
+            if (saki.isHistory() || saki.isView()) {
                 continue;
             }
 
-            // 比較元が、参照モデルならスキップ
-            if (isReferModel(src)) {
+            // 参照モデルは集約先としない
+            if (isReferModel(saki)) {
                 continue;
             }
 
-            // 比較元が派生元を設定済みならスキップ
-            if (src.getDeriveInfos().size() > 0) {
+            // 派生先を持っている（派生元である）なら集約先としない
+            if (saki.getDeriveInfos().size() > 0) {
                 continue;
             }
 
-            int summaryCount = 0;
+            int motoCount = 0;
 
             // 集約元として、テーブル情報をループ
-            Iterator<TableInfo> dests = tableInfos.iterator();
-            while (dests.hasNext()) {
-                TableInfo dest = dests.next();
+            Iterator<TableInfo> motos = tables.iterator();
+            while (motos.hasNext()) {
+                TableInfo moto = motos.next();
 
-                // 比較先が、履歴モデルかビューならスキップ
-                if (dest.isHistory() || dest.isView()) {
+                // 履歴モデルとビューは集約元にしない
+                if (moto.isHistory() || moto.isView()) {
                     continue;
                 }
 
-                // 比較先の外部キーを取得
-                Set<String> destFKs = new HashSet<String>();
-                for (String srcPK : src.getPrimaryKeys()) {
-                    ColumnInfo srcPrimaryKey = src.getColumnInfos().get(srcPK);
+                // 集約元の外部キーを探索
+                Set<String> motoFKs = new HashSet<String>();
+                for (String sakiPK : saki.getPrimaryKeys()) {
+                    ColumnInfo sakiKey = saki.getColumnInfos().get(sakiPK);
 
-                    // 比較先のカラム情報でループして、比較元の主キーがあれば、比較先の外部キーリストに追加
-                    for (Entry<String, ColumnInfo> destCols : dest.getColumnInfos().entrySet()) {
-                        String destColName = destCols.getKey();
-                        ColumnInfo destCol = destCols.getValue();
+                    // 集約元に集約先の主キーに合致するカラムがあれば外部キーとして取得
+                    for (ColumnInfo motoCol : moto.getColumnInfos().values()) {
 
                         // 比較先が主キーならスキップ
-                        if (destCol.isPk()) {
+                        if (motoCol.isPk()) {
                             continue;
                         }
 
                         // 比較先がNULL不可ならスキップ
-                        if (destCol.getNullable() != 1) {
+                        if (motoCol.getNullable() != 1) {
                             continue;
                         }
 
                         // データ型が異なるならスキップ
-                        if (!destCol.getTypeName().equals(srcPrimaryKey.getTypeName())) {
+                        if (!motoCol.getTypeName().equals(sakiKey.getTypeName())) {
                             continue;
                         }
 
                         // データサイズが異なるならスキップ
-                        if (destCol.getColumnSize() != srcPrimaryKey.getColumnSize()) {
+                        if (motoCol.getColumnSize() != sakiKey.getColumnSize()) {
                             continue;
                         }
 
                         // 小数桁数が異なるならスキップ
-                        if (destCol.getDecimalDigits() != srcPrimaryKey.getDecimalDigits()) {
+                        if (motoCol.getDecimalDigits() != sakiKey.getDecimalDigits()) {
                             continue;
                         }
 
                         // 比較先カラム名が比較元カラム名と合致するなら、比較先の外部キーリストに追加
-                        if (destColName.matches("(?i)^" + srcPK + "$")) {
-                            destFKs.add(destColName);
+                        if (motoCol.getName().matches("(?i)^" + sakiPK + "$")) {
+                            motoFKs.add(motoCol.getName());
                         }
                     }
                 }
 
-                if (src.getPrimaryKeys().size() == destFKs.size()) {
-                    // 比較元の主キーと、比較先の外部キーの、数が一致する場合
+                if (saki.getPrimaryKeys().size() == motoFKs.size()) {
+                    // 集約先の主キーと、集約元の外部キーが一致する場合
 
+                    // 処理済み情報でループ
                     boolean isSummaryElse = false;
-
-                    // 処理済み情報
-                    Iterator<TableInfo> others = tableInfos.iterator();
+                    Iterator<TableInfo> others = tables.iterator();
                     while (others.hasNext()) {
                         TableInfo other = others.next();
 
@@ -1403,56 +1400,57 @@ public final class DataSources {
                         }
 
                         // 集約元を設定済みでも、今回の集約元と重複していなければスキップ
-                        if (!other.getSummaryInfo().getName().equals(dest.getName())) {
+                        if (!other.getSummaryInfo().getName().equals(moto.getName())) {
                             continue;
                         }
 
                         // 重複する集約元を設定済みの場合
-                        if (other.getPrimaryKeys().size() < src.getPrimaryKeys().size()) {
+                        if (other.getPrimaryKeys().size() < saki.getPrimaryKeys().size()) {
 
                             // 今回の集約先の方がキー数が多いなら、処理済みの集約元をクリア
-                            TableInfo otherSummary = other.getSummaryInfo();
-                            other.setSummaryInfo(null);
-                            for (ColumnInfo column : otherSummary.getColumnInfos().values()) {
+                            for (ColumnInfo column : other.getSummaryInfo().getColumnInfos().values()) {
                                 column.setSummary(false);
                             }
+                            other.setSummaryInfo(null);
 
-                        } else if (other.getPrimaryKeys().size() > src.getPrimaryKeys().size()) {
-                            // 今回の集約元の方がキー数が少ないなら、集約先としない
+                        } else if (other.getPrimaryKeys().size() > saki.getPrimaryKeys().size()) {
+
+                            // 今回の集約先の方がキー数が少ないなら、今回を集約先としない
                             isSummaryElse = true;
                         }
                     }
 
-                    // 今回の比較先が、他モデルの集約元でなければ、比較元の集約元に設定
+                    // 今回の集約元が、他モデルの集約元でなければ、集約先に集約元を設定
                     if (!isSummaryElse) {
 
-                        // ２回以上ここに来る＝転生先が複数存在しうる＝転生登録しない
-                        if (summaryCount > 0) {
-                            if (src.getSummaryInfo() != null) {
-                                TableInfo summary = src.getSummaryInfo();
-                                src.setSummaryInfo(null);
-                                for (ColumnInfo column : summary.getColumnInfos().values()) {
+                        // ２回以上ここに来る＝同じ集約元を他でも設定済み＝今回は集約先としない
+                        if (motoCount > 0) {
+
+                            //誤って集約元を設定済みならクリア
+                            if (saki.getSummaryInfo() != null) {
+                                for (ColumnInfo column : saki.getSummaryInfo().getColumnInfos().values()) {
                                     column.setSummary(false);
                                 }
+                                saki.setSummaryInfo(null);
                             }
                             continue;
                         }
 
-                        ++summaryCount;
-                        src.setSummaryInfo(dest);
-                        for (String fk : destFKs) {
-                            dest.getColumnInfos().get(fk).setSummary(true);
+                        ++motoCount;
+                        for (String fk : motoFKs) {
+                            moto.getColumnInfos().get(fk).setSummary(true);
                         }
+                        saki.setSummaryInfo(moto);
 
-                        // summaryならrebornを外す
-                        if (src.getRebornInfo() != null) {
-                            TableInfo reborn = src.getRebornInfo();
-                            for (ColumnInfo column : reborn.getColumnInfos().values()) {
+                        // 集約先とする場合は、転生元としない（転生先をクリアする）
+                        if (saki.getRebornInfo() != null) {
+                            TableInfo tenseisaki = saki.getRebornInfo();
+                            for (ColumnInfo column : tenseisaki.getColumnInfos().values()) {
                                 if (column.isReborn()) {
                                     column.setReborn(false);
                                 }
                             }
-                            src.setRebornInfo(null);
+                            saki.setRebornInfo(null);
                         }
                     }
                 }
