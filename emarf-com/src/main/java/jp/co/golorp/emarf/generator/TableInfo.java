@@ -91,13 +91,13 @@ public class TableInfo {
     private List<TableInfo> comboInfos = new ArrayList<TableInfo>();
 
     /** 転生先テーブル */
-    private TableInfo rebornInfo;
+    private TableInfo rebornTo;
 
     /** 派生先テーブル */
-    private List<TableInfo> deriveInfos = new ArrayList<TableInfo>();
+    private List<TableInfo> deriveTos = new ArrayList<TableInfo>();
 
     /** 集約先テーブル */
-    private TableInfo summaryInfo;
+    private TableInfo summaryOf;
 
     /** 制約テーブル */
     private TableInfo stintInfo;
@@ -297,43 +297,43 @@ public class TableInfo {
     /**
      * @return TableInfo
      */
-    public TableInfo getRebornInfo() {
-        return rebornInfo;
+    public TableInfo getRebornTo() {
+        return rebornTo;
     }
 
     /**
      * @param p
      */
-    public void setRebornInfo(final TableInfo p) {
-        this.rebornInfo = p;
+    public void setRebornTo(final TableInfo p) {
+        this.rebornTo = p;
     }
 
     /**
      * @return List<TableInfo>
      */
-    public List<TableInfo> getDeriveInfos() {
-        return deriveInfos;
+    public List<TableInfo> getDeriveTos() {
+        return deriveTos;
     }
 
     /**
      * @param p
      */
-    public void setDeriveInfos(final List<TableInfo> p) {
-        this.deriveInfos = p;
+    public void setDeriveTos(final List<TableInfo> p) {
+        this.deriveTos = p;
     }
 
     /**
      * @return summaryInfo
      */
-    public TableInfo getSummaryInfo() {
-        return summaryInfo;
+    public TableInfo getSummaryOf() {
+        return summaryOf;
     }
 
     /**
      * @param p セットする summaryInfo
      */
-    public void setSummaryInfo(final TableInfo p) {
-        this.summaryInfo = p;
+    public void setSummaryOf(final TableInfo p) {
+        this.summaryOf = p;
     }
 
     /**

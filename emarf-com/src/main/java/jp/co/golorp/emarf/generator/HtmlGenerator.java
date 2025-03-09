@@ -395,8 +395,8 @@ public final class HtmlGenerator {
         //自モデルが転生先となる、別モデルを抽出
         List<TableInfo> summarys = new ArrayList<TableInfo>();
         for (TableInfo summary : tables) {
-            if (summary.getSummaryInfo() != null) {
-                if (table.getName().equals(summary.getSummaryInfo().getName())) {
+            if (summary.getSummaryOf() != null) {
+                if (table.getName().equals(summary.getSummaryOf().getName())) {
                     summarys.add(summary);
                 }
             }
@@ -567,22 +567,23 @@ public final class HtmlGenerator {
         s.add("        <a th:href=\"@{" + entity + "Get.xlsx(baseMei=#{" + entity + ".h2})}\" id=\""
                 + entity + "Get.xlsx\" th:text=\"#{common.xlsx}\" class=\"output\" tabindex=\"-1\">xlsx</a>");
         // 転生先がある場合は追加ボタンを出力
-        if (table.getRebornInfo() != null) {
-            TableInfo reborn = table.getRebornInfo();
+        if (table.getRebornTo() != null) {
+            TableInfo reborn = table.getRebornTo();
             String e = StringUtil.toPascalCase(reborn.getName());
             s.add("        <a th:href=\"@{/model/" + e + ".html}\" id=\"" + e + "\" target=\"dialog\" th:text=\"#{" + e
                     + ".add}\" class=\"reborner\" tabindex=\"-1\">" + reborn.getRemarks() + "</a>");
         }
         // 集約元がある場合は主キー項目を出力
-        if (table.getSummaryInfo() != null) {
-            TableInfo summary = table.getSummaryInfo();
+        if (table.getSummaryOf() != null) {
+            TableInfo summary = table.getSummaryOf();
             String e = StringUtil.toPascalCase(summary.getName());
-            if (table.getRebornInfo() == null) {
-                // 転生先（自主キーが必須の外部キーになっている）がなければ追加ボタンを出力
-                // 任意の転生先に準ずるため
-                s.add("        <a th:href=\"@{/model/" + e + ".html}\" id=\"" + e + "\" target=\"dialog\" th:text=\"#{"
-                        + e + ".add}\" class=\"reborner\" tabindex=\"-1\">" + summary.getRemarks() + "</a>");
-            }
+            // 転生先で必須でない場合でも、自モデルが他の転生先である場合は転生元となるよう変更したので、ここはコメントアウト
+            //            if (table.getRebornTo() == null) {
+            //                // 転生先（自主キーが必須の外部キーになっている）がなければ追加ボタンを出力
+            //                // 転生先で必須でないケース
+            //                s.add("        <a th:href=\"@{/model/" + e + ".html}\" id=\"" + e + "\" target=\"dialog\" th:text=\"#{"
+            //                        + e + ".add}\" class=\"reborner\" tabindex=\"-1\">" + summary.getRemarks() + "</a>");
+            //            }
             for (String pk : summary.getPrimaryKeys()) {
                 ColumnInfo primaryKey = summary.getColumnInfos().get(pk);
                 String p = StringUtil.toCamelCase(pk);
@@ -674,15 +675,15 @@ public final class HtmlGenerator {
             }
         }
 
-        if (table.getRebornInfo() != null) {
-            TableInfo reborn = table.getRebornInfo();
+        if (table.getRebornTo() != null) {
+            TableInfo reborn = table.getRebornTo();
             String e = StringUtil.toPascalCase(reborn.getName());
             s.add("");
             s.add(e + ".add " + reborn.getRemarks() + "追加");
         }
 
-        if (table.getSummaryInfo() != null) {
-            TableInfo summary = table.getSummaryInfo();
+        if (table.getSummaryOf() != null) {
+            TableInfo summary = table.getSummaryOf();
             String e = StringUtil.toPascalCase(summary.getName());
             s.add("");
             s.add(e + ".add " + summary.getRemarks() + "追加");
@@ -846,8 +847,8 @@ public final class HtmlGenerator {
         }
 
         //転生先モデル
-        if (table.getRebornInfo() != null) {
-            TableInfo reborn = table.getRebornInfo();
+        if (table.getRebornTo() != null) {
+            TableInfo reborn = table.getRebornTo();
             if (!added.contains(reborn)) {
                 added.add(reborn);
                 htmlNestGrid(s, reborn, tables, added);
@@ -855,8 +856,8 @@ public final class HtmlGenerator {
         }
 
         //集約元モデル
-        if (table.getSummaryInfo() != null) {
-            TableInfo summary = table.getSummaryInfo();
+        if (table.getSummaryOf() != null) {
+            TableInfo summary = table.getSummaryOf();
             if (!added.contains(summary)) {
                 String entity = StringUtil.toPascalCase(summary.getName());
                 s.add("<script th:src=\"@{/model/" + entity + "GridColumns.js}\"></script>");

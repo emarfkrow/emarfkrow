@@ -165,8 +165,8 @@ public final class DetailActionGenerator {
             s.add("            if (e.insert(now, execId) != 1) {");
             s.add("                throw new OptLockError(\"error.cant.insert\");");
             s.add("            }");
-            if (table.getSummaryInfo() != null) {
-                TableInfo summary = table.getSummaryInfo();
+            if (table.getSummaryOf() != null) {
+                TableInfo summary = table.getSummaryOf();
                 if (summary.getPrimaryKeys().size() == 1) {
                     String e = StringUtil.toPascalCase(summary.getName());
                     String i = StringUtil.toCamelCase(summary.getName());
@@ -639,8 +639,8 @@ public final class DetailActionGenerator {
 
         for (TableInfo fromTable : tables) {
             //転生元も集約先もなければスキップ
-            TableInfo reborn = fromTable.getRebornInfo();
-            TableInfo summary = fromTable.getSummaryInfo();
+            TableInfo reborn = fromTable.getRebornTo();
+            TableInfo summary = fromTable.getSummaryOf();
             if (reborn == null && summary == null) {
                 continue;
             }
