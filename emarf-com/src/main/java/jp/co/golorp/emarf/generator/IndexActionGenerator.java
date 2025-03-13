@@ -42,6 +42,9 @@ public final class IndexActionGenerator {
     /** ステータス区分 */
     private static String status;
 
+    /** 削除フラグ */
+    private static String deleteF;
+
     /**
      * プライベートコンストラクタ
      */
@@ -73,6 +76,8 @@ public final class IndexActionGenerator {
 
         status = bundle.getString("column.status");
 
+        deleteF = bundle.getString("column.delete");
+
         IndexActionGenerator.deleteAction(tableInfos);
         IndexActionGenerator.registAction(tableInfos);
         if (!StringUtil.isNullOrBlank(status)) {
@@ -83,9 +88,9 @@ public final class IndexActionGenerator {
 
     /**
      * 検索画面 登録処理出力
-     * @param tableInfos テーブル情報のリスト
+     * @param tables テーブル情報のリスト
      */
-    private static void deleteAction(final List<TableInfo> tableInfos) {
+    private static void deleteAction(final List<TableInfo> tables) {
 
         // 出力フォルダを再作成
         String packagePath = actionPackage.replace(".", File.separator);
@@ -93,15 +98,20 @@ public final class IndexActionGenerator {
 
         Map<String, String> javaFilePaths = new LinkedHashMap<String, String>();
 
-        for (TableInfo table : tableInfos) {
+        for (TableInfo table : tables) {
 
             if (table.isHistory() || table.isView()) {
                 continue;
             }
 
-            String tableName = table.getName();
+            //削除フラグがあればスキップ
+            if (!StringUtil.isNullOrBlank(deleteF) && (table.getColumnInfos().containsKey(deleteF.toLowerCase())
+                    || table.getColumnInfos().containsKey(deleteF.toUpperCase()))) {
+                continue;
+            }
+
+            String entity = StringUtil.toPascalCase(table.getName());
             String remarks = table.getRemarks();
-            String entity = StringUtil.toPascalCase(tableName);
 
             List<String> s = new ArrayList<String>();
             s.add("package " + actionPackage + ";");

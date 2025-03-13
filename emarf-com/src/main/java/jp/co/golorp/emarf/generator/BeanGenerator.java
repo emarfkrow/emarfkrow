@@ -69,6 +69,8 @@ public final class BeanGenerator {
     private static String updateBy;
     /** ステータス区分 */
     private static String status;
+    /** 削除フラグ */
+    private static String deleteF;
     /** 変更理由 */
     private static String reason;
 
@@ -127,6 +129,7 @@ public final class BeanGenerator {
         updateDt = bundle.getString("column.update.timestamp");
         updateBy = bundle.getString("column.update.id");
         status = bundle.getString("column.status");
+        deleteF = bundle.getString("column.delete");
         reason = bundle.getString("column.history.reason");
 
         javaDir = bundle.getString("dir.java");
@@ -447,14 +450,12 @@ public final class BeanGenerator {
      */
     private static void javaEntityCRUD(final TableInfo table, final List<String> s) {
 
-        String remarks = table.getRemarks();
-        String entityName = StringUtil.toPascalCase(table.getName());
-        String camelName = StringUtil.toCamelCase(table.getName());
+        String e = StringUtil.toPascalCase(table.getName());
 
         s.add("");
         s.add("    /**");
-        s.add("     * " + remarks + "照会");
-        int i = 0;
+        s.add("     * " + table.getRemarks() + "照会");
+        int paramCount = 0;
         String getParams = "";
         for (String pk : table.getPrimaryKeys()) {
             if (pk.length() > 0) {
@@ -464,16 +465,16 @@ public final class BeanGenerator {
                         columnRemarks = " " + table.getColumnInfos().get(pk).getRemarks();
                     }
                 }
-                s.add("     * @param param" + ++i + columnRemarks);
+                s.add("     * @param param" + ++paramCount + columnRemarks);
                 if (getParams.length() > 0) {
                     getParams += ", ";
                 }
-                getParams += "final Object param" + i;
+                getParams += "final Object param" + paramCount;
             }
         }
-        s.add("     * @return " + remarks);
+        s.add("     * @return " + table.getRemarks());
         s.add("     */");
-        s.add("    public static " + entityName + " get(" + getParams + ") {");
+        s.add("    public static " + e + " get(" + getParams + ") {");
         s.add("        List<String> whereList = new ArrayList<String>();");
 
         // 主キー条件
@@ -481,12 +482,10 @@ public final class BeanGenerator {
         for (String pk : table.getPrimaryKeys()) {
             if (pk.length() > 0) {
                 isPrimaryKey = true;
-
                 // quoted
                 String q = DataSources.getAssist().quoteEscapedSQL(pk);
                 // param
                 String p = ":" + StringUtil.toSnakeCase(pk);
-
                 ColumnInfo primaryKey = table.getColumnInfos().get(pk);
                 if (primaryKey.getTypeName().equals("CHAR")) {
                     s.add("        whereList.add(\"" + assist.trimedSQL(q) + " = " + assist.trimedSQL(p) + "\");");
@@ -498,12 +497,10 @@ public final class BeanGenerator {
         if (!isPrimaryKey) {
             for (String key : table.getColumnInfos().keySet()) {
                 if (key.length() > 0) {
-
                     // quoted
                     String q = DataSources.getAssist().quoteEscapedSQL(key);
                     // param
                     String p = ":" + StringUtil.toSnakeCase(key);
-
                     ColumnInfo column = table.getColumnInfos().get(key);
                     if (column.getTypeName().equals("CHAR")) {
                         s.add("        whereList.add(\"" + assist.trimedSQL(q) + " = " + assist.trimedSQL(p) + "\");");
@@ -530,70 +527,92 @@ public final class BeanGenerator {
         s.add("        sql += \"WHERE \\n\";");
         s.add("        sql += String.join(\" AND \\n\", whereList);");
         s.add("        Map<String, Object> map = new HashMap<String, Object>();");
-        i = 0;
+        paramCount = 0;
         for (String primaryKey : table.getPrimaryKeys()) {
             if (primaryKey.length() > 0) {
                 String snake = StringUtil.toSnakeCase(primaryKey);
-                s.add("        map.put(\"" + snake + "\", param" + ++i + ");");
+                s.add("        map.put(\"" + snake + "\", param" + ++paramCount + ");");
             }
         }
-        s.add("        return Queries.get(sql, map, " + entityName + ".class);");
+        s.add("        return Queries.get(sql, map, " + e + ".class);");
         s.add("    }");
+
         javaEntityCRUDInsert(table, s);
+
         javaEntityCRUDUpdate(table, s);
-        s.add("");
-        s.add("    /**");
-        s.add("     * " + remarks + "削除");
-        s.add("     * @return 削除件数");
-        s.add("     */");
-        s.add("    public int delete() {");
-        for (TableInfo childInfo : table.getChildInfos()) {
-            String childName = childInfo.getName();
-            String pascal = StringUtil.toPascalCase(childName);
-            String camel = StringUtil.toCamelCase(childName);
+
+        javaEntityCRUDDelete(table, s);
+    }
+
+    /**
+     * @param table
+     * @param s
+     */
+    public static void javaEntityCRUDDelete(final TableInfo table, final List<String> s) {
+
+        //削除フラグがなければdeleteメソッドを出力
+        if (!table.getColumnInfos().containsKey(deleteF.toLowerCase())
+                && !table.getColumnInfos().containsKey(deleteF.toUpperCase())) {
+
+            String e = StringUtil.toPascalCase(table.getName());
+            String i = StringUtil.toCamelCase(table.getName());
+
             s.add("");
-            s.add("        // " + childInfo.getRemarks() + "の削除");
-            s.add("        if (this." + camel + "s != null) {");
-            s.add("            for (" + pascal + " " + camel + " : this." + camel + "s) {");
-            s.add("                " + camel + ".delete();");
-            s.add("            }");
-            s.add("        }");
-        }
-        for (TableInfo brosInfo : table.getBrosInfos()) {
-            String brosName = brosInfo.getName();
-            String camel = StringUtil.toCamelCase(brosName);
-            s.add("");
-            s.add("        // " + brosInfo.getRemarks() + "の削除");
-            s.add("        if (this." + camel + " != null) {");
-            s.add("            this." + camel + ".delete();");
-            s.add("        }");
-        }
-        // ファイル列がある場合
-        for (String columnName : table.getColumnInfos().keySet()) {
-            if (StringUtil.endsWith(inputFileSuffixs, columnName)) {
-                String params = "";
-                for (String primaryKey : table.getPrimaryKeys()) {
-                    String camel = StringUtil.toCamelCase(primaryKey);
-                    if (params.length() > 0) {
-                        params += ", ";
-                    }
-                    params += "this." + camel;
-                }
+            s.add("    /**");
+            s.add("     * " + table.getRemarks() + "削除");
+            s.add("     * @return 削除件数");
+            s.add("     */");
+            s.add("    public int delete() {");
+
+            for (TableInfo child : table.getChildInfos()) {
+                String pascal = StringUtil.toPascalCase(child.getName());
+                String camel = StringUtil.toCamelCase(child.getName());
                 s.add("");
-                s.add("        " + entityName + " " + camelName + " = " + entityName + ".get(" + params + ");");
-                s.add("        try {");
-                s.add("            java.nio.file.Files.delete(java.nio.file.Paths.get(" + camelName + "."
-                        + StringUtil.toCamelCase(columnName) + "));");
-                s.add("        } catch (Exception e) {");
-                s.add("            throw new jp.co.golorp.emarf.exception.SysError(e);");
+                s.add("        // " + child.getRemarks() + "の削除");
+                s.add("        if (this." + camel + "s != null) {");
+                s.add("            for (" + pascal + " " + camel + " : this." + camel + "s) {");
+                s.add("                " + camel + ".delete();");
+                s.add("            }");
                 s.add("        }");
             }
+
+            for (TableInfo bro : table.getBrosInfos()) {
+                String b = StringUtil.toCamelCase(bro.getName());
+                s.add("");
+                s.add("        // " + bro.getRemarks() + "の削除");
+                s.add("        if (this." + b + " != null) {");
+                s.add("            this." + b + ".delete();");
+                s.add("        }");
+            }
+
+            // ファイル列がある場合
+            for (String columnName : table.getColumnInfos().keySet()) {
+                if (StringUtil.endsWith(inputFileSuffixs, columnName)) {
+                    String params = "";
+                    for (String primaryKey : table.getPrimaryKeys()) {
+                        String camel = StringUtil.toCamelCase(primaryKey);
+                        if (params.length() > 0) {
+                            params += ", ";
+                        }
+                        params += "this." + camel;
+                    }
+                    s.add("");
+                    s.add("        " + e + " " + i + " = " + e + ".get(" + params + ");");
+                    s.add("        try {");
+                    s.add("            java.nio.file.Files.delete(java.nio.file.Paths.get(" + i + "."
+                            + StringUtil.toCamelCase(columnName) + "));");
+                    s.add("        } catch (Exception e) {");
+                    s.add("            throw new jp.co.golorp.emarf.exception.SysError(e);");
+                    s.add("        }");
+                }
+            }
+
+            s.add("");
+            s.add("        // " + table.getRemarks() + "の削除");
+            s.add("        String sql = \"DELETE FROM " + table.getName() + " WHERE \" + getWhere();");
+            s.add("        return Queries.regist(sql, toMap(null, null));");
+            s.add("    }");
         }
-        s.add("");
-        s.add("        // " + remarks + "の削除");
-        s.add("        String sql = \"DELETE FROM " + table.getName() + " WHERE \" + getWhere();");
-        s.add("        return Queries.regist(sql, toMap(null, null));");
-        s.add("    }");
     }
 
     /**

@@ -341,9 +341,9 @@ public final class DetailActionGenerator {
 
     /**
      * 詳細画面 登録処理出力
-     * @param tableInfos テーブル情報のリスト
+     * @param tables テーブル情報のリスト
      */
-    private static void javaActionDetailDelete(final List<TableInfo> tableInfos) {
+    private static void javaActionDetailDelete(final List<TableInfo> tables) {
 
         // 出力フォルダを再作成
         String packagePath = pkgAction.replace(".", File.separator);
@@ -351,15 +351,19 @@ public final class DetailActionGenerator {
 
         Map<String, String> javaFilePaths = new LinkedHashMap<String, String>();
 
-        for (TableInfo table : tableInfos) {
+        for (TableInfo table : tables) {
 
             if (table.isHistory() || table.isView()) {
                 continue;
             }
 
-            String tableName = table.getName();
-            String remarks = table.getRemarks();
-            String entity = StringUtil.toPascalCase(tableName);
+            // 論理削除テーブルならスキップ（削除フラグ指定があり、テーブルに削除フラグがある場合）
+            if (!StringUtil.isNullOrBlank(deleteF) && (table.getColumnInfos().containsKey(deleteF.toLowerCase())
+                    || table.getColumnInfos().containsKey(deleteF.toUpperCase()))) {
+                continue;
+            }
+
+            String e = StringUtil.toPascalCase(table.getName());
 
             List<String> s = new ArrayList<String>();
             s.add("package " + pkgAction + ";");
@@ -368,7 +372,7 @@ public final class DetailActionGenerator {
             s.add("import java.util.HashMap;");
             s.add("import java.util.Map;");
             s.add("");
-            s.add("import " + pkgE + "." + entity + ";");
+            s.add("import " + pkgE + "." + e + ";");
             s.add("");
             s.add("import jp.co.golorp.emarf.action.BaseAction;");
             s.add("import jp.co.golorp.emarf.exception.OptLockError;");
@@ -376,23 +380,24 @@ public final class DetailActionGenerator {
             s.add("import jp.co.golorp.emarf.validation.FormValidator;");
             s.add("");
             s.add("/**");
-            s.add(" * " + remarks + "削除");
+            s.add(" * " + table.getRemarks() + "削除");
             s.add(" *");
             s.add(" * @author emarfkrow");
             s.add(" */");
-            s.add("public class " + entity + "DeleteAction extends BaseAction {");
+            s.add("public class " + e + "DeleteAction extends BaseAction {");
             s.add("");
-            s.add("    /** " + remarks + "削除処理 */");
+            s.add("    /** " + table.getRemarks() + "削除処理 */");
             s.add("    @Override");
             s.add("    public Map<String, Object> running(final LocalDateTime now, final String execId, final Map<String, Object> postJson) {");
             s.add("");
             s.add("        // 主キーが不足していたらエラー");
+
             String params = "";
             for (String primaryKey : table.getPrimaryKeys()) {
                 String camel = StringUtil.toCamelCase(primaryKey);
                 s.add("        Object " + camel + " = postJson.get(\"" + camel + "\");");
                 s.add("        if (" + camel + " == null) {");
-                s.add("            " + camel + " = postJson.get(\"" + entity + "." + camel + "\");");
+                s.add("            " + camel + " = postJson.get(\"" + e + "." + camel + "\");");
                 s.add("        }");
                 s.add("        if (" + camel + " == null) {");
                 s.add("            throw new OptLockError(\"error.cant.delete\");");
@@ -402,10 +407,12 @@ public final class DetailActionGenerator {
                 }
                 params += camel;
             }
+
             s.add("");
-            s.add("        " + entity + " e = FormValidator.toBean(" + entity + ".class.getName(), postJson);");
-            List<TableInfo> childInfos = table.getChildInfos();
-            BeanGenerator.getDeleteChilds(s, "e", childInfos, 0);
+            s.add("        " + e + " e = FormValidator.toBean(" + e + ".class.getName(), postJson);");
+
+            BeanGenerator.getDeleteChilds(s, "e", table.getChildInfos(), 0);
+
             s.add("        if (e.delete() != 1) {");
             s.add("            throw new OptLockError(\"error.cant.delete\");");
             s.add("        }");
@@ -417,8 +424,8 @@ public final class DetailActionGenerator {
             s.add("");
             s.add("}");
 
-            String javaFilePath = packageDir + File.separator + entity + "DeleteAction.java";
-            javaFilePaths.put(javaFilePath, pkgAction + "." + entity + "DeleteAction");
+            String javaFilePath = packageDir + File.separator + e + "DeleteAction.java";
+            javaFilePaths.put(javaFilePath, pkgAction + "." + e + "DeleteAction");
 
             FileUtil.writeFile(javaFilePath, s);
         }

@@ -106,27 +106,25 @@ $(function() {
         let formData = new FormData(this);
 
         // フォーム内容をjsonに取得して、グリッドデータもformdataに追加
-        let formJson = Jsonate.toJson($form, $button.hasClass('selectRows'));
+        let isSelectRow = $button.hasClass('selectRows');
+        let formJson = Jsonate.toJson($form, isSelectRow);
 
         for (let k in formJson) {
             let itemJson = formJson[k];
-            if (Array.isArray(itemJson) && itemJson.length > 0) {
-                if (k.match(/Grid$/)) {
-
-                    if (columnDetail && columnDetail != '') {
-                        let tableNameColumn = itemJson[0][columnDetail.toUpperCase()];
-                        if (!tableNameColumn) {
-                            tableNameColumn = itemJson[0][columnDetail.toLowerCase()];
-                        }
-                        if (tableNameColumn) {
-                            let entityName = Casing.toPascal(tableNameColumn);
-                            action = './' + entityName + 'SRegist.ajax';
-                            k = entityName + 'Grid';
-                        }
+            if (Array.isArray(itemJson) && itemJson.length > 0 && k.match(/Grid$/)) {
+                if (columnDetail && columnDetail != '') {
+                    let tableNameColumn = itemJson[0][columnDetail.toUpperCase()];
+                    if (!tableNameColumn) {
+                        tableNameColumn = itemJson[0][columnDetail.toLowerCase()];
                     }
-
-                    formData.append(k, JSON.stringify(itemJson));
+                    if (tableNameColumn) {
+                        let entityName = Casing.toPascal(tableNameColumn);
+                        action = './' + entityName + 'SRegist.ajax';
+                        k = entityName + 'Grid';
+                    }
                 }
+
+                formData.append(k, JSON.stringify(itemJson));
             }
         }
 

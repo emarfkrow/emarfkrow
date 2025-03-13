@@ -31,7 +31,7 @@ public final class SqlGenerator {
     /** 終了日 */
     private static String until;
     /** 削除フラグ */
-    private static String delete;
+    private static String deleteF;
     /** 表示順サフィックス */
     private static String[] orderSuffixs;
 
@@ -74,7 +74,7 @@ public final class SqlGenerator {
 
         start = bundle.getString("column.start").toUpperCase();
         until = bundle.getString("column.until").toUpperCase();
-        delete = bundle.getString("column.delete").toUpperCase();
+        deleteF = bundle.getString("column.delete").toUpperCase();
         orderSuffixs = bundle.getString("column.order.suffixs").split(",");
 
         inputTimestampSuffixs = bundle.getString("input.timestamp.suffixs").split(",");
@@ -307,8 +307,8 @@ public final class SqlGenerator {
 
         s.add("WHERE");
         s.add("    1 = 1 ");
-        if (table.getColumnInfos().containsKey(delete)) {
-            s.add("    AND " + assist.nvlZero("a." + delete) + " != 1 ");
+        if (table.getColumnInfos().containsKey(deleteF)) {
+            s.add("    AND " + assist.nvlZero("a." + deleteF) + " != 1 ");
         }
         if (table.getColumnInfos().containsKey(start)) {
             s.add("    AND " + assist.nvlSysdate("a." + start) + " <= " + assist.sysDate() + " ");
@@ -404,8 +404,8 @@ public final class SqlGenerator {
         sql.add("            " + stint.getName() + " p ");
         sql.add("        WHERE");
         sql.add("            1 = 1 ");
-        if (stint.getColumnInfos().containsKey(delete)) {
-            sql.add("            AND " + assist.nvlZero("p." + delete) + " != 1 ");
+        if (stint.getColumnInfos().containsKey(deleteF)) {
+            sql.add("            AND " + assist.nvlZero("p." + deleteF) + " != 1 ");
         }
         if (stint.getColumnInfos().containsKey(start)) {
             sql.add("            AND " + assist.nvlSysdate("p." + start) + " <= " + assist.sysDate()
@@ -441,8 +441,8 @@ public final class SqlGenerator {
             ++i;
             sql.add("    INNER JOIN " + combo.getName() + " c" + i + " ");
             sql.add("        ON 1 = 1 ");
-            if (combo.getColumnInfos().containsKey(delete)) {
-                sql.add("        AND " + assist.nvlZero("c" + i + "." + delete) + " != 1 ");
+            if (combo.getColumnInfos().containsKey(deleteF)) {
+                sql.add("        AND " + assist.nvlZero("c" + i + "." + deleteF) + " != 1 ");
             }
             if (combo.getColumnInfos().containsKey(start)) {
                 sql.add("        AND " + assist.nvlSysdate("c" + i + "." + start) + " <= " + assist.sysDate()

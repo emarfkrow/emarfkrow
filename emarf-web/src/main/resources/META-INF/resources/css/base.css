@@ -320,3 +320,8 @@ span.refer::before {
 a.readonly {
     display: none;
 }
+
+
+a.view {
+    background-color: darkseagreen;
+}
