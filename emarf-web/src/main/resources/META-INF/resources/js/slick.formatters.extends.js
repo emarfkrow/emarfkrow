@@ -51,7 +51,9 @@ limitations under the License.
         return '<input type="button" value="' + columnDef.name + '" class="gridButton" />';
     }
 
+    /* 選択ボタン列 */
     function ChooseButtonFormatter(row, cell, value, columnDef, dataContext) {
+        // 登録日時がなければ選択ボタン非表示
         if (!dataContext[columnRegistTs.toLowerCase()] && !dataContext[columnRegistTs.toUpperCase()]) {
             return null;
         }
@@ -61,7 +63,12 @@ limitations under the License.
         return '<input type="button" value="' + columnDef.name + '" class="gridButton gridChoose" />';
     }
 
+    /* 削除ボタン列 */
     function DeleteButtonFormatter(row, cell, value, columnDef, dataContext) {
+        // 削除フラグがあれば削除ボタン非表示
+        if (dataContext[columnDelete.toLowerCase()] || dataContext[columnDelete.toUpperCase()]) {
+            return null;
+        }
         if (columnDef.label) {
             return '<input type="button" value="' + columnDef.label + '" class="gridButton gridDelete" />';
         }

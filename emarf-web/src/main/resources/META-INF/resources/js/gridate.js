@@ -195,7 +195,7 @@ $(function() {
                     let gridChooseTitle = Messages['common.grid.choose.title'];
                     let gridChooseTitleWidth = 0;
                     if (gridChooseTitle) {
-                        gridChooseTitleWidth = gridChooseTitle.length * 20;
+                        gridChooseTitleWidth = new Blob([gridChooseTitle]).size * 10;
                     }
 
                     // ダイアログなら選択ボタンを追加
@@ -222,7 +222,7 @@ $(function() {
                     let gridLinkTitle = Messages['common.grid.link.title'];
                     let gridLinkTitleWidth = 0;
                     if (gridLinkTitle) {
-                        gridLinkTitleWidth = gridLinkTitle.length * 20;
+                        gridLinkTitleWidth = new Blob([gridLinkTitle]).size * 10;
                     }
 
                     //                    // 固定列がある場合（主キーが１つ以上ある場合）
@@ -264,7 +264,7 @@ $(function() {
                             let gridDeleteTitle = Messages['common.grid.delete.title'];
                             let gridDeleteTitleWidth = 0;
                             if (gridDeleteTitle) {
-                                gridDeleteTitleWidth = gridDeleteTitle.length * 20;
+                                gridDeleteTitleWidth = new Blob([gridDeleteTitle]).size * 10;
                             }
 
                             columns.unshift({
@@ -290,7 +290,7 @@ $(function() {
                     name: Messages['common.grid.link.title'],
                     field: 'field',
                     sortable: true,
-                    width: Messages['common.grid.link.title'].length * 20,
+                    width: new Blob([Messages['common.grid.link.title']]).size * 10,
                     label: Messages['common.grid.link.label'],
                     formatter: Slick.Formatters.Extends.Link
                 });
@@ -304,7 +304,7 @@ $(function() {
                             name: Messages['common.grid.delete.title'],
                             field: 'field',
                             sortable: true,
-                            width: Messages['common.grid.delete.title'].length * 20,
+                            width: new Blob([Messages['common.grid.delete.title']]).size * 10,
                             label: Messages['common.grid.delete.label'],
                             formatter: Slick.Formatters.Extends.Delete
                         });
