@@ -565,24 +565,30 @@ public final class BeanGenerator {
             s.add("    public int delete() {");
 
             for (TableInfo child : table.getChildInfos()) {
-                String pascal = StringUtil.toPascalCase(child.getName());
-                String camel = StringUtil.toCamelCase(child.getName());
-                s.add("");
-                s.add("        // " + child.getRemarks() + "の削除");
-                s.add("        if (this." + camel + "s != null) {");
-                s.add("            for (" + pascal + " " + camel + " : this." + camel + "s) {");
-                s.add("                " + camel + ".delete();");
-                s.add("            }");
-                s.add("        }");
+                if (StringUtil.isNullOrBlank(deleteF) || (!child.getColumnInfos().containsKey(deleteF.toLowerCase())
+                        && !child.getColumnInfos().containsKey(deleteF.toUpperCase()))) {
+                    String pascal = StringUtil.toPascalCase(child.getName());
+                    String camel = StringUtil.toCamelCase(child.getName());
+                    s.add("");
+                    s.add("        // " + child.getRemarks() + "の削除");
+                    s.add("        if (this." + camel + "s != null) {");
+                    s.add("            for (" + pascal + " " + camel + " : this." + camel + "s) {");
+                    s.add("                " + camel + ".delete();");
+                    s.add("            }");
+                    s.add("        }");
+                }
             }
 
             for (TableInfo bro : table.getBrosInfos()) {
-                String b = StringUtil.toCamelCase(bro.getName());
-                s.add("");
-                s.add("        // " + bro.getRemarks() + "の削除");
-                s.add("        if (this." + b + " != null) {");
-                s.add("            this." + b + ".delete();");
-                s.add("        }");
+                if (StringUtil.isNullOrBlank(deleteF) || (!bro.getColumnInfos().containsKey(deleteF.toLowerCase())
+                        && !bro.getColumnInfos().containsKey(deleteF.toUpperCase()))) {
+                    String b = StringUtil.toCamelCase(bro.getName());
+                    s.add("");
+                    s.add("        // " + bro.getRemarks() + "の削除");
+                    s.add("        if (this." + b + " != null) {");
+                    s.add("            this." + b + ".delete();");
+                    s.add("        }");
+                }
             }
 
             // ファイル列がある場合
@@ -1258,37 +1264,51 @@ public final class BeanGenerator {
     /**
      * 一覧画面の一括削除処理
      * @param s
-     * @param parent
+     * @param p
      * @param childs
      * @param indent
      */
-    public static void getDeleteChilds(final List<String> s, final String parent, final List<TableInfo> childs,
+    public static void getDeleteChilds(final List<String> s, final String p, final List<TableInfo> childs,
             final int indent) {
-        String space = "    ".repeat(indent);
-        for (TableInfo childInfo : childs) {
-            String child = StringUtil.toPascalCase(childInfo.getName());
-            String camel = StringUtil.toCamelCase(childInfo.getName());
+
+        String sp = "    ".repeat(indent);
+
+        for (TableInfo child : childs) {
+
+            if (!StringUtil.isNullOrBlank(deleteF) && (child.getColumnInfos().containsKey(deleteF.toLowerCase())
+                    || child.getColumnInfos().containsKey(deleteF.toUpperCase()))) {
+                continue;
+            }
+
             s.add("");
-            int parents = childInfo.getParentInfos().size();
+
+            // entity
+            String e = StringUtil.toPascalCase(child.getName());
+
+            // instance
+            String i = StringUtil.toCamelCase(child.getName());
+
+            int parents = child.getParentInfos().size();
             if (parents == 1) {
-                s.add(space + "        java.util.List<" + pkgE + "." + child + "> " + camel + "s = "
-                        + parent + ".refer" + child + "s();");
-                s.add(space + "        if (" + camel + "s != null) {");
-                s.add(space + "            for (" + pkgE + "." + child + " " + camel + " : " + camel + "s) {");
-                if (childInfo.getChildInfos().size() > 0) {
+
+                s.add(sp + "        java.util.List<" + pkgE + "." + e + "> " + i + "s = " + p + ".refer" + e + "s();");
+                s.add(sp + "        if (" + i + "s != null) {");
+                s.add(sp + "            for (" + pkgE + "." + e + " " + i + " : " + i + "s) {");
+                if (child.getChildInfos().size() > 0) {
                     // forでもう一段降りているから「+2」
-                    getDeleteChilds(s, camel, childInfo.getChildInfos(), indent + 2);
+                    getDeleteChilds(s, i, child.getChildInfos(), indent + 2);
                 }
                 s.add("");
-                s.add(space + "                if (" + camel + ".delete() != 1) {");
-                s.add(space + "                    throw new OptLockError(\"error.cant.delete\");");
-                s.add(space + "                }");
-                s.add(space + "            }");
-                s.add(space + "        }");
+                s.add(sp + "                if (" + i + ".delete() != 1) {");
+                s.add(sp + "                    throw new OptLockError(\"error.cant.delete\");");
+                s.add(sp + "                }");
+                s.add(sp + "            }");
+                s.add(sp + "        }");
+
             } else {
-                s.add(space + "        // child:" + child + ", parents:" + parents);
+
+                s.add(sp + "        // child:" + e + ", parents:" + parents);
             }
-            s.add("");
         }
     }
 
