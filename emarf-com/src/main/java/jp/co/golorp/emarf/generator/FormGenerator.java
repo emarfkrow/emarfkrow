@@ -156,7 +156,7 @@ public final class FormGenerator {
             s.add("");
             s.add("    /** logger */");
             s.add("    private static final Logger LOG = LoggerFactory.getLogger(" + entity + "RegistForm.class);");
-            for (ColumnInfo column : table.getColumnInfos().values()) {
+            for (ColumnInfo column : table.getColumns().values()) {
 
                 String columnName = column.getName();
 
@@ -192,7 +192,7 @@ public final class FormGenerator {
                 s.add("    }");
             }
             // 兄弟モデル
-            for (TableInfo brosInfo : table.getBrosInfos()) {
+            for (TableInfo brosInfo : table.getYoungers()) {
                 String brosName = brosInfo.getName();
                 String camel = StringUtil.toCamelCase(brosName);
                 String pascal = StringUtil.toPascalCase(brosName);

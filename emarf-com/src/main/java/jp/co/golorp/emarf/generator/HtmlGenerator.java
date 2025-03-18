@@ -263,7 +263,7 @@ public final class HtmlGenerator {
         String addRow = "";
         if (isAnew) {
             boolean isNotAddRow = false;
-            for (ColumnInfo column : table.getColumnInfos().values()) {
+            for (ColumnInfo column : table.getColumns().values()) {
                 if (column.getName().matches("(?i)^" + insertId + "$")
                         || column.getName().matches("(?i)^" + updateId + "$")) {
                     continue; //メタ情報ならスキップ
@@ -301,7 +301,7 @@ public final class HtmlGenerator {
                     + ".sum}\" class=\"summary\" tabindex=\"-1\">" + summary.getRemarks() + "</a>");
         }
         if (!table.isHistory() && (!table.isView() || table.isConvView()) && table.getChildInfos().size() == 0) {
-            for (ColumnInfo column : table.getColumnInfos().values()) {
+            for (ColumnInfo column : table.getColumns().values()) {
                 //グリッド用の非表示の参照ボタン
                 if (column.getReferInfo() != null) {
                     String columnName = column.getName();
@@ -326,15 +326,15 @@ public final class HtmlGenerator {
             if (!table.isView()) {
 
                 //削除フラグがなければdeleteボタンを出力
-                if (StringUtil.isNullOrBlank(deleteF) || (!table.getColumnInfos().containsKey(deleteF.toLowerCase())
-                        && !table.getColumnInfos().containsKey(deleteF.toUpperCase()))) {
+                if (StringUtil.isNullOrBlank(deleteF) || (!table.getColumns().containsKey(deleteF.toLowerCase())
+                        && !table.getColumns().containsKey(deleteF.toUpperCase()))) {
                     s.add("        <button type=\"submit\" id=\"Delete" + e
                             + "S\" class=\"delete selectRows\" data-action=\"" + e
                             + "SDelete.ajax\" th:text=\"#{common.delete}\" tabindex=\"-1\">削除</button>");
                 }
 
-                if (!StringUtil.isNullOrBlank(status) && (table.getColumnInfos().containsKey(status.toLowerCase())
-                        || table.getColumnInfos().containsKey(status.toUpperCase()))) {
+                if (!StringUtil.isNullOrBlank(status) && (table.getColumns().containsKey(status.toLowerCase())
+                        || table.getColumns().containsKey(status.toUpperCase()))) {
                     s.add("        <button type=\"submit\" id=\"Permit" + e
                             + "S\" class=\"permit selectRows\" data-action=\"" + e
                             + "SPermit.ajax\" th:text=\"#{common.permit}\" tabindex=\"-1\">承認</button>");
@@ -373,7 +373,7 @@ public final class HtmlGenerator {
 
         // 転生元が必須か
         boolean isReborneeNotNull = false;
-        for (ColumnInfo column : table.getColumnInfos().values()) {
+        for (ColumnInfo column : table.getColumns().values()) {
             if ((column.isReborn() || column.isDerive()) && column.getNullable() != 1) {
                 isReborneeNotNull = true;
                 break;
@@ -383,7 +383,7 @@ public final class HtmlGenerator {
         // 主キーが全て採番キーでないか
         boolean isAllNonNumberingKey = true;
         for (String pk : table.getPrimaryKeys()) {
-            ColumnInfo primaryKey = table.getColumnInfos().get(pk);
+            ColumnInfo primaryKey = table.getColumns().get(pk);
             if (primaryKey.isNumbering()) {
                 isAllNonNumberingKey = false;
                 break;
@@ -442,7 +442,7 @@ public final class HtmlGenerator {
 
         //主キー列の出力
         for (String pk : table.getPrimaryKeys()) {
-            ColumnInfo primaryKey = table.getColumnInfos().get(pk);
+            ColumnInfo primaryKey = table.getColumns().get(pk);
             String gridColumn = htmlGridColumn(table, primaryKey);
             if (gridColumn != null) {
                 s.add("        " + gridColumn);
@@ -462,7 +462,7 @@ public final class HtmlGenerator {
                 continue;
             }
 
-            ColumnInfo column = table.getColumnInfos().get(columnName);
+            ColumnInfo column = table.getColumns().get(columnName);
             String gridColumn = htmlGridColumn(table, column);
             if (gridColumn != null) {
                 s.add("        " + gridColumn);
@@ -518,7 +518,7 @@ public final class HtmlGenerator {
         s.add("        <legend th:text=\"#{" + e + ".legend}\">legend</legend>");
         htmlFields(table, s, true, false);
         s.add("      </fieldset>");
-        List<TableInfo> bros = table.getBrosInfos(); // 兄弟モデル
+        List<TableInfo> bros = table.getYoungers(); // 兄弟モデル
         if (bros != null) {
             for (TableInfo bro : bros) {
                 String b = StringUtil.toPascalCase(bro.getName());
@@ -536,7 +536,7 @@ public final class HtmlGenerator {
                     + ".add}\" class=\"addChild\" tabindex=\"-1\">" + child.getRemarks() + "</a>");
             // ファイル列がある場合は新規行を取消
             String addRow = " data-addRow=\"true\"";
-            for (ColumnInfo column : child.getColumnInfos().values()) {
+            for (ColumnInfo column : child.getColumns().values()) {
                 if (StringUtil.endsWith(inputFileSuffixs, column.getName())) {
                     addRow = "";
                     break;
@@ -545,7 +545,7 @@ public final class HtmlGenerator {
             String frozen = String.valueOf(table.getPrimaryKeys().size());
             s.add("      <div id=\"" + c + "Grid\" data-selectionMode=\"link\"" + addRow + " data-frozenColumn=\""
                     + frozen + "\" th:data-href=\"@{/model/" + c + ".html}\"></div>");
-            for (ColumnInfo column : child.getColumnInfos().values()) {
+            for (ColumnInfo column : child.getColumns().values()) {
                 if (column.getReferInfo() != null) {
                     String columnName = column.getName();
                     if (columnName.matches("(?i)^" + insertId + "$") || columnName.matches("(?i)^" + updateId + "$")) {
@@ -592,7 +592,7 @@ public final class HtmlGenerator {
             //                        + e + ".add}\" class=\"reborner\" tabindex=\"-1\">" + summary.getRemarks() + "</a>");
             //            }
             for (String pk : summary.getPrimaryKeys()) {
-                ColumnInfo primaryKey = summary.getColumnInfos().get(pk);
+                ColumnInfo primaryKey = summary.getColumns().get(pk);
                 String p = StringUtil.toCamelCase(pk);
                 s.add("        <div>");
                 s.add("          <label>" + primaryKey.getRemarks() + "</label>");
@@ -605,13 +605,13 @@ public final class HtmlGenerator {
         s.add("      <div class=\"submits\">");
         if (!table.isHistory() && !table.isView()) {
             // 論理削除テーブルでないならボタン表示
-            if (StringUtil.isNullOrBlank(deleteF) || (!table.getColumnInfos().containsKey(deleteF.toLowerCase())
-                    && !table.getColumnInfos().containsKey(deleteF.toUpperCase()))) {
+            if (StringUtil.isNullOrBlank(deleteF) || (!table.getColumns().containsKey(deleteF.toLowerCase())
+                    && !table.getColumns().containsKey(deleteF.toUpperCase()))) {
                 s.add("        <button id=\"Delete" + e + "\" type=\"submit\" class=\"delete\" data-action=\"" + e
                         + "Delete.ajax\" th:text=\"#{common.delete}\" tabindex=\"-1\">削除</button>");
             }
-            if (!StringUtil.isNullOrBlank(status) && (table.getColumnInfos().containsKey(status.toLowerCase())
-                    || table.getColumnInfos().containsKey(status.toUpperCase()))) {
+            if (!StringUtil.isNullOrBlank(status) && (table.getColumns().containsKey(status.toLowerCase())
+                    || table.getColumns().containsKey(status.toUpperCase()))) {
                 s.add("        <button id=\"Permit" + e + "\" type=\"submit\" class=\"permit\" data-action=\""
                         + e + "Permit.ajax\" th:text=\"#{common.permit}\" tabindex=\"-1\">承認</button>");
                 s.add("        <button id=\"Forbid" + e + "\" type=\"submit\" class=\"forbid\" data-action=\""
@@ -653,22 +653,22 @@ public final class HtmlGenerator {
         s.add(entity + ".h3       " + remarks + "一覧");
 
         s.add("");
-        for (ColumnInfo column : table.getColumnInfos().values()) {
+        for (ColumnInfo column : table.getColumns().values()) {
             String property = StringUtil.toCamelCase(column.getName());
             s.add(entity + "." + property + " " + column.getRemarks());
         }
 
         s.add("");
-        for (ColumnInfo column : table.getColumnInfos().values()) {
+        for (ColumnInfo column : table.getColumns().values()) {
             String property = StringUtil.toCamelCase(column.getName());
             s.add(entity + "Grid." + property + " " + column.getRemarks());
 
         }
-        for (TableInfo bros : table.getBrosInfos()) {
+        for (TableInfo bros : table.getYoungers()) {
             String e = StringUtil.toPascalCase(bros.getName());
             s.add("");
             s.add(e + ".legend   " + bros.getRemarks());
-            for (ColumnInfo column : bros.getColumnInfos().values()) {
+            for (ColumnInfo column : bros.getColumns().values()) {
                 String property = StringUtil.toCamelCase(column.getName());
                 s.add(e + "." + property + " " + column.getRemarks());
             }
@@ -680,7 +680,7 @@ public final class HtmlGenerator {
             s.add("");
             s.add(e + ".h3  " + mei + "一覧");
             s.add(e + ".add " + mei + "追加");
-            for (ColumnInfo column : child.getColumnInfos().values()) {
+            for (ColumnInfo column : child.getColumns().values()) {
                 String property = StringUtil.toCamelCase(column.getName());
                 s.add(e + "Grid." + property + " " + column.getRemarks());
             }
@@ -800,7 +800,7 @@ public final class HtmlGenerator {
             final Set<TableInfo> added) {
 
         //参照モデル
-        for (ColumnInfo column : table.getColumnInfos().values()) {
+        for (ColumnInfo column : table.getColumns().values()) {
 
             TableInfo refer = column.getReferInfo();
 
@@ -820,9 +820,9 @@ public final class HtmlGenerator {
         }
 
         //兄弟モデルの参照モデル
-        for (TableInfo bro : table.getBrosInfos()) {
+        for (TableInfo bro : table.getYoungers()) {
 
-            for (ColumnInfo column : bro.getColumnInfos().values()) {
+            for (ColumnInfo column : bro.getColumns().values()) {
 
                 TableInfo refer = column.getReferInfo();
 
@@ -976,7 +976,7 @@ public final class HtmlGenerator {
                         // カラム名の末尾を名称列サフィックスに変換
                         String tempMei = name.replaceAll("(?i)" + keySuffix + "$", meiSuffix);
                         // 名称列がテーブルに含まれていない場合は参照先から名称を取得する
-                        if (table.getColumnInfos().containsKey(tempMei)) {
+                        if (table.getColumns().containsKey(tempMei)) {
                             referMei = tempMei;
                             isMeiRefer = false;
                             break;
@@ -993,7 +993,7 @@ public final class HtmlGenerator {
                     if (name.matches("(?i).*" + keySuffix + "$")) {
                         // カラム名の末尾を名称列サフィックスに変換して、名称列が参照先テーブルに含まれている場合は、取得する名称を決定する
                         String tempMei = name.replaceAll("(?i)" + keySuffix + "$", meiSuffix).toUpperCase();
-                        for (ColumnInfo referColumnInfo : referInfo.getColumnInfos().values()) {
+                        for (ColumnInfo referColumnInfo : referInfo.getColumns().values()) {
                             if (tempMei.matches("(?i).*" + referColumnInfo.getName() + "$")) {
                                 referMei = tempMei;
                                 break;
@@ -1090,7 +1090,7 @@ public final class HtmlGenerator {
         String entity = StringUtil.toPascalCase(table.getName());
 
         // カラム情報でループ
-        for (ColumnInfo column : table.getColumnInfos().values()) {
+        for (ColumnInfo column : table.getColumns().values()) {
 
             if (isB && column.isPk()) {
                 continue; // 兄弟モデルの主キーは出力しない
@@ -1299,7 +1299,7 @@ public final class HtmlGenerator {
         TableInfo stint = table.getStintInfo();
         for (String pk : stint.getPrimaryKeys()) {
             if (!pk.equals(table.getPrimaryKeys().get(0))) {
-                ColumnInfo column = stint.getColumnInfos().get(pk);
+                ColumnInfo column = stint.getColumns().get(pk);
                 if (column.getReferInfo() != null) {
                     TableInfo refer = column.getReferInfo();
                     String entity = StringUtil.toPascalCase(refer.getName());
@@ -1329,7 +1329,7 @@ public final class HtmlGenerator {
             String entity = StringUtil.toPascalCase(table.getName());
             String meiColumnName = getMeiColumnName(column.getName(), refer);
 
-            if (!table.getColumnInfos().containsKey(meiColumnName)) {
+            if (!table.getColumns().containsKey(meiColumnName)) {
 
                 String meiId = entity + "." + StringUtil.toCamelCase(meiColumnName);
                 String referDef = getReferDef(entity, column.getName(), refer);
@@ -1384,7 +1384,7 @@ public final class HtmlGenerator {
         }
 
         String meiColName = getMeiColumnName(colName, refer);
-        if (!table.getColumnInfos().containsKey(meiColName)) {
+        if (!table.getColumns().containsKey(meiColName)) {
             String meiId = entity + "." + StringUtil.toCamelCase(meiColName);
             tag += "<span id=\"" + meiId + "\"" + referCss + referDef + "></span>";
         }
@@ -1566,7 +1566,7 @@ public final class HtmlGenerator {
                 // 参照先テーブルの全カラム名を確認して、末尾が合致するカラム名を、参照先のID・名称カラム名として取得
                 String destIdColumn = null;
                 String destMeiColumn = null;
-                for (String destColumnName : referInfo.getColumnInfos().keySet()) {
+                for (String destColumnName : referInfo.getColumns().keySet()) {
                     if (srcIdColumn.matches("(?i)^.*" + destColumnName + "$")) {
                         destIdColumn = destColumnName;
                     } else if (srcMeiColumn.matches("(?i)^.*" + destColumnName + "$")) {
@@ -1623,7 +1623,7 @@ public final class HtmlGenerator {
                 // 参照先テーブルの全カラム名を確認して、末尾が合致するカラム名を、参照先のID・名称カラム名として取得
                 String destIdColumn = null;
                 String destMeiColumn = null;
-                for (String destColumnName : referInfo.getColumnInfos().keySet()) {
+                for (String destColumnName : referInfo.getColumns().keySet()) {
                     if (srcIdColumn.matches("(?i)^.*" + destColumnName + "$")) {
                         destIdColumn = destColumnName;
                     } else if (srcMeiColumn.matches("(?i)^.*" + destColumnName + "$")) {

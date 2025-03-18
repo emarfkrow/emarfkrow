@@ -105,8 +105,8 @@ public final class IndexActionGenerator {
             }
 
             //削除フラグがあればスキップ
-            if (!StringUtil.isNullOrBlank(deleteF) && (table.getColumnInfos().containsKey(deleteF.toLowerCase())
-                    || table.getColumnInfos().containsKey(deleteF.toUpperCase()))) {
+            if (!StringUtil.isNullOrBlank(deleteF) && (table.getColumns().containsKey(deleteF.toLowerCase())
+                    || table.getColumns().containsKey(deleteF.toUpperCase()))) {
                 continue;
             }
 
@@ -271,8 +271,8 @@ public final class IndexActionGenerator {
                 s.add("                isNew = true;");
                 s.add("            }");
             }
-            if (table.getColumnInfos().containsKey(updateDt)
-                    || table.getColumnInfos().containsKey(updateDt.toUpperCase())) {
+            if (table.getColumns().containsKey(updateDt)
+                    || table.getColumns().containsKey(updateDt.toUpperCase())) {
                 String accessor = StringUtil.toPascalCase(updateDt);
                 s.add("            // 楽観ロック値がなくてもINSERT");
                 s.add("            if (jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(e.get" + accessor + "())) {");
@@ -280,8 +280,8 @@ public final class IndexActionGenerator {
                 s.add("            }");
             }
             if (!table.isView() && !StringUtil.isNullOrBlank(status)
-                    && (table.getColumnInfos().containsKey(status.toLowerCase())
-                            || table.getColumnInfos().containsKey(status.toUpperCase()))) {
+                    && (table.getColumns().containsKey(status.toLowerCase())
+                            || table.getColumns().containsKey(status.toUpperCase()))) {
                 s.add("");
                 s.add("            e.set" + StringUtil.toPascalCase(status) + "(0);");
             }
@@ -340,8 +340,8 @@ public final class IndexActionGenerator {
 
         for (TableInfo table : tables) {
 
-            if (table.isHistory() || table.isView() || (!table.getColumnInfos().containsKey(status.toLowerCase())
-                    && !table.getColumnInfos().containsKey(status.toUpperCase()))) {
+            if (table.isHistory() || table.isView() || (!table.getColumns().containsKey(status.toLowerCase())
+                    && !table.getColumns().containsKey(status.toUpperCase()))) {
                 continue;
             }
 
@@ -407,8 +407,8 @@ public final class IndexActionGenerator {
             BeanGenerator.getPermitChilds(s, "e", childInfos, 1);
             s.add("");
             s.add("            " + entity + " f = " + entity + ".get(" + params + ");");
-            if (table.getColumnInfos().containsKey(status.toLowerCase())
-                    || table.getColumnInfos().containsKey(status.toUpperCase())) {
+            if (table.getColumns().containsKey(status.toLowerCase())
+                    || table.getColumns().containsKey(status.toUpperCase())) {
                 s.add("            f.set" + StringUtil.toPascalCase(status) + "(1);");
             }
             s.add("            if (f.update(now, execId) != 1) {");
@@ -455,8 +455,8 @@ public final class IndexActionGenerator {
 
         for (TableInfo table : tables) {
 
-            if (table.isHistory() || table.isView() || (!table.getColumnInfos().containsKey(status.toLowerCase())
-                    && !table.getColumnInfos().containsKey(status.toUpperCase()))) {
+            if (table.isHistory() || table.isView() || (!table.getColumns().containsKey(status.toLowerCase())
+                    && !table.getColumns().containsKey(status.toUpperCase()))) {
                 continue;
             }
 
@@ -522,8 +522,8 @@ public final class IndexActionGenerator {
             BeanGenerator.getForbidChilds(s, "e", childInfos, 1);
             s.add("");
             s.add("            " + entity + " f = " + entity + ".get(" + params + ");");
-            if (table.getColumnInfos().containsKey(status.toLowerCase())
-                    || table.getColumnInfos().containsKey(status.toUpperCase())) {
+            if (table.getColumns().containsKey(status.toLowerCase())
+                    || table.getColumns().containsKey(status.toUpperCase())) {
                 s.add("            f.set" + StringUtil.toPascalCase(status) + "(-1);");
             }
             s.add("            if (f.update(now, execId) != 1) {");

@@ -145,8 +145,8 @@ public final class DetailActionGenerator {
                 s.add("            isNew = true;");
                 s.add("        }");
             }
-            if (table.getColumnInfos().containsKey(updateDt)
-                    || table.getColumnInfos().containsKey(updateDt.toUpperCase())) {
+            if (table.getColumns().containsKey(updateDt)
+                    || table.getColumns().containsKey(updateDt.toUpperCase())) {
                 String pascal = StringUtil.toPascalCase(updateDt);
                 s.add("        // 楽観ロック値がなくてもINSERT");
                 s.add("        if (jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(e.get" + pascal + "())) {");
@@ -154,8 +154,8 @@ public final class DetailActionGenerator {
                 s.add("        }");
             }
             if (!table.isView() && !StringUtil.isNullOrBlank(status)
-                    && (table.getColumnInfos().containsKey(status.toLowerCase())
-                            || table.getColumnInfos().containsKey(status.toUpperCase()))) {
+                    && (table.getColumns().containsKey(status.toLowerCase())
+                            || table.getColumns().containsKey(status.toUpperCase()))) {
                 s.add("");
                 s.add("        e.set" + StringUtil.toPascalCase(status) + "(0);");
             }
@@ -179,8 +179,8 @@ public final class DetailActionGenerator {
                     s.add("                String[] summaryKeys = summaryKey.trim().split(\",\");");
                     s.add("                for (String pk : summaryKeys) {");
                     s.add("                    " + pkgE + "." + e + " " + i + " = " + pkgE + "." + e + ".get(pk);");
-                    if (!StringUtil.isNullOrBlank(status) && (summary.getColumnInfos().containsKey(status.toLowerCase())
-                            || summary.getColumnInfos().containsKey(status.toUpperCase()))) {
+                    if (!StringUtil.isNullOrBlank(status) && (summary.getColumns().containsKey(status.toLowerCase())
+                            || summary.getColumns().containsKey(status.toUpperCase()))) {
                         String acc = StringUtil.toPascalCase(status);
                         s.add("                    //承認済みでなければエラー");
                         s.add("                    if (!" + i + ".get" + acc + "().equals(\"1\")) {");
@@ -249,10 +249,10 @@ public final class DetailActionGenerator {
 
         for (TableInfo table : tables) {
 
-            String tableName = table.getName();
-            String entity = StringUtil.toPascalCase(tableName);
-            String instance = StringUtil.toCamelCase(tableName);
-            String remarks = table.getRemarks();
+            //entity
+            String e = StringUtil.toPascalCase(table.getName());
+            //instance
+            String in = StringUtil.toCamelCase(table.getName());
 
             List<String> s = new ArrayList<String>();
             s.add("package " + pkgAction + ";");
@@ -261,18 +261,18 @@ public final class DetailActionGenerator {
             s.add("import java.util.HashMap;");
             s.add("import java.util.Map;");
             s.add("");
-            s.add("import " + pkgE + "." + entity + ";");
+            s.add("import " + pkgE + "." + e + ";");
             s.add("");
             s.add("import jp.co.golorp.emarf.action.BaseAction;");
             s.add("");
             s.add("/**");
-            s.add(" * " + remarks + "照会");
+            s.add(" * " + table.getRemarks() + "照会");
             s.add(" *");
             s.add(" * @author emarfkrow");
             s.add(" */");
-            s.add("public class " + entity + "GetAction extends BaseAction {");
+            s.add("public class " + e + "GetAction extends BaseAction {");
             s.add("");
-            s.add("    /** " + remarks + "照会処理 */");
+            s.add("    /** " + table.getRemarks() + "照会処理 */");
             s.add("    @Override");
             s.add("    public Map<String, Object> running(final LocalDateTime now, final String execId, final Map<String, Object> postJson) {");
             s.add("");
@@ -285,7 +285,7 @@ public final class DetailActionGenerator {
                 String property = StringUtil.toCamelCase(pk);
                 s.add("        Object " + property + " = postJson.get(\"" + property + "\");");
                 s.add("        if (" + property + " == null) {");
-                s.add("            " + property + " = postJson.get(\"" + entity + "." + property + "\");");
+                s.add("            " + property + " = postJson.get(\"" + e + "." + property + "\");");
                 s.add("        }");
                 s.add("        if (" + property + " == null) {");
                 if (i == 0) {
@@ -301,33 +301,33 @@ public final class DetailActionGenerator {
                     if (table.getParentInfos().size() > 0) {
                         s.add("        // 親モデルの取得");
                         for (TableInfo parent : table.getParentInfos()) {
-                            String parentE = StringUtil.toPascalCase(parent.getName());
-                            String parentI = StringUtil.toCamelCase(parent.getName());
-                            s.add("        " + pkgE + "." + parentE + " " + parentI + " = " + pkgE + "."
-                                    + parentE + ".get(" + pks + ");");
-                            s.add("        map.put(\"" + parentE + "\", " + parentI + ");");
+                            String pE = StringUtil.toPascalCase(parent.getName());
+                            String pI = StringUtil.toCamelCase(parent.getName());
+                            s.add("        " + pkgE + "." + pE + " " + pI + " = " + pkgE + "." + pE + ".get(" + pks
+                                    + ");");
+                            s.add("        map.put(\"" + pE + "\", " + pI + ");");
                         }
                     }
                 }
             }
             s.add("");
-            s.add("        " + entity + " " + instance + " = " + entity + ".get(" + pks + ");");
-            for (TableInfo bros : table.getBrosInfos()) {
+            s.add("        " + e + " " + in + " = " + e + ".get(" + pks + ");");
+            for (TableInfo bros : table.getYoungers()) {
                 String brosEntity = StringUtil.toPascalCase(bros.getName());
-                s.add("        " + instance + ".refer" + brosEntity + "();");
+                s.add("        " + in + ".refer" + brosEntity + "();");
             }
             for (TableInfo child : table.getChildInfos()) {
                 String pascal = StringUtil.toPascalCase(child.getName());
-                s.add("        " + instance + ".refer" + pascal + "s();");
+                s.add("        " + in + ".refer" + pascal + "s();");
             }
-            s.add("        map.put(\"" + entity + "\", " + instance + ");");
+            s.add("        map.put(\"" + e + "\", " + in + ");");
             s.add("        return map;");
             s.add("    }");
             s.add("");
             s.add("}");
 
-            String javaFilePath = packageDir + File.separator + entity + "GetAction.java";
-            javaFilePaths.put(javaFilePath, pkgAction + "." + entity + "GetAction");
+            String javaFilePath = packageDir + File.separator + e + "GetAction.java";
+            javaFilePaths.put(javaFilePath, pkgAction + "." + e + "GetAction");
 
             FileUtil.writeFile(javaFilePath, s);
         }
@@ -358,8 +358,8 @@ public final class DetailActionGenerator {
             }
 
             // 論理削除テーブルならスキップ（削除フラグ指定があり、テーブルに削除フラグがある場合）
-            if (!StringUtil.isNullOrBlank(deleteF) && (table.getColumnInfos().containsKey(deleteF.toLowerCase())
-                    || table.getColumnInfos().containsKey(deleteF.toUpperCase()))) {
+            if (!StringUtil.isNullOrBlank(deleteF) && (table.getColumns().containsKey(deleteF.toLowerCase())
+                    || table.getColumns().containsKey(deleteF.toUpperCase()))) {
                 continue;
             }
 
@@ -451,8 +451,8 @@ public final class DetailActionGenerator {
 
         for (TableInfo table : tables) {
 
-            if (table.isHistory() || table.isView() || (!table.getColumnInfos().containsKey(status.toLowerCase())
-                    && !table.getColumnInfos().containsKey(status.toUpperCase()))) {
+            if (table.isHistory() || table.isView() || (!table.getColumns().containsKey(status.toLowerCase())
+                    && !table.getColumns().containsKey(status.toUpperCase()))) {
                 continue;
             }
 
@@ -507,8 +507,8 @@ public final class DetailActionGenerator {
             BeanGenerator.getPermitChilds(s, "e", childInfos, 0);
             s.add("");
             s.add("        " + entity + " f = " + entity + ".get(" + params + ");");
-            if (table.getColumnInfos().containsKey(status.toLowerCase())
-                    || table.getColumnInfos().containsKey(status.toUpperCase())) {
+            if (table.getColumns().containsKey(status.toLowerCase())
+                    || table.getColumns().containsKey(status.toUpperCase())) {
                 s.add("        f.set" + StringUtil.toPascalCase(status) + "(1);");
             }
             s.add("        if (f.update(now, execId) != 1) {");
@@ -549,8 +549,8 @@ public final class DetailActionGenerator {
 
         for (TableInfo table : tables) {
 
-            if (table.isHistory() || table.isView() || (!table.getColumnInfos().containsKey(status.toLowerCase())
-                    && !table.getColumnInfos().containsKey(status.toUpperCase()))) {
+            if (table.isHistory() || table.isView() || (!table.getColumns().containsKey(status.toLowerCase())
+                    && !table.getColumns().containsKey(status.toUpperCase()))) {
                 continue;
             }
 
@@ -605,8 +605,8 @@ public final class DetailActionGenerator {
             BeanGenerator.getForbidChilds(s, "e", childInfos, 0);
             s.add("");
             s.add("        " + entity + " f = " + entity + ".get(" + params + ");");
-            if (table.getColumnInfos().containsKey(status.toLowerCase())
-                    || table.getColumnInfos().containsKey(status.toUpperCase())) {
+            if (table.getColumns().containsKey(status.toLowerCase())
+                    || table.getColumns().containsKey(status.toUpperCase())) {
                 s.add("        f.set" + StringUtil.toPascalCase(status) + "(-1);");
             }
             s.add("        if (f.update(now, execId) != 1) {");
@@ -688,7 +688,7 @@ public final class DetailActionGenerator {
             s.add("            " + pkgE + "." + fromEntity + " " + fromInstance + " = " + pkgE + "."
                     + fromEntity + ".get(" + fromKeys + ");");
             s.add("            " + entity + " " + instance + " = new " + entity + "();");
-            for (String fromColumnName : fromTable.getColumnInfos().keySet()) {
+            for (String fromColumnName : fromTable.getColumns().keySet()) {
                 boolean isInsertDt = fromColumnName.matches("(?i)^" + insertDt + "$");
                 boolean isInsertBy = fromColumnName.matches("(?i)^" + insertBy + "$");
                 boolean isUpdateDt = fromColumnName.matches("(?i)^" + updateDt + "$");
@@ -698,7 +698,7 @@ public final class DetailActionGenerator {
                 if (isInsertDt || isInsertBy || isUpdateDt || isUpdateBy || isDeleteF || isStatusKb) {
                     continue;
                 }
-                if (table.getColumnInfos().containsKey(fromColumnName)) {
+                if (table.getColumns().containsKey(fromColumnName)) {
                     String a = StringUtil.toPascalCase(fromColumnName);
                     s.add("            " + instance + ".set" + a + "(" + fromInstance + ".get" + a + "());");
                 }
@@ -727,7 +727,7 @@ public final class DetailActionGenerator {
                     s.add("                " + pkgE + "." + childEntity + " " + childInstance + " = new "
                             + pkgE + "." + childEntity + "();");
                     s.add("                " + childInstance + ".setId(" + fromChildInstance + ".getId());");
-                    for (String fromChildColumnName : fromChild.getColumnInfos().keySet()) {
+                    for (String fromChildColumnName : fromChild.getColumns().keySet()) {
                         boolean isInsertDt = fromChildColumnName.matches("(?i)^" + insertDt + "$");
                         boolean isInsertBy = fromChildColumnName.matches("(?i)^" + insertBy + "$");
                         boolean isUpdateDt = fromChildColumnName.matches("(?i)^" + updateDt + "$");
@@ -737,7 +737,7 @@ public final class DetailActionGenerator {
                         if (isInsertDt || isInsertBy || isUpdateDt || isUpdateBy || isDeleteF || isStatusKb) {
                             continue;
                         }
-                        if (child.getColumnInfos().containsKey(fromChildColumnName)) {
+                        if (child.getColumns().containsKey(fromChildColumnName)) {
                             String a = StringUtil.toPascalCase(fromChildColumnName);
                             s.add("                " + childInstance + ".set" + a + "(" + fromChildInstance + ".get" + a
                                     + "());");

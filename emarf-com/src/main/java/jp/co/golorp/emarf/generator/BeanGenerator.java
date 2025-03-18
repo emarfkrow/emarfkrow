@@ -223,7 +223,7 @@ public final class BeanGenerator {
             s.add(" * @author emarfkrow");
             s.add(" */");
             s.add("public class " + e + " implements IEntity {");
-            if (table.getColumnInfos().get("ID") == null) {
+            if (table.getColumns().get("ID") == null) {
                 s.add("");
                 s.add("    /** SlickGridのDataView用ID */");
                 s.add("    private Integer id;");
@@ -242,7 +242,7 @@ public final class BeanGenerator {
                 s.add("        }");
                 s.add("    }");
             }
-            for (ColumnInfo column : table.getColumnInfos().values()) {
+            for (ColumnInfo column : table.getColumns().values()) {
                 String n = column.getName();
                 String m = column.getRemarks();
                 String p = StringUtil.toCamelCase(n);
@@ -460,9 +460,9 @@ public final class BeanGenerator {
         for (String pk : table.getPrimaryKeys()) {
             if (pk.length() > 0) {
                 String columnRemarks = "";
-                if (table.getColumnInfos() != null && table.getColumnInfos().size() > 0) {
-                    if (table.getColumnInfos().containsKey(pk)) {
-                        columnRemarks = " " + table.getColumnInfos().get(pk).getRemarks();
+                if (table.getColumns() != null && table.getColumns().size() > 0) {
+                    if (table.getColumns().containsKey(pk)) {
+                        columnRemarks = " " + table.getColumns().get(pk).getRemarks();
                     }
                 }
                 s.add("     * @param param" + ++paramCount + columnRemarks);
@@ -486,7 +486,7 @@ public final class BeanGenerator {
                 String q = DataSources.getAssist().quoteEscapedSQL(pk);
                 // param
                 String p = ":" + StringUtil.toSnakeCase(pk);
-                ColumnInfo primaryKey = table.getColumnInfos().get(pk);
+                ColumnInfo primaryKey = table.getColumns().get(pk);
                 if (primaryKey.getTypeName().equals("CHAR")) {
                     s.add("        whereList.add(\"" + assist.trimedSQL(q) + " = " + assist.trimedSQL(p) + "\");");
                 } else {
@@ -495,13 +495,13 @@ public final class BeanGenerator {
             }
         }
         if (!isPrimaryKey) {
-            for (String key : table.getColumnInfos().keySet()) {
+            for (String key : table.getColumns().keySet()) {
                 if (key.length() > 0) {
                     // quoted
                     String q = DataSources.getAssist().quoteEscapedSQL(key);
                     // param
                     String p = ":" + StringUtil.toSnakeCase(key);
-                    ColumnInfo column = table.getColumnInfos().get(key);
+                    ColumnInfo column = table.getColumns().get(key);
                     if (column.getTypeName().equals("CHAR")) {
                         s.add("        whereList.add(\"" + assist.trimedSQL(q) + " = " + assist.trimedSQL(p) + "\");");
                     } else {
@@ -513,7 +513,7 @@ public final class BeanGenerator {
         s.add("        String sql = \"\";");
         s.add("        sql += \"SELECT \\n\";");
         boolean isFirst = true;
-        for (ColumnInfo columnInfo : table.getColumnInfos().values()) {
+        for (ColumnInfo columnInfo : table.getColumns().values()) {
             String sql = "    , ";
             if (isFirst) {
                 sql = "      ";
@@ -551,8 +551,8 @@ public final class BeanGenerator {
     public static void javaEntityCRUDDelete(final TableInfo table, final List<String> s) {
 
         //削除フラグがなければdeleteメソッドを出力
-        if (!table.getColumnInfos().containsKey(deleteF.toLowerCase())
-                && !table.getColumnInfos().containsKey(deleteF.toUpperCase())) {
+        if (!table.getColumns().containsKey(deleteF.toLowerCase())
+                && !table.getColumns().containsKey(deleteF.toUpperCase())) {
 
             String e = StringUtil.toPascalCase(table.getName());
             String i = StringUtil.toCamelCase(table.getName());
@@ -565,8 +565,8 @@ public final class BeanGenerator {
             s.add("    public int delete() {");
 
             for (TableInfo child : table.getChildInfos()) {
-                if (StringUtil.isNullOrBlank(deleteF) || (!child.getColumnInfos().containsKey(deleteF.toLowerCase())
-                        && !child.getColumnInfos().containsKey(deleteF.toUpperCase()))) {
+                if (StringUtil.isNullOrBlank(deleteF) || (!child.getColumns().containsKey(deleteF.toLowerCase())
+                        && !child.getColumns().containsKey(deleteF.toUpperCase()))) {
                     String pascal = StringUtil.toPascalCase(child.getName());
                     String camel = StringUtil.toCamelCase(child.getName());
                     s.add("");
@@ -579,9 +579,9 @@ public final class BeanGenerator {
                 }
             }
 
-            for (TableInfo bro : table.getBrosInfos()) {
-                if (StringUtil.isNullOrBlank(deleteF) || (!bro.getColumnInfos().containsKey(deleteF.toLowerCase())
-                        && !bro.getColumnInfos().containsKey(deleteF.toUpperCase()))) {
+            for (TableInfo bro : table.getYoungers()) {
+                if (StringUtil.isNullOrBlank(deleteF) || (!bro.getColumns().containsKey(deleteF.toLowerCase())
+                        && !bro.getColumns().containsKey(deleteF.toUpperCase()))) {
                     String b = StringUtil.toCamelCase(bro.getName());
                     s.add("");
                     s.add("        // " + bro.getRemarks() + "の削除");
@@ -592,7 +592,7 @@ public final class BeanGenerator {
             }
 
             // ファイル列がある場合
-            for (String columnName : table.getColumnInfos().keySet()) {
+            for (String columnName : table.getColumns().keySet()) {
                 if (StringUtil.endsWith(inputFileSuffixs, columnName)) {
                     String params = "";
                     for (String primaryKey : table.getPrimaryKeys()) {
@@ -674,7 +674,7 @@ public final class BeanGenerator {
         if (table.getPrimaryKeys() != null && table.getPrimaryKeys().size() > 0) {
             List<String> primaryKeys = table.getPrimaryKeys();
             String lastKey = primaryKeys.get(primaryKeys.size() - 1);
-            lastKeyInfo = table.getColumnInfos().get(lastKey);
+            lastKeyInfo = table.getColumns().get(lastKey);
             if (lastKeyInfo != null && lastKeyInfo.isNumbering()) {
                 s.add("");
                 s.add("        // " + lastKeyInfo.getRemarks() + "の採番処理");
@@ -703,7 +703,7 @@ public final class BeanGenerator {
         }
 
         // 兄弟モデル
-        for (TableInfo brosInfo : table.getBrosInfos()) {
+        for (TableInfo brosInfo : table.getYoungers()) {
             String brosName = brosInfo.getName();
             String camel = StringUtil.toCamelCase(brosName);
             s.add("");
@@ -725,7 +725,7 @@ public final class BeanGenerator {
             s.add("");
             s.add("        // " + table.getHistoryInfo().getRemarks() + "の登録");
             s.add("        " + pascal + " " + camel + " = new " + pascal + "();");
-            for (String columnName : table.getColumnInfos().keySet()) {
+            for (String columnName : table.getColumns().keySet()) {
                 String camelColumn = StringUtil.toCamelCase(columnName);
                 String pascalColumn = StringUtil.toPascalCase(columnName);
                 s.add("        " + camel + ".set" + pascalColumn + "(this." + camelColumn + ");");
@@ -748,7 +748,7 @@ public final class BeanGenerator {
         s.add("    /** @return insert用のname句 */");
         s.add("    private String names() {");
         s.add("        List<String> nameList = new ArrayList<String>();");
-        for (String columnName : table.getColumnInfos().keySet()) {
+        for (String columnName : table.getColumns().keySet()) {
             String snake = StringUtil.toSnakeCase(columnName);
             s.add("        nameList.add(\"" + assist.quoteEscapedSQL(columnName) + " -- :" + snake + "\");");
         }
@@ -758,7 +758,7 @@ public final class BeanGenerator {
         s.add("    /** @return insert用のvalue句 */");
         s.add("    private String values() {");
         s.add("        List<String> valueList = new ArrayList<String>();");
-        for (Entry<String, ColumnInfo> e : table.getColumnInfos().entrySet()) {
+        for (Entry<String, ColumnInfo> e : table.getColumns().entrySet()) {
             String columnName = e.getKey();
             ColumnInfo columnInfo = e.getValue();
             String rightHand = getRightHand(columnName, columnInfo);
@@ -908,7 +908,7 @@ public final class BeanGenerator {
         }
 
         // 兄弟モデル
-        for (TableInfo brosInfo : tableInfo.getBrosInfos()) {
+        for (TableInfo brosInfo : tableInfo.getYoungers()) {
             String brosType = StringUtil.toCamelCase(brosInfo.getName());
             s.add("");
             s.add("        // " + brosInfo.getRemarks() + "の登録");
@@ -934,7 +934,7 @@ public final class BeanGenerator {
             s.add("");
             s.add("        // " + historyInfo.getRemarks() + "の登録");
             s.add("        " + historyType + " " + history + " = new " + historyType + "();");
-            for (String columnName : tableInfo.getColumnInfos().keySet()) {
+            for (String columnName : tableInfo.getColumns().keySet()) {
                 String column = StringUtil.toCamelCase(columnName);
                 String columnType = StringUtil.toPascalCase(columnName);
                 s.add("        " + history + ".set" + columnType + "(this." + column + ");");
@@ -958,7 +958,7 @@ public final class BeanGenerator {
         s.add("    private String getSet() {");
         s.add("        List<String> setList = new ArrayList<String>();");
 
-        for (Entry<String, ColumnInfo> e : tableInfo.getColumnInfos().entrySet()) {
+        for (Entry<String, ColumnInfo> e : tableInfo.getColumns().entrySet()) {
             String columnName = e.getKey();
             ColumnInfo columnInfo = e.getValue();
 
@@ -998,7 +998,7 @@ public final class BeanGenerator {
             // param
             String p = ":" + StringUtil.toSnakeCase(primaryKey);
 
-            ColumnInfo primaryKeyInfo = tableInfo.getColumnInfos().get(primaryKey);
+            ColumnInfo primaryKeyInfo = tableInfo.getColumns().get(primaryKey);
             if (primaryKeyInfo.getTypeName().equals("CHAR")) {
                 s.add("        whereList.add(\"" + assist.trimedSQL(q) + " = " + assist.trimedSQL(p) + "\");");
             } else {
@@ -1007,7 +1007,7 @@ public final class BeanGenerator {
         }
 
         // 楽観ロック
-        ColumnInfo columnInfo = tableInfo.getColumnInfos().get(updateDt);
+        ColumnInfo columnInfo = tableInfo.getColumns().get(updateDt);
         if (columnInfo != null) {
 
             String rightHand = "'\" + this." + StringUtil.toCamelCase(updateDt) + " + \"'";
@@ -1030,7 +1030,7 @@ public final class BeanGenerator {
         s.add("     */");
         s.add("    private Map<String, Object> toMap(final LocalDateTime now, final String execId) {");
         s.add("        Map<String, Object> map = new HashMap<String, Object>();");
-        for (String columnName : tableInfo.getColumnInfos().keySet()) {
+        for (String columnName : tableInfo.getColumns().keySet()) {
             boolean isInsertDt = columnName.matches("(?i)^" + insertDt + "$");
             boolean isUpdateDt = columnName.matches("(?i)^" + updateDt + "$");
             boolean isInsertBy = columnName.matches("(?i)^" + insertBy + "$");
@@ -1072,7 +1072,7 @@ public final class BeanGenerator {
             }
         }
 
-        for (TableInfo brosInfo : tableInfo.getBrosInfos()) {
+        for (TableInfo brosInfo : tableInfo.getYoungers()) {
             String brosName = brosInfo.getName();
             String camel = StringUtil.toCamelCase(brosName);
             String pascal = StringUtil.toPascalCase(brosName);
@@ -1172,7 +1172,7 @@ public final class BeanGenerator {
                 if (pks.length() > 0) {
                     pks += ", ";
                 }
-                ColumnInfo column = table.getColumnInfos().get(pk);
+                ColumnInfo column = table.getColumns().get(pk);
                 pks += "final " + column.getDataType() + " param" + i;
             }
             s.add("     * @return List<" + entity + ">");
@@ -1187,7 +1187,7 @@ public final class BeanGenerator {
 
                 String p = ":" + StringUtil.toSnakeCase(pk);
 
-                ColumnInfo primaryKey = table.getColumnInfos().get(pk);
+                ColumnInfo primaryKey = table.getColumns().get(pk);
                 if (primaryKey.getTypeName().equals("CHAR")) {
                     s.add("        whereList.add(\"" + assist.trimedSQL(pk) + " = " + assist.trimedSQL(p) + "\");");
                 } else {
@@ -1200,7 +1200,7 @@ public final class BeanGenerator {
             s.add("        String sql = \"SELECT \";");
             int cols = 0;
             int refs = 0;
-            for (ColumnInfo column : child.getColumnInfos().values()) {
+            for (ColumnInfo column : child.getColumns().values()) {
                 String colName = column.getName();
                 String quoteEscaped = assist.quoteEscapedSQL(colName);
                 //時間サフィックスに合致する場合、データソースがOracleならTO_CHAR
@@ -1240,7 +1240,7 @@ public final class BeanGenerator {
                     orders += pk;
                 }
             } else {
-                for (i = 1; i <= child.getColumnInfos().size(); i++) {
+                for (i = 1; i <= child.getColumns().size(); i++) {
                     if (i == 1) {
                         orders += ", ";
                     }
@@ -1275,8 +1275,8 @@ public final class BeanGenerator {
 
         for (TableInfo child : childs) {
 
-            if (!StringUtil.isNullOrBlank(deleteF) && (child.getColumnInfos().containsKey(deleteF.toLowerCase())
-                    || child.getColumnInfos().containsKey(deleteF.toUpperCase()))) {
+            if (!StringUtil.isNullOrBlank(deleteF) && (child.getColumns().containsKey(deleteF.toLowerCase())
+                    || child.getColumns().containsKey(deleteF.toUpperCase()))) {
                 continue;
             }
 
@@ -1309,6 +1309,8 @@ public final class BeanGenerator {
 
                 s.add(sp + "        // child:" + e + ", parents:" + parents);
             }
+
+            s.add("");
         }
     }
 
@@ -1349,8 +1351,8 @@ public final class BeanGenerator {
                 getPermitChilds(s, i, child.getChildInfos(), indent + 2);
             }
             s.add("");
-            if (child.getColumnInfos().containsKey(status.toLowerCase())
-                    || child.getColumnInfos().containsKey(status.toUpperCase())) {
+            if (child.getColumns().containsKey(status.toLowerCase())
+                    || child.getColumns().containsKey(status.toUpperCase())) {
                 s.add(p + "                " + i + ".set" + StringUtil.toPascalCase(status) + "(1);");
             }
             s.add(p + "                if (" + i + ".update(now, execId) != 1) {");
@@ -1398,8 +1400,8 @@ public final class BeanGenerator {
                 getForbidChilds(s, i, child.getChildInfos(), indent + 2);
             }
             s.add("");
-            if (child.getColumnInfos().containsKey(status.toLowerCase())
-                    || child.getColumnInfos().containsKey(status.toUpperCase())) {
+            if (child.getColumns().containsKey(status.toLowerCase())
+                    || child.getColumns().containsKey(status.toUpperCase())) {
                 s.add(p + "                " + i + ".set" + StringUtil.toPascalCase(status) + "(-1);");
             }
             s.add(p + "                if (" + i + ".update(now, execId) != 1) {");

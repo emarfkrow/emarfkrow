@@ -111,7 +111,7 @@ public final class SqlGenerator {
         int refs = 0;
 
         List<String> s = new ArrayList<String>();
-        for (ColumnInfo column : table.getColumnInfos().values()) {
+        for (ColumnInfo column : table.getColumns().values()) {
 
             //カラム行追加
             String prefix = "    , ";
@@ -135,7 +135,7 @@ public final class SqlGenerator {
 
         s.add("WHERE");
         s.add("    1 = 1 ");
-        for (ColumnInfo column : table.getColumnInfos().values()) {
+        for (ColumnInfo column : table.getColumns().values()) {
             addWhere(s, column);
         }
 
@@ -144,7 +144,7 @@ public final class SqlGenerator {
             if (table.getPrimaryKeys().size() > 0) {
                 String orders = "";
                 if (table.getPrimaryKeys().size() == 1) {
-                    for (ColumnInfo column : table.getColumnInfos().values()) {
+                    for (ColumnInfo column : table.getColumns().values()) {
                         if (StringUtil.endsWith(orderSuffixs, column.getName())) {
                             if (orders.length() > 0) {
                                 orders += "    , ";
@@ -164,7 +164,7 @@ public final class SqlGenerator {
                     orders += "a." + assist.quotedSQL(pk) + "\r\n";
                 }
                 if (table.getPrimaryKeys().size() > 1) {
-                    for (ColumnInfo column : table.getColumnInfos().values()) {
+                    for (ColumnInfo column : table.getColumns().values()) {
                         if (StringUtil.endsWith(orderSuffixs, column.getName())) {
                             if (orders.length() > 0) {
                                 orders += "    , ";
@@ -177,7 +177,7 @@ public final class SqlGenerator {
                 }
                 s.add(orders.replaceFirst("\r\n$", ""));
             } else {
-                for (int i = 1; i <= table.getColumnInfos().size(); i++) {
+                for (int i = 1; i <= table.getColumns().size(); i++) {
                     if (i == 1) {
                         s.add("    " + i);
                     } else {
@@ -229,7 +229,7 @@ public final class SqlGenerator {
             // 参照先でID・名称のサフィックスに合致するカラムを取得し、両方取得できなければスキップ
             String destKey = null;
             String destMei = null;
-            for (String columnName : refer.getColumnInfos().keySet()) {
+            for (String columnName : refer.getColumns().keySet()) {
                 if (srcKey.matches("(?i)^.*" + columnName + "$")) {
                     destKey = columnName;
                 }
@@ -246,7 +246,7 @@ public final class SqlGenerator {
 
             // 生成した参照元名称カラムが、参照元に既存でない場合はselect句に追加
             boolean isSrcMei = false;
-            for (String columnName : table.getColumnInfos().keySet()) {
+            for (String columnName : table.getColumns().keySet()) {
                 if (columnName.matches("(?i)^" + srcMei + "$")) {
                     isSrcMei = true;
                     break;
@@ -277,7 +277,7 @@ public final class SqlGenerator {
 
         List<String> s = new ArrayList<String>();
 
-        for (ColumnInfo column : table.getColumnInfos().values()) {
+        for (ColumnInfo column : table.getColumns().values()) {
 
             //カラム行追加
             String prefix = "    , ";
@@ -307,17 +307,17 @@ public final class SqlGenerator {
 
         s.add("WHERE");
         s.add("    1 = 1 ");
-        if (table.getColumnInfos().containsKey(deleteF)) {
+        if (table.getColumns().containsKey(deleteF)) {
             s.add("    AND " + assist.nvlZero("a." + deleteF) + " != 1 ");
         }
-        if (table.getColumnInfos().containsKey(start)) {
+        if (table.getColumns().containsKey(start)) {
             s.add("    AND " + assist.nvlSysdate("a." + start) + " <= " + assist.sysDate() + " ");
         }
-        if (table.getColumnInfos().containsKey(until)) {
+        if (table.getColumns().containsKey(until)) {
             s.add("    AND " + assist.dateAdd(assist.nvlSysdate("a." + until), 1) + " > " + assist.sysDate()
                     + " ");
         }
-        for (ColumnInfo column : table.getColumnInfos().values()) {
+        for (ColumnInfo column : table.getColumns().values()) {
             addWhere(s, column);
         }
 
@@ -331,7 +331,7 @@ public final class SqlGenerator {
             if (table.getPrimaryKeys().size() > 0) {
                 String orders = "";
                 if (table.getPrimaryKeys().size() == 1) {
-                    for (ColumnInfo column : table.getColumnInfos().values()) {
+                    for (ColumnInfo column : table.getColumns().values()) {
                         if (StringUtil.endsWith(orderSuffixs, column.getName())) {
                             if (orders.length() > 0) {
                                 orders += "    , ";
@@ -351,7 +351,7 @@ public final class SqlGenerator {
                     orders += "a." + assist.quotedSQL(pk) + "\r\n";
                 }
                 if (table.getPrimaryKeys().size() > 1) {
-                    for (ColumnInfo column : table.getColumnInfos().values()) {
+                    for (ColumnInfo column : table.getColumns().values()) {
                         if (StringUtil.endsWith(orderSuffixs, column.getName())) {
                             if (orders.length() > 0) {
                                 orders += "    , ";
@@ -364,7 +364,7 @@ public final class SqlGenerator {
                 }
                 s.add(orders.replaceFirst("\r\n$", ""));
             } else {
-                for (int i = 1; i <= table.getColumnInfos().size(); i++) {
+                for (int i = 1; i <= table.getColumns().size(); i++) {
                     if (i == 1) {
                         s.add("    " + i);
                     } else {
@@ -404,14 +404,14 @@ public final class SqlGenerator {
         sql.add("            " + stint.getName() + " p ");
         sql.add("        WHERE");
         sql.add("            1 = 1 ");
-        if (stint.getColumnInfos().containsKey(deleteF)) {
+        if (stint.getColumns().containsKey(deleteF)) {
             sql.add("            AND " + assist.nvlZero("p." + deleteF) + " != 1 ");
         }
-        if (stint.getColumnInfos().containsKey(start)) {
+        if (stint.getColumns().containsKey(start)) {
             sql.add("            AND " + assist.nvlSysdate("p." + start) + " <= " + assist.sysDate()
                     + " ");
         }
-        if (stint.getColumnInfos().containsKey(until)) {
+        if (stint.getColumns().containsKey(until)) {
             sql.add("            AND " + assist.dateAdd(assist.nvlSysdate("p." + until), 1) + " > "
                     + assist.sysDate());
         }
@@ -441,14 +441,14 @@ public final class SqlGenerator {
             ++i;
             sql.add("    INNER JOIN " + combo.getName() + " c" + i + " ");
             sql.add("        ON 1 = 1 ");
-            if (combo.getColumnInfos().containsKey(deleteF)) {
+            if (combo.getColumns().containsKey(deleteF)) {
                 sql.add("        AND " + assist.nvlZero("c" + i + "." + deleteF) + " != 1 ");
             }
-            if (combo.getColumnInfos().containsKey(start)) {
+            if (combo.getColumns().containsKey(start)) {
                 sql.add("        AND " + assist.nvlSysdate("c" + i + "." + start) + " <= " + assist.sysDate()
                         + " ");
             }
-            if (combo.getColumnInfos().containsKey(until)) {
+            if (combo.getColumns().containsKey(until)) {
                 sql.add("        AND " + assist.dateAdd(assist.nvlSysdate("c" + i + "." + until), 1) + " > "
                         + assist.sysDate());
             }

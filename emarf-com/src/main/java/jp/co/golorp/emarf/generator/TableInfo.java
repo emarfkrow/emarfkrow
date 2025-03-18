@@ -44,7 +44,7 @@ public class TableInfo {
     private List<String> nonPrimaryKeys = new ArrayList<String>();
 
     /** カラム名：カラム情報のマップ */
-    private Map<String, ColumnInfo> columnInfos = new LinkedHashMap<String, ColumnInfo>();
+    private Map<String, ColumnInfo> columns = new LinkedHashMap<String, ColumnInfo>();
 
     /** 親テーブルのリスト */
     private List<TableInfo> parentInfos = new ArrayList<TableInfo>();
@@ -59,10 +59,10 @@ public class TableInfo {
     private boolean isHistory;
 
     /** 兄弟テーブルのリスト */
-    private List<TableInfo> brosInfos = new ArrayList<TableInfo>();
+    private List<TableInfo> youngers = new ArrayList<TableInfo>();
 
     /** 自身が兄弟テーブルならtrue */
-    private boolean isBrother;
+    private boolean isYounger;
 
     //    /** 依存レベル */
     //    private int dependLevel;
@@ -171,15 +171,15 @@ public class TableInfo {
     /**
      * @return カラム名：カラム情報のマップ
      */
-    public Map<String, ColumnInfo> getColumnInfos() {
-        return columnInfos;
+    public Map<String, ColumnInfo> getColumns() {
+        return columns;
     }
 
     /**
      * @param p カラム名：カラム情報のマップ
      */
-    public void setColumnInfos(final Map<String, ColumnInfo> p) {
-        this.columnInfos = p;
+    public void setColumns(final Map<String, ColumnInfo> p) {
+        this.columns = p;
     }
 
     /**
@@ -239,31 +239,31 @@ public class TableInfo {
     }
 
     /**
-     * @return 兄弟テーブルのリスト
+     * @return 弟テーブルのリスト
      */
-    public List<TableInfo> getBrosInfos() {
-        return brosInfos;
+    public List<TableInfo> getYoungers() {
+        return youngers;
     }
 
     /**
-     * @param p 兄弟テーブルのリスト
+     * @param p 弟テーブルのリスト
      */
-    public void setBrosInfos(final List<TableInfo> p) {
-        this.brosInfos = p;
+    public void setYoungers(final List<TableInfo> p) {
+        this.youngers = p;
     }
 
     /**
      * @return 自身が兄弟テーブルならtrue
      */
-    public boolean isBrother() {
-        return isBrother;
+    public boolean isYounger() {
+        return isYounger;
     }
 
     /**
      * @param p 自身が兄弟テーブルならtrue
      */
-    public void setBrother(final boolean p) {
-        this.isBrother = p;
+    public void setYounger(final boolean p) {
+        this.isYounger = p;
     }
 
     //    /**
