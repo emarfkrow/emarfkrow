@@ -252,6 +252,10 @@ public final class DetailActionGenerator {
 
         for (TableInfo table : tables) {
 
+            if (table.isView()) {
+                continue;
+            }
+
             //entity
             String e = StringUtil.toPascalCase(table.getName());
             //instance
