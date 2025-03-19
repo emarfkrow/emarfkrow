@@ -66,7 +66,7 @@ public class ColumnInfo {
     private boolean isSummary;
 
     /** 参照先テーブル */
-    private TableInfo referInfo;
+    private TableInfo refer;
 
     /**
      * @return カラム名
@@ -263,15 +263,15 @@ public class ColumnInfo {
     /**
      * @return 参照先テーブル
      */
-    public TableInfo getReferInfo() {
-        return referInfo;
+    public TableInfo getRefer() {
+        return refer;
     }
 
     /**
      * @param p 参照先テーブル
      */
-    public void setReferInfo(final TableInfo p) {
-        this.referInfo = p;
+    public void setRefer(final TableInfo p) {
+        this.refer = p;
     }
 
 }

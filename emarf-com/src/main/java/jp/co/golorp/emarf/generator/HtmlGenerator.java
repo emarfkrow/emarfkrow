@@ -53,6 +53,8 @@ public final class HtmlGenerator {
     /** 参照列名ペア */
     private static Set<String[]> referPairs = new LinkedHashSet<String[]>();
 
+    /** 適用日カラム名 */
+    private static String tekiyoBi;
     /** 登録日時カラム名 */
     private static String insertTs;
     /** 登録者カラム名 */
@@ -132,6 +134,7 @@ public final class HtmlGenerator {
             referPairs.add(kv);
         }
 
+        tekiyoBi = bundle.getString("column.start");
         insertTs = bundle.getString("column.insert.timestamp");
         insertId = bundle.getString("column.insert.id");
         updateTs = bundle.getString("column.update.timestamp");
@@ -265,21 +268,24 @@ public final class HtmlGenerator {
             boolean isNotAddRow = false;
             for (ColumnInfo column : table.getColumns().values()) {
                 if (column.getName().matches("(?i)^" + insertId + "$")
-                        || column.getName().matches("(?i)^" + updateId + "$")) {
-                    continue; //メタ情報ならスキップ
+                        || column.getName().matches("(?i)^" + updateId + "$")) { //メタ情報ならスキップ
+                    continue;
                 }
-                if (StringUtil.endsWith(inputFileSuffixs, column.getName())) {
-                    isNotAddRow = true; //ファイル列があれば新規行なし
+                if (StringUtil.endsWith(inputFileSuffixs, column.getName())) { //ファイル列があれば新規行なし
+                    isNotAddRow = true;
                     break;
                 }
             }
-            if (!isNotAddRow && table.getChildInfos().size() == 0) {
+            if (table.getChilds().size() > 0) { //子モデルがあれば新規行なし
+                isNotAddRow = true;
+            }
+            if (!isNotAddRow) {
                 addRow = " data-addRow=\"true\"";
             }
         }
         int frozenColumn = table.getPrimaryKeys().size() - 1;
         String editable = "";
-        if (table.isHistory() || table.isView() || table.getChildInfos().size() > 0) {
+        if (table.isHistory() || table.isView() || table.getChilds().size() > 0) {
             editable = "data-editable=\"false\" ";
         }
         s.add("      <div id=\"" + e + "Grid\" data-selectionMode=\"checkbox\"" + addRow + " data-frozenColumn=\""
@@ -300,16 +306,16 @@ public final class HtmlGenerator {
                     + "\" target=\"dialog\" th:text=\"#{" + summaryEntity
                     + ".sum}\" class=\"summary\" tabindex=\"-1\">" + summary.getRemarks() + "</a>");
         }
-        if (!table.isHistory() && (!table.isView() || table.isConvView()) && table.getChildInfos().size() == 0) {
+        if (!table.isHistory() && (!table.isView() || table.isConvView()) && table.getChilds().size() == 0) {
             for (ColumnInfo column : table.getColumns().values()) {
                 //グリッド用の非表示の参照ボタン
-                if (column.getReferInfo() != null) {
+                if (column.getRefer() != null) {
                     String columnName = column.getName();
                     if (columnName.matches("(?i)^" + insertId + "$") || columnName.matches("(?i)^" + updateId + "$")) {
                         continue;
                     }
                     String property = StringUtil.toCamelCase(column.getName());
-                    TableInfo refer = column.getReferInfo();
+                    TableInfo refer = column.getRefer();
                     String referEntity = StringUtil.toPascalCase(refer.getName());
                     String action = "";
                     String css = "";
@@ -324,7 +330,6 @@ public final class HtmlGenerator {
                 }
             }
             if (!table.isView()) {
-
                 //削除フラグがなければdeleteボタンを出力
                 if (StringUtil.isNullOrBlank(deleteF) || (!table.getColumns().containsKey(deleteF.toLowerCase())
                         && !table.getColumns().containsKey(deleteF.toUpperCase()))) {
@@ -332,7 +337,6 @@ public final class HtmlGenerator {
                             + "S\" class=\"delete selectRows\" data-action=\"" + e
                             + "SDelete.ajax\" th:text=\"#{common.delete}\" tabindex=\"-1\">削除</button>");
                 }
-
                 if (!StringUtil.isNullOrBlank(status) && (table.getColumns().containsKey(status.toLowerCase())
                         || table.getColumns().containsKey(status.toUpperCase()))) {
                     s.add("        <button type=\"submit\" id=\"Permit" + e
@@ -346,9 +350,9 @@ public final class HtmlGenerator {
         }
         s.add("      </div>");
         s.add("      <div class=\"submits\">");
-        if (!table.isHistory() && (!table.isView() || table.isConvView()) && table.getChildInfos().size() == 0) {
+        if (!table.isHistory() && (!table.isView() || table.isConvView()) && table.getChilds().size() == 0) {
             String onclick = "";
-            if (table.getHistoryInfo() != null && !StringUtil.isNullOrBlank(reason)) {
+            if (table.getHistory() != null && !StringUtil.isNullOrBlank(reason)) {
                 onclick = " onclick=\"if (!Base.historyReason(this)) { return false; }\"";
             }
             s.add("        <button id=\"Regist" + e
@@ -365,7 +369,7 @@ public final class HtmlGenerator {
 
     /**
      * 履歴モデルでない かつ ビューでない かつ 転生元が必須でない<br>
-     * 主キーが一つ か 組合せモデル か 主キーが２つ以上で全て採番キーでない
+     * 適用日を除く主キーが一つ か 組合せモデル か 主キーが２つ以上で全て採番キーでない
      * @param table
      * @return boolean
      */
@@ -380,9 +384,12 @@ public final class HtmlGenerator {
             }
         }
 
-        // 主キーが全て採番キーでないか
+        List<String> primaryKeys = new ArrayList<String>(table.getPrimaryKeys());
+        primaryKeys.remove(tekiyoBi);
+
+        // 適用日を除く主キーが全て採番キーでないか
         boolean isAllNonNumberingKey = true;
-        for (String pk : table.getPrimaryKeys()) {
+        for (String pk : primaryKeys) {
             ColumnInfo primaryKey = table.getColumns().get(pk);
             if (primaryKey.isNumbering()) {
                 isAllNonNumberingKey = false;
@@ -391,7 +398,7 @@ public final class HtmlGenerator {
         }
 
         return !table.isHistory() && !table.isView() && !isReborneeNotNull
-                && (table.getPrimaryKeys().size() == 1 || table.getComboInfos().size() > 1 || isAllNonNumberingKey);
+                && (primaryKeys.size() == 1 || table.getComboInfos().size() > 1 || isAllNonNumberingKey);
     }
 
     /**
@@ -503,7 +510,7 @@ public final class HtmlGenerator {
         s.add("  <div layout:fragment=\"article\">");
         s.add("    <h2 th:text=\"#{" + e + ".h2}\">h2</h2>");
         s.add("    <form name=\"" + e + "RegistForm\" action=\"" + e + "Regist.ajax\" class=\"regist\">");
-        for (TableInfo parent : table.getParentInfos()) { // 親モデル
+        for (TableInfo parent : table.getParents()) { // 親モデル
             String p = StringUtil.toPascalCase(parent.getName());
             s.add("      <fieldset class=\"parent\">");
             s.add("        <legend th:text=\"#{" + p + ".legend}\">legend</legend>");
@@ -529,7 +536,7 @@ public final class HtmlGenerator {
             }
         }
         //子テーブルリスト
-        for (TableInfo child : table.getChildInfos()) {
+        for (TableInfo child : table.getChilds()) {
             String c = StringUtil.toPascalCase(child.getName());
             s.add("      <h3 th:text=\"#{" + c + ".h3}\">h3</h3>");
             s.add("      <a th:href=\"@{/model/" + c + ".html}\" id=\"" + c + "\" target=\"dialog\" th:text=\"#{" + c
@@ -546,13 +553,13 @@ public final class HtmlGenerator {
             s.add("      <div id=\"" + c + "Grid\" data-selectionMode=\"link\"" + addRow + " data-frozenColumn=\""
                     + frozen + "\" th:data-href=\"@{/model/" + c + ".html}\"></div>");
             for (ColumnInfo column : child.getColumns().values()) {
-                if (column.getReferInfo() != null) {
+                if (column.getRefer() != null) {
                     String columnName = column.getName();
                     if (columnName.matches("(?i)^" + insertId + "$") || columnName.matches("(?i)^" + updateId + "$")) {
                         continue;
                     }
                     String p = StringUtil.toCamelCase(column.getName());
-                    TableInfo refer = column.getReferInfo();
+                    TableInfo refer = column.getRefer();
                     String referE = StringUtil.toPascalCase(refer.getName());
                     String action = "";
                     String childCss = "";
@@ -618,7 +625,7 @@ public final class HtmlGenerator {
                         + e + "Forbid.ajax\" th:text=\"#{common.forbid}\" tabindex=\"-1\">否認</button>");
             }
             String onclick = "";
-            if (table.getHistoryInfo() != null && !StringUtil.isNullOrBlank(reason)) {
+            if (table.getHistory() != null && !StringUtil.isNullOrBlank(reason)) {
                 onclick = " onclick=\"if (!Base.historyReason(this)) { return false; }\"";
             }
             s.add("        <button id=\"Regist" + e
@@ -674,7 +681,7 @@ public final class HtmlGenerator {
             }
         }
 
-        for (TableInfo child : table.getChildInfos()) {
+        for (TableInfo child : table.getChilds()) {
             String e = StringUtil.toPascalCase(child.getName());
             String mei = child.getRemarks();
             s.add("");
@@ -723,7 +730,7 @@ public final class HtmlGenerator {
         for (TableInfo table : tables) {
 
             // 親モデルがあればスキップ
-            if (table.getParentInfos().size() > 0) {
+            if (table.getParents().size() > 0) {
                 continue;
             }
 
@@ -802,7 +809,7 @@ public final class HtmlGenerator {
         //参照モデル
         for (ColumnInfo column : table.getColumns().values()) {
 
-            TableInfo refer = column.getReferInfo();
+            TableInfo refer = column.getRefer();
 
             if (refer != null) {
 
@@ -824,7 +831,7 @@ public final class HtmlGenerator {
 
             for (ColumnInfo column : bro.getColumns().values()) {
 
-                TableInfo refer = column.getReferInfo();
+                TableInfo refer = column.getRefer();
 
                 if (refer != null) {
 
@@ -843,7 +850,7 @@ public final class HtmlGenerator {
         }
 
         //子モデル
-        for (TableInfo child : table.getChildInfos()) {
+        for (TableInfo child : table.getChilds()) {
 
             if (added.contains(child)) {
                 continue;
@@ -895,11 +902,9 @@ public final class HtmlGenerator {
      * @return 列定義文字列
      */
     private static String htmlGridColumn(final TableInfo table, final ColumnInfo column) {
-
         String entity = StringUtil.toPascalCase(table.getName());
         String name = column.getName();
         String mei = "Messages['" + entity + "Grid." + StringUtil.toCamelCase(name) + "']";
-
         int w = column.getColumnSize() * COLUMN_WIDTH_PX_MULTIPLIER;
         if (column.getMaxLength() != null) {
             w = column.getMaxLength() * COLUMN_WIDTH_PX_MULTIPLIER;
@@ -909,7 +914,6 @@ public final class HtmlGenerator {
         } else if (w > 300) {
             w = 300;
         }
-
         boolean isInsTs = name.matches("(?i)^" + insertTs + "$");
         boolean isInsBy = name.matches("(?i)^" + insertId + "$");
         boolean isUpdTs = name.matches("(?i)^" + updateTs + "$");
@@ -923,15 +927,17 @@ public final class HtmlGenerator {
             if (column.isPk()) {
                 css = "primaryKey";
                 boolean isParentKey = false;
-                if (table.getParentInfos() != null) {
-                    for (TableInfo parent : table.getParentInfos()) {
-                        if (parent.getPrimaryKeys().contains(name)) {
+                if (table.getParents() != null) {
+                    for (TableInfo parent : table.getParents()) {
+                        List<String> primaryKeys = new ArrayList<String>(parent.getPrimaryKeys());
+                        primaryKeys.remove(tekiyoBi);
+                        if (primaryKeys.contains(name)) {
                             isParentKey = true;
                             break;
                         }
                     }
                 }
-                if ((column.isNumbering() && column.getReferInfo() == null) || isParentKey) {
+                if ((column.isNumbering() && column.getRefer() == null) || isParentKey) {
                     css += " numbering"; //採番キー かつ 参照キーでない か 親モデルのキー
                 }
             } else if (column.isUnique()) {
@@ -962,7 +968,7 @@ public final class HtmlGenerator {
         // 参照名の列名
         String referMei = null;
         // 参照テーブルが設定されている場合
-        TableInfo referInfo = column.getReferInfo();
+        TableInfo referInfo = column.getRefer();
         if (referInfo != null) {
             isMeiRefer = true;
             // カラム名が組み合わせキーのいずれかに合致する場合
@@ -1137,7 +1143,7 @@ public final class HtmlGenerator {
                 htmlFieldsMeta(s, fieldId, column.getRemarks());
                 addMeiSpan(s, table, column);
 
-            } else if (StringUtil.endsWith(optionsSuffixs, colName) && column.getReferInfo() == null) {
+            } else if (StringUtil.endsWith(optionsSuffixs, colName) && column.getRefer() == null) {
                 // 選択項目の場合（サフィックスが合致しても参照モデルなら除外）
 
                 String css = "";
@@ -1214,7 +1220,7 @@ public final class HtmlGenerator {
 
                 if (!isD && StringUtil.endsWith(inputRangeSuffixs, colName)) { // 検索画面の範囲指定項目の場合
                     s.add(htmlFieldsRange(fieldId, type, inputCss, column, format));
-                } else if (column.getReferInfo() != null) { // 参照モデルの場合
+                } else if (column.getRefer() != null) { // 参照モデルの場合
                     s.add(htmlFieldsRefer(fieldId, type, inputCss, column, format, table, referCss));
                 } else {
                     s.add(htmlFieldsInput(fieldId, type, inputCss, column, format));
@@ -1251,11 +1257,11 @@ public final class HtmlGenerator {
         }
 
         // 詳細画面の参照キー
-        if (isD && column.getReferInfo() != null) {
+        if (isD && column.getRefer() != null) {
             css += " refer";
 
             // 詳細画面の制約キー
-            TableInfo refer = column.getReferInfo();
+            TableInfo refer = column.getRefer();
             TableInfo stint = refer.getStintInfo();
             if (stint != null && !table.getName().equals(stint.getName())) {
                 css += " correct";
@@ -1300,8 +1306,8 @@ public final class HtmlGenerator {
         for (String pk : stint.getPrimaryKeys()) {
             if (!pk.equals(table.getPrimaryKeys().get(0))) {
                 ColumnInfo column = stint.getColumns().get(pk);
-                if (column.getReferInfo() != null) {
-                    TableInfo refer = column.getReferInfo();
+                if (column.getRefer() != null) {
+                    TableInfo refer = column.getRefer();
                     String entity = StringUtil.toPascalCase(refer.getName());
                     String columnName = column.getName();
                     String property = StringUtil.toCamelCase(columnName);
@@ -1323,8 +1329,8 @@ public final class HtmlGenerator {
      */
     private static void addMeiSpan(final List<String> s, final TableInfo table, final ColumnInfo column) {
 
-        if (column.getReferInfo() != null) {
-            TableInfo refer = column.getReferInfo();
+        if (column.getRefer() != null) {
+            TableInfo refer = column.getRefer();
 
             String entity = StringUtil.toPascalCase(table.getName());
             String meiColumnName = getMeiColumnName(column.getName(), refer);
@@ -1366,7 +1372,7 @@ public final class HtmlGenerator {
         String tag = "          ";
         tag += "<label for=\"" + fieldId + "\" th:text=\"#{" + fieldId + "}\">" + remarks + "</label>";
 
-        TableInfo refer = column.getReferInfo();
+        TableInfo refer = column.getRefer();
         String referName = StringUtil.toPascalCase(refer.getName());
         String referDef = getReferDef(entity, colName, refer);
         tag += "<input type=\"" + type + "\" id=\"" + fieldId + "\" name=\"" + fieldId + "\" maxlength=\"" + max + "\""

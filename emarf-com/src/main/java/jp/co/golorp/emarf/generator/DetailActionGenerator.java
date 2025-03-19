@@ -26,6 +26,8 @@ public final class DetailActionGenerator {
 
     /** BeanGenerator.properties */
     private static ResourceBundle bundle = ResourceBundles.getBundle(BeanGenerator.class);
+    /** 適用日カラム名 */
+    private static String tekiyoBi;
     /** 登録日時カラム名 */
     private static String insertDt;
     /** 登録者カラム名 */
@@ -66,6 +68,7 @@ public final class DetailActionGenerator {
         //プロジェクトディレクトリを退避
         projectDir = dir;
 
+        tekiyoBi = bundle.getString("column.start");
         insertDt = bundle.getString("column.insert.timestamp");
         insertBy = bundle.getString("column.insert.id");
         updateDt = bundle.getString("column.update.timestamp");
@@ -277,46 +280,66 @@ public final class DetailActionGenerator {
             s.add("    public Map<String, Object> running(final LocalDateTime now, final String execId, final Map<String, Object> postJson) {");
             s.add("");
             s.add("        Map<String, Object> map = new HashMap<String, Object>();");
-            s.add("");
-            s.add("        // 主キーが不足していたら終了");
             String pks = "";
-            for (int i = 0; i < table.getPrimaryKeys().size(); i++) {
-                String pk = table.getPrimaryKeys().get(i);
-                String property = StringUtil.toCamelCase(pk);
-                s.add("        Object " + property + " = postJson.get(\"" + property + "\");");
-                s.add("        if (" + property + " == null) {");
-                s.add("            " + property + " = postJson.get(\"" + e + "." + property + "\");");
-                s.add("        }");
-                s.add("        if (" + property + " == null) {");
-                if (i == 0) {
-                    addRebornee(s, table, tables);
+            if (table.getPrimaryKeys().size() > 0) {
+                s.add("");
+                s.add("        // 主キーのチェック");
+                s.add("        boolean isAllKey = true;");
+                for (int i = 0; i < table.getPrimaryKeys().size(); i++) {
+                    String pk = table.getPrimaryKeys().get(i);
+                    String property = StringUtil.toCamelCase(pk);
+                    s.add("");
+                    s.add("        Object " + property + " = postJson.get(\"" + property + "\");");
+                    s.add("        if (" + property + " == null) {");
+                    s.add("            " + property + " = postJson.get(\"" + e + "." + property + "\");");
+                    s.add("        }");
+                    s.add("        if (" + property + " == null) {");
+                    if (i == 0) {
+                        // 転生元から情報をコピー
+                        copyFromRebornee(s, table, tables);
+                    }
+                    s.add("            isAllKey = false;");
+                    s.add("        }");
                 }
-                s.add("            return map;");
-                s.add("        }");
-                if (pks.length() > 0) {
-                    pks += ", ";
+                if (table.getParents().size() > 0) {
+                    s.add("");
+                    s.add("        // 親モデルの取得");
                 }
-                pks += property;
-                if (i == table.getPrimaryKeys().size() - 2) {
-                    if (table.getParentInfos().size() > 0) {
-                        s.add("        // 親モデルの取得");
-                        for (TableInfo parent : table.getParentInfos()) {
-                            String pE = StringUtil.toPascalCase(parent.getName());
-                            String pI = StringUtil.toCamelCase(parent.getName());
-                            s.add("        " + pkgE + "." + pE + " " + pI + " = " + pkgE + "." + pE + ".get(" + pks
-                                    + ");");
-                            s.add("        map.put(\"" + pE + "\", " + pI + ");");
+                for (int i = 0; i < table.getPrimaryKeys().size(); i++) {
+                    String pk = table.getPrimaryKeys().get(i);
+                    if (pks.length() > 0) {
+                        pks += ", ";
+                    }
+                    pks += pk;
+                    for (TableInfo parent : table.getParents()) {
+                        List<String> oyaKeys = new ArrayList<String>(parent.getPrimaryKeys());
+                        String oyaPKs = oyaKeys.toString().replaceAll("[\\[\\]]", "");
+                        oyaKeys.remove(tekiyoBi);
+                        String oyaKeyCsv = oyaKeys.toString().replaceAll("[\\[\\]]", "");
+                        if (!pks.equals(oyaKeyCsv)) {
+                            continue;
                         }
+                        String pE = StringUtil.toPascalCase(parent.getName());
+                        String pI = StringUtil.toCamelCase(parent.getName());
+                        String oyaKey = StringUtil.toCamelCase(oyaPKs);
+                        s.add("        " + pkgE + "." + pE + " " + pI + " = " + pkgE + "." + pE + ".get(" + oyaKey
+                                + ");");
+                        s.add("        map.put(\"" + pE + "\", " + pI + ");");
                     }
                 }
+                s.add("");
+                s.add("        // 主キーが不足していたら終了");
+                s.add("        if (!isAllKey) {");
+                s.add("            return map;");
+                s.add("        }");
             }
             s.add("");
-            s.add("        " + e + " " + in + " = " + e + ".get(" + pks + ");");
+            s.add("        " + e + " " + in + " = " + e + ".get(" + StringUtil.toCamelCase(pks) + ");");
             for (TableInfo bros : table.getYoungers()) {
                 String brosEntity = StringUtil.toPascalCase(bros.getName());
                 s.add("        " + in + ".refer" + brosEntity + "();");
             }
-            for (TableInfo child : table.getChildInfos()) {
+            for (TableInfo child : table.getChilds()) {
                 String pascal = StringUtil.toPascalCase(child.getName());
                 s.add("        " + in + ".refer" + pascal + "s();");
             }
@@ -411,7 +434,7 @@ public final class DetailActionGenerator {
             s.add("");
             s.add("        " + e + " e = FormValidator.toBean(" + e + ".class.getName(), postJson);");
 
-            BeanGenerator.getDeleteChilds(s, "e", table.getChildInfos(), 0);
+            BeanGenerator.getDeleteChilds(s, "e", table.getChilds(), 0);
 
             s.add("        if (e.delete() != 1) {");
             s.add("            throw new OptLockError(\"error.cant.delete\");");
@@ -503,7 +526,7 @@ public final class DetailActionGenerator {
             }
             s.add("");
             s.add("        " + entity + " e = FormValidator.toBean(" + entity + ".class.getName(), postJson);");
-            List<TableInfo> childInfos = table.getChildInfos();
+            List<TableInfo> childInfos = table.getChilds();
             BeanGenerator.getPermitChilds(s, "e", childInfos, 0);
             s.add("");
             s.add("        " + entity + " f = " + entity + ".get(" + params + ");");
@@ -601,7 +624,7 @@ public final class DetailActionGenerator {
             }
             s.add("");
             s.add("        " + entity + " e = FormValidator.toBean(" + entity + ".class.getName(), postJson);");
-            List<TableInfo> childInfos = table.getChildInfos();
+            List<TableInfo> childInfos = table.getChilds();
             BeanGenerator.getForbidChilds(s, "e", childInfos, 0);
             s.add("");
             s.add("        " + entity + " f = " + entity + ".get(" + params + ");");
@@ -638,7 +661,7 @@ public final class DetailActionGenerator {
      * @param table
      * @param tables
      */
-    private static void addRebornee(final List<String> s, final TableInfo table, final List<TableInfo> tables) {
+    private static void copyFromRebornee(final List<String> s, final TableInfo table, final List<TableInfo> tables) {
 
         String tableName = table.getName();
         String entity = StringUtil.toPascalCase(tableName);
@@ -705,12 +728,12 @@ public final class DetailActionGenerator {
             }
             s.add("");
 
-            for (TableInfo fromChild : fromTable.getChildInfos()) {
+            for (TableInfo fromChild : fromTable.getChilds()) {
                 String fromChildName = fromChild.getName();
                 if (!fromChildName.startsWith(fromName)) {
                     continue;
                 }
-                for (TableInfo child : table.getChildInfos()) {
+                for (TableInfo child : table.getChilds()) {
                     String childName = child.getName();
                     if (!childName.startsWith(tableName)) {
                         continue;

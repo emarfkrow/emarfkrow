@@ -59,6 +59,8 @@ public final class BeanGenerator {
 
     /** BeanGenerator.properties */
     private static ResourceBundle bundle = ResourceBundles.getBundle(BeanGenerator.class);
+    /** 適用日カラム名 */
+    private static String tekiyoBi;
     /** 登録日時カラム名 */
     private static String insertDt;
     /** 登録者カラム名 */
@@ -124,6 +126,7 @@ public final class BeanGenerator {
         //プロジェクトディレクトリを退避
         projectDir = dir;
 
+        tekiyoBi = bundle.getString("column.start");
         insertDt = bundle.getString("column.insert.timestamp");
         insertBy = bundle.getString("column.insert.id");
         updateDt = bundle.getString("column.update.timestamp");
@@ -321,16 +324,16 @@ public final class BeanGenerator {
                 s.add("        }");
                 s.add("    }");
                 //子モデルgridで補填用の参照名
-                if (column.getReferInfo() != null) {
+                if (column.getRefer() != null) {
                     addSanshoMei(s, table, column);
                 }
             }
-            if (table.getHistoryInfo() != null && !StringUtil.isNullOrBlank(reason)) {
+            if (table.getHistory() != null && !StringUtil.isNullOrBlank(reason)) {
                 addHistoryReason(s);
             }
             javaEntityCRUD(table, s);
             javaEntityUtil(table, s);
-            javaEntityBros(table, s);
+            javaEntityYoungers(table, s);
             javaEntityChild(table, s);
             s.add("}");
             String path = pkgDir + File.separator + e + ".java";
@@ -564,7 +567,7 @@ public final class BeanGenerator {
             s.add("     */");
             s.add("    public int delete() {");
 
-            for (TableInfo child : table.getChildInfos()) {
+            for (TableInfo child : table.getChilds()) {
                 if (StringUtil.isNullOrBlank(deleteF) || (!child.getColumns().containsKey(deleteF.toLowerCase())
                         && !child.getColumns().containsKey(deleteF.toUpperCase()))) {
                     String pascal = StringUtil.toPascalCase(child.getName());
@@ -672,7 +675,8 @@ public final class BeanGenerator {
         // 最後のキーを取得
         ColumnInfo lastKeyInfo = null;
         if (table.getPrimaryKeys() != null && table.getPrimaryKeys().size() > 0) {
-            List<String> primaryKeys = table.getPrimaryKeys();
+            List<String> primaryKeys = new ArrayList<String>(table.getPrimaryKeys());
+            primaryKeys.remove(tekiyoBi);
             String lastKey = primaryKeys.get(primaryKeys.size() - 1);
             lastKeyInfo = table.getColumns().get(lastKey);
             if (lastKeyInfo != null && lastKeyInfo.isNumbering()) {
@@ -683,7 +687,7 @@ public final class BeanGenerator {
         }
 
         // 子モデル
-        for (TableInfo childInfo : table.getChildInfos()) {
+        for (TableInfo childInfo : table.getChilds()) {
             String childName = childInfo.getName();
             String camel = StringUtil.toCamelCase(childName);
             String pascal = StringUtil.toPascalCase(childName);
@@ -718,12 +722,12 @@ public final class BeanGenerator {
         }
 
         // 履歴モデル
-        if (table.getHistoryInfo() != null) {
-            String historyName = table.getHistoryInfo().getName();
+        if (table.getHistory() != null) {
+            String historyName = table.getHistory().getName();
             String camel = StringUtil.toCamelCase(historyName);
             String pascal = StringUtil.toPascalCase(historyName);
             s.add("");
-            s.add("        // " + table.getHistoryInfo().getRemarks() + "の登録");
+            s.add("        // " + table.getHistory().getRemarks() + "の登録");
             s.add("        " + pascal + " " + camel + " = new " + pascal + "();");
             for (String columnName : table.getColumns().keySet()) {
                 String camelColumn = StringUtil.toCamelCase(columnName);
@@ -805,23 +809,23 @@ public final class BeanGenerator {
 
     /**
      * エンティティに採番追加
-     * @param tableInfo テーブル情報
+     * @param table テーブル情報
      * @param s 出力文字列のリスト
-     * @param lastKeyInfo 最終キー情報
+     * @param lastKey 最終キー情報
      */
-    private static void javaEntityCRUDInsertNumbering(final TableInfo tableInfo, final List<String> s,
-            final ColumnInfo lastKeyInfo) {
+    private static void javaEntityCRUDInsertNumbering(final TableInfo table, final List<String> s,
+            final ColumnInfo lastKey) {
 
-        String tableName = tableInfo.getName();
+        String tableName = table.getName();
 
-        String keyName = lastKeyInfo.getName();
+        String keyName = lastKey.getName();
 
         String camel = StringUtil.toCamelCase(keyName);
 
         String quoted = assist.quoteEscapedSQL(keyName);
 
         s.add("");
-        s.add("    /** " + lastKeyInfo.getRemarks() + "の採番処理 */");
+        s.add("    /** " + lastKey.getRemarks() + "の採番処理 */");
         s.add("    private void numbering() {");
         s.add("        if (this." + camel + " != null) {");
         s.add("            return;");
@@ -829,21 +833,23 @@ public final class BeanGenerator {
 
         String numbering = "CASE WHEN MAX(e." + quoted + ") IS NULL THEN 0 ELSE MAX(e." + quoted + ") * 1 END + 1";
         String w = "";
-        if (lastKeyInfo.getTypeName().equals("CHAR")) {
-            int columnSize = lastKeyInfo.getColumnSize();
+        if (lastKey.getTypeName().equals("CHAR")) {
+            int columnSize = lastKey.getColumnSize();
             numbering = "LPAD (" + numbering + ", " + columnSize + ", '0')";
             w = " WHERE e." + quoted + " < '" + new String(new char[columnSize]).replace("\0", "9") + "'";
         }
         s.add("        String sql = \"SELECT " + numbering + " AS " + quoted + " FROM " + tableName + " e" + w + "\";");
         s.add("        Map<String, Object> map = new HashMap<String, Object>();");
 
-        if (tableInfo.getPrimaryKeys().size() > 1) {
+        List<String> primaryKeys = new ArrayList<>(table.getPrimaryKeys());
+        primaryKeys.remove(tekiyoBi);
+        if (primaryKeys.size() > 1) {
 
             s.add("        List<String> whereList = new ArrayList<String>();");
 
             // 一つ前までループ
-            for (int j = 0; j < tableInfo.getPrimaryKeys().size() - 1; j++) {
-                String primaryKey = tableInfo.getPrimaryKeys().get(j);
+            for (int j = 0; j < primaryKeys.size() - 1; j++) {
+                String primaryKey = primaryKeys.get(j);
                 String quotedKey = assist.quoteEscapedSQL(primaryKey);
                 String snakeKey = StringUtil.toSnakeCase(primaryKey);
                 s.add("        whereList.add(\"e." + quotedKey + " = :" + snakeKey + "\");");
@@ -852,8 +858,8 @@ public final class BeanGenerator {
             s.add("        sql += \" WHERE \" + String.join(\" AND \", whereList);");
 
             // 一つ前までループ
-            for (int j = 0; j < tableInfo.getPrimaryKeys().size() - 1; j++) {
-                String primaryKey = tableInfo.getPrimaryKeys().get(j);
+            for (int j = 0; j < primaryKeys.size() - 1; j++) {
+                String primaryKey = primaryKeys.get(j);
                 String snakeKey = StringUtil.toSnakeCase(primaryKey);
                 String camelKey = StringUtil.toCamelCase(primaryKey);
                 s.add("        map.put(\"" + snakeKey + "\", this." + camelKey + ");");
@@ -867,14 +873,14 @@ public final class BeanGenerator {
 
     /**
      * エンティティにUPDATE追加
-     * @param tableInfo テーブル情報
+     * @param table テーブル情報
      * @param s 出力文字列のリスト
      */
-    private static void javaEntityCRUDUpdate(final TableInfo tableInfo, final List<String> s) {
+    private static void javaEntityCRUDUpdate(final TableInfo table, final List<String> s) {
 
         s.add("");
         s.add("    /**");
-        s.add("     * " + tableInfo.getRemarks() + "更新");
+        s.add("     * " + table.getRemarks() + "更新");
         s.add("     * @param now システム日時");
         s.add("     * @param execId 更新者");
         s.add("     * @return 更新件数");
@@ -882,74 +888,72 @@ public final class BeanGenerator {
         s.add("    public int update(final LocalDateTime now, final String execId) {");
 
         // 子モデル
-        for (TableInfo childInfo : tableInfo.getChildInfos()) {
-            String childName = childInfo.getName();
-            String child = StringUtil.toCamelCase(childName);
-            String childType = StringUtil.toPascalCase(childName);
+        for (TableInfo child : table.getChilds()) {
+            String e = StringUtil.toPascalCase(child.getName());
+            String i = StringUtil.toCamelCase(child.getName());
             s.add("");
-            s.add("        // " + childInfo.getRemarks() + "の登録");
-            s.add("        if (this." + child + "s != null) {");
-            s.add("            for (" + childType + " " + child + " : this." + child + "s) {");
-            s.add("                if (" + child + " == null) {");
+            s.add("        // " + child.getRemarks() + "の登録");
+            s.add("        if (this." + i + "s != null) {");
+            s.add("            for (" + e + " " + i + " : this." + i + "s) {");
+            s.add("                if (" + i + " == null) {");
             s.add("                    continue;");
             s.add("                }");
-            for (String tablePk : tableInfo.getPrimaryKeys()) {
+            for (String tablePk : table.getPrimaryKeys()) {
                 String pk = StringUtil.toCamelCase(tablePk);
                 String pkType = StringUtil.toPascalCase(tablePk);
-                s.add("                " + child + ".set" + pkType + "(this." + pk + ");");
+                s.add("                " + i + ".set" + pkType + "(this." + pk + ");");
             }
             s.add("                try {");
-            s.add("                    " + child + ".insert(now, execId);");
+            s.add("                    " + i + ".insert(now, execId);");
             s.add("                } catch (Exception e) {");
-            s.add("                    " + child + ".update(now, execId);");
+            s.add("                    " + i + ".update(now, execId);");
             s.add("                }");
             s.add("            }");
             s.add("        }");
         }
 
         // 兄弟モデル
-        for (TableInfo brosInfo : tableInfo.getYoungers()) {
-            String brosType = StringUtil.toCamelCase(brosInfo.getName());
+        for (TableInfo younger : table.getYoungers()) {
+            String i = StringUtil.toCamelCase(younger.getName());
             s.add("");
-            s.add("        // " + brosInfo.getRemarks() + "の登録");
-            s.add("        if (this." + brosType + " != null) {");
-            for (String tablePk : tableInfo.getPrimaryKeys()) {
+            s.add("        // " + younger.getRemarks() + "の登録");
+            s.add("        if (this." + i + " != null) {");
+            for (String tablePk : table.getPrimaryKeys()) {
                 String pkType = StringUtil.toPascalCase(tablePk);
-                s.add("            " + brosType + ".set" + pkType + "(this.get" + pkType + "());");
+                s.add("            " + i + ".set" + pkType + "(this.get" + pkType + "());");
             }
             s.add("            try {");
-            s.add("                " + brosType + ".insert(now, execId);");
+            s.add("                " + i + ".insert(now, execId);");
             s.add("            } catch (Exception e) {");
-            s.add("                " + brosType + ".update(now, execId);");
+            s.add("                " + i + ".update(now, execId);");
             s.add("            }");
             s.add("        }");
         }
 
         // 履歴モデル
-        TableInfo historyInfo = tableInfo.getHistoryInfo();
-        if (historyInfo != null) {
-            String historyName = historyInfo.getName();
-            String history = StringUtil.toCamelCase(historyName);
-            String historyType = StringUtil.toPascalCase(historyName);
+        TableInfo history = table.getHistory();
+        if (history != null) {
+            String e = StringUtil.toPascalCase(history.getName());
+            String i = StringUtil.toCamelCase(history.getName());
             s.add("");
-            s.add("        // " + historyInfo.getRemarks() + "の登録");
-            s.add("        " + historyType + " " + history + " = new " + historyType + "();");
-            for (String columnName : tableInfo.getColumns().keySet()) {
+            s.add("        // " + history.getRemarks() + "の登録");
+            s.add("        " + e + " " + i + " = new " + e + "();");
+            for (String columnName : table.getColumns().keySet()) {
                 String column = StringUtil.toCamelCase(columnName);
                 String columnType = StringUtil.toPascalCase(columnName);
-                s.add("        " + history + ".set" + columnType + "(this." + column + ");");
+                s.add("        " + i + ".set" + columnType + "(this." + column + ");");
             }
             if (!StringUtil.isNullOrBlank(reason)) {
                 String p = StringUtil.toCamelCase(reason);
                 String a = StringUtil.toPascalCase(reason);
-                s.add("        " + history + ".set" + a + "(this." + p + ");");
+                s.add("        " + i + ".set" + a + "(this." + p + ");");
             }
-            s.add("        " + history + ".insert(now, execId);");
+            s.add("        " + i + ".insert(now, execId);");
         }
 
         s.add("");
-        s.add("        // " + tableInfo.getRemarks() + "の登録");
-        s.add("        String sql = \"UPDATE " + tableInfo.getName()
+        s.add("        // " + table.getRemarks() + "の登録");
+        s.add("        String sql = \"UPDATE " + table.getName()
                 + "\\r\\nSET\\r\\n      \" + getSet() + \"\\r\\nWHERE\\r\\n    \" + getWhere();");
         s.add("        return Queries.regist(sql, toMap(now, execId));");
         s.add("    }");
@@ -958,7 +962,7 @@ public final class BeanGenerator {
         s.add("    private String getSet() {");
         s.add("        List<String> setList = new ArrayList<String>();");
 
-        for (Entry<String, ColumnInfo> e : tableInfo.getColumns().entrySet()) {
+        for (Entry<String, ColumnInfo> e : table.getColumns().entrySet()) {
             String columnName = e.getKey();
             ColumnInfo columnInfo = e.getValue();
 
@@ -1055,15 +1059,15 @@ public final class BeanGenerator {
     }
 
     /**
-     * エンティティに兄弟モデル追加
-     * @param tableInfo テーブル情報
+     * エンティティに弟モデル追加
+     * @param table テーブル情報
      * @param s 出力文字列のリスト
      */
-    private static void javaEntityBros(final TableInfo tableInfo, final List<String> s) {
+    private static void javaEntityYoungers(final TableInfo table, final List<String> s) {
 
         // getパラメータ
         String params = "";
-        for (String pk : tableInfo.getPrimaryKeys()) {
+        for (String pk : table.getPrimaryKeys()) {
             if (pk.length() > 0) {
                 if (params.length() > 0) {
                     params += ", ";
@@ -1072,35 +1076,35 @@ public final class BeanGenerator {
             }
         }
 
-        for (TableInfo brosInfo : tableInfo.getYoungers()) {
-            String brosName = brosInfo.getName();
-            String camel = StringUtil.toCamelCase(brosName);
-            String pascal = StringUtil.toPascalCase(brosName);
+        for (TableInfo younger : table.getYoungers()) {
+
+            String e = StringUtil.toPascalCase(younger.getName());
+            String i = StringUtil.toCamelCase(younger.getName());
 
             s.add("");
-            s.add("    /** " + brosInfo.getRemarks() + " */");
-            s.add("    private " + pascal + " " + camel + ";");
+            s.add("    /** " + younger.getRemarks() + " */");
+            s.add("    private " + e + " " + i + ";");
             s.add("");
-            s.add("    /** @return " + brosInfo.getRemarks() + " */");
-            s.add("    @com.fasterxml.jackson.annotation.JsonProperty(\"" + pascal + "\")");
-            s.add("    public " + pascal + " get" + pascal + "() {");
-            s.add("        return this." + camel + ";");
+            s.add("    /** @return " + younger.getRemarks() + " */");
+            s.add("    @com.fasterxml.jackson.annotation.JsonProperty(\"" + e + "\")");
+            s.add("    public " + e + " get" + e + "() {");
+            s.add("        return this." + i + ";");
             s.add("    }");
             s.add("");
-            s.add("    /** @param p " + brosInfo.getRemarks() + " */");
-            s.add("    public void set" + pascal + "(final " + pascal + " p) {");
-            s.add("        this." + camel + " = p;");
+            s.add("    /** @param p " + younger.getRemarks() + " */");
+            s.add("    public void set" + e + "(final " + e + " p) {");
+            s.add("        this." + i + " = p;");
             s.add("    }");
             s.add("");
-            s.add("    /** @return " + brosInfo.getRemarks() + " */");
-            s.add("    public " + pascal + " refer" + pascal + "() {");
-            s.add("        if (this." + camel + " == null) {");
+            s.add("    /** @return " + younger.getRemarks() + " */");
+            s.add("    public " + e + " refer" + e + "() {");
+            s.add("        if (this." + i + " == null) {");
             s.add("            try {");
-            s.add("                this." + camel + " = " + pascal + ".get(" + params + ");");
+            s.add("                this." + i + " = " + e + ".get(" + params + ");");
             s.add("            } catch (jp.co.golorp.emarf.exception.NoDataError e) {");
             s.add("            }");
             s.add("        }");
-            s.add("        return this." + camel + ";");
+            s.add("        return this." + i + ";");
             s.add("    }");
         }
     }
@@ -1124,41 +1128,39 @@ public final class BeanGenerator {
             }
         }
 
-        for (TableInfo child : table.getChildInfos()) {
-            String entity = StringUtil.toPascalCase(child.getName());
-            String instance = StringUtil.toCamelCase(child.getName());
-
-            // childList
+        for (TableInfo child : table.getChilds()) {
+            String ent = StringUtil.toPascalCase(child.getName());
+            String ins = StringUtil.toCamelCase(child.getName());
             s.add("");
             s.add("    /** " + child.getRemarks() + "のリスト */");
-            s.add("    private List<" + entity + "> " + instance + "s;");
+            s.add("    private List<" + ent + "> " + ins + "s;");
             s.add("");
             s.add("    /** @return " + child.getRemarks() + "のリスト */");
-            s.add("    @com.fasterxml.jackson.annotation.JsonProperty(\"" + entity + "s\")");
-            s.add("    public List<" + entity + "> get" + entity + "s() {");
-            s.add("        return this." + instance + "s;");
+            s.add("    @com.fasterxml.jackson.annotation.JsonProperty(\"" + ent + "s\")");
+            s.add("    public List<" + ent + "> get" + ent + "s() {");
+            s.add("        return this." + ins + "s;");
             s.add("    }");
             s.add("");
             s.add("    /** @param list " + child.getRemarks() + "のリスト */");
-            s.add("    public void set" + entity + "s(final List<" + entity + "> list) {");
-            s.add("        this." + instance + "s = list;");
+            s.add("    public void set" + ent + "s(final List<" + ent + "> list) {");
+            s.add("        this." + ins + "s = list;");
             s.add("    }");
             s.add("");
-            s.add("    /** @param " + instance + " */");
-            s.add("    public void add" + entity + "s(final " + entity + " " + instance + ") {");
-            s.add("        if (this." + instance + "s == null) {");
-            s.add("            this." + instance + "s = new ArrayList<" + entity + ">();");
+            s.add("    /** @param " + ins + " */");
+            s.add("    public void add" + ent + "s(final " + ent + " " + ins + ") {");
+            s.add("        if (this." + ins + "s == null) {");
+            s.add("            this." + ins + "s = new ArrayList<" + ent + ">();");
             s.add("        }");
-            s.add("        this." + instance + "s.add(" + instance + ");");
+            s.add("        this." + ins + "s.add(" + ins + ");");
             s.add("    }");
             s.add("");
             s.add("    /** @return " + child.getRemarks() + "のリスト */");
-            s.add("    public List<" + entity + "> refer" + entity + "s() {");
-            s.add("        this." + instance + "s = " + parent + ".refer" + entity + "s(" + params + ");");
-            s.add("        return this." + instance + "s;");
+            s.add("    public List<" + ent + "> refer" + ent + "s() {");
+            s.add("        this." + ins + "s = " + parent + ".refer" + ent + "s(" + params + ");");
+            s.add("        return this." + ins + "s;");
             s.add("    }");
 
-            // search
+            // refer
             s.add("");
             s.add("    /**");
             int i = 0;
@@ -1175,43 +1177,40 @@ public final class BeanGenerator {
                 ColumnInfo column = table.getColumns().get(pk);
                 pks += "final " + column.getDataType() + " param" + i;
             }
-            s.add("     * @return List<" + entity + ">");
+            s.add("     * @return List<" + ent + ">");
             s.add("     */");
-            s.add("    public static List<" + entity + "> refer" + entity + "s(" + pks + ") {");
+            s.add("    public static List<" + ent + "> refer" + ent + "s(" + pks + ") {");
             s.add("        List<String> whereList = new ArrayList<String>();");
             for (String pk : table.getPrimaryKeys()) {
-
                 if (pk.length() == 0) {
                     continue;
                 }
-
                 String p = ":" + StringUtil.toSnakeCase(pk);
-
                 ColumnInfo primaryKey = table.getColumns().get(pk);
                 if (primaryKey.getTypeName().equals("CHAR")) {
                     s.add("        whereList.add(\"" + assist.trimedSQL(pk) + " = " + assist.trimedSQL(p) + "\");");
-                } else {
+                } else if (!pk.equals(tekiyoBi)) {
                     s.add("        whereList.add(\"" + pk + " = " + p + "\");");
+                    //                } else {
+                    //                    s.add("        whereList.add(\"" + getTekiyoBiSql(child, pk, p) + "\");");
                 }
             }
 
             //カラム名を列挙
-            //            s.add("        String sql = \"SELECT * FROM " + name + " WHERE \" + String.join(\" AND \", whereList);");
             s.add("        String sql = \"SELECT \";");
             int cols = 0;
             int refs = 0;
             for (ColumnInfo column : child.getColumns().values()) {
-                String colName = column.getName();
-                String quoteEscaped = assist.quoteEscapedSQL(colName);
+                String quoteEscaped = assist.quoteEscapedSQL(column.getName());
                 //時間サフィックスに合致する場合、データソースがOracleならTO_CHAR
-                if (StringUtil.endsWith(inputDateSuffixs, colName)) {
-                    quoteEscaped = assist.date2CharSQL(quoteEscaped) + " AS " + colName;
-                } else if (StringUtil.endsWith(inputTimeSuffixs, colName)) {
-                    quoteEscaped = assist.time2CharSQL(quoteEscaped) + " AS " + colName;
-                } else if (StringUtil.endsWith(inputDateTimeSuffixs, colName)) {
-                    quoteEscaped = assist.dateTime2CharSQL(quoteEscaped) + " AS " + colName;
-                } else if (StringUtil.endsWith(inputTimestampSuffixs, colName)) {
-                    quoteEscaped = assist.timestamp2CharSQL(quoteEscaped) + " AS " + colName;
+                if (StringUtil.endsWith(inputDateSuffixs, column.getName())) {
+                    quoteEscaped = assist.date2CharSQL(quoteEscaped) + " AS " + column.getName();
+                } else if (StringUtil.endsWith(inputTimeSuffixs, column.getName())) {
+                    quoteEscaped = assist.time2CharSQL(quoteEscaped) + " AS " + column.getName();
+                } else if (StringUtil.endsWith(inputDateTimeSuffixs, column.getName())) {
+                    quoteEscaped = assist.dateTime2CharSQL(quoteEscaped) + " AS " + column.getName();
+                } else if (StringUtil.endsWith(inputTimestampSuffixs, column.getName())) {
+                    quoteEscaped = assist.timestamp2CharSQL(quoteEscaped) + " AS " + column.getName();
                 }
                 if (cols == 0) {
                     s.add("        sql += \"" + quoteEscaped + "\";");
@@ -1220,7 +1219,7 @@ public final class BeanGenerator {
                 }
                 ++cols;
                 // 列の参照モデル情報があればカラム名の補完
-                if (column.getReferInfo() != null) {
+                if (column.getRefer() != null) {
                     String meiSql = SqlGenerator.getMeiSql(refs, table, column);
                     if (meiSql != null) {
                         ++refs;
@@ -1256,10 +1255,56 @@ public final class BeanGenerator {
                 }
                 s.add("        map.put(\"" + StringUtil.toSnakeCase(pk) + "\", param" + ++i + ");");
             }
-            s.add("        return Queries.select(sql, map, " + entity + ".class, null, null);");
+            s.add("        return Queries.select(sql, map, " + ent + ".class, null, null);");
             s.add("    }");
         }
     }
+
+    //    /**
+    //     * @param child
+    //     * @param colName
+    //     * @param param
+    //     * @return String
+    //     */
+    //    private static String getTekiyoBiSql(final TableInfo child, final String colName, final String param) {
+    //
+    //        String sql = colName + " = (";
+    //
+    //        sql += "SELECT DISTINCT MAX (a2." + colName + ") OVER (PARTITION BY ";
+    //
+    //        String cKeys = "";
+    //        for (String cPk : child.getPrimaryKeys()) {
+    //            if (cPk.equals(tekiyoBi)) {
+    //                continue;
+    //            }
+    //            if (cKeys.length() > 0) {
+    //                cKeys += ", ";
+    //            }
+    //            cKeys += "a2." + cPk;
+    //        }
+    //        sql += cKeys;
+    //
+    //        sql += ") ";
+    //        sql += "FROM " + child.getName() + " a2 ";
+    //        sql += "WHERE ";
+    //
+    //        cKeys = "";
+    //        for (String cPk : child.getPrimaryKeys()) {
+    //            if (cKeys.length() > 0) {
+    //                cKeys += " AND ";
+    //            }
+    //            if (cPk.equals(tekiyoBi)) {
+    //                cKeys += "a2." + cPk + " <= " + param;
+    //            } else {
+    //                cKeys += "a2." + cPk + " = a." + cPk;
+    //            }
+    //        }
+    //        sql += cKeys;
+    //
+    //        sql += ")";
+    //
+    //        return sql;
+    //    }
 
     /**
      * 一覧画面の一括削除処理
@@ -1288,15 +1333,15 @@ public final class BeanGenerator {
             // instance
             String i = StringUtil.toCamelCase(child.getName());
 
-            int parents = child.getParentInfos().size();
+            int parents = child.getParents().size();
             if (parents == 1) {
 
                 s.add(sp + "        java.util.List<" + pkgE + "." + e + "> " + i + "s = " + p + ".refer" + e + "s();");
                 s.add(sp + "        if (" + i + "s != null) {");
                 s.add(sp + "            for (" + pkgE + "." + e + " " + i + " : " + i + "s) {");
-                if (child.getChildInfos().size() > 0) {
+                if (child.getChilds().size() > 0) {
                     // forでもう一段降りているから「+2」
-                    getDeleteChilds(s, i, child.getChildInfos(), indent + 2);
+                    getDeleteChilds(s, i, child.getChilds(), indent + 2);
                 }
                 s.add("");
                 s.add(sp + "                if (" + i + ".delete() != 1) {");
@@ -1337,7 +1382,7 @@ public final class BeanGenerator {
 
             s.add("");
 
-            int parents = child.getParentInfos().size();
+            int parents = child.getParents().size();
             if (parents > 1) {
                 s.add(p + "        // child:" + e + ", parents:" + parents);
                 continue;
@@ -1346,9 +1391,9 @@ public final class BeanGenerator {
             s.add(p + "        java.util.List<" + pkgE + "." + e + "> " + i + "s = " + parent + ".refer" + e + "s();");
             s.add(p + "        if (" + i + "s != null) {");
             s.add(p + "            for (" + pkgE + "." + e + " " + i + " : " + i + "s) {");
-            if (child.getChildInfos().size() > 0) {
+            if (child.getChilds().size() > 0) {
                 // forでもう一段降りているから「+2」
-                getPermitChilds(s, i, child.getChildInfos(), indent + 2);
+                getPermitChilds(s, i, child.getChilds(), indent + 2);
             }
             s.add("");
             if (child.getColumns().containsKey(status.toLowerCase())
@@ -1386,7 +1431,7 @@ public final class BeanGenerator {
 
             s.add("");
 
-            int parents = child.getParentInfos().size();
+            int parents = child.getParents().size();
             if (parents > 1) {
                 s.add(p + "        // child:" + e + ", parents:" + parents);
                 continue;
@@ -1395,9 +1440,9 @@ public final class BeanGenerator {
             s.add(p + "        java.util.List<" + pkgE + "." + e + "> " + i + "s = " + parent + ".refer" + e + "s();");
             s.add(p + "        if (" + i + "s != null) {");
             s.add(p + "            for (" + pkgE + "." + e + " " + i + " : " + i + "s) {");
-            if (child.getChildInfos().size() > 0) {
+            if (child.getChilds().size() > 0) {
                 // forでもう一段降りているから「+2」
-                getForbidChilds(s, i, child.getChildInfos(), indent + 2);
+                getForbidChilds(s, i, child.getChilds(), indent + 2);
             }
             s.add("");
             if (child.getColumns().containsKey(status.toLowerCase())

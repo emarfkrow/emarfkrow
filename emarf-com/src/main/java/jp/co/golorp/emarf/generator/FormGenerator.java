@@ -136,7 +136,7 @@ public final class FormGenerator {
             List<String> s = new ArrayList<String>();
             s.add("package " + pkgForm + ";");
             s.add("");
-            if (table.getChildInfos().size() > 0) {
+            if (table.getChilds().size() > 0) {
                 s.add("import java.util.List;");
             }
             s.add("import java.util.Map;");
@@ -216,7 +216,7 @@ public final class FormGenerator {
                 s.add("    }");
             }
             // 子モデル
-            for (TableInfo childInfo : table.getChildInfos()) {
+            for (TableInfo childInfo : table.getChilds()) {
                 String childName = childInfo.getName();
                 String camel = StringUtil.toCamelCase(childName);
                 String pascal = StringUtil.toPascalCase(childName);
@@ -288,7 +288,7 @@ public final class FormGenerator {
                 //                // フラグも除外
                 //                LOG.trace("skip NotBlank.");
 
-            } else if (column.isPk() && table.getParentInfos().size() > 0
+            } else if (column.isPk() && table.getParents().size() > 0
                     && !column.getName().equals(keys.get(keys.size() - 1))) {
 
                 // 最終キーでなければ、親から取得するはずなので除外

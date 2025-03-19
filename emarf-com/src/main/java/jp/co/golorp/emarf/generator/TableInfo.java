@@ -47,13 +47,13 @@ public class TableInfo {
     private Map<String, ColumnInfo> columns = new LinkedHashMap<String, ColumnInfo>();
 
     /** 親テーブルのリスト */
-    private List<TableInfo> parentInfos = new ArrayList<TableInfo>();
+    private List<TableInfo> parents = new ArrayList<TableInfo>();
 
     /** 子テーブルのリスト */
-    private List<TableInfo> childInfos = new ArrayList<TableInfo>();
+    private List<TableInfo> childs = new ArrayList<TableInfo>();
 
     /** 履歴テーブル */
-    private TableInfo historyInfo;
+    private TableInfo history;
 
     /** 自身が履歴テーブルならtrue */
     private boolean isHistory;
@@ -185,43 +185,43 @@ public class TableInfo {
     /**
      * @return 親テーブルのリスト
      */
-    public List<TableInfo> getParentInfos() {
-        return parentInfos;
+    public List<TableInfo> getParents() {
+        return parents;
     }
 
     /**
      * @param p
      */
-    public void setParentInfos(final List<TableInfo> p) {
-        this.parentInfos = p;
+    public void setParents(final List<TableInfo> p) {
+        this.parents = p;
     }
 
     /**
      * @return 子テーブルのリスト
      */
-    public List<TableInfo> getChildInfos() {
-        return childInfos;
+    public List<TableInfo> getChilds() {
+        return childs;
     }
 
     /**
      * @param p 子テーブルのリスト
      */
-    public void setChildInfos(final List<TableInfo> p) {
-        this.childInfos = p;
+    public void setChilds(final List<TableInfo> p) {
+        this.childs = p;
     }
 
     /**
      * @return 履歴テーブル
      */
-    public TableInfo getHistoryInfo() {
-        return historyInfo;
+    public TableInfo getHistory() {
+        return history;
     }
 
     /**
      * @param p 履歴テーブル
      */
     public void setHistoryInfo(final TableInfo p) {
-        this.historyInfo = p;
+        this.history = p;
     }
 
     /**

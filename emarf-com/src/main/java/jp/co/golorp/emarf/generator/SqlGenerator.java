@@ -122,7 +122,7 @@ public final class SqlGenerator {
             s.add(prefix + SqlGenerator.getQuoted(column));
 
             // 列の参照モデル情報があればカラム名の補完
-            if (column.getReferInfo() != null) {
+            if (column.getRefer() != null) {
                 String meiSql = getMeiSql(refs, table, column);
                 if (meiSql != null) {
                     ++refs;
@@ -198,7 +198,7 @@ public final class SqlGenerator {
      */
     public static String getMeiSql(final int refs, final TableInfo table, final ColumnInfo column) {
 
-        TableInfo refer = column.getReferInfo();
+        TableInfo refer = column.getRefer();
 
         //BeanGeneratorの子モデル処理時にはnullかも知れない
         if (referPairs.size() == 0) {
@@ -288,7 +288,7 @@ public final class SqlGenerator {
             s.add(prefix + SqlGenerator.getQuoted(column));
 
             // 列の参照モデル情報があればカラム名の補完
-            if (column.getReferInfo() != null) {
+            if (column.getRefer() != null) {
                 String meiSql = getMeiSql(refs, table, column);
                 if (meiSql != null) {
                     ++refs;
@@ -493,7 +493,8 @@ public final class SqlGenerator {
 
             } else {
                 //以外の文字列は、データをパラメータで部分一致
-                sql.add("    AND UPPER (" + t + ") LIKE UPPER (" + assist.joinedSQL(new String[] { "'%'", p, "'%'" }) + ") ");
+                sql.add("    AND UPPER (" + t + ") LIKE UPPER (" + assist.joinedSQL(new String[] { "'%'", p, "'%'" })
+                        + ") ");
             }
 
         } else {

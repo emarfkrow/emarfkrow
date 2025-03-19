@@ -894,8 +894,8 @@ public final class DataSources {
                     }
 
                     // 参照元カラム名の末尾が参照先カラム名と合致し、参照モデルが未登録なら、カラムに参照モデルを設定
-                    if (columnName.matches("(?i)^.*" + sakiKey + "$") && column.getReferInfo() == null) {
-                        column.setReferInfo(saki);
+                    if (columnName.matches("(?i)^.*" + sakiKey + "$") && column.getRefer() == null) {
+                        column.setRefer(saki);
 
                         // 参照元の複合キーの最終キーなら、サブ画面で選択するため採番フラグをオフ
                         if (motoKeys.size() > 1 && columnName.equals(motoKeys.get(motoKeys.size() - 1))) {
@@ -936,7 +936,7 @@ public final class DataSources {
             }
 
             // 比較元の子テーブルリストを取得
-            List<TableInfo> childs = oya.getChildInfos();
+            List<TableInfo> childs = oya.getChilds();
 
             // テーブル情報でループ（比較先）
             Iterator<TableInfo> kos = tables.iterator();
@@ -997,7 +997,7 @@ public final class DataSources {
 
                 //最終キーが参照モデルならスキップ
                 String koLastKey = koKeys.get(koKeys.size() - 1);
-                if (ko.getColumns().get(koLastKey).getReferInfo() != null) {
+                if (ko.getColumns().get(koLastKey).getRefer() != null) {
                     continue;
                 }
 
@@ -1005,7 +1005,7 @@ public final class DataSources {
                 childs.add(ko);
 
                 //比較先の親モデルに比較元を追加
-                ko.getParentInfos().add(oya);
+                ko.getParents().add(oya);
 
                 //親が適用日なし、子が適用日ありで、兄弟に誤登録されている場合は除去
                 ko.getYoungers().remove(oya);
@@ -1331,11 +1331,11 @@ public final class DataSources {
             Set<TableInfo> combos = new LinkedHashSet<TableInfo>();
             for (String pk : table.getPrimaryKeys()) {
                 ColumnInfo primaryKey = table.getColumns().get(pk);
-                if (primaryKey.getReferInfo() != null) {
-                    String referName = primaryKey.getReferInfo().getName();
+                if (primaryKey.getRefer() != null) {
+                    String referName = primaryKey.getRefer().getName();
                     if (!done.contains(referName)) {
                         done.add(referName);
-                        combos.add(primaryKey.getReferInfo());
+                        combos.add(primaryKey.getRefer());
                     }
                 }
             }
@@ -1357,7 +1357,7 @@ public final class DataSources {
                         continue;
                     }
                     ColumnInfo primaryKey = table.getColumns().get(pk);
-                    TableInfo combo = primaryKey.getReferInfo();
+                    TableInfo combo = primaryKey.getRefer();
                     if (combo != null && combo.getPrimaryKeys().size() == 1) {
                         continue;
                     }
@@ -1398,9 +1398,9 @@ public final class DataSources {
                 LOG.info("    PrimaryKeys: " + table.getPrimaryKeys());
             }
 
-            if (table.getParentInfos().size() > 0) {
+            if (table.getParents().size() > 0) {
                 LOG.info("    ParentInfos:");
-                for (TableInfo parent : table.getParentInfos()) {
+                for (TableInfo parent : table.getParents()) {
                     LOG.info("        " + parent.getName() + " " + parent.getPrimaryKeys());
                 }
             }
@@ -1412,23 +1412,23 @@ public final class DataSources {
                 }
             }
 
-            if (table.getChildInfos().size() > 0) {
+            if (table.getChilds().size() > 0) {
                 LOG.info("    ChildInfos:");
-                for (TableInfo child : table.getChildInfos()) {
+                for (TableInfo child : table.getChilds()) {
                     LOG.info("        " + child.getName() + " " + child.getPrimaryKeys());
                 }
             }
 
-            if (table.getHistoryInfo() != null) {
+            if (table.getHistory() != null) {
                 LOG.info("    HistoryInfo:");
-                TableInfo history = table.getHistoryInfo();
+                TableInfo history = table.getHistory();
                 LOG.info("        " + history.getName() + " " + history.getPrimaryKeys());
             }
 
             Map<String, TableInfo> refers = new LinkedHashMap<String, TableInfo>();
             for (ColumnInfo column : table.getColumns().values()) {
-                if (column.getReferInfo() != null) {
-                    refers.put(column.getName(), column.getReferInfo());
+                if (column.getRefer() != null) {
+                    refers.put(column.getName(), column.getRefer());
                 }
             }
             if (refers.size() > 0) {
