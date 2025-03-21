@@ -217,7 +217,9 @@ let Jsonate = {
 
             // 入力項目でループ
             $form
-                // .find('[name*="' + entityName + '."]') // form内の兄弟モデルに同じメンバ名があると誤爆するため TODO 代替案
+                // TODO 転生元IDが空になるためコメントアウト。代替案必要。
+                // form内の親モデル・兄弟モデルに、更新日時など、同じメンバ名があると誤爆するため
+                // .find('[name*="' + entityName + '."]')
                 .find(Jsonate.inputSelector + ', input[type=checkbox]:enabled, input[type=radio]:enabled')
                 .each(function() {
 
@@ -230,6 +232,13 @@ let Jsonate = {
                     // チェックボックス・ラジオボタン用の対応（nameにdialogIdが接頭する時？陳腐化？）
                     if (inputName.lastIndexOf(entityName) > 0) {
                         inputName = inputName.substr(inputName.lastIndexOf(entityName));
+                    }
+
+                    let inputNames = inputName.split('.');
+                    if (inputNames.length == 2) {
+                        if (entityName != inputNames[0]) {
+                            return;
+                        }
                     }
 
                     // 入力項目のentity.propertyで値を取得してみる

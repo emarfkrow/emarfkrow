@@ -47,6 +47,23 @@ public class ColumnInfo {
     /** コメント */
     private String remarks;
 
+    /** コメント */
+    private String note;
+
+    /**
+     * @return note
+     */
+    public String getNote() {
+        return note;
+    }
+
+    /**
+     * @param p セットする note
+     */
+    public void setNote(final String p) {
+        this.note = p;
+    }
+
     /** 主キーならtrue */
     private boolean isPk;
 
