@@ -1180,7 +1180,7 @@ public final class DataSources {
         while (sakis.hasNext()) {
             TableInfo saki = sakis.next();
 
-            // 履歴モデルとビューと参照モデルは集約先としない
+            // 履歴モデル・ビュー・参照モデルは集約先としない
             if (saki.isHistory() || saki.isView() || isReferModel(saki)) {
                 continue;
             }
@@ -1213,7 +1213,7 @@ public final class DataSources {
             while (motos.hasNext()) {
                 TableInfo moto = motos.next();
 
-                // 履歴モデルとビューは集約元にしない
+                // 履歴モデル・ビューは集約元にしない
                 if (moto.isHistory() || moto.isView()) {
                     continue;
                 }
@@ -1226,7 +1226,7 @@ public final class DataSources {
                     // 集約元に集約先の主キーに合致するカラムがあれば外部キーとして取得
                     for (ColumnInfo motoCol : moto.getColumns().values()) {
 
-                        // 比較先が 主キー か NULL可でない ならスキップ
+                        // 集約元が 主キー か NULL可でない ならスキップ
                         if (motoCol.isPk() || motoCol.getNullable() != 1) {
                             continue;
                         }
@@ -1252,36 +1252,36 @@ public final class DataSources {
                 if (saki.getPrimaryKeys().size() == motoFKs.size()) {
                     // 集約先の主キーと、集約元の外部キーが一致する場合
 
-                    // 処理済み情報でループ
+                    // 集約元設定済み情報の精査
                     boolean isSummaryOfOther = false;
-                    Iterator<TableInfo> others = tables.iterator();
-                    while (others.hasNext()) {
-                        TableInfo other = others.next();
+                    Iterator<TableInfo> saki2s = tables.iterator();
+                    while (saki2s.hasNext()) {
+                        TableInfo saki2 = saki2s.next();
 
-                        // 集約元を設定済みでなければスキップ
-                        if (other.getSummaryOf() == null) {
+                        // 集約元を設定済みでなく、既に抑制判定済みでなければスキップ
+                        if (saki2.getSummaryOf() == null && !isSummaryOfOther) {
                             continue;
                         }
 
                         // 集約元を設定済みでも、今回の集約元と重複していなければスキップ
-                        if (!other.getSummaryOf().getName().equals(moto.getName())) {
+                        if (saki2.getSummaryOf() != null && !saki2.getSummaryOf().getName().equals(moto.getName())) {
                             continue;
                         }
 
                         // 重複する集約元を設定済みの場合
-                        if (other.getPrimaryKeys().size() < saki.getPrimaryKeys().size()) {
 
-                            // 今回の集約先の方がキー数が多いなら、処理済みの集約元をクリア
-                            for (ColumnInfo column : other.getSummaryOf().getColumns().values()) {
-                                column.setSummary(false);
+                        //                        if (saki2.getPrimaryKeys().size() < saki.getPrimaryKeys().size()) {
+                        //                            // 今回の集約先の方がキー数が多いなら、処理済みの集約元をクリア
+                        if (saki2.getSummaryOf() != null) {
+                            for (ColumnInfo sakiCol : saki2.getSummaryOf().getColumns().values()) {
+                                sakiCol.setSummary(false);
                             }
-                            other.setSummaryOf(null);
-
-                        } else if (other.getPrimaryKeys().size() > saki.getPrimaryKeys().size()) {
-
-                            // 今回の集約先の方がキー数が少ないなら、今回を集約先としない
-                            isSummaryOfOther = true;
                         }
+                        saki2.setSummaryOf(null);
+                        //                        } else if (saki2.getPrimaryKeys().size() > saki.getPrimaryKeys().size()) {
+                        //                            // 今回の集約先の方がキー数が少ないなら、今回を集約先としない
+                        isSummaryOfOther = true;
+                        //                        }
                     }
 
                     // 今回の集約元が、他モデルの集約元でなければ、集約先に集約元を設定

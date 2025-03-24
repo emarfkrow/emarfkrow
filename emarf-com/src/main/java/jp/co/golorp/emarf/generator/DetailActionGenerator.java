@@ -169,21 +169,21 @@ public final class DetailActionGenerator {
             s.add("                throw new OptLockError(\"error.cant.insert\");");
             s.add("            }");
             if (table.getSummaryOf() != null) {
-                TableInfo summary = table.getSummaryOf();
-                if (summary.getPrimaryKeys().size() == 1) {
-                    String e = StringUtil.toPascalCase(summary.getName());
-                    String i = StringUtil.toCamelCase(summary.getName());
-                    String pk = summary.getPrimaryKeys().get(0);
+                TableInfo summaryOf = table.getSummaryOf();
+                if (summaryOf.getPrimaryKeys().size() == 1) {
+                    String e = StringUtil.toPascalCase(summaryOf.getName());
+                    String i = StringUtil.toCamelCase(summaryOf.getName());
+                    String pk = summaryOf.getPrimaryKeys().get(0);
                     String prop = StringUtil.toCamelCase(pk);
                     s.add("");
-                    s.add("            //集約の場合は、集約元に主キーを反映");
+                    s.add("            //集約先に該当する場合は、集約元に主キーを反映");
                     s.add("            String summaryKey = postJson.get(\"" + e + "." + prop + "\").toString();");
                     s.add("            if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(summaryKey)) {");
                     s.add("                String[] summaryKeys = summaryKey.trim().split(\",\");");
                     s.add("                for (String pk : summaryKeys) {");
                     s.add("                    " + pkgE + "." + e + " " + i + " = " + pkgE + "." + e + ".get(pk);");
-                    if (!StringUtil.isNullOrBlank(status) && (summary.getColumns().containsKey(status.toLowerCase())
-                            || summary.getColumns().containsKey(status.toUpperCase()))) {
+                    if (!StringUtil.isNullOrBlank(status) && (summaryOf.getColumns().containsKey(status.toLowerCase())
+                            || summaryOf.getColumns().containsKey(status.toUpperCase()))) {
                         String acc = StringUtil.toPascalCase(status);
                         s.add("                    //承認済みでなければエラー");
                         s.add("                    if (!" + i + ".get" + acc + "().equals(\"1\")) {");
@@ -674,20 +674,20 @@ public final class DetailActionGenerator {
         for (TableInfo fromTable : tables) {
             //転生元も集約先もなければスキップ
             TableInfo reborn = fromTable.getRebornTo();
-            TableInfo summary = fromTable.getSummaryOf();
-            if (reborn == null && summary == null) {
+            //            TableInfo summary = fromTable.getSummaryOf();
+            if (reborn == null /*&& summary == null*/) {
                 continue;
             }
             //転生先で集約元でもなければスキップ
             String toTableName = null;
             String toTableKind = null;
-            if (reborn != null) {
-                toTableName = reborn.getName();
-                toTableKind = "転生";
-            } else if (summary != null) {
-                toTableName = summary.getName();
-                toTableKind = "集約";
-            }
+            //            if (reborn != null) {
+            toTableName = reborn.getName();
+            toTableKind = "転生";
+            //            } else if (summary != null) {
+            //                toTableName = summary.getName();
+            //                toTableKind = "集約";
+            //            }
             if (!toTableName.equals(tableName)) {
                 continue;
             }
