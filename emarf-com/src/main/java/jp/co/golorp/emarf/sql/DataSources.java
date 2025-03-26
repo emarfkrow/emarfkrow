@@ -968,8 +968,13 @@ public final class DataSources {
 
                 //親にも主キーに適用日があれば評価から除外
                 List<String> koKeys = new ArrayList<String>(ko.getPrimaryKeys());
-                if (isOyaTekiyoBi) {
-                    koKeys.remove(tekiyoBi);
+                if (koKeys.contains(tekiyoBi)) {
+                    if (isOyaTekiyoBi) {
+                        koKeys.remove(tekiyoBi);
+                    } else if (oyaKeys.size() + 2 == koKeys.size()) {
+                        // 親には適用日がないが子から適用日を外すと親子かもしれない場合
+                        koKeys.remove(tekiyoBi);
+                    }
                 }
 
                 // 主キーがなければスキップ

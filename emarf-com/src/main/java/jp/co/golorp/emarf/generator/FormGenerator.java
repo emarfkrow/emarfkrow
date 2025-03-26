@@ -38,6 +38,8 @@ public final class FormGenerator {
     /** プロジェクトディレクトリ */
     private static String projectDir;
 
+    /** 適用日カラム名 */
+    private static String tekiyoBi;
     /** 登録日時カラム名 */
     private static String insertDt;
     /** 登録者カラム名 */
@@ -82,6 +84,7 @@ public final class FormGenerator {
 
         pkgForm = bundle.getString("java.package.form") + ".model.base";
         javaDir = bundle.getString("dir.java");
+        tekiyoBi = bundle.getString("column.start");
         insertDt = bundle.getString("column.insert.timestamp");
         insertBy = bundle.getString("column.insert.id");
         updateDt = bundle.getString("column.update.timestamp");
@@ -270,7 +273,12 @@ public final class FormGenerator {
     private static void javaFormDetailRegistChecks(final List<String> s, final TableInfo table,
             final ColumnInfo column) {
 
-        List<String> keys = table.getPrimaryKeys();
+        // 適用日を含む主キー
+        List<String> keys = new ArrayList<String>(table.getPrimaryKeys());
+
+        // 適用日以外の主キー
+        List<String> koKeys = new ArrayList<String>(table.getPrimaryKeys());
+        koKeys.remove(tekiyoBi);
 
         String colName = column.getName();
 
@@ -289,7 +297,8 @@ public final class FormGenerator {
                 //                LOG.trace("skip NotBlank.");
 
             } else if (column.isPk() && table.getParents().size() > 0
-                    && !column.getName().equals(keys.get(keys.size() - 1))) {
+                    && !column.getName().equals(keys.get(keys.size() - 1))
+                    && !column.getName().equals(koKeys.get(koKeys.size() - 1))) {
 
                 // 最終キーでなければ、親から取得するはずなので除外
                 LOG.trace("skip NotBlank.");
