@@ -64,7 +64,7 @@ limitations under the License.
 
         this.init = function() {
             var navOnLR = args.grid.getOptions().editorCellNavOnLRKeys;
-            $input = $('<INPUT type=date class="editor-text" onChange="Gridate.fix()" />')
+            $input = $('<INPUT type="date" class="editor-text" onChange="Gridate.fix()" />')
                 .appendTo(args.container)
                 .on("keydown.nav", navOnLR ? handleKeydownLRNav : handleKeydownLRNoNav)
                 .focus()
@@ -148,7 +148,7 @@ limitations under the License.
 
         this.init = function() {
             var navOnLR = args.grid.getOptions().editorCellNavOnLRKeys;
-            $input = $('<INPUT type=date class="editor-text" onClick="Gridate.fix()" />')
+            $input = $('<INPUT type="date" class="editor-text" onChange="Gridate.fix()" />')
                 .appendTo(args.container)
                 .on("keydown.nav", navOnLR ? handleKeydownLRNav : handleKeydownLRNoNav)
                 .focus()
@@ -233,7 +233,7 @@ limitations under the License.
 
         this.init = function() {
             var navOnLR = args.grid.getOptions().editorCellNavOnLRKeys;
-            $input = $("<INPUT type=month class='editor-text' />")
+            $input = $('<INPUT type="month" class="editor-text" onChange="Gridate.fix()" />')
                 .appendTo(args.container)
                 .on("keydown.nav", navOnLR ? handleKeydownLRNav : handleKeydownLRNoNav)
                 .focus()
@@ -314,7 +314,7 @@ limitations under the License.
 
         this.init = function() {
             var navOnLR = args.grid.getOptions().editorCellNavOnLRKeys;
-            $input = $("<INPUT type=datetime-local class='editor-text' />")
+            $input = $('<INPUT type="datetime-local" class="editor-text" onChange="Gridate.fix()" />')
                 .appendTo(args.container)
                 .on("keydown.nav", navOnLR ? handleKeydownLRNav : handleKeydownLRNoNav)
                 .focus()
@@ -397,7 +397,7 @@ limitations under the License.
 
         this.init = function() {
             var navOnLR = args.grid.getOptions().editorCellNavOnLRKeys;
-            $input = $("<INPUT type=time class='editor-text' />")
+            $input = $('<INPUT type="time" class="editor-text" onChange="Gridate.fix()" />')
                 .appendTo(args.container)
                 .on("keydown.nav", navOnLR ? handleKeydownLRNav : handleKeydownLRNoNav)
                 .focus()
