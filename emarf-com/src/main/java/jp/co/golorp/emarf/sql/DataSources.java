@@ -304,7 +304,7 @@ public final class DataSources {
 
                     // カラム名が合致しなければスキップ
                     String columnName = columns.getString("COLUMN_NAME");
-                    if (!columnName.matches("^[\\$\\-0-9A-Z\\_a-z]+$")) {
+                    if (!columnName.matches("^[\\#\\$\\-0-9A-Z\\_a-z]+$")) {
                         continue;
                     }
                     if (columnName.matches(columnIgnoreRe)) {

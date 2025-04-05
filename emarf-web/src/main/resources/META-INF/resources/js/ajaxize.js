@@ -112,6 +112,8 @@ $(function() {
         for (let k in formJson) {
             let itemJson = formJson[k];
             if (Array.isArray(itemJson) && itemJson.length > 0 && k.match(/Grid$/)) {
+
+                // 【VIEW対応】グリッドデータでテーブル名指定があった場合は送信先とグリッド名を変更する
                 if (columnDetail && columnDetail != '') {
                     let tableNameColumn = itemJson[0][columnDetail.toUpperCase()];
                     if (!tableNameColumn) {

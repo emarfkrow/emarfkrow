@@ -510,34 +510,34 @@ public final class SqlGenerator {
     }
 
     /**
-     * @param columnInfo
+     * @param column
      * @return quoted
      */
-    private static String getQuoted(final ColumnInfo columnInfo) {
+    private static String getQuoted(final ColumnInfo column) {
 
-        String columnName = columnInfo.getName();
+        String colName = column.getName();
+        String cQuoted = assist.quotedSQL(colName);
+        String aQuoted = "a." + cQuoted;
 
-        String quoted = "a." + assist.quotedSQL(columnName);
+        if (column.getTypeName().equals("CHAR")) {
 
-        if (columnInfo.getTypeName().equals("CHAR")) {
+            String trimed = assist.trimedSQL(aQuoted);
+            aQuoted = trimed + " AS " + cQuoted;
 
-            String trimed = assist.trimedSQL(quoted);
-            quoted = trimed + " AS " + columnName;
+        } else if (StringUtil.endsWith(inputDateSuffixs, colName)) {
 
-        } else if (StringUtil.endsWith(inputDateSuffixs, columnInfo.getName())) {
+            aQuoted = assist.date2CharSQL(aQuoted) + " AS " + cQuoted;
 
-            quoted = assist.date2CharSQL(quoted) + " AS " + columnName;
+        } else if (StringUtil.endsWith(inputDateTimeSuffixs, colName)) {
 
-        } else if (StringUtil.endsWith(inputDateTimeSuffixs, columnInfo.getName())) {
+            aQuoted = assist.dateTime2CharSQL(aQuoted) + " AS " + cQuoted;
 
-            quoted = assist.dateTime2CharSQL(quoted) + " AS " + columnName;
+        } else if (StringUtil.endsWith(inputTimestampSuffixs, colName)) {
 
-        } else if (StringUtil.endsWith(inputTimestampSuffixs, columnInfo.getName())) {
-
-            quoted = assist.timestamp2CharSQL(quoted) + " AS " + columnName;
+            aQuoted = assist.timestamp2CharSQL(aQuoted) + " AS " + cQuoted;
         }
 
-        return quoted;
+        return aQuoted;
     }
 
 }
