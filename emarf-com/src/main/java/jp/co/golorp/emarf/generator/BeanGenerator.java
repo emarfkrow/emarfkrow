@@ -246,11 +246,13 @@ public final class BeanGenerator {
                 s.add("    }");
             }
             for (ColumnInfo column : table.getColumns().values()) {
-                String n = column.getName();
-                String m = column.getRemarks();
-                String p = StringUtil.toCamelCase(n);
-                String a = StringUtil.toPascalCase(n);
-                String t = column.getDataType();
+                String n = column.getName(); // name
+                String m = column.getRemarks(); // mei
+                String p = StringUtil.toCamelCase(n); // property
+                String a = StringUtil.toPascalCase(n); // accessor
+                String t = column.getDataType(); // type
+                p = p.replaceAll("#", "_");
+                a = a.replaceAll("#", "_");
                 s.add("");
                 s.add("    /** " + m + " */");
                 if (t.equals("java.time.LocalDate")) {
@@ -422,25 +424,27 @@ public final class BeanGenerator {
             int i = meiSql.lastIndexOf(" AS ") + 4;
 
             //参照ペアがあるが名称カラムがなければ追加
-            String meiColumnName = meiSql.substring(i).replaceAll("[ \"`]", "");
-            String meiProperty = StringUtil.toCamelCase(meiColumnName);
-            String meiAccessor = StringUtil.toPascalCase(meiColumnName);
+            String n = meiSql.substring(i).replaceAll("[ \"`]", "");
+            String p = StringUtil.toCamelCase(n);
+            String a = StringUtil.toPascalCase(n);
+            p = p.replaceAll("#", "_");
+            a = a.replaceAll("#", "_");
             s.add("");
             s.add("    /** " + columnMei + "参照 */");
-            s.add("    private String " + meiProperty + ";");
+            s.add("    private String " + p + ";");
             s.add("");
             s.add("    /** @return " + columnMei + "参照 */");
-            s.add("    @com.fasterxml.jackson.annotation.JsonProperty(\"" + meiColumnName + "\")");
-            s.add("    public String get" + meiAccessor + "() {");
-            s.add("        return this." + meiProperty + ";");
+            s.add("    @com.fasterxml.jackson.annotation.JsonProperty(\"" + n + "\")");
+            s.add("    public String get" + a + "() {");
+            s.add("        return this." + p + ";");
             s.add("    }");
             s.add("");
             s.add("    /** @param o " + columnMei + "参照 */");
-            s.add("    public void set" + meiAccessor + "(final Object o) {");
+            s.add("    public void set" + a + "(final Object o) {");
             s.add("        if (o != null) {");
-            s.add("            this." + meiProperty + " = o.toString();");
+            s.add("            this." + p + " = o.toString();");
             s.add("        } else {");
-            s.add("            this." + meiProperty + " = null;");
+            s.add("            this." + p + " = null;");
             s.add("        }");
             s.add("    }");
         }
@@ -1043,8 +1047,9 @@ public final class BeanGenerator {
                 continue;
             }
             String snake = StringUtil.toSnakeCase(columnName);
-            String camel = StringUtil.toCamelCase(columnName);
-            s.add("        map.put(\"" + snake + "\", this." + camel + ");");
+            String p = StringUtil.toCamelCase(columnName);
+            p = p.replaceAll("#", "_");
+            s.add("        map.put(\"" + snake + "\", this." + p + ");");
         }
         s.add("        map.put(\"" + StringUtil.toSnakeCase(insertDt) + "\", now);");
         s.add("        map.put(\"" + StringUtil.toSnakeCase(insertBy) + "\", execId);");
