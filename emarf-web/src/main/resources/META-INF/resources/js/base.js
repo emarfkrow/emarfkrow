@@ -315,9 +315,12 @@ let Base = {
             });
         });
 
+        let tmOptions = '<option></option>';
+        for (let i = 0; i <= 99; i++) {
+            tmOptions += '<option>' + i + ':00</option><option>' + i + ':15</option><option>' + i + ':30</option><option>' + i + ':45</option>';
+        }
+
         $('.time').each(function() {
-            //<input type="text" id="TprSagyoSearchForm.TprSagyo.sagyoTm_1" name="TprSagyo.sagyoTm_1" maxlength="6" class=" time" autocomplete="off">
-            console.log(this.outerHTML);
             this.outerHTML = '<select id="' + this.id + '"></select>';
             let $me = $('[id="' + this.id + '"]');
             let attrs = $(this)[0].attributes
@@ -331,10 +334,12 @@ let Base = {
                     continue;
                 } else if (name == 'maxlength') {
                     continue;
+                } else if (name == 'autocomplete') {
+                    continue;
                 }
-                console.log(attr.name + ' = ' + attr.value);
                 $me.attr(attr.name, attr.value);
             }
+            $me.append(tmOptions);
         });
 
         // buttonスタイル適用
