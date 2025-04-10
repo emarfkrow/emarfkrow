@@ -94,6 +94,8 @@ public final class HtmlGenerator {
     /** 日付入力サフィックス */
     private static String[] inputDateSuffixs;
     /** 時刻入力サフィックス */
+    private static String[] inputHourSuffixs;
+    /** 時間入力サフィックス */
     private static String[] inputTimeSuffixs;
     /** 範囲指定サフィックス */
     private static String[] inputRangeSuffixs;
@@ -156,6 +158,7 @@ public final class HtmlGenerator {
         inputTimestampSuffixs = bundle.getString("input.timestamp.suffixs").split(",");
         inputDateTimeSuffixs = bundle.getString("input.datetime.suffixs").split(",");
         inputDateSuffixs = bundle.getString("input.date.suffixs").split(",");
+        inputHourSuffixs = bundle.getString("input.hour.suffixs").split(",");
         inputTimeSuffixs = bundle.getString("input.time.suffixs").split(",");
         inputRangeSuffixs = bundle.getString("input.range.suffixs").split(",");
         inputFlagSuffixs = bundle.getString("input.flag.suffixs").split(",");
@@ -1031,7 +1034,7 @@ public final class HtmlGenerator {
             c = "Column.dateTime('" + name + "', " + mei + ", " + w + ", '" + css + "'),";
         } else if (StringUtil.endsWith(inputYMSuffixs, name)) {
             c = "Column.month('" + name + "', " + mei + ", " + w + ", '" + css + "', " + format + "),";
-        } else if (StringUtil.endsWith(inputTimeSuffixs, name)) {
+        } else if (StringUtil.endsWith(inputHourSuffixs, name)) {
             c = "Column.time('" + name + "', " + mei + ", " + w + ", '" + css + "', " + format + "),";
         } else if (StringUtil.endsWith(inputFileSuffixs, name)) {
             c = "Column.link('" + name + "', " + mei + ", " + w + ", '" + css + "'),";
@@ -1202,8 +1205,9 @@ public final class HtmlGenerator {
                     inputCss += " datepicker";
                 } else if (StringUtil.endsWith(inputDate8Suffixs, colName) && column.getColumnSize() == 8) {
                     inputCss += " datepicker";
+                } else if (StringUtil.endsWith(inputTimeSuffixs, colName)) {
+                    inputCss += " time";
                 }
-
                 if (!StringUtil.isNullOrBlank(inputCss)) {
                     inputCss = " class=\"" + inputCss + "\"";
                 }
@@ -1285,7 +1289,7 @@ public final class HtmlGenerator {
             // 年月項目
             return "month";
 
-        } else if (StringUtil.endsWith(inputTimeSuffixs, colName)) {
+        } else if (StringUtil.endsWith(inputHourSuffixs, colName)) {
             // 時刻項目
             return "time";
 

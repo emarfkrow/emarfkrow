@@ -99,6 +99,8 @@ public final class BeanGenerator {
     private static String[] inputDateTimeSuffixs;
     /** 日付け入力サフィックス */
     private static String[] inputDateSuffixs;
+    /** 時刻入力サフィックス */
+    private static String[] inputHourSuffixs;
     /** 時間入力サフィックス */
     private static String[] inputTimeSuffixs;
     /** フラグサフィックス */
@@ -151,6 +153,7 @@ public final class BeanGenerator {
         inputTimestampSuffixs = bundle.getString("input.timestamp.suffixs").split(",");
         inputDateTimeSuffixs = bundle.getString("input.datetime.suffixs").split(",");
         inputDateSuffixs = bundle.getString("input.date.suffixs").split(",");
+        inputHourSuffixs = bundle.getString("input.hour.suffixs").split(",");
         inputTimeSuffixs = bundle.getString("input.time.suffixs").split(",");
         inputFlagSuffixs = bundle.getString("input.flag.suffixs").split(",");
         inputFileSuffixs = bundle.getString("input.file.suffixs").split(",");
@@ -1210,7 +1213,7 @@ public final class BeanGenerator {
                 //時間サフィックスに合致する場合、データソースがOracleならTO_CHAR
                 if (StringUtil.endsWith(inputDateSuffixs, column.getName())) {
                     quoteEscaped = assist.date2CharSQL(quoteEscaped) + " AS " + column.getName();
-                } else if (StringUtil.endsWith(inputTimeSuffixs, column.getName())) {
+                } else if (StringUtil.endsWith(inputHourSuffixs, column.getName())) {
                     quoteEscaped = assist.time2CharSQL(quoteEscaped) + " AS " + column.getName();
                 } else if (StringUtil.endsWith(inputDateTimeSuffixs, column.getName())) {
                     quoteEscaped = assist.dateTime2CharSQL(quoteEscaped) + " AS " + column.getName();

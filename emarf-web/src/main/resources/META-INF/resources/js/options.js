@@ -207,7 +207,12 @@ let Options = {
 
         for (let i in dataJson) {
             let listSource = dataJson[i];
-            $element.append('<option value="' + listSource[valueName] + '">' + listSource[valueName] + '：' + listSource[labelName] + '</option>');
+            let value = listSource[valueName];
+            let label = listSource[labelName];
+            if (value != label) {
+                label = value + '：' + label;
+            }
+            $element.append('<option value="' + value + '">' + label + '</option>');
         }
     }
 

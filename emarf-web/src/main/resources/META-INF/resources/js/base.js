@@ -315,6 +315,28 @@ let Base = {
             });
         });
 
+        $('.time').each(function() {
+            //<input type="text" id="TprSagyoSearchForm.TprSagyo.sagyoTm_1" name="TprSagyo.sagyoTm_1" maxlength="6" class=" time" autocomplete="off">
+            console.log(this.outerHTML);
+            this.outerHTML = '<select id="' + this.id + '"></select>';
+            let $me = $('[id="' + this.id + '"]');
+            let attrs = $(this)[0].attributes
+            for (let i in attrs) {
+                let attr = attrs[i];
+                let name = attr.name;
+                let value = attr.value;
+                if (name == undefined || value == undefined) {
+                    continue;
+                } else if (name == 'type') {
+                    continue;
+                } else if (name == 'maxlength') {
+                    continue;
+                }
+                console.log(attr.name + ' = ' + attr.value);
+                $me.attr(attr.name, attr.value);
+            }
+        });
+
         // buttonスタイル適用
         $('button, .nav a, .article a').button();
         $('.article fieldset a').css('padding', 0);

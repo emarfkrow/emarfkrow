@@ -113,6 +113,8 @@ public final class DataSources {
     private static String[] inputDateSuffixs;
 
     /** 時刻入力サフィックス */
+    private static String[] inputHourSuffixs;
+    /** 時間入力サフィックス */
     private static String[] inputTimeSuffixs;
     /** 適用日 */
     private static String tekiyoBi;
@@ -265,6 +267,7 @@ public final class DataSources {
         inputTimestampSuffixs = bundle.getString("input.timestamp.suffixs").split(",");
         inputDateTimeSuffixs = bundle.getString("input.datetime.suffixs").split(",");
         inputDateSuffixs = bundle.getString("input.date.suffixs").split(",");
+        inputHourSuffixs = bundle.getString("input.hour.suffixs").split(",");
         inputTimeSuffixs = bundle.getString("input.time.suffixs").split(",");
         tekiyoBi = bundle.getString("column.start").toUpperCase();
     }
@@ -335,7 +338,7 @@ public final class DataSources {
                     // 桁制限
                     if (StringUtil.endsWith(inputDateSuffixs, columnName)) {
                         column.setMaxLength(10);
-                    } else if (StringUtil.endsWith(inputTimeSuffixs, columnName)) {
+                    } else if (StringUtil.endsWith(inputHourSuffixs, columnName)) {
                         column.setMaxLength(5);
                     } else if (StringUtil.endsWith(inputDateTimeSuffixs, columnName)) {
                         column.setMaxLength(19);
@@ -605,7 +608,7 @@ public final class DataSources {
 
             dataType = "java.time.LocalDate";
 
-        } else if (StringUtil.endsWith(inputTimeSuffixs, column.getName())) {
+        } else if (StringUtil.endsWith(inputHourSuffixs, column.getName())) {
 
             dataType = "java.time.LocalTime";
 
