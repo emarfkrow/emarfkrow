@@ -316,7 +316,7 @@ let Base = {
         });
 
         let tmOptions = '<option></option>';
-        for (let i = 0; i <= 99; i++) {
+        for (let i = 0; i <= 999; i++) {
             tmOptions += '<option>' + i + ':00</option><option>' + i + ':15</option><option>' + i + ':30</option><option>' + i + ':45</option>';
         }
 
