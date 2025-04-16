@@ -877,20 +877,20 @@ public final class DataSources {
                         continue;
                     }
 
-                    // データ型が異なるならスキップ
-                    if (!motoCol.getTypeName().equals(sakiCol.getTypeName())) {
-                        continue;
-                    }
-
-                    // データサイズが異なるならスキップ
-                    if (motoCol.getColumnSize() != sakiCol.getColumnSize()) {
-                        continue;
-                    }
-
-                    // 小数桁数が異なるならスキップ
-                    if (motoCol.getDecimalDigits() != sakiCol.getDecimalDigits()) {
-                        continue;
-                    }
+                    //                    // データ型が異なるならスキップ
+                    //                    if (!motoCol.getTypeName().equals(sakiCol.getTypeName())) {
+                    //                        continue;
+                    //                    }
+                    //
+                    //                    // データサイズが異なるならスキップ
+                    //                    if (motoCol.getColumnSize() != sakiCol.getColumnSize()) {
+                    //                        continue;
+                    //                    }
+                    //
+                    //                    // 小数桁数が異なるならスキップ
+                    //                    if (motoCol.getDecimalDigits() != sakiCol.getDecimalDigits()) {
+                    //                        continue;
+                    //                    }
 
                     // 参照元トランもユニークキーで、長兄ならスキップ
                     if (motoCol.isPk() && motoKeys.size() == 1) {
