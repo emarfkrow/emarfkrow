@@ -972,6 +972,8 @@ var Gridate = {
                 queryString += k + '=' + v;
             }
 
+            queryString += '&isSilent=true';
+
             entityName = Casing.toPascal(tableName);
 
             //別ウィンドウにするためwidth/heightを指定

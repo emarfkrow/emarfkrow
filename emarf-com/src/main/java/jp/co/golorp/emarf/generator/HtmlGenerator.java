@@ -48,7 +48,7 @@ public final class HtmlGenerator {
     private static ResourceBundle bundle = ResourceBundles.getBundle(BeanGenerator.class);
 
     /** グリッド列幅ピクセル乗数 */
-    private static final int COLUMN_WIDTH_PX_MULTIPLIER = 8;
+    private static final int COLUMN_WIDTH_PX_MULTIPLIER = 9;
 
     /** 参照列名ペア */
     private static Set<String[]> referPairs = new LinkedHashSet<String[]>();
@@ -850,6 +850,21 @@ public final class HtmlGenerator {
                     htmlNestGrid(s, refer, tables, added);
                 }
             }
+        }
+
+        //親モデル
+        for (TableInfo parent : table.getParents()) {
+
+            if (added.contains(parent)) {
+                continue;
+            }
+
+            String parentName = parent.getName();
+            String entity = StringUtil.toPascalCase(parentName);
+            s.add("<script th:src=\"@{/model/" + entity + "GridColumns.js}\"></script>");
+            added.add(parent);
+
+            htmlNestGrid(s, parent, tables, added);
         }
 
         //子モデル
