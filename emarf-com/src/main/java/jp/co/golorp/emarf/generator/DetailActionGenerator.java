@@ -271,6 +271,7 @@ public final class DetailActionGenerator {
             s.add("import " + pkgE + "." + e + ";");
             s.add("");
             s.add("import jp.co.golorp.emarf.action.BaseAction;");
+            s.add("import jp.co.golorp.emarf.exception.NoDataError;");
             s.add("");
             s.add("/**");
             s.add(" * " + table.getRemarks() + "照会");
@@ -354,6 +355,7 @@ public final class DetailActionGenerator {
             s.add("                throw e;");
             s.add("            }");
             s.add("        }");
+            s.add("");
             s.add("        return map;");
             s.add("    }");
             s.add("");
