@@ -171,9 +171,15 @@ $(document).on('ready', function() {
         data[entityName] = querystrings;
         Jsonate.toForm(data, $registForm);
 
+        let isSilent;
+        if (querystrings['isSilent']) {
+            isSilent = querystrings['isSilent'];
+        }
+
         // サブウィンドウの際にBase.init()が間に合わないため遅らせる
         Base.loaded(function() {
-            Base.referRegistForm($registForm);
+            Base.referRegistForm($registForm, isSilent);
+            Base.readonly($registForm.find('.parent').find('a,input,select,textarea'));
         });
     }
 });
@@ -585,7 +591,7 @@ let Base = {
     /**
      * 登録フォームの初期照会
      */
-    referRegistForm: function($registForm) {
+    referRegistForm: function($registForm, isSilent) {
 
         console.info('Base.referRegistForm();');
 
@@ -646,6 +652,10 @@ let Base = {
 
         let formJson = Jsonate.toValueJson($registForm);
         if (JSON.stringify(formJson) != '{}') {
+
+            if (isSilent) {
+                formJson['IsSilent'] = isSilent;
+            }
 
             let getAction = $registForm.prop('action').replace('Regist', 'Get').replace(/\.form$/, '.ajax');
             Ajaxize.ajaxPost(getAction, formJson, function(data) {

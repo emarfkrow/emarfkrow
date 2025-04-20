@@ -296,9 +296,8 @@ public final class HtmlGenerator {
         s.add("      <div id=\"" + e + "Pager\"></div>");
         s.add("      <div class=\"buttons\">");
         if (!table.isHistory() && (!table.isView() || table.isConvView())) {
-            s.add("        <button type=\"button\" id=\"Reset" + e
-                    + "S\" th:text=\"#{common.reset}\" class=\"reset\" onClick=\"Base.listReset('" + e
-                    + "');\">reset</button>");
+            s.add("        <button type=\"button\" class=\"reset\" id=\"Reset" + e
+                    + "S\" th:text=\"#{common.reset}\" onClick=\"Base.listReset('" + e + "');\">reset</button>");
         }
         s.add("        <a th:href=\"@{" + e + "Search.xlsx(baseMei=#{" + e + "S.h2})}\" id=\"" + e
                 + "Search.xlsx\" th:text=\"#{common.xlsx}\" class=\"output\" tabindex=\"-1\">xlsx</a>");
@@ -309,46 +308,44 @@ public final class HtmlGenerator {
                     + "\" target=\"dialog\" th:text=\"#{" + summaryEntity
                     + ".sum}\" class=\"summary\" tabindex=\"-1\">" + summary.getRemarks() + "</a>");
         }
-        if (!table.isHistory() && (!table.isView() || table.isConvView()) && table.getChilds().size() == 0) {
+        // 履歴モデルでないテーブルか、組み合わせビュー（検索条件で使う）なら、非表示の参照ボタンを出力
+        if ((!table.isView() && !table.isHistory()) || table.isConvView()) {
             for (ColumnInfo column : table.getColumns().values()) {
-                //グリッド用の非表示の参照ボタン
                 if (column.getRefer() != null) {
                     String columnName = column.getName();
                     if (columnName.matches("(?i)^" + insertId + "$") || columnName.matches("(?i)^" + updateId + "$")) {
                         continue;
                     }
-                    String property = StringUtil.toCamelCase(column.getName());
+                    String p = StringUtil.toCamelCase(column.getName());
                     TableInfo refer = column.getRefer();
-                    String referEntity = StringUtil.toPascalCase(refer.getName());
+                    String referE = StringUtil.toPascalCase(refer.getName());
                     String action = "";
                     String css = "";
                     if (refer.getStintInfo() != null) {
-                        action = "?action=" + referEntity + "Correct.ajax";
+                        action = "?action=" + referE + "Correct.ajax";
                         css = " correct";
                     }
-                    s.add("        <a id=\"" + e + "Grid." + property + "\" th:href=\"@{/model/" + referEntity
-                            + "S.html" + action + "}\" target=\"dialog\" class=\"refer" + css + "\" th:text=\"'"
-                            + refer.getRemarks()
+                    s.add("        <a id=\"" + e + "Grid." + p + "\" th:href=\"@{/model/" + referE + "S.html" + action
+                            + "}\" target=\"dialog\" class=\"refer" + css + "\" th:text=\"'" + refer.getRemarks()
                             + "' + #{common.refer}\" tabindex=\"-1\" style=\"display: none;\">...</a>");
                 }
             }
-            if (!table.isView()) {
-                //削除フラグがなければdeleteボタンを出力
-                if (StringUtil.isNullOrBlank(deleteF) || (!table.getColumns().containsKey(deleteF.toLowerCase())
-                        && !table.getColumns().containsKey(deleteF.toUpperCase()))) {
-                    s.add("        <button type=\"submit\" id=\"Delete" + e
-                            + "S\" class=\"delete selectRows\" data-action=\"" + e
-                            + "SDelete.ajax\" th:text=\"#{common.delete}\" tabindex=\"-1\">削除</button>");
-                }
-                if (!StringUtil.isNullOrBlank(status) && (table.getColumns().containsKey(status.toLowerCase())
-                        || table.getColumns().containsKey(status.toUpperCase()))) {
-                    s.add("        <button type=\"submit\" id=\"Permit" + e
-                            + "S\" class=\"permit selectRows\" data-action=\"" + e
-                            + "SPermit.ajax\" th:text=\"#{common.permit}\" tabindex=\"-1\">承認</button>");
-                    s.add("        <button type=\"submit\" id=\"Forbid" + e
-                            + "S\" class=\"forbid selectRows\" data-action=\"" + e
-                            + "SForbid.ajax\" th:text=\"#{common.forbid}\" tabindex=\"-1\">否認</button>");
-                }
+        }
+        // 履歴モデルでないテーブルで、子モデルを持たない場合
+        if (!table.isView() && !table.isHistory() && table.getChilds().size() == 0) {
+            // 削除フラグ列名の指定がないか、テーブルに削除フラグ列がないなら、物理削除ボタンを表示
+            if (StringUtil.isNullOrBlank(deleteF) || (!table.getColumns().containsKey(deleteF.toLowerCase())
+                    && !table.getColumns().containsKey(deleteF.toUpperCase()))) {
+                s.add("        <button type=\"submit\" id=\"Delete" + e + "S\" data-action=\"" + e
+                        + "SDelete.ajax\" class=\"delete selectRows\" th:text=\"#{common.delete}\" tabindex=\"-1\">削除</button>");
+            }
+            //ステータス列名の指定があり、テーブルにステータス列があるなら、承認ボタン・否認ボタンを表示
+            if (!StringUtil.isNullOrBlank(status) && (table.getColumns().containsKey(status.toLowerCase())
+                    || table.getColumns().containsKey(status.toUpperCase()))) {
+                s.add("        <button type=\"submit\" id=\"Permit" + e + "S\" data-action=\"" + e
+                        + "SPermit.ajax\" class=\"permit selectRows\" th:text=\"#{common.permit}\" tabindex=\"-1\">承認</button>");
+                s.add("        <button type=\"submit\" id=\"Forbid" + e + "S\" data-action=\"" + e
+                        + "SForbid.ajax\" class=\"forbid selectRows\" th:text=\"#{common.forbid}\" tabindex=\"-1\">否認</button>");
             }
         }
         s.add("      </div>");
@@ -544,11 +541,10 @@ public final class HtmlGenerator {
             s.add("      <h3 th:text=\"#{" + c + ".h3}\">h3</h3>");
             s.add("      <a th:href=\"@{/model/" + c + ".html}\" id=\"" + c + "\" target=\"dialog\" th:text=\"#{" + c
                     + ".add}\" class=\"addChild\" tabindex=\"-1\">" + child.getRemarks() + "</a>");
-            // ファイル列がある場合は新規行を取消
             String addRow = " data-addRow=\"true\"";
             for (ColumnInfo column : child.getColumns().values()) {
                 if (StringUtil.endsWith(inputFileSuffixs, column.getName())) {
-                    addRow = "";
+                    addRow = ""; // ファイル列がある場合は新規行を取消
                     break;
                 }
             }
@@ -583,15 +579,13 @@ public final class HtmlGenerator {
         }
         s.add("        <a th:href=\"@{" + e + "Get.xlsx(baseMei=#{" + e + ".h2})}\" id=\""
                 + e + "Get.xlsx\" th:text=\"#{common.xlsx}\" class=\"output\" tabindex=\"-1\">xlsx</a>");
-        // 転生先がある場合は追加ボタンを出力
-        if (table.getRebornTo() != null) {
+        if (table.getRebornTo() != null) { // 転生先がある場合は追加ボタンを出力
             TableInfo reborn = table.getRebornTo();
             String r = StringUtil.toPascalCase(reborn.getName());
             s.add("        <a th:href=\"@{/model/" + r + ".html}\" id=\"" + r + "\" target=\"dialog\" th:text=\"#{" + r
                     + ".add}\" class=\"reborner\" tabindex=\"-1\">" + reborn.getRemarks() + "</a>");
         }
-        // 集約元がある場合は主キー項目を出力
-        if (table.getSummaryOf() != null) {
+        if (table.getSummaryOf() != null) { // 集約元がある場合は主キー項目を出力
             TableInfo summary = table.getSummaryOf();
             String m = StringUtil.toPascalCase(summary.getName());
             // 転生先で必須でない場合でも、自モデルが他の転生先である場合は転生元となるよう変更したので、ここはコメントアウト
@@ -613,13 +607,15 @@ public final class HtmlGenerator {
         }
         s.add("      </div>");
         s.add("      <div class=\"submits\">");
+        // 履歴モデルでもビューでもない場合
         if (!table.isHistory() && !table.isView()) {
-            // 論理削除テーブルでないならボタン表示
+            // 削除フラグ列名の指定がないか、テーブルに削除フラグ列がないなら、物理削除ボタンを表示
             if (StringUtil.isNullOrBlank(deleteF) || (!table.getColumns().containsKey(deleteF.toLowerCase())
                     && !table.getColumns().containsKey(deleteF.toUpperCase()))) {
                 s.add("        <button id=\"Delete" + e + "\" type=\"submit\" class=\"delete\" data-action=\"" + e
                         + "Delete.ajax\" th:text=\"#{common.delete}\" tabindex=\"-1\">削除</button>");
             }
+            //ステータス列名の指定があり、テーブルにステータス列があるなら、承認ボタン・否認ボタンを表示
             if (!StringUtil.isNullOrBlank(status) && (table.getColumns().containsKey(status.toLowerCase())
                     || table.getColumns().containsKey(status.toUpperCase()))) {
                 s.add("        <button id=\"Permit" + e + "\" type=\"submit\" class=\"permit\" data-action=\""
