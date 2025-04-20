@@ -525,18 +525,16 @@ public final class HtmlGenerator {
         s.add("        <legend th:text=\"#{" + e + ".legend}\">legend</legend>");
         htmlFields(table, s, true, false);
         s.add("      </fieldset>");
-        List<TableInfo> bros = table.getYoungers(); // 兄弟モデル
-        if (bros != null) {
-            for (TableInfo bro : bros) {
-                String b = StringUtil.toPascalCase(bro.getName());
+        if (table.getYoungers() != null) { // 兄弟モデル
+            for (TableInfo younger : table.getYoungers()) {
+                String y = StringUtil.toPascalCase(younger.getName());
                 s.add("      <fieldset>");
-                s.add("        <legend th:text=\"#{" + b + ".legend}\">legend</legend>");
-                htmlFields(bro, s, true, true);
+                s.add("        <legend th:text=\"#{" + y + ".legend}\">legend</legend>");
+                htmlFields(younger, s, true, true);
                 s.add("      </fieldset>");
             }
         }
-        //子テーブルリスト
-        for (TableInfo child : table.getChilds()) {
+        for (TableInfo child : table.getChilds()) { // 子テーブルリスト
             String c = StringUtil.toPascalCase(child.getName());
             s.add("      <h3 th:text=\"#{" + c + ".h3}\">h3</h3>");
             s.add("      <a th:href=\"@{/model/" + c + ".html}\" id=\"" + c + "\" target=\"dialog\" th:text=\"#{" + c
@@ -590,10 +588,8 @@ public final class HtmlGenerator {
             String m = StringUtil.toPascalCase(summary.getName());
             // 転生先で必須でない場合でも、自モデルが他の転生先である場合は転生元となるよう変更したので、ここはコメントアウト
             //            if (table.getRebornTo() == null) {
-            //                // 転生先（自主キーが必須の外部キーになっている）がなければ追加ボタンを出力
-            //                // 転生先で必須でないケース
-            //                s.add("        <a th:href=\"@{/model/" + e + ".html}\" id=\"" + e + "\" target=\"dialog\" th:text=\"#{"
-            //                        + e + ".add}\" class=\"reborner\" tabindex=\"-1\">" + summary.getRemarks() + "</a>");
+            //                // 転生先（自主キーが必須の外部キーになっている）がなければ追加ボタンを出力（転生先で必須でないケース）
+            //                s.add("        <a th:href=\"@{/model/" + e + ".html}\" id=\"" + e + "\" target=\"dialog\" th:text=\"#{" + e + ".add}\" class=\"reborner\" tabindex=\"-1\">" + summary.getRemarks() + "</a>");
             //            }
             for (String pk : summary.getPrimaryKeys()) {
                 ColumnInfo primaryKey = summary.getColumns().get(pk);
@@ -675,6 +671,16 @@ public final class HtmlGenerator {
             s.add("");
             s.add(e + ".legend   " + bros.getRemarks());
             for (ColumnInfo column : bros.getColumns().values()) {
+                String property = StringUtil.toCamelCase(column.getName());
+                s.add(e + "." + property + " " + column.getRemarks());
+            }
+        }
+
+        for (TableInfo parent : table.getParents()) {
+            String e = StringUtil.toPascalCase(parent.getName());
+            s.add("");
+            s.add(e + ".legend   " + parent.getRemarks());
+            for (ColumnInfo column : parent.getColumns().values()) {
                 String property = StringUtil.toCamelCase(column.getName());
                 s.add(e + "." + property + " " + column.getRemarks());
             }
