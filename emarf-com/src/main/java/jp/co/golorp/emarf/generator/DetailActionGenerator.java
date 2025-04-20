@@ -338,16 +338,22 @@ public final class DetailActionGenerator {
                 s.add("        }");
             }
             s.add("");
-            s.add("        " + e + " " + in + " = " + e + ".get(" + StringUtil.toCamelCase(pks) + ");");
+            s.add("        try {");
+            s.add("            " + e + " " + in + " = " + e + ".get(" + StringUtil.toCamelCase(pks) + ");");
             for (TableInfo bros : table.getYoungers()) {
                 String brosEntity = StringUtil.toPascalCase(bros.getName());
-                s.add("        " + in + ".refer" + brosEntity + "();");
+                s.add("            " + in + ".refer" + brosEntity + "();");
             }
             for (TableInfo child : table.getChilds()) {
                 String pascal = StringUtil.toPascalCase(child.getName());
-                s.add("        " + in + ".refer" + pascal + "s();");
+                s.add("            " + in + ".refer" + pascal + "s();");
             }
-            s.add("        map.put(\"" + e + "\", " + in + ");");
+            s.add("            map.put(\"" + e + "\", " + in + ");");
+            s.add("        } catch (NoDataError e) {");
+            s.add("            if (!postJson.get(\"IsSilent\").equals(\"true\")) {");
+            s.add("                throw e;");
+            s.add("            }");
+            s.add("        }");
             s.add("        return map;");
             s.add("    }");
             s.add("");
