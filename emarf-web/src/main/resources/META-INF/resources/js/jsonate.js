@@ -307,7 +307,9 @@ let Jsonate = {
                         } else {
                             if ($input[0].type == 'datetime-local') {
                                 //                            $input.val([v.toISOString().slice(0, -1)]);
-                                $input.val(v.replace('%20', 'T'));
+                                v = v.replace('%20', 'T');
+                                v = v.replace(/(\d+-\d+-\d+ +\d+:\d+)(:\d+)/, '$1');
+                                $input.val(v);
                             } else {
                                 $input.val([v]);
                                 $('span[id="' + inputName + '"]').html(v);

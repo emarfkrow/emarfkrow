@@ -672,8 +672,11 @@ let Base = {
                     Base.readonly($status);
 
                     // ステータスによるボタン制御
-                    let $statusKb = $registForm.find('fieldset:nth-child(1)').find('[name$="statusKb"]:checked');
-                    if ($statusKb.val() == 0) {
+                    let $mainform = $registForm.find('fieldset:not(.parent):nth-child(1)');
+                    let $registDt = $mainform.find('[name$="' + Casing.toCamel(columnRegistTs) + '"]');
+                    let $statusKb = $mainform.find('[name$="' + Casing.toCamel(columnStatus) + '"]:checked');
+
+                    if ($registDt.val() != '' && $statusKb.val() == 0) {
                         //登録
                         if (Base.getAuthz($registForm[0].name) >= 2) { // 出力権限
                             $registForm.find('a.output').button('option', 'disabled', false);
