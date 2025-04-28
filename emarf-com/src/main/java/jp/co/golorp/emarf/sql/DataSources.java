@@ -74,7 +74,7 @@ public final class DataSources {
     private static String eldestRe;
 
     /** 繰上りの弟モデルのテーブル名 */
-    private static String bastardRe;
+    private static String fosterRe;
 
     /** 弟を設定しないテーブル名 */
     private static String youngestRe;
@@ -237,7 +237,7 @@ public final class DataSources {
      */
     public static DataSourcesAssist getAssist() {
         if (ds == null) {
-            get();
+            DataSources.get();
         }
         return assist;
     }
@@ -248,27 +248,45 @@ public final class DataSources {
     private static void loadBundle() {
 
         ResourceBundle bundle = ResourceBundles.getBundle(BeanGenerator.class);
+
         String[] pairs = bundle.getString("relation.refer.pairs").split(",");
         for (String pair : pairs) {
             String[] kv = pair.split(":");
             referPairs.add(kv);
         }
+
         ignoreRe = bundle.getString("relation.ignore.re");
+
         eldestRe = bundle.getString("relation.eldest.re");
-        bastardRe = bundle.getString("relation.bastard.re");
+
+        fosterRe = bundle.getString("relation.foster.re");
+
         youngestRe = bundle.getString("relation.youngest.re");
+
         dinksRe = bundle.getString("relation.dinks.re");
+
         orphansRe = bundle.getString("relation.orphans.re");
+
         columnIgnoreRe = bundle.getString("column.ignore.re");
+
         reason = bundle.getString("column.history.reason");
+
         viewDetailColumn = bundle.getString("view.detail");
+
         noNumberingIntRe = bundle.getString("column.int.nonumbering.re");
+
         numberingCharRe = bundle.getString("column.char.numbering.re");
+
         inputTimestampSuffixs = bundle.getString("input.timestamp.suffixs").split(",");
+
         inputDateTimeSuffixs = bundle.getString("input.datetime.suffixs").split(",");
+
         inputDateSuffixs = bundle.getString("input.date.suffixs").split(",");
+
         inputHourSuffixs = bundle.getString("input.hour.suffixs").split(",");
+
         inputTimeSuffixs = bundle.getString("input.time.suffixs").split(",");
+
         tekiyoBi = bundle.getString("column.start").toUpperCase();
     }
 
@@ -283,14 +301,16 @@ public final class DataSources {
 
         // テーブル情報の取得
         List<TableInfo> tables = new ArrayList<TableInfo>();
+
         try {
-            // データベースからテーブル情報を取得してループ
+
+            // コネクションからデータベースのメタ情報を取得
             Connection cn = Connections.get();
             DatabaseMetaData metaData = cn.getMetaData();
 
             // テーブル情報を取得
             String schemaPattern = BUNDLE.getString("username");
-            addTables(metaData, schemaPattern, tables);
+            DataSources.addTables(metaData, schemaPattern, tables);
 
             // テーブル毎に主キー情報を取得
             for (TableInfo table : tables) {
@@ -640,7 +660,7 @@ public final class DataSources {
      */
     private static void addBrotherTable(final List<TableInfo> tables) {
 
-        // 兄候補としてループ
+        // 兄モデルとしてループ
         Iterator<TableInfo> elders = tables.iterator();
         while (elders.hasNext()) {
             TableInfo elder = elders.next();
@@ -650,12 +670,17 @@ public final class DataSources {
                 continue;
             }
 
-            // 弟を設定しないテーブルならスキップ
+            // 末っ子モデルならスキップ
             if (elder.getName().matches(youngestRe)) {
                 continue;
             }
 
-            // 弟候補としてループ
+            // 孤児モデルならスキップ
+            if (elder.getName().matches(fosterRe)) {
+                continue;
+            }
+
+            // 弟モデルとしてループ
             Iterator<TableInfo> youngers = tables.iterator();
             while (youngers.hasNext()) {
                 TableInfo younger = youngers.next();
@@ -665,63 +690,37 @@ public final class DataSources {
                     continue;
                 }
 
-                // 兄弟の主キーに適用日が含まれる場合は評価から除外（不要かも）
-                List<String> elderKeys = new ArrayList<String>(elder.getPrimaryKeys());
-                List<String> youngerKeys = new ArrayList<String>(younger.getPrimaryKeys());
-                boolean isElderTekiyoBi = elderKeys.contains(tekiyoBi);
-                boolean isYoungerTekiyoBi = youngerKeys.contains(tekiyoBi);
-                if (isElderTekiyoBi && isYoungerTekiyoBi) {
-                    elderKeys.remove(tekiyoBi);
-                    youngerKeys.remove(tekiyoBi);
-                }
-
-                // 主キーが合致しなければスキップ
-                String elderKeyCsv = elderKeys.toString().replaceAll("[\\[\\]]", "");
-                String youngerKeyCsv = youngerKeys.toString().replaceAll("[\\[\\]]", "");
-                if (!elderKeyCsv.equals(youngerKeyCsv)) {
+                // 長兄モデルならスキップ
+                if (younger.getName().matches(eldestRe)) {
                     continue;
                 }
 
-                //                // 比較元が既に比較先の弟ならスキップ
-                //                if (destInfo.getBrosInfos().contains(srcInfo)) {
-                //                    continue;
-                //                }
+                // 孤児モデルならスキップ
+                if (younger.getName().matches(fosterRe)) {
+                    continue;
+                }
+
+                // 兄弟の主キーに適用日が含まれる場合は評価から除外（不要かも）
+                List<String> eKeys = new ArrayList<String>(elder.getPrimaryKeys());
+                List<String> yKeys = new ArrayList<String>(younger.getPrimaryKeys());
+                boolean isTekiyoBiE = eKeys.contains(tekiyoBi);
+                boolean isTekiyoBiY = yKeys.contains(tekiyoBi);
+                if (isTekiyoBiE && isTekiyoBiY) {
+                    eKeys.remove(tekiyoBi);
+                    yKeys.remove(tekiyoBi);
+                }
+
+                // 主キーが合致しなければスキップ
+                String eKeyCsv = eKeys.toString().replaceAll("[\\[\\]]", "");
+                String yKeyCsv = yKeys.toString().replaceAll("[\\[\\]]", "");
+                if (!eKeyCsv.equals(yKeyCsv)) {
+                    continue;
+                }
 
                 // 兄に弟を追加、弟に弟フラグを設定
                 elder.getYoungers().add(younger);
                 younger.setYounger(true);
             }
-        }
-
-        for (TableInfo elder : tables) {
-
-            // 設定済みの弟リストに、長兄モデルが含まれる場合は除去して再設定
-            List<TableInfo> nonEldests = new ArrayList<TableInfo>();
-            for (TableInfo younger : elder.getYoungers()) {
-                if (younger.getName().matches(eldestRe)) {
-                    younger.setYounger(false);
-                } else {
-                    nonEldests.add(younger);
-                }
-            }
-            elder.setYoungers(nonEldests);
-
-            // 長兄モデルである場合は、自身の弟フラグを消し込み、各弟モデルの弟情報をクリア
-            if (elder.getName().matches(eldestRe)) {
-                elder.setYounger(false);
-                for (TableInfo younger : elder.getYoungers()) {
-                    younger.setYoungers(new ArrayList<TableInfo>());
-                }
-            }
-
-            // 設定済みの弟リストに、弟にしないモデルがある場合は除去して再設定
-            List<TableInfo> youngers = new ArrayList<TableInfo>();
-            for (TableInfo younger : elder.getYoungers()) {
-                if (!younger.getName().matches(bastardRe)) {
-                    youngers.add(younger);
-                }
-            }
-            elder.setYoungers(youngers);
         }
     }
 
@@ -732,70 +731,71 @@ public final class DataSources {
     private static void addHistoryTable(final List<TableInfo> tables) {
 
         // 履歴元としてループ
-        Iterator<TableInfo> motos = tables.iterator();
-        while (motos.hasNext()) {
-            TableInfo moto = motos.next();
+        Iterator<TableInfo> srcs = tables.iterator();
+        while (srcs.hasNext()) {
+            TableInfo src = srcs.next();
 
             //主キーがなければスキップ
-            if (moto.getPrimaryKeys().size() == 0) {
+            if (src.getPrimaryKeys().size() == 0) {
                 continue;
             }
 
-            String motoKeyCsv = moto.getPrimaryKeys().toString().replaceAll("[\\[\\]]", "");
-            String motoColCsv = moto.getNonPrimaryKeys().toString().replaceAll("[\\[\\]]", "");
+            String srcKeyCsv = src.getPrimaryKeys().toString().replaceAll("[\\[\\]]", "");
+            String srcColCsv = src.getNonPrimaryKeys().toString().replaceAll("[\\[\\]]", "");
 
             // 比較先でループ
-            Iterator<TableInfo> sakis = tables.iterator();
-            while (sakis.hasNext()) {
-                TableInfo saki = sakis.next();
+            Iterator<TableInfo> hiss = tables.iterator();
+            while (hiss.hasNext()) {
+                TableInfo his = hiss.next();
 
                 // 比較元と比較先が同じならスキップ
-                if (moto == saki) {
+                if (src == his) {
                     continue;
                 }
 
-                List<String> sakiNonPrimaryKeys = new ArrayList<String>(saki.getNonPrimaryKeys());
-                if (!StringUtil.isNullOrBlank(reason) && sakiNonPrimaryKeys.contains(reason)) {
-                    sakiNonPrimaryKeys.remove(reason);
+                // 変更理由列は比較対象から除外
+                List<String> hisNonPrimaryKeys = new ArrayList<String>(his.getNonPrimaryKeys());
+                if (!StringUtil.isNullOrBlank(reason) && hisNonPrimaryKeys.contains(reason)) {
+                    hisNonPrimaryKeys.remove(reason);
                 }
 
-                String sakiKeyCsv = saki.getPrimaryKeys().toString().replaceAll("[\\[\\]]", "");
-                String sakiColCsv = sakiNonPrimaryKeys.toString().replaceAll("[\\[\\]]", "");
+                String hisKeyCsv = his.getPrimaryKeys().toString().replaceAll("[\\[\\]]", "");
+                String hisColCsv = hisNonPrimaryKeys.toString().replaceAll("[\\[\\]]", "");
 
                 // キーが合致するならスキップ
-                if (motoKeyCsv.equals(sakiKeyCsv)) {
+                if (srcKeyCsv.equals(hisKeyCsv)) {
                     continue;
                 }
 
                 // キー以外が合致しなければスキップ
-                if (!motoColCsv.equals(sakiColCsv)) {
+                if (!srcColCsv.equals(hisColCsv)) {
                     continue;
                 }
 
                 // 比較先が比較元の主キーと同じ組み合わせでスタートしなければスキップ
-                if (!sakiKeyCsv.startsWith(motoKeyCsv)) {
+                if (!hisKeyCsv.startsWith(srcKeyCsv)) {
                     continue;
                 }
 
                 // 比較先が比較元の主キー＋１キーでなければスキップ
-                if (saki.getPrimaryKeys().size() != moto.getPrimaryKeys().size() + 1) {
+                if (his.getPrimaryKeys().size() != src.getPrimaryKeys().size() + 1) {
                     continue;
                 }
 
                 // 比較先の最終キーが採番キーでないか文字列ならスキップ
-                String sakiLastKey = saki.getPrimaryKeys().get(saki.getPrimaryKeys().size() - 1);
-                ColumnInfo sakiLastPK = saki.getColumns().get(sakiLastKey);
-                if (!sakiLastPK.isNumbering() || sakiLastPK.getTypeName().equals("CHAR")) {
+                String hisLastKey = his.getPrimaryKeys().get(his.getPrimaryKeys().size() - 1);
+                ColumnInfo hisLastPK = his.getColumns().get(hisLastKey);
+                if (!hisLastPK.isNumbering() || hisLastPK.getTypeName().equals("CHAR")) {
                     continue;
                 }
 
                 // 比較先が比較元に前方一致しないならスキップ
-                if (!saki.getName().matches("(?i)^" + moto.getName() + ".+$")) {
+                if (!his.getName().matches("(?i)^" + src.getName() + ".+$")) {
                     continue;
                 }
 
-                saki.setHistory(true);
-                moto.setHistoryInfo(saki);
+                his.setHistory(true);
+                src.setHistoryInfo(his);
             }
         }
     }
@@ -807,105 +807,83 @@ public final class DataSources {
     private static void addReferTable(final List<TableInfo> tables) {
 
         // 参照先マスタとしてループ
-        Iterator<TableInfo> sakis = tables.iterator();
-        while (sakis.hasNext()) {
-            TableInfo saki = sakis.next();
+        Iterator<TableInfo> msts = tables.iterator();
+        while (msts.hasNext()) {
+            TableInfo mst = msts.next();
 
             // 適用日が主キーに含まれる場合は除去
-            List<String> sakiKeys = new ArrayList<String>(saki.getPrimaryKeys());
-            sakiKeys.remove(tekiyoBi);
+            List<String> mstKeys = new ArrayList<String>(mst.getPrimaryKeys());
+            mstKeys.remove(tekiyoBi);
 
-            // 参照先マスタが適用日を含まない複合キーならスキップ
-            if (sakiKeys.size() != 1) {
+            // 適用日を除く、単独キーでなければスキップ
+            if (mstKeys.size() != 1) {
                 continue;
             }
 
-            // 参照先マスタが他のテーブルの弟ならスキップ
-            if (saki.isYounger()) {
+            // 同じキーのマスタが複数存在するならスキップ
+            if (mst.isYounger()) {
                 continue;
             }
 
             // 参照先マスタの単独主キー
-            String sakiKey = sakiKeys.get(0);
+            String mstKey = mstKeys.get(0);
 
             // 参照先が参照キー・参照名のいずれにも合致しなければ次のテーブルを検証
             boolean isRefer = false;
             for (String[] referPair : referPairs) {
                 String keySuf = referPair[0];
                 String meiSuf = referPair[1];
-
                 // 参照キーに合致しなければ次の参照キーを検証
-                if (!StringUtil.endsWithIgnoreCase(keySuf, sakiKey)) {
+                if (!StringUtil.endsWithIgnoreCase(keySuf, mstKey)) {
                     continue;
                 }
-
-                // 参照名に合致するカラムがあれば終了
-                String referMei = sakiKey.replaceAll("(?i)" + keySuf + "$", meiSuf);
-                for (String colName : saki.getColumns().keySet()) {
+                // 参照名に合致するカラムがあるか調査
+                String referMei = mstKey.replaceAll("(?i)" + keySuf + "$", meiSuf);
+                for (String colName : mst.getColumns().keySet()) {
                     if (colName.matches("(?i)^" + referMei + "$")) {
                         isRefer = true;
                         break;
                     }
                 }
+                // 参照名に合致するカラムがあれば終了
                 if (isRefer) {
                     break;
                 }
             }
+            // 参照キー・参照名が揃っていなければスキップ
             if (!isRefer) {
                 continue;
             }
 
             // 参照先マスタのユニークキー情報
-            ColumnInfo sakiCol = saki.getColumns().get(sakiKey);
+            ColumnInfo mstPK = mst.getColumns().get(mstKey);
 
             // 参照元トランとしてループ
-            Iterator<TableInfo> motos = tables.iterator();
-            while (motos.hasNext()) {
-                TableInfo moto = motos.next();
+            Iterator<TableInfo> trns = tables.iterator();
+            while (trns.hasNext()) {
+                TableInfo trn = trns.next();
 
                 // 適用日が主キーに含まれる場合は除去
-                List<String> motoKeys = new ArrayList<String>(moto.getPrimaryKeys());
-                motoKeys.remove(tekiyoBi);
+                List<String> trnKeys = new ArrayList<String>(trn.getPrimaryKeys());
+                trnKeys.remove(tekiyoBi);
 
                 // 参照元トランのカラム情報でループ（比較元のユニークキーがあれば参照テーブルリストに追加）
-                for (Entry<String, ColumnInfo> e : moto.getColumns().entrySet()) {
-                    String motoColName = e.getKey();
-                    ColumnInfo motoCol = e.getValue();
+                for (Entry<String, ColumnInfo> e : trn.getColumns().entrySet()) {
+                    String colName = e.getKey();
+                    ColumnInfo col = e.getValue();
 
-                    // 参照テーブル自体の主キー自体ならスキップ
-                    if (moto == saki && motoCol == sakiCol) {
+                    // 参照テーブル自体の主キー自体ならスキップ（親ID参照もあるため）
+                    if (trn == mst && col == mstPK) {
                         continue;
                     }
 
-                    //                    // データ型が異なるならスキップ
-                    //                    if (!motoCol.getTypeName().equals(sakiCol.getTypeName())) {
-                    //                        continue;
-                    //                    }
-                    //
-                    //                    // データサイズが異なるならスキップ
-                    //                    if (motoCol.getColumnSize() != sakiCol.getColumnSize()) {
-                    //                        continue;
-                    //                    }
-                    //
-                    //                    // 小数桁数が異なるならスキップ
-                    //                    if (motoCol.getDecimalDigits() != sakiCol.getDecimalDigits()) {
-                    //                        continue;
-                    //                    }
-
-                    // 参照元トランもユニークキーで、長兄ならスキップ
-                    if (motoCol.isPk() && motoKeys.size() == 1) {
-                        if (moto.getName().matches(eldestRe)) {
-                            continue;
-                        }
-                    }
-
                     // 参照元カラム名の末尾が参照先カラム名と合致し、参照モデルが未登録なら、カラムに参照モデルを設定
-                    if (motoColName.matches("(?i)^.*" + sakiKey + "$") && motoCol.getRefer() == null) {
-                        motoCol.setRefer(saki);
+                    if (colName.matches("(?i)^.*" + mstKey + "$") && col.getRefer() == null) {
+                        col.setRefer(mst);
 
-                        // 参照元の複合キーの最終キーなら、サブ画面で選択するため採番フラグをオフ
-                        if (motoKeys.size() > 1 && motoColName.equals(motoKeys.get(motoKeys.size() - 1))) {
-                            motoCol.setNumbering(false);
+                        // 参照元の複合キーの最終キーなら、参照サブ画面で選択するため採番フラグをオフ
+                        if (trnKeys.size() > 1 && colName.equals(trnKeys.get(trnKeys.size() - 1))) {
+                            col.setNumbering(false);
                         }
                     }
                 }
@@ -929,7 +907,7 @@ public final class DataSources {
                 continue;
             }
 
-            //主キーに適用日があれば評価から除外
+            // 主キーに適用日があれば評価から除外
             List<String> oyaKeys = new ArrayList<String>(oya.getPrimaryKeys());
             boolean isOyaTekiyoBi = oyaKeys.contains(tekiyoBi);
             if (isOyaTekiyoBi) {
