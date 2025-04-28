@@ -323,5 +323,7 @@ a.readonly {
 
 
 a.view {
-    background-color: darkseagreen;
+    background-color: #fff;
+    border-color: blue !important;
+    color: blue !important;
 }

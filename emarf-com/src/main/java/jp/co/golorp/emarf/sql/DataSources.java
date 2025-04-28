@@ -1134,6 +1134,7 @@ public final class DataSources {
 
                             // 今回の転生元の方がキー数が多いなら、処理済みの転生先をクリア
                             TableInfo otherReborn = other.getRebornTo();
+                            LOG.info("Cancel " + other.getName() + " reborn to " + otherReborn.getName() + ".");
                             other.setRebornTo(null);
                             for (ColumnInfo column : otherReborn.getColumns().values()) {
                                 column.setReborn(false);
@@ -1152,6 +1153,7 @@ public final class DataSources {
                         if (rebornCount > 0) {
                             if (moto.getRebornTo() != null) {
                                 TableInfo reborn = moto.getRebornTo(); // 転生先を派生先に追加
+                                LOG.info("Cancel " + moto.getName() + " reborn to " + reborn.getName() + ".");
                                 moto.setRebornTo(null);
                                 moto.getDeriveTos().add(reborn);
                                 for (String fk : sakiFKs) {
@@ -1187,17 +1189,14 @@ public final class DataSources {
         Iterator<TableInfo> sakis = tables.iterator();
         while (sakis.hasNext()) {
             TableInfo saki = sakis.next();
-
             // 履歴モデル・ビュー・参照モデルは集約先としない
             if (saki.isHistory() || saki.isView() || isReferModel(saki)) {
                 continue;
             }
-
             // 派生先を持っている（派生元である）なら集約先としない
             if (saki.getDeriveTos().size() > 0) {
                 continue;
             }
-
             // 他モデルの転生先になっているなら集約先としない
             boolean isReborn = false;
             Iterator<TableInfo> rebornees = tables.iterator();
@@ -1284,8 +1283,10 @@ public final class DataSources {
                             for (ColumnInfo sakiCol : saki2.getSummaryOf().getColumns().values()) {
                                 sakiCol.setSummary(false);
                             }
+                            LOG.info("Cancel " + saki2.getName() + " summary of " + saki2.getSummaryOf().getName()
+                                    + ".");
+                            saki2.setSummaryOf(null);
                         }
-                        saki2.setSummaryOf(null);
                         //                        } else if (saki2.getPrimaryKeys().size() > saki.getPrimaryKeys().size()) {
                         //                            // 今回の集約先の方がキー数が少ないなら、今回を集約先としない
                         isSummaryOfOther = true;
@@ -1303,6 +1304,8 @@ public final class DataSources {
                                 for (ColumnInfo column : saki.getSummaryOf().getColumns().values()) {
                                     column.setSummary(false);
                                 }
+                                LOG.info("Cancel " + saki.getName() + " summary of " + saki.getSummaryOf().getName()
+                                        + ".");
                                 saki.setSummaryOf(null);
                             }
                             continue;
@@ -1322,6 +1325,7 @@ public final class DataSources {
                                     column.setReborn(false);
                                 }
                             }
+                            LOG.info("Cancel " + saki.getName() + " reborn to " + saki.getRebornTo().getName() + ".");
                             saki.setRebornTo(null);
                         }
                     }
@@ -1386,6 +1390,7 @@ public final class DataSources {
                     }
                     //制約モデルが２以上あれば消し込み
                     if (combo.getStintInfo() != null) {
+                        LOG.info("Cancel " + combo.getName() + " stint " + combo.getStintInfo().getName() + ".");
                         combo.setStintInfo(null);
                         break;
                     }
