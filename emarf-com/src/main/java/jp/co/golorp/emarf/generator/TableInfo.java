@@ -73,6 +73,9 @@ public class TableInfo {
     /** 変換VIEWならtrue */
     private boolean isConvView;
 
+    /** 自身が参照先ならtrue */
+    private boolean isRefer;
+
     /**
      * @return boolean
      */
@@ -362,6 +365,20 @@ public class TableInfo {
      */
     public void setStintInfo(final TableInfo p) {
         this.stintInfo = p;
+    }
+
+    /**
+     * @return boolean
+     */
+    public boolean isRefer() {
+        return isRefer;
+    }
+
+    /**
+     * @param p
+     */
+    public void setRefer(final boolean p) {
+        this.isRefer = p;
     }
 
 }
