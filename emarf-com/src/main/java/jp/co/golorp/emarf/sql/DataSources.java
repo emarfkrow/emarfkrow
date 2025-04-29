@@ -989,7 +989,7 @@ public final class DataSources {
     }
 
     /**
-     * ユニークキーテーブル（転生元）から、植え付け先（転生先）を探す
+     * 転生元から、転生先を探す
      * @param tables テーブル情報のリスト
      */
     private static void addRebornTable(final List<TableInfo> tables) {
@@ -1043,42 +1043,29 @@ public final class DataSources {
                             continue;
                         }
 
-                        // 転生元が何れの転生先でない場合は、比較先がNULL可ならスキップ
-                        // 転生が連続するうち、必須でないタイミングが合っても、集約モデルと誤認させない
-//                        if (!isReborn && rbnCol.getNullable() == 1) {
-//                            continue;
-//                        }
-
-                        // データ型が異なるならスキップ
-                        if (!rbnCol.getTypeName().equals(srcKey.getTypeName())) {
+                        // 転生元が他のテーブルの転生先でない場合は、外部キーがNULL可ならスキップ
+                        // （＝転生元が既に他のテーブルの転生先となっている場合は、外部キーがNULL可でも許可する）
+                        if (!isReborn && rbnCol.getNullable() == 1) {
                             continue;
                         }
 
-                        // データサイズが異なるならスキップ
-                        if (rbnCol.getColumnSize() != srcKey.getColumnSize()) {
+                        if (!isMatchColDef(srcKey, rbnCol)) {
                             continue;
                         }
 
-                        // 小数桁数が異なるならスキップ
-                        if (rbnCol.getDecimalDigits() != srcKey.getDecimalDigits()) {
-                            continue;
-                        }
-
-                        // 比較先カラム名が比較元カラム名と合致するなら比較先を転生モデルに設定
+                        // カラム名が合致するなら外部キーに追加
                         if (rbnCol.getName().matches("(?i)^" + srcPrimaryKey + "$")) {
                             rbnFKs.add(rbnCol.getName());
                         }
                     }
                 }
 
+                // 転生元の主キーと、転生先外部キーの、数が一致する場合
                 if (src.getPrimaryKeys().size() == rbnFKs.size()) {
-                    // 比較元の主キーと、比較先の外部キーの、数が一致する場合
-
-                    LOG.debug("Reborn? " + src.getName() + " to " + rbn.getName() + " [" + rbnFKs + "]");
 
                     boolean isRebornElse = false;
 
-                    // 処理済み情報
+                    // 他のテーブルと転生先が重複する場合、合致キー数が多いほうを転生元とする
                     Iterator<TableInfo> others = tables.iterator();
                     while (others.hasNext()) {
                         TableInfo other = others.next();
@@ -1093,18 +1080,18 @@ public final class DataSources {
                             continue;
                         }
 
-                        // 重複する転生先を設定済みの場合
                         if (other.getPrimaryKeys().size() < src.getPrimaryKeys().size()) {
 
                             // 今回の転生元の方がキー数が多いなら、処理済みの転生先をクリア
                             TableInfo otherReborn = other.getRebornTo();
-                            LOG.info("Cancel " + other.getName() + " reborn to " + otherReborn.getName() + ".");
+                            LOG.debug("Cancel " + other.getName() + " reborn to " + otherReborn.getName() + ".");
                             other.setRebornTo(null);
-                            for (ColumnInfo column : otherReborn.getColumns().values()) {
-                                column.setReborn(false);
+                            for (String primaryKey : other.getPrimaryKeys()) {
+                                otherReborn.getColumns().get(primaryKey).setReborn(false);
                             }
 
                         } else if (other.getPrimaryKeys().size() > src.getPrimaryKeys().size()) {
+
                             // 今回の転生元の方がキー数が少ないなら、転生先としない
                             isRebornElse = true;
                         }
@@ -1117,14 +1104,18 @@ public final class DataSources {
                         if (rebornCount > 0) {
                             if (src.getRebornTo() != null) {
                                 TableInfo reborn = src.getRebornTo(); // 転生先を派生先に追加
-                                LOG.info("Cancel " + src.getName() + " reborn to " + reborn.getName() + ".");
+                                LOG.debug("Cancel " + src.getName() + " reborn to " + reborn.getName() + ".");
                                 src.setRebornTo(null);
+                                for (String primaryKey : src.getPrimaryKeys()) {
+                                    reborn.getColumns().get(primaryKey).setReborn(false);
+                                }
+                                LOG.debug("Derive " + src.getName() + " to " + reborn.getName());
                                 src.getDeriveTos().add(reborn);
-                                for (String fk : rbnFKs) {
-                                    reborn.getColumns().get(fk).setReborn(false);
-                                    reborn.getColumns().get(fk).setDerive(true);
+                                for (String primaryKey : src.getPrimaryKeys()) {
+                                    reborn.getColumns().get(primaryKey).setDerive(true);
                                 }
                             }
+                            LOG.debug("Derive " + src.getName() + " to " + rbn.getName() + " [" + rbnFKs + "]");
                             src.getDeriveTos().add(rbn);
                             for (String fk : rbnFKs) {
                                 rbn.getColumns().get(fk).setDerive(true);
@@ -1132,6 +1123,7 @@ public final class DataSources {
                             continue;
                         }
 
+                        LOG.debug("Reborn " + src.getName() + " to " + rbn.getName() + " [" + rbnFKs + "]");
                         ++rebornCount;
                         src.setRebornTo(rbn);
                         for (String fk : rbnFKs) {
@@ -1144,30 +1136,58 @@ public final class DataSources {
     }
 
     /**
+     * @param src
+     * @param dest
+     * @return boolean
+     */
+    public static boolean isMatchColDef(final ColumnInfo src, final ColumnInfo dest) {
+
+        // データ型が異なる
+        if (!src.getTypeName().equals(dest.getTypeName())) {
+            return false;
+        }
+
+        // データサイズが異なる
+        if (src.getColumnSize() != dest.getColumnSize()) {
+            return false;
+        }
+
+        // 小数桁数が異なる
+        if (src.getDecimalDigits() != dest.getDecimalDigits()) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
      * 集約先の主キーから、集約元の外部キーを探す
      * @param tables テーブル情報のリスト
      */
     private static void addSummaryTable(final List<TableInfo> tables) {
 
         // 集約先として、テーブル情報をループ
-        Iterator<TableInfo> sakis = tables.iterator();
-        while (sakis.hasNext()) {
-            TableInfo saki = sakis.next();
+        Iterator<TableInfo> sums = tables.iterator();
+        while (sums.hasNext()) {
+            TableInfo sum = sums.next();
+
             // 履歴モデル・ビュー・参照モデルは集約先としない
-            if (saki.isHistory() || saki.isView() || saki.isRefer()) {
+            if (sum.isHistory() || sum.isView() || sum.isRefer()) {
                 continue;
             }
+
             // 派生先を持っている（派生元である）なら集約先としない
-            if (saki.getDeriveTos().size() > 0) {
+            if (sum.getDeriveTos().size() > 0) {
                 continue;
             }
+
             // 他モデルの転生先になっているなら集約先としない
             boolean isReborn = false;
             Iterator<TableInfo> rebornees = tables.iterator();
             while (rebornees.hasNext()) {
                 TableInfo rebornee = rebornees.next();
                 if (rebornee.getRebornTo() != null) {
-                    if (saki.getName().equals(rebornee.getRebornTo().getName())) {
+                    if (sum.getName().equals(rebornee.getRebornTo().getName())) {
                         isReborn = true;
                         break;
                     }
@@ -1191,8 +1211,8 @@ public final class DataSources {
 
                 // 集約元の外部キーを探索
                 Set<String> motoFKs = new HashSet<String>();
-                for (String sakiPK : saki.getPrimaryKeys()) {
-                    ColumnInfo sakiKey = saki.getColumns().get(sakiPK);
+                for (String sakiPK : sum.getPrimaryKeys()) {
+                    ColumnInfo sakiKey = sum.getColumns().get(sakiPK);
 
                     // 集約元に集約先の主キーに合致するカラムがあれば外部キーとして取得
                     for (ColumnInfo motoCol : moto.getColumns().values()) {
@@ -1202,14 +1222,7 @@ public final class DataSources {
                             continue;
                         }
 
-                        // データ型 か データサイズ が異なるならスキップ
-                        if (!motoCol.getTypeName().equals(sakiKey.getTypeName())
-                                || motoCol.getColumnSize() != sakiKey.getColumnSize()) {
-                            continue;
-                        }
-
-                        // 小数桁数が異なるならスキップ
-                        if (motoCol.getDecimalDigits() != sakiKey.getDecimalDigits()) {
+                        if (!isMatchColDef(sakiKey, motoCol)) {
                             continue;
                         }
 
@@ -1220,7 +1233,7 @@ public final class DataSources {
                     }
                 }
 
-                if (saki.getPrimaryKeys().size() == motoFKs.size()) {
+                if (sum.getPrimaryKeys().size() == motoFKs.size()) {
                     // 集約先の主キーと、集約元の外部キーが一致する場合
 
                     // 集約元設定済み情報の精査
@@ -1247,7 +1260,7 @@ public final class DataSources {
                             for (ColumnInfo sakiCol : saki2.getSummaryOf().getColumns().values()) {
                                 sakiCol.setSummary(false);
                             }
-                            LOG.info("Cancel " + saki2.getName() + " summary of " + saki2.getSummaryOf().getName()
+                            LOG.debug("Cancel " + saki2.getName() + " summary of " + saki2.getSummaryOf().getName()
                                     + ".");
                             saki2.setSummaryOf(null);
                         }
@@ -1264,13 +1277,13 @@ public final class DataSources {
                         if (motoCount > 0) {
 
                             //誤って集約元を設定済みならクリア
-                            if (saki.getSummaryOf() != null) {
-                                for (ColumnInfo column : saki.getSummaryOf().getColumns().values()) {
+                            if (sum.getSummaryOf() != null) {
+                                for (ColumnInfo column : sum.getSummaryOf().getColumns().values()) {
                                     column.setSummary(false);
                                 }
-                                LOG.info("Cancel " + saki.getName() + " summary of " + saki.getSummaryOf().getName()
+                                LOG.debug("Cancel " + sum.getName() + " summary of " + sum.getSummaryOf().getName()
                                         + ".");
-                                saki.setSummaryOf(null);
+                                sum.setSummaryOf(null);
                             }
                             continue;
                         }
@@ -1279,18 +1292,18 @@ public final class DataSources {
                         for (String fk : motoFKs) {
                             moto.getColumns().get(fk).setSummary(true);
                         }
-                        saki.setSummaryOf(moto);
+                        sum.setSummaryOf(moto);
 
                         // 集約先とする場合は、転生元としない（転生先をクリアする）
-                        if (saki.getRebornTo() != null) {
-                            TableInfo tenseisaki = saki.getRebornTo();
+                        if (sum.getRebornTo() != null) {
+                            TableInfo tenseisaki = sum.getRebornTo();
                             for (ColumnInfo column : tenseisaki.getColumns().values()) {
                                 if (column.isReborn()) {
                                     column.setReborn(false);
                                 }
                             }
-                            LOG.info("Cancel " + saki.getName() + " reborn to " + saki.getRebornTo().getName() + ".");
-                            saki.setRebornTo(null);
+                            LOG.debug("Cancel " + sum.getName() + " reborn to " + sum.getRebornTo().getName() + ".");
+                            sum.setRebornTo(null);
                         }
                     }
                 }
