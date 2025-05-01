@@ -1363,7 +1363,7 @@ public final class DataSources {
             //複合キー内の参照モデルが２以上あれば組合せモデルに設定
             if (combos.size() > 1) {
                 for (TableInfo combo : combos) {
-                    LOG.debug("    " + combo.getName() + " : " + table.getName());
+                    LOG.debug("    " + table.getName() + " : " + combo.getName());
                     table.getComboInfos().add(combo);
                 }
             }
