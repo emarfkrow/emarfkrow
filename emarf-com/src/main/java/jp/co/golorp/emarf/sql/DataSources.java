@@ -660,6 +660,8 @@ public final class DataSources {
      */
     private static void addBrotherTable(final List<TableInfo> tables) {
 
+        LOG.debug("【Brother】");
+
         // 兄モデルとしてループ
         Iterator<TableInfo> elders = tables.iterator();
         while (elders.hasNext()) {
@@ -718,6 +720,7 @@ public final class DataSources {
                 }
 
                 // 兄に弟を追加、弟に弟フラグを設定
+                LOG.debug("    " + elder.getName() + " : " + younger.getName());
                 elder.getYoungers().add(younger);
                 younger.setYounger(true);
             }
@@ -729,6 +732,8 @@ public final class DataSources {
      * @param tables テーブル情報のリスト
      */
     private static void addHistoryTable(final List<TableInfo> tables) {
+
+        LOG.debug("【History】");
 
         // 履歴元としてループ
         Iterator<TableInfo> srcs = tables.iterator();
@@ -794,6 +799,7 @@ public final class DataSources {
                     continue;
                 }
 
+                LOG.debug("    " + src.getName() + " : " + his.getName());
                 his.setHistory(true);
                 src.setHistoryInfo(his);
             }
@@ -806,6 +812,8 @@ public final class DataSources {
      */
     private static void addReferTable(final List<TableInfo> tables) {
 
+        LOG.debug("【Refer】");
+
         // 参照先マスタとしてループ
         Iterator<TableInfo> msts = tables.iterator();
         while (msts.hasNext()) {
@@ -816,38 +824,42 @@ public final class DataSources {
             mstKeys.remove(tekiyoBi);
 
             // 適用日を除く、単独キーでなければスキップ
-            if (mstKeys.size() != 1) {
+            if (mstKeys.size() == 0) {
                 continue;
             }
 
-            // 同じキーのマスタが複数存在するならスキップ
-            if (mst.isYounger()) {
+            // 同じキーのマスタが複数存在する か 履歴モデル ならスキップ
+            if (mst.isYounger() || mst.isHistory()) {
                 continue;
             }
 
             // 参照先マスタの単独主キー
-            String mstKey = mstKeys.get(0);
+            //            String mstKey = mstKeys.get(0);
 
             // 参照先が参照キー・参照名のいずれにも合致しなければ次のテーブルを検証
             boolean isRefer = false;
-            for (String[] referPair : referPairs) {
-                String keySuf = referPair[0];
-                String meiSuf = referPair[1];
-                // 参照キーに合致しなければ次の参照キーを検証
-                if (!StringUtil.endsWithIgnoreCase(keySuf, mstKey)) {
-                    continue;
-                }
-                // 参照名に合致するカラムがあるか調査
-                String referMei = mstKey.replaceAll("(?i)" + keySuf + "$", meiSuf);
-                for (String colName : mst.getColumns().keySet()) {
-                    if (colName.matches("(?i)^" + referMei + "$")) {
-                        isRefer = true;
+            String lastKey = null;
+            for (String mstKey : mstKeys) {
+                for (String[] referPair : referPairs) {
+                    String keySuf = referPair[0];
+                    String meiSuf = referPair[1];
+                    // 参照キーに合致しなければ次の参照キーを検証
+                    if (!StringUtil.endsWithIgnoreCase(keySuf, mstKey)) {
+                        continue;
+                    }
+                    // 参照名に合致するカラムがあるか調査
+                    String referMei = mstKey.replaceAll("(?i)" + keySuf + "$", meiSuf);
+                    for (String colName : mst.getColumns().keySet()) {
+                        if (colName.matches("(?i)^" + referMei + "$")) {
+                            lastKey = mstKey;
+                            isRefer = true;
+                            break;
+                        }
+                    }
+                    // 参照名に合致するカラムがあれば終了
+                    if (isRefer) {
                         break;
                     }
-                }
-                // 参照名に合致するカラムがあれば終了
-                if (isRefer) {
-                    break;
                 }
             }
             // 参照キー・参照名が揃っていなければスキップ
@@ -856,7 +868,7 @@ public final class DataSources {
             }
 
             // 参照先マスタのユニークキー情報
-            ColumnInfo mstPK = mst.getColumns().get(mstKey);
+            ColumnInfo mstPK = mst.getColumns().get(lastKey);
 
             // 参照元トランとしてループ
             Iterator<TableInfo> trns = tables.iterator();
@@ -878,7 +890,9 @@ public final class DataSources {
                     }
 
                     // 参照元カラム名の末尾が参照先カラム名と合致し、参照モデルが未登録なら、カラムに参照モデルを設定
-                    if (colName.matches("(?i)^.*" + mstKey + "$") && col.getRefer() == null) {
+                    if (colName.matches("(?i)^.*" + lastKey + "$") && col.getRefer() == null) {
+
+                        LOG.debug("    " + mst.getName() + " : " + trn.getName() + "." + col.getName());
                         col.setRefer(mst);
                         mst.setRefer(true);
 
@@ -897,6 +911,8 @@ public final class DataSources {
      * @param tables テーブル情報のリスト
      */
     private static void addChildTables(final List<TableInfo> tables) {
+
+        LOG.debug("【Childs】");
 
         // 親モデルとしてループ
         Iterator<TableInfo> oyas = tables.iterator();
@@ -982,6 +998,7 @@ public final class DataSources {
                 ko.getParents().add(oya);
 
                 // 親子設定した場合、兄弟モデルを消し込み（親が適用日なし、子が適用日ありで、誤登録されている可能性があるため）
+                LOG.debug("    " + oya.getName() + " : " + ko.getName());
                 oya.getYoungers().remove(ko);
                 ko.getYoungers().remove(oya);
             }
@@ -994,18 +1011,26 @@ public final class DataSources {
      */
     private static void addRebornTable(final List<TableInfo> tables) {
 
+        LOG.debug("【Reborn】");
+
         // 転生元としてループ
         Iterator<TableInfo> srcs = tables.iterator();
         while (srcs.hasNext()) {
             TableInfo src = srcs.next();
 
-            // 履歴モデル か ビュー か 参照モデル なら転生しない
-            if (src.isHistory() || src.isView() || src.isRefer()) {
+            // 履歴モデル か ビュー か 参照モデル か 親が参照モデル なら転生しない
+            boolean isParentRefer = false;
+            for (TableInfo parent : src.getParents()) {
+                if (parent.isRefer()) {
+                    isParentRefer = true;
+                    break;
+                }
+            }
+            if (src.isHistory() || src.isView() || src.isRefer() || isParentRefer) {
                 continue;
             }
 
-            // 既に何れかの転生先になっているか
-            boolean isReborn = false;
+            boolean isReborn = false; // 既に何れかの転生先になっているか
             Iterator<TableInfo> pres = tables.iterator();
             while (pres.hasNext()) {
                 TableInfo pre = pres.next();
@@ -1038,13 +1063,13 @@ public final class DataSources {
                     // 転生先のカラム情報でループして転生元の主キーがあれば参照テーブルリストに追加
                     for (ColumnInfo rbnCol : rbn.getColumns().values()) {
 
-                        // 主キーならスキップ
                         if (rbnCol.isPk()) {
-                            continue;
+                            continue; // 主キーならスキップ
                         }
 
                         // 転生元が他のテーブルの転生先でない場合は、外部キーがNULL可ならスキップ
                         // （＝転生元が既に他のテーブルの転生先となっている場合は、外部キーがNULL可でも許可する）
+                        // （見積→注文のパターン。注文からでもスタートできるよう。）
                         if (!isReborn && rbnCol.getNullable() == 1) {
                             continue;
                         }
@@ -1084,7 +1109,7 @@ public final class DataSources {
 
                             // 今回の転生元の方がキー数が多いなら、処理済みの転生先をクリア
                             TableInfo otherReborn = other.getRebornTo();
-                            LOG.debug("Cancel " + other.getName() + " reborn to " + otherReborn.getName() + ".");
+                            LOG.debug("        Cancel " + other.getName() + " reborn to " + otherReborn.getName());
                             other.setRebornTo(null);
                             for (String primaryKey : other.getPrimaryKeys()) {
                                 otherReborn.getColumns().get(primaryKey).setReborn(false);
@@ -1104,18 +1129,18 @@ public final class DataSources {
                         if (rebornCount > 0) {
                             if (src.getRebornTo() != null) {
                                 TableInfo reborn = src.getRebornTo(); // 転生先を派生先に追加
-                                LOG.debug("Cancel " + src.getName() + " reborn to " + reborn.getName() + ".");
+                                LOG.debug("        Cancel " + src.getName() + " : " + reborn.getName());
                                 src.setRebornTo(null);
                                 for (String primaryKey : src.getPrimaryKeys()) {
                                     reborn.getColumns().get(primaryKey).setReborn(false);
                                 }
-                                LOG.debug("Derive " + src.getName() + " to " + reborn.getName());
+                                LOG.debug("        Derive " + src.getName() + " : " + reborn.getName());
                                 src.getDeriveTos().add(reborn);
                                 for (String primaryKey : src.getPrimaryKeys()) {
                                     reborn.getColumns().get(primaryKey).setDerive(true);
                                 }
                             }
-                            LOG.debug("Derive " + src.getName() + " to " + rbn.getName() + " [" + rbnFKs + "]");
+                            LOG.debug("        Derive " + src.getName() + " : " + rbn.getName() + " " + rbnFKs);
                             src.getDeriveTos().add(rbn);
                             for (String fk : rbnFKs) {
                                 rbn.getColumns().get(fk).setDerive(true);
@@ -1123,7 +1148,7 @@ public final class DataSources {
                             continue;
                         }
 
-                        LOG.debug("Reborn " + src.getName() + " to " + rbn.getName() + " [" + rbnFKs + "]");
+                        LOG.debug("    " + src.getName() + " : " + rbn.getName() + " " + rbnFKs);
                         ++rebornCount;
                         src.setRebornTo(rbn);
                         for (String fk : rbnFKs) {
@@ -1165,6 +1190,8 @@ public final class DataSources {
      * @param tables テーブル情報のリスト
      */
     private static void addSummaryTable(final List<TableInfo> tables) {
+
+        LOG.debug("【Summary】");
 
         // 集約先として、テーブル情報をループ
         Iterator<TableInfo> sums = tables.iterator();
@@ -1260,8 +1287,7 @@ public final class DataSources {
                             for (ColumnInfo sakiCol : saki2.getSummaryOf().getColumns().values()) {
                                 sakiCol.setSummary(false);
                             }
-                            LOG.debug("Cancel " + saki2.getName() + " summary of " + saki2.getSummaryOf().getName()
-                                    + ".");
+                            LOG.debug("        Cancel " + saki2.getName() + " : " + saki2.getSummaryOf().getName());
                             saki2.setSummaryOf(null);
                         }
                         //                        } else if (saki2.getPrimaryKeys().size() > saki.getPrimaryKeys().size()) {
@@ -1281,13 +1307,13 @@ public final class DataSources {
                                 for (ColumnInfo column : sum.getSummaryOf().getColumns().values()) {
                                     column.setSummary(false);
                                 }
-                                LOG.debug("Cancel " + sum.getName() + " summary of " + sum.getSummaryOf().getName()
-                                        + ".");
+                                LOG.debug("        Cancel " + sum.getName() + " : " + sum.getSummaryOf().getName());
                                 sum.setSummaryOf(null);
                             }
                             continue;
                         }
 
+                        LOG.debug("    " + sum.getName() + " : " + moto.getName());
                         ++motoCount;
                         for (String fk : motoFKs) {
                             moto.getColumns().get(fk).setSummary(true);
@@ -1302,7 +1328,7 @@ public final class DataSources {
                                     column.setReborn(false);
                                 }
                             }
-                            LOG.debug("Cancel " + sum.getName() + " reborn to " + sum.getRebornTo().getName() + ".");
+                            LOG.debug("        Cancel reborn " + sum.getName() + " to " + sum.getRebornTo().getName());
                             sum.setRebornTo(null);
                         }
                     }
@@ -1315,6 +1341,8 @@ public final class DataSources {
      * @param tables
      */
     private static void addCombo(final List<TableInfo> tables) {
+
+        LOG.debug("【Combo】");
 
         for (TableInfo table : tables) {
 
@@ -1335,6 +1363,7 @@ public final class DataSources {
             //複合キー内の参照モデルが２以上あれば組合せモデルに設定
             if (combos.size() > 1) {
                 for (TableInfo combo : combos) {
+                    LOG.debug("    " + combo.getName() + " : " + table.getName());
                     table.getComboInfos().add(combo);
                 }
             }
@@ -1367,10 +1396,11 @@ public final class DataSources {
                     }
                     //制約モデルが２以上あれば消し込み
                     if (combo.getStintInfo() != null) {
-                        LOG.info("Cancel " + combo.getName() + " stint " + combo.getStintInfo().getName() + ".");
+                        LOG.debug("        Cancel " + combo.getName() + " : " + combo.getStintInfo().getName());
                         combo.setStintInfo(null);
                         break;
                     }
+                    LOG.debug("        Stint " + combo.getName() + " : " + table.getName());
                     combo.setStintInfo(table);
                 }
             }
@@ -1385,11 +1415,12 @@ public final class DataSources {
         for (TableInfo table : tableInfos) {
 
             LOG.info("");
-            LOG.info("■" + table.getName());
 
+            String tablelog = "■" + table.getName();
             if (table.getPrimaryKeys().size() > 0) {
-                LOG.info("    PrimaryKeys: " + table.getPrimaryKeys());
+                tablelog += " : " + table.getPrimaryKeys();
             }
+            LOG.info(tablelog);
 
             if (table.getParents().size() > 0) {
                 LOG.info("    ParentInfos:");
