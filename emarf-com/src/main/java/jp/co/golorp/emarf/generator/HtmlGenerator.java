@@ -769,7 +769,9 @@ public final class HtmlGenerator {
                 String remarks = table.getRemarks();
                 String e = StringUtil.toPascalCase(name);
                 String css = " class=\"table\"";
-                if (table.isView()) {
+                if (table.isHistory()) {
+                    css = " class=\"history\"";
+                } else if (table.isView()) {
                     css = " class=\"view\"";
                 }
                 s.add("          <li><a id=\"" + e + "\" th:href=\"@{/model/" + e + "S.html}\" th:text=\"#{nav." + e
