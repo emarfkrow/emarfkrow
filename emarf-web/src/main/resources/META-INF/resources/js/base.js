@@ -349,7 +349,7 @@ let Base = {
         });
 
         // buttonスタイル適用
-        $('button, .nav a, .article a').button();
+        $('button, .nav a.table, .nav a.view, .article a').button();
         $('.article fieldset a').css('padding', 0);
 
         // 画面の更新権限のチェック

@@ -328,7 +328,5 @@ a.view {
 }
 
 a.history {
-    background-color: #ddd;
-    border-color: gray !important;
-    color: gray !important;
+    margin-left: 2rem;
 }
