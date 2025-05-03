@@ -823,7 +823,7 @@ public final class DataSources {
             List<String> mstKeys = new ArrayList<String>(mst.getPrimaryKeys());
             mstKeys.remove(tekiyoBi);
 
-            // 適用日を除く、単独キーでなければスキップ
+            // 適用日を除く、キーがなければスキップ
             if (mstKeys.size() == 0) {
                 continue;
             }
@@ -833,37 +833,45 @@ public final class DataSources {
                 continue;
             }
 
-            // 参照先マスタの単独主キー
-            //            String mstKey = mstKeys.get(0);
-
-            // 参照先が参照キー・参照名のいずれにも合致しなければ次のテーブルを検証
-            boolean isRefer = false;
+            // 参照ペアでループ
+            boolean isReferMei = false;
             String lastKey = null;
-            for (String mstKey : mstKeys) {
-                for (String[] referPair : referPairs) {
-                    String keySuf = referPair[0];
-                    String meiSuf = referPair[1];
-                    // 参照キーに合致しなければ次の参照キーを検証
-                    if (!StringUtil.endsWithIgnoreCase(keySuf, mstKey)) {
-                        continue;
-                    }
-                    // 参照名に合致するカラムがあるか調査
-                    String referMei = mstKey.replaceAll("(?i)" + keySuf + "$", meiSuf);
-                    for (String colName : mst.getColumns().keySet()) {
-                        if (colName.matches("(?i)^" + referMei + "$")) {
-                            lastKey = mstKey;
-                            isRefer = true;
-                            break;
-                        }
-                    }
-                    // 参照名に合致するカラムがあれば終了
-                    if (isRefer) {
+            for (String[] referPair : referPairs) {
+                String[] keySufs = referPair[0].split("&");
+
+                // マスタキーが一つでも合致しなければ次の参照ペアに移動
+                boolean isReferKeys = true;
+                String lastKeySuf = null;
+                for (String mstKey : mstKeys) {
+                    if (!StringUtil.endsWith(keySufs, mstKey)) {
+                        isReferKeys = false;
                         break;
                     }
                 }
+                if (!isReferKeys) {
+                    continue;
+                }
+
+                // この参照ペアにマスタキーが全て一致した
+                lastKey = mstKeys.get(mstKeys.size() - 1);
+                lastKeySuf = keySufs[keySufs.length - 1];
+                if (lastKey.matches("(?i).*" + lastKeySuf + "$")) {
+                    // 参照値があるか
+                    String referMei = lastKey.replaceAll("(?i)" + lastKeySuf + "$", referPair[1]);
+                    for (String colName : mst.getColumns().keySet()) {
+                        if (colName.matches("(?i)^" + referMei + "$")) {
+                            isReferMei = true;
+                            break;
+                        }
+                    }
+                }
+                if (isReferMei) {
+                    break;
+                }
             }
-            // 参照キー・参照名が揃っていなければスキップ
-            if (!isRefer) {
+
+            // どの参照ペアにもヒットしなければスキップ
+            if (!isReferMei) {
                 continue;
             }
 

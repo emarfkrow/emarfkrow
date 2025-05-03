@@ -1014,11 +1014,12 @@ public final class HtmlGenerator {
             if (isMeiRefer) {
                 // 参照設定の組み合わせで、キー接尾辞に合致するカラム名を探索
                 for (String[] suffix : referPairs) {
-                    String keySuffix = suffix[0];
+                    String[] keySuffixs = suffix[0].split("&");
                     String meiSuffix = suffix[1];
-                    if (name.matches("(?i).*" + keySuffix + "$")) {
+                    if (StringUtil.endsWith(keySuffixs, name)) {
                         // カラム名の末尾を名称列サフィックスに変換して、名称列が参照先テーブルに含まれている場合は、取得する名称を決定する
-                        String tempMei = name.replaceAll("(?i)" + keySuffix + "$", meiSuffix).toUpperCase();
+                        String lastSuffix = keySuffixs[keySuffixs.length - 1];
+                        String tempMei = name.replaceAll("(?i)" + lastSuffix + "$", meiSuffix).toUpperCase();
                         for (ColumnInfo referColumnInfo : referInfo.getColumns().values()) {
                             if (tempMei.matches("(?i).*" + referColumnInfo.getName() + "$")) {
                                 referMei = tempMei;
