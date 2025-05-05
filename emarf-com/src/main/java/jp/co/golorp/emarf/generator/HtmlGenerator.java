@@ -1634,38 +1634,41 @@ public final class HtmlGenerator {
      */
     private static String getMeiColumnName(final String columnName, final TableInfo referInfo) {
 
-        // カラム名が参照キーに合致する場合
-        if (StringUtil.endsWith(referPairs, columnName)) {
+        for (String[] e : referPairs) {
+            String[] keySufs = e[0].split("&");
+            String valSuf = e[1];
 
-            for (String[] e : referPairs) {
-                String idSuffix = e[0];
-                String meiSuffix = e[1];
+            // カラム名が参照キーに合致する場合
+            if (StringUtil.endsWith(keySufs, columnName)) {
 
-                // カラム名が参照キーに合致しなければスキップ
-                if (!columnName.matches("(?i)^.*" + idSuffix + "$")) {
-                    continue;
-                }
+                for (String keySuf : keySufs) {
 
-                // カラム名のIDサフィックスを名称サフィックスに置換して名称カラム名を取得
-                String srcIdColumn = columnName;
-                String srcMeiColumn = srcIdColumn.replaceAll("(?i)" + idSuffix + "$", meiSuffix);
-
-                // 参照先テーブルの全カラム名を確認して、末尾が合致するカラム名を、参照先のID・名称カラム名として取得
-                String destIdColumn = null;
-                String destMeiColumn = null;
-                for (String destColumnName : referInfo.getColumns().keySet()) {
-                    if (srcIdColumn.matches("(?i)^.*" + destColumnName + "$")) {
-                        destIdColumn = destColumnName;
-                    } else if (srcMeiColumn.matches("(?i)^.*" + destColumnName + "$")) {
-                        destMeiColumn = destColumnName;
+                    // カラム名が参照キーに合致しなければスキップ
+                    if (!columnName.matches("(?i)^.*" + keySuf + "$")) {
+                        continue;
                     }
-                }
 
-                if (destIdColumn == null || destMeiColumn == null) {
-                    continue;
-                }
+                    // カラム名のIDサフィックスを名称サフィックスに置換して名称カラム名を取得
+                    String srcIdColumn = columnName;
+                    String srcMeiColumn = srcIdColumn.replaceAll("(?i)" + keySuf + "$", valSuf);
 
-                return srcMeiColumn;
+                    // 参照先テーブルの全カラム名を確認して、末尾が合致するカラム名を、参照先のID・名称カラム名として取得
+                    String destIdColumn = null;
+                    String destMeiColumn = null;
+                    for (String destColumnName : referInfo.getColumns().keySet()) {
+                        if (srcIdColumn.matches("(?i)^.*" + destColumnName + "$")) {
+                            destIdColumn = destColumnName;
+                        } else if (srcMeiColumn.matches("(?i)^.*" + destColumnName + "$")) {
+                            destMeiColumn = destColumnName;
+                        }
+                    }
+
+                    if (destIdColumn == null || destMeiColumn == null) {
+                        continue;
+                    }
+
+                    return srcMeiColumn;
+                }
             }
         }
 
