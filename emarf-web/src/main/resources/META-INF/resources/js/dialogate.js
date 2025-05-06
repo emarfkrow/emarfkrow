@@ -196,6 +196,11 @@ $(function() {
             $dialogDiv.find('[name$="' + id + '"]').val(vals);
 
             // 全ての選択行で一致するカラム名と値を取得
+            let summarySufs = null;
+            if (Messages['column.summary.suffixs']) {
+                summarySufs = Messages['column.summary.suffixs'].split(',');
+            }
+
             let eqs = {};
             for (let i in grid.getSelectedRows()) {
                 let r = grid.getSelectedRows()[i];
@@ -215,10 +220,27 @@ $(function() {
                         // メタ情報以外の項目を親画面に反映
 
                         let val = item[colName];
-                        if (!eqs[colName] && eqs[colName] != '') {
-                            eqs[colName] = val;
-                        } else if (eqs[colName] != val) {
-                            eqs[colName] = ''
+
+                        let isSummary = false;
+                        for (let i in summarySufs) {
+                            let summarySuf = summarySufs[i];
+                            if (colName.endsWith(summarySuf.toLowerCase()) || colName.endsWith(summarySuf.toUpperCase())) {
+                                isSummary = true;
+                                break;
+                            }
+                        }
+
+                        if (isSummary) {
+                            if (!eqs[colName]) {
+                                eqs[colName] = 0;
+                            }
+                            eqs[colName] += val;
+                        } else {
+                            if (!eqs[colName] && eqs[colName] != '') {
+                                eqs[colName] = val;
+                            } else if (eqs[colName] != val) {
+                                eqs[colName] = ''
+                            }
                         }
                     }
                 }
@@ -231,7 +253,7 @@ $(function() {
                 }
                 let property = Casing.toCamel(colName);
                 $dialogDiv.find('span[id$="' + property + '"]').html(eqs[colName]);
-                $dialogDiv.find('[name$="' + property + '"]').val(eqs[colName]);
+                $dialogDiv.find('[name$="' + property + '"]').val([eqs[colName]]);
             }
         }
 
