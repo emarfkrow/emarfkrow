@@ -375,30 +375,48 @@ public final class HtmlGenerator {
      */
     private static boolean isAnew(final TableInfo table) {
 
-        // 転生元が必須か
-        boolean isReborneeNotNull = false;
+        // 履歴モデルなら作成不可
+        if (table.isHistory()) {
+            return false;
+        }
+
+        // ビューなら作成不可
+        if (table.isView()) {
+            return false;
+        }
+
+        // 組合せモデルなら作成可
+        if (table.getComboInfos().size() > 1) {
+            return true;
+        }
+
+        // 転生元か派生元が必須なら作成不可
         for (ColumnInfo column : table.getColumns().values()) {
             if ((column.isReborn() || column.isDerive()) && column.getNullable() != 1) {
-                isReborneeNotNull = true;
-                break;
+                return false;
             }
         }
 
         List<String> primaryKeys = new ArrayList<String>(table.getPrimaryKeys());
         primaryKeys.remove(tekiyoBi);
 
-        // 適用日を除く主キーが全て採番キーでないか
-        boolean isAllNonNumberingKey = true;
-        for (String pk : primaryKeys) {
+        // 適用日を除く主キーが、一つなら作成可
+        if (primaryKeys.size() == 1) {
+            return true;
+        }
+
+        // 適用日を除く主キーが２以上ある
+
+        // 適用日を除く主キーのうち、最終キー以外の一つでも、参照モデルでない採番キーなら作成不可
+        for (int i = 0; i < primaryKeys.size() - 1; i++) {
+            String pk = primaryKeys.get(i);
             ColumnInfo primaryKey = table.getColumns().get(pk);
-            if (primaryKey.isNumbering()) {
-                isAllNonNumberingKey = false;
-                break;
+            if (primaryKey.getRefer() == null && primaryKey.isNumbering()) {
+                return false;
             }
         }
 
-        return !table.isHistory() && !table.isView() && !isReborneeNotNull
-                && (primaryKeys.size() == 1 || table.getComboInfos().size() > 1 || isAllNonNumberingKey);
+        return true;
     }
 
     /**

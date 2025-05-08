@@ -964,6 +964,16 @@ public final class DataSources {
                     continue;
                 }
 
+                //                // 親が参照モデルで子がトラン、およびその逆ならスキップ
+                //                if ((oya.isRefer() && !ko.isRefer()) || (!oya.isRefer() && ko.isRefer())) {
+                //                    continue;
+                //                }
+
+                // 親が参照モデルなら子のテーブル名が後方一致しなければスキップ
+                if (oya.isRefer() && !ko.getName().startsWith(oya.getName())) {
+                    continue;
+                }
+
                 // 親にも主キーに適用日があれば評価から除外
                 List<String> koKeys = new ArrayList<String>(ko.getPrimaryKeys());
                 if (koKeys.contains(tekiyoBi)) {
