@@ -828,54 +828,33 @@ public final class DataSources {
                 continue;
             }
 
-            // 同じキーのマスタが複数存在する か 履歴モデル ならスキップ
-            if (mst.isYounger() || mst.isHistory()) {
+            // 履歴モデル ならスキップ
+            if (mst.isHistory()) {
                 continue;
             }
 
-            // 参照ペアでループ
-            boolean isReferMei = false;
-            String lastKey = null;
-            for (String[] referPair : referPairs) {
-                String[] keySufs = referPair[0].split("&");
-
-                // マスタキーが一つでも合致しなければ次の参照ペアに移動
-                boolean isReferKeys = true;
-                String lastKeySuf = null;
-                for (String mstKey : mstKeys) {
-                    if (!StringUtil.endsWith(keySufs, mstKey)) {
-                        isReferKeys = false;
+            // 同じキーの参照モデルが複数存在する
+            if (mst.getYoungers().size() > 0) {
+                boolean isReferYng = false;
+                for (TableInfo yng : mst.getYoungers()) {
+                    if (isRefer(yng)) {
+                        isReferYng = true;
                         break;
                     }
                 }
-                if (!isReferKeys) {
+                if (isReferYng) {
                     continue;
-                }
-
-                // この参照ペアにマスタキーが全て一致した
-                lastKey = mstKeys.get(mstKeys.size() - 1);
-                lastKeySuf = keySufs[keySufs.length - 1];
-                if (lastKey.matches("(?i).*" + lastKeySuf + "$")) {
-                    // 参照値があるか
-                    String referMei = lastKey.replaceAll("(?i)" + lastKeySuf + "$", referPair[1]);
-                    for (String colName : mst.getColumns().keySet()) {
-                        if (colName.matches("(?i)^" + referMei + "$")) {
-                            isReferMei = true;
-                            break;
-                        }
-                    }
-                }
-                if (isReferMei) {
-                    break;
                 }
             }
 
             // どの参照ペアにもヒットしなければスキップ
-            if (!isReferMei) {
+            if (!isRefer(mst)) {
                 continue;
             }
 
             // 参照先マスタのユニークキー情報
+            String lastKey = null;
+            lastKey = mstKeys.get(mstKeys.size() - 1);
             ColumnInfo mstPK = mst.getColumns().get(lastKey);
 
             // 参照元トランとしてループ
@@ -912,6 +891,49 @@ public final class DataSources {
                 }
             }
         }
+    }
+
+    /**
+     * @param table
+     * @return boolean
+     */
+    public static boolean isRefer(final TableInfo table) {
+
+        List<String> mstKeys = table.getPrimaryKeys();
+
+        for (String[] referPair : referPairs) {
+            String[] keySufs = referPair[0].split("&");
+
+            // マスタキーが一つでも合致しなければ次の参照ペアに移動
+            boolean isReferKeys = true;
+            String lastKeySuf = null;
+            for (String mstKey : mstKeys) {
+                if (!StringUtil.endsWith(keySufs, mstKey)) {
+                    isReferKeys = false;
+                    break;
+                }
+            }
+            if (!isReferKeys) {
+                continue;
+            }
+
+            // この参照ペアにマスタキーが全て一致した
+
+            String lastKey = mstKeys.get(mstKeys.size() - 1);
+            lastKeySuf = keySufs[keySufs.length - 1];
+            if (lastKey.matches("(?i).*" + lastKeySuf + "$")) {
+
+                // 参照値があるか
+                String referMei = lastKey.replaceAll("(?i)" + lastKeySuf + "$", referPair[1]);
+                for (String colName : table.getColumns().keySet()) {
+                    if (colName.matches("(?i)^" + referMei + "$")) {
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -970,6 +992,7 @@ public final class DataSources {
                 //                }
 
                 // 親が参照モデルなら子のテーブル名が後方一致しなければスキップ
+                // （単独キーだとトラン系に影響する）
                 if (oya.isRefer() && !ko.getName().startsWith(oya.getName())) {
                     continue;
                 }
@@ -1003,10 +1026,18 @@ public final class DataSources {
                     continue;
                 }
 
-                // 最終キーが参照モデルならスキップ
-                String koLastKey = koKeys.get(koKeys.size() - 1);
-                if (ko.getColumns().get(koLastKey).getRefer() != null) {
-                    continue;
+                //                // 最終キーが参照モデルならスキップ
+                //                String koLastKey = koKeys.get(koKeys.size() - 1);
+                //                if (ko.getColumns().get(koLastKey).getRefer() != null) {
+                //                    continue;
+                //                }
+
+                // 設定済みの親モデルに子モデル名が後方一致するならスキップ
+                if (ko.getParents().size() == 1) {
+                    TableInfo orgParent = ko.getParents().get(0);
+                    if (ko.getName().startsWith(orgParent.getName())) {
+                        continue;
+                    }
                 }
 
                 // 親モデルの子リストに追加
