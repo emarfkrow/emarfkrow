@@ -1420,7 +1420,9 @@ public final class DataSources {
             //組合せモデル数が２の場合
             if (table.getComboInfos().size() == 2) {
 
-                //自テーブルの主キーが各単一キーと適用日のみで、各テーブルの主キーが自テーブルの第二キー以降の場合は、各テーブルに制約モデルを設定
+                // 自テーブルの主キーが各単一キーと適用日のみで、
+                // 各テーブルの主キーが自テーブルの第二キー以降の場合は、
+                // 各テーブルに制約モデルを設定
                 boolean b = true;
                 for (String pk : table.getPrimaryKeys()) {
                     if (pk.matches(tekiyoBi)) {
@@ -1444,13 +1446,13 @@ public final class DataSources {
                         continue;
                     }
                     //制約モデルが２以上あれば消し込み
-                    if (combo.getStintInfo() != null) {
-                        LOG.debug("        Cancel " + combo.getName() + " : " + combo.getStintInfo().getName());
-                        combo.setStintInfo(null);
+                    if (table.getStintInfo() != null) {
+                        LOG.debug("        Cancel " + table.getName() + " : " + combo.getName());
+                        table.setStintInfo(null);
                         break;
                     }
-                    LOG.debug("        Stint " + combo.getName() + " : " + table.getName());
-                    combo.setStintInfo(table);
+                    LOG.debug("        Stint " + table.getName() + " : " + combo.getName());
+                    table.setStintInfo(combo);
                 }
             }
         }
