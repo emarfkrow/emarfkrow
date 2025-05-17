@@ -66,7 +66,11 @@ public class SearchAction extends BaseAction {
         Map<String, Object> map = new HashMap<String, Object>();
 
         if (list == null) {
-            map.put("INFO", Messages.get("info.nodata"));
+            if (postJson.get("isSilent") == null) {
+                map.put("INFO", Messages.get("info.nodata"));
+            } else if (!postJson.get("isSilent").equals("true")) {
+                map.put("INFO", Messages.get("info.nodata"));
+            }
         } else {
             map.put(this.getBaseName(), list);
             if (rows != null) {

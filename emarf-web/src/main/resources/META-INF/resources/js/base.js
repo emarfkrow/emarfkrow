@@ -563,6 +563,11 @@ let Base = {
                 }
 
                 if (Object.keys(postJson).length > 0) {
+                    if (action.indexOf('?') < 0) {
+                        action += '?isSilent=true';
+                    } else {
+                        action += '&isSilent=true';
+                    }
                     Ajaxize.ajaxPost(action, postJson, function(data) {
                         for (let formName in data) {
                             let dataJson = data[formName];
