@@ -17,6 +17,7 @@ limitations under the License.
 package jp.co.golorp.emarf.servlet.http;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
@@ -74,6 +75,9 @@ public final class XlsxServlet extends HttpServlet {
         Map<String, Object> map = null;
         try {
             Map<String, Object> postJson = ServletUtil.getPostedJson(request);
+            if (postJson == null) {
+                postJson = new HashMap<String, Object>();
+            }
             postJson.put("page", 0);
             postJson.put("rows", 0);
             BaseAction action = ServletUtil.getAction(request);

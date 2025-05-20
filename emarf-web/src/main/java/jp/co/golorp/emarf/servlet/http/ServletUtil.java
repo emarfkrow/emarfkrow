@@ -331,21 +331,25 @@ public final class ServletUtil {
                 }
             }
 
-        } else if (request.getParameterMap().size() > 0) {
-            // form送信の場合
+        }
 
-            map = suckParameterMap(request);
+        // get/post送信の場合
+        if (request.getParameterMap().size() > 0) {
+            map.putAll(suckParameterMap(request));
+        }
 
-        } else {
-            // ajax送信の場合
-
-            try {
-                String s = StringUtil.sanitize(request.getReader().readLine());
-                map = mapper.readValue(s, new TypeReference<Map<String, Object>>() {
-                });
-            } catch (Exception e) {
-                throw new SysError(e);
+        // ajax送信の場合
+        try {
+            String line = request.getReader().readLine();
+            if (line != null) {
+                String s = StringUtil.sanitize(line);
+                if (!StringUtil.isNullOrBlank(s)) {
+                    map.putAll(mapper.readValue(s, new TypeReference<Map<String, Object>>() {
+                    }));
+                }
             }
+        } catch (Exception e) {
+            throw new SysError(e);
         }
 
         try {

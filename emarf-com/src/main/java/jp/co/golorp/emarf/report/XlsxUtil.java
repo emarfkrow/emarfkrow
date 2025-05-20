@@ -167,6 +167,7 @@ public final class XlsxUtil {
                         dataItem = map;
                         l = "{{";
                         r = "}}";
+                        // TODO 子モデルの場合
                     }
 
                     // 列情報を転記
@@ -417,10 +418,15 @@ public final class XlsxUtil {
      */
     private static File write(final Workbook workbook, final String fileBaseMei, final String extension) {
 
+        String tmp = App.get("tempVirtualDir");
+        if (tmp == null) {
+            tmp = "/temp";
+        }
+
         // 保存ファイルパス
         String timestamp = DateTimeUtil.ymdhmsS();
         String writeFileName = fileBaseMei + "." + timestamp + "." + extension;
-        String writeFilePath = App.get("tempVirtualDir") + sep + writeFileName;
+        String writeFilePath = tmp + sep + writeFileName;
         File file = FileUtil.get(writeFilePath);
 
         // エクセルファイルを保管

@@ -23,6 +23,9 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import jp.co.golorp.emarf.exception.SysError;
 
 /**
@@ -31,6 +34,9 @@ import jp.co.golorp.emarf.exception.SysError;
  * @author golorp
  */
 public final class FileUtil {
+
+    /** logger */
+    private static final Logger LOG = LoggerFactory.getLogger(FileUtil.class);
 
     /** プライベートコンストラクタ */
     private FileUtil() {
@@ -59,9 +65,13 @@ public final class FileUtil {
      */
     public static File get(final String filePath) {
         String pathname = contextDir + File.separator + filePath;
+        LOG.debug("pathname: " + pathname);
         pathname = pathname.replaceAll("[\\\\|\\/]+", "\\" + File.separator);
+        LOG.debug("pathname: " + pathname);
+        String dirname = pathname.replaceFirst("[^\\\\]+$", "");
+        LOG.debug("dirname : " + dirname);
         try {
-            Files.createDirectories(Paths.get(pathname.replaceFirst("[^\\\\]+$", "")));
+            Files.createDirectories(Paths.get(dirname));
         } catch (IOException e) {
             throw new SysError(e);
         }
