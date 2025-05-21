@@ -148,39 +148,62 @@ public final class XlsxUtil {
             // 追加シート情報でループ
             for (Map<String, Object> addSheetData : addSheetMap.values()) {
 
+                // タイトルとプレースホルダの出力
                 for (Object sheetData : addSheetData.values()) {
 
                     Map<String, Object> dataItem = null;
-                    String l = null;
-                    String r = null;
+                    String left = null;
+                    String right = null;
 
                     if (sheetData instanceof List) {
-                        // シートデータがListの場合
+                        // 検索画面の場合
                         @SuppressWarnings("unchecked")
                         List<Map<String, Object>> dataList = (List<Map<String, Object>>) sheetData;
                         dataItem = dataList.get(0);
-                        l = "[[";
-                        r = "]]";
+                        left = "[[";
+                        right = "]]";
                     } else if (sheetData instanceof Map) {
+                        // 単票画面の場合
                         @SuppressWarnings("unchecked")
                         Map<String, Object> map = (Map<String, Object>) sheetData;
                         dataItem = map;
-                        l = "{{";
-                        r = "}}";
-                        // TODO 子モデルの場合
+                        left = "{{";
+                        right = "}}";
                     }
 
                     // 列情報を転記
                     if (dataItem != null) {
+                        int r = 0;
                         int c = 0;
-                        for (String columnName : dataItem.keySet()) {
-                            setCellValue(layoutSheet, 0, c, columnName);
-                            setCellValue(layoutSheet, 1, c++, l + columnName + r);
+                        int childs = 0;
+                        for (Entry<String, Object> e : dataItem.entrySet()) {
+                            String k = e.getKey();
+                            Object v = e.getValue();
+                            if (!(v instanceof List)) {
+                                // 子モデルリストでない場合
+                                setCellValue(layoutSheet, r, c, k);
+                                setCellValue(layoutSheet, r + 1, c++, left + k + right);
+                            } else {
+                                // 子モデルリストの場合
+                                @SuppressWarnings("unchecked")
+                                List<Map<String, Object>> dataList = (List<Map<String, Object>>) v;
+                                Map<String, Object> childItem = dataList.get(0);
+                                if (childItem != null) {
+                                    int r2 = 3 * ++childs;
+                                    int c2 = 0;
+                                    for (Entry<String, Object> e2 : childItem.entrySet()) {
+                                        String k2 = e2.getKey();
+                                        Object v2 = e2.getValue();
+                                        setCellValue(layoutSheet, r2, c2, k2);
+                                        setCellValue(layoutSheet, r2 + 1, c2++, "[[" + k2 + "]]");
+                                    }
+                                }
+                            }
                         }
                     }
                 }
 
-                //追加シートの１枚目だけ処理すればいい
+                // 追加シートの１枚目だけ処理すればいい
                 break;
             }
         }

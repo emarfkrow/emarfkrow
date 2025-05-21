@@ -425,10 +425,10 @@ public final class DataSources {
             Connections.close();
         }
 
-        //兄弟モデルの評価
-        addBrotherTable(tables);
         //履歴モデルの評価
         addHistoryTable(tables);
+        //兄弟モデルの評価
+        addBrotherTable(tables);
         //参照モデルの評価
         addReferTable(tables);
         //子モデルの評価
@@ -699,6 +699,11 @@ public final class DataSources {
 
                 // 養子モデルならスキップ
                 if (younger.getName().matches(fosterRe)) {
+                    continue;
+                }
+
+                // 兄に履歴モデルがないのに弟に履歴モデルがある場合はスキップ
+                if (elder.getHistory() == null && younger.getHistory() != null) {
                     continue;
                 }
 
@@ -983,6 +988,11 @@ public final class DataSources {
 
                 // 履歴テーブルならスキップ
                 if (ko.isHistory()) {
+                    continue;
+                }
+
+                // 親に履歴モデルがないのに子に履歴モデルがある場合はスキップ
+                if (oya.getHistory() == null && ko.getHistory() != null) {
                     continue;
                 }
 

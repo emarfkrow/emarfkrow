@@ -229,12 +229,14 @@ public final class BeanGenerator {
             s.add(" * @author emarfkrow");
             s.add(" */");
             s.add("public class " + e + " implements IEntity {");
+            int i = 0;
             if (table.getColumns().get("ID") == null) {
                 s.add("");
                 s.add("    /** SlickGridのDataView用ID */");
                 s.add("    private Integer id;");
                 s.add("");
                 s.add("    /** @return id */");
+                s.add("    @com.fasterxml.jackson.annotation.JsonProperty(value = \"id\", index = " + ++i + ")");
                 s.add("    public final Integer getId() {");
                 s.add("        return id;");
                 s.add("    }");
@@ -281,7 +283,7 @@ public final class BeanGenerator {
                 }
                 s.add("");
                 s.add("    /** @return " + m + " */");
-                s.add("    @com.fasterxml.jackson.annotation.JsonProperty(\"" + n + "\")");
+                s.add("    @com.fasterxml.jackson.annotation.JsonProperty(value = \"" + n + "\", index = " + ++i + ")");
                 s.add("    public " + t + " get" + a + "() {");
                 if (t.equals("String") && StringUtil.endsWith(inputYMSuffixs, n)) {
                     s.add("        if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(this." + p + ")) {");
@@ -330,16 +332,16 @@ public final class BeanGenerator {
                 s.add("    }");
                 //子モデルgridで補填用の参照名
                 if (column.getRefer() != null) {
-                    addSanshoMei(s, table, column);
+                    i = addSanshoMei(s, table, column, i);
                 }
             }
             if (table.getHistory() != null && !StringUtil.isNullOrBlank(reason)) {
-                addHistoryReason(s);
+                i = addHistoryReason(s, i);
             }
             javaEntityCRUD(table, s);
             javaEntityUtil(table, s);
-            javaEntityYoungers(table, s);
-            javaEntityChild(table, s);
+            i = javaEntityYoungers(table, s, i);
+            i = javaEntityChild(table, s, i);
             s.add("}");
             String path = pkgDir + File.separator + e + ".java";
             FileUtil.writeFile(path, s);
@@ -354,14 +356,20 @@ public final class BeanGenerator {
 
     /**
      * @param s
+     * @param jsonIndex
+     * @return int
      */
-    public static void addHistoryReason(final List<String> s) {
+    public static int addHistoryReason(final List<String> s, final int jsonIndex) {
+
+        int i = jsonIndex;
+
         String p = StringUtil.toCamelCase(reason);
         String a = StringUtil.toPascalCase(reason);
         s.add("");
         s.add("    /** " + p + " */");
         s.add("    private String " + p + ";");
         s.add("");
+        s.add("    @com.fasterxml.jackson.annotation.JsonProperty(value = \"" + reason + "\", index = " + ++i + ")");
         s.add("    /** @return " + p + " */");
         s.add("    public String get" + a + "() {");
         s.add("        return this." + p + ";");
@@ -373,6 +381,8 @@ public final class BeanGenerator {
         s.add("            this." + p + " = o.toString();");
         s.add("        }");
         s.add("    }");
+
+        return i;
     }
 
     /**
@@ -415,8 +425,13 @@ public final class BeanGenerator {
      * @param s
      * @param table
      * @param column
+     * @param jsonIndex
+     * @return int
      */
-    private static void addSanshoMei(final List<String> s, final TableInfo table, final ColumnInfo column) {
+    private static int addSanshoMei(final List<String> s, final TableInfo table, final ColumnInfo column,
+            final int jsonIndex) {
+
+        int i = jsonIndex;
 
         String columnMei = column.getRemarks();
 
@@ -424,10 +439,10 @@ public final class BeanGenerator {
         String meiSql = SqlGenerator.getMeiSql(0, table, column);
         if (meiSql != null) {
 
-            int i = meiSql.lastIndexOf(" AS ") + 4;
+            int columnNameIndex = meiSql.lastIndexOf(" AS ") + 4;
 
             //参照ペアがあるが名称カラムがなければ追加
-            String n = meiSql.substring(i).replaceAll("[ \"`]", "");
+            String n = meiSql.substring(columnNameIndex).replaceAll("[ \"`]", "");
             String p = StringUtil.toCamelCase(n);
             String a = StringUtil.toPascalCase(n);
             p = p.replaceAll("#", "_");
@@ -437,7 +452,7 @@ public final class BeanGenerator {
             s.add("    private String " + p + ";");
             s.add("");
             s.add("    /** @return " + columnMei + "参照 */");
-            s.add("    @com.fasterxml.jackson.annotation.JsonProperty(\"" + n + "\")");
+            s.add("    @com.fasterxml.jackson.annotation.JsonProperty(value = \"" + n + "\", index = " + ++i + ")");
             s.add("    public String get" + a + "() {");
             s.add("        return this." + p + ";");
             s.add("    }");
@@ -451,6 +466,8 @@ public final class BeanGenerator {
             s.add("        }");
             s.add("    }");
         }
+
+        return i;
     }
 
     /**
@@ -1070,8 +1087,12 @@ public final class BeanGenerator {
      * エンティティに弟モデル追加
      * @param table テーブル情報
      * @param s 出力文字列のリスト
+     * @param jsonIndex
+     * @return int
      */
-    private static void javaEntityYoungers(final TableInfo table, final List<String> s) {
+    private static int javaEntityYoungers(final TableInfo table, final List<String> s, final int jsonIndex) {
+
+        int i = jsonIndex;
 
         // getパラメータ
         String params = "";
@@ -1086,43 +1107,49 @@ public final class BeanGenerator {
 
         for (TableInfo younger : table.getYoungers()) {
 
-            String e = StringUtil.toPascalCase(younger.getName());
-            String i = StringUtil.toCamelCase(younger.getName());
+            String ent = StringUtil.toPascalCase(younger.getName());
+            String ins = StringUtil.toCamelCase(younger.getName());
 
             s.add("");
             s.add("    /** " + younger.getRemarks() + " */");
-            s.add("    private " + e + " " + i + ";");
+            s.add("    private " + ent + " " + ins + ";");
             s.add("");
             s.add("    /** @return " + younger.getRemarks() + " */");
-            s.add("    @com.fasterxml.jackson.annotation.JsonProperty(\"" + e + "\")");
-            s.add("    public " + e + " get" + e + "() {");
-            s.add("        return this." + i + ";");
+            s.add("    @com.fasterxml.jackson.annotation.JsonProperty(value = \"" + ent + "\", index = " + ++i + ")");
+            s.add("    public " + ent + " get" + ent + "() {");
+            s.add("        return this." + ins + ";");
             s.add("    }");
             s.add("");
             s.add("    /** @param p " + younger.getRemarks() + " */");
-            s.add("    public void set" + e + "(final " + e + " p) {");
-            s.add("        this." + i + " = p;");
+            s.add("    public void set" + ent + "(final " + ent + " p) {");
+            s.add("        this." + ins + " = p;");
             s.add("    }");
             s.add("");
             s.add("    /** @return " + younger.getRemarks() + " */");
-            s.add("    public " + e + " refer" + e + "() {");
-            s.add("        if (this." + i + " == null) {");
+            s.add("    public " + ent + " refer" + ent + "() {");
+            s.add("        if (this." + ins + " == null) {");
             s.add("            try {");
-            s.add("                this." + i + " = " + e + ".get(" + params + ");");
+            s.add("                this." + ins + " = " + ent + ".get(" + params + ");");
             s.add("            } catch (jp.co.golorp.emarf.exception.NoDataError e) {");
             s.add("            }");
             s.add("        }");
-            s.add("        return this." + i + ";");
+            s.add("        return this." + ins + ";");
             s.add("    }");
         }
+
+        return i;
     }
 
     /**
      * エンティティに子モデル追加
      * @param table テーブル情報
      * @param s 出力文字列のリスト
+     * @param jsonIndex
+     * @return int
      */
-    private static void javaEntityChild(final TableInfo table, final List<String> s) {
+    private static int javaEntityChild(final TableInfo table, final List<String> s, final int jsonIndex) {
+
+        int i = jsonIndex;
 
         String parent = StringUtil.toPascalCase(table.getName());
 
@@ -1144,7 +1171,7 @@ public final class BeanGenerator {
             s.add("    private List<" + ent + "> " + ins + "s;");
             s.add("");
             s.add("    /** @return " + child.getRemarks() + "のリスト */");
-            s.add("    @com.fasterxml.jackson.annotation.JsonProperty(\"" + ent + "s\")");
+            s.add("    @com.fasterxml.jackson.annotation.JsonProperty(value = \"" + ent + "s\", index = " + ++i + ")");
             s.add("    public List<" + ent + "> get" + ent + "s() {");
             s.add("        return this." + ins + "s;");
             s.add("    }");
@@ -1171,19 +1198,19 @@ public final class BeanGenerator {
             // refer
             s.add("");
             s.add("    /**");
-            int i = 0;
+            int paramIndex = 0;
             String pks = "";
             for (String pk : table.getPrimaryKeys()) {
                 if (pk.length() == 0) {
                     continue;
                 }
                 String property = StringUtil.toCamelCase(pk);
-                s.add("     * @param param" + ++i + " " + property);
+                s.add("     * @param param" + ++paramIndex + " " + property);
                 if (pks.length() > 0) {
                     pks += ", ";
                 }
                 ColumnInfo column = table.getColumns().get(pk);
-                pks += "final " + column.getDataType() + " param" + i;
+                pks += "final " + column.getDataType() + " param" + paramIndex;
             }
             s.add("     * @return List<" + ent + ">");
             s.add("     */");
@@ -1247,25 +1274,27 @@ public final class BeanGenerator {
                     orders += pk;
                 }
             } else {
-                for (i = 1; i <= child.getColumns().size(); i++) {
-                    if (i == 1) {
+                for (paramIndex = 1; paramIndex <= child.getColumns().size(); paramIndex++) {
+                    if (paramIndex == 1) {
                         orders += ", ";
                     }
-                    orders += i;
+                    orders += paramIndex;
                 }
             }
             s.add("        sql += \"" + orders + "\";");
             s.add("        Map<String, Object> map = new HashMap<String, Object>();");
-            i = 0;
+            paramIndex = 0;
             for (String pk : table.getPrimaryKeys()) {
                 if (pk.length() == 0) {
                     continue;
                 }
-                s.add("        map.put(\"" + StringUtil.toSnakeCase(pk) + "\", param" + ++i + ");");
+                s.add("        map.put(\"" + StringUtil.toSnakeCase(pk) + "\", param" + ++paramIndex + ");");
             }
             s.add("        return Queries.select(sql, map, " + ent + ".class, null, null);");
             s.add("    }");
         }
+
+        return i;
     }
 
     //    /**

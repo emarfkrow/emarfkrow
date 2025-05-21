@@ -261,9 +261,13 @@ public final class ServletUtil {
                         // アップロードファイル名がある場合
 
                         // アップロードフォルダに保管
+                        String upload = App.get("uploadFolderPath");
+                        if (upload == null) {
+                            upload = "C:\\upload";
+                        }
                         String ext = fileName.replaceFirst("^.+\\.", "");
                         String saveName = partName + "." + DateTimeUtil.ymdhmsS() + "." + ext;
-                        String uploadPath = App.get("uploadFolderPath") + File.separator + saveName;
+                        String uploadPath = upload + File.separator + saveName;
                         try {
                             part.write(uploadPath);
                         } catch (IOException e) {
@@ -331,25 +335,26 @@ public final class ServletUtil {
                 }
             }
 
-        }
+        } else {
 
-        // get/post送信の場合
-        if (request.getParameterMap().size() > 0) {
-            map.putAll(suckParameterMap(request));
-        }
-
-        // ajax送信の場合
-        try {
-            String line = request.getReader().readLine();
-            if (line != null) {
-                String s = StringUtil.sanitize(line);
-                if (!StringUtil.isNullOrBlank(s)) {
-                    map.putAll(mapper.readValue(s, new TypeReference<Map<String, Object>>() {
-                    }));
-                }
+            // get/post送信の場合
+            if (request.getParameterMap().size() > 0) {
+                map.putAll(suckParameterMap(request));
             }
-        } catch (Exception e) {
-            throw new SysError(e);
+
+            // ajax送信の場合
+            try {
+                String line = request.getReader().readLine();
+                if (line != null) {
+                    String s = StringUtil.sanitize(line);
+                    if (!StringUtil.isNullOrBlank(s)) {
+                        map.putAll(mapper.readValue(s, new TypeReference<Map<String, Object>>() {
+                        }));
+                    }
+                }
+            } catch (Exception e) {
+                throw new SysError(e);
+            }
         }
 
         try {
@@ -419,6 +424,8 @@ public final class ServletUtil {
     }
 
     /**
+     * {"エンティティ名":エンティティインスタンス} を
+     * {"エンティティ名":{"プロパティ名":プロパティ値}} に変換
      * @param map
      * @return Map
      */
