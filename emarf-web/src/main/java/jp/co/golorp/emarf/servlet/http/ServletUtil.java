@@ -348,8 +348,16 @@ public final class ServletUtil {
                 if (line != null) {
                     String s = StringUtil.sanitize(line);
                     if (!StringUtil.isNullOrBlank(s)) {
-                        map.putAll(mapper.readValue(s, new TypeReference<Map<String, Object>>() {
-                        }));
+                        Map<String, Object> ajaxValues = mapper.readValue(s, new TypeReference<Map<String, Object>>() {
+                        });
+                        for (Map.Entry<String, Object> ajaxValue : ajaxValues.entrySet()) {
+                            String k = ajaxValue.getKey();
+                            Object v = ajaxValue.getValue();
+                            // get値・post値を優先する
+                            if (!map.containsKey(k)) {
+                                map.put(k, v);
+                            }
+                        }
                     }
                 }
             } catch (Exception e) {

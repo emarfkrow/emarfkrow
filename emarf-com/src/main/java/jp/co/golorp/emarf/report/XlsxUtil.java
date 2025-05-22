@@ -146,10 +146,18 @@ public final class XlsxUtil {
             layoutSheet = workbook.createSheet(layoutSheetName);
 
             // 追加シート情報でループ
-            for (Map<String, Object> addSheetData : addSheetMap.values()) {
+            for (Entry<String, Map<String, Object>> addSheetEntry : addSheetMap.entrySet()) {
+
+                // シート名
+                String addSheetName = addSheetEntry.getKey();
+                // モデル名：データ
+                Map<String, Object> addSheetData = addSheetEntry.getValue();
 
                 // タイトルとプレースホルダの出力
-                for (Object sheetData : addSheetData.values()) {
+                for (Entry<String, Object> addSheetItem : addSheetData.entrySet()) {
+
+                    String entityName = addSheetItem.getKey();
+                    Object sheetData = addSheetItem.getValue();
 
                     Map<String, Object> dataItem = null;
                     String left = null;
@@ -182,7 +190,7 @@ public final class XlsxUtil {
                             if (!(v instanceof List)) {
                                 // 子モデルリストでない場合
                                 setCellValue(layoutSheet, r, c, k);
-                                setCellValue(layoutSheet, r + 1, c++, left + k + right);
+                                setCellValue(layoutSheet, r + 1, c++, left + entityName + "." + k + right);
                             } else {
                                 // 子モデルリストの場合
                                 @SuppressWarnings("unchecked")
@@ -195,7 +203,7 @@ public final class XlsxUtil {
                                         String k2 = e2.getKey();
                                         Object v2 = e2.getValue();
                                         setCellValue(layoutSheet, r2, c2, k2);
-                                        setCellValue(layoutSheet, r2 + 1, c2++, "[[" + k2 + "]]");
+                                        setCellValue(layoutSheet, r2 + 1, c2++, "[[" + e.getKey() + "." + k2 + "]]");
                                     }
                                 }
                             }
@@ -275,6 +283,8 @@ public final class XlsxUtil {
 
                 // レイアウトシートの使用範囲内で、行・列ループして、各プレースホルダのアドレスを取得
                 Map<String, CellAddress> meisaiAddresses = new HashMap<String, CellAddress>();
+
+                // TODO モデルごとに範囲取得
                 Range range = getRange(sheet, meisaiAddresses, dataName);
 
                 @SuppressWarnings("unchecked")
@@ -415,7 +425,7 @@ public final class XlsxUtil {
                 }
 
                 String s = String.valueOf(o);
-                if (s.matches("^\\[\\[" + prefixText + ".+\\]\\]$") || s.matches("^\\[\\[.+\\]\\]$")) {
+                if (s.matches("^\\[\\[" + prefixText + ".+\\]\\]$") /*|| s.matches("^\\[\\[.+\\]\\]$")*/) {
 
                     // 明細項目の座標を退避
                     String key = s.replaceAll("^\\[\\[|\\]\\]$", "");

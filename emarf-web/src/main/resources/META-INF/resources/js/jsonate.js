@@ -281,11 +281,12 @@ let Jsonate = {
                             let $form = $input.closest('form');
                             let entityName = $form.prop('name').replace(/(Search|Regist)Form/, '');
 
+                            let $fieldset = $input.closest('fieldset');
                             let inputName = $input.prop('name');
                             let inputNames = inputName.split('.');
                             let params = '?name=' + inputNames[inputNames.length - 1];
 
-                            let $primaryKeys = $form.find('input.primaryKey');
+                            let $primaryKeys = $fieldset.find('input.primaryKey');
                             for (let i = 0; i < $primaryKeys.length; i++) {
                                 let $primaryKey = $($primaryKeys[i]);
                                 let name = $primaryKey.prop('name');
