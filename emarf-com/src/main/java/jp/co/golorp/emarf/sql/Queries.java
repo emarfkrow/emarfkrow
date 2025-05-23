@@ -581,8 +581,13 @@ public final class Queries {
      */
     private static File seekSqlFile(final List<String> sqlPathes, final String sqlName) {
 
+        String sqlDir = App.get("sqlVirtualDir");
+        if (sqlDir == null) {
+            sqlDir = "/WEB-INF/sql";
+        }
+
         String sqlPath = String.join(SEP, sqlPathes);
-        String filePath = App.get("sqlVirtualDir") + SEP + sqlPath + SEP + sqlName + ".sql";
+        String filePath = sqlDir + SEP + sqlPath + SEP + sqlName + ".sql";
         File file = FileUtil.get(filePath);
 
         if (!file.exists() && sqlPathes.size() > 0) {

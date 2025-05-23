@@ -65,10 +65,10 @@ public final class FileUtil {
      */
     public static File get(final String filePath) {
         String pathname = contextDir + File.separator + filePath;
-        LOG.debug("pathname: " + pathname);
         pathname = pathname.replaceAll("[\\\\|\\/]+", "\\" + File.separator);
         LOG.debug("pathname: " + pathname);
         String dirname = pathname.replaceFirst("[^\\\\]+$", "");
+        dirname = pathname.replaceFirst("[^\\/]+$", "");
         LOG.debug("dirname : " + dirname);
         try {
             Files.createDirectories(Paths.get(dirname));

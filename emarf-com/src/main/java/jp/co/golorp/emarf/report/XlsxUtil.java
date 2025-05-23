@@ -76,7 +76,11 @@ public final class XlsxUtil {
         File workFile = null;
 
         // テンプレートファイルのロック防止のため、テンプレートファイルを作業用ファイルにコピー
-        String layoutFilePath = App.get("layoutsVirtualDir") + sep + String.join(sep, pathes) + sep + layoutFileName;
+        String layoutsDir = App.get("layoutsVirtualDir");
+        if (layoutsDir == null) {
+            layoutsDir = "/WEB-INF/layouts";
+        }
+        String layoutFilePath = layoutsDir + sep + String.join(sep, pathes) + sep + layoutFileName;
         File layoutFile = FileUtil.get(layoutFilePath);
         if (!layoutFile.exists()) {
             if (pathes.size() > 0) {
@@ -461,6 +465,7 @@ public final class XlsxUtil {
     private static File write(final Workbook workbook, final String fileBaseMei, final String extension) {
 
         String tmp = App.get("tempVirtualDir");
+        LOG.debug(tmp);
         if (tmp == null) {
             tmp = "/temp";
         }
