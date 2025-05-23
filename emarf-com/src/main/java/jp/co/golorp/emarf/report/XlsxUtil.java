@@ -257,7 +257,6 @@ public final class XlsxUtil {
             int layoutSheetIndex = workbook.getSheetIndex(layoutSheet);
             Sheet newSheet = workbook.cloneSheet(layoutSheetIndex);
             workbook.setSheetName(workbook.getSheetIndex(newSheet), addSheetName);
-
             print(newSheet, sheetDataMap);
         }
 
@@ -284,8 +283,10 @@ public final class XlsxUtil {
                 // レイアウトシートの使用範囲内で、行・列ループして、各プレースホルダのアドレスを取得
                 Map<String, CellAddress> meisaiAddresses = new HashMap<String, CellAddress>();
 
-                // TODO モデルごとに範囲取得
+                //                LOG.debug(dataName);
                 Range range = getRange(sheet, meisaiAddresses, dataName);
+                //                LOG.debug("    b: " + range.getBoR() + ", " + range.getBoC());
+                //                LOG.debug("    e: " + range.getEoR() + ", " + range.getEoC());
 
                 @SuppressWarnings("unchecked")
                 List<Map<String, Object>> list = (List<Map<String, Object>>) data;
@@ -425,6 +426,7 @@ public final class XlsxUtil {
                 }
 
                 String s = String.valueOf(o);
+                //                LOG.debug("    " + s);
                 if (s.matches("^\\[\\[" + prefixText + ".+\\]\\]$") /*|| s.matches("^\\[\\[.+\\]\\]$")*/) {
 
                     // 明細項目の座標を退避
@@ -438,6 +440,13 @@ public final class XlsxUtil {
                     range.setEoC(c);
                 }
             }
+
+            //            LOG.debug("    last:[ r: " + sheet.getLastRowNum() + ", c: " + row.getLastCellNum() + " ]");
+        }
+
+        if (range.getBoR() == Integer.MAX_VALUE || range.getBoC() == Integer.MAX_VALUE || range.getEoR() == 0
+                || range.getEoC() == 0) {
+            throw new SysError("error.notexist", prefix + " range");
         }
 
         return range;
@@ -577,7 +586,11 @@ public final class XlsxUtil {
      */
     private static void copyRange(final Sheet sheet, final Range range, final int destRowIndex) {
 
-        // 今回コピーする開始行から終了行までループ
+        LOG.debug("    BoR: " + range.getBoR());
+        LOG.debug("    EoR: " + range.getEoR());
+        LOG.debug("    destRowIndex: " + destRowIndex);
+
+        // 今回コピーする開始行から終了行まで１行ずつループ
         for (int r = range.getBoR(); r <= range.getEoR(); r++) {
 
             // コピー対象の行数を取得
@@ -585,9 +598,10 @@ public final class XlsxUtil {
 
             // コピー先の行を取得
             Row destRow = sheet.getRow(rownum);
-            if (destRow != null) {
-                // 取れた場合はフッタありレイアウトのため、開始行から終了行までを１回だけ下にずらす
-                sheet.shiftRows(rownum, rownum, 1, true, true);
+
+            // 最終行でなければ１行ずらす
+            if (rownum <= sheet.getLastRowNum()) {
+                sheet.shiftRows(rownum, sheet.getLastRowNum(), 1, true, true);
             }
 
             // 改めてコピー先の行を作成

@@ -119,23 +119,15 @@ public final class FormGenerator {
      * @param tableInfos テーブル情報のリスト
      */
     private static void javaFormDetailRegist(final List<TableInfo> tableInfos) {
-
         // 出力フォルダを再作成
         String packagePath = pkgForm.replace(".", File.separator);
         String packageDir = projectDir + File.separator + javaDir + File.separator + packagePath;
-
         Map<String, String> javaFilePaths = new LinkedHashMap<String, String>();
-
         for (TableInfo table : tableInfos) {
-
             if (table.isHistory() || table.isView()) {
                 continue;
             }
-
-            String tableName = table.getName();
-            String remarks = table.getRemarks();
-            String entity = StringUtil.toPascalCase(tableName);
-
+            String entity = StringUtil.toPascalCase(table.getName());
             List<String> s = new ArrayList<String>();
             s.add("package " + pkgForm + ";");
             s.add("");
@@ -151,7 +143,7 @@ public final class FormGenerator {
             s.add("import jp.co.golorp.emarf.validation.IForm;");
             s.add("");
             s.add("/**");
-            s.add(" * " + remarks + "登録フォーム");
+            s.add(" * " + table.getRemarks() + "登録フォーム");
             s.add(" *");
             s.add(" * @author emarfkrow");
             s.add(" */");
@@ -160,38 +152,33 @@ public final class FormGenerator {
             s.add("    /** logger */");
             s.add("    private static final Logger LOG = LoggerFactory.getLogger(" + entity + "RegistForm.class);");
             for (ColumnInfo column : table.getColumns().values()) {
-
-                String columnName = column.getName();
-
                 // レコードメタデータならスキップ
-                boolean isInsertDt = columnName.matches("(?i)^" + insertDt + "$");
-                boolean isUpdateDt = columnName.matches("(?i)^" + updateDt + "$");
-                boolean isInsertBy = columnName.matches("(?i)^" + insertBy + "$");
-                boolean isUpdateBy = columnName.matches("(?i)^" + updateBy + "$");
+                boolean isInsertDt = column.getName().matches("(?i)^" + insertDt + "$");
+                boolean isUpdateDt = column.getName().matches("(?i)^" + updateDt + "$");
+                boolean isInsertBy = column.getName().matches("(?i)^" + insertBy + "$");
+                boolean isUpdateBy = column.getName().matches("(?i)^" + updateBy + "$");
                 if (isInsertDt || isInsertBy || isUpdateDt || isUpdateBy) {
                     continue;
                 }
-
-                String camel = StringUtil.toCamelCase(columnName);
-                String pascal = StringUtil.toPascalCase(columnName);
-
+                String prop = StringUtil.toCamelCase(column.getName());
+                String acce = StringUtil.toPascalCase(column.getName());
                 s.add("");
                 s.add("    /** " + column.getRemarks() + " */");
                 javaFormDetailRegistChecks(s, table, column);
-                s.add("    private String " + camel + ";");
+                s.add("    private String " + prop + ";");
                 s.add("");
                 s.add("    /**");
                 s.add("     * @return " + column.getRemarks());
                 s.add("     */");
-                s.add("    public String get" + pascal + "() {");
-                s.add("        return " + camel + ";");
+                s.add("    public String get" + acce + "() {");
+                s.add("        return " + prop + ";");
                 s.add("    }");
                 s.add("");
                 s.add("    /**");
                 s.add("     * @param p " + column.getRemarks());
                 s.add("     */");
-                s.add("    public void set" + pascal + "(final String p) {");
-                s.add("        this." + camel + " = p;");
+                s.add("    public void set" + acce + "(final String p) {");
+                s.add("        this." + prop + " = p;");
                 s.add("    }");
             }
             // 兄弟モデル
@@ -247,16 +234,34 @@ public final class FormGenerator {
             s.add("    @Override");
             s.add("    public void validate(final Map<String, String> errors, final BaseProcess baseProcess) {");
             s.add("        LOG.trace(\"validate() not overridden in subclasses.\");");
+            for (ColumnInfo column : table.getColumns().values()) {
+                boolean isInsertBy = column.getName().matches("(?i)^" + insertBy + "$");
+                boolean isUpdateBy = column.getName().matches("(?i)^" + updateBy + "$");
+                if (isInsertBy || isUpdateBy) {
+                    continue;
+                }
+                if (column.getRefer() != null) {
+                    TableInfo refer = column.getRefer();
+                    if (refer.getPrimaryKeys().size() == 1) {
+                        String prop = StringUtil.toCamelCase(column.getName());
+                        String acce = StringUtil.toPascalCase(column.getName());
+                        String referName = StringUtil.toPascalCase(refer.getName());
+                        String referKey = StringUtil.toCamelCase(refer.getPrimaryKeys().get(0));
+                        s.add("");
+                        s.add("        // " + column.getRemarks() + " のマスタチェック");
+                        s.add("        baseProcess.masterCheck(errors, \"" + referName + "Search\", \"" + referKey
+                                + "\", this.get" + acce + "(), jp.co.golorp.emarf.util.Messages.get(\"" + entity + "."
+                                + prop + "\"));");
+                    }
+                }
+            }
             s.add("    }");
             s.add("");
             s.add("}");
-
             String javaFilePath = packageDir + File.separator + entity + "RegistForm.java";
             javaFilePaths.put(javaFilePath, pkgForm + "." + entity + "RegistForm");
-
             FileUtil.writeFile(javaFilePath, s);
         }
-
         if (isGenerateAtStartup) {
             for (Entry<String, String> e : javaFilePaths.entrySet()) {
                 BeanGenerator.javaCompile(e.getKey(), e.getValue());
