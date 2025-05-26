@@ -15,8 +15,9 @@ limitations under the License.
 -->
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{common/base}">
-
 <head>
+<meta charset="UTF-8">
+<title th:text="#{Index.title}">top</title>
 <script type="text/javascript">
 	$(window).on('load', function() {
 
@@ -27,7 +28,7 @@ limitations under the License.
 		sessionStorage['breads'] = JSON.stringify(breads);
 
 		// home画面に遷移
-		let home = $('[name="home"]').val();
+		let home = Messages['index.home'];
 		if (home != '' && home.indexOf('index.home') < 0) {
 			sessionStorage['breads'] = JSON.stringify({});
 			window.document.location.href = home;
@@ -35,11 +36,10 @@ limitations under the License.
 	});
 </script>
 </head>
-
 <body>
   <div layout:fragment="article">
-    <input type="hidden" name="home" th:value="#{index.home}" />
+    <h2 id="index.h2" th:text="#{Index.h2}">トップ</h2>
+    <span id="index.msg" th:utext="#{Index.msg}">トップ画面です</span>
   </div>
 </body>
-
 </html>

@@ -179,7 +179,6 @@ $(document).on('ready', function() {
         // サブウィンドウの際にBase.init()が間に合わないため遅らせる
         Base.loaded(function() {
             Base.referRegistForm($registForm, isSilent);
-            Base.readonly($registForm.find('.parent').find('a,input,select,textarea'));
         });
     }
 });
@@ -759,6 +758,11 @@ let Base = {
                             Gridate.grids[gridId].getOptions()['editable'] = false;
                         }
                     }
+
+                    //親モデルを読み取り専用
+                    //        Base.readonly($dialogDiv.find('.parent').find('a,input,select,textarea'));
+                    Base.readonly($registForm.find('.parent').find('a,input,select,textarea'));
+
                 });
             });
 

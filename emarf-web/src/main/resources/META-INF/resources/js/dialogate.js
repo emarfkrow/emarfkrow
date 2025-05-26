@@ -414,9 +414,6 @@ let Dialogate = {
                     }
 
                     Nextize.first($dialogDiv);
-
-                    //親モデルを読み取り専用
-                    Base.readonly($dialogDiv.find('.parent').find('a,input,select,textarea'));
                 },
 
                 /*
