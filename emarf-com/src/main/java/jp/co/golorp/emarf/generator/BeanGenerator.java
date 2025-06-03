@@ -369,8 +369,8 @@ public final class BeanGenerator {
         s.add("    /** " + p + " */");
         s.add("    private String " + p + ";");
         s.add("");
-        s.add("    @com.fasterxml.jackson.annotation.JsonProperty(value = \"" + reason + "\", index = " + ++i + ")");
         s.add("    /** @return " + p + " */");
+        s.add("    @com.fasterxml.jackson.annotation.JsonProperty(value = \"" + reason + "\", index = " + ++i + ")");
         s.add("    public String get" + a + "() {");
         s.add("        return this." + p + ";");
         s.add("    }");

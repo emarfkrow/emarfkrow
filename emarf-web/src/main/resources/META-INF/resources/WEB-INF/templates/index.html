@@ -40,6 +40,7 @@ limitations under the License.
   <div layout:fragment="article">
     <h2 id="index.h2" th:text="#{Index.h2}">トップ</h2>
     <span id="index.msg" th:utext="#{Index.msg}">トップ画面です</span>
+    <div layout:replace="~{../../index.html}"></div>
   </div>
 </body>
 </html>
