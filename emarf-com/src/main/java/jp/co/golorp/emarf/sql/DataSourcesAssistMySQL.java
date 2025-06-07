@@ -57,7 +57,32 @@ public final class DataSourcesAssistMySQL extends DataSourcesAssist {
 
     @Override
     protected MapList getUniqueIndexes(final String tableName) {
-        MapList mapList = Queries.select("show index from " + tableName, null, null);
+
+        String showIndex = "";
+        showIndex += "SELECT ";
+        showIndex += "      id.index_name ";
+        showIndex += "    , id.column_name ";
+        showIndex += "FROM ";
+        showIndex += "    information_schema.statistics id ";
+        showIndex += "    INNER JOIN ( ";
+        showIndex += "        SELECT ";
+        showIndex += "              id.index_name ";
+        showIndex += "            , count(id.column_name) AS column_count ";
+        showIndex += "        FROM ";
+        showIndex += "            information_schema.statistics id ";
+        showIndex += "        WHERE ";
+        showIndex += "            id.index_name != 'PRIMARY' ";
+        showIndex += "            AND id.table_name = '" + tableName + "' ";
+        showIndex += "        GROUP BY ";
+        showIndex += "            id.index_name ";
+        showIndex += "    ) id2 ";
+        showIndex += "        ON id2.index_name = id.index_name ";
+        showIndex += "ORDER BY ";
+        showIndex += "    id2.column_count ";
+        showIndex += "    , id.column_name ";
+
+        MapList mapList = Queries.select(showIndex, null, null);
+
         return mapList;
     }
 
