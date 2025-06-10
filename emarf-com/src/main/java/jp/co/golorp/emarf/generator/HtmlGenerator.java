@@ -1201,6 +1201,10 @@ public final class HtmlGenerator {
                     css += " summary";
                 }
 
+                if (isD && column.getNullable() == 0) {
+                    css += isNotBlank(column);
+                }
+
                 htmlFieldsOptions(s, fieldId, colName, column.getRemarks(), css);
 
             } else if (isD && table.isHistory()) { // 履歴モデルの詳細画面
@@ -1220,7 +1224,13 @@ public final class HtmlGenerator {
                 htmlFieldsSpan(s, fieldId, column.getRemarks(), "");
 
             } else if (isD && StringUtil.endsWith(textareaSuffixs, colName)) { // テキストエリア項目の場合
-                htmlFieldsTextarea(s, fieldId, column.getRemarks());
+
+                String css = "";
+                if (isD && column.getNullable() == 0) {
+                    css += isNotBlank(column);
+                }
+
+                htmlFieldsTextarea(s, fieldId, column.getRemarks(), css);
 
             } else { // inputの場合
 
@@ -1230,12 +1240,7 @@ public final class HtmlGenerator {
 
                 // 詳細画面の必須項目
                 if (isD && column.getNullable() == 0) {
-                    if (!column.isPk() && column.getTypeName().equals("CHAR")
-                            && !StringUtil.isNullOrBlank(charNotNullRe) && !colName.matches(charNotNullRe)) {
-                        LOG.trace("skip NotBlank.");
-                    } else {
-                        inputCss += " notblank";
-                    }
+                    inputCss += isNotBlank(column);
                 }
 
                 // 日付項目および8桁日付項目
@@ -1271,6 +1276,20 @@ public final class HtmlGenerator {
 
             s.add("        </div>");
         }
+    }
+
+    /**
+     * @param column
+     * @return String
+     */
+    private static String isNotBlank(final ColumnInfo column) {
+        if (!column.isPk() && column.getTypeName().equals("CHAR")
+                && !StringUtil.isNullOrBlank(charNotNullRe) && !column.getName().matches(charNotNullRe)) {
+            LOG.trace("skip NotBlank.");
+        } else {
+            return " notblank";
+        }
+        return "";
     }
 
     /**
@@ -1516,10 +1535,18 @@ public final class HtmlGenerator {
      * @param s 出力文字列のリスト
      * @param id 項目ID
      * @param remarks コメント
+     * @param css css
      */
-    private static void htmlFieldsTextarea(final List<String> s, final String id, final String remarks) {
+    private static void htmlFieldsTextarea(final List<String> s, final String id, final String remarks,
+            final String css) {
+
+        String cssClass = "";
+        if (!StringUtil.isNullOrBlank(css)) {
+            cssClass = " class=\"" + css + "\"";
+        }
+
         s.add("          <label for=\"" + id + "\" th:text=\"#{" + id + "}\">" + remarks + "</label>");
-        s.add("          <textarea id=\"" + id + "\" name=\"" + id + "\"></textarea>");
+        s.add("          <textarea id=\"" + id + "\" name=\"" + id + "\"" + cssClass + "></textarea>");
     }
 
     /**

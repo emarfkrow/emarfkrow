@@ -265,8 +265,11 @@ button.forbid {
 }
 
 input.notblank,
+label.notblank,
+select.notblank,
+textarea.notblank,
 div.notblank {
-    background-color: lightyellow;
+    background-color: khaki;
 }
 
 input.primaryKey,

@@ -150,9 +150,14 @@ let Options = {
 
         $checks.find('div').remove();
 
+        let css = '';
+        if ($checks.hasClass('notblank')) {
+            css = ' class="notblank"';
+        }
+
         for (let i in dataJson) {
             let listSource = dataJson[i];
-            $checks.append('<div><label><input type="checkbox" name="' + itemName + '" value="' + listSource[valueName] + '">' + listSource[labelName] + '</label></div>');
+            $checks.append('<div><label' + css + '><input type="checkbox" name="' + itemName + '" value="' + listSource[valueName] + '">' + listSource[labelName] + '</label></div>');
         }
     },
 
@@ -168,9 +173,14 @@ let Options = {
 
         $radios.find('div').remove();
 
+        let css = '';
+        if ($radios.hasClass('notblank')) {
+            css = ' class="notblank"';
+        }
+
         for (let i in dataJson) {
             let listSource = dataJson[i];
-            $radios.append('<div><label><input type="radio" name="' + itemName + '" value="' + listSource[valueName] + '">' + listSource[labelName] + '</label></div>');
+            $radios.append('<div><label' + css + '><input type="radio" name="' + itemName + '" value="' + listSource[valueName] + '">' + listSource[labelName] + '</label></div>');
         }
     },
 
