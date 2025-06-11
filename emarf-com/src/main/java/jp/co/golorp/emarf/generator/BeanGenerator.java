@@ -787,9 +787,15 @@ public final class BeanGenerator {
         s.add("    private String values() {");
         s.add("        List<String> valueList = new ArrayList<String>();");
         for (Entry<String, ColumnInfo> e : table.getColumns().entrySet()) {
-            String columnName = e.getKey();
-            ColumnInfo columnInfo = e.getValue();
-            String rightHand = getRightHand(columnName, columnInfo);
+            String colName = e.getKey();
+            ColumnInfo column = e.getValue();
+            String rightHand = getRightHand(colName, column);
+
+            if (!colName.matches("(?i)^" + insertDt + "$") && !colName.matches("(?i)^" + updateDt + "$")
+                    && StringUtil.endsWith(inputTimestampSuffixs, colName)) {
+                rightHand = assist.toTimestampSQL(assist.timestamp2CharSQL(assist.sysDate()));
+            }
+
             s.add("        valueList.add(\"" + rightHand + "\");");
         }
         s.add("        return String.join(\"\\r\\n    , \", valueList);");
@@ -801,29 +807,29 @@ public final class BeanGenerator {
     }
 
     /**
-     * @param columnName
-     * @param columnInfo
+     * @param colName
+     * @param column
      * @return rightHand
      */
-    public static String getRightHand(final String columnName, final ColumnInfo columnInfo) {
+    public static String getRightHand(final String colName, final ColumnInfo column) {
 
-        String rightHand = ":" + StringUtil.toSnakeCase(columnName);
+        String rightHand = ":" + StringUtil.toSnakeCase(colName);
 
-        if (columnInfo.getDataType().equals("java.time.LocalDate")) {
+        if (column.getDataType().equals("java.time.LocalDate")) {
             rightHand = assist.toDateSQL(rightHand);
 
-        } else if (columnInfo.getDataType().equals("java.time.LocalDateTime")) {
+        } else if (column.getDataType().equals("java.time.LocalDateTime")) {
             rightHand = assist.toTimestampSQL(rightHand);
 
-        } else if (!columnInfo.isPk() && columnInfo.getTypeName().equals("CHAR")
+        } else if (!column.isPk() && column.getTypeName().equals("CHAR")
                 && !StringUtil.isNullOrBlank(charNotNullRe)
-                && !columnInfo.getName().matches(charNotNullRe)) {
+                && !column.getName().matches(charNotNullRe)) {
             //主キー以外のCHAR列で、必須CHAR指定に合致しない場合、NULLならスペースを補填する
             rightHand = "NVL (" + rightHand + ", ' ')";
 
-        } else if (!columnInfo.isPk() && columnInfo.getTypeName().equals("NUMBER")
+        } else if (!column.isPk() && column.getTypeName().equals("NUMBER")
                 && !StringUtil.isNullOrBlank(numberNullableRe)
-                && columnInfo.getName().matches(numberNullableRe)) {
+                && column.getName().matches(numberNullableRe)) {
             //主キー以外のNUMBER列で、非必須INT指定に合致する場合、NULLなら「0」を補填する
             rightHand = "NVL (" + rightHand + ", 0)";
         }
@@ -987,16 +993,16 @@ public final class BeanGenerator {
         s.add("        List<String> setList = new ArrayList<String>();");
 
         for (Entry<String, ColumnInfo> e : table.getColumns().entrySet()) {
-            String columnName = e.getKey();
-            ColumnInfo columnInfo = e.getValue();
+            String colName = e.getKey();
+            ColumnInfo column = e.getValue();
 
             // 追加時のメタ情報ならスキップ
-            if (columnName.matches("(?i)^" + insertDt + "$") || columnName.matches("(?i)^" + insertBy + "$")) {
+            if (colName.matches("(?i)^" + insertDt + "$") || colName.matches("(?i)^" + insertBy + "$")) {
                 continue;
             }
 
-            String rightHand = getRightHand(columnName, columnInfo);
-            s.add("        setList.add(\"" + assist.quoteEscapedSQL(columnName) + " = " + rightHand + "\");");
+            String rightHand = getRightHand(colName, column);
+            s.add("        setList.add(\"" + assist.quoteEscapedSQL(colName) + " = " + rightHand + "\");");
         }
         s.add("        return String.join(\"\\r\\n    , \", setList);");
         s.add("    }");

@@ -82,6 +82,8 @@ public final class AjaxServlet extends HttpServlet {
 
         } catch (OptLockError e) {
 
+            LOG.error(e.getMessage(), e);
+
             map = new HashMap<String, Object>();
             map.put("ERROR", e.getMessage());
 

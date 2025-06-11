@@ -351,9 +351,10 @@ public final class FormGenerator {
             String re = bundle.getString("valid." + validSuffix);
             s.add("    @jakarta.validation.constraints.Pattern(regexp = \"" + re + "\")");
 
-            if (column.getTypeName().contains("CHAR")) {
-                s.add("    @jakarta.validation.constraints.Size(max = " + column.getColumnSize() + ")");
-            }
+            // 桁数チェックは正規表現に任せる。<input type="month">が9999-99になるため。
+            //            if (column.getTypeName().contains("CHAR")) {
+            //                s.add("    @jakarta.validation.constraints.Size(max = " + column.getColumnSize() + ")");
+            //            }
 
         } else {
             // Patternの指定がない場合

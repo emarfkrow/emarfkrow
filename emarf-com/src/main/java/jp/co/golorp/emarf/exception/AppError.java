@@ -62,6 +62,14 @@ public class AppError extends RuntimeException {
 
     /**
      * @param msgId メッセージID
+     * @param e 例外
+     */
+    public AppError(final String msgId, final Throwable e) {
+        super(Messages.get(msgId), e);
+    }
+
+    /**
+     * @param msgId メッセージID
      * @param args 置換文字列
      */
     public AppError(final String msgId, final String... args) {

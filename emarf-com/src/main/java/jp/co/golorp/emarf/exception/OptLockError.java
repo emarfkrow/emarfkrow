@@ -30,4 +30,12 @@ public class OptLockError extends AppError {
         super(msgId);
     }
 
+    /**
+     * @param msgId メッセージID
+     * @param e 例外
+     */
+    public OptLockError(final String msgId, final Throwable e) {
+        super(msgId, e);
+    }
+
 }

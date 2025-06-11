@@ -326,7 +326,7 @@ public final class DataSources {
                 while (columns.next()) {
 
                     // カラム名が合致しなければスキップ
-                    String columnName = columns.getString("COLUMN_NAME");
+                    String columnName = columns.getString("COLUMN_NAME").toUpperCase();
                     if (!columnName.matches("^[\\#\\$\\-0-9A-Z\\_a-z]+$")) {
                         continue;
                     }

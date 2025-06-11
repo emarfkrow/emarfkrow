@@ -652,7 +652,7 @@ public final class Queries {
             return ps.executeUpdate();
 
         } catch (SQLIntegrityConstraintViolationException e) {
-            throw new OptLockError("error.cant.insert");
+            throw new OptLockError("error.cant.insert", e);
         } catch (Exception e) {
             // Tibero対応
             if (e.getMessage().contains("UNIQUE constraint violation")) {
