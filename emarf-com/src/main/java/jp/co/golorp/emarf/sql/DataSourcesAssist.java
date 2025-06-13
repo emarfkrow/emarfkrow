@@ -159,6 +159,11 @@ public abstract class DataSourcesAssist {
     public abstract String sysDate();
 
     /**
+     * @return String
+     */
+    public abstract String sysTimestamp();
+
+    /**
      * @param columns
      * @return int
      * @throws SQLException

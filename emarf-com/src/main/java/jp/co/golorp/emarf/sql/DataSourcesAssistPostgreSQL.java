@@ -139,6 +139,12 @@ public final class DataSourcesAssistPostgreSQL extends DataSourcesAssist {
     }
 
     @Override
+    public String sysTimestamp() {
+        // TODO 自動生成されたメソッド・スタブ
+        return null;
+    }
+
+    @Override
     public int getColumnSize(final ResultSet columns) throws SQLException {
         return columns.getInt("COLUMN_SIZE");
     }

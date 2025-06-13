@@ -251,6 +251,12 @@ public class DataSourcesAssistOracle extends DataSourcesAssist {
 
     /** */
     @Override
+    public String sysTimestamp() {
+        return "SYSTIMESTAMP";
+    }
+
+    /** */
+    @Override
     public int getColumnSize(final ResultSet columns) throws SQLException {
         // viewで「NUMBER（桁指定なし）」になった場合、BigDecimalにするため「11」以上にする
         if (columns.getString("TYPE_NAME").equals("NUMBER") && columns.getInt("COLUMN_SIZE") == 38) {

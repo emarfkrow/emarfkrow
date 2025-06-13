@@ -163,6 +163,11 @@ public final class DataSourcesAssistMySQL extends DataSourcesAssist {
     }
 
     @Override
+    public String sysTimestamp() {
+        return "now(3)";
+    }
+
+    @Override
     public int getColumnSize(final ResultSet columns) throws SQLException {
         return columns.getInt("COLUMN_SIZE");
     }

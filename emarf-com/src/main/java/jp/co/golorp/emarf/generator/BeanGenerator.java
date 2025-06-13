@@ -312,7 +312,8 @@ public final class BeanGenerator {
                     s.add("            this." + p + " = " + t + ".parse(o.toString().substring(0, 10));");
                 } else if (t.equals("java.time.LocalTime")) {
                     s.add("        if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {");
-                    s.add("            this." + p + " = " + t + ".parse(o.toString());");
+                    s.add("            String text = o.toString().replaceFirst(\"^\\\\d+[\\\\/|\\\\-]\\\\d+[\\\\/|\\\\-]\\\\d+ \", \"\");");
+                    s.add("            this." + p + " = " + t + ".parse(text);");
                 } else if (t.equals("java.math.BigDecimal")) {
                     s.add("        if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {");
                     s.add("            this." + p + " = new java.math.BigDecimal(o.toString());");
@@ -793,7 +794,7 @@ public final class BeanGenerator {
 
             if (!colName.matches("(?i)^" + insertDt + "$") && !colName.matches("(?i)^" + updateDt + "$")
                     && StringUtil.endsWith(inputTimestampSuffixs, colName)) {
-                rightHand = assist.toTimestampSQL(assist.timestamp2CharSQL(assist.sysDate()));
+                rightHand = assist.toTimestampSQL(assist.timestamp2CharSQL(assist.sysTimestamp()));
             }
 
             s.add("        valueList.add(\"" + rightHand + "\");");
