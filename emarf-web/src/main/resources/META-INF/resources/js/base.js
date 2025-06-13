@@ -680,19 +680,34 @@ let Base = {
                     let $registDt = $mainform.find('[name$="' + Casing.toCamel(columnRegistTs) + '"]');
                     let $statusKb = $mainform.find('[name$="' + Casing.toCamel(columnStatus) + '"]:checked');
 
-                    if ($registDt.val() != '' && $statusKb.val() == 0) {
-                        /*
-                         * 登録ステータス
-                         */
+                    if ($registDt.val() != '') {
 
-                        // 削除可能
-                        $registForm.find('button.delete').button('option', 'disabled', false);
+                        if ($statusKb.length == 0) {
+                            /*
+                             * ステータスなし
+                             */
 
-                        // 承認可能
-                        $registForm.find('button.permit').button('option', 'disabled', false);
+                            // 削除可能
+                            $registForm.find('button.delete').button('option', 'disabled', false);
 
-                        // 否認可能
-                        $registForm.find('button.forbid').button('option', 'disabled', false);
+                            // 転生可能
+                            $registForm.find('a.reborner').button('option', 'disabled', false);
+
+                        } else if ($statusKb.val() == 0) {
+                            /*
+                             * 登録ステータス
+                             */
+
+                            // 削除可能
+                            $registForm.find('button.delete').button('option', 'disabled', false);
+
+                            // 承認可能
+                            $registForm.find('button.permit').button('option', 'disabled', false);
+
+                            // 否認可能
+                            $registForm.find('button.forbid').button('option', 'disabled', false);
+
+                        }
 
                     } else if ($statusKb.val() == 1) {
                         /*
