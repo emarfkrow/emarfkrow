@@ -1232,7 +1232,7 @@ public final class HtmlGenerator {
                 htmlFieldsSpan(s, fieldId, column.getRemarks(), "rebornee");
             } else if (isD && column.getDeriveFrom() != null) { // 詳細画面の派生元外部キー
                 htmlFieldsSpan(s, fieldId, column.getRemarks(), "derivee");
-                String referCss = null;
+                String referCss = " class=\"derivee\"";
                 if (!isP && (table.getParents() == null || table.getParents().size() == 0)) {
                     String referName = StringUtil.toPascalCase(column.getDeriveFrom().getName());
                     s.add("          <a id=\"" + fieldId + "\" th:href=\"@{/model/" + referName + "S.html?action="
