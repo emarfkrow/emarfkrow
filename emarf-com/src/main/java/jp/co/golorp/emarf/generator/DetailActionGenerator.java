@@ -47,7 +47,7 @@ public final class DetailActionGenerator {
     /** actionパッケージ */
     private static String pkgAction;
     /** entityパッケージ */
-    private static String pkgE;
+    private static String pkE;
 
     /** プライベートコンストラクタ */
     private DetailActionGenerator() {
@@ -79,7 +79,7 @@ public final class DetailActionGenerator {
         javaDir = bundle.getString("dir.java");
 
         pkgAction = bundle.getString("java.package.action") + ".model.base";
-        pkgE = bundle.getString("java.package.entity");
+        pkE = bundle.getString("java.package.entity");
 
         javaActionDetailRegist(tables);
         javaActionDetailGet(tables);
@@ -118,7 +118,7 @@ public final class DetailActionGenerator {
             s.add("import java.util.HashMap;");
             s.add("import java.util.Map;");
             s.add("");
-            s.add("import " + pkgE + "." + entity + ";");
+            s.add("import " + pkE + "." + entity + ";");
             s.add("");
             s.add("import jp.co.golorp.emarf.action.BaseAction;");
             s.add("import jp.co.golorp.emarf.exception.OptLockError;");
@@ -181,7 +181,7 @@ public final class DetailActionGenerator {
                     s.add("            if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(summaryKey)) {");
                     s.add("                String[] summaryKeys = summaryKey.trim().split(\",\");");
                     s.add("                for (String pk : summaryKeys) {");
-                    s.add("                    " + pkgE + "." + e + " " + i + " = " + pkgE + "." + e + ".get(pk);");
+                    s.add("                    " + pkE + "." + e + " " + i + " = " + pkE + "." + e + ".get(pk);");
                     if (!StringUtil.isNullOrBlank(status) && (summaryOf.getColumns().containsKey(status.toLowerCase())
                             || summaryOf.getColumns().containsKey(status.toUpperCase()))) {
                         String acc = StringUtil.toPascalCase(status);
@@ -268,7 +268,7 @@ public final class DetailActionGenerator {
             s.add("import java.util.HashMap;");
             s.add("import java.util.Map;");
             s.add("");
-            s.add("import " + pkgE + "." + e + ";");
+            s.add("import " + pkE + "." + e + ";");
             s.add("");
             s.add("import jp.co.golorp.emarf.action.BaseAction;");
             s.add("import jp.co.golorp.emarf.exception.NoDataError;");
@@ -327,7 +327,7 @@ public final class DetailActionGenerator {
                         String pE = StringUtil.toPascalCase(parent.getName());
                         String pI = StringUtil.toCamelCase(parent.getName());
                         String oyaKey = StringUtil.toCamelCase(oyaPKs);
-                        s.add("        " + pkgE + "." + pE + " " + pI + " = " + pkgE + "." + pE + ".get(" + oyaKey
+                        s.add("        " + pkE + "." + pE + " " + pI + " = " + pkE + "." + pE + ".get(" + oyaKey
                                 + ");");
                         s.add("        map.put(\"" + pE + "\", " + pI + ");");
                     }
@@ -407,7 +407,7 @@ public final class DetailActionGenerator {
             s.add("import java.util.HashMap;");
             s.add("import java.util.Map;");
             s.add("");
-            s.add("import " + pkgE + "." + e + ";");
+            s.add("import " + pkE + "." + e + ";");
             s.add("");
             s.add("import jp.co.golorp.emarf.action.BaseAction;");
             s.add("import jp.co.golorp.emarf.exception.OptLockError;");
@@ -501,7 +501,7 @@ public final class DetailActionGenerator {
             s.add("import java.util.HashMap;");
             s.add("import java.util.Map;");
             s.add("");
-            s.add("import " + pkgE + "." + entity + ";");
+            s.add("import " + pkE + "." + entity + ";");
             s.add("");
             s.add("import jp.co.golorp.emarf.action.BaseAction;");
             s.add("import jp.co.golorp.emarf.exception.OptLockError;");
@@ -599,7 +599,7 @@ public final class DetailActionGenerator {
             s.add("import java.util.HashMap;");
             s.add("import java.util.Map;");
             s.add("");
-            s.add("import " + pkgE + "." + entity + ";");
+            s.add("import " + pkE + "." + entity + ";");
             s.add("");
             s.add("import jp.co.golorp.emarf.action.BaseAction;");
             s.add("import jp.co.golorp.emarf.exception.OptLockError;");
@@ -675,117 +675,135 @@ public final class DetailActionGenerator {
      */
     private static void copyFromRebornee(final List<String> s, final TableInfo table, final List<TableInfo> tables) {
 
-        String tableName = table.getName();
-        String entity = StringUtil.toPascalCase(tableName);
-        String instance = StringUtil.toCamelCase(tableName);
+        // 自テーブルが転生先か調査する
+        String toTbl = table.getName();
+        String toE = StringUtil.toPascalCase(toTbl);
+        String toI = StringUtil.toCamelCase(toTbl);
 
-        for (TableInfo fromTable : tables) {
-            //転生元も集約先もなければスキップ
-            TableInfo reborn = fromTable.getRebornTo();
-            //            TableInfo summary = fromTable.getSummaryOf();
-            if (reborn == null /*&& summary == null*/) {
+        // 自テーブルを転生先とするテーブルがあるかループ
+        for (TableInfo frTbl : tables) {
+
+            TableInfo rebornTo = frTbl.getRebornTo();
+
+            // テーブルに転生先がなければスキップ
+            if (rebornTo == null && frTbl.getDeriveTos() == null) {
                 continue;
             }
-            //転生先で集約元でもなければスキップ
-            String toTableName = null;
-            String toTableKind = null;
-            //            if (reborn != null) {
-            toTableName = reborn.getName();
-            toTableKind = "転生";
-            //            } else if (summary != null) {
-            //                toTableName = summary.getName();
-            //                toTableKind = "集約";
-            //            }
-            if (!toTableName.equals(tableName)) {
+
+            // 転生先があっても自テーブルに一致しなければスキップ
+            boolean isTo = false;
+            String kind = "転生";
+            if (rebornTo != null && rebornTo.getName().equals(toTbl)) {
+                isTo = true;
+            }
+            for (TableInfo deriveTo : frTbl.getDeriveTos()) {
+                if (deriveTo.getName().equals(toTbl)) {
+                    isTo = true;
+                    kind = "派生";
+                    break;
+                }
+            }
+            if (!isTo) {
                 continue;
             }
+
+            // 自テーブルが転生先であった
+
             s.add("");
-            s.add("            //" + toTableKind + "先になる場合は" + toTableKind + "元から情報をコピー");
-            String fromKeys = "";
-            for (String pk : fromTable.getPrimaryKeys()) {
-                String key = StringUtil.toCamelCase(pk);
-                s.add("            Object " + key + " = postJson.get(\"" + key + "\");");
-                s.add("            if (" + key + " == null) {");
-                s.add("                " + key + " = postJson.get(\"" + entity + "." + key + "\");");
+            s.add("            // " + kind + "先になる場合は" + kind + "元から情報をコピー");
+            String frK = "";
+            for (String fromKey : frTbl.getPrimaryKeys()) {
+                String k = StringUtil.toCamelCase(fromKey);
+                s.add("            Object " + k + " = postJson.get(\"" + k + "\");");
+                s.add("            if (" + k + " == null) {");
+                s.add("                " + k + " = postJson.get(\"" + toE + "." + k + "\");");
                 s.add("            }");
-                s.add("            if (" + key + " == null) {");
+                s.add("            if (" + k + " == null) {");
                 s.add("                return map;");
                 s.add("            }");
-                if (!fromKeys.equals("")) {
-                    fromKeys += ", ";
+                if (!frK.equals("")) {
+                    frK += ", ";
                 }
-                fromKeys += key;
+                frK += k;
             }
-            s.add("");
-            String fromName = fromTable.getName();
-            String fromEntity = StringUtil.toPascalCase(fromName);
-            String fromInstance = StringUtil.toCamelCase(fromName);
-            s.add("            " + pkgE + "." + fromEntity + " " + fromInstance + " = " + pkgE + "."
-                    + fromEntity + ".get(" + fromKeys + ");");
-            s.add("            " + entity + " " + instance + " = new " + entity + "();");
-            for (String fromColumnName : fromTable.getColumns().keySet()) {
-                boolean isInsertDt = fromColumnName.matches("(?i)^" + insertDt + "$");
-                boolean isInsertBy = fromColumnName.matches("(?i)^" + insertBy + "$");
-                boolean isUpdateDt = fromColumnName.matches("(?i)^" + updateDt + "$");
-                boolean isUpdateBy = fromColumnName.matches("(?i)^" + updateBy + "$");
-                boolean isDeleteF = fromColumnName.matches("(?i)^" + deleteF + "$");
-                boolean isStatusKb = fromColumnName.matches("(?i)^" + status + "$");
-                if (isInsertDt || isInsertBy || isUpdateDt || isUpdateBy || isDeleteF || isStatusKb) {
-                    continue;
-                }
-                if (table.getColumns().containsKey(fromColumnName)) {
-                    String a = StringUtil.toPascalCase(fromColumnName);
-                    s.add("            " + instance + ".set" + a + "(" + fromInstance + ".get" + a + "());");
-                }
-            }
-            s.add("");
 
-            for (TableInfo fromChild : fromTable.getChilds()) {
-                String fromChildName = fromChild.getName();
-                if (!fromChildName.startsWith(fromName)) {
+            s.add("");
+            String frName = frTbl.getName();
+            String frE = StringUtil.toPascalCase(frName);
+            String frI = StringUtil.toCamelCase(frName);
+            s.add("            " + pkE + "." + frE + " " + frI + " = " + pkE + "." + frE + ".get(" + frK + ");");
+            s.add("            " + toE + " " + toI + " = new " + toE + "();");
+
+            for (String frColNm : frTbl.getColumns().keySet()) {
+                // メタ情報ならスキップ
+                boolean isIDt = frColNm.matches("(?i)^" + insertDt + "$");
+                boolean isIBy = frColNm.matches("(?i)^" + insertBy + "$");
+                boolean isUDt = frColNm.matches("(?i)^" + updateDt + "$");
+                boolean isUBy = frColNm.matches("(?i)^" + updateBy + "$");
+                boolean isDel = frColNm.matches("(?i)^" + deleteF + "$");
+                boolean isSKb = frColNm.matches("(?i)^" + status + "$");
+                if (isIDt || isIBy || isUDt || isUBy || isDel || isSKb) {
                     continue;
                 }
+                // 自テーブルに転生元と同じカラムがあればコピー
+                if (table.getColumns().containsKey(frColNm)) {
+                    String a = StringUtil.toPascalCase(frColNm);
+                    s.add("            " + toI + ".set" + a + "(" + frI + ".get" + a + "());");
+                }
+            }
+
+            s.add("");
+            for (TableInfo frChild : frTbl.getChilds()) {
+
+                // 転生元の子モデル名が転生元に前方一致しなければスキップ
+                String frCNm = frChild.getName();
+                if (!frCNm.startsWith(frName)) {
+                    continue;
+                }
+
                 for (TableInfo child : table.getChilds()) {
+
+                    // 自テーブルの子モデル名が自テーブルに前方一致しなければスキップ
                     String childName = child.getName();
-                    if (!childName.startsWith(tableName)) {
+                    if (!childName.startsWith(toTbl)) {
                         continue;
                     }
-                    String fromChildEntity = StringUtil.toPascalCase(fromChildName);
-                    String fromChildInstance = StringUtil.toCamelCase(fromChildName);
-                    String childEntity = StringUtil.toPascalCase(childName);
-                    String childInstance = StringUtil.toCamelCase(childName);
-                    s.add("            " + fromInstance + ".refer" + StringUtil.toPascalCase(fromChildName) + "s();");
-                    s.add("            " + instance + ".set" + childEntity + "s(new java.util.ArrayList<" + pkgE
-                            + "." + childEntity + ">());");
-                    s.add("            for (" + pkgE + "." + fromChildEntity + " " + fromChildInstance + " : "
-                            + fromInstance + ".refer" + fromChildEntity + "s()) {");
-                    s.add("                " + pkgE + "." + childEntity + " " + childInstance + " = new "
-                            + pkgE + "." + childEntity + "();");
-                    s.add("                " + childInstance + ".setId(" + fromChildInstance + ".getId());");
-                    for (String fromChildColumnName : fromChild.getColumns().keySet()) {
-                        boolean isInsertDt = fromChildColumnName.matches("(?i)^" + insertDt + "$");
-                        boolean isInsertBy = fromChildColumnName.matches("(?i)^" + insertBy + "$");
-                        boolean isUpdateDt = fromChildColumnName.matches("(?i)^" + updateDt + "$");
-                        boolean isUpdateBy = fromChildColumnName.matches("(?i)^" + updateBy + "$");
-                        boolean isDeleteF = fromChildColumnName.matches("(?i)^" + deleteF + "$");
-                        boolean isStatusKb = fromChildColumnName.matches("(?i)^" + status + "$");
-                        if (isInsertDt || isInsertBy || isUpdateDt || isUpdateBy || isDeleteF || isStatusKb) {
+
+                    String fCE = StringUtil.toPascalCase(frCNm);
+                    String fCI = StringUtil.toCamelCase(frCNm);
+                    String cE = StringUtil.toPascalCase(childName);
+                    String cI = StringUtil.toCamelCase(childName);
+                    s.add("            " + frI + ".refer" + StringUtil.toPascalCase(frCNm) + "s();");
+                    s.add("            " + toI + ".set" + cE + "s(new java.util.ArrayList<" + pkE + "." + cE + ">());");
+                    s.add("            for (" + pkE + "." + fCE + " " + fCI + " : " + frI + ".refer" + fCE + "s()) {");
+                    s.add("                " + pkE + "." + cE + " " + cI + " = new " + pkE + "." + cE + "();");
+                    s.add("                " + cI + ".setId(" + fCI + ".getId());");
+                    for (String frCColNm : frChild.getColumns().keySet()) {
+                        // メタ情報ならスキップ
+                        boolean isIDt = frCColNm.matches("(?i)^" + insertDt + "$");
+                        boolean isIBy = frCColNm.matches("(?i)^" + insertBy + "$");
+                        boolean isUDt = frCColNm.matches("(?i)^" + updateDt + "$");
+                        boolean isUBy = frCColNm.matches("(?i)^" + updateBy + "$");
+                        boolean isDel = frCColNm.matches("(?i)^" + deleteF + "$");
+                        boolean isSKb = frCColNm.matches("(?i)^" + status + "$");
+                        if (isIDt || isIBy || isUDt || isUBy || isDel || isSKb) {
                             continue;
                         }
-                        if (child.getColumns().containsKey(fromChildColumnName)) {
-                            String a = StringUtil.toPascalCase(fromChildColumnName);
-                            s.add("                " + childInstance + ".set" + a + "(" + fromChildInstance + ".get" + a
-                                    + "());");
+                        // 子テーブルに転生元の子モデルと同じカラムがあればコピー
+                        if (child.getColumns().containsKey(frCColNm)) {
+                            String a = StringUtil.toPascalCase(frCColNm);
+                            s.add("                " + cI + ".set" + a + "(" + fCI + ".get" + a + "());");
                         }
                     }
-                    s.add("                " + instance + ".get" + childEntity + "s().add(" + childInstance + ");");
+                    s.add("                " + toI + ".get" + cE + "s().add(" + cI + ");");
                     s.add("            }");
                     s.add("");
                 }
             }
-            s.add("            map.put(\"" + entity + "\", " + instance + ");");
+            s.add("            map.put(\"" + toE + "\", " + toI + ");");
 
-            break;
+            //            // 転生元は一つしかないはずなので不要かも
+            //            break;
         }
     }
 
