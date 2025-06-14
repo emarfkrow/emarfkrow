@@ -76,8 +76,8 @@ public class ColumnInfo {
     /** 転生キーならtrue */
     private boolean isReborn;
 
-    /** 派生キーならtrue */
-    private boolean isDerive;
+    /** 派生元テーブル */
+    private TableInfo deriveFrom;
 
     /** 集約キーならtrue */
     private boolean isSummary;
@@ -252,15 +252,15 @@ public class ColumnInfo {
     /**
      * @return boolean
      */
-    public boolean isDerive() {
-        return isDerive;
+    public TableInfo getDeriveFrom() {
+        return deriveFrom;
     }
 
     /**
      * @param p
      */
-    public void setDerive(final boolean p) {
-        this.isDerive = p;
+    public void setDeriveFrom(final TableInfo p) {
+        this.deriveFrom = p;
     }
 
     /**

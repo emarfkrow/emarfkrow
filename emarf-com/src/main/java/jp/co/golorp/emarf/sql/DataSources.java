@@ -1189,22 +1189,22 @@ public final class DataSources {
                         // ２回以上ここに来る＝転生先が複数存在しうる＝転生モデルでなく派生モデルにする
                         if (rebornCount > 0) {
                             if (src.getRebornTo() != null) {
-                                TableInfo reborn = src.getRebornTo(); // 転生先を派生先に追加
-                                LOG.debug("        Cancel " + src.getName() + " : " + reborn.getName());
+                                TableInfo rebornTo = src.getRebornTo(); // 転生先を派生先に追加
+                                LOG.debug("        Cancel " + src.getName() + " : " + rebornTo.getName());
                                 src.setRebornTo(null);
                                 for (String primaryKey : src.getPrimaryKeys()) {
-                                    reborn.getColumns().get(primaryKey).setReborn(false);
+                                    rebornTo.getColumns().get(primaryKey).setReborn(false);
                                 }
-                                LOG.debug("        Derive " + src.getName() + " : " + reborn.getName());
-                                src.getDeriveTos().add(reborn);
+                                LOG.debug("        Derive " + src.getName() + " : " + rebornTo.getName());
+                                src.getDeriveTos().add(rebornTo);
                                 for (String primaryKey : src.getPrimaryKeys()) {
-                                    reborn.getColumns().get(primaryKey).setDerive(true);
+                                    rebornTo.getColumns().get(primaryKey).setDeriveFrom(src);
                                 }
                             }
                             LOG.debug("        Derive " + src.getName() + " : " + rbn.getName() + " " + rbnFKs);
                             src.getDeriveTos().add(rbn);
                             for (String fk : rbnFKs) {
-                                rbn.getColumns().get(fk).setDerive(true);
+                                rbn.getColumns().get(fk).setDeriveFrom(src);
                             }
                             continue;
                         }

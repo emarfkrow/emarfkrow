@@ -236,7 +236,7 @@ public final class HtmlGenerator {
         s.add("<script th:src=\"@{/model/" + e + "GridColumns.js}\"></script>");
         Set<TableInfo> added = new HashSet<TableInfo>();
         added.add(table);
-        htmlNestGrid(s, table, tables, added);
+        htmlNestGrid(s, table, tables, added, false);
         s.add("</head>");
         s.add("<body>");
         s.add("  <div layout:fragment=\"article\">");
@@ -247,7 +247,7 @@ public final class HtmlGenerator {
         s.add("      <input type=\"hidden\" name=\"page\" value=\"0\" />");
         s.add("      <fieldset>");
         s.add("        <legend th:text=\"#{" + e + "S.legend}\">legend</legend>");
-        htmlFields(table, s, false, false);
+        htmlFields(table, s, false, false, false);
         s.add("      </fieldset>");
         s.add("      <div class=\"buttons\">");
         s.add("        <button type=\"reset\" id=\"Reset" + e
@@ -390,9 +390,9 @@ public final class HtmlGenerator {
             return true;
         }
 
-        // 転生元か派生元が必須なら作成不可
+        // 転生元/*か派生元*/が必須なら作成不可
         for (ColumnInfo column : table.getColumns().values()) {
-            if ((column.isReborn() || column.isDerive()) && column.getNullable() != 1) {
+            if ((column.isReborn() /* || column.isDerive() */) && column.getNullable() != 1) {
                 return false;
             }
         }
@@ -522,7 +522,7 @@ public final class HtmlGenerator {
         s.add("<script th:src=\"@{/model/" + e + "GridColumns.js}\"></script>");
         Set<TableInfo> added = new HashSet<TableInfo>();
         added.add(table);
-        htmlNestGrid(s, table, tables, added);
+        htmlNestGrid(s, table, tables, added, false);
         s.add("</head>");
         s.add("<body>");
         s.add("  <div layout:fragment=\"article\">");
@@ -532,7 +532,7 @@ public final class HtmlGenerator {
             String p = StringUtil.toPascalCase(parent.getName());
             s.add("      <fieldset class=\"parent\">");
             s.add("        <legend th:text=\"#{" + p + ".legend}\">legend</legend>");
-            htmlFields(parent, s, true, false);
+            htmlFields(parent, s, true, false, true);
             s.add("      </fieldset>");
         }
         String css = "";
@@ -541,14 +541,14 @@ public final class HtmlGenerator {
         }
         s.add("      <fieldset" + css + ">");
         s.add("        <legend th:text=\"#{" + e + ".legend}\">legend</legend>");
-        htmlFields(table, s, true, false);
+        htmlFields(table, s, true, false, false);
         s.add("      </fieldset>");
         if (table.getYoungers() != null) { // 兄弟モデル
             for (TableInfo younger : table.getYoungers()) {
                 String y = StringUtil.toPascalCase(younger.getName());
                 s.add("      <fieldset>");
                 s.add("        <legend th:text=\"#{" + y + ".legend}\">legend</legend>");
-                htmlFields(younger, s, true, true);
+                htmlFields(younger, s, true, true, false);
                 s.add("      </fieldset>");
             }
         }
@@ -827,9 +827,10 @@ public final class HtmlGenerator {
      * @param table テーブル情報
      * @param tables
      * @param added 出力済みテーブル情報のリスト
+     * @param isP
      */
     private static void htmlNestGrid(final List<String> s, final TableInfo table, final List<TableInfo> tables,
-            final Set<TableInfo> added) {
+            final Set<TableInfo> added, final boolean isP) {
 
         //参照モデル
         for (ColumnInfo column : table.getColumns().values()) {
@@ -847,7 +848,7 @@ public final class HtmlGenerator {
                 s.add("<script th:src=\"@{/model/" + entity + "GridColumns.js}\"></script>");
                 added.add(refer);
 
-                htmlNestGrid(s, refer, tables, added);
+                htmlNestGrid(s, refer, tables, added, false);
             }
         }
 
@@ -869,7 +870,7 @@ public final class HtmlGenerator {
                     s.add("<script th:src=\"@{/model/" + entity + "GridColumns.js}\"></script>");
                     added.add(refer);
 
-                    htmlNestGrid(s, refer, tables, added);
+                    htmlNestGrid(s, refer, tables, added, false);
                 }
             }
         }
@@ -886,7 +887,7 @@ public final class HtmlGenerator {
             s.add("<script th:src=\"@{/model/" + entity + "GridColumns.js}\"></script>");
             added.add(parent);
 
-            htmlNestGrid(s, parent, tables, added);
+            htmlNestGrid(s, parent, tables, added, true);
         }
 
         //子モデル
@@ -901,7 +902,7 @@ public final class HtmlGenerator {
             s.add("<script th:src=\"@{/model/" + entity + "GridColumns.js}\"></script>");
             added.add(child);
 
-            htmlNestGrid(s, child, tables, added);
+            htmlNestGrid(s, child, tables, added, false);
         }
 
         //転生先モデル
@@ -909,7 +910,22 @@ public final class HtmlGenerator {
             TableInfo reborn = table.getRebornTo();
             if (!added.contains(reborn)) {
                 added.add(reborn);
-                htmlNestGrid(s, reborn, tables, added);
+                htmlNestGrid(s, reborn, tables, added, false);
+            }
+        }
+
+        // 派生元モデル
+        if (!isP) {
+            for (ColumnInfo column : table.getColumns().values()) {
+                if ((table.getParents() == null || table.getParents().size() == 0) && column.getDeriveFrom() != null) {
+                    TableInfo deriveFrom = column.getDeriveFrom();
+                    if (!added.contains(deriveFrom)) {
+                        String entity = StringUtil.toPascalCase(deriveFrom.getName());
+                        s.add("<script th:src=\"@{/model/" + entity + "GridColumns.js}\"></script>");
+                        added.add(deriveFrom);
+                        htmlNestGrid(s, deriveFrom, tables, added, false);
+                    }
+                }
             }
         }
 
@@ -920,7 +936,7 @@ public final class HtmlGenerator {
                 String entity = StringUtil.toPascalCase(summary.getName());
                 s.add("<script th:src=\"@{/model/" + entity + "GridColumns.js}\"></script>");
                 added.add(summary);
-                htmlNestGrid(s, summary, tables, added);
+                htmlNestGrid(s, summary, tables, added, false);
             }
         }
 
@@ -931,7 +947,7 @@ public final class HtmlGenerator {
                 String entity = StringUtil.toPascalCase(summary.getName());
                 s.add("<script th:src=\"@{/model/" + entity + "GridColumns.js}\"></script>");
                 added.add(summary);
-                htmlNestGrid(s, summary, tables, added);
+                htmlNestGrid(s, summary, tables, added, false);
             }
         }
     }
@@ -1126,8 +1142,10 @@ public final class HtmlGenerator {
      * @param s 出力文字列のリスト
      * @param isD 詳細画面ならtrue
      * @param isB 兄弟モデルならtrue
+     * @param isP 親モデルならtrue
      */
-    private static void htmlFields(final TableInfo table, final List<String> s, final boolean isD, final boolean isB) {
+    private static void htmlFields(final TableInfo table, final List<String> s, final boolean isD, final boolean isB,
+            final boolean isP) {
 
         //検索画面の場合は制約モデルの参照キーを出力
         if (!isD && table.getStintInfo() != null) {
@@ -1195,7 +1213,7 @@ public final class HtmlGenerator {
                     css += " history";
                 } else if (isD && column.isReborn()) { // 詳細画面の転生元外部キー
                     css += " rebornee";
-                } else if (isD && column.isDerive()) { // 詳細画面の派生元外部キー
+                } else if (isD && column.getDeriveFrom() != null) { // 詳細画面の派生元外部キー
                     css += " derivee";
                 } else if (isD && column.isSummary()) { // 詳細画面の集約先外部キー
                     css += " summary";
@@ -1210,19 +1228,21 @@ public final class HtmlGenerator {
             } else if (isD && table.isHistory()) { // 履歴モデルの詳細画面
                 htmlFieldsSpan(s, fieldId, column.getRemarks(), "history");
                 addMeiSpan(s, table, column);
-
             } else if (isD && column.isReborn()) { // 詳細画面の転生元外部キー
                 htmlFieldsSpan(s, fieldId, column.getRemarks(), "rebornee");
-
-            } else if (isD && column.isDerive()) { // 詳細画面の派生元外部キー
+            } else if (isD && column.getDeriveFrom() != null) { // 詳細画面の派生元外部キー
                 htmlFieldsSpan(s, fieldId, column.getRemarks(), "derivee");
-
+                String referCss = null;
+                if (!isP && (table.getParents() == null || table.getParents().size() == 0)) {
+                    String referName = StringUtil.toPascalCase(column.getDeriveFrom().getName());
+                    s.add("          <a id=\"" + fieldId + "\" th:href=\"@{/model/" + referName + "S.html?action="
+                            + referName + "Correct.ajax}\" target=\"dialog\"" + referCss
+                            + " th:text=\"#{common.correct}\" tabindex=\"-1\">...</a>");
+                }
             } else if (isD && column.isSummary()) { // 詳細画面の集約先外部キー
                 htmlFieldsSpan(s, fieldId, column.getRemarks(), "summary");
-
             } else if (StringUtil.endsWith(inputTimestampSuffixs, colName)) { // タイムスタンプの場合
                 htmlFieldsSpan(s, fieldId, column.getRemarks(), "");
-
             } else if (isD && StringUtil.endsWith(textareaSuffixs, colName)) { // テキストエリア項目の場合
 
                 String css = "";
@@ -1233,9 +1253,7 @@ public final class HtmlGenerator {
                 htmlFieldsTextarea(s, fieldId, column.getRemarks(), css);
 
             } else { // inputの場合
-
                 String type = getInputType(colName);
-
                 String inputCss = addCssByRelation(isD, table, column);
 
                 // 詳細画面の必須項目
