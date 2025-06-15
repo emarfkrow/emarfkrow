@@ -1074,12 +1074,17 @@ public final class DataSources {
 
         LOG.debug("【Reborn】");
 
-        // 転生元としてループ
+        // 転生元・派生元としてループ
         Iterator<TableInfo> srcs = tables.iterator();
         while (srcs.hasNext()) {
             TableInfo src = srcs.next();
 
-            // 履歴モデル か ビュー か 参照モデル か 親が参照モデル なら転生しない
+            // 履歴モデル・参照モデル・兄弟モデル・ビュー は転生しない
+            if (src.isHistory() || src.isRefer() || src.isYounger() || src.isView()) {
+                continue;
+            }
+
+            // 親が参照モデルでも転生しない
             boolean isParentRefer = false;
             for (TableInfo parent : src.getParents()) {
                 if (parent.isRefer()) {
@@ -1087,18 +1092,19 @@ public final class DataSources {
                     break;
                 }
             }
-            if (src.isHistory() || src.isView() || src.isRefer() || isParentRefer) {
+            if (isParentRefer) {
                 continue;
             }
 
-            boolean isReborn = false; // 既に何れかの転生先になっているか
+            // このテーブル自体が、既に何れかの転生先になっているか
+            boolean isThisSrcRebornTo = false;
             Iterator<TableInfo> pres = tables.iterator();
             while (pres.hasNext()) {
                 TableInfo pre = pres.next();
                 if (pre.getRebornTo() != null) {
                     TableInfo rbn = pre.getRebornTo();
                     if (src.getName().equals(rbn.getName())) {
-                        isReborn = true;
+                        isThisSrcRebornTo = true;
                         break;
                     }
                 }
@@ -1111,8 +1117,8 @@ public final class DataSources {
             while (rbns.hasNext()) {
                 TableInfo rbn = rbns.next();
 
-                // 履歴モデル か ビュー なら転生先にしない
-                if (rbn.isHistory() || rbn.isView()) {
+                // 履歴モデル・参照モデル・ビュー は転生先にしない
+                if (rbn.isHistory() || rbn.isRefer() || rbn.isView()) {
                     continue;
                 }
 
@@ -1131,7 +1137,7 @@ public final class DataSources {
                         // 転生元が他のテーブルの転生先でない場合は、外部キーがNULL可ならスキップ
                         // （＝転生元が既に他のテーブルの転生先となっている場合は、外部キーがNULL可でも許可する）
                         // （見積→注文のパターン。注文からでもスタートできるよう。）
-                        if (!isReborn && rbnCol.getNullable() == 1) {
+                        if (!isThisSrcRebornTo && rbnCol.getNullable() == 1) {
                             continue;
                         }
 
@@ -1149,59 +1155,27 @@ public final class DataSources {
                 // 転生元の主キーと、転生先外部キーの、数が一致する場合
                 if (src.getPrimaryKeys().size() == rbnFKs.size()) {
 
-                    boolean isRebornElse = false;
-
-                    // 他のテーブルと転生先が重複する場合、合致キー数が多いほうを転生元とする
-                    Iterator<TableInfo> others = tables.iterator();
-                    while (others.hasNext()) {
-                        TableInfo other = others.next();
-
-                        // 転生先を設定済みでなければスキップ
-                        if (other.getRebornTo() == null) {
-                            continue;
-                        }
-
-                        // 転生先を設定済みでも、今回の転生先と重複していなければスキップ
-                        if (!other.getRebornTo().getName().equals(rbn.getName())) {
-                            continue;
-                        }
-
-                        if (other.getPrimaryKeys().size() < src.getPrimaryKeys().size()) {
-
-                            // 今回の転生元の方がキー数が多いなら、処理済みの転生先をクリア
-                            TableInfo otherReborn = other.getRebornTo();
-                            LOG.debug("        Cancel " + other.getName() + " reborn to " + otherReborn.getName());
-                            other.setRebornTo(null);
-                            for (String primaryKey : other.getPrimaryKeys()) {
-                                otherReborn.getColumns().get(primaryKey).setReborn(false);
-                            }
-
-                        } else if (other.getPrimaryKeys().size() > src.getPrimaryKeys().size()) {
-
-                            // 今回の転生元の方がキー数が少ないなら、転生先としない
-                            isRebornElse = true;
-                        }
-                    }
+                    boolean isDestRebornElse = isRebornElse(tables, src, rbn);
 
                     // 今回の比較先が、他モデルの転生先でなければ、比較元の転生先に設定
-                    if (!isRebornElse) {
+                    if (!isDestRebornElse) {
 
                         // ２回以上ここに来る＝転生先が複数存在しうる＝転生モデルでなく派生モデルにする
                         if (rebornCount > 0) {
                             if (src.getRebornTo() != null) {
                                 TableInfo rebornTo = src.getRebornTo(); // 転生先を派生先に追加
-                                LOG.debug("        Cancel " + src.getName() + " : " + rebornTo.getName());
+                                LOG.debug("        Cancel : " + rebornTo.getName());
                                 src.setRebornTo(null);
                                 for (String primaryKey : src.getPrimaryKeys()) {
                                     rebornTo.getColumns().get(primaryKey).setReborn(false);
                                 }
-                                LOG.debug("        Derive " + src.getName() + " : " + rebornTo.getName());
+                                LOG.debug("        Derive to : " + rebornTo.getName());
                                 src.getDeriveTos().add(rebornTo);
                                 for (String primaryKey : src.getPrimaryKeys()) {
                                     rebornTo.getColumns().get(primaryKey).setDeriveFrom(src);
                                 }
                             }
-                            LOG.debug("        Derive " + src.getName() + " : " + rbn.getName() + " " + rbnFKs);
+                            LOG.debug("        Derive to : " + rbn.getName() + " " + rbnFKs);
                             src.getDeriveTos().add(rbn);
                             for (String fk : rbnFKs) {
                                 rbn.getColumns().get(fk).setDeriveFrom(src);
@@ -1219,6 +1193,101 @@ public final class DataSources {
                 }
             }
         }
+    }
+
+    /**
+     * src以外の転生先か派生先になっているか評価
+     * @param tables
+     * @param src
+     * @param rbn
+     * @return boolean
+     */
+    public static boolean isRebornElse(final List<TableInfo> tables, final TableInfo src, final TableInfo rbn) {
+
+        // 主キー合致数の多い転生元が他に存在するか
+        boolean isRebornElse = false;
+
+        // 他のテーブルと転生先が重複する場合、合致キー数が多いほうを転生元とする
+        Iterator<TableInfo> rebornees = tables.iterator();
+        while (rebornees.hasNext()) {
+            TableInfo rebornee = rebornees.next();
+
+            // 転生先を設定済みでなければスキップ
+            if (rebornee.getRebornTo() == null) {
+                continue;
+            }
+
+            // 転生先を設定済みでも、今回の転生先と重複していなければスキップ
+            if (!rebornee.getRebornTo().getName().equals(rbn.getName())) {
+                continue;
+            }
+
+            if (rebornee.getPrimaryKeys().size() < src.getPrimaryKeys().size()) {
+
+                // 今回の転生元の方がキー数が多いなら、処理済みの転生先をクリア
+                LOG.debug("        Cancel " + rebornee.getName() + " reborn to " + rebornee.getRebornTo().getName());
+                TableInfo reborneeReborn = rebornee.getRebornTo();
+                rebornee.setRebornTo(null);
+                for (String primaryKey : rebornee.getPrimaryKeys()) {
+                    reborneeReborn.getColumns().get(primaryKey).setReborn(false);
+                }
+
+            } else if (rebornee.getPrimaryKeys().size() > src.getPrimaryKeys().size()) {
+
+                // 今回の転生元の方がキー数が少ないなら、転生先としない
+                isRebornElse = true;
+            }
+        }
+
+        // 他のテーブルと派生先が重複する場合、合致キー数が多いほうを派生元とする
+        Iterator<TableInfo> derivees = tables.iterator();
+        while (derivees.hasNext()) {
+            TableInfo derivee = derivees.next();
+
+            // 派生先を設定済みでなければスキップ
+            if (derivee.getDeriveTos() == null || derivee.getDeriveTos().size() == 0) {
+                continue;
+            }
+
+            List<TableInfo> newDeriveTos = new ArrayList<TableInfo>();
+            for (TableInfo deriveTo : derivee.getDeriveTos()) {
+
+                newDeriveTos.add(deriveTo);
+
+                // 派生先を設定済みでも、今回の転生先と重複していなければスキップ
+                if (!deriveTo.getName().equals(rbn.getName())) {
+                    continue;
+                }
+
+                if (derivee.getPrimaryKeys().size() < src.getPrimaryKeys().size()) {
+
+                    // 今回の転生元の方がキー数が多いなら、処理済みの転生先をクリア
+                    LOG.debug("        Cancel " + derivee.getName() + " derive to " + deriveTo.getName());
+                    //derivee.getDeriveTos().remove(deriveTo);
+                    newDeriveTos.remove(deriveTo);
+                    for (String primaryKey : derivee.getPrimaryKeys()) {
+                        deriveTo.getColumns().get(primaryKey).setDeriveFrom(null);
+                    }
+
+                } else if (derivee.getPrimaryKeys().size() > src.getPrimaryKeys().size()) {
+
+                    // 今回の転生元の方がキー数が少ないなら、転生先としない
+                    isRebornElse = true;
+
+                } else {
+
+                    // キー数が一致しても、転生先としない
+                    isRebornElse = true;
+                }
+            }
+            derivee.setDeriveTos(newDeriveTos);
+
+            if (isRebornElse) {
+                break;
+            }
+        }
+
+        return isRebornElse;
     }
 
     /**
