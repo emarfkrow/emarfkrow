@@ -256,6 +256,17 @@ public final class HtmlGenerator {
         if (isAnew) {
             s.add("        <a th:href=\"@{/model/" + e + ".html}\" target=\"dialog\" id=\"" + e
                     + "\" class=\"anew\" th:text=\"#{" + e + ".add}\" tabindex=\"-1\">" + remarks + "</a>");
+            for (ColumnInfo column : table.getColumns().values()) {
+                if (column.getDeriveFrom() != null) {
+                    TableInfo derivee = column.getDeriveFrom();
+                    String fieldId = StringUtil.toPascalCase(derivee.getName()) + "."
+                            + StringUtil.toCamelCase(column.getName());
+                    String type = "text";
+                    String inputCss = "";
+                    String format = null;
+                    s.add(htmlFieldsInput(fieldId, type, inputCss, column, format));
+                }
+            }
         }
         s.add("      </div>");
         s.add("      <div class=\"submits\">");
