@@ -254,18 +254,30 @@ public final class HtmlGenerator {
                 + "\" th:text=\"#{common.reset}\" class=\"reset\">reset</button>");
         boolean isAnew = isAnew(table);
         if (isAnew) {
-            s.add("        <a th:href=\"@{/model/" + e + ".html}\" target=\"dialog\" id=\"" + e
-                    + "\" class=\"anew\" th:text=\"#{" + e + ".add}\" tabindex=\"-1\">" + remarks + "</a>");
-            for (ColumnInfo column : table.getColumns().values()) {
-                if (column.getDeriveFrom() != null) {
-                    TableInfo derivee = column.getDeriveFrom();
-                    String fieldId = StringUtil.toPascalCase(derivee.getName()) + "."
-                            + StringUtil.toCamelCase(column.getName());
-                    String type = "text";
-                    String inputCss = "";
-                    String format = null;
-                    s.add(htmlFieldsInput(fieldId, type, inputCss, column, format));
+            ColumnInfo column = null;
+            for (ColumnInfo col : table.getColumns().values()) {
+                if (col.getDeriveFrom() != null) {
+                    column = col;
                 }
+            }
+            String anewClass = "anew";
+            if (column != null) {
+                anewClass += " derive";
+            }
+            s.add("        <a th:href=\"@{/model/" + e + ".html}\" target=\"dialog\" id=\"" + e + "\" class=\""
+                    + anewClass + "\" th:text=\"#{" + e + ".add}\" tabindex=\"-1\">" + remarks + "</a>");
+            if (column != null) {
+                TableInfo derivee = column.getDeriveFrom();
+                String fieldId = StringUtil.toPascalCase(derivee.getName()) + "."
+                        + StringUtil.toCamelCase(column.getName());
+                String type = "text";
+                String inputCss = "";
+                String format = null;
+                s.add(htmlFieldsInput(fieldId, type, inputCss, column, format));
+                String referName = StringUtil.toPascalCase(column.getDeriveFrom().getName());
+                s.add("          <a id=\"" + fieldId + "\" th:href=\"@{/model/" + referName + "S.html?action="
+                        + referName + "Correct.ajax}\" target=\"dialog\" class=\"derivee\" "
+                        + "th:text=\"#{common.correct}\" tabindex=\"-1\">...</a>");
             }
         }
         s.add("      </div>");
@@ -1205,10 +1217,8 @@ public final class HtmlGenerator {
                 }
             }
 
-            s.add("        <div id=\"" + property + "\">");
-
             String fieldId = entity + "." + property;
-
+            s.add("        <div id=\"" + property + "\">");
             if (isInsertDt || isUpdateDt || isInsertBy || isUpdateBy) { // メタ情報の場合は表示項目（編集画面の自モデルのみここに到達する）
                 htmlFieldsMeta(s, fieldId, column.getRemarks());
                 addMeiSpan(s, table, column);
@@ -1243,13 +1253,14 @@ public final class HtmlGenerator {
                 htmlFieldsSpan(s, fieldId, column.getRemarks(), "rebornee");
             } else if (isD && column.getDeriveFrom() != null) { // 詳細画面の派生元外部キー
                 htmlFieldsSpan(s, fieldId, column.getRemarks(), "derivee");
-                String referCss = " class=\"derivee\"";
-                if (!isP && (table.getParents() == null || table.getParents().size() == 0)) {
-                    String referName = StringUtil.toPascalCase(column.getDeriveFrom().getName());
-                    s.add("          <a id=\"" + fieldId + "\" th:href=\"@{/model/" + referName + "S.html?action="
-                            + referName + "Correct.ajax}\" target=\"dialog\"" + referCss
-                            + " th:text=\"#{common.correct}\" tabindex=\"-1\">...</a>");
-                }
+                // 派生元は参照しない
+                //                String referCss = " class=\"derivee\"";
+                //                if (!isP && (table.getParents() == null || table.getParents().size() == 0)) {
+                //                    String referName = StringUtil.toPascalCase(column.getDeriveFrom().getName());
+                //                    s.add("          <a id=\"" + fieldId + "\" th:href=\"@{/model/" + referName + "S.html?action="
+                //                            + referName + "Correct.ajax}\" target=\"dialog\"" + referCss
+                //                            + " th:text=\"#{common.correct}\" tabindex=\"-1\">...</a>");
+                //                }
             } else if (isD && column.isSummary()) { // 詳細画面の集約先外部キー
                 htmlFieldsSpan(s, fieldId, column.getRemarks(), "summary");
             } else if (StringUtil.endsWith(inputTimestampSuffixs, colName)) { // タイムスタンプの場合

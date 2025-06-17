@@ -105,40 +105,7 @@ $(function() {
 
         // 呼び出し元の入力項目でループしてダイアログ内に反映
         $sendInputs.each(function() {
-
-            let sendItemName = this.name;                                                 // TEntity.betsuSansho1Id
-            let sendValue = $(this).val();
-
-            // そのままの項目名でヒットする場合（詳細リンク、追加リンクの親モデル）
-            let $dialogItem = $dialogDiv.find('[name="' + sendItemName + '"]');
-            if ($dialogItem.length > 0) {
-                $dialogItem.val(sendValue);
-                $dialogDiv.find('span[id="' + sendItemName + '"]').html(sendValue);
-                //追加リンクの親モデル用にコメントアウト
-                //                return;
-            }
-
-            // 以下、参照リンク、検索画面の追加リンク、詳細画面の追加リンク
-
-            // 表示するダイアログ内のフォーム名からモデル名を取得
-            let $dialogForm = $dialogDiv.find('form');
-            let dialogFormName = $dialogForm.prop('name');                                // MSansho1SearchForm
-            let dialogFormEntityName = dialogFormName.replace(/(Search|Regist)Form/, ''); // MSansho1
-
-            // 項目名からフィールド名を取得
-            let sendItemNames = sendItemName.split('.');
-            let sendFieldName = sendItemNames[sendItemNames.length - 1];                  // betsuSansho1Id
-
-            $dialogDiv.find('input').each(function() {
-                let dialogInputName = this.name;                                          // MSansho1.sansho1Id
-                let dialogInputNames = dialogInputName.split('.');                        // MSansho1, sansho1Id
-                let dialogEntityName = dialogInputNames[0];                               // MSansho1
-                let dialogFieldName = dialogInputNames[1];                                // sansho1Id
-                if (dialogFormEntityName == dialogEntityName && sendFieldName.match(new RegExp('^' + prefix + dialogFieldName + '$', 'i'))) {
-                    $(this).val([sendValue]);
-                    $dialogDiv.find('span[id="' + dialogInputName + '"]').html(sendValue);
-                }
-            });
+            Dialogate.reflect2Dialog(this, $dialogDiv, prefix);
         });
 
         //呼び出し先の制約項目があれば、呼び出し元から取得
@@ -255,6 +222,13 @@ $(function() {
                 $dialogDiv.find('span[id$="' + property + '"]').html(eqs[colName]);
                 $dialogDiv.find('[name$="' + property + '"]').val([eqs[colName]]);
             }
+        }
+
+        let isDerive = $link.hasClass('derive');
+        if (isDerive) {
+            $link.nextAll('input').each(function() {
+                Dialogate.reflect2Dialog(this, $dialogDiv, prefix);
+            });
         }
 
         // 呼び出し元を設定
@@ -462,6 +436,43 @@ let Dialogate = {
         }
         $dialogDiv.dialog('open');
 
+    },
+
+    reflect2Dialog: function(sendInput, $dialogDiv, prefix) {
+
+        let sendItemName = sendInput.name;                                                 // TEntity.betsuSansho1Id
+        let sendValue = $(sendInput).val();
+
+        // そのままの項目名でヒットする場合（詳細リンク、追加リンクの親モデル）
+        let $dialogItem = $dialogDiv.find('[name="' + sendItemName + '"]');
+        if ($dialogItem.length > 0) {
+            $dialogItem.val(sendValue);
+            $dialogDiv.find('span[id="' + sendItemName + '"]').html(sendValue);
+            //追加リンクの親モデル用にコメントアウト
+            //                return;
+        }
+
+        // 以下、参照リンク、検索画面の追加リンク、詳細画面の追加リンク
+
+        // 表示するダイアログ内のフォーム名からモデル名を取得
+        let $dialogForm = $dialogDiv.find('form');
+        let dialogFormName = $dialogForm.prop('name');                                // MSansho1SearchForm
+        let dialogFormEntityName = dialogFormName.replace(/(Search|Regist)Form/, ''); // MSansho1
+
+        // 項目名からフィールド名を取得
+        let sendItemNames = sendItemName.split('.');
+        let sendFieldName = sendItemNames[sendItemNames.length - 1];                  // betsuSansho1Id
+
+        $dialogDiv.find('input').each(function() {
+            let dialogInputName = this.name;                                          // MSansho1.sansho1Id
+            let dialogInputNames = dialogInputName.split('.');                        // MSansho1, sansho1Id
+            let dialogEntityName = dialogInputNames[0];                               // MSansho1
+            let dialogFieldName = dialogInputNames[1];                                // sansho1Id
+            if (dialogFormEntityName == dialogEntityName && sendFieldName.match(new RegExp('^' + prefix + dialogFieldName + '$', 'i'))) {
+                $(this).val([sendValue]);
+                $dialogDiv.find('span[id="' + dialogInputName + '"]').html(sendValue);
+            }
+        });
     },
 
 };
