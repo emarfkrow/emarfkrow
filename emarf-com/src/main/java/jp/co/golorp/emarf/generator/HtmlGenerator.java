@@ -221,18 +221,10 @@ public final class HtmlGenerator {
      */
     private static void htmlIndex(final String htmlDir, final TableInfo table, final List<TableInfo> tables) {
         String e = StringUtil.toPascalCase(table.getName());
+        String es = e + "S";
         String remarks = table.getRemarks();
         List<String> s = new ArrayList<String>();
-        s.add("<!DOCTYPE html>");
-        s.add("<html xmlns:th=\"http://www.thymeleaf.org\" xmlns:layout=\"http://www.ultraq.net.nz/web/thymeleaf/layout\" layout:decorate=\"~{common/base}\">");
-        s.add("<head>");
-        s.add("<meta charset=\"UTF-8\">");
-        s.add("<title th:text=\"#{" + e + "S.title}\">" + remarks + "</title>");
-        s.add("<style type=\"text/css\">");
-        s.add("</style>");
-        s.add("<script type=\"text/javascript\">");
-        s.add("");
-        s.add("</script>");
+        addHtmlHead(s, es, remarks);
         s.add("<script th:src=\"@{/model/" + e + "GridColumns.js}\"></script>");
         Set<TableInfo> added = new HashSet<TableInfo>();
         added.add(table);
@@ -240,13 +232,13 @@ public final class HtmlGenerator {
         s.add("</head>");
         s.add("<body>");
         s.add("  <div layout:fragment=\"article\">");
-        s.add("    <h2 th:text=\"#{" + e + "S.h2}\">h2</h2>");
+        s.add("    <h2 th:text=\"#{" + es + ".h2}\">h2</h2>");
         s.add("    <!-- 検索フォーム -->");
         s.add("    <form name=\"" + e + "SearchForm\" action=\"" + e + "Search.ajax\" class=\"search\">");
         s.add("      <input type=\"hidden\" name=\"rows\" value=\"" + gridRows + "\" />");
         s.add("      <input type=\"hidden\" name=\"page\" value=\"0\" />");
         s.add("      <fieldset>");
-        s.add("        <legend th:text=\"#{" + e + "S.legend}\">legend</legend>");
+        s.add("        <legend th:text=\"#{" + es + ".legend}\">legend</legend>");
         htmlFields(table, s, false, false, false);
         s.add("      </fieldset>");
         s.add("      <div class=\"buttons\">");
@@ -267,9 +259,8 @@ public final class HtmlGenerator {
             s.add("        <a th:href=\"@{/model/" + e + ".html}\" target=\"dialog\" id=\"" + e + "\" class=\""
                     + anewClass + "\" th:text=\"#{" + e + ".add}\" tabindex=\"-1\">" + remarks + "</a>");
             if (column != null) {
-                TableInfo derivee = column.getDeriveFrom();
-                String fieldId = StringUtil.toPascalCase(derivee.getName()) + "."
-                        + StringUtil.toCamelCase(column.getName());
+                String fieldId = StringUtil.toPascalCase(table.getName()) + ".derivee"
+                        + StringUtil.toPascalCase(column.getName());
                 String type = "text";
                 String inputCss = "";
                 String format = null;
@@ -287,7 +278,7 @@ public final class HtmlGenerator {
         s.add("      </div>");
         s.add("    </form>");
         s.add("    <!-- 一覧フォーム -->");
-        s.add("    <form name=\"" + e + "SRegistForm\" action=\"" + e + "SRegist.ajax\" class=\"regist\">");
+        s.add("    <form name=\"" + es + "RegistForm\" action=\"" + es + "Regist.ajax\" class=\"regist\">");
         s.add("      <h3 th:text=\"#{" + e + ".h3}\">h3</h3>");
         String addRow = "";
         if (isAnew) {
@@ -319,10 +310,10 @@ public final class HtmlGenerator {
         s.add("      <div id=\"" + e + "Pager\"></div>");
         s.add("      <div class=\"buttons\">");
         if (!table.isHistory() && (!table.isView() || table.isConvView())) {
-            s.add("        <button type=\"button\" class=\"reset\" id=\"Reset" + e
-                    + "S\" th:text=\"#{common.reset}\" onClick=\"Base.listReset('" + e + "');\">reset</button>");
+            s.add("        <button type=\"button\" class=\"reset\" id=\"Reset" + es
+                    + "\" th:text=\"#{common.reset}\" onClick=\"Base.listReset('" + e + "');\">reset</button>");
         }
-        s.add("        <a th:href=\"@{" + e + "Search.xlsx(baseMei=#{" + e + "S.h2})}\" id=\"" + e
+        s.add("        <a th:href=\"@{" + e + "Search.xlsx(baseMei=#{" + es + ".h2})}\" id=\"" + e
                 + "Search.xlsx\" th:text=\"#{common.xlsx}\" class=\"output\" tabindex=\"-1\">xlsx</a>");
         TableInfo summary = getSummary(table, tables); //集約先リンク
         if (summary != null) {
@@ -333,42 +324,23 @@ public final class HtmlGenerator {
         }
         // 履歴モデルでないテーブルか、組み合わせビュー（検索条件で使う）なら、非表示の参照ボタンを出力
         if ((!table.isView() && !table.isHistory()) || table.isConvView()) {
-            for (ColumnInfo column : table.getColumns().values()) {
-                if (column.getRefer() != null) {
-                    String columnName = column.getName();
-                    if (columnName.matches("(?i)^" + insertId + "$") || columnName.matches("(?i)^" + updateId + "$")) {
-                        continue;
-                    }
-                    String p = StringUtil.toCamelCase(column.getName());
-                    TableInfo refer = column.getRefer();
-                    String referE = StringUtil.toPascalCase(refer.getName());
-                    String action = "";
-                    String css = "";
-                    if (refer.getStintInfo() != null) {
-                        action = "?action=" + referE + "Correct.ajax";
-                        css = " correct";
-                    }
-                    s.add("        <a id=\"" + e + "Grid." + p + "\" th:href=\"@{/model/" + referE + "S.html" + action
-                            + "}\" target=\"dialog\" class=\"refer" + css + "\" th:text=\"'" + refer.getRemarks()
-                            + "' + #{common.refer}\" tabindex=\"-1\" style=\"display: none;\">...</a>");
-                }
-            }
+            addGridReferHiddenLinks(s, table);
         }
         // 履歴モデルでないテーブルで、子モデルを持たない場合
         if (!table.isView() && !table.isHistory() && table.getChilds().size() == 0) {
             // 削除フラグ列名の指定がないか、テーブルに削除フラグ列がないなら、物理削除ボタンを表示
             if (StringUtil.isNullOrBlank(deleteF) || (!table.getColumns().containsKey(deleteF.toLowerCase())
                     && !table.getColumns().containsKey(deleteF.toUpperCase()))) {
-                s.add("        <button type=\"submit\" id=\"Delete" + e + "S\" data-action=\"" + e
-                        + "SDelete.ajax\" class=\"delete selectRows\" th:text=\"#{common.delete}\" tabindex=\"-1\">削除</button>");
+                s.add("        <button type=\"submit\" id=\"Delete" + es + "\" data-action=\"" + es
+                        + "Delete.ajax\" class=\"delete selectRows\" th:text=\"#{common.delete}\" tabindex=\"-1\">削除</button>");
             }
             //ステータス列名の指定があり、テーブルにステータス列があるなら、承認ボタン・否認ボタンを表示
             if (!StringUtil.isNullOrBlank(status) && (table.getColumns().containsKey(status.toLowerCase())
                     || table.getColumns().containsKey(status.toUpperCase()))) {
-                s.add("        <button type=\"submit\" id=\"Permit" + e + "S\" data-action=\"" + e
-                        + "SPermit.ajax\" class=\"permit selectRows\" th:text=\"#{common.permit}\" tabindex=\"-1\">承認</button>");
-                s.add("        <button type=\"submit\" id=\"Forbid" + e + "S\" data-action=\"" + e
-                        + "SForbid.ajax\" class=\"forbid selectRows\" th:text=\"#{common.forbid}\" tabindex=\"-1\">否認</button>");
+                s.add("        <button type=\"submit\" id=\"Permit" + es + "\" data-action=\"" + es
+                        + "Permit.ajax\" class=\"permit selectRows\" th:text=\"#{common.permit}\" tabindex=\"-1\">承認</button>");
+                s.add("        <button type=\"submit\" id=\"Forbid" + es + "\" data-action=\"" + es
+                        + "Forbid.ajax\" class=\"forbid selectRows\" th:text=\"#{common.forbid}\" tabindex=\"-1\">否認</button>");
             }
         }
         s.add("      </div>");
@@ -378,8 +350,8 @@ public final class HtmlGenerator {
             if (table.getHistory() != null && !StringUtil.isNullOrBlank(reason)) {
                 onclick = " onclick=\"if (!Base.historyReason(this)) { return false; }\"";
             }
-            s.add("        <button id=\"Regist" + e
-                    + "S\" type=\"submit\" class=\"regist\" th:text=\"#{common.regist}\"" + onclick
+            s.add("        <button id=\"Regist" + es
+                    + "\" type=\"submit\" class=\"regist\" th:text=\"#{common.regist}\"" + onclick
                     + ">submit</button>");
         }
         s.add("      </div>");
@@ -387,7 +359,53 @@ public final class HtmlGenerator {
         s.add("  </div>");
         s.add("</body>");
         s.add("</html>");
-        FileUtil.writeFile(htmlDir + File.separator + e + "S.html", s);
+        FileUtil.writeFile(htmlDir + File.separator + es + ".html", s);
+    }
+
+    /**
+     * @param s
+     * @param table
+     */
+    public static void addGridReferHiddenLinks(final List<String> s, final TableInfo table) {
+        String e = StringUtil.toPascalCase(table.getName());
+        for (ColumnInfo column : table.getColumns().values()) {
+            if (column.getRefer() != null) {
+                String columnName = column.getName();
+                if (columnName.matches("(?i)^" + insertId + "$") || columnName.matches("(?i)^" + updateId + "$")) {
+                    continue;
+                }
+                String p = StringUtil.toCamelCase(column.getName());
+                TableInfo refer = column.getRefer();
+                String referE = StringUtil.toPascalCase(refer.getName());
+                String action = "";
+                String css = "";
+                if (refer.getStintInfo() != null) {
+                    action = "?action=" + referE + "Correct.ajax";
+                    css = " correct";
+                }
+                s.add("        <a id=\"" + e + "Grid." + p + "\" th:href=\"@{/model/" + referE + "S.html" + action
+                        + "}\" target=\"dialog\" class=\"refer" + css + "\" th:text=\"'" + refer.getRemarks()
+                        + "' + #{common.refer}\" tabindex=\"-1\" style=\"display: none;\">...</a>");
+            }
+        }
+    }
+
+    /**
+     * @param s
+     * @param entity
+     * @param remarks
+     */
+    public static void addHtmlHead(final List<String> s, final String entity, final String remarks) {
+        s.add("<!DOCTYPE html>");
+        s.add("<html xmlns:th=\"http://www.thymeleaf.org\" xmlns:layout=\"http://www.ultraq.net.nz/web/thymeleaf/layout\" layout:decorate=\"~{common/base}\">");
+        s.add("<head>");
+        s.add("<meta charset=\"UTF-8\">");
+        s.add("<title th:text=\"#{" + entity + ".title}\">" + remarks + "</title>");
+        s.add("<style type=\"text/css\">");
+        s.add("</style>");
+        s.add("<script type=\"text/javascript\">");
+        s.add("");
+        s.add("</script>");
     }
 
     /**
@@ -531,17 +549,9 @@ public final class HtmlGenerator {
      */
     private static void htmlDetail(final String htmlDir, final TableInfo table, final List<TableInfo> tables) {
         String e = StringUtil.toPascalCase(table.getName());
+        String remarks = table.getRemarks();
         List<String> s = new ArrayList<String>();
-        s.add("<!DOCTYPE html>");
-        s.add("<html xmlns:th=\"http://www.thymeleaf.org\" xmlns:layout=\"http://www.ultraq.net.nz/web/thymeleaf/layout\" layout:decorate=\"~{common/base}\">");
-        s.add("<head>");
-        s.add("<meta charset=\"UTF-8\">");
-        s.add("<title th:text=\"#{" + e + ".title}\">" + table.getRemarks() + "</title>");
-        s.add("<style type=\"text/css\">");
-        s.add("</style>");
-        s.add("<script type=\"text/javascript\">");
-        s.add("");
-        s.add("</script>");
+        addHtmlHead(s, e, remarks);
         s.add("<script th:src=\"@{/model/" + e + "GridColumns.js}\"></script>");
         Set<TableInfo> added = new HashSet<TableInfo>();
         added.add(table);
@@ -590,26 +600,7 @@ public final class HtmlGenerator {
             String frozen = String.valueOf(table.getPrimaryKeys().size());
             s.add("      <div id=\"" + c + "Grid\" data-selectionMode=\"link\"" + addRow + " data-frozenColumn=\""
                     + frozen + "\" th:data-href=\"@{/model/" + c + ".html}\"></div>");
-            for (ColumnInfo column : child.getColumns().values()) {
-                if (column.getRefer() != null) {
-                    String columnName = column.getName();
-                    if (columnName.matches("(?i)^" + insertId + "$") || columnName.matches("(?i)^" + updateId + "$")) {
-                        continue;
-                    }
-                    String p = StringUtil.toCamelCase(column.getName());
-                    TableInfo refer = column.getRefer();
-                    String referE = StringUtil.toPascalCase(refer.getName());
-                    String action = "";
-                    String childCss = "";
-                    if (refer.getStintInfo() != null) {
-                        action = "?action=" + referE + "Correct.ajax";
-                        childCss = " correct";
-                    }
-                    s.add("        <a id=\"" + c + "Grid." + p + "\" th:href=\"@{/model/" + referE + "S.html" + action
-                            + "}\" target=\"dialog\" class=\"refer" + childCss + "\" th:text=\"'" + refer.getRemarks()
-                            + "' + #{common.refer}\" tabindex=\"-1\" style=\"display: none;\">...</a>");
-                }
-            }
+            addGridReferHiddenLinks(s, child);
         }
         s.add("      <div class=\"buttons\">");
         if (!table.isHistory() && !table.isView()) {
@@ -699,6 +690,9 @@ public final class HtmlGenerator {
         for (ColumnInfo column : table.getColumns().values()) {
             String property = StringUtil.toCamelCase(column.getName());
             s.add(entity + "." + property + " " + column.getRemarks());
+            if (column.getDeriveFrom() != null) {
+                s.add(entity + ".derivee" + StringUtil.toPascalCase(property) + " " + column.getRemarks());
+            }
         }
 
         s.add("");

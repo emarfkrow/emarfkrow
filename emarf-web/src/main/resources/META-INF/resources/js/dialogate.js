@@ -227,7 +227,7 @@ $(function() {
         let isDerive = $link.hasClass('derive');
         if (isDerive) {
             $link.nextAll('input').each(function() {
-                Dialogate.reflect2Dialog(this, $dialogDiv, prefix);
+                Dialogate.reflect2Dialog(this, $dialogDiv, 'derivee');
             });
         }
 
