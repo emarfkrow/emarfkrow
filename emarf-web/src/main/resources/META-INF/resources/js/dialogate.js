@@ -126,7 +126,11 @@ $(function() {
             // グリッド取得
             let $gridDiv = $form.find('[id$="Grid"]');
             let gridId = $gridDiv.prop('id');
-            let grid = Gridate.grids[gridId]
+            let grid = Gridate.grids[gridId];
+            if (grid.getSelectedRows().length == 0) {
+                alert(Messages['error.notexist.selectedRows']);
+                return false;
+            }
 
             // グリッド列から主キーのIDとカラム名をCSVで取得（？）
             let columns = grid.getColumns();
