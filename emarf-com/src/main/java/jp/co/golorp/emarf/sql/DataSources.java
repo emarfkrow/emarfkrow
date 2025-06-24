@@ -725,7 +725,7 @@ public final class DataSources {
                 }
 
                 // 兄に弟を追加、弟に弟フラグを設定
-                LOG.debug("    " + elder.getName() + " : " + younger.getName());
+                LOG.debug("    " + elder.getName() + " and " + younger.getName());
                 elder.getYoungers().add(younger);
                 younger.setYounger(true);
             }
@@ -806,7 +806,7 @@ public final class DataSources {
                     continue;
                 }
 
-                LOG.debug("    " + src.getName() + " : " + his.getName());
+                LOG.debug("    " + src.getName() + " to " + his.getName());
                 his.setHistory(true);
                 src.setHistoryInfo(his);
             }
@@ -886,7 +886,7 @@ public final class DataSources {
                     // 参照元カラム名の末尾が参照先カラム名と合致し、参照モデルが未登録なら、カラムに参照モデルを設定
                     if (colName.matches("(?i)^.*" + lastKey + "$") && col.getRefer() == null) {
 
-                        LOG.debug("    " + mst.getName() + " : " + trn.getName() + "." + col.getName());
+                        LOG.debug("    " + mst.getName() + " from " + trn.getName() + "." + col.getName());
                         col.setRefer(mst);
                         mst.setRefer(true);
 
@@ -1059,7 +1059,7 @@ public final class DataSources {
                 ko.getParents().add(oya);
 
                 // 親子設定した場合、兄弟モデルを消し込み（親が適用日なし、子が適用日ありで、誤登録されている可能性があるため）
-                LOG.debug("    " + oya.getName() + " : " + ko.getName());
+                LOG.debug("    " + oya.getName() + " has " + ko.getName());
                 oya.getYoungers().remove(ko);
                 ko.getYoungers().remove(oya);
             }
@@ -1141,12 +1141,7 @@ public final class DataSources {
                             continue;
                         }
 
-                        if (!isMatchColDef(srcKey, rbnCol)) {
-                            continue;
-                        }
-
-                        // カラム名が合致するなら外部キーに追加
-                        if (rbnCol.getName().matches("(?i)^" + srcPrimaryKey + "$")) {
+                        if (isMatchColDef(srcKey, rbnCol)) {
                             rbnFKs.add(rbnCol.getName());
                         }
                     }
@@ -1164,18 +1159,18 @@ public final class DataSources {
                         if (rebornCount > 0) {
                             if (src.getRebornTo() != null) {
                                 TableInfo rebornTo = src.getRebornTo(); // 転生先を派生先に追加
-                                LOG.debug("        Cancel : " + rebornTo.getName());
+                                LOG.debug("        Cancel to " + rebornTo.getName());
                                 src.setRebornTo(null);
                                 for (String primaryKey : src.getPrimaryKeys()) {
                                     rebornTo.getColumns().get(primaryKey).setReborn(false);
                                 }
-                                LOG.debug("        Derive to : " + rebornTo.getName());
+                                LOG.debug("        Derive to " + rebornTo.getName());
                                 src.getDeriveTos().add(rebornTo);
                                 for (String primaryKey : src.getPrimaryKeys()) {
                                     rebornTo.getColumns().get(primaryKey).setDeriveFrom(src);
                                 }
                             }
-                            LOG.debug("        Derive to : " + rbn.getName() + " " + rbnFKs);
+                            LOG.debug("        Derive to " + rbn.getName() + " " + rbnFKs);
                             src.getDeriveTos().add(rbn);
                             for (String fk : rbnFKs) {
                                 rbn.getColumns().get(fk).setDeriveFrom(src);
@@ -1183,7 +1178,7 @@ public final class DataSources {
                             continue;
                         }
 
-                        LOG.debug("    " + src.getName() + " : " + rbn.getName() + " " + rbnFKs);
+                        LOG.debug("    " + src.getName() + " to " + rbn.getName() + " " + rbnFKs);
                         ++rebornCount;
                         src.setRebornTo(rbn);
                         for (String fk : rbnFKs) {
@@ -1198,8 +1193,8 @@ public final class DataSources {
     /**
      * src以外の転生先か派生先になっているか評価
      * @param tables
-     * @param src
-     * @param rbn
+     * @param src 転生元
+     * @param rbn 転生先
      * @return boolean
      */
     public static boolean isRebornElse(final List<TableInfo> tables, final TableInfo src, final TableInfo rbn) {
@@ -1211,6 +1206,10 @@ public final class DataSources {
         Iterator<TableInfo> rebornees = tables.iterator();
         while (rebornees.hasNext()) {
             TableInfo rebornee = rebornees.next();
+
+            if (rebornee == src) {
+                continue;
+            }
 
             // 転生先を設定済みでなければスキップ
             if (rebornee.getRebornTo() == null) {
@@ -1225,7 +1224,8 @@ public final class DataSources {
             if (rebornee.getPrimaryKeys().size() < src.getPrimaryKeys().size()) {
 
                 // 今回の転生元の方がキー数が多いなら、処理済みの転生先をクリア
-                LOG.debug("        Cancel " + rebornee.getName() + " reborn to " + rebornee.getRebornTo().getName());
+                LOG.debug("        Cancel " + rebornee.getName() + " reborn to " + rebornee.getRebornTo().getName()
+                        + " by " + src.getName());
                 TableInfo reborneeReborn = rebornee.getRebornTo();
                 rebornee.setRebornTo(null);
                 for (String primaryKey : rebornee.getPrimaryKeys()) {
@@ -1243,6 +1243,10 @@ public final class DataSources {
         Iterator<TableInfo> derivees = tables.iterator();
         while (derivees.hasNext()) {
             TableInfo derivee = derivees.next();
+
+            if (derivee == src) {
+                continue;
+            }
 
             // 派生先を設定済みでなければスキップ
             if (derivee.getDeriveTos() == null || derivee.getDeriveTos().size() == 0) {
@@ -1262,7 +1266,8 @@ public final class DataSources {
                 if (derivee.getPrimaryKeys().size() < src.getPrimaryKeys().size()) {
 
                     // 今回の転生元の方がキー数が多いなら、処理済みの転生先をクリア
-                    LOG.debug("        Cancel " + derivee.getName() + " derive to " + deriveTo.getName());
+                    LOG.debug("        Cancel " + derivee.getName() + " derive to " + deriveTo.getName() + " by "
+                            + src.getName());
                     //derivee.getDeriveTos().remove(deriveTo);
                     newDeriveTos.remove(deriveTo);
                     for (String primaryKey : derivee.getPrimaryKeys()) {
@@ -1309,6 +1314,11 @@ public final class DataSources {
 
         // 小数桁数が異なる
         if (src.getDecimalDigits() != dest.getDecimalDigits()) {
+            return false;
+        }
+
+        // 比較先カラム名が比較元カラム名と合致しない
+        if (!dest.getName().matches("(?i)^" + src.getName() + "$")) {
             return false;
         }
 
@@ -1379,12 +1389,7 @@ public final class DataSources {
                             continue;
                         }
 
-                        if (!isMatchColDef(sakiKey, motoCol)) {
-                            continue;
-                        }
-
-                        // 比較先カラム名が比較元カラム名と合致するなら、比較先の外部キーリストに追加
-                        if (motoCol.getName().matches("(?i)^" + sakiPK + "$")) {
+                        if (isMatchColDef(sakiKey, motoCol)) {
                             motoFKs.add(motoCol.getName());
                         }
                     }
@@ -1432,18 +1437,20 @@ public final class DataSources {
                         // ２回以上ここに来る＝同じ集約元を他でも設定済み＝今回は集約先としない
                         if (motoCount > 0) {
 
-                            //誤って集約元を設定済みならクリア
+                            // 誤って集約元を設定済みならクリア
                             if (sum.getSummaryOf() != null) {
-                                for (ColumnInfo column : sum.getSummaryOf().getColumns().values()) {
+                                TableInfo unit = sum.getSummaryOf();
+                                for (ColumnInfo column : unit.getColumns().values()) {
                                     column.setSummary(false);
                                 }
-                                LOG.debug("        Cancel " + sum.getName() + " : " + sum.getSummaryOf().getName());
+                                LOG.debug("        Cancel " + sum.getName() + " summary of " + unit.getName() + " by "
+                                        + moto.getName());
                                 sum.setSummaryOf(null);
                             }
                             continue;
                         }
 
-                        LOG.debug("    " + sum.getName() + " : " + moto.getName());
+                        LOG.debug("    " + sum.getName() + " of " + moto.getName());
                         ++motoCount;
                         for (String fk : motoFKs) {
                             moto.getColumns().get(fk).setSummary(true);
@@ -1458,7 +1465,7 @@ public final class DataSources {
                                     column.setReborn(false);
                                 }
                             }
-                            LOG.debug("        Cancel reborn " + sum.getName() + " to " + sum.getRebornTo().getName());
+                            LOG.debug("        Cancel " + sum.getName() + " reborn to " + sum.getRebornTo().getName());
                             sum.setRebornTo(null);
                         }
                     }
@@ -1593,6 +1600,21 @@ public final class DataSources {
                     String columnName = e.getKey();
                     TableInfo refer = e.getValue();
                     LOG.info("        " + columnName + " = " + refer.getName() + " " + refer.getPrimaryKeys());
+                }
+            }
+
+            Map<String, TableInfo> derivees = new LinkedHashMap<String, TableInfo>();
+            for (ColumnInfo column : table.getColumns().values()) {
+                if (column.getDeriveFrom() != null) {
+                    derivees.put(column.getName(), column.getDeriveFrom());
+                }
+            }
+            if (derivees.size() > 0) {
+                LOG.info("    DeriveFroms:");
+                for (Entry<String, TableInfo> e : derivees.entrySet()) {
+                    String columnName = e.getKey();
+                    TableInfo derivee = e.getValue();
+                    LOG.info("        " + columnName + " = " + derivee.getName() + " " + derivee.getPrimaryKeys());
                 }
             }
 
