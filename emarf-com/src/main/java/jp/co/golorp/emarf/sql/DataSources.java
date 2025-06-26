@@ -1107,6 +1107,13 @@ public final class DataSources {
                         isThisSrcRebornTo = true;
                         break;
                     }
+                    // 親が転生先かどうかも考慮する（受注明細→売上実績のパターン）
+                    for (TableInfo parent : src.getParents()) {
+                        if (parent.getName().equals(rbn.getName())) {
+                            isThisSrcRebornTo = true;
+                            break;
+                        }
+                    }
                 }
             }
 
@@ -1419,10 +1426,11 @@ public final class DataSources {
                         //                        if (saki2.getPrimaryKeys().size() < saki.getPrimaryKeys().size()) {
                         //                            // 今回の集約先の方がキー数が多いなら、処理済みの集約元をクリア
                         if (saki2.getSummaryOf() != null) {
+                            LOG.debug("        Cancel " + saki2.getName() + " of " + saki2.getSummaryOf().getName()
+                                    + " by " + sum.getName());
                             for (ColumnInfo sakiCol : saki2.getSummaryOf().getColumns().values()) {
                                 sakiCol.setSummary(false);
                             }
-                            LOG.debug("        Cancel " + saki2.getName() + " : " + saki2.getSummaryOf().getName());
                             saki2.setSummaryOf(null);
                         }
                         //                        } else if (saki2.getPrimaryKeys().size() > saki.getPrimaryKeys().size()) {

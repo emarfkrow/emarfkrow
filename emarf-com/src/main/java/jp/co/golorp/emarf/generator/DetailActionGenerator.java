@@ -683,19 +683,15 @@ public final class DetailActionGenerator {
         // 自テーブルを転生先とするテーブルがあるかループ
         for (TableInfo frTbl : tables) {
 
-            TableInfo rebornTo = frTbl.getRebornTo();
-
-            // テーブルに転生先がなければスキップ
-            if (rebornTo == null && frTbl.getDeriveTos() == null) {
-                continue;
-            }
-
-            // 転生先があっても自テーブルに一致しなければスキップ
             boolean isTo = false;
+
+            // 今回テーブルの転生先が、当該テーブルか調査
             String kind = "転生";
-            if (rebornTo != null && rebornTo.getName().equals(toTbl)) {
+            if (frTbl.getRebornTo() != null && frTbl.getRebornTo().getName().equals(toTbl)) {
                 isTo = true;
             }
+
+            // 今回テーブルの派生先が、当該テーブルか調査
             for (TableInfo deriveTo : frTbl.getDeriveTos()) {
                 if (deriveTo.getName().equals(toTbl)) {
                     isTo = true;
@@ -703,6 +699,7 @@ public final class DetailActionGenerator {
                     break;
                 }
             }
+
             if (!isTo) {
                 continue;
             }

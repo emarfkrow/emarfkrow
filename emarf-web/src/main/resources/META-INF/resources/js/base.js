@@ -707,47 +707,46 @@ let Base = {
                             // 否認可能
                             $registForm.find('button.forbid').button('option', 'disabled', false);
 
+                        } else if ($statusKb.val() == 1) {
+                            /*
+                             * 承認ステータス
+                             */
+
+                            // 画面をロック
+                            $registForm.find('input, select, textarea').each(function() {
+                                Base.readonly(this);
+                            });
+
+                            // グリッド行削除ボタンを非表示
+                            $registForm.find('fieldset a.refer, input[type="button"].gridDelete').hide();
+
+                            // グリッド列もロック
+                            let gridDivs = $registForm.find('[id$=Grid]');
+                            for (let i = 0; i < gridDivs.length; i++) {
+                                let gridId = gridDivs[i].id;
+                                Gridate.grids[gridId].getOptions()['editable'] = false;
+                            }
+
+                            // 転生可能
+                            $registForm.find('a.reborner').button('option', 'disabled', false);
+
+                            // 否認可能
+                            $registForm.find('button.forbid').button('option', 'disabled', false);
+
+                            // 登録不可
+                            $registForm.find('button.regist').button('option', 'disabled', true);
+
+                            // 子モデル追加不可
+                            $registForm.find('a.addChild').button('option', 'disabled', true);
+
+                        } else if ($statusKb.val() == -1) {
+                            /*
+                             * 否認ステータス
+                             */
+
+                            // 削除可能
+                            $registForm.find('button.delete').button('option', 'disabled', false);
                         }
-
-                    } else if ($statusKb.val() == 1) {
-                        /*
-                         * 承認ステータス
-                         */
-
-                        // 画面をロック
-                        $registForm.find('input, select, textarea').each(function() {
-                            Base.readonly(this);
-                        });
-
-                        // グリッド行削除ボタンを非表示
-                        $registForm.find('fieldset a.refer, input[type="button"].gridDelete').hide();
-
-                        // グリッド列もロック
-                        let gridDivs = $registForm.find('[id$=Grid]');
-                        for (let i = 0; i < gridDivs.length; i++) {
-                            let gridId = gridDivs[i].id;
-                            Gridate.grids[gridId].getOptions()['editable'] = false;
-                        }
-
-                        // 転生可能
-                        $registForm.find('a.reborner').button('option', 'disabled', false);
-
-                        // 否認可能
-                        $registForm.find('button.forbid').button('option', 'disabled', false);
-
-                        // 登録不可
-                        $registForm.find('button.regist').button('option', 'disabled', true);
-
-                        // 子モデル追加不可
-                        $registForm.find('a.addChild').button('option', 'disabled', true);
-
-                    } else if ($statusKb.val() == -1) {
-                        /*
-                         * 否認ステータス
-                         */
-
-                        // 削除可能
-                        $registForm.find('button.delete').button('option', 'disabled', false);
                     }
 
                     // 出力権限があれば出力ボタンを活性

@@ -246,29 +246,36 @@ public final class HtmlGenerator {
                 + "\" th:text=\"#{common.reset}\" class=\"reset\">reset</button>");
         boolean isAnew = isAnew(table);
         if (isAnew) {
-            ColumnInfo column = null;
+            boolean isDeriver = false;
             for (ColumnInfo col : table.getColumns().values()) {
                 if (col.getDeriveFrom() != null) {
-                    column = col;
+                    isDeriver = true;
+                    break;
                 }
             }
             String anewClass = "anew";
-            if (column != null) {
+            if (isDeriver) {
                 anewClass += " derive";
             }
             s.add("        <a th:href=\"@{/model/" + e + ".html}\" target=\"dialog\" id=\"" + e + "\" class=\""
                     + anewClass + "\" th:text=\"#{" + e + ".add}\" tabindex=\"-1\">" + remarks + "</a>");
-            if (column != null) {
-                String fieldId = StringUtil.toPascalCase(table.getName()) + ".derivee"
-                        + StringUtil.toPascalCase(column.getName());
-                String type = "text";
-                String inputCss = "";
-                String format = null;
-                s.add(htmlFieldsInput(fieldId, type, inputCss, column, format));
-                String referName = StringUtil.toPascalCase(column.getDeriveFrom().getName());
-                s.add("          <a id=\"" + fieldId + "\" th:href=\"@{/model/" + referName + "S.html?action="
-                        + referName + "Correct.ajax}\" target=\"dialog\" class=\"derivee\" "
-                        + "th:text=\"#{common.correct}\" tabindex=\"-1\">...</a>");
+            if (isDeriver) {
+                HashSet<String> deriveFroms = new HashSet<String>();
+                for (ColumnInfo col : table.getColumns().values()) {
+                    if (col.getDeriveFrom() != null && !deriveFroms.contains(col.getDeriveFrom().getName())) {
+                        deriveFroms.add(col.getDeriveFrom().getName());
+                        String fieldId = null;
+                        for (String primaryKey : col.getDeriveFrom().getPrimaryKeys()) {
+                            fieldId = e + ".derivee" + StringUtil.toPascalCase(primaryKey);
+                            s.add(htmlFieldsInput(fieldId, "text", "", col.getDeriveFrom().getColumns().get(primaryKey),
+                                    null));
+                        }
+                        String referName = StringUtil.toPascalCase(col.getDeriveFrom().getName());
+                        s.add("          <a id=\"" + fieldId + "\" th:href=\"@{/model/" + referName + "S.html?action="
+                                + referName + "Correct.ajax}\" target=\"dialog\" class=\"derivee\" "
+                                + "th:text=\"#{common.correct}\" tabindex=\"-1\">...</a>");
+                    }
+                }
             }
         }
         s.add("      </div>");
