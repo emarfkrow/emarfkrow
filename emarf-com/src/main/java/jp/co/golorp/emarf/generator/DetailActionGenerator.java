@@ -257,9 +257,9 @@ public final class DetailActionGenerator {
             }
 
             //entity
-            String e = StringUtil.toPascalCase(table.getName());
+            String ent = StringUtil.toPascalCase(table.getName());
             //instance
-            String in = StringUtil.toCamelCase(table.getName());
+            String ins = StringUtil.toCamelCase(table.getName());
 
             List<String> s = new ArrayList<String>();
             s.add("package " + pkgAction + ";");
@@ -268,7 +268,7 @@ public final class DetailActionGenerator {
             s.add("import java.util.HashMap;");
             s.add("import java.util.Map;");
             s.add("");
-            s.add("import " + pkE + "." + e + ";");
+            s.add("import " + pkE + "." + ent + ";");
             s.add("");
             s.add("import jp.co.golorp.emarf.action.BaseAction;");
             s.add("import jp.co.golorp.emarf.exception.NoDataError;");
@@ -278,7 +278,7 @@ public final class DetailActionGenerator {
             s.add(" *");
             s.add(" * @author emarfkrow");
             s.add(" */");
-            s.add("public class " + e + "GetAction extends BaseAction {");
+            s.add("public class " + ent + "GetAction extends BaseAction {");
             s.add("");
             s.add("    /** " + table.getRemarks() + "照会処理 */");
             s.add("    @Override");
@@ -296,7 +296,7 @@ public final class DetailActionGenerator {
                     s.add("");
                     s.add("        Object " + property + " = postJson.get(\"" + property + "\");");
                     s.add("        if (" + property + " == null) {");
-                    s.add("            " + property + " = postJson.get(\"" + e + "." + property + "\");");
+                    s.add("            " + property + " = postJson.get(\"" + ent + "." + property + "\");");
                     s.add("        }");
                     s.add("        if (" + property + " == null) {");
                     if (i == 0) {
@@ -340,16 +340,20 @@ public final class DetailActionGenerator {
             }
             s.add("");
             s.add("        try {");
-            s.add("            " + e + " " + in + " = " + e + ".get(" + StringUtil.toCamelCase(pks) + ");");
+            s.add("            " + ent + " " + ins + " = " + ent + ".get(" + StringUtil.toCamelCase(pks) + ");");
             for (TableInfo bros : table.getYoungers()) {
                 String brosEntity = StringUtil.toPascalCase(bros.getName());
-                s.add("            " + in + ".refer" + brosEntity + "();");
+                s.add("            " + ins + ".refer" + brosEntity + "();");
             }
             for (TableInfo child : table.getChilds()) {
                 String pascal = StringUtil.toPascalCase(child.getName());
-                s.add("            " + in + ".refer" + pascal + "s();");
+                s.add("            " + ins + ".refer" + pascal + "s();");
             }
-            s.add("            map.put(\"" + e + "\", " + in + ");");
+            if (table.getRebornTo() != null) {
+                String pascal = StringUtil.toPascalCase(table.getRebornTo().getName());
+                s.add("            " + ins + ".refer" + pascal + "s();");
+            }
+            s.add("            map.put(\"" + ent + "\", " + ins + ");");
             s.add("        } catch (NoDataError e) {");
             s.add("            if (!postJson.get(\"IsSilent\").equals(\"true\")) {");
             s.add("                throw e;");
@@ -361,8 +365,8 @@ public final class DetailActionGenerator {
             s.add("");
             s.add("}");
 
-            String javaFilePath = packageDir + File.separator + e + "GetAction.java";
-            javaFilePaths.put(javaFilePath, pkgAction + "." + e + "GetAction");
+            String javaFilePath = packageDir + File.separator + ent + "GetAction.java";
+            javaFilePaths.put(javaFilePath, pkgAction + "." + ent + "GetAction");
 
             FileUtil.writeFile(javaFilePath, s);
         }

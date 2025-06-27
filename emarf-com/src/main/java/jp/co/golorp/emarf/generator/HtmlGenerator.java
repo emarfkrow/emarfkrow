@@ -666,6 +666,14 @@ public final class HtmlGenerator {
                     + "\" type=\"submit\" class=\"regist\" th:text=\"#{common.regist}\"" + onclick + ">登録</button>");
         }
         s.add("      </div>");
+        if (table.getRebornTo() != null) {
+            TableInfo rebornTo = table.getRebornTo();
+            String c = StringUtil.toPascalCase(rebornTo.getName());
+            s.add("      <h3 th:text=\"#{" + c + ".h3}\">h3</h3>");
+            String frozen = String.valueOf(table.getPrimaryKeys().size());
+            s.add("      <div id=\"" + c + "Grid\" data-selectionMode=\"link\" data-frozenColumn=\"" + frozen
+                    + "\" th:data-href=\"@{/model/" + c + ".html}\"></div>");
+        }
         s.add("    </form>");
         s.add("  </div>");
         s.add("</body>");
@@ -934,6 +942,8 @@ public final class HtmlGenerator {
             TableInfo reborn = table.getRebornTo();
             if (!added.contains(reborn)) {
                 added.add(reborn);
+                String entity = StringUtil.toPascalCase(reborn.getName());
+                s.add("<script th:src=\"@{/model/" + entity + "GridColumns.js}\"></script>");
                 htmlNestGrid(s, reborn, tables, added, false);
             }
         }
