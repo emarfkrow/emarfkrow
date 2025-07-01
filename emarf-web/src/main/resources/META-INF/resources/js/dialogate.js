@@ -246,6 +246,8 @@ $(function() {
 
 let Dialogate = {
 
+    loaded: {},
+
     /*
      * [target=dialog]のリンクからダイアログのdivを画面に追加
      */
@@ -262,8 +264,13 @@ let Dialogate = {
         if (href == undefined) {
             return;
         }
+        // ロード済みならスキップ
+        if (Dialogate.loaded[href]) {
+            return;
+        }
 
-        console.debug('Dialogate load [' + href + '].');
+        console.debug('    Dialogate load [' + href + '].');
+        Dialogate.loaded[href] = 1;
 
         // hrefからdialogIdを取得。作成済みならスキップ。
         let entity = href.replace(/(^.+\/|\.html(\?.+)?$)/g, '');

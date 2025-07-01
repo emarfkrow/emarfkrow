@@ -19,9 +19,39 @@ limitations under the License.
  * @author golorp
  */
 
+// Messagesから取得する項目
+let Messages = {};
+let optionsSizeSearch = 0;
+let optionsSizeDetail = 0;
+let columnRegistTs = null;
+let columnDelete = null;
+let columnStatus = null;
+let columnDetail = null;
+let columnHistoryReason = null;
+
 $(function() {
 
     console.info('Gridate init.');
+
+    // グリッド列名取得のためここでMessagesを取得する
+    console.info('    Gridate get Messages.');
+    $.ajax({
+        async: false,
+        url: 'messages.json',
+        dataType: 'text',
+        success: function(data) {
+            Messages = JSON.parse(data.substr(15));
+        }
+    });
+    console.debug(Messages);
+
+    optionsSizeSearch = Messages['options.size.search'];
+    optionsSizeDetail = Messages['options.size.detail'];
+    columnRegistTs = Messages['column.update.timestamp'];
+    columnDelete = Messages['column.delete'];
+    columnStatus = Messages['column.status'];
+    columnDetail = Messages['view.detail'];
+    columnHistoryReason = Messages['column.history.reason'];
 
     // グリッドからフォーカスアウト時はグリッドを確定
     $(document).on('click', '*', function(event) {

@@ -58,34 +58,6 @@ limitations under the License.
 	// 	document.oncontextmenu = function() {
 	// 		return false;
 	// 	}
-	//grid列名が取れない事があるのでonloadまで遅らせる
-	let Messages = {};
-	let optionsSizeSearch = 0;
-	let optionsSizeDetail = 0;
-	let columnRegistTs = null;
-	let columnDelete = null;
-	let columnStatus = null;
-	let columnDetail = null;
-	let columnHistoryReason = null;
-	$(function() {
-		$.ajax({
-			async : false,
-			url : 'messages.json',
-			dataType : 'text',
-			success : function(data) {
-				Messages = JSON.parse(data.substr(15));
-			}
-		});
-		console.debug(Messages);
-
-		optionsSizeSearch = Messages['options.size.search'];
-		optionsSizeDetail = Messages['options.size.detail'];
-		columnRegistTs = Messages['column.update.timestamp'];
-		columnDelete = Messages['column.delete'];
-		columnStatus = Messages['column.status'];
-		columnDetail = Messages['view.detail'];
-		columnHistoryReason = Messages['column.history.reason'];
-	});
 </script>
 <script th:src="@{/js/ajaxize.js}"></script>
 <script th:src="@{/js/base.js}"></script>

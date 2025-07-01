@@ -220,6 +220,10 @@ input[type="datetime-local"] {
     width: 1210px;
 }
 
+[role="dialog"] [id$="Grid"].reborners {
+    height: 80px;
+}
+
 button#logout {
     font-size: xx-small;
 }

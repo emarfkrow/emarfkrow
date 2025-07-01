@@ -606,7 +606,7 @@ public final class HtmlGenerator {
             }
             String frozen = String.valueOf(table.getPrimaryKeys().size());
             s.add("      <div id=\"" + c + "Grid\" data-selectionMode=\"link\"" + addRow + " data-frozenColumn=\""
-                    + frozen + "\" th:data-href=\"@{/model/" + c + ".html}\"></div>");
+                    + frozen + "\" th:data-href=\"@{/model/" + c + ".html}\" class=\"childs\"></div>");
             addGridReferHiddenLinks(s, child);
         }
         s.add("      <div class=\"buttons\">");
@@ -672,7 +672,7 @@ public final class HtmlGenerator {
             s.add("      <h3 th:text=\"#{" + c + ".h3}\">h3</h3>");
             String frozen = String.valueOf(table.getPrimaryKeys().size());
             s.add("      <div id=\"" + c + "Grid\" data-selectionMode=\"link\" data-frozenColumn=\"" + frozen
-                    + "\" th:data-href=\"@{/model/" + c + ".html}\"></div>");
+                    + "\" th:data-href=\"@{/model/" + c + ".html}\" class=\"reborners\"></div>");
         }
         s.add("    </form>");
         s.add("  </div>");
@@ -751,8 +751,14 @@ public final class HtmlGenerator {
         if (table.getRebornTo() != null) {
             TableInfo reborn = table.getRebornTo();
             String e = StringUtil.toPascalCase(reborn.getName());
+            String mei = reborn.getRemarks();
             s.add("");
-            s.add(e + ".add " + reborn.getRemarks() + "追加");
+            s.add(e + ".h3  " + mei + "一覧");
+            s.add(e + ".add " + mei + "追加");
+            for (ColumnInfo column : reborn.getColumns().values()) {
+                String property = StringUtil.toCamelCase(column.getName());
+                s.add(e + "Grid." + property + " " + column.getRemarks());
+            }
         }
 
         if (table.getSummaryOf() != null) {

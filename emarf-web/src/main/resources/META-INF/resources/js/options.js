@@ -67,7 +67,7 @@ let Options = {
 
         let k = action + JSON.stringify(postJson);
         if (!sessionStorage[k]) {
-            console.debug('Options get [' + action + '].');
+            console.debug('    Options get [' + action + '].');
             Ajaxize.sjaxPost(action, postJson, function(data) {
                 if (data[action.replaceAll(/\.json/g, '')]) {
                     sessionStorage[k] = JSON.stringify(data[action.replaceAll(/\.json/g, '')]);

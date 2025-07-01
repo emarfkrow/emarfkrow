@@ -731,7 +731,20 @@ let Base = {
                             $registForm.find('a.reborner').button('option', 'disabled', false);
 
                             // 否認可能
-                            $registForm.find('button.forbid').button('option', 'disabled', false);
+                            let isReborned = false;
+                            let rebornersDivs = $registForm.find('div.reborners');
+                            if (rebornersDivs) {
+                                let rebornersDiv = rebornersDivs[0];
+                                if (rebornersDiv) {
+                                    let grid = Gridate.grids[rebornersDiv.id];
+                                    if (grid) {
+                                        isReborned = grid.getData().getItems().length > 0;
+                                    }
+                                }
+                            }
+                            if (!isReborned) {
+                                $registForm.find('button.forbid').button('option', 'disabled', false);
+                            }
 
                             // 登録不可
                             $registForm.find('button.regist').button('option', 'disabled', true);

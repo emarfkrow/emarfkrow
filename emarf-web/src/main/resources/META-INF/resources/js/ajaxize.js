@@ -293,7 +293,7 @@ let Ajaxize = {
             }
         }).done(function(data) {
 
-            console.info('action: ' + action);
+            console.debug('    action: ' + action);
             console.debug(logJson);
             console.debug(data);
             //console.info('--------------------------------------------------');
