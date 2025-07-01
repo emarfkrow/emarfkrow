@@ -71,7 +71,7 @@ var Loading = {
 
 };
 
-let reqPath = location.pathname.replace(/\/[^\/]+\.html$/, '');
+let reqPath = location.pathname.replace(/\/[^\/]+\.html.*$/, '');
 reqPath = reqPath.replace(/\/$/, '');
 pathlevel = reqPath.replace(/[^\/]/g, '').length;
 let dir = '';
