@@ -203,6 +203,10 @@ $(window).on('load', function() {
         console.debug(e.message);
     }
     //    }
+
+    $('div.nav a').on('click', function() {
+        sessionStorage.setItem('navScrollTop', $('div.nav')[0].scrollTop);
+    });
 });
 
 let Base = {
@@ -526,6 +530,8 @@ let Base = {
                 grid.resizeCanvas();
             }
         }
+
+        $('div.nav')[0].scrollTo(0, sessionStorage.getItem('navScrollTop'));
 
         $(window).resize(function() {
             Base.resizeNav();

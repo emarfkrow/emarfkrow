@@ -78,6 +78,7 @@ limitations under the License.
 <script th:inline="javascript" th:if="${#ctx.session != null && #ctx.session.get('AUTHZ_INFO') != null}">
 	let breads = sessionStorage['breads'];
 	let navs = sessionStorage['navs'];
+	let navScrollTop = sessionStorage['navScrollTop'];
 	sessionStorage.clear();
 	sessionStorage['authzInfo'] = JSON
 			.stringify(/*[[${#ctx.session.get('AUTHZ_INFO')}]]*/);
@@ -86,6 +87,9 @@ limitations under the License.
 	}
 	if (navs) {
 		sessionStorage['navs'] = navs;
+	}
+	if (navScrollTop) {
+		sessionStorage['navScrollTop'] = navScrollTop;
 	}
 </script>
 <script th:src="@{/js/app.js}"></script>
