@@ -82,6 +82,8 @@ public final class HtmlGenerator {
     private static String[] viewCriteriaPrefixs;
     /** VIEWの詳細画面にするテーブル名 */
     private static String viewDetail;
+    /** 中間表などメニュー化しないビューサフィックスのリスト */
+    private static String[] viewNavIgnoreSuffixs;
 
     /** 年月入力サフィックス */
     private static String[] inputYMSuffixs;
@@ -152,6 +154,7 @@ public final class HtmlGenerator {
 
         viewCriteriaPrefixs = bundle.getString("view.criteria.prefix").split(",");
         viewDetail = bundle.getString("view.detail");
+        viewNavIgnoreSuffixs = bundle.getString("view.nav.ignore.suffixs").split(",");
 
         inputYMSuffixs = bundle.getString("input.ym.suffixs").split(",");
         inputDate8Suffixs = bundle.getString("input.date8.suffixs").split(",");
@@ -817,21 +820,33 @@ public final class HtmlGenerator {
         s.add("    <dl>");
         for (Entry<String, List<TableInfo>> nav : navs.entrySet()) {
             String category = nav.getKey();
-            s.add("      <dt id=\"" + category + "\" th:text=\"#{nav.dt." + category + "}\">" + category + "</dt>");
+            s.add("      <dt id=\"" + category + "\" style=\"clear: both;\" th:text=\"#{nav.dt." + category + "}\">"
+                    + category + "</dt>");
             s.add("      <dd>");
             s.add("        <ul>");
+            String preName = "";
             for (TableInfo table : nav.getValue()) {
                 String name = table.getName();
                 String remarks = table.getRemarks();
                 String e = StringUtil.toPascalCase(name);
                 String css = " class=\"table\"";
+                String style = " style=\"clear: both; float: left;\"";
                 if (table.isHistory()) {
                     css = " class=\"history\"";
+                    style = " style=\"clear: both;\"";
                 } else if (table.isView()) {
+                    if (StringUtil.endsWith(viewNavIgnoreSuffixs, table.getName())) {
+                        continue;
+                    }
                     css = " class=\"view\"";
+                    // 直前のテーブル名と前方一致するなら回り込み
+                    if (name.startsWith(preName)) {
+                        style = " style=\"float: left;\"";
+                    }
                 }
-                s.add("          <li><a id=\"" + e + "\" th:href=\"@{/model/" + e + "S.html}\" th:text=\"#{nav." + e
-                        + "S}\"" + css + ">" + remarks + "</a></li>");
+                preName = name;
+                s.add("          <li" + style + "><a id=\"" + e + "\" th:href=\"@{/model/" + e
+                        + "S.html}\" th:text=\"#{nav." + e + "S}\"" + css + ">" + remarks + "</a></li>");
             }
             s.add("        </ul>");
             s.add("      </dd>");
