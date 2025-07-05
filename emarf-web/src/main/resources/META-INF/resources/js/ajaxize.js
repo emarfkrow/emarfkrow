@@ -93,6 +93,10 @@ $(function() {
         // フォーム内の入力項目のエラー表示をクリア
         let $inputs = $form.find(':input');
         $inputs.removeClass('error').prop('title', '');
+        $inputs.each(function() {
+            let $input = $(this);
+            $('label[for="' + $input.attr('id') + '"]').removeClass('error').prop('title', '');
+        });
         let $label = $inputs.parent('label');
         $label.removeClass('error').prop('title', '');
 
@@ -355,6 +359,7 @@ let Ajaxize = {
                     $input = $('[name="' + formName + '"]').find('[name="' + entityName + '.' + fieldName + '"]');
                 }
                 $input.addClass('error').attr('title', errors[k]);
+                $('label[for="' + $input.attr('id') + '"]').addClass('error').prop('title', errors[k]);
 
                 if ($input.parent('label').length > 0) {
                     $input.parent('label').addClass('error').attr('title', errors[k]);

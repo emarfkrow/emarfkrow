@@ -31,8 +31,9 @@ $(function() {
             let id = $form.prop('name') + '.' + this.id;
             $me.prop('id', id);
             //labelのfor属性も更新
-            if ($me.prev().length > 0 && $me.prev()[0].tagName == 'LABEL') {
-                $me.prev().prop('for', id);
+            let labels = $me.prevAll('LABEL');
+            if (labels.length > 0) {
+                $(labels[0]).prop('for', id);
             }
         }
         if (this.tagName == 'A' || this.tagName == 'FIELDSET') {
@@ -310,7 +311,11 @@ let Dialogate = {
                     let $form = $me.closest('form');
                     let id = $dialogDiv.prop('id') + '.' + $form.prop('name') + '.' + this.id;
                     $me.prop('id', id);
-                    $me.prev().prop('for', id);
+                    //$me.prev().prop('for', id);
+                    let labels = $me.prevAll('LABEL');
+                    if (labels.length > 0) {
+                        $(labels[0]).prop('for', id);
+                    }
                 }
                 if (this.tagName == 'A' || this.tagName == 'FIELDSET') {
                     let $me = $(this);

@@ -1679,7 +1679,7 @@ public final class HtmlGenerator {
         }
 
         String tag = "          ";
-        tag += "<label th:text=\"#{" + id + "}\">" + remarks + "</label>";
+        tag += "<label for=\"" + id + "\" th:text=\"#{" + id + "}\">" + remarks + "</label>";
         tag += "<span id=\"" + id + "\"" + css + "></span>";
         tag += "<input type=\"hidden\" id=\"" + id + "\" name=\"" + id + "\"" + css + " />";
         s.add(tag);
