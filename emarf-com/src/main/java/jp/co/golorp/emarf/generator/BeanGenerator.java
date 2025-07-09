@@ -325,6 +325,7 @@ public final class BeanGenerator {
             i = javaEntityYoungers(table, s, i);
             i = javaEntityChild(table, s, i);
             i = javaEntityRebornTo(table, s, i);
+            i = javaEntitySummaryOf(table, s, i);
 
             s.add("}");
             String path = pkgDir + File.separator + e + ".java";
@@ -377,149 +378,38 @@ public final class BeanGenerator {
      * @return int
      */
     private static int javaEntityRebornTo(final TableInfo table, final List<String> s, final int jsonIndex) {
-        int i = jsonIndex;
-        if (table.getRebornTo() != null) {
-            String parent = StringUtil.toPascalCase(table.getName());
-            String params = "";
-            for (String pk : table.getPrimaryKeys()) {
-                if (pk.length() > 0) {
-                    if (params.length() > 0) {
-                        params += ", ";
-                    }
-                    params += "this." + StringUtil.toCamelCase(pk);
-                }
-            }
-            TableInfo child = table.getRebornTo();
-            String ent = StringUtil.toPascalCase(child.getName());
-            String ins = StringUtil.toCamelCase(child.getName());
-            s.add("");
-            s.add("    /** " + child.getRemarks() + "のリスト */");
-            s.add("    private List<" + ent + "> " + ins + "s;");
-            s.add("");
-            s.add("    /** @return " + child.getRemarks() + "のリスト */");
-            s.add("    @com.fasterxml.jackson.annotation.JsonProperty(value = \"" + ent + "s\", index = " + ++i
-                    + ")");
-            s.add("    public List<" + ent + "> get" + ent + "s() {");
-            s.add("        return this." + ins + "s;");
-            s.add("    }");
-            s.add("");
-            s.add("    /** @param list " + child.getRemarks() + "のリスト */");
-            s.add("    public void set" + ent + "s(final List<" + ent + "> list) {");
-            s.add("        this." + ins + "s = list;");
-            s.add("    }");
-            s.add("");
-            s.add("    /** @param " + ins + " */");
-            s.add("    public void add" + ent + "s(final " + ent + " " + ins + ") {");
-            s.add("        if (this." + ins + "s == null) {");
-            s.add("            this." + ins + "s = new ArrayList<" + ent + ">();");
-            s.add("        }");
-            s.add("        this." + ins + "s.add(" + ins + ");");
-            s.add("    }");
-            s.add("");
-            s.add("    /** @return " + child.getRemarks() + "のリスト */");
-            s.add("    public List<" + ent + "> refer" + ent + "s() {");
-            s.add("        this." + ins + "s = " + parent + ".refer" + ent + "s(" + params + ");");
-            s.add("        return this." + ins + "s;");
-            s.add("    }");
 
-            // refer
-            s.add("");
-            s.add("    /**");
-            int paramIndex = 0;
-            String pks = "";
-            for (String pk : table.getPrimaryKeys()) {
-                if (pk.length() == 0) {
-                    continue;
-                }
-                String property = StringUtil.toCamelCase(pk);
-                s.add("     * @param param" + ++paramIndex + " " + property);
-                if (pks.length() > 0) {
-                    pks += ", ";
-                }
-                ColumnInfo column = table.getColumns().get(pk);
-                pks += "final " + column.getDataType() + " param" + paramIndex;
-            }
-            s.add("     * @return List<" + ent + ">");
-            s.add("     */");
-            s.add("    public static List<" + ent + "> refer" + ent + "s(" + pks + ") {");
-            s.add("        List<String> whereList = new ArrayList<String>();");
-            for (String pk : table.getPrimaryKeys()) {
-                if (pk.length() == 0) {
-                    continue;
-                }
-                String p = ":" + StringUtil.toSnakeCase(pk);
-                ColumnInfo primaryKey = table.getColumns().get(pk);
-                if (primaryKey.getTypeName().equals("CHAR")) {
-                    s.add("        whereList.add(\"" + assist.trimedSQL(pk) + " = " + assist.trimedSQL(p) + "\");");
-                } else if (!pk.equals(tekiyoBi)) {
-                    s.add("        whereList.add(\"" + pk + " = " + p + "\");");
-                    //                } else {
-                    //                    s.add("        whereList.add(\"" + getTekiyoBiSql(child, pk, p) + "\");");
-                }
-            }
-
-            //カラム名を列挙
-            s.add("        String sql = \"SELECT \";");
-            int cols = 0;
-            int refs = 0;
-            for (ColumnInfo column : child.getColumns().values()) {
-                String quoteEscaped = assist.quoteEscapedSQL(column.getName());
-                //時間サフィックスに合致する場合、データソースがOracleならTO_CHAR
-                if (StringUtil.endsWith(inputDateSuffixs, column.getName())) {
-                    quoteEscaped = assist.date2CharSQL(quoteEscaped) + " AS " + column.getName();
-                } else if (StringUtil.endsWith(inputHourSuffixs, column.getName())) {
-                    quoteEscaped = assist.time2CharSQL(quoteEscaped) + " AS " + column.getName();
-                } else if (StringUtil.endsWith(inputDateTimeSuffixs, column.getName())) {
-                    quoteEscaped = assist.dateTime2CharSQL(quoteEscaped) + " AS " + column.getName();
-                } else if (StringUtil.endsWith(inputTimestampSuffixs, column.getName())) {
-                    quoteEscaped = assist.timestamp2CharSQL(quoteEscaped) + " AS " + column.getName();
-                }
-                if (cols == 0) {
-                    s.add("        sql += \"" + quoteEscaped + "\";");
-                } else {
-                    s.add("        sql += \", " + quoteEscaped + "\";");
-                }
-                ++cols;
-                // 列の参照モデル情報があればカラム名の補完
-                if (column.getRefer() != null) {
-                    String meiSql = SqlGenerator.getMeiSql(refs, table, column);
-                    if (meiSql != null) {
-                        ++refs;
-                        meiSql = meiSql.replaceAll("\"", "\\\\\"");
-                        s.add("        sql += \"" + meiSql + "\";");
-                    }
-                }
-            }
-            s.add("        sql += \" FROM " + child.getName() + " a WHERE \" + String.join(\" AND \", whereList);");
-            s.add("        sql += \" ORDER BY \";");
-            String orders = "";
-            if (child.getPrimaryKeys().size() > 0) {
-                for (String pk : child.getPrimaryKeys()) {
-                    if (orders.length() > 0) {
-                        orders += ", ";
-                    }
-                    orders += pk;
-                }
-            } else {
-                for (paramIndex = 1; paramIndex <= child.getColumns().size(); paramIndex++) {
-                    if (paramIndex == 1) {
-                        orders += ", ";
-                    }
-                    orders += paramIndex;
-                }
-            }
-            s.add("        sql += \"" + orders + "\";");
-            s.add("        Map<String, Object> map = new HashMap<String, Object>();");
-            paramIndex = 0;
-            for (String pk : table.getPrimaryKeys()) {
-                if (pk.length() == 0) {
-                    continue;
-                }
-                s.add("        map.put(\"" + StringUtil.toSnakeCase(pk) + "\", param" + ++paramIndex + ");");
-            }
-            s.add("        return Queries.select(sql, map, " + ent + ".class, null, null);");
-            s.add("    }");
+        if (table.getRebornTo() == null) {
+            return jsonIndex;
         }
+
+        s.add("");
+        s.add("    /*");
+        s.add("     * 転生先：" + table.getRebornTo().getRemarks());
+        s.add("     */");
+        int i = addChilds(s, jsonIndex, table, table.getRebornTo());
+
+        return i;
+    }
+
+    /**
+     * @param table
+     * @param s
+     * @param jsonIndex
+     * @return int
+     */
+    private static int javaEntitySummaryOf(final TableInfo table, final List<String> s, final int jsonIndex) {
+
+        if (table.getSummaryOf() == null) {
+            return jsonIndex;
+        }
+
+        s.add("");
+        s.add("    /*");
+        s.add("     * 集約元：" + table.getSummaryOf().getRemarks());
+        s.add("     */");
+        int i = addChilds(s, jsonIndex, table, table.getSummaryOf());
+
         return i;
     }
 
@@ -1326,6 +1216,29 @@ public final class BeanGenerator {
 
         int i = jsonIndex;
 
+        for (TableInfo child : table.getChilds()) {
+            s.add("");
+            s.add("    /*");
+            s.add("     * 子モデル：" + child.getRemarks());
+            s.add("     */");
+            i = addChilds(s, i, table, child);
+        }
+
+        return i;
+    }
+
+    /**
+     * @param s
+     * @param jsonIndex
+     * @param table
+     * @param child
+     * @return int
+     */
+    private static int addChilds(final List<String> s, final int jsonIndex, final TableInfo table,
+            final TableInfo child) {
+
+        int i = jsonIndex;
+
         String parent = StringUtil.toPascalCase(table.getName());
 
         String params = "";
@@ -1338,47 +1251,46 @@ public final class BeanGenerator {
             }
         }
 
-        for (TableInfo child : table.getChilds()) {
-            String ent = StringUtil.toPascalCase(child.getName());
-            String ins = StringUtil.toCamelCase(child.getName());
-            s.add("");
-            s.add("    /** " + child.getRemarks() + "のリスト */");
-            s.add("    private List<" + ent + "> " + ins + "s;");
-            s.add("");
-            s.add("    /** @return " + child.getRemarks() + "のリスト */");
-            s.add("    @com.fasterxml.jackson.annotation.JsonProperty(value = \"" + ent + "s\", index = " + ++i + ")");
-            s.add("    public List<" + ent + "> get" + ent + "s() {");
-            s.add("        return this." + ins + "s;");
-            s.add("    }");
-            s.add("");
-            s.add("    /** @param list " + child.getRemarks() + "のリスト */");
-            s.add("    public void set" + ent + "s(final List<" + ent + "> list) {");
-            s.add("        this." + ins + "s = list;");
-            s.add("    }");
-            s.add("");
-            s.add("    /** @param " + ins + " */");
-            s.add("    public void add" + ent + "s(final " + ent + " " + ins + ") {");
-            s.add("        if (this." + ins + "s == null) {");
-            s.add("            this." + ins + "s = new ArrayList<" + ent + ">();");
-            s.add("        }");
-            s.add("        this." + ins + "s.add(" + ins + ");");
-            s.add("    }");
-            s.add("");
-            s.add("    /** @return " + child.getRemarks() + "のリスト */");
-            s.add("    public List<" + ent + "> refer" + ent + "s() {");
-            s.add("        this." + ins + "s = " + parent + ".refer" + ent + "s(" + params + ");");
-            s.add("        return this." + ins + "s;");
-            s.add("    }");
+        String ent = StringUtil.toPascalCase(child.getName());
 
-            // refer
-            s.add("");
-            s.add("    /**");
-            int paramIndex = 0;
-            String pks = "";
-            for (String pk : table.getPrimaryKeys()) {
-                if (pk.length() == 0) {
-                    continue;
-                }
+        String ins = StringUtil.toCamelCase(child.getName());
+
+        s.add("");
+        s.add("    /** " + child.getRemarks() + "のリスト */");
+        s.add("    private List<" + ent + "> " + ins + "s;");
+        s.add("");
+        s.add("    /** @return " + child.getRemarks() + "のリスト */");
+        s.add("    @com.fasterxml.jackson.annotation.JsonProperty(value = \"" + ent + "s\", index = " + ++i + ")");
+        s.add("    public List<" + ent + "> get" + ent + "s() {");
+        s.add("        return this." + ins + "s;");
+        s.add("    }");
+        s.add("");
+        s.add("    /** @param list " + child.getRemarks() + "のリスト */");
+        s.add("    public void set" + ent + "s(final List<" + ent + "> list) {");
+        s.add("        this." + ins + "s = list;");
+        s.add("    }");
+        s.add("");
+        s.add("    /** @param " + ins + " */");
+        s.add("    public void add" + ent + "s(final " + ent + " " + ins + ") {");
+        s.add("        if (this." + ins + "s == null) {");
+        s.add("            this." + ins + "s = new ArrayList<" + ent + ">();");
+        s.add("        }");
+        s.add("        this." + ins + "s.add(" + ins + ");");
+        s.add("    }");
+        s.add("");
+        s.add("    /** @return " + child.getRemarks() + "のリスト */");
+        s.add("    public List<" + ent + "> refer" + ent + "s() {");
+        s.add("        this." + ins + "s = " + parent + ".refer" + ent + "s(" + params + ");");
+        s.add("        return this." + ins + "s;");
+        s.add("    }");
+
+        // refer
+        s.add("");
+        s.add("    /**");
+        int paramIndex = 0;
+        String pks = "";
+        for (String pk : table.getPrimaryKeys()) {
+            if (pk.length() > 0) {
                 String property = StringUtil.toCamelCase(pk);
                 s.add("     * @param param" + ++paramIndex + " " + property);
                 if (pks.length() > 0) {
@@ -1387,88 +1299,84 @@ public final class BeanGenerator {
                 ColumnInfo column = table.getColumns().get(pk);
                 pks += "final " + column.getDataType() + " param" + paramIndex;
             }
-            s.add("     * @return List<" + ent + ">");
-            s.add("     */");
-            s.add("    public static List<" + ent + "> refer" + ent + "s(" + pks + ") {");
-            s.add("        List<String> whereList = new ArrayList<String>();");
-            for (String pk : table.getPrimaryKeys()) {
-                if (pk.length() == 0) {
-                    continue;
-                }
+        }
+        s.add("     * @return List<" + ent + ">");
+        s.add("     */");
+        s.add("    public static List<" + ent + "> refer" + ent + "s(" + pks + ") {");
+        s.add("        List<String> whereList = new ArrayList<String>();");
+        for (String pk : table.getPrimaryKeys()) {
+            if (pk.length() > 0) {
                 String p = ":" + StringUtil.toSnakeCase(pk);
                 ColumnInfo primaryKey = table.getColumns().get(pk);
                 if (primaryKey.getTypeName().equals("CHAR")) {
                     s.add("        whereList.add(\"" + assist.trimedSQL(pk) + " = " + assist.trimedSQL(p) + "\");");
                 } else if (!pk.equals(tekiyoBi)) {
                     s.add("        whereList.add(\"" + pk + " = " + p + "\");");
-                    //                } else {
-                    //                    s.add("        whereList.add(\"" + getTekiyoBiSql(child, pk, p) + "\");");
                 }
             }
-
-            //カラム名を列挙
-            s.add("        String sql = \"SELECT \";");
-            int cols = 0;
-            int refs = 0;
-            for (ColumnInfo column : child.getColumns().values()) {
-                String quoteEscaped = assist.quoteEscapedSQL(column.getName());
-                //時間サフィックスに合致する場合、データソースがOracleならTO_CHAR
-                if (StringUtil.endsWith(inputDateSuffixs, column.getName())) {
-                    quoteEscaped = assist.date2CharSQL(quoteEscaped) + " AS " + column.getName();
-                } else if (StringUtil.endsWith(inputHourSuffixs, column.getName())) {
-                    quoteEscaped = assist.time2CharSQL(quoteEscaped) + " AS " + column.getName();
-                } else if (StringUtil.endsWith(inputDateTimeSuffixs, column.getName())) {
-                    quoteEscaped = assist.dateTime2CharSQL(quoteEscaped) + " AS " + column.getName();
-                } else if (StringUtil.endsWith(inputTimestampSuffixs, column.getName())) {
-                    quoteEscaped = assist.timestamp2CharSQL(quoteEscaped) + " AS " + column.getName();
-                }
-                if (cols == 0) {
-                    s.add("        sql += \"" + quoteEscaped + "\";");
-                } else {
-                    s.add("        sql += \", " + quoteEscaped + "\";");
-                }
-                ++cols;
-                // 列の参照モデル情報があればカラム名の補完
-                if (column.getRefer() != null) {
-                    String meiSql = SqlGenerator.getMeiSql(refs, table, column);
-                    if (meiSql != null) {
-                        ++refs;
-                        meiSql = meiSql.replaceAll("\"", "\\\\\"");
-                        s.add("        sql += \"" + meiSql + "\";");
-                    }
-                }
-            }
-            s.add("        sql += \" FROM " + child.getName() + " a WHERE \" + String.join(\" AND \", whereList);");
-            s.add("        sql += \" ORDER BY \";");
-            String orders = "";
-            if (child.getPrimaryKeys().size() > 0) {
-                for (String pk : child.getPrimaryKeys()) {
-                    if (orders.length() > 0) {
-                        orders += ", ";
-                    }
-                    orders += pk;
-                }
-            } else {
-                for (paramIndex = 1; paramIndex <= child.getColumns().size(); paramIndex++) {
-                    if (paramIndex == 1) {
-                        orders += ", ";
-                    }
-                    orders += paramIndex;
-                }
-            }
-            s.add("        sql += \"" + orders + "\";");
-            s.add("        Map<String, Object> map = new HashMap<String, Object>();");
-            paramIndex = 0;
-            for (String pk : table.getPrimaryKeys()) {
-                if (pk.length() == 0) {
-                    continue;
-                }
-                s.add("        map.put(\"" + StringUtil.toSnakeCase(pk) + "\", param" + ++paramIndex + ");");
-            }
-            s.add("        return Queries.select(sql, map, " + ent + ".class, null, null);");
-            s.add("    }");
         }
 
+        //カラム名を列挙
+        s.add("        String sql = \"SELECT \";");
+        int cols = 0;
+        int refs = 0;
+        for (ColumnInfo column : child.getColumns().values()) {
+            String quoteEscaped = assist.quoteEscapedSQL(column.getName());
+            //時間サフィックスに合致する場合、データソースがOracleならTO_CHAR
+            if (StringUtil.endsWith(inputDateSuffixs, column.getName())) {
+                quoteEscaped = assist.date2CharSQL(quoteEscaped) + " AS " + column.getName();
+            } else if (StringUtil.endsWith(inputHourSuffixs, column.getName())) {
+                quoteEscaped = assist.time2CharSQL(quoteEscaped) + " AS " + column.getName();
+            } else if (StringUtil.endsWith(inputDateTimeSuffixs, column.getName())) {
+                quoteEscaped = assist.dateTime2CharSQL(quoteEscaped) + " AS " + column.getName();
+            } else if (StringUtil.endsWith(inputTimestampSuffixs, column.getName())) {
+                quoteEscaped = assist.timestamp2CharSQL(quoteEscaped) + " AS " + column.getName();
+            }
+            if (cols == 0) {
+                s.add("        sql += \"" + quoteEscaped + "\";");
+            } else {
+                s.add("        sql += \", " + quoteEscaped + "\";");
+            }
+            ++cols;
+            // 列の参照モデル情報があればカラム名の補完
+            if (column.getRefer() != null) {
+                String meiSql = SqlGenerator.getMeiSql(refs, table, column);
+                if (meiSql != null) {
+                    ++refs;
+                    meiSql = meiSql.replaceAll("\"", "\\\\\"");
+                    s.add("        sql += \"" + meiSql + "\";");
+                }
+            }
+        }
+        s.add("        sql += \" FROM " + child.getName() + " a WHERE \" + String.join(\" AND \", whereList);");
+        s.add("        sql += \" ORDER BY \";");
+        String orders = "";
+        if (child.getPrimaryKeys().size() > 0) {
+            for (String pk : child.getPrimaryKeys()) {
+                if (orders.length() > 0) {
+                    orders += ", ";
+                }
+                orders += pk;
+            }
+        } else {
+            for (paramIndex = 1; paramIndex <= child.getColumns().size(); paramIndex++) {
+                if (paramIndex == 1) {
+                    orders += ", ";
+                }
+                orders += paramIndex;
+            }
+        }
+        s.add("        sql += \"" + orders + "\";");
+        s.add("        Map<String, Object> map = new HashMap<String, Object>();");
+        paramIndex = 0;
+        for (String pk : table.getPrimaryKeys()) {
+            if (pk.length() == 0) {
+                continue;
+            }
+            s.add("        map.put(\"" + StringUtil.toSnakeCase(pk) + "\", param" + ++paramIndex + ");");
+        }
+        s.add("        return Queries.select(sql, map, " + ent + ".class, null, null);");
+        s.add("    }");
         return i;
     }
 

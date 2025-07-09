@@ -773,7 +773,7 @@ let Base = {
                         $registForm.find('a.output').button('option', 'disabled', false);
                     }
 
-                    // 更新権限がな伊場合
+                    // 更新権限がない場合
                     if (Base.getAuthz($registForm[0].name) < 3) {
 
                         // 画面をロック
@@ -796,6 +796,32 @@ let Base = {
                     //        Base.readonly($dialogDiv.find('.parent').find('a,input,select,textarea'));
                     Base.readonly($registForm.find('.parent').find('a,input,select,textarea'));
 
+                    if (Object.keys(data).length > 0) {
+
+                        // 集約元情報
+                        let $summaryDiv = $('div.summary');
+                        let summaryOfName = $summaryDiv.prop('class').replace('summary', '').trim();
+                        let $inputs = $summaryDiv.find('input');
+                        for (let i = 0; i < $inputs.length; i++) {
+                            let input = $inputs[i];
+                            let inputName = input.name;
+                            let property = inputName.split('.')[1];
+                            let colName = Casing.toUpper(property);
+                            let values = "";
+                            for (let n in data) {
+                                let summaryOfs = data[n][summaryOfName];
+                                for (let j in summaryOfs) {
+                                    let summaryOf = summaryOfs[j];
+                                    if (values != "") {
+                                        values += ',';
+                                    }
+                                    values += summaryOf[colName];
+                                }
+                            }
+                            $('span[id="' + inputName + '"]').html(values);
+                            $(input).val(values);
+                        }
+                    }
                 });
             });
 

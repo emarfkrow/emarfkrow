@@ -133,7 +133,7 @@ $(function() {
                 return false;
             }
 
-            // グリッド列から主キーのIDとカラム名をCSVで取得（？）
+            // グリッド列から主キーのIDとカラム名をCSVで取得（？）（単独キーしかsummaryにしてないはず）
             let columns = grid.getColumns();
             let id = '';
             let field = '';

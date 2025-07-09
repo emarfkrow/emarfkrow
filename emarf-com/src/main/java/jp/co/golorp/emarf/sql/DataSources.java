@@ -1465,17 +1465,17 @@ public final class DataSources {
                         }
                         sum.setSummaryOf(moto);
 
-                        // 集約先とする場合は、転生元としない（転生先をクリアする）
-                        if (sum.getRebornTo() != null) {
-                            TableInfo tenseisaki = sum.getRebornTo();
-                            for (ColumnInfo column : tenseisaki.getColumns().values()) {
-                                if (column.isReborn()) {
-                                    column.setReborn(false);
-                                }
-                            }
-                            LOG.debug("        Cancel " + sum.getName() + " reborn to " + sum.getRebornTo().getName());
-                            sum.setRebornTo(null);
-                        }
+                        //                        // 集約先とする場合は、転生元としない（転生先をクリアする）
+                        //                        if (sum.getRebornTo() != null) {
+                        //                            TableInfo tenseisaki = sum.getRebornTo();
+                        //                            for (ColumnInfo column : tenseisaki.getColumns().values()) {
+                        //                                if (column.isReborn()) {
+                        //                                    column.setReborn(false);
+                        //                                }
+                        //                            }
+                        //                            LOG.debug("        Cancel " + sum.getName() + " reborn to " + sum.getRebornTo().getName());
+                        //                            sum.setRebornTo(null);
+                        //                        }
                     }
                 }
             }

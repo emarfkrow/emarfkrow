@@ -245,10 +245,10 @@ public final class DetailActionGenerator {
     private static void javaActionDetailGet(final List<TableInfo> tables) {
 
         // 出力フォルダを再作成
-        String packagePath = pkgAction.replace(".", File.separator);
-        String packageDir = projectDir + File.separator + javaDir + File.separator + packagePath;
+        String pPath = pkgAction.replace(".", File.separator);
+        String pDir = projectDir + File.separator + javaDir + File.separator + pPath;
 
-        Map<String, String> javaFilePaths = new LinkedHashMap<String, String>();
+        Map<String, String> javaPaths = new LinkedHashMap<String, String>();
 
         for (TableInfo table : tables) {
 
@@ -342,15 +342,19 @@ public final class DetailActionGenerator {
             s.add("        try {");
             s.add("            " + ent + " " + ins + " = " + ent + ".get(" + StringUtil.toCamelCase(pks) + ");");
             for (TableInfo bros : table.getYoungers()) {
-                String brosEntity = StringUtil.toPascalCase(bros.getName());
-                s.add("            " + ins + ".refer" + brosEntity + "();");
+                s.add("            " + ins + ".refer" + StringUtil.toPascalCase(bros.getName()) + "();");
             }
             for (TableInfo child : table.getChilds()) {
-                String pascal = StringUtil.toPascalCase(child.getName());
-                s.add("            " + ins + ".refer" + pascal + "s();");
+                s.add("            " + ins + ".refer" + StringUtil.toPascalCase(child.getName()) + "s();");
             }
+            // 転生先リスト
             if (table.getRebornTo() != null) {
                 String pascal = StringUtil.toPascalCase(table.getRebornTo().getName());
+                s.add("            " + ins + ".refer" + pascal + "s();");
+            }
+            // 集約元リスト
+            if (table.getSummaryOf() != null) {
+                String pascal = StringUtil.toPascalCase(table.getSummaryOf().getName());
                 s.add("            " + ins + ".refer" + pascal + "s();");
             }
             s.add("            map.put(\"" + ent + "\", " + ins + ");");
@@ -365,14 +369,14 @@ public final class DetailActionGenerator {
             s.add("");
             s.add("}");
 
-            String javaFilePath = packageDir + File.separator + ent + "GetAction.java";
-            javaFilePaths.put(javaFilePath, pkgAction + "." + ent + "GetAction");
+            String javaFilePath = pDir + File.separator + ent + "GetAction.java";
+            javaPaths.put(javaFilePath, pkgAction + "." + ent + "GetAction");
 
             FileUtil.writeFile(javaFilePath, s);
         }
 
         if (isGenerateAtStartup) {
-            for (Entry<String, String> e : javaFilePaths.entrySet()) {
+            for (Entry<String, String> e : javaPaths.entrySet()) {
                 BeanGenerator.javaCompile(e.getKey(), e.getValue());
             }
         }
@@ -685,6 +689,7 @@ public final class DetailActionGenerator {
         String toI = StringUtil.toCamelCase(toTbl);
 
         // 自テーブルを転生先とするテーブルがあるかループ
+        int froms = 0;
         for (TableInfo frTbl : tables) {
 
             boolean isTo = false;
@@ -733,7 +738,9 @@ public final class DetailActionGenerator {
             String frE = StringUtil.toPascalCase(frName);
             String frI = StringUtil.toCamelCase(frName);
             s.add("            " + pkE + "." + frE + " " + frI + " = " + pkE + "." + frE + ".get(" + frK + ");");
-            s.add("            " + toE + " " + toI + " = new " + toE + "();");
+            if (froms++ == 0) {
+                s.add("            " + toE + " " + toI + " = new " + toE + "();");
+            }
 
             for (String frColNm : frTbl.getColumns().keySet()) {
                 // メタ情報ならスキップ

@@ -636,7 +636,7 @@ public final class HtmlGenerator {
             for (String pk : summary.getPrimaryKeys()) {
                 ColumnInfo primaryKey = summary.getColumns().get(pk);
                 String p = StringUtil.toCamelCase(pk);
-                s.add("        <div>");
+                s.add("        <div class=\"summary " + m + "s\">");
                 s.add("          <label>" + primaryKey.getRemarks() + "</label>");
                 s.add("          <span id=\"" + m + "." + p + "\"></span>");
                 s.add("          <input type=\"hidden\" id=\"" + m + "." + p + "\" name=\"" + m + "." + p + "\"/>");
