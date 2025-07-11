@@ -96,6 +96,9 @@ public class TableInfo {
     /** 転生先テーブル */
     private TableInfo rebornTo;
 
+    /** 転生元テーブル */
+    private List<TableInfo> rebornFroms = new ArrayList<TableInfo>();
+
     /** 派生先テーブル */
     private List<TableInfo> deriveTos = new ArrayList<TableInfo>();
 
@@ -309,6 +312,20 @@ public class TableInfo {
      */
     public void setRebornTo(final TableInfo p) {
         this.rebornTo = p;
+    }
+
+    /**
+     * @return rebornFroms
+     */
+    public List<TableInfo> getRebornFroms() {
+        return rebornFroms;
+    }
+
+    /**
+     * @param p セットする rebornFroms
+     */
+    public void setRebornFroms(final List<TableInfo> p) {
+        this.rebornFroms = p;
     }
 
     /**

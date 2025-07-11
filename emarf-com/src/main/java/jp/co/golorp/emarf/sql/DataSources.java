@@ -1171,6 +1171,7 @@ public final class DataSources {
                                 for (String primaryKey : src.getPrimaryKeys()) {
                                     rebornTo.getColumns().get(primaryKey).setReborn(false);
                                 }
+                                rebornTo.getRebornFroms().remove(src);
                                 LOG.debug("        Derive to " + rebornTo.getName());
                                 src.getDeriveTos().add(rebornTo);
                                 for (String primaryKey : src.getPrimaryKeys()) {
@@ -1191,6 +1192,7 @@ public final class DataSources {
                         for (String fk : rbnFKs) {
                             rbn.getColumns().get(fk).setReborn(true);
                         }
+                        rbn.getRebornFroms().add(src);
                     }
                 }
             }
@@ -1238,6 +1240,7 @@ public final class DataSources {
                 for (String primaryKey : rebornee.getPrimaryKeys()) {
                     reborneeReborn.getColumns().get(primaryKey).setReborn(false);
                 }
+                reborneeReborn.getRebornFroms().remove(rebornee);
 
             } else if (rebornee.getPrimaryKeys().size() > src.getPrimaryKeys().size()) {
 
@@ -1611,6 +1614,26 @@ public final class DataSources {
                 }
             }
 
+            if (table.getRebornTo() != null) {
+                LOG.info("    RebornTo:");
+                TableInfo reborn = table.getRebornTo();
+                LOG.info("        " + reborn.getName() + " " + reborn.getPrimaryKeys());
+            }
+
+            if (table.getRebornFroms().size() > 1) {
+                LOG.info("    RebornFroms:");
+                for (TableInfo rebornFrom : table.getRebornFroms()) {
+                    LOG.info("        " + rebornFrom.getName() + " " + rebornFrom.getPrimaryKeys());
+                }
+            }
+
+            if (table.getDeriveTos().size() > 1) {
+                LOG.info("    DeriveTos:");
+                for (TableInfo derive : table.getDeriveTos()) {
+                    LOG.info("        " + derive.getName() + " " + derive.getPrimaryKeys());
+                }
+            }
+
             Map<String, TableInfo> derivees = new LinkedHashMap<String, TableInfo>();
             for (ColumnInfo column : table.getColumns().values()) {
                 if (column.getDeriveFrom() != null) {
@@ -1624,19 +1647,6 @@ public final class DataSources {
                     TableInfo derivee = e.getValue();
                     LOG.info("        " + columnName + " = " + derivee.getName() + " " + derivee.getPrimaryKeys());
                 }
-            }
-
-            if (table.getDeriveTos().size() > 1) {
-                LOG.info("    DeriveTos:");
-                for (TableInfo derive : table.getDeriveTos()) {
-                    LOG.info("        " + derive.getName() + " " + derive.getPrimaryKeys());
-                }
-            }
-
-            if (table.getRebornTo() != null) {
-                LOG.info("    RebornTo:");
-                TableInfo reborn = table.getRebornTo();
-                LOG.info("        " + reborn.getName() + " " + reborn.getPrimaryKeys());
             }
 
             if (table.getSummaryOf() != null) {

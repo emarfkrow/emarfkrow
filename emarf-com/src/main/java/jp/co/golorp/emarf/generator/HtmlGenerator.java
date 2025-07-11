@@ -248,7 +248,7 @@ public final class HtmlGenerator {
         s.add("        <button type=\"reset\" id=\"Reset" + e
                 + "\" th:text=\"#{common.reset}\" class=\"reset\">reset</button>");
         boolean isAnew = isAnew(table);
-        if (isAnew) {
+        if (isAnew || table.getRebornFroms().size() > 1) {
             boolean isDeriver = false;
             for (ColumnInfo col : table.getColumns().values()) {
                 if (col.getDeriveFrom() != null) {
@@ -960,12 +960,26 @@ public final class HtmlGenerator {
 
         //転生先モデル
         if (table.getRebornTo() != null) {
-            TableInfo reborn = table.getRebornTo();
-            if (!added.contains(reborn)) {
-                added.add(reborn);
-                String entity = StringUtil.toPascalCase(reborn.getName());
+            TableInfo rebornTo = table.getRebornTo();
+            if (!added.contains(rebornTo)) {
+                added.add(rebornTo);
+                String entity = StringUtil.toPascalCase(rebornTo.getName());
                 s.add("<script th:src=\"@{/model/" + entity + "GridColumns.js}\"></script>");
-                htmlNestGrid(s, reborn, tables, added, false);
+                htmlNestGrid(s, rebornTo, tables, added, true);
+            }
+        }
+
+        // 転生元モデル
+        if (!isP) {
+            if (table.getRebornFroms().size() > 1) {
+                for (TableInfo reFrom : table.getRebornFroms()) {
+                    if (!added.contains(reFrom)) {
+                        String entity = StringUtil.toPascalCase(reFrom.getName());
+                        s.add("<script th:src=\"@{/model/" + entity + "GridColumns.js}\"></script>");
+                        added.add(reFrom);
+                        htmlNestGrid(s, reFrom, tables, added, false);
+                    }
+                }
             }
         }
 
@@ -1092,7 +1106,7 @@ public final class HtmlGenerator {
                     if (name.matches("(?i).*" + keySuffix + "$")) {
                         // カラム名の末尾を名称列サフィックスに変換
                         String tempMei = name.replaceAll("(?i)" + keySuffix + "$", meiSuffix);
-                        // 名称列がテーブルに含まれていない場合は参照先から名称を取得する
+                        // 名称列がテーブルに含まれている場合は参照先から名称を取得しない
                         if (table.getColumns().containsKey(tempMei)) {
                             referMei = tempMei;
                             isMeiRefer = false;
@@ -1249,6 +1263,23 @@ public final class HtmlGenerator {
                 }
             }
 
+            TableInfo rebornFrom = null;
+            if (table.getRebornFroms().size() > 1) {
+                for (TableInfo reFrom : table.getRebornFroms()) {
+                    for (String pk : reFrom.getPrimaryKeys()) {
+                        if (column.getName().equals(pk)) {
+                            rebornFrom = reFrom;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            String referCss = addCssByRelation(isD, table, column);
+            if (!StringUtil.isNullOrBlank(referCss)) {
+                referCss = " class=\"" + referCss + "\"";
+            }
+
             String fieldId = entity + "." + property;
             s.add("        <div id=\"" + property + "\">");
             if (isInsertDt || isUpdateDt || isInsertBy || isUpdateBy) { // メタ情報の場合は表示項目（編集画面の自モデルのみここに到達する）
@@ -1283,16 +1314,20 @@ public final class HtmlGenerator {
                 addMeiSpan(s, table, column);
             } else if (isD && column.isReborn()) { // 詳細画面の転生元外部キー
                 htmlFieldsSpan(s, fieldId, column.getRemarks(), "rebornee");
+                if (!isP && rebornFrom != null) {
+                    String referName = StringUtil.toPascalCase(rebornFrom.getName());
+                    String href = "/model/" + referName + "S.html?action=" + referName + "Correct.ajax";
+                    s.add("          <a id=\"" + fieldId + "\" th:href=\"@{" + href + "}\" target=\"dialog\"" + referCss
+                            + " th:text=\"#{common.correct}\" tabindex=\"-1\">...</a>");
+                }
             } else if (isD && column.getDeriveFrom() != null) { // 詳細画面の派生元外部キー
                 htmlFieldsSpan(s, fieldId, column.getRemarks(), "derivee");
                 // 派生元は参照しない
-                //                String referCss = " class=\"derivee\"";
-                //                if (!isP && (table.getParents() == null || table.getParents().size() == 0)) {
-                //                    String referName = StringUtil.toPascalCase(column.getDeriveFrom().getName());
-                //                    s.add("          <a id=\"" + fieldId + "\" th:href=\"@{/model/" + referName + "S.html?action="
-                //                            + referName + "Correct.ajax}\" target=\"dialog\"" + referCss
-                //                            + " th:text=\"#{common.correct}\" tabindex=\"-1\">...</a>");
-                //                }
+                // String referCss = " class=\"derivee\"";
+                // if (!isP && (table.getParents() == null || table.getParents().size() == 0)) {
+                //     String referName = StringUtil.toPascalCase(column.getDeriveFrom().getName());
+                //     s.add("          <a id=\"" + fieldId + "\" th:href=\"@{/model/" + referName + "S.html?action=" + referName + "Correct.ajax}\" target=\"dialog\"" + referCss + " th:text=\"#{common.correct}\" tabindex=\"-1\">...</a>");
+                // }
             } else if (isD && column.isSummary()) { // 詳細画面の集約先外部キー
                 htmlFieldsSpan(s, fieldId, column.getRemarks(), "summary");
             } else if (StringUtil.endsWith(inputTimestampSuffixs, colName)) { // タイムスタンプの場合
@@ -1327,11 +1362,6 @@ public final class HtmlGenerator {
                     inputCss = " class=\"" + inputCss + "\"";
                 }
 
-                String referCss = addCssByRelation(isD, table, column);
-                if (!StringUtil.isNullOrBlank(referCss)) {
-                    referCss = " class=\"" + referCss + "\"";
-                }
-
                 String format = "";
                 if (StringUtil.endsWith(inputDate8Suffixs, colName) && column.getColumnSize() == 8) { // 8桁日付項目
                     format = "yymmdd";
@@ -1343,6 +1373,12 @@ public final class HtmlGenerator {
                     s.add(htmlFieldsRefer(fieldId, type, inputCss, column, format, table, referCss));
                 } else {
                     s.add(htmlFieldsInput(fieldId, type, inputCss, column, format));
+                    if (rebornFrom != null) {
+                        String referName = StringUtil.toPascalCase(rebornFrom.getName());
+                        String href = "/model/" + referName + "S.html?action=" + referName + "Correct.ajax";
+                        s.add("          <a id=\"" + fieldId + "\" th:href=\"@{" + href + "}\" target=\"dialog\""
+                                + referCss + " th:text=\"#{common.correct}\" tabindex=\"-1\">...</a>");
+                    }
                 }
             }
 
@@ -1468,7 +1504,7 @@ public final class HtmlGenerator {
             String entity = StringUtil.toPascalCase(table.getName());
             String meiColumnName = getMeiColumnName(column.getName(), refer);
 
-            if (!table.getColumns().containsKey(meiColumnName)) {
+            if (meiColumnName != null && !table.getColumns().containsKey(meiColumnName)) {
 
                 String meiId = entity + "." + StringUtil.toCamelCase(meiColumnName);
                 String referDef = getReferDef(entity, column.getName(), refer);
@@ -1513,17 +1549,18 @@ public final class HtmlGenerator {
 
         if (referCss.contains("correct")) {
             //選択リンク
-            tag += "<a id=\"" + fieldId + "\" th:href=\"@{/model/" + referName + "S.html?action=" + referName
-                    + "Correct.ajax}\" target=\"dialog\"" + referCss
+            String href = "/model/" + referName + "S.html?action=" + referName + "Correct.ajax";
+            tag += "<a id=\"" + fieldId + "\" th:href=\"@{}" + href + "\" target=\"dialog\"" + referCss
                     + " th:text=\"#{common.correct}\" tabindex=\"-1\">...</a>";
         } else {
             //参照リンク
-            tag += "<a id=\"" + fieldId + "\" th:href=\"@{/model/" + referName + "S.html}\" target=\"dialog\""
-                    + referCss + " th:text=\"#{common.refer}\" tabindex=\"-1\">...</a>";
+            String href = "/model/" + referName + "S.html";
+            tag += "<a id=\"" + fieldId + "\" th:href=\"@{" + href + "}\" target=\"dialog\"" + referCss
+                    + " th:text=\"#{common.refer}\" tabindex=\"-1\">...</a>";
         }
 
         String meiColName = getMeiColumnName(colName, refer);
-        if (!table.getColumns().containsKey(meiColName)) {
+        if (meiColName != null && !table.getColumns().containsKey(meiColName)) {
             String meiId = entity + "." + StringUtil.toCamelCase(meiColName);
             tag += "<span id=\"" + meiId + "\"" + referCss + referDef + "></span>";
         }
@@ -1789,7 +1826,7 @@ public final class HtmlGenerator {
             }
         }
 
-        return "";
+        return null;
     }
 
 }
