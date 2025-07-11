@@ -1215,37 +1215,28 @@ public final class HtmlGenerator {
      */
     private static void htmlFields(final TableInfo table, final List<String> s, final boolean isD, final boolean isB,
             final boolean isP) {
-
         //検索画面の場合は制約モデルの参照キーを出力
         if (!isD && table.getStintInfo() != null) {
             htmlFieldsStint(table, s);
         }
-
         String entity = StringUtil.toPascalCase(table.getName());
-
         // カラム情報でループ
         for (ColumnInfo column : table.getColumns().values()) {
-
             if (isB && column.isPk()) {
                 continue; // 兄弟モデルの主キーは出力しない
             }
-
             String colName = column.getName();
             if (colName.matches("(?i)^" + viewDetail + "$")) {
                 continue; // VIEWのテーブル名なら出力しない
             }
-
             if (table.isView() && isD && StringUtil.startsWith(viewCriteriaPrefixs, colName)) {
                 continue; // VIEWの詳細フォームには「SEARCH_」を出力しない
             }
-
             if (!isD && (StringUtil.endsWith(inputFileSuffixs, colName)
                     || StringUtil.endsWith(inputTimestampSuffixs, colName))) {
                 continue; // 検索条件にはファイル項目とタイムスタンプを出力しない
             }
-
             String property = StringUtil.toCamelCase(colName);
-
             // メタ情報の場合（検索画面の場合はスキップ（検索条件にはしない）、詳細画面の兄弟モデルは更新日時のみhiddenで出力）
             boolean isInsertDt = colName.matches("(?i)^" + insertTs + "$");
             boolean isUpdateDt = colName.matches("(?i)^" + updateTs + "$");
@@ -1262,7 +1253,6 @@ public final class HtmlGenerator {
                     continue; // 兄弟モデルならスキップ（更新日時のみ楽観ロック用に出力）
                 }
             }
-
             TableInfo rebornFrom = null;
             if (table.getRebornFroms().size() > 1) {
                 for (TableInfo reFrom : table.getRebornFroms()) {
@@ -1274,21 +1264,17 @@ public final class HtmlGenerator {
                     }
                 }
             }
-
             String referCss = addCssByRelation(isD, table, column);
             if (!StringUtil.isNullOrBlank(referCss)) {
                 referCss = " class=\"" + referCss + "\"";
             }
-
             String fieldId = entity + "." + property;
             s.add("        <div id=\"" + property + "\">");
             if (isInsertDt || isUpdateDt || isInsertBy || isUpdateBy) { // メタ情報の場合は表示項目（編集画面の自モデルのみここに到達する）
                 htmlFieldsMeta(s, fieldId, column.getRemarks());
                 addMeiSpan(s, table, column);
-
             } else if (StringUtil.endsWith(optionsSuffixs, colName) && column.getRefer() == null) {
                 // 選択項目の場合（サフィックスが合致しても参照モデルなら除外）
-
                 String css = "";
                 if (isD && column.isPk()) { // 詳細画面の主キー
                     css += " primaryKey";
@@ -1302,13 +1288,10 @@ public final class HtmlGenerator {
                 } else if (isD && column.isSummary()) { // 詳細画面の集約先外部キー
                     css += " summary";
                 }
-
                 if (isD && column.getNullable() == 0) {
                     css += isNotBlank(column);
                 }
-
                 htmlFieldsOptions(s, fieldId, colName, column.getRemarks(), css);
-
             } else if (isD && table.isHistory()) { // 履歴モデルの詳細画面
                 htmlFieldsSpan(s, fieldId, column.getRemarks(), "history");
                 addMeiSpan(s, table, column);
@@ -1333,23 +1316,18 @@ public final class HtmlGenerator {
             } else if (StringUtil.endsWith(inputTimestampSuffixs, colName)) { // タイムスタンプの場合
                 htmlFieldsSpan(s, fieldId, column.getRemarks(), "");
             } else if (isD && StringUtil.endsWith(textareaSuffixs, colName)) { // テキストエリア項目の場合
-
                 String css = "";
                 if (isD && column.getNullable() == 0) {
                     css += isNotBlank(column);
                 }
-
                 htmlFieldsTextarea(s, fieldId, column.getRemarks(), css);
-
             } else { // inputの場合
                 String type = getInputType(colName);
                 String inputCss = addCssByRelation(isD, table, column);
-
                 // 詳細画面の必須項目
                 if (isD && column.getNullable() == 0) {
                     inputCss += isNotBlank(column);
                 }
-
                 // 日付項目および8桁日付項目
                 if (StringUtil.endsWith(inputDateSuffixs, colName)) {
                     inputCss += " datepicker";
@@ -1361,12 +1339,10 @@ public final class HtmlGenerator {
                 if (!StringUtil.isNullOrBlank(inputCss)) {
                     inputCss = " class=\"" + inputCss + "\"";
                 }
-
                 String format = "";
                 if (StringUtil.endsWith(inputDate8Suffixs, colName) && column.getColumnSize() == 8) { // 8桁日付項目
                     format = "yymmdd";
                 }
-
                 if (!isD && StringUtil.endsWith(inputRangeSuffixs, colName)) { // 検索画面の範囲指定項目の場合
                     s.add(htmlFieldsRange(fieldId, type, inputCss, column, format));
                 } else if (column.getRefer() != null) { // 参照モデルの場合
@@ -1381,7 +1357,6 @@ public final class HtmlGenerator {
                     }
                 }
             }
-
             s.add("        </div>");
         }
     }
