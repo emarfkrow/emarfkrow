@@ -965,20 +965,18 @@ public final class HtmlGenerator {
                 added.add(rebornTo);
                 String entity = StringUtil.toPascalCase(rebornTo.getName());
                 s.add("<script th:src=\"@{/model/" + entity + "GridColumns.js}\"></script>");
-                htmlNestGrid(s, rebornTo, tables, added, true);
+                htmlNestGrid(s, rebornTo, tables, added, false);
             }
         }
 
         // 転生元モデル
-        if (!isP) {
-            if (table.getRebornFroms().size() > 1) {
-                for (TableInfo reFrom : table.getRebornFroms()) {
-                    if (!added.contains(reFrom)) {
-                        String entity = StringUtil.toPascalCase(reFrom.getName());
-                        s.add("<script th:src=\"@{/model/" + entity + "GridColumns.js}\"></script>");
-                        added.add(reFrom);
-                        htmlNestGrid(s, reFrom, tables, added, false);
-                    }
+        if (table.getRebornFroms().size() > 1) {
+            for (TableInfo reFrom : table.getRebornFroms()) {
+                if (!added.contains(reFrom)) {
+                    String entity = StringUtil.toPascalCase(reFrom.getName());
+                    s.add("<script th:src=\"@{/model/" + entity + "GridColumns.js}\"></script>");
+                    added.add(reFrom);
+                    htmlNestGrid(s, reFrom, tables, added, false);
                 }
             }
         }
