@@ -431,6 +431,11 @@ public final class HtmlGenerator {
             return false;
         }
 
+        // 子モデルなら作成不可
+        if (table.getParents().size() > 0) {
+            return false;
+        }
+
         // ビューなら作成不可
         if (table.isView()) {
             return false;
