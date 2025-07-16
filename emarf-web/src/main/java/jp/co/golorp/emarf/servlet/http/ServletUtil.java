@@ -109,6 +109,32 @@ public final class ServletUtil {
         String actionName = lastPath.replaceFirst(".[a-z]+$", "") + "Action";
         servletPathes[servletPathes.length - 1] = actionName;
 
+        BaseAction a = extracted(request, servletPathes, actionName);
+
+        return a;
+    }
+
+    /**
+     * @param request
+     * @param actionName
+     * @return BaseAction
+     */
+    public static BaseAction getAction(final HttpServletRequest request, final String actionName) {
+
+        BaseAction a = extracted(request, null, actionName);
+
+        return a;
+    }
+
+    /**
+     * @param request
+     * @param servletPathes
+     * @param actionName
+     * @return BaseAction
+     */
+    private static BaseAction extracted(final HttpServletRequest request, final String[] servletPathes,
+            final String actionName) {
+
         String pkg = bundle.getString("java.package.action");
         BaseAction a = null;
 
@@ -117,18 +143,21 @@ public final class ServletUtil {
             // リクエストに則って、拡張アクションを取ってみる
             String className = pkg + String.join(".", servletPathes);
             a = (BaseAction) (Class.forName(className)).getDeclaredConstructor().newInstance();
+
         } catch (Exception e) {
             try {
 
                 // モデルパッケージからも、拡張アクションを取ってみる
                 String className = pkg + ".model." + actionName;
                 a = (BaseAction) (Class.forName(className)).getDeclaredConstructor().newInstance();
+
             } catch (Exception e1) {
                 try {
 
                     // モデルのベースパッケージからも、基底アクションを取ってみる
                     String className = pkg + ".model.base." + actionName;
                     a = (BaseAction) (Class.forName(className)).getDeclaredConstructor().newInstance();
+
                 } catch (Exception e2) {
                     if (actionName.endsWith("SearchAction")) {
                         try {
@@ -136,6 +165,7 @@ public final class ServletUtil {
                             // 検索処理の基底クラスを取ってみる
                             String className = "jp.co.golorp.emarf.action.SearchAction";
                             a = (BaseAction) (Class.forName(className)).getDeclaredConstructor().newInstance();
+
                         } catch (Exception e3) {
                             throw new SysError(e);
                         }
@@ -145,6 +175,7 @@ public final class ServletUtil {
                             // 選択検索処理の基底クラスを取ってみる
                             String className = "jp.co.golorp.emarf.action.CorrectAction";
                             a = (BaseAction) (Class.forName(className)).getDeclaredConstructor().newInstance();
+
                         } catch (Exception e3) {
                             throw new SysError(e);
                         }
@@ -154,6 +185,7 @@ public final class ServletUtil {
                             // 照会処理の基底クラスを取ってみる
                             String className = "jp.co.golorp.emarf.action.GetAction";
                             a = (BaseAction) (Class.forName(className)).getDeclaredConstructor().newInstance();
+
                         } catch (Exception e3) {
                             throw new SysError(e);
                         }
@@ -163,6 +195,7 @@ public final class ServletUtil {
                             // ダウンロード処理の基底クラスを取ってみる
                             String className = "jp.co.golorp.emarf.action.DownloadAction";
                             a = (BaseAction) (Class.forName(className)).getDeclaredConstructor().newInstance();
+
                         } catch (Exception e3) {
                             throw new SysError(e);
                         }

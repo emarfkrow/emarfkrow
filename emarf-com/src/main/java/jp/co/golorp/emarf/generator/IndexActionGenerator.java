@@ -207,7 +207,7 @@ public final class IndexActionGenerator {
 
         for (TableInfo table : tableInfos) {
 
-            if (table.isHistory() || table.isView()) {
+            if (table.isHistory()/* || table.isView() ClassNotFoundよけ*/) {
                 continue;
             }
 

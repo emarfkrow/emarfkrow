@@ -117,18 +117,19 @@ $(function() {
             let itemJson = formJson[k];
             if (Array.isArray(itemJson) && itemJson.length > 0 && k.match(/Grid$/)) {
 
-                // 【VIEW対応】グリッドデータでテーブル名指定があった場合は送信先とグリッド名を変更する
-                if (columnDetail && columnDetail != '') {
-                    let tableNameColumn = itemJson[0][columnDetail.toUpperCase()];
-                    if (!tableNameColumn) {
-                        tableNameColumn = itemJson[0][columnDetail.toLowerCase()];
-                    }
-                    if (tableNameColumn) {
-                        let entityName = Casing.toPascal(tableNameColumn);
-                        action = './' + entityName + 'SRegist.ajax';
-                        k = entityName + 'Grid';
-                    }
-                }
+                // table_nameでの振り分けはサーバ側で行う（トランザクション内で行ごとにtable_nameで振り分けたい）
+                //                // 【VIEW対応】グリッドデータでテーブル名指定があった場合は送信先とグリッド名を変更する
+                //                if (columnDetail && columnDetail != '') {
+                //                    let tableNameColumn = itemJson[0][columnDetail.toUpperCase()];
+                //                    if (!tableNameColumn) {
+                //                        tableNameColumn = itemJson[0][columnDetail.toLowerCase()];
+                //                    }
+                //                    if (tableNameColumn) {
+                //                        let entityName = Casing.toPascal(tableNameColumn);
+                //                        action = './' + entityName + 'SRegist.ajax';
+                //                        k = entityName + 'Grid';
+                //                    }
+                //                }
 
                 formData.append(k, JSON.stringify(itemJson));
             }

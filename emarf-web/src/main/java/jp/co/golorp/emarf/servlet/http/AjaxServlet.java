@@ -18,6 +18,7 @@ package jp.co.golorp.emarf.servlet.http;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import jakarta.servlet.ServletException;
@@ -34,6 +35,7 @@ import org.slf4j.LoggerFactory;
 import jp.co.golorp.emarf.action.BaseAction;
 import jp.co.golorp.emarf.exception.AppError;
 import jp.co.golorp.emarf.exception.OptLockError;
+import jp.co.golorp.emarf.lang.StringUtil;
 import jp.co.golorp.emarf.util.Messages;
 
 /**
@@ -74,8 +76,25 @@ public final class AjaxServlet extends HttpServlet {
             //ses.removeAttribute(requestURL);
 
             Map<String, Object> postJson = ServletUtil.getPostJson(request);
-            BaseAction action = ServletUtil.getAction(request);
-            map = action.run(postJson);
+            for (String k : postJson.keySet()) {
+                if (k.endsWith("Grid")) {
+                    @SuppressWarnings("unchecked")
+                    List<Map<String, Object>> gridData = (List<Map<String, Object>>) postJson.get(k);
+                    for (Map<String, Object> gridRow : gridData) {
+                        if (gridRow.containsKey(Messages.get("view.detail"))) {
+                            String tableName = gridRow.get(Messages.get("view.detail")).toString();
+                            String entityName = StringUtil.toPascalCase(tableName);
+                            BaseAction action = ServletUtil.getAction(request, entityName + "RegistAction");
+                            map = action.run(gridRow);
+                        }
+                    }
+                }
+            }
+
+            if (map == null) {
+                BaseAction action = ServletUtil.getAction(request);
+                map = action.run(postJson);
+            }
 
             // エクセルダウンロードの検索条件退避用
             ses.setAttribute(requestURI, postJson);
