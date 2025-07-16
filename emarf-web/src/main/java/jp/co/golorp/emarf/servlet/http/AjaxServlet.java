@@ -80,12 +80,12 @@ public final class AjaxServlet extends HttpServlet {
                 if (k.endsWith("Grid")) {
                     @SuppressWarnings("unchecked")
                     List<Map<String, Object>> gridData = (List<Map<String, Object>>) postJson.get(k);
-                    for (Map<String, Object> gridRow : gridData) {
-                        if (gridRow.containsKey(Messages.get("view.detail"))) {
-                            String tableName = gridRow.get(Messages.get("view.detail")).toString();
+                    for (Map<String, Object> row : gridData) {
+                        if (row.containsKey(Messages.get("view.detail"))) {
+                            String tableName = row.get(Messages.get("view.detail")).toString();
                             String entityName = StringUtil.toPascalCase(tableName);
                             BaseAction action = ServletUtil.getAction(request, entityName + "RegistAction");
-                            map = action.run(gridRow);
+                            map = action.run(row);
                         }
                     }
                 }

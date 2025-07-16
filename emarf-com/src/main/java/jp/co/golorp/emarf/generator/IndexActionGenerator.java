@@ -19,13 +19,13 @@ import jp.co.golorp.emarf.util.ResourceBundles;
 public final class IndexActionGenerator {
 
     /** プロジェクトディレクトリ */
-    private static String projectDir;
+    private static String prjDir;
 
     /** BeanGenerator.properties */
     private static ResourceBundle bundle = ResourceBundles.getBundle(BeanGenerator.class);
 
     /** actionパッケージ */
-    private static String actionPackage;
+    private static String actionPkg;
 
     /** entityパッケージ */
     private static String entityPackage;
@@ -59,9 +59,9 @@ public final class IndexActionGenerator {
     public static void generate(final String dir, final List<TableInfo> tableInfos) {
 
         //プロジェクトディレクトリを退避
-        projectDir = dir;
+        prjDir = dir;
 
-        actionPackage = bundle.getString("java.package.action") + ".model.base";
+        actionPkg = bundle.getString("java.package.action") + ".model.base";
 
         entityPackage = bundle.getString("java.package.entity");
 
@@ -93,8 +93,8 @@ public final class IndexActionGenerator {
     private static void deleteAction(final List<TableInfo> tables) {
 
         // 出力フォルダを再作成
-        String packagePath = actionPackage.replace(".", File.separator);
-        String packageDir = projectDir + File.separator + javaPath + File.separator + packagePath;
+        String pkgPath = actionPkg.replace(".", File.separator);
+        String pkgDir = prjDir + File.separator + javaPath + File.separator + pkgPath;
 
         Map<String, String> javaFilePaths = new LinkedHashMap<String, String>();
 
@@ -110,18 +110,18 @@ public final class IndexActionGenerator {
                 continue;
             }
 
-            String entity = StringUtil.toPascalCase(table.getName());
+            String e = StringUtil.toPascalCase(table.getName());
             String remarks = table.getRemarks();
 
             List<String> s = new ArrayList<String>();
-            s.add("package " + actionPackage + ";");
+            s.add("package " + actionPkg + ";");
             s.add("");
             s.add("import java.time.LocalDateTime;");
             s.add("import java.util.HashMap;");
             s.add("import java.util.List;");
             s.add("import java.util.Map;");
             s.add("");
-            s.add("import " + entityPackage + "." + entity + ";");
+            s.add("import " + entityPackage + "." + e + ";");
             s.add("");
             s.add("import jp.co.golorp.emarf.action.BaseAction;");
             s.add("import jp.co.golorp.emarf.exception.OptLockError;");
@@ -133,40 +133,41 @@ public final class IndexActionGenerator {
             s.add(" *");
             s.add(" * @author emarfkrow");
             s.add(" */");
-            s.add("public class " + entity + "SDeleteAction extends BaseAction {");
+            s.add("public class " + e + "SDeleteAction extends BaseAction {");
             s.add("");
             s.add("    /** " + remarks + "一覧削除処理 */");
             s.add("    @Override");
-            s.add("    public Map<String, Object> running(final LocalDateTime now, final String execId, final Map<String, Object> postJson) {");
+            s.add("    public Map<String, Object> running(final LocalDateTime now, final String execId, final Map<String, Object> form) {");
             s.add("");
             s.add("        Map<String, Object> map = new HashMap<String, Object>();");
             s.add("");
             s.add("        int count = 0;");
             s.add("");
             s.add("        @SuppressWarnings(\"unchecked\")");
-            s.add("        List<Map<String, Object>> gridData = (List<Map<String, Object>>) postJson.get(\"" + entity
-                    + "Grid\");");
-            s.add("        for (Map<String, Object> gridRow : gridData) {");
+            s.add("        List<Map<String, Object>> data = (List<Map<String, Object>>) form.get(\"" + e + "Grid\");");
+            s.add("        if (data != null) {");
+            s.add("            for (Map<String, Object> row : data) {");
             s.add("");
-            s.add("            if (gridRow.isEmpty()) {");
-            s.add("                continue;");
-            s.add("            }");
+            s.add("                if (row.isEmpty()) {");
+            s.add("                    continue;");
+            s.add("                }");
             s.add("");
-            s.add("            // 主キーが不足していたらエラー");
-            for (String pk : table.getPrimaryKeys()) {
-                s.add("            if (jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(gridRow.get(\"" + pk
+            s.add("                // 主キーが不足していたらエラー");
+            for (String k : table.getPrimaryKeys()) {
+                s.add("                if (jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(row.get(\"" + k
                         + "\"))) {");
-                s.add("                throw new OptLockError(\"error.cant.delete\");");
-                s.add("            }");
+                s.add("                    throw new OptLockError(\"error.cant.delete\");");
+                s.add("                }");
             }
             s.add("");
-            s.add("            " + entity + " e = FormValidator.toBean(" + entity + ".class.getName(), gridRow);");
+            s.add("                " + e + " e = FormValidator.toBean(" + e + ".class.getName(), row);");
             List<TableInfo> childInfos = table.getChilds();
             BeanGenerator.getDeleteChilds(s, "e", childInfos, 1);
-            s.add("            if (e.delete() != 1) {");
-            s.add("                throw new OptLockError(\"error.cant.delete\");");
+            s.add("                if (e.delete() != 1) {");
+            s.add("                    throw new OptLockError(\"error.cant.delete\");");
+            s.add("                }");
+            s.add("                ++count;");
             s.add("            }");
-            s.add("            ++count;");
             s.add("        }");
             s.add("");
             s.add("        if (count == 0) {");
@@ -180,8 +181,8 @@ public final class IndexActionGenerator {
             s.add("");
             s.add("}");
 
-            String javaFilePath = packageDir + File.separator + entity + "SDeleteAction.java";
-            javaFilePaths.put(javaFilePath, actionPackage + "." + entity + "SDeleteAction");
+            String javaFilePath = pkgDir + File.separator + e + "SDeleteAction.java";
+            javaFilePaths.put(javaFilePath, actionPkg + "." + e + "SDeleteAction");
 
             FileUtil.writeFile(javaFilePath, s);
         }
@@ -200,8 +201,8 @@ public final class IndexActionGenerator {
     private static void registAction(final List<TableInfo> tableInfos) {
 
         // 出力フォルダを再作成
-        String packagePath = actionPackage.replace(".", File.separator);
-        String packageDir = projectDir + File.separator + javaPath + File.separator + packagePath;
+        String packagePath = actionPkg.replace(".", File.separator);
+        String packageDir = prjDir + File.separator + javaPath + File.separator + packagePath;
 
         Map<String, String> javaFilePaths = new LinkedHashMap<String, String>();
 
@@ -211,18 +212,18 @@ public final class IndexActionGenerator {
                 continue;
             }
 
-            String entity = StringUtil.toPascalCase(table.getName());
+            String e = StringUtil.toPascalCase(table.getName());
             String remarks = table.getRemarks();
 
             List<String> s = new ArrayList<String>();
-            s.add("package " + actionPackage + ";");
+            s.add("package " + actionPkg + ";");
             s.add("");
             s.add("import java.time.LocalDateTime;");
             s.add("import java.util.HashMap;");
             s.add("import java.util.List;");
             s.add("import java.util.Map;");
             s.add("");
-            s.add("import " + entityPackage + "." + entity + ";");
+            s.add("import " + entityPackage + "." + e + ";");
             s.add("");
             s.add("import jp.co.golorp.emarf.action.BaseAction;");
             s.add("import jp.co.golorp.emarf.exception.OptLockError;");
@@ -234,71 +235,72 @@ public final class IndexActionGenerator {
             s.add(" *");
             s.add(" * @author emarfkrow");
             s.add(" */");
-            s.add("public class " + entity + "SRegistAction extends BaseAction {");
+            s.add("public class " + e + "SRegistAction extends BaseAction {");
             s.add("");
             s.add("    /** " + remarks + "一覧登録処理 */");
             s.add("    @Override");
-            s.add("    public Map<String, Object> running(final LocalDateTime now, final String execId, final Map<String, Object> postJson) {");
+            s.add("    public Map<String, Object> running(final LocalDateTime now, final String execId, final Map<String, Object> form) {");
             s.add("");
             s.add("        Map<String, Object> map = new HashMap<String, Object>();");
             s.add("");
             s.add("        int count = 0;");
             s.add("");
             s.add("        @SuppressWarnings(\"unchecked\")");
-            s.add("        List<Map<String, Object>> gridData = (List<Map<String, Object>>) postJson.get(\"" + entity
-                    + "Grid\");");
-            s.add("        for (Map<String, Object> gridRow : gridData) {");
+            s.add("        List<Map<String, Object>> data = (List<Map<String, Object>>) form.get(\"" + e + "Grid\");");
+            s.add("        if (data != null) {");
+            s.add("            for (Map<String, Object> row : data) {");
             s.add("");
-            s.add("            if (gridRow.isEmpty()) {");
-            s.add("                continue;");
-            s.add("            }");
+            s.add("                if (row.isEmpty()) {");
+            s.add("                    continue;");
+            s.add("                }");
             s.add("");
             //            s.add("            String className = " + entity + ".class.getName();");
             //            if (table.isConvView()) {
             //                s.add("            // 変換ビューの場合");
-            //                s.add("            className = \"" + entityPackage + ".\" + gridRow.get(\"TABLE_NAME\").toString();");
-            //                s.add("            jp.co.golorp.emarf.entity.IEntity e = FormValidator.toBean(className, gridRow);");
+            //                s.add("            className = \"" + entityPackage + ".\" + row.get(\"TABLE_NAME\").toString();");
+            //                s.add("            jp.co.golorp.emarf.entity.IEntity e = FormValidator.toBean(className, row);");
             //            } else {
-            //            s.add("            " + entity + " e = FormValidator.toBean(className, gridRow);");
-            s.add("            " + entity + " e = FormValidator.toBean(" + entity + ".class.getName(), gridRow);");
+            //            s.add("            " + entity + " e = FormValidator.toBean(className, row);");
+            s.add("                " + e + " e = FormValidator.toBean(" + e + ".class.getName(), row);");
             //            }
             s.add("");
-            s.add("            // 主キーが不足していたらINSERT");
-            s.add("            boolean isNew = false;");
+            s.add("                // 主キーが不足していたらINSERT");
+            s.add("                boolean isNew = false;");
             for (String primaryKey : table.getPrimaryKeys()) {
-                String accessor = StringUtil.toPascalCase(primaryKey);
-                s.add("            if (jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(e.get" + accessor + "())) {");
-                s.add("                isNew = true;");
-                s.add("            }");
+                String acc = StringUtil.toPascalCase(primaryKey);
+                s.add("                if (jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(e.get" + acc + "())) {");
+                s.add("                    isNew = true;");
+                s.add("                }");
             }
             if (table.getColumns().containsKey(updateDt)
                     || table.getColumns().containsKey(updateDt.toUpperCase())) {
-                String accessor = StringUtil.toPascalCase(updateDt);
-                s.add("            // 楽観ロック値がなくてもINSERT");
-                s.add("            if (jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(e.get" + accessor + "())) {");
-                s.add("                isNew = true;");
-                s.add("            }");
+                String acc = StringUtil.toPascalCase(updateDt);
+                s.add("                // 楽観ロック値がなくてもINSERT");
+                s.add("                if (jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(e.get" + acc + "())) {");
+                s.add("                    isNew = true;");
+                s.add("                }");
             }
             if (!table.isView() && !StringUtil.isNullOrBlank(status)
                     && (table.getColumns().containsKey(status.toLowerCase())
                             || table.getColumns().containsKey(status.toUpperCase()))) {
                 s.add("");
-                s.add("            e.set" + StringUtil.toPascalCase(status) + "(0);");
+                s.add("                e.set" + StringUtil.toPascalCase(status) + "(0);");
             }
             s.add("");
-            s.add("            if (isNew) {");
+            s.add("                if (isNew) {");
             s.add("");
-            s.add("                if (e.insert(now, execId) != 1) {");
-            s.add("                    throw new OptLockError(\"error.cant.insert\");");
+            s.add("                    if (e.insert(now, execId) != 1) {");
+            s.add("                        throw new OptLockError(\"error.cant.insert\");");
+            s.add("                    }");
+            s.add("                    ++count;");
+            s.add("");
+            s.add("                } else {");
+            s.add("");
+            s.add("                    if (e.update(now, execId) != 1) {");
+            s.add("                        throw new OptLockError(\"error.cant.update\");");
+            s.add("                    }");
+            s.add("                    ++count;");
             s.add("                }");
-            s.add("                ++count;");
-            s.add("");
-            s.add("            } else {");
-            s.add("");
-            s.add("                if (e.update(now, execId) != 1) {");
-            s.add("                    throw new OptLockError(\"error.cant.update\");");
-            s.add("                }");
-            s.add("                ++count;");
             s.add("            }");
             s.add("        }");
             s.add("");
@@ -313,8 +315,8 @@ public final class IndexActionGenerator {
             s.add("");
             s.add("}");
 
-            String javaFilePath = packageDir + File.separator + entity + "SRegistAction.java";
-            javaFilePaths.put(javaFilePath, actionPackage + "." + entity + "SRegistAction");
+            String javaFilePath = packageDir + File.separator + e + "SRegistAction.java";
+            javaFilePaths.put(javaFilePath, actionPkg + "." + e + "SRegistAction");
 
             FileUtil.writeFile(javaFilePath, s);
         }
@@ -333,8 +335,8 @@ public final class IndexActionGenerator {
     private static void permitAction(final List<TableInfo> tables) {
 
         // 出力フォルダを再作成
-        String packagePath = actionPackage.replace(".", File.separator);
-        String packageDir = projectDir + File.separator + javaPath + File.separator + packagePath;
+        String packagePath = actionPkg.replace(".", File.separator);
+        String packageDir = prjDir + File.separator + javaPath + File.separator + packagePath;
 
         Map<String, String> javaFilePaths = new LinkedHashMap<String, String>();
 
@@ -345,18 +347,18 @@ public final class IndexActionGenerator {
                 continue;
             }
 
-            String entity = StringUtil.toPascalCase(table.getName());
+            String e = StringUtil.toPascalCase(table.getName());
             String remarks = table.getRemarks();
 
             List<String> s = new ArrayList<String>();
-            s.add("package " + actionPackage + ";");
+            s.add("package " + actionPkg + ";");
             s.add("");
             s.add("import java.time.LocalDateTime;");
             s.add("import java.util.HashMap;");
             s.add("import java.util.List;");
             s.add("import java.util.Map;");
             s.add("");
-            s.add("import " + entityPackage + "." + entity + ";");
+            s.add("import " + entityPackage + "." + e + ";");
             s.add("");
             s.add("import jp.co.golorp.emarf.action.BaseAction;");
             s.add("import jp.co.golorp.emarf.exception.OptLockError;");
@@ -368,36 +370,36 @@ public final class IndexActionGenerator {
             s.add(" *");
             s.add(" * @author emarfkrow");
             s.add(" */");
-            s.add("public class " + entity + "SPermitAction extends BaseAction {");
+            s.add("public class " + e + "SPermitAction extends BaseAction {");
             s.add("");
             s.add("    /** " + remarks + "一覧承認処理 */");
             s.add("    @Override");
-            s.add("    public Map<String, Object> running(final LocalDateTime now, final String execId, final Map<String, Object> postJson) {");
+            s.add("    public Map<String, Object> running(final LocalDateTime now, final String execId, final Map<String, Object> form) {");
             s.add("");
             s.add("        Map<String, Object> map = new HashMap<String, Object>();");
             s.add("");
             s.add("        int count = 0;");
             s.add("");
             s.add("        @SuppressWarnings(\"unchecked\")");
-            s.add("        List<Map<String, Object>> gridData = (List<Map<String, Object>>) postJson.get(\"" + entity
-                    + "Grid\");");
-            s.add("        for (Map<String, Object> gridRow : gridData) {");
+            s.add("        List<Map<String, Object>> data = (List<Map<String, Object>>) form.get(\"" + e + "Grid\");");
+            s.add("        if (data != null) {");
+            s.add("            for (Map<String, Object> row : data) {");
             s.add("");
-            s.add("            if (gridRow.isEmpty()) {");
-            s.add("                continue;");
-            s.add("            }");
+            s.add("                if (row.isEmpty()) {");
+            s.add("                    continue;");
+            s.add("                }");
             s.add("");
-            s.add("            " + entity + " e = FormValidator.toBean(" + entity + ".class.getName(), gridRow);");
+            s.add("                " + e + " e = FormValidator.toBean(" + e + ".class.getName(), row);");
             s.add("");
-            s.add("            // 主キーが不足していたらエラー");
+            s.add("                // 主キーが不足していたらエラー");
             String params = "";
             for (String primaryKey : table.getPrimaryKeys()) {
                 String property = StringUtil.toCamelCase(primaryKey);
                 String accessor = StringUtil.toPascalCase(primaryKey);
-                s.add("            Object " + property + " = e.get" + accessor + "();");
-                s.add("            if (" + property + " == null) {");
-                s.add("                throw new OptLockError(\"error.cant.permit\");");
-                s.add("            }");
+                s.add("                Object " + property + " = e.get" + accessor + "();");
+                s.add("                if (" + property + " == null) {");
+                s.add("                    throw new OptLockError(\"error.cant.permit\");");
+                s.add("                }");
                 if (params.length() > 0) {
                     params += ", ";
                 }
@@ -406,15 +408,16 @@ public final class IndexActionGenerator {
             List<TableInfo> childInfos = table.getChilds();
             BeanGenerator.getPermitChilds(s, "e", childInfos, 1);
             s.add("");
-            s.add("            " + entity + " f = " + entity + ".get(" + params + ");");
+            s.add("                " + e + " f = " + e + ".get(" + params + ");");
             if (table.getColumns().containsKey(status.toLowerCase())
                     || table.getColumns().containsKey(status.toUpperCase())) {
-                s.add("            f.set" + StringUtil.toPascalCase(status) + "(1);");
+                s.add("                f.set" + StringUtil.toPascalCase(status) + "(1);");
             }
-            s.add("            if (f.update(now, execId) != 1) {");
-            s.add("                throw new OptLockError(\"error.cant.permit\");");
+            s.add("                if (f.update(now, execId) != 1) {");
+            s.add("                    throw new OptLockError(\"error.cant.permit\");");
+            s.add("                }");
+            s.add("                ++count;");
             s.add("            }");
-            s.add("            ++count;");
             s.add("        }");
             s.add("");
             s.add("        if (count == 0) {");
@@ -428,8 +431,8 @@ public final class IndexActionGenerator {
             s.add("");
             s.add("}");
 
-            String javaFilePath = packageDir + File.separator + entity + "SPermitAction.java";
-            javaFilePaths.put(javaFilePath, actionPackage + "." + entity + "SPermitAction");
+            String javaFilePath = packageDir + File.separator + e + "SPermitAction.java";
+            javaFilePaths.put(javaFilePath, actionPkg + "." + e + "SPermitAction");
 
             FileUtil.writeFile(javaFilePath, s);
         }
@@ -448,8 +451,8 @@ public final class IndexActionGenerator {
     private static void forbidAction(final List<TableInfo> tables) {
 
         // 出力フォルダを再作成
-        String packagePath = actionPackage.replace(".", File.separator);
-        String packageDir = projectDir + File.separator + javaPath + File.separator + packagePath;
+        String packagePath = actionPkg.replace(".", File.separator);
+        String packageDir = prjDir + File.separator + javaPath + File.separator + packagePath;
 
         Map<String, String> javaFilePaths = new LinkedHashMap<String, String>();
 
@@ -460,18 +463,18 @@ public final class IndexActionGenerator {
                 continue;
             }
 
-            String entity = StringUtil.toPascalCase(table.getName());
+            String e = StringUtil.toPascalCase(table.getName());
             String remarks = table.getRemarks();
 
             List<String> s = new ArrayList<String>();
-            s.add("package " + actionPackage + ";");
+            s.add("package " + actionPkg + ";");
             s.add("");
             s.add("import java.time.LocalDateTime;");
             s.add("import java.util.HashMap;");
             s.add("import java.util.List;");
             s.add("import java.util.Map;");
             s.add("");
-            s.add("import " + entityPackage + "." + entity + ";");
+            s.add("import " + entityPackage + "." + e + ";");
             s.add("");
             s.add("import jp.co.golorp.emarf.action.BaseAction;");
             s.add("import jp.co.golorp.emarf.exception.OptLockError;");
@@ -483,36 +486,36 @@ public final class IndexActionGenerator {
             s.add(" *");
             s.add(" * @author emarfkrow");
             s.add(" */");
-            s.add("public class " + entity + "SForbidAction extends BaseAction {");
+            s.add("public class " + e + "SForbidAction extends BaseAction {");
             s.add("");
             s.add("    /** " + remarks + "一覧承認処理 */");
             s.add("    @Override");
-            s.add("    public Map<String, Object> running(final LocalDateTime now, final String execId, final Map<String, Object> postJson) {");
+            s.add("    public Map<String, Object> running(final LocalDateTime now, final String execId, final Map<String, Object> form) {");
             s.add("");
             s.add("        Map<String, Object> map = new HashMap<String, Object>();");
             s.add("");
             s.add("        int count = 0;");
             s.add("");
             s.add("        @SuppressWarnings(\"unchecked\")");
-            s.add("        List<Map<String, Object>> gridData = (List<Map<String, Object>>) postJson.get(\"" + entity
-                    + "Grid\");");
-            s.add("        for (Map<String, Object> gridRow : gridData) {");
+            s.add("        List<Map<String, Object>> data = (List<Map<String, Object>>) form.get(\"" + e + "Grid\");");
+            s.add("        if (data != null) {");
+            s.add("            for (Map<String, Object> row : data) {");
             s.add("");
-            s.add("            if (gridRow.isEmpty()) {");
-            s.add("                continue;");
-            s.add("            }");
+            s.add("                if (row.isEmpty()) {");
+            s.add("                    continue;");
+            s.add("                }");
             s.add("");
-            s.add("            " + entity + " e = FormValidator.toBean(" + entity + ".class.getName(), gridRow);");
+            s.add("                " + e + " e = FormValidator.toBean(" + e + ".class.getName(), row);");
             s.add("");
-            s.add("            // 主キーが不足していたらエラー");
+            s.add("                // 主キーが不足していたらエラー");
             String params = "";
             for (String primaryKey : table.getPrimaryKeys()) {
                 String property = StringUtil.toCamelCase(primaryKey);
                 String accessor = StringUtil.toPascalCase(primaryKey);
-                s.add("            Object " + property + " = e.get" + accessor + "();");
-                s.add("            if (" + property + " == null) {");
-                s.add("                throw new OptLockError(\"error.cant.forbid\");");
-                s.add("            }");
+                s.add("                Object " + property + " = e.get" + accessor + "();");
+                s.add("                if (" + property + " == null) {");
+                s.add("                    throw new OptLockError(\"error.cant.forbid\");");
+                s.add("                }");
                 if (params.length() > 0) {
                     params += ", ";
                 }
@@ -521,15 +524,16 @@ public final class IndexActionGenerator {
             List<TableInfo> childInfos = table.getChilds();
             BeanGenerator.getForbidChilds(s, "e", childInfos, 1);
             s.add("");
-            s.add("            " + entity + " f = " + entity + ".get(" + params + ");");
+            s.add("                " + e + " f = " + e + ".get(" + params + ");");
             if (table.getColumns().containsKey(status.toLowerCase())
                     || table.getColumns().containsKey(status.toUpperCase())) {
-                s.add("            f.set" + StringUtil.toPascalCase(status) + "(-1);");
+                s.add("                f.set" + StringUtil.toPascalCase(status) + "(-1);");
             }
-            s.add("            if (f.update(now, execId) != 1) {");
-            s.add("                throw new OptLockError(\"error.cant.forbid\");");
+            s.add("                if (f.update(now, execId) != 1) {");
+            s.add("                    throw new OptLockError(\"error.cant.forbid\");");
+            s.add("                }");
+            s.add("                ++count;");
             s.add("            }");
-            s.add("            ++count;");
             s.add("        }");
             s.add("");
             s.add("        if (count == 0) {");
@@ -543,8 +547,8 @@ public final class IndexActionGenerator {
             s.add("");
             s.add("}");
 
-            String javaFilePath = packageDir + File.separator + entity + "SForbidAction.java";
-            javaFilePaths.put(javaFilePath, actionPackage + "." + entity + "SForbidAction");
+            String javaFilePath = packageDir + File.separator + e + "SForbidAction.java";
+            javaFilePaths.put(javaFilePath, actionPkg + "." + e + "SForbidAction");
 
             FileUtil.writeFile(javaFilePath, s);
         }

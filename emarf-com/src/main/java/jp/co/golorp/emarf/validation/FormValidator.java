@@ -297,18 +297,18 @@ public final class FormValidator {
                         List<T> formList = new ArrayList<T>();
                         @SuppressWarnings("unchecked")
                         List<Map<String, Object>> gridData = (List<Map<String, Object>>) list;
-                        for (Map<String, Object> gridRow : gridData) {
-                            if (gridRow.isEmpty()) {
+                        for (Map<String, Object> row : gridData) {
+                            if (row.isEmpty()) {
                                 formList.add(null);
                             } else {
                                 if (!StringUtil.isNullOrBlank(reason)) {
                                     String reasonName = StringUtil.toCamelCase(reason);
                                     if (!StringUtil.isNullOrBlank(postJson.get(reasonName))) {
-                                        gridRow.put(reason, postJson.get(reasonName));
+                                        row.put(reason, postJson.get(reasonName));
                                     }
                                 }
                                 @SuppressWarnings("unchecked")
-                                T t = (T) toGridForm(gridClassName, gridRow);
+                                T t = (T) toGridForm(gridClassName, row);
                                 formList.add(t);
                             }
                         }
