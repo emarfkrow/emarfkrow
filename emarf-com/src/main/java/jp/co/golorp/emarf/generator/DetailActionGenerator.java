@@ -359,7 +359,7 @@ public final class DetailActionGenerator {
             }
             s.add("            map.put(\"" + ent + "\", " + ins + ");");
             s.add("        } catch (NoDataError e) {");
-            s.add("            if (!postJson.get(\"IsSilent\").equals(\"true\")) {");
+            s.add("            if (postJson.get(\"IsSilent\") == null || !postJson.get(\"IsSilent\").equals(\"true\")) {");
             s.add("                throw e;");
             s.add("            }");
             s.add("        }");

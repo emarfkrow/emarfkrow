@@ -60,6 +60,12 @@ let Formatter = {
         return Formatter.comma(s);
     },
 
+    Ym: function(v) {
+        if (v === undefined || v === null || v === '') { return ''; }
+        v = v.replace('-', '');
+        return v.substr(0, 4) + '-' + v.substr(4);
+    },
+
     Ymd: function(date) {
         if (date && !isNaN(date.getFullYear())) {
             let y = date.getFullYear();

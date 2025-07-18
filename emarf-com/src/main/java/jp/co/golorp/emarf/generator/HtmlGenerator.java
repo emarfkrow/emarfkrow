@@ -1159,7 +1159,7 @@ public final class HtmlGenerator {
         } else if (StringUtil.endsWith(inputDateTimeSuffixs, name)) {
             c = "Column.dateTime('" + name + "', " + mei + ", " + w + ", '" + css + "'),";
         } else if (StringUtil.endsWith(inputYMSuffixs, name)) {
-            c = "Column.month('" + name + "', " + mei + ", " + w + ", '" + css + "', " + format + "),";
+            c = "Column.month('" + name + "', " + mei + ", " + w + ", '" + css + "', Slick.Formatters.Extends.Month),";
         } else if (StringUtil.endsWith(inputHourSuffixs, name)) {
             c = "Column.time('" + name + "', " + mei + ", " + w + ", '" + css + "', " + format + "),";
         } else if (StringUtil.endsWith(inputFileSuffixs, name)) {

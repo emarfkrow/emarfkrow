@@ -800,26 +800,28 @@ let Base = {
 
                         // 集約元情報
                         let $summaryDiv = $('div.summary');
-                        let summaryOfName = $summaryDiv.prop('class').replace('summary', '').trim();
-                        let $inputs = $summaryDiv.find('input');
-                        for (let i = 0; i < $inputs.length; i++) {
-                            let input = $inputs[i];
-                            let inputName = input.name;
-                            let property = inputName.split('.')[1];
-                            let colName = Casing.toUpper(property);
-                            let values = "";
-                            for (let n in data) {
-                                let summaryOfs = data[n][summaryOfName];
-                                for (let j in summaryOfs) {
-                                    let summaryOf = summaryOfs[j];
-                                    if (values != "") {
-                                        values += ',';
+                        if ($summaryDiv.length > 0) {
+                            let summaryOfName = $summaryDiv.prop('class').replace('summary', '').trim();
+                            let $inputs = $summaryDiv.find('input');
+                            for (let i = 0; i < $inputs.length; i++) {
+                                let input = $inputs[i];
+                                let inputName = input.name;
+                                let property = inputName.split('.')[1];
+                                let colName = Casing.toUpper(property);
+                                let values = "";
+                                for (let n in data) {
+                                    let summaryOfs = data[n][summaryOfName];
+                                    for (let j in summaryOfs) {
+                                        let summaryOf = summaryOfs[j];
+                                        if (values != "") {
+                                            values += ',';
+                                        }
+                                        values += summaryOf[colName];
                                     }
-                                    values += summaryOf[colName];
                                 }
+                                $('span[id="' + inputName + '"]').html(values);
+                                $(input).val(values);
                             }
-                            $('span[id="' + inputName + '"]').html(values);
-                            $(input).val(values);
                         }
                     }
                 });

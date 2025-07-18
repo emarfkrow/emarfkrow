@@ -28,6 +28,7 @@ limitations under the License.
                     "Button": ButtonFormatter,
                     "Choose": ChooseButtonFormatter,
                     "Delete": DeleteButtonFormatter,
+                    "Month": MonthFormatter,
                     "Date": DateFormatter,
                     "DateTime": DateTimeFormatter,
                     "Timestamp": TimestampFormatter,
@@ -73,6 +74,13 @@ limitations under the License.
             return '<input type="button" value="' + columnDef.label + '" class="gridButton gridDelete" />';
         }
         return '<input type="button" value="' + columnDef.name + '" class="gridButton gridDelete" />';
+    }
+
+    function MonthFormatter(row, cell, value, columnDef, dataContext) {
+        if (!value) {
+            return null;
+        }
+        return Formatter.Ym(value);
     }
 
     function DateFormatter(row, cell, value, columnDef, dataContext) {

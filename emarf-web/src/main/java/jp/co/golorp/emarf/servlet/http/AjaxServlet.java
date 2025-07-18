@@ -91,6 +91,7 @@ public final class AjaxServlet extends HttpServlet {
                 }
             }
 
+            // グリッド内のTABLE_NAMEで処理していなければ実行
             if (map == null) {
                 BaseAction action = ServletUtil.getAction(request);
                 map = action.run(postJson);

@@ -934,7 +934,13 @@ var Gridate = {
                 if ($item.length > 0) {
 
                     for (let i = 0; i < $item.length; i++) {
-                        if ($item[i].type != 'file') {
+                        if ($item[i].type == 'file') {
+                            continue;
+                        } else if ($item[i].type == 'month') {
+                            $('[id="' + dialogId + '"] span[id="' + camel + '"]').html(v);
+                            v = v.replace(/(\d{4})(\d{2})/, '$1-$2');
+                            $($item[i]).val([v]);
+                        } else {
                             $($item[i]).val([v]);
                             $('[id="' + dialogId + '"] span[id="' + camel + '"]').html(v);
                         }
@@ -946,7 +952,13 @@ var Gridate = {
                     if ($item.length > 0) {
 
                         for (let i = 0; i < $item.length; i++) {
-                            if ($item[i].type != 'file') {
+                            if ($item[i].type == 'file') {
+                                continue;
+                            } else if ($item[i].type == 'month') {
+                                $('[id="' + dialogId + '"] span[id="' + entityName + '.' + camel + '"]').html(v);
+                                v = v.replace(/(\d{4})(\d{2})/, '$1-$2');
+                                $($item[i]).val([v]);
+                            } else {
                                 $($item[i]).val([v]);
                                 $('[id="' + dialogId + '"] span[id="' + entityName + '.' + camel + '"]').html(v);
                             }

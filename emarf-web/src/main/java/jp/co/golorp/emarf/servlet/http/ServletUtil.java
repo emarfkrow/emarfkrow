@@ -141,7 +141,10 @@ public final class ServletUtil {
         try {
 
             // リクエストに則って、拡張アクションを取ってみる
-            String className = pkg + String.join(".", servletPathes);
+            String className = pkg;
+            if (servletPathes != null) {
+                className += String.join(".", servletPathes);
+            }
             a = (BaseAction) (Class.forName(className)).getDeclaredConstructor().newInstance();
 
         } catch (Exception e) {

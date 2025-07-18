@@ -42,6 +42,9 @@ let Jsonate = {
             let $input = $(this);
             let k = $input.prop('name');
             let v = $input.val();
+            if (v != '' && $input.prop('type') == 'month') {
+                v = v.replace(/(\d{4})-(\d{2})/, '$1$2');
+            }
             if (formJson[k]) {
                 if (!Array.isArray(formJson[k])) {
                     formJson[k] = [formJson[k]];
@@ -138,6 +141,9 @@ let Jsonate = {
 
             // JSON値
             let v = $input.val();
+            if (v != '' && $input.prop('type') == 'month') {
+                v = v.replace(/(\d{4})-(\d{2})/, '$1$2');
+            }
 
             if (v != '') {
                 // JSON値が取れた場合
@@ -267,8 +273,8 @@ let Jsonate = {
 
                         console.debug('#' + $(this).prop('id') + ' [' + inputName + ' = ' + v + ']');
 
-                        // もしファイルタグならリンクに変換
                         if ($input.attr('type') == 'file') {
+                            // ファイルタグならリンクに変換
 
                             //                        // ファイルタグを非表示
                             //                        $input.prop('disabled', true).hide();
@@ -305,16 +311,19 @@ let Jsonate = {
                             // ファイルパスのhiddenタグを活性
                             $('input[type="hidden"][id="' + this.id + '"]').prop("disabled", false).val([v]);
 
+                        } else if ($input.attr('type') == 'month') {
+                            // 年月ならフォーマットして設定
+                            v = v.replace(/(\d{4})(\d{2})/, '$1-$2');
+                            $input.val(v);
+                        } else if ($input[0].type == 'datetime-local') {
+                            // 日時ならフォーマット
+                            // $input.val([v.toISOString().slice(0, -1)]);
+                            v = v.replace('%20', 'T');
+                            v = v.replace(/(\d+-\d+-\d+ +\d+:\d+)(:\d+)/, '$1');
+                            $input.val(v);
                         } else {
-                            if ($input[0].type == 'datetime-local') {
-                                //                            $input.val([v.toISOString().slice(0, -1)]);
-                                v = v.replace('%20', 'T');
-                                v = v.replace(/(\d+-\d+-\d+ +\d+:\d+)(:\d+)/, '$1');
-                                $input.val(v);
-                            } else {
-                                $input.val([v]);
-                                $('span[id="' + inputName + '"]').html(v);
-                            }
+                            $input.val([v]);
+                            $('span[id="' + inputName + '"]').html(v);
                         }
                     }
                 });
