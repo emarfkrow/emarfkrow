@@ -792,9 +792,9 @@ let Base = {
                         }
                     }
 
-                    //親モデルを読み取り専用
+                    // 親モデルを読み取り専用
                     //        Base.readonly($dialogDiv.find('.parent').find('a,input,select,textarea'));
-                    Base.readonly($registForm.find('.parent').find('a,input,select,textarea'));
+                    Base.readonly($registForm.find('fieldset.parent').find('a,input,select,textarea'));
 
                     if (Object.keys(data).length > 0) {
 

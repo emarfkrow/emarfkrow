@@ -59,7 +59,7 @@ public class TableInfo {
     private boolean isHistory;
 
     /** 兄弟テーブルのリスト */
-    private List<TableInfo> youngers = new ArrayList<TableInfo>();
+    private List<TableInfo> brothers = new ArrayList<TableInfo>();
 
     /** 自身が兄弟テーブルならtrue */
     private boolean isYounger;
@@ -247,28 +247,28 @@ public class TableInfo {
     /**
      * @return 弟テーブルのリスト
      */
-    public List<TableInfo> getYoungers() {
-        return youngers;
+    public List<TableInfo> getBrothers() {
+        return brothers;
     }
 
     /**
      * @param p 弟テーブルのリスト
      */
-    public void setYoungers(final List<TableInfo> p) {
-        this.youngers = p;
+    public void setBrothers(final List<TableInfo> p) {
+        this.brothers = p;
     }
 
     /**
      * @return 自身が兄弟テーブルならtrue
      */
-    public boolean isYounger() {
+    public boolean isBrother() {
         return isYounger;
     }
 
     /**
      * @param p 自身が兄弟テーブルならtrue
      */
-    public void setYounger(final boolean p) {
+    public void setIsBrother(final boolean p) {
         this.isYounger = p;
     }
 

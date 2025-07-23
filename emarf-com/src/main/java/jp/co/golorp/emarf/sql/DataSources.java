@@ -726,8 +726,8 @@ public final class DataSources {
 
                 // 兄に弟を追加、弟に弟フラグを設定
                 LOG.debug("    " + elder.getName() + " and " + younger.getName());
-                elder.getYoungers().add(younger);
-                younger.setYounger(true);
+                elder.getBrothers().add(younger);
+                younger.setIsBrother(true);
             }
         }
     }
@@ -841,9 +841,9 @@ public final class DataSources {
             }
 
             // 同じキーの参照モデルが複数存在する
-            if (mst.getYoungers().size() > 0) {
+            if (mst.getBrothers().size() > 0) {
                 boolean isReferYng = false;
-                for (TableInfo yng : mst.getYoungers()) {
+                for (TableInfo yng : mst.getBrothers()) {
                     if (isRefer(yng)) {
                         isReferYng = true;
                         break;
@@ -1060,8 +1060,8 @@ public final class DataSources {
 
                 // 親子設定した場合、兄弟モデルを消し込み（親が適用日なし、子が適用日ありで、誤登録されている可能性があるため）
                 LOG.debug("    " + oya.getName() + " has " + ko.getName());
-                oya.getYoungers().remove(ko);
-                ko.getYoungers().remove(oya);
+                oya.getBrothers().remove(ko);
+                ko.getBrothers().remove(oya);
             }
         }
     }
@@ -1080,7 +1080,7 @@ public final class DataSources {
             TableInfo src = srcs.next();
 
             // 履歴モデル・参照モデル・兄弟モデル・ビュー は転生しない
-            if (src.isHistory() || src.isRefer() || src.isYounger() || src.isView()) {
+            if (src.isHistory() || src.isRefer() || src.isBrother() || src.isView()) {
                 continue;
             }
 
@@ -1579,9 +1579,9 @@ public final class DataSources {
                 }
             }
 
-            if (table.getYoungers().size() > 0) {
+            if (table.getBrothers().size() > 0) {
                 LOG.info("    BrosInfos:");
-                for (TableInfo bros : table.getYoungers()) {
+                for (TableInfo bros : table.getBrothers()) {
                     LOG.info("        " + bros.getName() + " " + bros.getPrimaryKeys());
                 }
             }

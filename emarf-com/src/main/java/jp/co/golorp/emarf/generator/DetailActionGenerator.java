@@ -341,7 +341,7 @@ public final class DetailActionGenerator {
             s.add("");
             s.add("        try {");
             s.add("            " + ent + " " + ins + " = " + ent + ".get(" + StringUtil.toCamelCase(pks) + ");");
-            for (TableInfo bros : table.getYoungers()) {
+            for (TableInfo bros : table.getBrothers()) {
                 s.add("            " + ins + ".refer" + StringUtil.toPascalCase(bros.getName()) + "();");
             }
             for (TableInfo child : table.getChilds()) {

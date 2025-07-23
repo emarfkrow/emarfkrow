@@ -665,7 +665,7 @@ public final class BeanGenerator {
                 }
             }
 
-            for (TableInfo bro : table.getYoungers()) {
+            for (TableInfo bro : table.getBrothers()) {
                 if (StringUtil.isNullOrBlank(deleteF) || (!bro.getColumns().containsKey(deleteF.toLowerCase())
                         && !bro.getColumns().containsKey(deleteF.toUpperCase()))) {
                     String b = StringUtil.toCamelCase(bro.getName());
@@ -790,7 +790,7 @@ public final class BeanGenerator {
         }
 
         // 兄弟モデル
-        for (TableInfo brosInfo : table.getYoungers()) {
+        for (TableInfo brosInfo : table.getBrothers()) {
             String brosName = brosInfo.getName();
             String camel = StringUtil.toCamelCase(brosName);
             s.add("");
@@ -1002,7 +1002,7 @@ public final class BeanGenerator {
         }
 
         // 兄弟モデル
-        for (TableInfo younger : table.getYoungers()) {
+        for (TableInfo younger : table.getBrothers()) {
             String i = StringUtil.toCamelCase(younger.getName());
             s.add("");
             s.add("        // " + younger.getRemarks() + "の登録");
@@ -1170,7 +1170,7 @@ public final class BeanGenerator {
             }
         }
 
-        for (TableInfo younger : table.getYoungers()) {
+        for (TableInfo younger : table.getBrothers()) {
 
             String ent = StringUtil.toPascalCase(younger.getName());
             String ins = StringUtil.toCamelCase(younger.getName());

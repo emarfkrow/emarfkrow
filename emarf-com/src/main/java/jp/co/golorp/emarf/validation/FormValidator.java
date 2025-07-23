@@ -211,20 +211,17 @@ public final class FormValidator {
             if (!methodName.startsWith("set")) {
                 continue;
             }
-
             String fieldName = null;
             Object value = null;
             Class<?>[] parameterTypes = method.getParameterTypes();
             Class<?>[] interfaces = parameterTypes[0].getInterfaces();
-            if (!isGrid && !isNested && interfaces.length > 0
-                    && (interfaces[0] == IEntity.class || interfaces[0] == IForm.class)) {
-
-                //Gridフォームなく、ネスト済でなく、EntityインタフェースかFormインタフェースを持つ場合はネスト
+            if (!isGrid && !isNested
+                    && (interfaces.length > 0 && (interfaces[0] == IEntity.class || interfaces[0] == IForm.class))) {
+                //Gridフォームでもネスト済でもないなら、EntityかFormの場合（兄弟モデルの場合）はネスト
                 String nestName = parameterTypes[0].getName();
-                value = toBean(nestName, postJson, false, true);
-
+                Object bro = toBean(nestName, postJson, false, true);
+                value = bro;
             } else {
-
                 // fieldName（フィールド名か、兄弟モデルか、グリッドID）
                 fieldName = StringUtil.toCamelCase(methodName.replaceFirst("^set", ""));
                 // 送信値をfieldNameで取得してみる
@@ -280,12 +277,15 @@ public final class FormValidator {
             }
             if (value != null) {
                 // 送信値がある場合
+
                 if (value instanceof List) {
                     // 送信値がListの場合
+
                     if (isNested) {
                         // 兄弟モデルには子モデルを付けない
                         continue;
                     }
+
                     List<?> list = (List<?>) value;
                     if (list.size() > 0 && list.get(0) instanceof Map) {
                         // 送信値の一つ目がMapの場合（何らかのクラスであるという事）

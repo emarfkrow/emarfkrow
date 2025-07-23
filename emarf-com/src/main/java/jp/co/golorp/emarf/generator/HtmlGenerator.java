@@ -50,6 +50,9 @@ public final class HtmlGenerator {
     /** グリッド列幅ピクセル乗数 */
     private static final int COLUMN_WIDTH_PX_MULTIPLIER = 9;
 
+    /** 弟を設定しないテーブル名 */
+    private static String youngestRe;
+
     /** 参照列名ペア */
     private static Set<String[]> referPairs = new LinkedHashSet<String[]>();
 
@@ -131,6 +134,8 @@ public final class HtmlGenerator {
      * @param tables テーブル情報のリスト
      */
     static void generate(final String projectDir, final List<TableInfo> tables) {
+
+        youngestRe = bundle.getString("relation.youngest.re");
 
         String[] pairs = bundle.getString("relation.refer.pairs").split(",");
         for (String pair : pairs) {
@@ -591,12 +596,16 @@ public final class HtmlGenerator {
         s.add("        <legend th:text=\"#{" + e + ".legend}\">legend</legend>");
         htmlFields(table, s, true, false, false);
         s.add("      </fieldset>");
-        if (table.getYoungers() != null) { // 兄弟モデル
-            for (TableInfo younger : table.getYoungers()) {
-                String y = StringUtil.toPascalCase(younger.getName());
-                s.add("      <fieldset>");
-                s.add("        <legend th:text=\"#{" + y + ".legend}\">legend</legend>");
-                htmlFields(younger, s, true, true, false);
+        if (table.getBrothers() != null) { // 兄弟モデル
+            for (TableInfo bro : table.getBrothers()) {
+                String b = StringUtil.toPascalCase(bro.getName());
+                String className = "";
+                if (bro.getName().matches(youngestRe)) {
+                    className = " class=\"youngest\"";
+                }
+                s.add("      <fieldset" + className + ">");
+                s.add("        <legend th:text=\"#{" + b + ".legend}\">legend</legend>");
+                htmlFields(bro, s, true, true, false);
                 s.add("      </fieldset>");
             }
         }
@@ -724,7 +733,7 @@ public final class HtmlGenerator {
             s.add(entity + "Grid." + property + " " + column.getRemarks());
 
         }
-        for (TableInfo bros : table.getYoungers()) {
+        for (TableInfo bros : table.getBrothers()) {
             String e = StringUtil.toPascalCase(bros.getName());
             s.add("");
             s.add(e + ".legend   " + bros.getRemarks());
@@ -911,7 +920,7 @@ public final class HtmlGenerator {
         }
 
         //兄弟モデルの参照モデル
-        for (TableInfo bro : table.getYoungers()) {
+        for (TableInfo bro : table.getBrothers()) {
 
             for (ColumnInfo column : bro.getColumns().values()) {
 

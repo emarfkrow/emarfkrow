@@ -182,7 +182,7 @@ public final class FormGenerator {
                 s.add("    }");
             }
             // 兄弟モデル
-            for (TableInfo brosInfo : table.getYoungers()) {
+            for (TableInfo brosInfo : table.getBrothers()) {
                 String brosName = brosInfo.getName();
                 String camel = StringUtil.toCamelCase(brosName);
                 String pascal = StringUtil.toPascalCase(brosName);
