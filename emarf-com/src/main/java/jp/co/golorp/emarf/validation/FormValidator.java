@@ -223,8 +223,8 @@ public final class FormValidator {
             } else {
                 // fieldName（フィールド名か、兄弟モデルか、グリッドID）
                 fieldName = StringUtil.toCamelCase(methodName.replaceFirst("^set", ""));
-                // 送信値をfieldNameで取得してみる
-                value = postJson.get(fieldName);
+                //                // 送信値をfieldNameで取得してみる
+                //                value = postJson.get(fieldName); 他モデルと誤爆するのは避ける
                 // entityName付きでも取得してみる
                 if (value == null) {
                     String entityName = clazz.getSimpleName().replaceAll("RegistForm$", "");
@@ -258,27 +258,27 @@ public final class FormValidator {
                     value = postJson.get(StringUtil.toPascalCase(fieldName).replaceAll("s$", "Grid"));
                 }
                 // スネークでも取得してみる（グリッド行用）
-                if (value == null) {
+                if (!isNested && value == null) {
                     value = postJson.get(StringUtil.toSnakeCase(fieldName));
                 }
                 // 数字の前の「_」を消して、スネークでも取得してみる（グリッド行用）
-                if (value == null) {
+                if (!isNested && value == null) {
                     value = postJson.get(StringUtil.toSnakeCase(fieldName).replaceAll("\\_([0-9]+)", "$1"));
                 }
                 // アッパーでも取得してみる（グリッド行用）
-                if (value == null) {
+                if (!isNested && value == null) {
                     value = postJson.get(StringUtil.toUpperCase(fieldName));
                 }
                 // 数字の前の「_」を消して、アッパーでも取得してみる（グリッド行用）
-                if (value == null) {
+                if (!isNested && value == null) {
                     value = postJson.get(StringUtil.toUpperCase(fieldName).replaceAll("\\_([0-9]+)", "$1"));
                 }
                 // ケバブでも取得してみる（グリッド行用）
-                if (value == null) {
+                if (!isNested && value == null) {
                     value = postJson.get(StringUtil.toKebabCase(fieldName));
                 }
                 // アッパーケバブでも取得してみる（グリッド行用）
-                if (value == null) {
+                if (!isNested && value == null) {
                     value = postJson.get(StringUtil.toUpperKebabCase(fieldName));
                 }
             }
@@ -352,8 +352,11 @@ public final class FormValidator {
             boolean isPrimaryKeys = false;
             Annotation[] annotations = field.getAnnotations();
             for (Annotation annotation : annotations) {
-                if (annotation.annotationType() == PrimaryKeys.class) {
+                if (annotation.annotationType() == PrimaryKeys.class
+                        || annotation.annotationType() == GridViewRowId.class
+                        || annotation.annotationType() == ReferMei.class) {
                     isPrimaryKeys = true;
+                    break;
                 }
             }
             if (!isPrimaryKeys) {

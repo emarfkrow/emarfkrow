@@ -354,6 +354,7 @@ public final class BeanGenerator {
         if (table.getColumns().get("ID") == null) {
             s.add("");
             s.add("    /** SlickGridのDataView用ID */");
+            s.add("    @jp.co.golorp.emarf.validation.GridViewRowId");
             s.add("    private Integer id;");
             s.add("");
             s.add("    /** @return id */");
@@ -511,6 +512,7 @@ public final class BeanGenerator {
             a = a.replaceAll("#", "_");
             s.add("");
             s.add("    /** " + columnMei + "参照 */");
+            s.add("    @jp.co.golorp.emarf.validation.ReferMei");
             s.add("    private String " + p + ";");
             s.add("");
             s.add("    /** @return " + columnMei + "参照 */");

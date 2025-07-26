@@ -839,10 +839,11 @@ let Base = {
      * 読み取り専用
      */
     readonly: function(item) {
-
         let $readonlys = $(item);
-        $readonlys.attr('readonly', true).attr('tabindex', '-1').addClass('readonly');
-
+        $readonlys.attr('readonly', true).addClass('readonly');
+        if (item.tagName != 'A') {
+            $readonlys.attr('tabindex', '-1');
+        }
         for (let i = 0; i < $readonlys.length; i++) {
             let $readonly = $($readonlys[i]);
             if ($readonly.prop('type') == 'checkbox' || $readonly.prop('type') == 'radio') {
@@ -860,7 +861,10 @@ let Base = {
      */
     writable: function(item) {
         let $readonlys = $(item);
-        $readonlys.removeAttr('readonly').removeAttr('tabindex').removeClass('readonly');
+        $readonlys.removeAttr('readonly').removeClass('readonly');
+        if (item.tagName != 'A') {
+            $readonlys.removeAttr('tabindex');
+        }
         for (let i = 0; i < $readonlys.length; i++) {
             let $readonly = $($readonlys[i]);
             if ($readonly.prop('type') == 'checkbox' || $readonly.prop('type') == 'radio') {
