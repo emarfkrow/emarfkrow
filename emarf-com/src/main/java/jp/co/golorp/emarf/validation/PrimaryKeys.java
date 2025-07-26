@@ -11,6 +11,6 @@ import java.lang.annotation.Target;
  * @author golorp
  */
 @Retention(RetentionPolicy.RUNTIME) // 実行時に利用可能
-@Target({ ElementType.FIELD }) // 適用対象
+@Target({ ElementType.FIELD, ElementType.METHOD }) // 適用対象
 public @interface PrimaryKeys {
 }

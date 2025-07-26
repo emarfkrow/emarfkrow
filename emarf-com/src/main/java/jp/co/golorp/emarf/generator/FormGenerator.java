@@ -134,13 +134,7 @@ public final class FormGenerator {
             if (table.getChilds().size() > 0) {
                 s.add("import java.util.List;");
             }
-            s.add("import java.util.Map;");
-            s.add("");
-            s.add("import org.slf4j.Logger;");
-            s.add("import org.slf4j.LoggerFactory;");
-            s.add("");
-            s.add("import jp.co.golorp.emarf.process.BaseProcess;");
-            s.add("import jp.co.golorp.emarf.validation.IForm;");
+            addImports(s);
             s.add("");
             s.add("/**");
             s.add(" * " + table.getRemarks() + "登録フォーム");
@@ -154,10 +148,10 @@ public final class FormGenerator {
             for (ColumnInfo column : table.getColumns().values()) {
                 // レコードメタデータならスキップ
                 boolean isInsertDt = column.getName().matches("(?i)^" + insertDt + "$");
-                boolean isUpdateDt = column.getName().matches("(?i)^" + updateDt + "$");
+                // boolean isUpdateDt = column.getName().matches("(?i)^" + updateDt + "$"); 楽観ロック用に必要
                 boolean isInsertBy = column.getName().matches("(?i)^" + insertBy + "$");
                 boolean isUpdateBy = column.getName().matches("(?i)^" + updateBy + "$");
-                if (isInsertDt || isInsertBy || isUpdateDt || isUpdateBy) {
+                if (isInsertDt || isInsertBy || /*isUpdateDt ||*/ isUpdateBy) {
                     continue;
                 }
                 String prop = StringUtil.toCamelCase(column.getName());
@@ -170,6 +164,9 @@ public final class FormGenerator {
                 s.add("    /**");
                 s.add("     * @return " + column.getRemarks());
                 s.add("     */");
+                if (column.isPk()) {
+                    s.add("    @jp.co.golorp.emarf.validation.PrimaryKeys");
+                }
                 s.add("    public String get" + acce + "() {");
                 s.add("        return " + prop + ";");
                 s.add("    }");
@@ -177,6 +174,9 @@ public final class FormGenerator {
                 s.add("    /**");
                 s.add("     * @param p " + column.getRemarks());
                 s.add("     */");
+                if (column.isPk()) {
+                    s.add("    @jp.co.golorp.emarf.validation.PrimaryKeys");
+                }
                 s.add("    public void set" + acce + "(final String p) {");
                 s.add("        this." + prop + " = p;");
                 s.add("    }");
@@ -267,6 +267,19 @@ public final class FormGenerator {
                 BeanGenerator.javaCompile(e.getKey(), e.getValue());
             }
         }
+    }
+
+    /**
+     * @param s
+     */
+    public static void addImports(final List<String> s) {
+        s.add("import java.util.Map;");
+        s.add("");
+        s.add("import org.slf4j.Logger;");
+        s.add("import org.slf4j.LoggerFactory;");
+        s.add("");
+        s.add("import jp.co.golorp.emarf.process.BaseProcess;");
+        s.add("import jp.co.golorp.emarf.validation.IForm;");
     }
 
     /**

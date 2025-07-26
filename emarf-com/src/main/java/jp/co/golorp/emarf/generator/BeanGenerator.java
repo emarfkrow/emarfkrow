@@ -250,6 +250,9 @@ public final class BeanGenerator {
                 } else if (StringUtil.endsWith(inputDateTimeSuffixs, n)) {
                     addAnnotationLocalDateTime(s);
                 }
+                if (column.isPk()) {
+                    s.add("    @jp.co.golorp.emarf.validation.PrimaryKeys");
+                }
                 if (StringUtil.endsWith(inputFlagSuffixs, n)) {
                     // フラグを外した際、何も送信されず更新もかからないため、フラグ項目には初期値を設定しておく
                     if (t.equals("java.math.BigDecimal")) {

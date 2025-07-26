@@ -191,8 +191,7 @@ public final class FormValidator {
      */
     private static <T> T toBean(final String className, final Map<String, Object> postJson, final boolean isGrid,
             final boolean isNested) {
-        // 変換後のフォームクラスインスタンスを取得
-        Class<?> clazz = forNameIf(className);
+        Class<?> clazz = forNameIf(className); // 変換後のフォームクラスインスタンスを取得
         if (clazz == null) {
             return null;
         }
@@ -203,8 +202,7 @@ public final class FormValidator {
             throw new SysError(e);
         }
         String reason = bundle.getString("column.history.reason");
-        // フォームクラスインスタンスのセッターでループ
-        Method[] methods = clazz.getMethods();
+        Method[] methods = clazz.getMethods(); // フォームクラスインスタンスのセッターでループ
         for (Method method : methods) {
             String methodName = method.getName();
             if (!methodName.startsWith("set")) {
@@ -234,12 +232,20 @@ public final class FormValidator {
                 }
                 // 他のエンティティで同名のfieldNameで取得してみる（兄弟モデルの主キー用）
                 if (value == null) {
-                    for (Entry<String, Object> e : postJson.entrySet()) {
-                        String k = e.getKey();
-                        Object v = e.getValue();
-                        if (k.endsWith("." + fieldName)) {
-                            value = v;
-                            break;
+                    Annotation[] annotations = method.getAnnotations();
+                    for (Annotation annotation : annotations) {
+                        if (annotation.annotationType() == PrimaryKeys.class) {
+                            for (Entry<String, Object> e : postJson.entrySet()) {
+                                String k = e.getKey();
+                                Object v = e.getValue();
+                                if (k.endsWith("." + fieldName)) {
+                                    value = v;
+                                    break;
+                                }
+                            }
+                            if (value != null) {
+                                break;
+                            }
                         }
                     }
                 }
@@ -278,23 +284,18 @@ public final class FormValidator {
             }
             if (value != null) {
                 // 送信値がある場合
-
                 if (value instanceof List) {
                     // 送信値がListの場合
-
                     if (isNested) {
                         // 兄弟モデルには子モデルを付けない
                         continue;
                     }
-
                     List<?> list = (List<?>) value;
                     if (list.size() > 0 && list.get(0) instanceof Map) {
                         // 送信値の一つ目がMapの場合（何らかのクラスであるという事）
-
                         String packageName = clazz.getPackage().getName();
                         String gridId = StringUtil.toPascalCase(fieldName);
                         String gridClassName = packageName + "." + gridId;
-
                         List<T> formList = new ArrayList<T>();
                         @SuppressWarnings("unchecked")
                         List<Map<String, Object>> gridData = (List<Map<String, Object>>) list;
