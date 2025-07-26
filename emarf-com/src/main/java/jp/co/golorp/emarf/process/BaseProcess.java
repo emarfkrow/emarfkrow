@@ -75,7 +75,7 @@ public class BaseProcess {
     public void masterCheck(final Map<String, String> errors, final String sqlName, final String itemName,
             final String itemValue, final String itemMei) {
 
-        if (!StringUtil.isNullOrBlank(itemValue)) {
+        if (!StringUtil.isNullOrWhiteSpace(itemValue)) {
 
             String namedSql = this.loadSqlFile(sqlName);
 
@@ -97,7 +97,7 @@ public class BaseProcess {
      */
     protected void sendErrorMail(final Throwable e) {
 
-        if (!StringUtil.isNullOrBlank(errorMailToCsv)) {
+        if (!StringUtil.isNullOrWhiteSpace(errorMailToCsv)) {
 
             MailInfo mi = new MailInfo();
 

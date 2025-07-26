@@ -84,7 +84,7 @@ public final class DetailActionGenerator {
         javaActionDetailRegist(tables);
         javaActionDetailGet(tables);
         javaActionDetailDelete(tables);
-        if (!StringUtil.isNullOrBlank(status)) {
+        if (!StringUtil.isNullOrWhiteSpace(status)) {
             javaActionDetailPermit(tables);
             javaActionDetailForbid(tables);
         }
@@ -144,7 +144,7 @@ public final class DetailActionGenerator {
             s.add("        boolean isNew = false;");
             for (String primaryKey : table.getPrimaryKeys()) {
                 String pascal = StringUtil.toPascalCase(primaryKey);
-                s.add("        if (jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(e.get" + pascal + "())) {");
+                s.add("        if (jp.co.golorp.emarf.lang.StringUtil.isNullOrWhiteSpace(e.get" + pascal + "())) {");
                 s.add("            isNew = true;");
                 s.add("        }");
             }
@@ -152,11 +152,11 @@ public final class DetailActionGenerator {
                     || table.getColumns().containsKey(updateDt.toUpperCase())) {
                 String pascal = StringUtil.toPascalCase(updateDt);
                 s.add("        // 楽観ロック値がなくてもINSERT");
-                s.add("        if (jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(e.get" + pascal + "())) {");
+                s.add("        if (jp.co.golorp.emarf.lang.StringUtil.isNullOrWhiteSpace(e.get" + pascal + "())) {");
                 s.add("            isNew = true;");
                 s.add("        }");
             }
-            if (!table.isView() && !StringUtil.isNullOrBlank(status)
+            if (!table.isView() && !StringUtil.isNullOrWhiteSpace(status)
                     && (table.getColumns().containsKey(status.toLowerCase())
                             || table.getColumns().containsKey(status.toUpperCase()))) {
                 s.add("");
@@ -178,11 +178,11 @@ public final class DetailActionGenerator {
                     s.add("");
                     s.add("            //集約先に該当する場合は、集約元に主キーを反映");
                     s.add("            String summaryKey = postJson.get(\"" + e + "." + prop + "\").toString();");
-                    s.add("            if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(summaryKey)) {");
+                    s.add("            if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrWhiteSpace(summaryKey)) {");
                     s.add("                String[] summaryKeys = summaryKey.trim().split(\",\");");
                     s.add("                for (String pk : summaryKeys) {");
                     s.add("                    " + pkE + "." + e + " " + i + " = " + pkE + "." + e + ".get(pk);");
-                    if (!StringUtil.isNullOrBlank(status) && (summaryOf.getColumns().containsKey(status.toLowerCase())
+                    if (!StringUtil.isNullOrWhiteSpace(status) && (summaryOf.getColumns().containsKey(status.toLowerCase())
                             || summaryOf.getColumns().containsKey(status.toUpperCase()))) {
                         String acc = StringUtil.toPascalCase(status);
                         s.add("                    //承認済みでなければエラー");
@@ -193,7 +193,7 @@ public final class DetailActionGenerator {
                     for (String fk : table.getPrimaryKeys()) {
                         String acc = StringUtil.toPascalCase(fk);
                         s.add("                    //集約済みならエラー");
-                        s.add("                    if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(" + i + ".get"
+                        s.add("                    if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrWhiteSpace(" + i + ".get"
                                 + acc + "())) {");
                         s.add("                        throw new OptLockError(\"error.already.summary\");");
                         s.add("                    }");
@@ -401,7 +401,7 @@ public final class DetailActionGenerator {
             }
 
             // 論理削除テーブルならスキップ（削除フラグ指定があり、テーブルに削除フラグがある場合）
-            if (!StringUtil.isNullOrBlank(deleteF) && (table.getColumns().containsKey(deleteF.toLowerCase())
+            if (!StringUtil.isNullOrWhiteSpace(deleteF) && (table.getColumns().containsKey(deleteF.toLowerCase())
                     || table.getColumns().containsKey(deleteF.toUpperCase()))) {
                 continue;
             }

@@ -267,7 +267,7 @@ public final class BeanGenerator {
                 s.add("    @com.fasterxml.jackson.annotation.JsonProperty(value = \"" + n + "\", index = " + ++i + ")");
                 s.add("    public " + t + " get" + a + "() {");
                 if (t.equals("String") && StringUtil.endsWith(inputYMSuffixs, n)) {
-                    s.add("        if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(this." + p + ")) {");
+                    s.add("        if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrWhiteSpace(this." + p + ")) {");
                     s.add("            return this." + p + ".substring(0, 4) + \"-\" + this." + p + ".substring(4);");
                     s.add("        }");
                 }
@@ -285,27 +285,27 @@ public final class BeanGenerator {
                     s.add("            java.util.Date d = new java.util.Date(Long.valueOf(o.toString()));");
                     s.add("            this." + p
                             + " = java.time.LocalDateTime.ofInstant(d.toInstant(), java.time.ZoneId.systemDefault());");
-                    s.add("        } else if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {");
+                    s.add("        } else if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrWhiteSpace(o)) {");
                     s.add("            this." + p + " = " + t
                             + ".parse(o.toString().replace(\" \", \"T\").replace(\"/\", \"-\"));");
                 } else if (t.equals("java.time.LocalDate")) {
-                    s.add("        if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {");
+                    s.add("        if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrWhiteSpace(o)) {");
                     s.add("            this." + p + " = " + t + ".parse(o.toString().substring(0, 10));");
                 } else if (t.equals("java.time.LocalTime")) {
-                    s.add("        if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {");
+                    s.add("        if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrWhiteSpace(o)) {");
                     s.add("            String text = o.toString().replaceFirst(\"^\\\\d+[\\\\/|\\\\-]\\\\d+[\\\\/|\\\\-]\\\\d+ \", \"\");");
                     s.add("            this." + p + " = " + t + ".parse(text);");
                 } else if (t.equals("java.math.BigDecimal")) {
-                    s.add("        if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {");
+                    s.add("        if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrWhiteSpace(o)) {");
                     s.add("            this." + p + " = new java.math.BigDecimal(o.toString());");
                 } else if (StringUtil.endsWith(inputYMSuffixs, n)) {
-                    s.add("        if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {");
+                    s.add("        if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrWhiteSpace(o)) {");
                     s.add("            this." + p + " = " + t + ".valueOf(o.toString().replace(\"-\", \"\"));");
                 } else if (t.equals("String")) {
                     s.add("        if (o != null) {");
                     s.add("            this." + p + " = o.toString();");
                 } else {
-                    s.add("        if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {");
+                    s.add("        if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrWhiteSpace(o)) {");
                     s.add("            this." + p + " = " + t + ".valueOf(o.toString());");
                 }
                 s.add("        } else {");
@@ -317,7 +317,7 @@ public final class BeanGenerator {
                     i = addSanshoMei(s, table, column, i);
                 }
             }
-            if (table.getHistory() != null && !StringUtil.isNullOrBlank(reason)) {
+            if (table.getHistory() != null && !StringUtil.isNullOrWhiteSpace(reason)) {
                 i = addHistoryReason(s, i);
             }
             javaEntityCRUD(table, s);
@@ -361,7 +361,7 @@ public final class BeanGenerator {
             s.add("");
             s.add("    /** @param o id */");
             s.add("    public final void setId(final Object o) {");
-            s.add("        if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(o)) {");
+            s.add("        if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrWhiteSpace(o)) {");
             s.add("            this.id = Integer.valueOf(o.toString());");
             s.add("        } else {");
             s.add("            this.id = null;");
@@ -651,7 +651,7 @@ public final class BeanGenerator {
             s.add("    public int delete() {");
 
             for (TableInfo child : table.getChilds()) {
-                if (StringUtil.isNullOrBlank(deleteF) || (!child.getColumns().containsKey(deleteF.toLowerCase())
+                if (StringUtil.isNullOrWhiteSpace(deleteF) || (!child.getColumns().containsKey(deleteF.toLowerCase())
                         && !child.getColumns().containsKey(deleteF.toUpperCase()))) {
                     String pascal = StringUtil.toPascalCase(child.getName());
                     String camel = StringUtil.toCamelCase(child.getName());
@@ -666,7 +666,7 @@ public final class BeanGenerator {
             }
 
             for (TableInfo bro : table.getBrothers()) {
-                if (StringUtil.isNullOrBlank(deleteF) || (!bro.getColumns().containsKey(deleteF.toLowerCase())
+                if (StringUtil.isNullOrWhiteSpace(deleteF) || (!bro.getColumns().containsKey(deleteF.toLowerCase())
                         && !bro.getColumns().containsKey(deleteF.toUpperCase()))) {
                     String b = StringUtil.toCamelCase(bro.getName());
                     s.add("");
@@ -817,7 +817,7 @@ public final class BeanGenerator {
                 String pascalColumn = StringUtil.toPascalCase(columnName);
                 s.add("        " + camel + ".set" + pascalColumn + "(this." + camelColumn + ");");
             }
-            if (!StringUtil.isNullOrBlank(reason)) {
+            if (!StringUtil.isNullOrWhiteSpace(reason)) {
                 String p = StringUtil.toCamelCase(reason);
                 String a = StringUtil.toPascalCase(reason);
                 s.add("        " + camel + ".set" + a + "(this." + p + ");");
@@ -881,13 +881,13 @@ public final class BeanGenerator {
             rightHand = assist.toTimestampSQL(rightHand);
 
         } else if (!column.isPk() && column.getTypeName().equals("CHAR")
-                && !StringUtil.isNullOrBlank(charNotNullRe)
+                && !StringUtil.isNullOrWhiteSpace(charNotNullRe)
                 && !column.getName().matches(charNotNullRe)) {
             //主キー以外のCHAR列で、必須CHAR指定に合致しない場合、NULLならスペースを補填する
             rightHand = "NVL (" + rightHand + ", ' ')";
 
         } else if (!column.isPk() && column.getTypeName().equals("NUMBER")
-                && !StringUtil.isNullOrBlank(numberNullableRe)
+                && !StringUtil.isNullOrWhiteSpace(numberNullableRe)
                 && column.getName().matches(numberNullableRe)) {
             //主キー以外のNUMBER列で、非必須INT指定に合致する場合、NULLなら「0」を補填する
             rightHand = "NVL (" + rightHand + ", 0)";
@@ -1032,7 +1032,7 @@ public final class BeanGenerator {
                 String columnType = StringUtil.toPascalCase(columnName);
                 s.add("        " + i + ".set" + columnType + "(this." + column + ");");
             }
-            if (!StringUtil.isNullOrBlank(reason)) {
+            if (!StringUtil.isNullOrWhiteSpace(reason)) {
                 String p = StringUtil.toCamelCase(reason);
                 String a = StringUtil.toPascalCase(reason);
                 s.add("        " + i + ".set" + a + "(this." + p + ");");
@@ -1100,11 +1100,14 @@ public final class BeanGenerator {
         }
 
         // 楽観ロック
-        ColumnInfo columnInfo = tableInfo.getColumns().get(updateDt);
-        if (columnInfo != null) {
+        ColumnInfo column = tableInfo.getColumns().get(updateDt.toLowerCase());
+        if (column == null) {
+            column = tableInfo.getColumns().get(updateDt.toUpperCase());
+        }
+        if (column != null) {
 
             String rightHand = "'\" + this." + StringUtil.toCamelCase(updateDt) + " + \"'";
-            if (columnInfo.getDataType().equals("java.time.LocalDateTime")) {
+            if (column.getDataType().equals("java.time.LocalDateTime")) {
                 rightHand = assist.toTimestampSQL(rightHand);
             }
 
@@ -1139,7 +1142,7 @@ public final class BeanGenerator {
         s.add("        map.put(\"" + StringUtil.toSnakeCase(insertDt) + "\", now);");
         s.add("        map.put(\"" + StringUtil.toSnakeCase(insertBy) + "\", execId);");
         String now = "now";
-        if (!StringUtil.isNullOrBlank(updateDtFormat)) {
+        if (!StringUtil.isNullOrWhiteSpace(updateDtFormat)) {
             now = "jp.co.golorp.emarf.time.DateTimeUtil.format(\"" + updateDtFormat + "\", now)";
         }
         s.add("        map.put(\"" + StringUtil.toSnakeCase(updateDt) + "\", " + now + ");");
@@ -1440,7 +1443,7 @@ public final class BeanGenerator {
 
         for (TableInfo child : childs) {
 
-            if (!StringUtil.isNullOrBlank(deleteF) && (child.getColumns().containsKey(deleteF.toLowerCase())
+            if (!StringUtil.isNullOrWhiteSpace(deleteF) && (child.getColumns().containsKey(deleteF.toLowerCase())
                     || child.getColumns().containsKey(deleteF.toUpperCase()))) {
                 continue;
             }

@@ -469,7 +469,7 @@ public final class DataSources {
             }
 
             //対象外のテーブル名ならスキップ
-            if (!StringUtil.isNullOrBlank(ignoreRe) && tableName.matches(ignoreRe)) {
+            if (!StringUtil.isNullOrWhiteSpace(ignoreRe) && tableName.matches(ignoreRe)) {
                 continue;
             }
 
@@ -765,7 +765,7 @@ public final class DataSources {
 
                 // 変更理由列は比較対象から除外
                 List<String> hisNonPrimaryKeys = new ArrayList<String>(his.getNonPrimaryKeys());
-                if (!StringUtil.isNullOrBlank(reason) && (hisNonPrimaryKeys.contains(reason.toLowerCase())
+                if (!StringUtil.isNullOrWhiteSpace(reason) && (hisNonPrimaryKeys.contains(reason.toLowerCase())
                         || hisNonPrimaryKeys.contains(reason.toUpperCase()))) {
                     hisNonPrimaryKeys.remove(reason.toLowerCase());
                     hisNonPrimaryKeys.remove(reason.toUpperCase());

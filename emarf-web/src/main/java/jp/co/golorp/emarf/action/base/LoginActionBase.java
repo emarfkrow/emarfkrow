@@ -40,7 +40,7 @@ public abstract class LoginActionBase extends BaseAction {
         }
 
         //ハッシュ値を指定済みならハッシュ
-        if (!StringUtil.isNullOrBlank(HASH)) {
+        if (!StringUtil.isNullOrWhiteSpace(HASH)) {
             passwd = StringUtil.hash(passwd);
         }
 

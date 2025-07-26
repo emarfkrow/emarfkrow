@@ -135,7 +135,7 @@ public final class Queries {
             for (Entry<String, Object> entry : params.entrySet()) {
                 String k = entry.getKey();
                 Object v = entry.getValue();
-                if (!StringUtil.isNullOrBlank(v)) {
+                if (!StringUtil.isNullOrWhiteSpace(v)) {
                     // 参照系のSQLは「モデル名.フィールド名」をフィールド名だけにする
                     k = k.replaceAll("^.+\\.", "");
                     newParams.put(k, v);

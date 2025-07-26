@@ -344,13 +344,13 @@ public final class HtmlGenerator {
         // 履歴モデルでないテーブルで、子モデルを持たない場合
         if (!table.isView() && !table.isHistory() && table.getChilds().size() == 0) {
             // 削除フラグ列名の指定がないか、テーブルに削除フラグ列がないなら、物理削除ボタンを表示
-            if (StringUtil.isNullOrBlank(deleteF) || (!table.getColumns().containsKey(deleteF.toLowerCase())
+            if (StringUtil.isNullOrWhiteSpace(deleteF) || (!table.getColumns().containsKey(deleteF.toLowerCase())
                     && !table.getColumns().containsKey(deleteF.toUpperCase()))) {
                 s.add("        <button type=\"submit\" id=\"Delete" + es + "\" data-action=\"" + es
                         + "Delete.ajax\" class=\"delete selectRows\" th:text=\"#{common.delete}\" tabindex=\"-1\">削除</button>");
             }
             //ステータス列名の指定があり、テーブルにステータス列があるなら、承認ボタン・否認ボタンを表示
-            if (!StringUtil.isNullOrBlank(status) && (table.getColumns().containsKey(status.toLowerCase())
+            if (!StringUtil.isNullOrWhiteSpace(status) && (table.getColumns().containsKey(status.toLowerCase())
                     || table.getColumns().containsKey(status.toUpperCase()))) {
                 s.add("        <button type=\"submit\" id=\"Permit" + es + "\" data-action=\"" + es
                         + "Permit.ajax\" class=\"permit selectRows\" th:text=\"#{common.permit}\" tabindex=\"-1\">承認</button>");
@@ -362,7 +362,7 @@ public final class HtmlGenerator {
         s.add("      <div class=\"submits\">");
         if (!table.isHistory() && (!table.isView() || table.isConvView()) && table.getChilds().size() == 0) {
             String onclick = "";
-            if (table.getHistory() != null && !StringUtil.isNullOrBlank(reason)) {
+            if (table.getHistory() != null && !StringUtil.isNullOrWhiteSpace(reason)) {
                 onclick = " onclick=\"if (!Base.historyReason(this)) { return false; }\"";
             }
             s.add("        <button id=\"Regist" + es
@@ -662,13 +662,13 @@ public final class HtmlGenerator {
         // 履歴モデルでもビューでもない場合
         if (!table.isHistory() && !table.isView()) {
             // 削除フラグ列名の指定がないか、テーブルに削除フラグ列がないなら、物理削除ボタンを表示
-            if (StringUtil.isNullOrBlank(deleteF) || (!table.getColumns().containsKey(deleteF.toLowerCase())
+            if (StringUtil.isNullOrWhiteSpace(deleteF) || (!table.getColumns().containsKey(deleteF.toLowerCase())
                     && !table.getColumns().containsKey(deleteF.toUpperCase()))) {
                 s.add("        <button id=\"Delete" + e + "\" type=\"submit\" class=\"delete\" data-action=\"" + e
                         + "Delete.ajax\" th:text=\"#{common.delete}\" tabindex=\"-1\">削除</button>");
             }
             //ステータス列名の指定があり、テーブルにステータス列があるなら、承認ボタン・否認ボタンを表示
-            if (!StringUtil.isNullOrBlank(status) && (table.getColumns().containsKey(status.toLowerCase())
+            if (!StringUtil.isNullOrWhiteSpace(status) && (table.getColumns().containsKey(status.toLowerCase())
                     || table.getColumns().containsKey(status.toUpperCase()))) {
                 s.add("        <button id=\"Permit" + e + "\" type=\"submit\" class=\"permit\" data-action=\""
                         + e + "Permit.ajax\" th:text=\"#{common.permit}\" tabindex=\"-1\">承認</button>");
@@ -676,7 +676,7 @@ public final class HtmlGenerator {
                         + e + "Forbid.ajax\" th:text=\"#{common.forbid}\" tabindex=\"-1\">否認</button>");
             }
             String onclick = "";
-            if (table.getHistory() != null && !StringUtil.isNullOrBlank(reason)) {
+            if (table.getHistory() != null && !StringUtil.isNullOrWhiteSpace(reason)) {
                 onclick = " onclick=\"if (!Base.historyReason(this)) { return false; }\"";
             }
             s.add("        <button id=\"Regist" + e
@@ -1083,7 +1083,7 @@ public final class HtmlGenerator {
                 css = "metaInfo";
             } else if (column.getNullable() == 0) {
                 if (!column.isPk() && column.getTypeName().equals("CHAR")
-                        && !StringUtil.isNullOrBlank(charNotNullRe) && !name.matches(charNotNullRe)) {
+                        && !StringUtil.isNullOrWhiteSpace(charNotNullRe) && !name.matches(charNotNullRe)) {
                     LOG.trace("skip NotBlank.");
                 } else {
                     css = "notblank";
@@ -1277,7 +1277,7 @@ public final class HtmlGenerator {
                 }
             }
             String referCss = addCssByRelation(isD, table, column);
-            if (!StringUtil.isNullOrBlank(referCss)) {
+            if (!StringUtil.isNullOrWhiteSpace(referCss)) {
                 referCss = " class=\"" + referCss + "\"";
             }
             String fieldId = entity + "." + property;
@@ -1348,7 +1348,7 @@ public final class HtmlGenerator {
                 } else if (StringUtil.endsWith(inputTimeSuffixs, colName)) {
                     inputCss += " time";
                 }
-                if (!StringUtil.isNullOrBlank(inputCss)) {
+                if (!StringUtil.isNullOrWhiteSpace(inputCss)) {
                     inputCss = " class=\"" + inputCss + "\"";
                 }
                 String format = "";
@@ -1379,7 +1379,7 @@ public final class HtmlGenerator {
      */
     private static String isNotBlank(final ColumnInfo column) {
         if (!column.isPk() && column.getTypeName().equals("CHAR")
-                && !StringUtil.isNullOrBlank(charNotNullRe) && !column.getName().matches(charNotNullRe)) {
+                && !StringUtil.isNullOrWhiteSpace(charNotNullRe) && !column.getName().matches(charNotNullRe)) {
             LOG.trace("skip NotBlank.");
         } else {
             return " notblank";
@@ -1516,7 +1516,7 @@ public final class HtmlGenerator {
             final ColumnInfo column, final String format, final TableInfo table, final String referCss) {
 
         String dataFormat = "";
-        if (!StringUtil.isNullOrBlank(format)) {
+        if (!StringUtil.isNullOrWhiteSpace(format)) {
             dataFormat = " data-format=\"" + format + "\"";
         }
 
@@ -1568,7 +1568,7 @@ public final class HtmlGenerator {
             final String format) {
 
         String dataFormat = "";
-        if (!StringUtil.isNullOrBlank(format)) {
+        if (!StringUtil.isNullOrWhiteSpace(format)) {
             dataFormat = " data-format=\"" + format + "\"";
         }
 
@@ -1605,7 +1605,7 @@ public final class HtmlGenerator {
             final ColumnInfo columnInfo, final String format) {
 
         String dataFormat = "";
-        if (!StringUtil.isNullOrBlank(format)) {
+        if (!StringUtil.isNullOrWhiteSpace(format)) {
             dataFormat = " data-format=\"" + format + "\"";
         }
 
@@ -1637,7 +1637,7 @@ public final class HtmlGenerator {
             final String css) {
 
         String cssClass = "";
-        if (!StringUtil.isNullOrBlank(css)) {
+        if (!StringUtil.isNullOrWhiteSpace(css)) {
             cssClass = " class=\"" + css + "\"";
         }
 
@@ -1657,7 +1657,7 @@ public final class HtmlGenerator {
             final String remarks, final String css) {
 
         String cssClass = "";
-        if (!StringUtil.isNullOrBlank(css)) {
+        if (!StringUtil.isNullOrWhiteSpace(css)) {
             cssClass = " class=\"" + css + "\"";
         }
 
@@ -1698,7 +1698,7 @@ public final class HtmlGenerator {
             final String cssClass) {
 
         String css = "";
-        if (!StringUtil.isNullOrBlank(cssClass)) {
+        if (!StringUtil.isNullOrWhiteSpace(cssClass)) {
             css = " class=\"" + cssClass + "\"";
         }
 

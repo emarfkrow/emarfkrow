@@ -80,7 +80,7 @@ public final class IndexActionGenerator {
 
         IndexActionGenerator.deleteAction(tableInfos);
         IndexActionGenerator.registAction(tableInfos);
-        if (!StringUtil.isNullOrBlank(status)) {
+        if (!StringUtil.isNullOrWhiteSpace(status)) {
             IndexActionGenerator.permitAction(tableInfos);
             IndexActionGenerator.forbidAction(tableInfos);
         }
@@ -105,7 +105,7 @@ public final class IndexActionGenerator {
             }
 
             //削除フラグがあればスキップ
-            if (!StringUtil.isNullOrBlank(deleteF) && (table.getColumns().containsKey(deleteF.toLowerCase())
+            if (!StringUtil.isNullOrWhiteSpace(deleteF) && (table.getColumns().containsKey(deleteF.toLowerCase())
                     || table.getColumns().containsKey(deleteF.toUpperCase()))) {
                 continue;
             }
@@ -154,7 +154,7 @@ public final class IndexActionGenerator {
             s.add("");
             s.add("                // 主キーが不足していたらエラー");
             for (String k : table.getPrimaryKeys()) {
-                s.add("                if (jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(row.get(\"" + k
+                s.add("                if (jp.co.golorp.emarf.lang.StringUtil.isNullOrWhiteSpace(row.get(\"" + k
                         + "\"))) {");
                 s.add("                    throw new OptLockError(\"error.cant.delete\");");
                 s.add("                }");
@@ -268,7 +268,7 @@ public final class IndexActionGenerator {
             s.add("                boolean isNew = false;");
             for (String primaryKey : table.getPrimaryKeys()) {
                 String acc = StringUtil.toPascalCase(primaryKey);
-                s.add("                if (jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(e.get" + acc + "())) {");
+                s.add("                if (jp.co.golorp.emarf.lang.StringUtil.isNullOrWhiteSpace(e.get" + acc + "())) {");
                 s.add("                    isNew = true;");
                 s.add("                }");
             }
@@ -276,11 +276,11 @@ public final class IndexActionGenerator {
                     || table.getColumns().containsKey(updateDt.toUpperCase())) {
                 String acc = StringUtil.toPascalCase(updateDt);
                 s.add("                // 楽観ロック値がなくてもINSERT");
-                s.add("                if (jp.co.golorp.emarf.lang.StringUtil.isNullOrBlank(e.get" + acc + "())) {");
+                s.add("                if (jp.co.golorp.emarf.lang.StringUtil.isNullOrWhiteSpace(e.get" + acc + "())) {");
                 s.add("                    isNew = true;");
                 s.add("                }");
             }
-            if (!table.isView() && !StringUtil.isNullOrBlank(status)
+            if (!table.isView() && !StringUtil.isNullOrWhiteSpace(status)
                     && (table.getColumns().containsKey(status.toLowerCase())
                             || table.getColumns().containsKey(status.toUpperCase()))) {
                 s.add("");

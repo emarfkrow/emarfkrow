@@ -197,7 +197,7 @@ public class LoginFilter implements Filter {
                 ses.setAttribute(LoginFilter.AUTHZ_INFO, map.get(LoginFilter.AUTHZ_INFO));
 
                 String orgRequestURI = StringUtil.sanitize(request.getParameter("requestURI"));
-                if (!StringUtil.isNullOrBlank(orgRequestURI)) {
+                if (!StringUtil.isNullOrWhiteSpace(orgRequestURI)) {
                     res.sendRedirect(orgRequestURI);
                 } else {
                     res.sendRedirect(contextPath);

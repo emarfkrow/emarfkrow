@@ -16,6 +16,8 @@ limitations under the License.
 
 package jp.co.golorp.emarf.validation;
 
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
@@ -189,7 +191,6 @@ public final class FormValidator {
      */
     private static <T> T toBean(final String className, final Map<String, Object> postJson, final boolean isGrid,
             final boolean isNested) {
-
         // 変換後のフォームクラスインスタンスを取得
         Class<?> clazz = forNameIf(className);
         if (clazz == null) {
@@ -201,9 +202,7 @@ public final class FormValidator {
         } catch (Exception e) {
             throw new SysError(e);
         }
-
         String reason = bundle.getString("column.history.reason");
-
         // フォームクラスインスタンスのセッターでループ
         Method[] methods = clazz.getMethods();
         for (Method method : methods) {
@@ -220,7 +219,9 @@ public final class FormValidator {
                 //Gridフォームでもネスト済でもないなら、EntityかFormの場合（兄弟モデルの場合）はネスト
                 String nestName = parameterTypes[0].getName();
                 Object bro = toBean(nestName, postJson, false, true);
-                value = bro;
+                if (isNullOrWhiteSpace(bro)) {
+                    value = bro;
+                }
             } else {
                 // fieldName（フィールド名か、兄弟モデルか、グリッドID）
                 fieldName = StringUtil.toCamelCase(methodName.replaceFirst("^set", ""));
@@ -301,9 +302,9 @@ public final class FormValidator {
                             if (row.isEmpty()) {
                                 formList.add(null);
                             } else {
-                                if (!StringUtil.isNullOrBlank(reason)) {
+                                if (!StringUtil.isNullOrWhiteSpace(reason)) {
                                     String reasonName = StringUtil.toCamelCase(reason);
-                                    if (!StringUtil.isNullOrBlank(postJson.get(reasonName))) {
+                                    if (!StringUtil.isNullOrWhiteSpace(postJson.get(reasonName))) {
                                         row.put(reason, postJson.get(reasonName));
                                     }
                                 }
@@ -337,6 +338,38 @@ public final class FormValidator {
         @SuppressWarnings("unchecked")
         T t = (T) o;
         return t;
+    }
+
+    /**
+     * @param bro
+     * @return boolean
+     */
+    private static boolean isNullOrWhiteSpace(final Object bro) {
+        boolean isNotNullOrWhitespace = false;
+        Field[] fields = bro.getClass().getDeclaredFields();
+        for (Field field : fields) {
+            boolean isPrimaryKeys = false;
+            Annotation[] annotations = field.getAnnotations();
+            for (Annotation annotation : annotations) {
+                if (annotation.annotationType() == PrimaryKeys.class) {
+                    isPrimaryKeys = true;
+                }
+            }
+            if (!isPrimaryKeys) {
+                Object v = null;
+                try {
+                    field.setAccessible(true);
+                    v = field.get(bro);
+                } catch (IllegalArgumentException | IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+                if (!StringUtil.isNullOrWhiteSpace(v) && v.getClass() != ch.qos.logback.classic.Logger.class) {
+                    isNotNullOrWhitespace = true;
+                    break;
+                }
+            }
+        }
+        return isNotNullOrWhitespace;
     }
 
     /**

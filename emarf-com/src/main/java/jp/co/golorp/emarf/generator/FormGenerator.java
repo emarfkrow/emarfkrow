@@ -309,13 +309,13 @@ public final class FormGenerator {
                 LOG.trace("skip NotBlank.");
 
             } else if (!column.isPk() && column.getTypeName().equals("CHAR")
-                    && !StringUtil.isNullOrBlank(charNotNullRe) && !colName.matches(charNotNullRe)) {
+                    && !StringUtil.isNullOrWhiteSpace(charNotNullRe) && !colName.matches(charNotNullRe)) {
 
                 // 主キー以外のCHAR列で、必須CHAR指定に合致しない場合、NULLならスペースを補填する
                 LOG.trace("skip NotBlank.");
 
             } else if (!column.isPk() && column.getTypeName().equals("NUMBER")
-                    && !StringUtil.isNullOrBlank(numberNullableRe) && colName.matches(numberNullableRe)) {
+                    && !StringUtil.isNullOrWhiteSpace(numberNullableRe) && colName.matches(numberNullableRe)) {
 
                 // 主キー以外のNUMBER列で、非必須INT指定に合致する場合、NULLなら「0」を補填する
                 LOG.trace("skip NotBlank.");
@@ -378,6 +378,10 @@ public final class FormGenerator {
                 // 上記以外の場合は最大桁チェック
                 s.add("    @jakarta.validation.constraints.Size(max = " + columnSize + ")");
             }
+        }
+
+        if (column.isPk()) {
+            s.add("    @jp.co.golorp.emarf.validation.PrimaryKeys");
         }
     }
 

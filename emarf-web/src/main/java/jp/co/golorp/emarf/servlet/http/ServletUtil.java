@@ -383,7 +383,7 @@ public final class ServletUtil {
                 String line = request.getReader().readLine();
                 if (line != null) {
                     String s = StringUtil.sanitize(line);
-                    if (!StringUtil.isNullOrBlank(s)) {
+                    if (!StringUtil.isNullOrWhiteSpace(s)) {
                         Map<String, Object> ajaxValues = mapper.readValue(s, new TypeReference<Map<String, Object>>() {
                         });
                         for (Map.Entry<String, Object> ajaxValue : ajaxValues.entrySet()) {

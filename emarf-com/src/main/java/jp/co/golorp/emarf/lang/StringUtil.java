@@ -182,7 +182,7 @@ public final class StringUtil {
      * @param o 検査対象
      * @return nullか空白ならtrue
      */
-    public static boolean isNullOrBlank(final Object o) {
+    public static boolean isNullOrWhiteSpace(final Object o) {
         return o == null || o.toString().trim().equals("");
     }
 
