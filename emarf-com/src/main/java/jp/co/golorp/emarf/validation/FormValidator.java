@@ -232,7 +232,8 @@ public final class FormValidator {
                 if (value == null) {
                     Annotation[] annotations = method.getAnnotations();
                     for (Annotation annotation : annotations) {
-                        if (annotation.annotationType() == PrimaryKeys.class) {
+                        if (annotation.annotationType() == PrimaryKeys.class
+                                || annotation.annotationType() == OptLock.class) {
                             for (Entry<String, Object> e : postJson.entrySet()) {
                                 String k = e.getKey();
                                 if (k.endsWith("." + fieldName) || k.equals(fieldName)) {

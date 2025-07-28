@@ -119,7 +119,6 @@ public final class FormGenerator {
      * @param tableInfos テーブル情報のリスト
      */
     private static void javaFormDetailRegist(final List<TableInfo> tableInfos) {
-        // 出力フォルダを再作成
         String packagePath = pkgForm.replace(".", File.separator);
         String packageDir = projectDir + File.separator + javaDir + File.separator + packagePath;
         Map<String, String> javaFilePaths = new LinkedHashMap<String, String>();
@@ -146,13 +145,12 @@ public final class FormGenerator {
             s.add("    /** logger */");
             s.add("    private static final Logger LOG = LoggerFactory.getLogger(" + entity + "RegistForm.class);");
             for (ColumnInfo column : table.getColumns().values()) {
-                // レコードメタデータならスキップ
                 boolean isInsertDt = column.getName().matches("(?i)^" + insertDt + "$");
                 // boolean isUpdateDt = column.getName().matches("(?i)^" + updateDt + "$"); 楽観ロック用に必要
                 boolean isInsertBy = column.getName().matches("(?i)^" + insertBy + "$");
                 boolean isUpdateBy = column.getName().matches("(?i)^" + updateBy + "$");
                 if (isInsertDt || isInsertBy || /*isUpdateDt ||*/ isUpdateBy) {
-                    continue;
+                    continue; // レコードメタデータならスキップ
                 }
                 String prop = StringUtil.toCamelCase(column.getName());
                 String acce = StringUtil.toPascalCase(column.getName());
@@ -166,6 +164,8 @@ public final class FormGenerator {
                 s.add("     */");
                 if (column.isPk()) {
                     s.add("    @jp.co.golorp.emarf.validation.PrimaryKeys");
+                } else if (column.getName().matches("(?i)^" + updateDt + "$")) {
+                    s.add("    @jp.co.golorp.emarf.validation.OptLock");
                 }
                 s.add("    public String get" + acce + "() {");
                 s.add("        return " + prop + ";");
@@ -176,13 +176,14 @@ public final class FormGenerator {
                 s.add("     */");
                 if (column.isPk()) {
                     s.add("    @jp.co.golorp.emarf.validation.PrimaryKeys");
+                } else if (column.getName().matches("(?i)^" + updateDt + "$")) {
+                    s.add("    @jp.co.golorp.emarf.validation.OptLock");
                 }
                 s.add("    public void set" + acce + "(final String p) {");
                 s.add("        this." + prop + " = p;");
                 s.add("    }");
             }
-            // 兄弟モデル
-            for (TableInfo brosInfo : table.getBrothers()) {
+            for (TableInfo brosInfo : table.getBrothers()) { // 兄弟モデル
                 String brosName = brosInfo.getName();
                 String camel = StringUtil.toCamelCase(brosName);
                 String pascal = StringUtil.toPascalCase(brosName);
@@ -205,8 +206,7 @@ public final class FormGenerator {
                 s.add("        this." + camel + "RegistForm = p;");
                 s.add("    }");
             }
-            // 子モデル
-            for (TableInfo childInfo : table.getChilds()) {
+            for (TableInfo childInfo : table.getChilds()) { // 子モデル
                 String childName = childInfo.getName();
                 String camel = StringUtil.toCamelCase(childName);
                 String pascal = StringUtil.toPascalCase(childName);
@@ -395,6 +395,8 @@ public final class FormGenerator {
 
         if (column.isPk()) {
             s.add("    @jp.co.golorp.emarf.validation.PrimaryKeys");
+        } else if (column.getName().matches("(?i)^" + updateDt + "$")) {
+            s.add("    @jp.co.golorp.emarf.validation.OptLock");
         }
     }
 

@@ -252,6 +252,8 @@ public final class BeanGenerator {
                 }
                 if (column.isPk()) {
                     s.add("    @jp.co.golorp.emarf.validation.PrimaryKeys");
+                } else if (column.getName().matches("(?i)^" + updateDt + "$")) {
+                    s.add("    @jp.co.golorp.emarf.validation.OptLock");
                 }
                 if (StringUtil.endsWith(inputFlagSuffixs, n)) {
                     // フラグを外した際、何も送信されず更新もかからないため、フラグ項目には初期値を設定しておく
@@ -268,6 +270,11 @@ public final class BeanGenerator {
                 s.add("");
                 s.add("    /** @return " + m + " */");
                 s.add("    @com.fasterxml.jackson.annotation.JsonProperty(value = \"" + n + "\", index = " + ++i + ")");
+                if (column.isPk()) {
+                    s.add("    @jp.co.golorp.emarf.validation.PrimaryKeys");
+                } else if (column.getName().matches("(?i)^" + updateDt + "$")) {
+                    s.add("    @jp.co.golorp.emarf.validation.OptLock");
+                }
                 s.add("    public " + t + " get" + a + "() {");
                 if (t.equals("String") && StringUtil.endsWith(inputYMSuffixs, n)) {
                     s.add("        if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrWhiteSpace(this." + p + ")) {");
@@ -278,6 +285,11 @@ public final class BeanGenerator {
                 s.add("    }");
                 s.add("");
                 s.add("    /** @param o " + m + " */");
+                if (column.isPk()) {
+                    s.add("    @jp.co.golorp.emarf.validation.PrimaryKeys");
+                } else if (column.getName().matches("(?i)^" + updateDt + "$")) {
+                    s.add("    @jp.co.golorp.emarf.validation.OptLock");
+                }
                 s.add("    public void set" + a + "(final Object o) {");
                 if (t.equals("java.time.LocalDateTime")) {
                     s.add("        if (o != null && o instanceof Long) {");
