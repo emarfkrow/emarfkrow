@@ -650,7 +650,7 @@ $(function() {
                             }
 
                             let dataView = g.getData();
-                            //                            if (dataItem.isNew) { 初期表示の１行目や選択サブで効かなくなる
+                            // if (dataItem.isNew) { 初期表示の１行目や選択サブで効かなくなる
                             if (!dataItem[columnRegistTs.toLowerCase()] && !dataItem[columnRegistTs.toUpperCase()]) {
                                 //未登録なら画面上で消去
                                 dataView.deleteItem(dataItem.id);
@@ -659,9 +659,11 @@ $(function() {
                                 let postJson = {};
                                 for (let i in g.getColumns()) {
                                     let column = g.getColumns()[i];
-                                    if (!column.cssClass || column.cssClass.indexOf('primaryKey') < 0) {
-                                        continue;
-                                    }
+                                    let colCss = column.cssClass;
+                                    // 削除フォームを登録フォーム化すると主キー以外の必須チェックに引っかかるためコメントアウト
+                                    // if (!colCss || (colCss.indexOf('primaryKey') < 0 && colCss.indexOf('optLock') < 0)) {
+                                    //     continue;
+                                    // }
                                     let v = dataItem[column.field];
                                     postJson[column.id] = v;
                                 }

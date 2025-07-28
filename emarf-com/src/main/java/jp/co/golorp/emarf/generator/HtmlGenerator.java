@@ -1058,7 +1058,6 @@ public final class HtmlGenerator {
         if (isInsTs /*|| isUpdateDt*/ || isInsBy || isUpdBy) {
             return null;
         }
-
         String css = "";
         if (!table.isView()) {
             if (column.isPk()) {
@@ -1081,6 +1080,9 @@ public final class HtmlGenerator {
                 css = "uniqueKey";
             } else if (isInsTs || isUpdTs || isInsBy || isUpdBy) {
                 css = "metaInfo";
+                if (isUpdTs) {
+                    css += " optLock";
+                }
             } else if (column.getNullable() == 0) {
                 if (!column.isPk() && column.getTypeName().equals("CHAR")
                         && !StringUtil.isNullOrWhiteSpace(charNotNullRe) && !name.matches(charNotNullRe)) {
@@ -1090,7 +1092,6 @@ public final class HtmlGenerator {
                 }
             }
         }
-
         String format = "null";
         if (column.getDataType().equals("java.time.LocalDate")) {
             format = "Slick.Formatters.Extends.Date";
@@ -1099,7 +1100,6 @@ public final class HtmlGenerator {
         } else if (column.getDataType().equals("java.time.LocalDateTime")) {
             format = "Slick.Formatters.Extends.DateTime";
         }
-
         // 名称を参照先から取得するか
         boolean isMeiRefer = false;
         // 参照名の列名

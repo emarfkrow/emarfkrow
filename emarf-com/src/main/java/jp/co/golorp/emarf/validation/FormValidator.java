@@ -223,8 +223,6 @@ public final class FormValidator {
             } else {
                 // fieldName（フィールド名か、兄弟モデルか、グリッドID）
                 fieldName = StringUtil.toCamelCase(methodName.replaceFirst("^set", ""));
-                //                // 送信値をfieldNameで取得してみる
-                //                value = postJson.get(fieldName); 他モデルと誤爆するのは避ける
                 // entityName付きでも取得してみる
                 if (value == null) {
                     String entityName = clazz.getSimpleName().replaceAll("RegistForm$", "");
@@ -237,9 +235,8 @@ public final class FormValidator {
                         if (annotation.annotationType() == PrimaryKeys.class) {
                             for (Entry<String, Object> e : postJson.entrySet()) {
                                 String k = e.getKey();
-                                Object v = e.getValue();
-                                if (k.endsWith("." + fieldName)) {
-                                    value = v;
+                                if (k.endsWith("." + fieldName) || k.equals(fieldName)) {
+                                    value = e.getValue();
                                     break;
                                 }
                             }
@@ -256,6 +253,10 @@ public final class FormValidator {
                 // 最後の「s」を「Grid」にしたパスカルでも取得してみる（カスタムフォームのグリッド本体用）
                 if (value == null) {
                     value = postJson.get(StringUtil.toPascalCase(fieldName).replaceAll("s$", "Grid"));
+                }
+                // 送信値をfieldNameで取得してみる（グリッド行用・他モデルと誤爆するのは避ける）
+                if (!isNested && value == null) {
+                    value = postJson.get(fieldName);
                 }
                 // スネークでも取得してみる（グリッド行用）
                 if (!isNested && value == null) {
@@ -283,56 +284,48 @@ public final class FormValidator {
                 }
             }
             if (value != null) {
-                // 送信値がある場合
-                if (value instanceof List) {
-                    // 送信値がListの場合
-                    if (isNested) {
-                        // 兄弟モデルには子モデルを付けない
-                        continue;
-                    }
-                    List<?> list = (List<?>) value;
-                    if (list.size() > 0 && list.get(0) instanceof Map) {
-                        // 送信値の一つ目がMapの場合（何らかのクラスであるという事）
-                        String packageName = clazz.getPackage().getName();
-                        String gridId = StringUtil.toPascalCase(fieldName);
-                        String gridClassName = packageName + "." + gridId;
-                        List<T> formList = new ArrayList<T>();
-                        @SuppressWarnings("unchecked")
-                        List<Map<String, Object>> gridData = (List<Map<String, Object>>) list;
-                        for (Map<String, Object> row : gridData) {
-                            if (row.isEmpty()) {
-                                formList.add(null);
-                            } else {
-                                if (!StringUtil.isNullOrWhiteSpace(reason)) {
-                                    String reasonName = StringUtil.toCamelCase(reason);
-                                    if (!StringUtil.isNullOrWhiteSpace(postJson.get(reasonName))) {
-                                        row.put(reason, postJson.get(reasonName));
-                                    }
-                                }
-                                @SuppressWarnings("unchecked")
-                                T t = (T) toGridForm(gridClassName, row);
-                                formList.add(t);
-                            }
+                try {
+                    // 送信値がある場合
+                    if (value instanceof List) {
+                        // 送信値がListの場合
+                        if (isNested) {
+                            // 兄弟モデルには子モデルを付けない
+                            continue;
                         }
-                        value = formList;
-                    }
-                    try {
+                        List<?> list = (List<?>) value;
+                        if (list.size() > 0 && list.get(0) instanceof Map) {
+                            // 送信値の一つ目がMapの場合（何らかのクラスであるという事）
+                            String packageName = clazz.getPackage().getName();
+                            String gridId = StringUtil.toPascalCase(fieldName);
+                            String gridClassName = packageName + "." + gridId;
+                            List<T> formList = new ArrayList<T>();
+                            @SuppressWarnings("unchecked")
+                            List<Map<String, Object>> gridData = (List<Map<String, Object>>) list;
+                            for (Map<String, Object> row : gridData) {
+                                if (row.isEmpty()) {
+                                    formList.add(null);
+                                } else {
+                                    if (!StringUtil.isNullOrWhiteSpace(reason)) {
+                                        String reasonName = StringUtil.toCamelCase(reason);
+                                        if (!StringUtil.isNullOrWhiteSpace(postJson.get(reasonName))) {
+                                            row.put(reason, postJson.get(reasonName));
+                                        }
+                                    }
+                                    @SuppressWarnings("unchecked")
+                                    T t = (T) toGridForm(gridClassName, row);
+                                    formList.add(t);
+                                }
+                            }
+                            value = formList;
+                        }
                         method.invoke(o, value);
-                    } catch (Exception e) {
-                        throw new SysError(e);
-                    }
-                } else if (value instanceof IEntity || value instanceof IForm) {
-                    try {
+                    } else if (value instanceof IEntity || value instanceof IForm) {
                         method.invoke(o, value);
-                    } catch (Exception e) {
-                        throw new SysError(e);
-                    }
-                } else {
-                    try {
+                    } else {
                         method.invoke(o, value.toString());
-                    } catch (Exception e) {
-                        throw new SysError(e);
                     }
+                } catch (Exception e) {
+                    throw new SysError(e);
                 }
             }
         }
@@ -403,17 +396,24 @@ public final class FormValidator {
                 } catch (ClassNotFoundException e2) {
                     try {
 
-                        // ***Gridなら、***RegistFormにしてみる
-                        return Class.forName(className.replaceFirst("Grid", "RegistForm"));
+                        // ***DeleteFormなら、***RegistFormにしてみる
+                        return Class.forName(className.replaceFirst("Delete", "Regist"));
 
                     } catch (ClassNotFoundException e3) {
                         try {
 
-                            // ***sなら、***にしてみる（カスタムフォームのグリッド本体用）
-                            return Class.forName(className.replaceFirst("s$", ""));
+                            // ***Gridなら、***RegistFormにしてみる
+                            return Class.forName(className.replaceFirst("Grid", "RegistForm"));
 
                         } catch (ClassNotFoundException e4) {
-                            LOG.trace(e.toString());
+                            try {
+
+                                // ***sなら、***にしてみる（カスタムフォームのグリッド本体用）
+                                return Class.forName(className.replaceFirst("s$", ""));
+
+                            } catch (ClassNotFoundException e5) {
+                                LOG.trace(e.toString());
+                            }
                         }
                     }
                 }

@@ -165,7 +165,7 @@ public class DataSourcesAssistOracle extends DataSourcesAssist {
      * @return 囲み後のSQL文字列
      */
     public String quotedSQL(final String columnName) {
-        return "\"" + columnName + "\"";
+        return "\"" + columnName.toUpperCase() + "\"";
     }
 
     /**
@@ -173,7 +173,7 @@ public class DataSourcesAssistOracle extends DataSourcesAssist {
      * @return エスケープ済みで囲み後のSQL文字列
      */
     public String quoteEscapedSQL(final String columnName) {
-        return "\\\"" + columnName + "\\\"";
+        return "\\\"" + columnName.toUpperCase() + "\\\"";
     }
 
     /**
