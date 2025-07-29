@@ -670,13 +670,18 @@ public final class BeanGenerator {
             for (TableInfo child : table.getChilds()) {
                 if (StringUtil.isNullOrWhiteSpace(deleteF) || (!child.getColumns().containsKey(deleteF.toLowerCase())
                         && !child.getColumns().containsKey(deleteF.toUpperCase()))) {
-                    String pascal = StringUtil.toPascalCase(child.getName());
-                    String camel = StringUtil.toCamelCase(child.getName());
+                    String ent = StringUtil.toPascalCase(child.getName());
+                    String ins = StringUtil.toCamelCase(child.getName());
+                    String r = child.getRemarks();
                     s.add("");
                     s.add("        // " + child.getRemarks() + "の削除");
-                    s.add("        if (this." + camel + "s != null) {");
-                    s.add("            for (" + pascal + " " + camel + " : this." + camel + "s) {");
-                    s.add("                " + camel + ".delete();");
+                    s.add("        if (this." + ins + "s != null) {");
+                    s.add("            for (" + ent + " " + ins + " : this." + ins + "s) {");
+                    // TODO グリッドの削除ボタンで、友連れ削除時に、更新日時の不一致で削除されない問題
+                    s.add("                if (" + ins + ".delete() != 1) {");
+                    s.add("                    throw new jp.co.golorp.emarf.exception.OptLockError(\"error.cant.delete\", \""
+                            + r + "\");");
+                    s.add("                }");
                     s.add("            }");
                     s.add("        }");
                 }
@@ -686,10 +691,15 @@ public final class BeanGenerator {
                 if (StringUtil.isNullOrWhiteSpace(deleteF) || (!bro.getColumns().containsKey(deleteF.toLowerCase())
                         && !bro.getColumns().containsKey(deleteF.toUpperCase()))) {
                     String b = StringUtil.toCamelCase(bro.getName());
+                    String r = bro.getRemarks();
                     s.add("");
                     s.add("        // " + bro.getRemarks() + "の削除");
                     s.add("        if (this." + b + " != null) {");
-                    s.add("            this." + b + ".delete();");
+                    // TODO グリッドの削除ボタンで、友連れ削除時に、更新日時の不一致で削除されない問題
+                    s.add("            if (this." + b + ".delete() != 1) {");
+                    s.add("                throw new jp.co.golorp.emarf.exception.OptLockError(\"error.cant.delete\", \""
+                            + r + "\");");
+                    s.add("            }");
                     s.add("        }");
                 }
             }
@@ -1467,6 +1477,8 @@ public final class BeanGenerator {
 
             s.add("");
 
+            String r = child.getRemarks();
+
             // entity
             String e = StringUtil.toPascalCase(child.getName());
 
@@ -1485,7 +1497,7 @@ public final class BeanGenerator {
                 }
                 s.add("");
                 s.add(sp + "                if (" + i + ".delete() != 1) {");
-                s.add(sp + "                    throw new OptLockError(\"error.cant.delete\");");
+                s.add(sp + "                    throw new OptLockError(\"error.cant.delete\", \"" + r + "\");");
                 s.add(sp + "                }");
                 s.add(sp + "            }");
                 s.add(sp + "        }");
@@ -1514,6 +1526,8 @@ public final class BeanGenerator {
 
         for (TableInfo child : childs) {
 
+            String r = child.getRemarks();
+
             // entity
             String e = StringUtil.toPascalCase(child.getName());
 
@@ -1541,7 +1555,7 @@ public final class BeanGenerator {
                 s.add(p + "                " + i + ".set" + StringUtil.toPascalCase(status) + "(1);");
             }
             s.add(p + "                if (" + i + ".update(now, execId) != 1) {");
-            s.add(p + "                    throw new OptLockError(\"error.cant.permit\");");
+            s.add(p + "                    throw new OptLockError(\"error.cant.permit\", \"" + r + "\");");
             s.add(p + "                }");
             s.add(p + "            }");
             s.add(p + "        }");
@@ -1562,6 +1576,8 @@ public final class BeanGenerator {
         String p = "    ".repeat(indent);
 
         for (TableInfo child : childs) {
+
+            String r = child.getRemarks();
 
             // entity
             String e = StringUtil.toPascalCase(child.getName());
@@ -1590,7 +1606,7 @@ public final class BeanGenerator {
                 s.add(p + "                " + i + ".set" + StringUtil.toPascalCase(status) + "(-1);");
             }
             s.add(p + "                if (" + i + ".update(now, execId) != 1) {");
-            s.add(p + "                    throw new OptLockError(\"error.cant.forbid\");");
+            s.add(p + "                    throw new OptLockError(\"error.cant.forbid\", \"" + r + "\");");
             s.add(p + "                }");
             s.add(p + "            }");
             s.add(p + "        }");

@@ -77,7 +77,6 @@ public final class FormValidator {
             final Map<String, Object> postJson) {
 
         IForm form = toBean(formClassName, postJson);
-
         if (form == null) {
             return null;
         }
@@ -85,7 +84,14 @@ public final class FormValidator {
         // バリデーションを実行
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         Validator validator = factory.getValidator();
-        Set<ConstraintViolation<IForm>> results = validator.validate(form);
+        Set<ConstraintViolation<IForm>> results = null;
+
+        if (formClassName.endsWith("RegistForm")) {
+            results = validator.validate(form, Regist.class);
+        } else {
+            // DeleteFormなら主キーと楽観ロック項目以外はチェックしない
+            results = validator.validate(form);
+        }
 
         for (ConstraintViolation<IForm> result : results) {
 

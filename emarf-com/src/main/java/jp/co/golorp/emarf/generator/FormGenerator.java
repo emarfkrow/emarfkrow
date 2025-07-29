@@ -129,17 +129,8 @@ public final class FormGenerator {
             String entity = StringUtil.toPascalCase(table.getName());
             List<String> s = new ArrayList<String>();
             s.add("package " + pkgForm + ";");
-            s.add("");
-            if (table.getChilds().size() > 0) {
-                s.add("import java.util.List;");
-            }
             addImports(s);
-            s.add("");
-            s.add("/**");
-            s.add(" * " + table.getRemarks() + "登録フォーム");
-            s.add(" *");
-            s.add(" * @author emarfkrow");
-            s.add(" */");
+            addAuthor(s, table.getRemarks() + "登録フォーム");
             s.add("public class " + entity + "RegistForm implements IForm {");
             s.add("");
             s.add("    /** logger */");
@@ -213,19 +204,19 @@ public final class FormGenerator {
                 s.add("");
                 s.add("    /** " + childInfo.getRemarks() + " */");
                 s.add("    @jakarta.validation.Valid");
-                s.add("    private List<" + pascal + "RegistForm> " + camel + "Grid;");
+                s.add("    private java.util.List<" + pascal + "RegistForm> " + camel + "Grid;");
                 s.add("");
                 s.add("    /**");
                 s.add("     * @return " + childInfo.getRemarks());
                 s.add("     */");
-                s.add("    public List<" + pascal + "RegistForm> get" + pascal + "Grid() {");
+                s.add("    public java.util.List<" + pascal + "RegistForm> get" + pascal + "Grid() {");
                 s.add("        return " + camel + "Grid;");
                 s.add("    }");
                 s.add("");
                 s.add("    /**");
                 s.add("     * @param p");
                 s.add("     */");
-                s.add("    public void set" + pascal + "Grid(final List<" + pascal + "RegistForm> p) {");
+                s.add("    public void set" + pascal + "Grid(final java.util.List<" + pascal + "RegistForm> p) {");
                 s.add("        this." + camel + "Grid = p;");
                 s.add("    }");
             }
@@ -249,6 +240,7 @@ public final class FormGenerator {
                         String referKey = StringUtil.toCamelCase(refer.getPrimaryKeys().get(0));
                         s.add("");
                         s.add("        // " + column.getRemarks() + " のマスタチェック");
+                        s.add("        // TODO できればAssertTrueにしたい");
                         s.add("        baseProcess.masterCheck(errors, \"" + referName + "Search\", \"" + referKey
                                 + "\", this.get" + acce + "(), jp.co.golorp.emarf.util.Messages.get(\"" + entity + "."
                                 + prop + "\"));");
@@ -271,8 +263,22 @@ public final class FormGenerator {
 
     /**
      * @param s
+     * @param javadoc
+     */
+    private static void addAuthor(final List<String> s, final String javadoc) {
+        s.add("");
+        s.add("/**");
+        s.add(" * " + javadoc);
+        s.add(" *");
+        s.add(" * @author emarfkrow");
+        s.add(" */");
+    }
+
+    /**
+     * @param s
      */
     public static void addImports(final List<String> s) {
+        s.add("");
         s.add("import java.util.Map;");
         s.add("");
         s.add("import org.slf4j.Logger;");
@@ -340,7 +346,12 @@ public final class FormGenerator {
 
             } else {
 
-                s.add("    @jakarta.validation.constraints.NotBlank");
+                // 主キー以外は登録時のみ必須チェック（削除時はチェックしない）
+                if (column.isPk()) {
+                    s.add("    @jakarta.validation.constraints.NotBlank");
+                } else {
+                    s.add("    @jakarta.validation.constraints.NotBlank(groups = jp.co.golorp.emarf.validation.Regist.class)");
+                }
             }
         }
 
@@ -435,12 +446,7 @@ public final class FormGenerator {
             s.add("import jakarta.validation.Valid;");
             s.add("import jp.co.golorp.emarf.process.BaseProcess;");
             s.add("import jp.co.golorp.emarf.validation.IForm;");
-            s.add("");
-            s.add("/**");
-            s.add(" * " + remarks + "一覧登録フォーム");
-            s.add(" *");
-            s.add(" * @author emarfkrow");
-            s.add(" */");
+            addAuthor(s, remarks + "一覧登録フォーム");
             s.add("public class " + entity + "SRegistForm implements IForm {");
             s.add("");
             s.add("    /** logger */");

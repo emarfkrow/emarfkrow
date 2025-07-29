@@ -108,9 +108,8 @@ public final class DetailActionGenerator {
                 continue;
             }
 
-            String tableName = table.getName();
-            String entity = StringUtil.toPascalCase(tableName);
-            String remarks = table.getRemarks();
+            String entity = StringUtil.toPascalCase(table.getName());
+            String r = table.getRemarks();
             List<String> s = new ArrayList<String>();
             s.add("package " + pkgAction + ";");
             s.add("");
@@ -126,13 +125,13 @@ public final class DetailActionGenerator {
             s.add("import jp.co.golorp.emarf.validation.FormValidator;");
             s.add("");
             s.add("/**");
-            s.add(" * " + remarks + "登録");
+            s.add(" * " + r + "登録");
             s.add(" *");
             s.add(" * @author emarfkrow");
             s.add(" */");
             s.add("public class " + entity + "RegistAction extends BaseAction {");
             s.add("");
-            s.add("    /** " + remarks + "登録処理 */");
+            s.add("    /** " + r + "登録処理 */");
             s.add("    @Override");
             s.add("    public Map<String, Object> running(final LocalDateTime now, final String execId, final Map<String, Object> postJson) {");
             s.add("");
@@ -166,7 +165,7 @@ public final class DetailActionGenerator {
             s.add("        if (isNew) {");
             s.add("");
             s.add("            if (e.insert(now, execId) != 1) {");
-            s.add("                throw new OptLockError(\"error.cant.insert\");");
+            s.add("                throw new OptLockError(\"error.cant.insert\", \"" + r + "\");");
             s.add("            }");
             if (table.getSummaryOf() != null) {
                 TableInfo summaryOf = table.getSummaryOf();
@@ -182,25 +181,29 @@ public final class DetailActionGenerator {
                     s.add("                String[] summaryKeys = summaryKey.trim().split(\",\");");
                     s.add("                for (String pk : summaryKeys) {");
                     s.add("                    " + pkE + "." + e + " " + i + " = " + pkE + "." + e + ".get(pk);");
-                    if (!StringUtil.isNullOrWhiteSpace(status) && (summaryOf.getColumns().containsKey(status.toLowerCase())
-                            || summaryOf.getColumns().containsKey(status.toUpperCase()))) {
+                    if (!StringUtil.isNullOrWhiteSpace(status)
+                            && (summaryOf.getColumns().containsKey(status.toLowerCase())
+                                    || summaryOf.getColumns().containsKey(status.toUpperCase()))) {
                         String acc = StringUtil.toPascalCase(status);
                         s.add("                    //承認済みでなければエラー");
                         s.add("                    if (!" + i + ".get" + acc + "().equals(\"1\")) {");
-                        s.add("                        throw new OptLockError(\"error.nopermit.summary\");");
+                        s.add("                        throw new OptLockError(\"error.nopermit.summary\", \"" + r
+                                + "\");");
                         s.add("                    }");
                     }
                     for (String fk : table.getPrimaryKeys()) {
                         String acc = StringUtil.toPascalCase(fk);
                         s.add("                    //集約済みならエラー");
-                        s.add("                    if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrWhiteSpace(" + i + ".get"
+                        s.add("                    if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrWhiteSpace(" + i
+                                + ".get"
                                 + acc + "())) {");
-                        s.add("                        throw new OptLockError(\"error.already.summary\");");
+                        s.add("                        throw new OptLockError(\"error.already.summary\", \"" + r
+                                + "\");");
                         s.add("                    }");
                         s.add("                    " + i + ".set" + acc + "(e.get" + acc + "());");
                     }
                     s.add("                    if (" + i + ".update(now, execId) != 1) {");
-                    s.add("                        throw new OptLockError(\"error.cant.insert\");");
+                    s.add("                        throw new OptLockError(\"error.cant.insert\", \"" + r + "\");");
                     s.add("                    }");
                     s.add("                }");
                     s.add("            }");
@@ -216,7 +219,7 @@ public final class DetailActionGenerator {
             s.add("            } else if (e.insert(now, execId) == 1) {");
             s.add("                map.put(\"INFO\", Messages.get(\"info.insert\"));");
             s.add("            } else {");
-            s.add("                throw new OptLockError(\"error.cant.update\");");
+            s.add("                throw new OptLockError(\"error.cant.update\", \"" + r + "\");");
             s.add("            }");
             s.add("        }");
             s.add("");
@@ -443,7 +446,7 @@ public final class DetailActionGenerator {
                 s.add("            " + camel + " = postJson.get(\"" + e + "." + camel + "\");");
                 s.add("        }");
                 s.add("        if (" + camel + " == null) {");
-                s.add("            throw new OptLockError(\"error.cant.delete\");");
+                s.add("            throw new OptLockError(\"error.cant.delete\", \"" + table.getRemarks() + "\");");
                 s.add("        }");
                 if (params.length() > 0) {
                     params += ", ";
@@ -457,7 +460,7 @@ public final class DetailActionGenerator {
             BeanGenerator.getDeleteChilds(s, "e", table.getChilds(), 0);
 
             s.add("        if (e.delete() != 1) {");
-            s.add("            throw new OptLockError(\"error.cant.delete\");");
+            s.add("            throw new OptLockError(\"error.cant.delete\", \"" + table.getRemarks() + "\");");
             s.add("        }");
             s.add("");
             s.add("        Map<String, Object> map = new HashMap<String, Object>();");
@@ -537,7 +540,7 @@ public final class DetailActionGenerator {
                 s.add("            " + property + " = postJson.get(\"" + entity + "." + property + "\");");
                 s.add("        }");
                 s.add("        if (" + property + " == null) {");
-                s.add("            throw new OptLockError(\"error.cant.permit\");");
+                s.add("            throw new OptLockError(\"error.cant.permit\", \"" + remarks + "\");");
                 s.add("        }");
                 if (params.length() > 0) {
                     params += ", ";
@@ -555,7 +558,7 @@ public final class DetailActionGenerator {
                 s.add("        f.set" + StringUtil.toPascalCase(status) + "(1);");
             }
             s.add("        if (f.update(now, execId) != 1) {");
-            s.add("            throw new OptLockError(\"error.cant.permit\");");
+            s.add("            throw new OptLockError(\"error.cant.permit\", \"" + remarks + "\");");
             s.add("        }");
             s.add("");
             s.add("        Map<String, Object> map = new HashMap<String, Object>();");
@@ -635,7 +638,7 @@ public final class DetailActionGenerator {
                 s.add("            " + property + " = postJson.get(\"" + entity + "." + property + "\");");
                 s.add("        }");
                 s.add("        if (" + property + " == null) {");
-                s.add("            throw new OptLockError(\"error.cant.forbid\");");
+                s.add("            throw new OptLockError(\"error.cant.forbid\", \"" + remarks + "\");");
                 s.add("        }");
                 if (params.length() > 0) {
                     params += ", ";
@@ -653,7 +656,7 @@ public final class DetailActionGenerator {
                 s.add("        f.set" + StringUtil.toPascalCase(status) + "(-1);");
             }
             s.add("        if (f.update(now, execId) != 1) {");
-            s.add("            throw new OptLockError(\"error.cant.forbid\");");
+            s.add("            throw new OptLockError(\"error.cant.forbid\", \"" + remarks + "\");");
             s.add("        }");
             s.add("");
             s.add("        Map<String, Object> map = new HashMap<String, Object>();");

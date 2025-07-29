@@ -156,7 +156,7 @@ public final class IndexActionGenerator {
             for (String k : table.getPrimaryKeys()) {
                 s.add("                if (jp.co.golorp.emarf.lang.StringUtil.isNullOrWhiteSpace(row.get(\"" + k
                         + "\"))) {");
-                s.add("                    throw new OptLockError(\"error.cant.delete\");");
+                s.add("                    throw new OptLockError(\"error.cant.delete\", \"" + remarks + "\");");
                 s.add("                }");
             }
             s.add("");
@@ -164,7 +164,7 @@ public final class IndexActionGenerator {
             List<TableInfo> childInfos = table.getChilds();
             BeanGenerator.getDeleteChilds(s, "e", childInfos, 2);
             s.add("                if (e.delete() != 1) {");
-            s.add("                    throw new OptLockError(\"error.cant.delete\");");
+            s.add("                    throw new OptLockError(\"error.cant.delete\", \"" + remarks + "\");");
             s.add("                }");
             s.add("                ++count;");
             s.add("            }");
@@ -268,7 +268,8 @@ public final class IndexActionGenerator {
             s.add("                boolean isNew = false;");
             for (String primaryKey : table.getPrimaryKeys()) {
                 String acc = StringUtil.toPascalCase(primaryKey);
-                s.add("                if (jp.co.golorp.emarf.lang.StringUtil.isNullOrWhiteSpace(e.get" + acc + "())) {");
+                s.add("                if (jp.co.golorp.emarf.lang.StringUtil.isNullOrWhiteSpace(e.get" + acc
+                        + "())) {");
                 s.add("                    isNew = true;");
                 s.add("                }");
             }
@@ -276,7 +277,8 @@ public final class IndexActionGenerator {
                     || table.getColumns().containsKey(updateDt.toUpperCase())) {
                 String acc = StringUtil.toPascalCase(updateDt);
                 s.add("                // 楽観ロック値がなくてもINSERT");
-                s.add("                if (jp.co.golorp.emarf.lang.StringUtil.isNullOrWhiteSpace(e.get" + acc + "())) {");
+                s.add("                if (jp.co.golorp.emarf.lang.StringUtil.isNullOrWhiteSpace(e.get" + acc
+                        + "())) {");
                 s.add("                    isNew = true;");
                 s.add("                }");
             }
@@ -290,14 +292,14 @@ public final class IndexActionGenerator {
             s.add("                if (isNew) {");
             s.add("");
             s.add("                    if (e.insert(now, execId) != 1) {");
-            s.add("                        throw new OptLockError(\"error.cant.insert\");");
+            s.add("                        throw new OptLockError(\"error.cant.insert\", \"" + remarks + "\");");
             s.add("                    }");
             s.add("                    ++count;");
             s.add("");
             s.add("                } else {");
             s.add("");
             s.add("                    if (e.update(now, execId) != 1) {");
-            s.add("                        throw new OptLockError(\"error.cant.update\");");
+            s.add("                        throw new OptLockError(\"error.cant.update\", \"" + remarks + "\");");
             s.add("                    }");
             s.add("                    ++count;");
             s.add("                }");
@@ -398,7 +400,7 @@ public final class IndexActionGenerator {
                 String accessor = StringUtil.toPascalCase(primaryKey);
                 s.add("                Object " + property + " = e.get" + accessor + "();");
                 s.add("                if (" + property + " == null) {");
-                s.add("                    throw new OptLockError(\"error.cant.permit\");");
+                s.add("                    throw new OptLockError(\"error.cant.permit\", \"" + remarks + "\");");
                 s.add("                }");
                 if (params.length() > 0) {
                     params += ", ";
@@ -414,7 +416,7 @@ public final class IndexActionGenerator {
                 s.add("                f.set" + StringUtil.toPascalCase(status) + "(1);");
             }
             s.add("                if (f.update(now, execId) != 1) {");
-            s.add("                    throw new OptLockError(\"error.cant.permit\");");
+            s.add("                    throw new OptLockError(\"error.cant.permit\", \"" + remarks + "\");");
             s.add("                }");
             s.add("                ++count;");
             s.add("            }");
@@ -514,7 +516,7 @@ public final class IndexActionGenerator {
                 String accessor = StringUtil.toPascalCase(primaryKey);
                 s.add("                Object " + property + " = e.get" + accessor + "();");
                 s.add("                if (" + property + " == null) {");
-                s.add("                    throw new OptLockError(\"error.cant.forbid\");");
+                s.add("                    throw new OptLockError(\"error.cant.forbid\", \"" + remarks + "\");");
                 s.add("                }");
                 if (params.length() > 0) {
                     params += ", ";
@@ -530,7 +532,7 @@ public final class IndexActionGenerator {
                 s.add("                f.set" + StringUtil.toPascalCase(status) + "(-1);");
             }
             s.add("                if (f.update(now, execId) != 1) {");
-            s.add("                    throw new OptLockError(\"error.cant.forbid\");");
+            s.add("                    throw new OptLockError(\"error.cant.forbid\", \"" + remarks + "\");");
             s.add("                }");
             s.add("                ++count;");
             s.add("            }");

@@ -38,4 +38,12 @@ public class OptLockError extends AppError {
         super(msgId, e);
     }
 
+    /**
+     * @param msgId メッセージID
+     * @param args 置換文字列
+     */
+    public OptLockError(final String msgId, final String... args) {
+        super(msgId, args);
+    }
+
 }
