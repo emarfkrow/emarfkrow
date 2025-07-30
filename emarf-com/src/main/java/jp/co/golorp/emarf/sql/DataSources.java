@@ -435,13 +435,13 @@ public final class DataSources {
         addChildTables(tables);
         //転生モデルの評価
         addRebornTable(tables);
+        //択一モデルの評価
+        addChoiceTable(tables);
         //集約モデルの評価
         addSummaryTable(tables);
         //組合せモデルの評価
         addCombo(tables);
-
         log(tables);
-
         return tables;
     }
 
@@ -1336,6 +1336,142 @@ public final class DataSources {
     }
 
     /**
+     * 択一元の主キーから、択一先の外部キーを探す
+     *
+     * @param tables テーブル情報のリスト
+     */
+    private static void addChoiceTable(final List<TableInfo> tables) {
+
+        LOG.debug("【Choice】");
+
+        // 択一元として、テーブル情報をループ
+        Iterator<TableInfo> motos = tables.iterator();
+        while (motos.hasNext()) {
+            TableInfo moto = motos.next();
+
+            // 履歴モデル・ビュー・参照モデルは択一元としない
+            if (moto.isHistory() || moto.isView() || moto.isRefer()) {
+                continue;
+            }
+
+            // 派生先を持っている（派生元である）なら択一元としない
+            if (moto.getDeriveTos().size() > 0) {
+                continue;
+            }
+
+            int motoCount = 0;
+
+            // 集約元として、テーブル情報をループ
+            Iterator<TableInfo> sakis = tables.iterator();
+            while (sakis.hasNext()) {
+                TableInfo saki = sakis.next();
+
+                // 履歴モデル・ビュー・参照モデルは択一先にしない
+                if (saki.isHistory() || saki.isView() || saki.isRefer()) {
+                    continue;
+                }
+
+                // 択一先の外部キーを探索
+                Set<String> sakiFKs = new HashSet<String>();
+                for (String motoPK : moto.getPrimaryKeys()) {
+                    ColumnInfo motoKey = moto.getColumns().get(motoPK);
+
+                    // 択一元の主キーに合致するカラムが択一先にあれば外部キーとして取得
+                    for (ColumnInfo sakiCol : saki.getColumns().values()) {
+
+                        // 主キー か NULL不可 ならスキップ
+                        if (sakiCol.isPk() || sakiCol.getNullable() != 1) {
+                            continue;
+                        }
+
+                        // 主キーでなくNULL可の場合、カラム定義が一致するなら外部キーに追加
+                        if (isMatchColDef(motoKey, sakiCol)) {
+                            sakiFKs.add(sakiCol.getName());
+                        }
+                    }
+                }
+
+                if (moto.getPrimaryKeys().size() == sakiFKs.size()) {
+                    // 択一元の主キーと、択一先の外部キーが一致する場合
+
+                    // 集約元設定済み情報の精査
+                    boolean isSummaryOfOther = false;
+                    Iterator<TableInfo> saki2s = tables.iterator();
+                    while (saki2s.hasNext()) {
+                        TableInfo saki2 = saki2s.next();
+
+                        // 集約元を設定済みでなく、既に抑制判定済みでなければスキップ
+                        if (saki2.getSummaryOf() == null && !isSummaryOfOther) {
+                            continue;
+                        }
+
+                        // 集約元を設定済みでも、今回の集約元と重複していなければスキップ
+                        if (saki2.getSummaryOf() != null && !saki2.getSummaryOf().getName().equals(saki.getName())) {
+                            continue;
+                        }
+
+                        // 重複する集約元を設定済みの場合
+
+                        //                        if (saki2.getPrimaryKeys().size() < saki.getPrimaryKeys().size()) {
+                        //                            // 今回の集約先の方がキー数が多いなら、処理済みの集約元をクリア
+                        if (saki2.getSummaryOf() != null) {
+                            LOG.debug("        Cancel " + saki2.getName() + " of " + saki2.getSummaryOf().getName()
+                                    + " by " + moto.getName());
+                            for (ColumnInfo sakiCol : saki2.getSummaryOf().getColumns().values()) {
+                                sakiCol.setSummary(false);
+                            }
+                            saki2.setSummaryOf(null);
+                        }
+                        //                        } else if (saki2.getPrimaryKeys().size() > saki.getPrimaryKeys().size()) {
+                        //                            // 今回の集約先の方がキー数が少ないなら、今回を集約先としない
+                        isSummaryOfOther = true;
+                        //                        }
+                    }
+
+                    // 今回の集約元が、他モデルの集約元でなければ、集約先に集約元を設定
+                    if (!isSummaryOfOther) {
+
+                        // ２回以上ここに来る＝同じ集約先を他の集約元でも設定済み＝集約先を取消
+                        if (motoCount > 0) {
+
+                            // 誤って集約元を設定済みならクリア
+                            if (moto.getSummaryOf() != null) {
+                                TableInfo unit = moto.getSummaryOf();
+                                for (ColumnInfo column : unit.getColumns().values()) {
+                                    column.setSummary(false);
+                                }
+                                LOG.debug("        Cancel " + moto.getName() + " summary of " + unit.getName() + " by "
+                                        + saki.getName());
+                                moto.setSummaryOf(null);
+                            }
+                            continue;
+                        }
+
+                        LOG.debug("    " + moto.getName() + " of " + saki.getName());
+                        ++motoCount;
+                        for (String fk : sakiFKs) {
+                            saki.getColumns().get(fk).setSummary(true);
+                        }
+                        moto.setSummaryOf(saki);
+
+                        // // 集約先とする場合は、転生元としない（転生先をクリアする）
+                        // if (sum.getRebornTo() != null) {
+                        //     TableInfo tenseisaki = sum.getRebornTo();
+                        //     for (ColumnInfo column : tenseisaki.getColumns().values()) {
+                        //         if (column.isReborn()) {
+                        //             column.setReborn(false);
+                        //         }
+                        //     }
+                        //     LOG.debug("        Cancel " + sum.getName() + " reborn to " + sum.getRebornTo().getName());
+                        //     sum.setRebornTo(null);
+                        // }
+                    }
+                }
+            }
+        }
+    }
+
+    /**
      * 集約先の主キーから、集約元の外部キーを探す
      * @param tables テーブル情報のリスト
      */
@@ -1394,11 +1530,12 @@ public final class DataSources {
                     // 集約元に集約先の主キーに合致するカラムがあれば外部キーとして取得
                     for (ColumnInfo motoCol : moto.getColumns().values()) {
 
-                        // 集約元が 主キー か NULL可でない ならスキップ
+                        // 集約元が 主キー か NULL不可 ならスキップ
                         if (motoCol.isPk() || motoCol.getNullable() != 1) {
                             continue;
                         }
 
+                        // 主キーでなくNULL可の場合、カラム定義が一致するなら外部キーに追加
                         if (isMatchColDef(sakiKey, motoCol)) {
                             motoFKs.add(motoCol.getName());
                         }
@@ -1445,7 +1582,7 @@ public final class DataSources {
                     // 今回の集約元が、他モデルの集約元でなければ、集約先に集約元を設定
                     if (!isSummaryOfOther) {
 
-                        // ２回以上ここに来る＝同じ集約元を他でも設定済み＝今回は集約先としない
+                        // ２回以上ここに来る＝同じ集約先を他の集約元でも設定済み＝集約先を取消
                         if (motoCount > 0) {
 
                             // 誤って集約元を設定済みならクリア
@@ -1468,17 +1605,17 @@ public final class DataSources {
                         }
                         sum.setSummaryOf(moto);
 
-                        //                        // 集約先とする場合は、転生元としない（転生先をクリアする）
-                        //                        if (sum.getRebornTo() != null) {
-                        //                            TableInfo tenseisaki = sum.getRebornTo();
-                        //                            for (ColumnInfo column : tenseisaki.getColumns().values()) {
-                        //                                if (column.isReborn()) {
-                        //                                    column.setReborn(false);
-                        //                                }
-                        //                            }
-                        //                            LOG.debug("        Cancel " + sum.getName() + " reborn to " + sum.getRebornTo().getName());
-                        //                            sum.setRebornTo(null);
-                        //                        }
+                        // // 集約先とする場合は、転生元としない（転生先をクリアする）
+                        // if (sum.getRebornTo() != null) {
+                        //     TableInfo tenseisaki = sum.getRebornTo();
+                        //     for (ColumnInfo column : tenseisaki.getColumns().values()) {
+                        //         if (column.isReborn()) {
+                        //             column.setReborn(false);
+                        //         }
+                        //     }
+                        //     LOG.debug("        Cancel " + sum.getName() + " reborn to " + sum.getRebornTo().getName());
+                        //     sum.setRebornTo(null);
+                        // }
                     }
                 }
             }
