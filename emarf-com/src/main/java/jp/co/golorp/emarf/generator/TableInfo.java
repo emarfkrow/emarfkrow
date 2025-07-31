@@ -102,6 +102,12 @@ public class TableInfo {
     /** 派生先テーブル */
     private List<TableInfo> deriveTos = new ArrayList<TableInfo>();
 
+    /** 択一先テーブル */
+    private TableInfo choiceTo;
+
+    /** 択一元テーブル */
+    private List<TableInfo> choices = new ArrayList<TableInfo>();
+
     /** 集約先テーブル */
     private TableInfo summaryOf;
 
@@ -340,6 +346,34 @@ public class TableInfo {
      */
     public void setDeriveTos(final List<TableInfo> p) {
         this.deriveTos = p;
+    }
+
+    /**
+     * @return choiceTo
+     */
+    public TableInfo getChoiceTo() {
+        return choiceTo;
+    }
+
+    /**
+     * @param p セットする choiceTo
+     */
+    public void setChoiceTo(final TableInfo p) {
+        this.choiceTo = p;
+    }
+
+    /**
+     * @return choices
+     */
+    public List<TableInfo> getChoices() {
+        return choices;
+    }
+
+    /**
+     * @param p セットする choices
+     */
+    public void setChoices(final List<TableInfo> p) {
+        this.choices = p;
     }
 
     /**

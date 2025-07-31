@@ -1405,7 +1405,12 @@ public final class BeanGenerator {
             }
             s.add("        map.put(\"" + StringUtil.toSnakeCase(pk) + "\", param" + ++paramIndex + ");");
         }
-        s.add("        return Queries.select(sql, map, " + ent + ".class, null, null);");
+        //        s.add("        return Queries.select(sql, map, " + ent + ".class, null, null);");
+        s.add("        List<" + ent + "> list = Queries.select(sql, map, " + ent + ".class, null, null);");
+        s.add("        if (list != null) {");
+        s.add("            return list;");
+        s.add("        }");
+        s.add("        return new ArrayList<" + ent + ">();");
         s.add("    }");
         return i;
     }

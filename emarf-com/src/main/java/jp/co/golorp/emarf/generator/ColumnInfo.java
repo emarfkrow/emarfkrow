@@ -79,6 +79,9 @@ public class ColumnInfo {
     /** 派生元テーブル */
     private TableInfo deriveFrom;
 
+    /** 択一キーならtrue */
+    private boolean isChoice;
+
     /** 集約キーならtrue */
     private boolean isSummary;
 
@@ -261,6 +264,20 @@ public class ColumnInfo {
      */
     public void setDeriveFrom(final TableInfo p) {
         this.deriveFrom = p;
+    }
+
+    /**
+     * @return isChoice
+     */
+    public boolean isChoice() {
+        return isChoice;
+    }
+
+    /**
+     * @param p セットする isChoice
+     */
+    public void setChoice(final boolean p) {
+        this.isChoice = p;
     }
 
     /**
