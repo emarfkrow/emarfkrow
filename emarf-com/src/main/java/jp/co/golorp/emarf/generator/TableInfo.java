@@ -103,7 +103,7 @@ public class TableInfo {
     private List<TableInfo> deriveTos = new ArrayList<TableInfo>();
 
     /** 択一先テーブル */
-    private TableInfo choiceTo;
+    private List<TableInfo> choosers = new ArrayList<TableInfo>();
 
     /** 択一元テーブル */
     private List<TableInfo> choices = new ArrayList<TableInfo>();
@@ -349,17 +349,17 @@ public class TableInfo {
     }
 
     /**
-     * @return choiceTo
+     * @return choosers
      */
-    public TableInfo getChoiceTo() {
-        return choiceTo;
+    public List<TableInfo> getChoosers() {
+        return choosers;
     }
 
     /**
-     * @param p セットする choiceTo
+     * @param p セットする choosers
      */
-    public void setChoiceTo(final TableInfo p) {
-        this.choiceTo = p;
+    public void setChoosers(final List<TableInfo> p) {
+        this.choosers = p;
     }
 
     /**

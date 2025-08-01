@@ -639,6 +639,13 @@ public final class HtmlGenerator {
             s.add("        <a th:href=\"@{/model/" + r + ".html}\" id=\"" + r + "\" target=\"dialog\" th:text=\"#{" + r
                     + ".add}\" class=\"reborner\" tabindex=\"-1\">" + reborn.getRemarks() + "</a>");
         }
+        if (table.getChoosers() != null) { // 転生先がある場合は追加ボタンを出力
+            for (TableInfo chooser : table.getChoosers()) {
+                String r = StringUtil.toPascalCase(chooser.getName());
+                s.add("        <a th:href=\"@{/model/" + r + ".html}\" id=\"" + r + "\" target=\"dialog\" th:text=\"#{"
+                        + r + ".add}\" class=\"chooser\" tabindex=\"-1\">" + chooser.getRemarks() + "</a>");
+            }
+        }
         if (table.getSummaryOf() != null) { // 集約元がある場合は主キー項目を出力
             TableInfo summary = table.getSummaryOf();
             String m = StringUtil.toPascalCase(summary.getName());
@@ -687,9 +694,18 @@ public final class HtmlGenerator {
             TableInfo rebornTo = table.getRebornTo();
             String c = StringUtil.toPascalCase(rebornTo.getName());
             s.add("      <h3 th:text=\"#{" + c + ".h3}\">h3</h3>");
-            String frozen = String.valueOf(table.getPrimaryKeys().size());
+            String frozen = String.valueOf(rebornTo.getPrimaryKeys().size());
             s.add("      <div id=\"" + c + "Grid\" data-selectionMode=\"link\" data-frozenColumn=\"" + frozen
                     + "\" th:data-href=\"@{/model/" + c + ".html}\" class=\"reborners\"></div>");
+        }
+        if (table.getChoosers() != null) {
+            for (TableInfo chooser : table.getChoosers()) {
+                String c = StringUtil.toPascalCase(chooser.getName());
+                s.add("      <h3 th:text=\"#{" + c + ".h3}\">h3</h3>");
+                String frozen = String.valueOf(chooser.getPrimaryKeys().size());
+                s.add("      <div id=\"" + c + "Grid\" data-selectionMode=\"link\" data-frozenColumn=\"" + frozen
+                        + "\" th:data-href=\"@{/model/" + c + ".html}\" class=\"choosers\"></div>");
+            }
         }
         s.add("    </form>");
         s.add("  </div>");
@@ -980,6 +996,18 @@ public final class HtmlGenerator {
                 String entity = StringUtil.toPascalCase(rebornTo.getName());
                 s.add("<script th:src=\"@{/model/" + entity + "GridColumns.js}\"></script>");
                 htmlNestGrid(s, rebornTo, tables, added, false);
+            }
+        }
+
+        // 択一先モデル
+        if (table.getChoosers().size() > 1) {
+            for (TableInfo chooser : table.getChoosers()) {
+                if (!added.contains(chooser)) {
+                    String entity = StringUtil.toPascalCase(chooser.getName());
+                    s.add("<script th:src=\"@{/model/" + entity + "GridColumns.js}\"></script>");
+                    added.add(chooser);
+                    htmlNestGrid(s, chooser, tables, added, false);
+                }
             }
         }
 

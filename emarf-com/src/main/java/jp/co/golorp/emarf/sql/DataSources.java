@@ -1363,6 +1363,27 @@ public final class DataSources {
                 continue;
             }
 
+            // 派生先なら択一先にしない
+            boolean isDerive = false;
+            Iterator<TableInfo> derivees = tables.iterator();
+            while (derivees.hasNext()) {
+                TableInfo derivee = derivees.next();
+                if (derivee.getDeriveTos() != null) {
+                    for (TableInfo deriveTo : derivee.getDeriveTos()) {
+                        if (saki.getName().equals(deriveTo.getName())) {
+                            isDerive = true;
+                            break;
+                        }
+                    }
+                    if (isDerive) {
+                        break;
+                    }
+                }
+            }
+            if (isDerive) {
+                continue;
+            }
+
             // 択一元として、テーブル情報をループ
             Iterator<TableInfo> motos = tables.iterator();
             while (motos.hasNext()) {
@@ -1378,10 +1399,14 @@ public final class DataSources {
                 for (String motoPK : moto.getPrimaryKeys()) {
                     ColumnInfo motoKey = moto.getColumns().get(motoPK);
                     for (ColumnInfo sakiCol : saki.getColumns().values()) {
-                        // 主キー か NULL不可 ならスキップ
-                        if (sakiCol.isPk() || sakiCol.getNullable() != 1) {
+                        // 主キーならスキップ
+                        if (sakiCol.isPk()) {
                             continue;
                         }
+                        //                        // NULL不可ならスキップ
+                        //                        if (sakiCol.getNullable() != 1) {
+                        //                            continue;
+                        //                        }
                         // 主キーでなくNULL可の場合、カラム定義が一致するなら外部キーに追加
                         if (isMatchColDef(motoKey, sakiCol)) {
                             sakiFKs.add(sakiCol.getName());
@@ -1401,7 +1426,7 @@ public final class DataSources {
 
             if (saki.getChoices().size() < 2) {
                 for (TableInfo moto : saki.getChoices()) {
-                    LOG.debug("    Cancel " + saki.getName() + " of " + moto.getName());
+                    LOG.debug("        Cancel " + saki.getName() + " of " + moto.getName());
                     for (ColumnInfo sakiCol : saki.getColumns().values()) {
                         sakiCol.setChoice(false);
                     }
@@ -1409,7 +1434,7 @@ public final class DataSources {
                 saki.getChoices().clear();
             } else {
                 for (TableInfo moto : saki.getChoices()) {
-                    moto.setChoiceTo(saki);
+                    moto.getChoosers().add(saki);
                 }
             }
         }
@@ -1733,10 +1758,11 @@ public final class DataSources {
                 }
             }
 
-            if (table.getChoiceTo() != null) {
-                LOG.info("    ChoiceTo:");
-                TableInfo t = table.getChoiceTo();
-                LOG.info("        " + t.getName() + " " + t.getPrimaryKeys());
+            if (table.getChoosers().size() > 1) {
+                LOG.info("    Choosers:");
+                for (TableInfo chooser : table.getChoosers()) {
+                    LOG.info("        " + chooser.getName() + " " + chooser.getPrimaryKeys());
+                }
             }
 
             if (table.getChoices().size() > 1) {
