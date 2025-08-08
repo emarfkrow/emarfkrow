@@ -79,7 +79,7 @@ public class ColumnInfo {
     /** 派生元テーブル */
     private TableInfo deriveFrom;
 
-    /** 択一キーならtrue */
+    /** 選抜キーならtrue */
     private boolean isChoice;
 
     /** 集約キーならtrue */

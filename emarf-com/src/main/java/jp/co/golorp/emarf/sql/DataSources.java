@@ -404,9 +404,7 @@ public final class DataSources {
                     String dataType = getDataType(column);
                     column.setDataType(dataType);
                 }
-
                 columns.close();
-
                 if (table.getPrimaryKeys().size() == 0 && table.isView()) {
                     ColumnInfo noCol = table.getColumns().get("NO");
                     if (noCol != null) {
@@ -417,36 +415,39 @@ public final class DataSources {
                     }
                 }
             }
-
         } catch (Exception e) {
             LOG.error(e.getMessage(), e);
             throw new SysError(e);
         } finally {
             Connections.close();
         }
-
-        //履歴モデルの評価
-        addHistoryTable(tables);
-        //兄弟モデルの評価
-        addBrotherTable(tables);
-        //参照モデルの評価
-        addReferTable(tables);
-        //子モデルの評価
-        addChildTables(tables);
-        //転生モデルの評価
-        addRebornTable(tables);
-        //択一モデルの評価
-        addChoiceTable(tables);
-        //集約モデルの評価
-        addSummaryTable(tables);
-        //組合せモデルの評価
-        addCombo(tables);
+        // 参照モデルの評価
+        setRefer(tables);
+        // 複合モデルの評価
+        addCombos(tables);
+        // 兄弟モデルの評価
+        addBrothers(tables);
+        // 履歴モデルの評価
+        setHistory(tables);
+        // 親子モデルの評価
+        addChildren(tables);
+        // 派生モデルの評価
+        addDerives(tables);
+        // 統合モデルの評価
+        addMerge(tables);
+        // 転生モデルの評価
+        setReborn(tables);
+        // 選抜モデルの評価
+        addChoices(tables);
+        // 集約モデルの評価
+        addSummaryOfs(tables);
         log(tables);
         return tables;
     }
 
     /**
      * テーブル情報のリストに各テーブルを追加
+     *
      * @param metaData メタデータ
      * @param schemaPattern スキーマ名
      * @param tables テーブル情報のリスト
@@ -507,6 +508,7 @@ public final class DataSources {
 
     /**
      * テーブル情報に主キー名のリストを設定
+     *
      * @param metaData メタデータ
      * @param table テーブル情報
      * @throws SQLException
@@ -654,245 +656,83 @@ public final class DataSources {
     }
 
     /**
-     * 各テーブル情報に弟モデルを追加
+     * マスタテーブル（参照先）から、植え付け先（参照元）を探す
      *
      * @param tables テーブル情報のリスト
      */
-    private static void addBrotherTable(final List<TableInfo> tables) {
-
-        LOG.debug("【Brother】");
-
-        // 兄モデルとしてループ
-        Iterator<TableInfo> elders = tables.iterator();
-        while (elders.hasNext()) {
-            TableInfo elder = elders.next();
-
-            // 比較元に主キーがなければスキップ
-            if (elder.getPrimaryKeys().size() == 0) {
-                continue;
-            }
-
-            // 末っ子モデルならスキップ
-            if (elder.getName().matches(youngestRe)) {
-                continue;
-            }
-
-            // 孤児モデルならスキップ
-            if (elder.getName().matches(fosterRe)) {
-                continue;
-            }
-
-            // 弟モデルとしてループ
-            Iterator<TableInfo> youngers = tables.iterator();
-            while (youngers.hasNext()) {
-                TableInfo younger = youngers.next();
-
-                // 同じテーブルならスキップ
-                if (elder == younger) {
-                    continue;
-                }
-
-                // 長兄モデルならスキップ
-                if (younger.getName().matches(eldestRe)) {
-                    continue;
-                }
-
-                // 養子モデルならスキップ
-                if (younger.getName().matches(fosterRe)) {
-                    continue;
-                }
-
-                // 兄に履歴モデルがないのに弟に履歴モデルがある場合はスキップ
-                if (elder.getHistory() == null && younger.getHistory() != null) {
-                    continue;
-                }
-
-                // 兄弟の主キーに適用日が含まれる場合は評価から除外（不要かも）
-                List<String> eldKeys = new ArrayList<String>(elder.getPrimaryKeys());
-                List<String> yngKeys = new ArrayList<String>(younger.getPrimaryKeys());
-                boolean isTekiyoBiEld = eldKeys.contains(tekiyoBi);
-                boolean isTekiyoBiYng = yngKeys.contains(tekiyoBi);
-                if (isTekiyoBiEld && isTekiyoBiYng) {
-                    eldKeys.remove(tekiyoBi);
-                    yngKeys.remove(tekiyoBi);
-                }
-
-                // 主キーが合致しなければスキップ
-                String eldKeyCsv = eldKeys.toString().replaceAll("[\\[\\]]", "");
-                String yngKeyCsv = yngKeys.toString().replaceAll("[\\[\\]]", "");
-                if (!eldKeyCsv.equals(yngKeyCsv)) {
-                    continue;
-                }
-
-                // 兄に弟を追加、弟に弟フラグを設定
-                LOG.debug("    " + elder.getName() + " and " + younger.getName());
-                elder.getBrothers().add(younger);
-                younger.setIsBrother(true);
-            }
-        }
-    }
-
-    /**
-     * 各テーブル情報に履歴モデルを設定
-     * @param tables テーブル情報のリスト
-     */
-    private static void addHistoryTable(final List<TableInfo> tables) {
-
-        LOG.debug("【History】");
-
-        // 履歴元としてループ
-        Iterator<TableInfo> srcs = tables.iterator();
-        while (srcs.hasNext()) {
-            TableInfo src = srcs.next();
-
-            //主キーがなければスキップ
-            if (src.getPrimaryKeys().size() == 0) {
-                continue;
-            }
-
-            String srcKeyCsv = src.getPrimaryKeys().toString().replaceAll("[\\[\\]]", "");
-            String srcColCsv = src.getNonPrimaryKeys().toString().replaceAll("[\\[\\]]", "");
-
-            // 比較先でループ
-            Iterator<TableInfo> hiss = tables.iterator();
-            while (hiss.hasNext()) {
-                TableInfo his = hiss.next();
-
-                // 比較元と比較先が同じならスキップ
-                if (src == his) {
-                    continue;
-                }
-
-                // 変更理由列は比較対象から除外
-                List<String> hisNonPrimaryKeys = new ArrayList<String>(his.getNonPrimaryKeys());
-                if (!StringUtil.isNullOrWhiteSpace(reason) && (hisNonPrimaryKeys.contains(reason.toLowerCase())
-                        || hisNonPrimaryKeys.contains(reason.toUpperCase()))) {
-                    hisNonPrimaryKeys.remove(reason.toLowerCase());
-                    hisNonPrimaryKeys.remove(reason.toUpperCase());
-                }
-
-                String hisKeyCsv = his.getPrimaryKeys().toString().replaceAll("[\\[\\]]", "");
-                String hisColCsv = hisNonPrimaryKeys.toString().replaceAll("[\\[\\]]", "");
-
-                // キーが合致するならスキップ
-                if (srcKeyCsv.equals(hisKeyCsv)) {
-                    continue;
-                }
-
-                // キー以外が合致しなければスキップ
-                if (!srcColCsv.equals(hisColCsv)) {
-                    continue;
-                }
-
-                // 比較先が比較元の主キーと同じ組み合わせでスタートしなければスキップ
-                if (!hisKeyCsv.startsWith(srcKeyCsv)) {
-                    continue;
-                }
-
-                // 比較先が比較元の主キー＋１キーでなければスキップ
-                if (his.getPrimaryKeys().size() != src.getPrimaryKeys().size() + 1) {
-                    continue;
-                }
-
-                // 比較先の最終キーが採番キーでないか文字列ならスキップ
-                String hisLastKey = his.getPrimaryKeys().get(his.getPrimaryKeys().size() - 1);
-                ColumnInfo hisLastPK = his.getColumns().get(hisLastKey);
-                if (!hisLastPK.isNumbering() || hisLastPK.getTypeName().equals("CHAR")) {
-                    continue;
-                }
-
-                // 比較先が比較元に前方一致しないならスキップ
-                if (!his.getName().matches("(?i)^" + src.getName() + ".+$")) {
-                    continue;
-                }
-
-                LOG.debug("    " + src.getName() + " to " + his.getName());
-                his.setHistory(true);
-                src.setHistoryInfo(his);
-            }
-        }
-    }
-
-    /**
-     * マスタテーブル（参照先）から、植え付け先（参照元）を探す
-     * @param tables テーブル情報のリスト
-     */
-    private static void addReferTable(final List<TableInfo> tables) {
+    private static void setRefer(final List<TableInfo> tables) {
 
         LOG.debug("【Refer】");
 
-        // 参照先マスタとしてループ
-        Iterator<TableInfo> msts = tables.iterator();
-        while (msts.hasNext()) {
-            TableInfo mst = msts.next();
+        // 参照先としてループ
+        Iterator<TableInfo> sakis = tables.iterator();
+        while (sakis.hasNext()) {
+            TableInfo saki = sakis.next();
 
-            // 適用日が主キーに含まれる場合は除去
-            List<String> mstKeys = new ArrayList<String>(mst.getPrimaryKeys());
-            mstKeys.remove(tekiyoBi);
-
-            // 適用日を除く、キーがなければスキップ
-            if (mstKeys.size() == 0) {
+            // 適用日を除く、主キーがなければスキップ
+            List<String> referKeys = new ArrayList<String>(saki.getPrimaryKeys());
+            referKeys.remove(tekiyoBi);
+            if (referKeys.size() == 0) {
                 continue;
             }
 
-            // 履歴モデル ならスキップ
-            if (mst.isHistory()) {
-                continue;
-            }
+            //            // 履歴モデル ならスキップ
+            //            if (saki.isHistory()) {
+            //                continue;
+            //            }
 
-            // 同じキーの参照モデルが複数存在する
-            if (mst.getBrothers().size() > 0) {
-                boolean isReferYng = false;
-                for (TableInfo yng : mst.getBrothers()) {
-                    if (isRefer(yng)) {
-                        isReferYng = true;
-                        break;
-                    }
-                }
-                if (isReferYng) {
-                    continue;
-                }
-            }
+            //            // 同じキーの参照モデルが複数存在するならスキップ
+            //            if (saki.getBrothers().size() > 0) {
+            //                boolean isReferYng = false;
+            //                for (TableInfo yng : saki.getBrothers()) {
+            //                    if (isRefer(yng)) {
+            //                        isReferYng = true;
+            //                        break;
+            //                    }
+            //                }
+            //                if (isReferYng) {
+            //                    continue;
+            //                }
+            //            }
 
             // どの参照ペアにもヒットしなければスキップ
-            if (!isRefer(mst)) {
+            if (!isMatchReferPairs(saki)) {
                 continue;
             }
 
             // 参照先マスタのユニークキー情報
-            String lastKey = null;
-            lastKey = mstKeys.get(mstKeys.size() - 1);
-            ColumnInfo mstPK = mst.getColumns().get(lastKey);
+            String referLastKey = referKeys.get(referKeys.size() - 1);
+            //            ColumnInfo sakiLastPK = saki.getColumns().get(sakiLastKey);
 
             // 参照元トランとしてループ
-            Iterator<TableInfo> trns = tables.iterator();
-            while (trns.hasNext()) {
-                TableInfo trn = trns.next();
+            Iterator<TableInfo> motos = tables.iterator();
+            while (motos.hasNext()) {
+                TableInfo moto = motos.next();
 
                 // 適用日が主キーに含まれる場合は除去
-                List<String> trnKeys = new ArrayList<String>(trn.getPrimaryKeys());
-                trnKeys.remove(tekiyoBi);
+                List<String> motoKeys = new ArrayList<String>(moto.getPrimaryKeys());
+                motoKeys.remove(tekiyoBi);
 
                 // 参照元トランのカラム情報でループ（比較元のユニークキーがあれば参照テーブルリストに追加）
-                for (Entry<String, ColumnInfo> e : trn.getColumns().entrySet()) {
-                    String colName = e.getKey();
-                    ColumnInfo col = e.getValue();
+                for (Entry<String, ColumnInfo> e : moto.getColumns().entrySet()) {
+                    String motoColName = e.getKey();
+                    ColumnInfo motoCol = e.getValue();
 
                     // 参照テーブル自体の主キー自体ならスキップ（親ID参照もあるため）
-                    if (trn == mst && col == mstPK) {
+                    if (moto == saki && motoCol.isPk()) {
                         continue;
                     }
 
                     // 参照元カラム名の末尾が参照先カラム名と合致し、参照モデルが未登録なら、カラムに参照モデルを設定
-                    if (colName.matches("(?i)^.*" + lastKey + "$") && col.getRefer() == null) {
+                    if (motoColName.matches("(?i)^.*" + referLastKey + "$") && motoCol.getRefer() == null) {
 
-                        LOG.debug("    " + mst.getName() + " from " + trn.getName() + "." + col.getName());
-                        col.setRefer(mst);
-                        mst.setRefer(true);
+                        LOG.debug("    " + saki.getName() + " from " + moto.getName() + "." + motoCol.getName());
+                        motoCol.setRefer(saki);
+                        saki.setRefer(true);
 
                         // 参照元の複合キーの最終キーなら、参照サブ画面で選択するため採番フラグをオフ
-                        if (trnKeys.size() > 1 && colName.equals(trnKeys.get(trnKeys.size() - 1))) {
-                            col.setNumbering(false);
+                        if (motoKeys.size() > 1 && motoColName.equals(motoKeys.get(motoKeys.size() - 1))) {
+                            motoCol.setNumbering(false);
                         }
                     }
                 }
@@ -901,10 +741,12 @@ public final class DataSources {
     }
 
     /**
+     * 参照ペアのいずれかに該当するか評価
+     *
      * @param table
      * @return boolean
      */
-    public static boolean isRefer(final TableInfo table) {
+    public static boolean isMatchReferPairs(final TableInfo table) {
 
         List<String> mstKeys = table.getPrimaryKeys();
 
@@ -944,12 +786,247 @@ public final class DataSources {
     }
 
     /**
-     * 各テーブル情報に子モデルを設定
+     * 複合先の複合キー群から参照マスタを探す
+     *
+     * @param tables
+     */
+    private static void addCombos(final List<TableInfo> tables) {
+
+        LOG.debug("【Combo】");
+
+        for (TableInfo saki : tables) {
+
+            //複合キー内の参照モデルを探索
+            Set<TableInfo> combos = new LinkedHashSet<TableInfo>();
+            for (String sakiPrimaryKey : saki.getPrimaryKeys()) {
+                ColumnInfo pkCol = saki.getColumns().get(sakiPrimaryKey);
+                if (pkCol.getRefer() != null) {
+                    TableInfo refer = pkCol.getRefer();
+                    if (!combos.contains(refer)) {
+                        combos.add(refer);
+                    }
+                }
+            }
+
+            //複合キー内の参照モデルが２以上あれば組合せモデルに設定
+            if (combos.size() > 1) {
+                for (TableInfo combo : combos) {
+                    LOG.debug("    " + saki.getName() + " : " + combo.getName());
+                    saki.getComboInfos().add(combo);
+                }
+            }
+
+            //            //組合せモデル数が２の場合
+            //            if (saki.getComboInfos().size() == 2) {
+            //
+            //                // 自テーブルの主キーが各単一キーと適用日のみで、
+            //                // 各テーブルの主キーが自テーブルの第二キー以降の場合は、
+            //                // 各テーブルに制約モデルを設定
+            //                boolean b = true;
+            //                for (String pk : saki.getPrimaryKeys()) {
+            //                    if (pk.matches(tekiyoBi)) {
+            //                        continue;
+            //                    }
+            //                    ColumnInfo primaryKey = saki.getColumns().get(pk);
+            //                    TableInfo combo = primaryKey.getRefer();
+            //                    if (combo != null && combo.getPrimaryKeys().size() == 1) {
+            //                        continue;
+            //                    }
+            //                    b = false;
+            //                    break;
+            //                }
+            //                if (!b) {
+            //                    continue;
+            //                }
+            //
+            //                for (TableInfo combo : saki.getComboInfos()) {
+            //                    //組合せの第一キーなら制約設定なし
+            //                    if (saki.getPrimaryKeys().get(0).equals(combo.getPrimaryKeys().get(0))) {
+            //                        continue;
+            //                    }
+            //                    //制約モデルが２以上あれば消し込み
+            //                    if (saki.getStintInfo() != null) {
+            //                        LOG.debug("        Cancel " + saki.getName() + " : " + combo.getName());
+            //                        saki.setStintInfo(null);
+            //                        break;
+            //                    }
+            //                    LOG.debug("        Stint " + saki.getName() + " : " + combo.getName());
+            //                    saki.setStintInfo(combo);
+            //                }
+            //            }
+        }
+    }
+
+    /**
+     * 各テーブル情報に弟モデルを追加
+     *
      * @param tables テーブル情報のリスト
      */
-    private static void addChildTables(final List<TableInfo> tables) {
+    private static void addBrothers(final List<TableInfo> tables) {
 
-        LOG.debug("【Childs】");
+        LOG.debug("【Brother】");
+
+        // 比較元としてループ
+        Iterator<TableInfo> elds = tables.iterator();
+        while (elds.hasNext()) {
+            TableInfo eld = elds.next();
+
+            // 比較元に主キーがなければスキップ
+            if (eld.getPrimaryKeys().size() == 0) {
+                continue;
+            }
+
+            // 里子モデルならスキップ
+            if (eld.getName().matches(fosterRe)) {
+                continue;
+            }
+
+            // 末弟モデルならスキップ
+            if (eld.getName().matches(youngestRe)) {
+                continue;
+            }
+
+            // 比較元の主キーに適用日が含まれているか
+            List<String> eldKeys = new ArrayList<String>(eld.getPrimaryKeys());
+            boolean isTekiyoBiEld = eldKeys.contains(tekiyoBi);
+
+            // 比較先としてループ
+            Iterator<TableInfo> yngs = tables.iterator();
+            while (yngs.hasNext()) {
+                TableInfo yng = yngs.next();
+
+                // 同じテーブルならスキップ
+                if (eld == yng) {
+                    continue;
+                }
+
+                // 比較先に主キーがなければスキップ
+                if (yng.getPrimaryKeys().size() == 0) {
+                    continue;
+                }
+
+                // 里子モデルならスキップ
+                if (yng.getName().matches(fosterRe)) {
+                    continue;
+                }
+
+                // 長兄モデルならスキップ
+                if (yng.getName().matches(eldestRe)) {
+                    continue;
+                }
+
+                //                // 兄に履歴モデルがないのに弟に履歴モデルがある場合はスキップ
+                //                if (moto.getHistory() == null && saki.getHistory() != null) {
+                //                    continue;
+                //                }
+
+                // 兄弟ともに適用日が主キーに含まれる場合は評価から除外
+                List<String> yngKeys = new ArrayList<String>(yng.getPrimaryKeys());
+                boolean isTekiyoBiYng = yngKeys.contains(tekiyoBi);
+                if (isTekiyoBiEld && isTekiyoBiYng) {
+                    eldKeys.remove(tekiyoBi);
+                    yngKeys.remove(tekiyoBi);
+                }
+
+                // 主キーが合致しなければスキップ
+                String eldKeyCsv = eldKeys.toString().replaceAll("[\\[\\]]", "");
+                String yngKeyCsv = yngKeys.toString().replaceAll("[\\[\\]]", "");
+                if (!eldKeyCsv.equals(yngKeyCsv)) {
+                    continue;
+                }
+
+                // 兄に弟を追加、弟に弟フラグを設定
+                LOG.debug("    " + eld.getName() + " and " + yng.getName());
+                eld.getBrothers().add(yng);
+                yng.setBrother(true);
+            }
+        }
+    }
+
+    /**
+     * 各テーブル情報に履歴モデルを設定
+     *
+     * @param tables テーブル情報のリスト
+     */
+    private static void setHistory(final List<TableInfo> tables) {
+
+        LOG.debug("【History】");
+
+        // 履歴元としてループ
+        Iterator<TableInfo> motos = tables.iterator();
+        while (motos.hasNext()) {
+            TableInfo moto = motos.next();
+
+            // 主キーがなければスキップ
+            if (moto.getPrimaryKeys().size() == 0) {
+                continue;
+            }
+
+            String motoKeyCsv = moto.getPrimaryKeys().toString().replaceAll("[\\[\\]]", "");
+            String motoColCsv = moto.getNonPrimaryKeys().toString().replaceAll("[\\[\\]]", "");
+
+            // 比較先でループ
+            Iterator<TableInfo> sakis = tables.iterator();
+            while (sakis.hasNext()) {
+                TableInfo saki = sakis.next();
+
+                // 比較元と比較先が同じならスキップ
+                if (moto == saki) {
+                    continue;
+                }
+
+                // 比較先テーブル名が比較元テーブル名に前方一致しないならスキップ
+                if (!saki.getName().matches("(?i)^" + moto.getName() + ".+$")) {
+                    continue;
+                }
+
+                // 変更理由列は比較対象から除外
+                List<String> sakiNonPrimaryKeys = new ArrayList<String>(saki.getNonPrimaryKeys());
+                if (!StringUtil.isNullOrWhiteSpace(reason)) {
+                    sakiNonPrimaryKeys.remove(reason.toLowerCase());
+                    sakiNonPrimaryKeys.remove(reason.toUpperCase());
+                }
+
+                String sakiKeyCsv = saki.getPrimaryKeys().toString().replaceAll("[\\[\\]]", "");
+                String sakiColCsv = sakiNonPrimaryKeys.toString().replaceAll("[\\[\\]]", "");
+
+                // 比較先の主キーの最初から、比較元の主キーと合致しなければスキップ
+                if (!sakiKeyCsv.startsWith(motoKeyCsv)) {
+                    continue;
+                }
+
+                // 比較先の主キー数が、比較元の主キー数＋１でなければスキップ
+                if (saki.getPrimaryKeys().size() != moto.getPrimaryKeys().size() + 1) {
+                    continue;
+                }
+
+                // キー以外が合致しなければスキップ
+                if (!motoColCsv.equals(sakiColCsv)) {
+                    continue;
+                }
+
+                // 比較先の最終キーが採番キーでないか文字列ならスキップ
+                String sakiLastKey = saki.getPrimaryKeys().get(saki.getPrimaryKeys().size() - 1);
+                ColumnInfo sakiLastPK = saki.getColumns().get(sakiLastKey);
+                if (!sakiLastPK.isNumbering() || sakiLastPK.getTypeName().equals("CHAR")) {
+                    continue;
+                }
+
+                LOG.debug("    " + moto.getName() + " to " + saki.getName());
+                saki.setHistory(true);
+                moto.setHistory(saki);
+            }
+        }
+    }
+
+    /**
+     * 各テーブル情報に子モデルを設定
+     *
+     * @param tables テーブル情報のリスト
+     */
+    private static void addChildren(final List<TableInfo> tables) {
+
+        LOG.debug("【Children】");
 
         // 親モデルとしてループ
         Iterator<TableInfo> oyas = tables.iterator();
@@ -993,10 +1070,10 @@ public final class DataSources {
                     continue;
                 }
 
-                // 親に履歴モデルがないのに子に履歴モデルがある場合はスキップ
-                if (oya.getHistory() == null && ko.getHistory() != null) {
-                    continue;
-                }
+                //                // 親に履歴モデルがないのに子に履歴モデルがある場合はスキップ
+                //                if (oya.getHistory() == null && ko.getHistory() != null) {
+                //                    continue;
+                //                }
 
                 //                // 親が参照モデルで子がトラン、およびその逆ならスキップ
                 //                if ((oya.isRefer() && !ko.isRefer()) || (!oya.isRefer() && ko.isRefer())) {
@@ -1009,7 +1086,7 @@ public final class DataSources {
                     continue;
                 }
 
-                // 親にも主キーに適用日があれば評価から除外
+                // 親にも主キーに適用日があれば、評価から除外
                 List<String> koKeys = new ArrayList<String>(ko.getPrimaryKeys());
                 if (koKeys.contains(tekiyoBi)) {
                     if (isOyaTekiyoBi) {
@@ -1020,15 +1097,14 @@ public final class DataSources {
                     }
                 }
 
-                // 主キーがなければスキップ
+                // 適用日を処置した結果、主キーがなければスキップ
                 if (koKeys.size() == 0) {
                     continue;
                 }
 
+                // 子の主キーの先頭から、親の主キーに合致しなければスキップ
                 String oyaKeyCsv = oyaKeys.toString().replaceAll("[\\[\\]]", "");
                 String koKeyCsv = koKeys.toString().replaceAll("[\\[\\]]", "");
-
-                // 子の主キーが親の主キーを満たさなければスキップ
                 if (!koKeyCsv.startsWith(oyaKeyCsv)) {
                     continue;
                 }
@@ -1044,47 +1120,52 @@ public final class DataSources {
                 //                    continue;
                 //                }
 
-                // 設定済みの親モデルに子モデル名が後方一致するならスキップ
-                if (ko.getParents().size() == 1) {
-                    TableInfo orgParent = ko.getParents().get(0);
-                    if (ko.getName().startsWith(orgParent.getName())) {
-                        continue;
-                    }
-                }
+                //                // 設定済みの親モデルに子モデル名が後方一致するならスキップ（親を先勝ちで１つに絞っている）
+                //                if (ko.getParents().size() == 1) {
+                //                    TableInfo orgParent = ko.getParents().get(0);
+                //                    if (ko.getName().startsWith(orgParent.getName())) {
+                //                        continue;
+                //                    }
+                //                }
 
-                // 親モデルの子リストに追加
-                oya.getChilds().add(ko);
-
-                // 子モデルの親リストに追加
+                // 親モデルの子リストに追加・子モデルの親リストに追加
+                LOG.debug("    " + oya.getName() + " has " + ko.getName());
+                oya.getChildren().add(ko);
                 ko.getParents().add(oya);
 
-                // 親子設定した場合、兄弟モデルを消し込み（親が適用日なし、子が適用日ありで、誤登録されている可能性があるため）
-                LOG.debug("    " + oya.getName() + " has " + ko.getName());
-                oya.getBrothers().remove(ko);
-                ko.getBrothers().remove(oya);
+                //                // 親子設定した場合、兄弟モデルを消し込み（親が適用日なし、子が適用日ありで、兄弟モデルに誤登録されている可能性があるため）
+                //                if (oya.getBrothers().contains(ko)) {
+                //                    LOG.debug("    Cancel brother" + oya.getName() + " and " + ko.getName());
+                //                    oya.getBrothers().remove(ko);
+                //                }
+                //                if (ko.getBrothers().contains(oya)) {
+                //                    LOG.debug("    Cancel brother" + ko.getName() + " and " + oya.getName());
+                //                    ko.getBrothers().remove(oya);
+                //                }
             }
         }
     }
 
     /**
-     * 転生元（派生元）から、転生先（派生先）を探す
+     * 一旦、全ての外部キーについて、派生元から派生先を探す
+     *
      * @param tables テーブル情報のリスト
      */
-    private static void addRebornTable(final List<TableInfo> tables) {
+    private static void addDerives(final List<TableInfo> tables) {
 
-        LOG.debug("【Reborn】");
+        LOG.debug("【Derives】");
 
-        // 転生元・派生元としてループ
+        // 派生元としてループ
         Iterator<TableInfo> motos = tables.iterator();
         while (motos.hasNext()) {
             TableInfo moto = motos.next();
 
-            // 履歴モデル・参照モデル・兄弟モデル・ビュー は転生しない
-            if (moto.isHistory() || moto.isRefer() || moto.isBrother() || moto.isView()) {
+            // ビュー・参照モデル・兄弟モデル・履歴モデル は派生しない
+            if (moto.isView() || moto.isRefer() || moto.isBrother() || moto.isHistory()) {
                 continue;
             }
 
-            // 親が参照モデルでも転生しない
+            // 参照モデルの子モデルは転生しない
             boolean isOyaRefer = false;
             for (TableInfo oya : moto.getParents()) {
                 if (oya.isRefer()) {
@@ -1096,222 +1177,152 @@ public final class DataSources {
                 continue;
             }
 
-            // この転生元自体が、既に何れかの転生先になっているか
-            boolean isThisMotoRebornTo = false;
-            Iterator<TableInfo> others = tables.iterator();
-            while (others.hasNext()) {
-                TableInfo other = others.next();
-                if (other.getRebornTo() != null) {
-                    TableInfo rebornTo = other.getRebornTo();
-                    if (moto.getName().equals(rebornTo.getName())) {
-                        isThisMotoRebornTo = true;
-                        break;
-                    }
-                    // この転生元の親が、既に何れかの転生先かどうかも考慮する（受注明細→売上実績のパターンで受注を評価している）
-                    for (TableInfo oya : moto.getParents()) {
-                        if (oya.getName().equals(rebornTo.getName())) {
-                            isThisMotoRebornTo = true;
-                            break;
-                        }
-                    }
-                }
-            }
-
-            int rebornCount = 0;
-
-            // 転生先として、テーブル情報をループ
+            // 派生先として、テーブル情報をループ
             Iterator<TableInfo> sakis = tables.iterator();
             while (sakis.hasNext()) {
                 TableInfo saki = sakis.next();
 
-                // 履歴モデル・参照モデル・ビュー は転生先にしない
-                if (saki.isHistory() || saki.isRefer() || saki.isView()) {
+                // ビュー・参照モデル・履歴モデル は派生先にしない
+                if (saki.isView() || saki.isRefer() || saki.isHistory()) {
                     continue;
                 }
 
-                // 転生先の外部キーを取得
-                Set<String> sakiFKs = new HashSet<String>();
-                for (String motoPrimaryKey : moto.getPrimaryKeys()) {
-                    ColumnInfo motoKey = moto.getColumns().get(motoPrimaryKey);
-
-                    // 転生先のカラム情報でループして転生元の主キーがあれば参照テーブルリストに追加
+                // 派生元の主キーでループして、合致する派生先の外部キーを取得
+                Set<String> sakiKeys = new HashSet<String>();
+                for (String motoKey : moto.getPrimaryKeys()) {
+                    ColumnInfo motoPK = moto.getColumns().get(motoKey);
                     for (ColumnInfo sakiCol : saki.getColumns().values()) {
-
-                        if (sakiCol.isPk()) {
-                            continue; // 主キーならスキップ
-                        }
-
-                        // 転生先のカラムがNULL可でも、転生元および親が、既に他の転生先である場合は外部キーに含める
-                        // （見積→注文のパターン。注文からでもスタートできるよう。）
-                        if (sakiCol.getNullable() == 1 && !isThisMotoRebornTo) {
-                            continue;
-                        }
-
-                        if (isMatchColDef(motoKey, sakiCol)) {
-                            sakiFKs.add(sakiCol.getName());
+                        if (!sakiCol.isPk() && isMatchColDef(motoPK, sakiCol)) {
+                            sakiKeys.add(sakiCol.getName());
                         }
                     }
                 }
 
-                // 転生元の主キーと、転生先外部キーの、数が一致する場合
-                if (moto.getPrimaryKeys().size() == sakiFKs.size()) {
+                // 転生元の主キーと、転生先外部キーの数が一致しなければスキップ
+                if (moto.getPrimaryKeys().size() != sakiKeys.size()) {
+                    continue;
+                }
 
-                    boolean isSakiRebornElse = isSakiRebornElse(tables, moto, saki);
-
-                    // 今回の比較先が、他モデルの転生先でなければ、比較元の転生先に設定
-                    if (!isSakiRebornElse) {
-
-                        // ２回以上ここに来る＝転生先が複数存在しうる＝転生モデルでなく派生モデルにする
-                        if (rebornCount > 0) {
-                            if (moto.getRebornTo() != null) {
-                                TableInfo rebornTo = moto.getRebornTo(); // 転生先を派生先に追加
-                                LOG.debug("        Cancel to " + rebornTo.getName());
-                                moto.setRebornTo(null);
-                                for (String primaryKey : moto.getPrimaryKeys()) {
-                                    rebornTo.getColumns().get(primaryKey).setReborn(false);
-                                }
-                                rebornTo.getRebornFroms().remove(moto);
-                                LOG.debug("        Derive to " + rebornTo.getName());
-                                moto.getDeriveTos().add(rebornTo);
-                                for (String primaryKey : moto.getPrimaryKeys()) {
-                                    rebornTo.getColumns().get(primaryKey).setDeriveFrom(moto);
-                                }
-                            }
-                            LOG.debug("        Derive to " + saki.getName() + " " + sakiFKs);
-                            moto.getDeriveTos().add(saki);
-                            for (String fk : sakiFKs) {
-                                saki.getColumns().get(fk).setDeriveFrom(moto);
-                            }
-                            continue;
-                        }
-
-                        LOG.debug("    " + moto.getName() + " to " + saki.getName() + " " + sakiFKs);
-                        ++rebornCount;
-                        moto.setRebornTo(saki);
-                        for (String fk : sakiFKs) {
-                            saki.getColumns().get(fk).setReborn(true);
-                        }
-                        saki.getRebornFroms().add(moto);
-                    }
+                LOG.debug("    " + moto.getName() + " to " + saki.getName() + " " + sakiKeys);
+                moto.getDeriveTos().add(saki);
+                saki.getDeriveFroms().add(moto);
+                for (String sakiKey : sakiKeys) {
+                    saki.getColumns().get(sakiKey).setDeriveFrom(moto);
                 }
             }
         }
     }
 
     /**
-     * src以外の転生先か派生先になっているか評価
-     * @param tables
-     * @param moto 転生元
-     * @param saki 転生先
-     * @return boolean
+     * 統合先から、統合元を探す
+     *
+     * @param tables テーブル情報のリスト
      */
-    public static boolean isSakiRebornElse(final List<TableInfo> tables, final TableInfo moto, final TableInfo saki) {
+    private static void addMerge(final List<TableInfo> tables) {
 
-        String motoNm = moto.getName();
-        String sakiNm = saki.getName();
+        LOG.debug("【Merge】");
 
-        // 主キー合致数の多い転生元が他に存在するか
-        boolean isSakiRebornElse = false;
+        // 統合先としてループ
+        Iterator<TableInfo> sakis = tables.iterator();
+        while (sakis.hasNext()) {
+            TableInfo saki = sakis.next();
 
-        // 他テーブルと転生先が重複する場合、合致キー数が多いほうを転生元とする
-        Iterator<TableInfo> rebornees = tables.iterator();
-        while (rebornees.hasNext()) {
-            TableInfo other = rebornees.next();
-
-            // 転生元自身ならスキップ
-            if (other == moto) {
+            // 派生元が１つ以下ならスキップ
+            if (saki.getDeriveFroms().size() <= 1) {
                 continue;
             }
 
-            // 比較対象に転生先がなければスキップ
-            if (other.getRebornTo() == null) {
-                continue;
-            }
-
-            // 比較対象に転生先があっても、今回の転生先でなければスキップ
-            if (!other.getRebornTo().getName().equals(sakiNm)) {
-                continue;
-            }
-
-            // 転生元が優先される場合
-            if (other.getPrimaryKeys().size() <= moto.getPrimaryKeys().size()) {
-
-                // 比較対象の転生先をクリア
-                LOG.debug("        Cancel " + other.getName() + " reborn to " + sakiNm + " by " + motoNm);
-                TableInfo rebornTo = other.getRebornTo();
-                other.setRebornTo(null);
-                for (String otherKey : other.getPrimaryKeys()) {
-                    rebornTo.getColumns().get(otherKey).setReborn(false);
+            // 転生キーがある場合は転生元を取得
+            List<TableInfo> merges = new ArrayList<TableInfo>();
+            for (ColumnInfo sakiCol : saki.getColumns().values()) {
+                if (sakiCol.getDeriveFrom() != null && sakiCol.getNullable() != 1) {
+                    merges.add(sakiCol.getDeriveFrom());
                 }
-                rebornTo.getRebornFroms().remove(other);
             }
 
-            // 比較対象が優先される場合
-            if (other.getPrimaryKeys().size() >= moto.getPrimaryKeys().size()) {
-                isSakiRebornElse = true;
+            // 統合モデルでなければスキップ
+            if (merges.size() <= 1) {
+                continue;
+            }
+
+            for (TableInfo moto : merges) {
+                LOG.debug("    " + saki.getName() + " from " + moto.getName() + " " + moto.getPrimaryKeys());
+
+                // 派生情報を消し込み
+                moto.getDeriveTos().remove(saki);
+                saki.getDeriveFroms().remove(moto);
+                for (ColumnInfo sakiCol : saki.getColumns().values()) {
+                    if (sakiCol.getDeriveFrom() == moto) {
+                        sakiCol.setDeriveFrom(null);
+                    }
+                }
+
+                // 統合情報を書き込み
+                moto.setMergeTo(saki);
+                saki.getMergeFroms().add(moto);
+                for (String motoKey : moto.getPrimaryKeys()) {
+                    saki.getColumns().get(motoKey).setRefer(moto);
+                }
             }
         }
+    }
 
-        // 他のテーブルと派生先が重複する場合、合致キー数が多いほうを派生元とする
-        Iterator<TableInfo> derivees = tables.iterator();
-        while (derivees.hasNext()) {
-            TableInfo other = derivees.next();
+    /**
+     * 転生元から、転生先を探す
+     *
+     * @param tables テーブル情報のリスト
+     */
+    private static void setReborn(final List<TableInfo> tables) {
 
-            // 転生元自身ならスキップ
-            if (other == moto) {
+        LOG.debug("【Reborn】");
+
+        // 転生元としてループ
+        Iterator<TableInfo> motos = tables.iterator();
+        while (motos.hasNext()) {
+            TableInfo moto = motos.next();
+
+            // 派生先が１つでなければスキップ
+            if (moto.getDeriveTos().size() != 1) {
                 continue;
             }
 
-            // 比較対象に派生先がなければスキップ
-            if (other.getDeriveTos() == null || other.getDeriveTos().size() == 0) {
-                continue;
-            }
-
-            List<TableInfo> deriveTos = new ArrayList<TableInfo>();
-            for (TableInfo deriveTo : other.getDeriveTos()) {
-
-                deriveTos.add(deriveTo);
-
-                // 比較対象に派生先があっても、今回の転生先でなければスキップ
-                if (!deriveTo.getName().equals(sakiNm)) {
+            // 派生先の外部キーがNULL可ならスキップ
+            boolean isReborn = true;
+            Set<String> sakiKeys = new HashSet<String>();
+            TableInfo saki = moto.getDeriveTos().get(0);
+            for (ColumnInfo sakiCol : saki.getColumns().values()) {
+                if (sakiCol.getDeriveFrom() == null) {
                     continue;
                 }
-
-                // 転生元が優先される場合
-                if (other.getPrimaryKeys().size() <= moto.getPrimaryKeys().size()) {
-
-                    // 比較対象の派生先をクリア
-                    LOG.debug("        Cancel " + other.getName() + " derive to " + sakiNm + " by " + motoNm);
-                    deriveTos.remove(deriveTo);
-                    for (String primaryKey : other.getPrimaryKeys()) {
-                        deriveTo.getColumns().get(primaryKey).setDeriveFrom(null);
+                if (sakiCol.getDeriveFrom() == moto) {
+                    if (sakiCol.getNullable() == 1) {
+                        isReborn = false;
+                        break;
                     }
-
-                    //                    // 転生先が誤登録されているなら削除
-                    //                    if (deriveTo.getRebornFroms() != null && deriveTo.getRebornFroms().contains(other)) {
-                    //                        LOG.debug("        Cancel " + other.getName() + " reborn to " + deriveTo.getName() + " by "
-                    //                                + moto.getName());
-                    //                        other.setRebornTo(null);
-                    //                        for (String otherKey : other.getPrimaryKeys()) {
-                    //                            deriveTo.getColumns().get(otherKey).setReborn(false);
-                    //                        }
-                    //                        deriveTo.getRebornFroms().remove(other);
-                    //                    }
-                }
-
-                // 比較対象が優先される場合
-                if (other.getPrimaryKeys().size() >= moto.getPrimaryKeys().size()) {
-                    isSakiRebornElse = true;
+                    sakiKeys.add(sakiCol.getName());
                 }
             }
-            other.setDeriveTos(deriveTos);
+            if (!isReborn) {
+                continue;
+            }
 
-            //            if (isMotoElse) {
-            //                break;
-            //            }
+            // 派生情報を消し込み
+            moto.getDeriveTos().remove(saki);
+            saki.getDeriveFroms().remove(moto);
+            for (ColumnInfo sakiCol : saki.getColumns().values()) {
+                if (sakiCol.getDeriveFrom() == moto) {
+                    sakiCol.setDeriveFrom(null);
+                }
+            }
+
+            // 転生情報を書き込み
+            LOG.debug("    " + moto.getName() + " to " + saki.getName() + " " + sakiKeys);
+            moto.setRebornTo(saki);
+            saki.setRebornFrom(moto);
+            for (String sakiKey : sakiKeys) {
+                saki.getColumns().get(sakiKey).setReborn(true);
+            }
         }
-
-        return isSakiRebornElse;
     }
 
     /**
@@ -1345,322 +1356,116 @@ public final class DataSources {
     }
 
     /**
-     * 択一元の主キーから、択一先の外部キーを探す
+     * 選抜先から、選抜元を探す
      *
      * @param tables テーブル情報のリスト
      */
-    private static void addChoiceTable(final List<TableInfo> tables) {
+    private static void addChoices(final List<TableInfo> tables) {
 
-        LOG.debug("【Choice】");
+        LOG.debug("【Choices】");
 
-        // 択一先として、テーブル情報をループ
+        // 選抜先として、テーブル情報をループ
         Iterator<TableInfo> sakis = tables.iterator();
         while (sakis.hasNext()) {
             TableInfo saki = sakis.next();
 
-            // 履歴モデル・ビュー・参照モデルは択一元としない
-            if (saki.isHistory() || saki.isView() || saki.isRefer()) {
+            // 派生元が１つ以下ならスキップ
+            if (saki.getDeriveFroms().size() <= 1) {
                 continue;
             }
 
-            // 派生先なら択一先にしない
-            boolean isDerive = false;
-            Iterator<TableInfo> derivees = tables.iterator();
-            while (derivees.hasNext()) {
-                TableInfo derivee = derivees.next();
-                if (derivee.getDeriveTos() != null) {
-                    for (TableInfo deriveTo : derivee.getDeriveTos()) {
-                        if (saki.getName().equals(deriveTo.getName())) {
-                            isDerive = true;
-                            break;
-                        }
-                    }
-                    if (isDerive) {
-                        break;
-                    }
+            // 派生キーがある場合は派生元を取得
+            List<TableInfo> choises = new ArrayList<TableInfo>();
+            for (ColumnInfo sakiCol : saki.getColumns().values()) {
+                if (sakiCol.getDeriveFrom() != null && sakiCol.getNullable() == 1) {
+                    choises.add(sakiCol.getDeriveFrom());
                 }
             }
-            if (isDerive) {
+
+            // 選抜モデルでなければスキップ
+            if (choises.size() <= 1) {
                 continue;
             }
 
-            // 択一元として、テーブル情報をループ
-            Iterator<TableInfo> motos = tables.iterator();
-            while (motos.hasNext()) {
-                TableInfo moto = motos.next();
+            // 選択肢でループ
+            for (TableInfo moto : choises) {
+                LOG.debug("    " + saki.getName() + " from " + moto.getName() + " " + moto.getPrimaryKeys());
 
-                // 履歴モデル・ビュー・参照モデルは択一元にしない
-                if (moto.isHistory() || moto.isView() || moto.isRefer()) {
-                    continue;
-                }
-
-                // 択一元の主キーが、択一先にあれば、外部キーとして取得
-                Set<String> sakiFKs = new HashSet<String>();
-                for (String motoPK : moto.getPrimaryKeys()) {
-                    ColumnInfo motoKey = moto.getColumns().get(motoPK);
-                    for (ColumnInfo sakiCol : saki.getColumns().values()) {
-                        // 主キーならスキップ
-                        if (sakiCol.isPk()) {
-                            continue;
-                        }
-                        //                        // NULL不可ならスキップ
-                        //                        if (sakiCol.getNullable() != 1) {
-                        //                            continue;
-                        //                        }
-                        // 主キーでなくNULL可の場合、カラム定義が一致するなら外部キーに追加
-                        if (isMatchColDef(motoKey, sakiCol)) {
-                            sakiFKs.add(sakiCol.getName());
-                        }
+                // 派生情報を消し込み
+                moto.getDeriveTos().remove(saki);
+                saki.getDeriveFroms().remove(moto);
+                for (ColumnInfo sakiCol : saki.getColumns().values()) {
+                    if (sakiCol.getDeriveFrom() == moto) {
+                        sakiCol.setDeriveFrom(null);
                     }
                 }
 
-                // 択一元の主キーと、択一先の外部キーが一致する場合
-                if (moto.getPrimaryKeys().size() == sakiFKs.size()) {
-                    LOG.debug("    " + saki.getName() + " of " + moto.getName());
-                    for (String fk : sakiFKs) {
-                        saki.getColumns().get(fk).setChoice(true);
-                    }
-                    saki.getChoices().add(moto);
-                }
-            }
-
-            if (saki.getChoices().size() < 2) {
-                for (TableInfo moto : saki.getChoices()) {
-                    LOG.debug("        Cancel " + saki.getName() + " of " + moto.getName());
-                    for (ColumnInfo sakiCol : saki.getColumns().values()) {
-                        sakiCol.setChoice(false);
-                    }
-                }
-                saki.getChoices().clear();
-            } else {
-                for (TableInfo moto : saki.getChoices()) {
-                    moto.getChoosers().add(saki);
+                // 選抜情報を書き込み
+                moto.getChoosers().add(saki);
+                saki.getChoices().add(moto);
+                for (String motoKey : moto.getPrimaryKeys()) {
+                    saki.getColumns().get(motoKey).setRefer(moto);
                 }
             }
         }
     }
 
     /**
-     * 集約先の主キーから、集約元の外部キーを探す
+     * 集約先から、集約元を探す
+     *
      * @param tables テーブル情報のリスト
      */
-    private static void addSummaryTable(final List<TableInfo> tables) {
+    private static void addSummaryOfs(final List<TableInfo> tables) {
 
         LOG.debug("【Summary】");
 
-        // 集約先として、テーブル情報をループ
-        Iterator<TableInfo> sums = tables.iterator();
-        while (sums.hasNext()) {
-            TableInfo sum = sums.next();
+        // 集約先としてループ
+        Iterator<TableInfo> sakis = tables.iterator();
+        while (sakis.hasNext()) {
+            TableInfo saki = sakis.next();
 
-            // 履歴モデル・ビュー・参照モデルは集約先としない
-            if (sum.isHistory() || sum.isView() || sum.isRefer()) {
+            // 派生先がなければスキップ
+            if (saki.getDeriveTos().size() == 0) {
                 continue;
             }
 
-            // 派生先を持っている（派生元である）なら集約先としない
-            if (sum.getDeriveTos().size() > 0) {
+            // 転生先ならスキップ
+            if (saki.getRebornFrom() != null) {
                 continue;
             }
 
-            // 他モデルの転生先になっているなら集約先としない
-            boolean isReborn = false;
-            Iterator<TableInfo> rebornees = tables.iterator();
-            while (rebornees.hasNext()) {
-                TableInfo rebornee = rebornees.next();
-                if (rebornee.getRebornTo() != null) {
-                    if (sum.getName().equals(rebornee.getRebornTo().getName())) {
-                        isReborn = true;
-                        break;
+            // 集約元に派生キーがある場合は派生元を取得
+            List<TableInfo> sums = new ArrayList<TableInfo>();
+            for (TableInfo moto : saki.getDeriveTos()) {
+                for (ColumnInfo motoCol : moto.getColumns().values()) {
+                    if (motoCol.getDeriveFrom() != null && motoCol.getNullable() == 1) {
+                        sums.add(moto);
                     }
                 }
             }
-            if (isReborn) {
-                continue;
-            }
 
-            int motoCount = 0;
+            for (TableInfo moto : sums) {
 
-            // 集約元として、テーブル情報をループ
-            Iterator<TableInfo> motos = tables.iterator();
-            while (motos.hasNext()) {
-                TableInfo moto = motos.next();
-
-                // 履歴モデル・ビューは集約元にしない
-                if (moto.isHistory() || moto.isView()) {
+                // 集約元に転生先があるならスキップ
+                if (moto.getRebornTo() != null) {
                     continue;
                 }
 
-                // 集約先が択一元になっているならスキップ
-                if (moto.getChoices().contains(sum)) {
-                    continue;
-                }
-
-                // 集約元の外部キーを探索
-                Set<String> motoFKs = new HashSet<String>();
-                for (String sakiPK : sum.getPrimaryKeys()) {
-                    ColumnInfo sakiKey = sum.getColumns().get(sakiPK);
-
-                    // 集約元に集約先の主キーに合致するカラムがあれば外部キーとして取得
-                    for (ColumnInfo motoCol : moto.getColumns().values()) {
-                        // 集約元が 主キー か NULL不可 ならスキップ
-                        if (motoCol.isPk() || motoCol.getNullable() != 1) {
-                            continue;
-                        }
-                        // 主キーでなくNULL可の場合、カラム定義が一致するなら外部キーに追加
-                        if (isMatchColDef(sakiKey, motoCol)) {
-                            motoFKs.add(motoCol.getName());
-                        }
+                // 派生情報を消し込み
+                saki.getDeriveTos().remove(moto);
+                moto.getDeriveFroms().remove(saki);
+                for (ColumnInfo motoCol : moto.getColumns().values()) {
+                    if (motoCol.getDeriveFrom() == saki) {
+                        motoCol.setDeriveFrom(null);
                     }
                 }
 
-                if (sum.getPrimaryKeys().size() == motoFKs.size()) {
-                    // 集約先の主キーと、集約元の外部キーが一致する場合
-
-                    // 集約元設定済み情報の精査
-                    boolean isSummaryOfOther = false;
-                    Iterator<TableInfo> saki2s = tables.iterator();
-                    while (saki2s.hasNext()) {
-                        TableInfo saki2 = saki2s.next();
-
-                        // 集約元を設定済みでなく、既に抑制判定済みでなければスキップ
-                        if (saki2.getSummaryOf() == null && !isSummaryOfOther) {
-                            continue;
-                        }
-
-                        // 集約元を設定済みでも、今回の集約元と重複していなければスキップ
-                        if (saki2.getSummaryOf() != null && !saki2.getSummaryOf().getName().equals(moto.getName())) {
-                            continue;
-                        }
-
-                        // 重複する集約元を設定済みの場合
-
-                        //                        if (saki2.getPrimaryKeys().size() < saki.getPrimaryKeys().size()) {
-                        //                            // 今回の集約先の方がキー数が多いなら、処理済みの集約元をクリア
-                        if (saki2.getSummaryOf() != null) {
-                            LOG.debug("        Cancel " + saki2.getName() + " of " + saki2.getSummaryOf().getName()
-                                    + " by " + sum.getName());
-                            for (ColumnInfo sakiCol : saki2.getSummaryOf().getColumns().values()) {
-                                sakiCol.setSummary(false);
-                            }
-                            saki2.setSummaryOf(null);
-                        }
-                        //                        } else if (saki2.getPrimaryKeys().size() > saki.getPrimaryKeys().size()) {
-                        //                            // 今回の集約先の方がキー数が少ないなら、今回を集約先としない
-                        isSummaryOfOther = true;
-                        //                        }
-                    }
-
-                    // 今回の集約元が、他モデルの集約元でなければ、集約先に集約元を設定
-                    if (!isSummaryOfOther) {
-
-                        // ２回以上ここに来る＝同じ集約先を他の集約元でも設定済み＝集約先を取消
-                        if (motoCount > 0) {
-
-                            // 誤って集約元を設定済みならクリア
-                            if (sum.getSummaryOf() != null) {
-                                TableInfo unit = sum.getSummaryOf();
-                                for (ColumnInfo column : unit.getColumns().values()) {
-                                    column.setSummary(false);
-                                }
-                                LOG.debug("        Cancel " + sum.getName() + " summary of " + unit.getName() + " by "
-                                        + moto.getName());
-                                sum.setSummaryOf(null);
-                            }
-                            continue;
-                        }
-
-                        LOG.debug("    " + sum.getName() + " of " + moto.getName());
-                        ++motoCount;
-                        for (String fk : motoFKs) {
-                            moto.getColumns().get(fk).setSummary(true);
-                        }
-                        sum.setSummaryOf(moto);
-
-                        // // 集約先とする場合は、転生元としない（転生先をクリアする）
-                        // if (sum.getRebornTo() != null) {
-                        //     TableInfo tenseisaki = sum.getRebornTo();
-                        //     for (ColumnInfo column : tenseisaki.getColumns().values()) {
-                        //         if (column.isReborn()) {
-                        //             column.setReborn(false);
-                        //         }
-                        //     }
-                        //     LOG.debug("        Cancel " + sum.getName() + " reborn to " + sum.getRebornTo().getName());
-                        //     sum.setRebornTo(null);
-                        // }
-                    }
-                }
-            }
-        }
-    }
-
-    /**
-     * @param tables
-     */
-    private static void addCombo(final List<TableInfo> tables) {
-
-        LOG.debug("【Combo】");
-
-        for (TableInfo table : tables) {
-
-            //複合キー内の参照モデルを探索
-            Set<String> done = new HashSet<String>();
-            Set<TableInfo> combos = new LinkedHashSet<TableInfo>();
-            for (String pk : table.getPrimaryKeys()) {
-                ColumnInfo primaryKey = table.getColumns().get(pk);
-                if (primaryKey.getRefer() != null) {
-                    String referName = primaryKey.getRefer().getName();
-                    if (!done.contains(referName)) {
-                        done.add(referName);
-                        combos.add(primaryKey.getRefer());
-                    }
-                }
-            }
-
-            //複合キー内の参照モデルが２以上あれば組合せモデルに設定
-            if (combos.size() > 1) {
-                for (TableInfo combo : combos) {
-                    LOG.debug("    " + table.getName() + " : " + combo.getName());
-                    table.getComboInfos().add(combo);
-                }
-            }
-
-            //組合せモデル数が２の場合
-            if (table.getComboInfos().size() == 2) {
-
-                // 自テーブルの主キーが各単一キーと適用日のみで、
-                // 各テーブルの主キーが自テーブルの第二キー以降の場合は、
-                // 各テーブルに制約モデルを設定
-                boolean b = true;
-                for (String pk : table.getPrimaryKeys()) {
-                    if (pk.matches(tekiyoBi)) {
-                        continue;
-                    }
-                    ColumnInfo primaryKey = table.getColumns().get(pk);
-                    TableInfo combo = primaryKey.getRefer();
-                    if (combo != null && combo.getPrimaryKeys().size() == 1) {
-                        continue;
-                    }
-                    b = false;
-                    break;
-                }
-                if (!b) {
-                    continue;
-                }
-
-                for (TableInfo combo : table.getComboInfos()) {
-                    //組合せの第一キーなら制約設定なし
-                    if (table.getPrimaryKeys().get(0).equals(combo.getPrimaryKeys().get(0))) {
-                        continue;
-                    }
-                    //制約モデルが２以上あれば消し込み
-                    if (table.getStintInfo() != null) {
-                        LOG.debug("        Cancel " + table.getName() + " : " + combo.getName());
-                        table.setStintInfo(null);
-                        break;
-                    }
-                    LOG.debug("        Stint " + table.getName() + " : " + combo.getName());
-                    table.setStintInfo(combo);
+                // 集約情報を書き込み
+                LOG.debug("    " + moto.getName() + " to " + saki.getName() + " " + saki.getPrimaryKeys());
+                moto.setSummaryTo(saki);
+                saki.getSummaryOfs().add(moto);
+                for (String sakiKey : saki.getPrimaryKeys()) {
+                    moto.getColumns().get(sakiKey).setSummary(true);
                 }
             }
         }
@@ -1681,33 +1486,6 @@ public final class DataSources {
             }
             LOG.info(tablelog);
 
-            if (table.getParents().size() > 0) {
-                LOG.info("    ParentInfos:");
-                for (TableInfo parent : table.getParents()) {
-                    LOG.info("        " + parent.getName() + " " + parent.getPrimaryKeys());
-                }
-            }
-
-            if (table.getBrothers().size() > 0) {
-                LOG.info("    BrosInfos:");
-                for (TableInfo bros : table.getBrothers()) {
-                    LOG.info("        " + bros.getName() + " " + bros.getPrimaryKeys());
-                }
-            }
-
-            if (table.getChilds().size() > 0) {
-                LOG.info("    ChildInfos:");
-                for (TableInfo child : table.getChilds()) {
-                    LOG.info("        " + child.getName() + " " + child.getPrimaryKeys());
-                }
-            }
-
-            if (table.getHistory() != null) {
-                LOG.info("    HistoryInfo:");
-                TableInfo history = table.getHistory();
-                LOG.info("        " + history.getName() + " " + history.getPrimaryKeys());
-            }
-
             Map<String, TableInfo> refers = new LinkedHashMap<String, TableInfo>();
             for (ColumnInfo column : table.getColumns().values()) {
                 if (column.getRefer() != null) {
@@ -1715,7 +1493,7 @@ public final class DataSources {
                 }
             }
             if (refers.size() > 0) {
-                LOG.info("    ReferInfos:");
+                LOG.info("    Refers:");
                 for (Entry<String, TableInfo> e : refers.entrySet()) {
                     String columnName = e.getKey();
                     TableInfo refer = e.getValue();
@@ -1723,20 +1501,41 @@ public final class DataSources {
                 }
             }
 
-            if (table.getRebornTo() != null) {
-                LOG.info("    RebornTo:");
-                TableInfo reborn = table.getRebornTo();
-                LOG.info("        " + reborn.getName() + " " + reborn.getPrimaryKeys());
-            }
-
-            if (table.getRebornFroms().size() > 1) {
-                LOG.info("    RebornFroms:");
-                for (TableInfo rebornFrom : table.getRebornFroms()) {
-                    LOG.info("        " + rebornFrom.getName() + " " + rebornFrom.getPrimaryKeys());
+            if (table.getComboInfos().size() > 0) {
+                LOG.info("    Combos:");
+                for (TableInfo combo : table.getComboInfos()) {
+                    LOG.info("        " + combo.getName() + " " + combo.getPrimaryKeys());
                 }
             }
 
-            if (table.getDeriveTos().size() > 1) {
+            if (table.getBrothers().size() > 0) {
+                LOG.info("    Brothers:");
+                for (TableInfo brother : table.getBrothers()) {
+                    LOG.info("        " + brother.getName() + " " + brother.getPrimaryKeys());
+                }
+            }
+
+            if (table.getHistory() != null) {
+                LOG.info("    History:");
+                TableInfo history = table.getHistory();
+                LOG.info("        " + history.getName() + " " + history.getPrimaryKeys());
+            }
+
+            if (table.getParents().size() > 0) {
+                LOG.info("    Parents:");
+                for (TableInfo parent : table.getParents()) {
+                    LOG.info("        " + parent.getName() + " " + parent.getPrimaryKeys());
+                }
+            }
+
+            if (table.getChildren().size() > 0) {
+                LOG.info("    Children:");
+                for (TableInfo child : table.getChildren()) {
+                    LOG.info("        " + child.getName() + " " + child.getPrimaryKeys());
+                }
+            }
+
+            if (table.getDeriveTos().size() > 0) {
                 LOG.info("    DeriveTos:");
                 for (TableInfo derive : table.getDeriveTos()) {
                     LOG.info("        " + derive.getName() + " " + derive.getPrimaryKeys());
@@ -1758,35 +1557,60 @@ public final class DataSources {
                 }
             }
 
-            if (table.getChoosers().size() > 1) {
+            if (table.getMergeTo() != null) {
+                LOG.info("    MergeTo:");
+                TableInfo t = table.getMergeTo();
+                LOG.info("        " + t.getName() + " " + t.getPrimaryKeys());
+            }
+
+            if (table.getMergeFroms().size() > 0) {
+                LOG.info("    MergeFroms:");
+                for (TableInfo t : table.getMergeFroms()) {
+                    LOG.info("        " + t.getName() + " " + t.getPrimaryKeys());
+                }
+            }
+
+            if (table.getRebornTo() != null) {
+                LOG.info("    RebornTo:");
+                TableInfo reborn = table.getRebornTo();
+                LOG.info("        " + reborn.getName() + " " + reborn.getPrimaryKeys());
+            }
+
+            if (table.getRebornFrom() != null) {
+                LOG.info("    RebornFrom:");
+                TableInfo rebornFrom = table.getRebornFrom();
+                LOG.info("        " + rebornFrom.getName() + " " + rebornFrom.getPrimaryKeys());
+            }
+
+            if (table.getChoosers().size() > 0) {
                 LOG.info("    Choosers:");
                 for (TableInfo chooser : table.getChoosers()) {
                     LOG.info("        " + chooser.getName() + " " + chooser.getPrimaryKeys());
                 }
             }
 
-            if (table.getChoices().size() > 1) {
-                LOG.info("    ChoiceOf:");
+            if (table.getChoices().size() > 0) {
+                LOG.info("    ChoiceOfs:");
                 for (TableInfo choice : table.getChoices()) {
                     LOG.info("        " + choice.getName() + " " + choice.getPrimaryKeys());
                 }
             }
 
-            if (table.getSummaryOf() != null) {
-                LOG.info("    SummaryOf:");
-                TableInfo summary = table.getSummaryOf();
-                LOG.info("        " + summary.getName() + " " + summary.getPrimaryKeys());
+            if (table.getSummaryTo() != null) {
+                LOG.info("    SummaryTo:");
+                TableInfo t = table.getSummaryTo();
+                LOG.info("        " + t.getName() + " " + t.getPrimaryKeys());
             }
 
-            if (table.getComboInfos().size() > 1) {
-                LOG.info("    ComboInfos:");
-                for (TableInfo combo : table.getComboInfos()) {
-                    LOG.info("        " + combo.getName() + " " + combo.getPrimaryKeys());
+            if (table.getSummaryOfs().size() > 0) {
+                LOG.info("    SummaryOfs:");
+                for (TableInfo t : table.getSummaryOfs()) {
+                    LOG.info("        " + t.getName() + " " + t.getPrimaryKeys());
                 }
             }
 
             if (table.getStintInfo() != null) {
-                LOG.info("    StintInfo:");
+                LOG.info("    Stint:");
                 TableInfo stint = table.getStintInfo();
                 LOG.info("        " + stint.getName() + " " + stint.getPrimaryKeys());
             }

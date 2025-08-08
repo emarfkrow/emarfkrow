@@ -147,6 +147,14 @@ $(function() {
                 for (let dataName in data) {
                     if (Array.isArray(data[dataName])) {
                         Gridate.refresh(gridId, data[dataName], data['totalRows'], data['currentPage']);
+
+                        let $form = $button.closest('form');
+                        let $h2 = $form.prev('h2');
+                        let $h2Toggle = $h2.find('[id="h2Toggle"]');
+                        if ($h2Toggle.hasClass('ui-icon-triangle-1-s')) {
+                            $h2.click();
+                        }
+
                         break;
                     }
                 }

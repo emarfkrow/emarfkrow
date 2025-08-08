@@ -485,15 +485,17 @@ let Base = {
                 });
             });
         });
-        $('div.article>form.search button.search').on('click', function() {
-            let $button = $(this);
-            let $form = $button.closest('form');
-            let $h2 = $form.prev('h2');
-            let $h2Toggle = $h2.find('[id="h2Toggle"]');
-            if ($h2Toggle.hasClass('ui-icon-triangle-1-s')) {
-                $h2.click();
-            }
-        });
+
+        //        // 検索ボタン押下時に検索条件を閉じる ajaxizeのcallbackで検索結果があれば閉じるように変更
+        //        $('div.article>form.search button.search').on('click', function() {
+        //            let $button = $(this);
+        //            let $form = $button.closest('form');
+        //            let $h2 = $form.prev('h2');
+        //            let $h2Toggle = $h2.find('[id="h2Toggle"]');
+        //            if ($h2Toggle.hasClass('ui-icon-triangle-1-s')) {
+        //                $h2.click();
+        //            }
+        //        });
 
         Base.resizeNav();
 
@@ -799,8 +801,9 @@ let Base = {
                     if (Object.keys(data).length > 0) {
 
                         // 集約元情報
-                        let $summaryDiv = $('div.summary');
-                        if ($summaryDiv.length > 0) {
+                        let $summaryDivs = $('div.summary');
+                        for (let i = 0; i < $summaryDivs.length; i++) {
+                            let $summaryDiv = $($summaryDivs[i]);
                             let summaryOfName = $summaryDiv.prop('class').replace('summary', '').trim();
                             let $inputs = $summaryDiv.find('input');
                             for (let i = 0; i < $inputs.length; i++) {

@@ -50,7 +50,7 @@ public class TableInfo {
     private List<TableInfo> parents = new ArrayList<TableInfo>();
 
     /** 子テーブルのリスト */
-    private List<TableInfo> childs = new ArrayList<TableInfo>();
+    private List<TableInfo> children = new ArrayList<TableInfo>();
 
     /** 履歴テーブル */
     private TableInfo history;
@@ -62,7 +62,7 @@ public class TableInfo {
     private List<TableInfo> brothers = new ArrayList<TableInfo>();
 
     /** 自身が兄弟テーブルならtrue */
-    private boolean isYounger;
+    private boolean isBrother;
 
     //    /** 依存レベル */
     //    private int dependLevel;
@@ -75,6 +75,42 @@ public class TableInfo {
 
     /** 自身が参照先ならtrue */
     private boolean isRefer;
+
+    /** 組合せモデルならtrue */
+    private List<TableInfo> comboInfos = new ArrayList<TableInfo>();
+
+    /** 制約テーブル */
+    private TableInfo stintInfo;
+
+    /** 統合先テーブル */
+    private TableInfo mergeTo;
+
+    /** 統合元テーブル */
+    private List<TableInfo> mergeFroms = new ArrayList<TableInfo>();
+
+    /** 転生先テーブル */
+    private TableInfo rebornTo;
+
+    /** 転生元テーブル */
+    private TableInfo rebornFrom;
+
+    /** 派生先テーブル */
+    private List<TableInfo> deriveTos = new ArrayList<TableInfo>();
+
+    /** 派生元テーブル */
+    private List<TableInfo> deriveFroms = new ArrayList<TableInfo>();
+
+    /** 選抜先テーブル */
+    private List<TableInfo> choosers = new ArrayList<TableInfo>();
+
+    /** 選抜元テーブル */
+    private List<TableInfo> choices = new ArrayList<TableInfo>();
+
+    /** 集約先テーブル */
+    private TableInfo summaryTo;
+
+    /** 集約元テーブル */
+    private List<TableInfo> summaryOfs = new ArrayList<TableInfo>();
 
     /**
      * @return boolean
@@ -90,29 +126,33 @@ public class TableInfo {
         this.isConvView = p;
     }
 
-    /** 組合せモデルならtrue */
-    private List<TableInfo> comboInfos = new ArrayList<TableInfo>();
+    /**
+     * @return summaryTo
+     */
+    public TableInfo getSummaryTo() {
+        return summaryTo;
+    }
 
-    /** 転生先テーブル */
-    private TableInfo rebornTo;
+    /**
+     * @param p セットする summaryTo
+     */
+    public void setSummaryTo(final TableInfo p) {
+        this.summaryTo = p;
+    }
 
-    /** 転生元テーブル */
-    private List<TableInfo> rebornFroms = new ArrayList<TableInfo>();
+    /**
+     * @return summaryOfs
+     */
+    public List<TableInfo> getSummaryOfs() {
+        return summaryOfs;
+    }
 
-    /** 派生先テーブル */
-    private List<TableInfo> deriveTos = new ArrayList<TableInfo>();
-
-    /** 択一先テーブル */
-    private List<TableInfo> choosers = new ArrayList<TableInfo>();
-
-    /** 択一元テーブル */
-    private List<TableInfo> choices = new ArrayList<TableInfo>();
-
-    /** 集約先テーブル */
-    private TableInfo summaryOf;
-
-    /** 制約テーブル */
-    private TableInfo stintInfo;
+    /**
+     * @param p セットする summaryOfs
+     */
+    public void setSummaryOfs(final List<TableInfo> p) {
+        this.summaryOfs = p;
+    }
 
     /**
      * @return テーブル名
@@ -211,15 +251,15 @@ public class TableInfo {
     /**
      * @return 子テーブルのリスト
      */
-    public List<TableInfo> getChilds() {
-        return childs;
+    public List<TableInfo> getChildren() {
+        return children;
     }
 
     /**
      * @param p 子テーブルのリスト
      */
-    public void setChilds(final List<TableInfo> p) {
-        this.childs = p;
+    public void setChildren(final List<TableInfo> p) {
+        this.children = p;
     }
 
     /**
@@ -232,7 +272,7 @@ public class TableInfo {
     /**
      * @param p 履歴テーブル
      */
-    public void setHistoryInfo(final TableInfo p) {
+    public void setHistory(final TableInfo p) {
         this.history = p;
     }
 
@@ -268,14 +308,7 @@ public class TableInfo {
      * @return 自身が兄弟テーブルならtrue
      */
     public boolean isBrother() {
-        return isYounger;
-    }
-
-    /**
-     * @param p 自身が兄弟テーブルならtrue
-     */
-    public void setIsBrother(final boolean p) {
-        this.isYounger = p;
+        return isBrother;
     }
 
     //    /**
@@ -293,6 +326,13 @@ public class TableInfo {
     //    }
 
     /**
+     * @param p セットする isBrother
+     */
+    public void setBrother(final boolean p) {
+        this.isBrother = p;
+    }
+
+    /**
      * @return VIEWならtrue
      */
     public boolean isView() {
@@ -304,6 +344,34 @@ public class TableInfo {
      */
     public void setView(final boolean p) {
         this.isView = p;
+    }
+
+    /**
+     * @return mergeTo
+     */
+    public TableInfo getMergeTo() {
+        return mergeTo;
+    }
+
+    /**
+     * @param p セットする mergeTo
+     */
+    public void setMergeTo(final TableInfo p) {
+        this.mergeTo = p;
+    }
+
+    /**
+     * @return mergeFroms
+     */
+    public List<TableInfo> getMergeFroms() {
+        return mergeFroms;
+    }
+
+    /**
+     * @param p セットする mergeFroms
+     */
+    public void setMergeFroms(final List<TableInfo> p) {
+        this.mergeFroms = p;
     }
 
     /**
@@ -321,17 +389,17 @@ public class TableInfo {
     }
 
     /**
-     * @return rebornFroms
+     * @return rebornFrom
      */
-    public List<TableInfo> getRebornFroms() {
-        return rebornFroms;
+    public TableInfo getRebornFrom() {
+        return rebornFrom;
     }
 
     /**
      * @param p セットする rebornFroms
      */
-    public void setRebornFroms(final List<TableInfo> p) {
-        this.rebornFroms = p;
+    public void setRebornFrom(final TableInfo p) {
+        this.rebornFrom = p;
     }
 
     /**
@@ -346,6 +414,20 @@ public class TableInfo {
      */
     public void setDeriveTos(final List<TableInfo> p) {
         this.deriveTos = p;
+    }
+
+    /**
+     * @return deriveFroms
+     */
+    public List<TableInfo> getDeriveFroms() {
+        return deriveFroms;
+    }
+
+    /**
+     * @param p セットする deriveFroms
+     */
+    public void setDeriveFroms(final List<TableInfo> p) {
+        this.deriveFroms = p;
     }
 
     /**
@@ -374,20 +456,6 @@ public class TableInfo {
      */
     public void setChoices(final List<TableInfo> p) {
         this.choices = p;
-    }
-
-    /**
-     * @return summaryInfo
-     */
-    public TableInfo getSummaryOf() {
-        return summaryOf;
-    }
-
-    /**
-     * @param p セットする summaryInfo
-     */
-    public void setSummaryOf(final TableInfo p) {
-        this.summaryOf = p;
     }
 
     /**

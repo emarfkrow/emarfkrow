@@ -53,6 +53,9 @@ public final class HtmlGenerator {
     /** 弟を設定しないテーブル名 */
     private static String youngestRe;
 
+    //    /** 孤児モデル正規表現 */
+    //    private static String orphansRe;
+
     /** 参照列名ペア */
     private static Set<String[]> referPairs = new LinkedHashSet<String[]>();
 
@@ -136,6 +139,7 @@ public final class HtmlGenerator {
     static void generate(final String projectDir, final List<TableInfo> tables) {
 
         youngestRe = bundle.getString("relation.youngest.re");
+        //        orphansRe = bundle.getString("relation.orphans.re");
 
         String[] pairs = bundle.getString("relation.refer.pairs").split(",");
         for (String pair : pairs) {
@@ -253,7 +257,7 @@ public final class HtmlGenerator {
         s.add("        <button type=\"reset\" id=\"Reset" + e
                 + "\" th:text=\"#{common.reset}\" class=\"reset\">reset</button>");
         boolean isAnew = isAnew(table);
-        if (isAnew || table.getRebornFroms().size() > 1) {
+        if (isAnew || table.getRebornFrom() != null) {
             boolean isDeriver = false;
             for (ColumnInfo col : table.getColumns().values()) {
                 if (col.getDeriveFrom() != null) {
@@ -308,7 +312,7 @@ public final class HtmlGenerator {
                     break;
                 }
             }
-            if (table.getChilds().size() > 0) { //子モデルがあれば新規行なし
+            if (table.getChildren().size() > 0) { //子モデルがあれば新規行なし
                 isNotAddRow = true;
             }
             if (!isNotAddRow) {
@@ -317,7 +321,7 @@ public final class HtmlGenerator {
         }
         int frozenColumn = table.getPrimaryKeys().size() - 1;
         String editable = "";
-        if (table.isHistory() || table.isView() || table.getChilds().size() > 0) {
+        if (table.isView() || table.isHistory() || table.getChildren().size() > 0) {
             editable = "data-editable=\"false\" ";
         }
         s.add("      <div id=\"" + e + "Grid\" data-selectionMode=\"checkbox\"" + addRow + " data-frozenColumn=\""
@@ -330,7 +334,7 @@ public final class HtmlGenerator {
         }
         s.add("        <a th:href=\"@{" + e + "Search.xlsx(baseMei=#{" + es + ".h2})}\" id=\"" + e
                 + "Search.xlsx\" th:text=\"#{common.xlsx}\" class=\"output\" tabindex=\"-1\">xlsx</a>");
-        TableInfo summary = getSummary(table, tables); //集約先リンク
+        TableInfo summary = table.getSummaryTo(); //集約先リンク
         if (summary != null) {
             String summaryEntity = StringUtil.toPascalCase(summary.getName());
             s.add("        <a th:href=\"@{/model/" + summaryEntity + ".html}\" id=\"" + summaryEntity
@@ -342,7 +346,7 @@ public final class HtmlGenerator {
             addGridReferHiddenLinks(s, table);
         }
         // 履歴モデルでないテーブルで、子モデルを持たない場合
-        if (!table.isView() && !table.isHistory() && table.getChilds().size() == 0) {
+        if (!table.isView() && !table.isHistory() && table.getChildren().size() == 0) {
             // 削除フラグ列名の指定がないか、テーブルに削除フラグ列がないなら、物理削除ボタンを表示
             if (StringUtil.isNullOrWhiteSpace(deleteF) || (!table.getColumns().containsKey(deleteF.toLowerCase())
                     && !table.getColumns().containsKey(deleteF.toUpperCase()))) {
@@ -360,7 +364,7 @@ public final class HtmlGenerator {
         }
         s.add("      </div>");
         s.add("      <div class=\"submits\">");
-        if (!table.isHistory() && (!table.isView() || table.isConvView()) && table.getChilds().size() == 0) {
+        if (!table.isHistory() && (!table.isView() || table.isConvView()) && table.getChildren().size() == 0) {
             String onclick = "";
             if (table.getHistory() != null && !StringUtil.isNullOrWhiteSpace(reason)) {
                 onclick = " onclick=\"if (!Base.historyReason(this)) { return false; }\"";
@@ -458,15 +462,20 @@ public final class HtmlGenerator {
             }
         }
 
+        // 適用日を除く主キーが、一つなら作成可
         List<String> primaryKeys = new ArrayList<String>(table.getPrimaryKeys());
         primaryKeys.remove(tekiyoBi);
-
-        // 適用日を除く主キーが、一つなら作成可
         if (primaryKeys.size() == 1) {
             return true;
         }
 
         // 適用日を除く主キーが２以上ある
+
+        // 複合キーの孤児は兄弟から作れるので新規機能は付けない
+        //        // 孤児モデルなら作成可
+        //        if (table.getName().matches(orphansRe)) {
+        //            return true;
+        //        }
 
         // 適用日を除く主キーのうち、最終キー以外の一つでも、参照モデルでない採番キーなら作成不可
         for (int i = 0; i < primaryKeys.size() - 1; i++) {
@@ -478,32 +487,6 @@ public final class HtmlGenerator {
         }
 
         return true;
-    }
-
-    /**
-     * @param table
-     * @param tables
-     * @return TableInfo
-     */
-    private static TableInfo getSummary(final TableInfo table, final List<TableInfo> tables) {
-
-        //自モデルが転生先となる、別モデルを抽出
-        List<TableInfo> summarys = new ArrayList<TableInfo>();
-        for (TableInfo summary : tables) {
-            if (summary.getSummaryOf() != null) {
-                if (table.getName().equals(summary.getSummaryOf().getName())) {
-                    summarys.add(summary);
-                }
-            }
-        }
-
-        //抽出した転生元モデルが１つだった場合は集約用のリンク追加
-        TableInfo summary = null;
-        if (summarys.size() == 1) {
-            summary = summarys.get(0);
-        }
-
-        return summary;
     }
 
     /**
@@ -609,7 +592,7 @@ public final class HtmlGenerator {
                 s.add("      </fieldset>");
             }
         }
-        for (TableInfo child : table.getChilds()) { // 子テーブルリスト
+        for (TableInfo child : table.getChildren()) { // 子テーブルリスト
             String c = StringUtil.toPascalCase(child.getName());
             s.add("      <h3 th:text=\"#{" + c + ".h3}\">h3</h3>");
             s.add("      <a th:href=\"@{/model/" + c + ".html}\" id=\"" + c + "\" target=\"dialog\" th:text=\"#{" + c
@@ -639,29 +622,31 @@ public final class HtmlGenerator {
             s.add("        <a th:href=\"@{/model/" + r + ".html}\" id=\"" + r + "\" target=\"dialog\" th:text=\"#{" + r
                     + ".add}\" class=\"reborner\" tabindex=\"-1\">" + reborn.getRemarks() + "</a>");
         }
-        if (table.getChoosers() != null) { // 転生先がある場合は追加ボタンを出力
-            for (TableInfo chooser : table.getChoosers()) {
-                String r = StringUtil.toPascalCase(chooser.getName());
-                s.add("        <a th:href=\"@{/model/" + r + ".html}\" id=\"" + r + "\" target=\"dialog\" th:text=\"#{"
-                        + r + ".add}\" class=\"chooser\" tabindex=\"-1\">" + chooser.getRemarks() + "</a>");
-            }
-        }
-        if (table.getSummaryOf() != null) { // 集約元がある場合は主キー項目を出力
-            TableInfo summary = table.getSummaryOf();
-            String m = StringUtil.toPascalCase(summary.getName());
-            // 転生先で必須でない場合でも、自モデルが他の転生先である場合は転生元となるよう変更したので、ここはコメントアウト
-            //            if (table.getRebornTo() == null) {
-            //                // 転生先（自主キーが必須の外部キーになっている）がなければ追加ボタンを出力（転生先で必須でないケース）
-            //                s.add("        <a th:href=\"@{/model/" + e + ".html}\" id=\"" + e + "\" target=\"dialog\" th:text=\"#{" + e + ".add}\" class=\"reborner\" tabindex=\"-1\">" + summary.getRemarks() + "</a>");
-            //            }
-            for (String pk : summary.getPrimaryKeys()) {
-                ColumnInfo primaryKey = summary.getColumns().get(pk);
-                String p = StringUtil.toCamelCase(pk);
-                s.add("        <div class=\"summary " + m + "s\">");
-                s.add("          <label>" + primaryKey.getRemarks() + "</label>");
-                s.add("          <span id=\"" + m + "." + p + "\"></span>");
-                s.add("          <input type=\"hidden\" id=\"" + m + "." + p + "\" name=\"" + m + "." + p + "\"/>");
-                s.add("        </div>");
+        //        if (table.getChoosers() != null) { // 選抜先がある場合は追加ボタンを出力
+        //            for (TableInfo chooser : table.getChoosers()) {
+        //                String r = StringUtil.toPascalCase(chooser.getName());
+        //                s.add("        <a th:href=\"@{/model/" + r + ".html}\" id=\"" + r + "\" target=\"dialog\" th:text=\"#{"
+        //                        + r + ".add}\" class=\"chooser\" tabindex=\"-1\">" + chooser.getRemarks() + "</a>");
+        //            }
+        //        }
+        if (table.getSummaryOfs().size() > 0) { // 集約元がある場合は主キー項目を出力
+
+            for (TableInfo summaryOf : table.getSummaryOfs()) {
+                String m = StringUtil.toPascalCase(summaryOf.getName());
+                // 転生先で必須でない場合でも、自モデルが他の転生先である場合は転生元となるよう変更したので、ここはコメントアウト
+                //            if (table.getRebornTo() == null) {
+                //                // 転生先（自主キーが必須の外部キーになっている）がなければ追加ボタンを出力（転生先で必須でないケース）
+                //                s.add("        <a th:href=\"@{/model/" + e + ".html}\" id=\"" + e + "\" target=\"dialog\" th:text=\"#{" + e + ".add}\" class=\"reborner\" tabindex=\"-1\">" + summary.getRemarks() + "</a>");
+                //            }
+                for (String pk : summaryOf.getPrimaryKeys()) {
+                    ColumnInfo primaryKey = summaryOf.getColumns().get(pk);
+                    String p = StringUtil.toCamelCase(pk);
+                    s.add("        <div class=\"summary " + m + "s\">");
+                    s.add("          <label>" + primaryKey.getRemarks() + ": </label>");
+                    s.add("          <span id=\"" + m + "." + p + "\"></span>");
+                    s.add("          <input type=\"hidden\" id=\"" + m + "." + p + "\" name=\"" + m + "." + p + "\"/>");
+                    s.add("        </div>");
+                }
             }
         }
         s.add("      </div>");
@@ -698,15 +683,15 @@ public final class HtmlGenerator {
             s.add("      <div id=\"" + c + "Grid\" data-selectionMode=\"link\" data-frozenColumn=\"" + frozen
                     + "\" th:data-href=\"@{/model/" + c + ".html}\" class=\"reborners\"></div>");
         }
-        if (table.getChoosers() != null) {
-            for (TableInfo chooser : table.getChoosers()) {
-                String c = StringUtil.toPascalCase(chooser.getName());
-                s.add("      <h3 th:text=\"#{" + c + ".h3}\">h3</h3>");
-                String frozen = String.valueOf(chooser.getPrimaryKeys().size());
-                s.add("      <div id=\"" + c + "Grid\" data-selectionMode=\"link\" data-frozenColumn=\"" + frozen
-                        + "\" th:data-href=\"@{/model/" + c + ".html}\" class=\"choosers\"></div>");
-            }
-        }
+        //        if (table.getChoosers() != null) {
+        //            for (TableInfo chooser : table.getChoosers()) {
+        //                String c = StringUtil.toPascalCase(chooser.getName());
+        //                s.add("      <h3 th:text=\"#{" + c + ".h3}\">h3</h3>");
+        //                String frozen = String.valueOf(chooser.getPrimaryKeys().size());
+        //                s.add("      <div id=\"" + c + "Grid\" data-selectionMode=\"link\" data-frozenColumn=\"" + frozen
+        //                        + "\" th:data-href=\"@{/model/" + c + ".html}\" class=\"choosers\"></div>");
+        //            }
+        //        }
         s.add("    </form>");
         s.add("  </div>");
         s.add("</body>");
@@ -749,11 +734,11 @@ public final class HtmlGenerator {
             s.add(entity + "Grid." + property + " " + column.getRemarks());
 
         }
-        for (TableInfo bros : table.getBrothers()) {
-            String e = StringUtil.toPascalCase(bros.getName());
+        for (TableInfo brother : table.getBrothers()) {
+            String e = StringUtil.toPascalCase(brother.getName());
             s.add("");
-            s.add(e + ".legend   " + bros.getRemarks());
-            for (ColumnInfo column : bros.getColumns().values()) {
+            s.add(e + ".legend   " + brother.getRemarks());
+            for (ColumnInfo column : brother.getColumns().values()) {
                 String property = StringUtil.toCamelCase(column.getName());
                 s.add(e + "." + property + " " + column.getRemarks());
             }
@@ -769,7 +754,7 @@ public final class HtmlGenerator {
             }
         }
 
-        for (TableInfo child : table.getChilds()) {
+        for (TableInfo child : table.getChildren()) {
             String e = StringUtil.toPascalCase(child.getName());
             String mei = child.getRemarks();
             s.add("");
@@ -794,14 +779,15 @@ public final class HtmlGenerator {
             }
         }
 
-        if (table.getSummaryOf() != null) {
-            TableInfo summary = table.getSummaryOf();
-            String e = StringUtil.toPascalCase(summary.getName());
-            s.add("");
-            s.add(e + ".add " + summary.getRemarks() + "追加");
+        if (table.getSummaryOfs().size() > 0) {
+            for (TableInfo summary : table.getSummaryOfs()) {
+                String e = StringUtil.toPascalCase(summary.getName());
+                s.add("");
+                s.add(e + ".add " + summary.getRemarks() + "追加");
+            }
         }
 
-        TableInfo summary = getSummary(table, tables);
+        TableInfo summary = table.getSummaryTo();
         if (summary != null) {
             String e = StringUtil.toPascalCase(summary.getName());
             s.add("");
@@ -974,7 +960,7 @@ public final class HtmlGenerator {
         }
 
         //子モデル
-        for (TableInfo child : table.getChilds()) {
+        for (TableInfo child : table.getChildren()) {
 
             if (added.contains(child)) {
                 continue;
@@ -999,27 +985,26 @@ public final class HtmlGenerator {
             }
         }
 
-        // 択一先モデル
-        if (table.getChoosers().size() > 1) {
-            for (TableInfo chooser : table.getChoosers()) {
-                if (!added.contains(chooser)) {
-                    String entity = StringUtil.toPascalCase(chooser.getName());
-                    s.add("<script th:src=\"@{/model/" + entity + "GridColumns.js}\"></script>");
-                    added.add(chooser);
-                    htmlNestGrid(s, chooser, tables, added, false);
-                }
-            }
-        }
+        //        // 選抜先モデル
+        //        if (table.getChoosers().size() > 0) {
+        //            for (TableInfo chooser : table.getChoosers()) {
+        //                if (!added.contains(chooser)) {
+        //                    String entity = StringUtil.toPascalCase(chooser.getName());
+        //                    s.add("<script th:src=\"@{/model/" + entity + "GridColumns.js}\"></script>");
+        //                    added.add(chooser);
+        //                    htmlNestGrid(s, chooser, tables, added, false);
+        //                }
+        //            }
+        //        }
 
         // 転生元モデル
-        if (table.getRebornFroms().size() > 1) {
-            for (TableInfo reFrom : table.getRebornFroms()) {
-                if (!added.contains(reFrom)) {
-                    String entity = StringUtil.toPascalCase(reFrom.getName());
-                    s.add("<script th:src=\"@{/model/" + entity + "GridColumns.js}\"></script>");
-                    added.add(reFrom);
-                    htmlNestGrid(s, reFrom, tables, added, false);
-                }
+        if (table.getRebornFrom() != null) {
+            TableInfo reFrom = table.getRebornFrom();
+            if (!added.contains(reFrom)) {
+                String entity = StringUtil.toPascalCase(reFrom.getName());
+                s.add("<script th:src=\"@{/model/" + entity + "GridColumns.js}\"></script>");
+                added.add(reFrom);
+                htmlNestGrid(s, reFrom, tables, added, false);
             }
         }
 
@@ -1039,24 +1024,25 @@ public final class HtmlGenerator {
         }
 
         //集約元モデル
-        if (table.getSummaryOf() != null) {
-            TableInfo summary = table.getSummaryOf();
-            if (!added.contains(summary)) {
-                String entity = StringUtil.toPascalCase(summary.getName());
-                s.add("<script th:src=\"@{/model/" + entity + "GridColumns.js}\"></script>");
-                added.add(summary);
-                htmlNestGrid(s, summary, tables, added, false);
+        if (table.getSummaryOfs().size() > 0) {
+            for (TableInfo summary : table.getSummaryOfs()) {
+                if (!added.contains(summary)) {
+                    String entity = StringUtil.toPascalCase(summary.getName());
+                    s.add("<script th:src=\"@{/model/" + entity + "GridColumns.js}\"></script>");
+                    added.add(summary);
+                    htmlNestGrid(s, summary, tables, added, false);
+                }
             }
         }
 
         //集約先モデル
-        TableInfo summary = getSummary(table, tables);
-        if (summary != null) {
-            if (!added.contains(summary)) {
-                String entity = StringUtil.toPascalCase(summary.getName());
+        TableInfo summaryTo = table.getSummaryTo();
+        if (summaryTo != null) {
+            if (!added.contains(summaryTo)) {
+                String entity = StringUtil.toPascalCase(summaryTo.getName());
                 s.add("<script th:src=\"@{/model/" + entity + "GridColumns.js}\"></script>");
-                added.add(summary);
-                htmlNestGrid(s, summary, tables, added, false);
+                added.add(summaryTo);
+                htmlNestGrid(s, summaryTo, tables, added, false);
             }
         }
     }
@@ -1294,13 +1280,12 @@ public final class HtmlGenerator {
                 }
             }
             TableInfo rebornFrom = null;
-            if (table.getRebornFroms().size() > 1) {
-                for (TableInfo reFrom : table.getRebornFroms()) {
-                    for (String pk : reFrom.getPrimaryKeys()) {
-                        if (column.getName().equals(pk)) {
-                            rebornFrom = reFrom;
-                            break;
-                        }
+            if (table.getRebornFrom() != null) {
+                TableInfo reFrom = table.getRebornFrom();
+                for (String pk : reFrom.getPrimaryKeys()) {
+                    if (column.getName().equals(pk)) {
+                        rebornFrom = reFrom;
+                        break;
                     }
                 }
             }

@@ -167,18 +167,23 @@ public final class DetailActionGenerator {
             s.add("            if (e.insert(now, execId) != 1) {");
             s.add("                throw new OptLockError(\"error.cant.insert\", \"" + r + "\");");
             s.add("            }");
-            if (table.getSummaryOf() != null) {
-                TableInfo summaryOf = table.getSummaryOf();
-                if (summaryOf.getPrimaryKeys().size() == 1) {
+            if (table.getSummaryOfs().size() > 0) {
+                int sCount = 0;
+                for (TableInfo summaryOf : table.getSummaryOfs()) {
+                    if (summaryOf.getPrimaryKeys().size() != 1) {
+                        continue;
+                    }
+                    ++sCount;
+                    String sKey = "summaryKey" + sCount;
                     String e = StringUtil.toPascalCase(summaryOf.getName());
                     String i = StringUtil.toCamelCase(summaryOf.getName());
                     String pk = summaryOf.getPrimaryKeys().get(0);
                     String prop = StringUtil.toCamelCase(pk);
                     s.add("");
                     s.add("            //集約先に該当する場合は、集約元に主キーを反映");
-                    s.add("            String summaryKey = postJson.get(\"" + e + "." + prop + "\").toString();");
-                    s.add("            if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrWhiteSpace(summaryKey)) {");
-                    s.add("                String[] summaryKeys = summaryKey.trim().split(\",\");");
+                    s.add("            String " + sKey + " = postJson.get(\"" + e + "." + prop + "\").toString();");
+                    s.add("            if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrWhiteSpace(" + sKey + ")) {");
+                    s.add("                String[] summaryKeys = " + sKey + ".trim().split(\",\");");
                     s.add("                for (String pk : summaryKeys) {");
                     s.add("                    " + pkE + "." + e + " " + i + " = " + pkE + "." + e + ".get(pk);");
                     if (!StringUtil.isNullOrWhiteSpace(status)
@@ -195,8 +200,7 @@ public final class DetailActionGenerator {
                         String acc = StringUtil.toPascalCase(fk);
                         s.add("                    //集約済みならエラー");
                         s.add("                    if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrWhiteSpace(" + i
-                                + ".get"
-                                + acc + "())) {");
+                                + ".get" + acc + "())) {");
                         s.add("                        throw new OptLockError(\"error.already.summary\", \"" + r
                                 + "\");");
                         s.add("                    }");
@@ -347,7 +351,7 @@ public final class DetailActionGenerator {
             for (TableInfo bros : table.getBrothers()) {
                 s.add("            " + ins + ".refer" + StringUtil.toPascalCase(bros.getName()) + "();");
             }
-            for (TableInfo child : table.getChilds()) {
+            for (TableInfo child : table.getChildren()) {
                 s.add("            " + ins + ".refer" + StringUtil.toPascalCase(child.getName()) + "s();");
             }
             // 転生先リスト
@@ -356,9 +360,11 @@ public final class DetailActionGenerator {
                 s.add("            " + ins + ".refer" + pascal + "s();");
             }
             // 集約元リスト
-            if (table.getSummaryOf() != null) {
-                String pascal = StringUtil.toPascalCase(table.getSummaryOf().getName());
-                s.add("            " + ins + ".refer" + pascal + "s();");
+            if (table.getSummaryOfs().size() > 0) {
+                for (TableInfo summaryOf : table.getSummaryOfs()) {
+                    String pascal = StringUtil.toPascalCase(summaryOf.getName());
+                    s.add("            " + ins + ".refer" + pascal + "s();");
+                }
             }
             s.add("            map.put(\"" + ent + "\", " + ins + ");");
             s.add("        } catch (NoDataError e) {");
@@ -457,7 +463,7 @@ public final class DetailActionGenerator {
             s.add("");
             s.add("        " + e + " e = FormValidator.toBean(" + e + ".class.getName(), postJson);");
 
-            BeanGenerator.getDeleteChilds(s, "e", table.getChilds(), 0);
+            BeanGenerator.getDeleteChilds(s, "e", table.getChildren(), 0);
 
             s.add("        if (e.delete() != 1) {");
             s.add("            throw new OptLockError(\"error.cant.delete\", \"" + table.getRemarks() + "\");");
@@ -549,7 +555,7 @@ public final class DetailActionGenerator {
             }
             s.add("");
             s.add("        " + entity + " e = FormValidator.toBean(" + entity + ".class.getName(), postJson);");
-            List<TableInfo> childInfos = table.getChilds();
+            List<TableInfo> childInfos = table.getChildren();
             BeanGenerator.getPermitChilds(s, "e", childInfos, 0);
             s.add("");
             s.add("        " + entity + " f = " + entity + ".get(" + params + ");");
@@ -647,7 +653,7 @@ public final class DetailActionGenerator {
             }
             s.add("");
             s.add("        " + entity + " e = FormValidator.toBean(" + entity + ".class.getName(), postJson);");
-            List<TableInfo> childInfos = table.getChilds();
+            List<TableInfo> childInfos = table.getChildren();
             BeanGenerator.getForbidChilds(s, "e", childInfos, 0);
             s.add("");
             s.add("        " + entity + " f = " + entity + ".get(" + params + ");");
@@ -764,7 +770,7 @@ public final class DetailActionGenerator {
             }
 
             s.add("");
-            for (TableInfo frChild : frTbl.getChilds()) {
+            for (TableInfo frChild : frTbl.getChildren()) {
 
                 // 転生元の子モデル名が転生元に前方一致しなければスキップ
                 String frCNm = frChild.getName();
@@ -772,7 +778,7 @@ public final class DetailActionGenerator {
                     continue;
                 }
 
-                for (TableInfo child : table.getChilds()) {
+                for (TableInfo child : table.getChildren()) {
 
                     // 自テーブルの子モデル名が自テーブルに前方一致しなければスキップ
                     String childName = child.getName();

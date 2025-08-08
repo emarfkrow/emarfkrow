@@ -197,7 +197,7 @@ public final class FormGenerator {
                 s.add("        this." + camel + "RegistForm = p;");
                 s.add("    }");
             }
-            for (TableInfo childInfo : table.getChilds()) { // 子モデル
+            for (TableInfo childInfo : table.getChildren()) { // 子モデル
                 String childName = childInfo.getName();
                 String camel = StringUtil.toCamelCase(childName);
                 String pascal = StringUtil.toPascalCase(childName);

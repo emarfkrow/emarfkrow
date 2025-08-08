@@ -416,15 +416,18 @@ public final class BeanGenerator {
      */
     private static int javaEntitySummaryOf(final TableInfo table, final List<String> s, final int jsonIndex) {
 
-        if (table.getSummaryOf() == null) {
+        if (table.getSummaryOfs().size() == 0) {
             return jsonIndex;
         }
 
-        s.add("");
-        s.add("    /*");
-        s.add("     * 集約元：" + table.getSummaryOf().getRemarks());
-        s.add("     */");
-        int i = addChilds(s, jsonIndex, table, table.getSummaryOf());
+        int i = jsonIndex;
+        for (TableInfo summaryOf : table.getSummaryOfs()) {
+            s.add("");
+            s.add("    /*");
+            s.add("     * 集約元：" + summaryOf.getRemarks());
+            s.add("     */");
+            i = addChilds(s, i, table, summaryOf);
+        }
 
         return i;
     }
@@ -667,7 +670,7 @@ public final class BeanGenerator {
             s.add("     */");
             s.add("    public int delete() {");
 
-            for (TableInfo child : table.getChilds()) {
+            for (TableInfo child : table.getChildren()) {
                 if (StringUtil.isNullOrWhiteSpace(deleteF) || (!child.getColumns().containsKey(deleteF.toLowerCase())
                         && !child.getColumns().containsKey(deleteF.toUpperCase()))) {
                     String ent = StringUtil.toPascalCase(child.getName());
@@ -797,7 +800,7 @@ public final class BeanGenerator {
         }
 
         // 子モデル
-        for (TableInfo childInfo : table.getChilds()) {
+        for (TableInfo childInfo : table.getChildren()) {
             String childName = childInfo.getName();
             String camel = StringUtil.toCamelCase(childName);
             String pascal = StringUtil.toPascalCase(childName);
@@ -1004,7 +1007,7 @@ public final class BeanGenerator {
         s.add("    public int update(final LocalDateTime now, final String execId) {");
 
         // 子モデル
-        for (TableInfo child : table.getChilds()) {
+        for (TableInfo child : table.getChildren()) {
             String e = StringUtil.toPascalCase(child.getName());
             String i = StringUtil.toCamelCase(child.getName());
             s.add("");
@@ -1246,7 +1249,7 @@ public final class BeanGenerator {
 
         int i = jsonIndex;
 
-        for (TableInfo child : table.getChilds()) {
+        for (TableInfo child : table.getChildren()) {
             s.add("");
             s.add("    /*");
             s.add("     * 子モデル：" + child.getRemarks());
@@ -1496,9 +1499,9 @@ public final class BeanGenerator {
                 s.add(sp + "        java.util.List<" + pkgE + "." + e + "> " + i + "s = " + p + ".refer" + e + "s();");
                 s.add(sp + "        if (" + i + "s != null) {");
                 s.add(sp + "            for (" + pkgE + "." + e + " " + i + " : " + i + "s) {");
-                if (child.getChilds().size() > 0) {
+                if (child.getChildren().size() > 0) {
                     // forでもう一段降りているから「+2」
-                    getDeleteChilds(s, i, child.getChilds(), indent + 2);
+                    getDeleteChilds(s, i, child.getChildren(), indent + 2);
                 }
                 s.add("");
                 s.add(sp + "                if (" + i + ".delete() != 1) {");
@@ -1550,9 +1553,9 @@ public final class BeanGenerator {
             s.add(p + "        java.util.List<" + pkgE + "." + e + "> " + i + "s = " + parent + ".refer" + e + "s();");
             s.add(p + "        if (" + i + "s != null) {");
             s.add(p + "            for (" + pkgE + "." + e + " " + i + " : " + i + "s) {");
-            if (child.getChilds().size() > 0) {
+            if (child.getChildren().size() > 0) {
                 // forでもう一段降りているから「+2」
-                getPermitChilds(s, i, child.getChilds(), indent + 2);
+                getPermitChilds(s, i, child.getChildren(), indent + 2);
             }
             s.add("");
             if (child.getColumns().containsKey(status.toLowerCase())
@@ -1601,9 +1604,9 @@ public final class BeanGenerator {
             s.add(p + "        java.util.List<" + pkgE + "." + e + "> " + i + "s = " + parent + ".refer" + e + "s();");
             s.add(p + "        if (" + i + "s != null) {");
             s.add(p + "            for (" + pkgE + "." + e + " " + i + " : " + i + "s) {");
-            if (child.getChilds().size() > 0) {
+            if (child.getChildren().size() > 0) {
                 // forでもう一段降りているから「+2」
-                getForbidChilds(s, i, child.getChilds(), indent + 2);
+                getForbidChilds(s, i, child.getChildren(), indent + 2);
             }
             s.add("");
             if (child.getColumns().containsKey(status.toLowerCase())

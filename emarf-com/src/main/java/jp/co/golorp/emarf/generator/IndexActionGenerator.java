@@ -161,7 +161,7 @@ public final class IndexActionGenerator {
             }
             s.add("");
             s.add("                " + e + " e = FormValidator.toBean(" + e + ".class.getName(), row);");
-            List<TableInfo> childInfos = table.getChilds();
+            List<TableInfo> childInfos = table.getChildren();
             BeanGenerator.getDeleteChilds(s, "e", childInfos, 2);
             s.add("                if (e.delete() != 1) {");
             s.add("                    throw new OptLockError(\"error.cant.delete\", \"" + remarks + "\");");
@@ -407,7 +407,7 @@ public final class IndexActionGenerator {
                 }
                 params += property;
             }
-            List<TableInfo> childInfos = table.getChilds();
+            List<TableInfo> childInfos = table.getChildren();
             BeanGenerator.getPermitChilds(s, "e", childInfos, 2);
             s.add("");
             s.add("                " + e + " f = " + e + ".get(" + params + ");");
@@ -523,7 +523,7 @@ public final class IndexActionGenerator {
                 }
                 params += property;
             }
-            List<TableInfo> childInfos = table.getChilds();
+            List<TableInfo> childInfos = table.getChildren();
             BeanGenerator.getForbidChilds(s, "e", childInfos, 2);
             s.add("");
             s.add("                " + e + " f = " + e + ".get(" + params + ");");
