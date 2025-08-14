@@ -1117,7 +1117,7 @@ public final class HtmlGenerator {
         // 名称を参照先から取得するか
         boolean isMeiRefer = false;
         // 参照名の列名
-        String referMei = null;
+        String referMei = "";
         // 参照テーブルが設定されている場合
         TableInfo referInfo = column.getRefer();
         if (referInfo != null) {
@@ -1157,7 +1157,7 @@ public final class HtmlGenerator {
                                 break;
                             }
                         }
-                        if (referMei != null) {
+                        if (!referMei.isBlank()) {
                             break;
                         }
                     }

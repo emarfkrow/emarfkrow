@@ -90,7 +90,7 @@ public final class StringUtil {
         }
 
         // 一旦スネークケースにしてから"_"で分割
-        String forceSnake = toSnakeCase(s);
+        String forceSnake = toSnakeCase(s.replaceAll("#|\\$", "_"));
         String[] snakes = forceSnake.split("_");
 
         StringBuilder camel = new StringBuilder();

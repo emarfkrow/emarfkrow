@@ -237,8 +237,8 @@ public final class BeanGenerator {
                 String p = StringUtil.toCamelCase(n); // property
                 String a = StringUtil.toPascalCase(n); // accessor
                 String t = column.getDataType(); // type
-                p = p.replaceAll("#", "_");
-                a = a.replaceAll("#", "_");
+                //                p = p.replaceAll("#", "_");
+                //                a = a.replaceAll("#", "_");
                 s.add("");
                 s.add("    /** " + m + " */");
                 if (t.equals("java.time.LocalDate")) {
@@ -337,7 +337,7 @@ public final class BeanGenerator {
             }
             javaEntityCRUD(table, s);
             javaEntityUtil(table, s);
-            i = javaEntityYoungers(table, s, i);
+            i = javaEntityBrothers(table, s, i);
             i = javaEntityChild(table, s, i);
             i = javaEntityRebornTo(table, s, i);
             i = javaEntitySummaryOf(table, s, i);
@@ -523,8 +523,8 @@ public final class BeanGenerator {
             String n = meiSql.substring(columnNameIndex).replaceAll("[ \"`]", "");
             String p = StringUtil.toCamelCase(n);
             String a = StringUtil.toPascalCase(n);
-            p = p.replaceAll("#", "_");
-            a = a.replaceAll("#", "_");
+            //            p = p.replaceAll("#", "_");
+            //            a = a.replaceAll("#", "_");
             s.add("");
             s.add("    /** " + columnMei + "参照 */");
             s.add("    @jp.co.golorp.emarf.validation.ReferMei");
@@ -1166,7 +1166,7 @@ public final class BeanGenerator {
             }
             String snake = StringUtil.toSnakeCase(columnName);
             String p = StringUtil.toCamelCase(columnName);
-            p = p.replaceAll("#", "_");
+            //            p = p.replaceAll("#", "_");
             s.add("        map.put(\"" + snake + "\", this." + p + ");");
         }
         s.add("        map.put(\"" + StringUtil.toSnakeCase(insertDt) + "\", now);");
@@ -1188,7 +1188,7 @@ public final class BeanGenerator {
      * @param jsonIndex
      * @return int
      */
-    private static int javaEntityYoungers(final TableInfo table, final List<String> s, final int jsonIndex) {
+    private static int javaEntityBrothers(final TableInfo table, final List<String> s, final int jsonIndex) {
 
         int i = jsonIndex;
 
@@ -1203,27 +1203,27 @@ public final class BeanGenerator {
             }
         }
 
-        for (TableInfo younger : table.getBrothers()) {
+        for (TableInfo bro : table.getBrothers()) {
 
-            String ent = StringUtil.toPascalCase(younger.getName());
-            String ins = StringUtil.toCamelCase(younger.getName());
+            String ent = StringUtil.toPascalCase(bro.getName());
+            String ins = StringUtil.toCamelCase(bro.getName());
 
             s.add("");
-            s.add("    /** " + younger.getRemarks() + " */");
+            s.add("    /** 兄弟：" + bro.getRemarks() + " */");
             s.add("    private " + ent + " " + ins + ";");
             s.add("");
-            s.add("    /** @return " + younger.getRemarks() + " */");
+            s.add("    /** @return " + bro.getRemarks() + " */");
             s.add("    @com.fasterxml.jackson.annotation.JsonProperty(value = \"" + ent + "\", index = " + ++i + ")");
             s.add("    public " + ent + " get" + ent + "() {");
             s.add("        return this." + ins + ";");
             s.add("    }");
             s.add("");
-            s.add("    /** @param p " + younger.getRemarks() + " */");
+            s.add("    /** @param p " + bro.getRemarks() + " */");
             s.add("    public void set" + ent + "(final " + ent + " p) {");
             s.add("        this." + ins + " = p;");
             s.add("    }");
             s.add("");
-            s.add("    /** @return " + younger.getRemarks() + " */");
+            s.add("    /** @return " + bro.getRemarks() + " */");
             s.add("    public " + ent + " refer" + ent + "() {");
             s.add("        if (this." + ins + " == null) {");
             s.add("            try {");
