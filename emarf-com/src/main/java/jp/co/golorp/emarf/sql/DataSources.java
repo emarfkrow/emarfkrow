@@ -431,16 +431,16 @@ public final class DataSources {
 		addMerge(tables);
 		// 転生モデルの評価
 		setReborn(tables);
-		// 転生モデルの再評価：１回目
-		setReborn(tables);
+		//		// 転生モデルの再評価：１回目
+		//		setReborn(tables);
 		// 選抜モデルの評価
 		addChoices(tables);
-		// 転生モデルの再評価：２回目
-		setReborn(tables);
+		//		// 転生モデルの再評価：２回目
+		//		setReborn(tables);
 		// 集約モデルの評価
 		addSummaryOfs(tables);
-		// 転生モデルの再評価：３回目
-		setReborn(tables);
+		//		// 転生モデルの再評価：３回目
+		//		setReborn(tables);
 		log(tables);
 		return tables;
 	}
