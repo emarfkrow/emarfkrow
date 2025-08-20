@@ -1322,20 +1322,20 @@ public final class HtmlGenerator {
                 addMeiSpan(s, table, column);
             } else if (isD && column.isReborn()) { // 詳細画面の転生元外部キー
                 htmlFieldsSpan(s, fieldId, column.getRemarks(), "rebornee");
-                if (!isP && rebornFrom != null) {
-                    String referName = StringUtil.toPascalCase(rebornFrom.getName());
-                    String href = "/model/" + referName + "S.html?action=" + referName + "Correct.ajax";
-                    s.add("          <a id=\"" + fieldId + "\" th:href=\"@{" + href + "}\" target=\"dialog\"" + referCss
-                            + " th:text=\"#{common.correct}\" tabindex=\"-1\">...</a>");
-                }
+                //                if (!isP && rebornFrom != null) {
+                //                    String referName = StringUtil.toPascalCase(rebornFrom.getName());
+                //                    String href = "/model/" + referName + "S.html?action=" + referName + "Correct.ajax";
+                //                    s.add("          <a id=\"" + fieldId + "\" th:href=\"@{" + href + "}\" target=\"dialog\"" + referCss
+                //                            + " th:text=\"#{common.correct}\" tabindex=\"-1\">...</a>");
+                //                }
             } else if (isD && column.getDeriveFrom() != null) { // 詳細画面の派生元外部キー
                 htmlFieldsSpan(s, fieldId, column.getRemarks(), "derivee");
-                // 派生元は参照しない
-                // String referCss = " class=\"derivee\"";
-                // if (!isP && (table.getParents() == null || table.getParents().size() == 0)) {
-                //     String referName = StringUtil.toPascalCase(column.getDeriveFrom().getName());
-                //     s.add("          <a id=\"" + fieldId + "\" th:href=\"@{/model/" + referName + "S.html?action=" + referName + "Correct.ajax}\" target=\"dialog\"" + referCss + " th:text=\"#{common.correct}\" tabindex=\"-1\">...</a>");
-                // }
+                if (!isP) {
+                    String referName = StringUtil.toPascalCase(column.getDeriveFrom().getName());
+                    s.add("          <a id=\"" + fieldId + "\" th:href=\"@{/model/" + referName + "S.html?action="
+                            + referName + "Correct.ajax}\" target=\"dialog\" class=\"derivee\" "
+                            + "th:text=\"#{common.correct}\" tabindex=\"-1\">...</a>");
+                }
             } else if (isD && column.isSummary()) { // 詳細画面の集約先外部キー
                 htmlFieldsSpan(s, fieldId, column.getRemarks(), "summary");
             } else if (StringUtil.endsWith(inputTimestampSuffixs, colName)) { // タイムスタンプの場合
@@ -1349,8 +1349,7 @@ public final class HtmlGenerator {
             } else { // inputの場合
                 String type = getInputType(colName);
                 String inputCss = addCssByRelation(isD, table, column);
-                // 詳細画面の必須項目
-                if (isD && column.getNullable() == 0) {
+                if (isD && column.getNullable() == 0) { // 詳細画面の必須項目
                     inputCss += isNotBlank(column);
                 }
                 // 日付項目および8桁日付項目
@@ -1376,6 +1375,12 @@ public final class HtmlGenerator {
                     s.add(htmlFieldsInput(fieldId, type, inputCss, column, format));
                     if (rebornFrom != null) {
                         String referName = StringUtil.toPascalCase(rebornFrom.getName());
+                        String href = "/model/" + referName + "S.html?action=" + referName + "Correct.ajax";
+                        s.add("          <a id=\"" + fieldId + "\" th:href=\"@{" + href + "}\" target=\"dialog\""
+                                + referCss + " th:text=\"#{common.correct}\" tabindex=\"-1\">...</a>");
+                    }
+                    if (column.getDeriveFrom() != null) {
+                        String referName = StringUtil.toPascalCase(column.getDeriveFrom().getName());
                         String href = "/model/" + referName + "S.html?action=" + referName + "Correct.ajax";
                         s.add("          <a id=\"" + fieldId + "\" th:href=\"@{" + href + "}\" target=\"dialog\""
                                 + referCss + " th:text=\"#{common.correct}\" tabindex=\"-1\">...</a>");

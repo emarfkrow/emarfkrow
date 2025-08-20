@@ -348,19 +348,27 @@ public final class DetailActionGenerator {
             s.add("");
             s.add("        try {");
             s.add("            " + ent + " " + ins + " = " + ent + ".get(" + StringUtil.toCamelCase(pks) + ");");
-            for (TableInfo bros : table.getBrothers()) {
-                s.add("            " + ins + ".refer" + StringUtil.toPascalCase(bros.getName()) + "();");
+            if (table.getBrothers().size() > 0) {
+                s.add("            // 兄弟");
+                for (TableInfo bros : table.getBrothers()) {
+                    s.add("            " + ins + ".refer" + StringUtil.toPascalCase(bros.getName()) + "();");
+                }
             }
-            for (TableInfo child : table.getChildren()) {
-                s.add("            " + ins + ".refer" + StringUtil.toPascalCase(child.getName()) + "s();");
+            if (table.getChildren().size() > 0) {
+                s.add("            // 子");
+                for (TableInfo child : table.getChildren()) {
+                    s.add("            " + ins + ".refer" + StringUtil.toPascalCase(child.getName()) + "s();");
+                }
             }
             // 転生先リスト
             if (table.getRebornTo() != null) {
+                s.add("            // 転生先");
                 String pascal = StringUtil.toPascalCase(table.getRebornTo().getName());
                 s.add("            " + ins + ".refer" + pascal + "s();");
             }
             // 集約元リスト
             if (table.getSummaryOfs().size() > 0) {
+                s.add("            // 集約元");
                 for (TableInfo summaryOf : table.getSummaryOfs()) {
                     String pascal = StringUtil.toPascalCase(summaryOf.getName());
                     s.add("            " + ins + ".refer" + pascal + "s();");
@@ -729,17 +737,17 @@ public final class DetailActionGenerator {
             String frK = "";
             for (String fromKey : frTbl.getPrimaryKeys()) {
                 String k = StringUtil.toCamelCase(fromKey);
-                s.add("            Object " + k + " = postJson.get(\"" + k + "\");");
-                s.add("            if (" + k + " == null) {");
-                s.add("                " + k + " = postJson.get(\"" + toE + "." + k + "\");");
+                s.add("            Object " + k + froms + " = postJson.get(\"" + k + "\");");
+                s.add("            if (" + k + froms + " == null) {");
+                s.add("                " + k + froms + " = postJson.get(\"" + toE + "." + k + "\");");
                 s.add("            }");
-                s.add("            if (" + k + " == null) {");
+                s.add("            if (" + k + froms + " == null) {");
                 s.add("                return map;");
                 s.add("            }");
                 if (!frK.equals("")) {
                     frK += ", ";
                 }
-                frK += k;
+                frK += k + froms;
             }
 
             s.add("");
