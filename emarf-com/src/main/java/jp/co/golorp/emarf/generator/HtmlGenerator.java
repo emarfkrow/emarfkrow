@@ -19,13 +19,13 @@ package jp.co.golorp.emarf.generator;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.ResourceBundle;
 import java.util.Set;
+import java.util.TreeMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -127,6 +127,8 @@ public final class HtmlGenerator {
     /** 区分値名カラム */
     private static String optL;
 
+    private static Map<String, String> navOrderRes = new TreeMap<String, String>();
+
     /** プライベートコンストラクタ */
     private HtmlGenerator() {
     }
@@ -183,6 +185,15 @@ public final class HtmlGenerator {
         optK = bundle.getString("options.key").toUpperCase();
         optV = bundle.getString("options.value").toUpperCase();
         optL = bundle.getString("options.label").toUpperCase();
+
+        // 業務並び順
+        for (String key : bundle.keySet()) {
+            if (key.startsWith("nav.order.prefix.re.")) {
+                String order = key.replaceFirst("nav.order.prefix.re.", "");
+                String re = bundle.getString(key);
+                navOrderRes.put(order, re);
+            }
+        }
 
         // 出力フォルダを再作成
         String htmlDir = projectDir + File.separator + bundle.getString("dir.html");
@@ -805,7 +816,7 @@ public final class HtmlGenerator {
     private static void htmlNav(final String htmlDir, final List<TableInfo> tables) {
 
         // プレフィクス毎にグループ化
-        Map<String, List<TableInfo>> navs = new LinkedHashMap<String, List<TableInfo>>();
+        Map<String, List<TableInfo>> navs = new TreeMap<String, List<TableInfo>>();
 
         for (TableInfo table : tables) {
 
@@ -816,6 +827,14 @@ public final class HtmlGenerator {
 
             String name = table.getName();
             String prefix = name.replaceAll("_.+$", "");
+
+            for (Entry<String, String> navOrderRe : navOrderRes.entrySet()) {
+                String navOrder = navOrderRe.getKey();
+                String prefixRe = navOrderRe.getValue();
+                if (prefix.matches(prefixRe)) {
+                    prefix = navOrder + prefix;
+                }
+            }
 
             List<TableInfo> nav = null;
             if (navs.containsKey(prefix)) {
@@ -836,6 +855,7 @@ public final class HtmlGenerator {
         s.add("    <dl>");
         for (Entry<String, List<TableInfo>> nav : navs.entrySet()) {
             String category = nav.getKey();
+            category = category.replaceAll("^\\d+", "");
             s.add("      <dt id=\"" + category + "\" style=\"clear: both;\" th:text=\"#{nav.dt." + category + "}\">"
                     + category + "</dt>");
             s.add("      <dd>");
@@ -878,6 +898,7 @@ public final class HtmlGenerator {
         s = new ArrayList<String>();
         for (Entry<String, List<TableInfo>> nav : navs.entrySet()) {
             String category = nav.getKey();
+            category = category.replaceAll("^\\d+", "");
             s.add("nav.dt." + category + " " + category);
             for (TableInfo table : nav.getValue()) {
                 String name = table.getName();
@@ -1241,13 +1262,11 @@ public final class HtmlGenerator {
      */
     private static void htmlFields(final TableInfo table, final List<String> s, final boolean isD, final boolean isB,
             final boolean isP) {
-        //検索画面の場合は制約モデルの参照キーを出力
-        if (!isD && table.getStintInfo() != null) {
+        if (!isD && table.getStintInfo() != null) { // 検索画面の場合は制約モデルの参照キーを出力
             htmlFieldsStint(table, s);
         }
         String entity = StringUtil.toPascalCase(table.getName());
-        // カラム情報でループ
-        for (ColumnInfo column : table.getColumns().values()) {
+        for (ColumnInfo column : table.getColumns().values()) { // カラム情報でループ
             if (isB && column.isPk()) {
                 continue; // 兄弟モデルの主キーは出力しない
             }
