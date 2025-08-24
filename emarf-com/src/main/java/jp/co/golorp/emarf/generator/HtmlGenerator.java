@@ -834,7 +834,7 @@ public final class HtmlGenerator {
                 if (prefix.matches(prefixRe)) {
                     String matches = prefixRe.replaceAll("[^0-9A-Za-z]", "");
                     String p = prefix.replaceAll(matches, "");
-                    prefix = p + navOrder + prefix;
+                    prefix = p + navOrder + "-" + prefix;
                 }
             }
 
@@ -857,7 +857,7 @@ public final class HtmlGenerator {
         s.add("    <dl>");
         for (Entry<String, List<TableInfo>> nav : navs.entrySet()) {
             String category = nav.getKey();
-            category = category.replaceAll("^.*\\d+", "");
+            category = category.replaceAll("^.*\\d*?-", "");
             s.add("      <dt id=\"" + category + "\" style=\"clear: both;\" th:text=\"#{nav.dt." + category + "}\">"
                     + category + "</dt>");
             s.add("      <dd>");
@@ -900,7 +900,7 @@ public final class HtmlGenerator {
         s = new ArrayList<String>();
         for (Entry<String, List<TableInfo>> nav : navs.entrySet()) {
             String category = nav.getKey();
-            category = category.replaceAll("^.*\\d+", "");
+            category = category.replaceAll("^.*\\d*?-", "");
             s.add("nav.dt." + category + " " + category);
             for (TableInfo table : nav.getValue()) {
                 String name = table.getName();
