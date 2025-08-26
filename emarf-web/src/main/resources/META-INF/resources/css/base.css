@@ -335,6 +335,12 @@ a.view {
     color: blue !important;
 }
 
+a.M {
+    background-color: #fff;
+    border-color: goldenrod !important;
+    color: goldenrod !important;
+}
+
 a.history {
     margin-left: 2rem;
 }

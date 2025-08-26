@@ -690,9 +690,25 @@ public final class BeanGenerator {
                 }
             }
 
+            // 兄弟
             for (TableInfo bro : table.getBrothers()) {
-                if (StringUtil.isNullOrWhiteSpace(deleteF) || (!bro.getColumns().containsKey(deleteF.toLowerCase())
-                        && !bro.getColumns().containsKey(deleteF.toUpperCase()))) {
+
+                // 自テーブル名に兄弟テーブル名が接頭する場合もスキップ（兄テーブルは削除しない）
+                if (table.getName().startsWith(bro.getName())) {
+                    continue;
+                }
+
+                // 兄弟に親がなく自テーブル名に前方一致しければスキップ（弟でもなく別で成り立つため）
+                if (bro.getParents() == null || bro.getParents().size() == 0) {
+                    if (!bro.getName().startsWith(table.getName())) {
+                        continue;
+                    }
+                }
+
+                // 削除フラグの定義がないか削除フラグ列がない
+                if (StringUtil.isNullOrWhiteSpace(deleteF)
+                        || (!bro.getColumns().containsKey(deleteF.toLowerCase())
+                                && !bro.getColumns().containsKey(deleteF.toUpperCase()))) {
                     String b = StringUtil.toCamelCase(bro.getName());
                     String r = bro.getRemarks();
                     s.add("");

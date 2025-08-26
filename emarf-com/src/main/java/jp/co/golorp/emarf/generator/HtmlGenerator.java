@@ -127,6 +127,7 @@ public final class HtmlGenerator {
     /** 区分値名カラム */
     private static String optL;
 
+    /** 業務順のプレフィクス正規表現 */
     private static Map<String, String> navOrderRes = new TreeMap<String, String>();
 
     /** プライベートコンストラクタ */
@@ -827,23 +828,23 @@ public final class HtmlGenerator {
 
             String name = table.getName();
             String prefix = name.replaceAll("_.+$", "");
+            String navKey = prefix;
 
             for (Entry<String, String> navOrderRe : navOrderRes.entrySet()) {
                 String navOrder = navOrderRe.getKey();
                 String prefixRe = navOrderRe.getValue();
                 if (prefix.matches(prefixRe)) {
-                    String matches = prefixRe.replaceAll("[^0-9A-Za-z]", "");
-                    String p = prefix.replaceAll(matches, "");
-                    prefix = p + navOrder + "-" + prefix;
+                    String category = prefixRe.replaceAll("[^0-9A-Za-z]", "");
+                    navKey = navOrder + "-" + category;
                 }
             }
 
             List<TableInfo> nav = null;
-            if (navs.containsKey(prefix)) {
-                nav = navs.get(prefix);
+            if (navs.containsKey(navKey)) {
+                nav = navs.get(navKey);
             } else {
                 nav = new ArrayList<TableInfo>();
-                navs.put(prefix, nav);
+                navs.put(navKey, nav);
             }
 
             nav.add(table);
@@ -856,35 +857,43 @@ public final class HtmlGenerator {
         s.add("  <div class=\"nav\" layout:fragment=\"nav\" th:if=\"${#ctx.session != null && #ctx.session.get('AUTHN_KEY') != null}\">");
         s.add("    <dl>");
         for (Entry<String, List<TableInfo>> nav : navs.entrySet()) {
-            String category = nav.getKey();
-            category = category.replaceAll("^.*\\d*?-", "");
+            String navKey = nav.getKey();
+            String category = navKey.replaceAll("^.*\\d*?-", "");
             s.add("      <dt id=\"" + category + "\" style=\"clear: both;\" th:text=\"#{nav.dt." + category + "}\">"
                     + category + "</dt>");
             s.add("      <dd>");
             s.add("        <ul>");
-            String preName = "";
+            //            String preName = "";
             for (TableInfo table : nav.getValue()) {
                 String name = table.getName();
+
                 String remarks = table.getRemarks();
                 String e = StringUtil.toPascalCase(name);
-                String css = " class=\"table\"";
+                String css = "table";
                 String style = " style=\"clear: both; float: left;\"";
                 if (table.isHistory()) {
-                    css = " class=\"history\"";
+                    css = "history";
                     style = " style=\"clear: both;\"";
                 } else if (table.isView()) {
                     if (StringUtil.endsWith(viewNavIgnoreSuffixs, table.getName())) {
                         continue;
                     }
-                    css = " class=\"view\"";
-                    // 直前のテーブル名と前方一致するなら回り込み
-                    if (name.startsWith(preName)) {
-                        style = " style=\"float: left;\"";
-                    }
+                    css = "view";
+                    //                    // 直前のテーブル名と前方一致するなら回り込み
+                    //                    if (name.startsWith(preName)) {
+                    //                        style = " style=\"float: left;\"";
+                    //                    }
                 }
-                preName = name;
+
+                String prefix = name.replaceAll("_.+$", "");
+                String type = prefix.replaceAll(category, "");
+                if (!StringUtil.isNullOrWhiteSpace(type)) {
+                    css += " " + type;
+                }
+
+                //                preName = name;
                 s.add("          <li" + style + "><a id=\"" + e + "\" th:href=\"@{/model/" + e
-                        + "S.html}\" th:text=\"#{nav." + e + "S}\"" + css + ">" + remarks + "</a></li>");
+                        + "S.html}\" th:text=\"#{nav." + e + "S}\" class=\"" + css + "\">" + remarks + "</a></li>");
             }
             s.add("        </ul>");
             s.add("      </dd>");
