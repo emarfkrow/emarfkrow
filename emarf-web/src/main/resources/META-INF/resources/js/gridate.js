@@ -400,7 +400,7 @@ $(function() {
                 if (c) {
                     //参照モデルなら隠しリンク押下
                     let column = g.getColumns()[c];
-                    if (column.referField && g.getOptions().editable == true) {
+                    if (/*column.referField*/column.formatter.name == 'ReferFormatter' && g.getOptions().editable == true) {
                         let gridNode = g.getContainerNode();
                         let gridId = gridNode.id;
                         console.debug('gridId: ' + gridId);

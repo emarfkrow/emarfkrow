@@ -634,15 +634,20 @@ public final class HtmlGenerator {
             s.add("        <a th:href=\"@{/model/" + r + ".html}\" id=\"" + r + "\" target=\"dialog\" th:text=\"#{" + r
                     + ".add}\" class=\"reborner\" tabindex=\"-1\">" + reborn.getRemarks() + "</a>");
         }
+        if (table.getDeriveTos().size() > 0) { // 派生先がある場合は追加ボタンを出力
+            for (TableInfo deriveTo : table.getDeriveTos()) {
+                String r = StringUtil.toPascalCase(deriveTo.getName());
+                s.add("        <a th:href=\"@{/model/" + r + ".html}\" id=\"" + r + "\" target=\"dialog\" th:text=\"#{"
+                        + r + ".add}\" class=\"reborner\" tabindex=\"-1\">" + deriveTo.getRemarks() + "</a>");
+            }
+        }
         //        if (table.getChoosers() != null) { // 選抜先がある場合は追加ボタンを出力
         //            for (TableInfo chooser : table.getChoosers()) {
         //                String r = StringUtil.toPascalCase(chooser.getName());
-        //                s.add("        <a th:href=\"@{/model/" + r + ".html}\" id=\"" + r + "\" target=\"dialog\" th:text=\"#{"
-        //                        + r + ".add}\" class=\"chooser\" tabindex=\"-1\">" + chooser.getRemarks() + "</a>");
+        //                s.add("        <a th:href=\"@{/model/" + r + ".html}\" id=\"" + r + "\" target=\"dialog\" th:text=\"#{" + r + ".add}\" class=\"chooser\" tabindex=\"-1\">" + chooser.getRemarks() + "</a>");
         //            }
         //        }
         if (table.getSummaryOfs().size() > 0) { // 集約元がある場合は主キー項目を出力
-
             for (TableInfo summaryOf : table.getSummaryOfs()) {
                 String m = StringUtil.toPascalCase(summaryOf.getName());
                 // 転生先で必須でない場合でも、自モデルが他の転生先である場合は転生元となるよう変更したので、ここはコメントアウト
@@ -663,17 +668,15 @@ public final class HtmlGenerator {
         }
         s.add("      </div>");
         s.add("      <div class=\"submits\">");
-        // 履歴モデルでもビューでもない場合
-        if (!table.isHistory() && !table.isView()) {
+        if (!table.isHistory() && !table.isView()) { // 履歴モデルでもビューでもない場合
             // 削除フラグ列名の指定がないか、テーブルに削除フラグ列がないなら、物理削除ボタンを表示
             if (StringUtil.isNullOrWhiteSpace(deleteF) || (!table.getColumns().containsKey(deleteF.toLowerCase())
                     && !table.getColumns().containsKey(deleteF.toUpperCase()))) {
                 s.add("        <button id=\"Delete" + e + "\" type=\"submit\" class=\"delete\" data-action=\"" + e
                         + "Delete.ajax\" th:text=\"#{common.delete}\" tabindex=\"-1\">削除</button>");
             }
-            //ステータス列名の指定があり、テーブルにステータス列があるなら、承認ボタン・否認ボタンを表示
             if (!StringUtil.isNullOrWhiteSpace(status) && (table.getColumns().containsKey(status.toLowerCase())
-                    || table.getColumns().containsKey(status.toUpperCase()))) {
+                    || table.getColumns().containsKey(status.toUpperCase()))) { //ステータス列名の指定があり、テーブルにステータス列があるなら、承認ボタン・否認ボタンを表示
                 s.add("        <button id=\"Permit" + e + "\" type=\"submit\" class=\"permit\" data-action=\""
                         + e + "Permit.ajax\" th:text=\"#{common.permit}\" tabindex=\"-1\">承認</button>");
                 s.add("        <button id=\"Forbid" + e + "\" type=\"submit\" class=\"forbid\" data-action=\""
@@ -700,8 +703,7 @@ public final class HtmlGenerator {
         //                String c = StringUtil.toPascalCase(chooser.getName());
         //                s.add("      <h3 th:text=\"#{" + c + ".h3}\">h3</h3>");
         //                String frozen = String.valueOf(chooser.getPrimaryKeys().size());
-        //                s.add("      <div id=\"" + c + "Grid\" data-selectionMode=\"link\" data-frozenColumn=\"" + frozen
-        //                        + "\" th:data-href=\"@{/model/" + c + ".html}\" class=\"choosers\"></div>");
+        //                s.add("      <div id=\"" + c + "Grid\" data-selectionMode=\"link\" data-frozenColumn=\"" + frozen + "\" th:data-href=\"@{/model/" + c + ".html}\" class=\"choosers\"></div>");
         //            }
         //        }
         s.add("    </form>");
@@ -1005,7 +1007,6 @@ public final class HtmlGenerator {
 
             htmlNestGrid(s, child, tables, added, false);
         }
-
         //転生先モデル
         if (table.getRebornTo() != null) {
             TableInfo rebornTo = table.getRebornTo();
@@ -1016,7 +1017,6 @@ public final class HtmlGenerator {
                 htmlNestGrid(s, rebornTo, tables, added, false);
             }
         }
-
         //        // 選抜先モデル
         //        if (table.getChoosers().size() > 0) {
         //            for (TableInfo chooser : table.getChoosers()) {
@@ -1028,7 +1028,6 @@ public final class HtmlGenerator {
         //                }
         //            }
         //        }
-
         // 転生元モデル
         if (table.getRebornFrom() != null) {
             TableInfo reFrom = table.getRebornFrom();
@@ -1039,9 +1038,8 @@ public final class HtmlGenerator {
                 htmlNestGrid(s, reFrom, tables, added, false);
             }
         }
-
-        // 派生元モデル
         if (!isP) {
+            // 派生元モデル
             for (ColumnInfo column : table.getColumns().values()) {
                 if ((table.getParents() == null || table.getParents().size() == 0) && column.getDeriveFrom() != null) {
                     TableInfo deriveFrom = column.getDeriveFrom();
@@ -1053,8 +1051,16 @@ public final class HtmlGenerator {
                     }
                 }
             }
+            // 派生先モデル
+            for (TableInfo deriveTo : table.getDeriveTos()) {
+                if (!added.contains(deriveTo)) {
+                    String entity = StringUtil.toPascalCase(deriveTo.getName());
+                    s.add("<script th:src=\"@{/model/" + entity + "GridColumns.js}\"></script>");
+                    added.add(deriveTo);
+                    htmlNestGrid(s, deriveTo, tables, added, false);
+                }
+            }
         }
-
         //集約元モデル
         if (table.getSummaryOfs().size() > 0) {
             for (TableInfo summary : table.getSummaryOfs()) {
@@ -1066,7 +1072,6 @@ public final class HtmlGenerator {
                 }
             }
         }
-
         //集約先モデル
         TableInfo summaryTo = table.getSummaryTo();
         if (summaryTo != null) {
@@ -1146,13 +1151,10 @@ public final class HtmlGenerator {
         } else if (column.getDataType().equals("java.time.LocalDateTime")) {
             format = "Slick.Formatters.Extends.DateTime";
         }
-        // 名称を参照先から取得するか
-        boolean isMeiRefer = false;
-        // 参照名の列名
-        String referMei = "";
-        // 参照テーブルが設定されている場合
+        boolean isMeiRefer = false; // 名称を参照先から取得するか
+        String referMei = ""; // 参照名の列名
         TableInfo referInfo = column.getRefer();
-        if (referInfo != null) {
+        if (referInfo != null) { // 参照テーブルが設定されている場合
             isMeiRefer = true;
             // カラム名が組み合わせキーのいずれかに合致する場合
             if (StringUtil.endsWith(referPairs, name)) {
@@ -1182,10 +1184,13 @@ public final class HtmlGenerator {
                     if (StringUtil.endsWith(keySuffixs, name)) {
                         // カラム名の末尾を名称列サフィックスに変換して、名称列が参照先テーブルに含まれている場合は、取得する名称を決定する
                         String lastSuffix = keySuffixs[keySuffixs.length - 1];
-                        String tempMei = name.replaceAll("(?i)" + lastSuffix + "$", meiSuffix).toUpperCase();
+                        String tempMei = name.replaceAll("(?i)" + lastSuffix + "$", meiSuffix);
+                        if (name.equals(tempMei)) {
+                            continue;
+                        }
                         for (ColumnInfo referColumnInfo : referInfo.getColumns().values()) {
                             if (tempMei.matches("(?i).*" + referColumnInfo.getName() + "$")) {
-                                referMei = tempMei;
+                                referMei = tempMei.toUpperCase();
                                 break;
                             }
                         }

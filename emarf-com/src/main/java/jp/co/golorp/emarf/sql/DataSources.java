@@ -1201,11 +1201,25 @@ public final class DataSources {
                     continue;
                 }
 
+                String lastKey = moto.getPrimaryKeys().get(moto.getPrimaryKeys().size() - 1);
+
                 LOG.debug("    " + moto.getName() + " to " + saki.getName() + " " + sakiKeys);
                 moto.getDeriveTos().add(saki);
                 saki.getDeriveFroms().add(moto);
                 for (String sakiKey : sakiKeys) {
-                    saki.getColumns().get(sakiKey).setDeriveFrom(moto);
+                    if (saki.getColumns().get(sakiKey).getNullable() != 1) {
+                        // 必須なら上書き
+                        saki.getColumns().get(sakiKey).setDeriveFrom(moto);
+                        for (String motoKey : moto.getPrimaryKeys()) {
+                            saki.getColumns().get(motoKey).setRefer(moto);
+                        }
+                    } else if (sakiKey.equals(lastKey)) {
+                        // 必須でない場合は派生元の最終キーと一致するなら上書き
+                        saki.getColumns().get(sakiKey).setDeriveFrom(moto);
+                        for (String motoKey : moto.getPrimaryKeys()) {
+                            saki.getColumns().get(motoKey).setRefer(moto);
+                        }
+                    }
                 }
             }
         }
@@ -1451,14 +1465,14 @@ public final class DataSources {
             for (TableInfo moto : choises) {
                 LOG.debug("    " + saki.getName() + " from " + moto.getName() + " " + moto.getPrimaryKeys());
 
-                // 派生情報を消し込み
-                moto.getDeriveTos().remove(saki);
-                saki.getDeriveFroms().remove(moto);
-                for (ColumnInfo sakiCol : saki.getColumns().values()) {
-                    if (sakiCol.getDeriveFrom() == moto) {
-                        sakiCol.setDeriveFrom(null);
-                    }
-                }
+                //                // 派生情報を消し込み
+                //                moto.getDeriveTos().remove(saki);
+                //                saki.getDeriveFroms().remove(moto);
+                //                for (ColumnInfo sakiCol : saki.getColumns().values()) {
+                //                    if (sakiCol.getDeriveFrom() == moto) {
+                //                        sakiCol.setDeriveFrom(null);
+                //                    }
+                //                }
 
                 // 選抜情報を書き込み
                 moto.getChoosers().add(saki);
@@ -1513,6 +1527,16 @@ public final class DataSources {
 
                 // 集約元に転生先があるならスキップ
                 if (moto.getRebornTo() != null) {
+                    continue;
+                }
+
+                // 集約元に派生先があるならスキップ
+                if (moto.getDeriveTos().size() > 0) {
+                    continue;
+                }
+
+                // 集約元が選抜先に登録済みならスキップ
+                if (saki.getChoosers().contains(moto)) {
                     continue;
                 }
 

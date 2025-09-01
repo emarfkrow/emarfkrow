@@ -265,6 +265,9 @@ let Dialogate = {
         if (href == undefined) {
             return;
         }
+        // URL引数を除去
+        href = href.replace(/\?.+$/, '');
+
         // ロード済みならスキップ
         if (Dialogate.loaded[href]) {
             return;

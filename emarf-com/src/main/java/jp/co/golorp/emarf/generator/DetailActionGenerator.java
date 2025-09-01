@@ -710,18 +710,24 @@ public final class DetailActionGenerator {
         for (TableInfo frTbl : tables) {
 
             boolean isTo = false;
-
             // 今回テーブルの転生先が、当該テーブルか調査
             String kind = "転生";
             if (frTbl.getRebornTo() != null && frTbl.getRebornTo().getName().equals(toTbl)) {
                 isTo = true;
             }
-
             // 今回テーブルの派生先が、当該テーブルか調査
             for (TableInfo deriveTo : frTbl.getDeriveTos()) {
                 if (deriveTo.getName().equals(toTbl)) {
                     isTo = true;
                     kind = "派生";
+                    break;
+                }
+            }
+            // 今回テーブルの派生先が、当該テーブルか調査
+            for (TableInfo choiceOf : frTbl.getChoosers()) {
+                if (choiceOf.getName().equals(toTbl)) {
+                    isTo = true;
+                    kind = "選抜";
                     break;
                 }
             }
@@ -732,33 +738,35 @@ public final class DetailActionGenerator {
 
             // 自テーブルが転生先であった
 
+            if (froms++ == 0) {
+                s.add("");
+                s.add("            " + toE + " " + toI + " = new " + toE + "();");
+            }
+
             s.add("");
             s.add("            // " + kind + "先になる場合は" + kind + "元から情報をコピー");
             String frK = "";
+            String frC = "";
             for (String fromKey : frTbl.getPrimaryKeys()) {
                 String k = StringUtil.toCamelCase(fromKey);
                 s.add("            Object " + k + froms + " = postJson.get(\"" + k + "\");");
                 s.add("            if (" + k + froms + " == null) {");
                 s.add("                " + k + froms + " = postJson.get(\"" + toE + "." + k + "\");");
                 s.add("            }");
-                s.add("            if (" + k + froms + " == null) {");
-                s.add("                return map;");
-                s.add("            }");
                 if (!frK.equals("")) {
                     frK += ", ";
                 }
                 frK += k + froms;
+                if (!frC.equals("")) {
+                    frC += " && ";
+                }
+                frC += k + froms + " != null";
             }
-
-            s.add("");
+            s.add("            if (" + frC + ") {");
             String frName = frTbl.getName();
             String frE = StringUtil.toPascalCase(frName);
             String frI = StringUtil.toCamelCase(frName);
-            s.add("            " + pkE + "." + frE + " " + frI + " = " + pkE + "." + frE + ".get(" + frK + ");");
-            if (froms++ == 0) {
-                s.add("            " + toE + " " + toI + " = new " + toE + "();");
-            }
-
+            s.add("                " + pkE + "." + frE + " " + frI + " = " + pkE + "." + frE + ".get(" + frK + ");");
             for (String frColNm : frTbl.getColumns().keySet()) {
                 // メタ情報ならスキップ
                 boolean isIDt = frColNm.matches("(?i)^" + insertDt + "$");
@@ -773,11 +781,9 @@ public final class DetailActionGenerator {
                 // 自テーブルに転生元と同じカラムがあればコピー
                 if (table.getColumns().containsKey(frColNm)) {
                     String a = StringUtil.toPascalCase(frColNm);
-                    s.add("            " + toI + ".set" + a + "(" + frI + ".get" + a + "());");
+                    s.add("                " + toI + ".set" + a + "(" + frI + ".get" + a + "());");
                 }
             }
-
-            s.add("");
             for (TableInfo frChild : frTbl.getChildren()) {
 
                 // 転生元の子モデル名が転生元に前方一致しなければスキップ
@@ -798,11 +804,13 @@ public final class DetailActionGenerator {
                     String fCI = StringUtil.toCamelCase(frCNm);
                     String cE = StringUtil.toPascalCase(childName);
                     String cI = StringUtil.toCamelCase(childName);
-                    s.add("            " + frI + ".refer" + StringUtil.toPascalCase(frCNm) + "s();");
-                    s.add("            " + toI + ".set" + cE + "s(new java.util.ArrayList<" + pkE + "." + cE + ">());");
-                    s.add("            for (" + pkE + "." + fCE + " " + fCI + " : " + frI + ".refer" + fCE + "s()) {");
-                    s.add("                " + pkE + "." + cE + " " + cI + " = new " + pkE + "." + cE + "();");
-                    s.add("                " + cI + ".setId(" + fCI + ".getId());");
+                    s.add("                " + frI + ".refer" + StringUtil.toPascalCase(frCNm) + "s();");
+                    s.add("                " + toI + ".set" + cE + "s(new java.util.ArrayList<" + pkE + "." + cE
+                            + ">());");
+                    s.add("                for (" + pkE + "." + fCE + " " + fCI + " : " + frI + ".refer" + fCE
+                            + "s()) {");
+                    s.add("                    " + pkE + "." + cE + " " + cI + " = new " + pkE + "." + cE + "();");
+                    s.add("                    " + cI + ".setId(" + fCI + ".getId());");
                     for (String frCColNm : frChild.getColumns().keySet()) {
                         // メタ情報ならスキップ
                         boolean isIDt = frCColNm.matches("(?i)^" + insertDt + "$");
@@ -817,18 +825,23 @@ public final class DetailActionGenerator {
                         // 子テーブルに転生元の子モデルと同じカラムがあればコピー
                         if (child.getColumns().containsKey(frCColNm)) {
                             String a = StringUtil.toPascalCase(frCColNm);
-                            s.add("                " + cI + ".set" + a + "(" + fCI + ".get" + a + "());");
+                            s.add("                    " + cI + ".set" + a + "(" + fCI + ".get" + a + "());");
                         }
                     }
-                    s.add("                " + toI + ".get" + cE + "s().add(" + cI + ");");
-                    s.add("            }");
+                    s.add("                    " + toI + ".get" + cE + "s().add(" + cI + ");");
+                    s.add("                }");
                     s.add("");
                 }
             }
-            s.add("            map.put(\"" + toE + "\", " + toI + ");");
+            s.add("            }");
 
             //            // 転生元は一つしかないはずなので不要かも
             //            break;
+        }
+
+        if (froms > 0) {
+            s.add("");
+            s.add("            map.put(\"" + toE + "\", " + toI + ");");
         }
     }
 
