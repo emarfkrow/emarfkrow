@@ -417,12 +417,12 @@ public final class DataSources {
         }
         // 参照モデルの評価
         setRefer(tables);
-        // 複合モデルの評価
-        addCombos(tables);
         // 兄弟モデルの評価
         addBrothers(tables);
         // 履歴モデルの評価
         setHistory(tables);
+        // 複合モデルの評価
+        addCombos(tables);
         // 親子モデルの評価
         addChildren(tables);
         // 派生モデルの評価
@@ -795,7 +795,11 @@ public final class DataSources {
 
         for (TableInfo saki : tables) {
 
-            //複合キー内の参照モデルを探索
+            if (saki.isHistory()) {
+                continue;
+            }
+
+            // 統合先の主キー内の参照モデルが１以下ならスキップ
             Set<TableInfo> combos = new LinkedHashSet<TableInfo>();
             for (String sakiPrimaryKey : saki.getPrimaryKeys()) {
                 ColumnInfo pkCol = saki.getColumns().get(sakiPrimaryKey);
@@ -806,53 +810,46 @@ public final class DataSources {
                     }
                 }
             }
+            if (combos.size() <= 1) {
+                continue;
+            }
 
-            //複合キー内の参照モデルが２以上あれば組合せモデルに設定
-            if (combos.size() > 1) {
-                for (TableInfo combo : combos) {
-                    LOG.debug("    " + saki.getName() + " : " + combo.getName());
-                    saki.getComboInfos().add(combo);
+            // 統合モデルに設定
+            for (TableInfo combo : combos) {
+                LOG.debug("    " + saki.getName() + " : " + combo.getName());
+                saki.getComboInfos().add(combo);
+            }
+
+            /*
+             * 適用日を除く最終キー以外を
+             * 参照ダイアログで採用する制約モデルにする
+             */
+
+            // ２モデルの組み合わせでなければスキップ（３モデル以上になると複雑すぎる）
+            if (saki.getComboInfos().size() != 2) {
+                continue;
+            }
+
+            // 適用日はスキップ
+            List<String> primaryKeys = new ArrayList<String>(saki.getPrimaryKeys());
+            if (primaryKeys.get(primaryKeys.size() - 1).equals(tekiyoBi)) {
+                primaryKeys.remove(tekiyoBi);
+            }
+
+            // 主キーに参照キー以外が含まれるならスキップ
+            boolean isStint = true;
+            for (String primaryKey : primaryKeys) {
+                if (saki.getColumns().get(primaryKey).getRefer() == null) {
+                    isStint = false;
+                    break;
                 }
             }
 
-            //            //組合せモデル数が２の場合
-            //            if (saki.getComboInfos().size() == 2) {
-            //
-            //                // 自テーブルの主キーが各単一キーと適用日のみで、
-            //                // 各テーブルの主キーが自テーブルの第二キー以降の場合は、
-            //                // 各テーブルに制約モデルを設定
-            //                boolean b = true;
-            //                for (String pk : saki.getPrimaryKeys()) {
-            //                    if (pk.matches(tekiyoBi)) {
-            //                        continue;
-            //                    }
-            //                    ColumnInfo primaryKey = saki.getColumns().get(pk);
-            //                    TableInfo combo = primaryKey.getRefer();
-            //                    if (combo != null && combo.getPrimaryKeys().size() == 1) {
-            //                        continue;
-            //                    }
-            //                    b = false;
-            //                    break;
-            //                }
-            //                if (!b) {
-            //                    continue;
-            //                }
-            //
-            //                for (TableInfo combo : saki.getComboInfos()) {
-            //                    //組合せの第一キーなら制約設定なし
-            //                    if (saki.getPrimaryKeys().get(0).equals(combo.getPrimaryKeys().get(0))) {
-            //                        continue;
-            //                    }
-            //                    //制約モデルが２以上あれば消し込み
-            //                    if (saki.getStintInfo() != null) {
-            //                        LOG.debug("        Cancel " + saki.getName() + " : " + combo.getName());
-            //                        saki.setStintInfo(null);
-            //                        break;
-            //                    }
-            //                    LOG.debug("        Stint " + saki.getName() + " : " + combo.getName());
-            //                    saki.setStintInfo(combo);
-            //                }
-            //            }
+            if (isStint) {
+                TableInfo combo = saki.getComboInfos().get(saki.getComboInfos().size() - 1);
+                LOG.debug("        " + combo.getName() + " stint by " + saki.getName());
+                combo.setStintInfo(saki);
+            }
         }
     }
 

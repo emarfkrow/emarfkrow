@@ -2,11 +2,13 @@ package jp.co.golorp.emarf.generator;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.ResourceBundle;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -136,12 +138,10 @@ public final class FormGenerator {
             s.add("    /** logger */");
             s.add("    private static final Logger LOG = LoggerFactory.getLogger(" + entity + "RegistForm.class);");
             for (ColumnInfo column : table.getColumns().values()) {
-                boolean isInsertDt = column.getName().matches("(?i)^" + insertDt + "$");
-                // boolean isUpdateDt = column.getName().matches("(?i)^" + updateDt + "$"); 楽観ロック用に必要
-                boolean isInsertBy = column.getName().matches("(?i)^" + insertBy + "$");
-                boolean isUpdateBy = column.getName().matches("(?i)^" + updateBy + "$");
-                if (isInsertDt || isInsertBy || /*isUpdateDt ||*/ isUpdateBy) {
-                    continue; // レコードメタデータならスキップ
+                if (column.getName().matches("(?i)^" + insertDt + "$")
+                        || column.getName().matches("(?i)^" + insertBy + "$")
+                        || column.getName().matches("(?i)^" + updateBy + "$")) {
+                    continue; // レコードメタデータならスキップ。updateDtは楽観ロック用に必要
                 }
                 String prop = StringUtil.toCamelCase(column.getName());
                 String acce = StringUtil.toPascalCase(column.getName());
@@ -174,12 +174,11 @@ public final class FormGenerator {
                 s.add("        this." + prop + " = p;");
                 s.add("    }");
             }
-            for (TableInfo brosInfo : table.getBrothers()) { // 兄弟モデル
-                String brosName = brosInfo.getName();
-                String camel = StringUtil.toCamelCase(brosName);
-                String pascal = StringUtil.toPascalCase(brosName);
+            for (TableInfo brother : table.getBrothers()) { // 兄弟モデル
+                String camel = StringUtil.toCamelCase(brother.getName());
+                String pascal = StringUtil.toPascalCase(brother.getName());
                 s.add("");
-                s.add("    /** " + brosInfo.getRemarks() + " */");
+                s.add("    /** " + brother.getRemarks() + " */");
                 s.add("    @jakarta.validation.Valid");
                 s.add("    private " + pascal + "RegistForm " + camel + "RegistForm;");
                 s.add("");
@@ -197,17 +196,16 @@ public final class FormGenerator {
                 s.add("        this." + camel + "RegistForm = p;");
                 s.add("    }");
             }
-            for (TableInfo childInfo : table.getChildren()) { // 子モデル
-                String childName = childInfo.getName();
-                String camel = StringUtil.toCamelCase(childName);
-                String pascal = StringUtil.toPascalCase(childName);
+            for (TableInfo child : table.getChildren()) { // 子モデル
+                String camel = StringUtil.toCamelCase(child.getName());
+                String pascal = StringUtil.toPascalCase(child.getName());
                 s.add("");
-                s.add("    /** " + childInfo.getRemarks() + " */");
+                s.add("    /** " + child.getRemarks() + " */");
                 s.add("    @jakarta.validation.Valid");
                 s.add("    private java.util.List<" + pascal + "RegistForm> " + camel + "Grid;");
                 s.add("");
                 s.add("    /**");
-                s.add("     * @return " + childInfo.getRemarks());
+                s.add("     * @return " + child.getRemarks());
                 s.add("     */");
                 s.add("    public java.util.List<" + pascal + "RegistForm> get" + pascal + "Grid() {");
                 s.add("        return " + camel + "Grid;");
@@ -225,26 +223,35 @@ public final class FormGenerator {
             s.add("    @Override");
             s.add("    public void validate(final Map<String, String> errors, final BaseProcess baseProcess) {");
             s.add("        LOG.trace(\"validate() not overridden in subclasses.\");");
+            Set<String> refers = new HashSet<String>();
             for (ColumnInfo column : table.getColumns().values()) {
-                boolean isInsertBy = column.getName().matches("(?i)^" + insertBy + "$");
-                boolean isUpdateBy = column.getName().matches("(?i)^" + updateBy + "$");
-                if (isInsertBy || isUpdateBy) {
+                if (column.getRefer() == null || column.getName().matches("(?i)^" + insertBy + "$")
+                        || column.getName().matches("(?i)^" + updateBy + "$")) {
                     continue;
                 }
-                if (column.getRefer() != null) {
-                    TableInfo refer = column.getRefer();
-                    if (refer.getPrimaryKeys().size() == 1) {
-                        String prop = StringUtil.toCamelCase(column.getName());
-                        String acce = StringUtil.toPascalCase(column.getName());
-                        String referName = StringUtil.toPascalCase(refer.getName());
-                        String referKey = StringUtil.toCamelCase(refer.getPrimaryKeys().get(0));
-                        s.add("");
-                        s.add("        // " + column.getRemarks() + " のマスタチェック");
-                        s.add("        // TODO できればAssertTrueにしたい");
-                        s.add("        baseProcess.masterCheck(errors, \"" + referName + "Search\", \"" + referKey
-                                + "\", this.get" + acce + "(), jp.co.golorp.emarf.util.Messages.get(\"" + entity + "."
-                                + prop + "\"));");
+                s.add("");
+                s.add("        // " + column.getRemarks() + " のマスタチェック TODO できればAssertTrueにしたい");
+                TableInfo refer = column.getRefer();
+                String prop = StringUtil.toCamelCase(column.getName());
+                String className = StringUtil.toPascalCase(refer.getName());
+                String referName = StringUtil.toCamelCase(refer.getName());
+                if (refer.getPrimaryKeys().size() > 1) {
+                    if (!refers.contains(className)) {
+                        refers.add(className);
+                        s.add("        Map<String, Object> " + referName
+                                + "Params = new java.util.HashMap<String, Object>();");
+                        for (String primaryKey : refer.getPrimaryKeys()) {
+                            s.add("        " + referName + "Params.put(\"" + StringUtil.toCamelCase(primaryKey) + "\", "
+                                    + "this.get" + StringUtil.toPascalCase(primaryKey) + "());");
+                        }
                     }
+                    s.add("        baseProcess.masterCheck(errors, \"" + className + "Search\", \"" + prop + "\", "
+                            + referName + "Params, jp.co.golorp.emarf.util.Messages.get(\"" + entity + "." + prop
+                            + "\"));");
+                } else {
+                    s.add("        baseProcess.masterCheck(errors, \"" + className + "Search\", \"" + prop
+                            + "\", this.get" + StringUtil.toPascalCase(column.getName())
+                            + "(), jp.co.golorp.emarf.util.Messages.get(\"" + entity + "." + prop + "\"));");
                 }
             }
             s.add("    }");

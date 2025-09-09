@@ -74,16 +74,33 @@ public class BaseProcess {
      */
     public void masterCheck(final Map<String, String> errors, final String sqlName, final String itemName,
             final String itemValue, final String itemMei) {
-
         if (!StringUtil.isNullOrWhiteSpace(itemValue)) {
-
-            String namedSql = this.loadSqlFile(sqlName);
-
             Map<String, Object> params = new HashMap<String, Object>();
             params.put(itemName, itemValue);
+            masterCheck(errors, sqlName, itemName, params, itemMei);
+        }
+    }
 
+    /**
+     * マスタチェック処理
+     * @param errors 維持するエラーリスト
+     * @param sqlName マスタチェック用SQLファイル名
+     * @param itemName 主キー名
+     * @param params キー値
+     * @param itemMei 項目名
+     */
+    public void masterCheck(final Map<String, String> errors, final String sqlName, final String itemName,
+            final Map<String, Object> params, final String itemMei) {
+        boolean isNotEmpty = false;
+        for (Object o : params.values()) {
+            if (!StringUtil.isNullOrWhiteSpace(o)) {
+                isNotEmpty = true;
+                break;
+            }
+        }
+        if (isNotEmpty) {
+            String namedSql = this.loadSqlFile(sqlName);
             MapList mapList = Queries.select(namedSql, params, null, null);
-
             if (mapList == null) {
                 String processName = this.getClass().getSimpleName();
                 String formName = processName.replaceFirst("Action$", "Form");

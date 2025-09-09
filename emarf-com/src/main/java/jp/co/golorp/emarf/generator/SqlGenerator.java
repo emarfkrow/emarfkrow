@@ -386,16 +386,16 @@ public final class SqlGenerator {
 
         TableInfo stint = table.getStintInfo();
 
-        String anotherKey = "";
-        for (String pk : stint.getPrimaryKeys()) {
-            if (pk.equals(start)) {
-                continue;
-            }
-            if (!pk.equals(table.getPrimaryKeys().get(0))) {
-                anotherKey = pk;
-                break;
-            }
-        }
+        //        String anotherKey = "";
+        //        for (String pk : stint.getPrimaryKeys()) {
+        //            if (pk.equals(start)) {
+        //                continue;
+        //            }
+        //            if (!pk.equals(table.getPrimaryKeys().get(0))) {
+        //                anotherKey = pk;
+        //                break;
+        //            }
+        //        }
 
         sql.add("    AND EXISTS ( ");
         sql.add("        SELECT");
@@ -415,15 +415,15 @@ public final class SqlGenerator {
             sql.add("            AND " + assist.dateAdd(assist.nvlSysdate("p." + until), 1) + " > "
                     + assist.sysDate());
         }
-        for (String pk : stint.getPrimaryKeys()) {
-            if (pk.equals(start)) {
-                continue;
-            }
-            if (pk.equals(anotherKey)) {
-                String snake = StringUtil.toSnakeCase(pk);
-                sql.add("            AND p." + pk + " = :" + snake + " ");
+        List<String> primaryKeys = new ArrayList<String>(stint.getPrimaryKeys());
+        primaryKeys.remove(start);
+        for (int i = 0; i < primaryKeys.size(); i++) {
+            String primaryKey = primaryKeys.get(i);
+            if (i < primaryKeys.size() - 1) {
+                String snake = StringUtil.toSnakeCase(primaryKey);
+                sql.add("            AND p." + primaryKey + " = :" + snake + " ");
             } else {
-                sql.add("            AND p." + pk + " = a." + pk + " ");
+                sql.add("            AND p." + primaryKey + " = a." + primaryKey + " ");
             }
         }
         sql.add("    ) ");

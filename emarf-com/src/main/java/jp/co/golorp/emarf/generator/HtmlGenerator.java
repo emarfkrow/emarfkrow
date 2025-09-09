@@ -410,7 +410,7 @@ public final class HtmlGenerator {
                 String referE = StringUtil.toPascalCase(refer.getName());
                 String action = "";
                 String css = "";
-                if (refer.getStintInfo() != null) {
+                if (refer.getStintInfo() != null && table != refer.getStintInfo()) {
                     action = "?action=" + referE + "Correct.ajax";
                     css = " correct";
                 }
@@ -1298,14 +1298,13 @@ public final class HtmlGenerator {
                 continue; // 検索条件にはファイル項目とタイムスタンプを出力しない
             }
             String property = StringUtil.toCamelCase(colName);
-            // メタ情報の場合（検索画面の場合はスキップ（検索条件にはしない）、詳細画面の兄弟モデルは更新日時のみhiddenで出力）
             boolean isInsertDt = colName.matches("(?i)^" + insertTs + "$");
             boolean isUpdateDt = colName.matches("(?i)^" + updateTs + "$");
             boolean isInsertBy = colName.matches("(?i)^" + insertId + "$");
             boolean isUpdateBy = colName.matches("(?i)^" + updateId + "$");
-            if (isInsertDt || isInsertBy || isUpdateDt || isUpdateBy) {
+            if (isInsertDt || isInsertBy || isUpdateDt || isUpdateBy) { // メタ情報の場合
                 if (!isD) {
-                    continue; // 検索画面ならスキップ
+                    continue; // 検索画面ならスキップ（検索条件にはしない）
                 }
                 if (isB) {
                     if (isUpdateDt) {
@@ -1334,8 +1333,7 @@ public final class HtmlGenerator {
                 htmlFieldsMeta(s, fieldId, column.getRemarks());
                 addMeiSpan(s, table, column);
             } else if (StringUtil.endsWith(optionsSuffixs, colName) && column.getRefer() == null) {
-                // 選択項目の場合（サフィックスが合致しても参照モデルなら除外）
-                String css = "";
+                String css = ""; // 選択項目の場合（サフィックスが合致しても参照モデルなら除外）
                 if (isD && column.isPk()) { // 詳細画面の主キー
                     css += " primaryKey";
                 }
@@ -1364,11 +1362,15 @@ public final class HtmlGenerator {
                 //                            + " th:text=\"#{common.correct}\" tabindex=\"-1\">...</a>");
                 //                }
             } else if (isD && column.getDeriveFrom() != null) { // 詳細画面の派生元外部キー
-                htmlFieldsSpan(s, fieldId, column.getRemarks(), "derivee");
-                if (!isP) {
+                String css = "derivee";
+                if (table.getSummaryOfs().size() > 0) {
+                    css += " summaryOf";
+                }
+                htmlFieldsSpan(s, fieldId, column.getRemarks(), css);
+                if (!isP && table.getSummaryOfs().size() == 0) {
                     String referName = StringUtil.toPascalCase(column.getDeriveFrom().getName());
                     s.add("          <a id=\"" + fieldId + "\" th:href=\"@{/model/" + referName + "S.html?action="
-                            + referName + "Correct.ajax}\" target=\"dialog\" class=\"derivee\" "
+                            + referName + "Correct.ajax}\" target=\"dialog\" class=\"" + css + "\" "
                             + "th:text=\"#{common.correct}\" tabindex=\"-1\">...</a>");
                 }
             } else if (isD && column.isSummary()) { // 詳細画面の集約先外部キー
@@ -1590,7 +1592,7 @@ public final class HtmlGenerator {
         if (referCss.contains("correct")) {
             //選択リンク
             String href = "/model/" + referName + "S.html?action=" + referName + "Correct.ajax";
-            tag += "<a id=\"" + fieldId + "\" th:href=\"@{}" + href + "\" target=\"dialog\"" + referCss
+            tag += "<a id=\"" + fieldId + "\" th:href=\"@{" + href + "}\" target=\"dialog\"" + referCss
                     + " th:text=\"#{common.correct}\" tabindex=\"-1\">...</a>";
         } else {
             //参照リンク
