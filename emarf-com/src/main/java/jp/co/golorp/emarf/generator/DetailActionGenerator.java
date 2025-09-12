@@ -95,19 +95,14 @@ public final class DetailActionGenerator {
      * @param tables テーブル情報のリスト
      */
     private static void javaActionDetailRegist(final List<TableInfo> tables) {
-
         // 出力フォルダを再作成
         String packagePath = pkgAction.replace(".", File.separator);
         String packageDir = projectDir + File.separator + javaDir + File.separator + packagePath;
-
         Map<String, String> javaFilePaths = new LinkedHashMap<String, String>();
-
         for (TableInfo table : tables) {
-
             if (table.isHistory() || table.isView()) {
                 continue;
             }
-
             String entity = StringUtil.toPascalCase(table.getName());
             String r = table.getRemarks();
             List<String> s = new ArrayList<String>();
@@ -192,8 +187,8 @@ public final class DetailActionGenerator {
                         String acc = StringUtil.toPascalCase(status);
                         s.add("                    //承認済みでなければエラー");
                         s.add("                    if (!" + i + ".get" + acc + "().equals(\"1\")) {");
-                        s.add("                        throw new OptLockError(\"error.nopermit.summary\", \"" + r
-                                + "\");");
+                        s.add("                        throw new OptLockError(\"error.nopermit.summary\", \""
+                                + summaryOf.getRemarks() + "\");");
                         s.add("                    }");
                     }
                     for (String fk : table.getPrimaryKeys()) {
@@ -201,13 +196,14 @@ public final class DetailActionGenerator {
                         s.add("                    //集約済みならエラー");
                         s.add("                    if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrWhiteSpace(" + i
                                 + ".get" + acc + "())) {");
-                        s.add("                        throw new OptLockError(\"error.already.summary\", \"" + r
-                                + "\");");
+                        s.add("                        throw new OptLockError(\"error.already.summary\", \""
+                                + summaryOf.getRemarks() + "\");");
                         s.add("                    }");
                         s.add("                    " + i + ".set" + acc + "(e.get" + acc + "());");
                     }
                     s.add("                    if (" + i + ".update(now, execId) != 1) {");
-                    s.add("                        throw new OptLockError(\"error.cant.insert\", \"" + r + "\");");
+                    s.add("                        throw new OptLockError(\"error.cant.insert\", \""
+                            + summaryOf.getRemarks() + "\");");
                     s.add("                    }");
                     s.add("                }");
                     s.add("            }");

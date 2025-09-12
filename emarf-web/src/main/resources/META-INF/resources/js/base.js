@@ -827,6 +827,8 @@ let Base = {
                             }
                         }
                     }
+
+                    Nextize.firstImpl($registForm);
                 });
             });
 
@@ -835,6 +837,8 @@ let Base = {
             // 詳細画面のステータス区分は選択項目名のみ表示（新規画面用に一旦やっておく）
             let $readonlys = $registForm.find('[name$="' + Casing.toCamel(columnStatus) + '"]');
             Base.readonly($readonlys);
+
+            Nextize.firstImpl($registForm);
         }
     },
 

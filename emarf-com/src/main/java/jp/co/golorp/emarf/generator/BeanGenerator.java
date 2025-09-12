@@ -924,7 +924,12 @@ public final class BeanGenerator {
             rightHand = assist.toDateSQL(rightHand);
 
         } else if (column.getDataType().equals("java.time.LocalDateTime")) {
-            rightHand = assist.toTimestampSQL(rightHand);
+
+            if (StringUtil.endsWith(inputTimestampSuffixs, column.getName())) {
+                rightHand = assist.toTimestampSQL(rightHand);
+            } else {
+                rightHand = assist.toDateTimeSQL(rightHand);
+            }
 
         } else if (!column.isPk() && column.getTypeName().equals("CHAR")
                 && !StringUtil.isNullOrWhiteSpace(charNotNullRe)

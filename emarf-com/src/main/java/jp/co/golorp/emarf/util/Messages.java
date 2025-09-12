@@ -43,9 +43,12 @@ public final class Messages {
 
         String msg = msgs.get(msgId);
 
-        for (int i = 0; i < args.length; i++) {
-            String arg = args[i];
-            msg = msg.replaceAll("\\{" + i + "\\}", arg);
+        if (msg != null) {
+            for (int i = 0; i < args.length; i++) {
+                String arg = args[i];
+                msg = msg.replaceAll("\\{" + i + "\\}", arg);
+            }
+            msg = msg.replaceAll("\\{\\d+\\}", "");
         }
 
         return msg;

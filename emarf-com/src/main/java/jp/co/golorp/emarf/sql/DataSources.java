@@ -1255,6 +1255,12 @@ public final class DataSources {
             }
 
             for (TableInfo moto : merges) {
+
+                // マスタ同士かトラン同士でなければスキップ
+                if (saki.isRefer() != moto.isRefer()) {
+                    continue;
+                }
+
                 LOG.debug("    " + saki.getName() + " from " + moto.getName() + " " + moto.getPrimaryKeys());
 
                 // 派生情報を消し込み
