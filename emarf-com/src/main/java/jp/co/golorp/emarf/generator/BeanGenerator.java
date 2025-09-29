@@ -1142,10 +1142,18 @@ public final class BeanGenerator {
             // param
             String p = ":" + StringUtil.toSnakeCase(primaryKey);
 
-            ColumnInfo primaryKeyInfo = tableInfo.getColumns().get(primaryKey);
-            if (primaryKeyInfo.getTypeName().equals("CHAR")) {
+            ColumnInfo pkCol = tableInfo.getColumns().get(primaryKey);
+
+            if (pkCol.getTypeName().equals("CHAR")) {
+
                 s.add("        whereList.add(\"" + assist.trimedSQL(q) + " = " + assist.trimedSQL(p) + "\");");
+
+            } else if (pkCol.getDataType().equals("java.time.LocalDateTime")) {
+
+                s.add("        whereList.add(\"" + q + " = " + assist.toDateTimeSQL(p) + "\");");
+
             } else {
+
                 s.add("        whereList.add(\"" + q + " = " + p + "\");");
             }
         }

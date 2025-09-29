@@ -324,9 +324,26 @@ let Base = {
             });
         });
 
+        // 時間プルダウン
+        let maxH = 100;
         let tmOptions = '<option></option>';
-        for (let i = 0; i <= 999; i++) {
-            tmOptions += '<option>' + i + ':00</option><option>' + i + ':15</option><option>' + i + ':30</option><option>' + i + ':45</option>';
+        for (let i = 0; i <= maxH; i++) {
+            if (i > 0) {
+                tmOptions += '<option>' + i + ':00</option>';
+            }
+            if (i == 0) {
+                tmOptions += '<option>' + i + ':05</option>';
+                tmOptions += '<option>' + i + ':10</option>';
+                tmOptions += '<option>' + i + ':15</option>';
+                tmOptions += '<option>' + i + ':20</option>';
+                tmOptions += '<option>' + i + ':25</option>';
+                tmOptions += '<option>' + i + ':30</option>';
+                tmOptions += '<option>' + i + ':45</option>';
+            } else if (i < maxH) {
+                tmOptions += '<option>' + i + ':15</option>';
+                tmOptions += '<option>' + i + ':30</option>';
+                tmOptions += '<option>' + i + ':45</option>';
+            }
         }
 
         $('.time').each(function() {
@@ -403,6 +420,9 @@ let Base = {
                 if (width > 20) {
                     width = 20;
                 }
+            }
+            if ($(this).prop('type') == 'number') {
+                ++width;
             }
             $(this).css('width', width + 'rem');
         });

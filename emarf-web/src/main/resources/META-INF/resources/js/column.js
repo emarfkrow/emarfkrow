@@ -37,6 +37,7 @@ let Column = {
     refer: function(field, fieldMei, width, cssClass, referField) {
         let column = Column.cell(field, fieldMei, width, cssClass);
         column.referField = referField;
+        if (cssClass.indexOf('readonly') < 0) column.editor = Slick.Editors.Text;
         column.formatter = Slick.Formatters.Extends.Refer;
         return column;
     },
@@ -44,14 +45,14 @@ let Column = {
     text: function(field, fieldMei, width, cssClass, formatter, validator) {
         let column = Column.cell(field, fieldMei, width, cssClass, formatter);
         if (validator) { column.validator = validator; }
-        column.editor = Slick.Editors.Text;
+        if (cssClass.indexOf('readonly') < 0) column.editor = Slick.Editors.Text;
         return column;
     },
 
     comma: function(field, fieldMei, width, cssClass, formatter, validator) {
         let column = Column.cell(field, fieldMei, width, cssClass, formatter);
         if (validator) { column.validator = validator; }
-        column.editor = Slick.Editors.Extends.Comma;
+        if (cssClass.indexOf('readonly') < 0) column.editor = Slick.Editors.Extends.Comma;
         column.formatter = Slick.Formatters.Extends.Comma;
         if (cssClass) {
             column.cssClass += ' right';
@@ -64,7 +65,7 @@ let Column = {
     dec1: function(field, fieldMei, width, cssClass, formatter, validator) {
         let column = Column.cell(field, fieldMei, width, cssClass, formatter);
         if (validator) { column.validator = validator; }
-        column.editor = Slick.Editors.Extends.Dec1;
+        if (cssClass.indexOf('readonly') < 0) column.editor = Slick.Editors.Extends.Dec1;
         column.formatter = Slick.Formatters.Extends.Dec1;
         if (cssClass) {
             column.cssClass += ' right';
@@ -77,7 +78,7 @@ let Column = {
     dec2: function(field, fieldMei, width, cssClass, formatter, validator) {
         let column = Column.cell(field, fieldMei, width, cssClass, formatter);
         if (validator) { column.validator = validator; }
-        column.editor = Slick.Editors.Extends.Dec2;
+        if (cssClass.indexOf('readonly') < 0) column.editor = Slick.Editors.Extends.Dec2;
         column.formatter = Slick.Formatters.Extends.Dec2;
         if (cssClass) {
             column.cssClass += ' right';
@@ -90,7 +91,7 @@ let Column = {
     dec3: function(field, fieldMei, width, cssClass, formatter, validator) {
         let column = Column.cell(field, fieldMei, width, cssClass, formatter);
         if (validator) { column.validator = validator; }
-        column.editor = Slick.Editors.Extends.Dec3;
+        if (cssClass.indexOf('readonly') < 0) column.editor = Slick.Editors.Extends.Dec3;
         column.formatter = Slick.Formatters.Extends.Dec3;
         if (cssClass) {
             column.cssClass += ' right';
@@ -102,38 +103,38 @@ let Column = {
 
     longText: function(field, fieldMei, width, cssClass, formatter, validator) {
         let column = Column.text(field, fieldMei, width, cssClass, formatter, validator);
-        column.editor = Slick.Editors.LongText;
+        if (cssClass.indexOf('readonly') < 0) column.editor = Slick.Editors.LongText;
         return column;
     },
 
     dateTime: function(field, fieldMei, width, cssClass, formatter, validator) {
         let column = Column.text(field, fieldMei, width, cssClass, formatter, validator);
-        column.editor = Slick.Editors.Extends.DateTime;
+        if (cssClass.indexOf('readonly') < 0) column.editor = Slick.Editors.Extends.DateTime;
         column.formatter = Slick.Formatters.Extends.DateTime;
         return column;
     },
 
     date: function(field, fieldMei, width, cssClass, formatter, validator) {
         let column = Column.text(field, fieldMei, width, cssClass, formatter, validator);
-        column.editor = Slick.Editors.Extends.Date;
+        if (cssClass.indexOf('readonly') < 0) column.editor = Slick.Editors.Extends.Date;
         return column;
     },
 
     date8: function(field, fieldMei, width, cssClass, formatter, validator) {
         let column = Column.text(field, fieldMei, width, cssClass, formatter, validator);
-        column.editor = Slick.Editors.Extends.Date8;
+        if (cssClass.indexOf('readonly') < 0) column.editor = Slick.Editors.Extends.Date8;
         return column;
     },
 
     time: function(field, fieldMei, width, cssClass, formatter, validator) {
         let column = Column.text(field, fieldMei, width, cssClass, formatter, validator);
-        column.editor = Slick.Editors.Extends.Time;
+        if (cssClass.indexOf('readonly') < 0) column.editor = Slick.Editors.Extends.Time;
         return column;
     },
 
     month: function(field, fieldMei, width, cssClass, formatter, validator) {
         let column = Column.text(field, fieldMei, width, cssClass, formatter, validator);
-        column.editor = Slick.Editors.Extends.Month;
+        if (cssClass.indexOf('readonly') < 0) column.editor = Slick.Editors.Extends.Month;
         return column;
     },
 
@@ -145,14 +146,14 @@ let Column = {
 
     check: function(field, fieldMei, width, cssClass) {
         let column = Column.cell(field, fieldMei, width, cssClass);
-        column.editor = Slick.Editors.Extends.Checkbox;
+        if (cssClass.indexOf('readonly') < 0) column.editor = Slick.Editors.Extends.Checkbox;
         column.formatter = Slick.Formatters.Extends.Checkbox;
         return column;
     },
 
     select: function(field, fieldMei, width, cssClass, options) {
         let column = Column.cell(field, fieldMei, width, cssClass);
-        column.editor = Slick.Editors.Extends.Select;
+        if (cssClass.indexOf('readonly') < 0) column.editor = Slick.Editors.Extends.Select;
         column.formatter = Slick.Formatters.Extends.Select;
 
         // 条件が揃っている場合は、サーバから選択項目を取得

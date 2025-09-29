@@ -94,7 +94,9 @@ limitations under the License.
         if (!value) {
             return null;
         }
-        return Formatter.YmdHms(new Date(value));
+        let v = Formatter.YmdHms(new Date(value));
+        dataContext[columnDef.field] = v;
+        return v;
     }
 
     function TimestampFormatter(row, cell, value, columnDef, dataContext) {

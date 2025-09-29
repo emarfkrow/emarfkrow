@@ -314,7 +314,7 @@ span.refer::before {
     content: '：';
 }
 
-.readonly {
+input.readonly {
     border-style: none;
     pointer-events: none;
     -webkit-appearance: none;

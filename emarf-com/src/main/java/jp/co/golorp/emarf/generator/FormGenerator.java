@@ -150,9 +150,7 @@ public final class FormGenerator {
                 javaFormDetailRegistChecks(s, table, column);
                 s.add("    private String " + prop + ";");
                 s.add("");
-                s.add("    /**");
-                s.add("     * @return " + column.getRemarks());
-                s.add("     */");
+                s.add("    /** @return " + column.getRemarks() + " */");
                 if (column.isPk()) {
                     s.add("    @jp.co.golorp.emarf.validation.PrimaryKeys");
                 } else if (column.getName().matches("(?i)^" + updateDt + "$")) {
@@ -162,9 +160,7 @@ public final class FormGenerator {
                 s.add("        return " + prop + ";");
                 s.add("    }");
                 s.add("");
-                s.add("    /**");
-                s.add("     * @param p " + column.getRemarks());
-                s.add("     */");
+                s.add("    /** @param p " + column.getRemarks() + " */");
                 if (column.isPk()) {
                     s.add("    @jp.co.golorp.emarf.validation.PrimaryKeys");
                 } else if (column.getName().matches("(?i)^" + updateDt + "$")) {
@@ -182,16 +178,12 @@ public final class FormGenerator {
                 s.add("    @jakarta.validation.Valid");
                 s.add("    private " + pascal + "RegistForm " + camel + "RegistForm;");
                 s.add("");
-                s.add("    /**");
-                s.add("     * @return " + pascal + "RegistForm");
-                s.add("     */");
+                s.add("    /** @return " + pascal + "RegistForm */");
                 s.add("    public " + pascal + "RegistForm get" + pascal + "RegistForm() {");
                 s.add("        return " + camel + "RegistForm;");
                 s.add("    }");
                 s.add("");
-                s.add("    /**");
-                s.add("     * @param p");
-                s.add("     */");
+                s.add("    /** @param p */");
                 s.add("    public void set" + pascal + "RegistForm(final " + pascal + "RegistForm p) {");
                 s.add("        this." + camel + "RegistForm = p;");
                 s.add("    }");
@@ -229,33 +221,42 @@ public final class FormGenerator {
                         || column.getName().matches("(?i)^" + updateBy + "$")) {
                     continue;
                 }
-                s.add("");
-                s.add("        // " + column.getRemarks() + " のマスタチェック TODO できればAssertTrueにしたい");
                 TableInfo refer = column.getRefer();
-                String prop = StringUtil.toCamelCase(column.getName());
-                String className = StringUtil.toPascalCase(refer.getName());
-                String referName = StringUtil.toCamelCase(refer.getName());
+                String cls = StringUtil.toPascalCase(refer.getName());
+                String ins = StringUtil.toCamelCase(refer.getName());
+                String p = StringUtil.toCamelCase(column.getName());
+                String keySuf = "";
                 if (refer.getPrimaryKeys().size() > 1) {
-                    if (!refers.contains(className)) {
-                        refers.add(className);
-                        s.add("        Map<String, Object> " + referName
-                                + "Params = new java.util.HashMap<String, Object>();");
-                        for (String primaryKey : refer.getPrimaryKeys()) {
-                            s.add("        " + referName + "Params.put(\"" + StringUtil.toCamelCase(primaryKey) + "\", "
-                                    + "this.get" + StringUtil.toPascalCase(primaryKey) + "());");
-                        }
+                    if (refers.contains(cls)) {
+                        continue;
                     }
-                    s.add("        baseProcess.masterCheck(errors, \"" + className + "Search\", \"" + prop + "\", "
-                            + referName + "Params, jp.co.golorp.emarf.util.Messages.get(\"" + entity + "." + prop
-                            + "\"));");
+                    refers.add(cls);
+                    s.add("");
+                    s.add("        // " + column.getRemarks() + " のマスタチェック TODO できればAssertTrueにしたい");
+                    s.add("        Map<String, Object> " + ins + "Params = new java.util.HashMap<String, Object>();");
+                    for (String pk : refer.getPrimaryKeys()) {
+                        if (refer.getColumns().get(pk).getDataType().equals("String")) {
+                            keySuf = "Full";
+                        }
+                        s.add("        " + ins + "Params.put(\"" + StringUtil.toCamelCase(pk) + keySuf + "\", this.get"
+                                + StringUtil.toPascalCase(pk) + "());");
+                    }
+                    s.add("        baseProcess.masterCheck(errors, \"" + cls + "Search\", \"" + p + "\", " + ins
+                            + "Params, jp.co.golorp.emarf.util.Messages.get(\"" + entity + "." + p + "\"));");
                 } else {
-                    s.add("        baseProcess.masterCheck(errors, \"" + className + "Search\", \"" + prop
-                            + "\", this.get" + StringUtil.toPascalCase(column.getName())
-                            + "(), jp.co.golorp.emarf.util.Messages.get(\"" + entity + "." + prop + "\"));");
+                    s.add("");
+                    s.add("        // " + column.getRemarks() + " のマスタチェック TODO できればAssertTrueにしたい");
+                    s.add("        Map<String, Object> " + p + "Params = new java.util.HashMap<String, Object>();");
+                    if (column.getDataType().equals("String")) {
+                        keySuf = "Full";
+                    }
+                    s.add("        " + p + "Params.put(\"" + p + keySuf + "\", this.get"
+                            + StringUtil.toPascalCase(column.getName()) + "());");
+                    s.add("        baseProcess.masterCheck(errors, \"" + cls + "Search\", \"" + p + "\", " + p
+                            + "Params, jp.co.golorp.emarf.util.Messages.get(\"" + entity + "." + p + "\"));");
                 }
             }
             s.add("    }");
-            s.add("");
             s.add("}");
             String javaFilePath = packageDir + File.separator + entity + "RegistForm.java";
             javaFilePaths.put(javaFilePath, pkgForm + "." + entity + "RegistForm");
@@ -312,6 +313,7 @@ public final class FormGenerator {
         koKeys.remove(tekiyoBi);
 
         String colName = column.getName();
+        String registGroup = "groups = jp.co.golorp.emarf.validation.Regist.class";
 
         // 必須チェック
         if (column.getNullable() == 0) {
@@ -357,7 +359,7 @@ public final class FormGenerator {
                 if (column.isPk()) {
                     s.add("    @jakarta.validation.constraints.NotBlank");
                 } else {
-                    s.add("    @jakarta.validation.constraints.NotBlank(groups = jp.co.golorp.emarf.validation.Regist.class)");
+                    s.add("    @jakarta.validation.constraints.NotBlank(" + registGroup + ")");
                 }
             }
         }
@@ -380,7 +382,7 @@ public final class FormGenerator {
             // Patternの指定がある場合
 
             String re = bundle.getString("valid." + validSuffix);
-            s.add("    @jakarta.validation.constraints.Pattern(regexp = \"" + re + "\")");
+            s.add("    @jakarta.validation.constraints.Pattern(" + registGroup + ", regexp = \"" + re + "\")");
 
             // 桁数チェックは正規表現に任せる。<input type="month">が9999-99になるため。
             //            if (column.getTypeName().contains("CHAR")) {
@@ -401,13 +403,13 @@ public final class FormGenerator {
                 int decimalDigits = column.getDecimalDigits();
                 int integer = columnSize - decimalDigits;
                 String re = "-?([0-9]{0," + integer + "}\\\\.?[0-9]{0," + decimalDigits + "}?)?";
-                s.add("    @jakarta.validation.constraints.Pattern(regexp = \"" + re + "\")");
+                s.add("    @jakarta.validation.constraints.Pattern(" + registGroup + ", regexp = \"" + re + "\")");
 
             } else {
                 // DECIMAL以外
 
                 // 上記以外の場合は最大桁チェック
-                s.add("    @jakarta.validation.constraints.Size(max = " + columnSize + ")");
+                s.add("    @jakarta.validation.constraints.Size(" + registGroup + ", max = " + columnSize + ")");
             }
         }
 
@@ -447,8 +449,8 @@ public final class FormGenerator {
             s.add("import java.util.List;");
             s.add("import java.util.Map;");
             s.add("");
-            s.add("import org.slf4j.Logger;");
-            s.add("import org.slf4j.LoggerFactory;");
+            s.add("// import org.slf4j.Logger;");
+            s.add("// import org.slf4j.LoggerFactory;");
             s.add("");
             s.add("import jakarta.validation.Valid;");
             s.add("import jp.co.golorp.emarf.process.BaseProcess;");
@@ -456,8 +458,8 @@ public final class FormGenerator {
             addAuthor(s, remarks + "一覧登録フォーム");
             s.add("public class " + entity + "SRegistForm implements IForm {");
             s.add("");
-            s.add("    /** logger */");
-            s.add("    private static final Logger LOG = LoggerFactory.getLogger(" + entity + "RegistForm.class);");
+            s.add("    // /** logger */");
+            s.add("    // private static final Logger LOG = LoggerFactory.getLogger(" + entity + "RegistForm.class);");
             s.add("");
             s.add("    /** " + table.getRemarks() + "登録フォームのリスト */");
             s.add("    @Valid");
@@ -480,7 +482,11 @@ public final class FormGenerator {
             s.add("    /** 関連チェック */");
             s.add("    @Override");
             s.add("    public void validate(final Map<String, String> errors, final BaseProcess baseProcess) {");
-            s.add("        LOG.debug(\"validate() not overridden in subclasses.\");");
+            s.add("        for (" + entity + "RegistForm form : " + instance + "Grid) {");
+            s.add("            if (form != null) {");
+            s.add("                form.validate(errors, baseProcess);");
+            s.add("            }");
+            s.add("        }");
             s.add("    }");
             s.add("");
             s.add("}");

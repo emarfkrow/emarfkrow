@@ -400,7 +400,7 @@ $(function() {
                 if (c) {
                     //参照モデルなら隠しリンク押下
                     let column = g.getColumns()[c];
-                    if (/*column.referField*/column.formatter.name == 'ReferFormatter' && g.getOptions().editable == true) {
+                    if (/*column.referField*/column.formatter && column.formatter.name == 'ReferFormatter' && g.getOptions().editable == true) {
                         let gridNode = g.getContainerNode();
                         let gridId = gridNode.id;
                         console.debug('gridId: ' + gridId);
@@ -480,11 +480,14 @@ $(function() {
                 console.debug('Gridate on cell change.');
                 let c = args.cell;
                 let column = args.column;
+                if (!column) {
+                    column = args.grid.getColumns()[args.cell];
+                }
                 let command = args.command;
                 let g = args.grid;
                 let item = args.item;
                 let r = args.row;
-                let field = args.column.field;
+                let field = column.field;
                 //削除フラグオフの親伝播
                 if (columnDelete != null) {
                     let camel = Casing.toCamel(columnDelete);
@@ -801,6 +804,91 @@ $(function() {
             });
             //				grid.onValidationError.subscribe(function(a, b, c, d, e, f, g) { });
             //				grid.onViewportChanged.subscribe(function(a, b, c, d, e, f, g) { });
+
+            // plugin
+            let ExternalCopyOption = {
+                //copyCellStyle               :コピーされたセルに使用されるcss classNameを設定します。デフォルト："copied"
+                //copyCellStyleLayerKey       :コピーされたセルのcss値を設定するためのレイヤーキーを設定します。デフォルト： "copy-manager"
+                //dataItemColumnValueExtractor:カスタム列値抽出関数を指定するオプション
+                //dataItemColumnValueSetter   :カスタム列値セッター関数を指定するオプション
+                /*
+                 * 貼り付けアクションのカスタムハンドラーを指定するオプション
+                 */
+                clipboardCommandHandler: function(clipCommand) {
+
+                    // ペースト実行
+                    clipCommand.execute();
+
+                    // 表示専用列を元の値に戻す
+                    var r = clipCommand.activeRow;
+                    var c = clipCommand.activeCell;
+                    var h = clipCommand.h;
+                    var w = clipCommand.w;
+                    var columns = grid.getColumns();
+
+                    var data = grid.getData();
+
+                    // DataViewの場合
+                    if (data.getItems) {
+                        data = data.getItems();
+                    }
+
+                    // 固定列（editorなし）なら元の値に書き戻す
+                    for (var i = 0; i < w; i++) {
+                        var column = columns[i + c];
+                        if (column && !column.editor) {
+                            for (var j = 0; j < h; j++) {
+                                data[j + r][column.field] = clipCommand.oldValues[j][i];
+                            }
+                        }
+                    }
+
+                    grid.invalidate();
+
+                    // 選択列をクリアする
+                    if (grid.getSelectionModel().pluginName == 'RowSelectionModel') {
+                        grid.setSelectedRows([]);
+                    }
+
+                    // コールバックを実行
+                    try {
+                        eval(Gridate.getGridName(grid) + 'Paste(grid, r, c, h, w)');
+                    } catch (e) {
+                        // 未実装ならコンソールに通知
+                        console.info(e.message);
+                    }
+                },
+                //includeHeaderWhenCopying    :trueに設定すると、プラグインは各列からnameプロパティ（通常はヘッダーに表示されるもの）を取得し、それをクリップボードにコピーされるテキストの最初の行として配置します
+                //bodyElement                 :非表示のテキストボックスに追加されるカスタムDOM要素を指定するオプション。グリッドがモーダルダイアログ内にある場合に便利です。
+                /*
+                 * コピーアクションの初期化時に実行するオプションのハンドラー
+                 */
+                onCopyInit: function() {
+                    //if (grid.getSelectionModel().pluginName == 'RowSelectionModel') {
+                    //    alert('チェックボックスで選択した行をコピーします。');
+                    //} else if (grid.getSelectionModel().pluginName == 'CellSelectionModel') {
+                    //    alert('セルの値をコピーします。');
+                    //}
+                },
+                //onCopySuccess               :コピーアクションが完了したときに実行するオプションのハンドラー
+                /**
+                 * この関数が提供されない場合、貼り付けがテーブルの下部からオーバーフローした場合にテーブルに行を追加する関数。新しい行は無視されます。
+                 * @param {any} count
+                 */
+                newRowCreator: function(count) {
+                    for (var i = 0; i < count; i++) {
+                        var item = {
+                            id: grid.getData().getLength()
+                        }
+                        grid.getData().addItem(item);
+                    }
+                },
+                readOnlyMode: false,
+                //headerColumnValueExtractor  :カスタム列ヘッダー値抽出関数を指定するオプション
+            };
+
+            // グリッドに外部コピープラグインを設定（Ctrl+C、Ctrl+Vを有効化）
+            grid.registerPlugin(new Slick.CellExternalCopyManager(ExternalCopyOption));
         });
     });
 });

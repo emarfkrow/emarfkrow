@@ -400,8 +400,8 @@ let Dialogate = {
                     }
 
                     try {
-                        console.info(entity + 'Open();');
-                        eval(entity + 'Open()');
+                        console.info(entity + 'Open($("#' + entity + 'Dialog"));');
+                        eval(entity + 'Open($("#' + entity + 'Dialog"))');
                     } catch (e) {
                         console.debug(e.message);
                     }

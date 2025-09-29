@@ -487,6 +487,10 @@ public final class SqlGenerator {
 
         } else if (column.getDataType().equals("String")) {
 
+            if (column.isPk()) {
+                sql.add("    AND UPPER (" + t + ") = UPPER (" + p + "_full) ");
+            }
+
             if (name.toUpperCase().equals(optK)) {
                 //参照キーの場合は、パラメータをデータで後方一致
                 sql.add("    AND UPPER (" + p + ") LIKE UPPER (" + assist.joinedSQL(new String[] { "'%'", t }) + ") ");

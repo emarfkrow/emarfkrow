@@ -91,6 +91,10 @@ public final class HtmlGenerator {
     /** 中間表などメニュー化しないビューサフィックスのリスト */
     private static String[] viewNavIgnoreSuffixs;
 
+    /** 読み取り専用サフィックス */
+    private static String[] inputReadonlySuffixs;
+    /** 数値入力サフィックス */
+    private static String[] inputNumberSuffixs;
     /** 年月入力サフィックス */
     private static String[] inputYMSuffixs;
     /** 8桁日付入力サフィックス */
@@ -168,6 +172,8 @@ public final class HtmlGenerator {
         viewDetail = bundle.getString("view.detail");
         viewNavIgnoreSuffixs = bundle.getString("view.nav.ignore.suffixs").split(",");
 
+        inputReadonlySuffixs = bundle.getString("input.readonly.suffixs").split(",");
+        inputNumberSuffixs = bundle.getString("input.number.suffixs").split(",");
         inputYMSuffixs = bundle.getString("input.ym.suffixs").split(",");
         inputDate8Suffixs = bundle.getString("input.date8.suffixs").split(",");
         inputTimestampSuffixs = bundle.getString("input.timestamp.suffixs").split(",");
@@ -1141,6 +1147,8 @@ public final class HtmlGenerator {
                 } else {
                     css = "notblank";
                 }
+            } else if (StringUtil.endsWith(inputReadonlySuffixs, name)) {
+                css = "readonly";
             }
         }
         String format = "null";
@@ -1202,6 +1210,7 @@ public final class HtmlGenerator {
             }
         }
 
+        String type = column.getTypeName();
         String opt = "{ json: '" + json + "', paramkey: '" + optK + "', value: '" + optV + "', label: '" + optL + "' }";
         String c = "";
         if (isMeiRefer) {
@@ -1228,15 +1237,12 @@ public final class HtmlGenerator {
             c = "Column.select('" + name + "', " + mei + ", " + w + ", '" + css + "', " + opt + "),";
         } else if (StringUtil.endsWith(textareaSuffixs, name)) {
             c = "Column.longText('" + name + "', " + mei + ", " + w + ", '" + css + "', " + format + "),";
-        } else if ((column.getTypeName().equals("INT") || column.getTypeName().equals("DECIMAL")
-                || column.getTypeName().equals("DOUBLE") || column.getTypeName().equals("NUMBER")
-                || column.getTypeName().equals("NUMERIC"))
-                && !StringUtil.endsWith(intNoFormatSuffixs, column.getName())) {
+        } else if ((type.equals("INT") || type.equals("DECIMAL") || type.equals("DOUBLE") || type.equals("NUMBER")
+                || type.equals("NUMERIC")) && !StringUtil.endsWith(intNoFormatSuffixs, column.getName())) {
             c = getNumericColumn(column, name, mei, w, css, format);
         } else {
             c = "Column.text('" + name + "', " + mei + ", " + w + ", '" + css + "', " + format + "),";
         }
-
         return c;
     }
 
@@ -1331,7 +1337,9 @@ public final class HtmlGenerator {
             s.add("        <div id=\"" + property + "\">");
             if (isInsertDt || isUpdateDt || isInsertBy || isUpdateBy) { // メタ情報の場合は表示項目（編集画面の自モデルのみここに到達する）
                 htmlFieldsMeta(s, fieldId, column.getRemarks());
-                addMeiSpan(s, table, column);
+                addMeiSpan(s, table, column, "meta");
+            } else if (isD && StringUtil.endsWith(inputReadonlySuffixs, colName)) { // 読み取り専用の場合
+                htmlFieldsSpan(s, fieldId, column.getRemarks(), "");
             } else if (StringUtil.endsWith(optionsSuffixs, colName) && column.getRefer() == null) {
                 String css = ""; // 選択項目の場合（サフィックスが合致しても参照モデルなら除外）
                 if (isD && column.isPk()) { // 詳細画面の主キー
@@ -1352,15 +1360,9 @@ public final class HtmlGenerator {
                 htmlFieldsOptions(s, fieldId, colName, column.getRemarks(), css);
             } else if (isD && table.isHistory()) { // 履歴モデルの詳細画面
                 htmlFieldsSpan(s, fieldId, column.getRemarks(), "history");
-                addMeiSpan(s, table, column);
+                addMeiSpan(s, table, column, "");
             } else if (isD && column.isReborn()) { // 詳細画面の転生元外部キー
                 htmlFieldsSpan(s, fieldId, column.getRemarks(), "rebornee");
-                //                if (!isP && rebornFrom != null) {
-                //                    String referName = StringUtil.toPascalCase(rebornFrom.getName());
-                //                    String href = "/model/" + referName + "S.html?action=" + referName + "Correct.ajax";
-                //                    s.add("          <a id=\"" + fieldId + "\" th:href=\"@{" + href + "}\" target=\"dialog\"" + referCss
-                //                            + " th:text=\"#{common.correct}\" tabindex=\"-1\">...</a>");
-                //                }
             } else if (isD && column.getDeriveFrom() != null) { // 詳細画面の派生元外部キー
                 String css = "derivee";
                 if (table.getSummaryOfs().size() > 0) {
@@ -1492,6 +1494,10 @@ public final class HtmlGenerator {
             // 日時項目
             return "datetime-local";
 
+        } else if (StringUtil.endsWith(inputNumberSuffixs, colName)) {
+            // 数値項目
+            return "number";
+
         } else if (StringUtil.endsWith(inputYMSuffixs, colName)) {
             // 年月項目
             return "month";
@@ -1526,7 +1532,7 @@ public final class HtmlGenerator {
                     s.add("        <div id=\"" + property + "\" class=\"stint\" style=\"display: none;\">");
                     //                    s.add(htmlFieldsRefer(fieldId, "text", "refer", column, "", table, "refer"));
                     htmlFieldsSpan(s, fieldId, column.getRemarks(), "stint");
-                    addMeiSpan(s, table, column);
+                    addMeiSpan(s, table, column, "");
                     s.add("        </div>");
                 }
             }
@@ -1537,8 +1543,10 @@ public final class HtmlGenerator {
      * @param s
      * @param table
      * @param column
+     * @param css
      */
-    private static void addMeiSpan(final List<String> s, final TableInfo table, final ColumnInfo column) {
+    private static void addMeiSpan(final List<String> s, final TableInfo table, final ColumnInfo column,
+            final String css) {
 
         if (column.getRefer() != null) {
             TableInfo refer = column.getRefer();
@@ -1551,7 +1559,11 @@ public final class HtmlGenerator {
                 String meiId = entity + "." + StringUtil.toCamelCase(meiColumnName);
                 String referDef = getReferDef(entity, column.getName(), refer);
 
-                s.add("          <span id=\"" + meiId + "\" class=\"refer\"" + referDef + "></span>");
+                String cssClass = "";
+                if (!StringUtil.isNullOrWhiteSpace(css)) {
+                    cssClass = " " + css;
+                }
+                s.add("          <span id=\"" + meiId + "\" class=\"refer" + cssClass + "\"" + referDef + "></span>");
             }
         }
     }
@@ -1737,8 +1749,8 @@ public final class HtmlGenerator {
     private static void htmlFieldsMeta(final List<String> s, final String id, final String remarks) {
         String tag = "          ";
         tag += "<label th:text=\"#{" + id + "}\" class=\"meta\">" + remarks + "</label>";
-        tag += "<span id=\"" + id + "\"></span>";
-        tag += "<input type=\"hidden\" id=\"" + id + "\" name=\"" + id + "\" />";
+        tag += "<span id=\"" + id + "\" class=\"meta\"></span>";
+        tag += "<input type=\"hidden\" id=\"" + id + "\" name=\"" + id + "\" class=\"meta\"/>";
         s.add(tag);
     }
 
