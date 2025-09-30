@@ -181,7 +181,7 @@ public class DataSourcesAssistOracle extends DataSourcesAssist {
      * @return ID列を付加したSQL
      */
     public String addIdColumn(final String sql) {
-        return "SELECT ROWNUM AS \"id\", sub.* FROM (" + sql + ") sub ORDER BY ROWNUM";
+        return "SELECT ROWNUM - 1 AS \"id\", sub.* FROM (" + sql + ") sub ORDER BY ROWNUM";
     }
 
     /**

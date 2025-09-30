@@ -226,8 +226,8 @@ public final class Queries {
                 logSql = p.matcher(logSql).replaceFirst("");
 
                 // １行削除
-                rawSql = rawSql.replaceFirst(".*:" + parameterName + "[^_]?[^\r\n]*([\r\n]+|$)", "");
-                logSql = logSql.replaceFirst(".*:" + parameterName + "[^_]?[^\r\n]*([\r\n]+|$)", "");
+                rawSql = rawSql.replaceFirst(".*:" + parameterName + "[^_\r\n]*([\r\n]+|$)", "");
+                logSql = logSql.replaceFirst(".*:" + parameterName + "[^_\r\n]*([\r\n]+|$)", "");
 
             } else if (snakes.get(parameterName) == null) {
                 // パラメータ値がない場合
@@ -243,8 +243,8 @@ public final class Queries {
                     logSql = p.matcher(logSql).replaceFirst("");
 
                     // １行削除
-                    rawSql = rawSql.replaceFirst(".*:" + parameterName + "[^_]?[^\r\n]*([\r\n]+|$)", "");
-                    logSql = logSql.replaceFirst(".*:" + parameterName + "[^_]?[^\r\n]*([\r\n]+|$)", "");
+                    rawSql = rawSql.replaceFirst(".*:" + parameterName + "[^_\r\n]*([\r\n]+|$)", "");
+                    logSql = logSql.replaceFirst(".*:" + parameterName + "[^_\r\n]*([\r\n]+|$)", "");
                 }
             }
         }

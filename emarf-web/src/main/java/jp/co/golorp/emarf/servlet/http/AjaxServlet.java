@@ -107,6 +107,10 @@ public final class AjaxServlet extends HttpServlet {
             map = new HashMap<String, Object>();
             map.put("ERROR", e.getMessage());
 
+            if (e.getCause() != null) {
+                map.put("ERROR", e.getMessage() + "\r\n" + e.getCause().getMessage());
+            }
+
         } catch (AppError e) {
 
             map = new HashMap<String, Object>();

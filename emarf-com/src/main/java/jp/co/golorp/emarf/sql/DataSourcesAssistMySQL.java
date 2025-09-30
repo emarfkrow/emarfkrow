@@ -123,7 +123,7 @@ public final class DataSourcesAssistMySQL extends DataSourcesAssist {
 
     @Override
     public String addIdColumn(final String sql) {
-        return "SELECT ROW_NUMBER () OVER () AS \"id\", sub.* FROM (" + sql + ") sub ORDER BY ROW_NUMBER () OVER ()";
+        return "SELECT ROW_NUMBER () OVER () - 1 AS \"id\", sub.* FROM (" + sql + ") sub ORDER BY ROW_NUMBER () OVER ()";
     }
 
     @Override

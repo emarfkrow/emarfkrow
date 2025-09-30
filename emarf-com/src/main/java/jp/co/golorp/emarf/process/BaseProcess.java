@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import jp.co.golorp.emarf.lang.StringUtil;
 import jp.co.golorp.emarf.mail.MailInfo;
@@ -106,6 +107,28 @@ public class BaseProcess {
                 String formName = processName.replaceFirst("Action$", "Form");
                 errors.put(formName + "." + itemName, Messages.get("error.notexist", itemMei));
             }
+        }
+    }
+
+    /**
+     * @param errors
+     * @param gridName
+     * @param i
+     * @param gridErrors
+     */
+    public static void copyGridErrors(final Map<String, String> errors, final String gridName, final int i,
+            final Map<String, String> gridErrors) {
+        for (Entry<String, String> gridError : gridErrors.entrySet()) {
+            String k = gridError.getKey();
+            String v = gridError.getValue();
+            String[] keys = k.split("\\.");
+            String key = "";
+            for (int j = 0; j < keys.length - 1; j++) {
+                key += keys[j] + ".";
+            }
+            key += gridName + "[" + i + "].";
+            key += keys[keys.length - 1];
+            errors.put(key, v);
         }
     }
 

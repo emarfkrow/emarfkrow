@@ -482,9 +482,12 @@ public final class FormGenerator {
             s.add("    /** 関連チェック */");
             s.add("    @Override");
             s.add("    public void validate(final Map<String, String> errors, final BaseProcess baseProcess) {");
-            s.add("        for (" + entity + "RegistForm form : " + instance + "Grid) {");
+            s.add("        for (int i = 0; i < this." + instance + "Grid.size(); i++) {");
+            s.add("            " + entity + "RegistForm form = this." + instance + "Grid.get(i);");
             s.add("            if (form != null) {");
-            s.add("                form.validate(errors, baseProcess);");
+            s.add("                Map<String, String> gridErrors = new java.util.LinkedHashMap<String, String>();");
+            s.add("                form.validate(gridErrors, baseProcess);");
+            s.add("                BaseProcess.copyGridErrors(errors, \"" + entity + "Grid\", i, gridErrors);");
             s.add("            }");
             s.add("        }");
             s.add("    }");
