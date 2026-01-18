@@ -114,8 +114,8 @@ public final class DataSources {
 
     /** 時刻入力サフィックス */
     private static String[] inputHourSuffixs;
-    /** 時間入力サフィックス */
-    private static String[] inputTimeSuffixs;
+    //    /** 時間入力サフィックス */
+    //    private static String[] inputTimeSuffixs;
     /** 適用日 */
     private static String tekiyoBi;
 
@@ -285,7 +285,7 @@ public final class DataSources {
 
         inputHourSuffixs = bundle.getString("input.hour.suffixs").split(",");
 
-        inputTimeSuffixs = bundle.getString("input.time.suffixs").split(",");
+        //        inputTimeSuffixs = bundle.getString("input.time.suffixs").split(",");
 
         tekiyoBi = bundle.getString("column.start").toUpperCase();
     }

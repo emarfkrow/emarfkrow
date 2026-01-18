@@ -153,7 +153,7 @@ public final class XlsxUtil {
             for (Entry<String, Map<String, Object>> addSheetEntry : addSheetMap.entrySet()) {
 
                 // シート名
-                String addSheetName = addSheetEntry.getKey();
+                //                String addSheetName = addSheetEntry.getKey();
                 // モデル名：データ
                 Map<String, Object> addSheetData = addSheetEntry.getValue();
 
@@ -205,7 +205,7 @@ public final class XlsxUtil {
                                     int c2 = 0;
                                     for (Entry<String, Object> e2 : childItem.entrySet()) {
                                         String k2 = e2.getKey();
-                                        Object v2 = e2.getValue();
+                                        //                                        Object v2 = e2.getValue();
                                         setCellValue(layoutSheet, r2, c2, k2);
                                         setCellValue(layoutSheet, r2 + 1, c2++, "[[" + e.getKey() + "." + k2 + "]]");
                                     }

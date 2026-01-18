@@ -101,8 +101,8 @@ public final class BeanGenerator {
     private static String[] inputDateSuffixs;
     /** 時刻入力サフィックス */
     private static String[] inputHourSuffixs;
-    /** 時間入力サフィックス */
-    private static String[] inputTimeSuffixs;
+    //    /** 時間入力サフィックス */
+    //    private static String[] inputTimeSuffixs;
     /** フラグサフィックス */
     private static String[] inputFlagSuffixs;
     /** ファイルサフィックス */
@@ -154,7 +154,7 @@ public final class BeanGenerator {
         inputDateTimeSuffixs = bundle.getString("input.datetime.suffixs").split(",");
         inputDateSuffixs = bundle.getString("input.date.suffixs").split(",");
         inputHourSuffixs = bundle.getString("input.hour.suffixs").split(",");
-        inputTimeSuffixs = bundle.getString("input.time.suffixs").split(",");
+        //        inputTimeSuffixs = bundle.getString("input.time.suffixs").split(",");
         inputFlagSuffixs = bundle.getString("input.flag.suffixs").split(",");
         inputFileSuffixs = bundle.getString("input.file.suffixs").split(",");
 
