@@ -404,7 +404,12 @@ let Base = {
         // リンクの認可処理
         $('.nav a, .article a').each(function() {
             if (Base.getAuthz(this.href) < 1) {
-                $(this).button('option', 'disabled', true);
+                if ($(this).hasClass('ui-button')) {
+                    $(this).button('option', 'disabled', true);
+                } else {
+                    $(this).css('pointer-events', 'none');
+                    $(this).css('color', 'gray');
+                }
             }
         });
 
@@ -553,7 +558,9 @@ let Base = {
             }
         }
 
-        $('div.nav')[0].scrollTo(0, sessionStorage.getItem('navScrollTop'));
+        if ($('div.nav').length > 0) {
+            $('div.nav')[0].scrollTo(0, sessionStorage.getItem('navScrollTop'));
+        }
 
         $(window).resize(function() {
             Base.resizeNav();

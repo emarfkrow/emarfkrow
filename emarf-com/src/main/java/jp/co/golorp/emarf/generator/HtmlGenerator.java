@@ -834,6 +834,7 @@ public final class HtmlGenerator {
                 continue;
             }
 
+            // テーブル名から「_」より前を取得
             String name = table.getName();
             String prefix = name.replaceAll("_.+$", "");
             String navKey = prefix;
