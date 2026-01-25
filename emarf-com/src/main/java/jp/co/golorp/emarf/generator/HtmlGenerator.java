@@ -840,10 +840,15 @@ public final class HtmlGenerator {
             String navKey = prefix;
 
             for (Entry<String, String> navOrderRe : navOrderRes.entrySet()) {
+                // propertiesで指定した並び順
                 String navOrder = navOrderRe.getKey();
+                // propertiesで指定した正規表現
                 String prefixRe = navOrderRe.getValue();
+                // テーブル名の一つ目の区切りが正規表現にマッチする場合
                 if (prefix.matches(prefixRe)) {
+                    // テーブル名の一つ目の区切りから正規表現にマッチする部分を業務カテゴリとして取得
                     String category = prefixRe.replaceAll("[^0-9A-Za-z]", "");
+                    // 並び順＋業務カテゴリを取得
                     navKey = navOrder + "-" + category;
                 }
             }

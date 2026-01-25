@@ -95,7 +95,12 @@ $(function() {
         $inputs.removeClass('error').prop('title', '');
         $inputs.each(function() {
             let $input = $(this);
+            // input
             $('label[for="' + $input.attr('id') + '"]').removeClass('error').prop('title', '');
+            // check,radio
+            $input.closest('fieldset').find('legend').removeClass('error').prop('title', '');
+            // select
+            $input.prev('label').removeClass('error').prop('title', '');
         });
         let $label = $inputs.parent('label');
         $label.removeClass('error').prop('title', '');
@@ -370,9 +375,15 @@ let Ajaxize = {
                 $input.addClass('error').attr('title', errors[k]);
                 $('label[for="' + $input.attr('id') + '"]').addClass('error').prop('title', errors[k]);
 
+                // 選択項目ならラベルにもエラー表示
                 if ($input.parent('label').length > 0) {
+                    // input
                     $input.parent('label').addClass('error').attr('title', errors[k]);
+                    // check,radio
+                    $input.closest('fieldset').find('legend').addClass('error').attr('title', errors[k]);
                 }
+                // select
+                $input.prev('label').addClass('error').attr('title', errors[k]);
 
             } else {
                 // grid項目の場合

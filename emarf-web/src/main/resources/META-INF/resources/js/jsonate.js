@@ -386,7 +386,12 @@ let Jsonate = {
         //$inputs.next('a').show();
         $inputs.each(function() {
             let $input = $(this);
+            // input
             $('label[for="' + $input.attr('id') + '"]').removeClass('error').prop('title', '');
+            // check,radio
+            $input.closest('fieldset').find('legend').removeClass('error').prop('title', '');
+            // select
+            $input.prev('label').removeClass('error').prop('title', '');
         });
 
         // 選択項目のエラースタイル解除
