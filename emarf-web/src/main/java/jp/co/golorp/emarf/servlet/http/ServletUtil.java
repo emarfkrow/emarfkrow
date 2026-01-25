@@ -301,6 +301,11 @@ public final class ServletUtil {
                         if (upload == null) {
                             upload = "C:\\upload";
                         }
+                        // アップロードフォルダがなければ作成
+                        File uploadDir = new File(upload);
+                        if (!uploadDir.exists()) {
+                            uploadDir.mkdirs();
+                        }
                         String ext = fileName.replaceFirst("^.+\\.", "");
                         String saveName = partName + "." + DateTimeUtil.ymdhmsS() + "." + ext;
                         String uploadPath = upload + File.separator + saveName;
