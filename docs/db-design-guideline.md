@@ -46,6 +46,16 @@
 - 【ホスト対応】数値列がNOTNULLな場合、ここで正規表現が指定されていれば、「0」で補填する
 - 【ホスト対応】更新日時カラムが日付型でなく文字列化する場合のみフォーマットを指定する
 
+---
+
+## VIEW用の拡張設定
+
+VIEWについては追加の設定を行います。
+
+- VIEWの検索条件にするプレフィクス
+- VIEWの詳細画面用テーブル名とする列名
+- 中間表などメニュー化しないビューサフィックスのリスト
+
 
 
 # ホーム画面URL
@@ -70,13 +80,6 @@ java.package.action            com.example.action
 java.package.entity            com.example.entity
 # formクラスのパッケージ
 java.package.form              com.example.form
-
-# VIEWの検索条件にするプレフィクス
-view.criteria.prefix           SEARCH_
-# VIEWの詳細画面用テーブル名とする列名
-view.detail                    TABLE_NAME
-# 中間表などメニュー化しないビューサフィックスのリスト
-view.nav.ignore.suffixs        _bl,_bl0,_bl1,_bl2
 
 # 読み取り専用サフィックス
 input.readonly.suffixs         _am,_jpy
