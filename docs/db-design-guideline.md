@@ -81,67 +81,15 @@ VIEWについては追加の設定を行います。
 - 詳細画面でプルダウン指定にするサフィックス
 - テキストエリアサフィックス
 
+---
 
+## 入力チェックルール
 
-# ホーム画面URL
-#index.home                     ./D0000/D0000.html
-index.home
+「valid.」+カラムサフィックス毎にチェックルールとなる正規表現を指定します。
 
-# javaファイル出力のルートパス
-dir.java                       src\\main\\java
-# グリッド列ファイル出力のルートパス
-dir.grid                       src\\main\\resources\\META-INF\\resources\\model
-# htmlファイル出力のルートパス
-dir.html                       src\\main\\resources\\META-INF\\resources\\WEB-INF\\templates\\model
-# SQLファイル出力のルートパス
-dir.sql                        src\\main\\resources\\sql
+- formクラス内の文字列用バリデータの正規表現（サフィックスは2桁以上でないと誤爆しやすい）
 
-# グリッド行数
-grid.rows                      10
-
-# actionクラスのパッケージ
-java.package.action            com.example.action
-# entityクラスのパッケージ
-java.package.entity            com.example.entity
-# formクラスのパッケージ
-java.package.form              com.example.form
-
-# 選択項目取得URL
-options.json                   MsyKbnValSearch.json
-# 選択項目取得時のパラメータ名
-options.key                    kbn_nm
-# 選択項目取得時の値用カラム名
-options.value                  kbn_val
-# 選択項目取得時のラベル用カラム名
-options.label                  kbn_val_mei
-# 検索条件内でプルダウンにする要素数
-options.size.search            10
-# 詳細画面内でプルダウンにする要素数
-options.size.detail            5
-
-# formクラス内の文字列用バリデータの正規表現（サフィックスは2桁以上でないと誤爆しやすい）
-valid._CD                      ([\\\\-0-9A-Za-z]{1,10})?
-valid._NO                      ([0-9]{1,10})?
-valid._FY                      ([0-9]{4})?
-valid._Y                       ([0-9]{4})?
-valid._M                       ([0-9]{2})?
-valid._D                       ([0-9]{2})?
-valid._YM                      ([0-9]{4}(\\\\/|\\\\-)?[0-9]{1,2})?
-valid._YMD                     ([0-9]{8})?
-valid._TS                      ([0-9]{13}|[0-9]{4}(\\\\/|\\\\-)[0-9]{1,2}(\\\\/|\\\\-)[0-9]{1,2}(T| )[0-9]{1,2}:[0-9]{1,2}(:[0-9]{1,2}(\\\\.[0-9]{3})?)?)?
-valid._DT                      ([0-9]{13}|[0-9]{4}(\\\\/|\\\\-)[0-9]{1,2}(\\\\/|\\\\-)[0-9]{1,2}(T| )[0-9]{1,2}:[0-9]{1,2}(:[0-9]{1,2}(\\\\.[0-9]{3})?)?)?
-valid._BI                      ([0-9]{4}(\\\\/|\\\\-)[0-9]{1,2}(\\\\/|\\\\-)[0-9]{1,2})?
-valid._HM                      ([0-9]{1,2}:[0-9]{1,2})?
-valid._TM                      ([0-9]{1,}:[0-9]{1,2})?
-# 追加バリデータ
-valid.YY                       ([0-9]{4})?
-valid.MM                       ([0-9]{2})?
-valid.DD                       ([0-9]{2})?
-valid.YYMM                     ([0-9]{4})?
-valid.YOUBI                    ([日月火水木金土])?
-valid.BOTM                     (B)?
-valid.UBINNO                   ([0-9]{7}|[0-9]{3}\\\\-[0-9]{4})?
-valid.TELNO                    ([ \\\\-0-9]{1,15})?
+---
 
 # 業務カテゴリの設定および並び順
 nav.order.prefix.re.04 ^.04$
