@@ -94,7 +94,7 @@ VIEWについては追加の設定を行います。
 ## 業務カテゴリ
 
 メニューのリンクを出力する際の並び順を指定します。  
-「nav.order.prefix.re.」+ZERO梅連番 ごとにテーブル名のプレフィクスのうち業務部分を正規表現で指定します。
+「nav.order.prefix.re.」+ZERO埋め連番 ごとにテーブル名のプレフィクスのうち業務部分を正規表現で指定します。
 
 - nav.order.prefix.re.01 ^.CM$ →共通（CoMmon）
 - nav.order.prefix.re.99 ^.SY$ →システム（SYstem）
