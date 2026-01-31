@@ -18,52 +18,36 @@
 - 兄弟を評価しないテーブル名の正規表現
 - 参照モデル探索に使用する、キーサフィックス：名サフィックスの組み合わせ
 
+---
+
+## カラム名およびサフィックスに従っての制御も指定します。
+
+- 処理対象外カラム名の正規表現
+- 有効期間開始日
+- 有効期間終了日
+- 登録日時カラム名
+- 登録者カラム名
+- 登録者名カラム名
+- 更新日時カラム名
+- 更新者カラム名
+- 更新者名カラム名
+- 論理削除カラム名
+- ステータスカラム名
+- 履歴の変更理由のカラム名
+- 表示順カラムサフィックスCSV
+- 数値列でカンマ・小数編集しないサフィックス
+- 集約時に合計するサフィックス
+- 数値列で自動採番しないカラム名の正規表現
+- 【ホスト対応】CHARがNOTNULLでもスペースが補填される場合、ここで正規表現が指定されていれば、それに該当する項目のみ必須チェック対象とする。
+- 【ホスト対応】固定長列で自動採番するカラム名の正規表現
+- 【ホスト対応】数値列がNOTNULLな場合、ここで正規表現が指定されていれば、「0」で補填する
+- 【ホスト対応】更新日時カラムが日付型でなく文字列化する場合のみフォーマットを指定する
+
 
 
 # ホーム画面URL
 #index.home                     ./D0000/D0000.html
 index.home
-
-# 処理対象外カラム名の正規表現
-column.ignore.re               (?i)^(FILLER|ABSTRACT|PUBLIC)$
-# 有効期間開始日
-column.start                   tekiyo_bi
-# 有効期間終了日
-column.until                   haishi_bi
-# 登録日時カラム名
-column.insert.timestamp        insert_ts
-# 登録者カラム名
-column.insert.id               insert_user_id
-# 登録者名カラム名
-column.insert.mei              insert_user_sei
-# 更新日時カラム名
-column.update.timestamp        update_ts
-# 更新者カラム名
-column.update.id               update_user_id
-# 更新者名カラム名
-column.update.mei              update_user_sei
-# 論理削除カラム名
-column.delete                  delete_f
-# ステータスカラム名
-column.status                  status_kb
-# 履歴の変更理由のカラム名
-column.history.reason          riyu_tx
-# 表示順カラムサフィックスCSV
-column.order.suffixs           _on
-# 数値列でカンマ・小数編集しないサフィックス
-column.int.noformat.suffixs    _id,_bn,_on,_fy,_y
-# 集約時に合計するサフィックス
-column.summary.suffixs         _qt,_am,_jpy
-# 数値列で自動採番しないカラム名の正規表現
-column.int.nonumbering.re      (?i)^.+_(fy|y)$
-# 【ホスト対応】CHARがNOTNULLでもスペースが補填される場合、ここで正規表現が指定されていれば、それに該当する項目のみ必須チェック対象とする。
-column.char.notnull.re
-# 【ホスト対応】固定長列で自動採番するカラム名の正規表現
-column.char.numbering.re
-# 【ホスト対応】数値列がNOTNULLな場合、ここで正規表現が指定されていれば、「0」で補填する
-column.number.nullable.re
-# 【ホスト対応】更新日時カラムが日付型でなく文字列化する場合のみフォーマットを指定する
-column.update.timestamp.format
 
 # javaファイル出力のルートパス
 dir.java                       src\\main\\java
