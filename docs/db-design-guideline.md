@@ -17,6 +17,8 @@ Entity・Validator・Action・HTMLなどWebアプリケーションに必要な�
 - **子モデル**  
   最終キー以前まで主キーが一致するテーブルが存在する。
 
+<img src="docs/er/parent_child.png" alt="親子パターンER図" height="600" width="600">
+
 ### （親子パターン例外）
 
 - **子なしモデル**  
