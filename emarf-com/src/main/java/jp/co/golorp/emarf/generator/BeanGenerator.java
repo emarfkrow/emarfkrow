@@ -805,7 +805,8 @@ public final class BeanGenerator {
         ColumnInfo lastKeyInfo = null;
         if (table.getPrimaryKeys() != null && table.getPrimaryKeys().size() > 0) {
             List<String> primaryKeys = new ArrayList<String>(table.getPrimaryKeys());
-            primaryKeys.remove(tekiyoBi);
+            primaryKeys.remove(tekiyoBi.toLowerCase());
+            primaryKeys.remove(tekiyoBi.toUpperCase());
             String lastKey = primaryKeys.get(primaryKeys.size() - 1);
             lastKeyInfo = table.getColumns().get(lastKey);
             if (lastKeyInfo != null && lastKeyInfo.isNumbering()) {
@@ -982,7 +983,8 @@ public final class BeanGenerator {
         s.add("        Map<String, Object> map = new HashMap<String, Object>();");
 
         List<String> primaryKeys = new ArrayList<>(table.getPrimaryKeys());
-        primaryKeys.remove(tekiyoBi);
+        primaryKeys.remove(tekiyoBi.toLowerCase());
+        primaryKeys.remove(tekiyoBi.toUpperCase());
         if (primaryKeys.size() > 1) {
 
             s.add("        List<String> whereList = new ArrayList<String>();");
@@ -1372,7 +1374,7 @@ public final class BeanGenerator {
                 ColumnInfo primaryKey = table.getColumns().get(pk);
                 if (primaryKey.getTypeName().equals("CHAR")) {
                     s.add("        whereList.add(\"" + assist.trimedSQL(pk) + " = " + assist.trimedSQL(p) + "\");");
-                } else if (!pk.equals(tekiyoBi)) {
+                } else if (!pk.matches("(?i)" + tekiyoBi)) {
                     s.add("        whereList.add(\"" + pk + " = " + p + "\");");
                 }
             }
