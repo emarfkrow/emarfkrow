@@ -97,5 +97,5 @@ VIEWについては追加の設定を行います。
 「nav.order.prefix.re.」+ZERO梅連番 ごとにテーブル名のプレフィクスのうち業務部分を正規表現で指定します。
 
 - nav.order.prefix.re.01 ^.CM$ →共通（CoMmon）
-- nav.order.prefix.re.99 ^.SY$ →システム（SYstem）
+- nav.order.prefix.re.99 ^.SY$ →システム（SYstem）  
 など
