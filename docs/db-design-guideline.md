@@ -17,8 +17,6 @@ Entity・Validator・Action・HTMLなどWebアプリケーションに必要な�
 - **子モデル**  
   最終キー以前まで主キーが一致するテーブルが存在する。
 
-<img src="img/1.png" alt="親子パターン" height="600" width="600">
-
 ### （親子パターン例外）
 
 - **子なしモデル**  
@@ -26,6 +24,8 @@ Entity・Validator・Action・HTMLなどWebアプリケーションに必要な�
 
 - **孤児モデル**  
   親モデルを設定しないテーブル。
+
+<img src="img/1.png" alt="親子パターン">
 
 ### ２．兄弟パターン
 
@@ -44,6 +44,8 @@ Entity・Validator・Action・HTMLなどWebアプリケーションに必要な�
 
 - **里子モデル**  
   兄弟関係の評価対象外とするテーブル。
+
+<img src="img/2.png" alt="兄弟パターン">
 
 ### ３．履歴パターン
 
