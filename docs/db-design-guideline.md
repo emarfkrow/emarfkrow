@@ -85,51 +85,17 @@ VIEWについては追加の設定を行います。
 
 ## 入力チェックルール
 
-「valid.」+カラムサフィックス毎にチェックルールとなる正規表現を指定します。
+「valid.」+カラムサフィックス ごとにチェックルールとなる正規表現を指定します。
 
 - formクラス内の文字列用バリデータの正規表現（サフィックスは2桁以上でないと誤爆しやすい）
 
 ---
 
-# 業務カテゴリの設定および並び順
-nav.order.prefix.re.04 ^.04$
-nav.order.prefix.re.05 ^.05$
-nav.order.prefix.re.12 ^.13$
-## 共通（CoMmon）
-#nav.order.prefix.re.01 ^.CM$
-## 販売目標（Sales Goal）
-#nav.order.prefix.re.02 ^.SG$
-## 生産計画（Production Plan）
-#nav.order.prefix.re.03 ^.PP$
-## 購買（PUrchase）
-#nav.order.prefix.re.04 ^.PU$
-## 製造（PRoduction）
-#nav.order.prefix.re.05 ^.PR$
-## 調達（ProCurement）
-#nav.order.prefix.re.06 ^.PC$
-## 販売（SaLes）
-#nav.order.prefix.re.07 ^.SL$
-## 見積（Sales Quotation）
-#nav.order.prefix.re.08 ^.SQ$
-## 受注（Sales Order）
-#nav.order.prefix.re.09 ^.SO$
-## 受注残（Sales Backlog）
-#nav.order.prefix.re.10 ^.SB$
-## 入出庫（Logistics Warehousing）
-#nav.order.prefix.re.11 ^.LW$
-## 在庫（Logistics Inventory）
-#nav.order.prefix.re.12 ^.LI$
-## 流通加工（Logistics Processing ）
-#nav.order.prefix.re.13 ^.LP$
-## 出荷（Logistics Shipping）
-#nav.order.prefix.re.14 ^.LS$
-## 売り上げ（Accounting Sales）
-#nav.order.prefix.re.15 ^.AS$
-## 仕入れ（Accounting Purchase）
-#nav.order.prefix.re.16 ^.AP$
-## 原価（Accounting Cost）
-#nav.order.prefix.re.17 ^.AC$
-## 人事（Human Resource）
-#nav.order.prefix.re.18 ^.HR$
-## システム（SYstem）
-#nav.order.prefix.re.19 ^.SY$
+## 業務カテゴリ
+
+メニューのリンクを出力する際の並び順を指定します。  
+「nav.order.prefix.re.」+ZERO梅連番 ごとにテーブル名のプレフィクスのうち業務部分を正規表現で指定します。
+
+- nav.order.prefix.re.01 ^.CM$ →共通（CoMmon）
+- nav.order.prefix.re.99 ^.SY$ →システム（SYstem）
+など
