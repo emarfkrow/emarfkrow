@@ -56,6 +56,29 @@ VIEWについては追加の設定を行います。
 - VIEWの詳細画面用テーブル名とする列名
 - 中間表などメニュー化しないビューサフィックスのリスト
 
+---
+
+## カラムサフィックスによる画面項目の制御
+
+カラム名のサフィックスにより  
+画面上での入力項目の制御を行います。
+
+- 読み取り専用サフィックス
+- 数値入力サフィックス
+- 年月入力サフィックス
+- 8桁日付入力サフィックス
+- タイムスタンプサフィックス
+- 日時入力サフィックス
+- 日付入力サフィックス
+- 時刻入力サフィックス
+- 時間入力サフィックス
+- 検索画面で範囲指定となるサフィックス
+- 検索画面でnullを「0」として検索するサフィックス
+- ファイル選択サフィックス
+- 選択項目サフィックス
+- 詳細画面でプルダウン指定にするサフィックス
+- テキストエリアサフィックス
+
 
 
 # ホーム画面URL
@@ -80,37 +103,6 @@ java.package.action            com.example.action
 java.package.entity            com.example.entity
 # formクラスのパッケージ
 java.package.form              com.example.form
-
-# 読み取り専用サフィックス
-input.readonly.suffixs         _am,_jpy
-# 数値入力サフィックス
-input.number.suffixs           _fy,_y,_m,_d,_lt,_qt,_pr,_am,_jpy,receipt,payment,credit
-# 年月入力サフィックス
-input.ym.suffixs               _ym
-# 8桁日付入力サフィックス
-input.date8.suffixs            _ymd
-# タイムスタンプサフィックス
-input.timestamp.suffixs        _ts
-# 日時入力サフィックス
-input.datetime.suffixs         _dt
-# 日付入力サフィックス
-input.date.suffixs             _bi
-# 時刻入力サフィックス
-input.hour.suffixs             _hm
-# 時間入力サフィックス
-input.time.suffixs             _tm
-# 検索画面で範囲指定となるサフィックス
-input.range.suffixs            _fy,_y,_m,_d,_ym,_ymd,_ts,_dt,_bi,_hm,_tm,_qt,_pr,_am,_lt,_jpy,receipt,payment,credit
-# 検索画面でnullを「0」として検索するサフィックス
-input.flag.suffixs             _f
-# ファイル選択サフィックス
-input.file.suffixs             _file
-# 選択項目サフィックス
-input.options.suffixs          _f,_kb,_sb
-# 詳細画面でプルダウン指定にするサフィックス
-input.pulldown.suffixs         _sb
-# テキストエリアサフィックス
-input.textarea.suffixs         _tx
 
 # 選択項目取得URL
 options.json                   MsyKbnValSearch.json
