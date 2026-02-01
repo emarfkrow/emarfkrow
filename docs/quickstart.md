@@ -23,7 +23,8 @@ git clone https://github.com/emarfkrow/sample.git
 - samplejob：バッチサンプル
 - sampleweb：ウェブサンプル
 
-プロジェクトの依存関係は以下の通りになっています。
+プロジェクトの依存関係はMavenのPOMファイルで設定しており  
+以下の通りになっています。
 
 ```
 emarf-com
