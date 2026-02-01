@@ -200,4 +200,4 @@ VIEW は、物理的な外部キー制約を持たない場合が多いため、
 
 ---
 
-- [DB Design Guideline 2](docs/db-design-guideline-2.md)
+- [DB Design Guideline 2](db-design-guideline-2.md)
