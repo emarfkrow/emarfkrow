@@ -28,6 +28,7 @@ git clone https://github.com/emarfkrow/sample.git
 ```
 emarf-com
 ├ emarf-job ┐
-└ emarf-web ┴ samplecom ┬ samplejob
-                          └ sampleweb
+└ emarf-web ┴ samplecom
+                ├ samplejob
+                └ sampleweb
 ```
