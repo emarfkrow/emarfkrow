@@ -1,4 +1,4 @@
-# DB Design Guideline
+# DB Design Guideline 2
 
 **テーブル名とカラム名に一定のルールを設定することで  
 関連の評価や画面での入力方法の制御を行います。**  
