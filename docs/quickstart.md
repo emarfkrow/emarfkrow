@@ -1,6 +1,6 @@
 # Quick Start
 
-**Eclipse(Pleiades All in One)での開始方法について記載します。**
+**Eclipseを想定した開始方法について記載します。**
 
 ---
 
@@ -33,3 +33,13 @@ emarf-com
                 ├ samplejob
                 └ sampleweb
 ```
+
+---
+
+## サンプルデータベースの構築
+
+sampleリポジトリ.schemaフォルダのDDLでサンプル用のデータベースを構築します。
+
+- [DB名]/create_database.sql
+- [DB名]/create_tables.sql
+
