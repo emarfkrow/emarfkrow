@@ -1,6 +1,6 @@
 # Quick Start
 
-**Eclipseを想定した開始方法について記載します。**
+**主にeclipseを想定した開始方法について記載します。**
 
 ---
 
@@ -42,4 +42,11 @@ sampleリポジトリ.schemaフォルダのDDLでサンプル用のデータベ�
 
 - [DB名]/create_database.sql
 - [DB名]/create_tables.sql
+
+最低限必要なデータをロードします。
+
+- MHR_SHOKUI_NINKA.xlsx：システム管理者に全権を与えます。
+- MHR_USER.xlsx：システム管理者を登録します。
+- MHR_USER_POS.xlsx：システム管理者の所属を設定します。
+- MSY_KBN_VAL.xlsx：選択項目用の区分を設定します。
 
