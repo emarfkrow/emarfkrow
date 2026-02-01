@@ -50,3 +50,16 @@ sampleリポジトリ.schemaフォルダのDDLでサンプル用のデータベ�
 - MHR_USER_POS.xlsx：システム管理者の所属を設定します。
 - MSY_KBN_VAL.xlsx：選択項目用の区分を設定します。
 
+---
+
+## 自動生成とデバッグ実行
+
+samplecom内のsrc/test/resources/DataSource.propertiesを配置し、  
+samplecom内のsrc/test/java/BeanGenerator.javaを「Javaアプリケーション」で実行すると、  
+samplecom内のsrc/main内に各種ファイルを出力します。
+
+samplewebをTomcat10_Java17で「サーバーでデバッグ」すると、  
+ブラウザにログイン画面が表示されます。
+
+- ログインID：0
+- パスワード：password
