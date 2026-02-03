@@ -106,6 +106,8 @@ This project is released as Open Source Software.
 
 ## Philosophy
 
+日本のITを強くしたい。
+
 本OSSは、自由度よりも
 
 - 保守性
@@ -116,5 +118,5 @@ This project is released as Open Source Software.
 
 働き手不足の時代においても、  
 **DB設計を正として、安全に業務Webシステムを量産できる開発基盤**  
-であることを目指しています。
-
+個人のスキルや属人的な実装に依存せず、
+チームとして継続的にシステムを育てられる開発を目指しています。
