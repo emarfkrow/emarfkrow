@@ -67,9 +67,11 @@ public class DataSourcesAssistOracle extends DataSourcesAssist {
         String sql = "SELECT COMMENTS FROM USER_COL_COMMENTS WHERE TABLE_NAME = '" + tableName + "' AND COLUMN_NAME = '"
                 + columnName + "'";
         MapList mapList = Queries.select(sql, null, null);
-        Map<String, Object> map = mapList.get(0);
-        if (map.get("COMMENTS") != null) {
-            return map.get("COMMENTS").toString();
+        if (mapList != null) {
+            Map<String, Object> map = mapList.get(0);
+            if (map.get("COMMENTS") != null) {
+                return map.get("COMMENTS").toString();
+            }
         }
         return null;
     }

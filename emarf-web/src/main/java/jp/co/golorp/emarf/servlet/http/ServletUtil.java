@@ -47,6 +47,7 @@ import org.slf4j.LoggerFactory;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import jp.co.golorp.emarf.action.BaseAction;
 import jp.co.golorp.emarf.exception.SysError;
@@ -278,6 +279,7 @@ public final class ServletUtil {
 
         Map<String, Object> map = new HashMap<String, Object>();
         ObjectMapper mapper = new ObjectMapper();
+        mapper.registerModule(new JavaTimeModule());
 
         if (parts != null) {
             // 「enctype="multipart/form-data"」の場合
@@ -464,10 +466,12 @@ public final class ServletUtil {
     public static void sendJson(final HttpServletResponse response, final Map<String, Object> map) {
         try {
             ObjectMapper mapper = new ObjectMapper();
+            mapper.registerModule(new JavaTimeModule());
             String s = mapper.writeValueAsString(map);
             LOG.trace("ResponseJson: " + mapper.writerWithDefaultPrettyPrinter().writeValueAsString(map));
             response.getWriter().append(s);
         } catch (Exception e) {
+            LOG.error(e.getMessage(), e);
             throw new SysError(e);
         }
     }

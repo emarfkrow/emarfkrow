@@ -2,13 +2,11 @@ package jp.co.golorp.emarf.generator;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.ResourceBundle;
-import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -210,53 +208,7 @@ public final class FormGenerator {
                 s.add("        this." + camel + "Grid = p;");
                 s.add("    }");
             }
-            s.add("");
-            s.add("    /** 関連チェック */");
-            s.add("    @Override");
-            s.add("    public void validate(final Map<String, String> errors, final BaseProcess baseProcess) {");
-            s.add("        LOG.trace(\"validate() not overridden in subclasses.\");");
-            Set<String> refers = new HashSet<String>();
-            for (ColumnInfo column : table.getColumns().values()) {
-                if (column.getRefer() == null || column.getName().matches("(?i)^" + insertBy + "$")
-                        || column.getName().matches("(?i)^" + updateBy + "$")) {
-                    continue;
-                }
-                TableInfo refer = column.getRefer();
-                String cls = StringUtil.toPascalCase(refer.getName());
-                String ins = StringUtil.toCamelCase(refer.getName());
-                String p = StringUtil.toCamelCase(column.getName());
-                String keySuf = "";
-                if (refer.getPrimaryKeys().size() > 1) {
-                    if (refers.contains(cls)) {
-                        continue;
-                    }
-                    refers.add(cls);
-                    s.add("");
-                    s.add("        // " + column.getRemarks() + " のマスタチェック TODO できればAssertTrueにしたい");
-                    s.add("        Map<String, Object> " + ins + "Params = new java.util.HashMap<String, Object>();");
-                    for (String pk : refer.getPrimaryKeys()) {
-                        if (refer.getColumns().get(pk).getDataType().equals("String")) {
-                            keySuf = "Full";
-                        }
-                        s.add("        " + ins + "Params.put(\"" + StringUtil.toCamelCase(pk) + keySuf + "\", this.get"
-                                + StringUtil.toPascalCase(pk) + "());");
-                    }
-                    s.add("        baseProcess.masterCheck(errors, \"" + cls + "Search\", \"" + p + "\", " + ins
-                            + "Params, jp.co.golorp.emarf.util.Messages.get(\"" + entity + "." + p + "\"));");
-                } else {
-                    s.add("");
-                    s.add("        // " + column.getRemarks() + " のマスタチェック TODO できればAssertTrueにしたい");
-                    s.add("        Map<String, Object> " + p + "Params = new java.util.HashMap<String, Object>();");
-                    if (column.getDataType().equals("String")) {
-                        keySuf = "Full";
-                    }
-                    s.add("        " + p + "Params.put(\"" + p + keySuf + "\", this.get"
-                            + StringUtil.toPascalCase(column.getName()) + "());");
-                    s.add("        baseProcess.masterCheck(errors, \"" + cls + "Search\", \"" + p + "\", " + p
-                            + "Params, jp.co.golorp.emarf.util.Messages.get(\"" + entity + "." + p + "\"));");
-                }
-            }
-            s.add("    }");
+            javaFormDetailRegistRelCheck(table, s);
             s.add("}");
             String javaFilePath = packageDir + File.separator + entity + "RegistForm.java";
             javaFilePaths.put(javaFilePath, pkgForm + "." + entity + "RegistForm");
@@ -267,6 +219,70 @@ public final class FormGenerator {
                 BeanGenerator.javaCompile(e.getKey(), e.getValue());
             }
         }
+    }
+
+    /**
+     * 関連チェック
+     * @param table
+     * @param s
+     */
+    private static void javaFormDetailRegistRelCheck(final TableInfo table, final List<String> s) {
+
+        String entity = StringUtil.toPascalCase(table.getName());
+
+        s.add("");
+        s.add("    /** 関連チェック */");
+        s.add("    @Override");
+        s.add("    public void validate(final Map<String, String> errors, final BaseProcess baseProcess) {");
+        s.add("        LOG.trace(\"validate() not overridden in subclasses.\");");
+
+        // 列ごとに評価
+        for (ColumnInfo column : table.getColumns().values()) {
+
+            if (column.getRefer() == null) {
+                continue; //参照モデルがなければスキップ
+            }
+            if (column.getName().matches("(?i)^" + insertBy + "$")) {
+                continue; //登録者ならスキップ
+            }
+            if (column.getName().matches("(?i)^" + updateBy + "$")) {
+                continue; //更新者ならスキップ
+            }
+
+            TableInfo refer = column.getRefer();
+            String cls = StringUtil.toPascalCase(refer.getName());
+            String p = StringUtil.toCamelCase(column.getName());
+            String keySuf = "";
+
+            s.add("");
+            s.add("        // " + column.getRemarks() + " のマスタチェック TODO できればAssertTrueにしたい");
+            s.add("        Map<String, Object> " + p + "Params = new java.util.HashMap<String, Object>();");
+
+            // 該当する主キーと比べて、カラム名の接頭辞を判定する
+            String keyPrefix = "";
+            for (String pk : refer.getPrimaryKeys()) {
+                if (column.getName().endsWith(pk)) {
+                    keyPrefix = column.getName().replaceAll(pk + "$", "");
+                    if (!keyPrefix.isEmpty()) {
+                        keyPrefix += "_";
+                    }
+                    break;
+                }
+            }
+
+            for (String pk : refer.getPrimaryKeys()) {
+                if (refer.getColumns().get(pk).getDataType().equals("String")) {
+                    keySuf = "Full";
+                }
+                s.add("        " + p + "Params.put(\"" + StringUtil.toCamelCase(pk) + keySuf + "\", this.get"
+                        + StringUtil.toPascalCase(StringUtil.toPascalCase(keyPrefix + pk)) + "());");
+            }
+
+            s.add("        baseProcess.masterCheck(errors, \"" + cls + "Search\", \"" + p + "\", " + p
+                    + "Params, jp.co.golorp.emarf.util.Messages.get(\"" + entity + "." + p + "\"));");
+        }
+
+        s.add("    }");
     }
 
     /**

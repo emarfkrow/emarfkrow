@@ -603,10 +603,11 @@ public final class BeanGenerator {
         if (!isPrimaryKey) {
             for (String key : table.getColumns().keySet()) {
                 if (key.length() > 0) {
+                    String cleanedKey = key.replaceAll("\\$", "_");
                     // quoted
                     String q = DataSources.getAssist().quoteEscapedSQL(key);
                     // param
-                    String p = ":" + StringUtil.toSnakeCase(key);
+                    String p = ":" + StringUtil.toSnakeCase(cleanedKey);
                     ColumnInfo column = table.getColumns().get(key);
                     if (column.getTypeName().equals("CHAR")) {
                         s.add("        whereList.add(\"" + assist.trimedSQL(q) + " = " + assist.trimedSQL(p) + "\");");
@@ -884,7 +885,8 @@ public final class BeanGenerator {
         s.add("        List<String> nameList = new ArrayList<String>();");
         for (String columnName : table.getColumns().keySet()) {
             String snake = StringUtil.toSnakeCase(columnName);
-            s.add("        nameList.add(\"" + assist.quoteEscapedSQL(columnName) + " -- :" + snake + "\");");
+            String cleanedKey = snake.replaceAll("\\$", "_");
+            s.add("        nameList.add(\"" + assist.quoteEscapedSQL(columnName) + " -- :" + cleanedKey + "\");");
         }
         s.add("        return String.join(\"\\r\\n    , \", nameList);");
         s.add("    }");
@@ -895,7 +897,9 @@ public final class BeanGenerator {
         for (Entry<String, ColumnInfo> e : table.getColumns().entrySet()) {
             String colName = e.getKey();
             ColumnInfo column = e.getValue();
-            String rightHand = getRightHand(colName, column);
+
+            String cleanedName = colName.replaceAll("\\$", "_");
+            String rightHand = getRightHand(cleanedName, column);
 
             if (!colName.matches("(?i)^" + insertDt + "$") && !colName.matches("(?i)^" + updateDt + "$")
                     && StringUtil.endsWith(inputTimestampSuffixs, colName)) {
@@ -1113,7 +1117,8 @@ public final class BeanGenerator {
                 continue;
             }
 
-            String rightHand = getRightHand(colName, column);
+            String cleanedName = colName.replaceAll("\\$", "_");
+            String rightHand = getRightHand(cleanedName, column);
             s.add("        setList.add(\"" + assist.quoteEscapedSQL(colName) + " = " + rightHand + "\");");
         }
         s.add("        return String.join(\"\\r\\n    , \", setList);");

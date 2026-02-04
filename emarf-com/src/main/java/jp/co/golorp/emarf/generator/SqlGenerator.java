@@ -470,7 +470,8 @@ public final class SqlGenerator {
         String q = assist.quotedSQL(name);
 
         // parameters
-        String p = BeanGenerator.getRightHand(name, column);
+        String cleanedKey = name.replaceAll("\\$", "_");
+        String p = BeanGenerator.getRightHand(cleanedKey, column);
 
         // trimed
         String t = assist.trimedSQL("a." + q);

@@ -255,6 +255,7 @@ public final class HtmlGenerator {
         String remarks = table.getRemarks();
         List<String> s = new ArrayList<String>();
         addHtmlHead(s, es, remarks);
+        s.add("<script th:src=\"@{/js/" + e + ".js}\"></script>");
         s.add("<script th:src=\"@{/model/" + e + "GridColumns.js}\"></script>");
         Set<TableInfo> added = new HashSet<TableInfo>();
         added.add(table);
@@ -573,6 +574,7 @@ public final class HtmlGenerator {
         String remarks = table.getRemarks();
         List<String> s = new ArrayList<String>();
         addHtmlHead(s, e, remarks);
+        s.add("<script th:src=\"@{/js/" + e + ".js}\"></script>");
         s.add("<script th:src=\"@{/model/" + e + "GridColumns.js}\"></script>");
         Set<TableInfo> added = new HashSet<TableInfo>();
         added.add(table);
@@ -649,8 +651,7 @@ public final class HtmlGenerator {
         }
         //        if (table.getChoosers() != null) { // 選抜先がある場合は追加ボタンを出力
         //            for (TableInfo chooser : table.getChoosers()) {
-        //                String r = StringUtil.toPascalCase(chooser.getName());
-        //                s.add("        <a th:href=\"@{/model/" + r + ".html}\" id=\"" + r + "\" target=\"dialog\" th:text=\"#{" + r + ".add}\" class=\"chooser\" tabindex=\"-1\">" + chooser.getRemarks() + "</a>");
+        //                String r = StringUtil.toPascalCase(chooser.getName());s.add("        <a th:href=\"@{/model/" + r + ".html}\" id=\"" + r + "\" target=\"dialog\" th:text=\"#{" + r + ".add}\" class=\"chooser\" tabindex=\"-1\">" + chooser.getRemarks() + "</a>");
         //            }
         //        }
         if (table.getSummaryOfs().size() > 0) { // 集約元がある場合は主キー項目を出力
@@ -949,42 +950,33 @@ public final class HtmlGenerator {
 
         //参照モデル
         for (ColumnInfo column : table.getColumns().values()) {
-
             TableInfo refer = column.getRefer();
-
             if (refer != null) {
-
                 if (added.contains(refer)) {
                     continue;
                 }
-
                 String referName = refer.getName();
                 String entity = StringUtil.toPascalCase(referName);
+                s.add("<script th:src=\"@{/js/" + entity + ".js}\"></script>");
                 s.add("<script th:src=\"@{/model/" + entity + "GridColumns.js}\"></script>");
                 added.add(refer);
-
                 htmlNestGrid(s, refer, tables, added, false);
             }
         }
 
         //兄弟モデルの参照モデル
         for (TableInfo bro : table.getBrothers()) {
-
             for (ColumnInfo column : bro.getColumns().values()) {
-
                 TableInfo refer = column.getRefer();
-
                 if (refer != null) {
-
                     if (added.contains(refer)) {
                         continue;
                     }
-
                     String referName = refer.getName();
                     String entity = StringUtil.toPascalCase(referName);
+                    s.add("<script th:src=\"@{/js/" + entity + ".js}\"></script>");
                     s.add("<script th:src=\"@{/model/" + entity + "GridColumns.js}\"></script>");
                     added.add(refer);
-
                     htmlNestGrid(s, refer, tables, added, false);
                 }
             }
@@ -992,43 +984,42 @@ public final class HtmlGenerator {
 
         //親モデル
         for (TableInfo parent : table.getParents()) {
-
             if (added.contains(parent)) {
                 continue;
             }
-
             String parentName = parent.getName();
             String entity = StringUtil.toPascalCase(parentName);
+            s.add("<script th:src=\"@{/js/" + entity + ".js}\"></script>");
             s.add("<script th:src=\"@{/model/" + entity + "GridColumns.js}\"></script>");
             added.add(parent);
-
             htmlNestGrid(s, parent, tables, added, true);
         }
 
         //子モデル
         for (TableInfo child : table.getChildren()) {
-
             if (added.contains(child)) {
                 continue;
             }
-
             String childName = child.getName();
             String entity = StringUtil.toPascalCase(childName);
+            s.add("<script th:src=\"@{/js/" + entity + ".js}\"></script>");
             s.add("<script th:src=\"@{/model/" + entity + "GridColumns.js}\"></script>");
             added.add(child);
-
             htmlNestGrid(s, child, tables, added, false);
         }
+
         //転生先モデル
         if (table.getRebornTo() != null) {
             TableInfo rebornTo = table.getRebornTo();
             if (!added.contains(rebornTo)) {
                 added.add(rebornTo);
                 String entity = StringUtil.toPascalCase(rebornTo.getName());
+                s.add("<script th:src=\"@{/js/" + entity + ".js}\"></script>");
                 s.add("<script th:src=\"@{/model/" + entity + "GridColumns.js}\"></script>");
                 htmlNestGrid(s, rebornTo, tables, added, false);
             }
         }
+
         //        // 選抜先モデル
         //        if (table.getChoosers().size() > 0) {
         //            for (TableInfo chooser : table.getChoosers()) {
@@ -1040,11 +1031,13 @@ public final class HtmlGenerator {
         //                }
         //            }
         //        }
+
         // 転生元モデル
         if (table.getRebornFrom() != null) {
             TableInfo reFrom = table.getRebornFrom();
             if (!added.contains(reFrom)) {
                 String entity = StringUtil.toPascalCase(reFrom.getName());
+                s.add("<script th:src=\"@{/js/" + entity + ".js}\"></script>");
                 s.add("<script th:src=\"@{/model/" + entity + "GridColumns.js}\"></script>");
                 added.add(reFrom);
                 htmlNestGrid(s, reFrom, tables, added, false);
@@ -1057,6 +1050,7 @@ public final class HtmlGenerator {
                     TableInfo deriveFrom = column.getDeriveFrom();
                     if (!added.contains(deriveFrom)) {
                         String entity = StringUtil.toPascalCase(deriveFrom.getName());
+                        s.add("<script th:src=\"@{/js/" + entity + ".js}\"></script>");
                         s.add("<script th:src=\"@{/model/" + entity + "GridColumns.js}\"></script>");
                         added.add(deriveFrom);
                         htmlNestGrid(s, deriveFrom, tables, added, false);
@@ -1067,28 +1061,33 @@ public final class HtmlGenerator {
             for (TableInfo deriveTo : table.getDeriveTos()) {
                 if (!added.contains(deriveTo)) {
                     String entity = StringUtil.toPascalCase(deriveTo.getName());
+                    s.add("<script th:src=\"@{/js/" + entity + ".js}\"></script>");
                     s.add("<script th:src=\"@{/model/" + entity + "GridColumns.js}\"></script>");
                     added.add(deriveTo);
                     htmlNestGrid(s, deriveTo, tables, added, false);
                 }
             }
         }
+
         //集約元モデル
         if (table.getSummaryOfs().size() > 0) {
             for (TableInfo summary : table.getSummaryOfs()) {
                 if (!added.contains(summary)) {
                     String entity = StringUtil.toPascalCase(summary.getName());
+                    s.add("<script th:src=\"@{/js/" + entity + ".js}\"></script>");
                     s.add("<script th:src=\"@{/model/" + entity + "GridColumns.js}\"></script>");
                     added.add(summary);
                     htmlNestGrid(s, summary, tables, added, false);
                 }
             }
         }
+
         //集約先モデル
         TableInfo summaryTo = table.getSummaryTo();
         if (summaryTo != null) {
             if (!added.contains(summaryTo)) {
                 String entity = StringUtil.toPascalCase(summaryTo.getName());
+                s.add("<script th:src=\"@{/js/" + entity + ".js}\"></script>");
                 s.add("<script th:src=\"@{/model/" + entity + "GridColumns.js}\"></script>");
                 added.add(summaryTo);
                 htmlNestGrid(s, summaryTo, tables, added, false);

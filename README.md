@@ -95,6 +95,7 @@ DDL変更後も **再生成によるデグレは発生しません。**
 - [Quick Start](docs/quickstart.md)
 - [DB Design Guideline](docs/db-design-guideline.md)
 - [Sample Application](https://github.com/emarfkrow/sample)
+- [Consideration of weaknesses](docs/weaknesses.md)
 
 ---
 
