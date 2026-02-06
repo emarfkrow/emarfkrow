@@ -95,7 +95,6 @@ DDL変更後も **再生成によるデグレは発生しません。**
 - [Quick Start](docs/quickstart.md)
 - [DB Design Guideline](docs/db-design-guideline.md)
 - [Sample Application](https://github.com/emarfkrow/sample)
-- [Consideration of weaknesses](docs/weaknesses.md)
 
 ---
 
@@ -121,3 +120,5 @@ This project is released as Open Source Software.
 **DB設計を正として、安全に業務Webシステムを量産できる開発基盤**  
 個人のスキルや属人的な実装に依存せず、
 チームとして継続的にシステムを育てられる開発を目指しています。
+
+- [Consideration of weaknesses](docs/weaknesses.md)
