@@ -89,20 +89,32 @@ let Jsonate = {
 
                 for (let r in gridData) {
 
+                    let gridRow = gridData[r];
+
+                    let contents = '';
+                    for (let c in gridRow) {
+                        if (c != 'id') {
+                            contents += gridRow[c];
+                        }
+                    }
+                    if (contents.replace(/0/g, '') == '') {
+                        continue;
+                    }
+
                     // 変更有無のチェック
                     let updated = false;
                     if (!grid.orgData || !grid.orgData[r]) {
                         // 元データがない場合
                         updated = true;
-                        postData.push(gridData[r]);
-                    } else if (JSON.stringify(gridData[r]) != JSON.stringify(grid.orgData[r])) {
+                        postData.push(gridRow);
+                    } else if (JSON.stringify(gridRow) != JSON.stringify(grid.orgData[r])) {
                         // 変更があった場合
                         updated = true;
-                        postData.push(gridData[r]);
-                    } else if (gridData[r][columnRegistTs.toLowerCase()] == null && gridData[r][columnRegistTs.toUpperCase()] == null) {
+                        postData.push(gridRow);
+                    } else if (gridRow[columnRegistTs.toLowerCase()] == null && gridRow[columnRegistTs.toUpperCase()] == null) {
                         // INSERT_TSがNULLの場合（転生時など）
                         updated = true;
-                        postData.push(gridData[r]);
+                        postData.push(gridRow);
                     }
 
                     // 変更なしなら空配列を追加（nullだとvalidatorが利かなくなる）
@@ -293,7 +305,7 @@ let Jsonate = {
                             let params = '?name=' + inputNames[inputNames.length - 1];
 
                             let $primaryKeys = $fieldset.find('input.primaryKey');
-                            for (let i = 0; i < $primaryKeys.length; i++) {
+                            for (let i = 0;i < $primaryKeys.length;i++) {
                                 let $primaryKey = $($primaryKeys[i]);
                                 let name = $primaryKey.prop('name');
                                 let names = name.split('.');

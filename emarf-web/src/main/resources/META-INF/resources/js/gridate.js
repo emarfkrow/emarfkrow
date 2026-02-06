@@ -89,7 +89,7 @@ $(function() {
 
                 //子モデルに反映
                 let $grids = $form.children('[id$="Grid"]');
-                for (let i = 0; i < $grids.length; i++) {
+                for (let i = 0;i < $grids.length;i++) {
                     if ($($grids[i]).prop('id')) {
                         let gridId = $($grids[i]).prop('id');
                         let grid = Gridate.grids[gridId];
@@ -382,9 +382,9 @@ $(function() {
             } else if (selectionMode == 'row') {
                 // 行選択モード
                 grid.setSelectionModel(new Slick.RowSelectionModel());
-            } else {
-                // セル選択モード
-                grid.setSelectionModel(new Slick.CellSelectionModel());
+            } else if (!isDialog) {
+                // セル範囲選択モード
+                grid.setSelectionModel(new Slick.RangeSelectionModel());
             }
 
             /*
@@ -789,7 +789,7 @@ $(function() {
             grid.onSort.subscribe(function(e, args) {
                 var cols = args.sortCols;
                 args.grid.getData().sort(function(dataRow1, dataRow2) {
-                    for (var i = 0, l = cols.length; i < l; i++) {
+                    for (var i = 0, l = cols.length;i < l;i++) {
                         var field = cols[i].sortCol.field;
                         var sign = cols[i].sortAsc ? 1 : -1;
                         var value1 = dataRow1[field], value2 = dataRow2[field];
@@ -834,10 +834,10 @@ $(function() {
                     }
 
                     // 固定列（editorなし）なら元の値に書き戻す
-                    for (var i = 0; i < w; i++) {
+                    for (var i = 0;i < w;i++) {
                         var column = columns[i + c];
                         if (column && !column.editor) {
-                            for (var j = 0; j < h; j++) {
+                            for (var j = 0;j < h;j++) {
                                 data[j + r][column.field] = clipCommand.oldValues[j][i];
                             }
                         }
@@ -876,7 +876,7 @@ $(function() {
                  * @param {any} count
                  */
                 newRowCreator: function(count) {
-                    for (var i = 0; i < count; i++) {
+                    for (var i = 0;i < count;i++) {
                         var item = {
                             id: grid.getData().getLength()
                         }
@@ -887,8 +887,10 @@ $(function() {
                 //headerColumnValueExtractor  :カスタム列ヘッダー値抽出関数を指定するオプション
             };
 
-            // グリッドに外部コピープラグインを設定（Ctrl+C、Ctrl+Vを有効化）
-            grid.registerPlugin(new Slick.CellExternalCopyManager(ExternalCopyOption));
+            if (grid.getSelectionModel()) {
+                // グリッドに外部コピープラグインを設定（Ctrl+C、Ctrl+Vを有効化）
+                grid.registerPlugin(new Slick.CellExternalCopyManager(ExternalCopyOption));
+            }
         });
     });
 });
@@ -933,7 +935,7 @@ var Gridate = {
             let pagerId = gridId.replace(/Grid$/, 'Pager');
             let $pager = $('[id="' + pagerId + '"]');
             let html = '';
-            for (let i = 1; i <= maxPage; i++) {
+            for (let i = 1;i <= maxPage;i++) {
                 if (i == currentPage) {
                     html += '<a>' + i + '</a>&nbsp;';
                 } else {
@@ -964,7 +966,9 @@ var Gridate = {
         //			grid.setData(data);
         //			grid.invalidate();
         //		}
-        grid.setSelectedRows([]);
+        if (grid.getSelectionModel()) {
+            grid.setSelectedRows([]);
+        }
     },
 
     paginate: function(gridId, page) {
@@ -1023,7 +1027,7 @@ var Gridate = {
                 let $item = $('[id="' + dialogId + '"] [name="' + camel + '"]');
                 if ($item.length > 0) {
 
-                    for (let i = 0; i < $item.length; i++) {
+                    for (let i = 0;i < $item.length;i++) {
                         if ($item[i].type == 'file') {
                             continue;
                         } else if ($item[i].type == 'month') {
@@ -1041,7 +1045,7 @@ var Gridate = {
                     $item = $('[id="' + dialogId + '"] [name="' + entityName + '.' + camel + '"]');
                     if ($item.length > 0) {
 
-                        for (let i = 0; i < $item.length; i++) {
+                        for (let i = 0;i < $item.length;i++) {
                             if ($item[i].type == 'file') {
                                 continue;
                             } else if ($item[i].type == 'month') {

@@ -226,21 +226,6 @@ public final class HtmlGenerator {
         }
 
         HtmlGenerator.htmlNav(htmlDir, tables);
-
-        //        List<String> s = new ArrayList<String>();
-        //        s.add("<!DOCTYPE html>");
-        //        s.add("<html xmlns:th=\"http://www.thymeleaf.org\" xmlns:layout=\"http://www.ultraq.net.nz/web/thymeleaf/layout\">");
-        //        s.add("<head layout:fragment=\"gridColumns\">");
-        //        for (TableInfo tableInfo : tableInfos) {
-        //            String tableName = tableInfo.getTableName();
-        //            String pascal = StringUtil.toPascalCase(tableName);
-        //            s.add("<script th:src=\"@{/model/" + pascal + "GridColumns.js}\"></script>");
-        //        }
-        //        s.add("</head>");
-        //        s.add("</html>");
-        //        FileUtil.writeFile(
-        //                htmlDir + File.separator + ".." + File.separator + "common" + File.separator + "gridColumns.html",
-        //                s);
     }
 
     /**
@@ -255,7 +240,7 @@ public final class HtmlGenerator {
         String remarks = table.getRemarks();
         List<String> s = new ArrayList<String>();
         addHtmlHead(s, es, remarks);
-        s.add("<script th:src=\"@{/js/" + e + ".js}\"></script>");
+        s.add("<script th:src=\"@{/model/" + e + ".js}\"></script>");
         s.add("<script th:src=\"@{/model/" + e + "GridColumns.js}\"></script>");
         Set<TableInfo> added = new HashSet<TableInfo>();
         added.add(table);
@@ -561,6 +546,12 @@ public final class HtmlGenerator {
         s.add("});");
 
         FileUtil.writeFile(gridDir + File.separator + entity + "GridColumns.js", s);
+
+        s = new ArrayList<String>();
+        s.add("/**");
+        s.add(" * " + table.getRemarks() + "スクリプト");
+        s.add(" */");
+        FileUtil.writeFile(gridDir + File.separator + entity + ".js", s);
     }
 
     /**
@@ -574,7 +565,7 @@ public final class HtmlGenerator {
         String remarks = table.getRemarks();
         List<String> s = new ArrayList<String>();
         addHtmlHead(s, e, remarks);
-        s.add("<script th:src=\"@{/js/" + e + ".js}\"></script>");
+        s.add("<script th:src=\"@{/model/" + e + ".js}\"></script>");
         s.add("<script th:src=\"@{/model/" + e + "GridColumns.js}\"></script>");
         Set<TableInfo> added = new HashSet<TableInfo>();
         added.add(table);
@@ -957,7 +948,7 @@ public final class HtmlGenerator {
                 }
                 String referName = refer.getName();
                 String entity = StringUtil.toPascalCase(referName);
-                s.add("<script th:src=\"@{/js/" + entity + ".js}\"></script>");
+                s.add("<script th:src=\"@{/model/" + entity + ".js}\"></script>");
                 s.add("<script th:src=\"@{/model/" + entity + "GridColumns.js}\"></script>");
                 added.add(refer);
                 htmlNestGrid(s, refer, tables, added, false);
@@ -974,7 +965,7 @@ public final class HtmlGenerator {
                     }
                     String referName = refer.getName();
                     String entity = StringUtil.toPascalCase(referName);
-                    s.add("<script th:src=\"@{/js/" + entity + ".js}\"></script>");
+                    s.add("<script th:src=\"@{/model/" + entity + ".js}\"></script>");
                     s.add("<script th:src=\"@{/model/" + entity + "GridColumns.js}\"></script>");
                     added.add(refer);
                     htmlNestGrid(s, refer, tables, added, false);
@@ -989,7 +980,7 @@ public final class HtmlGenerator {
             }
             String parentName = parent.getName();
             String entity = StringUtil.toPascalCase(parentName);
-            s.add("<script th:src=\"@{/js/" + entity + ".js}\"></script>");
+            s.add("<script th:src=\"@{/model/" + entity + ".js}\"></script>");
             s.add("<script th:src=\"@{/model/" + entity + "GridColumns.js}\"></script>");
             added.add(parent);
             htmlNestGrid(s, parent, tables, added, true);
@@ -1002,7 +993,7 @@ public final class HtmlGenerator {
             }
             String childName = child.getName();
             String entity = StringUtil.toPascalCase(childName);
-            s.add("<script th:src=\"@{/js/" + entity + ".js}\"></script>");
+            s.add("<script th:src=\"@{/model/" + entity + ".js}\"></script>");
             s.add("<script th:src=\"@{/model/" + entity + "GridColumns.js}\"></script>");
             added.add(child);
             htmlNestGrid(s, child, tables, added, false);
@@ -1014,30 +1005,18 @@ public final class HtmlGenerator {
             if (!added.contains(rebornTo)) {
                 added.add(rebornTo);
                 String entity = StringUtil.toPascalCase(rebornTo.getName());
-                s.add("<script th:src=\"@{/js/" + entity + ".js}\"></script>");
+                s.add("<script th:src=\"@{/model/" + entity + ".js}\"></script>");
                 s.add("<script th:src=\"@{/model/" + entity + "GridColumns.js}\"></script>");
                 htmlNestGrid(s, rebornTo, tables, added, false);
             }
         }
-
-        //        // 選抜先モデル
-        //        if (table.getChoosers().size() > 0) {
-        //            for (TableInfo chooser : table.getChoosers()) {
-        //                if (!added.contains(chooser)) {
-        //                    String entity = StringUtil.toPascalCase(chooser.getName());
-        //                    s.add("<script th:src=\"@{/model/" + entity + "GridColumns.js}\"></script>");
-        //                    added.add(chooser);
-        //                    htmlNestGrid(s, chooser, tables, added, false);
-        //                }
-        //            }
-        //        }
 
         // 転生元モデル
         if (table.getRebornFrom() != null) {
             TableInfo reFrom = table.getRebornFrom();
             if (!added.contains(reFrom)) {
                 String entity = StringUtil.toPascalCase(reFrom.getName());
-                s.add("<script th:src=\"@{/js/" + entity + ".js}\"></script>");
+                s.add("<script th:src=\"@{/model/" + entity + ".js}\"></script>");
                 s.add("<script th:src=\"@{/model/" + entity + "GridColumns.js}\"></script>");
                 added.add(reFrom);
                 htmlNestGrid(s, reFrom, tables, added, false);
@@ -1050,7 +1029,7 @@ public final class HtmlGenerator {
                     TableInfo deriveFrom = column.getDeriveFrom();
                     if (!added.contains(deriveFrom)) {
                         String entity = StringUtil.toPascalCase(deriveFrom.getName());
-                        s.add("<script th:src=\"@{/js/" + entity + ".js}\"></script>");
+                        s.add("<script th:src=\"@{/model/" + entity + ".js}\"></script>");
                         s.add("<script th:src=\"@{/model/" + entity + "GridColumns.js}\"></script>");
                         added.add(deriveFrom);
                         htmlNestGrid(s, deriveFrom, tables, added, false);
@@ -1061,7 +1040,7 @@ public final class HtmlGenerator {
             for (TableInfo deriveTo : table.getDeriveTos()) {
                 if (!added.contains(deriveTo)) {
                     String entity = StringUtil.toPascalCase(deriveTo.getName());
-                    s.add("<script th:src=\"@{/js/" + entity + ".js}\"></script>");
+                    s.add("<script th:src=\"@{/model/" + entity + ".js}\"></script>");
                     s.add("<script th:src=\"@{/model/" + entity + "GridColumns.js}\"></script>");
                     added.add(deriveTo);
                     htmlNestGrid(s, deriveTo, tables, added, false);
@@ -1074,7 +1053,7 @@ public final class HtmlGenerator {
             for (TableInfo summary : table.getSummaryOfs()) {
                 if (!added.contains(summary)) {
                     String entity = StringUtil.toPascalCase(summary.getName());
-                    s.add("<script th:src=\"@{/js/" + entity + ".js}\"></script>");
+                    s.add("<script th:src=\"@{/model/" + entity + ".js}\"></script>");
                     s.add("<script th:src=\"@{/model/" + entity + "GridColumns.js}\"></script>");
                     added.add(summary);
                     htmlNestGrid(s, summary, tables, added, false);
@@ -1087,7 +1066,7 @@ public final class HtmlGenerator {
         if (summaryTo != null) {
             if (!added.contains(summaryTo)) {
                 String entity = StringUtil.toPascalCase(summaryTo.getName());
-                s.add("<script th:src=\"@{/js/" + entity + ".js}\"></script>");
+                s.add("<script th:src=\"@{/model/" + entity + ".js}\"></script>");
                 s.add("<script th:src=\"@{/model/" + entity + "GridColumns.js}\"></script>");
                 added.add(summaryTo);
                 htmlNestGrid(s, summaryTo, tables, added, false);
