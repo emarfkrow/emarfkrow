@@ -98,6 +98,22 @@ DDL変更後も **再生成によるデグレは発生しません。**
 
 ---
 
+## Configuration
+
+本プロジェクトでは、役割の異なる以下の3つの `.properties` ファイルを使用します。
+
+### 設定ファイル一覧
+
+| ファイル名 | 役割 | 主な利用タイミング |
+|-----------|------|------------------|
+| `BeanGenerator.properties` | 自動生成（コード／Bean 定義）に関する設定 | ビルド時・生成時 |
+| `App.properties` | サーバサイドのアプリケーション設定 | 実行時 |
+| `messages.properties` | 国際化（i18n）対応メッセージ定義 | 実行時 |
+
+- [Configuration](docs/configuration.md)
+
+---
+
 ## License
 
 This project is released as Open Source Software.
