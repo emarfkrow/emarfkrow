@@ -94,7 +94,7 @@ DDL変更後も **再生成によるデグレは発生しません。**
 
 - [Quick Start](docs/quickstart.md)
 - [DB Design Guideline](docs/db-design-guideline.md)
-- [Sample Application](../../sample)
+- [Sample Application](../../../sample)
 
 ---
 
@@ -107,7 +107,7 @@ DDL変更後も **再生成によるデグレは発生しません。**
 
 | ファイル名 | 役割 | 主な利用タイミング |
 |------------|------|--------------------|
-| samplecom/src/main/resources/BeanGenerator.properties | 自動生成の設定 | 生成時 |
+| BeanGenerator.properties(../../../sample/samplecom/src/main/resources/BeanGenerator.properties) | 自動生成の設定 | 生成時 |
 | samplecom/src/main/resources/DataSources.properties   | データソース定義 | 生成時 |
 | sampleweb/src/main/resources/App.properties | サーバサイドの基本設定 | 実行時 |
 | sampleweb/src/main/resources/Mailer.properties | メール送信設定 | 実行時 |
