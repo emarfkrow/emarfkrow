@@ -108,7 +108,7 @@ DDL変更後も **再生成によるデグレは発生しません。**
 | ファイル名 | 役割 | 主な利用タイミング |
 |------------|------|--------------------|
 | [BeanGenerator.properties](../../../sample/blob/main/samplecom/src/main/resources/BeanGenerator.properties) | 自動生成の設定 | 生成時 |
-| [DataSources.properties](../../../sample/blob/main/samplecom/src/main/resources/DataSources.properties)   | データソース定義 | 生成時 |
+| [DataSources.properties](../../../sample/blob/main/samplecom/src/main/resources)   | データソース定義 | 生成時 |
 | [App.properties](../../../sample/blob/main/sampleweb/src/main/resources/App.properties) | サーバサイドの基本設定 | 実行時 |
 | [Mailer.properties](../../../sample/blob/main/sampleweb/src/main/resources/Mailer.properties) | メール送信設定 | 実行時 |
 | [ValidationMessages.properties](../../../sample/blob/main/sampleweb/src/main/resources/ValidationMessages.properties) | バリデーションメッセージ定義 | 実行時 |
