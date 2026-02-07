@@ -54,8 +54,8 @@ sampleリポジトリ.schemaフォルダのDDLでサンプル用のデータベ�
 
 ## 自動生成とデバッグ実行
 
-samplecom内のsrc/test/resources/DataSource.propertiesを配置し、  
-samplecom内のsrc/test/java/BeanGenerator.javaを「Javaアプリケーション」で実行すると、  
+samplecom内のsrc/main/resources/DataSource.propertiesを配置し、  
+samplecom内のApp.javaを「Javaアプリケーション」で実行すると、  
 samplecom内のsrc/main内に各種ファイルを出力します。
 
 samplewebをTomcat10_Java17で「サーバーでデバッグ」すると、  
