@@ -101,6 +101,7 @@ DDL変更後も **再生成によるデグレは発生しません。**
 ## Configuration
 
 本プロジェクトでは、役割の異なる以下の `.properties` ファイルを使用します。
+詳細は各ファイル内のコメントを参照してください。
 
 ### 設定ファイル一覧
 
@@ -112,8 +113,6 @@ DDL変更後も **再生成によるデグレは発生しません。**
 | sampleweb/src/main/resources/Mailer.properties | メール送信設定 | 実行時 |
 | sampleweb/src/main/resources/ValidationMessages.properties | バリデーションメッセージ定義 | 実行時 |
 | sampleweb/src/main/resources/messages.properties | 国際化（i18n）対応メッセージ | 実行時 |
-
-- [Configuration](docs/configuration.md)
 
 ---
 
