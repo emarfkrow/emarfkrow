@@ -105,10 +105,13 @@ DDL変更後も **再生成によるデグレは発生しません。**
 ### 設定ファイル一覧
 
 | ファイル名 | 役割 | 主な利用タイミング |
-|-----------|------|------------------|
-| `BeanGenerator.properties` | 自動生成（コード／Bean 定義）に関する設定 | ビルド時・生成時 |
-| `App.properties` | サーバサイドのアプリケーション設定 | 実行時 |
-| `messages.properties` | 国際化（i18n）対応メッセージ定義 | 実行時 |
+|------------|------|--------------------|
+| samplecom/src/main/resources/BeanGenerator.properties | 自動生成（Bean / コード構造）の設定 | ビルド時・生成時 |
+| samplecom/src/main/resources/DataSources.properties   | データソース定義 | ビルド時・生成時・実行時 |
+| sampleweb/src/main/resources/App.properties | サーバサイドの基本設定 | 実行時 |
+| sampleweb/src/main/resources/Mailer.properties | メール送信設定 | 実行時 |
+| sampleweb/src/main/resources/ValidationMessages.properties | バリデーションメッセージ定義 | 実行時 |
+| sampleweb/src/main/resources/messages.properties | 国際化（i18n）対応メッセージ | 実行時 |
 
 - [Configuration](docs/configuration.md)
 
