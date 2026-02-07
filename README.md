@@ -140,3 +140,4 @@ This project is released as Open Source Software.
 チームとして継続的にシステムを育てられる開発を目指しています。
 
 - [Consideration of weaknesses](docs/weaknesses.md)
+
