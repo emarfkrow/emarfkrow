@@ -100,14 +100,14 @@ DDL変更後も **再生成によるデグレは発生しません。**
 
 ## Configuration
 
-本プロジェクトでは、主に役割の異なる以下の3つの `.properties` ファイルを使用します。
+本プロジェクトでは、役割の異なる以下の `.properties` ファイルを使用します。
 
 ### 設定ファイル一覧
 
 | ファイル名 | 役割 | 主な利用タイミング |
 |------------|------|--------------------|
-| samplecom/src/main/resources/BeanGenerator.properties | 自動生成（Bean / コード構造）の設定 | ビルド時・生成時 |
-| samplecom/src/main/resources/DataSources.properties   | データソース定義 | ビルド時・生成時・実行時 |
+| samplecom/src/main/resources/BeanGenerator.properties | 自動生成の設定 | 生成時 |
+| samplecom/src/main/resources/DataSources.properties   | データソース定義 | 生成時 |
 | sampleweb/src/main/resources/App.properties | サーバサイドの基本設定 | 実行時 |
 | sampleweb/src/main/resources/Mailer.properties | メール送信設定 | 実行時 |
 | sampleweb/src/main/resources/ValidationMessages.properties | バリデーションメッセージ定義 | 実行時 |
