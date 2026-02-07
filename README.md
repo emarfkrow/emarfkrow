@@ -94,7 +94,7 @@ DDL変更後も **再生成によるデグレは発生しません。**
 
 - [Quick Start](docs/quickstart.md)
 - [DB Design Guideline](docs/db-design-guideline.md)
-- [Sample Application](../../sample)
+- [Sample Application](../../../sample)
 
 ---
 
@@ -140,3 +140,4 @@ This project is released as Open Source Software.
 チームとして継続的にシステムを育てられる開発を目指しています。
 
 - [Consideration of weaknesses](docs/weaknesses.md)
+
