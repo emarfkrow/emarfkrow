@@ -191,7 +191,16 @@ public final class XlsxUtil {
                         for (Entry<String, Object> e : dataItem.entrySet()) {
                             String k = e.getKey();
                             Object v = e.getValue();
-                            if (!(v instanceof List)) {
+
+                            boolean isChilds = false;
+                            if (v instanceof List) {
+                                List<?> list = (List<?>) v;
+                                if (!list.isEmpty() && list.get(0) instanceof Map<?, ?>) {
+                                    isChilds = true;
+                                }
+                            }
+
+                            if (!isChilds) {
                                 // 子モデルリストでない場合
                                 setCellValue(layoutSheet, r, c, k);
                                 setCellValue(layoutSheet, r + 1, c++, left + entityName + "." + k + right);
@@ -468,6 +477,10 @@ public final class XlsxUtil {
         LOG.debug(tmp);
         if (tmp == null) {
             tmp = "/temp";
+        }
+
+        if (!FileUtil.get(tmp).exists()) {
+            FileUtil.get(tmp).mkdirs();
         }
 
         // 保存ファイルパス

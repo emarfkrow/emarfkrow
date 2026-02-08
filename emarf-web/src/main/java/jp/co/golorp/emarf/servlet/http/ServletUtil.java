@@ -47,6 +47,7 @@ import org.slf4j.LoggerFactory;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import jp.co.golorp.emarf.action.BaseAction;
@@ -278,8 +279,7 @@ public final class ServletUtil {
         }
 
         Map<String, Object> map = new HashMap<String, Object>();
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.registerModule(new JavaTimeModule());
+        ObjectMapper mapper = ServletUtil.getMapper();
 
         if (parts != null) {
             // 「enctype="multipart/form-data"」の場合
@@ -418,6 +418,16 @@ public final class ServletUtil {
     }
 
     /**
+     * @return ObjectMapper
+     */
+    public static ObjectMapper getMapper() {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.registerModule(new JavaTimeModule());
+        mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+        return mapper;
+    }
+
+    /**
      * @param request
      * @return サニタイズ済みのMap
      */
@@ -465,7 +475,7 @@ public final class ServletUtil {
      */
     public static void sendJson(final HttpServletResponse response, final Map<String, Object> map) {
         try {
-            ObjectMapper mapper = new ObjectMapper();
+            ObjectMapper mapper = ServletUtil.getMapper();
             mapper.registerModule(new JavaTimeModule());
             String s = mapper.writeValueAsString(map);
             LOG.trace("ResponseJson: " + mapper.writerWithDefaultPrettyPrinter().writeValueAsString(map));
@@ -484,8 +494,9 @@ public final class ServletUtil {
      */
     public static Map<String, Object> toSimpleMap(final Map<String, Object> map) {
         try {
-            String s = new ObjectMapper().writeValueAsString(map);
-            return new ObjectMapper().readValue(s, new TypeReference<Map<String, Object>>() {
+            ObjectMapper mapper = ServletUtil.getMapper();
+            String s = mapper.writeValueAsString(map);
+            return mapper.readValue(s, new TypeReference<Map<String, Object>>() {
             });
         } catch (Exception e) {
             throw new SysError(e);

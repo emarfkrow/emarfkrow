@@ -67,7 +67,8 @@ public final class JsonServlet extends HttpServlet {
         String[] servletPathes = request.getServletPath().split("/");
         if (servletPathes[servletPathes.length - 1].equals("messages.json")) {
             Map<String, String> msgs = MessageResolver.getMessages();
-            response.getWriter().append("let Messages = " + new ObjectMapper().writeValueAsString(msgs));
+            ObjectMapper mapper = ServletUtil.getMapper();
+            response.getWriter().append("let Messages = " + mapper.writeValueAsString(msgs));
             return;
         }
 
