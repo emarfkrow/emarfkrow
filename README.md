@@ -1,7 +1,6 @@
-# DB-First Web Application Generator
+# DB-First Application Generator
 
-**DB設計から業務Webシステムを自動生成する  
-再生成しても壊れない Java Servlet ベース OSS**
+**DBのテーブル定義から業務システムを自動生成**
 
 ---
 
@@ -140,4 +139,5 @@ This project is released as Open Source Software.
 チームとして継続的にシステムを育てられる開発を目指しています。
 
 - [Consideration of weaknesses](docs/weaknesses.md)
+
 
