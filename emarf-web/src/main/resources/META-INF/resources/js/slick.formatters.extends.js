@@ -67,7 +67,11 @@ limitations under the License.
     /* 削除ボタン列 */
     function DeleteButtonFormatter(row, cell, value, columnDef, dataContext) {
         // 削除フラグがあれば削除ボタン非表示
-        if (dataContext[columnDelete.toLowerCase()] || dataContext[columnDelete.toUpperCase()]) {
+        if (columnDelete.toLowerCase() in dataContext || columnDelete.toUpperCase() in dataContext) {
+            return null;
+        }
+        // 有効期間終了日があれば削除ボタン非表示
+        if (columnUntil.toLowerCase() in dataContext || columnUntil.toUpperCase() in dataContext) {
             return null;
         }
         if (columnDef.label) {

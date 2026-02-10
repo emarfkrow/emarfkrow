@@ -25,6 +25,7 @@ let optionsSizeSearch = 0;
 let optionsSizeDetail = 0;
 let columnRegistTs = null;
 let columnDelete = null;
+let columnUntil = null;
 let columnStatus = null;
 let columnDetail = null;
 let columnHistoryReason = null;
@@ -49,6 +50,7 @@ $(function() {
     optionsSizeDetail = Messages['options.size.detail'];
     columnRegistTs = Messages['column.update.timestamp'];
     columnDelete = Messages['column.delete'];
+    columnUntil = Messages['column.until'];
     columnStatus = Messages['column.status'];
     columnDetail = Messages['view.detail'];
     columnHistoryReason = Messages['column.history.reason'];
@@ -252,7 +254,7 @@ $(function() {
                     let gridLinkTitle = Messages['common.grid.link.title'];
                     let gridLinkTitleWidth = 0;
                     if (gridLinkTitle) {
-                        gridLinkTitleWidth = new Blob([gridLinkTitle]).size * 10;
+                        gridLinkTitleWidth = new Blob([gridLinkTitle]).size * 7;
                     }
 
                     //                    // 固定列がある場合（主キーが１つ以上ある場合）
@@ -273,19 +275,23 @@ $(function() {
 
                 // checkbox指定で、ダイアログ内でないなら、最左列にチェックボックス列を追加
                 if (!isDialog && $gridDiv.attr('data-frozenColumn') * 1 >= 0) {
-                    checkboxSelectColumn = new Slick.CheckboxSelectColumn({
-                        selectableOverride: function(row, dataContext, grid) {
-                            let dataItem = dataContext;
-                            if (dataItem[columnRegistTs.toLowerCase()] || dataItem[columnRegistTs.toUpperCase()]) {
-                                var UID = Math.round(10000000 * Math.random()) + row;
-                                return dataContext
-                                    ? "<input id='selector" + UID + "' type='checkbox' checked='checked'><label for='selector" + UID + "'></label>"
-                                    : "<input id='selector" + UID + "' type='checkbox'><label for='selector" + UID + "'></label>";
+
+                    // メイングリッドにsubmitボタンがある場合は、行選択用のチェックボックス列を追加
+                    if ($('body>.article .regist .buttons button[type="submit"]').length > 0) {
+                        checkboxSelectColumn = new Slick.CheckboxSelectColumn({
+                            selectableOverride: function(row, dataContext, grid) {
+                                let dataItem = dataContext;
+                                if (dataItem[columnRegistTs.toLowerCase()] || dataItem[columnRegistTs.toUpperCase()]) {
+                                    var UID = Math.round(10000000 * Math.random()) + row;
+                                    return dataContext
+                                        ? "<input id='selector" + UID + "' type='checkbox' checked='checked'><label for='selector" + UID + "'></label>"
+                                        : "<input id='selector" + UID + "' type='checkbox'><label for='selector" + UID + "'></label>";
+                                }
                             }
-                        }
-                    });
-                    columns.unshift(checkboxSelectColumn.getColumnDefinition());
-                    ++frozenColumnAdd;
+                        });
+                        columns.unshift(checkboxSelectColumn.getColumnDefinition());
+                        ++frozenColumnAdd;
+                    }
 
                     //更新権限以上なら最左列に削除ボタン列を追加
                     if (options.editable) {
@@ -294,19 +300,29 @@ $(function() {
                             let gridDeleteTitle = Messages['common.grid.delete.title'];
                             let gridDeleteTitleWidth = 0;
                             if (gridDeleteTitle) {
-                                gridDeleteTitleWidth = new Blob([gridDeleteTitle]).size * 10;
+                                gridDeleteTitleWidth = new Blob([gridDeleteTitle]).size * 7;
                             }
 
-                            columns.unshift({
-                                id: 'delete',
-                                name: gridDeleteTitle,
-                                field: 'field',
-                                sortable: true,
-                                width: gridDeleteTitleWidth,
-                                label: Messages['common.grid.delete.label'],
-                                formatter: Slick.Formatters.Extends.Delete
-                            });
-                            ++frozenColumnAdd;
+                            let noDelete = false;
+                            for (let i in gridColumns) {
+                                let col = gridColumns[i];
+                                if (col.field.match(new RegExp(columnDelete, 'i')) || col.field.match(new RegExp(columnUntil, 'i'))) {
+                                    noDelete = true;
+                                    break;
+                                }
+                            }
+                            if (!noDelete) {
+                                columns.unshift({
+                                    id: 'delete',
+                                    name: gridDeleteTitle,
+                                    field: 'field',
+                                    sortable: true,
+                                    width: gridDeleteTitleWidth,
+                                    label: Messages['common.grid.delete.label'],
+                                    formatter: Slick.Formatters.Extends.Delete
+                                });
+                                ++frozenColumnAdd;
+                            }
                         }
                     }
                 }
@@ -329,16 +345,27 @@ $(function() {
                 //更新権限以上なら最左列に削除ボタン列を追加
                 if (options.editable) {
                     if (Base.getAuthz(form.name) >= 3) {
-                        columns.unshift({
-                            id: 'delete',
-                            name: Messages['common.grid.delete.title'],
-                            field: 'field',
-                            sortable: true,
-                            width: new Blob([Messages['common.grid.delete.title']]).size * 10,
-                            label: Messages['common.grid.delete.label'],
-                            formatter: Slick.Formatters.Extends.Delete
-                        });
-                        ++frozenColumnAdd;
+
+                        let noDelete = false;
+                        for (let i in gridColumns) {
+                            let col = gridColumns[i];
+                            if (col.field.match(new RegExp(columnDelete, 'i')) || col.field.match(new RegExp(columnUntil, 'i'))) {
+                                noDelete = true;
+                                break;
+                            }
+                        }
+                        if (!noDelete) {
+                            columns.unshift({
+                                id: 'delete',
+                                name: Messages['common.grid.delete.title'],
+                                field: 'field',
+                                sortable: true,
+                                width: new Blob([Messages['common.grid.delete.title']]).size * 7,
+                                label: Messages['common.grid.delete.label'],
+                                formatter: Slick.Formatters.Extends.Delete
+                            });
+                            ++frozenColumnAdd;
+                        }
                     }
                 }
             }
@@ -377,14 +404,16 @@ $(function() {
 
             if (selectionMode == 'checkbox' && !isDialog && $gridDiv.attr('data-frozenColumn') * 1 >= 0) {
                 // 行選択チェックボックス
-                grid.registerPlugin(checkboxSelectColumn);
+                if (checkboxSelectColumn) {
+                    grid.registerPlugin(checkboxSelectColumn);
+                }
                 grid.setSelectionModel(new Slick.RowSelectionModel({ selectActiveRow: false }));
             } else if (selectionMode == 'row') {
                 // 行選択モード
                 grid.setSelectionModel(new Slick.RowSelectionModel());
             } else if (!isDialog) {
                 // セル範囲選択モード
-                grid.setSelectionModel(new Slick.RangeSelectionModel());
+                grid.setSelectionModel(new Slick.CellSelectionModel());
             }
 
             /*

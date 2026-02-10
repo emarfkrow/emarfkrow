@@ -303,6 +303,20 @@ public final class StringUtil {
         return sanitizeds.toArray(new String[sanitizeds.size()]);
     }
 
+    /**
+     * @param keys
+     * @param key
+     * @return boolean
+     */
+    public static boolean hasKeyIgnoreCase(final Set<String> keys, final String key) {
+        // キーがnullか空白の場合はfalse
+        if (StringUtil.isNullOrWhiteSpace(key)) {
+            return false;
+        }
+        // 小文字・大文字の両方で存在確認
+        return keys.contains(key.toLowerCase()) || keys.contains(key.toUpperCase());
+    }
+
     //    /** 秘密鍵（16文字） */
     //    private static byte[] secretKey;
     //
