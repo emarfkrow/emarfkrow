@@ -77,7 +77,7 @@ $(function() {
         let upper = columnDelete.toUpperCase();
 
         /* 削除フラグの反映 */
-        $(document).on('change', '.article>form.regist>fieldset>div#' + camel + ' [name$="' + camel + '"]', function(a, b, c, d, e) {
+        $(document).on('change', '.article>form.regist>fieldset>div#' + camel + ' [name$="' + camel + '"]', function() {
 
             let checked = $(this).prop('checked');
 
@@ -388,7 +388,7 @@ $(function() {
             //                showCountText: Messages['common.grid.showCountText']
             //            });
 
-            dataView.onRowCountChanged.subscribe(function(e, args) {
+            dataView.onRowCountChanged.subscribe(function(/*e, args*/) {
                 grid.updateRowCount();
                 grid.render();
             });
@@ -447,7 +447,7 @@ $(function() {
                     }
                 }
             });
-            grid.onActiveCellPositionChanged.subscribe(function(a, b, c, d, e, f, g) {
+            grid.onActiveCellPositionChanged.subscribe(function() {
                 console.debug('Gridate active cell position changed.');
             });
             grid.onAddNewRow.subscribe(function(e, args) {
@@ -507,7 +507,7 @@ $(function() {
             /* セル値変更 */
             grid.onCellChange.subscribe(function(e, args) {
                 console.debug('Gridate on cell change.');
-                let c = args.cell;
+                //                let c = args.cell;
                 let column = args.column;
                 if (!column) {
                     column = args.grid.getColumns()[args.cell];
@@ -601,7 +601,7 @@ $(function() {
 
                         let callerGrid = null;
                         let callerR = 0;
-                        let callerC = 0;
+                        //                        let callerC = 0;
                         if (callerGridName != undefined && callerGridName != '') {
                             let gridId = callerGridName.toString();
                             if (callerDialogId != undefined && callerDialogId != '') {
@@ -768,7 +768,7 @@ $(function() {
             //				grid.onColumnsReordered.subscribe(function(a, b, c, d, e, f, g) { });
             //				grid.onColumnsResizeDblClick.subscribe(function(a, b, c, d, e, f, g) { });
             //				grid.onColumnsResized.subscribe(function(a, b, c, d, e, f, g) { });
-            grid.onCompositeEditorChange.subscribe(function(a, b, c, d, e, f, g) {
+            grid.onCompositeEditorChange.subscribe(function() {
                 console.debug('Gridate on composite editor change.');
             });
             //				grid.onContextMenu.subscribe(function(a, b, c, d, e, f, g) { });
