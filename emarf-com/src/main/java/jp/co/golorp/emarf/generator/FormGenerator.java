@@ -40,8 +40,6 @@ public final class FormGenerator {
 
     /** 適用日カラム名 */
     private static String tekiyoBi;
-    /** 登録日時カラム名 */
-    private static String insertTs;
     /** 登録者カラム名 */
     private static String insertBy;
     /** 更新日時カラム名 */
@@ -88,7 +86,6 @@ public final class FormGenerator {
         pkgForm = bundle.getString("java.package.form") + ".model.base";
         javaDir = bundle.getString("dir.java");
         tekiyoBi = bundle.getString("column.start");
-        insertTs = bundle.getString("column.insert.timestamp");
         insertBy = bundle.getString("column.insert.id");
         updateTs = bundle.getString("column.update.timestamp");
         updateBy = bundle.getString("column.update.id");
@@ -141,10 +138,9 @@ public final class FormGenerator {
             s.add("    /** logger */");
             s.add("    private static final Logger LOG = LoggerFactory.getLogger(" + entity + "RegistForm.class);");
             for (ColumnInfo column : table.getColumns().values()) {
-                if (column.getName().matches("(?i)^" + insertTs + "$")
-                        || column.getName().matches("(?i)^" + insertBy + "$")
-                        || column.getName().matches("(?i)^" + updateBy + "$")) {
-                    continue; // レコードメタデータならスキップ。updateDtは楽観ロック用に必要
+                // レコードメタデータならスキップ。updateDtは楽観ロック用に必要
+                if (!column.getName().matches("(?i)^" + updateTs + "$") && BeanGenerator.isMetaTsBy(column.getName())) {
+                    continue;
                 }
                 String prop = StringUtil.toCamelCase(column.getName());
                 String acce = StringUtil.toPascalCase(column.getName());

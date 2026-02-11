@@ -901,8 +901,7 @@ public final class BeanGenerator {
             String cleanedName = colName.replaceAll("\\$", "_");
             String rightHand = getRightHand(cleanedName, column);
 
-            if (!colName.matches("(?i)^" + insertTs + "$") && !colName.matches("(?i)^" + updateTs + "$")
-                    && StringUtil.endsWith(inputTimestampSuffixs, colName)) {
+            if (StringUtil.endsWith(inputTimestampSuffixs, colName) && !isMetaTs(colName)) {
                 rightHand = assist.toTimestampSQL(assist.timestamp2CharSQL(assist.sysTimestamp()));
             }
 
@@ -1113,7 +1112,7 @@ public final class BeanGenerator {
             ColumnInfo column = e.getValue();
 
             // 追加時のメタ情報ならスキップ
-            if (colName.matches("(?i)^" + insertTs + "$") || colName.matches("(?i)^" + insertBy + "$")) {
+            if (isMetaIns(colName)) {
                 continue;
             }
 
@@ -1193,11 +1192,7 @@ public final class BeanGenerator {
         s.add("    private Map<String, Object> toMap(final LocalDateTime now, final String execId) {");
         s.add("        Map<String, Object> map = new HashMap<String, Object>();");
         for (String columnName : tableInfo.getColumns().keySet()) {
-            boolean isInsertDt = columnName.matches("(?i)^" + insertTs + "$");
-            boolean isUpdateDt = columnName.matches("(?i)^" + updateTs + "$");
-            boolean isInsertBy = columnName.matches("(?i)^" + insertBy + "$");
-            boolean isUpdateBy = columnName.matches("(?i)^" + updateBy + "$");
-            if (isInsertDt || isInsertBy || isUpdateDt || isUpdateBy) {
+            if (isMetaTsBy(columnName)) {
                 continue;
             }
             String snake = StringUtil.toSnakeCase(columnName);
@@ -1702,6 +1697,41 @@ public final class BeanGenerator {
         } catch (ClassNotFoundException e) {
             throw new SysError(e);
         }
+    }
+
+    /**
+     * @param s
+     * @return boolean
+     */
+    public static boolean isMetaTs(final String s) {
+        return s.matches("(?i)^" + insertTs + "$") || s.matches("(?i)^" + updateTs + "$");
+    }
+
+    /**
+     * @param s
+     * @return boolean
+     */
+    public static boolean isMetaIns(final String s) {
+        return s.matches("(?i)^" + insertTs + "$") || s.matches("(?i)^" + insertBy + "$");
+    }
+
+    /**
+     * @param s
+     * @return boolean
+     */
+    public static boolean isMetaTsBy(final String s) {
+        return s.matches("(?i)^" + insertTs + "$") || s.matches("(?i)^" + insertBy + "$")
+                || s.matches("(?i)^" + updateTs + "$") || s.matches("(?i)^" + updateBy + "$");
+    }
+
+    /**
+     * @param s
+     * @return boolean
+     */
+    public static boolean isMeta(final String s) {
+        return s.matches("(?i)^" + insertTs + "$") || s.matches("(?i)^" + insertBy + "$")
+                || s.matches("(?i)^" + updateTs + "$") || s.matches("(?i)^" + updateBy + "$")
+                || s.matches("(?i)^" + deleteF + "$") || s.matches("(?i)^" + status + "$");
     }
 
 }

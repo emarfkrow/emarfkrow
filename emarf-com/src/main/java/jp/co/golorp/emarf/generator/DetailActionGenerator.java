@@ -28,14 +28,8 @@ public final class DetailActionGenerator {
     private static ResourceBundle bundle = ResourceBundles.getBundle(BeanGenerator.class);
     /** 適用日カラム名 */
     private static String tekiyoBi;
-    /** 登録日時カラム名 */
-    private static String insertTs;
-    /** 登録者カラム名 */
-    private static String insertBy;
     /** 更新日時カラム名 */
     private static String updateTs;
-    /** 更新者カラム名 */
-    private static String updateBy;
     /** 削除フラグ */
     private static String deleteF;
     /** ステータス区分 */
@@ -69,10 +63,7 @@ public final class DetailActionGenerator {
         projectDir = dir;
 
         tekiyoBi = bundle.getString("column.start");
-        insertTs = bundle.getString("column.insert.timestamp");
-        insertBy = bundle.getString("column.insert.id");
         updateTs = bundle.getString("column.update.timestamp");
-        updateBy = bundle.getString("column.update.id");
         deleteF = bundle.getString("column.delete");
         status = bundle.getString("column.status");
 
@@ -764,13 +755,7 @@ public final class DetailActionGenerator {
             s.add("                " + pkE + "." + frE + " " + frI + " = " + pkE + "." + frE + ".get(" + frK + ");");
             for (String frColNm : frTbl.getColumns().keySet()) {
                 // メタ情報ならスキップ
-                boolean isIDt = frColNm.matches("(?i)^" + insertTs + "$");
-                boolean isIBy = frColNm.matches("(?i)^" + insertBy + "$");
-                boolean isUDt = frColNm.matches("(?i)^" + updateTs + "$");
-                boolean isUBy = frColNm.matches("(?i)^" + updateBy + "$");
-                boolean isDel = frColNm.matches("(?i)^" + deleteF + "$");
-                boolean isSKb = frColNm.matches("(?i)^" + status + "$");
-                if (isIDt || isIBy || isUDt || isUBy || isDel || isSKb) {
+                if (BeanGenerator.isMeta(frColNm)) {
                     continue;
                 }
                 // 自テーブルに転生元と同じカラムがあればコピー
@@ -808,13 +793,7 @@ public final class DetailActionGenerator {
                     s.add("                    " + cI + ".setId(" + fCI + ".getId());");
                     for (String frCColNm : frChild.getColumns().keySet()) {
                         // メタ情報ならスキップ
-                        boolean isIDt = frCColNm.matches("(?i)^" + insertTs + "$");
-                        boolean isIBy = frCColNm.matches("(?i)^" + insertBy + "$");
-                        boolean isUDt = frCColNm.matches("(?i)^" + updateTs + "$");
-                        boolean isUBy = frCColNm.matches("(?i)^" + updateBy + "$");
-                        boolean isDel = frCColNm.matches("(?i)^" + deleteF + "$");
-                        boolean isSKb = frCColNm.matches("(?i)^" + status + "$");
-                        if (isIDt || isIBy || isUDt || isUBy || isDel || isSKb) {
+                        if (BeanGenerator.isMeta(frCColNm)) {
                             continue;
                         }
                         // 子テーブルに転生元の子モデルと同じカラムがあればコピー

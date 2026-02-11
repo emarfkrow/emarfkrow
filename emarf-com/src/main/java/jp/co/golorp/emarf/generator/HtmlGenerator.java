@@ -63,8 +63,6 @@ public final class HtmlGenerator {
     private static String tekiyoBi;
     /** 廃止日カラム名 */
     private static String haishiBi;
-    /** 登録日時カラム名 */
-    private static String insertTs;
     /** 登録者カラム名 */
     private static String insertId;
     /** 更新日時カラム名 */
@@ -158,7 +156,6 @@ public final class HtmlGenerator {
 
         tekiyoBi = bundle.getString("column.start");
         haishiBi = bundle.getString("column.until");
-        insertTs = bundle.getString("column.insert.timestamp");
         insertId = bundle.getString("column.insert.id");
         updateTs = bundle.getString("column.update.timestamp");
         updateId = bundle.getString("column.update.id");
@@ -1094,11 +1091,8 @@ public final class HtmlGenerator {
         } else if (w > 300) {
             w = 300;
         }
-        boolean isInsTs = name.matches("(?i)^" + insertTs + "$");
-        boolean isInsBy = name.matches("(?i)^" + insertId + "$");
         boolean isUpdTs = name.matches("(?i)^" + updateTs + "$");
-        boolean isUpdBy = name.matches("(?i)^" + updateId + "$");
-        if (isInsTs /*|| isUpdateDt*/ || isInsBy || isUpdBy) {
+        if (!isUpdTs && BeanGenerator.isMetaTsBy(name)) {
             return null;
         }
         String css = "";
@@ -1121,7 +1115,7 @@ public final class HtmlGenerator {
                 }
             } else if (column.isUnique()) {
                 css = "uniqueKey";
-            } else if (isInsTs || isUpdTs || isInsBy || isUpdBy) {
+            } else if (BeanGenerator.isMetaTsBy(name)) {
                 css = "metaInfo";
                 if (isUpdTs) {
                     css += " optLock";
@@ -1201,7 +1195,7 @@ public final class HtmlGenerator {
         String c = "";
         if (isMeiRefer) {
             c = "Column.refer('" + name + "', " + mei + ", " + w + ", '" + css + "', '" + referMei.toString() + "'),";
-        } else if (isInsTs || isUpdTs || isInsBy || isUpdBy || column.isReborn() || column.isSummary()) {
+        } else if (BeanGenerator.isMetaTsBy(name) || column.isReborn() || column.isSummary()) {
             c = "Column.cell('" + name + "', " + mei + ", " + w + ", '" + css + "', " + format + "),";
         } else if (StringUtil.endsWith(inputFlagSuffixs, name)) {
             c = "Column.check('" + name + "', " + mei + ", " + w + ", '" + css + "'),";
@@ -1290,16 +1284,12 @@ public final class HtmlGenerator {
                 continue; // 検索条件にはファイル項目とタイムスタンプを出力しない
             }
             String property = StringUtil.toCamelCase(colName);
-            boolean isInsertDt = colName.matches("(?i)^" + insertTs + "$");
-            boolean isUpdateDt = colName.matches("(?i)^" + updateTs + "$");
-            boolean isInsertBy = colName.matches("(?i)^" + insertId + "$");
-            boolean isUpdateBy = colName.matches("(?i)^" + updateId + "$");
-            if (isInsertDt || isInsertBy || isUpdateDt || isUpdateBy) { // メタ情報の場合
+            if (BeanGenerator.isMetaTsBy(colName)) { // メタ情報の場合
                 if (!isD) {
                     continue; // 検索画面ならスキップ（検索条件にはしない）
                 }
                 if (isB) {
-                    if (isUpdateDt) {
+                    if (colName.matches("(?i)^" + updateTs + "$")) {
                         s.add("        <input type=\"hidden\" name=\"" + entity + "." + property + "\" />");
                     }
                     continue; // 兄弟モデルならスキップ（更新日時のみ楽観ロック用に出力）
@@ -1321,7 +1311,7 @@ public final class HtmlGenerator {
             }
             String fieldId = entity + "." + property;
             s.add("        <div id=\"" + property + "\">");
-            if (isInsertDt || isUpdateDt || isInsertBy || isUpdateBy) { // メタ情報の場合は表示項目（編集画面の自モデルのみここに到達する）
+            if (BeanGenerator.isMetaTsBy(colName)) { // メタ情報の場合は表示項目（編集画面の自モデルのみここに到達する）
                 htmlFieldsMeta(s, fieldId, column.getRemarks());
                 addMeiSpan(s, table, column, "meta");
             } else if (isD && StringUtil.endsWith(inputReadonlySuffixs, colName)) { // 読み取り専用の場合
