@@ -62,11 +62,11 @@ public final class BeanGenerator {
     /** 適用日カラム名 */
     private static String tekiyoBi;
     /** 登録日時カラム名 */
-    private static String insertDt;
+    private static String insertTs;
     /** 登録者カラム名 */
     private static String insertBy;
     /** 更新日時カラム名 */
-    private static String updateDt;
+    private static String updateTs;
     /** 更新者カラム名 */
     private static String updateBy;
     /** ステータス区分 */
@@ -89,7 +89,7 @@ public final class BeanGenerator {
     /** 非必須INT列の指定 */
     private static String numberNullableRe;
     /** 更新日時フォーマット */
-    private static String updateDtFormat;
+    private static String updateTsFormat;
 
     /** 年月入力サフィックス */
     private static String[] inputYMSuffixs;
@@ -129,9 +129,9 @@ public final class BeanGenerator {
         projectDir = dir;
 
         tekiyoBi = bundle.getString("column.start");
-        insertDt = bundle.getString("column.insert.timestamp");
+        insertTs = bundle.getString("column.insert.timestamp");
         insertBy = bundle.getString("column.insert.id");
-        updateDt = bundle.getString("column.update.timestamp");
+        updateTs = bundle.getString("column.update.timestamp");
         updateBy = bundle.getString("column.update.id");
         status = bundle.getString("column.status");
         deleteF = bundle.getString("column.delete");
@@ -147,7 +147,7 @@ public final class BeanGenerator {
         //NOTNULLのINT列で「0」を補填する列名指定
         numberNullableRe = bundle.getString("column.number.nullable.re");
         //登録情報・更新情報の列名
-        updateDtFormat = bundle.getString("column.update.timestamp.format");
+        updateTsFormat = bundle.getString("column.update.timestamp.format");
 
         inputYMSuffixs = bundle.getString("input.ym.suffixs").split(",");
         inputTimestampSuffixs = bundle.getString("input.timestamp.suffixs").split(",");
@@ -252,7 +252,7 @@ public final class BeanGenerator {
                 }
                 if (column.isPk()) {
                     s.add("    @jp.co.golorp.emarf.validation.PrimaryKeys");
-                } else if (column.getName().matches("(?i)^" + updateDt + "$")) {
+                } else if (column.getName().matches("(?i)^" + updateTs + "$")) {
                     s.add("    @jp.co.golorp.emarf.validation.OptLock");
                 }
                 if (StringUtil.endsWith(inputFlagSuffixs, n)) {
@@ -272,7 +272,7 @@ public final class BeanGenerator {
                 s.add("    @com.fasterxml.jackson.annotation.JsonProperty(value = \"" + n + "\", index = " + ++i + ")");
                 if (column.isPk()) {
                     s.add("    @jp.co.golorp.emarf.validation.PrimaryKeys");
-                } else if (column.getName().matches("(?i)^" + updateDt + "$")) {
+                } else if (column.getName().matches("(?i)^" + updateTs + "$")) {
                     s.add("    @jp.co.golorp.emarf.validation.OptLock");
                 }
                 s.add("    public " + t + " get" + a + "() {");
@@ -287,7 +287,7 @@ public final class BeanGenerator {
                 s.add("    /** @param o " + m + " */");
                 if (column.isPk()) {
                     s.add("    @jp.co.golorp.emarf.validation.PrimaryKeys");
-                } else if (column.getName().matches("(?i)^" + updateDt + "$")) {
+                } else if (column.getName().matches("(?i)^" + updateTs + "$")) {
                     s.add("    @jp.co.golorp.emarf.validation.OptLock");
                 }
                 s.add("    public void set" + a + "(final Object o) {");
@@ -901,7 +901,7 @@ public final class BeanGenerator {
             String cleanedName = colName.replaceAll("\\$", "_");
             String rightHand = getRightHand(cleanedName, column);
 
-            if (!colName.matches("(?i)^" + insertDt + "$") && !colName.matches("(?i)^" + updateDt + "$")
+            if (!colName.matches("(?i)^" + insertTs + "$") && !colName.matches("(?i)^" + updateTs + "$")
                     && StringUtil.endsWith(inputTimestampSuffixs, colName)) {
                 rightHand = assist.toTimestampSQL(assist.timestamp2CharSQL(assist.sysTimestamp()));
             }
@@ -1113,7 +1113,7 @@ public final class BeanGenerator {
             ColumnInfo column = e.getValue();
 
             // 追加時のメタ情報ならスキップ
-            if (colName.matches("(?i)^" + insertDt + "$") || colName.matches("(?i)^" + insertBy + "$")) {
+            if (colName.matches("(?i)^" + insertTs + "$") || colName.matches("(?i)^" + insertBy + "$")) {
                 continue;
             }
 
@@ -1166,18 +1166,18 @@ public final class BeanGenerator {
         }
 
         // 楽観ロック
-        ColumnInfo column = tableInfo.getColumns().get(updateDt.toLowerCase());
+        ColumnInfo column = tableInfo.getColumns().get(updateTs.toLowerCase());
         if (column == null) {
-            column = tableInfo.getColumns().get(updateDt.toUpperCase());
+            column = tableInfo.getColumns().get(updateTs.toUpperCase());
         }
         if (column != null) {
 
-            String rightHand = "'\" + this." + StringUtil.toCamelCase(updateDt) + " + \"'";
+            String rightHand = "'\" + this." + StringUtil.toCamelCase(updateTs) + " + \"'";
             if (column.getDataType().equals("java.time.LocalDateTime")) {
                 rightHand = assist.toTimestampSQL(rightHand);
             }
 
-            s.add("        whereList.add(\"" + assist.quoteEscapedSQL(updateDt) + " = " + rightHand + "\");");
+            s.add("        whereList.add(\"" + assist.quoteEscapedSQL(updateTs) + " = " + rightHand + "\");");
         }
 
         s.add("        return String.join(\" AND \", whereList);");
@@ -1193,8 +1193,8 @@ public final class BeanGenerator {
         s.add("    private Map<String, Object> toMap(final LocalDateTime now, final String execId) {");
         s.add("        Map<String, Object> map = new HashMap<String, Object>();");
         for (String columnName : tableInfo.getColumns().keySet()) {
-            boolean isInsertDt = columnName.matches("(?i)^" + insertDt + "$");
-            boolean isUpdateDt = columnName.matches("(?i)^" + updateDt + "$");
+            boolean isInsertDt = columnName.matches("(?i)^" + insertTs + "$");
+            boolean isUpdateDt = columnName.matches("(?i)^" + updateTs + "$");
             boolean isInsertBy = columnName.matches("(?i)^" + insertBy + "$");
             boolean isUpdateBy = columnName.matches("(?i)^" + updateBy + "$");
             if (isInsertDt || isInsertBy || isUpdateDt || isUpdateBy) {
@@ -1205,13 +1205,13 @@ public final class BeanGenerator {
             //            p = p.replaceAll("#", "_");
             s.add("        map.put(\"" + snake + "\", this." + p + ");");
         }
-        s.add("        map.put(\"" + StringUtil.toSnakeCase(insertDt) + "\", now);");
+        s.add("        map.put(\"" + StringUtil.toSnakeCase(insertTs) + "\", now);");
         s.add("        map.put(\"" + StringUtil.toSnakeCase(insertBy) + "\", execId);");
         String now = "now";
-        if (!StringUtil.isNullOrWhiteSpace(updateDtFormat)) {
-            now = "jp.co.golorp.emarf.time.DateTimeUtil.format(\"" + updateDtFormat + "\", now)";
+        if (!StringUtil.isNullOrWhiteSpace(updateTsFormat)) {
+            now = "jp.co.golorp.emarf.time.DateTimeUtil.format(\"" + updateTsFormat + "\", now)";
         }
-        s.add("        map.put(\"" + StringUtil.toSnakeCase(updateDt) + "\", " + now + ");");
+        s.add("        map.put(\"" + StringUtil.toSnakeCase(updateTs) + "\", " + now + ");");
         s.add("        map.put(\"" + StringUtil.toSnakeCase(updateBy) + "\", execId);");
         s.add("        return map;");
         s.add("    }");

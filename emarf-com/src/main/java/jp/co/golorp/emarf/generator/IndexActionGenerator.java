@@ -37,7 +37,7 @@ public final class IndexActionGenerator {
     private static boolean isGenerateAtStartup;
 
     /** 更新日時カラム名 */
-    private static String updateDt;
+    private static String updateTs;
 
     /** ステータス区分 */
     private static String status;
@@ -72,7 +72,7 @@ public final class IndexActionGenerator {
             isGenerateAtStartup = App.get("generateAtStartup").toLowerCase().equals("true");
         }
 
-        updateDt = bundle.getString("column.update.timestamp");
+        updateTs = bundle.getString("column.update.timestamp");
 
         status = bundle.getString("column.status");
 
@@ -273,9 +273,8 @@ public final class IndexActionGenerator {
                 s.add("                    isNew = true;");
                 s.add("                }");
             }
-            if (table.getColumns().containsKey(updateDt)
-                    || table.getColumns().containsKey(updateDt.toUpperCase())) {
-                String acc = StringUtil.toPascalCase(updateDt);
+            if (StringUtil.hasKeyIgnoreCase(table.getColumns().keySet(), updateTs)) {
+                String acc = StringUtil.toPascalCase(updateTs);
                 s.add("                // 楽観ロック値がなくてもINSERT");
                 s.add("                if (jp.co.golorp.emarf.lang.StringUtil.isNullOrWhiteSpace(e.get" + acc
                         + "())) {");

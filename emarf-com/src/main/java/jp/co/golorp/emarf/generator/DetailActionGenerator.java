@@ -29,11 +29,11 @@ public final class DetailActionGenerator {
     /** 適用日カラム名 */
     private static String tekiyoBi;
     /** 登録日時カラム名 */
-    private static String insertDt;
+    private static String insertTs;
     /** 登録者カラム名 */
     private static String insertBy;
     /** 更新日時カラム名 */
-    private static String updateDt;
+    private static String updateTs;
     /** 更新者カラム名 */
     private static String updateBy;
     /** 削除フラグ */
@@ -69,9 +69,9 @@ public final class DetailActionGenerator {
         projectDir = dir;
 
         tekiyoBi = bundle.getString("column.start");
-        insertDt = bundle.getString("column.insert.timestamp");
+        insertTs = bundle.getString("column.insert.timestamp");
         insertBy = bundle.getString("column.insert.id");
-        updateDt = bundle.getString("column.update.timestamp");
+        updateTs = bundle.getString("column.update.timestamp");
         updateBy = bundle.getString("column.update.id");
         deleteF = bundle.getString("column.delete");
         status = bundle.getString("column.status");
@@ -142,9 +142,8 @@ public final class DetailActionGenerator {
                 s.add("            isNew = true;");
                 s.add("        }");
             }
-            if (table.getColumns().containsKey(updateDt)
-                    || table.getColumns().containsKey(updateDt.toUpperCase())) {
-                String pascal = StringUtil.toPascalCase(updateDt);
+            if (StringUtil.hasKeyIgnoreCase(table.getColumns().keySet(), updateTs)) {
+                String pascal = StringUtil.toPascalCase(updateTs);
                 s.add("        // 楽観ロック値がなくてもINSERT");
                 s.add("        if (jp.co.golorp.emarf.lang.StringUtil.isNullOrWhiteSpace(e.get" + pascal + "())) {");
                 s.add("            isNew = true;");
@@ -765,9 +764,9 @@ public final class DetailActionGenerator {
             s.add("                " + pkE + "." + frE + " " + frI + " = " + pkE + "." + frE + ".get(" + frK + ");");
             for (String frColNm : frTbl.getColumns().keySet()) {
                 // メタ情報ならスキップ
-                boolean isIDt = frColNm.matches("(?i)^" + insertDt + "$");
+                boolean isIDt = frColNm.matches("(?i)^" + insertTs + "$");
                 boolean isIBy = frColNm.matches("(?i)^" + insertBy + "$");
-                boolean isUDt = frColNm.matches("(?i)^" + updateDt + "$");
+                boolean isUDt = frColNm.matches("(?i)^" + updateTs + "$");
                 boolean isUBy = frColNm.matches("(?i)^" + updateBy + "$");
                 boolean isDel = frColNm.matches("(?i)^" + deleteF + "$");
                 boolean isSKb = frColNm.matches("(?i)^" + status + "$");
@@ -809,9 +808,9 @@ public final class DetailActionGenerator {
                     s.add("                    " + cI + ".setId(" + fCI + ".getId());");
                     for (String frCColNm : frChild.getColumns().keySet()) {
                         // メタ情報ならスキップ
-                        boolean isIDt = frCColNm.matches("(?i)^" + insertDt + "$");
+                        boolean isIDt = frCColNm.matches("(?i)^" + insertTs + "$");
                         boolean isIBy = frCColNm.matches("(?i)^" + insertBy + "$");
-                        boolean isUDt = frCColNm.matches("(?i)^" + updateDt + "$");
+                        boolean isUDt = frCColNm.matches("(?i)^" + updateTs + "$");
                         boolean isUBy = frCColNm.matches("(?i)^" + updateBy + "$");
                         boolean isDel = frCColNm.matches("(?i)^" + deleteF + "$");
                         boolean isSKb = frCColNm.matches("(?i)^" + status + "$");

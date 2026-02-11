@@ -41,11 +41,11 @@ public final class FormGenerator {
     /** 適用日カラム名 */
     private static String tekiyoBi;
     /** 登録日時カラム名 */
-    private static String insertDt;
+    private static String insertTs;
     /** 登録者カラム名 */
     private static String insertBy;
     /** 更新日時カラム名 */
-    private static String updateDt;
+    private static String updateTs;
     /** 更新者カラム名 */
     private static String updateBy;
 
@@ -88,9 +88,9 @@ public final class FormGenerator {
         pkgForm = bundle.getString("java.package.form") + ".model.base";
         javaDir = bundle.getString("dir.java");
         tekiyoBi = bundle.getString("column.start");
-        insertDt = bundle.getString("column.insert.timestamp");
+        insertTs = bundle.getString("column.insert.timestamp");
         insertBy = bundle.getString("column.insert.id");
-        updateDt = bundle.getString("column.update.timestamp");
+        updateTs = bundle.getString("column.update.timestamp");
         updateBy = bundle.getString("column.update.id");
 
         inputFlagSuffixs = bundle.getString("input.flag.suffixs").split(",");
@@ -141,7 +141,7 @@ public final class FormGenerator {
             s.add("    /** logger */");
             s.add("    private static final Logger LOG = LoggerFactory.getLogger(" + entity + "RegistForm.class);");
             for (ColumnInfo column : table.getColumns().values()) {
-                if (column.getName().matches("(?i)^" + insertDt + "$")
+                if (column.getName().matches("(?i)^" + insertTs + "$")
                         || column.getName().matches("(?i)^" + insertBy + "$")
                         || column.getName().matches("(?i)^" + updateBy + "$")) {
                     continue; // レコードメタデータならスキップ。updateDtは楽観ロック用に必要
@@ -166,7 +166,7 @@ public final class FormGenerator {
                 s.add("    /** @return " + column.getRemarks() + " */");
                 if (column.isPk()) {
                     s.add("    @jp.co.golorp.emarf.validation.PrimaryKeys");
-                } else if (column.getName().matches("(?i)^" + updateDt + "$")) {
+                } else if (column.getName().matches("(?i)^" + updateTs + "$")) {
                     s.add("    @jp.co.golorp.emarf.validation.OptLock");
                 }
                 s.add("    public String get" + acce + "() {");
@@ -176,7 +176,7 @@ public final class FormGenerator {
                 s.add("    /** @param p " + column.getRemarks() + " */");
                 if (column.isPk()) {
                     s.add("    @jp.co.golorp.emarf.validation.PrimaryKeys");
-                } else if (column.getName().matches("(?i)^" + updateDt + "$")) {
+                } else if (column.getName().matches("(?i)^" + updateTs + "$")) {
                     s.add("    @jp.co.golorp.emarf.validation.OptLock");
                 }
                 s.add("    public void set" + acce + "(final String p) {");
@@ -446,7 +446,7 @@ public final class FormGenerator {
 
         if (column.isPk()) {
             s.add("    @jp.co.golorp.emarf.validation.PrimaryKeys");
-        } else if (column.getName().matches("(?i)^" + updateDt + "$")) {
+        } else if (column.getName().matches("(?i)^" + updateTs + "$")) {
             s.add("    @jp.co.golorp.emarf.validation.OptLock");
         }
     }
