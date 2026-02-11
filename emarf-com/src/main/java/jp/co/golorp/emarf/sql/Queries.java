@@ -229,6 +229,10 @@ public final class Queries {
                 rawSql = rawSql.replaceFirst(".*:" + parameterName + "[^_\r\n]*([\r\n]+|$)", "");
                 logSql = logSql.replaceFirst(".*:" + parameterName + "[^_\r\n]*([\r\n]+|$)", "");
 
+                // データが条件に後方一致する検索の対応
+                rawSql = rawSql.replaceFirst(".*:" + parameterName + "[^_\r\n]+LIKE[^\r\n]+([\r\n]+|$)", "");
+                logSql = logSql.replaceFirst(".*:" + parameterName + "[^_\r\n]+LIKE[^\r\n]+([\r\n]+|$)", "");
+
             } else if (snakes.get(parameterName) == null) {
                 // パラメータ値がない場合
 

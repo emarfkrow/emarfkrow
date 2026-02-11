@@ -362,10 +362,10 @@ public final class DataSources {
 
                     // 小数桁数
                     column.setDecimalDigits(columns.getInt("DECIMAL_DIGITS"));
-
                     // NULL可否
                     column.setNullable(columns.getInt("NULLABLE"));
-
+                    // デフォルト値
+                    column.setDefaultValue(columns.getString("COLUMN_DEF"));
                     // カラム論理名
                     String remarks = columns.getString("REMARKS");
                     String note = "";

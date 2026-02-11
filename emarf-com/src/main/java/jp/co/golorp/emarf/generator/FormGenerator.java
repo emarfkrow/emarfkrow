@@ -49,6 +49,9 @@ public final class FormGenerator {
     /** 更新者カラム名 */
     private static String updateBy;
 
+    /** フラグサフィックス */
+    private static String[] inputFlagSuffixs;
+
     /** 起動時の自動生成か */
     private static boolean isGenerateAtStartup;
 
@@ -89,6 +92,8 @@ public final class FormGenerator {
         insertBy = bundle.getString("column.insert.id");
         updateDt = bundle.getString("column.update.timestamp");
         updateBy = bundle.getString("column.update.id");
+
+        inputFlagSuffixs = bundle.getString("input.flag.suffixs").split(",");
 
         //validator正規表現の接尾辞を取得
         validSuffixs = new ArrayList<String>();
@@ -146,7 +151,17 @@ public final class FormGenerator {
                 s.add("");
                 s.add("    /** " + column.getRemarks() + " */");
                 javaFormDetailRegistChecks(s, table, column);
-                s.add("    private String " + prop + ";");
+
+                if (column.getNullable() == 1) {
+                    s.add("    private String " + prop + ";");
+                } else if (column.getDefaultValue() != null) {
+                    s.add("    private String " + prop + " = \"" + column.getDefaultValue() + "\";");
+                } else if (StringUtil.endsWith(inputFlagSuffixs, column.getName())) {
+                    s.add("    private String " + prop + " = \"0\";");
+                } else {
+                    s.add("    private String " + prop + ";");
+                }
+
                 s.add("");
                 s.add("    /** @return " + column.getRemarks() + " */");
                 if (column.isPk()) {

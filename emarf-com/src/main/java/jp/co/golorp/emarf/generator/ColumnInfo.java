@@ -44,6 +44,23 @@ public class ColumnInfo {
     /** null可なら「1」 */
     private int nullable;
 
+    /** 規定値 */
+    private String defaultValue;
+
+    /**
+     * @return defaultValue
+     */
+    public String getDefaultValue() {
+        return defaultValue;
+    }
+
+    /**
+     * @param p
+     */
+    public void setDefaultValue(final String p) {
+        this.defaultValue = p;
+    }
+
     /** コメント */
     private String remarks;
 
