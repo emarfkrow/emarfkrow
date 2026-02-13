@@ -133,7 +133,8 @@ public final class FormGenerator {
             s.add("    private static final Logger LOG = LoggerFactory.getLogger(" + entity + "RegistForm.class);");
             for (ColumnInfo column : table.getColumns().values()) {
                 // レコードメタデータならスキップ。updateDtは楽観ロック用に必要
-                if (!column.getName().matches("(?i)^" + updateTs + "$") && BeanGenerator.isMetaTsBy(column.getName())) {
+                boolean isUpdTs = column.getName().matches("(?i)^" + updateTs + "$");
+                if (!isUpdTs && BeanGenerator.isMetaTsBy(column.getName())) {
                     continue;
                 }
                 String prop = StringUtil.toCamelCase(column.getName());
@@ -144,7 +145,7 @@ public final class FormGenerator {
 
                 if (column.getNullable() == 1) {
                     s.add("    private String " + prop + ";");
-                } else if (column.getDefaultValue() != null) {
+                } else if (column.getDefaultValue() != null && column.getDataType().equals("String")) {
                     s.add("    private String " + prop + " = \"" + column.getDefaultValue() + "\";");
                 } else if (StringUtil.endsWith(inputFlagSuffixs, column.getName())) {
                     s.add("    private String " + prop + " = \"0\";");
