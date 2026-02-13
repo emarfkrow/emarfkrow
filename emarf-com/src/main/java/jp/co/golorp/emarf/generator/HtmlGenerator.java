@@ -48,7 +48,7 @@ public final class HtmlGenerator {
     private static ResourceBundle bundle = ResourceBundles.getBundle(BeanGenerator.class);
 
     /** グリッド列幅ピクセル乗数 */
-    private static final int COLUMN_WIDTH_PX_MULTIPLIER = 9;
+    private static final int COLUMN_WIDTH_PX_MULTIPLIER = 10;
 
     /** 弟を設定しないテーブル名 */
     private static String youngestRe;
@@ -63,12 +63,8 @@ public final class HtmlGenerator {
     private static String tekiyoBi;
     /** 廃止日カラム名 */
     private static String haishiBi;
-    /** 登録者カラム名 */
-    private static String insertId;
     /** 更新日時カラム名 */
     private static String updateTs;
-    /** 更新者カラム名 */
-    private static String updateId;
     /** ステータス区分 */
     private static String status;
     /** 削除フラグ */
@@ -76,7 +72,7 @@ public final class HtmlGenerator {
     /** 変更理由 */
     private static String reason;
 
-    /** 数値列で自動採番しないサフィックス */
+    /** 数値だがフォーマットしないサフィックス */
     private static String[] intNoFormatSuffixs;
     /** 必須CHAR列の指定 */
     private static String charNotNullRe;
@@ -88,8 +84,8 @@ public final class HtmlGenerator {
     private static String[] viewCriteriaPrefixs;
     /** VIEWの詳細画面にするテーブル名 */
     private static String viewDetail;
-    /** 中間表などメニュー化しないビューサフィックスのリスト */
-    private static String[] viewNavIgnoreSuffixs;
+    /** メニュー化しない正規表現 */
+    private static String navIgnoreRe;
 
     /** 読み取り専用サフィックス */
     private static String[] inputReadonlySuffixs;
@@ -156,9 +152,7 @@ public final class HtmlGenerator {
 
         tekiyoBi = bundle.getString("column.start");
         haishiBi = bundle.getString("column.until");
-        insertId = bundle.getString("column.insert.id");
         updateTs = bundle.getString("column.update.timestamp");
-        updateId = bundle.getString("column.update.id");
         status = bundle.getString("column.status");
         deleteF = bundle.getString("column.delete");
         reason = bundle.getString("column.history.reason");
@@ -170,7 +164,7 @@ public final class HtmlGenerator {
 
         viewCriteriaPrefixs = bundle.getString("view.criteria.prefix").split(",");
         viewDetail = bundle.getString("view.detail");
-        viewNavIgnoreSuffixs = bundle.getString("view.nav.ignore.suffixs").split(",");
+        navIgnoreRe = bundle.getString("nav.ignore.re");
 
         inputReadonlySuffixs = bundle.getString("input.readonly.suffixs").split(",");
         inputNumberSuffixs = bundle.getString("input.number.suffixs").split(",");
@@ -307,8 +301,8 @@ public final class HtmlGenerator {
         if (isAnew) {
             boolean isNotAddRow = false;
             for (ColumnInfo column : table.getColumns().values()) {
-                if (column.getName().matches("(?i)^" + insertId + "$")
-                        || column.getName().matches("(?i)^" + updateId + "$")) { //メタ情報ならスキップ
+                //メタ情報ならスキップ
+                if (BeanGenerator.isMetaBy(column.getName())) {
                     continue;
                 }
                 if (StringUtil.endsWith(inputFileSuffixs, column.getName())) { //ファイル列があれば新規行なし
@@ -392,8 +386,7 @@ public final class HtmlGenerator {
         String e = StringUtil.toPascalCase(table.getName());
         for (ColumnInfo column : table.getColumns().values()) {
             if (column.getRefer() != null) {
-                String columnName = column.getName();
-                if (columnName.matches("(?i)^" + insertId + "$") || columnName.matches("(?i)^" + updateId + "$")) {
+                if (BeanGenerator.isMetaBy(column.getName())) {
                     continue;
                 }
                 String p = StringUtil.toCamelCase(column.getName());
@@ -870,8 +863,10 @@ public final class HtmlGenerator {
             s.add("        <ul>");
             //            String preName = "";
             for (TableInfo table : nav.getValue()) {
+                if (table.getName().matches(navIgnoreRe)) {
+                    continue;
+                }
                 String name = table.getName();
-
                 String remarks = table.getRemarks();
                 String e = StringUtil.toPascalCase(name);
                 String css = "table";
@@ -880,9 +875,6 @@ public final class HtmlGenerator {
                     css = "history";
                     style = " style=\"clear: both;\"";
                 } else if (table.isView()) {
-                    if (StringUtil.endsWith(viewNavIgnoreSuffixs, table.getName())) {
-                        continue;
-                    }
                     css = "view";
                     //                    // 直前のテーブル名と前方一致するなら回り込み
                     //                    if (name.startsWith(preName)) {
@@ -1082,15 +1074,6 @@ public final class HtmlGenerator {
         String entity = StringUtil.toPascalCase(table.getName());
         String name = column.getName();
         String mei = "Messages['" + entity + "Grid." + StringUtil.toCamelCase(name) + "']";
-        int w = column.getColumnSize() * COLUMN_WIDTH_PX_MULTIPLIER;
-        if (column.getMaxLength() != null) {
-            w = column.getMaxLength() * COLUMN_WIDTH_PX_MULTIPLIER;
-        }
-        if (w < 30) {
-            w = 30;
-        } else if (w > 300) {
-            w = 300;
-        }
         boolean isUpdTs = name.matches("(?i)^" + updateTs + "$");
         if (!isUpdTs && BeanGenerator.isMetaTsBy(name)) {
             return null;
@@ -1134,7 +1117,7 @@ public final class HtmlGenerator {
         String format = "null";
         if (column.getDataType().equals("java.time.LocalDate")) {
             format = "Slick.Formatters.Extends.Date";
-        } else if (StringUtil.endsWith(inputTimestampSuffixs, column.getName())) {
+        } else if (StringUtil.endsWith(inputTimestampSuffixs, name)) {
             format = "Slick.Formatters.Extends.Timestamp";
         } else if (column.getDataType().equals("java.time.LocalDateTime")) {
             format = "Slick.Formatters.Extends.DateTime";
@@ -1163,10 +1146,8 @@ public final class HtmlGenerator {
                     }
                 }
             }
-            //名称を参照先から取得する場合
-            if (isMeiRefer) {
-                // 参照設定の組み合わせで、キー接尾辞に合致するカラム名を探索
-                for (String[] suffix : referPairs) {
+            if (isMeiRefer) { // 名称を参照先から取得する場合
+                for (String[] suffix : referPairs) { // 参照設定の組み合わせで、キー接尾辞に合致するカラム名を探索
                     String[] keySuffixs = suffix[0].split("&");
                     String meiSuffix = suffix[1];
                     if (StringUtil.endsWith(keySuffixs, name)) {
@@ -1189,7 +1170,15 @@ public final class HtmlGenerator {
                 }
             }
         }
-
+        int w = column.getColumnSize() * COLUMN_WIDTH_PX_MULTIPLIER;
+        if (column.getMaxLength() != null) {
+            w = column.getMaxLength() * COLUMN_WIDTH_PX_MULTIPLIER;
+        }
+        if (w < 30) {
+            w = 30;
+        } else if (w > 300) {
+            w = 300;
+        }
         String type = column.getTypeName();
         String opt = "{ json: '" + json + "', paramkey: '" + optK + "', value: '" + optV + "', label: '" + optL + "' }";
         String c = "";
@@ -1217,9 +1206,13 @@ public final class HtmlGenerator {
             c = "Column.select('" + name + "', " + mei + ", " + w + ", '" + css + "', " + opt + "),";
         } else if (StringUtil.endsWith(textareaSuffixs, name)) {
             c = "Column.longText('" + name + "', " + mei + ", " + w + ", '" + css + "', " + format + "),";
-        } else if ((type.equals("INT") || type.equals("DECIMAL") || type.equals("DOUBLE") || type.equals("NUMBER")
-                || type.equals("NUMERIC")) && !StringUtil.endsWith(intNoFormatSuffixs, column.getName())) {
-            c = getNumericColumn(column, name, mei, w, css, format);
+        } else if (type.equals("INT") || type.equals("DECIMAL") || type.equals("DOUBLE") || type.equals("NUMBER")
+                || type.equals("NUMERIC")) {
+            if (StringUtil.endsWith(intNoFormatSuffixs, name)) {
+                c = "Column.text('" + name + "', " + mei + ", " + w + ", '" + css + "', " + format + "),";
+            } else {
+                c = getNumericColumn(column, name, mei, w, css, format);
+            }
         } else {
             c = "Column.text('" + name + "', " + mei + ", " + w + ", '" + css + "', " + format + "),";
         }

@@ -1734,4 +1734,12 @@ public final class BeanGenerator {
                 || s.matches("(?i)^" + deleteF + "$") || s.matches("(?i)^" + status + "$");
     }
 
+    /**
+     * @param name
+     * @return boolean
+     */
+    public static boolean isMetaBy(final String name) {
+        return name.matches("(?i)^" + insertBy + "$") || name.matches("(?i)^" + updateBy + "$");
+    }
+
 }

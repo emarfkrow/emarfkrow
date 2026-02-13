@@ -40,12 +40,8 @@ public final class FormGenerator {
 
     /** 適用日カラム名 */
     private static String tekiyoBi;
-    /** 登録者カラム名 */
-    private static String insertBy;
     /** 更新日時カラム名 */
     private static String updateTs;
-    /** 更新者カラム名 */
-    private static String updateBy;
 
     /** フラグサフィックス */
     private static String[] inputFlagSuffixs;
@@ -86,9 +82,7 @@ public final class FormGenerator {
         pkgForm = bundle.getString("java.package.form") + ".model.base";
         javaDir = bundle.getString("dir.java");
         tekiyoBi = bundle.getString("column.start");
-        insertBy = bundle.getString("column.insert.id");
         updateTs = bundle.getString("column.update.timestamp");
-        updateBy = bundle.getString("column.update.id");
 
         inputFlagSuffixs = bundle.getString("input.flag.suffixs").split(",");
 
@@ -249,15 +243,13 @@ public final class FormGenerator {
 
         // 列ごとに評価
         for (ColumnInfo column : table.getColumns().values()) {
-
+            // 参照モデルがなければスキップ
             if (column.getRefer() == null) {
-                continue; //参照モデルがなければスキップ
+                continue;
             }
-            if (column.getName().matches("(?i)^" + insertBy + "$")) {
-                continue; //登録者ならスキップ
-            }
-            if (column.getName().matches("(?i)^" + updateBy + "$")) {
-                continue; //更新者ならスキップ
+            // 登録者か更新者ならスキップ
+            if (BeanGenerator.isMetaBy(column.getName())) {
+                continue;
             }
 
             TableInfo refer = column.getRefer();
