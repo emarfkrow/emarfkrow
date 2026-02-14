@@ -123,7 +123,8 @@ public final class DataSourcesAssistMySQL extends DataSourcesAssist {
 
     @Override
     public String addIdColumn(final String sql) {
-        return "SELECT ROW_NUMBER () OVER () - 1 AS \"id\", sub.* FROM (" + sql + ") sub ORDER BY ROW_NUMBER () OVER ()";
+        return "SELECT ROW_NUMBER () OVER () - 1 AS \"id\", sub.* FROM (" + sql
+                + ") sub ORDER BY ROW_NUMBER () OVER ()";
     }
 
     @Override
@@ -149,12 +150,12 @@ public final class DataSourcesAssistMySQL extends DataSourcesAssist {
 
     @Override
     public String dateTime2CharSQL(final String s) {
-        return s;
+        return "LEFT(DATE_FORMAT (" + s + ", '%Y-%m-%dT%H:%i:%s'), 19)";
     }
 
     @Override
     public String timestamp2CharSQL(final String s) {
-        return s;
+        return "LEFT(DATE_FORMAT (" + s + ", '%Y-%m-%dT%H:%i:%s.%f'), 23)";
     }
 
     @Override
