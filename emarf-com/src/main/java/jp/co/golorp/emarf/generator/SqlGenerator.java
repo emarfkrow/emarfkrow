@@ -23,6 +23,8 @@ public final class SqlGenerator {
     /** BeanGenerator.properties */
     private static ResourceBundle bundle = ResourceBundles.getBundle(BeanGenerator.class);
 
+    /** 長兄 */
+    private static String eldestRe;
     /** 参照列名ペア */
     private static Set<String[]> referPairs = new LinkedHashSet<String[]>();
 
@@ -30,6 +32,8 @@ public final class SqlGenerator {
     private static String start;
     /** 終了日 */
     private static String until;
+    /** 更新日時カラム名 */
+    private static String updateTs;
     /** 削除フラグ */
     private static String deleteF;
     /** 表示順サフィックス */
@@ -67,6 +71,7 @@ public final class SqlGenerator {
 
         /* 設定ファイル読み込み */
         String[] pairs = bundle.getString("relation.refer.pairs").split(",");
+        eldestRe = bundle.getString("relation.eldest.re");
         for (String pair : pairs) {
             String[] kv = pair.split(":");
             referPairs.add(kv);
@@ -74,6 +79,7 @@ public final class SqlGenerator {
 
         start = bundle.getString("column.start").toUpperCase();
         until = bundle.getString("column.until").toUpperCase();
+        updateTs = bundle.getString("column.update.timestamp");
         deleteF = bundle.getString("column.delete").toUpperCase();
         orderSuffixs = bundle.getString("column.order.suffixs").split(",");
 
@@ -130,8 +136,35 @@ public final class SqlGenerator {
                 }
             }
         }
+
+        if (table.getName().matches(eldestRe)) {
+            int i = 0;
+            for (TableInfo bro : table.getBrothers()) {
+                ++i;
+                for (String colName : bro.getNonPrimaryKeys()) {
+                    if (!colName.matches("(?i)^" + updateTs + "$") && BeanGenerator.isMeta(colName)) {
+                        continue;
+                    }
+                    ColumnInfo column = bro.getColumns().get(colName);
+                    s.add("    , " + SqlGenerator.getQuoted(column, bro.getName(), "c" + i));
+                }
+            }
+        }
+
         s.add("FROM");
         s.add("    " + table.getName() + " a ");
+
+        if (table.getName().matches(eldestRe)) {
+            int i = 0;
+            for (TableInfo bro : table.getBrothers()) {
+                ++i;
+                s.add("    INNER JOIN " + bro.getName() + " c" + i + " ");
+                s.add("        ON 1 = 1 ");
+                for (String pk : bro.getPrimaryKeys()) {
+                    s.add("        AND c" + i + "." + pk + " = a." + pk + " ");
+                }
+            }
+        }
 
         s.add("WHERE");
         s.add("    1 = 1 ");
@@ -297,8 +330,46 @@ public final class SqlGenerator {
             }
         }
 
+        if (table.getName().matches(eldestRe)) {
+            int i = 0;
+            for (TableInfo bro : table.getBrothers()) {
+                ++i;
+                for (String colName : bro.getNonPrimaryKeys()) {
+                    if (!colName.matches("(?i)^" + updateTs + "$") && BeanGenerator.isMeta(colName)) {
+                        continue;
+                    }
+                    ColumnInfo column = bro.getColumns().get(colName);
+                    s.add("    , " + SqlGenerator.getQuoted(column, bro.getName(), "c" + i));
+                }
+            }
+        }
+
         s.add("FROM");
         s.add("    " + table.getName() + " a ");
+
+        if (table.getName().matches(eldestRe)) {
+            List<TableInfo> bros = table.getBrothers();
+            int i = 0;
+            for (TableInfo bro : bros) {
+                ++i;
+                s.add("    INNER JOIN " + bro.getName() + " c" + i + " ");
+                s.add("        ON 1 = 1 ");
+                if (bro.getColumns().containsKey(deleteF)) {
+                    s.add("        AND " + assist.nvlZero("c" + i + "." + deleteF) + " != 1 ");
+                }
+                if (bro.getColumns().containsKey(start)) {
+                    s.add("        AND " + assist.nvlSysdate("c" + i + "." + start) + " <= " + assist.sysDate()
+                            + " ");
+                }
+                if (bro.getColumns().containsKey(until)) {
+                    s.add("        AND " + assist.dateAdd(assist.nvlSysdate("c" + i + "." + until), 1) + " > "
+                            + assist.sysDate());
+                }
+                for (String pk : bro.getPrimaryKeys()) {
+                    s.add("        AND c" + i + "." + pk + " = a." + pk + " ");
+                }
+            }
+        }
 
         //組合せモデル
         if (table.getComboInfos().size() > 0) {
@@ -519,27 +590,46 @@ public final class SqlGenerator {
      * @return quoted
      */
     private static String getQuoted(final ColumnInfo column) {
+        return getQuoted(column, null, "a");
+    }
+
+    /**
+     * @param column
+     * @param tableName
+     * @param alias
+     * @return quoted
+     */
+    public static String getQuoted(final ColumnInfo column, final String tableName, final String alias) {
 
         String colName = column.getName();
         String cQuoted = assist.quotedSQL(colName);
-        String aQuoted = "a." + cQuoted;
+        String aQuoted = alias + "." + cQuoted;
+
+        String asQuoted = cQuoted;
+        if (tableName != null) {
+            asQuoted = assist.quotedSQL(tableName + "." + colName);
+        }
 
         if (column.getTypeName().equals("CHAR")) {
 
             String trimed = assist.trimedSQL(aQuoted);
-            aQuoted = trimed + " AS " + cQuoted;
+            aQuoted = trimed + " AS " + asQuoted;
 
         } else if (StringUtil.endsWith(inputDateSuffixs, colName)) {
 
-            aQuoted = assist.date2CharSQL(aQuoted) + " AS " + cQuoted;
+            aQuoted = assist.date2CharSQL(aQuoted) + " AS " + asQuoted;
 
         } else if (StringUtil.endsWith(inputDateTimeSuffixs, colName)) {
 
-            aQuoted = assist.dateTime2CharSQL(aQuoted) + " AS " + cQuoted;
+            aQuoted = assist.dateTime2CharSQL(aQuoted) + " AS " + asQuoted;
 
         } else if (StringUtil.endsWith(inputTimestampSuffixs, colName)) {
 
-            aQuoted = assist.timestamp2CharSQL(aQuoted) + " AS " + cQuoted;
+            aQuoted = assist.timestamp2CharSQL(aQuoted) + " AS " + asQuoted;
+
+        } else {
+
+            aQuoted = aQuoted + " AS " + asQuoted;
         }
 
         return aQuoted;

@@ -191,11 +191,11 @@ public final class FormValidator {
      * @param <T> 返却クラス
      * @param className jsonを変換するクラス名
      * @param postJson 送信値のマップ
-     * @param isGrid グリッドフォームならtrue
+     * @param isGridRow グリッド行ならtrue
      * @param isNested 兄弟モデルの無限ループ防止
      * @return 指定クラスのインスタンス
      */
-    private static <T> T toBean(final String className, final Map<String, Object> postJson, final boolean isGrid,
+    private static <T> T toBean(final String className, final Map<String, Object> postJson, final boolean isGridRow,
             final boolean isNested) {
         Class<?> clazz = forNameIf(className); // 変換後のフォームクラスインスタンスを取得
         if (clazz == null) {
@@ -218,9 +218,9 @@ public final class FormValidator {
             Object value = null;
             Class<?>[] parameterTypes = method.getParameterTypes();
             Class<?>[] interfaces = parameterTypes[0].getInterfaces();
-            if (!isGrid && !isNested
+            if (/*!isGridRow &&*/ !isNested
                     && (interfaces.length > 0 && (interfaces[0] == IEntity.class || interfaces[0] == IForm.class))) {
-                //Gridフォームでもネスト済でもないなら、EntityかFormの場合（兄弟モデルの場合）はネスト
+                // Grid行でもネストでもなく、EntityクラスかFormクラスの場合（兄弟モデルの場合）はネスト
                 String nestName = parameterTypes[0].getName();
                 Object bro = toBean(nestName, postJson, false, true);
                 if (isNullOrWhiteSpace(bro)) {
@@ -229,20 +229,21 @@ public final class FormValidator {
             } else {
                 // fieldName（フィールド名か、兄弟モデルか、グリッドID）
                 fieldName = StringUtil.toCamelCase(methodName.replaceFirst("^set", ""));
-                // entityName付きでも取得してみる
+                String upperName = StringUtil.toUpperCase(methodName.replaceFirst("^set", ""));
+                // １．まず「EntityName.」付きで取得してみる
                 if (value == null) {
                     String entityName = clazz.getSimpleName().replaceAll("RegistForm$", "");
                     value = postJson.get(entityName + "." + fieldName);
                 }
-                // 他のエンティティで同名のfieldNameで取得してみる（兄弟モデルの主キー用）
+                // ２．主キーか楽観ロック用なら、Entityに関わらず「fieldName」か「FIELD_NAME」で取得してみる（兄弟モデル用）
                 if (value == null) {
-                    Annotation[] annotations = method.getAnnotations();
-                    for (Annotation annotation : annotations) {
-                        if (annotation.annotationType() == PrimaryKeys.class
-                                || annotation.annotationType() == OptLock.class) {
+                    for (Annotation a : method.getAnnotations()) {
+                        if (a.annotationType() == PrimaryKeys.class /*|| a.annotationType() == OptLock.class*/) {
                             for (Entry<String, Object> e : postJson.entrySet()) {
                                 String k = e.getKey();
-                                if (k.endsWith("." + fieldName) || k.equals(fieldName)) {
+                                if (k.endsWith("." + fieldName) || k.equals(fieldName)
+                                        || k.toUpperCase().endsWith("." + upperName)
+                                        || k.toUpperCase().equals(upperName)) {
                                     value = e.getValue();
                                     break;
                                 }
@@ -253,13 +254,19 @@ public final class FormValidator {
                         }
                     }
                 }
-                // パスカルでも取得してみる（グリッド本体用）
+                // ３．"FieldName"でも取得してみる（グリッド本体用）
                 if (value == null) {
                     value = postJson.get(StringUtil.toPascalCase(fieldName));
                 }
-                // 最後の「s」を「Grid」にしたパスカルでも取得してみる（カスタムフォームのグリッド本体用）
+                // ４．"[FieldName]s"を"[FieldName]Grid"にして取得してみる（グリッド本体用その２）
                 if (value == null) {
                     value = postJson.get(StringUtil.toPascalCase(fieldName).replaceAll("s$", "Grid"));
+                }
+                // 「Entity.」付きのアッパーでも取得してみる（グリッド行の兄弟モデル用）
+                if (value == null) {
+                    String entityName = clazz.getSimpleName().replaceAll("RegistForm$", "");
+                    entityName = StringUtil.toUpperCase(entityName).replaceAll("\\_([0-9]+)", "$1");
+                    value = postJson.get(entityName + "." + StringUtil.toUpperCase(fieldName));
                 }
                 // 送信値をfieldNameで取得してみる（グリッド行用・他モデルと誤爆するのは避ける）
                 if (!isNested && value == null) {
@@ -290,13 +297,10 @@ public final class FormValidator {
                     value = postJson.get(StringUtil.toUpperKebabCase(fieldName));
                 }
             }
-            if (value != null) {
+            if (value != null) { // 送信値がある場合
                 try {
-                    // 送信値がある場合
-                    if (value instanceof List) {
-                        // 送信値がListの場合
-                        if (isNested) {
-                            // 兄弟モデルには子モデルを付けない
+                    if (value instanceof List) { // 送信値がListの場合
+                        if (isNested) { // 兄弟モデルには子モデルを付けない
                             continue;
                         }
                         List<?> list = (List<?>) value;
