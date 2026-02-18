@@ -171,7 +171,7 @@ let Column = {
                 console.debug('Column.select get [' + json + '].');
                 Ajaxize.sjaxPost(json, postJson, function(data) {
                     for (let i in data) {
-                        if (i == 'INFO') {
+                        if (i == 'INFO' || i == 'ERROR') {
                             break;
                         }
                         sessionStorage[k] = JSON.stringify(data[i]);

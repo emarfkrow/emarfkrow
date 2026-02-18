@@ -27,7 +27,7 @@ limitations under the License.
  */
 String.prototype.bytes = function() {
     var length = 0;
-    for (var i = 0; i < this.length; i++) {
+    for (var i = 0;i < this.length;i++) {
         var c = this.charCodeAt(i);
         if ((c >= 0x0 && c < 0x81) || (c === 0xf8f0) || (c >= 0xff61 && c < 0xffa0) || (c >= 0xf8f1 && c < 0xf8f4)) {
             length += 1;
@@ -44,19 +44,6 @@ $(function() {
     console.debug('base-1: $(function() {});');
 
     console.info('Base init.');
-
-    // 画面の参照権限のチェック
-    let href = window.document.location.href;
-    let home = Messages['index.home'];
-    if (home && home != '') {
-        home = home.replace(/^[\.\/]+/, '');
-        if (!href.match(home)) {
-            if (Base.getAuthz(href) < 1) {
-                alert(Messages['error.authz.view']);
-                window.document.location.href = '../';
-            }
-        }
-    }
 
     // クエリストリングの取得
     window.location.search.slice(1).split('&').forEach(function(s) {
@@ -93,6 +80,22 @@ $(document).ready(function() {
 // ３．DOM構築後
 $(document).on('ready', function() {
     console.debug('base-3: $(document).on(\'ready\', function() {});');
+
+    // 画面の参照権限のチェック
+    let thisHref = window.document.location.href;
+    let home = Messages['index.home'];
+    if (home && home != '') {
+        home = home.replace(/^[\.\/]+/, '');
+        if (thisHref.match(home)) {
+            thisHref = '';
+        }
+    }
+    let errorId = Base.getAuthz(thisHref);
+    if (errorId != undefined && errorId != null && errorId != '') {
+        alert(Messages[errorId]);
+        window.document.location.href = '../';
+        return;
+    }
 
     // 画面初期化
     if (typeof Loading != 'undefined') {
@@ -159,7 +162,7 @@ $(document).on('ready', function() {
             // 「$」区切りのパラメータがもしあれば、各名称に分割（UNIONしたVIEWの対応）
             if (k.lastIndexOf('$') >= 0) {
                 let ks = k.split('$');
-                for (let i = 0; i < ks.length; i++) {
+                for (let i = 0;i < ks.length;i++) {
                     querystrings[ks[i]] = Base.querystrings[k];
                 }
             } else {
@@ -246,37 +249,36 @@ let Base = {
 
     getAuthz: function(href) {
 
-        //返却値を初期化
-        let authz = '';
+        // 画面IDを取得（URLから、最後の「/」までと「?」以降を除去）
+        let lastPath = href.replace(/\?.+/, '').replace(/.+\//, '');
 
-        //画面IDを取得（URLから、最後の「/」までと、「?」以降と、拡張子を除去）
-        let gamenId = href.replace(/.+\//, '').replace(/\?.+/, '').replace(/\.html/, '');
-        //エクセルボタン用
+        // 拡張子を除去
+        let gamenId = lastPath.replace(/\.html/, '');
+        // エクセルボタン用
         gamenId = gamenId.replace(/(Search|Get)/, '').replace(/\.xlsx/, '');
-        //登録系ボタン用
+        // 登録系ボタン用
         gamenId = gamenId.replace(/(Search|Regist)/, '').replace(/Form/, '');
 
-        //画面IDが取れなければ参照可
         if (gamenId == '') {
-            return '1';
+            return '';        // 画面IDが取れなければ参照可
+        }
+        if (gamenId.match(/^login$/i) != null) {
+            return '';        // ログイン画面なら参照可
+        }
+        if (gamenId.match(/^passmail$/i) != null) {
+            return '';        // パスワードメール画面なら参照可
+        }
+        if (gamenId.match(/^passreset$/i) != null) {
+            return '';        // パスワードリセット画面なら参照可
+        }
+        if (gamenId.match(/^outofservice$/i) != null) {
+            return '';        // パスワードリセット画面なら参照可
         }
 
-        //ログイン画面なら参照可
-        if (gamenId == 'login') {
-            return '1';
-        }
+        // 返却値を初期化
+        let authz = '';
 
-        //パスワードメール画面なら参照可
-        if (gamenId == 'passmail') {
-            return '1';
-        }
-
-        //パスワードリセット画面なら参照可
-        if (gamenId == 'passreset') {
-            return '1';
-        }
-
-        //sessionStorageに認可情報がある場合
+        // sessionStorageに認可情報がある場合
         if (sessionStorage['authzInfo']) {
 
             //認可情報を取得
@@ -287,21 +289,25 @@ let Base = {
                 return 9;
             }
 
-            //認可情報のうち画面IDが最長でマッチする認可区分を返す
-            //            let matchLength = 0;
-            for (let gamenNm in authzInfo) {
-                //                if (gamenId.match(gamenNm)) {
-                //                    if (matchLength <= gamenNm.length) {
-                //                        matchLength = gamenNm.length;
-                //                        authz = authzInfo[gamenNm];
-                //                    }
-                //                }
-                if (gamenId.match(new RegExp('^' + gamenNm + '$', 'i'))) {
-                    if (authz < authzInfo[gamenNm]) {
-                        authz = authzInfo[gamenNm];
-                    }
-                }
-            }
+            Ajaxize.sjaxPost('./Authz.ajax', { 'requestURI': lastPath }, function(data) {
+                authz = data.AUTHZ;
+            }, false);
+
+            //            //認可情報のうち画面IDが最長でマッチする認可区分を返す
+            //            //            let matchLength = 0;
+            //            for (let gamenNm in authzInfo) {
+            //                //                if (gamenId.match(gamenNm)) {
+            //                //                    if (matchLength <= gamenNm.length) {
+            //                //                        matchLength = gamenNm.length;
+            //                //                        authz = authzInfo[gamenNm];
+            //                //                    }
+            //                //                }
+            //                if (gamenId.match(new RegExp('^' + gamenNm + '$', 'i'))) {
+            //                    if (authz < authzInfo[gamenNm]) {
+            //                        authz = authzInfo[gamenNm];
+            //                    }
+            //                }
+            //            }
         }
 
         return authz;
@@ -327,7 +333,7 @@ let Base = {
         // 時間プルダウン
         let maxH = 100;
         let tmOptions = '<option></option>';
-        for (let i = 0; i <= maxH; i++) {
+        for (let i = 0;i <= maxH;i++) {
             if (i > 0) {
                 tmOptions += '<option>' + i + ':00</option>';
             }
@@ -374,12 +380,17 @@ let Base = {
 
         // 画面の更新権限のチェック
         $('form[name]').each(function() {
+
+            let formName = this.name;
+            let errorId = Base.getAuthz(formName);
+
             // 出力権限なし
-            if (Base.getAuthz(this.name) < 2) {
+            if (errorId < 2) {
                 $(this).find('a.output').hide();
             }
+
             // 更新権限なし
-            if (Base.getAuthz(this.name) < 3) {
+            if (errorId < 3) {
                 $(this).find('button.delete, button.regist').hide();
                 if ($(this).hasClass('regist')) {
                     $(this).find('button.reset').hide();
@@ -387,31 +398,35 @@ let Base = {
                     $(this).find('a.anew').hide();
                 }
             }
+
             // 追加権限なし
-            if (Base.getAuthz(this.name) < 4) {
+            if (errorId < 4) {
                 $(this).find('a.anew').hide();
             }
+
             // 承認権限なし
-            if (Base.getAuthz(this.name) < 5) {
+            if (errorId < 5) {
                 $(this).find('button.permit').hide();
             }
+
             // 否認権限なし
-            if (Base.getAuthz(this.name) < 6) {
+            if (errorId < 6) {
                 $(this).find('button.forbid').hide();
             }
         });
 
-        // リンクの認可処理
-        $('.nav a, .article a').each(function() {
-            if (Base.getAuthz(this.href) < 1) {
-                if ($(this).hasClass('ui-button')) {
-                    $(this).button('option', 'disabled', true);
-                } else {
-                    $(this).css('pointer-events', 'none');
-                    $(this).css('color', 'gray');
-                }
-            }
-        });
+        //        //リンクの認可処理
+        //        $('.nav a, .article a').each(function() {
+        //            let linkHref = this.href;
+        //            if (Base.getAuthz(linkHref) < 1) {
+        //                if ($(this).hasClass('ui-button')) {
+        //                    $(this).button('option', 'disabled', true);
+        //                } else {
+        //                    $(this).css('pointer-events', 'none');
+        //                    $(this).css('color', 'gray');
+        //                }
+        //            }
+        //        });
 
         // maxlengthに応じて幅調整
         $('[maxlength]').each(function() {
@@ -437,7 +452,7 @@ let Base = {
         $registForm.find('.addChild').button('option', 'disabled', false);
         let isPrimaryKey = true;
         let primaryKeys = $registForm.find('input.primaryKey');
-        for (let i = 0; i < primaryKeys.length; i++) {
+        for (let i = 0;i < primaryKeys.length;i++) {
             isPrimaryKey &= $(primaryKeys[i]).val() != '';
         }
         if (!isPrimaryKey) {
@@ -757,7 +772,7 @@ let Base = {
 
                             // グリッド列もロック
                             let gridDivs = $registForm.find('[id$=Grid]');
-                            for (let i = 0; i < gridDivs.length; i++) {
+                            for (let i = 0;i < gridDivs.length;i++) {
                                 let gridId = gridDivs[i].id;
                                 Gridate.grids[gridId].getOptions()['editable'] = false;
                             }
@@ -815,7 +830,7 @@ let Base = {
 
                         // グリッド列もロック
                         let gridDivs = $registForm.find('[id$=Grid]');
-                        for (let i = 0; i < gridDivs.length; i++) {
+                        for (let i = 0;i < gridDivs.length;i++) {
                             let gridId = gridDivs[i].id;
                             Gridate.grids[gridId].getOptions()['editable'] = false;
                         }
@@ -829,11 +844,11 @@ let Base = {
 
                         // 集約元情報
                         let $summaryDivs = $('div.summary');
-                        for (let i = 0; i < $summaryDivs.length; i++) {
+                        for (let i = 0;i < $summaryDivs.length;i++) {
                             let $summaryDiv = $($summaryDivs[i]);
                             let summaryOfName = $summaryDiv.prop('class').replace('summary', '').trim();
                             let $inputs = $summaryDiv.find('input');
-                            for (let i = 0; i < $inputs.length; i++) {
+                            for (let i = 0;i < $inputs.length;i++) {
                                 let input = $inputs[i];
                                 let inputName = input.name;
                                 let property = inputName.split('.')[1];
@@ -878,7 +893,7 @@ let Base = {
         if (item.tagName != 'A') {
             $readonlys.attr('tabindex', '-1');
         }
-        for (let i = 0; i < $readonlys.length; i++) {
+        for (let i = 0;i < $readonlys.length;i++) {
             let $readonly = $($readonlys[i]);
             if ($readonly.prop('type') == 'checkbox' || $readonly.prop('type') == 'radio') {
                 if (!$readonly.prop('checked')) {
@@ -899,7 +914,7 @@ let Base = {
         if (item.tagName != 'A') {
             $readonlys.removeAttr('tabindex');
         }
-        for (let i = 0; i < $readonlys.length; i++) {
+        for (let i = 0;i < $readonlys.length;i++) {
             let $readonly = $($readonlys[i]);
             if ($readonly.prop('type') == 'checkbox' || $readonly.prop('type') == 'radio') {
                 $readonly.closest('label').css('display', 'inherit');

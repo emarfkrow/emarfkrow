@@ -334,6 +334,7 @@ public final class FormGenerator {
 
         String colName = column.getName();
         String registGroup = "groups = jp.co.golorp.emarf.validation.Regist.class";
+        String regDelGroups = "groups = { jp.co.golorp.emarf.validation.Regist.class, jp.co.golorp.emarf.validation.Delete.class }";
 
         // 必須チェック
         if (column.getNullable() == 0) {
@@ -377,7 +378,7 @@ public final class FormGenerator {
 
                 // 主キー以外は登録時のみ必須チェック（削除時はチェックしない）
                 if (column.isPk()) {
-                    s.add("    @jakarta.validation.constraints.NotBlank");
+                    s.add("    @jakarta.validation.constraints.NotBlank(" + regDelGroups + ")");
                 } else {
                     s.add("    @jakarta.validation.constraints.NotBlank(" + registGroup + ")");
                 }

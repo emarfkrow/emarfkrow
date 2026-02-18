@@ -204,6 +204,16 @@ public final class ServletUtil {
                         } catch (Exception e3) {
                             throw new SysError(e);
                         }
+                    } else if (actionName.endsWith("AuthzAction")) {
+                        try {
+
+                            // 認可処理の基底クラスを取ってみる
+                            String className = "jp.co.golorp.emarf.action.AuthzAction";
+                            a = (BaseAction) (Class.forName(className)).getDeclaredConstructor().newInstance();
+
+                        } catch (Exception e3) {
+                            throw new SysError(e);
+                        }
                     } else {
                         throw new SysError(e);
                     }

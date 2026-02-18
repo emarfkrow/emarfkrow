@@ -68,6 +68,9 @@ public class LoginFilter implements Filter {
     /** 認可情報のキー */
     public static final String AUTHZ_INFO = "AUTHZ_INFO";
 
+    /** ログインフォームのキー */
+    public static final String LOGIN_FORM = "LOGIN_FORM";
+
     /** ロガー */
     private static final Logger LOG = LoggerFactory.getLogger(LoginFilter.class);
 
@@ -195,6 +198,7 @@ public class LoginFilter implements Filter {
                 ses.setAttribute(LoginFilter.AUTHN_MEI, map.get(LoginFilter.AUTHN_MEI));
                 ses.setAttribute(LoginFilter.AUTHN_INFO, map.get(LoginFilter.AUTHN_INFO));
                 ses.setAttribute(LoginFilter.AUTHZ_INFO, map.get(LoginFilter.AUTHZ_INFO));
+                ses.setAttribute(LoginFilter.LOGIN_FORM, map.get(LoginFilter.LOGIN_FORM));
 
                 String orgRequestURI = StringUtil.sanitize(request.getParameter("requestURI"));
                 if (!StringUtil.isNullOrWhiteSpace(orgRequestURI)) {

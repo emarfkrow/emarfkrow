@@ -29,7 +29,9 @@ import org.slf4j.LoggerFactory;
 import jp.co.golorp.emarf.exception.AppError;
 import jp.co.golorp.emarf.exception.OptLockError;
 import jp.co.golorp.emarf.exception.SysError;
+import jp.co.golorp.emarf.form.base.LoginFormBase;
 import jp.co.golorp.emarf.process.BaseProcess;
+import jp.co.golorp.emarf.servlet.LoginFilter;
 import jp.co.golorp.emarf.sql.Connections;
 import jp.co.golorp.emarf.time.DateTimeUtil;
 import jp.co.golorp.emarf.validation.FormValidator;
@@ -126,9 +128,23 @@ public abstract class BaseAction extends BaseProcess {
         if (this.baseName != null && this.getClass().getName().indexOf(this.baseName) < 0) {
             logBaseName = "[" + this.baseName + "]";
         }
-        LOG.info("  " + this.getClass().getName() + logBaseName + " run."/* + logPostJson*/);
+        LOG.info(">>" + this.getClass().getName() + logBaseName + " run."/* + logPostJson*/);
         if (postJson != null) {
-            LOG.debug("    " + postJson.toString());
+            LOG.debug("    posted: " + postJson.toString());
+        }
+
+        // ログイン後なら認可チェック
+        if (session != null) {
+            LoginFormBase loginForm = (LoginFormBase) session.getAttribute(LoginFilter.LOGIN_FORM);
+            if (loginForm != null && !requestURI.endsWith("/Authz.ajax")) {
+                String errorId = loginForm.getAuthZ(requestURI);
+                LOG.debug("    Base requestURI: " + requestURI + ", errorIds: " + errorId);
+                if (errorId != null) {
+                    Map<String, Object> map = new HashMap<String, Object>();
+                    map.put("ERROR", errorId);
+                    return map;
+                }
+            }
         }
 
         // アクションクラス名からフォームクラス名を取得して検査
@@ -202,7 +218,7 @@ public abstract class BaseAction extends BaseProcess {
             // 終了ログ
             Calendar end = Calendar.getInstance();
             long millis = end.getTimeInMillis() - begin.getTimeInMillis();
-            LOG.info("  " + this.getClass().getName() + " end in " + millis + " millis.");
+            LOG.info("<<" + this.getClass().getName() + " end in " + millis + " millis.");
         }
     }
 

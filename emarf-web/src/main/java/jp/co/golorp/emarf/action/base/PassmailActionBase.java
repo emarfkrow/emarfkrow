@@ -6,7 +6,7 @@ import java.util.Map;
 
 import jp.co.golorp.emarf.action.BaseAction;
 import jp.co.golorp.emarf.exception.AppError;
-import jp.co.golorp.emarf.form.LoginForm;
+import jp.co.golorp.emarf.form.base.LoginFormBase;
 import jp.co.golorp.emarf.lang.StringUtil;
 import jp.co.golorp.emarf.mail.MailInfo;
 import jp.co.golorp.emarf.mail.Mailer;
@@ -30,7 +30,7 @@ public abstract class PassmailActionBase extends BaseAction {
 
         String userId = postJson.get("userId").toString();
 
-        LoginForm loginForm = getLoginForm(userId);
+        LoginFormBase loginForm = getLoginForm(userId);
 
         // 該当データなし
         if (loginForm.getEmail() == null) {
@@ -65,6 +65,6 @@ public abstract class PassmailActionBase extends BaseAction {
      * @param userId
      * @return LoginForm
      */
-    protected abstract LoginForm getLoginForm(String userId);
+    protected abstract LoginFormBase getLoginForm(String userId);
 
 }

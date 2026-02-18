@@ -6,7 +6,7 @@ import java.util.Map;
 
 import jp.co.golorp.emarf.action.BaseAction;
 import jp.co.golorp.emarf.exception.AppError;
-import jp.co.golorp.emarf.form.LoginForm;
+import jp.co.golorp.emarf.form.base.LoginFormBase;
 import jp.co.golorp.emarf.lang.StringUtil;
 import jp.co.golorp.emarf.properties.App;
 import jp.co.golorp.emarf.servlet.LoginFilter;
@@ -32,7 +32,7 @@ public abstract class LoginActionBase extends BaseAction {
         String passwd = postJson.get("passwd").toString();
 
         //ユーザマスタからログインフォームを生成
-        LoginForm loginForm = this.getLoginForm(userId);
+        LoginFormBase loginForm = this.getLoginForm(userId);
 
         //該当ユーザなしエラー
         if (loginForm == null) {
@@ -55,6 +55,7 @@ public abstract class LoginActionBase extends BaseAction {
         ret.put(LoginFilter.AUTHN_MEI, loginForm.getAuthnMei());
         ret.put(LoginFilter.AUTHN_INFO, loginForm.getAuthnInfo());
         ret.put(LoginFilter.AUTHZ_INFO, loginForm.getAuthzInfo());
+        ret.put(LoginFilter.LOGIN_FORM, loginForm);
 
         return ret;
     }
@@ -63,6 +64,6 @@ public abstract class LoginActionBase extends BaseAction {
      * @param userId
      * @return LoginForm
      */
-    protected abstract LoginForm getLoginForm(String userId);
+    protected abstract LoginFormBase getLoginForm(String userId);
 
 }

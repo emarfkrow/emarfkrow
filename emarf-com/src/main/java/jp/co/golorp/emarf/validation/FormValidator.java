@@ -90,7 +90,7 @@ public final class FormValidator {
             results = validator.validate(form, Regist.class);
         } else {
             // DeleteFormなら主キーと楽観ロック項目以外はチェックしない
-            results = validator.validate(form);
+            results = validator.validate(form, Delete.class);
         }
 
         for (ConstraintViolation<IForm> result : results) {

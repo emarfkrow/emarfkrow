@@ -1,4 +1,4 @@
-package jp.co.golorp.emarf.form;
+package jp.co.golorp.emarf.form.base;
 
 import java.util.Map;
 
@@ -13,7 +13,7 @@ import jp.co.golorp.emarf.validation.IForm;
  * @author toshiyuki
  *
  */
-public class LoginForm implements IForm {
+public abstract class LoginFormBase implements IForm {
 
     /***/
     @NotBlank
@@ -111,26 +111,31 @@ public class LoginForm implements IForm {
     /**
      * 認可情報
      */
-    private Map<String, String> authzInfo;
+    private Map<String, Integer> authzInfo;
 
     /**
      * @return authzInfo
      */
-    public Map<String, String> getAuthzInfo() {
+    public Map<String, Integer> getAuthzInfo() {
         return authzInfo;
     }
 
     /**
      * @param p
      */
-    public void setAuthzInfo(final Map<String, String> p) {
+    public void setAuthzInfo(final Map<String, Integer> p) {
         this.authzInfo = p;
     }
 
     @Override
     public void validate(final Map<String, String> errors, final BaseProcess baseProcess) {
         // TODO 自動生成されたメソッド・スタブ
-
     }
+
+    /**
+     * @param requestUri
+     * @return String エラーID
+     */
+    public abstract String getAuthZ(String requestUri);
 
 }

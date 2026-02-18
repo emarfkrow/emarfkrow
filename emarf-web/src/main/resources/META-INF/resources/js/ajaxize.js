@@ -300,6 +300,8 @@ let Ajaxize = {
         }
 
         $.ajax(options).fail(function(data) {
+            console.error(options);
+            console.error(logJson);
             console.error(data);
             if (data.status == 200) {
                 alert(Messages['error.session']);
@@ -323,7 +325,7 @@ let Ajaxize = {
             }
 
             // アプリケーションエラー
-            if (data.ERROR) {
+            if (data.ERROR && isQuiet != true) {
 
                 alert(data.ERROR);
 
@@ -338,7 +340,7 @@ let Ajaxize = {
             }
 
             // 情報通知
-            if (data.INFO && !(isQuiet == true)) {
+            if (data.INFO && isQuiet != true) {
                 alert(data.INFO);
             }
 
@@ -389,9 +391,13 @@ let Ajaxize = {
                 // grid項目の場合
 
                 var names = k.split('\.');               // D0001RegistForm, D0001Grid[0], entityMei
-                //var formName = names[0];                 // D0001RegistForm
                 var rowName = names[1];                  // D0001Grid[0]
                 var fieldName = names[2];                // entityMei
+
+                // 長兄モデルの際の、兄弟モデルの対応
+                if (names.length > 3) {
+                    fieldName = fieldName.replace(/RegistForm$/, '') + '.' + names[3];
+                }
 
                 var rowNames = rowName.split(/[\[\]]/g); // D0001Grid, 0
                 var gridId = rowNames[0];                // D0001Grid

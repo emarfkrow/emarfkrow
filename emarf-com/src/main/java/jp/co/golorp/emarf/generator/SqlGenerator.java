@@ -158,7 +158,7 @@ public final class SqlGenerator {
             int i = 0;
             for (TableInfo bro : table.getBrothers()) {
                 ++i;
-                s.add("    INNER JOIN " + bro.getName() + " c" + i + " ");
+                s.add("    LEFT OUTER JOIN " + bro.getName() + " c" + i + " ");
                 s.add("        ON 1 = 1 ");
                 for (String pk : bro.getPrimaryKeys()) {
                     s.add("        AND c" + i + "." + pk + " = a." + pk + " ");
@@ -352,7 +352,7 @@ public final class SqlGenerator {
             int i = 0;
             for (TableInfo bro : bros) {
                 ++i;
-                s.add("    INNER JOIN " + bro.getName() + " c" + i + " ");
+                s.add("    LEFT OUTER JOIN " + bro.getName() + " c" + i + " ");
                 s.add("        ON 1 = 1 ");
                 if (bro.getColumns().containsKey(deleteF)) {
                     s.add("        AND " + assist.nvlZero("c" + i + "." + deleteF) + " != 1 ");

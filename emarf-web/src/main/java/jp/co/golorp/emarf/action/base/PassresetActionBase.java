@@ -29,24 +29,24 @@ public abstract class PassresetActionBase extends BaseAction {
             throw new AppError("error.passreset.passwd2");
         }
 
-        String hash = null;
-        if (postJson.get("hash") != null) {
-            hash = postJson.get("hash").toString();
-        }
+        //        String hash = null;
+        //        if (postJson.get("hash") != null) {
+        //            hash = postJson.get("hash").toString();
+        //        }
+        //
+        //        String userId = null;
+        //        if (hash != null) {
+        //            if (this.getSession().getAttribute(hash) != null) {
+        //                userId = this.getSession().getAttribute(hash).toString();
+        //            }
+        //        }
+        //
+        //        // セッション切れ
+        //        if (userId == null) {
+        //            throw new AppError("error.passreset");
+        //        }
 
-        String userId = null;
-        if (hash != null) {
-            if (this.getSession().getAttribute(hash) != null) {
-                userId = this.getSession().getAttribute(hash).toString();
-            }
-        }
-
-        // セッション切れ
-        if (userId == null) {
-            throw new AppError("error.passreset");
-        }
-
-        if (!resetPassword(now, id, passwd, userId)) {
+        if (!resetPassword(now, "0", passwd, "0")) {
             throw new AppError("error.cant.update");
         }
 
