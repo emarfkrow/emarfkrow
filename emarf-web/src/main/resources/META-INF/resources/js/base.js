@@ -90,9 +90,9 @@ $(document).on('ready', function() {
             thisHref = '';
         }
     }
-    let errorId = Base.getAuthz(thisHref);
-    if (errorId != undefined && errorId != null && errorId != '') {
-        alert(Messages[errorId]);
+    let authzMsg = Base.getAuthz(thisHref);
+    if (authzMsg != undefined && authzMsg != null && authzMsg != '') {
+        alert(authzMsg);
         window.document.location.href = '../';
         return;
     }
@@ -276,22 +276,38 @@ let Base = {
         }
 
         // 返却値を初期化
-        let authz = '';
+        let authz = null;
 
-        // sessionStorageに認可情報がある場合
+        // sessionStorageに認可設定がある場合
         if (sessionStorage['authzInfo']) {
 
-            //認可情報を取得
+            // 認可設定を取得
             let authzInfo = JSON.parse(sessionStorage['authzInfo']);
 
-            //認可スキップなら「9」を返す
+            // 認可スキップなら「9」を返す
             if (authzInfo['authz'] && authzInfo['authz'] == 'false') {
                 return 9;
             }
 
-            Ajaxize.sjaxPost('./Authz.ajax', { 'requestURI': lastPath }, function(data) {
-                authz = data.AUTHZ;
-            }, false);
+            // 認可済みメッセージがある場合は取得
+            let authzMsgs = {};
+            if (sessionStorage['authzMsgs']) {
+                authzMsgs = JSON.parse(sessionStorage['authzMsgs']);
+                if (authzMsgs[lastPath] != null) {
+                    authz = authzMsgs[lastPath];
+                }
+            }
+
+            if (authz == null) {
+                Ajaxize.sjaxPost('./Authz.ajax', { 'requestURI': lastPath }, function(data) {
+                    authz = data.AUTHZ;
+                }, false);
+                if (authz == undefined) {
+                    authz = '';
+                }
+                authzMsgs[lastPath] = authz;
+                sessionStorage['authzMsgs'] = JSON.stringify(authzMsgs);
+            }
 
             //            //認可情報のうち画面IDが最長でマッチする認可区分を返す
             //            //            let matchLength = 0;
@@ -309,6 +325,7 @@ let Base = {
             //                }
             //            }
         }
+
 
         return authz;
     },
@@ -382,37 +399,63 @@ let Base = {
         $('form[name]').each(function() {
 
             let formName = this.name;
-            let errorId = Base.getAuthz(formName);
+            let authzMsg = Base.getAuthz(formName);
 
             // 出力権限なし
-            if (errorId < 2) {
-                $(this).find('a.output').hide();
-            }
+            $(this).find('a.output').each(function() {
+                if (Base.getAuthz(this.href) != '') {
+                    $(this).button('option', 'disabled', true)
+                }
+            });
 
             // 更新権限なし
-            if (errorId < 3) {
-                $(this).find('button.delete, button.regist').hide();
-                if ($(this).hasClass('regist')) {
-                    $(this).find('button.reset').hide();
-                } else {
-                    $(this).find('a.anew').hide();
+            //            if (authzMsg < 3) {
+            //                $(this).find('button.delete, button.regist').hide();
+            //                if ($(this).hasClass('regist')) {
+            //                    $(this).find('button.reset').hide();
+            //                } else {
+            //                    $(this).find('a.anew').hide();
+            //                }
+            //            }
+            $(this).find('button.delete, button.regist').each(function() {
+                let href = $(this).attr('data-action');
+                if (!href) {
+                    href = $(this).closest('form')[0].action
                 }
-            }
+                if (Base.getAuthz(href) != '') {
+                    $(this).button('option', 'disabled', true);
+                    if ($(this).closest('form').hasClass('regist')) {
+                        $(this).closest('form').find('button.reset').button('option', 'disabled', true);
+                    }
+                }
+            });
 
             // 追加権限なし
-            if (errorId < 4) {
-                $(this).find('a.anew').hide();
-            }
+            $(this).find('a.anew').each(function() {
+                if (Base.getAuthz(this.href) != '') {
+                    $(this).button('option', 'disabled', true)
+                }
+            });
 
             // 承認権限なし
-            if (errorId < 5) {
-                $(this).find('button.permit').hide();
-            }
+            $(this).find('button.permit').each(function() {
+                let href = $(this).attr('data-action');
+                if (href) {
+                    if (Base.getAuthz(href) != '') {
+                        $(this).button('option', 'disabled', true);
+                    }
+                }
+            });
 
             // 否認権限なし
-            if (errorId < 6) {
-                $(this).find('button.forbid').hide();
-            }
+            $(this).find('button.forbid').each(function() {
+                let href = $(this).attr('data-action');
+                if (href) {
+                    if (Base.getAuthz(href) != '') {
+                        $(this).button('option', 'disabled', true);
+                    }
+                }
+            });
         });
 
         //        //リンクの認可処理
@@ -818,7 +861,7 @@ let Base = {
                     }
 
                     // 更新権限がない場合
-                    if (Base.getAuthz($registForm[0].name) < 3) {
+                    if (Base.getAuthz($registForm[0].name) != '') {
 
                         // 画面をロック
                         $registForm.find('input, select, textarea').each(function() {

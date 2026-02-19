@@ -1,5 +1,6 @@
 package jp.co.golorp.emarf.form.base;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import jakarta.validation.constraints.NotBlank;
@@ -109,7 +110,7 @@ public abstract class LoginFormBase implements IForm {
     }
 
     /**
-     * 認可情報
+     * 認可情報<正規表現, ビットフラグ>
      */
     private Map<String, Integer> authzInfo;
 
@@ -137,5 +138,24 @@ public abstract class LoginFormBase implements IForm {
      * @return String エラーID
      */
     public abstract String getAuthZ(String requestUri);
+
+    /**
+     * 認可評価済みのエラーID<URI, エラーID>
+     */
+    private Map<String, String> authzIds = new HashMap<String, String>();
+
+    /**
+     * @return Map<String, String> authzIds
+     */
+    public Map<String, String> getAuthzIds() {
+        return authzIds;
+    }
+
+    /**
+     * @param p
+     */
+    public void setAuthzIds(final Map<String, String> p) {
+        this.authzIds = p;
+    }
 
 }

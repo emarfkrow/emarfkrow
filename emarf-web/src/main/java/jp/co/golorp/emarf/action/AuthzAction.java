@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 
 import jp.co.golorp.emarf.form.base.LoginFormBase;
 import jp.co.golorp.emarf.servlet.LoginFilter;
+import jp.co.golorp.emarf.util.Messages;
 
 /**
  * 認可アクション
@@ -26,15 +27,19 @@ public class AuthzAction extends BaseAction {
     @Override
     public Map<String, Object> running(final LocalDateTime now, final String id, final Map<String, Object> postJson) {
 
-        LoginFormBase loginForm = (LoginFormBase) this.getSession().getAttribute(LoginFilter.LOGIN_FORM);
         String requestURI = postJson.get("requestURI").toString();
-        String errorId = loginForm.getAuthZ(requestURI);
 
-        LOG.debug("    Authz requestURI: " + requestURI + ", errorIds: " + errorId);
+        LoginFormBase loginForm = (LoginFormBase) this.getSession().getAttribute(LoginFilter.LOGIN_FORM);
+        String errorId = loginForm.getAuthzIds().get(requestURI);
+        if (errorId == null) {
+            errorId = loginForm.getAuthZ(requestURI);
+            loginForm.getAuthzIds().put(requestURI, errorId);
+            LOG.debug("    Authz requestURI: " + requestURI + ", errorId: " + errorId);
+        }
 
         Map<String, Object> ret = new HashMap<String, Object>();
         if (errorId != null) {
-            ret.put("AUTHZ", errorId);
+            ret.put("AUTHZ", Messages.get(errorId));
         }
 
         return ret;

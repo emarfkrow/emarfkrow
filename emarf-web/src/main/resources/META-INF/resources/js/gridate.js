@@ -151,7 +151,7 @@ $(function() {
 
             // 新規行有無
             let addRow = $gridDiv.attr('data-addRow');
-            if (addRow && Base.getAuthz(form.name) >= 3) {
+            if (addRow && Base.getAuthz(form.name) == '') {
                 options.enableAddRow = eval(addRow);
             }
 
@@ -208,7 +208,7 @@ $(function() {
             //			}
 
             //登録権限なしなら列のエディタをクリア
-            if (Base.getAuthz(form.name) < 3) {
+            if (Base.getAuthz(form.name) != '') {
                 for (let i in columns) {
                     let column = columns[i];
                     column.editor = null;
@@ -725,7 +725,7 @@ $(function() {
                     let entityName = $gridDiv.attr('data-href').replace(/(^.+\/|\.html$)/g, '');
 
                     // 対象エンティティに参照権限がないならエラー
-                    if (Base.getAuthz(entityName) < 1) {
+                    if (Base.getAuthz(entityName) != '') {
                         e.preventDefault();
                         e.stopPropagation();
                         e.stopImmediatePropagation();

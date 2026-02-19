@@ -30,10 +30,12 @@ import jp.co.golorp.emarf.exception.AppError;
 import jp.co.golorp.emarf.exception.OptLockError;
 import jp.co.golorp.emarf.exception.SysError;
 import jp.co.golorp.emarf.form.base.LoginFormBase;
+import jp.co.golorp.emarf.lang.StringUtil;
 import jp.co.golorp.emarf.process.BaseProcess;
 import jp.co.golorp.emarf.servlet.LoginFilter;
 import jp.co.golorp.emarf.sql.Connections;
 import jp.co.golorp.emarf.time.DateTimeUtil;
+import jp.co.golorp.emarf.util.Messages;
 import jp.co.golorp.emarf.validation.FormValidator;
 import jp.co.golorp.emarf.validation.IForm;
 
@@ -137,11 +139,18 @@ public abstract class BaseAction extends BaseProcess {
         if (session != null) {
             LoginFormBase loginForm = (LoginFormBase) session.getAttribute(LoginFilter.LOGIN_FORM);
             if (loginForm != null && !requestURI.endsWith("/Authz.ajax")) {
-                String errorId = loginForm.getAuthZ(requestURI);
-                LOG.debug("    Base requestURI: " + requestURI + ", errorIds: " + errorId);
-                if (errorId != null) {
+                String errorId = loginForm.getAuthzIds().get(requestURI);
+                if (errorId == null) {
+                    errorId = loginForm.getAuthZ(requestURI);
+                    if (errorId == null) {
+                        errorId = "";
+                    }
+                    loginForm.getAuthzIds().put(requestURI, errorId);
+                }
+                LOG.debug("    Base requestURI: " + requestURI + ", errorId: " + errorId);
+                if (!StringUtil.isNullOrWhiteSpace(errorId)) {
                     Map<String, Object> map = new HashMap<String, Object>();
-                    map.put("ERROR", errorId);
+                    map.put("AUTHZ", Messages.get(errorId));
                     return map;
                 }
             }
