@@ -502,7 +502,7 @@ let Base = {
             $registForm.find('.addChild').button('option', 'disabled', true);
         }
 
-        // リセットボタン押下時に、id付きのスパンでrederクラスの内容もクリア
+        // リセットボタン押下時に、id付きのスパンでreferクラスの内容もクリア
         $(document).on('click', 'button[type="reset"]', function() {
             let $reset = $(this);
             let $form = $reset.closest('form');

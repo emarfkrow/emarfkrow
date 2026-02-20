@@ -48,7 +48,7 @@ $(function() {
      * [target=dialog]のリンクから、ダイアログのhtmlを画面に追加
      */
     $('a[target="dialog"], div[data-href]').each(function() {
-        Dialogate.enable(this);
+        Dialogate.enable(this, "  ", $(this).hasClass('refer'));
     });
 
     /*
@@ -111,7 +111,7 @@ $(function() {
 
         //呼び出し先の制約項目があれば、呼び出し元から取得
         let stints = $dialogDiv.find('span.stint,input.stint');
-        for (let i = 0; i < stints.length; i++) {
+        for (let i = 0;i < stints.length;i++) {
             let stint = stints[i];
             let names = stint.id.split('.');
             let name = names[names.length - 1];
@@ -137,7 +137,7 @@ $(function() {
             let columns = grid.getColumns();
             let id = '';
             let field = '';
-            for (let i = 0; i < columns.length; i++) {
+            for (let i = 0;i < columns.length;i++) {
                 let column = columns[i];
                 let isPK = column.cssClass != null && column.cssClass.indexOf('primaryKey') >= 0;
                 if (isPK) {
@@ -252,7 +252,7 @@ let Dialogate = {
     /*
      * [target=dialog]のリンクからダイアログのdivを画面に追加
      */
-    enable: function(link, parentId) {
+    enable: function(link, indent, isRefer) {
 
         // リンクを取得
         let $link = $(link);
@@ -273,7 +273,7 @@ let Dialogate = {
             return;
         }
 
-        console.debug('    Dialogate load [' + href + '].');
+        console.debug(indent + 'Dialogate load [' + href + '].');
         Dialogate.loaded[href] = 1;
 
         // hrefからdialogIdを取得。作成済みならスキップ。
@@ -349,7 +349,7 @@ let Dialogate = {
                     $dialogDiv.find('.addChild').button('option', 'disabled', false);
                     let isPrimaryKey = true;
                     let primaryKeys = $dialogDiv.find('input.primaryKey');
-                    for (let i = 0; i < primaryKeys.length; i++) {
+                    for (let i = 0;i < primaryKeys.length;i++) {
                         isPrimaryKey &= $(primaryKeys[i]).val() != '';
                     }
                     if (!isPrimaryKey) {
@@ -390,7 +390,7 @@ let Dialogate = {
                         });
                         $registForm.find('fieldset a.refer, input[type="button"].gridDelete').show();
                         let gridDivs = $registForm.find('[id$=Grid]');
-                        for (let i = 0; i < gridDivs.length; i++) {
+                        for (let i = 0;i < gridDivs.length;i++) {
                             let gridId = gridDivs[i].id;
                             Gridate.grids[gridId].getOptions()['editable'] = true;
                         }
@@ -419,9 +419,11 @@ let Dialogate = {
             });
 
             // 遅延ロードした外部HTMLにダイアログリンクがあれば、再度、外部HTMLを読み込み
-            let linkId = $link.attr('id');
             $(dialogHtml).find('a[target="dialog"]').each(function() {
-                Dialogate.enable(this, linkId);
+                let dialogLink = this;
+                if (!isRefer || $(dialogLink).hasClass('refer')) {
+                    Dialogate.enable(dialogLink, indent + "  ", isRefer || $(dialogLink).hasClass('refer'));
+                }
             });
 
         }).always(function(data) {
