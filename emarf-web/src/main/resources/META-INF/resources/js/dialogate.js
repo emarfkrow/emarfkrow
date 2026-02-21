@@ -421,8 +421,8 @@ let Dialogate = {
             // 遅延ロードした外部HTMLにダイアログリンクがあれば、再度、外部HTMLを読み込み
             $(dialogHtml).find('a[target="dialog"]').each(function() {
                 let dialogLink = this;
-                if (!isRefer || $(dialogLink).hasClass('refer')) {
-                    Dialogate.enable(dialogLink, indent + "  ", isRefer || $(dialogLink).hasClass('refer'));
+                if (!isRefer || $(dialogLink).hasClass('refer') || $(dialogLink).hasClass('derivee')) {
+                    Dialogate.enable(dialogLink, indent + "  ", isRefer || $(dialogLink).hasClass('refer') || $(dialogLink).hasClass('derivee'));
                 }
             });
 

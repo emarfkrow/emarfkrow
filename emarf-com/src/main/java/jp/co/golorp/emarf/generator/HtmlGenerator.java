@@ -995,21 +995,18 @@ public final class HtmlGenerator {
                     htmlNestGrid(s, parent, tables, added, true, indent + "  ", false);
                 }
             }
-        }
 
-        // 子モデル
-        for (TableInfo child : table.getChildren()) {
-            if (!added.contains(child)) {
-                added.add(child);
-                String childName = StringUtil.toPascalCase(child.getName());
-                s.add(indent + "<!-- " + table.getRemarks() + "の子モデルのグリッド定義 -->");
-                s.add(indent + "<script th:src=\"@{/model/" + childName + ".js}\"></script>");
-                s.add(indent + "<script th:src=\"@{/model/" + childName + "GridColumns.js}\"></script>");
-                htmlNestGrid(s, child, tables, added, false, indent + "  ", false);
+            // 子モデル
+            for (TableInfo child : table.getChildren()) {
+                if (!added.contains(child)) {
+                    added.add(child);
+                    String childName = StringUtil.toPascalCase(child.getName());
+                    s.add(indent + "<!-- " + table.getRemarks() + "の子モデルのグリッド定義 -->");
+                    s.add(indent + "<script th:src=\"@{/model/" + childName + ".js}\"></script>");
+                    s.add(indent + "<script th:src=\"@{/model/" + childName + "GridColumns.js}\"></script>");
+                    htmlNestGrid(s, child, tables, added, false, indent + "  ", false);
+                }
             }
-        }
-
-        if (!isRefer) {
 
             // 転生先モデル
             if (table.getRebornTo() != null) {
@@ -1051,7 +1048,7 @@ public final class HtmlGenerator {
                             s.add(indent + "<!-- " + table.getRemarks() + "の派生元モデルのグリッド定義 -->");
                             s.add(indent + "<script th:src=\"@{/model/" + entity + ".js}\"></script>");
                             s.add(indent + "<script th:src=\"@{/model/" + entity + "GridColumns.js}\"></script>");
-                            htmlNestGrid(s, deriveFrom, tables, added, false, indent + "  ", false);
+                            htmlNestGrid(s, deriveFrom, tables, added, false, indent + "  ", true);
                         }
                     }
                 }
