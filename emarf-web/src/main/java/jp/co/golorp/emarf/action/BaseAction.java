@@ -147,7 +147,9 @@ public abstract class BaseAction extends BaseProcess {
                     }
                     loginForm.getAuthzIds().put(requestURI, errorId);
                 }
-                LOG.debug("    Base requestURI: " + requestURI + ", errorId: " + errorId);
+                if (!StringUtil.isNullOrWhiteSpace(errorId)) {
+                    LOG.warn("    Base requestURI: " + requestURI + ", errorId: " + errorId);
+                }
                 if (!StringUtil.isNullOrWhiteSpace(errorId)) {
                     Map<String, Object> map = new HashMap<String, Object>();
                     map.put("AUTHZ", Messages.get(errorId));

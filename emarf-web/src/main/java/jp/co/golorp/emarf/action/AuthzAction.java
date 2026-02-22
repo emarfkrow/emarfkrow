@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import jp.co.golorp.emarf.form.base.LoginFormBase;
+import jp.co.golorp.emarf.lang.StringUtil;
 import jp.co.golorp.emarf.servlet.LoginFilter;
 import jp.co.golorp.emarf.util.Messages;
 
@@ -34,7 +35,9 @@ public class AuthzAction extends BaseAction {
         if (errorId == null) {
             errorId = loginForm.getAuthZ(requestURI);
             loginForm.getAuthzIds().put(requestURI, errorId);
-            LOG.debug("    Authz requestURI: " + requestURI + ", errorId: " + errorId);
+            if (!StringUtil.isNullOrWhiteSpace(errorId)) {
+                LOG.warn("    Authz requestURI: " + requestURI + ", errorId: " + errorId);
+            }
         }
 
         Map<String, Object> ret = new HashMap<String, Object>();

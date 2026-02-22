@@ -299,12 +299,22 @@ let Base = {
             }
 
             if (authz == null) {
-                Ajaxize.sjaxPost('./Authz.ajax', { 'requestURI': lastPath }, function(data) {
-                    authz = data.AUTHZ;
-                }, false);
+
+                Ajaxize.sjaxPost(
+                    './Authz.ajax',
+                    {
+                        'requestURI': lastPath
+                    },
+                    function(data) {
+                        authz = data.AUTHZ;
+                    },
+                    false
+                );
+
                 if (authz == undefined) {
                     authz = '';
                 }
+
                 authzMsgs[lastPath] = authz;
                 sessionStorage['authzMsgs'] = JSON.stringify(authzMsgs);
             }
@@ -775,13 +785,49 @@ let Base = {
 
                     if ($registDt.val() != '') {
 
+                        // 出力権限があれば出力ボタンを活性
+                        $registForm.find('a.output').each(function() {
+                            if (Base.getAuthz(this.href) == '') {
+                                $(this).button('option', 'disabled', false);
+                            }
+                        });
+
+                        // 更新権限がない場合は全てを非活性
+                        $registForm.find('button.regist').each(function() {
+
+                            if (Base.getAuthz($registForm[0].action) != '') {
+
+                                $(this).button('option', 'disabled', true);
+
+                                // 画面をロック
+                                $registForm.find('input, select, textarea').each(function() {
+                                    Base.readonly(this);
+                                });
+
+                                // グリッド行削除ボタンを非表示
+                                $registForm.find('fieldset a.refer, input[type="button"].gridDelete').hide();
+
+                                // グリッド列もロック
+                                let gridDivs = $registForm.find('[id$=Grid]');
+                                for (let i = 0;i < gridDivs.length;i++) {
+                                    let gridId = gridDivs[i].id;
+                                    Gridate.grids[gridId].getOptions()['editable'] = false;
+                                }
+                            }
+                        });
+
                         if ($statusKb.length == 0) {
                             /*
                              * ステータスなし
                              */
 
                             // 削除可能
-                            $registForm.find('button.delete').button('option', 'disabled', false);
+                            $registForm.find('button.delete').each(function() {
+                                let $button = $(this);
+                                if (Base.getAuthz($button.attr('data-action')) == '') {
+                                    $button.button('option', 'disabled', false);
+                                }
+                            });
 
                             // 転生可能
                             $registForm.find('a.reborner').button('option', 'disabled', false);
@@ -792,13 +838,28 @@ let Base = {
                              */
 
                             // 削除可能
-                            $registForm.find('button.delete').button('option', 'disabled', false);
+                            $registForm.find('button.delete').each(function() {
+                                let $button = $(this);
+                                if (Base.getAuthz($button.attr('data-action')) == '') {
+                                    $button.button('option', 'disabled', false);
+                                }
+                            });
 
                             // 承認可能
-                            $registForm.find('button.permit').button('option', 'disabled', false);
+                            $registForm.find('button.permit').each(function() {
+                                let $button = $(this);
+                                if (Base.getAuthz($button.attr('data-action')) == '') {
+                                    $button.button('option', 'disabled', false);
+                                }
+                            });
 
                             // 否認可能
-                            $registForm.find('button.forbid').button('option', 'disabled', false);
+                            $registForm.find('button.forbid').each(function() {
+                                let $button = $(this);
+                                if (Base.getAuthz($button.attr('data-action')) == '') {
+                                    $button.button('option', 'disabled', false);
+                                }
+                            });
 
                         } else if ($statusKb.val() == 1) {
                             /*
@@ -836,7 +897,12 @@ let Base = {
                                 }
                             }
                             if (!isReborned) {
-                                $registForm.find('button.forbid').button('option', 'disabled', false);
+                                $registForm.find('button.forbid').each(function() {
+                                    let $button = $(this);
+                                    if (Base.getAuthz($button.attr('data-action')) == '') {
+                                        $button.button('option', 'disabled', false);
+                                    }
+                                });
                             }
 
                             // 登録不可
@@ -851,31 +917,12 @@ let Base = {
                              */
 
                             // 削除可能
-                            $registForm.find('button.delete').button('option', 'disabled', false);
-                        }
-                    }
-
-                    // 出力権限があれば出力ボタンを活性
-                    if ($registDt.val() != '' && Base.getAuthz($registForm[0].name) >= 2) {
-                        $registForm.find('a.output').button('option', 'disabled', false);
-                    }
-
-                    // 更新権限がない場合
-                    if (Base.getAuthz($registForm[0].name) != '') {
-
-                        // 画面をロック
-                        $registForm.find('input, select, textarea').each(function() {
-                            Base.readonly(this);
-                        });
-
-                        // グリッド行削除ボタンを非表示
-                        $registForm.find('fieldset a.refer, input[type="button"].gridDelete').hide();
-
-                        // グリッド列もロック
-                        let gridDivs = $registForm.find('[id$=Grid]');
-                        for (let i = 0;i < gridDivs.length;i++) {
-                            let gridId = gridDivs[i].id;
-                            Gridate.grids[gridId].getOptions()['editable'] = false;
+                            $registForm.find('button.delete').each(function() {
+                                let $button = $(this);
+                                if (Base.getAuthz($button.attr('data-action')) == '') {
+                                    $button.button('option', 'disabled', false);
+                                }
+                            });
                         }
                     }
 
