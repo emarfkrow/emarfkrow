@@ -1204,20 +1204,29 @@ public final class DataSources {
                 moto.getDeriveTos().add(saki);
                 saki.getDeriveFroms().add(moto);
                 for (String sakiKey : sakiKeys) {
-                    if (saki.getColumns().get(sakiKey).getNullable() != 1) {
+                    ColumnInfo sakiCol = saki.getColumns().get(sakiKey);
+                    if (sakiCol.getNullable() != 1) {
                         // 必須なら上書き
-                        saki.getColumns().get(sakiKey).setDeriveFrom(moto);
+                        sakiCol.setDeriveFrom(moto);
                         for (String motoKey : moto.getPrimaryKeys()) {
-                            saki.getColumns().get(motoKey).setRefer(moto);
+                            //参照モデルを未設定なら設定
+                            if (saki.getColumns().get(motoKey).getRefer() == null) {
+                                saki.getColumns().get(motoKey).setRefer(moto);
+                            }
                         }
                     } else if (sakiKey.equals(lastKey)) {
                         // 必須でない場合は派生元の最終キーと一致するなら上書き
-                        saki.getColumns().get(sakiKey).setDeriveFrom(moto);
+                        sakiCol.setDeriveFrom(moto);
                         for (String motoKey : moto.getPrimaryKeys()) {
-                            saki.getColumns().get(motoKey).setRefer(moto);
+                            //参照モデルを未設定なら設定
+                            if (saki.getColumns().get(motoKey).getRefer() == null) {
+                                saki.getColumns().get(motoKey).setRefer(moto);
+                            }
                         }
                     }
                 }
+
+                // 売り上げの派生元が受注と受注明細になるので、受注は派生元から外したいが、参照は可能にしたい。
             }
         }
     }

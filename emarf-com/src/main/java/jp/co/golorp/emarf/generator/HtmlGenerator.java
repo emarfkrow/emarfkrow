@@ -18,6 +18,7 @@ package jp.co.golorp.emarf.generator;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -239,8 +240,8 @@ public final class HtmlGenerator {
         addHtmlHead(s, es, remarks);
         s.add("<script th:src=\"@{/model/" + e + ".js}\"></script>");
         s.add("<script th:src=\"@{/model/" + e + "GridColumns.js}\"></script>");
-        Set<TableInfo> added = new HashSet<TableInfo>();
-        added.add(table);
+        Map<TableInfo, Integer> added = new HashMap<TableInfo, Integer>();
+        added.put(table, 1);
         htmlNestGrid(s, table, tables, added, false, "", false);
         s.add("</head>");
         s.add("<body>");
@@ -577,8 +578,8 @@ public final class HtmlGenerator {
         addHtmlHead(s, e, table.getRemarks());
         s.add("<script th:src=\"@{/model/" + e + ".js}\"></script>");
         s.add("<script th:src=\"@{/model/" + e + "GridColumns.js}\"></script>");
-        Set<TableInfo> added = new HashSet<TableInfo>();
-        added.add(table);
+        Map<TableInfo, Integer> added = new HashMap<TableInfo, Integer>();
+        added.put(table, 1);
         htmlNestGrid(s, table, tables, added, false, "", false);
         s.add("</head>");
         s.add("<body>");
@@ -948,19 +949,17 @@ public final class HtmlGenerator {
      * @param isRefer  参照モデルか
      */
     private static void htmlNestGrid(final List<String> s, final TableInfo table, final List<TableInfo> tables,
-            final Set<TableInfo> added, final boolean isParent, final String indent, final boolean isRefer) {
+            final Map<TableInfo, Integer> added, final boolean isParent, final String indent, final boolean isRefer) {
 
         // 参照モデル
         for (ColumnInfo column : table.getColumns().values()) {
-            TableInfo refer = column.getRefer();
-            if (refer != null) {
-                if (!added.contains(refer)) {
-                    added.add(refer);
-                    String referName = StringUtil.toPascalCase(refer.getName());
-                    s.add(indent + "<!-- " + table.getRemarks() + "の参照モデルのグリッド定義 -->");
-                    s.add(indent + "<script th:src=\"@{/model/" + referName + ".js}\"></script>");
-                    s.add(indent + "<script th:src=\"@{/model/" + referName + "GridColumns.js}\"></script>");
-                    htmlNestGrid(s, refer, tables, added, false, indent + "  ", true);
+            TableInfo e = column.getRefer();
+            if (e != null) {
+                if (!added.containsKey(e)) {
+                    String name = StringUtil.toPascalCase(e.getName());
+                    addGridJs(s, indent, table.getRemarks(), name, "参照モデル");
+                    added.put(e, 1);
+                    htmlNestGrid(s, e, tables, added, false, indent + "  ", true);
                 }
             }
         }
@@ -968,133 +967,145 @@ public final class HtmlGenerator {
         // 兄弟モデルの参照モデル
         for (TableInfo bro : table.getBrothers()) {
             for (ColumnInfo column : bro.getColumns().values()) {
-                TableInfo refer = column.getRefer();
-                if (refer != null) {
-                    if (!added.contains(refer)) {
-                        added.add(refer);
-                        String referName = StringUtil.toPascalCase(refer.getName());
-                        s.add(indent + "<!-- " + table.getRemarks() + "の兄弟モデルの参照モデルのグリッド定義 -->");
-                        s.add(indent + "<script th:src=\"@{/model/" + referName + ".js}\"></script>");
-                        s.add(indent + "<script th:src=\"@{/model/" + referName + "GridColumns.js}\"></script>");
-                        htmlNestGrid(s, refer, tables, added, false, indent + "  ", true);
+                TableInfo e = column.getRefer();
+                if (e != null) {
+                    if (!added.containsKey(e)) {
+                        String name = StringUtil.toPascalCase(e.getName());
+                        addGridJs(s, indent, table.getRemarks(), name, "兄弟モデルの参照モデル");
+                        added.put(e, 1);
+                        htmlNestGrid(s, e, tables, added, false, indent + "  ", true);
                     }
                 }
             }
         }
 
-        if (!isRefer) {
+        if (!isParent && !isRefer) {
 
             // 親モデル
-            for (TableInfo parent : table.getParents()) {
-                if (!added.contains(parent)) {
-                    added.add(parent);
-                    String parentName = StringUtil.toPascalCase(parent.getName());
-                    s.add(indent + "<!-- " + table.getRemarks() + "の親モデルのグリッド定義 -->");
-                    s.add(indent + "<script th:src=\"@{/model/" + parentName + ".js}\"></script>");
-                    s.add(indent + "<script th:src=\"@{/model/" + parentName + "GridColumns.js}\"></script>");
-                    htmlNestGrid(s, parent, tables, added, true, indent + "  ", false);
+            for (TableInfo e : table.getParents()) {
+                if (added.get(e) != null && added.get(e) == 0) {
+                    continue;
                 }
+                if (!added.containsKey(e)) {
+                    String name = StringUtil.toPascalCase(e.getName());
+                    addGridJs(s, indent, table.getRemarks(), name, "親モデル");
+                }
+                added.put(e, 0);
+                htmlNestGrid(s, e, tables, added, true, indent + "  ", false);
             }
 
             // 子モデル
-            for (TableInfo child : table.getChildren()) {
-                if (!added.contains(child)) {
-                    added.add(child);
-                    String childName = StringUtil.toPascalCase(child.getName());
-                    s.add(indent + "<!-- " + table.getRemarks() + "の子モデルのグリッド定義 -->");
-                    s.add(indent + "<script th:src=\"@{/model/" + childName + ".js}\"></script>");
-                    s.add(indent + "<script th:src=\"@{/model/" + childName + "GridColumns.js}\"></script>");
-                    htmlNestGrid(s, child, tables, added, false, indent + "  ", false);
+            for (TableInfo e : table.getChildren()) {
+                if (added.get(e) != null && added.get(e) == 0) {
+                    continue;
                 }
+                if (!added.containsKey(e)) {
+                    String name = StringUtil.toPascalCase(e.getName());
+                    addGridJs(s, indent, table.getRemarks(), name, "子モデル");
+                }
+                added.put(e, 0);
+                htmlNestGrid(s, e, tables, added, false, indent + "  ", false);
             }
 
             // 転生先モデル
             if (table.getRebornTo() != null) {
-                TableInfo rebornTo = table.getRebornTo();
-                if (!added.contains(rebornTo)) {
-                    added.add(rebornTo);
-                    String entity = StringUtil.toPascalCase(rebornTo.getName());
-                    s.add(indent + "<!-- " + table.getRemarks() + "の転生先モデルのグリッド定義 -->");
-                    s.add(indent + "<script th:src=\"@{/model/" + entity + ".js}\"></script>");
-                    s.add(indent + "<script th:src=\"@{/model/" + entity + "GridColumns.js}\"></script>");
-                    htmlNestGrid(s, rebornTo, tables, added, false, indent + "  ", false);
+                TableInfo e = table.getRebornTo();
+                if (added.get(e) == null || added.get(e) != 0) {
+                    if (!added.containsKey(e)) {
+                        String name = StringUtil.toPascalCase(e.getName());
+                        addGridJs(s, indent, table.getRemarks(), name, "転生先モデル");
+                    }
+                    added.put(e, 0);
+                    htmlNestGrid(s, e, tables, added, false, indent + "  ", false);
                 }
             }
 
             // 転生元モデル
             if (table.getRebornFrom() != null) {
-                TableInfo reFrom = table.getRebornFrom();
-                if (!added.contains(reFrom)) {
-                    added.add(reFrom);
-                    String entity = StringUtil.toPascalCase(reFrom.getName());
-                    s.add(indent + "<!-- " + table.getRemarks() + "の転生元モデルのグリッド定義 -->");
-                    s.add(indent + "<script th:src=\"@{/model/" + entity + ".js}\"></script>");
-                    s.add(indent + "<script th:src=\"@{/model/" + entity + "GridColumns.js}\"></script>");
-                    htmlNestGrid(s, reFrom, tables, added, false, indent + "  ", false);
+                TableInfo e = table.getRebornFrom();
+                if (added.get(e) == null || added.get(e) != 0) {
+                    if (!added.containsKey(e)) {
+                        String name = StringUtil.toPascalCase(e.getName());
+                        addGridJs(s, indent, table.getRemarks(), name, "転生元モデル");
+                    }
+                    added.put(e, 0);
+                    htmlNestGrid(s, e, tables, added, false, indent + "  ", false);
                 }
             }
 
-            // 親モデルでなければ
-            if (!isParent) {
-
-                // 派生元モデル
-                for (ColumnInfo column : table.getColumns().values()) {
-                    if ((table.getParents() == null || table.getParents().size() == 0)
-                            && column.getDeriveFrom() != null) {
-                        TableInfo deriveFrom = column.getDeriveFrom();
-                        if (!added.contains(deriveFrom)) {
-                            added.add(deriveFrom);
-                            String entity = StringUtil.toPascalCase(deriveFrom.getName());
-                            s.add(indent + "<!-- " + table.getRemarks() + "の派生元モデルのグリッド定義 -->");
-                            s.add(indent + "<script th:src=\"@{/model/" + entity + ".js}\"></script>");
-                            s.add(indent + "<script th:src=\"@{/model/" + entity + "GridColumns.js}\"></script>");
-                            htmlNestGrid(s, deriveFrom, tables, added, false, indent + "  ", true);
-                        }
+            // 派生元モデル
+            for (ColumnInfo column : table.getColumns().values()) {
+                if (column.getDeriveFrom() != null) {
+                    TableInfo e = column.getDeriveFrom();
+                    if (added.get(e) != null && added.get(e) == 0) {
+                        continue;
                     }
+                    if (!added.containsKey(e)) {
+                        String name = StringUtil.toPascalCase(e.getName());
+                        addGridJs(s, indent, table.getRemarks(), name, "派生元モデル");
+                    }
+                    added.put(e, 0);
+                    htmlNestGrid(s, e, tables, added, false, indent + "  ", false);
                 }
+            }
 
-                // 派生先モデル
-                if (table.getDeriveTos().size() > 0) {
-                    for (TableInfo deriveTo : table.getDeriveTos()) {
-                        if (!added.contains(deriveTo)) {
-                            added.add(deriveTo);
-                            String entity = StringUtil.toPascalCase(deriveTo.getName());
-                            s.add(indent + "<!-- " + table.getRemarks() + "の派生先モデルのグリッド定義 -->");
-                            s.add(indent + "<script th:src=\"@{/model/" + entity + ".js}\"></script>");
-                            s.add(indent + "<script th:src=\"@{/model/" + entity + "GridColumns.js}\"></script>");
-                            htmlNestGrid(s, deriveTo, tables, added, false, indent + "  ", false);
-                        }
+            // 派生先モデル
+            if (table.getDeriveTos().size() > 0) {
+                for (TableInfo e : table.getDeriveTos()) {
+                    if (added.get(e) != null && added.get(e) == 0) {
+                        continue;
                     }
+                    if (!added.containsKey(e)) {
+                        String name = StringUtil.toPascalCase(e.getName());
+                        addGridJs(s, indent, table.getRemarks(), name, "派生先モデル");
+                    }
+                    added.put(e, 0);
+                    htmlNestGrid(s, e, tables, added, false, indent + "  ", false);
                 }
             }
 
             // 集約元モデル
             if (table.getSummaryOfs().size() > 0) {
-                for (TableInfo summary : table.getSummaryOfs()) {
-                    if (!added.contains(summary)) {
-                        added.add(summary);
-                        String entity = StringUtil.toPascalCase(summary.getName());
-                        s.add(indent + "<!-- " + table.getRemarks() + "の集約元モデルのグリッド定義 -->");
-                        s.add(indent + "<script th:src=\"@{/model/" + entity + ".js}\"></script>");
-                        s.add(indent + "<script th:src=\"@{/model/" + entity + "GridColumns.js}\"></script>");
-                        htmlNestGrid(s, summary, tables, added, false, indent + "  ", false);
+                for (TableInfo e : table.getSummaryOfs()) {
+                    if (added.get(e) != null && added.get(e) == 0) {
+                        continue;
                     }
+                    if (!added.containsKey(e)) {
+                        String name = StringUtil.toPascalCase(e.getName());
+                        addGridJs(s, indent, table.getRemarks(), name, "集約元モデル");
+                    }
+                    added.put(e, 0);
+                    htmlNestGrid(s, e, tables, added, false, indent + "  ", false);
                 }
             }
 
             // 集約先モデル
-            TableInfo summaryTo = table.getSummaryTo();
-            if (summaryTo != null) {
-                if (!added.contains(summaryTo)) {
-                    added.add(summaryTo);
-                    String entity = StringUtil.toPascalCase(summaryTo.getName());
-                    s.add(indent + "<!-- " + table.getRemarks() + "の集約先モデルのグリッド定義 -->");
-                    s.add(indent + "<script th:src=\"@{/model/" + entity + ".js}\"></script>");
-                    s.add(indent + "<script th:src=\"@{/model/" + entity + "GridColumns.js}\"></script>");
-                    htmlNestGrid(s, summaryTo, tables, added, false, indent + "  ", false);
+            TableInfo e = table.getSummaryTo();
+            if (e != null) {
+                if (added.get(e) == null || added.get(e) != 0) {
+                    if (!added.containsKey(e)) {
+                        String name = StringUtil.toPascalCase(e.getName());
+                        addGridJs(s, indent, table.getRemarks(), name, "集約先モデル");
+                    }
+                    added.put(e, 0);
+                    htmlNestGrid(s, e, tables, added, false, indent + "  ", false);
                 }
             }
         }
+    }
+
+    /**
+     * @param s
+     * @param indent
+     * @param tableMei
+     * @param name
+     * @param mei
+     */
+    public static void addGridJs(final List<String> s, final String indent, final String tableMei, final String name,
+            final String mei) {
+        s.add(indent + "<!-- " + tableMei + "の" + mei + "のグリッド定義 -->");
+        s.add(indent + "<script th:src=\"@{/model/" + name + ".js}\"></script>");
+        s.add(indent + "<script th:src=\"@{/model/" + name + "GridColumns.js}\"></script>");
     }
 
     /**
