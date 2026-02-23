@@ -88,6 +88,11 @@ public final class XlsxServlet extends HttpServlet {
             response.sendRedirect(referer + "?FATAL=fatal");
             return;
         }
+        if (map.get("AUTHZ") != null) {
+            String referer = request.getHeader("referer").replaceAll("\\?.+$", "");
+            response.sendRedirect(referer + "?ERROR=error.authz.output");
+            return;
+        }
 
         // requestURIからエクセルアクションの実行結果を取得
         BaseAction xlsxAction = null;

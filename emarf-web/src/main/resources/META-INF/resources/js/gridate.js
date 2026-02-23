@@ -720,18 +720,19 @@ $(function() {
 
                     console.info('Gridate gridLink click.');
 
-                    // グリッドの属性からエンティティ名を取得
-                    //let entityName = gridId.replace(/[^\.]+\./, '').replace(/Grid$/, '');
-                    let entityName = $gridDiv.attr('data-href').replace(/(^.+\/|\.html$)/g, '');
-
                     // 対象エンティティに参照権限がないならエラー
-                    if (Base.getAuthz(entityName) != '') {
+                    let authzMsg = Base.getAuthz($gridDiv.attr('data-href'));
+                    if (authzMsg != '') {
                         e.preventDefault();
                         e.stopPropagation();
                         e.stopImmediatePropagation();
                         alert(Messages['error.authz.view']);
                         return;
                     }
+
+                    // グリッドの属性からエンティティ名を取得
+                    //let entityName = gridId.replace(/[^\.]+\./, '').replace(/Grid$/, '');
+                    let entityName = $gridDiv.attr('data-href').replace(/(^.+\/|\.html$)/g, '');
 
                     if (e.target.id) {
                         // ファイル列の場合

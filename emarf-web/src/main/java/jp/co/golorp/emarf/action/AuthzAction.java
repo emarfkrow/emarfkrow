@@ -31,10 +31,12 @@ public class AuthzAction extends BaseAction {
         String requestURI = postJson.get("requestURI").toString();
 
         LoginFormBase loginForm = (LoginFormBase) this.getSession().getAttribute(LoginFilter.LOGIN_FORM);
-        String errorId = loginForm.getAuthzIds().get(requestURI);
-        if (errorId == null) {
-            errorId = loginForm.getAuthZ(requestURI);
-            loginForm.getAuthzIds().put(requestURI, errorId);
+        Map<String, Integer> tableAuthZ = loginForm.getTablesAuthZ().get(requestURI);
+
+        String errorId = null;
+        if (tableAuthZ == null) {
+            tableAuthZ = loginForm.getTableAuthZ(requestURI);
+            loginForm.getTablesAuthZ().put(requestURI, tableAuthZ);
             if (!StringUtil.isNullOrWhiteSpace(errorId)) {
                 LOG.warn("    Authz requestURI: " + requestURI + ", errorId: " + errorId);
             }

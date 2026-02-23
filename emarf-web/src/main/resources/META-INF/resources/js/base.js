@@ -297,45 +297,44 @@ let Base = {
                     authz = authzMsgs[lastPath];
                 }
             }
-
-            if (authz == null) {
-
-                Ajaxize.sjaxPost(
-                    './Authz.ajax',
-                    {
-                        'requestURI': lastPath
-                    },
-                    function(data) {
-                        authz = data.AUTHZ;
-                    },
-                    false
-                );
-
-                if (authz == undefined) {
-                    authz = '';
-                }
-
-                authzMsgs[lastPath] = authz;
-                sessionStorage['authzMsgs'] = JSON.stringify(authzMsgs);
-            }
-
-            //            //認可情報のうち画面IDが最長でマッチする認可区分を返す
-            //            //            let matchLength = 0;
-            //            for (let gamenNm in authzInfo) {
-            //                //                if (gamenId.match(gamenNm)) {
-            //                //                    if (matchLength <= gamenNm.length) {
-            //                //                        matchLength = gamenNm.length;
-            //                //                        authz = authzInfo[gamenNm];
-            //                //                    }
-            //                //                }
-            //                if (gamenId.match(new RegExp('^' + gamenNm + '$', 'i'))) {
-            //                    if (authz < authzInfo[gamenNm]) {
-            //                        authz = authzInfo[gamenNm];
-            //                    }
-            //                }
-            //            }
         }
 
+        if (authz == null) {
+
+            Ajaxize.sjaxPost(
+                './Authz.ajax',
+                {
+                    'requestURI': lastPath
+                },
+                function(data) {
+                    authz = data.AUTHZ;
+                },
+                false
+            );
+
+            if (authz == undefined) {
+                authz = '';
+            }
+
+            authzMsgs[lastPath] = authz;
+            sessionStorage['authzMsgs'] = JSON.stringify(authzMsgs);
+        }
+
+        //            //認可情報のうち画面IDが最長でマッチする認可区分を返す
+        //            //            let matchLength = 0;
+        //            for (let gamenNm in authzInfo) {
+        //                //                if (gamenId.match(gamenNm)) {
+        //                //                    if (matchLength <= gamenNm.length) {
+        //                //                        matchLength = gamenNm.length;
+        //                //                        authz = authzInfo[gamenNm];
+        //                //                    }
+        //                //                }
+        //                if (gamenId.match(new RegExp('^' + gamenNm + '$', 'i'))) {
+        //                    if (authz < authzInfo[gamenNm]) {
+        //                        authz = authzInfo[gamenNm];
+        //                    }
+        //                }
+        //            }
 
         return authz;
     },
@@ -407,9 +406,6 @@ let Base = {
 
         // 画面の更新権限のチェック
         $('form[name]').each(function() {
-
-            let formName = this.name;
-            let authzMsg = Base.getAuthz(formName);
 
             // 出力権限なし
             $(this).find('a.output').each(function() {

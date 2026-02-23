@@ -326,11 +326,14 @@ let Ajaxize = {
 
             // アプリケーションエラー
             if (data.ERROR && isQuiet != true) {
-
                 alert(data.ERROR);
-
                 Ajaxize.errorStyle(data.errors);
+                return;
+            }
 
+            // 認可エラー
+            if (data.AUTHZ && isQuiet != true) {
+                alert(data.AUTHZ);
                 return;
             }
 

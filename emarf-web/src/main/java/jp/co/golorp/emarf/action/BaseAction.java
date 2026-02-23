@@ -20,6 +20,7 @@ import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -139,18 +140,49 @@ public abstract class BaseAction extends BaseProcess {
         if (session != null) {
             LoginFormBase loginForm = (LoginFormBase) session.getAttribute(LoginFilter.LOGIN_FORM);
             if (loginForm != null && !requestURI.endsWith("/Authz.ajax")) {
-                String errorId = loginForm.getAuthzIds().get(requestURI);
-                if (errorId == null) {
-                    errorId = loginForm.getAuthZ(requestURI);
-                    if (errorId == null) {
-                        errorId = "";
+
+                String tableName = baseName.replaceFirst("(Get|Search|Regist|Delete|Permit|Forbid)$", "");
+                Map<String, Integer> tableAuthZ = loginForm.getTablesAuthZ().get(tableName);
+                if (tableAuthZ == null) {
+                    tableAuthZ = loginForm.getTableAuthZ(tableName);
+                    loginForm.getTablesAuthZ().put(tableName, tableAuthZ);
+                }
+
+                String action = baseName.replaceFirst(tableName, "");
+                String errorId = null;
+                if (!requestURI.matches(".+\\.(ajax|json)$") && tableAuthZ.get("output") == null) {
+                    errorId = "error.authz.output";
+                } else if (action.equals("Get") && tableAuthZ.get("view") == null) {
+                    errorId = "error.authz.view";
+                } else if (action.equals("Search") && tableAuthZ.get("seek") == null) {
+                    errorId = "error.authz.seek";
+                } else if (action.equals("Regist")) {
+
+                    boolean isUpdate = false;
+                    for (Entry<String, Object> e : postJson.entrySet()) {
+                        String k = e.getKey();
+                        Object v = e.getValue();
+                        if (k.endsWith(Messages.get("column.update.timestamp")) && !StringUtil.isNullOrWhiteSpace(v)) {
+                            isUpdate = true;
+                            break;
+                        }
                     }
-                    loginForm.getAuthzIds().put(requestURI, errorId);
+
+                    if (!isUpdate && tableAuthZ.get("anew") == null) {
+                        errorId = "error.authz.anew";
+                    } else if (isUpdate && tableAuthZ.get("edit") == null) {
+                        errorId = "error.authz.edit";
+                    }
+                } else if (action.equals("Delete") && tableAuthZ.get("delete") == null) {
+                    errorId = "error.authz.delete";
+                } else if (action.equals("Permit") && tableAuthZ.get("permit") == null) {
+                    errorId = "error.authz.permit";
+                } else if (action.equals("Forbid") && tableAuthZ.get("forbid") == null) {
+                    errorId = "error.authz.forbid";
                 }
+
                 if (!StringUtil.isNullOrWhiteSpace(errorId)) {
-                    LOG.warn("    Base requestURI: " + requestURI + ", errorId: " + errorId);
-                }
-                if (!StringUtil.isNullOrWhiteSpace(errorId)) {
+                    LOG.warn("    Base  requestURI: " + requestURI + ", errorId: " + errorId);
                     Map<String, Object> map = new HashMap<String, Object>();
                     map.put("AUTHZ", Messages.get(errorId));
                     return map;

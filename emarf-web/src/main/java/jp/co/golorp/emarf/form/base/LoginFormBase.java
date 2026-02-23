@@ -137,25 +137,25 @@ public abstract class LoginFormBase implements IForm {
      * @param requestUri
      * @return String エラーID
      */
-    public abstract String getAuthZ(String requestUri);
+    public abstract Map<String, Integer> getTableAuthZ(String requestUri);
 
     /**
      * 認可評価済みのエラーID<URI, エラーID>
      */
-    private Map<String, String> authzIds = new HashMap<String, String>();
+    private Map<String, Map<String, Integer>> tablesAuthZ = new HashMap<String, Map<String, Integer>>();
 
     /**
      * @return Map<String, String> authzIds
      */
-    public Map<String, String> getAuthzIds() {
-        return authzIds;
+    public Map<String, Map<String, Integer>> getTablesAuthZ() {
+        return tablesAuthZ;
     }
 
     /**
      * @param p
      */
-    public void setAuthzIds(final Map<String, String> p) {
-        this.authzIds = p;
+    public void setTablesAuthZ(final Map<String, Map<String, Integer>> p) {
+        this.tablesAuthZ = p;
     }
 
 }
