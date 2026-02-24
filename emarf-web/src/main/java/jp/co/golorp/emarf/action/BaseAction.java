@@ -142,22 +142,23 @@ public abstract class BaseAction extends BaseProcess {
             if (loginForm != null && !requestURI.endsWith("/Authz.ajax")) {
 
                 String tableName = baseName.replaceFirst("(Get|Search|Regist|Delete|Permit|Forbid)$", "");
-                Map<String, Integer> tableAuthZ = loginForm.getTablesAuthZ().get(tableName);
-                if (tableAuthZ == null) {
-                    tableAuthZ = loginForm.getTableAuthZ(tableName);
-                    loginForm.getTablesAuthZ().put(tableName, tableAuthZ);
+                Map<String, Integer> authZ = loginForm.getTablesAuthZ().get(tableName);
+                if (authZ == null) {
+                    authZ = loginForm.getTableAuthZ(tableName);
+                    loginForm.getTablesAuthZ().put(tableName, authZ);
                 }
 
                 String action = baseName.replaceFirst(tableName, "");
                 String errorId = null;
-                if (!requestURI.matches(".+\\.(ajax|json)$") && tableAuthZ.get("output") == null) {
-                    errorId = "error.authz.output";
-                } else if (action.equals("Get") && tableAuthZ.get("view") == null) {
+                if (!requestURI.matches(".+\\.(ajax|json)$")) {
+                    if (authZ.get("output") == null || authZ.get("output") != 1) {
+                        errorId = "error.authz.output";
+                    }
+                } else if (action.equals("Get") && (authZ.get("view") == null || authZ.get("view") != 1)) {
                     errorId = "error.authz.view";
-                } else if (action.equals("Search") && tableAuthZ.get("seek") == null) {
+                } else if (action.equals("Search") && (authZ.get("seek") == null || authZ.get("seek") != 1)) {
                     errorId = "error.authz.seek";
                 } else if (action.equals("Regist")) {
-
                     boolean isUpdate = false;
                     for (Entry<String, Object> e : postJson.entrySet()) {
                         String k = e.getKey();
@@ -167,24 +168,23 @@ public abstract class BaseAction extends BaseProcess {
                             break;
                         }
                     }
-
-                    if (!isUpdate && tableAuthZ.get("anew") == null) {
+                    if (!isUpdate && (authZ.get("anew") == null || authZ.get("anew") != 1)) {
                         errorId = "error.authz.anew";
-                    } else if (isUpdate && tableAuthZ.get("edit") == null) {
+                    } else if (isUpdate && (authZ.get("edit") == null || authZ.get("edit") != 1)) {
                         errorId = "error.authz.edit";
                     }
-                } else if (action.equals("Delete") && tableAuthZ.get("delete") == null) {
+                } else if (action.equals("Delete") && (authZ.get("delete") == null || authZ.get("delete") != 1)) {
                     errorId = "error.authz.delete";
-                } else if (action.equals("Permit") && tableAuthZ.get("permit") == null) {
+                } else if (action.equals("Permit") && (authZ.get("permit") == null || authZ.get("permit") != 1)) {
                     errorId = "error.authz.permit";
-                } else if (action.equals("Forbid") && tableAuthZ.get("forbid") == null) {
+                } else if (action.equals("Forbid") && (authZ.get("forbid") == null || authZ.get("forbid") != 1)) {
                     errorId = "error.authz.forbid";
                 }
 
-                if (!StringUtil.isNullOrWhiteSpace(errorId)) {
+                if (errorId != null) {
                     LOG.warn("    Base  requestURI: " + requestURI + ", errorId: " + errorId);
                     Map<String, Object> map = new HashMap<String, Object>();
-                    map.put("AUTHZ", Messages.get(errorId));
+                    map.put("ERROR", Messages.get(errorId));
                     return map;
                 }
             }

@@ -271,7 +271,7 @@ public final class HtmlGenerator {
             if (isDeriver) {
                 anewClass += " derive";
             }
-            s.add("        <a th:href=\"@{/model/" + e + ".html}\" target=\"dialog\" id=\"" + e + "\" class=\""
+            s.add("        <a th:href=\"@{/model/" + e + ".html(anew)}\" target=\"dialog\" id=\"" + e + "\" class=\""
                     + anewClass + "\" th:text=\"#{" + e + ".add}\" tabindex=\"-1\">" + remarks + "</a>");
             if (table.getName().matches(eldestRe)) {
                 for (TableInfo bro : table.getBrothers()) {

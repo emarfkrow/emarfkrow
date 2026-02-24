@@ -331,12 +331,6 @@ let Ajaxize = {
                 return;
             }
 
-            // 認可エラー
-            if (data.AUTHZ && isQuiet != true) {
-                alert(data.AUTHZ);
-                return;
-            }
-
             // 警告表示
             if (data.WARN) {
                 alert(data.WARN);

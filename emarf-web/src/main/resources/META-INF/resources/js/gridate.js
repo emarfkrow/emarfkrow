@@ -151,7 +151,7 @@ $(function() {
 
             // 新規行有無
             let addRow = $gridDiv.attr('data-addRow');
-            if (addRow && Base.getAuthz(form.name) == '') {
+            if (addRow && Base.getAuthz(form.action + '?anew') == '') {
                 options.enableAddRow = eval(addRow);
             }
 
@@ -208,7 +208,7 @@ $(function() {
             //			}
 
             //登録権限なしなら列のエディタをクリア
-            if (Base.getAuthz(form.name) != '') {
+            if (Base.getAuthz(form.action) != '') {
                 for (let i in columns) {
                     let column = columns[i];
                     column.editor = null;
@@ -293,9 +293,9 @@ $(function() {
                         ++frozenColumnAdd;
                     }
 
-                    //更新権限以上なら最左列に削除ボタン列を追加
+                    // 削除権限なら最左列に削除ボタン列を追加
                     if (options.editable) {
-                        if (Base.getAuthz(form.name) >= 3) {
+                        if (Base.getAuthz(form.action.replace('Regist', 'Delete')) == '') {
 
                             let gridDeleteTitle = Messages['common.grid.delete.title'];
                             let gridDeleteTitleWidth = 0;
@@ -342,9 +342,9 @@ $(function() {
                 });
                 ++frozenColumnAdd;
 
-                //更新権限以上なら最左列に削除ボタン列を追加
+                // 削除権限なら最左列に削除ボタン列を追加
                 if (options.editable) {
-                    if (Base.getAuthz(form.name) >= 3) {
+                    if (Base.getAuthz(form.action.replace('Regist', 'Delete')) == '') {
 
                         let noDelete = false;
                         for (let i in gridColumns) {
@@ -672,12 +672,13 @@ $(function() {
                             // グリッドの属性からエンティティ名を取得
                             let entityName = $gridDiv.attr('data-href').replace(/(^.+\/|\.html$)/g, '');
 
-                            // 対象エンティティに更新権限がないならエラー
-                            if (Base.getAuthz(entityName) < 3) {
+                            // 対象エンティティに削除権限がないならエラー
+                            let errorId = Base.getAuthz(form.action.replace('Regist', 'Delete'));
+                            if (errorId != '') {
                                 e.preventDefault();
                                 e.stopPropagation();
                                 e.stopImmediatePropagation();
-                                alert(Messages['error.authz.edit']);
+                                alert(Messages[errorId]);
                                 return;
                             }
 
@@ -726,7 +727,7 @@ $(function() {
                         e.preventDefault();
                         e.stopPropagation();
                         e.stopImmediatePropagation();
-                        alert(Messages['error.authz.view']);
+                        alert(Messages[authzMsg]);
                         return;
                     }
 

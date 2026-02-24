@@ -250,10 +250,12 @@ let Base = {
     getAuthz: function(href) {
 
         // 画面IDを取得（URLから、最後の「/」までと「?」以降を除去）
-        let lastPath = href.replace(/\?.+/, '').replace(/.+\//, '');
+        //		let lastPath = href.replace(/\?.+/, '').replace(/.+\//, '');
+        let lastPath = href.replace(/.+\//, '');
 
         // 拡張子を除去
-        let gamenId = lastPath.replace(/\.html/, '');
+        let gamenId = lastPath.replace(/\?.+/, '');
+        gamenId = gamenId.replace(/\.html/, '');
         // エクセルボタン用
         gamenId = gamenId.replace(/(Search|Get)/, '').replace(/\.xlsx/, '');
         // 登録系ボタン用
@@ -276,6 +278,7 @@ let Base = {
         }
 
         // 返却値を初期化
+        let authzMsgs = {};
         let authz = null;
 
         // sessionStorageに認可設定がある場合
@@ -286,11 +289,10 @@ let Base = {
 
             // 認可スキップなら「9」を返す
             if (authzInfo['authz'] && authzInfo['authz'] == 'false') {
-                return 9;
+                return 255;
             }
 
             // 認可済みメッセージがある場合は取得
-            let authzMsgs = {};
             if (sessionStorage['authzMsgs']) {
                 authzMsgs = JSON.parse(sessionStorage['authzMsgs']);
                 if (authzMsgs[lastPath] != null) {
