@@ -52,8 +52,11 @@ public class AuthzAction extends BaseAction {
                 errorId = "error.authz.view";
             }
 
-        } else if (suffix.matches("^Search.+$") && (authZ.get("seek") == null || authZ.get("seek") != 1)) {
-            errorId = "error.authz.seek";
+        } else if (suffix.matches("^Search.+$") || suffix.matches("^S\\.html$")) {
+
+            if (authZ.get("seek") == null || authZ.get("seek") != 1) {
+                errorId = "error.authz.seek";
+            }
 
         } else if (suffix.matches("^\\.html\\?anew$") || suffix.matches("^\\.ajax\\?anew$")) {
 

@@ -90,9 +90,9 @@ $(document).on('ready', function() {
             thisHref = '';
         }
     }
-    let authzMsg = Base.getAuthz(thisHref);
-    if (authzMsg != undefined && authzMsg != null && authzMsg != '') {
-        alert(authzMsg);
+    let errorId = Base.getAuthz(thisHref);
+    if (errorId != undefined && errorId != null && errorId != '') {
+        alert(Messages[errorId]);
         window.document.location.href = '../';
         return;
     }
@@ -255,7 +255,7 @@ let Base = {
 
         // 拡張子を除去
         let gamenId = lastPath.replace(/\?.+/, '');
-        gamenId = gamenId.replace(/\.html/, '');
+        gamenId = gamenId.replace(/S?\.html/, '');
         // エクセルボタン用
         gamenId = gamenId.replace(/(Search|Get)/, '').replace(/\.xlsx/, '');
         // 登録系ボタン用
@@ -409,6 +409,22 @@ let Base = {
         // 画面の更新権限のチェック
         $('form[name]').each(function() {
 
+            let formAction = this.action;
+
+            // 検索・リセット権限なし
+            $(this).find('button.search, button.reset').each(function() {
+                if (Base.getAuthz(formAction) != '') {
+                    $(this).button('option', 'disabled', true);
+                }
+            });
+
+            // 参照権限なし
+            $(this).find('a.refer').each(function() {
+                if (Base.getAuthz(this.href) != '') {
+                    $(this).button('option', 'disabled', true)
+                }
+            });
+
             // 出力権限なし
             $(this).find('a.output').each(function() {
                 if (Base.getAuthz(this.href) != '') {
@@ -428,7 +444,7 @@ let Base = {
             $(this).find('button.delete, button.regist').each(function() {
                 let href = $(this).attr('data-action');
                 if (!href) {
-                    href = $(this).closest('form')[0].action
+                    href = formAction;
                 }
                 if (Base.getAuthz(href) != '') {
                     $(this).button('option', 'disabled', true);
@@ -1011,8 +1027,13 @@ let Base = {
     },
 
     listReset: function(e) {
-        if (Gridate.grids[e + 'Grid'].getDataLength() > 0) {
-            $('[id="Search' + e + '"]').click();
+        for (let gridName in Gridate.grids) {
+            if (gridName.endsWith(e + 'Grid')) {
+                if (Gridate.grids[gridName].getDataLength() > 0) {
+                    $('[id="Search' + e + '"]').click();
+                }
+                break;
+            }
         }
     },
 

@@ -112,6 +112,8 @@ public final class HtmlGenerator {
     private static String[] inputRangeSuffixs;
     /** フラグサフィックス */
     private static String[] inputFlagSuffixs;
+    /** ビットフラグサフィックス */
+    private static String[] inputBitSuffixs;
     /** ファイルサフィックス */
     private static String[] inputFileSuffixs;
     /** options項目サフィックス */
@@ -181,6 +183,7 @@ public final class HtmlGenerator {
         inputTimeSuffixs = bundle.getString("input.time.suffixs").split(",");
         inputRangeSuffixs = bundle.getString("input.range.suffixs").split(",");
         inputFlagSuffixs = bundle.getString("input.flag.suffixs").split(",");
+        inputBitSuffixs = bundle.getString("input.bit.suffixs").split(",");
         inputFileSuffixs = bundle.getString("input.file.suffixs").split(",");
         optionsSuffixs = bundle.getString("input.options.suffixs").split(",");
         pulldownSuffixs = bundle.getString("input.pulldown.suffixs").split(",");
@@ -1292,154 +1295,176 @@ public final class HtmlGenerator {
 
     /**
      * htmlにフィールド追加
-     * @param table テーブル情報
+     * @param t テーブル情報
      * @param s 出力文字列のリスト
      * @param isD 詳細画面ならtrue
      * @param isB 兄弟モデルならtrue
      * @param isP 親モデルならtrue
      */
-    private static void htmlFields(final TableInfo table, final List<String> s, final boolean isD, final boolean isB,
+    private static void htmlFields(final TableInfo t, final List<String> s, final boolean isD, final boolean isB,
             final boolean isP) {
-        if (!isD && table.getStintInfo() != null) { // 検索画面の場合は制約モデルの参照キーを出力
-            htmlFieldsStint(table, s);
+
+        if (!isD && t.getStintInfo() != null) { // 検索画面の場合は制約モデルの参照キーを出力
+            htmlFieldsStint(t, s);
         }
-        String entity = StringUtil.toPascalCase(table.getName());
-        for (ColumnInfo column : table.getColumns().values()) { // カラム情報でループ
-            if (isB && column.isPk()) {
+        String eName = StringUtil.toPascalCase(t.getName());
+        for (ColumnInfo c : t.getColumns().values()) { // カラム情報でループ
+            if (isB && c.isPk()) {
                 continue; // 兄弟モデルの主キーは出力しない
             }
-            String colName = column.getName();
-            if (colName.matches("(?i)^" + viewDetail + "$")) {
+            String cName = c.getName();
+            if (cName.matches("(?i)^" + viewDetail + "$")) {
                 continue; // VIEWのテーブル名なら出力しない
             }
-            if (table.isView() && isD && StringUtil.startsWith(viewCriteriaPrefixs, colName)) {
+            if (t.isView() && isD && StringUtil.startsWith(viewCriteriaPrefixs, cName)) {
                 continue; // VIEWの詳細フォームには「SEARCH_」を出力しない
             }
-            if (!isD && (StringUtil.endsWith(inputFileSuffixs, colName)
-                    || StringUtil.endsWith(inputTimestampSuffixs, colName))) {
+            if (!isD && (StringUtil.endsWith(inputFileSuffixs, cName)
+                    || StringUtil.endsWith(inputTimestampSuffixs, cName))) {
                 continue; // 検索条件にはファイル項目とタイムスタンプを出力しない
             }
-            String property = StringUtil.toCamelCase(colName);
-            if (BeanGenerator.isMetaTsBy(colName)) { // メタ情報の場合
+            String property = StringUtil.toCamelCase(cName);
+            if (BeanGenerator.isMetaTsBy(cName)) { // メタ情報の場合
                 if (!isD) {
                     continue; // 検索画面ならスキップ（検索条件にはしない）
                 }
                 if (isB) {
-                    if (colName.matches("(?i)^" + updateTs + "$")) {
-                        s.add("        <input type=\"hidden\" name=\"" + entity + "." + property + "\" />");
+                    if (cName.matches("(?i)^" + updateTs + "$")) {
+                        s.add("        <input type=\"hidden\" name=\"" + eName + "." + property + "\" />");
                     }
                     continue; // 兄弟モデルならスキップ（更新日時のみ楽観ロック用に出力）
                 }
             }
-            TableInfo rebornFrom = null;
-            if (table.getRebornFrom() != null) {
-                TableInfo reFrom = table.getRebornFrom();
-                for (String pk : reFrom.getPrimaryKeys()) {
-                    if (column.getName().equals(pk)) {
-                        rebornFrom = reFrom;
-                        break;
-                    }
-                }
-            }
-            String referCss = addCssByRelation(isD, table, column);
+            TableInfo rebornFrom = seekRebornFrom(t, c);
+            String referCss = addCssByRelation(isD, t, c);
             if (!StringUtil.isNullOrWhiteSpace(referCss)) {
                 referCss = " class=\"" + referCss + "\"";
             }
-            String fieldId = entity + "." + property;
+            String fId = eName + "." + property;
             s.add("        <div id=\"" + property + "\">");
-            if (BeanGenerator.isMetaTsBy(colName)) { // メタ情報の場合は表示項目（編集画面の自モデルのみここに到達する）
-                htmlFieldsMeta(s, fieldId, column.getRemarks());
-                addMeiSpan(s, table, column, "meta");
-            } else if (isD && StringUtil.endsWith(inputReadonlySuffixs, colName)) { // 読み取り専用の場合
-                htmlFieldsSpan(s, fieldId, column.getRemarks(), "");
-            } else if (StringUtil.endsWith(optionsSuffixs, colName) && column.getRefer() == null) {
+            if (BeanGenerator.isMetaTsBy(cName)) { // メタ情報の場合は表示項目（編集画面の自モデルのみここに到達する）
+                htmlFieldsMeta(s, fId, c.getRemarks());
+                addMeiSpan(s, t, c, "meta");
+            } else if (isD && StringUtil.endsWith(inputReadonlySuffixs, cName)) { // 読み取り専用の場合
+                htmlFieldsSpan(s, fId, c.getRemarks(), "");
+            } else if (StringUtil.endsWith(optionsSuffixs, cName) && c.getRefer() == null) {
                 String css = ""; // 選択項目の場合（サフィックスが合致しても参照モデルなら除外）
-                if (isD && column.isPk()) { // 詳細画面の主キー
+                if (isD && c.isPk()) { // 詳細画面の主キー
                     css += " primaryKey";
                 }
-                if (isD && table.isHistory()) { // 履歴モデルの詳細画面
+                if (isD && t.isHistory()) { // 履歴モデルの詳細画面
                     css += " history";
-                } else if (isD && column.isReborn()) { // 詳細画面の転生元外部キー
+                } else if (isD && c.isReborn()) { // 詳細画面の転生元外部キー
                     css += " rebornee";
-                } else if (isD && column.getDeriveFrom() != null) { // 詳細画面の派生元外部キー
+                } else if (isD && c.getDeriveFrom() != null) { // 詳細画面の派生元外部キー
                     css += " derivee";
-                } else if (isD && column.isSummary()) { // 詳細画面の集約先外部キー
+                } else if (isD && c.isSummary()) { // 詳細画面の集約先外部キー
                     css += " summary";
                 }
-                if (isD && column.getNullable() == 0) {
-                    css += isNotBlank(column);
+                if (isD && c.getNullable() == 0) {
+                    css += isNotBlank(c);
                 }
-                htmlFieldsOptions(s, fieldId, colName, column.getRemarks(), css);
-            } else if (isD && table.isHistory()) { // 履歴モデルの詳細画面
-                htmlFieldsSpan(s, fieldId, column.getRemarks(), "history");
-                addMeiSpan(s, table, column, "");
-            } else if (isD && column.isReborn()) { // 詳細画面の転生元外部キー
-                htmlFieldsSpan(s, fieldId, column.getRemarks(), "rebornee");
-            } else if (isD && column.getDeriveFrom() != null) { // 詳細画面の派生元外部キー
+                htmlFieldsOptions(s, fId, cName, c.getRemarks(), css);
+            } else if (isD && t.isHistory()) { // 履歴モデルの詳細画面
+                htmlFieldsSpan(s, fId, c.getRemarks(), "history");
+                addMeiSpan(s, t, c, "");
+            } else if (isD && c.isReborn()) { // 詳細画面の転生元外部キー
+                htmlFieldsSpan(s, fId, c.getRemarks(), "rebornee");
+            } else if (isD && c.getDeriveFrom() != null) { // 詳細画面の派生元外部キー
                 String css = "derivee";
-                if (table.getSummaryOfs().size() > 0) {
+                if (t.getSummaryOfs().size() > 0) {
                     css += " summaryOf";
                 }
-                htmlFieldsSpan(s, fieldId, column.getRemarks(), css);
-                if (!isP && table.getSummaryOfs().size() == 0) {
-                    String referName = StringUtil.toPascalCase(column.getDeriveFrom().getName());
-                    s.add("          <a id=\"" + fieldId + "\" th:href=\"@{/model/" + referName + "S.html?action="
+                htmlFieldsSpan(s, fId, c.getRemarks(), css);
+                if (!isP && t.getSummaryOfs().size() == 0) {
+                    String referName = StringUtil.toPascalCase(c.getDeriveFrom().getName());
+                    s.add("          <a id=\"" + fId + "\" th:href=\"@{/model/" + referName + "S.html?action="
                             + referName + "Correct.ajax}\" target=\"dialog\" class=\"" + css + "\" "
                             + "th:text=\"#{common.correct}\" tabindex=\"-1\">...</a>");
                 }
-            } else if (isD && column.isSummary()) { // 詳細画面の集約先外部キー
-                htmlFieldsSpan(s, fieldId, column.getRemarks(), "summary");
-            } else if (StringUtil.endsWith(inputTimestampSuffixs, colName)) { // タイムスタンプの場合
-                htmlFieldsSpan(s, fieldId, column.getRemarks(), "");
-            } else if (isD && StringUtil.endsWith(textareaSuffixs, colName)) { // テキストエリア項目の場合
+            } else if (isD && c.isSummary()) { // 詳細画面の集約先外部キー
+                htmlFieldsSpan(s, fId, c.getRemarks(), "summary");
+            } else if (StringUtil.endsWith(inputTimestampSuffixs, cName)) { // タイムスタンプの場合
+                htmlFieldsSpan(s, fId, c.getRemarks(), "");
+            } else if (isD && StringUtil.endsWith(textareaSuffixs, cName)) { // テキストエリア項目の場合
                 String css = "";
-                if (isD && column.getNullable() == 0) {
-                    css += isNotBlank(column);
+                if (isD && c.getNullable() == 0) {
+                    css += isNotBlank(c);
                 }
-                htmlFieldsTextarea(s, fieldId, column.getRemarks(), css);
+                htmlFieldsTextarea(s, fId, c.getRemarks(), css);
             } else { // inputの場合
-                String type = getInputType(colName);
-                String inputCss = addCssByRelation(isD, table, column);
-                if (isD && column.getNullable() == 0) { // 詳細画面の必須項目
-                    inputCss += isNotBlank(column);
+                String type = getInputType(cName);
+                String inputCss = addCssByRelation(isD, t, c);
+                if (isD && c.getNullable() == 0) { // 詳細画面の必須項目
+                    inputCss += isNotBlank(c);
                 }
-                // 日付項目および8桁日付項目
-                if (StringUtil.endsWith(inputDateSuffixs, colName)) {
+                if (StringUtil.endsWith(inputDateSuffixs, cName)) { // 日付項目および8桁日付項目
                     inputCss += " datepicker";
-                } else if (StringUtil.endsWith(inputDate8Suffixs, colName) && column.getColumnSize() == 8) {
+                } else if (StringUtil.endsWith(inputDate8Suffixs, cName) && c.getColumnSize() == 8) {
                     inputCss += " datepicker";
-                } else if (StringUtil.endsWith(inputTimeSuffixs, colName)) {
+                } else if (StringUtil.endsWith(inputTimeSuffixs, cName)) {
                     inputCss += " time";
                 }
                 if (!StringUtil.isNullOrWhiteSpace(inputCss)) {
                     inputCss = " class=\"" + inputCss + "\"";
                 }
                 String format = "";
-                if (StringUtil.endsWith(inputDate8Suffixs, colName) && column.getColumnSize() == 8) { // 8桁日付項目
+                if (StringUtil.endsWith(inputDate8Suffixs, cName) && c.getColumnSize() == 8) { // 8桁日付項目
                     format = "yymmdd";
                 }
-                if (!isD && StringUtil.endsWith(inputRangeSuffixs, colName)) { // 検索画面の範囲指定項目の場合
-                    s.add(htmlFieldsRange(fieldId, type, inputCss, column, format));
-                } else if (column.getRefer() != null) { // 参照モデルの場合
-                    s.add(htmlFieldsRefer(fieldId, type, inputCss, column, format, table, referCss));
+                if (!isD && StringUtil.endsWith(inputRangeSuffixs, cName)) { // 検索画面の範囲指定項目の場合
+                    s.add(htmlFieldsRange(fId, type, inputCss, c, format));
+                } else if (c.getRefer() != null) { // 参照モデルの場合
+                    s.add(htmlFieldsRefer(fId, type, inputCss, c, format, t, referCss));
                 } else {
-                    s.add(htmlFieldsInput(fieldId, type, inputCss, column, format));
+                    if (StringUtil.endsWith(inputBitSuffixs, cName)) {
+                        String tag = "          ";
+                        tag += "<label for=\"" + fId + "\" th:text=\"#{" + fId + "}\">" + c.getRemarks() + "</label>";
+                        tag += "<input type=\"" + type + "\" id=\"" + fId + "\" name=\"" + fId + "\" maxlength=\""
+                                + c.getColumnSize() + "\"" + inputCss + format + " />";
+                        s.add(tag);
+                        tag = "          ";
+                        tag += "<span id=\"" + fId + "\"></span>";
+                        tag += "<input type=\"hidden\" id=\"" + fId + "\" name=\"" + fId + "\" />";
+                        s.add(tag);
+                    } else {
+                        s.add(htmlFieldsInput(fId, type, inputCss, c, format));
+                    }
                     if (rebornFrom != null) {
                         String referName = StringUtil.toPascalCase(rebornFrom.getName());
                         String href = "/model/" + referName + "S.html?action=" + referName + "Correct.ajax";
-                        s.add("          <a id=\"" + fieldId + "\" th:href=\"@{" + href + "}\" target=\"dialog\""
-                                + referCss + " th:text=\"#{common.correct}\" tabindex=\"-1\">...</a>");
+                        s.add("          <a id=\"" + fId + "\" th:href=\"@{" + href + "}\" target=\"dialog\"" + referCss
+                                + " th:text=\"#{common.correct}\" tabindex=\"-1\">...</a>");
                     }
-                    if (column.getDeriveFrom() != null) {
-                        String referName = StringUtil.toPascalCase(column.getDeriveFrom().getName());
+                    if (c.getDeriveFrom() != null) {
+                        String referName = StringUtil.toPascalCase(c.getDeriveFrom().getName());
                         String href = "/model/" + referName + "S.html?action=" + referName + "Correct.ajax";
-                        s.add("          <a id=\"" + fieldId + "\" th:href=\"@{" + href + "}\" target=\"dialog\""
-                                + referCss + " th:text=\"#{common.correct}\" tabindex=\"-1\">...</a>");
+                        s.add("          <a id=\"" + fId + "\" th:href=\"@{" + href + "}\" target=\"dialog\"" + referCss
+                                + " th:text=\"#{common.correct}\" tabindex=\"-1\">...</a>");
                     }
                 }
             }
             s.add("        </div>");
         }
+    }
+
+    /**
+     * @param table
+     * @param column
+     * @return カラムの転生元
+     */
+    public static TableInfo seekRebornFrom(final TableInfo table, final ColumnInfo column) {
+        TableInfo rebornFrom = null;
+        if (table.getRebornFrom() != null) {
+            TableInfo reFrom = table.getRebornFrom();
+            for (String pk : reFrom.getPrimaryKeys()) {
+                if (column.getName().equals(pk)) {
+                    rebornFrom = reFrom;
+                    break;
+                }
+            }
+        }
+        return rebornFrom;
     }
 
     /**
