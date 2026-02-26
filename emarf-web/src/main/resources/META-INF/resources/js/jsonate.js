@@ -335,7 +335,10 @@ let Jsonate = {
                             $input.val(v);
                         } else {
                             $input.val([v]);
-                            $('span[id="' + inputName + '"]').html(v);
+                            $form.find('span[id="' + inputName + '"]').html(v);
+                        }
+                        if ($input.hasClass('bit')) {
+                            $form.find('[name="' + inputName + 'F"]').val([v.toString(2)]);
                         }
                     }
                 });

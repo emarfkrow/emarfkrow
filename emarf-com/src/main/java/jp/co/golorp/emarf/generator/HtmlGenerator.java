@@ -1407,7 +1407,7 @@ public final class HtmlGenerator {
                 } else if (StringUtil.endsWith(inputTimeSuffixs, cName)) {
                     inputCss += " time";
                 } else if (StringUtil.endsWith(inputBitSuffixs, cName)) {
-                    inputCss += " bit";
+                    inputCss += " bit right";
                 }
                 if (!StringUtil.isNullOrWhiteSpace(inputCss)) {
                     inputCss = " class=\"" + inputCss + "\"";
@@ -1428,8 +1428,8 @@ public final class HtmlGenerator {
                                 + c.getColumnSize() + "\"" + inputCss + format + " />";
                         s.add(tag);
                         tag = "          ";
-                        tag += "<span id=\"" + fId + "\"></span>";
-                        tag += "<input type=\"hidden\" id=\"" + fId + "\" name=\"" + fId + "\" />";
+                        tag += "<span id=\"" + fId + "\"" + inputCss + "></span>";
+                        tag += "<input type=\"hidden\" id=\"" + fId + "\" name=\"" + fId + "\"" + inputCss + " />";
                         s.add(tag);
                     } else {
                         s.add(htmlFieldsInput(fId, type, inputCss, c, format));

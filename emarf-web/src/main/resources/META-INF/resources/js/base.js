@@ -402,6 +402,13 @@ let Base = {
             $me.append(tmOptions);
         });
 
+        $(document).on('change', 'input[type="text"].bit', function() {
+            let bName = this.name.replace(/f$/i, '');
+            let $form = $(this).closest('form');
+            $form.find('[name="' + bName + '"]').val(parseInt(this.value, 2));
+            $form.find('[id="' + bName + '"]').html(parseInt(this.value, 2));
+        });
+
         // buttonスタイル適用
         $('button, .nav a.table, .nav a.view, .article a').button();
         $('.article fieldset a').css('padding', 0);
