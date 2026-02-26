@@ -1235,6 +1235,8 @@ public final class HtmlGenerator {
             return "Column.cell('" + fieldPrefix + n + "', " + m + ", " + w + ", '" + css + "', " + format + "),";
         } else if (StringUtil.endsWith(inputFlagSuffixs, n)) {
             return "Column.check('" + fieldPrefix + n + "', " + m + ", " + w + ", '" + css + "'),";
+        } else if (StringUtil.endsWith(inputBitSuffixs, n)) {
+            return "Column.bit('" + fieldPrefix + n + "', " + m + ", " + w + ", '" + css + "'),";
         } else if (StringUtil.endsWith(inputDateSuffixs, n)) {
             return "Column.date('" + fieldPrefix + n + "', " + m + ", " + w + ", '" + css + "', " + format + "),";
         } else if (StringUtil.endsWith(inputDate8Suffixs, n) && column.getColumnSize() == 8) {
@@ -1404,6 +1406,8 @@ public final class HtmlGenerator {
                     inputCss += " datepicker";
                 } else if (StringUtil.endsWith(inputTimeSuffixs, cName)) {
                     inputCss += " time";
+                } else if (StringUtil.endsWith(inputBitSuffixs, cName)) {
+                    inputCss += " bit";
                 }
                 if (!StringUtil.isNullOrWhiteSpace(inputCss)) {
                     inputCss = " class=\"" + inputCss + "\"";
@@ -1419,8 +1423,8 @@ public final class HtmlGenerator {
                 } else {
                     if (StringUtil.endsWith(inputBitSuffixs, cName)) {
                         String tag = "          ";
-                        tag += "<label for=\"" + fId + "\" th:text=\"#{" + fId + "}\">" + c.getRemarks() + "</label>";
-                        tag += "<input type=\"" + type + "\" id=\"" + fId + "\" name=\"" + fId + "\" maxlength=\""
+                        tag += "<label for=\"" + fId + "F\" th:text=\"#{" + fId + "}\">" + c.getRemarks() + "</label>";
+                        tag += "<input type=\"" + type + "\" id=\"" + fId + "F\" name=\"" + fId + "F\" maxlength=\""
                                 + c.getColumnSize() + "\"" + inputCss + format + " />";
                         s.add(tag);
                         tag = "          ";

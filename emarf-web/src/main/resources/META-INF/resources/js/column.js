@@ -151,6 +151,13 @@ let Column = {
         return column;
     },
 
+	bit: function(field, fieldMei, width, cssClass, formatter, validator) {
+	    let column = Column.cell(field, fieldMei, width, cssClass, formatter);
+	    if (validator) { column.validator = validator; }
+	    if (cssClass.indexOf('readonly') < 0) column.editor = Slick.Editors.Extends.Bit;
+	    return column;
+	},
+
     select: function(field, fieldMei, width, cssClass, options) {
         let column = Column.cell(field, fieldMei, width, cssClass);
         if (cssClass.indexOf('readonly') < 0) column.editor = Slick.Editors.Extends.Select;
