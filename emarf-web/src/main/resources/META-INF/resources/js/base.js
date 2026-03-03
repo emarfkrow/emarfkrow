@@ -43,7 +43,7 @@ $(function() {
 
     console.debug('base-1: $(function() {});');
 
-    console.info('Base init.');
+    $('html').prop('lang', navigator.language || navigator.userLanguage || navigator.browserLanguage || navigator.systemLanguage);
 
     // クエリストリングの取得
     window.location.search.slice(1).split('&').forEach(function(s) {
@@ -343,6 +343,8 @@ let Base = {
 
     init: function() {
 
+        console.info('Base.init() start.');
+
         $('.datepicker').each(function() {
             let format = 'yy-mm-dd';
             let dataFormat = $(this).attr('data-format');
@@ -615,6 +617,7 @@ let Base = {
 
         Base.referMei($('span.refer'));
 
+        console.info('Base.init() end.');
     },
 
     resizeNav: function() {
