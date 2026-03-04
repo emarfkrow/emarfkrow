@@ -16,6 +16,7 @@ limitations under the License.
 
 package jp.co.golorp.emarf.sql;
 
+import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -27,6 +28,26 @@ import jp.co.golorp.emarf.util.MapList;
  * @author golorp
  */
 public final class DataSourcesAssistPostgreSQL extends DataSourcesAssist {
+
+    @Override
+    public ResultSet getTables(final DatabaseMetaData metaData, final String schemaPattern) throws SQLException {
+
+        return metaData.getTables(null, "public", null, new String[] { "TABLE", "VIEW" });
+    }
+
+    @Override
+    public ResultSet getColumns(final DatabaseMetaData metaData, final String schemaPattern,
+            final String tableNamePattern) throws SQLException {
+
+        return metaData.getColumns(null, "public", tableNamePattern.toLowerCase(), null);
+    }
+
+    @Override
+    public ResultSet getPrimaryKeys(final DatabaseMetaData metaData, final String schemaPattern,
+            final String tableName) throws SQLException {
+
+        return metaData.getPrimaryKeys(null, "public", tableName.toLowerCase());
+    }
 
     @Override
     protected String getTableComment(final String tableName) {

@@ -16,6 +16,7 @@ limitations under the License.
 
 package jp.co.golorp.emarf.sql;
 
+import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Map;
@@ -28,6 +29,40 @@ import jp.co.golorp.emarf.util.MapList;
  * @author golorp
  */
 public class DataSourcesAssistOracle extends DataSourcesAssist {
+
+    /**
+     * @param metaData
+     * @param schemaPattern
+     * @return ResultSet
+     * @throws SQLException
+     */
+    public ResultSet getTables(final DatabaseMetaData metaData, final String schemaPattern) throws SQLException {
+        return metaData.getTables(null, schemaPattern.toUpperCase(), null, new String[] { "TABLE", "VIEW" });
+    }
+
+    /**
+     * @param metaData
+     * @param schemaPattern
+     * @param tableNamePattern
+     * @return ResultSet
+     * @throws SQLException
+     */
+    public ResultSet getColumns(final DatabaseMetaData metaData, final String schemaPattern,
+            final String tableNamePattern) throws SQLException {
+        return metaData.getColumns(null, schemaPattern.toUpperCase(), tableNamePattern, null);
+    }
+
+    /**
+     * @param metaData
+     * @param schemaPattern
+     * @param tableName
+     * @return ResultSet
+     * @throws SQLException
+     */
+    public ResultSet getPrimaryKeys(final DatabaseMetaData metaData, final String schemaPattern,
+            final String tableName) throws SQLException {
+        return metaData.getPrimaryKeys(null, schemaPattern.toUpperCase(), tableName);
+    }
 
     @Override
     public final String dateAdd(final String columnName, final int d) {

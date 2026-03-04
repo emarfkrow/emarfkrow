@@ -16,6 +16,7 @@ limitations under the License.
 
 package jp.co.golorp.emarf.sql;
 
+import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -27,6 +28,34 @@ import jp.co.golorp.emarf.util.MapList;
  * @author golorp
  */
 public abstract class DataSourcesAssist {
+
+    /**
+     * @param metaData
+     * @param schemaPattern
+     * @return ResultSet
+     * @throws SQLException
+     */
+    public abstract ResultSet getTables(DatabaseMetaData metaData, String schemaPattern) throws SQLException;
+
+    /**
+     * @param metaData
+     * @param schemaPattern
+     * @param tableNamePattern
+     * @return ResultSet
+     * @throws SQLException
+     */
+    public abstract ResultSet getColumns(DatabaseMetaData metaData, String schemaPattern, String tableNamePattern)
+            throws SQLException;
+
+    /**
+     * @param metaData
+     * @param schemaPattern
+     * @param tableName
+     * @return ResultSet
+     * @throws SQLException
+     */
+    protected abstract ResultSet getPrimaryKeys(DatabaseMetaData metaData, String schemaPattern, String tableName)
+            throws SQLException;
 
     /**
      * @param tableName テーブル名

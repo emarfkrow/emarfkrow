@@ -315,7 +315,7 @@ public final class DataSources {
             for (TableInfo table : tables) {
 
                 // テーブルのカラム情報を取得してループ
-                ResultSet columns = metaData.getColumns(null, schemaPattern.toUpperCase(), table.getName(), null);
+                ResultSet columns = assist.getColumns(metaData, schemaPattern, table.getName());
 
                 while (columns.next()) {
 
@@ -335,7 +335,7 @@ public final class DataSources {
 
                     // カラム情報を追加
                     ColumnInfo column = new ColumnInfo();
-                    table.getColumns().put(columnName, column);
+                    table.getColumns().put(columnName.toUpperCase(), column);
 
                     // カラム物理名
                     column.setName(columnName);
@@ -458,7 +458,7 @@ public final class DataSources {
 
         Map<String, TableInfo> tree = new TreeMap<String, TableInfo>();
 
-        ResultSet rs = metaData.getTables(null, schemaPattern.toUpperCase(), null, new String[] { "TABLE", "VIEW" });
+        ResultSet rs = assist.getTables(metaData, schemaPattern);
 
         while (rs.next()) {
 
@@ -473,6 +473,8 @@ public final class DataSources {
             if (!StringUtil.isNullOrWhiteSpace(ignoreRe) && tableName.matches(ignoreRe)) {
                 continue;
             }
+
+            LOG.debug("テーブル名: " + tableName);
 
             // テーブル情報を追加
             TableInfo table = new TableInfo();
@@ -519,7 +521,7 @@ public final class DataSources {
 
         // テーブルの主キー情報でループ
         String schemaPattern = BUNDLE.getString("username");
-        try (ResultSet rs = metaData.getPrimaryKeys(null, schemaPattern.toUpperCase(), table.getName())) {
+        try (ResultSet rs = assist.getPrimaryKeys(metaData, schemaPattern, table.getName())) {
             while (rs.next()) {
 
                 // 対象外のカラム名ならスキップ
@@ -538,7 +540,7 @@ public final class DataSources {
                 while (primaryKeys.size() <= keySeq) {
                     primaryKeys.add("");
                 }
-                primaryKeys.set(keySeq, columnName);
+                primaryKeys.set(keySeq, columnName.toUpperCase());
             }
         }
 
@@ -560,7 +562,7 @@ public final class DataSources {
                     columnName = uniqueIndexColumn.get("Column_name").toString();
                 }
                 if (!table.getUniqueIndexColumns().contains(columnName)) {
-                    table.getUniqueIndexColumns().add(columnName);
+                    table.getUniqueIndexColumns().add(columnName.toUpperCase());
                 }
             }
 
@@ -588,10 +590,12 @@ public final class DataSources {
                     } else if (uniqueIndexColumn.get("Column_name") != null) {
                         columnName = uniqueIndexColumn.get("Column_name").toString();
                     }
-                    table.getPrimaryKeys().add(columnName);
+                    table.getPrimaryKeys().add(columnName.toUpperCase());
                 }
             }
         }
+
+        LOG.debug("    主キー: " + table.getPrimaryKeys());
     }
 
     /**
