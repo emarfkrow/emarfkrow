@@ -61,7 +61,34 @@ public final class DataSourcesAssistPostgreSQL extends DataSourcesAssist {
 
     @Override
     protected MapList getUniqueIndexes(final String tableName) {
-        return null;
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("SELECT ");
+        sb.append("    i.relname AS \"INDEX_NAME\" ");
+        sb.append("    , ix.indnatts AS total_column_count ");
+        sb.append("    , a.attname AS \"COLUMN_NAME\" ");
+        sb.append("    , k.n AS column_position ");
+        sb.append("FROM ");
+        sb.append("    pg_class t ");
+        sb.append("    INNER JOIN pg_index ix ");
+        sb.append("        ON t.oid = ix.indrelid ");
+        sb.append("    INNER JOIN pg_class i ");
+        sb.append("        ON i.oid = ix.indexrelid ");
+        sb.append("    INNER JOIN pg_attribute a ");
+        sb.append("        ON a.attrelid = t.oid ");
+        sb.append("    CROSS JOIN generate_series(1, CAST(current_setting('max_index_keys') AS integer)) AS k(n) ");
+        sb.append("WHERE ");
+        sb.append("    t.relname = '" + tableName.toLowerCase() + "'");
+        sb.append("    AND a.attnum = ix.indkey [k.n - 1] ");
+        sb.append("    AND ix.indisunique = TRUE ");
+        sb.append("ORDER BY ");
+        sb.append("    total_column_count ");
+        sb.append("    , \"INDEX_NAME\" ");
+        sb.append("    , column_position ");
+
+        MapList mapList = Queries.select(sb.toString(), null, null);
+
+        return mapList;
     }
 
     @Override
