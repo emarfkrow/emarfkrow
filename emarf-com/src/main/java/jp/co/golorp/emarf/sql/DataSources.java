@@ -48,9 +48,9 @@ import jp.co.golorp.emarf.generator.BeanGenerator;
 import jp.co.golorp.emarf.generator.ColumnInfo;
 import jp.co.golorp.emarf.generator.TableInfo;
 import jp.co.golorp.emarf.lang.StringUtil;
+import jp.co.golorp.emarf.util.IgnoreCaseList;
 import jp.co.golorp.emarf.util.MapList;
 import jp.co.golorp.emarf.util.ResourceBundles;
-import jp.co.golorp.emarf.util.IgnoreCaseList;
 
 /**
  * データソース管理クラス
@@ -475,7 +475,7 @@ public final class DataSources {
                 continue;
             }
 
-            LOG.debug("テーブル名: " + tableName);
+            LOG.info("テーブル名: " + tableName);
 
             // テーブル情報を追加
             TableInfo table = new TableInfo();
@@ -596,7 +596,7 @@ public final class DataSources {
             }
         }
 
-        LOG.debug("    主キー: " + table.getPrimaryKeys());
+        LOG.info("    主キー: " + table.getPrimaryKeys());
     }
 
     /**
