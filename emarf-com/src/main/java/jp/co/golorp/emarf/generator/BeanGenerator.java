@@ -37,6 +37,7 @@ import jp.co.golorp.emarf.properties.App;
 import jp.co.golorp.emarf.sql.DataSources;
 import jp.co.golorp.emarf.sql.DataSourcesAssist;
 import jp.co.golorp.emarf.util.ResourceBundles;
+import jp.co.golorp.emarf.util.IgnoreCaseList;
 
 /**
  * java/html/sql出力
@@ -658,8 +659,7 @@ public final class BeanGenerator {
     public static void javaEntityCRUDDelete(final TableInfo table, final List<String> s) {
 
         //削除フラグがなければdeleteメソッドを出力
-        if (!table.getColumns().containsKey(deleteF.toLowerCase())
-                && !table.getColumns().containsKey(deleteF.toUpperCase())) {
+        if (!table.getColumns().containsKey(deleteF)) {
 
             String e = StringUtil.toPascalCase(table.getName());
             String i = StringUtil.toCamelCase(table.getName());
@@ -672,8 +672,7 @@ public final class BeanGenerator {
             s.add("    public int delete() {");
 
             for (TableInfo child : table.getChildren()) {
-                if (StringUtil.isNullOrWhiteSpace(deleteF) || (!child.getColumns().containsKey(deleteF.toLowerCase())
-                        && !child.getColumns().containsKey(deleteF.toUpperCase()))) {
+                if (StringUtil.isNullOrWhiteSpace(deleteF) || !child.getColumns().containsKey(deleteF)) {
                     String ent = StringUtil.toPascalCase(child.getName());
                     String ins = StringUtil.toCamelCase(child.getName());
                     String r = child.getRemarks();
@@ -707,9 +706,7 @@ public final class BeanGenerator {
                 }
 
                 // 削除フラグの定義がないか削除フラグ列がない
-                if (StringUtil.isNullOrWhiteSpace(deleteF)
-                        || (!bro.getColumns().containsKey(deleteF.toLowerCase())
-                                && !bro.getColumns().containsKey(deleteF.toUpperCase()))) {
+                if (StringUtil.isNullOrWhiteSpace(deleteF) || !bro.getColumns().containsKey(deleteF)) {
                     String b = StringUtil.toCamelCase(bro.getName());
                     String r = bro.getRemarks();
                     s.add("");
@@ -805,9 +802,8 @@ public final class BeanGenerator {
         // 最後のキーを取得
         ColumnInfo lastKeyInfo = null;
         if (table.getPrimaryKeys() != null && table.getPrimaryKeys().size() > 0) {
-            List<String> primaryKeys = new ArrayList<String>(table.getPrimaryKeys());
-            primaryKeys.remove(tekiyoBi.toLowerCase());
-            primaryKeys.remove(tekiyoBi.toUpperCase());
+            List<String> primaryKeys = new IgnoreCaseList<String>(table.getPrimaryKeys());
+            primaryKeys.remove(tekiyoBi);
             String lastKey = primaryKeys.get(primaryKeys.size() - 1);
             lastKeyInfo = table.getColumns().get(lastKey);
             if (lastKeyInfo != null && lastKeyInfo.isNumbering()) {
@@ -985,9 +981,8 @@ public final class BeanGenerator {
         s.add("        String sql = \"SELECT " + numbering + " AS " + quoted + " FROM " + tableName + " e" + w + "\";");
         s.add("        Map<String, Object> map = new HashMap<String, Object>();");
 
-        List<String> primaryKeys = new ArrayList<>(table.getPrimaryKeys());
-        primaryKeys.remove(tekiyoBi.toLowerCase());
-        primaryKeys.remove(tekiyoBi.toUpperCase());
+        List<String> primaryKeys = new IgnoreCaseList<>(table.getPrimaryKeys());
+        primaryKeys.remove(tekiyoBi);
         if (primaryKeys.size() > 1) {
 
             s.add("        List<String> whereList = new ArrayList<String>();");
@@ -1165,10 +1160,7 @@ public final class BeanGenerator {
         }
 
         // 楽観ロック
-        ColumnInfo column = tableInfo.getColumns().get(updateTs.toLowerCase());
-        if (column == null) {
-            column = tableInfo.getColumns().get(updateTs.toUpperCase());
-        }
+        ColumnInfo column = tableInfo.getColumns().get(updateTs);
         if (column != null) {
 
             String rightHand = "'\" + this." + StringUtil.toCamelCase(updateTs) + " + \"'";
@@ -1509,8 +1501,7 @@ public final class BeanGenerator {
 
         for (TableInfo child : childs) {
 
-            if (!StringUtil.isNullOrWhiteSpace(deleteF) && (child.getColumns().containsKey(deleteF.toLowerCase())
-                    || child.getColumns().containsKey(deleteF.toUpperCase()))) {
+            if (!StringUtil.isNullOrWhiteSpace(deleteF) && child.getColumns().containsKey(deleteF)) {
                 continue;
             }
 
@@ -1589,8 +1580,7 @@ public final class BeanGenerator {
                 getPermitChilds(s, i, child.getChildren(), indent + 2);
             }
             s.add("");
-            if (child.getColumns().containsKey(status.toLowerCase())
-                    || child.getColumns().containsKey(status.toUpperCase())) {
+            if (child.getColumns().containsKey(status)) {
                 s.add(p + "                " + i + ".set" + StringUtil.toPascalCase(status) + "(1);");
             }
             s.add(p + "                if (" + i + ".update(now, execId) != 1) {");
@@ -1640,8 +1630,7 @@ public final class BeanGenerator {
                 getForbidChilds(s, i, child.getChildren(), indent + 2);
             }
             s.add("");
-            if (child.getColumns().containsKey(status.toLowerCase())
-                    || child.getColumns().containsKey(status.toUpperCase())) {
+            if (child.getColumns().containsKey(status)) {
                 s.add(p + "                " + i + ".set" + StringUtil.toPascalCase(status) + "(-1);");
             }
             s.add(p + "                if (" + i + ".update(now, execId) != 1) {");

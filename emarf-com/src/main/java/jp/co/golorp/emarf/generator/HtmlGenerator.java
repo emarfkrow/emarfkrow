@@ -358,13 +358,12 @@ public final class HtmlGenerator {
         // 履歴モデルでないテーブルで、子モデルを持たない場合
         if (!table.isView() && !table.isHistory() && table.getChildren().size() == 0) {
             // 削除フラグも有効期間終了日もないなら、物理削除ボタンを表示
-            if (!StringUtil.hasKeyIgnoreCase(table.getColumns().keySet(), deleteF)
-                    && !StringUtil.hasKeyIgnoreCase(table.getColumns().keySet(), haishiBi)) {
+            if (!table.getColumns().containsKey(deleteF) && !table.getColumns().containsKey(haishiBi)) {
                 s.add("        <button type=\"submit\" id=\"Delete" + es + "\" data-action=\"" + es
                         + "Delete.ajax\" class=\"delete selectRows\" th:text=\"#{common.delete}\" tabindex=\"-1\">削除</button>");
             }
             //ステータス列名の指定があり、テーブルにステータス列があるなら、承認ボタン・否認ボタンを表示
-            if (StringUtil.hasKeyIgnoreCase(table.getColumns().keySet(), status)) {
+            if (table.getColumns().containsKey(status)) {
                 s.add("        <button type=\"submit\" id=\"Permit" + es + "\" data-action=\"" + es
                         + "Permit.ajax\" class=\"permit selectRows\" th:text=\"#{common.permit}\" tabindex=\"-1\">承認</button>");
                 s.add("        <button type=\"submit\" id=\"Forbid" + es + "\" data-action=\"" + es
@@ -682,13 +681,12 @@ public final class HtmlGenerator {
         s.add("      <div class=\"submits\">");
         if (!table.isHistory() && !table.isView()) { // 履歴モデルでもビューでもない場合
             // 削除フラグ列名の指定がないか、テーブルに削除フラグ列がないなら、物理削除ボタンを表示
-            if (!StringUtil.hasKeyIgnoreCase(table.getColumns().keySet(), deleteF)
-                    && !StringUtil.hasKeyIgnoreCase(table.getColumns().keySet(), haishiBi)) {
+            if (!table.getColumns().containsKey(deleteF) && !table.getColumns().containsKey(haishiBi)) {
                 s.add("        <button id=\"Delete" + e + "\" type=\"submit\" class=\"delete\" data-action=\"" + e
                         + "Delete.ajax\" th:text=\"#{common.delete}\" tabindex=\"-1\">削除</button>");
             }
             //ステータス列名の指定があり、テーブルにステータス列があるなら、承認ボタン・否認ボタンを表示
-            if (StringUtil.hasKeyIgnoreCase(table.getColumns().keySet(), status)) {
+            if (table.getColumns().containsKey(status)) {
                 s.add("        <button id=\"Permit" + e + "\" type=\"submit\" class=\"permit\" data-action=\""
                         + e + "Permit.ajax\" th:text=\"#{common.permit}\" tabindex=\"-1\">承認</button>");
                 s.add("        <button id=\"Forbid" + e + "\" type=\"submit\" class=\"forbid\" data-action=\""

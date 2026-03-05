@@ -133,16 +133,14 @@ public final class DetailActionGenerator {
                 s.add("            isNew = true;");
                 s.add("        }");
             }
-            if (StringUtil.hasKeyIgnoreCase(table.getColumns().keySet(), updateTs)) {
+            if (table.getColumns().containsKey(updateTs)) {
                 String pascal = StringUtil.toPascalCase(updateTs);
                 s.add("        // 楽観ロック値がなくてもINSERT");
                 s.add("        if (jp.co.golorp.emarf.lang.StringUtil.isNullOrWhiteSpace(e.get" + pascal + "())) {");
                 s.add("            isNew = true;");
                 s.add("        }");
             }
-            if (!table.isView() && !StringUtil.isNullOrWhiteSpace(status)
-                    && (table.getColumns().containsKey(status.toLowerCase())
-                            || table.getColumns().containsKey(status.toUpperCase()))) {
+            if (!table.isView() && !StringUtil.isNullOrWhiteSpace(status) && table.getColumns().containsKey(status)) {
                 s.add("");
                 s.add("        e.set" + StringUtil.toPascalCase(status) + "(0);");
             }
@@ -171,9 +169,7 @@ public final class DetailActionGenerator {
                     s.add("                String[] summaryKeys = " + sKey + ".trim().split(\",\");");
                     s.add("                for (String pk : summaryKeys) {");
                     s.add("                    " + pkE + "." + e + " " + i + " = " + pkE + "." + e + ".get(pk);");
-                    if (!StringUtil.isNullOrWhiteSpace(status)
-                            && (summaryOf.getColumns().containsKey(status.toLowerCase())
-                                    || summaryOf.getColumns().containsKey(status.toUpperCase()))) {
+                    if (!StringUtil.isNullOrWhiteSpace(status) && summaryOf.getColumns().containsKey(status)) {
                         String acc = StringUtil.toPascalCase(status);
                         s.add("                    //承認済みでなければエラー");
                         s.add("                    if (!" + i + ".get" + acc + "().equals(\"1\")) {");
@@ -404,8 +400,7 @@ public final class DetailActionGenerator {
             }
 
             // 論理削除テーブルならスキップ（削除フラグ指定があり、テーブルに削除フラグがある場合）
-            if (!StringUtil.isNullOrWhiteSpace(deleteF) && (table.getColumns().containsKey(deleteF.toLowerCase())
-                    || table.getColumns().containsKey(deleteF.toUpperCase()))) {
+            if (!StringUtil.isNullOrWhiteSpace(deleteF) && table.getColumns().containsKey(deleteF)) {
                 continue;
             }
 
@@ -497,8 +492,7 @@ public final class DetailActionGenerator {
 
         for (TableInfo table : tables) {
 
-            if (table.isHistory() || table.isView() || (!table.getColumns().containsKey(status.toLowerCase())
-                    && !table.getColumns().containsKey(status.toUpperCase()))) {
+            if (table.isHistory() || table.isView() || !table.getColumns().containsKey(status)) {
                 continue;
             }
 
@@ -553,8 +547,7 @@ public final class DetailActionGenerator {
             BeanGenerator.getPermitChilds(s, "e", childInfos, 0);
             s.add("");
             s.add("        " + entity + " f = " + entity + ".get(" + params + ");");
-            if (table.getColumns().containsKey(status.toLowerCase())
-                    || table.getColumns().containsKey(status.toUpperCase())) {
+            if (table.getColumns().containsKey(status)) {
                 s.add("        f.set" + StringUtil.toPascalCase(status) + "(1);");
             }
             s.add("        if (f.update(now, execId) != 1) {");
@@ -595,8 +588,7 @@ public final class DetailActionGenerator {
 
         for (TableInfo table : tables) {
 
-            if (table.isHistory() || table.isView() || (!table.getColumns().containsKey(status.toLowerCase())
-                    && !table.getColumns().containsKey(status.toUpperCase()))) {
+            if (table.isHistory() || table.isView() || !table.getColumns().containsKey(status)) {
                 continue;
             }
 
@@ -651,8 +643,7 @@ public final class DetailActionGenerator {
             BeanGenerator.getForbidChilds(s, "e", childInfos, 0);
             s.add("");
             s.add("        " + entity + " f = " + entity + ".get(" + params + ");");
-            if (table.getColumns().containsKey(status.toLowerCase())
-                    || table.getColumns().containsKey(status.toUpperCase())) {
+            if (table.getColumns().containsKey(status)) {
                 s.add("        f.set" + StringUtil.toPascalCase(status) + "(-1);");
             }
             s.add("        if (f.update(now, execId) != 1) {");

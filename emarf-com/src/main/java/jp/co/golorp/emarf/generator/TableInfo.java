@@ -17,9 +17,11 @@ limitations under the License.
 package jp.co.golorp.emarf.generator;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+
+import jp.co.golorp.emarf.util.IgnoreCaseLinkedMap;
+import jp.co.golorp.emarf.util.IgnoreCaseList;
 
 /**
  * テーブル情報
@@ -35,16 +37,16 @@ public class TableInfo {
     private String remarks;
 
     /** 主キーカラム名のリスト */
-    private List<String> primaryKeys = new ArrayList<String>();
+    private List<String> primaryKeys = new IgnoreCaseList<String>();
 
     /** ユニークインデクスカラム名のセット */
-    private List<String> uniqueIndexColumns = new ArrayList<String>();
+    private List<String> uniqueIndexColumns = new IgnoreCaseList<String>();
 
     /** 主キーでないカラム名のリスト */
-    private List<String> nonPrimaryKeys = new ArrayList<String>();
+    private List<String> nonPrimaryKeys = new IgnoreCaseList<String>();
 
     /** カラム名：カラム情報のマップ */
-    private Map<String, ColumnInfo> columns = new LinkedHashMap<String, ColumnInfo>();
+    private Map<String, ColumnInfo> columns = new IgnoreCaseLinkedMap<String, ColumnInfo>();
 
     /** 親テーブルのリスト */
     private List<TableInfo> parents = new ArrayList<TableInfo>();

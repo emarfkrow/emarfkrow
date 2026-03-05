@@ -50,6 +50,7 @@ import jp.co.golorp.emarf.generator.TableInfo;
 import jp.co.golorp.emarf.lang.StringUtil;
 import jp.co.golorp.emarf.util.MapList;
 import jp.co.golorp.emarf.util.ResourceBundles;
+import jp.co.golorp.emarf.util.IgnoreCaseList;
 
 /**
  * データソース管理クラス
@@ -335,7 +336,7 @@ public final class DataSources {
 
                     // カラム情報を追加
                     ColumnInfo column = new ColumnInfo();
-                    table.getColumns().put(columnName.toUpperCase(), column);
+                    table.getColumns().put(columnName, column);
 
                     // カラム物理名
                     column.setName(columnName);
@@ -562,7 +563,7 @@ public final class DataSources {
                     columnName = uniqueIndexColumn.get("Column_name").toString();
                 }
                 if (!table.getUniqueIndexColumns().contains(columnName)) {
-                    table.getUniqueIndexColumns().add(columnName.toUpperCase());
+                    table.getUniqueIndexColumns().add(columnName);
                 }
             }
 
@@ -590,7 +591,7 @@ public final class DataSources {
                     } else if (uniqueIndexColumn.get("Column_name") != null) {
                         columnName = uniqueIndexColumn.get("Column_name").toString();
                     }
-                    table.getPrimaryKeys().add(columnName.toUpperCase());
+                    table.getPrimaryKeys().add(columnName);
                 }
             }
         }
@@ -705,7 +706,6 @@ public final class DataSources {
 
             // 参照先マスタのユニークキー情報
             String referLastKey = referKeys.get(referKeys.size() - 1);
-            //            ColumnInfo sakiLastPK = saki.getColumns().get(sakiLastKey);
 
             // 参照元トランとしてループ
             Iterator<TableInfo> motos = tables.iterator();
@@ -981,10 +981,9 @@ public final class DataSources {
                 }
 
                 // 変更理由列は比較対象から除外
-                List<String> sakiNonPrimaryKeys = new ArrayList<String>(saki.getNonPrimaryKeys());
+                List<String> sakiNonPrimaryKeys = new IgnoreCaseList<String>(saki.getNonPrimaryKeys());
                 if (!StringUtil.isNullOrWhiteSpace(reason)) {
-                    sakiNonPrimaryKeys.remove(reason.toLowerCase());
-                    sakiNonPrimaryKeys.remove(reason.toUpperCase());
+                    sakiNonPrimaryKeys.remove(reason);
                 }
 
                 String sakiKeyCsv = saki.getPrimaryKeys().toString().replaceAll("[\\[\\]]", "");
@@ -1159,6 +1158,10 @@ public final class DataSources {
         while (motos.hasNext()) {
             TableInfo moto = motos.next();
 
+            if (moto.getPrimaryKeys().size() == 0) {
+                continue;
+            }
+
             // ビュー・参照モデル・兄弟モデル・履歴モデル は派生しない
             if (moto.isView() || moto.isRefer() || moto.isBrother() || moto.isHistory()) {
                 continue;
@@ -1180,6 +1183,10 @@ public final class DataSources {
             Iterator<TableInfo> sakis = tables.iterator();
             while (sakis.hasNext()) {
                 TableInfo saki = sakis.next();
+
+                if (saki.getPrimaryKeys().size() == 0) {
+                    continue;
+                }
 
                 // ビュー・参照モデル・履歴モデル は派生先にしない
                 if (saki.isView() || saki.isRefer() || saki.isHistory()) {

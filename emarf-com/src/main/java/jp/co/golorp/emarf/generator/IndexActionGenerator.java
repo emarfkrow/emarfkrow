@@ -105,8 +105,7 @@ public final class IndexActionGenerator {
             }
 
             //削除フラグがあればスキップ
-            if (!StringUtil.isNullOrWhiteSpace(deleteF) && (table.getColumns().containsKey(deleteF.toLowerCase())
-                    || table.getColumns().containsKey(deleteF.toUpperCase()))) {
+            if (!StringUtil.isNullOrWhiteSpace(deleteF) && table.getColumns().containsKey(deleteF)) {
                 continue;
             }
 
@@ -273,7 +272,7 @@ public final class IndexActionGenerator {
                 s.add("                    isNew = true;");
                 s.add("                }");
             }
-            if (StringUtil.hasKeyIgnoreCase(table.getColumns().keySet(), updateTs)) {
+            if (table.getColumns().containsKey(updateTs)) {
                 String acc = StringUtil.toPascalCase(updateTs);
                 s.add("                // 楽観ロック値がなくてもINSERT");
                 s.add("                if (jp.co.golorp.emarf.lang.StringUtil.isNullOrWhiteSpace(e.get" + acc
@@ -281,9 +280,7 @@ public final class IndexActionGenerator {
                 s.add("                    isNew = true;");
                 s.add("                }");
             }
-            if (!table.isView() && !StringUtil.isNullOrWhiteSpace(status)
-                    && (table.getColumns().containsKey(status.toLowerCase())
-                            || table.getColumns().containsKey(status.toUpperCase()))) {
+            if (!table.isView() && !StringUtil.isNullOrWhiteSpace(status) && table.getColumns().containsKey(status)) {
                 s.add("");
                 s.add("                e.set" + StringUtil.toPascalCase(status) + "(0);");
             }
@@ -343,8 +340,7 @@ public final class IndexActionGenerator {
 
         for (TableInfo table : tables) {
 
-            if (table.isHistory() || table.isView() || (!table.getColumns().containsKey(status.toLowerCase())
-                    && !table.getColumns().containsKey(status.toUpperCase()))) {
+            if (table.isHistory() || table.isView() || !table.getColumns().containsKey(status)) {
                 continue;
             }
 
@@ -410,8 +406,7 @@ public final class IndexActionGenerator {
             BeanGenerator.getPermitChilds(s, "e", childInfos, 2);
             s.add("");
             s.add("                " + e + " f = " + e + ".get(" + params + ");");
-            if (table.getColumns().containsKey(status.toLowerCase())
-                    || table.getColumns().containsKey(status.toUpperCase())) {
+            if (table.getColumns().containsKey(status)) {
                 s.add("                f.set" + StringUtil.toPascalCase(status) + "(1);");
             }
             s.add("                if (f.update(now, execId) != 1) {");
@@ -459,8 +454,7 @@ public final class IndexActionGenerator {
 
         for (TableInfo table : tables) {
 
-            if (table.isHistory() || table.isView() || (!table.getColumns().containsKey(status.toLowerCase())
-                    && !table.getColumns().containsKey(status.toUpperCase()))) {
+            if (table.isHistory() || table.isView() || !table.getColumns().containsKey(status)) {
                 continue;
             }
 
@@ -526,8 +520,7 @@ public final class IndexActionGenerator {
             BeanGenerator.getForbidChilds(s, "e", childInfos, 2);
             s.add("");
             s.add("                " + e + " f = " + e + ".get(" + params + ");");
-            if (table.getColumns().containsKey(status.toLowerCase())
-                    || table.getColumns().containsKey(status.toUpperCase())) {
+            if (table.getColumns().containsKey(status)) {
                 s.add("                f.set" + StringUtil.toPascalCase(status) + "(-1);");
             }
             s.add("                if (f.update(now, execId) != 1) {");
