@@ -60,6 +60,7 @@ public abstract class DataSourcesAssist {
     /**
      * @param tableName テーブル名
      * @return テーブルコメント
+     * @throws Exception
      */
     protected abstract String getTableComment(String tableName);
 
@@ -67,12 +68,13 @@ public abstract class DataSourcesAssist {
      * @param tableName テーブル名
      * @param columnName カラム名
      * @return カラムコメント
+     * @throws Exception
      */
     protected abstract String getColumnComment(String tableName, String columnName);
 
     /**
      * @param tableName テーブル名
-     * @return カラムコメント
+     * @return 複数のユニークインデクスについての列情報
      */
     protected abstract MapList getUniqueIndexes(String tableName);
 
@@ -83,25 +85,25 @@ public abstract class DataSourcesAssist {
     public abstract String joinedSQL(String[] array);
 
     /**
-     * @param s 対象文字列
+     * @param s カラム物理名
      * @return yyyy/mm/ddにキャストするSQL
      */
     public abstract String toDateSQL(String s);
 
     /**
-     * @param s 対象文字列
-     * @return yyyy/mm/dd hh:mm:ssにキャストするSQL
+     * @param s カラム物理名
+     * @return 日時にキャストするSQL
      */
     public abstract String toDateTimeSQL(String s);
 
     /**
-     * @param s 対象文字列
-     * @return yyyy/mm/dd hh:mm:ss.SSSにキャストするSQL
+     * @param s カラム物理名
+     * @return ミリ秒タイムスタンプにキャストするSQL
      */
     public abstract String toTimestampSQL(String s);
 
     /**
-     * @param s 対象文字列
+     * @param s カラム物理名
      * @return yyyy/mm/ddを文字列にキャストするSQL
      */
     public abstract String date2CharSQL(String s);
@@ -125,21 +127,21 @@ public abstract class DataSourcesAssist {
     public abstract String timestamp2CharSQL(String s);
 
     /**
-     * @param s 対象文字列
+     * @param s カラム物理名
      * @param format フォーマット文字列
-     * @return フォーマットするSQL
+     * @return タイムスタンプをフォーマットするSQL
      */
     public abstract String formatedSQL(String s, String format);
 
     /**
-     * @param columnName カラム名
+     * @param columnName カラム物理名
      * @return 引用符付きの文字列
      */
     public abstract String quotedSQL(String columnName);
 
     /**
-     * @param columnName カラム名
-     * @return エスケープ引用符付きの文字列
+     * @param columnName カラム物理名
+     * @return 引用符をエスケープ済みの文字列
      */
     public abstract String quoteEscapedSQL(String columnName);
 

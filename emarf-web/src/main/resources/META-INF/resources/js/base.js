@@ -779,7 +779,7 @@ let Base = {
         $registForm.find('button.delete').button('option', 'disabled', true);
         $registForm.find('button.permit').button('option', 'disabled', true);
         $registForm.find('button.forbid').button('option', 'disabled', true);
-        $registForm.find('button.regist').button('option', 'disabled', false);
+        $registForm.find('button.regist').button('option', 'disabled', true);
 
         let formJson = Jsonate.toValueJson($registForm);
         if (JSON.stringify(formJson) != '{}') {
@@ -821,8 +821,6 @@ let Base = {
 
                             if (Base.getAuthz($registForm[0].action) != '') {
 
-                                $(this).button('option', 'disabled', true);
-
                                 // 画面をロック
                                 $registForm.find('input, select, textarea').each(function() {
                                     Base.readonly(this);
@@ -837,6 +835,8 @@ let Base = {
                                     let gridId = gridDivs[i].id;
                                     Gridate.grids[gridId].getOptions()['editable'] = false;
                                 }
+                            } else {
+                                $(this).button('option', 'disabled', false);
                             }
                         });
 
@@ -993,6 +993,8 @@ let Base = {
             // 詳細画面のステータス区分は選択項目名のみ表示（新規画面用に一旦やっておく）
             let $readonlys = $registForm.find('[name$="' + Casing.toCamel(columnStatus) + '"]');
             Base.readonly($readonlys);
+
+            $registForm.find('button.regist').button('option', 'disabled', false);
 
             Nextize.firstImpl($registForm);
         }

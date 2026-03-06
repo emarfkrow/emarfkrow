@@ -358,8 +358,9 @@ let Dialogate = {
 
                     let $searchForm = $dialogDiv.find('[name$="SearchForm"]');
                     if ($searchForm.length > 0) {
+                        // ダイアログ上部が検索フォームの場合
 
-                        //クエリストリングにaction指定があれば設定
+                        //クエリストリングに指定があれば、フォームのアクションに設定
                         let href = $link.prop('href');
                         let i = href.indexOf('?');
                         if (i >= 0) {
@@ -374,15 +375,17 @@ let Dialogate = {
                             }
                         }
 
-                        // ダイアログ内に検索フォームがあり、呼び出し元イベントで検索項目が設定されている場合は、検索結果を初期表示
+                        // 呼び出し元で検索項目が設定されている場合は検索結果を初期表示
                         let formJson = Jsonate.toValueJson($searchForm);
                         if (JSON.stringify(formJson) != '{}') {
                             $searchForm.find('button.search').click();
                         }
 
-                    } else {
+                    }
 
-                        let $registForm = $dialogDiv.find('[name$="RegistForm"]');
+                    let $registForm = $dialogDiv.find('[name$="RegistForm"]');
+                    if ($registForm.length > 0) {
+                        // ダイアログ内に検索フォームがある場合
 
                         // ダイアログの場合だけ初期化すればいいのでBase.referRegistForm()から移動
                         $registForm.find('a, input, select, textarea').each(function() {

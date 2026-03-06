@@ -20,6 +20,7 @@ import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import jp.co.golorp.emarf.exception.SysError;
 import jp.co.golorp.emarf.util.MapList;
 
 /**
@@ -31,32 +32,29 @@ public final class DataSourcesAssistPostgreSQL extends DataSourcesAssist {
 
     @Override
     public ResultSet getTables(final DatabaseMetaData metaData, final String schemaPattern) throws SQLException {
-
         return metaData.getTables(null, "public", null, new String[] { "TABLE", "VIEW" });
     }
 
     @Override
     public ResultSet getColumns(final DatabaseMetaData metaData, final String schemaPattern,
             final String tableNamePattern) throws SQLException {
-
         return metaData.getColumns(null, "public", tableNamePattern.toLowerCase(), null);
     }
 
     @Override
     public ResultSet getPrimaryKeys(final DatabaseMetaData metaData, final String schemaPattern,
             final String tableName) throws SQLException {
-
         return metaData.getPrimaryKeys(null, "public", tableName.toLowerCase());
     }
 
     @Override
     protected String getTableComment(final String tableName) {
-        return null;
+        throw new SysError("メソッドが実装されていません。");
     }
 
     @Override
     protected String getColumnComment(final String tableName, final String columnName) {
-        return null;
+        throw new SysError("メソッドが実装されていません。");
     }
 
     @Override
@@ -93,37 +91,57 @@ public final class DataSourcesAssistPostgreSQL extends DataSourcesAssist {
 
     @Override
     public String joinedSQL(final String[] array) {
-        return null;
+        throw new SysError("メソッドが実装されていません。");
     }
 
     @Override
-    public String toDateSQL(final String lowerColumn) {
-        return null;
+    public String toDateSQL(final String s) {
+        throw new SysError("メソッドが実装されていません。");
     }
 
     @Override
     public String toDateTimeSQL(final String s) {
-        return s;
+        throw new SysError("メソッドが実装されていません。");
     }
 
     @Override
-    public String toTimestampSQL(final String lowerColumn) {
-        return null;
+    public String toTimestampSQL(final String s) {
+        throw new SysError("メソッドが実装されていません。");
+    }
+
+    @Override
+    public String date2CharSQL(final String s) {
+        throw new SysError("メソッドが実装されていません。");
+    }
+
+    @Override
+    public String time2CharSQL(final String s) {
+        throw new SysError("メソッドが実装されていません。");
+    }
+
+    @Override
+    public String dateTime2CharSQL(final String s) {
+        throw new SysError("メソッドが実装されていません。");
+    }
+
+    @Override
+    public String timestamp2CharSQL(final String s) {
+        throw new SysError("メソッドが実装されていません。");
     }
 
     @Override
     public String formatedSQL(final String s, final String format) {
-        return s;
+        throw new SysError("メソッドが実装されていません。");
     }
 
     @Override
     public String quotedSQL(final String columnName) {
-        return null;
+        throw new SysError("メソッドが実装されていません。");
     }
 
     @Override
     public String quoteEscapedSQL(final String columnName) {
-        return null;
+        throw new SysError("メソッドが実装されていません。");
     }
 
     @Override
@@ -139,57 +157,32 @@ public final class DataSourcesAssistPostgreSQL extends DataSourcesAssist {
 
     @Override
     public String trimedSQL(final String columnName) {
-        return null;
-    }
-
-    @Override
-    public String date2CharSQL(final String s) {
-        return s;
-    }
-
-    @Override
-    public String time2CharSQL(final String s) {
-        return s;
-    }
-
-    @Override
-    public String dateTime2CharSQL(final String s) {
-        return s;
-    }
-
-    @Override
-    public String timestamp2CharSQL(final String s) {
-        return s;
+        throw new SysError("メソッドが実装されていません。");
     }
 
     @Override
     public String dateAdd(final String columnName, final int d) {
-        // TODO 自動生成されたメソッド・スタブ
-        return null;
+        throw new SysError("メソッドが実装されていません。");
     }
 
     @Override
     public String nvlSysdate(final String columnName) {
-        // TODO 自動生成されたメソッド・スタブ
-        return null;
+        throw new SysError("メソッドが実装されていません。");
     }
 
     @Override
     public String nvlZero(final String columnName) {
-        // TODO 自動生成されたメソッド・スタブ
-        return null;
+        throw new SysError("メソッドが実装されていません。");
     }
 
     @Override
     public String sysDate() {
-        // TODO 自動生成されたメソッド・スタブ
-        return null;
+        throw new SysError("メソッドが実装されていません。");
     }
 
     @Override
     public String sysTimestamp() {
-        // TODO 自動生成されたメソッド・スタブ
-        return null;
+        throw new SysError("メソッドが実装されていません。");
     }
 
     @Override

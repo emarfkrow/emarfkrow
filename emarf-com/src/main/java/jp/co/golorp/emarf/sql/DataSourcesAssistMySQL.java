@@ -29,53 +29,21 @@ import jp.co.golorp.emarf.util.MapList;
  */
 public final class DataSourcesAssistMySQL extends DataSourcesAssist {
 
-    /**
-     * @param metaData
-     * @param schemaPattern
-     * @return ResultSet
-     * @throws SQLException
-     */
+    @Override
     public ResultSet getTables(final DatabaseMetaData metaData, final String schemaPattern) throws SQLException {
         return metaData.getTables(null, schemaPattern.toUpperCase(), null, new String[] { "TABLE", "VIEW" });
     }
 
-    /**
-     * @param metaData
-     * @param schemaPattern
-     * @param tableNamePattern
-     * @return ResultSet
-     * @throws SQLException
-     */
+    @Override
     public ResultSet getColumns(final DatabaseMetaData metaData, final String schemaPattern,
             final String tableNamePattern) throws SQLException {
         return metaData.getColumns(null, schemaPattern.toUpperCase(), tableNamePattern, null);
     }
 
-    /**
-     * @param metaData
-     * @param schemaPattern
-     * @param tableName
-     * @return ResultSet
-     * @throws SQLException
-     */
+    @Override
     public ResultSet getPrimaryKeys(final DatabaseMetaData metaData, final String schemaPattern,
             final String tableName) throws SQLException {
         return metaData.getPrimaryKeys(null, schemaPattern.toUpperCase(), tableName);
-    }
-
-    @Override
-    public String dateAdd(final String columnName, final int d) {
-        return "DATE_ADD(" + columnName + ", INTERVAL " + d + " DAY)";
-    }
-
-    @Override
-    public String nvlSysdate(final String columnName) {
-        return "IFNULL (" + columnName + ", sysdate())";
-    }
-
-    @Override
-    public String nvlZero(final String columnName) {
-        return "IFNULL (" + columnName + ", 0)";
     }
 
     @Override
@@ -87,7 +55,16 @@ public final class DataSourcesAssistMySQL extends DataSourcesAssist {
 
     @Override
     protected String getColumnComment(final String tableName, final String columnName) {
-        return null;
+        StringBuilder sb = new StringBuilder();
+        sb.append("SELECT ");
+        sb.append("    column_comment ");
+        sb.append("FROM ");
+        sb.append("    information_schema.columns ");
+        sb.append("WHERE ");
+        sb.append("    table_name = '" + tableName + "' ");
+        sb.append("    AND column_name = '" + columnName + "' ");
+        MapList mapList = Queries.select(sb.toString(), null, null);
+        return mapList.get(0).get("COLUMN_COMMENT").toString();
     }
 
     @Override
@@ -142,6 +119,26 @@ public final class DataSourcesAssistMySQL extends DataSourcesAssist {
     }
 
     @Override
+    public String date2CharSQL(final String s) {
+        return s;
+    }
+
+    @Override
+    public String time2CharSQL(final String s) {
+        return s;
+    }
+
+    @Override
+    public String dateTime2CharSQL(final String s) {
+        return "LEFT(DATE_FORMAT (" + s + ", '%Y-%m-%dT%H:%i:%s'), 19)";
+    }
+
+    @Override
+    public String timestamp2CharSQL(final String s) {
+        return "LEFT(DATE_FORMAT (" + s + ", '%Y-%m-%dT%H:%i:%s.%f'), 23)";
+    }
+
+    @Override
     public String formatedSQL(final String s, final String format) {
         return s;
     }
@@ -174,23 +171,18 @@ public final class DataSourcesAssistMySQL extends DataSourcesAssist {
     }
 
     @Override
-    public String date2CharSQL(final String s) {
-        return s;
+    public String dateAdd(final String columnName, final int d) {
+        return "DATE_ADD(" + columnName + ", INTERVAL " + d + " DAY)";
     }
 
     @Override
-    public String time2CharSQL(final String s) {
-        return s;
+    public String nvlSysdate(final String columnName) {
+        return "IFNULL (" + columnName + ", sysdate())";
     }
 
     @Override
-    public String dateTime2CharSQL(final String s) {
-        return "LEFT(DATE_FORMAT (" + s + ", '%Y-%m-%dT%H:%i:%s'), 19)";
-    }
-
-    @Override
-    public String timestamp2CharSQL(final String s) {
-        return "LEFT(DATE_FORMAT (" + s + ", '%Y-%m-%dT%H:%i:%s.%f'), 23)";
+    public String nvlZero(final String columnName) {
+        return "IFNULL (" + columnName + ", 0)";
     }
 
     @Override

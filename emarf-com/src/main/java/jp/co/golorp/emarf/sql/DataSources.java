@@ -296,24 +296,23 @@ public final class DataSources {
      * @return List<TableInfo>
      */
     public static List<TableInfo> getTables() {
-        // 設定ファイル読み込み
-        loadBundle();
-        // テーブル情報の取得
-        List<TableInfo> tables = new ArrayList<TableInfo>();
-        try {
-            // コネクションからデータベースのメタ情報を取得
+        loadBundle(); // 設定ファイル読み込み
+        List<TableInfo> tables = new ArrayList<TableInfo>(); // テーブル情報の取得
+        try { // コネクションからデータベースのメタ情報を取得
             Connection cn = Connections.get();
             DatabaseMetaData metaData = cn.getMetaData();
             // テーブル情報を取得
             String schemaPattern = BUNDLE.getString("username");
             DataSources.addTables(metaData, schemaPattern, tables);
-            // テーブル毎に主キー情報を取得
+            Map<String, TableInfo> tableMap = new TreeMap<String, TableInfo>();
             for (TableInfo table : tables) {
+                tableMap.put(table.getName(), table);
+            }
+            tables = tableMap.values().stream().toList();
+            for (TableInfo table : tables) { // テーブル毎に主キー情報を取得
                 addPrimaryKeys(metaData, table);
             }
-
-            // テーブル毎にカラム情報を取得
-            for (TableInfo table : tables) {
+            for (TableInfo table : tables) { // テーブル毎にカラム情報を取得
 
                 // テーブルのカラム情報を取得してループ
                 ResultSet columns = assist.getColumns(metaData, schemaPattern, table.getName());

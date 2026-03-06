@@ -619,8 +619,8 @@ public final class HtmlGenerator {
         for (TableInfo child : table.getChildren()) { // 子テーブルリスト
             String c = StringUtil.toPascalCase(child.getName());
             s.add("      <h3 th:text=\"#{" + c + ".h3}\">h3</h3>");
-            s.add("      <a th:href=\"@{/model/" + c + ".html}\" id=\"" + c + "\" target=\"dialog\" th:text=\"#{" + c
-                    + ".add}\" class=\"addChild\" tabindex=\"-1\">" + child.getRemarks() + "</a>");
+            s.add("      <a th:href=\"@{/model/" + c + ".html(anew)}\" id=\"" + c + "\" target=\"dialog\" th:text=\"#{"
+                    + c + ".add}\" class=\"addChild\" tabindex=\"-1\">" + child.getRemarks() + "</a>");
             String addRow = " data-addRow=\"true\"";
             for (ColumnInfo column : child.getColumns().values()) {
                 if (StringUtil.endsWith(inputFileSuffixs, column.getName())) {

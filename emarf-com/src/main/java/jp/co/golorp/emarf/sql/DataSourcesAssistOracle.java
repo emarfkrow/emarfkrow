@@ -158,7 +158,7 @@ public class DataSourcesAssistOracle extends DataSourcesAssist {
 
     /**
      * @param array 文字列配列
-     * @return 結合後の文字列
+     * @return 文字列を結合するSQL
      */
     public String joinedSQL(final String[] array) {
         return String.join(" || ", array);
@@ -166,7 +166,7 @@ public class DataSourcesAssistOracle extends DataSourcesAssist {
 
     /**
      * @param s カラム物理名
-     * @return 日付変換SQL
+     * @return yyyy/mm/ddにキャストするSQL
      */
     public String toDateSQL(final String s) {
         return "TO_DATE (SUBSTR (" + s + ", 0, 10), 'YYYY-MM-DD')";
@@ -174,7 +174,7 @@ public class DataSourcesAssistOracle extends DataSourcesAssist {
 
     /**
      * @param s カラム物理名
-     * @return ミリ秒タイムスタンプ変換SQL
+     * @return 日時にキャストするSQL
      */
     public String toDateTimeSQL(final String s) {
         return "TO_TIMESTAMP (REPLACE (SUBSTR (" + s + ", 0, 19), 'T', ' '), 'YYYY-MM-DD HH24:MI:SS')";
@@ -182,16 +182,36 @@ public class DataSourcesAssistOracle extends DataSourcesAssist {
 
     /**
      * @param s カラム物理名
-     * @return ミリ秒タイムスタンプ変換SQL
+     * @return ミリ秒タイムスタンプにキャストするSQL
      */
     public String toTimestampSQL(final String s) {
         return "TO_TIMESTAMP (REPLACE (SUBSTR (" + s + ", 0, 23), 'T', ' '), 'YYYY-MM-DD HH24:MI:SS.FF3')";
     }
 
+    @Override
+    public final String date2CharSQL(final String s) {
+        return "TO_CHAR (" + s + ", 'YYYY-MM-DD')";
+    }
+
+    @Override
+    public final String time2CharSQL(final String s) {
+        return "TO_CHAR (" + s + ", 'HH24:MI:SS')";
+    }
+
+    @Override
+    public final String dateTime2CharSQL(final String s) {
+        return "TO_CHAR (" + s + ", 'YYYY-MM-DD HH24:MI:SS')";
+    }
+
+    @Override
+    public final String timestamp2CharSQL(final String s) {
+        return "TO_CHAR (" + s + ", 'YYYY-MM-DD HH24:MI:SS.FF3')";
+    }
+
     /**
      * @param s カラム物理名
      * @param format フォーマット文字列
-     * @return フォーマットSQL
+     * @return タイムスタンプをフォーマットするSQL
      */
     public String formatedSQL(final String s, final String format) {
         return "TO_CHAR (" + toTimestampSQL(s) + ", '" + format + "')";
@@ -199,7 +219,7 @@ public class DataSourcesAssistOracle extends DataSourcesAssist {
 
     /**
      * @param columnName カラム物理名
-     * @return 囲み後のSQL文字列
+     * @return 引用符付きの文字列
      */
     public String quotedSQL(final String columnName) {
         return "\"" + columnName.toUpperCase() + "\"";
@@ -207,7 +227,7 @@ public class DataSourcesAssistOracle extends DataSourcesAssist {
 
     /**
      * @param columnName カラム物理名
-     * @return エスケープ済みで囲み後のSQL文字列
+     * @return 引用符をエスケープ済みの文字列
      */
     public String quoteEscapedSQL(final String columnName) {
         return "\\\"" + columnName.toUpperCase() + "\\\"";
@@ -250,51 +270,24 @@ public class DataSourcesAssistOracle extends DataSourcesAssist {
 
     /**
      * @param columnName カラム名
-     * @return 全半角スペースのトリム文字列
+     * @return 全半角スペースのトリムSQL文字列
      */
     public String trimedSQL(final String columnName) {
         return "RTRIM (RTRIM (" + columnName + "), '　')";
     }
 
-    /** */
     @Override
-    public String date2CharSQL(final String s) {
-        return "TO_CHAR (" + s + ", 'YYYY-MM-DD')";
-    }
-
-    /** */
-    @Override
-    public String time2CharSQL(final String s) {
-        return "TO_CHAR (" + s + ", 'HH24:MI:SS')";
-    }
-
-    /** */
-    @Override
-    public String dateTime2CharSQL(final String s) {
-        return "TO_CHAR (" + s + ", 'YYYY-MM-DD HH24:MI:SS')";
-    }
-
-    /** */
-    @Override
-    public String timestamp2CharSQL(final String s) {
-        return "TO_CHAR (" + s + ", 'YYYY-MM-DD HH24:MI:SS.FF3')";
-    }
-
-    /** */
-    @Override
-    public String sysDate() {
+    public final String sysDate() {
         return "SYSDATE";
     }
 
-    /** */
     @Override
-    public String sysTimestamp() {
+    public final String sysTimestamp() {
         return "SYSTIMESTAMP";
     }
 
-    /** */
     @Override
-    public int getColumnSize(final ResultSet columns) throws SQLException {
+    public final int getColumnSize(final ResultSet columns) throws SQLException {
         // viewで「NUMBER（桁指定なし）」になった場合、BigDecimalにするため「11」以上にする
         if (columns.getString("TYPE_NAME").equals("NUMBER") && columns.getInt("COLUMN_SIZE") == 38) {
             return 11;
