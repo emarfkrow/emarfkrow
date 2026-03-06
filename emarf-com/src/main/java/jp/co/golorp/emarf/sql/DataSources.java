@@ -300,15 +300,17 @@ public final class DataSources {
         List<TableInfo> tables = new ArrayList<TableInfo>(); // テーブル情報の取得
         try { // コネクションからデータベースのメタ情報を取得
             Connection cn = Connections.get();
-            DatabaseMetaData metaData = cn.getMetaData();
-            // テーブル情報を取得
+            DatabaseMetaData metaData = cn.getMetaData(); // テーブル情報を取得
             String schemaPattern = BUNDLE.getString("username");
             DataSources.addTables(metaData, schemaPattern, tables);
             Map<String, TableInfo> tableMap = new TreeMap<String, TableInfo>();
             for (TableInfo table : tables) {
                 tableMap.put(table.getName(), table);
             }
-            tables = tableMap.values().stream().toList();
+            tables = new ArrayList<TableInfo>(); // テーブル情報の取得
+            for (Entry<String, TableInfo> entry : tableMap.entrySet()) {
+                tables.add(entry.getValue());
+            }
             for (TableInfo table : tables) { // テーブル毎に主キー情報を取得
                 addPrimaryKeys(metaData, table);
             }
@@ -316,7 +318,6 @@ public final class DataSources {
 
                 // テーブルのカラム情報を取得してループ
                 ResultSet columns = assist.getColumns(metaData, schemaPattern, table.getName());
-
                 while (columns.next()) {
 
                     // カラム名が合致しなければスキップ
