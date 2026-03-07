@@ -295,4 +295,9 @@ public class DataSourcesAssistOracle extends DataSourcesAssist {
         return columns.getInt("COLUMN_SIZE");
     }
 
+    @Override
+    public final String castInteger(final String rightHand) {
+        return rightHand;
+    }
+
 }

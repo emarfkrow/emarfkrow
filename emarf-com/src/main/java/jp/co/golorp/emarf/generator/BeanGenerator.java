@@ -36,8 +36,8 @@ import jp.co.golorp.emarf.lang.StringUtil;
 import jp.co.golorp.emarf.properties.App;
 import jp.co.golorp.emarf.sql.DataSources;
 import jp.co.golorp.emarf.sql.DataSourcesAssist;
-import jp.co.golorp.emarf.util.ResourceBundles;
 import jp.co.golorp.emarf.util.IgnoreCaseList;
+import jp.co.golorp.emarf.util.ResourceBundles;
 
 /**
  * java/html/sql出力
@@ -597,6 +597,12 @@ public final class BeanGenerator {
                 if (primaryKey.getTypeName().equals("CHAR")) {
                     s.add("        whereList.add(\"" + assist.trimedSQL(q) + " = " + assist.trimedSQL(p) + "\");");
                 } else {
+
+                    // INT列の場合、postgresならcastを入れる
+                    if (primaryKey.getTypeName().startsWith("INT")) {
+                        p = assist.castInteger(p);
+                    }
+
                     s.add("        whereList.add(\"" + q + " = " + p + "\");");
                 }
             }
@@ -901,6 +907,11 @@ public final class BeanGenerator {
                 rightHand = assist.toTimestampSQL(assist.timestamp2CharSQL(assist.sysTimestamp()));
             }
 
+            // INT列の場合、postgresならcastを入れる
+            if (column.getTypeName().startsWith("INT")) {
+                rightHand = assist.castInteger(rightHand);
+            }
+
             s.add("        valueList.add(\"" + rightHand + "\");");
         }
         s.add("        return String.join(\"\\r\\n    , \", valueList);");
@@ -921,6 +932,7 @@ public final class BeanGenerator {
         String rightHand = ":" + StringUtil.toSnakeCase(colName);
 
         if (column.getDataType().equals("java.time.LocalDate")) {
+
             rightHand = assist.toDateSQL(rightHand);
 
         } else if (column.getDataType().equals("java.time.LocalDateTime")) {
@@ -934,12 +946,14 @@ public final class BeanGenerator {
         } else if (!column.isPk() && column.getTypeName().equals("CHAR")
                 && !StringUtil.isNullOrWhiteSpace(charNotNullRe)
                 && !column.getName().matches(charNotNullRe)) {
+
             //主キー以外のCHAR列で、必須CHAR指定に合致しない場合、NULLならスペースを補填する
             rightHand = "NVL (" + rightHand + ", ' ')";
 
         } else if (!column.isPk() && column.getTypeName().equals("NUMBER")
                 && !StringUtil.isNullOrWhiteSpace(numberNullableRe)
                 && column.getName().matches(numberNullableRe)) {
+
             //主キー以外のNUMBER列で、非必須INT指定に合致する場合、NULLなら「0」を補填する
             rightHand = "NVL (" + rightHand + ", 0)";
         }
@@ -1113,6 +1127,12 @@ public final class BeanGenerator {
 
             String cleanedName = colName.replaceAll("\\$", "_");
             String rightHand = getRightHand(cleanedName, column);
+
+            // INT列の場合、postgresならcastを入れる
+            if (column.getTypeName().startsWith("INT")) {
+                rightHand = assist.castInteger(rightHand);
+            }
+
             s.add("        setList.add(\"" + assist.quoteEscapedSQL(colName) + " = " + rightHand + "\");");
         }
         s.add("        return String.join(\"\\r\\n    , \", setList);");
@@ -1154,6 +1174,11 @@ public final class BeanGenerator {
                 s.add("        whereList.add(\"" + q + " = " + assist.toDateTimeSQL(p) + "\");");
 
             } else {
+
+                // INT列の場合、postgresならcastを入れる
+                if (pkCol.getTypeName().startsWith("INT")) {
+                    p = assist.castInteger(p);
+                }
 
                 s.add("        whereList.add(\"" + q + " = " + p + "\");");
             }

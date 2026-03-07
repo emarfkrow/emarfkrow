@@ -714,7 +714,6 @@ public final class DetailActionGenerator {
             }
 
             // 自テーブルが転生先であった
-
             if (froms++ == 0) {
                 s.add("");
                 s.add("            " + toE + " " + toI + " = new " + toE + "();");

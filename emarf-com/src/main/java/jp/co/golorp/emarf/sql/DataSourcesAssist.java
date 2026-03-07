@@ -201,4 +201,10 @@ public abstract class DataSourcesAssist {
      */
     public abstract int getColumnSize(ResultSet columns) throws SQLException;
 
+    /**
+     * @param rightHand
+     * @return String
+     */
+    public abstract String castInteger(String rightHand);
+
 }

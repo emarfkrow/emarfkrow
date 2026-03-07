@@ -1845,7 +1845,8 @@ public final class HtmlGenerator {
                 // 参照先テーブルの全カラム名を確認して、末尾が合致するカラム名を、参照先のID・名称カラム名として取得
                 String destIdColumn = null;
                 String destMeiColumn = null;
-                for (String destColumnName : referInfo.getColumns().keySet()) {
+                for (ColumnInfo column : referInfo.getColumns().values()) {
+                    String destColumnName = column.getName();
                     if (srcIdColumn.matches("(?i)^.*" + destColumnName + "$")) {
                         destIdColumn = destColumnName;
                     } else if (srcMeiColumn.matches("(?i)^.*" + destColumnName + "$")) {

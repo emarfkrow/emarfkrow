@@ -574,6 +574,12 @@ public final class SqlGenerator {
             }
 
         } else {
+
+            // INT列の場合、postgresならcastを入れる
+            if (column.getTypeName().startsWith("INT")) {
+                p = assist.castInteger(p);
+            }
+
             // 以外は等値検索
             sql.add("    AND a." + q + " = " + p + " ");
         }

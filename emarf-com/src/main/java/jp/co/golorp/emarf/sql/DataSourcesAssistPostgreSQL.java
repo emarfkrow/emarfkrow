@@ -91,57 +91,59 @@ public final class DataSourcesAssistPostgreSQL extends DataSourcesAssist {
 
     @Override
     public String joinedSQL(final String[] array) {
-        throw new SysError("メソッドが実装されていません。");
+        return "CONCAT (" + String.join(", ", array) + ")";
     }
 
     @Override
     public String toDateSQL(final String s) {
-        throw new SysError("メソッドが実装されていません。");
+        return "TO_DATE (SUBSTR (" + s + ", 0, 10), 'YYYY-MM-DD')";
     }
 
     @Override
     public String toDateTimeSQL(final String s) {
-        throw new SysError("メソッドが実装されていません。");
+        return "TO_TIMESTAMP (REPLACE (SUBSTR (" + s + ", 0, 19), 'T', ' '), 'YYYY-MM-DD HH24:MI:SS')";
     }
 
     @Override
     public String toTimestampSQL(final String s) {
-        throw new SysError("メソッドが実装されていません。");
+        return "TO_TIMESTAMP (REPLACE (SUBSTR (" + s + ", 0, 23), 'T', ' '), 'YYYY-MM-DD HH24:MI:SS.FF3')";
     }
 
     @Override
     public String date2CharSQL(final String s) {
-        throw new SysError("メソッドが実装されていません。");
+        return "TO_CHAR (" + s + ", 'YYYY-MM-DD')";
     }
 
     @Override
     public String time2CharSQL(final String s) {
-        throw new SysError("メソッドが実装されていません。");
+        return "TO_CHAR (" + s + ", 'HH24:MI:SS')";
     }
 
     @Override
     public String dateTime2CharSQL(final String s) {
-        throw new SysError("メソッドが実装されていません。");
+        //        return "TO_CHAR (" + s + ", 'YYYY-MM-DD\\\"T\\\"HH24:MI:SS')";
+        return "TO_CHAR (" + s + ", 'YYYY-MM-DD HH24:MI:SS')";
     }
 
     @Override
     public String timestamp2CharSQL(final String s) {
-        throw new SysError("メソッドが実装されていません。");
+        //        return "TO_CHAR (" + s + ", 'YYYY-MM-DD\\\"T\\\"HH24:MI:SS.MS')";
+        return "TO_CHAR (" + s + ", 'YYYY-MM-DD HH24:MI:SS.MS')";
     }
 
     @Override
     public String formatedSQL(final String s, final String format) {
-        throw new SysError("メソッドが実装されていません。");
+        return s;
     }
 
     @Override
-    public String quotedSQL(final String columnName) {
-        throw new SysError("メソッドが実装されていません。");
+    public String quotedSQL(final String columnNm) {
+        return "\"" + columnNm.toLowerCase() + "\"";
     }
 
     @Override
-    public String quoteEscapedSQL(final String columnName) {
-        throw new SysError("メソッドが実装されていません。");
+    public String quoteEscapedSQL(final String columnNm) {
+        return "\\\"" + columnNm.toLowerCase() + "\\\"";
     }
 
     @Override
@@ -157,37 +159,42 @@ public final class DataSourcesAssistPostgreSQL extends DataSourcesAssist {
 
     @Override
     public String trimedSQL(final String columnName) {
-        throw new SysError("メソッドが実装されていません。");
+        return "TRIM(TRAILING ' ' FROM " + columnName + ")";
     }
 
     @Override
     public String dateAdd(final String columnName, final int d) {
-        throw new SysError("メソッドが実装されていません。");
+        return "DATE_ADD(" + columnName + ", INTERVAL " + d + " DAY)";
     }
 
     @Override
     public String nvlSysdate(final String columnName) {
-        throw new SysError("メソッドが実装されていません。");
+        return "IFNULL (" + columnName + ", sysdate())";
     }
 
     @Override
     public String nvlZero(final String columnName) {
-        throw new SysError("メソッドが実装されていません。");
+        return "IFNULL (" + columnName + ", 0)";
     }
 
     @Override
     public String sysDate() {
-        throw new SysError("メソッドが実装されていません。");
+        return "sysdate()";
     }
 
     @Override
     public String sysTimestamp() {
-        throw new SysError("メソッドが実装されていません。");
+        return "now(3)";
     }
 
     @Override
     public int getColumnSize(final ResultSet columns) throws SQLException {
         return columns.getInt("COLUMN_SIZE");
+    }
+
+    @Override
+    public String castInteger(final String rightHand) {
+        return "CAST (" + rightHand + " AS INTEGER)";
     }
 
 }

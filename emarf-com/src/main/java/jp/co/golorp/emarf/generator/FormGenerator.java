@@ -265,8 +265,8 @@ public final class FormGenerator {
             // 該当する主キーと比べて、カラム名の接頭辞を判定する
             String keyPrefix = "";
             for (String pk : refer.getPrimaryKeys()) {
-                if (column.getName().endsWith(pk)) {
-                    keyPrefix = column.getName().replaceAll(pk + "$", "");
+                if (column.getName().matches("(?i).+" + pk + "$")) {
+                    keyPrefix = column.getName().replaceAll("(?i)" + pk + "$", "");
                     if (!keyPrefix.isEmpty()) {
                         keyPrefix += "_";
                     }
@@ -351,8 +351,8 @@ public final class FormGenerator {
                 //                LOG.trace("skip NotBlank.");
 
             } else if (column.isPk() && table.getParents().size() > 0
-                    && !column.getName().equals(keys.get(keys.size() - 1))
-                    && !column.getName().equals(koKeys.get(koKeys.size() - 1))) {
+                    && !column.getName().matches("(?i)^" + keys.get(keys.size() - 1) + "$")
+                    && !column.getName().matches("(?i)^" + koKeys.get(koKeys.size() - 1) + "$")) {
 
                 // 最終キーでなければ、親から取得するはずなので除外
                 LOG.trace("skip NotBlank.");
@@ -416,7 +416,7 @@ public final class FormGenerator {
             int columnSize = column.getColumnSize();
 
             // 形式チェック
-            if (column.getTypeName().equals("INT") || column.getTypeName().equals("DECIMAL")
+            if (column.getTypeName().startsWith("INT") || column.getTypeName().equals("DECIMAL")
                     || column.getTypeName().equals("DOUBLE") || column.getTypeName().equals("NUMBER")
                     || column.getTypeName().equals("NUMERIC")) {
 

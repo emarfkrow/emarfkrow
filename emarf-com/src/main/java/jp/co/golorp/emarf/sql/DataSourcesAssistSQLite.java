@@ -166,4 +166,9 @@ public final class DataSourcesAssistSQLite extends DataSourcesAssist {
         return columns.getInt("COLUMN_SIZE");
     }
 
+    @Override
+    public String castInteger(final String rightHand) {
+        return rightHand;
+    }
+
 }

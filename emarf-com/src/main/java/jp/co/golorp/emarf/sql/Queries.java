@@ -165,7 +165,8 @@ public final class Queries {
         if (rows != null && rows > 0) {
 
             // 上限なしの件数を取得
-            MapList data = Queries.selectByRawSql("SELECT COUNT(*) AS TOTAL_ROWS FROM (" + idSql + ") SUB", args, null);
+            MapList data = Queries.selectByRawSql("SELECT COUNT(*) AS \"TOTAL_ROWS\" FROM (" + idSql + ") SUB", args,
+                    null);
             Map<String, Object> item = data.get(0);
             Integer totalRows = Integer.valueOf(item.get("TOTAL_ROWS").toString());
             params.put("totalRows", totalRows);

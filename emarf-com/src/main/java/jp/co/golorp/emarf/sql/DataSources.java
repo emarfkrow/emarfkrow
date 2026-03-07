@@ -319,19 +319,15 @@ public final class DataSources {
                 // テーブルのカラム情報を取得してループ
                 ResultSet columns = assist.getColumns(metaData, schemaPattern, table.getName());
                 while (columns.next()) {
-
-                    // カラム名が合致しなければスキップ
-                    String columnName = columns.getString("COLUMN_NAME").toUpperCase();
+                    String columnName = columns.getString("COLUMN_NAME");
                     if (!columnName.matches("^[\\#\\$\\-0-9A-Z\\_a-z]+$")) {
-                        continue;
+                        continue; // カラム名が合致しなければスキップ
                     }
                     if (columnName.matches(columnIgnoreRe)) {
                         continue;
                     }
-
-                    // 変換ビューならtrue
                     if (columnName.toUpperCase().equals(viewDetailColumn.toUpperCase())) {
-                        table.setConvView(true);
+                        table.setConvView(true); // 変換ビューならtrue
                     }
 
                     // カラム情報を追加
@@ -341,8 +337,12 @@ public final class DataSources {
                     // カラム物理名
                     column.setName(columnName);
 
-                    // DBデータ型
-                    column.setTypeName(columns.getString("TYPE_NAME"));
+                    // DBデータ型：postgresqlのCHARはBPCHARなので変換
+                    String typeName = columns.getString("TYPE_NAME");
+                    if (typeName.matches("(?i)^BPCHAR$")) {
+                        typeName = "CHAR";
+                    }
+                    column.setTypeName(typeName.toUpperCase());
 
                     // カラムサイズ
                     column.setColumnSize(assist.getColumnSize(columns));
@@ -608,7 +608,7 @@ public final class DataSources {
         String typeName = column.getTypeName().toUpperCase();
         String dataType = typeName;
 
-        if (typeName.equals("INT")
+        if (typeName.startsWith("INT")
                 || (typeName.equals("NUMBER") && column.getColumnSize() <= 10 && column.getDecimalDigits() == 0)) {
 
             dataType = "Integer";
@@ -982,7 +982,7 @@ public final class DataSources {
 
                 // 変更理由列は比較対象から除外
                 List<String> sakiNonPrimaryKeys = new IgnoreCaseList<String>(saki.getNonPrimaryKeys());
-                if (!StringUtil.isNullOrWhiteSpace(reason)) {
+                if (!StringUtil.isNullOrWhiteSpace(reason) && sakiNonPrimaryKeys.contains(reason)) {
                     sakiNonPrimaryKeys.remove(reason);
                 }
 
@@ -1225,7 +1225,7 @@ public final class DataSources {
                                 saki.getColumns().get(motoKey).setRefer(moto);
                             }
                         }
-                    } else if (sakiKey.equals(lastKey)) {
+                    } else if (sakiKey.matches("(?i)^" + lastKey + "$")) {
                         // 必須でない場合は派生元の最終キーと一致するなら上書き
                         sakiCol.setDeriveFrom(moto);
                         for (String motoKey : moto.getPrimaryKeys()) {
@@ -1537,7 +1537,7 @@ public final class DataSources {
             }
 
             // 派生先（集約元）に集約先向けの派生キーがある場合は派生元（集約先）を取得
-            Set<TableInfo> sums = new HashSet<TableInfo>();
+            Set<TableInfo> sums = new LinkedHashSet<TableInfo>();
             for (TableInfo moto : saki.getDeriveTos()) {
                 for (ColumnInfo motoCol : moto.getColumns().values()) {
                     if (motoCol.getDeriveFrom() == saki && motoCol.getNullable() == 1) {

@@ -270,11 +270,15 @@ let Jsonate = {
                             // UPPER_CASEでも取得してみる
                             v = entity[Casing.toUpper(property)];
                             if (v == null) {
-                                // kebab-caseでも取得してみる
-                                v = entity[Casing.toKebab(property)];
+                                // snake_caseでも取得してみる
+                                v = entity[Casing.toSnake(property)];
                                 if (v == null) {
-                                    // UPPER-KEBAB-CASEでも取得してみる
-                                    v = entity[Casing.toUpperKebab(property)];
+                                    // kebab-caseでも取得してみる
+                                    v = entity[Casing.toKebab(property)];
+                                    if (v == null) {
+                                        // UPPER-KEBAB-CASEでも取得してみる
+                                        v = entity[Casing.toUpperKebab(property)];
+                                    }
                                 }
                             }
                         }
