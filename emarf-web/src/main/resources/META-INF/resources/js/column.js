@@ -151,12 +151,12 @@ let Column = {
         return column;
     },
 
-	bit: function(field, fieldMei, width, cssClass, formatter, validator) {
-	    let column = Column.cell(field, fieldMei, width, cssClass, formatter);
-	    if (validator) { column.validator = validator; }
-	    if (cssClass.indexOf('readonly') < 0) column.editor = Slick.Editors.Extends.Bit;
-	    return column;
-	},
+    bit: function(field, fieldMei, width, cssClass, formatter, validator) {
+        let column = Column.cell(field, fieldMei, width, cssClass, formatter);
+        if (validator) { column.validator = validator; }
+        if (cssClass.indexOf('readonly') < 0) column.editor = Slick.Editors.Extends.Bit;
+        return column;
+    },
 
     select: function(field, fieldMei, width, cssClass, options) {
         let column = Column.cell(field, fieldMei, width, cssClass);
@@ -199,8 +199,14 @@ let Column = {
                 //				let dataJson = data[i];
                 for (let j in dataJson) {
                     let row = dataJson[j];
-                    let v = row[value];
-                    let l = row[label];
+                    let v = row[value.toUpperCase()];
+                    if (!v) {
+                        v = row[value.toLowerCase()];
+                    }
+                    let l = row[label.toUpperCase()];
+                    if (!l) {
+                        l = row[label.toLowerCase()];
+                    }
                     options[v] = l;
                     if (column.width < l.bytes() * 10) {
                         column.width = l.bytes() * 10;

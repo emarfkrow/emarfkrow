@@ -157,7 +157,15 @@ let Options = {
 
         for (let i in dataJson) {
             let listSource = dataJson[i];
-            $checks.append('<div><label' + css + '><input type="checkbox" name="' + itemName + '" value="' + listSource[valueName] + '">' + listSource[labelName] + '</label></div>');
+            let value = listSource[valueName.toUpperCase()];
+            if (!value) {
+                value = listSource[valueName.toLowerCase()];
+            }
+            let label = listSource[labelName.toUpperCase()];
+            if (!label) {
+                label = listSource[labelName.toLowerCase()];
+            }
+            $checks.append('<div><label' + css + '><input type="checkbox" name="' + itemName + '" value="' + value + '">' + label + '</label></div>');
         }
     },
 
@@ -180,7 +188,15 @@ let Options = {
 
         for (let i in dataJson) {
             let listSource = dataJson[i];
-            $radios.append('<div><label' + css + '><input type="radio" name="' + itemName + '" value="' + listSource[valueName] + '">' + listSource[labelName] + '</label></div>');
+            let value = listSource[valueName.toUpperCase()];
+            if (!value) {
+                value = listSource[valueName.toLowerCase()];
+            }
+            let label = listSource[labelName.toUpperCase()];
+            if (!label) {
+                label = listSource[labelName.toLowerCase()];
+            }
+            $radios.append('<div><label' + css + '><input type="radio" name="' + itemName + '" value="' + value + '">' + label + '</label></div>');
         }
     },
 
@@ -217,8 +233,14 @@ let Options = {
 
         for (let i in dataJson) {
             let listSource = dataJson[i];
-            let value = listSource[valueName];
-            let label = listSource[labelName];
+            let value = listSource[valueName.toUpperCase()];
+            if (!value) {
+                value = listSource[valueName.toLowerCase()];
+            }
+            let label = listSource[labelName.toUpperCase()];
+            if (!label) {
+                label = listSource[labelName.toLowerCase()];
+            }
             if (value != label) {
                 label = value + '：' + label;
             }
