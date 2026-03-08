@@ -206,7 +206,6 @@ public final class BeanGenerator {
      * @param tables テーブル情報のリスト
      */
     private static void javaEntity(final List<TableInfo> tables) {
-
         String pkgPath = pkgE.replace(".", File.separator);
         String pkgDir = projectDir + File.separator + javaDir + File.separator + pkgPath;
         Map<String, String> paths = new LinkedHashMap<String, String>();
@@ -230,8 +229,7 @@ public final class BeanGenerator {
             s.add(" * @author emarfkrow");
             s.add(" */");
             s.add("public class " + e + " implements IEntity {");
-            int i = 0;
-            i = addSlickGridId(table, s, i);
+            int i = addSlickGridId(table, s, 0);
             for (ColumnInfo column : table.getColumns().values()) {
                 String n = column.getName(); // name
                 String m = column.getRemarks(); // mei
@@ -328,8 +326,7 @@ public final class BeanGenerator {
                 s.add("            this." + p + " = null;");
                 s.add("        }");
                 s.add("    }");
-                //子モデルgridで補填用の参照名
-                if (column.getRefer() != null) {
+                if (column.getRefer() != null) { // 子モデルgridで補填用の参照名
                     i = addSanshoMei(s, table, column, i);
                 }
             }

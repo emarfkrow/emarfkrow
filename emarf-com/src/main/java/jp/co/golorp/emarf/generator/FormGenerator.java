@@ -144,11 +144,13 @@ public final class FormGenerator {
                 javaFormDetailRegistChecks(s, table, column);
 
                 if (column.getNullable() == 1) {
-                    s.add("    private String " + prop + ";");
+                    if (StringUtil.endsWith(inputFlagSuffixs, column.getName())) {
+                        s.add("    private String " + prop + " = \"0\";");
+                    } else {
+                        s.add("    private String " + prop + ";");
+                    }
                 } else if (column.getDefaultValue() != null && column.getDataType().equals("String")) {
                     s.add("    private String " + prop + " = \"" + column.getDefaultValue() + "\";");
-                } else if (StringUtil.endsWith(inputFlagSuffixs, column.getName())) {
-                    s.add("    private String " + prop + " = \"0\";");
                 } else {
                     s.add("    private String " + prop + ";");
                 }

@@ -102,7 +102,9 @@ let Options = {
                     }
                 } else {
                     //登録フォームの場合
-                    if (dataJson.length == 2 && dataJson[0][optionValue] == '0' && dataJson[1][optionValue] == '1') {
+                    if (dataJson.length == 2 &&
+                        (dataJson[0][optionValue.toUpperCase()] == '0' || dataJson[0][optionValue.toLowerCase()] == '0') &&
+                        (dataJson[1][optionValue.toUpperCase()] == '1' || dataJson[1][optionValue.toLowerCase()] == '1')) {
                         //値が「0」「1」の場合はチェックボックス
                         Options.check($element, itemName, [dataJson[1]], optionValue, optionLabel);
                     } else if ($element.attr('data-force-pulldown') == '1') {
