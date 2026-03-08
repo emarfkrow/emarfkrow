@@ -152,6 +152,38 @@ $(document).on('ready', function() {
         radioCancel = false;
     });
 
+    if (Messages['span.product.suffixs']) {
+        let spanProductSuffixs = Messages['span.product.suffixs'].split(',');
+        for (let i in spanProductSuffixs) {
+            spanProductSuffix = spanProductSuffixs[i];
+            if (spanProductSuffix) {
+                let productSuffix = spanProductSuffix.split(':');
+                let spanSuffix = Casing.toPascal(productSuffix[0]);
+                if (productSuffix[1]) {
+                    let productDef = productSuffix[1].split('.');
+                    let formula = productDef[0].split('*');
+                    let suffix1 = Casing.toPascal(formula[0]);
+                    let suffix2 = Casing.toPascal(formula[1]);
+                    let round = 10 ** productDef[1];
+                    $('form.regist span[id$="' + spanSuffix + '"]').each(function() {
+                        let prefix = this.id.replace(new RegExp(spanSuffix + '$'), '');
+                        let $param1 = $('input[name="' + prefix + suffix1 + '"]');
+                        let $param2 = $('input[name="' + prefix + suffix2 + '"]');
+                        if ($param1 && $param2) {
+                            let $span = $(this);
+                            $param1.on('change', function() {
+                                $span.html(Math.round($param1.val() * $param2.val() * round) / round);
+                            });
+                            $param2.on('change', function() {
+                                $span.html(Math.round($param1.val() * $param2.val() * round) / round);
+                            });
+                        }
+                    });
+                }
+            }
+        }
+    }
+
     // 詳細画面で、URL引数に値が設定されている場合は、照会結果を初期表示
     let href = window.document.location.href;
     let $searchForm = $('body>.article [name$="SearchForm"]');
