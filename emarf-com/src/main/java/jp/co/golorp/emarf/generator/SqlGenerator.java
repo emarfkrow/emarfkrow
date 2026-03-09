@@ -45,6 +45,8 @@ public final class SqlGenerator {
     private static String[] inputDateTimeSuffixs;
     /** 日付入力サフィックス */
     private static String[] inputDateSuffixs;
+    /** 時刻入力サフィックス */
+    private static String[] inputHourSuffixs;
     /** 範囲指定サフィックス */
     private static String[] inputRangeSuffixs;
     /** フラグサフィックス */
@@ -86,6 +88,7 @@ public final class SqlGenerator {
         inputTimestampSuffixs = bundle.getString("input.timestamp.suffixs").split(",");
         inputDateTimeSuffixs = bundle.getString("input.datetime.suffixs").split(",");
         inputDateSuffixs = bundle.getString("input.date.suffixs").split(",");
+        inputHourSuffixs = bundle.getString("input.hour.suffixs").split(",");
         inputRangeSuffixs = bundle.getString("input.range.suffixs").split(",");
         inputFlagSuffixs = bundle.getString("input.flag.suffixs").split(",");
         inputOptionsSuffixs = bundle.getString("input.options.suffixs").split(",");
@@ -618,12 +621,15 @@ public final class SqlGenerator {
 
         if (column.getTypeName().equals("CHAR")) {
 
-            String trimed = assist.trimedSQL(aQuoted);
-            aQuoted = trimed + " AS " + asQuoted;
+            aQuoted = assist.trimedSQL(aQuoted) + " AS " + asQuoted;
 
         } else if (StringUtil.endsWith(inputDateSuffixs, colName)) {
 
             aQuoted = assist.date2CharSQL(aQuoted) + " AS " + asQuoted;
+
+        } else if (StringUtil.endsWith(inputHourSuffixs, colName)) {
+
+            aQuoted = assist.time2CharSQL(aQuoted) + " AS " + asQuoted;
 
         } else if (StringUtil.endsWith(inputDateTimeSuffixs, colName)) {
 

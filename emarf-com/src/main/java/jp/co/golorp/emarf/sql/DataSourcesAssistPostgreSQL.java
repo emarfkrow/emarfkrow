@@ -116,7 +116,7 @@ public final class DataSourcesAssistPostgreSQL extends DataSourcesAssist {
 
     @Override
     public String time2CharSQL(final String s) {
-        return "TO_CHAR (" + s + ", 'HH24:MI:SS')";
+        return "TO_CHAR (" + s + ", 'HH24:MI')";
     }
 
     @Override
@@ -184,7 +184,7 @@ public final class DataSourcesAssistPostgreSQL extends DataSourcesAssist {
 
     @Override
     public String sysTimestamp() {
-        return "now(3)";
+        return "CURRENT_TIMESTAMP";
     }
 
     @Override

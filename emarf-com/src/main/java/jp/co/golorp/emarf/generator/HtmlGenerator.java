@@ -1155,8 +1155,9 @@ public final class HtmlGenerator {
                 } else {
                     css = "notblank";
                 }
-            } else if (StringUtil.endsWith(inputReadonlySuffixs, n)) {
-                css = "readonly";
+            }
+            if (StringUtil.endsWith(inputReadonlySuffixs, n)) {
+                css += " readonly";
             }
         }
         String format = "null";
@@ -1172,18 +1173,13 @@ public final class HtmlGenerator {
         TableInfo referInfo = column.getRefer();
         if (referInfo != null) { // 参照テーブルが設定されている場合
             isMeiRefer = true;
-            // カラム名が組み合わせキーのいずれかに合致する場合
-            if (StringUtil.endsWith(referPairs, n)) {
-                // 参照設定の組み合わせでループ
-                for (String[] suffix : referPairs) {
+            if (StringUtil.endsWith(referPairs, n)) { // カラム名が組み合わせキーのいずれかに合致する場合
+                for (String[] suffix : referPairs) { // 参照設定の組み合わせでループ
                     String keySuffix = suffix[0];
                     String meiSuffix = suffix[1];
-                    // カラム名がキー接尾辞に合致する場合
-                    if (n.matches("(?i).*" + keySuffix + "$")) {
-                        // カラム名の末尾を名称列サフィックスに変換
-                        String tempMei = n.replaceAll("(?i)" + keySuffix + "$", meiSuffix);
-                        // 名称列がテーブルに含まれている場合は参照先から名称を取得しない
-                        if (table.getColumns().containsKey(tempMei)) {
+                    if (n.matches("(?i).*" + keySuffix + "$")) { // カラム名がキー接尾辞に合致する場合
+                        String tempMei = n.replaceAll("(?i)" + keySuffix + "$", meiSuffix); // カラム名の末尾を名称列サフィックスに変換
+                        if (table.getColumns().containsKey(tempMei)) { // 名称列がテーブルに含まれている場合は参照先から名称を取得しない
                             referMei = tempMei;
                             isMeiRefer = false;
                             break;
@@ -1195,8 +1191,7 @@ public final class HtmlGenerator {
                 for (String[] suffix : referPairs) { // 参照設定の組み合わせで、キー接尾辞に合致するカラム名を探索
                     String[] keySuffixs = suffix[0].split("&");
                     String meiSuffix = suffix[1];
-                    if (StringUtil.endsWith(keySuffixs, n)) {
-                        // カラム名の末尾を名称列サフィックスに変換して、名称列が参照先テーブルに含まれている場合は、取得する名称を決定する
+                    if (StringUtil.endsWith(keySuffixs, n)) { // カラム名の末尾を名称列サフィックスに変換して、名称列が参照先テーブルに含まれている場合は、取得する名称を決定する
                         String lastSuffix = keySuffixs[keySuffixs.length - 1];
                         String tempMei = n.replaceAll("(?i)" + lastSuffix + "$", meiSuffix);
                         if (n.equals(tempMei)) {
@@ -1227,8 +1222,7 @@ public final class HtmlGenerator {
         String type = column.getTypeName();
         String opt = "{ json: '" + json + "', paramkey: '" + optK + "', value: '" + optV + "', label: '" + optL + "' }";
         if (isMeiRefer) {
-            return "Column.refer('" + fieldPrefix + n + "', " + m + ", " + w + ", '" + css + "', '"
-                    + referMei.toString() + "'),";
+            return "Column.refer('" + fieldPrefix + n + "', " + m + ", " + w + ", '" + css + "', '" + referMei + "'),";
         } else if (BeanGenerator.isMetaTsBy(n) || column.isReborn() || column.isSummary()) {
             return "Column.cell('" + fieldPrefix + n + "', " + m + ", " + w + ", '" + css + "', " + format + "),";
         } else if (StringUtil.endsWith(inputFlagSuffixs, n)) {
@@ -1247,6 +1241,8 @@ public final class HtmlGenerator {
             return "Column.month('" + fieldPrefix + n + "', " + m + ", " + w + ", '" + css
                     + "', Slick.Formatters.Extends.Month),";
         } else if (StringUtil.endsWith(inputHourSuffixs, n)) {
+            return "Column.hour('" + fieldPrefix + n + "', " + m + ", " + w + ", '" + css + "', " + format + "),";
+        } else if (StringUtil.endsWith(inputTimeSuffixs, n)) {
             return "Column.time('" + fieldPrefix + n + "', " + m + ", " + w + ", '" + css + "', " + format + "),";
         } else if (StringUtil.endsWith(inputFileSuffixs, n)) {
             return "Column.link('" + fieldPrefix + n + "', " + m + ", " + w + ", '" + css + "'),";

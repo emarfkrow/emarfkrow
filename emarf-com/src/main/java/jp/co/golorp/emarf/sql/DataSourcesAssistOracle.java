@@ -195,7 +195,7 @@ public class DataSourcesAssistOracle extends DataSourcesAssist {
 
     @Override
     public final String time2CharSQL(final String s) {
-        return "TO_CHAR (" + s + ", 'HH24:MI:SS')";
+        return "TO_CHAR (" + s + ", 'HH24:MI')";
     }
 
     @Override

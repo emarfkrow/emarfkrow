@@ -126,11 +126,17 @@ let Column = {
         return column;
     },
 
-    time: function(field, fieldMei, width, cssClass, formatter, validator) {
-        let column = Column.text(field, fieldMei, width, cssClass, formatter, validator);
-        if (cssClass.indexOf('readonly') < 0) column.editor = Slick.Editors.Extends.Time;
-        return column;
-    },
+	hour: function(field, fieldMei, width, cssClass, formatter, validator) {
+	    let column = Column.text(field, fieldMei, width, cssClass, formatter, validator);
+	    if (cssClass.indexOf('readonly') < 0) column.editor = Slick.Editors.Extends.Hour;
+	    return column;
+	},
+
+	time: function(field, fieldMei, width, cssClass, formatter, validator) {
+	    let column = Column.text(field, fieldMei, width, cssClass, formatter, validator);
+	    if (cssClass.indexOf('readonly') < 0) column.editor = Slick.Editors.Extends.Time;
+	    return column;
+	},
 
     month: function(field, fieldMei, width, cssClass, formatter, validator) {
         let column = Column.text(field, fieldMei, width, cssClass, formatter, validator);

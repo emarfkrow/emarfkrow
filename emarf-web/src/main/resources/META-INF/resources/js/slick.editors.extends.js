@@ -29,6 +29,7 @@ limitations under the License.
                     "Date8": Date8Editor,
                     "Month": MonthEditor,
                     "DateTime": DateTimeEditor,
+                    "Hour": HourEditor,
                     "Time": TimeEditor,
                     "Select": SelectEditor,
                     "Checkbox": CheckboxEditor,
@@ -273,6 +274,8 @@ limitations under the License.
 
         this.loadValue = function(item) {
             defaultValue = item[args.column.field] || "";
+            // 6桁年月の対応
+            defaultValue = defaultValue.toString().replace(/([0-9]{4})([0-9]{2})/, '$1-$2');
             $input.val(defaultValue);
             $input[0].defaultValue = defaultValue;
             $input.select();
@@ -390,7 +393,7 @@ limitations under the License.
         this.init();
     }
 
-    function TimeEditor(args) {
+    function HourEditor(args) {
         var $input;
         var defaultValue;
         var scope = this;
@@ -462,6 +465,53 @@ limitations under the License.
                 }
             }
 
+            return {
+                valid: true,
+                msg: null
+            };
+        };
+
+        this.init();
+    }
+
+    function TimeEditor(args) {
+
+        var $select;
+        var defaultValue;
+        var scope = this;
+
+        this.init = function() {
+            $select = $("<SELECT tabIndex='0' class='editor-select'>" + tmOptions.join('') + "</SELECT>");
+            $select.appendTo(args.container);
+            $select.focus();
+        };
+
+        this.destroy = function() {
+            $select.remove();
+        };
+
+        this.focus = function() {
+            $select.focus();
+        };
+
+        this.loadValue = function(item) {
+            defaultValue = item[args.column.field];
+            $select.val(defaultValue);
+        };
+
+        this.serializeValue = function() {
+            return $select.val();
+        };
+
+        this.applyValue = function(item, state) {
+            item[args.column.field] = state;
+        };
+
+        this.isValueChanged = function() {
+            return ($select.val() != defaultValue);
+        };
+
+        this.validate = function() {
             return {
                 valid: true,
                 msg: null

@@ -152,10 +152,11 @@ $(document).on('ready', function() {
         radioCancel = false;
     });
 
+    // 数量×単価＝金額の自動計算
     if (Messages['span.product.suffixs']) {
         let spanProductSuffixs = Messages['span.product.suffixs'].split(',');
         for (let i in spanProductSuffixs) {
-            spanProductSuffix = spanProductSuffixs[i];
+            let spanProductSuffix = spanProductSuffixs[i];
             if (spanProductSuffix) {
                 let productSuffix = spanProductSuffix.split(':');
                 let spanSuffix = Casing.toPascal(productSuffix[0]);
@@ -164,18 +165,22 @@ $(document).on('ready', function() {
                     let formula = productDef[0].split('*');
                     let suffix1 = Casing.toPascal(formula[0]);
                     let suffix2 = Casing.toPascal(formula[1]);
-                    let round = 10 ** productDef[1];
+                    let roundBase = Math.pow(10, productDef[1]);
                     $('form.regist span[id$="' + spanSuffix + '"]').each(function() {
                         let prefix = this.id.replace(new RegExp(spanSuffix + '$'), '');
                         let $param1 = $('input[name="' + prefix + suffix1 + '"]');
                         let $param2 = $('input[name="' + prefix + suffix2 + '"]');
-                        if ($param1 && $param2) {
+                        if ($param1.length && $param2.length) {
                             let $span = $(this);
                             $param1.on('change', function() {
-                                $span.html(Math.round($param1.val() * $param2.val() * round) / round);
+                                let v = Math.round($param1.val() * $param2.val() * roundBase) / roundBase;
+                                $span.html(v);
+                                $('[name="' + $span[0].id + '"]').val(v);
                             });
                             $param2.on('change', function() {
-                                $span.html(Math.round($param1.val() * $param2.val() * round) / round);
+                                let v = Math.round($param1.val() * $param2.val() * roundBase) / roundBase;
+                                $span.html(v);
+                                $('[name="' + $span[0].id + '"]').val(v);
                             });
                         }
                     });
@@ -243,6 +248,29 @@ $(window).on('load', function() {
         sessionStorage.setItem('navScrollTop', $('div.nav')[0].scrollTop);
     });
 });
+
+// 時間プルダウン
+let maxH = 100;
+let tmOptions = [];
+tmOptions.push('<option></option>');
+for (let i = 0;i <= maxH;i++) {
+    if (i > 0) {
+        tmOptions.push('<option>' + i + ':00</option>');
+    }
+    if (i == 0) {
+        tmOptions.push('<option>' + i + ':05</option>');
+        tmOptions.push('<option>' + i + ':10</option>');
+        tmOptions.push('<option>' + i + ':15</option>');
+        tmOptions.push('<option>' + i + ':20</option>');
+        tmOptions.push('<option>' + i + ':25</option>');
+        tmOptions.push('<option>' + i + ':30</option>');
+        tmOptions.push('<option>' + i + ':45</option>');
+    } else if (i < maxH) {
+        tmOptions.push('<option>' + i + ':15</option>');
+        tmOptions.push('<option>' + i + ':30</option>');
+        tmOptions.push('<option>' + i + ':45</option>');
+    }
+}
 
 let Base = {
 
@@ -392,28 +420,6 @@ let Base = {
             });
         });
 
-        // 時間プルダウン
-        let maxH = 100;
-        let tmOptions = '<option></option>';
-        for (let i = 0;i <= maxH;i++) {
-            if (i > 0) {
-                tmOptions += '<option>' + i + ':00</option>';
-            }
-            if (i == 0) {
-                tmOptions += '<option>' + i + ':05</option>';
-                tmOptions += '<option>' + i + ':10</option>';
-                tmOptions += '<option>' + i + ':15</option>';
-                tmOptions += '<option>' + i + ':20</option>';
-                tmOptions += '<option>' + i + ':25</option>';
-                tmOptions += '<option>' + i + ':30</option>';
-                tmOptions += '<option>' + i + ':45</option>';
-            } else if (i < maxH) {
-                tmOptions += '<option>' + i + ':15</option>';
-                tmOptions += '<option>' + i + ':30</option>';
-                tmOptions += '<option>' + i + ':45</option>';
-            }
-        }
-
         $('.time').each(function() {
             this.outerHTML = '<select id="' + this.id + '"></select>';
             let $me = $('[id="' + this.id + '"]');
@@ -433,7 +439,7 @@ let Base = {
                 }
                 $me.attr(attr.name, attr.value);
             }
-            $me.append(tmOptions);
+            $me.append(tmOptions.join(''));
         });
 
         $(document).on('change', 'input[type="text"].bit', function() {
