@@ -311,14 +311,13 @@ public final class DataSources {
             for (Entry<String, TableInfo> entry : tableMap.entrySet()) {
                 tables.add(entry.getValue());
             }
+            LOG.info("主キー一覧取得");
             for (TableInfo table : tables) { // テーブル毎に主キー情報を取得
                 addPrimaryKeys(metaData, table);
             }
             for (TableInfo table : tables) { // テーブル毎にカラム情報を取得
-
-                // テーブルのカラム情報を取得してループ
                 ResultSet columns = assist.getColumns(metaData, schemaPattern, table.getName());
-                while (columns.next()) {
+                while (columns.next()) { // テーブルのカラム情報を取得してループ
                     String columnName = columns.getString("COLUMN_NAME");
                     if (!columnName.matches("^[\\#\\$\\-0-9A-Z\\_a-z]+$")) {
                         continue; // カラム名が合致しなければスキップ
@@ -457,6 +456,8 @@ public final class DataSources {
     private static void addTables(final DatabaseMetaData metaData, final String schemaPattern,
             final List<TableInfo> tables) throws SQLException {
 
+        LOG.info("テーブル一覧取得");
+
         Map<String, TableInfo> tree = new TreeMap<String, TableInfo>();
 
         ResultSet rs = assist.getTables(metaData, schemaPattern);
@@ -474,8 +475,6 @@ public final class DataSources {
             if (!StringUtil.isNullOrWhiteSpace(ignoreRe) && tableName.matches(ignoreRe)) {
                 continue;
             }
-
-            LOG.info("テーブル名: " + tableName);
 
             // テーブル情報を追加
             TableInfo table = new TableInfo();
@@ -500,6 +499,8 @@ public final class DataSources {
             table.setView(tableType.equals("VIEW"));
 
             tree.put(tableName, table);
+
+            LOG.info(tableName);
         }
 
         rs.close();
@@ -596,7 +597,7 @@ public final class DataSources {
             }
         }
 
-        LOG.info("    主キー: " + table.getPrimaryKeys());
+        LOG.info(table.getName() + " " + table.getPrimaryKeys());
     }
 
     /**

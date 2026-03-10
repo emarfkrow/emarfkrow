@@ -19,6 +19,7 @@ package jp.co.golorp.emarf.sql;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.Map;
 
 import jp.co.golorp.emarf.util.MapList;
@@ -79,19 +80,37 @@ public class DataSourcesAssistOracle extends DataSourcesAssist {
         return "NVL (" + columnName + ", 0)";
     }
 
+    /** テーブルコメントのキャッシュ */
+    private Map<String, String> tableCommentsCache = null;
+
     /**
      * @param tableName テーブル名
      * @return テーブルコメント
      */
     protected String getTableComment(final String tableName) {
-        String sql = "SELECT COMMENTS FROM USER_TAB_COMMENTS WHERE TABLE_NAME = '" + tableName + "'";
-        MapList mapList = Queries.select(sql, null, null);
-        Map<String, Object> map = mapList.get(0);
-        if (map.get("COMMENTS") != null) {
-            return map.get("COMMENTS").toString();
+
+        if (tableCommentsCache == null) {
+            tableCommentsCache = new HashMap<>();
+
+            String sql = "SELECT TABLE_NAME, COMMENTS FROM USER_TAB_COMMENTS";
+            MapList mapList = Queries.select(sql, null, null);
+            if (mapList != null) {
+                for (Map<String, Object> map : mapList) {
+                    String k = map.get("TABLE_NAME").toString();
+                    String v = null;
+                    if (map.get("COMMENTS") != null) {
+                        v = map.get("COMMENTS").toString();
+                    }
+                    tableCommentsCache.put(k, v);
+                }
+            }
         }
-        return null;
+
+        return tableCommentsCache.get(tableName);
     }
+
+    /** カラムコメントのキャッシュ */
+    private Map<String, String> columnCommentsCache = null;
 
     /**
      * @param tableName テーブル名
@@ -99,61 +118,94 @@ public class DataSourcesAssistOracle extends DataSourcesAssist {
      * @return カラムコメント
      */
     protected String getColumnComment(final String tableName, final String columnName) {
-        String sql = "SELECT COMMENTS FROM USER_COL_COMMENTS WHERE TABLE_NAME = '" + tableName + "' AND COLUMN_NAME = '"
-                + columnName + "'";
-        MapList mapList = Queries.select(sql, null, null);
-        if (mapList != null) {
-            Map<String, Object> map = mapList.get(0);
-            if (map.get("COMMENTS") != null) {
-                return map.get("COMMENTS").toString();
+
+        if (columnCommentsCache == null) {
+            columnCommentsCache = new HashMap<>();
+
+            String sql = "SELECT TABLE_NAME, COLUMN_NAME, COMMENTS FROM USER_COL_COMMENTS";
+            MapList mapList = Queries.select(sql, null, null);
+            if (mapList != null) {
+                for (Map<String, Object> map : mapList) {
+                    String k = map.get("TABLE_NAME").toString() + "." + map.get("COLUMN_NAME").toString();
+                    String v = null;
+                    if (map.get("COMMENTS") != null) {
+                        v = map.get("COMMENTS").toString();
+                    }
+                    columnCommentsCache.put(k, v);
+                }
             }
         }
-        return null;
+
+        return columnCommentsCache.get(tableName + "." + columnName);
     }
+
+    /** ユニークインデクスのキャッシュ */
+    private Map<String, MapList> uniqueIndexesCache = null;
 
     /**
      * @param tableName テーブル名
      * @return 複数のユニークインデクスについての列情報
      */
     protected MapList getUniqueIndexes(final String tableName) {
-        StringBuilder sb = new StringBuilder();
-        sb.append("SELECT \n");
-        sb.append("    uic.* \n");
-        sb.append("FROM \n");
-        sb.append("    ( \n");
-        sb.append("        SELECT \n");
-        sb.append("            ui.table_name \n");
-        sb.append("            , ui.index_name \n");
-        sb.append("            , COUNT(uic.column_name) AS column_count \n");
-        sb.append("        FROM \n");
-        sb.append("            user_indexes ui                     --インデクス \n");
-        sb.append("            INNER JOIN user_ind_columns uic     --インデクス列 \n");
-        sb.append("                ON uic.table_name = ui.table_name \n");
-        sb.append("                AND uic.index_name = ui.index_name \n");
-        sb.append("            LEFT OUTER JOIN user_constraints uc --主キー \n");
-        sb.append("                ON uc.owner = ui.table_owner \n");
-        sb.append("                AND uc.table_name = ui.table_name \n");
-        sb.append("                AND uc.constraint_type = 'P' \n");
-        sb.append("        WHERE \n");
-        sb.append("            ui.table_name = '" + tableName + "' \n");
-        sb.append("            AND ui.index_type = 'NORMAL' \n");
-        sb.append("            AND ui.uniqueness = 'UNIQUE' \n");
-        sb.append("            AND uc.owner IS NULL                --主キー以外のインデクス \n");
-        sb.append("        GROUP BY \n");
-        sb.append("            ui.table_name \n");
-        sb.append("            , ui.index_name \n");
-        sb.append("    ) ui \n");
-        sb.append("    INNER JOIN user_ind_columns uic             --インデクス列 \n");
-        sb.append("        ON uic.table_name = ui.table_name \n");
-        sb.append("        AND uic.index_name = ui.index_name \n");
-        sb.append("ORDER BY \n");
-        sb.append("    ui.table_name \n");
-        sb.append("    , ui.column_count \n");
-        sb.append("    , ui.index_name \n");
-        sb.append("    , uic.column_position \n");
-        String sql = sb.toString();
-        MapList mapList = Queries.select(sql, null, null);
-        return mapList;
+
+        if (uniqueIndexesCache == null) {
+            uniqueIndexesCache = new HashMap<>();
+
+            StringBuilder sb = new StringBuilder();
+            sb.append("SELECT \n");
+            sb.append("    ui.table_name \n");
+            sb.append("    , uic.* \n");
+            sb.append("FROM \n");
+            sb.append("    ( \n");
+            sb.append("        SELECT \n");
+            sb.append("            ui.table_name \n");
+            sb.append("            , ui.index_name \n");
+            sb.append("            , COUNT(uic.column_name) AS column_count \n");
+            sb.append("        FROM \n");
+            sb.append("            user_indexes ui                     --インデクス \n");
+            sb.append("            INNER JOIN user_ind_columns uic     --インデクス列 \n");
+            sb.append("                ON uic.table_name = ui.table_name \n");
+            sb.append("                AND uic.index_name = ui.index_name \n");
+            sb.append("            LEFT OUTER JOIN user_constraints uc --主キー \n");
+            sb.append("                ON uc.owner = ui.table_owner \n");
+            sb.append("                AND uc.table_name = ui.table_name \n");
+            sb.append("                AND uc.constraint_type = 'P' \n");
+            sb.append("        WHERE \n");
+            //            sb.append("            ui.table_name = '" + tableName + "' AND \n");
+            sb.append("            ui.index_type = 'NORMAL' \n");
+            sb.append("            AND ui.uniqueness = 'UNIQUE' \n");
+            sb.append("            AND uc.owner IS NULL                --主キー以外のインデクス \n");
+            sb.append("        GROUP BY \n");
+            sb.append("            ui.table_name \n");
+            sb.append("            , ui.index_name \n");
+            sb.append("    ) ui \n");
+            sb.append("    INNER JOIN user_ind_columns uic             --インデクス列 \n");
+            sb.append("        ON uic.table_name = ui.table_name \n");
+            sb.append("        AND uic.index_name = ui.index_name \n");
+            sb.append("ORDER BY \n");
+            sb.append("    ui.table_name \n");
+            sb.append("    , ui.column_count \n");
+            sb.append("    , ui.index_name \n");
+            sb.append("    , uic.column_position \n");
+            String sql = sb.toString();
+            MapList mapList = Queries.select(sql, null, null);
+
+            if (mapList != null) {
+                String previousTableName = null;
+                MapList tableUniqueIndexes = null;
+                for (Map<String, Object> map : mapList) {
+                    String t = map.get("TABLE_NAME").toString();
+                    if (!t.equals(previousTableName)) {
+                        previousTableName = t;
+                        tableUniqueIndexes = new MapList();
+                        uniqueIndexesCache.put(t, tableUniqueIndexes);
+                    }
+                    tableUniqueIndexes.add(map);
+                }
+            }
+        }
+
+        return uniqueIndexesCache.get(tableName);
     }
 
     /**

@@ -150,7 +150,7 @@ public final class Queries {
         // id列を付与（SlickGridのDataView対応）
         String idSql = sql;
         if (params == null && rows == null && page == null) {
-            LOG.debug("skip ided process.");
+            LOG.trace("skip ided process.");
         } else {
             String sql2 = sql.replaceAll("^[\\s\\t]*", ""); // 行頭の空白文字削除
             sql2 = sql2.replaceAll("--[^\\r\\n]*", ""); // １行コメント削除
