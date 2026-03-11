@@ -290,10 +290,9 @@ public final class HtmlGenerator {
                     if (col.getDeriveFrom() != null && !deriveFroms.contains(col.getDeriveFrom().getName())) {
                         deriveFroms.add(col.getDeriveFrom().getName());
                         String fieldId = null;
-                        for (String primaryKey : col.getDeriveFrom().getPrimaryKeys()) {
-                            fieldId = e + ".derivee" + StringUtil.toPascalCase(primaryKey);
-                            s.add(htmlFieldsInput(fieldId, "text", "", col.getDeriveFrom().getColumns().get(primaryKey),
-                                    null));
+                        for (String pk : col.getDeriveFrom().getPrimaryKeys()) {
+                            fieldId = e + ".derivee" + StringUtil.toPascalCase(pk);
+                            s.add(htmlFieldsInput(fieldId, "text", "", col.getDeriveFrom().getColumns().get(pk), null));
                         }
                         String referName = StringUtil.toPascalCase(col.getDeriveFrom().getName());
                         s.add("          <a id=\"" + fieldId + "\" th:href=\"@{/model/" + referName + "S.html?action="
@@ -329,7 +328,10 @@ public final class HtmlGenerator {
                 addRow = " data-addRow=\"true\"";
             }
         }
-        int frozenColumn = table.getPrimaryKeys().size() - 1;
+        int frozenColumn = -1;
+        if (!table.isView()) {
+            frozenColumn += table.getPrimaryKeys().size();
+        }
         String editable = "";
         if (table.isView() || table.isHistory() || table.getChildren().size() > 0) {
             editable = "data-editable=\"false\" ";
@@ -351,9 +353,8 @@ public final class HtmlGenerator {
                     + "\" target=\"dialog\" th:text=\"#{" + summaryEntity
                     + ".sum}\" class=\"summary\" tabindex=\"-1\">" + summary.getRemarks() + "</a>");
         }
-        // 履歴モデルでないテーブルか、組み合わせビュー（検索条件で使う）なら、非表示の参照ボタンを出力
         if ((!table.isView() && !table.isHistory()) || table.isConvView()) {
-            addGridReferHiddenLinks(s, table);
+            addGridReferHiddenLinks(s, table); // 履歴モデルでないテーブルか、組み合わせビュー（検索条件で使う）なら、非表示の参照ボタンを出力
         }
         // 履歴モデルでないテーブルで、子モデルを持たない場合
         if (!table.isView() && !table.isHistory() && table.getChildren().size() == 0) {
@@ -513,11 +514,13 @@ public final class HtmlGenerator {
         s.add("    " + entity + "GridColumns = [");
 
         //主キー列の出力
-        for (String pk : table.getPrimaryKeys()) {
-            ColumnInfo primaryKey = table.getColumns().get(pk);
-            String gridColumn = htmlGridColumn(table, primaryKey, "");
-            if (gridColumn != null) {
-                s.add("        " + gridColumn);
+        if (!table.isView()) {
+            for (String pk : table.getPrimaryKeys()) {
+                ColumnInfo primaryKey = table.getColumns().get(pk);
+                String gridColumn = htmlGridColumn(table, primaryKey, "");
+                if (gridColumn != null) {
+                    s.add("        " + gridColumn);
+                }
             }
         }
 

@@ -215,7 +215,9 @@ public final class BeanGenerator {
             List<String> s = new ArrayList<String>();
             s.add("package " + pkgE + ";");
             s.add("");
-            s.add("import java.time.LocalDateTime;");
+            if (!table.isView()) {
+                s.add("import java.time.LocalDateTime;");
+            }
             s.add("import java.util.ArrayList;");
             s.add("import java.util.HashMap;");
             s.add("import java.util.List;");
@@ -561,19 +563,21 @@ public final class BeanGenerator {
         s.add("     * " + table.getRemarks() + "照会");
         int paramCount = 0;
         String getParams = "";
-        for (String pk : table.getPrimaryKeys()) {
-            if (pk.length() > 0) {
-                String columnRemarks = "";
-                if (table.getColumns() != null && table.getColumns().size() > 0) {
-                    if (table.getColumns().containsKey(pk)) {
-                        columnRemarks = " " + table.getColumns().get(pk).getRemarks();
+        if (!table.isView()) {
+            for (String pk : table.getPrimaryKeys()) {
+                if (pk.length() > 0) {
+                    String columnRemarks = "";
+                    if (table.getColumns() != null && table.getColumns().size() > 0) {
+                        if (table.getColumns().containsKey(pk)) {
+                            columnRemarks = " " + table.getColumns().get(pk).getRemarks();
+                        }
                     }
+                    s.add("     * @param param" + ++paramCount + columnRemarks);
+                    if (getParams.length() > 0) {
+                        getParams += ", ";
+                    }
+                    getParams += "final Object param" + paramCount;
                 }
-                s.add("     * @param param" + ++paramCount + columnRemarks);
-                if (getParams.length() > 0) {
-                    getParams += ", ";
-                }
-                getParams += "final Object param" + paramCount;
             }
         }
         s.add("     * @return " + table.getRemarks());
@@ -581,26 +585,28 @@ public final class BeanGenerator {
         s.add("    public static " + e + " get(" + getParams + ") {");
         s.add("        List<String> whereList = new ArrayList<String>();");
 
-        // 主キー条件
+        // 主キー条件：ビューの場合は、主キーがなくても全ての列を条件にする
         boolean isPrimaryKey = false;
-        for (String pk : table.getPrimaryKeys()) {
-            if (pk.length() > 0) {
-                isPrimaryKey = true;
-                // quoted
-                String q = DataSources.getAssist().quoteEscapedSQL(pk);
-                // param
-                String p = ":" + StringUtil.toSnakeCase(pk);
-                ColumnInfo primaryKey = table.getColumns().get(pk);
-                if (primaryKey.getTypeName().equals("CHAR")) {
-                    s.add("        whereList.add(\"" + assist.trimedSQL(q) + " = " + assist.trimedSQL(p) + "\");");
-                } else {
+        if (!table.isView()) {
+            for (String pk : table.getPrimaryKeys()) {
+                if (pk.length() > 0) {
+                    isPrimaryKey = true;
+                    // quoted
+                    String q = DataSources.getAssist().quoteEscapedSQL(pk);
+                    // param
+                    String p = ":" + StringUtil.toSnakeCase(pk);
+                    ColumnInfo primaryKey = table.getColumns().get(pk);
+                    if (primaryKey.getTypeName().equals("CHAR")) {
+                        s.add("        whereList.add(\"" + assist.trimedSQL(q) + " = " + assist.trimedSQL(p) + "\");");
+                    } else {
 
-                    // INT列の場合、postgresならcastを入れる
-                    if (primaryKey.getTypeName().startsWith("INT")) {
-                        p = assist.castInteger(p);
+                        // INT列の場合、postgresならcastを入れる
+                        if (primaryKey.getTypeName().startsWith("INT")) {
+                            p = assist.castInteger(p);
+                        }
+
+                        s.add("        whereList.add(\"" + q + " = " + p + "\");");
                     }
-
-                    s.add("        whereList.add(\"" + q + " = " + p + "\");");
                 }
             }
         }
@@ -614,7 +620,8 @@ public final class BeanGenerator {
                     String p = ":" + StringUtil.toSnakeCase(cleanedKey);
                     ColumnInfo column = table.getColumns().get(key);
                     if (column.getTypeName().equals("CHAR")) {
-                        s.add("        whereList.add(\"" + assist.trimedSQL(q) + " = " + assist.trimedSQL(p) + "\");");
+                        s.add("        whereList.add(\"" + assist.trimedSQL(q) + " = " + assist.trimedSQL(p)
+                                + "\");");
                     } else {
                         s.add("        whereList.add(\"" + q + " = " + p + "\");");
                     }
@@ -638,21 +645,23 @@ public final class BeanGenerator {
         s.add("        sql += \"WHERE \\n\";");
         s.add("        sql += String.join(\" AND \\n\", whereList);");
         s.add("        Map<String, Object> map = new HashMap<String, Object>();");
-        paramCount = 0;
-        for (String primaryKey : table.getPrimaryKeys()) {
-            if (primaryKey.length() > 0) {
-                String snake = StringUtil.toSnakeCase(primaryKey);
-                s.add("        map.put(\"" + snake + "\", param" + ++paramCount + ");");
+        if (!table.isView()) {
+            paramCount = 0;
+            for (String primaryKey : table.getPrimaryKeys()) {
+                if (primaryKey.length() > 0) {
+                    String snake = StringUtil.toSnakeCase(primaryKey);
+                    s.add("        map.put(\"" + snake + "\", param" + ++paramCount + ");");
+                }
             }
         }
         s.add("        return Queries.get(sql, map, " + e + ".class);");
         s.add("    }");
 
-        javaEntityCRUDInsert(table, s);
-
-        javaEntityCRUDUpdate(table, s);
-
-        javaEntityCRUDDelete(table, s);
+        if (!table.isView()) {
+            javaEntityCRUDInsert(table, s);
+            javaEntityCRUDUpdate(table, s);
+            javaEntityCRUDDelete(table, s);
+        }
     }
 
     /**
@@ -1138,92 +1147,95 @@ public final class BeanGenerator {
 
     /**
      * エンティティにCRUD用ユーティリティ追加
-     * @param tableInfo テーブル情報
+     * @param table テーブル情報
      * @param s 出力文字列のリスト
      */
-    private static void javaEntityUtil(final TableInfo tableInfo, final List<String> s) {
+    private static void javaEntityUtil(final TableInfo table, final List<String> s) {
 
-        s.add("");
-        s.add("    /** @return where句 */");
-        s.add("    private String getWhere() {");
-        s.add("        List<String> whereList = new ArrayList<String>();");
+        if (!table.isView()) {
 
-        // 主キー条件
-        for (String primaryKey : tableInfo.getPrimaryKeys()) {
+            s.add("");
+            s.add("    /** @return where句 */");
+            s.add("    private String getWhere() {");
+            s.add("        List<String> whereList = new ArrayList<String>();");
 
-            if (primaryKey.length() == 0) {
-                continue;
-            }
+            // 主キー条件
+            for (String primaryKey : table.getPrimaryKeys()) {
 
-            // quoted
-            String q = assist.quoteEscapedSQL(primaryKey);
-            // param
-            String p = ":" + StringUtil.toSnakeCase(primaryKey);
-
-            ColumnInfo pkCol = tableInfo.getColumns().get(primaryKey);
-
-            if (pkCol.getTypeName().equals("CHAR")) {
-
-                s.add("        whereList.add(\"" + assist.trimedSQL(q) + " = " + assist.trimedSQL(p) + "\");");
-
-            } else if (pkCol.getDataType().equals("java.time.LocalDateTime")) {
-
-                s.add("        whereList.add(\"" + q + " = " + assist.toDateTimeSQL(p) + "\");");
-
-            } else {
-
-                // INT列の場合、postgresならcastを入れる
-                if (pkCol.getTypeName().startsWith("INT")) {
-                    p = assist.castInteger(p);
+                if (primaryKey.length() == 0) {
+                    continue;
                 }
 
-                s.add("        whereList.add(\"" + q + " = " + p + "\");");
+                // quoted
+                String q = assist.quoteEscapedSQL(primaryKey);
+                // param
+                String p = ":" + StringUtil.toSnakeCase(primaryKey);
+
+                ColumnInfo pkCol = table.getColumns().get(primaryKey);
+
+                if (pkCol.getTypeName().equals("CHAR")) {
+
+                    s.add("        whereList.add(\"" + assist.trimedSQL(q) + " = " + assist.trimedSQL(p) + "\");");
+
+                } else if (pkCol.getDataType().equals("java.time.LocalDateTime")) {
+
+                    s.add("        whereList.add(\"" + q + " = " + assist.toDateTimeSQL(p) + "\");");
+
+                } else {
+
+                    // INT列の場合、postgresならcastを入れる
+                    if (pkCol.getTypeName().startsWith("INT")) {
+                        p = assist.castInteger(p);
+                    }
+
+                    s.add("        whereList.add(\"" + q + " = " + p + "\");");
+                }
             }
-        }
 
-        // 楽観ロック
-        ColumnInfo column = tableInfo.getColumns().get(updateTs);
-        if (column != null) {
+            // 楽観ロック
+            ColumnInfo column = table.getColumns().get(updateTs);
+            if (column != null) {
 
-            String rightHand = "'\" + this." + StringUtil.toCamelCase(updateTs) + " + \"'";
-            if (column.getDataType().equals("java.time.LocalDateTime")) {
-                rightHand = assist.toTimestampSQL(rightHand);
+                String rightHand = "'\" + this." + StringUtil.toCamelCase(updateTs) + " + \"'";
+                if (column.getDataType().equals("java.time.LocalDateTime")) {
+                    rightHand = assist.toTimestampSQL(rightHand);
+                }
+
+                s.add("        whereList.add(\"" + assist.quoteEscapedSQL(updateTs) + " = " + rightHand + "\");");
             }
 
-            s.add("        whereList.add(\"" + assist.quoteEscapedSQL(updateTs) + " = " + rightHand + "\");");
-        }
+            s.add("        return String.join(\" AND \", whereList);");
+            s.add("    }");
 
-        s.add("        return String.join(\" AND \", whereList);");
-        s.add("    }");
-
-        // toMap
-        s.add("");
-        s.add("    /**");
-        s.add("     * @param now システム日時");
-        s.add("     * @param execId 実行ID");
-        s.add("     * @return マップ化したエンティティ");
-        s.add("     */");
-        s.add("    private Map<String, Object> toMap(final LocalDateTime now, final String execId) {");
-        s.add("        Map<String, Object> map = new HashMap<String, Object>();");
-        for (String columnName : tableInfo.getColumns().keySet()) {
-            if (isMetaTsBy(columnName)) {
-                continue;
+            // toMap
+            s.add("");
+            s.add("    /**");
+            s.add("     * @param now システム日時");
+            s.add("     * @param execId 実行ID");
+            s.add("     * @return マップ化したエンティティ");
+            s.add("     */");
+            s.add("    private Map<String, Object> toMap(final LocalDateTime now, final String execId) {");
+            s.add("        Map<String, Object> map = new HashMap<String, Object>();");
+            for (String columnName : table.getColumns().keySet()) {
+                if (isMetaTsBy(columnName)) {
+                    continue;
+                }
+                String snake = StringUtil.toSnakeCase(columnName);
+                String p = StringUtil.toCamelCase(columnName);
+                //            p = p.replaceAll("#", "_");
+                s.add("        map.put(\"" + snake + "\", this." + p + ");");
             }
-            String snake = StringUtil.toSnakeCase(columnName);
-            String p = StringUtil.toCamelCase(columnName);
-            //            p = p.replaceAll("#", "_");
-            s.add("        map.put(\"" + snake + "\", this." + p + ");");
+            s.add("        map.put(\"" + StringUtil.toSnakeCase(insertTs) + "\", now);");
+            s.add("        map.put(\"" + StringUtil.toSnakeCase(insertBy) + "\", execId);");
+            String now = "now";
+            if (!StringUtil.isNullOrWhiteSpace(updateTsFormat)) {
+                now = "jp.co.golorp.emarf.time.DateTimeUtil.format(\"" + updateTsFormat + "\", now)";
+            }
+            s.add("        map.put(\"" + StringUtil.toSnakeCase(updateTs) + "\", " + now + ");");
+            s.add("        map.put(\"" + StringUtil.toSnakeCase(updateBy) + "\", execId);");
+            s.add("        return map;");
+            s.add("    }");
         }
-        s.add("        map.put(\"" + StringUtil.toSnakeCase(insertTs) + "\", now);");
-        s.add("        map.put(\"" + StringUtil.toSnakeCase(insertBy) + "\", execId);");
-        String now = "now";
-        if (!StringUtil.isNullOrWhiteSpace(updateTsFormat)) {
-            now = "jp.co.golorp.emarf.time.DateTimeUtil.format(\"" + updateTsFormat + "\", now)";
-        }
-        s.add("        map.put(\"" + StringUtil.toSnakeCase(updateTs) + "\", " + now + ");");
-        s.add("        map.put(\"" + StringUtil.toSnakeCase(updateBy) + "\", execId);");
-        s.add("        return map;");
-        s.add("    }");
     }
 
     /**

@@ -328,29 +328,19 @@ public final class DataSources {
                     if (columnName.toUpperCase().equals(viewDetailColumn.toUpperCase())) {
                         table.setConvView(true); // 変換ビューならtrue
                     }
-
-                    // カラム情報を追加
-                    ColumnInfo column = new ColumnInfo();
+                    ColumnInfo column = new ColumnInfo(); // カラム情報を追加
                     table.getColumns().put(columnName, column);
-
-                    // カラム物理名
-                    column.setName(columnName);
-
-                    // DBデータ型：postgresqlのCHARはBPCHARなので変換
+                    column.setName(columnName); // カラム物理名
                     String typeName = columns.getString("TYPE_NAME");
-                    if (typeName.matches("(?i)^BPCHAR$")) {
+                    if (typeName.matches("(?i)^BPCHAR$")) { // DBデータ型：postgresqlのCHARはBPCHARなので変換
                         typeName = "CHAR";
                     }
                     column.setTypeName(typeName.toUpperCase());
-
-                    // カラムサイズ
-                    column.setColumnSize(assist.getColumnSize(columns));
+                    column.setColumnSize(assist.getColumnSize(columns)); // カラムサイズ
                     if (column.getColumnSize() == 0) {
                         column.setColumnSize(3);
                     }
-
-                    // 桁制限
-                    if (StringUtil.endsWith(inputDateSuffixs, columnName)) {
+                    if (StringUtil.endsWith(inputDateSuffixs, columnName)) { // 桁制限
                         column.setMaxLength(10);
                     } else if (StringUtil.endsWith(inputHourSuffixs, columnName)) {
                         column.setMaxLength(5);
@@ -359,15 +349,10 @@ public final class DataSources {
                     } else if (StringUtil.endsWith(inputTimestampSuffixs, columnName)) {
                         column.setMaxLength(23);
                     }
-
-                    // 小数桁数
-                    column.setDecimalDigits(columns.getInt("DECIMAL_DIGITS"));
-                    // NULL可否
-                    column.setNullable(columns.getInt("NULLABLE"));
-                    // デフォルト値
-                    column.setDefaultValue(columns.getString("COLUMN_DEF"));
-                    // カラム論理名
-                    String remarks = columns.getString("REMARKS");
+                    column.setDecimalDigits(columns.getInt("DECIMAL_DIGITS")); // 小数桁数
+                    column.setNullable(columns.getInt("NULLABLE")); // NULL可否
+                    column.setDefaultValue(columns.getString("COLUMN_DEF")); // デフォルト値
+                    String remarks = columns.getString("REMARKS"); // カラム論理名
                     String note = "";
                     if (remarks == null || remarks.length() == 0) {
                         remarks = assist.getColumnComment(table.getName(), columnName);
@@ -384,30 +369,51 @@ public final class DataSources {
                     column.setNote(note);
 
                     if (table.getPrimaryKeys().contains(columnName)) {
-                        // 主キー
                         column.setPk(true);
                     } else {
-                        // 変更理由でない場合
                         if (table.getUniqueIndexColumns().contains(columnName)) {
                             column.setUnique(true);
                         }
                         table.getNonPrimaryKeys().add(columnName);
                     }
-
-                    // typeNameをjavaデータ型に変換
-                    String dataType = getDataType(column);
+                    String dataType = getDataType(column); // typeNameをjavaデータ型に変換
                     column.setDataType(dataType);
                 }
                 columns.close();
                 if (table.getPrimaryKeys().size() == 0 && table.isView()) {
-                    ColumnInfo noCol = table.getColumns().get("NO");
+                    ColumnInfo noCol = table.getColumns().get("NO"); //viewの場合、「NO」列があれば主キーとする
                     if (noCol != null) {
-                        //viewの場合、「NO」列があれば主キーとする
                         table.getPrimaryKeys().add("NO");
                         noCol.setPk(true);
                         table.getNonPrimaryKeys().remove("NO");
+                    } else {
+                        String prefix = null;
+                        for (ColumnInfo column : table.getColumns().values()) {
+                            for (String allKey : allKeys) {
+                                if (column.getName().matches("(?i)^.*" + allKey + "$")) {
+                                    if (prefix == null) {
+                                        prefix = column.getName().replaceAll("(?i)" + allKey + "$", "");
+                                    }
+                                    if (prefix == null) {
+                                        table.getPrimaryKeys().add(column.getName());
+                                    } else {
+                                        List<String> primaryKeys = new ArrayList<String>();
+                                        for (String primaryKey : table.getPrimaryKeys()) {
+                                            if (primaryKey.startsWith(prefix)) {
+                                                primaryKeys.add(primaryKey);
+                                            }
+                                        }
+                                        if (column.getName().startsWith(prefix)) {
+                                            primaryKeys.add(column.getName());
+                                        }
+                                        table.setPrimaryKeys(primaryKeys);
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
+                LOG.info(table.getName() + " " + table.getPrimaryKeys());
             }
         } catch (Exception e) {
             LOG.error(e.getMessage(), e);
@@ -415,30 +421,19 @@ public final class DataSources {
         } finally {
             Connections.close();
         }
-        // 参照モデルの評価
-        setRefer(tables);
-        // 兄弟モデルの評価
-        addBrothers(tables);
-        // 履歴モデルの評価
-        setHistory(tables);
-        // 複合モデルの評価
-        addCombos(tables);
-        // 親子モデルの評価
-        addChildren(tables);
-        // 派生モデルの評価
-        addDerives(tables);
-        // 統合モデルの評価
-        addMerge(tables);
-        // 転生モデルの評価
-        setReborn(tables);
-        // 転生モデルの再評価：１回目
-        setReborn(tables);
-        // 選抜モデルの評価
-        addChoices(tables);
+        setRefer(tables); // 参照モデルの評価
+        addBrothers(tables); // 兄弟モデルの評価
+        setHistory(tables); // 履歴モデルの評価
+        addCombos(tables); // 複合モデルの評価
+        addChildren(tables); // 親子モデルの評価
+        addDerives(tables); // 派生モデルの評価
+        addMerge(tables); // 統合モデルの評価
+        setReborn(tables); // 転生モデルの評価
+        setReborn(tables); // 転生モデルの再評価：１回目
+        addChoices(tables); // 選抜モデルの評価
         // // 転生モデルの再評価：２回目
         // setReborn(tables);
-        // 集約モデルの評価
-        addSummaryOfs(tables);
+        addSummaryOfs(tables); // 集約モデルの評価
         // // 転生モデルの再評価：３回目
         // setReborn(tables);
         log(tables);
@@ -509,6 +504,9 @@ public final class DataSources {
             tables.add(table);
         }
     }
+
+    /** */
+    private static Set<String> allKeys = new HashSet<String>();
 
     /**
      * テーブル情報に主キー名のリストを設定
@@ -597,7 +595,9 @@ public final class DataSources {
             }
         }
 
-        LOG.info(table.getName() + " " + table.getPrimaryKeys());
+        for (String primaryKey : table.getPrimaryKeys()) {
+            allKeys.add(primaryKey);
+        }
     }
 
     /**
@@ -675,9 +675,9 @@ public final class DataSources {
             TableInfo saki = sakis.next();
 
             // 適用日を除く、主キーがなければスキップ
-            List<String> referKeys = new ArrayList<String>(saki.getPrimaryKeys());
-            referKeys.remove(tekiyoBi);
-            if (referKeys.size() == 0) {
+            List<String> sakiKeys = new ArrayList<String>(saki.getPrimaryKeys());
+            sakiKeys.remove(tekiyoBi);
+            if (sakiKeys.size() == 0) {
                 continue;
             }
 
@@ -706,7 +706,7 @@ public final class DataSources {
             }
 
             // 参照先マスタのユニークキー情報
-            String referLastKey = referKeys.get(referKeys.size() - 1);
+            String sakiLastKey = sakiKeys.get(sakiKeys.size() - 1);
 
             // 参照元トランとしてループ
             Iterator<TableInfo> motos = tables.iterator();
@@ -728,7 +728,23 @@ public final class DataSources {
                     }
 
                     // 参照元カラム名の末尾が参照先カラム名と合致し、参照モデルが未登録なら、カラムに参照モデルを設定
-                    if (motoColName.matches("(?i)^.*" + referLastKey + "$") && motoCol.getRefer() == null) {
+                    if (motoColName.matches("(?i)^.*" + sakiLastKey + "$") && motoCol.getRefer() == null) {
+
+                        //接頭辞を取得
+                        String prefix = motoColName.replaceAll("(?i)" + sakiLastKey + "$", "");
+
+                        //参照先の全主キーに接頭辞を加えたカラム名が全て存在すれば参照元として認める
+                        boolean isRefer = true;
+                        for (String sakiKey : sakiKeys) {
+                            String motoKey = prefix + sakiKey;
+                            if (!moto.getColumns().containsKey(motoKey)) {
+                                isRefer = false;
+                                break;
+                            }
+                        }
+                        if (!isRefer) {
+                            continue;
+                        }
 
                         LOG.debug("    " + saki.getName() + " from " + moto.getName() + "." + motoCol.getName());
                         motoCol.setRefer(saki);
@@ -799,6 +815,10 @@ public final class DataSources {
         LOG.debug("【Combo】");
 
         for (TableInfo saki : tables) {
+
+            if (saki.isView()) {
+                continue;
+            }
 
             if (saki.isHistory()) {
                 continue;
@@ -872,6 +892,10 @@ public final class DataSources {
         while (elds.hasNext()) {
             TableInfo eld = elds.next();
 
+            if (eld.isView()) {
+                continue;
+            }
+
             // 比較元に主キーがなければスキップ
             if (eld.getPrimaryKeys().size() == 0) {
                 continue;
@@ -894,6 +918,10 @@ public final class DataSources {
             Iterator<TableInfo> yngs = tables.iterator();
             while (yngs.hasNext()) {
                 TableInfo yng = yngs.next();
+
+                if (yng.isView()) {
+                    continue;
+                }
 
                 // 同じテーブルならスキップ
                 if (eld == yng) {
@@ -958,6 +986,10 @@ public final class DataSources {
         while (motos.hasNext()) {
             TableInfo moto = motos.next();
 
+            if (moto.isView()) {
+                continue;
+            }
+
             // 主キーがなければスキップ
             if (moto.getPrimaryKeys().size() == 0) {
                 continue;
@@ -970,6 +1002,10 @@ public final class DataSources {
             Iterator<TableInfo> sakis = tables.iterator();
             while (sakis.hasNext()) {
                 TableInfo saki = sakis.next();
+
+                if (saki.isView()) {
+                    continue;
+                }
 
                 // 比較元と比較先が同じならスキップ
                 if (moto == saki) {
@@ -1033,6 +1069,10 @@ public final class DataSources {
         while (oyas.hasNext()) {
             TableInfo oya = oyas.next();
 
+            if (oya.isView()) {
+                continue;
+            }
+
             // 子を設定しないならスキップ
             if (oya.getName().matches(dinksRe)) {
                 continue;
@@ -1050,6 +1090,10 @@ public final class DataSources {
             Iterator<TableInfo> kos = tables.iterator();
             while (kos.hasNext()) {
                 TableInfo ko = kos.next();
+
+                if (ko.isView()) {
+                    continue;
+                }
 
                 // 比較元と同じならスキップ
                 if (oya == ko) {
@@ -1185,6 +1229,10 @@ public final class DataSources {
             while (sakis.hasNext()) {
                 TableInfo saki = sakis.next();
 
+                if (saki.isView()) {
+                    continue;
+                }
+
                 if (saki.getPrimaryKeys().size() == 0) {
                     continue;
                 }
@@ -1257,6 +1305,10 @@ public final class DataSources {
         while (sakis.hasNext()) {
             TableInfo saki = sakis.next();
 
+            if (saki.isView()) {
+                continue;
+            }
+
             // 派生元が１つ以下ならスキップ
             if (saki.getDeriveFroms().size() <= 1) {
                 continue;
@@ -1276,6 +1328,10 @@ public final class DataSources {
             }
 
             for (TableInfo moto : merges) {
+
+                if (moto.isView()) {
+                    continue;
+                }
 
                 // マスタ同士かトラン同士でなければスキップ
                 if (saki.isRefer() != moto.isRefer()) {
@@ -1317,6 +1373,10 @@ public final class DataSources {
         while (motos.hasNext()) {
             TableInfo moto = motos.next();
 
+            if (moto.isView()) {
+                continue;
+            }
+
             // ユニークな必須の転生先情報
             TableInfo saki = null;
             Set<String> sakiKeys = null;
@@ -1329,6 +1389,10 @@ public final class DataSources {
 
             // 派生先でループ
             for (TableInfo deriveTo : moto.getDeriveTos()) {
+
+                if (deriveTo.isView()) {
+                    continue;
+                }
 
                 // 派生先のうち一つでも、転生先を持っているか
                 if (!isSakiRebornTo) {
@@ -1463,6 +1527,10 @@ public final class DataSources {
         while (sakis.hasNext()) {
             TableInfo saki = sakis.next();
 
+            if (saki.isView()) {
+                continue;
+            }
+
             // 派生元が１つ以下ならスキップ
             if (saki.getDeriveFroms().size() <= 1) {
                 continue;
@@ -1487,6 +1555,11 @@ public final class DataSources {
 
             // 選択肢でループ
             for (TableInfo moto : choises) {
+
+                if (moto.isView()) {
+                    continue;
+                }
+
                 LOG.debug("    " + saki.getName() + " from " + moto.getName() + " " + moto.getPrimaryKeys());
 
                 //                // 派生情報を消し込み
@@ -1522,6 +1595,10 @@ public final class DataSources {
         while (sakis.hasNext()) {
             TableInfo saki = sakis.next();
 
+            if (saki.isView()) {
+                continue;
+            }
+
             // 子モデルはスキップ
             if (saki.getParents().size() > 0) {
                 continue;
@@ -1548,6 +1625,10 @@ public final class DataSources {
             }
 
             for (TableInfo moto : sums) {
+
+                if (moto.isView()) {
+                    continue;
+                }
 
                 // 集約元に転生先があるならスキップ
                 if (moto.getRebornTo() != null) {
