@@ -234,6 +234,10 @@ public final class SqlGenerator {
      */
     public static String getMeiSql(final int refs, final TableInfo table, final ColumnInfo column) {
 
+        if (table.isView()) {
+            return null;
+        }
+
         TableInfo refer = column.getRefer();
 
         //BeanGeneratorの子モデル処理時にはnullかも知れない

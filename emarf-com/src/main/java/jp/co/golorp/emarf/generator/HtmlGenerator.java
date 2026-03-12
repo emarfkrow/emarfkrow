@@ -1174,7 +1174,7 @@ public final class HtmlGenerator {
         boolean isMeiRefer = false; // 名称を参照先から取得するか
         String referMei = ""; // 参照名の列名
         TableInfo referInfo = column.getRefer();
-        if (referInfo != null) { // 参照テーブルが設定されている場合
+        if (!table.isView() && referInfo != null) { // 参照テーブルが設定されている場合
             isMeiRefer = true;
             if (StringUtil.endsWith(referPairs, n)) { // カラム名が組み合わせキーのいずれかに合致する場合
                 for (String[] suffix : referPairs) { // 参照設定の組み合わせでループ
@@ -1415,7 +1415,7 @@ public final class HtmlGenerator {
                 }
                 if (!isD && StringUtil.endsWith(inputRangeSuffixs, cName)) { // 検索画面の範囲指定項目の場合
                     s.add(htmlFieldsRange(fId, type, inputCss, c, format));
-                } else if (c.getRefer() != null) { // 参照モデルの場合
+                } else if ((!t.isView() || !isD) && c.getRefer() != null) { // 参照モデルの場合
                     s.add(htmlFieldsRefer(fId, type, inputCss, c, format, t, referCss));
                 } else {
                     if (StringUtil.endsWith(inputBitSuffixs, cName)) {

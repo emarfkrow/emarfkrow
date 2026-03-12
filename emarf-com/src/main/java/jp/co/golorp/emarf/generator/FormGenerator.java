@@ -250,6 +250,9 @@ public final class FormGenerator {
             if (column.getRefer() == null) {
                 continue;
             }
+            if (column.getRefer().isView()) {
+                continue;
+            }
             // 登録者か更新者ならスキップ
             if (BeanGenerator.isMetaBy(column.getName())) {
                 continue;

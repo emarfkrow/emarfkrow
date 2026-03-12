@@ -328,7 +328,7 @@ public final class BeanGenerator {
                 s.add("            this." + p + " = null;");
                 s.add("        }");
                 s.add("    }");
-                if (column.getRefer() != null) { // 子モデルgridで補填用の参照名
+                if (!table.isView() && column.getRefer() != null) { // 子モデルgridで補填用の参照名
                     i = addSanshoMei(s, table, column, i);
                 }
             }

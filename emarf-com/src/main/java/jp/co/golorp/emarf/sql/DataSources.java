@@ -367,7 +367,6 @@ public final class DataSources {
                     }
                     column.setRemarks(remarks);
                     column.setNote(note);
-
                     if (table.getPrimaryKeys().contains(columnName)) {
                         column.setPk(true);
                     } else {
@@ -381,12 +380,12 @@ public final class DataSources {
                 }
                 columns.close();
                 if (table.getPrimaryKeys().size() == 0 && table.isView()) {
-                    ColumnInfo noCol = table.getColumns().get("NO"); //viewの場合、「NO」列があれば主キーとする
+                    ColumnInfo noCol = table.getColumns().get("NO"); // viewの場合、「NO」列があれば主キーとする
                     if (noCol != null) {
                         table.getPrimaryKeys().add("NO");
                         noCol.setPk(true);
                         table.getNonPrimaryKeys().remove("NO");
-                    } else {
+                    } else { // viewの場合、主キーのいずれかに後方一致するカラム名を取得し、その接頭辞に合致する列を主キーとする
                         String prefix = null;
                         for (ColumnInfo column : table.getColumns().values()) {
                             for (String allKey : allKeys) {
@@ -411,6 +410,17 @@ public final class DataSources {
                                 }
                             }
                         }
+                        for (String primaryKey : table.getPrimaryKeys()) {
+                            table.getColumns().get(primaryKey).setPk(true);
+                        }
+                        // TANKA_PRは主キーにしない
+                        // if (prefix != null) {
+                        //     for (ColumnInfo column : table.getColumns().values()) {
+                        //         if (column.getName().startsWith(prefix) && !table.getPrimaryKeys().contains(column.getName())) {
+                        //             table.getPrimaryKeys().add(column.getName());
+                        //         }
+                        //     }
+                        // }
                     }
                 }
                 LOG.info(table.getName() + " " + table.getPrimaryKeys());
@@ -429,13 +439,9 @@ public final class DataSources {
         addDerives(tables); // 派生モデルの評価
         addMerge(tables); // 統合モデルの評価
         setReborn(tables); // 転生モデルの評価
-        setReborn(tables); // 転生モデルの再評価：１回目
+        setReborn(tables); // 転生モデルの再評価
         addChoices(tables); // 選抜モデルの評価
-        // // 転生モデルの再評価：２回目
-        // setReborn(tables);
         addSummaryOfs(tables); // 集約モデルの評価
-        // // 転生モデルの再評価：３回目
-        // setReborn(tables);
         log(tables);
         return tables;
     }
@@ -707,6 +713,7 @@ public final class DataSources {
 
             // 参照先マスタのユニークキー情報
             String sakiLastKey = sakiKeys.get(sakiKeys.size() - 1);
+            String sakiLastKeyPrefix = sakiLastKey.split("_")[0];
 
             // 参照元トランとしてループ
             Iterator<TableInfo> motos = tables.iterator();
@@ -727,24 +734,34 @@ public final class DataSources {
                         continue;
                     }
 
+                    if (moto == saki && saki.isView()) {
+                        continue;
+                    }
+
+                    if (motoCol.getRefer() != null) {
+                        continue;
+                    }
+
+                    String motoColNamePrefix = motoColName.split("_")[0];
+
                     // 参照元カラム名の末尾が参照先カラム名と合致し、参照モデルが未登録なら、カラムに参照モデルを設定
-                    if (motoColName.matches("(?i)^.*" + sakiLastKey + "$") && motoCol.getRefer() == null) {
+                    if (motoColName.matches("(?i)^.*" + sakiLastKey + "$")
+                            || (saki.isView() && !moto.isView() && motoColNamePrefix.equals(sakiLastKeyPrefix))) {
 
-                        //接頭辞を取得
-                        String prefix = motoColName.replaceAll("(?i)" + sakiLastKey + "$", "");
-
-                        //参照先の全主キーに接頭辞を加えたカラム名が全て存在すれば参照元として認める
-                        boolean isRefer = true;
-                        for (String sakiKey : sakiKeys) {
-                            String motoKey = prefix + sakiKey;
-                            if (!moto.getColumns().containsKey(motoKey)) {
-                                isRefer = false;
-                                break;
-                            }
-                        }
-                        if (!isRefer) {
-                            continue;
-                        }
+                        // viewの最終キーに合致していたら参照させたいためコメントアウト
+                        //                        //参照先の全主キーに接頭辞を加えたカラム名が全て存在すれば参照元として認める
+                        //                        String prefix = motoColName.replaceAll("(?i)" + sakiLastKey + "$", "");
+                        //                        boolean isRefer = true;
+                        //                        for (String sakiKey : sakiKeys) {
+                        //                            String motoKey = prefix + sakiKey;
+                        //                            if (!moto.getColumns().containsKey(motoKey)) {
+                        //                                isRefer = false;
+                        //                                break;
+                        //                            }
+                        //                        }
+                        //                        if (!isRefer) {
+                        //                            continue;
+                        //                        }
 
                         LOG.debug("    " + saki.getName() + " from " + moto.getName() + "." + motoCol.getName());
                         motoCol.setRefer(saki);
