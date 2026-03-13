@@ -216,7 +216,12 @@ input[type="datetime-local"] {
 }
 
 [role="dialog"] [id$="Grid"] {
-    height: 180px;
+    height: 190px;
+    width: 1210px;
+}
+
+[role="dialog"] [id$="SDialog"] [id$="Grid"] {
+    height: 320px;
     width: 1210px;
 }
 

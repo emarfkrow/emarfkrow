@@ -377,6 +377,8 @@ let Dialogate = {
 
                         // 呼び出し元で検索項目が設定されている場合は検索結果を初期表示
                         let formJson = Jsonate.toValueJson($searchForm);
+                        delete formJson['rows'];
+                        delete formJson['page'];
                         if (JSON.stringify(formJson) != '{}') {
                             $searchForm.find('button.search').click();
                         }
