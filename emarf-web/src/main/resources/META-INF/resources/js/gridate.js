@@ -533,21 +533,61 @@ $(function() {
                     if (!productSuffixs[i]) {
                         continue;
                     }
-                    let productSuffix = productSuffixs[i].split(':');
-                    let spanSuffix = productSuffix[0];
-                    let definition = productSuffix[1].split('.');
-                    let formula = definition[0].split('*');
-                    let digits = definition[1];
-                    let leftSuffix = formula[0];
-                    let rightSuffix = formula[1];
-                    let prefix = field.replace(new RegExp('(' + leftSuffix + '|' + rightSuffix + ')$', 'i'), '');
-                    let leftField = prefix + leftSuffix;
-                    let rightField = prefix + rightSuffix;
-                    let spanField = prefix + spanSuffix;
-                    if (field == leftField || field == rightField) {
-                        item[spanField] = Math.round(item[leftField] * item[rightField] * digits) / digits;
-                        grid.invalidate();
-                        break;
+                    let productSuffix = productSuffixs[i].split(':'); // ['_am', '_qt*_pr.2']
+                    let spanSuffix = productSuffix[0]; // _am
+                    let definition = productSuffix[1].split('.'); // ['_qt*_pr', '2']
+                    let formula = definition[0].split('*'); // ['_qt', '_pr']
+                    let digits = definition[1]; // 2
+                    let leftSuffix = formula[0]; // _qt
+                    let rightSuffix = formula[1]; // _pr
+
+                    if (field.match(new RegExp('(' + leftSuffix + '|' + rightSuffix + ')$', 'i'))) {
+
+                        let leftName = null;
+                        let rightName = null;
+                        let spanName = null;
+
+                        // 接頭辞で一致する場合
+                        let prefix = field.replace(new RegExp('(' + leftSuffix + '|' + rightSuffix + ')$', 'i'), ''); // SURYO
+                        let leftField = prefix + leftSuffix;
+                        let rightField = prefix + rightSuffix;
+                        let spanField = prefix + spanSuffix;
+                        for (let k in grid.getColumns()) {
+                            let c = grid.getColumns()[k];
+                            if (c.field.match(new RegExp(leftField + '$', 'i'))) {
+                                leftName = c.field;
+                            }
+                            if (c.field.match(new RegExp(rightField + '$', 'i'))) {
+                                rightName = c.field;
+                            }
+                            if (c.field.match(new RegExp(spanField + '$', 'i'))) {
+                                spanName = c.field;
+                            }
+                        }
+                        if (leftName && rightName && spanName) {
+                            item[spanName] = Math.round(item[leftName] * item[rightName] * digits) / digits;
+                            grid.invalidate();
+                            break;
+                        }
+
+                        // 接頭辞で一致しない場合
+                        for (let k in grid.getColumns()) {
+                            let c = grid.getColumns()[k];
+                            if (c.field.match(new RegExp(leftSuffix + '$', 'i'))) {
+                                leftName = c.field;
+                            }
+                            if (c.field.match(new RegExp(rightSuffix + '$', 'i'))) {
+                                rightName = c.field;
+                            }
+                            if (c.field.match(new RegExp(spanSuffix + '', 'i'))) {
+                                spanName = c.field;
+                            }
+                        }
+                        if (leftName && rightName && spanName) {
+                            item[spanName] = Math.round(item[leftName] * item[rightName] * digits) / digits;
+                            grid.invalidate();
+                            break;
+                        }
                     }
                 }
                 //フック済みならイベント発火
