@@ -565,9 +565,11 @@ $(function() {
                             }
                         }
                         if (leftName && rightName && spanName) {
-                            item[spanName] = Math.round(item[leftName] * item[rightName] * digits) / digits;
-                            grid.invalidate();
-                            break;
+                            if (item[leftName] && item[rightName]) {
+                                item[spanName] = Math.round(item[leftName] * item[rightName] * digits) / digits;
+                                grid.invalidate();
+                                break;
+                            }
                         }
 
                         // 接頭辞で一致しない場合
@@ -584,9 +586,11 @@ $(function() {
                             }
                         }
                         if (leftName && rightName && spanName) {
-                            item[spanName] = Math.round(item[leftName] * item[rightName] * digits) / digits;
-                            grid.invalidate();
-                            break;
+                            if (item[leftName] && item[rightName]) {
+                                item[spanName] = Math.round(item[leftName] * item[rightName] * digits) / digits;
+                                grid.invalidate();
+                                break;
+                            }
                         }
                     }
                 }
@@ -663,6 +667,7 @@ $(function() {
 
                         let callerGrid = null;
                         let callerR = 0;
+                        let callerC = 0;
                         //                        let callerC = 0;
                         if (callerGridName != undefined && callerGridName != '') {
                             let gridId = callerGridName.toString();
@@ -708,12 +713,13 @@ $(function() {
                                     dataView.endUpdate();
                                     callerGrid.invalidate();
 
-                                    try {
-                                        let fieldName = Casing.toPascal(callerColumnName);
-                                        eval(fieldName + 'OnChange(callerGrid, callerR, callerC)');
-                                    } catch (e) {
-                                        console.debug(e.message);
-                                    }
+                                    callerGrid.onCellChange.notify({
+                                        row: callerR,
+                                        cell: callerC,
+                                        item: data[callerR],
+                                        grid: callerGrid
+                                    });
+
                                 } else {
                                     //フォームの場合
                                     console.debug(parentSelector + ' [name$="' + camel + '"]:not([readonly])');
