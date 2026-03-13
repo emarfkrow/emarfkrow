@@ -528,6 +528,28 @@ $(function() {
                         }
                     }
                 }
+                let productSuffixs = Messages['span.product.suffixs'].split(',');
+                for (let i in productSuffixs) {
+                    if (!productSuffixs[i]) {
+                        continue;
+                    }
+                    let productSuffix = productSuffixs[i].split(':');
+                    let spanSuffix = productSuffix[0];
+                    let definition = productSuffix[1].split('.');
+                    let formula = definition[0].split('*');
+                    let digits = definition[1];
+                    let leftSuffix = formula[0];
+                    let rightSuffix = formula[1];
+                    let prefix = field.replace(new RegExp('(' + leftSuffix + '|' + rightSuffix + ')$', 'i'), '');
+                    let leftField = prefix + leftSuffix;
+                    let rightField = prefix + rightSuffix;
+                    let spanField = prefix + spanSuffix;
+                    if (field == leftField || field == rightField) {
+                        item[spanField] = Math.round(item[leftField] * item[rightField] * digits) / digits;
+                        grid.invalidate();
+                        break;
+                    }
+                }
                 //フック済みならイベント発火
                 let columnName = Casing.toPascal(column.id);
                 try {
