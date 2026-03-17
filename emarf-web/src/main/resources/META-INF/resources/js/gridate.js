@@ -507,7 +507,6 @@ $(function() {
             /* セル値変更 */
             grid.onCellChange.subscribe(function(e, args) {
                 console.debug('Gridate on cell change.');
-                //                let c = args.cell;
                 let column = args.column;
                 if (!column) {
                     column = args.grid.getColumns()[args.cell];
@@ -515,7 +514,8 @@ $(function() {
                 let command = args.command;
                 let g = args.grid;
                 let item = args.item;
-                let r = args.row;
+                let r = args.row; // evalで使うため必要
+                let c = args.cell; // evalで使うため必要
                 let field = column.field;
                 //削除フラグオフの親伝播
                 if (columnDelete != null) {
@@ -713,13 +713,6 @@ $(function() {
                                     dataView.endUpdate();
                                     callerGrid.invalidate();
 
-                                    callerGrid.onCellChange.notify({
-                                        row: callerR,
-                                        cell: callerC,
-                                        item: data[callerR],
-                                        grid: callerGrid
-                                    });
-
                                 } else {
                                     //フォームの場合
                                     console.debug(parentSelector + ' [name$="' + camel + '"]:not([readonly])');
@@ -727,6 +720,16 @@ $(function() {
                                     $(parentSelector + ' span[id$="' + camel + '"]').html(dataItem[columnName]);
                                 }
                             }
+                        }
+
+                        //グリッドの場合
+                        if (callerGridName != undefined && callerGridName != '') {
+                            callerGrid.onCellChange.notify({
+                                row: callerR,
+                                cell: callerC,
+                                item: grid.getDataItem(callerR),
+                                grid: callerGrid
+                            });
                         }
 
                         $dialogDiv.dialog('close');

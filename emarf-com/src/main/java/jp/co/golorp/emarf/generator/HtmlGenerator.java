@@ -1302,7 +1302,6 @@ public final class HtmlGenerator {
      */
     private static void htmlFields(final TableInfo t, final List<String> s, final boolean isD, final boolean isB,
             final boolean isP) {
-
         if (!isD && t.getStintInfo() != null) { // 検索画面の場合は制約モデルの参照キーを出力
             htmlFieldsStint(t, s);
         }
@@ -1344,8 +1343,6 @@ public final class HtmlGenerator {
             if (BeanGenerator.isMetaTsBy(cName)) { // メタ情報の場合は表示項目（編集画面の自モデルのみここに到達する）
                 htmlFieldsMeta(s, fId, c.getRemarks());
                 addMeiSpan(s, t, c, "meta");
-            } else if (isD && StringUtil.endsWith(inputReadonlySuffixs, cName)) { // 読み取り専用の場合
-                htmlFieldsSpan(s, fId, c.getRemarks(), "");
             } else if (StringUtil.endsWith(optionsSuffixs, cName) && c.getRefer() == null) {
                 String css = ""; // 選択項目の場合（サフィックスが合致しても参照モデルなら除外）
                 if (isD && c.isPk()) { // 詳細画面の主キー
@@ -1363,7 +1360,13 @@ public final class HtmlGenerator {
                 if (isD && c.getNullable() == 0) {
                     css += isNotBlank(c);
                 }
+                if (isD && t.getHistory() == null && !t.isHistory() && !c.isPk()
+                        && StringUtil.endsWith(inputReadonlySuffixs, cName)) {
+                    css += " readonly";
+                }
                 htmlFieldsOptions(s, fId, cName, c.getRemarks(), css);
+            } else if (isD && StringUtil.endsWith(inputReadonlySuffixs, cName)) { // 読み取り専用の場合
+                htmlFieldsSpan(s, fId, c.getRemarks(), "");
             } else if (isD && t.isHistory()) { // 履歴モデルの詳細画面
                 htmlFieldsSpan(s, fId, c.getRemarks(), "history");
                 addMeiSpan(s, t, c, "");
