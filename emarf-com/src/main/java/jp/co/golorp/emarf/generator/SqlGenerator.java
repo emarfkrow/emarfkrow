@@ -38,6 +38,8 @@ public final class SqlGenerator {
     private static String deleteF;
     /** 表示順サフィックス */
     private static String[] orderSuffixs;
+    /** VIEWの詳細画面にするテーブル名 */
+    private static String viewDetail;
 
     /** タイムスタンプサフィックス */
     private static String[] inputTimestampSuffixs;
@@ -84,6 +86,7 @@ public final class SqlGenerator {
         updateTs = bundle.getString("column.update.timestamp");
         deleteF = bundle.getString("column.delete").toUpperCase();
         orderSuffixs = bundle.getString("column.order.suffixs").split(",");
+        viewDetail = bundle.getString("view.detail");
 
         inputTimestampSuffixs = bundle.getString("input.timestamp.suffixs").split(",");
         inputDateTimeSuffixs = bundle.getString("input.datetime.suffixs").split(",");
@@ -543,6 +546,11 @@ public final class SqlGenerator {
     private static void addWhere(final List<String> sql, final ColumnInfo column) {
 
         String name = column.getName();
+
+        //カラム名が「TABLE_NAME」なら出力しない
+        if (name.matches("(?i)^" + viewDetail + "$")) {
+            return;
+        }
 
         // quoted
         String q = assist.quotedSQL(name);
