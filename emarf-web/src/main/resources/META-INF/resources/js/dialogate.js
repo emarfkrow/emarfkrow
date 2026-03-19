@@ -64,23 +64,23 @@ $(function() {
         event.stopImmediatePropagation();
 
         // リンクを取得
-        let $link = $(this);
+        let $clicked = $(this);
 
         // 表示するダイアログを取得
-        let href = $link.attr('href');
+        let href = $clicked.attr('href');
         let dialogId = href.replace(/(^.+\/|\.html(\?.+)?$)/g, '') + 'Dialog';
         let $dialogDiv = $('div[id="' + dialogId + '"]');
 
         //選択サブなら制約条件を表示
-        if ($link.hasClass('correct')) {
+        if ($clicked.hasClass('correct')) {
             $dialogDiv.find('div.stint').show();
         }
 
         // 参照ダイアログの場合、リンクのIDとダイアログ内の項目のIDを比較し、呼び出し元での接頭辞を評価
         let prefix = '';
-        let isRefer = $link.hasClass('refer');
+        let isRefer = $clicked.hasClass('refer');
         if (isRefer) {
-            let linkId = $link.prop('id');
+            let linkId = $clicked.prop('id');
             let linkIds = linkId.split('.');
             let linkItemName = linkIds[linkIds.length - 1];                            // betsuSanshoId
             $dialogDiv.find('input').each(function() {
@@ -94,7 +94,7 @@ $(function() {
         }
 
         // 呼び出し元の入力項目を取得
-        let $form = $link.closest('form');
+        let $form = $clicked.closest('form');
         let $sendInputs;
         if (isRefer) {
             // 参照ダイアログなら接頭辞に合致する項目を取得（接頭辞がなければ全てを取得する）
@@ -121,7 +121,7 @@ $(function() {
         }
 
         // 集約先追加の場合
-        let isSummary = $link.hasClass('summary');
+        let isSummary = $clicked.hasClass('summary');
         if (isSummary) {
 
             // グリッド取得
@@ -229,15 +229,15 @@ $(function() {
             }
         }
 
-        let isDerive = $link.hasClass('derive');
+        let isDerive = $clicked.hasClass('derive');
         if (isDerive) {
-            $link.nextAll('input').each(function() {
+            $clicked.nextAll('input').each(function() {
                 Dialogate.reflect2Dialog(this, $dialogDiv, 'derivee');
             });
         }
 
         // 呼び出し元を設定
-        $dialogDiv.attr('data-caller', $link.attr('id'));
+        $dialogDiv.attr('data-caller', $clicked.attr('id'));
 
         // ダイアログを開く
         $dialogDiv.dialog('open');
@@ -375,14 +375,15 @@ let Dialogate = {
                             }
                         }
 
-                        // 呼び出し元で検索項目が設定されている場合は検索結果を初期表示
-                        let formJson = Jsonate.toValueJson($searchForm);
-                        delete formJson['rows'];
-                        delete formJson['page'];
-                        if (JSON.stringify(formJson) != '{}') {
-                            $searchForm.find('button.search').click();
+                        // グリッド内でなく、呼び出し元で検索項目が設定されている場合は、検索結果を初期表示
+                        if (!$dialogDiv.attr('data-caller').match(/.+Grid.+/)) {
+                            let formJson = Jsonate.toValueJson($searchForm);
+                            delete formJson['rows'];
+                            delete formJson['page'];
+                            if (JSON.stringify(formJson) != '{}') {
+                                $searchForm.find('button.search').click();
+                            }
                         }
-
                     }
 
                     let $registForm = $dialogDiv.find('[name$="RegistForm"]');

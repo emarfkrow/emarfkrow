@@ -429,7 +429,7 @@ $(function() {
                 if (c) {
                     //参照モデルなら隠しリンク押下
                     let column = g.getColumns()[c];
-                    if (/*column.referField*/column.formatter && column.formatter.name == 'ReferFormatter' && g.getOptions().editable == true) {
+                    if (/*column.referField*/column.formatter && column.formatter.name.match('ReferFormatter$') && g.getOptions().editable == true) {
                         let gridNode = g.getContainerNode();
                         let gridId = gridNode.id;
                         console.debug('gridId: ' + gridId);
@@ -513,7 +513,6 @@ $(function() {
                 }
                 let command = args.command;
                 let g = args.grid;
-                let item = args.item;
                 let r = args.row; // evalで使うため必要
                 let c = args.cell; // evalで使うため必要
                 let field = column.field;
@@ -522,7 +521,7 @@ $(function() {
                     let camel = Casing.toCamel(columnDelete);
                     let upper = columnDelete.toUpperCase();
                     if (field.toUpperCase() == upper) {
-                        let val = item[upper];
+                        let val = args.item[upper];
                         if (!val) {
                             $($(g.getActiveCellNode()).closest('form').find('[name$="' + camel + '"]')[0]).prop('checked', false);
                         }
@@ -586,6 +585,7 @@ $(function() {
                             }
                         }
                         if (leftName && rightName && spanName) {
+                            let item = grid.getDataItem(r);
                             if (item[leftName] && item[rightName]) {
                                 item[spanName] = Math.round(item[leftName] * item[rightName] * digits) / digits;
                                 grid.invalidate();

@@ -83,12 +83,16 @@ public final class Queries {
 
         List<T> list = Queries.select(namedSql, params, c, null, null);
 
-        if (list != null && list.size() == 1) {
-            T t = (T) list.get(0);
-            return t;
+        if (list == null || list.size() == 0) {
+            throw new NoDataError("info.nodata");
         }
 
-        throw new NoDataError("info.nodata");
+        if (list == null || list.size() > 1) {
+            throw new NoDataError("info.duplicate");
+        }
+
+        T t = (T) list.get(0);
+        return t;
     }
 
     /**

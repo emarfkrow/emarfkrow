@@ -214,17 +214,12 @@ public final class BeanGenerator {
             String r = table.getRemarks();
             List<String> s = new ArrayList<String>();
             s.add("package " + pkgE + ";");
-            s.add("");
             if (!table.isView()) {
+                s.add("");
                 s.add("import java.time.LocalDateTime;");
             }
-            s.add("import java.util.ArrayList;");
-            s.add("import java.util.HashMap;");
-            s.add("import java.util.List;");
-            s.add("import java.util.Map;");
             s.add("");
             s.add("import jp.co.golorp.emarf.entity.IEntity;");
-            s.add("import jp.co.golorp.emarf.sql.Queries;");
             s.add("");
             s.add("/**");
             s.add(" * " + r);
@@ -556,6 +551,11 @@ public final class BeanGenerator {
      */
     private static void javaEntityCRUD(final TableInfo table, final List<String> s) {
 
+        // 主キーなしならスキップ
+        if (table.getPrimaryKeys().size() == 0) {
+            return;
+        }
+
         String e = StringUtil.toPascalCase(table.getName());
 
         s.add("");
@@ -563,7 +563,11 @@ public final class BeanGenerator {
         s.add("     * " + table.getRemarks() + "照会");
         int paramCount = 0;
         String getParams = "";
-        if (!table.isView()) {
+
+        // 主キー条件：ビューの場合は、主キーがなくても全ての列を条件にする
+        boolean isPrimaryKey = table.getPrimaryKeys().size() > 0;
+        if (isPrimaryKey) {
+            //        if (!table.isView()) {
             for (String pk : table.getPrimaryKeys()) {
                 if (pk.length() > 0) {
                     String columnRemarks = "";
@@ -579,18 +583,34 @@ public final class BeanGenerator {
                     getParams += "final Object param" + paramCount;
                 }
             }
+            //        }
+        } else {
+            for (String key : table.getColumns().keySet()) {
+                if (key.length() > 0) {
+                    String columnRemarks = "";
+                    if (table.getColumns() != null && table.getColumns().size() > 0) {
+                        if (table.getColumns().containsKey(key)) {
+                            columnRemarks = " " + table.getColumns().get(key).getRemarks();
+                        }
+                    }
+                    s.add("     * @param param" + ++paramCount + columnRemarks);
+                    if (getParams.length() > 0) {
+                        getParams += ", ";
+                    }
+                    getParams += "final Object param" + paramCount;
+                }
+            }
         }
+
         s.add("     * @return " + table.getRemarks());
         s.add("     */");
         s.add("    public static " + e + " get(" + getParams + ") {");
-        s.add("        List<String> whereList = new ArrayList<String>();");
+        s.add("        java.util.List<String> whereList = new java.util.ArrayList<String>();");
 
-        // 主キー条件：ビューの場合は、主キーがなくても全ての列を条件にする
-        boolean isPrimaryKey = false;
-        if (!table.isView()) {
+        if (isPrimaryKey) {
+            //        if (!table.isView()) {
             for (String pk : table.getPrimaryKeys()) {
                 if (pk.length() > 0) {
-                    isPrimaryKey = true;
                     // quoted
                     String q = DataSources.getAssist().quoteEscapedSQL(pk);
                     // param
@@ -609,15 +629,15 @@ public final class BeanGenerator {
                     }
                 }
             }
-        }
-        if (!isPrimaryKey) {
+            //        }
+        } else {
             for (String key : table.getColumns().keySet()) {
                 if (key.length() > 0) {
-                    String cleanedKey = key.replaceAll("\\$", "_");
+                    String cleaned = key.replaceAll("\\$", "_");
                     // quoted
                     String q = DataSources.getAssist().quoteEscapedSQL(key);
                     // param
-                    String p = ":" + StringUtil.toSnakeCase(cleanedKey);
+                    String p = ":" + StringUtil.toSnakeCase(cleaned);
                     ColumnInfo column = table.getColumns().get(key);
                     if (column.getTypeName().equals("CHAR")) {
                         s.add("        whereList.add(\"" + assist.trimedSQL(q) + " = " + assist.trimedSQL(p)
@@ -628,6 +648,7 @@ public final class BeanGenerator {
                 }
             }
         }
+
         s.add("        String sql = \"\";");
         s.add("        sql += \"SELECT \\n\";");
         boolean isFirst = true;
@@ -644,17 +665,29 @@ public final class BeanGenerator {
         s.add("        sql += \"    " + table.getName() + " a \\n\";");
         s.add("        sql += \"WHERE \\n\";");
         s.add("        sql += String.join(\" AND \\n\", whereList);");
-        s.add("        Map<String, Object> map = new HashMap<String, Object>();");
-        if (!table.isView()) {
-            paramCount = 0;
-            for (String primaryKey : table.getPrimaryKeys()) {
-                if (primaryKey.length() > 0) {
-                    String snake = StringUtil.toSnakeCase(primaryKey);
+        s.add("        java.util.Map<String, Object> map = new java.util.HashMap<String, Object>();");
+
+        //        if (!table.isView()) {
+        paramCount = 0;
+        if (isPrimaryKey) {
+            for (String pk : table.getPrimaryKeys()) {
+                if (pk.length() > 0) {
+                    String snake = StringUtil.toSnakeCase(pk);
+                    s.add("        map.put(\"" + snake + "\", param" + ++paramCount + ");");
+                }
+            }
+        } else {
+            for (String key : table.getColumns().keySet()) {
+                if (key.length() > 0) {
+                    String cleaned = key.replaceAll("\\$", "_");
+                    String snake = StringUtil.toSnakeCase(cleaned);
                     s.add("        map.put(\"" + snake + "\", param" + ++paramCount + ");");
                 }
             }
         }
-        s.add("        return Queries.get(sql, map, " + e + ".class);");
+        //        }
+
+        s.add("        return jp.co.golorp.emarf.sql.Queries.get(sql, map, " + e + ".class);");
         s.add("    }");
 
         if (!table.isView()) {
@@ -758,7 +791,7 @@ public final class BeanGenerator {
             s.add("");
             s.add("        // " + table.getRemarks() + "の削除");
             s.add("        String sql = \"DELETE FROM " + table.getName() + " WHERE \" + getWhere();");
-            s.add("        return Queries.regist(sql, toMap(null, null));");
+            s.add("        return jp.co.golorp.emarf.sql.Queries.regist(sql, toMap(null, null));");
             s.add("    }");
         }
     }
@@ -885,12 +918,12 @@ public final class BeanGenerator {
         s.add("        // " + table.getRemarks() + "の登録");
         s.add("        String sql = \"INSERT INTO " + table.getName()
                 + "(\\r\\n      \" + names() + \"\\r\\n) VALUES (\\r\\n      \" + values() + \"\\r\\n)\";");
-        s.add("        return Queries.regist(sql, toMap(now, execId));");
+        s.add("        return jp.co.golorp.emarf.sql.Queries.regist(sql, toMap(now, execId));");
         s.add("    }");
         s.add("");
         s.add("    /** @return insert用のname句 */");
         s.add("    private String names() {");
-        s.add("        List<String> nameList = new ArrayList<String>();");
+        s.add("        java.util.List<String> nameList = new java.util.ArrayList<String>();");
         for (String columnName : table.getColumns().keySet()) {
             String snake = StringUtil.toSnakeCase(columnName);
             String cleanedKey = snake.replaceAll("\\$", "_");
@@ -901,7 +934,7 @@ public final class BeanGenerator {
         s.add("");
         s.add("    /** @return insert用のvalue句 */");
         s.add("    private String values() {");
-        s.add("        List<String> valueList = new ArrayList<String>();");
+        s.add("        java.util.List<String> valueList = new java.util.ArrayList<String>();");
         for (Entry<String, ColumnInfo> e : table.getColumns().entrySet()) {
             String colName = e.getKey();
             ColumnInfo column = e.getValue();
@@ -999,13 +1032,13 @@ public final class BeanGenerator {
             w = " WHERE e." + quoted + " < '" + new String(new char[columnSize]).replace("\0", "9") + "'";
         }
         s.add("        String sql = \"SELECT " + numbering + " AS " + quoted + " FROM " + tableName + " e" + w + "\";");
-        s.add("        Map<String, Object> map = new HashMap<String, Object>();");
+        s.add("        java.util.Map<String, Object> map = new java.util.HashMap<String, Object>();");
 
         List<String> primaryKeys = new IgnoreCaseList<>(table.getPrimaryKeys());
         primaryKeys.remove(tekiyoBi);
         if (primaryKeys.size() > 1) {
 
-            s.add("        List<String> whereList = new ArrayList<String>();");
+            s.add("        java.util.List<String> whereList = new java.util.ArrayList<String>();");
 
             // 一つ前までループ
             for (int j = 0; j < primaryKeys.size() - 1; j++) {
@@ -1025,7 +1058,7 @@ public final class BeanGenerator {
                 s.add("        map.put(\"" + snakeKey + "\", this." + camelKey + ");");
             }
         }
-        s.add("        jp.co.golorp.emarf.util.MapList mapList = Queries.select(sql, map, null, null);");
+        s.add("        jp.co.golorp.emarf.util.MapList mapList = jp.co.golorp.emarf.sql.Queries.select(sql, map, null, null);");
         s.add("        Object o = mapList.get(0).get(\"" + keyName + "\");");
         s.add("        this.set" + StringUtil.toPascalCase(keyName) + "(o);");
         s.add("    }");
@@ -1115,12 +1148,12 @@ public final class BeanGenerator {
         s.add("        // " + table.getRemarks() + "の登録");
         s.add("        String sql = \"UPDATE " + table.getName()
                 + "\\r\\nSET\\r\\n      \" + getSet() + \"\\r\\nWHERE\\r\\n    \" + getWhere();");
-        s.add("        return Queries.regist(sql, toMap(now, execId));");
+        s.add("        return jp.co.golorp.emarf.sql.Queries.regist(sql, toMap(now, execId));");
         s.add("    }");
         s.add("");
         s.add("    /** @return update用のset句 */");
         s.add("    private String getSet() {");
-        s.add("        List<String> setList = new ArrayList<String>();");
+        s.add("        java.util.List<String> setList = new java.util.ArrayList<String>();");
 
         for (Entry<String, ColumnInfo> e : table.getColumns().entrySet()) {
             String colName = e.getKey();
@@ -1157,7 +1190,7 @@ public final class BeanGenerator {
             s.add("");
             s.add("    /** @return where句 */");
             s.add("    private String getWhere() {");
-            s.add("        List<String> whereList = new ArrayList<String>();");
+            s.add("        java.util.List<String> whereList = new java.util.ArrayList<String>();");
 
             // 主キー条件
             for (String primaryKey : table.getPrimaryKeys()) {
@@ -1214,8 +1247,8 @@ public final class BeanGenerator {
             s.add("     * @param execId 実行ID");
             s.add("     * @return マップ化したエンティティ");
             s.add("     */");
-            s.add("    private Map<String, Object> toMap(final LocalDateTime now, final String execId) {");
-            s.add("        Map<String, Object> map = new HashMap<String, Object>();");
+            s.add("    private java.util.Map<String, Object> toMap(final LocalDateTime now, final String execId) {");
+            s.add("        java.util.Map<String, Object> map = new java.util.HashMap<String, Object>();");
             for (String columnName : table.getColumns().keySet()) {
                 if (isMetaTsBy(columnName)) {
                     continue;
@@ -1347,29 +1380,29 @@ public final class BeanGenerator {
 
         s.add("");
         s.add("    /** " + child.getRemarks() + "のリスト */");
-        s.add("    private List<" + ent + "> " + ins + "s;");
+        s.add("    private java.util.List<" + ent + "> " + ins + "s;");
         s.add("");
         s.add("    /** @return " + child.getRemarks() + "のリスト */");
         s.add("    @com.fasterxml.jackson.annotation.JsonProperty(value = \"" + ent + "s\", index = " + ++i + ")");
-        s.add("    public List<" + ent + "> get" + ent + "s() {");
+        s.add("    public java.util.List<" + ent + "> get" + ent + "s() {");
         s.add("        return this." + ins + "s;");
         s.add("    }");
         s.add("");
         s.add("    /** @param list " + child.getRemarks() + "のリスト */");
-        s.add("    public void set" + ent + "s(final List<" + ent + "> list) {");
+        s.add("    public void set" + ent + "s(final java.util.List<" + ent + "> list) {");
         s.add("        this." + ins + "s = list;");
         s.add("    }");
         s.add("");
         s.add("    /** @param " + ins + " */");
         s.add("    public void add" + ent + "s(final " + ent + " " + ins + ") {");
         s.add("        if (this." + ins + "s == null) {");
-        s.add("            this." + ins + "s = new ArrayList<" + ent + ">();");
+        s.add("            this." + ins + "s = new java.util.ArrayList<" + ent + ">();");
         s.add("        }");
         s.add("        this." + ins + "s.add(" + ins + ");");
         s.add("    }");
         s.add("");
         s.add("    /** @return " + child.getRemarks() + "のリスト */");
-        s.add("    public List<" + ent + "> refer" + ent + "s() {");
+        s.add("    public java.util.List<" + ent + "> refer" + ent + "s() {");
         s.add("        this." + ins + "s = " + parent + ".refer" + ent + "s(" + params + ");");
         s.add("        return this." + ins + "s;");
         s.add("    }");
@@ -1390,10 +1423,10 @@ public final class BeanGenerator {
                 pks += "final " + column.getDataType() + " param" + paramIndex;
             }
         }
-        s.add("     * @return List<" + ent + ">");
+        s.add("     * @return java.util.List<" + ent + ">");
         s.add("     */");
-        s.add("    public static List<" + ent + "> refer" + ent + "s(" + pks + ") {");
-        s.add("        List<String> whereList = new ArrayList<String>();");
+        s.add("    public static java.util.List<" + ent + "> refer" + ent + "s(" + pks + ") {");
+        s.add("        java.util.List<String> whereList = new java.util.ArrayList<String>();");
         for (String pk : table.getPrimaryKeys()) {
             if (pk.length() > 0) {
                 String p = ":" + StringUtil.toSnakeCase(pk);
@@ -1457,7 +1490,7 @@ public final class BeanGenerator {
             }
         }
         s.add("        sql += \"" + orders + "\";");
-        s.add("        Map<String, Object> map = new HashMap<String, Object>();");
+        s.add("        java.util.Map<String, Object> map = new java.util.HashMap<String, Object>();");
         paramIndex = 0;
         for (String pk : table.getPrimaryKeys()) {
             if (pk.length() == 0) {
@@ -1466,11 +1499,11 @@ public final class BeanGenerator {
             s.add("        map.put(\"" + StringUtil.toSnakeCase(pk) + "\", param" + ++paramIndex + ");");
         }
         //        s.add("        return Queries.select(sql, map, " + ent + ".class, null, null);");
-        s.add("        List<" + ent + "> list = Queries.select(sql, map, " + ent + ".class, null, null);");
+        s.add("        java.util.List<" + ent + "> list = jp.co.golorp.emarf.sql.Queries.select(sql, map, " + ent + ".class, null, null);");
         s.add("        if (list != null) {");
         s.add("            return list;");
         s.add("        }");
-        s.add("        return new ArrayList<" + ent + ">();");
+        s.add("        return new java.util.ArrayList<" + ent + ">();");
         s.add("    }");
         return i;
     }

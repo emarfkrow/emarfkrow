@@ -42,6 +42,50 @@ let Column = {
         return column;
     },
 
+    commaRefer: function(field, fieldMei, width, cssClass, referField) {
+        let column = Column.refer(field, fieldMei, width, cssClass, referField);
+        column.formatter = Slick.Formatters.Extends.CommaRefer;
+		if (cssClass) {
+		    column.cssClass += ' right';
+		} else {
+		    column.cssClass = ' right';
+		}
+        return column;
+    },
+
+    dec1Refer: function(field, fieldMei, width, cssClass, referField) {
+        let column = Column.refer(field, fieldMei, width, cssClass, referField);
+        column.formatter = Slick.Formatters.Extends.Dec1Refer;
+		if (cssClass) {
+		    column.cssClass += ' right';
+		} else {
+		    column.cssClass = ' right';
+		}
+        return column;
+    },
+
+    dec2Refer: function(field, fieldMei, width, cssClass, referField) {
+        let column = Column.refer(field, fieldMei, width, cssClass, referField);
+        column.formatter = Slick.Formatters.Extends.Dec2Refer;
+		if (cssClass) {
+		    column.cssClass += ' right';
+		} else {
+		    column.cssClass = ' right';
+		}
+        return column;
+    },
+
+    dec3Refer: function(field, fieldMei, width, cssClass, referField) {
+        let column = Column.refer(field, fieldMei, width, cssClass, referField);
+        column.formatter = Slick.Formatters.Extends.Dec3Refer;
+		if (cssClass) {
+		    column.cssClass += ' right';
+		} else {
+		    column.cssClass = ' right';
+		}
+        return column;
+    },
+
     text: function(field, fieldMei, width, cssClass, formatter, validator) {
         let column = Column.cell(field, fieldMei, width, cssClass, formatter);
         if (validator) { column.validator = validator; }
@@ -126,17 +170,17 @@ let Column = {
         return column;
     },
 
-	hour: function(field, fieldMei, width, cssClass, formatter, validator) {
-	    let column = Column.text(field, fieldMei, width, cssClass, formatter, validator);
-	    if (cssClass.indexOf('readonly') < 0) column.editor = Slick.Editors.Extends.Hour;
-	    return column;
-	},
+    hour: function(field, fieldMei, width, cssClass, formatter, validator) {
+        let column = Column.text(field, fieldMei, width, cssClass, formatter, validator);
+        if (cssClass.indexOf('readonly') < 0) column.editor = Slick.Editors.Extends.Hour;
+        return column;
+    },
 
-	time: function(field, fieldMei, width, cssClass, formatter, validator) {
-	    let column = Column.text(field, fieldMei, width, cssClass, formatter, validator);
-	    if (cssClass.indexOf('readonly') < 0) column.editor = Slick.Editors.Extends.Time;
-	    return column;
-	},
+    time: function(field, fieldMei, width, cssClass, formatter, validator) {
+        let column = Column.text(field, fieldMei, width, cssClass, formatter, validator);
+        if (cssClass.indexOf('readonly') < 0) column.editor = Slick.Editors.Extends.Time;
+        return column;
+    },
 
     month: function(field, fieldMei, width, cssClass, formatter, validator) {
         let column = Column.text(field, fieldMei, width, cssClass, formatter, validator);

@@ -1225,7 +1225,12 @@ public final class HtmlGenerator {
         String type = column.getTypeName();
         String opt = "{ json: '" + json + "', paramkey: '" + optK + "', value: '" + optV + "', label: '" + optL + "' }";
         if (isMeiRefer) {
-            return "Column.refer('" + fieldPrefix + n + "', " + m + ", " + w + ", '" + css + "', '" + referMei + "'),";
+            if (!type.matches("INT|DECIMAL|DOUBLE|NUMBER|NUMERIC") || StringUtil.endsWith(intNoFormatSuffixs, n)) {
+                return "Column.refer('" + fieldPrefix + n + "', " + m + ", " + w + ", '" + css + "', '" + referMei
+                        + "'),";
+            } else {
+                return getNumericRefer(column, fieldPrefix + n, m, w, css, referMei);
+            }
         } else if (BeanGenerator.isMetaTsBy(n) || column.isReborn() || column.isSummary()) {
             return "Column.cell('" + fieldPrefix + n + "', " + m + ", " + w + ", '" + css + "', " + format + "),";
         } else if (StringUtil.endsWith(inputFlagSuffixs, n)) {
@@ -1290,6 +1295,34 @@ public final class HtmlGenerator {
         }
 
         return "Column.comma('" + name + "', " + mei + ", " + width + ", '" + css + "', " + formatter + "),";
+    }
+
+    /**
+     * @param column
+     * @param name
+     * @param mei
+     * @param width
+     * @param css
+     * @param referMei
+     * @return String
+     */
+    private static String getNumericRefer(final ColumnInfo column, final String name, final String mei,
+            final int width, final String css, final String referMei) {
+
+        if (column.getDecimalDigits() == 3) {
+
+            return "Column.dec3Refer('" + name + "', " + mei + ", " + width + ", '" + css + "', " + referMei + "),";
+
+        } else if (column.getDecimalDigits() == 2) {
+
+            return "Column.dec2Refer('" + name + "', " + mei + ", " + width + ", '" + css + "', " + referMei + "),";
+
+        } else if (column.getDecimalDigits() == 1) {
+
+            return "Column.dec1Refer('" + name + "', " + mei + ", " + width + ", '" + css + "', " + referMei + "),";
+        }
+
+        return "Column.commaRefer('" + name + "', " + mei + ", " + width + ", '" + css + "', '" + referMei + "'),";
     }
 
     /**

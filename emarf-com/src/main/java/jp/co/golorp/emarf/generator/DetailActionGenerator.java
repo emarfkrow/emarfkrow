@@ -241,7 +241,7 @@ public final class DetailActionGenerator {
 
         for (TableInfo table : tables) {
 
-            if (table.isView()) {
+            if (table.getPrimaryKeys().size() == 0) {
                 continue;
             }
 

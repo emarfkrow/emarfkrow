@@ -40,6 +40,10 @@ limitations under the License.
                     "Dec2": Dec2Formatter,
                     "Dec3": Dec3Formatter,
                     "Refer": ReferFormatter,
+					"CommaRefer": CommaReferFormatter,
+					"Dec1Refer": Dec1ReferFormatter,
+					"Dec2Refer": Dec2ReferFormatter,
+					"Dec3Refer": Dec3ReferFormatter,
                 }
             }
         }
@@ -151,5 +155,21 @@ limitations under the License.
         }
         return value;
     }
+
+	function CommaReferFormatter(row, cell, value, columnDef, dataContext) {
+	    return Formatter.comma(value);
+	}
+
+	function Dec1ReferFormatter(row, cell, value, columnDef, dataContext) {
+	    return Formatter.dec1(value);
+	}
+
+	function Dec2ReferFormatter(row, cell, value, columnDef, dataContext) {
+	    return Formatter.dec2(value);
+	}
+
+	function Dec3ReferFormatter(row, cell, value, columnDef, dataContext) {
+	    return Formatter.dec3(value);
+	}
 
 })(jQuery);
