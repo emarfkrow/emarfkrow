@@ -117,7 +117,7 @@ $(function() {
             let name = names[names.length - 1];
             let parentVal = $form.find('[name$="' + name + '"]').val();
             $(stint).html(parentVal);
-            $(stint).val(parentVal);
+            $(stint).val([parentVal]);
         }
 
         // 集約先追加の場合

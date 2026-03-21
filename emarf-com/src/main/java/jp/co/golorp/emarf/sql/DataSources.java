@@ -693,7 +693,6 @@ public final class DataSources {
 
             // 参照先マスタのユニークキー情報
             String sakiLastKey = sakiKeys.get(sakiKeys.size() - 1);
-            String sakiLastKeyPrefix = sakiLastKey.split("_")[0];
 
             // 参照元トランとしてループ
             Iterator<TableInfo> motos = tables.iterator();
@@ -722,10 +721,8 @@ public final class DataSources {
                         continue;
                     }
 
-                    String motoColNamePrefix = motoColName.split("_")[0];
-
                     if (motoColName.matches("(?i)^.*" + sakiLastKey + "$")) {
-                        // 参照元カラム名の末尾が参照先カラム名と合致し、参照モデルが未登録なら、カラムに参照モデルを設定
+                        // 参照元カラム名と参照先最終キーが末尾で一致する場合
 
                         //参照先の全主キーに接頭辞を加えたカラム名が全て存在すれば参照元として認める
                         String prefix = motoColName.replaceAll("(?i)" + sakiLastKey + "$", "");
@@ -751,10 +748,13 @@ public final class DataSources {
                         }
 
                     } else if (saki.isView() && !moto.isView()) {
-                        // ビュー参照の場合
+                        // 参照先候補がビューで、参照元候補がテーブルの場合
 
-                        if (motoColNamePrefix.equals(sakiLastKeyPrefix)) {
-                            // 参照元カラム名の末尾が参照先カラム名と合致し、参照モデルが未登録なら、カラムに参照モデルを設定
+                        String[] sakiSuffixs = saki.getName().split("_");
+                        String sakiSuffix = sakiSuffixs[sakiSuffixs.length - 1];
+
+                        if (motoColName.matches("(?i)^" + sakiSuffix + ".+$")) {
+                            // 参照先ビュー名から始まるカラム名の場合
 
                             LOG.debug("    " + saki.getName() + " from " + moto.getName() + "." + motoCol.getName());
                             motoCol.setRefer(saki);

@@ -716,7 +716,7 @@ $(function() {
                                 } else {
                                     //フォームの場合
                                     console.debug(parentSelector + ' [name$="' + camel + '"]:not([readonly])');
-                                    $(parentSelector + ' [name$="' + camel + '"]:not([readonly])').val(dataItem[columnName]);
+                                    $(parentSelector + ' [name$="' + camel + '"]:not([readonly])').val([dataItem[columnName]]).trigger('change');
                                     $(parentSelector + ' span[id$="' + camel + '"]').html(dataItem[columnName]);
                                 }
                             }

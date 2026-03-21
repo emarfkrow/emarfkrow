@@ -154,24 +154,32 @@ $(document).on('ready', function() {
 
     // 数量×単価＝金額の自動計算
     if (Messages['span.product.suffixs']) {
+        // 定義ごとにループ
         let spanProductSuffixs = Messages['span.product.suffixs'].split(',');
         for (let i in spanProductSuffixs) {
             let spanProductSuffix = spanProductSuffixs[i];
             if (spanProductSuffix) {
                 let productSuffix = spanProductSuffix.split(':');
+                // 計算結果項目の接尾辞
                 let spanSuffix = Casing.toPascal(productSuffix[0]);
                 if (productSuffix[1]) {
                     let productDef = productSuffix[1].split('.');
                     let formula = productDef[0].split('*');
+                    // 乗算の左辺
                     let suffix1 = Casing.toPascal(formula[0]);
+                    // 乗算の右辺
                     let suffix2 = Casing.toPascal(formula[1]);
+                    // 丸め桁数
                     let roundBase = Math.pow(10, productDef[1]);
+                    // 計算結果に該当する全ての項目
                     $('form.regist span[id$="' + spanSuffix + '"]').each(function() {
+                        let $span = $(this);
+                        let $form = $span.closest('form');
+                        // 計算結果項目の接頭辞を取得
                         let prefix = this.id.replace(new RegExp(spanSuffix + '$'), '');
-                        let $param1 = $('input[name="' + prefix + suffix1 + '"]');
-                        let $param2 = $('input[name="' + prefix + suffix2 + '"]');
+                        let $param1 = $form.find('input[name="' + prefix + suffix1 + '"]');
+                        let $param2 = $form.find('input[name="' + prefix + suffix2 + '"]');
                         if ($param1.length && $param2.length) {
-                            let $span = $(this);
                             $param1.on('change', function() {
                                 let v = Math.round($param1.val() * $param2.val() * roundBase) / roundBase;
                                 $span.html(v);
@@ -182,6 +190,22 @@ $(document).on('ready', function() {
                                 $span.html(v);
                                 $('[name="' + $span[0].id + '"]').val(v);
                             });
+                        } else {
+                            // 接頭辞で括れなかった場合、左辺項目と右辺項目が各１つしかなければ、計算結果を反映
+                            $param1 = $form.find('input[name$="' + suffix1 + '"]');
+                            $param2 = $form.find('input[name$="' + suffix2 + '"]');
+                            if ($param1.length == 1 && $param2.length == 1) {
+                                $param1.on('change', function() {
+                                    let v = Math.round($param1.val() * $param2.val() * roundBase) / roundBase;
+                                    $span.html(v);
+                                    $('[name="' + $span[0].id + '"]').val(v);
+                                });
+                                $param2.on('change', function() {
+                                    let v = Math.round($param1.val() * $param2.val() * roundBase) / roundBase;
+                                    $span.html(v);
+                                    $('[name="' + $span[0].id + '"]').val(v);
+                                });
+                            }
                         }
                     });
                 }

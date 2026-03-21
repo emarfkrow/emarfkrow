@@ -42,6 +42,9 @@ import jp.co.golorp.emarf.util.ResourceBundles;
  */
 public final class HtmlGenerator {
 
+    /** 数値項目の正規表現 */
+    private static final String NUM_RE = "INT|DECIMAL|DOUBLE|NUMBER|NUMERIC";
+
     /** logger */
     private static final Logger LOG = LoggerFactory.getLogger(HtmlGenerator.class);
 
@@ -99,7 +102,7 @@ public final class HtmlGenerator {
     /** 8桁日付入力サフィックス */
     private static String[] inputDate8Suffixs;
     /** タイムスタンプサフィックス */
-    private static String[] inputTimestampSuffixs;
+    private static String[] tsSufs;
     /** 日時入力サフィックス */
     private static String[] inputDateTimeSuffixs;
     /** 日付入力サフィックス */
@@ -115,7 +118,7 @@ public final class HtmlGenerator {
     /** ビットフラグサフィックス */
     private static String[] inputBitSuffixs;
     /** ファイルサフィックス */
-    private static String[] inputFileSuffixs;
+    private static String[] fileSufs;
     /** options項目サフィックス */
     private static String[] optionsSuffixs;
     /** pulldown項目サフィックス */
@@ -176,7 +179,7 @@ public final class HtmlGenerator {
         inputNumberSuffixs = bundle.getString("input.number.suffixs").split(",");
         inputYMSuffixs = bundle.getString("input.ym.suffixs").split(",");
         inputDate8Suffixs = bundle.getString("input.date8.suffixs").split(",");
-        inputTimestampSuffixs = bundle.getString("input.timestamp.suffixs").split(",");
+        tsSufs = bundle.getString("input.timestamp.suffixs").split(",");
         inputDateTimeSuffixs = bundle.getString("input.datetime.suffixs").split(",");
         inputDateSuffixs = bundle.getString("input.date.suffixs").split(",");
         inputHourSuffixs = bundle.getString("input.hour.suffixs").split(",");
@@ -184,7 +187,7 @@ public final class HtmlGenerator {
         inputRangeSuffixs = bundle.getString("input.range.suffixs").split(",");
         inputFlagSuffixs = bundle.getString("input.flag.suffixs").split(",");
         inputBitSuffixs = bundle.getString("input.bit.suffixs").split(",");
-        inputFileSuffixs = bundle.getString("input.file.suffixs").split(",");
+        fileSufs = bundle.getString("input.file.suffixs").split(",");
         optionsSuffixs = bundle.getString("input.options.suffixs").split(",");
         pulldownSuffixs = bundle.getString("input.pulldown.suffixs").split(",");
         textareaSuffixs = bundle.getString("input.textarea.suffixs").split(",");
@@ -316,7 +319,7 @@ public final class HtmlGenerator {
                 if (BeanGenerator.isMetaBy(column.getName())) {
                     continue; // メタ情報ならスキップ
                 }
-                if (StringUtil.endsWith(inputFileSuffixs, column.getName())) { //ファイル列があれば新規行なし
+                if (StringUtil.endsWith(fileSufs, column.getName())) { //ファイル列があれば新規行なし
                     isNotAddRow = true;
                     break;
                 }
@@ -626,7 +629,7 @@ public final class HtmlGenerator {
                     + c + ".add}\" class=\"addChild\" tabindex=\"-1\">" + child.getRemarks() + "</a>");
             String addRow = " data-addRow=\"true\"";
             for (ColumnInfo column : child.getColumns().values()) {
-                if (StringUtil.endsWith(inputFileSuffixs, column.getName())) {
+                if (StringUtil.endsWith(fileSufs, column.getName())) {
                     addRow = ""; // ファイル列がある場合は新規行を取消
                     break;
                 }
@@ -1166,7 +1169,7 @@ public final class HtmlGenerator {
         String format = "null";
         if (column.getDataType().equals("java.time.LocalDate")) {
             format = "Slick.Formatters.Extends.Date";
-        } else if (StringUtil.endsWith(inputTimestampSuffixs, n)) {
+        } else if (StringUtil.endsWith(tsSufs, n)) {
             format = "Slick.Formatters.Extends.Timestamp";
         } else if (column.getDataType().equals("java.time.LocalDateTime")) {
             format = "Slick.Formatters.Extends.DateTime";
@@ -1225,7 +1228,7 @@ public final class HtmlGenerator {
         String type = column.getTypeName();
         String opt = "{ json: '" + json + "', paramkey: '" + optK + "', value: '" + optV + "', label: '" + optL + "' }";
         if (isMeiRefer) {
-            if (!type.matches("INT|DECIMAL|DOUBLE|NUMBER|NUMERIC") || StringUtil.endsWith(intNoFormatSuffixs, n)) {
+            if (!type.matches(NUM_RE) || StringUtil.endsWith(intNoFormatSuffixs, n)) {
                 return "Column.refer('" + fieldPrefix + n + "', " + m + ", " + w + ", '" + css + "', '" + referMei
                         + "'),";
             } else {
@@ -1241,7 +1244,7 @@ public final class HtmlGenerator {
             return "Column.date('" + fieldPrefix + n + "', " + m + ", " + w + ", '" + css + "', " + format + "),";
         } else if (StringUtil.endsWith(inputDate8Suffixs, n) && column.getColumnSize() == 8) {
             return "Column.date8('" + fieldPrefix + n + "', " + m + ", " + w + ", '" + css + "', " + format + "),";
-        } else if (StringUtil.endsWith(inputTimestampSuffixs, n)) {
+        } else if (StringUtil.endsWith(tsSufs, n)) {
             return "Column.cell('" + fieldPrefix + n + "', " + m + ", " + w + ", '" + css + "', " + format + "),";
         } else if (StringUtil.endsWith(inputDateTimeSuffixs, n)) {
             return "Column.dateTime('" + fieldPrefix + n + "', " + m + ", " + w + ", '" + css + "'),";
@@ -1252,13 +1255,13 @@ public final class HtmlGenerator {
             return "Column.hour('" + fieldPrefix + n + "', " + m + ", " + w + ", '" + css + "', " + format + "),";
         } else if (StringUtil.endsWith(inputTimeSuffixs, n)) {
             return "Column.time('" + fieldPrefix + n + "', " + m + ", " + w + ", '" + css + "', " + format + "),";
-        } else if (StringUtil.endsWith(inputFileSuffixs, n)) {
+        } else if (StringUtil.endsWith(fileSufs, n)) {
             return "Column.link('" + fieldPrefix + n + "', " + m + ", " + w + ", '" + css + "'),";
         } else if (StringUtil.endsWith(optionsSuffixs, n)) {
             return "Column.select('" + fieldPrefix + n + "', " + m + ", " + w + ", '" + css + "', " + opt + "),";
         } else if (StringUtil.endsWith(textareaSuffixs, n)) {
             return "Column.longText('" + fieldPrefix + n + "', " + m + ", " + w + ", '" + css + "', " + format + "),";
-        } else if (type.matches("INT|DECIMAL|DOUBLE|NUMBER|NUMERIC")) {
+        } else if (type.matches(NUM_RE)) {
             if (StringUtil.endsWith(intNoFormatSuffixs, n)) {
                 return "Column.text('" + fieldPrefix + n + "', " + m + ", " + w + ", '" + css + "', " + format + "),";
             } else {
@@ -1338,45 +1341,38 @@ public final class HtmlGenerator {
         if (!isD && t.getStintInfo() != null) { // 検索画面の場合は制約モデルの参照キーを出力
             htmlFieldsStint(t, s);
         }
-        String eName = StringUtil.toPascalCase(t.getName());
+        String entNm = StringUtil.toPascalCase(t.getName());
         for (ColumnInfo c : t.getColumns().values()) { // カラム情報でループ
-            if (isB && c.isPk()) {
-                continue; // 兄弟モデルの主キーは出力しない
+            String colNm = c.getName();
+            if ((isB && c.isPk()) || colNm.matches("(?i)^" + viewDetail + "$")) {
+                continue; // 兄弟モデルの主キー と VIEWの「TABLE_NAME」なら出力しない
             }
-            String cName = c.getName();
-            if (cName.matches("(?i)^" + viewDetail + "$")) {
-                continue; // VIEWのテーブル名なら出力しない
-            }
-            if (t.isView() && isD && StringUtil.startsWith(viewCriteriaPrefixs, cName)) {
+            if (t.isView() && isD && StringUtil.startsWith(viewCriteriaPrefixs, colNm)) {
                 continue; // VIEWの詳細フォームには「SEARCH_」を出力しない
             }
-            if (!isD && (StringUtil.endsWith(inputFileSuffixs, cName)
-                    || StringUtil.endsWith(inputTimestampSuffixs, cName))) {
+            if (!isD && (StringUtil.endsWith(fileSufs, colNm) || StringUtil.endsWith(tsSufs, colNm))) {
                 continue; // 検索条件にはファイル項目とタイムスタンプを出力しない
             }
-            String property = StringUtil.toCamelCase(cName);
-            if (BeanGenerator.isMetaTsBy(cName)) { // メタ情報の場合
+            String property = StringUtil.toCamelCase(colNm);
+            if (BeanGenerator.isMetaTsBy(colNm)) { // メタ情報の場合
                 if (!isD) {
                     continue; // 検索画面ならスキップ（検索条件にはしない）
                 }
                 if (isB) {
-                    if (cName.matches("(?i)^" + updateTs + "$")) {
-                        s.add("        <input type=\"hidden\" name=\"" + eName + "." + property + "\" />");
+                    if (colNm.matches("(?i)^" + updateTs + "$")) {
+                        s.add("        <input type=\"hidden\" name=\"" + entNm + "." + property + "\" />");
                     }
                     continue; // 兄弟モデルならスキップ（更新日時のみ楽観ロック用に出力）
                 }
             }
             TableInfo rebornFrom = seekRebornFrom(t, c);
             String referCss = addCssByRelation(isD, t, c);
-            if (!StringUtil.isNullOrWhiteSpace(referCss)) {
-                referCss = " class=\"" + referCss + "\"";
-            }
-            String fId = eName + "." + property;
+            String fId = entNm + "." + property;
             s.add("        <div id=\"" + property + "\">");
-            if (BeanGenerator.isMetaTsBy(cName)) { // メタ情報の場合は表示項目（編集画面の自モデルのみここに到達する）
+            if (BeanGenerator.isMetaTsBy(colNm)) { // メタ情報の場合は表示項目（編集画面の自モデルのみここに到達する）
                 htmlFieldsMeta(s, fId, c.getRemarks());
                 addMeiSpan(s, t, c, "meta");
-            } else if (StringUtil.endsWith(optionsSuffixs, cName) && c.getRefer() == null) {
+            } else if (StringUtil.endsWith(optionsSuffixs, colNm) && c.getRefer() == null) {
                 String css = ""; // 選択項目の場合（サフィックスが合致しても参照モデルなら除外）
                 if (isD && c.isPk()) { // 詳細画面の主キー
                     css += " primaryKey";
@@ -1394,12 +1390,28 @@ public final class HtmlGenerator {
                     css += isNotBlank(c);
                 }
                 if (isD && t.getHistory() == null && !t.isHistory() && !c.isPk()
-                        && StringUtil.endsWith(inputReadonlySuffixs, cName)) {
+                        && StringUtil.endsWith(inputReadonlySuffixs, colNm)) {
                     css += " readonly";
                 }
-                htmlFieldsOptions(s, fId, cName, c.getRemarks(), css);
-            } else if (isD && StringUtil.endsWith(inputReadonlySuffixs, cName)) { // 読み取り専用の場合
-                htmlFieldsSpan(s, fId, c.getRemarks(), "");
+                htmlFieldsOptions(s, fId, colNm, c.getRemarks(), css);
+            } else if (isD && StringUtil.endsWith(inputReadonlySuffixs, colNm)) { // 読み取り専用の場合
+                String css = "";
+                if (c.getTypeName().matches(NUM_RE) && !StringUtil.endsWith(intNoFormatSuffixs, colNm)) {
+                    css = getNumericCss(c);
+                }
+                htmlFieldsSpan(s, fId, c.getRemarks(), css);
+                if (c.getRefer() != null) {
+                    String rNm = StringUtil.toPascalCase(c.getRefer().getName());
+                    if (referCss.contains("correct")) {
+                        //選択リンク
+                        addCorrectLink(s, fId, rNm, referCss);
+                    } else {
+                        //参照リンク
+                        s.add("          <a id=\"" + fId + "\" th:href=\"@{/model/" + rNm
+                                + "S.html}\" target=\"dialog\" class=\"" + referCss
+                                + "\" th:text=\"#{common.refer}\" tabindex=\"-1\">...</a>");
+                    }
+                }
             } else if (isD && t.isHistory()) { // 履歴モデルの詳細画面
                 htmlFieldsSpan(s, fId, c.getRemarks(), "history");
                 addMeiSpan(s, t, c, "");
@@ -1412,49 +1424,46 @@ public final class HtmlGenerator {
                 }
                 htmlFieldsSpan(s, fId, c.getRemarks(), css);
                 if (!isP && t.getSummaryOfs().size() == 0) {
-                    String referName = StringUtil.toPascalCase(c.getDeriveFrom().getName());
-                    s.add("          <a id=\"" + fId + "\" th:href=\"@{/model/" + referName + "S.html?action="
-                            + referName + "Correct.ajax}\" target=\"dialog\" class=\"" + css + "\" "
-                            + "th:text=\"#{common.correct}\" tabindex=\"-1\">...</a>");
+                    addCorrectLink(s, fId, StringUtil.toPascalCase(c.getDeriveFrom().getName()), css);
                 }
             } else if (isD && c.isSummary()) { // 詳細画面の集約先外部キー
                 htmlFieldsSpan(s, fId, c.getRemarks(), "summary");
-            } else if (StringUtil.endsWith(inputTimestampSuffixs, cName)) { // タイムスタンプの場合
+            } else if (StringUtil.endsWith(tsSufs, colNm)) { // タイムスタンプの場合
                 htmlFieldsSpan(s, fId, c.getRemarks(), "");
-            } else if (isD && StringUtil.endsWith(textareaSuffixs, cName)) { // テキストエリア項目の場合
+            } else if (isD && StringUtil.endsWith(textareaSuffixs, colNm)) { // テキストエリア項目の場合
                 String css = "";
                 if (isD && c.getNullable() == 0) {
                     css += isNotBlank(c);
                 }
                 htmlFieldsTextarea(s, fId, c.getRemarks(), css);
             } else { // inputの場合
-                String type = getInputType(cName);
+                String type = getInputType(colNm);
                 String inputCss = addCssByRelation(isD, t, c);
                 if (isD && c.getNullable() == 0) { // 詳細画面の必須項目
                     inputCss += isNotBlank(c);
                 }
-                if (StringUtil.endsWith(inputDateSuffixs, cName)) { // 日付項目および8桁日付項目
+                if (StringUtil.endsWith(inputDateSuffixs, colNm)) { // 日付項目および8桁日付項目
                     inputCss += " datepicker";
-                } else if (StringUtil.endsWith(inputDate8Suffixs, cName) && c.getColumnSize() == 8) {
+                } else if (StringUtil.endsWith(inputDate8Suffixs, colNm) && c.getColumnSize() == 8) {
                     inputCss += " datepicker";
-                } else if (StringUtil.endsWith(inputTimeSuffixs, cName)) {
+                } else if (StringUtil.endsWith(inputTimeSuffixs, colNm)) {
                     inputCss += " time";
-                } else if (StringUtil.endsWith(inputBitSuffixs, cName)) {
+                } else if (StringUtil.endsWith(inputBitSuffixs, colNm)) {
                     inputCss += " bit right";
                 }
                 if (!StringUtil.isNullOrWhiteSpace(inputCss)) {
                     inputCss = " class=\"" + inputCss + "\"";
                 }
                 String format = "";
-                if (StringUtil.endsWith(inputDate8Suffixs, cName) && c.getColumnSize() == 8) { // 8桁日付項目
+                if (StringUtil.endsWith(inputDate8Suffixs, colNm) && c.getColumnSize() == 8) { // 8桁日付項目
                     format = "yymmdd";
                 }
-                if (!isD && StringUtil.endsWith(inputRangeSuffixs, cName)) { // 検索画面の範囲指定項目の場合
+                if (!isD && StringUtil.endsWith(inputRangeSuffixs, colNm)) { // 検索画面の範囲指定項目の場合
                     s.add(htmlFieldsRange(fId, type, inputCss, c, format));
                 } else if ((!t.isView() || !isD) && c.getRefer() != null) { // 参照モデルの場合
                     s.add(htmlFieldsRefer(fId, type, inputCss, c, format, t, referCss));
                 } else {
-                    if (StringUtil.endsWith(inputBitSuffixs, cName)) {
+                    if (StringUtil.endsWith(inputBitSuffixs, colNm)) {
                         String tag = "          ";
                         tag += "<label for=\"" + fId + "F\" th:text=\"#{" + fId + "}\">" + c.getRemarks() + "</label>";
                         tag += "<input type=\"" + type + "\" id=\"" + fId + "F\" name=\"" + fId + "F\" maxlength=\""
@@ -1468,21 +1477,41 @@ public final class HtmlGenerator {
                         s.add(htmlFieldsInput(fId, type, inputCss, c, format));
                     }
                     if (rebornFrom != null) {
-                        String referName = StringUtil.toPascalCase(rebornFrom.getName());
-                        String href = "/model/" + referName + "S.html?action=" + referName + "Correct.ajax";
-                        s.add("          <a id=\"" + fId + "\" th:href=\"@{" + href + "}\" target=\"dialog\"" + referCss
-                                + " th:text=\"#{common.correct}\" tabindex=\"-1\">...</a>");
-                    }
-                    if (c.getDeriveFrom() != null) {
-                        String referName = StringUtil.toPascalCase(c.getDeriveFrom().getName());
-                        String href = "/model/" + referName + "S.html?action=" + referName + "Correct.ajax";
-                        s.add("          <a id=\"" + fId + "\" th:href=\"@{" + href + "}\" target=\"dialog\"" + referCss
-                                + " th:text=\"#{common.correct}\" tabindex=\"-1\">...</a>");
+                        addCorrectLink(s, fId, StringUtil.toPascalCase(rebornFrom.getName()), referCss);
+                    } else if (c.getDeriveFrom() != null) {
+                        addCorrectLink(s, fId, StringUtil.toPascalCase(c.getDeriveFrom().getName()), referCss);
                     }
                 }
             }
             s.add("        </div>");
         }
+    }
+
+    /**
+     * @param s
+     * @param fId
+     * @param rNm
+     * @param css
+     */
+    public static void addCorrectLink(final List<String> s, final String fId, final String rNm, final String css) {
+        s.add("          <a id=\"" + fId + "\" th:href=\"@{/model/" + rNm + "S.html?action=" + rNm
+                + "Correct.ajax}\" target=\"dialog\" class=\"" + css
+                + "\" th:text=\"#{common.correct}\" tabindex=\"-1\">...</a>");
+    }
+
+    /**
+     * @param c
+     * @return String
+     */
+    public static String getNumericCss(final ColumnInfo c) {
+        if (c.getDecimalDigits() == 3) {
+            return "dec3";
+        } else if (c.getDecimalDigits() == 2) {
+            return "dec2";
+        } else if (c.getDecimalDigits() == 1) {
+            return "dec1";
+        }
+        return "comma";
     }
 
     /**
@@ -1582,7 +1611,7 @@ public final class HtmlGenerator {
             // 時刻項目
             return "time";
 
-        } else if (StringUtil.endsWith(inputFileSuffixs, colName)) {
+        } else if (StringUtil.endsWith(fileSufs, colName)) {
             // ファイル
             return "file";
         }
@@ -1680,19 +1709,19 @@ public final class HtmlGenerator {
         if (referCss.contains("correct")) {
             //選択リンク
             String href = "/model/" + referName + "S.html?action=" + referName + "Correct.ajax";
-            tag += "<a id=\"" + fieldId + "\" th:href=\"@{" + href + "}\" target=\"dialog\"" + referCss
-                    + " th:text=\"#{common.correct}\" tabindex=\"-1\">...</a>";
+            tag += "<a id=\"" + fieldId + "\" th:href=\"@{" + href + "}\" target=\"dialog\" class=\"" + referCss
+                    + "\" th:text=\"#{common.correct}\" tabindex=\"-1\">...</a>";
         } else {
             //参照リンク
             String href = "/model/" + referName + "S.html";
-            tag += "<a id=\"" + fieldId + "\" th:href=\"@{" + href + "}\" target=\"dialog\"" + referCss
-                    + " th:text=\"#{common.refer}\" tabindex=\"-1\">...</a>";
+            tag += "<a id=\"" + fieldId + "\" th:href=\"@{" + href + "}\" target=\"dialog\" class=\"" + referCss
+                    + "\" th:text=\"#{common.refer}\" tabindex=\"-1\">...</a>";
         }
 
         String meiColName = getMeiColumnName(colName, refer);
         if (meiColName != null && !table.getColumns().containsKey(meiColName)) {
             String meiId = entity + "." + StringUtil.toCamelCase(meiColName);
-            tag += "<span id=\"" + meiId + "\"" + referCss + referDef + "></span>";
+            tag += "<span id=\"" + meiId + "\" class=\"" + referCss + "\"" + referDef + "></span>";
         }
 
         return tag;
@@ -1848,7 +1877,7 @@ public final class HtmlGenerator {
         String tag = "          ";
         tag += "<label th:text=\"#{" + id + "}\">" + remarks + "</label>";
         tag += "<span id=\"" + id + "\"" + css + "></span>";
-        tag += "<input type=\"hidden\" id=\"" + id + "\" name=\"" + id + "\"" + css + " />";
+        tag += "<input type=\"text\" id=\"" + id + "\" name=\"" + id + "\" style=\"display: none;\"" + css + " />";
         s.add(tag);
     }
 
