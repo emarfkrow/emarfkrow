@@ -34,7 +34,7 @@ limitations under the License.
                     "Select": SelectEditor,
                     "Checkbox": CheckboxEditor,
                     "Bit": BitEditor,
-                    "Comma": CommaEditor,
+                    "Dec0": Dec0Editor,
                     "Dec1": Dec1Editor,
                     "Dec2": Dec2Editor,
                     "Dec3": Dec3Editor,
@@ -521,7 +521,7 @@ limitations under the License.
         this.init();
     }
 
-    function CommaEditor(args) {
+    function Dec0Editor(args) {
         var $input;
         var defaultValue;
         var scope = this;

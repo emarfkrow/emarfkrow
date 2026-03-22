@@ -50,7 +50,7 @@ $(function() {
 
 	// パンくずラベル用に、article内のh2から、ページタイトルを取得してみる
 	// 取得できなければページのタイトルを取得
-	let pageTitle = $('.article h2').html();
+	let pageTitle = $('body>.article h2').text();
 	if (!pageTitle) {
 		pageTitle = document.title;
 	}
@@ -61,7 +61,7 @@ $(function() {
 
 	// パンくずリストに表示
 	let $ul = $('ul#breads');
-	$ul.html('');
+	$ul.text('');
 	for (let bread in breads) {
 		if (bread.indexOf(pathname) === 0) {
 			// 現在ページならリンクなし

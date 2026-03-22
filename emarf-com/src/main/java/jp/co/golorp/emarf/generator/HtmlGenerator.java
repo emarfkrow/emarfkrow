@@ -1297,7 +1297,7 @@ public final class HtmlGenerator {
             return "Column.dec1('" + name + "', " + mei + ", " + width + ", '" + css + "', " + formatter + "),";
         }
 
-        return "Column.comma('" + name + "', " + mei + ", " + width + ", '" + css + "', " + formatter + "),";
+        return "Column.dec0('" + name + "', " + mei + ", " + width + ", '" + css + "', " + formatter + "),";
     }
 
     /**
@@ -1325,7 +1325,7 @@ public final class HtmlGenerator {
             return "Column.dec1Refer('" + name + "', " + mei + ", " + width + ", '" + css + "', " + referMei + "),";
         }
 
-        return "Column.commaRefer('" + name + "', " + mei + ", " + width + ", '" + css + "', '" + referMei + "'),";
+        return "Column.dec0Refer('" + name + "', " + mei + ", " + width + ", '" + css + "', '" + referMei + "'),";
     }
 
     /**
@@ -1511,7 +1511,7 @@ public final class HtmlGenerator {
         } else if (c.getDecimalDigits() == 1) {
             return "dec1";
         }
-        return "comma";
+        return "dec0";
     }
 
     /**

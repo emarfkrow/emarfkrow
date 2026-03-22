@@ -339,7 +339,7 @@ let Jsonate = {
                             $input.val(v);
                         } else {
                             $input.val([v]);
-                            $form.find('span[id="' + inputName + '"]').html(v);
+                            $form.find('span[id="' + inputName + '"]').format(v);
                         }
                         if ($input.hasClass('bit')) {
                             $form.find('[name="' + inputName + 'F"]').val([v.toString(2)]);
@@ -369,7 +369,7 @@ let Jsonate = {
                 // 値があれば反映
                 if (v) {
                     console.debug('#' + $(this).prop('id') + ' [' + spanId + ' = ' + v + ']');
-                    $span.html(v);
+                    $span.format(v);
                 }
             });
 
@@ -437,7 +437,7 @@ let Jsonate = {
         // スパン内容
         $form.find('span[id]').each(function() {
             let $span = $(this);
-            $span.html('');
+            $span.text('');
         });
 
         // グリッド内容

@@ -35,15 +35,15 @@ limitations under the License.
                     "Link": LinkFormatter,
                     "Select": SelectFormatter,
                     "Checkbox": CheckboxFormatter,
-                    "Comma": CommaFormatter,
+                    "Dec0": Dec0Formatter,
                     "Dec1": Dec1Formatter,
                     "Dec2": Dec2Formatter,
                     "Dec3": Dec3Formatter,
                     "Refer": ReferFormatter,
-					"CommaRefer": CommaReferFormatter,
-					"Dec1Refer": Dec1ReferFormatter,
-					"Dec2Refer": Dec2ReferFormatter,
-					"Dec3Refer": Dec3ReferFormatter,
+                    "Dec0Refer": Dec0ReferFormatter,
+                    "Dec1Refer": Dec1ReferFormatter,
+                    "Dec2Refer": Dec2ReferFormatter,
+                    "Dec3Refer": Dec3ReferFormatter,
                 }
             }
         }
@@ -133,8 +133,8 @@ limitations under the License.
         return '<img class="slick-edit-preclick" src="../images/' + (value == 1 ? "CheckboxY" : "CheckboxN") + '.png">';
     }
 
-    function CommaFormatter(row, cell, value, columnDef, dataContext) {
-        return Formatter.comma(value);
+    function Dec0Formatter(row, cell, value, columnDef, dataContext) {
+        return Formatter.dec0(value);
     }
 
     function Dec1Formatter(row, cell, value, columnDef, dataContext) {
@@ -156,20 +156,20 @@ limitations under the License.
         return value;
     }
 
-	function CommaReferFormatter(row, cell, value, columnDef, dataContext) {
-	    return Formatter.comma(value);
-	}
+    function Dec0ReferFormatter(row, cell, value, columnDef, dataContext) {
+        return Formatter.dec0(value);
+    }
 
-	function Dec1ReferFormatter(row, cell, value, columnDef, dataContext) {
-	    return Formatter.dec1(value);
-	}
+    function Dec1ReferFormatter(row, cell, value, columnDef, dataContext) {
+        return Formatter.dec1(value);
+    }
 
-	function Dec2ReferFormatter(row, cell, value, columnDef, dataContext) {
-	    return Formatter.dec2(value);
-	}
+    function Dec2ReferFormatter(row, cell, value, columnDef, dataContext) {
+        return Formatter.dec2(value);
+    }
 
-	function Dec3ReferFormatter(row, cell, value, columnDef, dataContext) {
-	    return Formatter.dec3(value);
-	}
+    function Dec3ReferFormatter(row, cell, value, columnDef, dataContext) {
+        return Formatter.dec3(value);
+    }
 
 })(jQuery);

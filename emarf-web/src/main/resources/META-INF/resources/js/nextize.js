@@ -69,7 +69,7 @@ $(function() {
                 var dest = destDefs[i];
                 var dests = dest.split(':');
                 $form.find('[name$="' + dests[0] + '"]').val(['']);
-                $form.find('[id$="' + dests[0] + '"]').html('');
+                $form.find('[id$="' + dests[0] + '"]').text('');
             }
 
             let postJson = {};
@@ -98,7 +98,7 @@ $(function() {
                                 let srcValue = rowJson[srcName];
                                 if (srcValue) {
                                     $form.find('[name$="' + destName + '"]').val(srcValue);
-                                    $form.find('[id$="' + destName + '"]').html(srcValue);
+                                    $form.find('[id$="' + destName + '"]').format(srcValue);
                                 }
                             }
                         }

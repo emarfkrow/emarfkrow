@@ -21,7 +21,7 @@ limitations under the License.
 
 let Formatter = {
 
-    comma: function(v) {
+    commma: function(v) {
         if (v === undefined || v === null || v === '') { return ''; }
         // 整数と小数に分割
         var values = v.toString().split('.');
@@ -39,25 +39,25 @@ let Formatter = {
     dec0: function(v) {
         if (v === undefined || v === null || v === '') { return ''; }
         var s = Number(v).toFixed(0);
-        return Formatter.comma(s);
+        return Formatter.commma(s);
     },
 
     dec1: function(v) {
         if (v === undefined || v === null || v === '') { return ''; }
         var s = Number(v).toFixed(1);
-        return Formatter.comma(s);
+        return Formatter.commma(s);
     },
 
     dec2: function(v) {
         if (v === undefined || v === null || v === '') { return ''; }
         var s = Number(v).toFixed(2);
-        return Formatter.comma(s);
+        return Formatter.commma(s);
     },
 
     dec3: function(v) {
         if (v === undefined || v === null || v === '') { return ''; }
         var s = Number(v).toFixed(3);
-        return Formatter.comma(s);
+        return Formatter.commma(s);
     },
 
     Ym: function(v) {

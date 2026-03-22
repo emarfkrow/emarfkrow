@@ -45,6 +45,23 @@ $(function() {
 
     $('html').prop('lang', navigator.language || navigator.userLanguage || navigator.browserLanguage || navigator.systemLanguage);
 
+    // formatメソッドを定義
+    $.fn.format = function(value) {
+        let v = value;
+        if (v !== undefined) {
+            if (this.hasClass('dec3')) {
+                v = Formatter.dec3(value);
+            } else if (this.hasClass('dec2')) {
+                v = Formatter.dec2(value);
+            } else if (this.hasClass('dec1')) {
+                v = Formatter.dec1(value);
+            } else if (this.hasClass('dec0')) {
+                v = Formatter.dec0(value);
+            }
+        }
+        return $.fn.text.call(this, v);
+    };
+
     // クエリストリングの取得
     window.location.search.slice(1).split('&').forEach(function(s) {
         if (s != '') {
@@ -58,7 +75,7 @@ $(function() {
     $('input[type="password"]').prop('autocomplete', 'new-password').prop('aria-autocomplete', 'none');
 
     // 画面にクライアントシステム日時を表示
-    $('.certification #timestamp').html(Formatter.YmdHmsS(new Date()));
+    $('.certification #timestamp').text(Formatter.YmdHmsS(new Date()));
 
     // サブウィンドウならメインリンク・ログアウトボタン・ナビ非表示
     if (window.opener) {
@@ -67,7 +84,7 @@ $(function() {
         $('.nav dl').hide();
     }
 
-    if ($('#authNName').html() == 'anonymous') {
+    if ($('#authNName').text() == 'anonymous') {
         $('button#logout').hide();
     }
 });
@@ -182,12 +199,12 @@ $(document).on('ready', function() {
                         if ($param1.length && $param2.length) {
                             $param1.on('change', function() {
                                 let v = Math.round($param1.val() * $param2.val() * roundBase) / roundBase;
-                                $span.html(v);
+                                $span.format(v);
                                 $('[name="' + $span[0].id + '"]').val(v);
                             });
                             $param2.on('change', function() {
                                 let v = Math.round($param1.val() * $param2.val() * roundBase) / roundBase;
-                                $span.html(v);
+                                $span.format(v);
                                 $('[name="' + $span[0].id + '"]').val(v);
                             });
                         } else {
@@ -197,12 +214,12 @@ $(document).on('ready', function() {
                             if ($param1.length == 1 && $param2.length == 1) {
                                 $param1.on('change', function() {
                                     let v = Math.round($param1.val() * $param2.val() * roundBase) / roundBase;
-                                    $span.html(v);
+                                    $span.format(v);
                                     $('[name="' + $span[0].id + '"]').val(v);
                                 });
                                 $param2.on('change', function() {
                                     let v = Math.round($param1.val() * $param2.val() * roundBase) / roundBase;
-                                    $span.html(v);
+                                    $span.format(v);
                                     $('[name="' + $span[0].id + '"]').val(v);
                                 });
                             }
@@ -470,7 +487,7 @@ let Base = {
             let bName = this.name.replace(/f$/i, '');
             let $form = $(this).closest('form');
             $form.find('[name="' + bName + '"]').val(parseInt(this.value, 2));
-            $form.find('[id="' + bName + '"]').html(parseInt(this.value, 2));
+            $form.find('[id="' + bName + '"]').text(parseInt(this.value, 2));
         });
 
         // buttonスタイル適用
@@ -601,7 +618,7 @@ let Base = {
         $(document).on('click', 'button[type="reset"]', function() {
             let $reset = $(this);
             let $form = $reset.closest('form');
-            $form.find('span[id].refer').html('');
+            $form.find('span[id].refer').text('');
         });
 
         // メニューのトグル
@@ -609,7 +626,7 @@ let Base = {
         $dts.each(function() {
             let $dt = $(this);
             let id = 'navToggle' + this.id;
-            $dt.html('<span id="' + id + '" class="ui-accordion-header-icon ui-icon"></span>' + $dt.html());
+            $dt.html('<span id="' + id + '" class="ui-accordion-header-icon ui-icon"></span>' + $dt.text());
             let isNavs = 0;
             if (sessionStorage['navs']) {
                 navs = JSON.parse(sessionStorage['navs']);
@@ -647,7 +664,7 @@ let Base = {
         let $h2s = $('div.article>form.search').parent().find('h2');
         $h2s.each(function() {
             let $h2 = $(this);
-            $h2.html('<span id="h2Toggle" class="ui-accordion-header-icon ui-icon ui-icon-triangle-1-s"></span>' + $h2.html());
+            $h2.html('<span id="h2Toggle" class="ui-accordion-header-icon ui-icon ui-icon-triangle-1-s"></span>' + $h2.text());
             $h2.css('width', 'fit-content');
             $h2.on('click', function() {
                 let $h2Toggle = $h2.find('[id="h2Toggle"]');
@@ -770,7 +787,7 @@ let Base = {
                                     let srcValue = rowJson[srcName];
                                     if (srcValue) {
                                         $form.find('[name$="' + destName + '"]').val(srcValue);
-                                        $form.find('[id$="' + destName + '"]').html(srcValue);
+                                        $form.find('[id$="' + destName + '"]').text(srcValue);
                                     }
                                 }
                             }
@@ -1040,7 +1057,7 @@ let Base = {
                                         values += summaryOf[colName];
                                     }
                                 }
-                                $('span[id="' + inputName + '"]').html(values);
+                                $('span[id="' + inputName + '"]').text(values);
                                 $(input).val(values);
                             }
                         }

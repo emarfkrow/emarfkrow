@@ -42,9 +42,9 @@ let Column = {
         return column;
     },
 
-    commaRefer: function(field, fieldMei, width, cssClass, referField) {
+    dec0Refer: function(field, fieldMei, width, cssClass, referField) {
         let column = Column.refer(field, fieldMei, width, cssClass, referField);
-        column.formatter = Slick.Formatters.Extends.CommaRefer;
+        column.formatter = Slick.Formatters.Extends.Dec0Refer;
 		if (cssClass) {
 		    column.cssClass += ' right';
 		} else {
@@ -93,11 +93,11 @@ let Column = {
         return column;
     },
 
-    comma: function(field, fieldMei, width, cssClass, formatter, validator) {
+    dec0: function(field, fieldMei, width, cssClass, formatter, validator) {
         let column = Column.cell(field, fieldMei, width, cssClass, formatter);
         if (validator) { column.validator = validator; }
-        if (cssClass.indexOf('readonly') < 0) column.editor = Slick.Editors.Extends.Comma;
-        column.formatter = Slick.Formatters.Extends.Comma;
+        if (cssClass.indexOf('readonly') < 0) column.editor = Slick.Editors.Extends.Dec0;
+        column.formatter = Slick.Formatters.Extends.Dec0;
         if (cssClass) {
             column.cssClass += ' right';
         } else {

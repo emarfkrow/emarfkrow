@@ -715,9 +715,11 @@ $(function() {
 
                                 } else {
                                     //フォームの場合
-                                    console.debug(parentSelector + ' [name$="' + camel + '"]:not([readonly])');
-                                    $(parentSelector + ' [name$="' + camel + '"]:not([readonly])').val([dataItem[columnName]]).trigger('change');
-                                    $(parentSelector + ' span[id$="' + camel + '"]').html(dataItem[columnName]);
+                                    if ($(parentSelector + ' [name$="' + camel + '"]:not([readonly])').length > 0) {
+                                        console.debug(parentSelector + ' [name$="' + camel + '"]:not([readonly])');
+                                        $(parentSelector + ' [name$="' + camel + '"]:not([readonly])').val([dataItem[columnName]]).trigger('change');
+                                        $(parentSelector + ' span[id$="' + camel + '"]').format(dataItem[columnName]);
+                                    }
                                 }
                             }
                         }
@@ -1133,12 +1135,12 @@ var Gridate = {
                         if ($item[i].type == 'file') {
                             continue;
                         } else if ($item[i].type == 'month') {
-                            $('[id="' + dialogId + '"] span[id="' + camel + '"]').html(v);
+                            $('[id="' + dialogId + '"] span[id="' + camel + '"]').format(v);
                             v = v.replace(/(\d{4})(\d{2})/, '$1-$2');
                             $($item[i]).val([v]);
                         } else {
                             $($item[i]).val([v]);
-                            $('[id="' + dialogId + '"] span[id="' + camel + '"]').html(v);
+                            $('[id="' + dialogId + '"] span[id="' + camel + '"]').format(v);
                         }
                     }
 
@@ -1151,12 +1153,12 @@ var Gridate = {
                             if ($item[i].type == 'file') {
                                 continue;
                             } else if ($item[i].type == 'month') {
-                                $('[id="' + dialogId + '"] span[id="' + entityName + '.' + camel + '"]').html(v);
+                                $('[id="' + dialogId + '"] span[id="' + entityName + '.' + camel + '"]').format(v);
                                 v = v.replace(/(\d{4})(\d{2})/, '$1-$2');
                                 $($item[i]).val([v]);
                             } else {
                                 $($item[i]).val([v]);
-                                $('[id="' + dialogId + '"] span[id="' + entityName + '.' + camel + '"]').html(v);
+                                $('[id="' + dialogId + '"] span[id="' + entityName + '.' + camel + '"]').format(v);
                             }
                         }
                     }

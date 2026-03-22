@@ -116,7 +116,7 @@ $(function() {
             let names = stint.id.split('.');
             let name = names[names.length - 1];
             let parentVal = $form.find('[name$="' + name + '"]').val();
-            $(stint).html(parentVal);
+            $(stint).text(parentVal);
             $(stint).val([parentVal]);
         }
 
@@ -164,7 +164,7 @@ $(function() {
                 }
                 vals += item[field];
             }
-            $dialogDiv.find('[id$="' + id + '"]').html(vals);
+            $dialogDiv.find('[id$="' + id + '"]').text(vals);
             $dialogDiv.find('[name$="' + id + '"]').val(vals);
 
             // 全ての選択行で一致するカラム名と値を取得
@@ -224,7 +224,7 @@ $(function() {
                     continue;
                 }
                 let property = Casing.toCamel(colName);
-                $dialogDiv.find('span[id$="' + property + '"]').html(eqs[colName]);
+                $dialogDiv.find('span[id$="' + property + '"]').format(eqs[colName]);
                 $dialogDiv.find('[name$="' + property + '"]').val([eqs[colName]]);
             }
         }
@@ -474,7 +474,7 @@ let Dialogate = {
         let $dialogItem = $dialogDiv.find('[name="' + sendItemName + '"]');
         if ($dialogItem.length > 0) {
             $dialogItem.val(sendValue);
-            $dialogDiv.find('span[id="' + sendItemName + '"]').html(sendValue);
+            $dialogDiv.find('span[id="' + sendItemName + '"]').text(sendValue);
             //追加リンクの親モデル用にコメントアウト
             //                return;
         }
@@ -497,7 +497,7 @@ let Dialogate = {
             let dialogFieldName = dialogInputNames[1];                                // sansho1Id
             if (dialogFormEntityName == dialogEntityName && sendFieldName.match(new RegExp('^' + prefix + dialogFieldName + '$', 'i'))) {
                 $(this).val([sendValue]);
-                $dialogDiv.find('span[id="' + dialogInputName + '"]').html(sendValue);
+                $dialogDiv.find('span[id="' + dialogInputName + '"]').text(sendValue);
             }
         });
     },
