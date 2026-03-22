@@ -94,6 +94,9 @@ public final class DetailActionGenerator {
             if (table.isHistory() || table.isView()) {
                 continue;
             }
+            if (table.getPrimaryKeys().size() == 0) {
+                continue;
+            }
             String entity = StringUtil.toPascalCase(table.getName());
             String r = table.getRemarks();
             List<String> s = new ArrayList<String>();
@@ -396,6 +399,10 @@ public final class DetailActionGenerator {
         for (TableInfo table : tables) {
 
             if (table.isHistory() || table.isView()) {
+                continue;
+            }
+
+            if (table.getPrimaryKeys().size() == 0) {
                 continue;
             }
 

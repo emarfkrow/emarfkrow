@@ -104,6 +104,10 @@ public final class IndexActionGenerator {
                 continue;
             }
 
+            if (table.getPrimaryKeys().size() == 0) {
+                continue;
+            }
+
             //削除フラグがあればスキップ
             if (!StringUtil.isNullOrWhiteSpace(deleteF) && table.getColumns().containsKey(deleteF)) {
                 continue;
@@ -208,6 +212,10 @@ public final class IndexActionGenerator {
         for (TableInfo table : tableInfos) {
 
             if (table.isHistory() || table.isView() /* ClassNotFoundよけ */) {
+                continue;
+            }
+
+            if (table.getPrimaryKeys().size() == 0) {
                 continue;
             }
 
