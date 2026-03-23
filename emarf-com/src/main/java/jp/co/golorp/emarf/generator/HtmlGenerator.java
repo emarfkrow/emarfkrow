@@ -1558,16 +1558,16 @@ public final class HtmlGenerator {
         String css = "";
 
         // 詳細画面のユニークキー
-        if (isD && column.isUnique()) {
+        if (/*isD &&*/ column.isUnique()) {
             css += " uniqueKey";
         }
 
         // 詳細画面の主キー
-        if (isD && column.isPk()) {
+        if (/*isD &&*/ column.isPk()) {
             css += " primaryKey";
 
             // 詳細画面の採番キー
-            if (column.isNumbering()) {
+            if (isD && column.isNumbering()) {
                 css += " numbering";
             }
         }

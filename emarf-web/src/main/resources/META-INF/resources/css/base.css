@@ -282,10 +282,10 @@ div.notblank {
     background-color: khaki;
 }
 
-input.primaryKey,
-div.primaryKey,
-span.primaryKey,
-select.primaryKey {
+form.regist input.primaryKey,
+form.regist div.primaryKey,
+form.regist span.primaryKey,
+form.regist select.primaryKey {
     background-color: pink;
 }
 

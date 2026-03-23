@@ -818,6 +818,18 @@ let Base = {
             }
         });
 
+        $registForm.find('input[type="checkbox"],input[type="radio"]').closest('fieldset').each(function() {
+            let $fieldset = $(this);
+            let isReadonly = $fieldset.hasClass('readonly');
+            $fieldset.find('input[type="checkbox"],input[type="radio"]').each(function() {
+                if (isReadonly) {
+                    Base.readonly(this);
+                } else {
+                    Base.writable(this);
+                }
+            });
+        });
+
         // 詳細画面の主キー項目の参照ボタンは、値が既にあれば非表示
         $registForm.find('[target=dialog].refer.primaryKey').each(function() {
             if ($('input[id="' + this.id + '"]').val() != '') {

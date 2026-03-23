@@ -734,6 +734,14 @@ $(function() {
                             });
                         }
 
+                        // 一旦、検索条件を開いておく
+                        let $searchForm = $dialogDiv.find('[name$="SearchForm"]');
+                        let $h2 = $searchForm.prev('h2');
+                        let $h2Toggle = $h2.find('[id="h2Toggle"]');
+                        if ($h2Toggle.hasClass('ui-icon-triangle-1-e')) {
+                            $h2.click();
+                        }
+
                         $dialogDiv.dialog('close');
 
                     } else if ($clicked.hasClass('gridDelete')) {

@@ -106,7 +106,7 @@ $(function() {
 
         // 呼び出し元の入力項目でループしてダイアログ内に反映
         $sendInputs.each(function() {
-            Dialogate.reflect2Dialog(this, $dialogDiv, prefix);
+            Dialogate.reflect2Dialog($dialogDiv, prefix, this.name, $(this).val());
         });
 
         //呼び出し先の制約項目があれば、呼び出し元から取得
@@ -232,7 +232,7 @@ $(function() {
         let isDerive = $clicked.hasClass('derive');
         if (isDerive) {
             $clicked.nextAll('input').each(function() {
-                Dialogate.reflect2Dialog(this, $dialogDiv, 'derivee');
+                Dialogate.reflect2Dialog($dialogDiv, 'derivee', this.name, $(this).val());
             });
         }
 
@@ -375,7 +375,7 @@ let Dialogate = {
                             }
                         }
 
-                        // グリッド内でなく、呼び出し元で検索項目が設定されている場合は、検索結果を初期表示
+                        // 呼び出し元がグリッドでなく、検索項目が設定されている場合は、検索結果を初期表示
                         if (!$dialogDiv.attr('data-caller').match(/.+Grid.+/)) {
                             let formJson = Jsonate.toValueJson($searchForm);
                             delete formJson['rows'];
@@ -465,18 +465,21 @@ let Dialogate = {
 
     },
 
-    reflect2Dialog: function(sendInput, $dialogDiv, prefix) {
+    reflect2Dialog: function($dialogDiv, prefix, sendItemName, sendValue) {
 
-        let sendItemName = sendInput.name;                                                 // TEntity.betsuSansho1Id
-        let sendValue = $(sendInput).val();
+        // let sendItemName = sendInput.name;                                         // TEntity.betsuSansho1Id
+        // let sendValue = $(sendInput).val();
+        if (sendValue.length == 0) {
+            return;
+        }
 
         // そのままの項目名でヒットする場合（詳細リンク、追加リンクの親モデル）
         let $dialogItem = $dialogDiv.find('[name="' + sendItemName + '"]');
         if ($dialogItem.length > 0) {
-            $dialogItem.val(sendValue);
+            $dialogItem.val([sendValue]);
             $dialogDiv.find('span[id="' + sendItemName + '"]').text(sendValue);
-            //追加リンクの親モデル用にコメントアウト
-            //                return;
+            // 追加リンクの親モデル用にコメントアウト
+            // return;
         }
 
         // 以下、参照リンク、検索画面の追加リンク、詳細画面の追加リンク
@@ -493,11 +496,15 @@ let Dialogate = {
         $dialogDiv.find('input').each(function() {
             let dialogInputName = this.name;                                          // MSansho1.sansho1Id
             let dialogInputNames = dialogInputName.split('.');                        // MSansho1, sansho1Id
-            let dialogEntityName = dialogInputNames[0];                               // MSansho1
+            let dialogInputEntityName = dialogInputNames[0];                          // MSansho1
             let dialogFieldName = dialogInputNames[1];                                // sansho1Id
-            if (dialogFormEntityName == dialogEntityName && sendFieldName.match(new RegExp('^' + prefix + dialogFieldName + '$', 'i'))) {
+            if (dialogFormEntityName == dialogInputEntityName && sendFieldName.match(new RegExp('^' + prefix + dialogFieldName + '$', 'i'))) {
                 $(this).val([sendValue]);
                 $dialogDiv.find('span[id="' + dialogInputName + '"]').text(sendValue);
+                if ($(this).hasClass('primaryKey') && $(this).hasClass('refer')) {
+                    Base.readonly(this);
+                    Base.readonly($('a[id="' + this.id + '"]'));
+                }
             }
         });
     },
