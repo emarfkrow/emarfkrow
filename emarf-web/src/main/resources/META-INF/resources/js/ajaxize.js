@@ -51,6 +51,26 @@ $(function() {
             }
         }
 
+        // 申請ボタンだった場合は実行確認
+        if ($button.hasClass('apply')) {
+            if (!confirm(Messages['confirm.apply'])) {
+                event.preventDefault();
+                event.stopPropagation();
+                event.stopImmediatePropagation();
+                return false;
+            }
+        }
+
+        // 取消ボタンだった場合は実行確認
+        if ($button.hasClass('cancel')) {
+            if (!confirm(Messages['confirm.cancel'])) {
+                event.preventDefault();
+                event.stopPropagation();
+                event.stopImmediatePropagation();
+                return false;
+            }
+        }
+
         // 承認ボタンだった場合は実行確認
         if ($button.hasClass('permit')) {
             if (!confirm(Messages['confirm.permit'])) {

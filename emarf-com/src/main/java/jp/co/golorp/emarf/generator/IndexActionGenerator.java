@@ -81,6 +81,8 @@ public final class IndexActionGenerator {
         IndexActionGenerator.deleteAction(tableInfos);
         IndexActionGenerator.registAction(tableInfos);
         if (!StringUtil.isNullOrWhiteSpace(status)) {
+            IndexActionGenerator.applyAction(tableInfos);
+            IndexActionGenerator.cancelAction(tableInfos);
             IndexActionGenerator.permitAction(tableInfos);
             IndexActionGenerator.forbidAction(tableInfos);
         }
@@ -288,10 +290,10 @@ public final class IndexActionGenerator {
                 s.add("                    isNew = true;");
                 s.add("                }");
             }
-            if (!table.isView() && !StringUtil.isNullOrWhiteSpace(status) && table.getColumns().containsKey(status)) {
-                s.add("");
-                s.add("                e.set" + StringUtil.toPascalCase(status) + "(0);");
-            }
+            //            if (!table.isView() && !StringUtil.isNullOrWhiteSpace(status) && table.getColumns().containsKey(status)) {
+            //                s.add("");
+            //                s.add("                e.set" + StringUtil.toPascalCase(status) + "(0);");
+            //            }
             s.add("");
             s.add("                if (isNew) {");
             s.add("");
@@ -323,6 +325,234 @@ public final class IndexActionGenerator {
 
             String javaFilePath = packageDir + File.separator + e + "SRegistAction.java";
             javaFilePaths.put(javaFilePath, actionPkg + "." + e + "SRegistAction");
+
+            FileUtil.writeFile(javaFilePath, s);
+        }
+
+        if (isGenerateAtStartup) {
+            for (Entry<String, String> e : javaFilePaths.entrySet()) {
+                BeanGenerator.javaCompile(e.getKey(), e.getValue());
+            }
+        }
+    }
+
+    /**
+     * 検索画面 申請処理出力
+     * @param tables テーブル情報のリスト
+     */
+    private static void applyAction(final List<TableInfo> tables) {
+
+        // 出力フォルダを再作成
+        String packagePath = actionPkg.replace(".", File.separator);
+        String packageDir = prjDir + File.separator + javaPath + File.separator + packagePath;
+
+        Map<String, String> javaFilePaths = new LinkedHashMap<String, String>();
+
+        for (TableInfo table : tables) {
+
+            if (table.isHistory() || table.isView() || !table.getColumns().containsKey(status)) {
+                continue;
+            }
+
+            String e = StringUtil.toPascalCase(table.getName());
+            String remarks = table.getRemarks();
+
+            List<String> s = new ArrayList<String>();
+            s.add("package " + actionPkg + ";");
+            s.add("");
+            s.add("import java.time.LocalDateTime;");
+            s.add("import java.util.HashMap;");
+            s.add("import java.util.List;");
+            s.add("import java.util.Map;");
+            s.add("");
+            s.add("import " + entityPackage + "." + e + ";");
+            s.add("");
+            s.add("import jp.co.golorp.emarf.action.BaseAction;");
+            s.add("import jp.co.golorp.emarf.exception.OptLockError;");
+            s.add("import jp.co.golorp.emarf.util.Messages;");
+            s.add("import jp.co.golorp.emarf.validation.FormValidator;");
+            s.add("");
+            s.add("/**");
+            s.add(" * " + remarks + "一覧申請");
+            s.add(" *");
+            s.add(" * @author emarfkrow");
+            s.add(" */");
+            s.add("public class " + e + "SApplyAction extends BaseAction {");
+            s.add("");
+            s.add("    /** " + remarks + "一覧申請処理 */");
+            s.add("    @Override");
+            s.add("    public Map<String, Object> running(final LocalDateTime now, final String execId, final Map<String, Object> form) {");
+            s.add("");
+            s.add("        Map<String, Object> map = new HashMap<String, Object>();");
+            s.add("");
+            s.add("        int count = 0;");
+            s.add("");
+            s.add("        @SuppressWarnings(\"unchecked\")");
+            s.add("        List<Map<String, Object>> data = (List<Map<String, Object>>) form.get(\"" + e + "Grid\");");
+            s.add("        if (data != null) {");
+            s.add("            for (Map<String, Object> row : data) {");
+            s.add("");
+            s.add("                if (row.isEmpty()) {");
+            s.add("                    continue;");
+            s.add("                }");
+            s.add("");
+            s.add("                " + e + " e = FormValidator.toBean(" + e + ".class.getName(), row);");
+            s.add("");
+            s.add("                // 主キーが不足していたらエラー");
+            String params = "";
+            for (String primaryKey : table.getPrimaryKeys()) {
+                String property = StringUtil.toCamelCase(primaryKey);
+                String accessor = StringUtil.toPascalCase(primaryKey);
+                s.add("                Object " + property + " = e.get" + accessor + "();");
+                s.add("                if (" + property + " == null) {");
+                s.add("                    throw new OptLockError(\"error.cant.apply\", \"" + remarks + "\");");
+                s.add("                }");
+                if (params.length() > 0) {
+                    params += ", ";
+                }
+                params += property;
+            }
+            List<TableInfo> childInfos = table.getChildren();
+            BeanGenerator.getApplyChilds(s, "e", childInfos, 2);
+            s.add("");
+            s.add("                " + e + " f = " + e + ".get(" + params + ");");
+            if (table.getColumns().containsKey(status)) {
+                s.add("                f.set" + StringUtil.toPascalCase(status) + "(0);");
+            }
+            s.add("                if (f.update(now, execId) != 1) {");
+            s.add("                    throw new OptLockError(\"error.cant.apply\", \"" + remarks + "\");");
+            s.add("                }");
+            s.add("                ++count;");
+            s.add("            }");
+            s.add("        }");
+            s.add("");
+            s.add("        if (count == 0) {");
+            s.add("            map.put(\"ERROR\", Messages.get(\"error.nopost\"));");
+            s.add("            return map;");
+            s.add("        }");
+            s.add("");
+            s.add("        map.put(\"INFO\", Messages.get(\"info.apply\"));");
+            s.add("        return map;");
+            s.add("    }");
+            s.add("");
+            s.add("}");
+
+            String javaFilePath = packageDir + File.separator + e + "SApplyAction.java";
+            javaFilePaths.put(javaFilePath, actionPkg + "." + e + "SApplyAction");
+
+            FileUtil.writeFile(javaFilePath, s);
+        }
+
+        if (isGenerateAtStartup) {
+            for (Entry<String, String> e : javaFilePaths.entrySet()) {
+                BeanGenerator.javaCompile(e.getKey(), e.getValue());
+            }
+        }
+    }
+
+    /**
+     * 検索画面 取消処理出力
+     * @param tables テーブル情報のリスト
+     */
+    private static void cancelAction(final List<TableInfo> tables) {
+
+        // 出力フォルダを再作成
+        String packagePath = actionPkg.replace(".", File.separator);
+        String packageDir = prjDir + File.separator + javaPath + File.separator + packagePath;
+
+        Map<String, String> javaFilePaths = new LinkedHashMap<String, String>();
+
+        for (TableInfo table : tables) {
+
+            if (table.isHistory() || table.isView() || !table.getColumns().containsKey(status)) {
+                continue;
+            }
+
+            String e = StringUtil.toPascalCase(table.getName());
+            String remarks = table.getRemarks();
+
+            List<String> s = new ArrayList<String>();
+            s.add("package " + actionPkg + ";");
+            s.add("");
+            s.add("import java.time.LocalDateTime;");
+            s.add("import java.util.HashMap;");
+            s.add("import java.util.List;");
+            s.add("import java.util.Map;");
+            s.add("");
+            s.add("import " + entityPackage + "." + e + ";");
+            s.add("");
+            s.add("import jp.co.golorp.emarf.action.BaseAction;");
+            s.add("import jp.co.golorp.emarf.exception.OptLockError;");
+            s.add("import jp.co.golorp.emarf.util.Messages;");
+            s.add("import jp.co.golorp.emarf.validation.FormValidator;");
+            s.add("");
+            s.add("/**");
+            s.add(" * " + remarks + "一覧取消");
+            s.add(" *");
+            s.add(" * @author emarfkrow");
+            s.add(" */");
+            s.add("public class " + e + "SCancelAction extends BaseAction {");
+            s.add("");
+            s.add("    /** " + remarks + "一覧取消処理 */");
+            s.add("    @Override");
+            s.add("    public Map<String, Object> running(final LocalDateTime now, final String execId, final Map<String, Object> form) {");
+            s.add("");
+            s.add("        Map<String, Object> map = new HashMap<String, Object>();");
+            s.add("");
+            s.add("        int count = 0;");
+            s.add("");
+            s.add("        @SuppressWarnings(\"unchecked\")");
+            s.add("        List<Map<String, Object>> data = (List<Map<String, Object>>) form.get(\"" + e + "Grid\");");
+            s.add("        if (data != null) {");
+            s.add("            for (Map<String, Object> row : data) {");
+            s.add("");
+            s.add("                if (row.isEmpty()) {");
+            s.add("                    continue;");
+            s.add("                }");
+            s.add("");
+            s.add("                " + e + " e = FormValidator.toBean(" + e + ".class.getName(), row);");
+            s.add("");
+            s.add("                // 主キーが不足していたらエラー");
+            String params = "";
+            for (String primaryKey : table.getPrimaryKeys()) {
+                String property = StringUtil.toCamelCase(primaryKey);
+                String accessor = StringUtil.toPascalCase(primaryKey);
+                s.add("                Object " + property + " = e.get" + accessor + "();");
+                s.add("                if (" + property + " == null) {");
+                s.add("                    throw new OptLockError(\"error.cant.cancel\", \"" + remarks + "\");");
+                s.add("                }");
+                if (params.length() > 0) {
+                    params += ", ";
+                }
+                params += property;
+            }
+            List<TableInfo> childInfos = table.getChildren();
+            BeanGenerator.getCancelChilds(s, "e", childInfos, 2);
+            s.add("");
+            s.add("                " + e + " f = " + e + ".get(" + params + ");");
+            if (table.getColumns().containsKey(status)) {
+                s.add("                f.set" + StringUtil.toPascalCase(status) + "(null);");
+            }
+            s.add("                if (f.update(now, execId) != 1) {");
+            s.add("                    throw new OptLockError(\"error.cant.cancel\", \"" + remarks + "\");");
+            s.add("                }");
+            s.add("                ++count;");
+            s.add("            }");
+            s.add("        }");
+            s.add("");
+            s.add("        if (count == 0) {");
+            s.add("            map.put(\"ERROR\", Messages.get(\"error.nopost\"));");
+            s.add("            return map;");
+            s.add("        }");
+            s.add("");
+            s.add("        map.put(\"INFO\", Messages.get(\"info.cancel\"));");
+            s.add("        return map;");
+            s.add("    }");
+            s.add("");
+            s.add("}");
+
+            String javaFilePath = packageDir + File.separator + e + "SCancelAction.java";
+            javaFilePaths.put(javaFilePath, actionPkg + "." + e + "SCancelAction");
 
             FileUtil.writeFile(javaFilePath, s);
         }
@@ -485,13 +715,13 @@ public final class IndexActionGenerator {
             s.add("import jp.co.golorp.emarf.validation.FormValidator;");
             s.add("");
             s.add("/**");
-            s.add(" * " + remarks + "一覧承認");
+            s.add(" * " + remarks + "一覧否認");
             s.add(" *");
             s.add(" * @author emarfkrow");
             s.add(" */");
             s.add("public class " + e + "SForbidAction extends BaseAction {");
             s.add("");
-            s.add("    /** " + remarks + "一覧承認処理 */");
+            s.add("    /** " + remarks + "一覧否認処理 */");
             s.add("    @Override");
             s.add("    public Map<String, Object> running(final LocalDateTime now, final String execId, final Map<String, Object> form) {");
             s.add("");

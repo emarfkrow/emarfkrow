@@ -249,8 +249,7 @@ public final class HtmlGenerator {
         Map<TableInfo, Integer> added = new HashMap<TableInfo, Integer>();
         added.put(table, 1);
         htmlNestGrid(s, table, tables, added, false, "", false);
-        s.add("</head>");
-        s.add("<body>");
+        s.add("</head>\r\n<body>");
         s.add("  <div layout:fragment=\"article\">");
         s.add("    <h2 th:text=\"#{" + es + ".h2}\">h2</h2>");
         s.add("    <!-- 検索フォーム -->");
@@ -305,8 +304,7 @@ public final class HtmlGenerator {
                 }
             }
         }
-        s.add("      </div>");
-        s.add("      <div class=\"submits\">");
+        s.add("      </div>\r\n      <div class=\"submits\">");
         s.add("        <button id=\"Search" + e + "\" type=\"submit\" class=\"search\" data-gridId=\"" + e
                 + "Grid\" th:text=\"#{common.search}\">submit</button>");
         s.add("      </div>\r\n    </form>\r\n    <!-- 一覧フォーム -->");
@@ -361,18 +359,20 @@ public final class HtmlGenerator {
         }
         // 履歴モデルでないテーブルで、子モデルを持たない場合
         if (!table.isView() && !table.isHistory() && table.getChildren().size() == 0) {
-            // 削除フラグも有効期間終了日もないなら、物理削除ボタンを表示
             if (!table.getColumns().containsKey(deleteF) && !table.getColumns().containsKey(haishiBi)) {
                 s.add("        <button type=\"submit\" id=\"Delete" + es + "\" data-action=\"" + es
                         + "Delete.ajax\" class=\"delete selectRows\" th:text=\"#{common.delete}\" tabindex=\"-1\">削除</button>");
-            }
-            //ステータス列名の指定があり、テーブルにステータス列があるなら、承認ボタン・否認ボタンを表示
+            } // 削除フラグも有効期間終了日もないなら、物理削除ボタンを表示
             if (table.getColumns().containsKey(status)) {
                 s.add("        <button type=\"submit\" id=\"Permit" + es + "\" data-action=\"" + es
                         + "Permit.ajax\" class=\"permit selectRows\" th:text=\"#{common.permit}\" tabindex=\"-1\">承認</button>");
                 s.add("        <button type=\"submit\" id=\"Forbid" + es + "\" data-action=\"" + es
                         + "Forbid.ajax\" class=\"forbid selectRows\" th:text=\"#{common.forbid}\" tabindex=\"-1\">否認</button>");
-            }
+                s.add("        <button type=\"submit\" id=\"Apply" + es + "\" data-action=\"" + es
+                        + "Apply.ajax\" class=\"apply selectRows\" th:text=\"#{common.apply}\" tabindex=\"-1\">申請</button>");
+                s.add("        <button type=\"submit\" id=\"Cancel" + es + "\" data-action=\"" + es
+                        + "Cancel.ajax\" class=\"cancel selectRows\" th:text=\"#{common.cancel}\" tabindex=\"-1\">取消</button>");
+            } //ステータス列名の指定があり、テーブルにステータス列があるなら、承認ボタン・否認ボタンを表示
         }
         s.add("      </div>");
         s.add("      <div class=\"submits\">");
@@ -686,18 +686,20 @@ public final class HtmlGenerator {
         s.add("      </div>");
         s.add("      <div class=\"submits\">");
         if (!table.isHistory() && !table.isView()) { // 履歴モデルでもビューでもない場合
-            // 削除フラグ列名の指定がないか、テーブルに削除フラグ列がないなら、物理削除ボタンを表示
             if (!table.getColumns().containsKey(deleteF) && !table.getColumns().containsKey(haishiBi)) {
                 s.add("        <button id=\"Delete" + e + "\" type=\"submit\" class=\"delete\" data-action=\"" + e
                         + "Delete.ajax\" th:text=\"#{common.delete}\" tabindex=\"-1\">削除</button>");
-            }
-            //ステータス列名の指定があり、テーブルにステータス列があるなら、承認ボタン・否認ボタンを表示
+            } // 削除フラグ列名の指定がないか、テーブルに削除フラグ列がないなら、物理削除ボタンを表示
             if (table.getColumns().containsKey(status)) {
                 s.add("        <button id=\"Permit" + e + "\" type=\"submit\" class=\"permit\" data-action=\""
                         + e + "Permit.ajax\" th:text=\"#{common.permit}\" tabindex=\"-1\">承認</button>");
                 s.add("        <button id=\"Forbid" + e + "\" type=\"submit\" class=\"forbid\" data-action=\""
                         + e + "Forbid.ajax\" th:text=\"#{common.forbid}\" tabindex=\"-1\">否認</button>");
-            }
+                s.add("        <button id=\"Apply" + e + "\" type=\"submit\" class=\"apply\" data-action=\""
+                        + e + "Apply.ajax\" th:text=\"#{common.apply}\" tabindex=\"-1\">申請</button>");
+                s.add("        <button id=\"Cancel" + e + "\" type=\"submit\" class=\"cancel\" data-action=\""
+                        + e + "Cancel.ajax\" th:text=\"#{common.cancel}\" tabindex=\"-1\">取消</button>");
+            } //ステータス列名の指定があり、テーブルにステータス列があるなら、承認ボタン・否認ボタンを表示
             String onclick = "";
             if (table.getHistory() != null && !StringUtil.isNullOrWhiteSpace(reason)) {
                 onclick = " onclick=\"if (!Base.historyReason(this)) { return false; }\"";

@@ -67,6 +67,12 @@ public class AuthzAction extends BaseAction {
         } else if (suffix.matches("^S?Regist.+$") && (authZ.get("edit") == null || authZ.get("edit") != 1)) {
             errorId = "error.authz.edit";
 
+        } else if (suffix.matches("^S?Apply.+$") && (authZ.get("edit") == null || authZ.get("edit") != 1)) {
+            errorId = "error.authz.apply";
+
+        } else if (suffix.matches("^S?Cancel.+$") && (authZ.get("edit") == null || authZ.get("edit") != 1)) {
+            errorId = "error.authz.cancel";
+
         } else if (suffix.matches("^S?Delete.+$") && (authZ.get("delete") == null || authZ.get("delete") != 1)) {
             errorId = "error.authz.delete";
 

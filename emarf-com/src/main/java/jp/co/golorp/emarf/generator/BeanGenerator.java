@@ -1611,6 +1611,106 @@ public final class BeanGenerator {
     }
 
     /**
+     * 一覧画面の一括申請処理
+     * @param s
+     * @param parent
+     * @param childs
+     * @param indent
+     */
+    public static void getApplyChilds(final List<String> s, final String parent, final List<TableInfo> childs,
+            final int indent) {
+
+        // indent
+        String p = "    ".repeat(indent);
+
+        for (TableInfo child : childs) {
+
+            String r = child.getRemarks();
+
+            // entity
+            String e = StringUtil.toPascalCase(child.getName());
+
+            // instance
+            String i = StringUtil.toCamelCase(child.getName());
+
+            s.add("");
+
+            int parents = child.getParents().size();
+            if (parents > 1) {
+                s.add(p + "        // child:" + e + ", parents:" + parents);
+                continue;
+            }
+
+            s.add(p + "        java.util.List<" + pkgE + "." + e + "> " + i + "s = " + parent + ".refer" + e + "s();");
+            s.add(p + "        if (" + i + "s != null) {");
+            s.add(p + "            for (" + pkgE + "." + e + " " + i + " : " + i + "s) {");
+            if (child.getChildren().size() > 0) {
+                // forでもう一段降りているから「+2」
+                getApplyChilds(s, i, child.getChildren(), indent + 2);
+            }
+            s.add("");
+            if (child.getColumns().containsKey(status)) {
+                s.add(p + "                " + i + ".set" + StringUtil.toPascalCase(status) + "(0);");
+            }
+            s.add(p + "                if (" + i + ".update(now, execId) != 1) {");
+            s.add(p + "                    throw new OptLockError(\"error.cant.apply\", \"" + r + "\");");
+            s.add(p + "                }");
+            s.add(p + "            }");
+            s.add(p + "        }");
+        }
+    }
+
+    /**
+     * 一覧画面の一括取消処理
+     * @param s
+     * @param parent
+     * @param childs
+     * @param indent
+     */
+    public static void getCancelChilds(final List<String> s, final String parent, final List<TableInfo> childs,
+            final int indent) {
+
+        // indent
+        String p = "    ".repeat(indent);
+
+        for (TableInfo child : childs) {
+
+            String r = child.getRemarks();
+
+            // entity
+            String e = StringUtil.toPascalCase(child.getName());
+
+            // instance
+            String i = StringUtil.toCamelCase(child.getName());
+
+            s.add("");
+
+            int parents = child.getParents().size();
+            if (parents > 1) {
+                s.add(p + "        // child:" + e + ", parents:" + parents);
+                continue;
+            }
+
+            s.add(p + "        java.util.List<" + pkgE + "." + e + "> " + i + "s = " + parent + ".refer" + e + "s();");
+            s.add(p + "        if (" + i + "s != null) {");
+            s.add(p + "            for (" + pkgE + "." + e + " " + i + " : " + i + "s) {");
+            if (child.getChildren().size() > 0) {
+                // forでもう一段降りているから「+2」
+                getCancelChilds(s, i, child.getChildren(), indent + 2);
+            }
+            s.add("");
+            if (child.getColumns().containsKey(status)) {
+                s.add(p + "                " + i + ".set" + StringUtil.toPascalCase(status) + "(null);");
+            }
+            s.add(p + "                if (" + i + ".update(now, execId) != 1) {");
+            s.add(p + "                    throw new OptLockError(\"error.cant.cancel\", \"" + r + "\");");
+            s.add(p + "                }");
+            s.add(p + "            }");
+            s.add(p + "        }");
+        }
+    }
+
+    /**
      * 一覧画面の一括承認処理
      * @param s
      * @param parent
@@ -1667,8 +1767,8 @@ public final class BeanGenerator {
      * @param childs
      * @param indent
      */
-    public static void getForbidChilds(final List<String> s, final String parent,
-            final List<TableInfo> childs, final int indent) {
+    public static void getForbidChilds(final List<String> s, final String parent, final List<TableInfo> childs,
+            final int indent) {
 
         // indent
         String p = "    ".repeat(indent);

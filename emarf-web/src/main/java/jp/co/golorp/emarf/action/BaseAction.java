@@ -175,6 +175,10 @@ public abstract class BaseAction extends BaseProcess {
                     }
                 } else if (action.equals("Delete") && (authZ.get("delete") == null || authZ.get("delete") != 1)) {
                     errorId = "error.authz.delete";
+                } else if (action.equals("Apply") && (authZ.get("edit") == null || authZ.get("edit") != 1)) {
+                    errorId = "error.authz.apply";
+                } else if (action.equals("Cancel") && (authZ.get("edit") == null || authZ.get("edit") != 1)) {
+                    errorId = "error.authz.cancel";
                 } else if (action.equals("Permit") && (authZ.get("permit") == null || authZ.get("permit") != 1)) {
                     errorId = "error.authz.permit";
                 } else if (action.equals("Forbid") && (authZ.get("forbid") == null || authZ.get("forbid") != 1)) {

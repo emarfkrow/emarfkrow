@@ -549,6 +549,26 @@ let Base = {
                 }
             });
 
+            // 申請権限なし
+            $(this).find('button.apply').each(function() {
+                let href = $(this).attr('data-action');
+                if (href) {
+                    if (Base.getAuthz(href) != '') {
+                        $(this).button('option', 'disabled', true);
+                    }
+                }
+            });
+
+            // 取消権限なし
+            $(this).find('button.cancel').each(function() {
+                let href = $(this).attr('data-action');
+                if (href) {
+                    if (Base.getAuthz(href) != '') {
+                        $(this).button('option', 'disabled', true);
+                    }
+                }
+            });
+
             // 承認権限なし
             $(this).find('button.permit').each(function() {
                 let href = $(this).attr('data-action');
@@ -868,6 +888,8 @@ let Base = {
         $registForm.find('a.output').button('option', 'disabled', true);
         $registForm.find('a.reborner').button('option', 'disabled', true);
         $registForm.find('button.delete').button('option', 'disabled', true);
+        $registForm.find('button.apply').button('option', 'disabled', true);
+        $registForm.find('button.cancel').button('option', 'disabled', true);
         $registForm.find('button.permit').button('option', 'disabled', true);
         $registForm.find('button.forbid').button('option', 'disabled', true);
         $registForm.find('button.regist').button('option', 'disabled', true);
@@ -944,16 +966,32 @@ let Base = {
                                 }
                             });
 
+                            // 申請可能
+                            $registForm.find('button.apply').each(function() {
+                                let $button = $(this);
+                                if (Base.getAuthz($button.attr('data-action')) == '') {
+                                    $button.button('option', 'disabled', false);
+                                }
+                            });
+
                             // 転生可能
                             $registForm.find('a.reborner').button('option', 'disabled', false);
 
                         } else if ($statusKb.val() == 0) {
                             /*
-                             * 登録ステータス
+                             * 申請ステータス
                              */
 
                             // 削除可能
                             $registForm.find('button.delete').each(function() {
+                                let $button = $(this);
+                                if (Base.getAuthz($button.attr('data-action')) == '') {
+                                    $button.button('option', 'disabled', false);
+                                }
+                            });
+
+                            // 取消可能
+                            $registForm.find('button.cancel').each(function() {
                                 let $button = $(this);
                                 if (Base.getAuthz($button.attr('data-action')) == '') {
                                     $button.button('option', 'disabled', false);
@@ -1033,6 +1071,14 @@ let Base = {
 
                             // 削除可能
                             $registForm.find('button.delete').each(function() {
+                                let $button = $(this);
+                                if (Base.getAuthz($button.attr('data-action')) == '') {
+                                    $button.button('option', 'disabled', false);
+                                }
+                            });
+
+                            // 取消可能
+                            $registForm.find('button.cancel').each(function() {
                                 let $button = $(this);
                                 if (Base.getAuthz($button.attr('data-action')) == '') {
                                     $button.button('option', 'disabled', false);
