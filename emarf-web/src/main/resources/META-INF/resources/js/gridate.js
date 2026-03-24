@@ -718,6 +718,9 @@ $(function() {
                                     if ($(parentSelector + ' [name$="' + camel + '"]:not([readonly])').length > 0) {
                                         console.debug(parentSelector + ' [name$="' + camel + '"]:not([readonly])');
                                         $(parentSelector + ' [name$="' + camel + '"]:not([readonly])').val([dataItem[columnName]]).trigger('change');
+                                    }
+                                    if ($(parentSelector + ' span[id$="' + camel + '"]').length > 0) {
+                                        console.debug(parentSelector + ' span[id$="' + camel + '"]');
                                         $(parentSelector + ' span[id$="' + camel + '"]').format(dataItem[columnName]);
                                     }
                                 }
