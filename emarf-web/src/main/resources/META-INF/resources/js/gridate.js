@@ -719,6 +719,11 @@ $(function() {
                                         console.debug(parentSelector + ' [name$="' + camel + '"]:not([readonly])');
                                         $(parentSelector + ' [name$="' + camel + '"]:not([readonly])').val([dataItem[columnName]]).trigger('change');
                                     }
+                                    if ($(parentSelector + ' [name$="' + camel + '"].forceReadonly').length > 0) {
+                                        console.debug(parentSelector + ' [name$="' + camel + '"].forceReadonly');
+                                        $(parentSelector + ' [name$="' + camel + '"].forceReadonly').val([dataItem[columnName]]).trigger('change');
+                                        Base.readonly($(parentSelector + ' [name$="' + camel + '"].forceReadonly'));
+                                    }
                                     if ($(parentSelector + ' span[id$="' + camel + '"]').length > 0) {
                                         console.debug(parentSelector + ' span[id$="' + camel + '"]');
                                         $(parentSelector + ' span[id$="' + camel + '"]').format(dataItem[columnName]);

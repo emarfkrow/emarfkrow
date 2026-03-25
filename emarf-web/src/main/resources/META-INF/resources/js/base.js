@@ -838,9 +838,10 @@ let Base = {
             }
         });
 
+        // 詳細画面のチェックボックス・ラジオボタンは、fieldsetにforceReadonlyクラスがあれば読み取り専用
         $registForm.find('input[type="checkbox"],input[type="radio"]').closest('fieldset').each(function() {
             let $fieldset = $(this);
-            let isReadonly = $fieldset.hasClass('readonly');
+            let isReadonly = $fieldset.hasClass('forceReadonly');
             $fieldset.find('input[type="checkbox"],input[type="radio"]').each(function() {
                 if (isReadonly) {
                     Base.readonly(this);
@@ -848,6 +849,16 @@ let Base = {
                     Base.writable(this);
                 }
             });
+        });
+
+        $registForm.find('select').each(function() {
+            let $select = $(this);
+            let isReadonly = $select.hasClass('forceReadonly');
+            if (isReadonly) {
+                Base.readonly(this);
+            } else {
+                Base.writable(this);
+            }
         });
 
         // 詳細画面の主キー項目の参照ボタンは、値が既にあれば非表示
@@ -918,9 +929,40 @@ let Base = {
                     // ステータスによるボタン制御
                     let $mainform = $registForm.find('fieldset:not(.parent):nth-child(1)');
                     let $registDt = $mainform.find('[name$="' + Casing.toCamel(columnRegistTs) + '"]');
+                    let $statusKbs = $mainform.find('[name$="' + Casing.toCamel(columnStatus) + '"]');
                     let $statusKb = $mainform.find('[name$="' + Casing.toCamel(columnStatus) + '"]:checked');
 
-                    if ($registDt.val() != '') {
+                    if ($registDt.val() == '') {
+                        // 更新日時がない場合
+
+                        // 更新権限がない場合は全てを非活性
+                        $registForm.find('button.regist').each(function() {
+
+                            if (Base.getAuthz($registForm[0].action) != '') {
+
+                                // 画面をロック
+                                $registForm.find('input, select, textarea').each(function() {
+                                    Base.readonly(this);
+                                });
+
+                                // グリッド行削除ボタンを非表示
+                                $registForm.find('fieldset a.refer, input[type="button"].gridDelete').hide();
+
+                                // グリッド列もロック
+                                let gridDivs = $registForm.find('[id$=Grid]');
+                                for (let i = 0;i < gridDivs.length;i++) {
+                                    let gridId = gridDivs[i].id;
+                                    Gridate.grids[gridId].getOptions()['editable'] = false;
+                                }
+
+                            } else {
+
+                                $(this).button('option', 'disabled', false);
+                            }
+                        });
+
+                    } else {
+                        // 更新日時がある場合
 
                         // 出力権限があれば出力ボタンを活性
                         $registForm.find('a.output').each(function() {
@@ -948,14 +990,32 @@ let Base = {
                                     let gridId = gridDivs[i].id;
                                     Gridate.grids[gridId].getOptions()['editable'] = false;
                                 }
+
                             } else {
+
                                 $(this).button('option', 'disabled', false);
                             }
                         });
 
-                        if ($statusKb.length == 0) {
+                        if ($statusKbs.length == 0) {
                             /*
                              * ステータスなし
+                             */
+
+                            // 削除可能
+                            $registForm.find('button.delete').each(function() {
+                                let $button = $(this);
+                                if (Base.getAuthz($button.attr('data-action')) == '') {
+                                    $button.button('option', 'disabled', false);
+                                }
+                            });
+
+                            // 転生可能
+                            $registForm.find('a.reborner').button('option', 'disabled', false);
+
+                        } else if ($statusKb.val() == null) {
+                            /*
+                             * 申請前
                              */
 
                             // 削除可能
@@ -974,13 +1034,25 @@ let Base = {
                                 }
                             });
 
-                            // 転生可能
-                            $registForm.find('a.reborner').button('option', 'disabled', false);
-
                         } else if ($statusKb.val() == 0) {
                             /*
                              * 申請ステータス
                              */
+
+                            // 画面をロック
+                            $registForm.find('input, select, textarea').each(function() {
+                                Base.readonly(this);
+                            });
+
+                            // グリッド行削除ボタンを非表示
+                            $registForm.find('fieldset a.refer, input[type="button"].gridDelete').hide();
+
+                            // グリッド列もロック
+                            let gridDivs = $registForm.find('[id$=Grid]');
+                            for (let i = 0;i < gridDivs.length;i++) {
+                                let gridId = gridDivs[i].id;
+                                Gridate.grids[gridId].getOptions()['editable'] = false;
+                            }
 
                             // 削除可能
                             $registForm.find('button.delete').each(function() {
@@ -1013,6 +1085,9 @@ let Base = {
                                     $button.button('option', 'disabled', false);
                                 }
                             });
+
+                            // 登録不可
+                            $registForm.find('button.regist').button('option', 'disabled', true);
 
                         } else if ($statusKb.val() == 1) {
                             /*
@@ -1154,6 +1229,17 @@ let Base = {
                 } else {
                     $readonly.closest('label').css('display', 'inherit');
                 }
+            }
+            // プルダウンなら選択値以外は非活性
+            if ($readonly.prop('tagName') == 'SELECT') {
+                var v = $readonly.find('option:selected').val();
+                $readonly.find('option').each(function() {
+                    if ($(this).val() == v) {
+                        $(this).prop('disabled', false);
+                    } else {
+                        $(this).prop('disabled', true);
+                    }
+                });
             }
         }
     },

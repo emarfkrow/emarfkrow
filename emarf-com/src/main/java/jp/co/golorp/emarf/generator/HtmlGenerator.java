@@ -1393,7 +1393,7 @@ public final class HtmlGenerator {
                 }
                 if (isD && t.getHistory() == null && !t.isHistory() && !c.isPk()
                         && StringUtil.endsWith(inputReadonlySuffixs, colNm)) {
-                    css += " readonly";
+                    css += " forceReadonly";
                 }
                 htmlFieldsOptions(s, fId, colNm, c.getRemarks(), css);
             } else if (isD && StringUtil.endsWith(inputReadonlySuffixs, colNm)) { // 読み取り専用の場合

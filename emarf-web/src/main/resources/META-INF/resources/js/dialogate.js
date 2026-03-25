@@ -328,6 +328,16 @@ let Dialogate = {
                 }
             });
 
+            // 参照ダイアログの場合、ダイアログ内の新規ボタンは非表示
+            if ($link.hasClass('refer')) {
+                $dialogDiv.find('a.anew').hide();
+                $dialogDiv.find('[id$=Grid]').each(function() {
+                    let $gridDiv = $(this);
+                    $gridDiv.attr('data-addRow', false);
+                });
+                $dialogDiv.find('button.regist').hide();
+            }
+
             // ダイアログを設定
             $dialogDiv.dialog({
                 autoOpen: false,
@@ -388,7 +398,7 @@ let Dialogate = {
 
                     let $registForm = $dialogDiv.find('[name$="RegistForm"]');
                     if ($registForm.length > 0) {
-                        // ダイアログ内に検索フォームがある場合
+                        // ダイアログ内に登録フォームがある場合
 
                         // ダイアログの場合だけ初期化すればいいのでBase.referRegistForm()から移動
                         $registForm.find('a, input, select, textarea').each(function() {
