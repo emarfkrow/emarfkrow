@@ -454,6 +454,14 @@ let Dialogate = {
         Dialogate.refreshById(dialogId);
     },
 
+    reset: function(event) {
+        let searchForm = event.srcElement.closest('form.search');
+        $(searchForm).find('input:not([name="rows"]):not([name="page"]),select,textarea').each(function() {
+            let $inputs = $(this);
+            $inputs.val([$inputs.attr('data-callerVal')]);
+        });
+    },
+
     refreshById: function(dialogId) {
 
         let $dialogDiv = $('[id$="' + dialogId + '"]');
@@ -472,7 +480,6 @@ let Dialogate = {
             $dialogDiv.find('[name="' + name + '"]').val(primaryKeys[name]);
         }
         $dialogDiv.dialog('open');
-
     },
 
     reflect2Dialog: function($dialogDiv, prefix, sendItemName, sendValue) {
@@ -488,6 +495,10 @@ let Dialogate = {
         if ($dialogItem.length > 0) {
             $dialogItem.val([sendValue]);
             $dialogDiv.find('span[id="' + sendItemName + '"]').text(sendValue);
+            if ($dialogItem.hasClass('primaryKey') && $dialogItem.hasClass('refer')) {
+                $dialogItem.attr('data-callerVal', sendValue);
+                $dialogDiv.find('span[id="' + sendItemName + '"]').attr('data-callerVal', sendValue);
+            }
             // 追加リンクの親モデル用にコメントアウト
             // return;
         }
@@ -512,6 +523,8 @@ let Dialogate = {
                 $(this).val([sendValue]);
                 $dialogDiv.find('span[id="' + dialogInputName + '"]').text(sendValue);
                 if ($(this).hasClass('primaryKey') && $(this).hasClass('refer')) {
+                    $(this).attr('data-callerVal', sendValue);
+                    $dialogDiv.find('span[id="' + dialogInputName + '"]').attr('data-callerVal', sendValue);
                     Base.readonly(this);
                     Base.readonly($('a[id="' + this.id + '"]'));
                 }

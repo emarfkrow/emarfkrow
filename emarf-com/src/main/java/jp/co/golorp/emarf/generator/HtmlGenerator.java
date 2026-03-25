@@ -261,8 +261,8 @@ public final class HtmlGenerator {
         htmlFields(table, s, false, false, false);
         s.add("      </fieldset>");
         s.add("      <div class=\"buttons\">");
-        s.add("        <button type=\"reset\" id=\"Reset" + e
-                + "\" th:text=\"#{common.reset}\" class=\"reset\">reset</button>");
+        s.add("        <button type=\"button\" id=\"Reset" + e
+                + "\" th:text=\"#{common.reset}\" class=\"reset\" onClick=\"Dialogate.reset(event);\">reset</button>");
         boolean isAnew = isAnew(table);
         if (isAnew || table.getRebornFrom() != null) {
             boolean isDeriver = false;
