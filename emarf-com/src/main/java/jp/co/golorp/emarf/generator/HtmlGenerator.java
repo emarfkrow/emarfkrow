@@ -1931,11 +1931,12 @@ public final class HtmlGenerator {
                 String srcIdName = entityName + "." + StringUtil.toCamelCase(srcIdColumn);
                 String srcMeiName = entityName + "." + StringUtil.toCamelCase(srcMeiColumn);
 
+                String referFor = " data-referFor=\"" + srcIdName + "\"";
                 String dataJson = " data-json=\"" + referName + "Search.json\"";
                 String srcDef = " data-srcDef=\"" + destIdColumn + ":" + srcIdName + "\"";
                 String destDef = " data-destDef=\"" + srcMeiName + ":" + destMeiColumn + "\"";
 
-                return dataJson + srcDef + destDef;
+                return referFor + dataJson + srcDef + destDef;
             }
         }
 

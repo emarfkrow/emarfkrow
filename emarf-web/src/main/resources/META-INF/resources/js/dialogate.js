@@ -459,6 +459,8 @@ let Dialogate = {
         $(searchForm).find('input:not([name="rows"]):not([name="page"]),select,textarea').each(function() {
             let $inputs = $(this);
             $inputs.val([$inputs.attr('data-callerVal')]);
+            let $referMei = $inputs.siblings('[data-referFor="' + $inputs[0].name + '"]');
+            $referMei.text([$referMei.attr('data-callerVal')]);
         });
     },
 
