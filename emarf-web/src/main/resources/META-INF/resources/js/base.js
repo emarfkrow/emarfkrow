@@ -57,6 +57,8 @@ $(function() {
                 v = Formatter.dec1(value);
             } else if (this.hasClass('dec0')) {
                 v = Formatter.dec0(value);
+            } else if (this.hasClass('YmdHmsS')) {
+                v = Formatter.YmdHmsS(new Date(value));
             }
         }
         return $.fn.text.call(this, v);

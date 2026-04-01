@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
+import java.util.ResourceBundle;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
@@ -39,11 +40,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import jp.co.golorp.emarf.exception.SysError;
+import jp.co.golorp.emarf.generator.BeanGenerator;
 import jp.co.golorp.emarf.io.FileUtil;
 import jp.co.golorp.emarf.lang.StringUtil;
 import jp.co.golorp.emarf.properties.App;
 import jp.co.golorp.emarf.time.DateTimeUtil;
 import jp.co.golorp.emarf.util.Messages;
+import jp.co.golorp.emarf.util.ResourceBundles;
 
 /**
  * エクセル操作ユーティリティ
@@ -57,6 +60,16 @@ public final class XlsxUtil {
 
     /** セパレータ */
     private static String sep = File.separator;
+
+    /** properties */
+    private static ResourceBundle bundle = ResourceBundles.getBundle(BeanGenerator.class);
+
+    /** options項目サフィックス */
+    private static String[] optionsSuffixs;
+
+    static {
+        optionsSuffixs = bundle.getString("input.options.suffixs").split(",");
+    }
 
     /** プライベートコンストラクタ */
     private XlsxUtil() {
@@ -194,8 +207,9 @@ public final class XlsxUtil {
 
                             boolean isChilds = false;
                             if (v instanceof List) {
-                                List<?> list = (List<?>) v;
-                                if (!list.isEmpty() && list.get(0) instanceof Map<?, ?>) {
+                                // List<?> list = (List<?>) v;
+                                // if (!list.isEmpty() && list.get(0) instanceof Map<?, ?>) {
+                                if (!StringUtil.endsWith(optionsSuffixs, StringUtil.toSnakeCase(k))) {
                                     isChilds = true;
                                 }
                             }
@@ -208,15 +222,18 @@ public final class XlsxUtil {
                                 // 子モデルリストの場合
                                 @SuppressWarnings("unchecked")
                                 List<Map<String, Object>> dataList = (List<Map<String, Object>>) v;
-                                Map<String, Object> childItem = dataList.get(0);
-                                if (childItem != null) {
-                                    int r2 = 3 * ++childs;
-                                    int c2 = 0;
-                                    for (Entry<String, Object> e2 : childItem.entrySet()) {
-                                        String k2 = e2.getKey();
-                                        //                                        Object v2 = e2.getValue();
-                                        setCellValue(layoutSheet, r2, c2, k2);
-                                        setCellValue(layoutSheet, r2 + 1, c2++, "[[" + e.getKey() + "." + k2 + "]]");
+                                if (dataList.size() > 0) {
+                                    Map<String, Object> childItem = dataList.get(0);
+                                    if (childItem != null) {
+                                        int r2 = 3 * ++childs;
+                                        int c2 = 0;
+                                        for (Entry<String, Object> e2 : childItem.entrySet()) {
+                                            String k2 = e2.getKey();
+                                            // Object v2 = e2.getValue();
+                                            setCellValue(layoutSheet, r2, c2, k2);
+                                            setCellValue(layoutSheet, r2 + 1, c2++,
+                                                    "[[" + e.getKey() + "." + k2 + "]]");
+                                        }
                                     }
                                 }
                             }
@@ -293,6 +310,13 @@ public final class XlsxUtil {
             if (data instanceof List) {
                 // 一覧系エクセル
 
+                @SuppressWarnings("unchecked")
+                List<Map<String, Object>> list = (List<Map<String, Object>>) data;
+
+                //                if (list.size() == 0) {
+                //                    continue;
+                //                }
+
                 // レイアウトシートの使用範囲内で、行・列ループして、各プレースホルダのアドレスを取得
                 Map<String, CellAddress> meisaiAddresses = new HashMap<String, CellAddress>();
 
@@ -301,8 +325,9 @@ public final class XlsxUtil {
                 //                LOG.debug("    b: " + range.getBoR() + ", " + range.getBoC());
                 //                LOG.debug("    e: " + range.getEoR() + ", " + range.getEoC());
 
-                @SuppressWarnings("unchecked")
-                List<Map<String, Object>> list = (List<Map<String, Object>>) data;
+                if (range == null) {
+                    continue;
+                }
 
                 // 明細行インデクス
                 int meisaiIndex = 0;
@@ -459,7 +484,8 @@ public final class XlsxUtil {
 
         if (range.getBoR() == Integer.MAX_VALUE || range.getBoC() == Integer.MAX_VALUE || range.getEoR() == 0
                 || range.getEoC() == 0) {
-            throw new SysError("error.notexist", prefix + " range");
+            //throw new SysError("error.notexist", prefix + " range");
+            return null;
         }
 
         return range;

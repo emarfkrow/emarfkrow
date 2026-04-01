@@ -59,9 +59,6 @@ public final class HtmlGenerator {
     /** 弟を設定しないテーブル名 */
     private static String youngestRe;
 
-    //    /** 孤児モデル正規表現 */
-    //    private static String orphansRe;
-
     /** 参照列名ペア */
     private static Set<String[]> referPairs = new LinkedHashSet<String[]>();
 
@@ -1372,7 +1369,7 @@ public final class HtmlGenerator {
             String fId = entNm + "." + property;
             s.add("        <div id=\"" + property + "\">");
             if (BeanGenerator.isMetaTsBy(colNm)) { // メタ情報の場合は表示項目（編集画面の自モデルのみここに到達する）
-                htmlFieldsMeta(s, fId, c.getRemarks());
+                htmlFieldsMeta(s, fId, c);
                 addMeiSpan(s, t, c, "meta");
             } else if (StringUtil.endsWith(optionsSuffixs, colNm) && c.getRefer() == null) {
                 String css = ""; // 選択項目の場合（サフィックスが合致しても参照モデルなら除外）
@@ -1851,12 +1848,18 @@ public final class HtmlGenerator {
      * レコードメタ情報の出力
      * @param s 出力文字列のリスト
      * @param id 項目ID
-     * @param remarks コメント
+     * @param c カラム情報
      */
-    private static void htmlFieldsMeta(final List<String> s, final String id, final String remarks) {
+    private static void htmlFieldsMeta(final List<String> s, final String id, final ColumnInfo c) {
+
+        String css = "";
+        if (StringUtil.endsWith(tsSufs, c.getName())) {
+            css += " YmdHmsS";
+        }
+
         String tag = "          ";
-        tag += "<label th:text=\"#{" + id + "}\" class=\"meta\">" + remarks + "</label>";
-        tag += "<span id=\"" + id + "\" class=\"meta\"></span>";
+        tag += "<label th:text=\"#{" + id + "}\" class=\"meta\">" + c.getRemarks() + "</label>";
+        tag += "<span id=\"" + id + "\" class=\"meta" + css + "\"></span>";
         tag += "<input type=\"hidden\" id=\"" + id + "\" name=\"" + id + "\" class=\"meta\"/>";
         s.add(tag);
     }

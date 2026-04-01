@@ -110,7 +110,7 @@ let Formatter = {
             let mm = ('0' + date.getMinutes()).slice(-2);
             let s = ('0' + date.getSeconds()).slice(-2);
             let S = ('00' + date.getMilliseconds()).slice(-3);
-            return y + '-' + m + '-' + d + ' ' + h + ':' + mm + ':' + s + '.' + S;
+            return y + '/' + m + '/' + d + ' ' + h + ':' + mm + ':' + s + '.' + S;
         }
         return '';
     },
