@@ -257,6 +257,8 @@ let Dialogate = {
         // リンクを取得
         let $link = $(link);
 
+        let isReborner = $link.hasClass('reborner');
+
         // hrefを取得。なければスキップ。
         let href = $link.attr('href');
         if (href == undefined) {
@@ -355,6 +357,11 @@ let Dialogate = {
                     // ダイアログdiv
                     let $dialogDiv = $(event.target);
 
+                    $dialogDiv.find('a.reborner').show();
+                    if (isReborner) {
+                        $dialogDiv.find('a.reborner').hide();
+                    }
+
                     // ダイアログ内のグリッド新規ボタンは、呼び出し元の主キーが揃っていなければ非活性
                     $dialogDiv.find('.addChild').button('option', 'disabled', false);
                     let isPrimaryKey = true;
@@ -437,8 +444,11 @@ let Dialogate = {
             // 遅延ロードした外部HTMLにダイアログリンクがあれば、再度、外部HTMLを読み込み
             $(dialogHtml).find('a[target="dialog"]').each(function() {
                 let dialogLink = this;
-                if (!isRefer || $(dialogLink).hasClass('refer') || $(dialogLink).hasClass('derivee')) {
-                    Dialogate.enable(dialogLink, indent + "  ", isRefer || $(dialogLink).hasClass('refer') || $(dialogLink).hasClass('derivee'));
+                // 転生ならネストしない
+                if (!isReborner || !$(dialogLink).hasClass('reborner')) {
+                    if (!isRefer || $(dialogLink).hasClass('refer') || $(dialogLink).hasClass('derivee')) {
+                        Dialogate.enable(dialogLink, indent + "  ", isRefer || $(dialogLink).hasClass('refer') || $(dialogLink).hasClass('derivee'));
+                    }
                 }
             });
 
