@@ -1398,7 +1398,7 @@ public final class HtmlGenerator {
                 if (c.getTypeName().matches(NUM_RE) && !StringUtil.endsWith(intNoFormatSuffixs, colNm)) {
                     css = getNumericCss(c);
                 }
-                htmlFieldsSpan(s, fId, c.getRemarks(), css);
+                htmlFieldsSpan(s, fId, c, css);
                 if (c.getRefer() != null) {
                     String rNm = StringUtil.toPascalCase(c.getRefer().getName());
                     if (referCss.contains("correct")) {
@@ -1412,23 +1412,23 @@ public final class HtmlGenerator {
                     }
                 }
             } else if (isD && t.isHistory()) { // 履歴モデルの詳細画面
-                htmlFieldsSpan(s, fId, c.getRemarks(), "history");
+                htmlFieldsSpan(s, fId, c, "history");
                 addMeiSpan(s, t, c, "");
             } else if (isD && c.isReborn()) { // 詳細画面の転生元外部キー
-                htmlFieldsSpan(s, fId, c.getRemarks(), "rebornee");
+                htmlFieldsSpan(s, fId, c, "rebornee");
             } else if (isD && c.getDeriveFrom() != null) { // 詳細画面の派生元外部キー
                 String css = "derivee";
                 if (t.getSummaryOfs().size() > 0) {
                     css += " summaryOf";
                 }
-                htmlFieldsSpan(s, fId, c.getRemarks(), css);
+                htmlFieldsSpan(s, fId, c, css);
                 if (!isP && t.getSummaryOfs().size() == 0) {
                     addCorrectLink(s, fId, StringUtil.toPascalCase(c.getDeriveFrom().getName()), css);
                 }
             } else if (isD && c.isSummary()) { // 詳細画面の集約先外部キー
-                htmlFieldsSpan(s, fId, c.getRemarks(), "summary");
+                htmlFieldsSpan(s, fId, c, "summary");
             } else if (StringUtil.endsWith(tsSufs, colNm)) { // タイムスタンプの場合
-                htmlFieldsSpan(s, fId, c.getRemarks(), "");
+                htmlFieldsSpan(s, fId, c, "");
             } else if (isD && StringUtil.endsWith(textareaSuffixs, colNm)) { // テキストエリア項目の場合
                 String css = "";
                 if (isD && c.getNullable() == 0) {
@@ -1635,7 +1635,7 @@ public final class HtmlGenerator {
                     String fieldId = entity + "." + property;
                     s.add("        <div id=\"" + property + "\" class=\"stint\" style=\"display: none;\">");
                     //                    s.add(htmlFieldsRefer(fieldId, "text", "refer", column, "", table, "refer"));
-                    htmlFieldsSpan(s, fieldId, column.getRemarks(), "stint");
+                    htmlFieldsSpan(s, fieldId, column, "stint");
                     addMeiSpan(s, table, column, "");
                     s.add("        </div>");
                 }
@@ -1868,19 +1868,21 @@ public final class HtmlGenerator {
      * 表示項目の出力
      * @param s 出力文字列のリスト
      * @param id 項目ID
-     * @param remarks コメント
+     * @param c カラム情報
      * @param cssClass
      */
-    private static void htmlFieldsSpan(final List<String> s, final String id, final String remarks,
+    private static void htmlFieldsSpan(final List<String> s, final String id, final ColumnInfo c,
             final String cssClass) {
 
-        String css = "";
-        if (!StringUtil.isNullOrWhiteSpace(cssClass)) {
-            css = " class=\"" + cssClass + "\"";
+        String css = cssClass;
+        if (StringUtil.endsWith(tsSufs, c.getName())) {
+            css += " YmdHmsS";
         }
-
+        if (!StringUtil.isNullOrWhiteSpace(css)) {
+            css = " class=\"" + css + "\"";
+        }
         String tag = "          ";
-        tag += "<label th:text=\"#{" + id + "}\">" + remarks + "</label>";
+        tag += "<label th:text=\"#{" + id + "}\">" + c.getRemarks() + "</label>";
         tag += "<span id=\"" + id + "\"" + css + "></span>";
         tag += "<input type=\"text\" id=\"" + id + "\" name=\"" + id + "\" style=\"display: none;\"" + css + " />";
         s.add(tag);
