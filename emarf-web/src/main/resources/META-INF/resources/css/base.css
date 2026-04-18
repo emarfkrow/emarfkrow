@@ -103,7 +103,6 @@ form>div {
 
 form>div[id$=Pager] {
     min-height: 1.5rem;
-    overflow-wrap: anywhere;
     margin-top: 0px;
 }
 
@@ -222,6 +221,10 @@ input[type="datetime-local"] {
 
 [role="dialog"] [id$="SDialog"] [id$="Grid"] {
     height: 320px;
+    width: 1210px;
+}
+
+[role="dialog"] [id$="Pager"] {
     width: 1210px;
 }
 

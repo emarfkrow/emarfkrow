@@ -360,6 +360,7 @@ let Dialogate = {
                     $dialogDiv.find('a.reborner').show();
                     if (isReborner) {
                         $dialogDiv.find('a.reborner').hide();
+                        $dialogDiv.find('div.submits').hide();
                     }
 
                     // ダイアログ内のグリッド新規ボタンは、呼び出し元の主キーが揃っていなければ非活性

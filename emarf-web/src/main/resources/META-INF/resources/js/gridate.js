@@ -1057,9 +1057,9 @@ var Gridate = {
             let html = '';
             for (let i = 1;i <= maxPage;i++) {
                 if (i == currentPage) {
-                    html += '<a>' + i + '</a>&nbsp;';
+                    html += '<a>' + i + '</a> ';
                 } else {
-                    html += '<a href="javascript:void(0);" onclick="Gridate.paginate(\'' + gridId + '\',' + i + ')">' + i + '</a>&nbsp;';
+                    html += '<a href="javascript:void(0);" onclick="Gridate.paginate(\'' + gridId + '\',' + i + ')">' + i + '</a> ';
                 }
             }
             $pager.html(html);
