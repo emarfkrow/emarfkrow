@@ -24,7 +24,10 @@ import java.io.InputStreamReader;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.file.Path;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -491,13 +494,55 @@ public final class Queries {
      * @return SQLファイル内容
      */
     public static String loadSqlFile(final List<String> sqlPathes, final Class<?> c, final String sqlName) {
-        try {
-            // サーブレットのsqlフォルダからの相対パスで取得
-            return Queries.loadSqlFile(sqlPathes, sqlName);
-        } catch (Exception e) {
-            // 参照jarを含め、クラスパス内のsqlフォルダからのパッケージ相対位置で取得
-            return Queries.loadSqlFile(c, sqlName);
+
+        String s = null;
+
+        // サーブレットのsqlフォルダからの相対パスで取得
+        s = Queries.loadSqlFile(sqlPathes, sqlName);
+        if (s != null) {
+            return s;
         }
+
+        s = Queries.loadSqlFile(c, sqlPathes, sqlName);
+        if (s != null) {
+            return s;
+        }
+
+        // 参照jarを含め、クラスパス内のsqlフォルダからのパッケージ相対位置で取得
+        s = Queries.loadSqlFile(c, sqlName);
+        if (s != null) {
+            return s;
+        }
+
+        throw new SysError("error.notexist.file", sqlPathes + sqlName + ".sql");
+    }
+
+    /**
+     * サーブレットコンテキスト内のSQLファイルをロード
+     * @param c 呼び出し元のクラス
+     * @param sqlPathes サーブレットコンテキストからのパス
+     * @param sqlName SQLファイル名
+     * @return SQLファイル内容
+     */
+    private static String loadSqlFile(final Class<?> c, final List<String> sqlPathes, final String sqlName) {
+
+        File file = getExternalPath(c, sqlPathes, sqlName);
+
+        if (file.exists()) {
+            try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file)));) {
+                StringBuilder sb = new StringBuilder();
+                String line;
+                while ((line = br.readLine()) != null) {
+                    sb.append(line + "\r\n");
+                }
+                return sb.toString();
+            } catch (IOException e) {
+                LOG.trace(e.getMessage());
+            }
+        }
+
+        return null;
+        //throw new SysError("error.notexist.file", sqlName + ".sql");
     }
 
     /**
@@ -535,7 +580,8 @@ public final class Queries {
             }
         }
 
-        throw new SysError("error.notexist.file", sqlName + ".sql");
+        return null;
+        //throw new SysError("error.notexist.file", sqlName + ".sql");
     }
 
     /**
@@ -574,6 +620,7 @@ public final class Queries {
     private static String loadSqlFile(final List<String> sqlPathes, final String sqlName) {
 
         File file = seekSqlFile(sqlPathes, sqlName);
+
         if (file.exists()) {
             try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file)));) {
                 StringBuilder sb = new StringBuilder();
@@ -587,7 +634,8 @@ public final class Queries {
             }
         }
 
-        throw new SysError("error.notexist.file", sqlName + ".sql");
+        return null;
+        //throw new SysError("error.notexist.file", sqlName + ".sql");
     }
 
     /**
@@ -608,8 +656,55 @@ public final class Queries {
         File file = FileUtil.get(filePath);
 
         if (!file.exists() && sqlPathes.size() > 0) {
-            sqlPathes.remove(0);
-            file = seekSqlFile(sqlPathes, sqlName);
+            List<String> copy = new ArrayList<>(sqlPathes);
+            copy.remove(0);
+            file = seekSqlFile(copy, sqlName);
+        }
+
+        return file;
+    }
+
+    /**
+     * @param c
+     * @param sqlPathes
+     * @param sqlName
+     * @return Path
+     * @throws URISyntaxException
+     */
+    public static File getExternalPath(final Class<?> c, final List<String> sqlPathes, final String sqlName) {
+
+        String sqlPath = "sql" + SEP + String.join(SEP, sqlPathes);
+
+        // 1. このクラスがロードされている場所（JARまたはクラスファイル）を取得
+        URL location = c.getProtectionDomain().getCodeSource().getLocation();
+
+        URI uri = null;
+        try {
+            uri = location.toURI();
+        } catch (URISyntaxException e) {
+            LOG.trace(e.getMessage());
+        }
+
+        // 2. URIをFileに変換（パスのエンコード問題を回避）
+        String uriPath = uri.getRawPath().toString();
+        uriPath = uriPath.replace("/target/classes/", "/");
+        File jarOrClassFile = new File(uriPath);
+
+        // 3. 親ディレクトリを取得（これがJARのあるディレクトリ）
+        File jarDir = jarOrClassFile;
+        if (jarOrClassFile.toString().endsWith(".jar")) {
+            jarDir = jarOrClassFile.getParentFile();
+        }
+
+        // 4. そこから相対パスで目的のファイルにアクセス
+        Path path = jarDir.toPath().resolve(sqlPath).resolve(sqlName + ".sql");
+
+        File file = path.toFile();
+
+        if (!file.exists() && sqlPathes.size() > 0) {
+            List<String> copy = new ArrayList<>(sqlPathes);
+            copy.remove(0);
+            file = seekSqlFile(copy, sqlName);
         }
 
         return file;

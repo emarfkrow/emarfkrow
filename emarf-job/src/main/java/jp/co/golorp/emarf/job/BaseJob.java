@@ -17,6 +17,8 @@ limitations under the License.
 package jp.co.golorp.emarf.job;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 
 import org.slf4j.Logger;
@@ -50,6 +52,9 @@ public abstract class BaseJob extends BaseProcess {
         try {
 
             LOG.info("<<<run>>> " + this.getClass().getName());
+
+            String[] packages = this.getClass().getPackageName().split("\\.");
+            this.setPathes(new ArrayList<String>(Arrays.asList(packages)));
 
             String simpleName = this.getClass().getSimpleName();
             String id = simpleName.replaceFirst("Job$", "");

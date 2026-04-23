@@ -64,7 +64,10 @@ public final class FileUtil {
      * @return File ファイル実体
      */
     public static File get(final String filePath) {
-        String pathname = contextDir + File.separator + filePath;
+        String pathname = filePath;
+        if (contextDir != null) {
+            pathname = contextDir + File.separator + pathname;
+        }
         pathname = pathname.replaceAll("[\\\\|\\/]+", "\\" + File.separator);
         LOG.debug("pathname: " + pathname);
         String dirname = pathname.replaceFirst("[^\\\\]+$", "");
