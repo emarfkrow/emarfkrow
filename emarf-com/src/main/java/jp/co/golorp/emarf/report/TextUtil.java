@@ -26,6 +26,7 @@ import com.fasterxml.jackson.dataformat.csv.CsvSchema.Builder;
 
 import jp.co.golorp.emarf.exception.NoDataError;
 import jp.co.golorp.emarf.exception.SysError;
+import jp.co.golorp.emarf.io.FileUtil;
 import jp.co.golorp.emarf.sql.Queries;
 import jp.co.golorp.emarf.util.MapList;
 
@@ -40,10 +41,18 @@ public final class TextUtil {
 
     /**
      * @param sql
+     * @param filePath
+     */
+    public static void csvOut(final String sql, final String filePath) {
+        csvOut(sql, null, filePath);
+    }
+
+    /**
+     * @param sql
      * @param params
      * @param filePath
      */
-    public static void csv(final String sql, final Map<String, Object> params, final String filePath) {
+    public static void csvOut(final String sql, final Map<String, Object> params, final String filePath) {
 
         Builder builder = CsvSchema.builder();
 
@@ -52,10 +61,18 @@ public final class TextUtil {
 
     /**
      * @param sql
+     * @param filePath
+     */
+    public static void tsvOut(final String sql, final String filePath) {
+        tsvOut(sql, null, filePath);
+    }
+
+    /**
+     * @param sql
      * @param params
      * @param filePath
      */
-    public static void tsv(final String sql, final Map<String, Object> params, final String filePath) {
+    public static void tsvOut(final String sql, final Map<String, Object> params, final String filePath) {
 
         Builder builder = CsvSchema.builder();
         builder.setColumnSeparator('\t');
@@ -91,10 +108,45 @@ public final class TextUtil {
         CsvSchema schema = builder.build().withHeader();
 
         try {
-            mapper.writer(schema).writeValue(new File(csvPath), list);
+            File file = new File(csvPath);
+            mapper.writer(schema).writeValue(file, list);
         } catch (IOException e) {
             throw new SysError(e);
         }
+    }
+
+    /**
+     * @param sql
+     * @param filePath
+     */
+    public static void fixOut(final String sql, final String filePath) {
+        fixOut(sql, null, filePath);
+    }
+
+    /**
+     * @param sql
+     * @param params
+     * @param filePath
+     */
+    public static void fixOut(final String sql, final Map<String, Object> params, final String filePath) {
+
+        MapList list = Queries.select(sql, params, null, null);
+
+        if (list == null || list.size() == 0) {
+            throw new NoDataError("info.nodata");
+        }
+
+        StringBuilder sb = new StringBuilder();
+        for (Map<String, Object> m : list) {
+            for (String key : m.keySet()) {
+                if (!key.equals("id")) {
+                    sb.append(m.get(key));
+                }
+            }
+            sb.append("\n");
+        }
+
+        FileUtil.writeFile(filePath, sb.toString());
     }
 
 }

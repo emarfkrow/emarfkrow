@@ -135,4 +135,26 @@ public final class FileUtil {
         }
     }
 
+    /**
+     * ファイル出力
+     * @param filePath 出力ファイルパス
+     * @param s 出力文字列のリスト
+     */
+    public static void writeFile(final String filePath, final String s) {
+        FileWriter w = null;
+        try {
+            w = new FileWriter(new File(filePath));
+            w.write(s);
+            w.flush();
+        } catch (IOException e) {
+            throw new SysError(e);
+        } finally {
+            try {
+                w.close();
+            } catch (IOException e) {
+                throw new SysError(e);
+            }
+        }
+    }
+
 }
