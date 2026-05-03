@@ -14,29 +14,32 @@ var Complement = {
                 source: function(req, resp) {
 
                     var formJson = {};
-                    formJson['page'] = 1;
+                    formJson['page'] = 0;
                     formJson['rows'] = 10;
-                    formJson['IsSilently'] = 1;
+                    //formJson['isSilent'] = 'true';
                     formJson[valueColumn] = $(me).val();
 
-                    var formsJson = {};
-                    formsJson['AutoCompleteForm'] = formJson;
-
-                    Ajaxise.ajaxPostJson(url, formsJson, function(DataSetJson) {
-                        var dataJson = DataSetJson['Table1'];
-                        var items = [];
-                        for (var i in dataJson) {
-                            var rowJson = dataJson[i];
-                            var value = rowJson[valueColumn];
-                            if (labelColumn) {
-                                var label = rowJson[labelColumn];
-                            } else {
-                                var label = rowJson[valueColumn];
+                    Ajaxize.ajaxPost(
+                        url,
+                        formJson,
+                        function(DataSetJson) {
+                            var dataJson = DataSetJson[url.replaceAll(/^.*\//g, '').replaceAll(/\..+$/g, '')];
+                            var items = [];
+                            for (var i in dataJson) {
+                                var rowJson = dataJson[i];
+                                var value = rowJson[valueColumn];
+                                if (labelColumn) {
+                                    var label = rowJson[labelColumn];
+                                } else {
+                                    var label = rowJson[valueColumn];
+                                }
+                                items.push({ value: value, label: label });
                             }
-                            items.push({ value: value, label: label });
-                        }
-                        resp(items);
-                    });
+                            resp(items);
+                        },
+                        true,
+                        true
+                    );
                 },
                 select: function(e, ui) {
                     if (onSelect) {
@@ -50,4 +53,11 @@ var Complement = {
 }
 
 $(function() {
+    $('.refer').each(function() {
+        let url = $(this).attr('data-json');
+        let src = $(this).attr('data-srcDef');
+        if (url && src) {
+            Complement.enable(this, './' + url, src.split(':')[0]);
+        }
+    });
 });

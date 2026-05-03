@@ -283,7 +283,7 @@ let Ajaxize = {
      */
     jaxPost: function(action, formJson, callback, noLoading, isQuiet, isAsync) {
 
-        if (typeof Loading != 'undefined' && noLoading != false) {
+        if (typeof Loading != 'undefined' && noLoading != true) {
             Loading.fadeIn();
         }
 
@@ -368,7 +368,7 @@ let Ajaxize = {
                 alert(e);
             }
         }).always(function() {
-            if (typeof Loading != 'undefined' && noLoading != false) {
+            if (typeof Loading != 'undefined' && noLoading != true) {
                 Loading.fadeOut();
             }
         });
