@@ -26,23 +26,35 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.poi.ss.formula.functions.T;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvSchema;
 import com.fasterxml.jackson.dataformat.csv.CsvSchema.Builder;
 
+import io.github.classgraph.ClassGraph;
+import io.github.classgraph.ClassInfo;
+import io.github.classgraph.ScanResult;
+import jp.co.golorp.emarf.exception.AppError;
 import jp.co.golorp.emarf.exception.NoDataError;
 import jp.co.golorp.emarf.exception.SysError;
 import jp.co.golorp.emarf.io.FileUtil;
 import jp.co.golorp.emarf.sql.Queries;
 import jp.co.golorp.emarf.util.MapList;
+import jp.co.golorp.emarf.util.Messages;
+import jp.co.golorp.emarf.validation.FormValidator;
 
 /**
  * テキストファイル入出力
  */
 public final class TextUtil {
+
+    /**
+     * logger
+     */
+    private static final Logger LOG = LoggerFactory.getLogger(TextUtil.class);
 
     /** */
     private TextUtil() {
@@ -159,17 +171,47 @@ public final class TextUtil {
     }
 
     /**
+     * 入力チェックなしのCSV取り込み
      * @param now
      * @param jobId
      * @param filePath
      * @param isTitle
      * @param c
      */
-    public static void in(final LocalDateTime now, final String jobId, final String filePath, final boolean isTitle,
+    public static void walkIn(final LocalDateTime now, final String jobId, final String filePath, final boolean isTitle,
             final Class<?> c) {
+        in(now, jobId, filePath, isTitle, c, false);
+    }
+
+    /**
+     * 入力チェックありのCSV取り込み
+     * @param now
+     * @param jobId
+     * @param filePath
+     * @param isTitle
+     * @param c
+     */
+    public static void checkIn(final LocalDateTime now, final String jobId, final String filePath,
+            final boolean isTitle, final Class<?> c) {
+        in(now, jobId, filePath, isTitle, c, true);
+    }
+
+    /**
+     * @param now
+     * @param jobId
+     * @param filePath
+     * @param isTitle
+     * @param c
+     * @param isCheckIn
+     */
+    private static void in(final LocalDateTime now, final String jobId, final String filePath, final boolean isTitle,
+            final Class<?> c, final boolean isCheckIn) {
 
         boolean titled = isTitle;
 
+        String formClassName = null;
+
+        int j = 0;
         String[] titles = null;
         try (BufferedReader br = Files.newBufferedReader(Paths.get(filePath))) {
 
@@ -190,6 +232,8 @@ public final class TextUtil {
                     continue;
                 }
 
+                ++j;
+
                 String[] values = null;
                 if (line.split("\",\"").length > 1) {
                     values = line.replaceAll("^\"|\"$", "").split("\",\"");
@@ -200,11 +244,12 @@ public final class TextUtil {
                 }
 
                 try {
-                    T t = null;
+
+                    Object o = null;
 
                     if (titles.length == 0) {
 
-                        t = (T) c.getDeclaredConstructor(String[].class).newInstance((Object) values);
+                        o = c.getDeclaredConstructor(String[].class).newInstance((Object) values);
 
                     } else {
 
@@ -212,12 +257,41 @@ public final class TextUtil {
                         for (int i = 0; i < titles.length; i++) {
                             map.put(titles[i], values[i]);
                         }
-                        t = (T) c.getDeclaredConstructor(Map.class).newInstance((Object) map);
+
+                        //入力チェック
+                        if (isCheckIn) {
+                            if (formClassName == null) {
+                                try (ScanResult scanResult = new ClassGraph()
+                                        .acceptPackages(Messages.get("java.package.form")).scan()) {
+                                    for (ClassInfo classInfo : scanResult.getAllClasses()) {
+                                        if (classInfo.getSimpleName().equals(c.getSimpleName() + "RegistForm")) {
+                                            formClassName = classInfo.getName();
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+                            Map<String, String> errors = new HashMap<String, String>();
+                            FormValidator.validate(errors, formClassName, map);
+                            if (errors.size() > 0) {
+                                throw new AppError(errors);
+                            }
+                        }
+
+                        o = c.getDeclaredConstructor(Map.class).newInstance((Object) map);
                     }
 
-                    c.getMethod("insert", LocalDateTime.class, String.class).invoke(t, now, jobId);
+                    c.getMethod("insert", LocalDateTime.class, String.class).invoke(o, now, jobId);
 
+                } catch (AppError e) {
+                    e.getErrors();
+                    for (String key : e.getErrors().keySet()) {
+                        LOG.error(key + "[" + j + "]: " + e.getErrors().get(key));
+                    }
+                    Files.write(Paths.get(filePath + ".err"), Collections.singletonList(line),
+                            StandardOpenOption.CREATE, StandardOpenOption.APPEND);
                 } catch (Exception e) {
+                    LOG.error(e.getMessage(), e);
                     Files.write(Paths.get(filePath + ".err"), Collections.singletonList(line),
                             StandardOpenOption.CREATE, StandardOpenOption.APPEND);
                 }
