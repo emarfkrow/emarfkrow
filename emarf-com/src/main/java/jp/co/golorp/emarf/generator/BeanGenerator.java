@@ -214,18 +214,17 @@ public final class BeanGenerator {
             String r = table.getRemarks();
             List<String> s = new ArrayList<String>();
             s.add("package " + pkgE + ";");
-            //            if (!table.isView()) {
-            //                s.add("");
-            //                s.add("import java.time.LocalDateTime;");
-            //            }
             s.add("");
             s.add("import jp.co.golorp.emarf.entity.IEntity;");
+            s.add("import jp.co.golorp.emarf.util.IgnoreCaseLinkedMap;");
             s.add("");
             s.add("/**");
             s.add(" * " + r);
             s.add(" * @author emarfkrow");
             s.add(" */");
             s.add("public class " + e + " implements IEntity {");
+            addConstructor(table, e, s);
+            s.add("    }");
             int i = addSlickGridId(table, s, 0);
             for (ColumnInfo column : table.getColumns().values()) {
                 String n = column.getName(); // name
@@ -347,6 +346,34 @@ public final class BeanGenerator {
             for (Entry<String, String> e : paths.entrySet()) {
                 BeanGenerator.javaCompile(e.getKey(), e.getValue());
             }
+        }
+    }
+
+    /**
+     * @param table
+     * @param e
+     * @param s
+     */
+    public static void addConstructor(final TableInfo table, final String e, final List<String> s) {
+        s.add("");
+        s.add("    /** デフォルトコンストラクタ */");
+        s.add("    public " + e + "() {");
+        s.add("    }");
+        s.add("");
+        s.add("    /** @param values */");
+        s.add("    public " + e + "(final String[] values) {");
+        int j = 0;
+        for (String cName : table.getColumns().keySet()) {
+            String a = StringUtil.toPascalCase(cName);
+            s.add("        this.set" + a + "(values[" + j++ + "]);");
+        }
+        s.add("    }");
+        s.add("");
+        s.add("    /** @param map */");
+        s.add("    public " + e + "(final java.util.Map<String, Object> map) {");
+        for (String cName : table.getColumns().keySet()) {
+            String p = StringUtil.toPascalCase(cName);
+            s.add("        this.set" + p + "(IgnoreCaseLinkedMap.get(map, \"" + cName + "\"));");
         }
     }
 

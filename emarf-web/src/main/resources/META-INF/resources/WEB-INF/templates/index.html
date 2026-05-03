@@ -28,8 +28,8 @@ limitations under the License.
 		sessionStorage['breads'] = JSON.stringify(breads);
 
 		// home画面に遷移
-		let home = Messages['index.home'];
-		if (home != '' && home.indexOf('index.home') < 0) {
+		let home = Messages['Index.home'];
+		if (home != '' && home.indexOf('Index.home') < 0) {
 			sessionStorage['breads'] = JSON.stringify({});
 			window.document.location.href = home;
 		}

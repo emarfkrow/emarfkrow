@@ -102,7 +102,7 @@ $(document).on('ready', function() {
 
     // 画面の参照権限のチェック
     let thisHref = window.document.location.href;
-    let home = Messages['index.home'];
+    let home = Messages['Index.home'];
     if (home && home != '') {
         home = home.replace(/^[\.\/]+/, '');
         if (thisHref.match(home)) {

@@ -6,6 +6,8 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
+import jp.co.golorp.emarf.lang.StringUtil;
+
 /**
  * @param <K>
  * @param <V>
@@ -83,5 +85,30 @@ public final class IgnoreCaseLinkedMap<K, V> implements Map<String, V> {
     @Override
     public Set<Entry<String, V>> entrySet() {
         return map.entrySet();
+    }
+
+    /**
+     * @param map
+     * @param k
+     * @return Object
+     */
+    public static Object get(final java.util.Map<String, Object> map, final String k) {
+        String u = StringUtil.toUpperCase(k);
+        if (map.containsKey(u)) {
+            return map.get(u);
+        }
+        String n = StringUtil.toSnakeCase(k);
+        if (map.containsKey(n)) {
+            return map.get(n);
+        }
+        String p = StringUtil.toPascalCase(k);
+        if (map.containsKey(p)) {
+            return map.get(p);
+        }
+        String c = StringUtil.toCamelCase(k);
+        if (map.containsKey(c)) {
+            return map.get(c);
+        }
+        return null;
     }
 }
