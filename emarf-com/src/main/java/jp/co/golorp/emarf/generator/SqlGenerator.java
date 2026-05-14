@@ -267,14 +267,17 @@ public final class SqlGenerator {
 
             // 参照元カラム名のIDサフィックスを名称サフィックスに置換して、参照元の名称カラム名を取得
             String srcKey = column.getName();
+            String srcType = column.getDataType();
             String srcMei = srcKey.replaceAll("(?i)" + keySuf + "$", meiSuf).toUpperCase();
 
             // 参照先でID・名称のサフィックスに合致するカラムを取得し、両方取得できなければスキップ
             String destKey = null;
+            String destType = null;
             String destMei = null;
             for (String columnName : refer.getColumns().keySet()) {
                 if (srcKey.matches("(?i)^.*" + columnName + "$")) {
                     destKey = columnName;
+                    destType = refer.getColumns().get(destKey).getDataType();
                 }
                 if (srcMei.matches("(?i)^.*" + columnName + "$")) {
                     destMei = columnName;
@@ -300,8 +303,12 @@ public final class SqlGenerator {
                 String srcM = assist.quotedSQL(srcMei);
                 String destK = assist.quotedSQL(destKey);
                 String destM = assist.quotedSQL(destMei);
-                return ", (SELECT r" + refs + "." + destM + " FROM " + refer.getName() + " r" + refs + " WHERE r"
-                        + refs + "." + destK + " = a." + srcK + ") AS " + srcM;
+                destK = "r" + refs + "." + destK;
+                if (srcType.equals("String") && !destType.equals("String")) {
+                    destK = assist.int2charSQL(destK);
+                }
+                return ", (SELECT r" + refs + "." + destM + " FROM " + refer.getName() + " r" + refs + " WHERE "
+                        + destK + " = a." + srcK + ") AS " + srcM;
             }
         }
 

@@ -207,4 +207,10 @@ public abstract class DataSourcesAssist {
      */
     public abstract String castInteger(String rightHand);
 
+    /**
+     * @param a
+     * @return String
+     */
+    public abstract String int2charSQL(String a);
+
 }

@@ -171,4 +171,9 @@ public final class DataSourcesAssistSQLite extends DataSourcesAssist {
         return rightHand;
     }
 
+    @Override
+    public String int2charSQL(final String a) {
+        return a;
+    }
+
 }

@@ -352,4 +352,9 @@ public class DataSourcesAssistOracle extends DataSourcesAssist {
         return rightHand;
     }
 
+    @Override
+    public final String int2charSQL(final String a) {
+        return "TO_CHAR (" + a + ")";
+    }
+
 }

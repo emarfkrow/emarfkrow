@@ -514,7 +514,7 @@ public final class Queries {
             return s;
         }
 
-        throw new SysError("error.notexist.file", sqlPathes + sqlName + ".sql");
+        throw new SysError("error.notexist.file", String.join("\\\\", sqlPathes) + "\\\\" + sqlName + ".sql");
     }
 
     /**

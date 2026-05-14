@@ -284,7 +284,7 @@ let Ajaxize = {
     jaxPost: function(action, formJson, callback, noLoading, isQuiet, isAsync) {
 
         if (typeof Loading != 'undefined' && noLoading != true) {
-            Loading.fadeIn();
+            Loading.fadeIn(action);
         }
 
         // ajaxオプション
@@ -369,7 +369,7 @@ let Ajaxize = {
             }
         }).always(function() {
             if (typeof Loading != 'undefined' && noLoading != true) {
-                Loading.fadeOut();
+                Loading.fadeOut(action);
             }
         });
     },

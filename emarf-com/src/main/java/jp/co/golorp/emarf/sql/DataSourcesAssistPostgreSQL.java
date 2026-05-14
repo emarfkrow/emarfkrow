@@ -197,4 +197,9 @@ public final class DataSourcesAssistPostgreSQL extends DataSourcesAssist {
         return "CAST (" + rightHand + " AS INTEGER)";
     }
 
+    @Override
+    public String int2charSQL(final String a) {
+        return a;
+    }
+
 }

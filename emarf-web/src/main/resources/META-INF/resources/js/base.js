@@ -414,7 +414,7 @@ let Base = {
                 function(data) {
                     authz = data.AUTHZ;
                 },
-                false
+                true // loadingなしで間に合わせてみる
             );
 
             if (authz == undefined) {
