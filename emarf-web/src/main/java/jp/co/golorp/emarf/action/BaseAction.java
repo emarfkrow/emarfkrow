@@ -239,22 +239,25 @@ public abstract class BaseAction extends BaseProcess {
 
         } catch (SysError e) {
 
-            if (e.getCause() != null) {
-                sendErrorMail(e.getCause());
-            } else {
-                sendErrorMail(e);
-            }
-
             // システムエラーの場合、ロールバックしてそのままエラーを投げる
             Connections.rollback();
-            throw e;
+
+            if (postJson.get("isSilent") == null || !postJson.get("isSilent").equals("true")) {
+                if (e.getCause() != null) {
+                    sendErrorMail(e.getCause());
+                } else {
+                    sendErrorMail(e);
+                }
+                throw e;
+            }
+            return null;
 
         } catch (Exception e) {
 
-            sendErrorMail(e);
-
             // 以外のエラーの場合は、ロールバックしてシステムエラーを投げる
             Connections.rollback();
+
+            sendErrorMail(e);
             throw new SysError(e);
 
         } finally {

@@ -46,7 +46,8 @@ public class GetAction extends BaseAction {
         if (list == null) {
             map.put("INFO", Messages.get("info.nodata"));
         } else {
-            map.put(this.getBaseName(), list.get(0));
+            String entityName = this.getBaseName().replaceAll("Get$", "");
+            map.put(entityName, list.get(0));
         }
 
         return map;

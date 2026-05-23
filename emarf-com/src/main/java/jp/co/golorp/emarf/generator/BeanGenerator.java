@@ -295,6 +295,10 @@ public final class BeanGenerator {
                     s.add("            java.util.Date d = new java.util.Date(Long.valueOf(o.toString()));");
                     s.add("            this." + p
                             + " = java.time.LocalDateTime.ofInstant(d.toInstant(), java.time.ZoneId.systemDefault());");
+                    s.add("        } else if (o != null && o.toString().matches(\"^.+\\\\+\\\\d{2}:\\\\d{2}$\")) {");
+                    s.add("            java.time.Instant instant = java.time.Instant.parse(o.toString());");
+                    s.add("            this." + p
+                            + " = java.time.LocalDateTime.ofInstant(instant, java.time.ZoneId.systemDefault());");
                     s.add("        } else if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrWhiteSpace(o)) {");
                     s.add("            this." + p + " = " + t
                             + ".parse(o.toString().replace(\" \", \"T\").replace(\"/\", \"-\"));");

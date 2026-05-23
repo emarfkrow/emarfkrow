@@ -232,9 +232,7 @@ public final class FormValidator {
                 fieldName = StringUtil.toCamelCase(methodName.replaceFirst("^set", ""));
                 String upperName = StringUtil.toUpperCase(methodName.replaceFirst("^set", ""));
                 // １．まず「EntityName.」付きで取得してみる
-                if (value == null) {
-                    value = postJson.get(entityName + "." + fieldName);
-                }
+                value = postJson.get(entityName + "." + fieldName);
                 // ２．主キーか楽観ロック用なら、Entityに関わらず「fieldName」か「FIELD_NAME」で取得してみる（兄弟モデル用）
                 if (value == null) {
                     for (Annotation a : method.getAnnotations()) {

@@ -675,7 +675,8 @@ public final class HtmlGenerator {
                     s.add("        <div class=\"summary " + m + "s\">");
                     s.add("          <label>" + primaryKey.getRemarks() + ": </label>");
                     s.add("          <span id=\"" + m + "." + p + "\"></span>");
-                    s.add("          <input type=\"hidden\" id=\"" + m + "." + p + "\" name=\"" + m + "." + p + "\"/>");
+                    s.add("          <input type=\"hidden\" id=\"" + m + "." + p + "\" name=\"" + m + "." + p
+                            + "\" />");
                     s.add("        </div>");
                 }
             }
@@ -719,8 +720,7 @@ public final class HtmlGenerator {
         //                s.add("      <h3 th:text=\"#{" + c + ".h3}\">h3</h3>");
         //                String frozen = String.valueOf(chooser.getPrimaryKeys().size());
         //                s.add("      <div id=\"" + c + "Grid\" data-selectionMode=\"link\" data-frozenColumn=\"" + frozen + "\" th:data-href=\"@{/model/" + c + ".html}\" class=\"choosers\"></div>");
-        //            }
-        //        }
+        //            }        }
         s.add("    </form>");
         s.add("  </div>");
         s.add("</body>");
@@ -1860,7 +1860,7 @@ public final class HtmlGenerator {
         String tag = "          ";
         tag += "<label th:text=\"#{" + id + "}\" class=\"meta\">" + c.getRemarks() + "</label>";
         tag += "<span id=\"" + id + "\" class=\"meta" + css + "\"></span>";
-        tag += "<input type=\"hidden\" id=\"" + id + "\" name=\"" + id + "\" class=\"meta\"/>";
+        tag += "<input type=\"hidden\" id=\"" + id + "\" name=\"" + id + "\" class=\"meta\" />";
         s.add(tag);
     }
 

@@ -325,7 +325,9 @@ let Ajaxize = {
             console.error(data);
             if (data.status == 200) {
                 alert(Messages['error.session']);
-                window.document.location.href = '../';
+                if (window.document.location.href.indexOf(Messages['loginfilter.login.page']) < 0) {
+                    window.document.location.href = '../';
+                }
             } else if (data.status == 500) {
                 alert(Messages['fatal']);
             } else {
@@ -339,25 +341,25 @@ let Ajaxize = {
             //console.info('--------------------------------------------------');
 
             // システムエラー
-            if (data.FATAL) {
+            if (data && data.FATAL) {
                 alert(data.FATAL);
                 return;
             }
 
             // アプリケーションエラー
-            if (data.ERROR && isQuiet != true) {
+            if (data && data.ERROR && isQuiet != true) {
                 alert(data.ERROR);
                 Ajaxize.errorStyle(data.errors);
                 return;
             }
 
             // 警告表示
-            if (data.WARN) {
+            if (data && data.WARN) {
                 alert(data.WARN);
             }
 
             // 情報通知
-            if (data.INFO && isQuiet != true) {
+            if (data && data.INFO && isQuiet != true) {
                 alert(data.INFO);
             }
 
@@ -369,7 +371,10 @@ let Ajaxize = {
             }
         }).always(function() {
             if (typeof Loading != 'undefined' && noLoading != true) {
-                Loading.fadeOut(action);
+                // Base.loaded内で Base.referMei をコール時に Loading が一瞬切れるため少し遅らせる
+                setTimeout(function() {
+                    Loading.fadeOut();
+                }, 300);
             }
         });
     },

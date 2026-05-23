@@ -461,8 +461,13 @@ let Dialogate = {
     },
 
     refresh: function(event) {
-        let dialogId = event.srcElement.closest('[id$="Dialog"]').id;
-        Dialogate.refreshById(dialogId);
+        let dialog = event.srcElement.closest('[id$="Dialog"]');
+        if (dialog) {
+            let dialogId = dialog.id;
+            Dialogate.refreshById(dialogId);
+        } else {
+            window.location.reload();
+        }
     },
 
     reset: function(event) {

@@ -254,30 +254,40 @@ let Jsonate = {
 
                     let inputNames = inputName.split('.');
                     if (inputNames.length == 2) {
-                        if (entityName != inputNames[0]) {
-                            return;
+                        // データの項目名にエンティティ名の指定がある場合
+                        let pagename = window.location.pathname.split('/').pop().replace('.html', '');
+                        if (pagename != entityName) {
+                            // ページ名とエンティティ名が違う場合
+                            if (entityName != inputNames[0]) {
+                                // 結果セットのエンティティ名とデータ項目のエンティティ名が異なる場合
+                                return;
+                            }
                         }
                     }
 
                     // 入力項目のentity.propertyで値を取得してみる
                     let v = entity[inputName];
                     if (v == null) {
-                        // プロパティ名だけで取得してみる
-                        let i = inputName.lastIndexOf('.');
-                        let property = inputName.substr(i + 1);
-                        v = entity[property];
+                        // UPPER_CASEでも取得してみる
+                        v = entity[Casing.toUpper(inputName)];
                         if (v == null) {
-                            // UPPER_CASEでも取得してみる
-                            v = entity[Casing.toUpper(property)];
+                            // プロパティ名だけで取得してみる
+                            let i = inputName.lastIndexOf('.');
+                            let property = inputName.substr(i + 1);
+                            v = entity[property];
                             if (v == null) {
-                                // snake_caseでも取得してみる
-                                v = entity[Casing.toSnake(property)];
+                                // プロパティ名のUPPER_CASEでも取得してみる
+                                v = entity[Casing.toUpper(property)];
                                 if (v == null) {
-                                    // kebab-caseでも取得してみる
-                                    v = entity[Casing.toKebab(property)];
+                                    // プロパティ名のsnake_caseでも取得してみる
+                                    v = entity[Casing.toSnake(property)];
                                     if (v == null) {
-                                        // UPPER-KEBAB-CASEでも取得してみる
-                                        v = entity[Casing.toUpperKebab(property)];
+                                        // プロパティ名のkebab-caseでも取得してみる
+                                        v = entity[Casing.toKebab(property)];
+                                        if (v == null) {
+                                            // プロパティ名のUPPER-KEBAB-CASEでも取得してみる
+                                            v = entity[Casing.toUpperKebab(property)];
+                                        }
                                     }
                                 }
                             }
