@@ -28,7 +28,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Path;
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
@@ -346,11 +345,8 @@ public final class Queries {
      */
     private static <T> T selectByRawSql(final String sql, final List<Object> args, final Class<?> c) {
 
-        // コネクションを取得
-        Connection cn = Connections.get();
-
         // プリペアードステートメント取得
-        try (PreparedStatement ps = cn.prepareStatement(sql);) {
+        try (PreparedStatement ps = Connections.getStatement(sql);) {
 
             // パラメータを設定
             for (int i = 0; i < args.size(); i++) {
@@ -375,11 +371,14 @@ public final class Queries {
                     // 戻り値の型指定がある場合
                     objectList.add(rs2Entity(rs, c));
                 } else {
-                    // 戻り値の方指定がない場合
+                    // 戻り値の型指定がない場合
                     Map<String, Object> map = new LinkedHashMap<String, Object>();
                     int columnCount = metaData.getColumnCount();
                     for (int i = 0; i < columnCount; i++) {
-                        String columnName = metaData.getColumnName(i + 1);
+                        String columnName = metaData.getColumnLabel(i + 1);
+                        if (!columnName.equals("id")) {
+                            columnName = columnName.toUpperCase();
+                        }
                         Object value = rs.getObject(i + 1);
                         map.put(columnName, value);
                     }
@@ -737,11 +736,8 @@ public final class Queries {
      */
     private static int registByRawSql(final String sql, final List<Object> args) {
 
-        // コネクションを取得
-        Connection cn = Connections.get();
-
         // プリペアードステートメント取得
-        try (PreparedStatement ps = cn.prepareStatement(sql);) {
+        try (PreparedStatement ps = Connections.getStatement(sql);) {
 
             // パラメータを設定
             for (int i = 0; i < args.size(); i++) {

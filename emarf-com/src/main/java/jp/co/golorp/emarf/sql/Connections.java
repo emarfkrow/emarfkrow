@@ -17,6 +17,8 @@ limitations under the License.
 package jp.co.golorp.emarf.sql;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,6 +53,16 @@ public final class Connections {
         Connection cn = threadLocalConnection.get();
         LOG.trace("connection get.      [" + cn + "]");
         return cn;
+    }
+
+    /**
+     * @param sql
+     * @return PreparedStatement
+     * @throws SQLException
+     */
+    public static PreparedStatement getStatement(final String sql) throws SQLException {
+        Connection cn = Connections.get();
+        return cn.prepareStatement(sql);
     }
 
     /**
