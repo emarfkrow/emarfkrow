@@ -224,7 +224,6 @@ public final class BeanGenerator {
             s.add(" */");
             s.add("public class " + e + " implements IEntity {");
             addConstructor(table, e, s);
-            s.add("    }");
             int i = addSlickGridId(table, s, 0);
             for (ColumnInfo column : table.getColumns().values()) {
                 String n = column.getName(); // name
@@ -379,6 +378,21 @@ public final class BeanGenerator {
             String p = StringUtil.toPascalCase(cName);
             s.add("        this.set" + p + "(IgnoreCaseLinkedMap.get(map, \"" + cName + "\"));");
         }
+        s.add("    }");
+        s.add("");
+        s.add("    /** @return boolean */");
+        s.add("    public boolean isEmpty() {");
+        s.add("        boolean isEmpty = true;");
+        for (String cName : table.getColumns().keySet()) {
+            if (isMeta(cName) || table.getColumns().get(cName).isPk()) {
+                continue;
+            }
+            String c = StringUtil.toCamelCase(cName);
+            s.add("        isEmpty &= this." + c + " == null || this." + c
+                    + ".toString().replaceAll(\"　| \", \"\").equals(\"\");");
+        }
+        s.add("        return isEmpty;");
+        s.add("    }");
     }
 
     /**
