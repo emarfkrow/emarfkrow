@@ -381,6 +381,27 @@ public final class BeanGenerator {
         s.add("    }");
         s.add("");
         s.add("    /** @return boolean */");
+        s.add("    public boolean isNew() {");
+        s.add("        boolean isNew = false;");
+        s.add("");
+        s.add("        // 主キーが不足していたらINSERT");
+        for (String primaryKey : table.getPrimaryKeys()) {
+            String camel = StringUtil.toCamelCase(primaryKey);
+            s.add("        if (jp.co.golorp.emarf.lang.StringUtil.isNullOrWhiteSpace(this." + camel + ")) {");
+            s.add("            isNew = true;");
+            s.add("        }");
+        }
+        if (table.getColumns().containsKey(updateTs)) {
+            String camel = StringUtil.toCamelCase(updateTs);
+            s.add("        // 楽観ロック値がなくてもINSERT");
+            s.add("        if (jp.co.golorp.emarf.lang.StringUtil.isNullOrWhiteSpace(this." + camel + ")) {");
+            s.add("            isNew = true;");
+            s.add("        }");
+        }
+        s.add("        return isNew;");
+        s.add("    }");
+        s.add("");
+        s.add("    /** @return boolean */");
         s.add("    public boolean isEmpty() {");
         s.add("        boolean isEmpty = true;");
         for (String cName : table.getColumns().keySet()) {
@@ -1141,9 +1162,9 @@ public final class BeanGenerator {
                 String pkType = StringUtil.toPascalCase(tablePk);
                 s.add("                " + i + ".set" + pkType + "(this." + pk + ");");
             }
-            s.add("                try {");
+            s.add("                if (" + i + ".isNew()) {");
             s.add("                    " + i + ".insert(now, execId);");
-            s.add("                } catch (Exception e) {");
+            s.add("                } else {");
             s.add("                    " + i + ".update(now, execId);");
             s.add("                }");
             s.add("            }");
@@ -1160,9 +1181,9 @@ public final class BeanGenerator {
                 String pkType = StringUtil.toPascalCase(tablePk);
                 s.add("            " + i + ".set" + pkType + "(this.get" + pkType + "());");
             }
-            s.add("            try {");
+            s.add("            if (" + i + ".isNew()) {");
             s.add("                " + i + ".insert(now, execId);");
-            s.add("            } catch (Exception e) {");
+            s.add("            } else {");
             s.add("                " + i + ".update(now, execId);");
             s.add("            }");
             s.add("        }");

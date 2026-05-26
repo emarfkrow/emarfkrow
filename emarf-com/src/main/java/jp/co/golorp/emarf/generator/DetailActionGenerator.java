@@ -28,8 +28,6 @@ public final class DetailActionGenerator {
     private static ResourceBundle bundle = ResourceBundles.getBundle(BeanGenerator.class);
     /** 適用日カラム名 */
     private static String tekiyoBi;
-    /** 更新日時カラム名 */
-    private static String updateTs;
     /** 削除フラグ */
     private static String deleteF;
     /** ステータス区分 */
@@ -63,7 +61,6 @@ public final class DetailActionGenerator {
         projectDir = dir;
 
         tekiyoBi = bundle.getString("column.start");
-        updateTs = bundle.getString("column.update.timestamp");
         deleteF = bundle.getString("column.delete");
         status = bundle.getString("column.status");
 
@@ -129,28 +126,12 @@ public final class DetailActionGenerator {
             s.add("        Map<String, Object> map = new HashMap<String, Object>();");
             s.add("");
             s.add("        " + entity + " e = FormValidator.toBean(" + entity + ".class.getName(), postJson);");
-            s.add("");
-            s.add("        // 主キーが不足していたらINSERT");
-            s.add("        boolean isNew = false;");
-            for (String primaryKey : table.getPrimaryKeys()) {
-                String pascal = StringUtil.toPascalCase(primaryKey);
-                s.add("        if (jp.co.golorp.emarf.lang.StringUtil.isNullOrWhiteSpace(e.get" + pascal + "())) {");
-                s.add("            isNew = true;");
-                s.add("        }");
-            }
-            if (table.getColumns().containsKey(updateTs)) {
-                String pascal = StringUtil.toPascalCase(updateTs);
-                s.add("        // 楽観ロック値がなくてもINSERT");
-                s.add("        if (jp.co.golorp.emarf.lang.StringUtil.isNullOrWhiteSpace(e.get" + pascal + "())) {");
-                s.add("            isNew = true;");
-                s.add("        }");
-            }
             //            if (!table.isView() && !StringUtil.isNullOrWhiteSpace(status) && table.getColumns().containsKey(status)) {
             //                s.add("");
             //                s.add("        e.set" + StringUtil.toPascalCase(status) + "(0);");
             //            }
             s.add("");
-            s.add("        if (isNew) {");
+            s.add("        if (e.isNew()) {");
             s.add("");
             s.add("            if (e.insert(now, execId) != 1) {");
             s.add("                throw new OptLockError(\"error.cant.insert\", \"" + r + "\");");
