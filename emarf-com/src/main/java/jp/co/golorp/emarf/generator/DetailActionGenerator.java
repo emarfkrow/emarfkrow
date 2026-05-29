@@ -2,11 +2,13 @@ package jp.co.golorp.emarf.generator;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.ResourceBundle;
+import java.util.Set;
 
 import jp.co.golorp.emarf.io.FileUtil;
 import jp.co.golorp.emarf.lang.StringUtil;
@@ -218,24 +220,18 @@ public final class DetailActionGenerator {
      * @param tables テーブル情報のリスト
      */
     private static void javaActionDetailGet(final List<TableInfo> tables) {
-
         // 出力フォルダを再作成
         String pPath = pkgAction.replace(".", File.separator);
         String pDir = projectDir + File.separator + javaDir + File.separator + pPath;
-
         Map<String, String> javaPaths = new LinkedHashMap<String, String>();
-
         for (TableInfo table : tables) {
-
             if (table.getPrimaryKeys().size() == 0) {
                 continue;
             }
-
             //entity
             String ent = StringUtil.toPascalCase(table.getName());
             //instance
             String ins = StringUtil.toCamelCase(table.getName());
-
             List<String> s = new ArrayList<String>();
             s.add("package " + pkgAction + ";");
             s.add("");
@@ -265,21 +261,25 @@ public final class DetailActionGenerator {
                 s.add("");
                 s.add("        // 主キーのチェック");
                 s.add("        boolean isAllKey = true;");
+                Set<String> donePks = new HashSet<String>();
                 for (int i = 0; i < table.getPrimaryKeys().size(); i++) {
                     String pk = table.getPrimaryKeys().get(i);
-                    String property = StringUtil.toCamelCase(pk);
-                    s.add("");
-                    s.add("        Object " + property + " = postJson.get(\"" + property + "\");");
-                    s.add("        if (" + property + " == null) {");
-                    s.add("            " + property + " = postJson.get(\"" + ent + "." + property + "\");");
-                    s.add("        }");
-                    s.add("        if (" + property + " == null) {");
-                    if (i == 0) {
-                        // 転生元から情報をコピー
-                        copyFromRebornee(s, table, tables);
+                    if (!donePks.contains(pk)) {
+                        donePks.add(pk);
+                        String property = StringUtil.toCamelCase(pk);
+                        s.add("");
+                        s.add("        Object " + property + " = postJson.get(\"" + property + "\");");
+                        s.add("        if (" + property + " == null) {");
+                        s.add("            " + property + " = postJson.get(\"" + ent + "." + property + "\");");
+                        s.add("        }");
+                        s.add("        if (" + property + " == null) {");
+                        if (i == 0) {
+                            // 転生元から情報をコピー
+                            copyFromRebornee(s, table, tables);
+                        }
+                        s.add("            isAllKey = false;");
+                        s.add("        }");
                     }
-                    s.add("            isAllKey = false;");
-                    s.add("        }");
                 }
                 if (table.getParents().size() > 0) {
                     s.add("");
