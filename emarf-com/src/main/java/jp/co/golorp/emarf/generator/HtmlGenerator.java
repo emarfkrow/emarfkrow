@@ -253,8 +253,7 @@ public final class HtmlGenerator {
         s.add("    <form name=\"" + e + "SearchForm\" action=\"" + e + "Search.ajax\" class=\"search\">");
         s.add("      <input type=\"hidden\" name=\"rows\" value=\"" + gridRows + "\" />");
         s.add("      <input type=\"hidden\" name=\"page\" value=\"0\" />");
-        s.add("      <fieldset>");
-        s.add("        <legend th:text=\"#{" + es + ".legend}\">legend</legend>");
+        s.add("      <fieldset>\r\n        <legend th:text=\"#{" + es + ".legend}\">legend</legend>");
         htmlFields(table, s, false, false, false);
         s.add("      </fieldset>");
         s.add("      <div class=\"buttons\">");
