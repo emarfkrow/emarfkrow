@@ -119,7 +119,7 @@ public final class FormGenerator {
         String packageDir = projectDir + File.separator + javaDir + File.separator + packagePath;
         Map<String, String> javaFilePaths = new LinkedHashMap<String, String>();
         for (TableInfo table : tableInfos) {
-            if (table.isHistory() || table.isView()) {
+            if (table.isHistory() || table.isView() || table.isStatusFlow()) {
                 continue;
             }
             String entity = StringUtil.toPascalCase(table.getName());
@@ -250,7 +250,7 @@ public final class FormGenerator {
             if (column.getRefer() == null) {
                 continue;
             }
-            if (column.getRefer().isView()) {
+            if (column.getRefer().isView() || column.getRefer().isStatusFlow()) {
                 continue;
             }
             // 登録者か更新者ならスキップ
@@ -460,7 +460,7 @@ public final class FormGenerator {
 
         for (TableInfo table : tableInfos) {
 
-            if (table.isHistory() || table.isView()) {
+            if (table.isHistory() || table.isView() || table.isStatusFlow()) {
                 continue;
             }
 

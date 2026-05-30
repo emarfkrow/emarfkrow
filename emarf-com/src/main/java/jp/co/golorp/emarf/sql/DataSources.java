@@ -89,6 +89,9 @@ public final class DataSources {
     /** 列評価をスキップする列名 */
     private static String columnIgnoreRe;
 
+    /** ステータス区分 */
+    private static String status;
+
     /** 変更理由 */
     private static String reason;
 
@@ -269,6 +272,8 @@ public final class DataSources {
         orphansRe = bundle.getString("relation.orphans.re");
 
         columnIgnoreRe = bundle.getString("column.ignore.re");
+
+        status = bundle.getString("column.status");
 
         reason = bundle.getString("column.history.reason");
 
@@ -478,6 +483,8 @@ public final class DataSources {
 
             String tableType = rs.getString("TABLE_TYPE");
             table.setView(tableType.equals("VIEW"));
+
+            table.setStatusFlow(tableName.matches("(?i).*" + status + ".*"));
 
             tree.put(tableName, table);
 
@@ -713,7 +720,7 @@ public final class DataSources {
                         continue;
                     }
 
-                    if (moto == saki && saki.isView()) {
+                    if (moto == saki && (saki.isView() || saki.isStatusFlow())) {
                         continue;
                     }
 
@@ -747,7 +754,7 @@ public final class DataSources {
                             motoCol.setNumbering(false);
                         }
 
-                    } else if (saki.isView() && !moto.isView()) {
+                    } else if ((saki.isView() || saki.isStatusFlow()) && !moto.isView() && !moto.isStatusFlow()) {
                         // 参照先候補がビューで、参照元候補がテーブルの場合
 
                         String[] sakiSuffixs = saki.getName().split("_");
@@ -827,7 +834,7 @@ public final class DataSources {
 
         for (TableInfo saki : tables) {
 
-            if (saki.isView()) {
+            if (saki.isView() || saki.isStatusFlow()) {
                 continue;
             }
 
@@ -841,7 +848,7 @@ public final class DataSources {
                 ColumnInfo pkCol = saki.getColumns().get(sakiPrimaryKey);
                 if (pkCol.getRefer() != null) {
                     TableInfo refer = pkCol.getRefer();
-                    if (!combos.contains(refer) && !refer.isView()) {
+                    if (!combos.contains(refer) && !refer.isView() && !refer.isStatusFlow()) {
                         combos.add(refer);
                     }
                 }
@@ -903,7 +910,7 @@ public final class DataSources {
         while (elds.hasNext()) {
             TableInfo eld = elds.next();
 
-            if (eld.isView()) {
+            if (eld.isView() || eld.isStatusFlow()) {
                 continue;
             }
 
@@ -930,7 +937,7 @@ public final class DataSources {
             while (yngs.hasNext()) {
                 TableInfo yng = yngs.next();
 
-                if (yng.isView()) {
+                if (yng.isView() || yng.isStatusFlow()) {
                     continue;
                 }
 
@@ -997,7 +1004,7 @@ public final class DataSources {
         while (motos.hasNext()) {
             TableInfo moto = motos.next();
 
-            if (moto.isView()) {
+            if (moto.isView() || moto.isStatusFlow()) {
                 continue;
             }
 
@@ -1014,7 +1021,7 @@ public final class DataSources {
             while (sakis.hasNext()) {
                 TableInfo saki = sakis.next();
 
-                if (saki.isView()) {
+                if (saki.isView() || saki.isStatusFlow()) {
                     continue;
                 }
 
@@ -1080,7 +1087,7 @@ public final class DataSources {
         while (oyas.hasNext()) {
             TableInfo oya = oyas.next();
 
-            if (oya.isView()) {
+            if (oya.isView() || oya.isStatusFlow()) {
                 continue;
             }
 
@@ -1102,7 +1109,7 @@ public final class DataSources {
             while (kos.hasNext()) {
                 TableInfo ko = kos.next();
 
-                if (ko.isView()) {
+                if (ko.isView() || ko.isStatusFlow()) {
                     continue;
                 }
 
@@ -1219,7 +1226,7 @@ public final class DataSources {
             }
 
             // ビュー・参照モデル・兄弟モデル・履歴モデル は派生しない
-            if (moto.isView() || moto.isRefer() || moto.isBrother() || moto.isHistory()) {
+            if (moto.isView() || moto.isStatusFlow() || moto.isRefer() || moto.isBrother() || moto.isHistory()) {
                 continue;
             }
 
@@ -1240,16 +1247,12 @@ public final class DataSources {
             while (sakis.hasNext()) {
                 TableInfo saki = sakis.next();
 
-                if (saki.isView()) {
+                // ビュー・参照モデル・履歴モデル は派生先にしない
+                if (saki.isHistory() || saki.isView() || saki.isStatusFlow() || saki.isRefer()) {
                     continue;
                 }
 
                 if (saki.getPrimaryKeys().size() == 0) {
-                    continue;
-                }
-
-                // ビュー・参照モデル・履歴モデル は派生先にしない
-                if (saki.isView() || saki.isRefer() || saki.isHistory()) {
                     continue;
                 }
 
@@ -1316,7 +1319,7 @@ public final class DataSources {
         while (sakis.hasNext()) {
             TableInfo saki = sakis.next();
 
-            if (saki.isView()) {
+            if (saki.isView() || saki.isStatusFlow()) {
                 continue;
             }
 
@@ -1340,7 +1343,7 @@ public final class DataSources {
 
             for (TableInfo moto : merges) {
 
-                if (moto.isView()) {
+                if (moto.isView() || moto.isStatusFlow()) {
                     continue;
                 }
 
@@ -1384,7 +1387,7 @@ public final class DataSources {
         while (motos.hasNext()) {
             TableInfo moto = motos.next();
 
-            if (moto.isView()) {
+            if (moto.isView() || moto.isStatusFlow()) {
                 continue;
             }
 
@@ -1401,7 +1404,7 @@ public final class DataSources {
             // 派生先でループ
             for (TableInfo deriveTo : moto.getDeriveTos()) {
 
-                if (deriveTo.isView()) {
+                if (deriveTo.isView() || deriveTo.isStatusFlow()) {
                     continue;
                 }
 
@@ -1538,7 +1541,7 @@ public final class DataSources {
         while (sakis.hasNext()) {
             TableInfo saki = sakis.next();
 
-            if (saki.isView()) {
+            if (saki.isView() || saki.isStatusFlow()) {
                 continue;
             }
 
@@ -1567,7 +1570,7 @@ public final class DataSources {
             // 選択肢でループ
             for (TableInfo moto : choises) {
 
-                if (moto.isView()) {
+                if (moto.isView() || moto.isStatusFlow()) {
                     continue;
                 }
 
@@ -1606,7 +1609,7 @@ public final class DataSources {
         while (sakis.hasNext()) {
             TableInfo saki = sakis.next();
 
-            if (saki.isView()) {
+            if (saki.isView() || saki.isStatusFlow()) {
                 continue;
             }
 
@@ -1637,7 +1640,7 @@ public final class DataSources {
 
             for (TableInfo moto : sums) {
 
-                if (moto.isView()) {
+                if (moto.isView() || moto.isStatusFlow()) {
                     continue;
                 }
 

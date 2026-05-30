@@ -331,14 +331,14 @@ public final class HtmlGenerator {
             frozenColumn += table.getPrimaryKeys().size();
         }
         String editable = "";
-        if (table.isView() || table.isHistory() || table.getChildren().size() > 0) {
+        if (table.isView() || table.isStatusFlow() || table.isHistory() || table.getChildren().size() > 0) {
             editable = "data-editable=\"false\" ";
         }
         s.add("      <div id=\"" + e + "Grid\" data-selectionMode=\"checkbox\"" + addRow + " data-frozenColumn=\""
                 + frozenColumn + "\" " + editable + "th:data-href=\"@{/model/" + e + ".html}\"></div>");
         s.add("      <div id=\"" + e + "Pager\"></div>");
         s.add("      <div class=\"buttons\">");
-        if (!table.isHistory() && (!table.isView() || table.isConvView())) {
+        if (!table.isHistory() && (!table.isView() || table.isConvView()) && !table.isStatusFlow()) {
             s.add("        <button type=\"button\" class=\"reset\" id=\"Reset" + es
                     + "\" th:text=\"#{common.reset}\" onClick=\"Base.listReset('" + e + "');\">reset</button>");
         }
@@ -351,11 +351,11 @@ public final class HtmlGenerator {
                     + "\" target=\"dialog\" th:text=\"#{" + summaryEntity
                     + ".sum}\" class=\"summary\" tabindex=\"-1\">" + summary.getRemarks() + "</a>");
         }
-        if ((!table.isView() && !table.isHistory()) || table.isConvView()) {
+        if ((!table.isView() && !table.isStatusFlow() && !table.isHistory()) || table.isConvView()) {
             addGridReferHiddenLinks(s, table); // 履歴モデルでないテーブルか、組み合わせビュー（検索条件で使う）なら、非表示の参照ボタンを出力
         }
         // 履歴モデルでないテーブルで、子モデルを持たない場合
-        if (!table.isView() && !table.isHistory() && table.getChildren().size() == 0) {
+        if (!table.isView() && !table.isStatusFlow() && !table.isHistory() && table.getChildren().size() == 0) {
             if (!table.getColumns().containsKey(deleteF) && !table.getColumns().containsKey(haishiBi)) {
                 s.add("        <button type=\"submit\" id=\"Delete" + es + "\" data-action=\"" + es
                         + "Delete.ajax\" class=\"delete selectRows\" th:text=\"#{common.delete}\" tabindex=\"-1\">削除</button>");
@@ -373,7 +373,8 @@ public final class HtmlGenerator {
         }
         s.add("      </div>");
         s.add("      <div class=\"submits\">");
-        if (!table.isHistory() && (!table.isView() || table.isConvView()) && table.getChildren().size() == 0) {
+        if (!table.isHistory() && (!table.isView() || table.isConvView()) && !table.isStatusFlow()
+                && table.getChildren().size() == 0) {
             String onclick = "";
             if (table.getHistory() != null && !StringUtil.isNullOrWhiteSpace(reason)) {
                 onclick = " onclick=\"if (!Base.historyReason(this)) { return false; }\"";
@@ -450,7 +451,7 @@ public final class HtmlGenerator {
         }
 
         // ビューなら作成不可
-        if (table.isView()) {
+        if (table.isView() || table.isStatusFlow()) {
             return false;
         }
 
@@ -637,7 +638,7 @@ public final class HtmlGenerator {
             addGridReferHiddenLinks(s, child);
         }
         s.add("      <div class=\"buttons\">");
-        if (!table.isHistory() && !table.isView()) {
+        if (!table.isHistory() && !table.isView() && !table.isStatusFlow()) {
             s.add("        <button type=\"button\" id=\"Refresh" + e
                     + "\" th:text=\"#{common.reset}\" class=\"reset\" onClick=\"Dialogate.refresh(event);\">reset</button>");
         }
@@ -683,7 +684,7 @@ public final class HtmlGenerator {
         }
         s.add("      </div>");
         s.add("      <div class=\"submits\">");
-        if (!table.isHistory() && !table.isView()) { // 履歴モデルでもビューでもない場合
+        if (!table.isHistory() && !table.isView() && !table.isStatusFlow()) { // 履歴モデルでもビューでもない場合
             if (!table.getColumns().containsKey(deleteF) && !table.getColumns().containsKey(haishiBi)) {
                 s.add("        <button id=\"Delete" + e + "\" type=\"submit\" class=\"delete\" data-action=\"" + e
                         + "Delete.ajax\" th:text=\"#{common.delete}\" tabindex=\"-1\">削除</button>");
@@ -1459,7 +1460,7 @@ public final class HtmlGenerator {
                 }
                 if (!isD && StringUtil.endsWith(inputRangeSuffixs, colNm)) { // 検索画面の範囲指定項目の場合
                     s.add(htmlFieldsRange(fId, type, inputCss, c, format));
-                } else if ((!t.isView() || !isD) && c.getRefer() != null) { // 参照モデルの場合
+                } else if (((!t.isView() && !t.isStatusFlow()) || !isD) && c.getRefer() != null) { // 参照モデルの場合
                     s.add(htmlFieldsRefer(fId, type, inputCss, c, format, t, referCss));
                 } else {
                     if (StringUtil.endsWith(inputBitSuffixs, colNm)) {

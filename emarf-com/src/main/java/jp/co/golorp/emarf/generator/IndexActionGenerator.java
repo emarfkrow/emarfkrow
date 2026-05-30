@@ -97,7 +97,7 @@ public final class IndexActionGenerator {
 
         for (TableInfo table : tables) {
 
-            if (table.isHistory() || table.isView()) {
+            if (table.isHistory() || table.isView() || table.isStatusFlow()) {
                 continue;
             }
 
@@ -208,7 +208,7 @@ public final class IndexActionGenerator {
 
         for (TableInfo table : tableInfos) {
 
-            if (table.isHistory() || table.isView() /* ClassNotFoundよけ */) {
+            if (table.isHistory() || table.isView() || table.isStatusFlow() /* ClassNotFoundよけ */) {
                 continue;
             }
 
@@ -327,7 +327,8 @@ public final class IndexActionGenerator {
 
         for (TableInfo table : tables) {
 
-            if (table.isHistory() || table.isView() || !table.getColumns().containsKey(status)) {
+            if (table.isHistory() || table.isView() || table.isStatusFlow()
+                    || !table.getColumns().containsKey(status)) {
                 continue;
             }
 
@@ -441,7 +442,8 @@ public final class IndexActionGenerator {
 
         for (TableInfo table : tables) {
 
-            if (table.isHistory() || table.isView() || !table.getColumns().containsKey(status)) {
+            if (table.isHistory() || table.isView() || table.isStatusFlow()
+                    || !table.getColumns().containsKey(status)) {
                 continue;
             }
 
@@ -555,7 +557,8 @@ public final class IndexActionGenerator {
 
         for (TableInfo table : tables) {
 
-            if (table.isHistory() || table.isView() || !table.getColumns().containsKey(status)) {
+            if (table.isHistory() || table.isView() || table.isStatusFlow()
+                    || !table.getColumns().containsKey(status)) {
                 continue;
             }
 
@@ -669,7 +672,8 @@ public final class IndexActionGenerator {
 
         for (TableInfo table : tables) {
 
-            if (table.isHistory() || table.isView() || !table.getColumns().containsKey(status)) {
+            if (table.isHistory() || table.isView() || table.isStatusFlow()
+                    || !table.getColumns().containsKey(status)) {
                 continue;
             }
 

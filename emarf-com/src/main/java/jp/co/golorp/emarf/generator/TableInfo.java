@@ -75,6 +75,9 @@ public class TableInfo {
     /** 変換VIEWならtrue */
     private boolean isConvView;
 
+    /** ステータスフローならtrue */
+    private boolean isStatusFlow;
+
     /** 自身が参照先ならtrue */
     private boolean isRefer;
 
@@ -113,20 +116,6 @@ public class TableInfo {
 
     /** 集約元テーブル */
     private List<TableInfo> summaryOfs = new ArrayList<TableInfo>();
-
-    /**
-     * @return boolean
-     */
-    public boolean isConvView() {
-        return isConvView;
-    }
-
-    /**
-     * @param p
-     */
-    public void setConvView(final boolean p) {
-        this.isConvView = p;
-    }
 
     /**
      * @return summaryTo
@@ -346,6 +335,34 @@ public class TableInfo {
      */
     public void setView(final boolean p) {
         this.isView = p;
+    }
+
+    /**
+     * @return boolean
+     */
+    public boolean isConvView() {
+        return isConvView;
+    }
+
+    /**
+     * @param p
+     */
+    public void setConvView(final boolean p) {
+        this.isConvView = p;
+    }
+
+    /**
+     * @return boolean
+     */
+    public boolean isStatusFlow() {
+        return isStatusFlow;
+    }
+
+    /**
+     * @param p
+     */
+    public void setStatusFlow(final boolean p) {
+        this.isStatusFlow = p;
     }
 
     /**

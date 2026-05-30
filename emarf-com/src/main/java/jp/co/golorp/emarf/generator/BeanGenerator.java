@@ -756,7 +756,7 @@ public final class BeanGenerator {
         s.add("        return jp.co.golorp.emarf.sql.Queries.get(sql, map, " + e + ".class);");
         s.add("    }");
 
-        if (!table.isView()) {
+        if (!table.isView() && !table.isStatusFlow()) {
             javaEntityCRUDInsert(table, s);
             javaEntityCRUDUpdate(table, s);
             javaEntityCRUDDelete(table, s);
@@ -1251,7 +1251,7 @@ public final class BeanGenerator {
      */
     private static void javaEntityUtil(final TableInfo table, final List<String> s) {
 
-        if (table.isView() || table.getPrimaryKeys().size() == 0) {
+        if (table.isView() || table.isStatusFlow() || table.getPrimaryKeys().size() == 0) {
             return;
         }
 

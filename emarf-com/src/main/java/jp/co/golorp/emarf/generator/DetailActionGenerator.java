@@ -92,7 +92,7 @@ public final class DetailActionGenerator {
         String packageDir = projectDir + File.separator + javaDir + File.separator + packagePath;
         Map<String, String> javaFilePaths = new LinkedHashMap<String, String>();
         for (TableInfo table : tables) {
-            if (table.isHistory() || table.isView()) {
+            if (table.isHistory() || table.isView() || table.isStatusFlow()) {
                 continue;
             }
             if (table.getPrimaryKeys().size() == 0) {
@@ -381,7 +381,7 @@ public final class DetailActionGenerator {
 
         for (TableInfo table : tables) {
 
-            if (table.isHistory() || table.isView()) {
+            if (table.isHistory() || table.isView() || table.isStatusFlow()) {
                 continue;
             }
 
@@ -482,7 +482,8 @@ public final class DetailActionGenerator {
 
         for (TableInfo table : tables) {
 
-            if (table.isHistory() || table.isView() || !table.getColumns().containsKey(status)) {
+            if (table.isHistory() || table.isView() || table.isStatusFlow()
+                    || !table.getColumns().containsKey(status)) {
                 continue;
             }
 
@@ -578,7 +579,8 @@ public final class DetailActionGenerator {
 
         for (TableInfo table : tables) {
 
-            if (table.isHistory() || table.isView() || !table.getColumns().containsKey(status)) {
+            if (table.isHistory() || table.isView() || table.isStatusFlow()
+                    || !table.getColumns().containsKey(status)) {
                 continue;
             }
 
@@ -674,7 +676,8 @@ public final class DetailActionGenerator {
 
         for (TableInfo table : tables) {
 
-            if (table.isHistory() || table.isView() || !table.getColumns().containsKey(status)) {
+            if (table.isHistory() || table.isView() || table.isStatusFlow()
+                    || !table.getColumns().containsKey(status)) {
                 continue;
             }
 
@@ -770,7 +773,8 @@ public final class DetailActionGenerator {
 
         for (TableInfo table : tables) {
 
-            if (table.isHistory() || table.isView() || !table.getColumns().containsKey(status)) {
+            if (table.isHistory() || table.isView() || table.isStatusFlow()
+                    || !table.getColumns().containsKey(status)) {
                 continue;
             }
 
