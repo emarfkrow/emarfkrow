@@ -756,10 +756,12 @@ public final class BeanGenerator {
         s.add("        return jp.co.golorp.emarf.sql.Queries.get(sql, map, " + e + ".class);");
         s.add("    }");
 
-        if (!table.isView() && !table.isStatusFlow()) {
+        if (!table.isView()) {
             javaEntityCRUDInsert(table, s);
-            javaEntityCRUDUpdate(table, s);
-            javaEntityCRUDDelete(table, s);
+            if (!table.isStatusFlow()) {
+                javaEntityCRUDUpdate(table, s);
+                javaEntityCRUDDelete(table, s);
+            }
         }
     }
 
@@ -1251,7 +1253,40 @@ public final class BeanGenerator {
      */
     private static void javaEntityUtil(final TableInfo table, final List<String> s) {
 
-        if (table.isView() || table.isStatusFlow() || table.getPrimaryKeys().size() == 0) {
+        if (table.isView() || table.getPrimaryKeys().size() == 0) {
+            return;
+        }
+
+        // toMap
+        s.add("");
+        s.add("    /**");
+        s.add("     * @param now システム日時");
+        s.add("     * @param execId 実行ID");
+        s.add("     * @return マップ化したエンティティ");
+        s.add("     */");
+        s.add("    private java.util.Map<String, Object> toMap(final java.time.LocalDateTime now, final String execId) {");
+        s.add("        java.util.Map<String, Object> map = new java.util.HashMap<String, Object>();");
+        for (String columnName : table.getColumns().keySet()) {
+            if (isMetaTsBy(columnName)) {
+                continue;
+            }
+            String snake = StringUtil.toSnakeCase(columnName);
+            String p = StringUtil.toCamelCase(columnName);
+            //            p = p.replaceAll("#", "_");
+            s.add("        map.put(\"" + snake + "\", this." + p + ");");
+        }
+        s.add("        map.put(\"" + StringUtil.toSnakeCase(insertTs) + "\", now);");
+        s.add("        map.put(\"" + StringUtil.toSnakeCase(insertBy) + "\", execId);");
+        String now = "now";
+        if (!StringUtil.isNullOrWhiteSpace(updateTsFormat)) {
+            now = "jp.co.golorp.emarf.time.DateTimeUtil.format(\"" + updateTsFormat + "\", now)";
+        }
+        s.add("        map.put(\"" + StringUtil.toSnakeCase(updateTs) + "\", " + now + ");");
+        s.add("        map.put(\"" + StringUtil.toSnakeCase(updateBy) + "\", execId);");
+        s.add("        return map;");
+        s.add("    }");
+
+        if (table.isStatusFlow()) {
             return;
         }
 
@@ -1306,35 +1341,6 @@ public final class BeanGenerator {
         }
 
         s.add("        return String.join(\" AND \", whereList);");
-        s.add("    }");
-
-        // toMap
-        s.add("");
-        s.add("    /**");
-        s.add("     * @param now システム日時");
-        s.add("     * @param execId 実行ID");
-        s.add("     * @return マップ化したエンティティ");
-        s.add("     */");
-        s.add("    private java.util.Map<String, Object> toMap(final java.time.LocalDateTime now, final String execId) {");
-        s.add("        java.util.Map<String, Object> map = new java.util.HashMap<String, Object>();");
-        for (String columnName : table.getColumns().keySet()) {
-            if (isMetaTsBy(columnName)) {
-                continue;
-            }
-            String snake = StringUtil.toSnakeCase(columnName);
-            String p = StringUtil.toCamelCase(columnName);
-            //            p = p.replaceAll("#", "_");
-            s.add("        map.put(\"" + snake + "\", this." + p + ");");
-        }
-        s.add("        map.put(\"" + StringUtil.toSnakeCase(insertTs) + "\", now);");
-        s.add("        map.put(\"" + StringUtil.toSnakeCase(insertBy) + "\", execId);");
-        String now = "now";
-        if (!StringUtil.isNullOrWhiteSpace(updateTsFormat)) {
-            now = "jp.co.golorp.emarf.time.DateTimeUtil.format(\"" + updateTsFormat + "\", now)";
-        }
-        s.add("        map.put(\"" + StringUtil.toSnakeCase(updateTs) + "\", " + now + ");");
-        s.add("        map.put(\"" + StringUtil.toSnakeCase(updateBy) + "\", execId);");
-        s.add("        return map;");
         s.add("    }");
     }
 
