@@ -393,11 +393,11 @@ public final class IndexActionGenerator {
             List<TableInfo> childInfos = table.getChildren();
             BeanGenerator.getApplyChilds(s, "e", childInfos, 2);
             s.add("");
-            s.add("                " + e + " f = " + e + ".get(" + params + ");");
+            //s.add("                " + e + " f = " + e + ".get(" + params + ");");
             if (table.getColumns().containsKey(status)) {
-                s.add("                f.set" + StringUtil.toPascalCase(status) + "(0);");
+                s.add("                e.set" + StringUtil.toPascalCase(status) + "(0);");
             }
-            s.add("                if (f.update(now, execId) != 1) {");
+            s.add("                if (e.update(now, execId) != 1) {");
             s.add("                    throw new OptLockError(\"error.cant.apply\", \"" + remarks + "\");");
             s.add("                }");
             s.add("                ++count;");
@@ -508,11 +508,11 @@ public final class IndexActionGenerator {
             List<TableInfo> childInfos = table.getChildren();
             BeanGenerator.getCancelChilds(s, "e", childInfos, 2);
             s.add("");
-            s.add("                " + e + " f = " + e + ".get(" + params + ");");
+            //s.add("                " + e + " f = " + e + ".get(" + params + ");");
             if (table.getColumns().containsKey(status)) {
-                s.add("                f.set" + StringUtil.toPascalCase(status) + "(null);");
+                s.add("                e.set" + StringUtil.toPascalCase(status) + "(null);");
             }
-            s.add("                if (f.update(now, execId) != 1) {");
+            s.add("                if (e.update(now, execId) != 1) {");
             s.add("                    throw new OptLockError(\"error.cant.cancel\", \"" + remarks + "\");");
             s.add("                }");
             s.add("                ++count;");
@@ -623,11 +623,11 @@ public final class IndexActionGenerator {
             List<TableInfo> childInfos = table.getChildren();
             BeanGenerator.getPermitChilds(s, "e", childInfos, 2);
             s.add("");
-            s.add("                " + e + " f = " + e + ".get(" + params + ");");
+            //s.add("                " + e + " f = " + e + ".get(" + params + ");");
             if (table.getColumns().containsKey(status)) {
-                s.add("                f.set" + StringUtil.toPascalCase(status) + "(1);");
+                s.add("                e.set" + StringUtil.toPascalCase(status) + "(1);");
             }
-            s.add("                if (f.update(now, execId) != 1) {");
+            s.add("                if (e.update(now, execId) != 1) {");
             s.add("                    throw new OptLockError(\"error.cant.permit\", \"" + remarks + "\");");
             s.add("                }");
             s.add("                ++count;");
@@ -738,11 +738,11 @@ public final class IndexActionGenerator {
             List<TableInfo> childInfos = table.getChildren();
             BeanGenerator.getForbidChilds(s, "e", childInfos, 2);
             s.add("");
-            s.add("                " + e + " f = " + e + ".get(" + params + ");");
+            //s.add("                " + e + " f = " + e + ".get(" + params + ");");
             if (table.getColumns().containsKey(status)) {
-                s.add("                f.set" + StringUtil.toPascalCase(status) + "(-1);");
+                s.add("                e.set" + StringUtil.toPascalCase(status) + "(-1);");
             }
-            s.add("                if (f.update(now, execId) != 1) {");
+            s.add("                if (e.update(now, execId) != 1) {");
             s.add("                    throw new OptLockError(\"error.cant.forbid\", \"" + remarks + "\");");
             s.add("                }");
             s.add("                ++count;");

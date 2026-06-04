@@ -48,13 +48,10 @@ public final class BeanGenerator {
 
     /** logger */
     private static final Logger LOG = LoggerFactory.getLogger(BeanGenerator.class);
-
     /** DB方言クラス */
     private static DataSourcesAssist assist = DataSources.getAssist();
-
     /** 起動時の自動生成か */
     private static boolean isGenerateAtStartup;
-
     /** プロジェクトディレクトリ */
     private static String projectDir;
 
@@ -75,7 +72,18 @@ public final class BeanGenerator {
     /** 削除フラグ */
     private static String deleteF;
     /** 変更理由 */
-    private static String reason;
+    private static String rirekiTx;
+    /** 決裁理由 */
+    private static String kessaiTx;
+
+    /** 決裁フロー：テーブル名 */
+    private static String statusTableName;
+    /** 決裁フロー：主キー */
+    private static String statusPrimaryKeys;
+    /** 決裁フロー：決裁日時 */
+    private static String statusKessaiTs;
+    /** 決裁フロー：決裁者 */
+    private static String statusKessaiId;
 
     /** javaファイル出力ルートパス */
     private static String javaDir;
@@ -128,7 +136,6 @@ public final class BeanGenerator {
 
         //プロジェクトディレクトリを退避
         projectDir = dir;
-
         tekiyoBi = bundle.getString("column.start");
         insertTs = bundle.getString("column.insert.timestamp");
         insertBy = bundle.getString("column.insert.id");
@@ -136,10 +143,13 @@ public final class BeanGenerator {
         updateBy = bundle.getString("column.update.id");
         status = bundle.getString("column.status");
         deleteF = bundle.getString("column.delete");
-        reason = bundle.getString("column.history.reason");
-
+        rirekiTx = bundle.getString("column.rireki.reason");
+        kessaiTx = bundle.getString("column.kessai.reason");
+        statusTableName = bundle.getString("status.tableName");
+        statusPrimaryKeys = bundle.getString("status.primaryKeys");
+        statusKessaiTs = bundle.getString("status.kessaiTs");
+        statusKessaiId = bundle.getString("status.kessaiId");
         javaDir = bundle.getString("dir.java");
-
         pkgAction = bundle.getString("java.package.action") + ".model.base";
         pkgE = bundle.getString("java.package.entity");
 
@@ -176,28 +186,20 @@ public final class BeanGenerator {
         /*
          * データベースから自動生成
          */
-
         // テーブル情報を取得
         List<TableInfo> tables = DataSources.getTables();
-
         //エンティティクラス
         BeanGenerator.javaEntity(tables);
-
         //詳細画面アクションクラス
         DetailActionGenerator.generate(projectDir, tables);
-
         //検索画面アクションクラス
         IndexActionGenerator.generate(projectDir, tables);
-
         //フォームクラス
         FormGenerator.generate(projectDir, tables);
-
         //HTMLファイル
         HtmlGenerator.generate(projectDir, tables);
-
         //検索SQLファイル
         SqlGenerator.generate(projectDir, tables);
-
         LOG.info("success.");
     }
 
@@ -329,8 +331,11 @@ public final class BeanGenerator {
                     i = addSanshoMei(s, table, column, i);
                 }
             }
-            if (table.getHistory() != null && !StringUtil.isNullOrWhiteSpace(reason)) {
-                i = addHistoryReason(s, i);
+            if (!StringUtil.isNullOrWhiteSpace(rirekiTx) && table.getHistory() != null) {
+                i = addRirekiTx(s, i);
+            }
+            if (!StringUtil.isNullOrWhiteSpace(kessaiTx) && table.getStatusFlow() != null) {
+                i = addKessaiTx(s, i);
             }
             javaEntityCRUD(table, s);
             javaEntityUtil(table, s);
@@ -498,18 +503,16 @@ public final class BeanGenerator {
      * @param jsonIndex
      * @return int
      */
-    public static int addHistoryReason(final List<String> s, final int jsonIndex) {
-
+    public static int addRirekiTx(final List<String> s, final int jsonIndex) {
         int i = jsonIndex;
-
-        String p = StringUtil.toCamelCase(reason);
-        String a = StringUtil.toPascalCase(reason);
+        String p = StringUtil.toCamelCase(rirekiTx);
+        String a = StringUtil.toPascalCase(rirekiTx);
         s.add("");
         s.add("    /** " + p + " */");
         s.add("    private String " + p + ";");
         s.add("");
         s.add("    /** @return " + p + " */");
-        s.add("    @com.fasterxml.jackson.annotation.JsonProperty(value = \"" + reason + "\", index = " + ++i + ")");
+        s.add("    @com.fasterxml.jackson.annotation.JsonProperty(value = \"" + rirekiTx + "\", index = " + ++i + ")");
         s.add("    public String get" + a + "() {");
         s.add("        return this." + p + ";");
         s.add("    }");
@@ -520,7 +523,34 @@ public final class BeanGenerator {
         s.add("            this." + p + " = o.toString();");
         s.add("        }");
         s.add("    }");
+        return i;
+    }
 
+    /**
+     * @param s
+     * @param jsonIndex
+     * @return int
+     */
+    public static int addKessaiTx(final List<String> s, final int jsonIndex) {
+        int i = jsonIndex;
+        String p = StringUtil.toCamelCase(kessaiTx);
+        String a = StringUtil.toPascalCase(kessaiTx);
+        s.add("");
+        s.add("    /** " + p + " */");
+        s.add("    private String " + p + ";");
+        s.add("");
+        s.add("    /** @return " + p + " */");
+        s.add("    @com.fasterxml.jackson.annotation.JsonProperty(value = \"" + kessaiTx + "\", index = " + ++i + ")");
+        s.add("    public String get" + a + "() {");
+        s.add("        return this." + p + ";");
+        s.add("    }");
+        s.add("");
+        s.add("    /** @param o " + p + " */");
+        s.add("    public void set" + a + "(final Object o) {");
+        s.add("        if (o != null) {");
+        s.add("            this." + p + " = o.toString();");
+        s.add("        }");
+        s.add("    }");
         return i;
     }
 
@@ -773,17 +803,14 @@ public final class BeanGenerator {
 
         //削除フラグがなければdeleteメソッドを出力
         if (!table.getColumns().containsKey(deleteF)) {
-
             String e = StringUtil.toPascalCase(table.getName());
             String i = StringUtil.toCamelCase(table.getName());
-
             s.add("");
             s.add("    /**");
             s.add("     * " + table.getRemarks() + "削除");
             s.add("     * @return 削除件数");
             s.add("     */");
             s.add("    public int delete() {");
-
             for (TableInfo child : table.getChildren()) {
                 if (StringUtil.isNullOrWhiteSpace(deleteF) || !child.getColumns().containsKey(deleteF)) {
                     String ent = StringUtil.toPascalCase(child.getName());
@@ -805,19 +832,16 @@ public final class BeanGenerator {
 
             // 兄弟
             for (TableInfo bro : table.getBrothers()) {
-
                 // 自テーブル名に兄弟テーブル名が接頭する場合もスキップ（兄テーブルは削除しない）
                 if (table.getName().startsWith(bro.getName())) {
                     continue;
                 }
-
                 // 兄弟に親がなく自テーブル名に前方一致しければスキップ（弟でもなく別で成り立つため）
                 if (bro.getParents() == null || bro.getParents().size() == 0) {
                     if (!bro.getName().startsWith(table.getName())) {
                         continue;
                     }
                 }
-
                 // 削除フラグの定義がないか削除フラグ列がない
                 if (StringUtil.isNullOrWhiteSpace(deleteF) || !bro.getColumns().containsKey(deleteF)) {
                     String b = StringUtil.toCamelCase(bro.getName());
@@ -833,7 +857,6 @@ public final class BeanGenerator {
                     s.add("        }");
                 }
             }
-
             // ファイル列がある場合
             for (String columnName : table.getColumns().keySet()) {
                 if (StringUtil.endsWith(inputFileSuffixs, columnName)) {
@@ -855,7 +878,6 @@ public final class BeanGenerator {
                     s.add("        }");
                 }
             }
-
             s.add("");
             s.add("        // " + table.getRemarks() + "の削除");
             s.add("        String sql = \"DELETE FROM " + table.getName() + " WHERE \" + getWhere();");
@@ -869,30 +891,18 @@ public final class BeanGenerator {
      * @return quoteEscaped
      */
     private static String getQuoteEscaped(final ColumnInfo columnInfo) {
-
         String columnName = columnInfo.getName();
-
         String quoteEscaped = "a." + assist.quoteEscapedSQL(columnName);
-
         if (columnInfo.getTypeName().equals("CHAR")) {
-
             String trimed = assist.trimedSQL(quoteEscaped);
             quoteEscaped = trimed + " AS " + columnName;
-
         } else if (StringUtil.endsWith(inputDateSuffixs, columnInfo.getName())) {
-
             quoteEscaped = assist.date2CharSQL(quoteEscaped) + " AS " + columnName;
-
         } else if (StringUtil.endsWith(inputDateTimeSuffixs, columnInfo.getName())) {
-
             quoteEscaped = assist.dateTime2CharSQL(quoteEscaped) + " AS " + columnName;
-
         } else if (StringUtil.endsWith(inputTimestampSuffixs, columnInfo.getName())) {
-
             quoteEscaped = assist.timestamp2CharSQL(quoteEscaped) + " AS " + columnName;
-
         }
-
         return quoteEscaped;
     }
 
@@ -902,7 +912,6 @@ public final class BeanGenerator {
      * @param s 出力文字列のリスト
      */
     private static void javaEntityCRUDInsert(final TableInfo table, final List<String> s) {
-
         s.add("");
         s.add("    /**");
         s.add("     * " + table.getRemarks() + "追加");
@@ -911,7 +920,6 @@ public final class BeanGenerator {
         s.add("     * @return 追加件数");
         s.add("     */");
         s.add("    public int insert(final java.time.LocalDateTime now, final String execId) {");
-
         // 最後のキーを取得
         ColumnInfo lastKeyInfo = null;
         if (table.getPrimaryKeys() != null && table.getPrimaryKeys().size() > 0) {
@@ -925,9 +933,7 @@ public final class BeanGenerator {
                 s.add("        numbering();");
             }
         }
-
-        // 子モデル
-        for (TableInfo childInfo : table.getChildren()) {
+        for (TableInfo childInfo : table.getChildren()) { // 子モデル
             String childName = childInfo.getName();
             String camel = StringUtil.toCamelCase(childName);
             String pascal = StringUtil.toPascalCase(childName);
@@ -945,9 +951,7 @@ public final class BeanGenerator {
             s.add("            }");
             s.add("        }");
         }
-
-        // 兄弟モデル
-        for (TableInfo brosInfo : table.getBrothers()) {
+        for (TableInfo brosInfo : table.getBrothers()) { // 兄弟モデル
             String brosName = brosInfo.getName();
             String camel = StringUtil.toCamelCase(brosName);
             s.add("");
@@ -960,9 +964,7 @@ public final class BeanGenerator {
             s.add("            this." + camel + ".insert(now, execId);");
             s.add("        }");
         }
-
-        // 履歴モデル
-        if (table.getHistory() != null) {
+        if (table.getHistory() != null) { // 履歴モデル
             String historyName = table.getHistory().getName();
             String camel = StringUtil.toCamelCase(historyName);
             String pascal = StringUtil.toPascalCase(historyName);
@@ -974,14 +976,13 @@ public final class BeanGenerator {
                 String pascalColumn = StringUtil.toPascalCase(columnName);
                 s.add("        " + camel + ".set" + pascalColumn + "(this." + camelColumn + ");");
             }
-            if (!StringUtil.isNullOrWhiteSpace(reason)) {
-                String p = StringUtil.toCamelCase(reason);
-                String a = StringUtil.toPascalCase(reason);
+            if (!StringUtil.isNullOrWhiteSpace(rirekiTx)) {
+                String p = StringUtil.toCamelCase(rirekiTx);
+                String a = StringUtil.toPascalCase(rirekiTx);
                 s.add("        " + camel + ".set" + a + "(this." + p + ");");
             }
             s.add("        " + camel + ".insert(now, execId);");
         }
-
         s.add("");
         s.add("        // " + table.getRemarks() + "の登録");
         s.add("        String sql = \"INSERT INTO " + table.getName()
@@ -1006,24 +1007,19 @@ public final class BeanGenerator {
         for (Entry<String, ColumnInfo> e : table.getColumns().entrySet()) {
             String colName = e.getKey();
             ColumnInfo column = e.getValue();
-
             String cleanedName = colName.replaceAll("\\$", "_");
             String rightHand = getRightHand(cleanedName, column);
-
             if (StringUtil.endsWith(inputTimestampSuffixs, colName) && !isMetaTs(colName)) {
                 rightHand = assist.toTimestampSQL(assist.timestamp2CharSQL(assist.sysTimestamp()));
             }
-
             // INT列の場合、postgresならcastを入れる
             if (column.getTypeName().startsWith("INT")) {
                 rightHand = assist.castInteger(rightHand);
             }
-
             s.add("        valueList.add(\"" + rightHand + "\");");
         }
         s.add("        return String.join(\"\\r\\n    , \", valueList);");
         s.add("    }");
-
         if (lastKeyInfo != null && lastKeyInfo.isNumbering()) {
             javaEntityCRUDInsertNumbering(table, s, lastKeyInfo);
         }
@@ -1035,36 +1031,26 @@ public final class BeanGenerator {
      * @return rightHand
      */
     public static String getRightHand(final String colName, final ColumnInfo column) {
-
         String rightHand = ":" + StringUtil.toSnakeCase(colName);
-
         if (column.getDataType().equals("java.time.LocalDate")) {
-
             rightHand = assist.toDateSQL(rightHand);
-
         } else if (column.getDataType().equals("java.time.LocalDateTime")) {
-
             if (StringUtil.endsWith(inputTimestampSuffixs, column.getName())) {
                 rightHand = assist.toTimestampSQL(rightHand);
             } else {
                 rightHand = assist.toDateTimeSQL(rightHand);
             }
-
         } else if (!column.isPk() && column.getTypeName().equals("CHAR")
                 && !StringUtil.isNullOrWhiteSpace(charNotNullRe)
                 && !column.getName().matches(charNotNullRe)) {
-
             //主キー以外のCHAR列で、必須CHAR指定に合致しない場合、NULLならスペースを補填する
             rightHand = "NVL (" + rightHand + ", ' ')";
-
         } else if (!column.isPk() && column.getTypeName().equals("NUMBER")
                 && !StringUtil.isNullOrWhiteSpace(numberNullableRe)
                 && column.getName().matches(numberNullableRe)) {
-
             //主キー以外のNUMBER列で、非必須INT指定に合致する場合、NULLなら「0」を補填する
             rightHand = "NVL (" + rightHand + ", 0)";
         }
-
         return rightHand;
     }
 
@@ -1191,6 +1177,48 @@ public final class BeanGenerator {
             s.add("        }");
         }
 
+        // 決裁フロー
+        if (table.getColumns().containsKey(status)) {
+            TableInfo statusFlow = table.getStatusFlow();
+            if (statusFlow != null) {
+                String statusFlowName = statusFlow.getName();
+                String camel = StringUtil.toCamelCase(statusFlowName);
+                String pascal = StringUtil.toPascalCase(statusFlowName);
+                s.add("");
+                s.add("        // " + statusFlow.getRemarks() + "の登録");
+                s.add("        if (!" + StringUtil.class.getName() + ".isNullOrWhiteSpace(this."
+                        + StringUtil.toCamelCase(status) + ") && !" + StringUtil.class.getName()
+                        + ".isNullOrWhiteSpace(this." + StringUtil.toCamelCase(kessaiTx) + ")) {");
+                s.add("            " + pascal + " " + camel + " = new " + pascal + "();");
+                for (ColumnInfo column : statusFlow.getColumns().values()) {
+                    if (column.isPk()) {
+                        continue;
+                    }
+                    String columnName = column.getName();
+                    String camelColumn = StringUtil.toCamelCase(columnName);
+                    String pascalColumn = StringUtil.toPascalCase(columnName);
+                    if (columnName.equals(statusTableName)) {
+                        s.add("            " + camel + ".set" + pascalColumn + "(\"" + table.getName() + "\");");
+                    } else if (columnName.equals(statusPrimaryKeys)) {
+                        String keys = "String.join(\",\"";
+                        for (String pk : table.getPrimaryKeys()) {
+                            keys += ", this.get" + StringUtil.toPascalCase(pk) + "().toString()";
+                        }
+                        keys += ")";
+                        s.add("            " + camel + ".set" + pascalColumn + "(" + keys + ");");
+                    } else if (columnName.equals(statusKessaiTs)) {
+                        s.add("            " + camel + ".set" + pascalColumn + "(now);");
+                    } else if (columnName.equals(statusKessaiId)) {
+                        s.add("            " + camel + ".set" + pascalColumn + "(execId);");
+                    } else {
+                        s.add("            " + camel + ".set" + pascalColumn + "(this." + camelColumn + ");");
+                    }
+                }
+                s.add("            " + camel + ".insert(now, execId);");
+                s.add("        }");
+            }
+        }
+
         // 履歴モデル
         TableInfo history = table.getHistory();
         if (history != null) {
@@ -1204,9 +1232,9 @@ public final class BeanGenerator {
                 String columnType = StringUtil.toPascalCase(columnName);
                 s.add("        " + i + ".set" + columnType + "(this." + column + ");");
             }
-            if (!StringUtil.isNullOrWhiteSpace(reason)) {
-                String p = StringUtil.toCamelCase(reason);
-                String a = StringUtil.toPascalCase(reason);
+            if (!StringUtil.isNullOrWhiteSpace(rirekiTx)) {
+                String p = StringUtil.toCamelCase(rirekiTx);
+                String a = StringUtil.toPascalCase(rirekiTx);
                 s.add("        " + i + ".set" + a + "(this." + p + ");");
             }
             s.add("        " + i + ".insert(now, execId);");
@@ -1842,21 +1870,13 @@ public final class BeanGenerator {
     public static void getForbidChilds(final List<String> s, final String parent, final List<TableInfo> childs,
             final int indent) {
 
-        // indent
         String p = "    ".repeat(indent);
 
         for (TableInfo child : childs) {
-
             String r = child.getRemarks();
-
-            // entity
             String e = StringUtil.toPascalCase(child.getName());
-
-            // instance
             String i = StringUtil.toCamelCase(child.getName());
-
             s.add("");
-
             int parents = child.getParents().size();
             if (parents > 1) {
                 s.add(p + "        // child:" + e + ", parents:" + parents);

@@ -275,7 +275,7 @@ public final class DataSources {
 
         status = bundle.getString("column.status");
 
-        reason = bundle.getString("column.history.reason");
+        reason = bundle.getString("column.rireki.reason");
 
         viewDetailColumn = bundle.getString("view.detail");
 
@@ -419,6 +419,20 @@ public final class DataSources {
         setRefer(tables); // 参照モデルの評価
         addBrothers(tables); // 兄弟モデルの評価
         setHistory(tables); // 履歴モデルの評価
+        Iterator<TableInfo> motos = tables.iterator();
+        while (motos.hasNext()) {
+            TableInfo moto = motos.next();
+            if (moto.isStatusFlow()) {
+                Iterator<TableInfo> sakis = tables.iterator();
+                while (sakis.hasNext()) {
+                    TableInfo saki = sakis.next();
+                    if (!saki.isStatusFlow() && !saki.isHistory() && saki.getColumns().containsKey(status)) {
+                        saki.setStatusFlow(moto);
+                    }
+                }
+                break;
+            }
+        }
         addCombos(tables); // 複合モデルの評価
         addChildren(tables); // 親子モデルの評価
         addDerives(tables); // 派生モデルの評価
@@ -484,7 +498,7 @@ public final class DataSources {
             String tableType = rs.getString("TABLE_TYPE");
             table.setView(tableType.equals("VIEW"));
 
-            table.setStatusFlow(tableName.matches("(?i).*" + status + ".*"));
+            table.setStatusFlow(!status.equals("") && tableName.matches("(?i).*" + status + ".*"));
 
             tree.put(tableName, table);
 

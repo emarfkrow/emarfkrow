@@ -75,7 +75,24 @@ public class TableInfo {
     /** 変換VIEWならtrue */
     private boolean isConvView;
 
-    /** ステータスフローならtrue */
+    /** 決裁ありならtrue */
+    private TableInfo statusFlow;
+
+    /**
+     * @return TableInfo
+     */
+    public TableInfo getStatusFlow() {
+        return statusFlow;
+    }
+
+    /**
+     * @param p
+     */
+    public void setStatusFlow(final TableInfo p) {
+        this.statusFlow = p;
+    }
+
+    /** 決裁フローならtrue */
     private boolean isStatusFlow;
 
     /** 自身が参照先ならtrue */

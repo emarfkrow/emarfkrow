@@ -207,7 +207,7 @@ public final class FormValidator {
         } catch (Exception e) {
             throw new SysError(e);
         }
-        String reason = bundle.getString("column.history.reason");
+        String reason = bundle.getString("column.rireki.reason");
         Method[] methods = clazz.getMethods(); // フォームクラスインスタンスのセッターでループ
         for (Method method : methods) {
             String methodName = method.getName();

@@ -353,8 +353,8 @@ let Base = {
     getAuthz: function(href) {
 
         // 画面IDを取得（URLから、最後の「/」までと「?」以降を除去）
-        //		let lastPath = href.replace(/\?.+/, '').replace(/.+\//, '');
-        let lastPath = href.replace(/.+\//, '');
+        let lastPath = href.replace(/\?.+/, '').replace(/.+\//, '');//クエリストリングを除く
+        //let lastPath = href.replace(/.+\//, '');
 
         // 拡張子を除去
         let gamenId = lastPath.replace(/\?.+/, '');
@@ -1274,12 +1274,24 @@ let Base = {
         }
     },
 
-    historyReason: function(me) {
+    rirekiTx: function(me) {
 
         let reason = prompt('変更理由を入力してください。');
         if (reason) {
             let $form = $(me).closest('form');
-            let name = Casing.toCamel(columnHistoryReason);
+            let name = Casing.toCamel(columnRirekiTx);
+            $form.find('[name="' + name + '"]').remove();
+            $form.append('<input type=\"hidden\" name=\"' + name + '\" value=\"' + reason + '\">');
+        }
+        return reason;
+    },
+
+    kessaiTx: function(me) {
+
+        let reason = prompt('決裁理由を入力してください。');
+        if (reason) {
+            let $form = $(me).closest('form');
+            let name = Casing.toCamel(columnKessaiTx);
             $form.find('[name="' + name + '"]').remove();
             $form.append('<input type=\"hidden\" name=\"' + name + '\" value=\"' + reason + '\">');
         }
