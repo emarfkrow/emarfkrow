@@ -72,9 +72,7 @@ public final class BeanGenerator {
     /** 削除フラグ */
     private static String deleteF;
     /** 変更理由 */
-    private static String rirekiTx;
-    /** 決裁理由 */
-    private static String kessaiTx;
+    private static String reason;
 
     /** 決裁フロー：テーブル名 */
     private static String statusTableName;
@@ -143,8 +141,7 @@ public final class BeanGenerator {
         updateBy = bundle.getString("column.update.id");
         status = bundle.getString("column.status");
         deleteF = bundle.getString("column.delete");
-        rirekiTx = bundle.getString("column.rireki.reason");
-        kessaiTx = bundle.getString("column.kessai.reason");
+        reason = bundle.getString("column.reason");
         statusTableName = bundle.getString("status.tableName");
         statusPrimaryKeys = bundle.getString("status.primaryKeys");
         statusKessaiTs = bundle.getString("status.kessaiTs");
@@ -331,11 +328,9 @@ public final class BeanGenerator {
                     i = addSanshoMei(s, table, column, i);
                 }
             }
-            if (!StringUtil.isNullOrWhiteSpace(rirekiTx) && table.getHistory() != null) {
+            if (!StringUtil.isNullOrWhiteSpace(reason)
+                    && (table.getHistory() != null || table.getStatusFlow() != null)) {
                 i = addRirekiTx(s, i);
-            }
-            if (!StringUtil.isNullOrWhiteSpace(kessaiTx) && table.getStatusFlow() != null) {
-                i = addKessaiTx(s, i);
             }
             javaEntityCRUD(table, s);
             javaEntityUtil(table, s);
@@ -505,42 +500,14 @@ public final class BeanGenerator {
      */
     public static int addRirekiTx(final List<String> s, final int jsonIndex) {
         int i = jsonIndex;
-        String p = StringUtil.toCamelCase(rirekiTx);
-        String a = StringUtil.toPascalCase(rirekiTx);
+        String p = StringUtil.toCamelCase(reason);
+        String a = StringUtil.toPascalCase(reason);
         s.add("");
         s.add("    /** " + p + " */");
         s.add("    private String " + p + ";");
         s.add("");
         s.add("    /** @return " + p + " */");
-        s.add("    @com.fasterxml.jackson.annotation.JsonProperty(value = \"" + rirekiTx + "\", index = " + ++i + ")");
-        s.add("    public String get" + a + "() {");
-        s.add("        return this." + p + ";");
-        s.add("    }");
-        s.add("");
-        s.add("    /** @param o " + p + " */");
-        s.add("    public void set" + a + "(final Object o) {");
-        s.add("        if (o != null) {");
-        s.add("            this." + p + " = o.toString();");
-        s.add("        }");
-        s.add("    }");
-        return i;
-    }
-
-    /**
-     * @param s
-     * @param jsonIndex
-     * @return int
-     */
-    public static int addKessaiTx(final List<String> s, final int jsonIndex) {
-        int i = jsonIndex;
-        String p = StringUtil.toCamelCase(kessaiTx);
-        String a = StringUtil.toPascalCase(kessaiTx);
-        s.add("");
-        s.add("    /** " + p + " */");
-        s.add("    private String " + p + ";");
-        s.add("");
-        s.add("    /** @return " + p + " */");
-        s.add("    @com.fasterxml.jackson.annotation.JsonProperty(value = \"" + kessaiTx + "\", index = " + ++i + ")");
+        s.add("    @com.fasterxml.jackson.annotation.JsonProperty(value = \"" + reason + "\", index = " + ++i + ")");
         s.add("    public String get" + a + "() {");
         s.add("        return this." + p + ";");
         s.add("    }");
@@ -976,9 +943,9 @@ public final class BeanGenerator {
                 String pascalColumn = StringUtil.toPascalCase(columnName);
                 s.add("        " + camel + ".set" + pascalColumn + "(this." + camelColumn + ");");
             }
-            if (!StringUtil.isNullOrWhiteSpace(rirekiTx)) {
-                String p = StringUtil.toCamelCase(rirekiTx);
-                String a = StringUtil.toPascalCase(rirekiTx);
+            if (!StringUtil.isNullOrWhiteSpace(reason)) {
+                String p = StringUtil.toCamelCase(reason);
+                String a = StringUtil.toPascalCase(reason);
                 s.add("        " + camel + ".set" + a + "(this." + p + ");");
             }
             s.add("        " + camel + ".insert(now, execId);");
@@ -1188,7 +1155,7 @@ public final class BeanGenerator {
                 s.add("        // " + statusFlow.getRemarks() + "の登録");
                 s.add("        if (!" + StringUtil.class.getName() + ".isNullOrWhiteSpace(this."
                         + StringUtil.toCamelCase(status) + ") && !" + StringUtil.class.getName()
-                        + ".isNullOrWhiteSpace(this." + StringUtil.toCamelCase(kessaiTx) + ")) {");
+                        + ".isNullOrWhiteSpace(this." + StringUtil.toCamelCase(reason) + ")) {");
                 s.add("            " + pascal + " " + camel + " = new " + pascal + "();");
                 for (ColumnInfo column : statusFlow.getColumns().values()) {
                     if (column.isPk()) {
@@ -1232,9 +1199,9 @@ public final class BeanGenerator {
                 String columnType = StringUtil.toPascalCase(columnName);
                 s.add("        " + i + ".set" + columnType + "(this." + column + ");");
             }
-            if (!StringUtil.isNullOrWhiteSpace(rirekiTx)) {
-                String p = StringUtil.toCamelCase(rirekiTx);
-                String a = StringUtil.toPascalCase(rirekiTx);
+            if (!StringUtil.isNullOrWhiteSpace(reason)) {
+                String p = StringUtil.toCamelCase(reason);
+                String a = StringUtil.toPascalCase(reason);
                 s.add("        " + i + ".set" + a + "(this." + p + ");");
             }
             s.add("        " + i + ".insert(now, execId);");

@@ -73,9 +73,7 @@ public final class HtmlGenerator {
     /** 削除フラグ */
     private static String deleteF;
     /** 変更理由 */
-    private static String rirekiTx;
-    /** 決裁理由 */
-    private static String kessaiTx;
+    private static String reason;
 
     /** 数値だがフォーマットしないサフィックス */
     private static String[] intNoFormatSuffixs;
@@ -163,8 +161,7 @@ public final class HtmlGenerator {
         updateTs = bundle.getString("column.update.timestamp");
         status = bundle.getString("column.status");
         deleteF = bundle.getString("column.delete");
-        rirekiTx = bundle.getString("column.rireki.reason");
-        kessaiTx = bundle.getString("column.kessai.reason");
+        reason = bundle.getString("column.reason");
 
         intNoFormatSuffixs = bundle.getString("column.int.noformat.suffixs").split(",");
         charNotNullRe = bundle.getString("column.char.notnull.re");
@@ -359,7 +356,7 @@ public final class HtmlGenerator {
             } // 削除フラグも有効期間終了日もないなら、物理削除ボタンを表示
             if (table.getColumns().containsKey(status)) {
                 String onClick = "";
-                if (table.getStatusFlow() != null && !StringUtil.isNullOrWhiteSpace(kessaiTx)) {
+                if (table.getStatusFlow() != null && !StringUtil.isNullOrWhiteSpace(reason)) {
                     onClick = " onclick=\"if (!Base.kessaiTx(this)) { return false; }\"";
                 }
                 s.add("        <button type=\"submit\"" + onClick + " id=\"Permit" + es + "\" data-action=\"" + es
@@ -368,7 +365,7 @@ public final class HtmlGenerator {
                         + "Forbid.ajax\" class=\"forbid selectRows\" th:text=\"#{common.forbid}\" tabindex=\"-1\">否認</button>");
                 s.add("        <button type=\"submit\"" + onClick + " id=\"Apply" + es + "\" data-action=\"" + es
                         + "Apply.ajax\" class=\"apply selectRows\" th:text=\"#{common.apply}\" tabindex=\"-1\">申請</button>");
-                s.add("        <button type=\"submit\" id=\"Cancel" + es + "\" data-action=\"" + es
+                s.add("        <button type=\"submit\"" + onClick + " id=\"Cancel" + es + "\" data-action=\"" + es
                         + "Cancel.ajax\" class=\"cancel selectRows\" th:text=\"#{common.cancel}\" tabindex=\"-1\">取消</button>");
             } //ステータス列名の指定があり、テーブルにステータス列があるなら、承認ボタン・否認ボタンを表示
         }
@@ -376,7 +373,7 @@ public final class HtmlGenerator {
         if (!table.isHistory() && (!table.isView() || table.isConvView()) && !table.isStatusFlow()
                 && table.getChildren().size() == 0) {
             String onClick = "";
-            if (table.getHistory() != null && !StringUtil.isNullOrWhiteSpace(rirekiTx)) {
+            if (table.getHistory() != null && !StringUtil.isNullOrWhiteSpace(reason)) {
                 onClick = " onclick=\"if (!Base.rirekiTx(this)) { return false; }\"";
             }
             s.add("        <button id=\"Regist" + es + "\" type=\"submit\"" + onClick
@@ -686,7 +683,7 @@ public final class HtmlGenerator {
             } // 削除フラグ列名の指定がないか、テーブルに削除フラグ列がないなら、物理削除ボタンを表示
             if (table.getColumns().containsKey(status)) {
                 String onClick = "";
-                if (table.getStatusFlow() != null && !StringUtil.isNullOrWhiteSpace(kessaiTx)) {
+                if (table.getStatusFlow() != null && !StringUtil.isNullOrWhiteSpace(reason)) {
                     onClick = " onclick=\"if (!Base.kessaiTx(this)) { return false; }\"";
                 }
                 s.add("        <button type=\"submit\"" + onClick + " id=\"Permit" + e + "\" data-action=\"" + e
@@ -695,11 +692,11 @@ public final class HtmlGenerator {
                         + "Forbid.ajax\" class=\"forbid\" th:text=\"#{common.forbid}\" tabindex=\"-1\">否認</button>");
                 s.add("        <button type=\"submit\"" + onClick + " id=\"Apply" + e + "\" data-action=\"" + e
                         + "Apply.ajax\" class=\"apply\" th:text=\"#{common.apply}\" tabindex=\"-1\">申請</button>");
-                s.add("        <button type=\"submit\" id=\"Cancel" + e + "\" data-action=\"" + e
+                s.add("        <button type=\"submit\"" + onClick + " id=\"Cancel" + e + "\" data-action=\"" + e
                         + "Cancel.ajax\" class=\"cancel\" th:text=\"#{common.cancel}\" tabindex=\"-1\">取消</button>");
             } //ステータス列名の指定があり、テーブルにステータス列があるなら、承認ボタン・否認ボタンを表示
             String onclick = "";
-            if (table.getHistory() != null && !StringUtil.isNullOrWhiteSpace(rirekiTx)) {
+            if (table.getHistory() != null && !StringUtil.isNullOrWhiteSpace(reason)) {
                 onclick = " onclick=\"if (!Base.rirekiTx(this)) { return false; }\"";
             }
             s.add("        <button id=\"Regist" + e

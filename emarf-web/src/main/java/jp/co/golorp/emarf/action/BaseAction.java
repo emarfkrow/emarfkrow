@@ -200,6 +200,7 @@ public abstract class BaseAction extends BaseProcess {
         String formPackageName = actionPackageName.replaceFirst("action", "form");
         String actionClassName = actionClass.getSimpleName();
         String formClassName = formPackageName + "." + actionClassName.replaceFirst("Action$", "Form");
+        formClassName = formClassName.replaceAll("(Apply|Cancel|Forbid|Permit)", "Regist");
 
         Map<String, String> errors = new HashMap<String, String>();
         IForm form = FormValidator.validate(errors, formClassName, postJson);

@@ -28,8 +28,7 @@ let columnDelete = null;
 let columnUntil = null;
 let columnStatus = null;
 let columnDetail = null;
-let columnRirekiTx = null;
-let columnKessaiTx = null;
+let columnReason = null;
 
 $(function() {
 
@@ -54,8 +53,7 @@ $(function() {
     columnUntil = Messages['column.until'];
     columnStatus = Messages['column.status'];
     columnDetail = Messages['view.detail'];
-    columnRirekiTx = Messages['column.rireki.reason'];
-    columnKessaiTx = Messages['column.kessai.reason'];
+    columnReason = Messages['column.reason'];
 
     // グリッドからフォーカスアウト時はグリッドを確定
     $(document).on('click', '*', function(event) {

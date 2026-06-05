@@ -1279,7 +1279,7 @@ let Base = {
         let reason = prompt('変更理由を入力してください。');
         if (reason) {
             let $form = $(me).closest('form');
-            let name = Casing.toCamel(columnRirekiTx);
+            let name = Casing.toCamel(columnReason);
             $form.find('[name="' + name + '"]').remove();
             $form.append('<input type=\"hidden\" name=\"' + name + '\" value=\"' + reason + '\">');
         }
@@ -1291,7 +1291,7 @@ let Base = {
         let reason = prompt('決裁理由を入力してください。');
         if (reason) {
             let $form = $(me).closest('form');
-            let name = Casing.toCamel(columnKessaiTx);
+            let name = Casing.toCamel(columnReason);
             $form.find('[name="' + name + '"]').remove();
             $form.append('<input type=\"hidden\" name=\"' + name + '\" value=\"' + reason + '\">');
         }

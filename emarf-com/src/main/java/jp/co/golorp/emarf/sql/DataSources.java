@@ -275,7 +275,7 @@ public final class DataSources {
 
         status = bundle.getString("column.status");
 
-        reason = bundle.getString("column.rireki.reason");
+        reason = bundle.getString("column.reason");
 
         viewDetailColumn = bundle.getString("view.detail");
 
