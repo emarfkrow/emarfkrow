@@ -395,7 +395,11 @@ public final class IndexActionGenerator {
             s.add("");
             //s.add("                " + e + " f = " + e + ".get(" + params + ");");
             if (table.getColumns().containsKey(status)) {
-                s.add("                e.set" + StringUtil.toPascalCase(status) + "(0);");
+                String acc = StringUtil.toPascalCase(status);
+                s.add("                if (!e.get" + acc + "().equals(\"\")) {");
+                s.add("                    throw new jp.co.golorp.emarf.exception.AppError(\"error.notmatch\", Messages.get(\"common.selectedRow\"), Messages.get(\"common.notapply\"));");
+                s.add("                }");
+                s.add("                e.set" + acc + "(0);");
             }
             s.add("                if (e.update(now, execId) != 1) {");
             s.add("                    throw new OptLockError(\"error.cant.apply\", \"" + remarks + "\");");
@@ -510,7 +514,11 @@ public final class IndexActionGenerator {
             s.add("");
             //s.add("                " + e + " f = " + e + ".get(" + params + ");");
             if (table.getColumns().containsKey(status)) {
-                s.add("                e.set" + StringUtil.toPascalCase(status) + "(null);");
+                String acc = StringUtil.toPascalCase(status);
+                s.add("                if (!e.get" + acc + "().equals(\"0\") && !e.get" + acc + "().equals(\"-1\")) {");
+                s.add("                    throw new jp.co.golorp.emarf.exception.AppError(\"error.notmatch\", Messages.get(\"common.selectedRow\"), Messages.get(\"common.apply.forbid\"));");
+                s.add("                }");
+                s.add("                e.set" + acc + "(null);");
             }
             s.add("                if (e.update(now, execId) != 1) {");
             s.add("                    throw new OptLockError(\"error.cant.cancel\", \"" + remarks + "\");");
@@ -625,7 +633,11 @@ public final class IndexActionGenerator {
             s.add("");
             //s.add("                " + e + " f = " + e + ".get(" + params + ");");
             if (table.getColumns().containsKey(status)) {
-                s.add("                e.set" + StringUtil.toPascalCase(status) + "(1);");
+                String acc = StringUtil.toPascalCase(status);
+                s.add("                if (!e.get" + acc + "().equals(\"0\")) {");
+                s.add("                    throw new jp.co.golorp.emarf.exception.AppError(\"error.notmatch\", Messages.get(\"common.selectedRow\"), Messages.get(\"common.applied\"));");
+                s.add("                }");
+                s.add("                e.set" + acc + "(1);");
             }
             s.add("                if (e.update(now, execId) != 1) {");
             s.add("                    throw new OptLockError(\"error.cant.permit\", \"" + remarks + "\");");
@@ -740,7 +752,11 @@ public final class IndexActionGenerator {
             s.add("");
             //s.add("                " + e + " f = " + e + ".get(" + params + ");");
             if (table.getColumns().containsKey(status)) {
-                s.add("                e.set" + StringUtil.toPascalCase(status) + "(-1);");
+                String acc = StringUtil.toPascalCase(status);
+                s.add("                if (!e.get" + acc + "().equals(\"0\") && !e.get" + acc + "().equals(\"1\")) {");
+                s.add("                    throw new jp.co.golorp.emarf.exception.AppError(\"error.notmatch\", Messages.get(\"common.selectedRow\"), Messages.get(\"common.apply.permit\"));");
+                s.add("                }");
+                s.add("                e.set" + acc + "(-1);");
             }
             s.add("                if (e.update(now, execId) != 1) {");
             s.add("                    throw new OptLockError(\"error.cant.forbid\", \"" + remarks + "\");");

@@ -906,6 +906,7 @@ let Base = {
         $registForm.find('button.permit').button('option', 'disabled', true);
         $registForm.find('button.forbid').button('option', 'disabled', true);
         $registForm.find('button.regist').button('option', 'disabled', true);
+        $registForm.find('button.reset').button('option', 'disabled', true);
 
         let formJson = Jsonate.toValueJson($registForm);
         if (JSON.stringify(formJson) != '{}') {
@@ -1056,13 +1057,13 @@ let Base = {
                                 Gridate.grids[gridId].getOptions()['editable'] = false;
                             }
 
-                            // 削除可能
-                            $registForm.find('button.delete').each(function() {
-                                let $button = $(this);
-                                if (Base.getAuthz($button.attr('data-action')) == '') {
-                                    $button.button('option', 'disabled', false);
-                                }
-                            });
+                            //                            // 削除可能
+                            //                            $registForm.find('button.delete').each(function() {
+                            //                                let $button = $(this);
+                            //                                if (Base.getAuthz($button.attr('data-action')) == '') {
+                            //                                    $button.button('option', 'disabled', false);
+                            //                                }
+                            //                            });
 
                             // 取消可能
                             $registForm.find('button.cancel').each(function() {
@@ -1090,6 +1091,7 @@ let Base = {
 
                             // 登録不可
                             $registForm.find('button.regist').button('option', 'disabled', true);
+                            $registForm.find('button.reset').button('option', 'disabled', true);
 
                         } else if ($statusKb.val() == 1) {
                             /*
@@ -1137,6 +1139,7 @@ let Base = {
 
                             // 登録不可
                             $registForm.find('button.regist').button('option', 'disabled', true);
+                            $registForm.find('button.reset').button('option', 'disabled', true);
 
                             // 子モデル追加不可
                             $registForm.find('a.addChild').button('option', 'disabled', true);
