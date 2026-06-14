@@ -89,6 +89,8 @@ $(function() {
     if ($('#authNName').text() == 'anonymous') {
         $('button#logout').hide();
     }
+
+    $('.gantt').closest('.ganttWrapper').css('max-width', $('.gantt').closest('.article').css('width'));
 });
 
 // ２．DOM構築後
@@ -314,6 +316,8 @@ for (let i = 0;i <= maxH;i++) {
         tmOptions.push('<option>' + i + ':45</option>');
     }
 }
+
+let resizeTimer;
 
 let Base = {
 
@@ -755,8 +759,13 @@ let Base = {
             $('div.nav')[0].scrollTo(0, sessionStorage.getItem('navScrollTop'));
         }
 
+        $('.gantt').closest('.ganttWrapper').css('max-width', $('.gantt').closest('.article').css('width'));
+		
         $(window).resize(function() {
-            Base.resizeNav();
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(function() {
+                Base.resizeNav();
+            }, 300);
         });
     },
 

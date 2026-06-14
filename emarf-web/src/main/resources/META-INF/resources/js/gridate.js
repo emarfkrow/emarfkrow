@@ -1065,29 +1065,31 @@ var Gridate = {
             $pager.html(html);
         }
         let grid = Gridate.grids[gridId];
-        if (!data) {
-            data = [];
+        if (grid) {
+            if (!data) {
+                data = [];
+                //		} else {
+                //			for (let i in data) {
+                //				let item = data[i];
+                //				if (item['id']) {
+                //					break;
+                //				}
+                //				item['id'] = i;
+                //			}
+            }
+            grid['orgData'] = JSON.parse(JSON.stringify(data));
+            //		if (data.length > 0 && data[0]['id']) {
+            var dataView = grid.getData();
+            dataView.beginUpdate();
+            dataView.setItems(data);
+            dataView.endUpdate();
             //		} else {
-            //			for (let i in data) {
-            //				let item = data[i];
-            //				if (item['id']) {
-            //					break;
-            //				}
-            //				item['id'] = i;
-            //			}
-        }
-        grid['orgData'] = JSON.parse(JSON.stringify(data));
-        //		if (data.length > 0 && data[0]['id']) {
-        var dataView = grid.getData();
-        dataView.beginUpdate();
-        dataView.setItems(data);
-        dataView.endUpdate();
-        //		} else {
-        //			grid.setData(data);
-        //			grid.invalidate();
-        //		}
-        if (grid.getSelectionModel()) {
-            grid.setSelectedRows([]);
+            //			grid.setData(data);
+            //			grid.invalidate();
+            //		}
+            if (grid.getSelectionModel()) {
+                grid.setSelectedRows([]);
+            }
         }
     },
 

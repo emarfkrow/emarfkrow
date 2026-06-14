@@ -163,6 +163,7 @@ $(function() {
         let callback;
 
         let gridId = $button.attr('data-gridId');
+        let ganttId = $button.attr('data-ganttId');
         if (gridId != undefined) {
             // 送信したボタンに反映先のグリッドID指定がある場合（検索ボタンの場合）
 
@@ -184,6 +185,31 @@ $(function() {
                     }
                 }
                 if (gridId.indexOf('Dialog') < 0) {
+                    Base.resizeNav();
+                }
+            };
+
+        } else if (ganttId != undefined) {
+            // 送信したボタンに反映先のガントID指定がある場合（検索ボタンの場合）
+
+            Ganttate.refresh(ganttId, []);
+
+            callback = function(data) {
+                for (let dataName in data) {
+                    if (Array.isArray(data[dataName])) {
+                        Ganttate.refresh(ganttId, data[dataName]);
+
+                        let $form = $button.closest('form');
+                        let $h2 = $form.prev('h2');
+                        let $h2Toggle = $h2.find('[id="h2Toggle"]');
+                        if ($h2Toggle.hasClass('ui-icon-triangle-1-s')) {
+                            $h2.click();
+                        }
+
+                        break;
+                    }
+                }
+                if (ganttId.indexOf('Dialog') < 0) {
                     Base.resizeNav();
                 }
             };
