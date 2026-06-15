@@ -229,27 +229,34 @@ public abstract class HtmlGenerator {
             // thymeleafのプロパティファイルを出力
             HtmlGenerator.htmlProperties(htmlDir, table, tables);
 
-            for (String[] ganttColumn : ganttColumns) {
-                String nameSuffix = ganttColumn[0];
-                String startSuffix = ganttColumn[1];
-                String endSuffix = ganttColumn[2];
+            if (table.getPrimaryKeys().size() == 1) {
 
-                String nameColumn = null;
-                String startColumn = null;
-                String endColumn = null;
-                for (String columnName : table.getColumns().keySet()) {
-                    if (StringUtil.endsWithIgnoreCase(nameSuffix, columnName)) {
-                        nameColumn = columnName;
-                    } else if (StringUtil.endsWithIgnoreCase(startSuffix, columnName)) {
-                        startColumn = columnName;
-                    } else if (StringUtil.endsWithIgnoreCase(endSuffix, columnName)) {
-                        endColumn = columnName;
+                for (String[] ganttColumn : ganttColumns) {
+                    String nameSuffix = ganttColumn[0];
+                    String startSuffix = ganttColumn[1];
+                    String endSuffix = ganttColumn[2];
+
+                    String idName = table.getPrimaryKeys().get(0);
+                    String nameColumn = null;
+                    String startColumn = null;
+                    String endColumn = null;
+                    String dependColumn = null;
+                    for (String columnName : table.getColumns().keySet()) {
+                        if (StringUtil.endsWithIgnoreCase(nameSuffix, columnName)) {
+                            nameColumn = columnName;
+                        } else if (StringUtil.endsWithIgnoreCase(startSuffix, columnName)) {
+                            startColumn = columnName;
+                        } else if (StringUtil.endsWithIgnoreCase(endSuffix, columnName)) {
+                            endColumn = columnName;
+                        } else if (StringUtil.endsWithIgnoreCase(".+_" + idName, columnName)) {
+                            dependColumn = columnName;
+                        }
                     }
-                }
-
-                if (nameColumn != null && startColumn != null && endColumn != null) {
-                    HtmlGeneratorGantt.htmlGantt(htmlDir, table, tables);
-                    HtmlGeneratorGantt.htmlGanttTasks(gridDir, table);
+                    if (nameColumn != null && startColumn != null && endColumn != null) {
+                        HtmlGeneratorGantt.htmlGantt(htmlDir, table, tables);
+                        HtmlGeneratorGantt.htmlGanttTasks(gridDir, table, nameColumn, startColumn, endColumn,
+                                dependColumn);
+                    }
                 }
             }
         }

@@ -37,6 +37,7 @@ public final class HtmlGeneratorGantt extends HtmlGenerator {
         addHtmlHead(s, es, remarks);
         s.add("<script th:src=\"@{/model/" + e + ".js}\"></script>");
         s.add("<script th:src=\"@{/model/" + e + "GridColumns.js}\"></script>");
+        s.add("<script th:src=\"@{/model/" + e + "GanttTasks.js}\"></script>");
         Map<TableInfo, Integer> added = new HashMap<TableInfo, Integer>();
         added.put(table, 1);
         htmlNestGrid(s, table, tables, added, false, "", false);
@@ -106,8 +107,13 @@ public final class HtmlGeneratorGantt extends HtmlGenerator {
      * ガント画面 タスク定義出力
      * @param gridDir グリッド出力ディレクトリ
      * @param table テーブル情報
+     * @param nameColumn
+     * @param startColumn
+     * @param endColumn
+     * @param dependColumn
      */
-    public static void htmlGanttTasks(final String gridDir, final TableInfo table) {
+    public static void htmlGanttTasks(final String gridDir, final TableInfo table, final String nameColumn,
+            final String startColumn, final String endColumn, final String dependColumn) {
 
         String entity = StringUtil.toPascalCase(table.getName());
 
@@ -126,11 +132,11 @@ public final class HtmlGeneratorGantt extends HtmlGenerator {
         s.add("            let row = data[r];");
         s.add("");
         s.add("            let task = {};");
-        s.add("            task.id = row.KOUTEI_ID;");
-        s.add("            task.name = row.KOUTEI_MEI;");
-        s.add("            task.start = row.KAISHI_BI;");
-        s.add("            task.end = row.SHURYO_BI;");
-        s.add("            task.dependencies = row.OYA_KOUTEI_ID ? row.OYA_KOUTEI_ID + '' : '';");
+        s.add("            task.id = row." + table.getPrimaryKeys().get(0) + ";");
+        s.add("            task.name = row." + nameColumn + ";");
+        s.add("            task.start = row." + startColumn + ";");
+        s.add("            task.end = row." + endColumn + ";");
+        s.add("            task.dependencies = row." + dependColumn + " ? row." + dependColumn + " + '' : '';");
         s.add("");
         s.add("            tasks.push(task);");
         s.add("        }");
