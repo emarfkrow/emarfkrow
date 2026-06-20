@@ -147,7 +147,7 @@ public final class HtmlGeneratorGantt extends HtmlGenerator {
         s.add("            task.name = row." + nameColumn + ";");
         s.add("            task.start = row." + startColumn + ";");
         s.add("            task.end = row." + endColumn + ";");
-        s.add("            task.dependencies = row." + dependColumn + " ? row." + dependColumn + " + '' : '';");
+        s.add("            task.dependencies = row.DEPENDENCIES ? row.DEPENDENCIES + '' : '';");
         s.add("");
         for (String k : table.getColumns().keySet()) {
             ColumnInfo col = table.getColumns().get(k);
