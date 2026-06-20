@@ -41,14 +41,19 @@ public final class HtmlGeneratorGantt extends HtmlGenerator {
         Map<TableInfo, Integer> added = new HashMap<TableInfo, Integer>();
         added.put(table, 1);
         htmlNestGrid(s, table, tables, added, false, "", false);
-        s.add("</head>\r\n<body>\r\n  <div layout:fragment=\"article\">");
-        s.add("    <h2 th:text=\"#{" + es + ".h2}\">h2</h2>\r\n    <!-- 検索フォーム -->");
+        s.add("</head>");
+        s.add("<body>");
+        s.add("  <div layout:fragment=\"article\">");
+        s.add("    <h2 th:text=\"#{" + es + ".h2}\">h2</h2>");
+        s.add("    <!-- 検索フォーム -->");
         s.add("    <form name=\"" + e + "SearchForm\" action=\"" + e + "Search.ajax\" class=\"search\">");
         s.add("      <input type=\"hidden\" name=\"rows\" value=\"" + GRID_ROWS + "\" />");
         s.add("      <input type=\"hidden\" name=\"page\" value=\"0\" />");
-        s.add("      <fieldset>\r\n        <legend th:text=\"#{" + es + ".legend}\">legend</legend>");
+        s.add("      <fieldset>");
+        s.add("        <legend th:text=\"#{" + es + ".legend}\">legend</legend>");
         htmlFields(table, s, false, false, false);
-        s.add("      </fieldset>\r\n      <div class=\"buttons\">");
+        s.add("      </fieldset>");
+        s.add("      <div class=\"buttons\">");
         s.add("        <button type=\"button\" id=\"Reset" + e
                 + "\" th:text=\"#{common.reset}\" class=\"reset\" onClick=\"Dialogate.reset(event);\">reset</button>");
         boolean isAnew = isAnew(table);
@@ -92,14 +97,20 @@ public final class HtmlGeneratorGantt extends HtmlGenerator {
                 }
             }
         }
-        s.add("      </div>\r\n      <div class=\"submits\">");
+        s.add("      </div>");
+        s.add("      <div class=\"submits\">");
         s.add("        <button id=\"Search" + e + "\" type=\"submit\" class=\"search\" data-ganttId=\"" + e
-                + "Gantt\" th:text=\"#{common.search}\">submit</button>\r\n      </div>\r\n    </form>\r\n    <!-- 一覧フォーム -->");
+                + "Gantt\" th:text=\"#{common.search}\">submit</button>");
+        s.add("      </div>");
+        s.add("    </form>");
+        s.add("    <!-- 一覧フォーム -->");
         s.add("    <h3 th:text=\"#{" + e + ".h3}\">h3</h3>");
         s.add("    <div class=\"ganttWrapper\">");
         s.add("      <svg id=\"" + e + "Gantt\" class=\"gantt\" th:data-href=\"@{/model/" + e + ".html}\"></svg>");
         s.add("    </div>");
-        s.add("  </div>\r\n</body>\r\n</html>");
+        s.add("  </div>");
+        s.add("</body>");
+        s.add("</html>");
         FileUtil.writeFile(htmlDir + File.separator + e + "G.html", s);
     }
 
@@ -138,71 +149,20 @@ public final class HtmlGeneratorGantt extends HtmlGenerator {
         s.add("            task.end = row." + endColumn + ";");
         s.add("            task.dependencies = row." + dependColumn + " ? row." + dependColumn + " + '' : '';");
         s.add("");
+        for (String k : table.getColumns().keySet()) {
+            ColumnInfo col = table.getColumns().get(k);
+            if (col.getName().matches("^(id|name|start|end|dependencies)$")) {
+                continue;
+            }
+            s.add("            task." + StringUtil.toCamelCase(col.getName()) + " = row." + col.getName() + ";");
+        }
+        s.add("");
         s.add("            tasks.push(task);");
         s.add("        }");
         s.add("");
         s.add("        return tasks;");
         s.add("    }");
         s.add("};");
-
-        //        s.add("/**");
-        //        s.add(" * " + table.getRemarks() + "タスク定義");
-        //        s.add(" */");
-        //        s.add("");
-        //        //grid列名が取れない事があるのでonloadまで遅らせる
-        //        s.add("let " + entity + "GanttTasks = [];");
-        //        s.add("");
-        //        s.add("$(function() {");
-        //        s.add("    " + entity + "GanttTasks = [");
-        //
-        //        //主キー列の出力
-        //        if (!table.isView()) {
-        //            for (String pk : table.getPrimaryKeys()) {
-        //                ColumnInfo primaryKey = table.getColumns().get(pk);
-        //                String gridColumn = htmlGridColumn(table, primaryKey, "");
-        //                if (gridColumn != null) {
-        //                    s.add("        " + gridColumn);
-        //                }
-        //            }
-        //        }
-        //
-        //        //非主キー列の出力
-        //        for (String columnName : table.getNonPrimaryKeys()) {
-        //
-        //            //VIEWなら「SEARCH_」を出力しない
-        //            if (table.isView() && StringUtil.startsWith(viewCriteriaPrefixs, columnName)) {
-        //                continue;
-        //            }
-        //
-        //            //カラム名が「TABLE_NAME」なら出力しない
-        //            if (columnName.matches("(?i)^" + viewDetail + "$")) {
-        //                continue;
-        //            }
-        //
-        //            ColumnInfo column = table.getColumns().get(columnName);
-        //            String gridColumn = htmlGridColumn(table, column, "");
-        //            if (gridColumn != null) {
-        //                s.add("        " + gridColumn);
-        //            }
-        //        }
-        //
-        //        if (table.getName().matches(eldestRe)) {
-        //            for (TableInfo bro : table.getBrothers()) {
-        //                for (String colName : bro.getNonPrimaryKeys()) {
-        //                    if (colName.matches("(?i)^" + updateTs + "$")) {
-        //                        continue;
-        //                    }
-        //                    ColumnInfo column = bro.getColumns().get(colName);
-        //                    String gridColumn = htmlGridColumn(bro, column, bro.getName() + ".");
-        //                    if (gridColumn != null) {
-        //                        s.add("        " + gridColumn);
-        //                    }
-        //                }
-        //            }
-        //        }
-        //
-        //        s.add("    ];");
-        //        s.add("});");
 
         FileUtil.writeFile(gridDir + File.separator + entity + "GanttTasks.js", s);
     }

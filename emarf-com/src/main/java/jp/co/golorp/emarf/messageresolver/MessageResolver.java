@@ -85,6 +85,7 @@ public class MessageResolver extends StandardMessageResolver {
 
         String path = (String) ReflectUtil.get(templateResource, "path");
         path = path.replaceFirst("S\\.html", ".html");
+        path = path.replaceFirst("G\\.html", ".html");
         ReflectUtil.set(templateResource, "path", path);
 
         // テンプレートのプロパティファイル

@@ -738,16 +738,22 @@ let Base = {
         let $rootGrids = $('body>div.article>form>div[id$="Grid"]');
         if ($rootGrids.length == 1) {
 
-            if ($('body')[0].scrollHeight != $('body').outerHeight()) {
+            // 画面の全高
+            let bodyScrollHeight = $('body')[0].scrollHeight;
 
+            // bodyの可視高
+            let bodyOuterHeight = $('body').outerHeight();
+
+            let gridHeight = 0;
+            if (bodyScrollHeight != bodyOuterHeight) {
                 //ウィンドウにスクロールがある場合
-                $rootGrids.height($rootGrids.height() - ($('body')[0].scrollHeight - $('body').outerHeight()))
-
+                gridHeight = $rootGrids.height() - (bodyScrollHeight - bodyOuterHeight);
             } else {
-
                 //ウィンドウにスクロールがない場合
-                $rootGrids.height($rootGrids.height() + ($('.nav').height() - $('.article').outerHeight() - $('.breads').outerHeight()))
+                gridHeight = $rootGrids.height() + ($('.nav').height() - $('.article').outerHeight() - $('.breads').outerHeight());
             }
+
+            $rootGrids.height(gridHeight);
 
             let grid = Gridate.grids[$rootGrids.prop('id')];
             if (grid) {
@@ -755,12 +761,33 @@ let Base = {
             }
         }
 
+        $('.gantt').closest('.ganttWrapper').css('max-width', $('.gantt').closest('.article').css('width'));
+
+        let $rootGantts = $('body>div.article>div>div.gantt-container');
+        if ($rootGantts.length == 1) {
+
+            // 画面の全高
+            let bodyScrollHeight = $('body')[0].scrollHeight;
+
+            // bodyの可視高
+            let bodyOuterHeight = $('body').outerHeight();
+
+            let gridHeight = 0;
+            if (bodyScrollHeight != bodyOuterHeight) {
+                //ウィンドウにスクロールがある場合
+                gridHeight = $rootGantts.height() - (bodyScrollHeight - bodyOuterHeight);
+            } else {
+                //ウィンドウにスクロールがない場合
+                gridHeight = $rootGantts.height() + ($('.nav').height() - $('.article').outerHeight() - $('.breads').outerHeight());
+            }
+
+            //$('body>div.article>div>div')[0].style.setProperty('--gv-grid-height', gridHeight + 'px');
+        }
+
         if ($('div.nav').length > 0) {
             $('div.nav')[0].scrollTo(0, sessionStorage.getItem('navScrollTop'));
         }
 
-        $('.gantt').closest('.ganttWrapper').css('max-width', $('.gantt').closest('.article').css('width'));
-		
         $(window).resize(function() {
             clearTimeout(resizeTimer);
             resizeTimer = setTimeout(function() {

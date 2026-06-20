@@ -53,8 +53,7 @@ public final class HtmlGeneratorIndex extends HtmlGenerator {
         s.add("      <input type=\"hidden\" name=\"page\" value=\"0\" />");
         s.add("      <fieldset>\r\n        <legend th:text=\"#{" + es + ".legend}\">legend</legend>");
         htmlFields(table, s, false, false, false);
-        s.add("      </fieldset>\r\n      <div class=\"buttons\">");
-        s.add("        <button type=\"button\" id=\"Reset" + e
+        s.add("      </fieldset>\r\n      <div class=\"buttons\">\r\n        <button type=\"button\" id=\"Reset" + e
                 + "\" th:text=\"#{common.reset}\" class=\"reset\" onClick=\"Dialogate.reset(event);\">reset</button>");
         boolean isAnew = isAnew(table);
         if (isAnew || table.getRebornFrom() != null) {
@@ -97,9 +96,12 @@ public final class HtmlGeneratorIndex extends HtmlGenerator {
                 }
             }
         }
-        s.add("      </div>\r\n      <div class=\"submits\">");
+        s.add("      </div>");
+        s.add("      <div class=\"submits\">");
         s.add("        <button id=\"Search" + e + "\" type=\"submit\" class=\"search\" data-gridId=\"" + e
-                + "Grid\" th:text=\"#{common.search}\">submit</button>\r\n      </div>\r\n    </form>\r\n    <!-- 一覧フォーム -->");
+                + "Grid\" th:text=\"#{common.search}\">submit</button>");
+        s.add("      </div>");
+        s.add("    </form>\r\n    <!-- 一覧フォーム -->");
         s.add("    <form name=\"" + es + "RegistForm\" action=\"" + es + "Regist.ajax\" class=\"regist\">");
         s.add("      <h3 th:text=\"#{" + e + ".h3}\">h3</h3>");
         String addRow = "";
@@ -169,7 +171,8 @@ public final class HtmlGeneratorIndex extends HtmlGenerator {
                         + "Cancel.ajax\" class=\"cancel selectRows\" th:text=\"#{common.cancel}\" tabindex=\"-1\">取消</button>");
             } //ステータス列名の指定があり、テーブルにステータス列があるなら、承認ボタン・否認ボタンを表示
         }
-        s.add("      </div>\r\n      <div class=\"submits\">");
+        s.add("      </div>");
+        s.add("      <div class=\"submits\">");
         if (!table.isHistory() && (!table.isView() || table.isConvView()) && !table.isStatusFlow()
                 && table.getChildren().size() == 0) {
             String onClick = "";
@@ -372,7 +375,6 @@ public final class HtmlGeneratorIndex extends HtmlGenerator {
             w = 300;
         }
         String type = column.getTypeName();
-        String opt = "{ json: '" + JSON + "', paramkey: '" + OPT_K + "', value: '" + OPT_V + "', label: '" + OPT_L + "' }";
         if (isMeiRefer) {
             if (!type.matches(NUM_RE) || StringUtil.endsWith(INT_NOFORMAT_SUFFIXS, n)) {
                 return "Column.refer('" + fieldPrefix + n + "', " + m + ", " + w + ", '" + css + "', '" + referMei
@@ -404,7 +406,8 @@ public final class HtmlGeneratorIndex extends HtmlGenerator {
         } else if (StringUtil.endsWith(FILE_SUFS, n)) {
             return "Column.link('" + fieldPrefix + n + "', " + m + ", " + w + ", '" + css + "'),";
         } else if (StringUtil.endsWith(OPTIONS_SUFFIXS, n)) {
-            return "Column.select('" + fieldPrefix + n + "', " + m + ", " + w + ", '" + css + "', " + opt + "),";
+            return "Column.select('" + fieldPrefix + n + "', " + m + ", " + w + ", '" + css + "', { json: '" + JSON
+                    + "', paramkey: '" + OPT_K + "', value: '" + OPT_V + "', label: '" + OPT_L + "' }),";
         } else if (StringUtil.endsWith(TEXTAREA_SUFFIXS, n)) {
             return "Column.longText('" + fieldPrefix + n + "', " + m + ", " + w + ", '" + css + "', " + format + "),";
         } else if (type.matches(NUM_RE)) {
