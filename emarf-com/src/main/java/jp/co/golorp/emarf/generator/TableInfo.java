@@ -78,6 +78,23 @@ public class TableInfo {
     /** 決裁ありならtrue */
     private TableInfo statusFlow;
 
+    /** ガントチャートならtrue */
+    private boolean isGantt;
+
+    /**
+     * @return boolean
+     */
+    public boolean isGantt() {
+        return isGantt;
+    }
+
+    /**
+     * @param p
+     */
+    public void setGantt(final boolean p) {
+        this.isGantt = p;
+    }
+
     /**
      * @return TableInfo
      */

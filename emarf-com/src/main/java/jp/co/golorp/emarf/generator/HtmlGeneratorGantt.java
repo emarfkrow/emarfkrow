@@ -121,10 +121,9 @@ public final class HtmlGeneratorGantt extends HtmlGenerator {
      * @param nameColumn
      * @param startColumn
      * @param endColumn
-     * @param dependColumn
      */
     public static void htmlGanttTasks(final String gridDir, final TableInfo table, final String nameColumn,
-            final String startColumn, final String endColumn, final String dependColumn) {
+            final String startColumn, final String endColumn) {
 
         String entity = StringUtil.toPascalCase(table.getName());
 

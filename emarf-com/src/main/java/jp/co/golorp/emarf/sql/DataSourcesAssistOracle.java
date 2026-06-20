@@ -22,6 +22,7 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
+import jp.co.golorp.emarf.generator.TableInfo;
 import jp.co.golorp.emarf.util.MapList;
 
 /**
@@ -355,6 +356,24 @@ public class DataSourcesAssistOracle extends DataSourcesAssist {
     @Override
     public final String int2charSQL(final String a) {
         return "TO_CHAR (" + a + ")";
+    }
+
+    @Override
+    public final String addDependencies(final TableInfo table, final String pk, final String oya) {
+        StringBuilder s = new StringBuilder();
+        s.append("    LEFT OUTER JOIN ( \r\n");
+        s.append("        SELECT\r\n");
+        s.append("              " + oya + "\r\n");
+        s.append("            , LISTAGG (" + pk + ", ',') WITHIN GROUP (ORDER BY " + pk + ") AS DEPENDENCIES \r\n");
+        s.append("        FROM\r\n");
+        s.append("            " + table.getName() + " \r\n");
+        s.append("        WHERE\r\n");
+        s.append("            " + oya + " IS NOT NULL \r\n");
+        s.append("        GROUP BY\r\n");
+        s.append("            " + oya + "\r\n");
+        s.append("    ) b \r\n");
+        s.append("        ON b." + oya + " = a." + pk + " ");
+        return s.toString();
     }
 
 }

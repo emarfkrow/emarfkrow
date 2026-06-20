@@ -98,6 +98,9 @@ public final class DataSources {
     /** VIEWで変換先を指定する列名 */
     private static String viewDetailColumn;
 
+    /** ガントチャート化を判定する項目名・開始日・終了日のカラムサフィックス */
+    private static Set<String[]> ganttColumns = new LinkedHashSet<String[]>();
+
     /** 数値列で自動採番しないサフィックス */
     private static String noNumberingIntRe;
 
@@ -279,6 +282,12 @@ public final class DataSources {
 
         viewDetailColumn = bundle.getString("view.detail");
 
+        String[] columns = bundle.getString("gantt.columns").split(",");
+        for (String column : columns) {
+            String[] strings = column.split(":");
+            ganttColumns.add(strings);
+        }
+
         noNumberingIntRe = bundle.getString("column.int.nonumbering.re");
 
         numberingCharRe = bundle.getString("column.char.numbering.re");
@@ -416,6 +425,7 @@ public final class DataSources {
         } finally {
             Connections.close();
         }
+        setGantt(tables);
         setRefer(tables); // 参照モデルの評価
         addBrothers(tables); // 兄弟モデルの評価
         setHistory(tables); // 履歴モデルの評価
@@ -443,6 +453,31 @@ public final class DataSources {
         addSummaryOfs(tables); // 集約モデルの評価
         log(tables);
         return tables;
+    }
+
+    /**
+     * @param tables
+     */
+    private static void setGantt(final List<TableInfo> tables) {
+        for (TableInfo table : tables) {
+            if (table.getPrimaryKeys().size() == 1) {
+                for (String[] ganttColumn : ganttColumns) {
+                    boolean nameColumn = false;
+                    boolean startColumn = false;
+                    boolean endColumn = false;
+                    for (String columnName : table.getColumns().keySet()) {
+                        if (StringUtil.endsWithIgnoreCase(ganttColumn[0], columnName)) {
+                            nameColumn = true;
+                        } else if (StringUtil.endsWithIgnoreCase(ganttColumn[1], columnName)) {
+                            startColumn = true;
+                        } else if (StringUtil.endsWithIgnoreCase(ganttColumn[2], columnName)) {
+                            endColumn = true;
+                        }
+                    }
+                    table.setGantt(nameColumn && startColumn && endColumn);
+                }
+            }
+        }
     }
 
     /**

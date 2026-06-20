@@ -20,6 +20,7 @@ import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import jp.co.golorp.emarf.generator.TableInfo;
 import jp.co.golorp.emarf.util.MapList;
 
 /**
@@ -208,6 +209,24 @@ public final class DataSourcesAssistMySQL extends DataSourcesAssist {
     @Override
     public String int2charSQL(final String a) {
         return a;
+    }
+
+    @Override
+    public String addDependencies(final TableInfo table, final String pk, final String oya) {
+        StringBuilder s = new StringBuilder();
+        s.append("    LEFT OUTER JOIN ( \r\n");
+        s.append("        SELECT\r\n");
+        s.append("              " + oya + "\r\n");
+        s.append("            , GROUP_CONCAT(" + pk + " ORDER BY " + pk + " SEPARATOR ',') AS DEPENDENCIES \r\n");
+        s.append("        FROM\r\n");
+        s.append("            " + table.getName() + " \r\n");
+        s.append("        WHERE\r\n");
+        s.append("            " + oya + " IS NOT NULL \r\n");
+        s.append("        GROUP BY\r\n");
+        s.append("            " + oya + "\r\n");
+        s.append("    ) b \r\n");
+        s.append("        ON b." + oya + " = a." + pk + " ");
+        return s.toString();
     }
 
 }

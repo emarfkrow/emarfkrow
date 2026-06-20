@@ -20,6 +20,7 @@ import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import jp.co.golorp.emarf.generator.TableInfo;
 import jp.co.golorp.emarf.util.MapList;
 
 /**
@@ -213,4 +214,11 @@ public abstract class DataSourcesAssist {
      */
     public abstract String int2charSQL(String a);
 
+    /**
+     * @param table
+     * @param pk
+     * @param oya
+     * @return String
+     */
+    public abstract String addDependencies(TableInfo table, String pk, String oya);
 }

@@ -157,6 +157,10 @@ public final class SqlGenerator {
             }
         }
 
+        if (table.isGantt()) {
+            s.add("    , b.DEPENDENCIES");
+        }
+
         s.add("FROM");
         s.add("    " + table.getName() + " a ");
 
@@ -170,6 +174,18 @@ public final class SqlGenerator {
                     s.add("        AND c" + i + "." + pk + " = a." + pk + " ");
                 }
             }
+        }
+
+        if (table.isGantt()) {
+            String pk = table.getPrimaryKeys().get(0);
+            String oya = null;
+            for (ColumnInfo column : table.getColumns().values()) {
+                if (column.getRefer() == table) {
+                    oya = column.getName();
+                    break;
+                }
+            }
+            s.add(assist.addDependencies(table, pk, oya));
         }
 
         s.add("WHERE");
