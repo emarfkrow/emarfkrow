@@ -61,7 +61,7 @@ let Ganttate = {
 
 $(function() {
 
-    $('.gantt').each(function() {
+    $('svg.gantt').each(function() {
 
         let ganttId = this.id;
         let gantt = new Gantt("#" + ganttId, [], Ganttate.options);

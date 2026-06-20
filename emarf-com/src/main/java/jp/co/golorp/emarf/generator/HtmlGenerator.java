@@ -705,6 +705,11 @@ public abstract class HtmlGenerator {
                 //                preName = name;
                 s.add("          <li" + style + "><a id=\"" + e + "\" th:href=\"@{/model/" + e
                         + "S.html}\" th:text=\"#{nav." + e + "S}\" class=\"" + css + "\">" + remarks + "</a></li>");
+                if (table.isGantt()) {
+                    s.add("          <li" + style + "><a id=\"" + e + "G\" th:href=\"@{/model/" + e
+                            + "G.html}\" th:text=\"#{nav." + e + "G}\" class=\"" + css + " ganttNav\">" + remarks
+                            + "</a></li>");
+                }
             }
             s.add("        </ul>");
             s.add("      </dd>");
@@ -727,6 +732,9 @@ public abstract class HtmlGenerator {
                 String remarks = table.getRemarks();
                 String e = StringUtil.toPascalCase(name);
                 s.add("nav." + e + "S " + remarks);
+                if (table.isGantt()) {
+                    s.add("nav." + e + "G " + remarks);
+                }
             }
         }
 
