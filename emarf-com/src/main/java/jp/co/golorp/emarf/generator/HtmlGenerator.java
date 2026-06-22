@@ -707,8 +707,8 @@ public abstract class HtmlGenerator {
                         + "S.html}\" th:text=\"#{nav." + e + "S}\" class=\"" + css + "\">" + remarks + "</a></li>");
                 if (table.isGantt()) {
                     s.add("          <li" + style + "><a id=\"" + e + "G\" th:href=\"@{/model/" + e
-                            + "G.html}\" th:text=\"#{nav." + e + "G}\" class=\"" + css + " ganttNav\">" + remarks
-                            + "</a></li>");
+                            + "G.html}\" th:text=\"#{nav." + e + "G}+#{nav.Gantt}\" class=\"" + css + " ganttNav\">"
+                            + remarks + "</a></li>");
                 }
             }
             s.add("        </ul>");
