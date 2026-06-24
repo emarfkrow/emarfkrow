@@ -74,8 +74,8 @@ public final class SqlGenerator {
     public static void generate(final String projectDir, final List<TableInfo> tableInfos) {
 
         /* 設定ファイル読み込み */
-        String[] pairs = bundle.getString("relation.refer.pairs").split(",");
         eldestRe = bundle.getString("relation.eldest.re");
+        String[] pairs = bundle.getString("relation.refer.pairs").split(",");
         for (String pair : pairs) {
             String[] kv = pair.split(":");
             referPairs.add(kv);
@@ -129,6 +129,14 @@ public final class SqlGenerator {
             String prefix = "    , ";
             if (s.size() == 0) {
                 s.add("SELECT");
+                if (table.isGantt()) {
+                    s.add("      * ");
+                    s.add("FROM");
+                    s.add("    ( ");
+                    s.add("        SELECT");
+                    s.add("              SYS_CONNECT_BY_PATH (a.\"" + column.getName()
+                            + "\", ',')             AS PATH,");
+                }
                 prefix = "      ";
             }
             s.add(prefix + SqlGenerator.getQuoted(column));
@@ -196,7 +204,10 @@ public final class SqlGenerator {
 
         if (!table.isView()) {
             s.add("ORDER BY");
-            if (table.getPrimaryKeys().size() > 0) {
+
+            if (table.isGantt()) {
+                s.add("    a.PATH DESC");
+            } else if (table.getPrimaryKeys().size() > 0) {
                 String orders = "";
                 if (table.getPrimaryKeys().size() == 1) {
                     for (ColumnInfo column : table.getColumns().values()) {
@@ -259,16 +270,17 @@ public final class SqlGenerator {
 
         TableInfo refer = column.getRefer();
 
-        //BeanGeneratorの子モデル処理時にはnullかも知れない
+        if (assist == null) {
+            assist = DataSources.getAssist();
+        }
+
+        // BeanGeneratorの子モデル処理時にはnullかも知れない
         if (referPairs.size() == 0) {
             String[] pairs = bundle.getString("relation.refer.pairs").split(",");
             for (String pair : pairs) {
                 String[] kv = pair.split(":");
                 referPairs.add(kv);
             }
-        }
-        if (assist == null) {
-            assist = DataSources.getAssist();
         }
 
         //IDと名称のサフィックスペアでループ

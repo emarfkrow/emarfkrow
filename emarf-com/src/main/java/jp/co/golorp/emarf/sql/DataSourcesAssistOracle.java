@@ -361,18 +361,23 @@ public class DataSourcesAssistOracle extends DataSourcesAssist {
     @Override
     public final String addDependencies(final TableInfo table, final String pk, final String oya) {
         StringBuilder s = new StringBuilder();
-        s.append("    LEFT OUTER JOIN ( \r\n");
-        s.append("        SELECT\r\n");
-        s.append("              " + oya + "\r\n");
-        s.append("            , LISTAGG (" + pk + ", ',') WITHIN GROUP (ORDER BY " + pk + ") AS DEPENDENCIES \r\n");
-        s.append("        FROM\r\n");
-        s.append("            " + table.getName() + " \r\n");
-        s.append("        WHERE\r\n");
-        s.append("            " + oya + " IS NOT NULL \r\n");
-        s.append("        GROUP BY\r\n");
-        s.append("            " + oya + "\r\n");
-        s.append("    ) b \r\n");
-        s.append("        ON b." + oya + " = a." + pk + " ");
+        s.append("        LEFT OUTER JOIN ( \r\n");
+        s.append("            SELECT\r\n");
+        s.append("                  " + oya + "\r\n");
+        s.append("                , LISTAGG (" + pk + ", ',') WITHIN GROUP (ORDER BY " + pk + ") AS DEPENDENCIES \r\n");
+        s.append("            FROM\r\n");
+        s.append("                " + table.getName() + " \r\n");
+        s.append("            WHERE\r\n");
+        s.append("                " + oya + " IS NOT NULL \r\n");
+        s.append("            GROUP BY\r\n");
+        s.append("                " + oya + "\r\n");
+        s.append("        ) b \r\n");
+        s.append("            ON b." + oya + " = a." + pk + " \r\n");
+        s.append("        START WITH\r\n");
+        s.append("            a." + oya + " IS NULL \r\n");
+        s.append("        CONNECT BY\r\n");
+        s.append("            PRIOR " + pk + " = a." + oya + "\r\n");
+        s.append("    ) a ");
         return s.toString();
     }
 

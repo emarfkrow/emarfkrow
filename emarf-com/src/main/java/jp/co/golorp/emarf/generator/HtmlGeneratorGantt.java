@@ -70,13 +70,13 @@ public final class HtmlGeneratorGantt extends HtmlGenerator {
                 anewClass += " derive";
             }
             s.add("        <a th:href=\"@{/model/" + e + ".html(anew)}\" target=\"dialog\" id=\"" + e + "\" class=\""
-                    + anewClass + "\" th:text=\"#{" + e + ".add}\" tabindex=\"-1\">" + remarks + "</a>");
+                    + anewClass + "\" th:text=\"#{" + e + ".add}\" tabindex=\"-1\">" + table.getName() + "</a>");
             if (table.getName().matches(ELDEST_RE)) {
                 for (TableInfo bro : table.getBrothers()) {
                     String b = StringUtil.toPascalCase(bro.getName());
                     s.add("        <a th:href=\"@{/model/" + b + ".html}\" target=\"dialog\" id=\"" + b + "\" class=\""
                             + anewClass + "\" style=\"display: none;\" th:text=\"#{" + b + ".add}\" tabindex=\"-1\">"
-                            + bro.getRemarks() + "</a>");
+                            + bro.getName() + "</a>");
                 }
             }
             if (isDeriver) {
@@ -100,7 +100,7 @@ public final class HtmlGeneratorGantt extends HtmlGenerator {
         s.add("      </div>");
         s.add("      <div class=\"submits\">");
         s.add("        <button id=\"Search" + e + "\" type=\"submit\" class=\"search\" data-ganttId=\"" + e
-                + "Gantt\" th:text=\"#{common.search}\">submit</button>");
+                + "Gantt\" th:text=\"#{common.search}\">search</button>");
         s.add("      </div>");
         s.add("    </form>");
         s.add("    <!-- 一覧フォーム -->");
@@ -129,7 +129,7 @@ public final class HtmlGeneratorGantt extends HtmlGenerator {
 
         List<String> s = new ArrayList<String>();
         s.add("/**");
-        s.add(" * " + table.getRemarks() + "ガント定義");
+        s.add(" * " + table.getName() + " gantt tasks");
         s.add(" */");
         s.add("");
         s.add("let " + entity + "GanttTasks = {");

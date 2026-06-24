@@ -38,9 +38,8 @@ public final class HtmlGeneratorIndex extends HtmlGenerator {
     public static void htmlIndex(final String htmlDir, final TableInfo table, final List<TableInfo> tables) {
         String e = StringUtil.toPascalCase(table.getName());
         String es = e + "S";
-        String remarks = table.getRemarks();
         List<String> s = new ArrayList<String>();
-        addHtmlHead(s, es, remarks);
+        addHtmlHead(s, es, table.getName());
         s.add("<script th:src=\"@{/model/" + e + ".js}\"></script>");
         s.add("<script th:src=\"@{/model/" + e + "GridColumns.js}\"></script>");
         Map<TableInfo, Integer> added = new HashMap<TableInfo, Integer>();
@@ -69,13 +68,13 @@ public final class HtmlGeneratorIndex extends HtmlGenerator {
                 anewClass += " derive";
             }
             s.add("        <a th:href=\"@{/model/" + e + ".html(anew)}\" target=\"dialog\" id=\"" + e + "\" class=\""
-                    + anewClass + "\" th:text=\"#{" + e + ".add}\" tabindex=\"-1\">" + remarks + "</a>");
+                    + anewClass + "\" th:text=\"#{" + e + ".add}\" tabindex=\"-1\">" + table.getName() + "</a>");
             if (table.getName().matches(ELDEST_RE)) {
                 for (TableInfo bro : table.getBrothers()) {
                     String b = StringUtil.toPascalCase(bro.getName());
                     s.add("        <a th:href=\"@{/model/" + b + ".html}\" target=\"dialog\" id=\"" + b + "\" class=\""
                             + anewClass + "\" style=\"display: none;\" th:text=\"#{" + b + ".add}\" tabindex=\"-1\">"
-                            + bro.getRemarks() + "</a>");
+                            + bro.getName() + "</a>");
                 }
             }
             if (isDeriver) {
@@ -99,7 +98,7 @@ public final class HtmlGeneratorIndex extends HtmlGenerator {
         s.add("      </div>");
         s.add("      <div class=\"submits\">");
         s.add("        <button id=\"Search" + e + "\" type=\"submit\" class=\"search\" data-gridId=\"" + e
-                + "Grid\" th:text=\"#{common.search}\">submit</button>");
+                + "Grid\" th:text=\"#{common.search}\">search</button>");
         s.add("      </div>");
         s.add("    </form>\r\n    <!-- 一覧フォーム -->");
         s.add("    <form name=\"" + es + "RegistForm\" action=\"" + es + "Regist.ajax\" class=\"regist\">");
@@ -146,7 +145,7 @@ public final class HtmlGeneratorIndex extends HtmlGenerator {
             String summaryEntity = StringUtil.toPascalCase(summary.getName());
             s.add("        <a th:href=\"@{/model/" + summaryEntity + ".html}\" id=\"" + summaryEntity
                     + "\" target=\"dialog\" th:text=\"#{" + summaryEntity
-                    + ".sum}\" class=\"summary\" tabindex=\"-1\">" + summary.getRemarks() + "</a>");
+                    + ".sum}\" class=\"summary\" tabindex=\"-1\">" + summary.getName() + "</a>");
         }
         if ((!table.isView() && !table.isStatusFlow() && !table.isHistory()) || table.isConvView()) {
             addGridReferHiddenLinks(s, table); // 履歴モデルでないテーブルか、組み合わせビュー（検索条件で使う）なら、非表示の参照ボタンを出力
@@ -154,7 +153,7 @@ public final class HtmlGeneratorIndex extends HtmlGenerator {
         if (!table.isView() && !table.isStatusFlow() && !table.isHistory() && table.getChildren().size() == 0) { // 履歴モデルでないテーブルで、子モデルを持たない場合
             if (!table.getColumns().containsKey(DELETE_F) && !table.getColumns().containsKey(HAISHI_BI)) {
                 s.add("        <button type=\"submit\" id=\"Delete" + es + "\" data-action=\"" + es
-                        + "Delete.ajax\" class=\"delete selectRows\" th:text=\"#{common.delete}\" tabindex=\"-1\">削除</button>");
+                        + "Delete.ajax\" class=\"delete selectRows\" th:text=\"#{common.delete}\" tabindex=\"-1\">delete</button>");
             } // 削除フラグも有効期間終了日もないなら、物理削除ボタンを表示
             if (table.getColumns().containsKey(STATUS)) {
                 String onClick = "";
@@ -162,13 +161,13 @@ public final class HtmlGeneratorIndex extends HtmlGenerator {
                     onClick = " onclick=\"if (!Base.kessaiTx(this)) { return false; }\"";
                 }
                 s.add("        <button type=\"submit\"" + onClick + " id=\"Permit" + es + "\" data-action=\"" + es
-                        + "Permit.ajax\" class=\"permit selectRows\" th:text=\"#{common.permit}\" tabindex=\"-1\">承認</button>");
+                        + "Permit.ajax\" class=\"permit selectRows\" th:text=\"#{common.permit}\" tabindex=\"-1\">permit</button>");
                 s.add("        <button type=\"submit\"" + onClick + " id=\"Forbid" + es + "\" data-action=\"" + es
-                        + "Forbid.ajax\" class=\"forbid selectRows\" th:text=\"#{common.forbid}\" tabindex=\"-1\">否認</button>");
+                        + "Forbid.ajax\" class=\"forbid selectRows\" th:text=\"#{common.forbid}\" tabindex=\"-1\">forbid</button>");
                 s.add("        <button type=\"submit\"" + onClick + " id=\"Apply" + es + "\" data-action=\"" + es
-                        + "Apply.ajax\" class=\"apply selectRows\" th:text=\"#{common.apply}\" tabindex=\"-1\">申請</button>");
+                        + "Apply.ajax\" class=\"apply selectRows\" th:text=\"#{common.apply}\" tabindex=\"-1\">apply</button>");
                 s.add("        <button type=\"submit\"" + onClick + " id=\"Cancel" + es + "\" data-action=\"" + es
-                        + "Cancel.ajax\" class=\"cancel selectRows\" th:text=\"#{common.cancel}\" tabindex=\"-1\">取消</button>");
+                        + "Cancel.ajax\" class=\"cancel selectRows\" th:text=\"#{common.cancel}\" tabindex=\"-1\">cancel</button>");
             } //ステータス列名の指定があり、テーブルにステータス列があるなら、承認ボタン・否認ボタンを表示
         }
         s.add("      </div>");
@@ -180,7 +179,7 @@ public final class HtmlGeneratorIndex extends HtmlGenerator {
                 onClick = " onclick=\"if (!Base.rirekiTx(this)) { return false; }\"";
             }
             s.add("        <button id=\"Regist" + es + "\" type=\"submit\"" + onClick
-                    + " class=\"regist\" th:text=\"#{common.regist}\">submit</button>");
+                    + " class=\"regist\" th:text=\"#{common.regist}\">regist</button>");
         }
         s.add("      </div>\r\n    </form>\r\n  </div>\r\n</body>\r\n</html>");
         FileUtil.writeFile(htmlDir + File.separator + es + ".html", s);
@@ -197,7 +196,7 @@ public final class HtmlGeneratorIndex extends HtmlGenerator {
 
         List<String> s = new ArrayList<String>();
         s.add("/**");
-        s.add(" * " + table.getRemarks() + "グリッド定義");
+        s.add(" * " + table.getName() + " grid columns");
         s.add(" */");
         s.add("");
         //grid列名が取れない事があるのでonloadまで遅らせる
@@ -259,7 +258,7 @@ public final class HtmlGeneratorIndex extends HtmlGenerator {
 
         s = new ArrayList<String>();
         s.add("/**");
-        s.add(" * " + table.getRemarks() + "スクリプト");
+        s.add(" * " + table.getName() + " script");
         s.add(" */");
         FileUtil.writeFile(gridDir + File.separator + entity + ".js", s);
     }

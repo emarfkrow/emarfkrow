@@ -275,8 +275,8 @@ public abstract class HtmlGenerator {
                     css = " correct";
                 }
                 s.add("        <a id=\"" + e + "Grid." + p + "\" th:href=\"@{/model/" + referE + "S.html" + action
-                        + "}\" target=\"dialog\" class=\"refer" + css + "\" th:text=\"'" + refer.getRemarks()
-                        + "' + #{common.refer}\" tabindex=\"-1\" style=\"display: none;\">...</a>");
+                        + "}\" target=\"dialog\" class=\"refer" + css + "\" th:text=\"#{" + referE
+                        + "S.title} + #{common.refer}\" tabindex=\"-1\" style=\"display: none;\">...</a>");
             }
         }
     }
@@ -284,14 +284,14 @@ public abstract class HtmlGenerator {
     /**
      * @param s
      * @param entity
-     * @param remarks
+     * @param tableName
      */
-    public static void addHtmlHead(final List<String> s, final String entity, final String remarks) {
+    public static void addHtmlHead(final List<String> s, final String entity, final String tableName) {
         s.add("<!DOCTYPE html>");
         s.add("<html xmlns:th=\"http://www.thymeleaf.org\" xmlns:layout=\"http://www.ultraq.net.nz/web/thymeleaf/layout\" layout:decorate=\"~{common/base}\">");
         s.add("<head>");
         s.add("<meta charset=\"UTF-8\">");
-        s.add("<title th:text=\"#{" + entity + ".title}\">" + remarks + "</title>");
+        s.add("<title th:text=\"#{" + entity + ".title}\">" + tableName + "</title>");
         s.add("<style type=\"text/css\">");
         s.add("</style>");
         s.add("<script type=\"text/javascript\">");
@@ -370,7 +370,7 @@ public abstract class HtmlGenerator {
     private static void htmlDetail(final String htmlDir, final TableInfo table, final List<TableInfo> tables) {
         String e = StringUtil.toPascalCase(table.getName());
         List<String> s = new ArrayList<String>();
-        addHtmlHead(s, e, table.getRemarks());
+        addHtmlHead(s, e, table.getName());
         s.add("<script th:src=\"@{/model/" + e + ".js}\"></script>");
         s.add("<script th:src=\"@{/model/" + e + "GridColumns.js}\"></script>");
         Map<TableInfo, Integer> added = new HashMap<TableInfo, Integer>();
@@ -411,7 +411,7 @@ public abstract class HtmlGenerator {
             String c = StringUtil.toPascalCase(child.getName());
             s.add("      <h3 th:text=\"#{" + c + ".h3}\">h3</h3>");
             s.add("      <a th:href=\"@{/model/" + c + ".html(anew)}\" id=\"" + c + "\" target=\"dialog\" th:text=\"#{"
-                    + c + ".add}\" class=\"addChild\" tabindex=\"-1\">" + child.getRemarks() + "</a>");
+                    + c + ".add}\" class=\"addChild\" tabindex=\"-1\">" + child.getName() + "</a>");
             String addRow = " data-addRow=\"true\"";
             for (ColumnInfo column : child.getColumns().values()) {
                 if (StringUtil.endsWith(FILE_SUFS, column.getName())) {
@@ -435,13 +435,13 @@ public abstract class HtmlGenerator {
             TableInfo reborn = table.getRebornTo();
             String r = StringUtil.toPascalCase(reborn.getName());
             s.add("        <a th:href=\"@{/model/" + r + ".html}\" id=\"" + r + "\" target=\"dialog\" th:text=\"#{" + r
-                    + ".add}\" class=\"reborner\" tabindex=\"-1\">" + reborn.getRemarks() + "</a>");
+                    + ".add}\" class=\"reborner\" tabindex=\"-1\">" + reborn.getName() + "</a>");
         }
         if (table.getDeriveTos().size() > 0) { // 派生先がある場合は追加ボタンを出力
             for (TableInfo deriveTo : table.getDeriveTos()) {
                 String r = StringUtil.toPascalCase(deriveTo.getName());
                 s.add("        <a th:href=\"@{/model/" + r + ".html}\" id=\"" + r + "\" target=\"dialog\" th:text=\"#{"
-                        + r + ".add}\" class=\"reborner\" tabindex=\"-1\">" + deriveTo.getRemarks() + "</a>");
+                        + r + ".add}\" class=\"reborner\" tabindex=\"-1\">" + deriveTo.getName() + "</a>");
             }
         }
         //        if (table.getChoosers() != null) { // 選抜先がある場合は追加ボタンを出力
@@ -460,7 +460,7 @@ public abstract class HtmlGenerator {
                     ColumnInfo primaryKey = summaryOf.getColumns().get(pk);
                     String p = StringUtil.toCamelCase(pk);
                     s.add("        <div class=\"summary " + m + "s\">");
-                    s.add("          <label>" + primaryKey.getRemarks() + ": </label>");
+                    s.add("          <label>" + primaryKey.getName() + ": </label>");
                     s.add("          <span id=\"" + m + "." + p + "\"></span>");
                     s.add("          <input type=\"hidden\" id=\"" + m + "." + p + "\" name=\"" + m + "." + p
                             + "\" />");
@@ -472,7 +472,7 @@ public abstract class HtmlGenerator {
         if (!table.isHistory() && !table.isView() && !table.isStatusFlow()) { // 履歴モデルでもビューでもない場合
             if (!table.getColumns().containsKey(DELETE_F) && !table.getColumns().containsKey(HAISHI_BI)) {
                 s.add("        <button id=\"Delete" + e + "\" type=\"submit\" class=\"delete\" data-action=\"" + e
-                        + "Delete.ajax\" th:text=\"#{common.delete}\" tabindex=\"-1\">削除</button>");
+                        + "Delete.ajax\" th:text=\"#{common.delete}\" tabindex=\"-1\">delete</button>");
             } // 削除フラグ列名の指定がないか、テーブルに削除フラグ列がないなら、物理削除ボタンを表示
             if (table.getColumns().containsKey(STATUS)) {
                 String onClick = "";
@@ -480,20 +480,21 @@ public abstract class HtmlGenerator {
                     onClick = " onclick=\"if (!Base.kessaiTx(this)) { return false; }\"";
                 }
                 s.add("        <button type=\"submit\"" + onClick + " id=\"Permit" + e + "\" data-action=\"" + e
-                        + "Permit.ajax\" class=\"permit\" th:text=\"#{common.permit}\" tabindex=\"-1\">承認</button>");
+                        + "Permit.ajax\" class=\"permit\" th:text=\"#{common.permit}\" tabindex=\"-1\">permit</button>");
                 s.add("        <button type=\"submit\"" + onClick + " id=\"Forbid" + e + "\" data-action=\"" + e
-                        + "Forbid.ajax\" class=\"forbid\" th:text=\"#{common.forbid}\" tabindex=\"-1\">否認</button>");
+                        + "Forbid.ajax\" class=\"forbid\" th:text=\"#{common.forbid}\" tabindex=\"-1\">forbid</button>");
                 s.add("        <button type=\"submit\"" + onClick + " id=\"Apply" + e + "\" data-action=\"" + e
-                        + "Apply.ajax\" class=\"apply\" th:text=\"#{common.apply}\" tabindex=\"-1\">申請</button>");
+                        + "Apply.ajax\" class=\"apply\" th:text=\"#{common.apply}\" tabindex=\"-1\">apply</button>");
                 s.add("        <button type=\"submit\"" + onClick + " id=\"Cancel" + e + "\" data-action=\"" + e
-                        + "Cancel.ajax\" class=\"cancel\" th:text=\"#{common.cancel}\" tabindex=\"-1\">取消</button>");
+                        + "Cancel.ajax\" class=\"cancel\" th:text=\"#{common.cancel}\" tabindex=\"-1\">cancel</button>");
             } //ステータス列名の指定があり、テーブルにステータス列があるなら、承認ボタン・否認ボタンを表示
             String onclick = "";
             if (table.getHistory() != null && !StringUtil.isNullOrWhiteSpace(REASON)) {
                 onclick = " onclick=\"if (!Base.rirekiTx(this)) { return false; }\"";
             }
             s.add("        <button id=\"Regist" + e
-                    + "\" type=\"submit\" class=\"regist\" th:text=\"#{common.regist}\"" + onclick + ">登録</button>");
+                    + "\" type=\"submit\" class=\"regist\" th:text=\"#{common.regist}\"" + onclick
+                    + ">regist</button>");
         }
         s.add("      </div>");
         if (table.getRebornTo() != null) {
@@ -681,7 +682,6 @@ public abstract class HtmlGenerator {
                     continue;
                 }
                 String name = table.getName();
-                String remarks = table.getRemarks();
                 String e = StringUtil.toPascalCase(name);
                 String css = "table";
                 String style = " style=\"clear: both; float: left;\"";
@@ -704,11 +704,11 @@ public abstract class HtmlGenerator {
 
                 //                preName = name;
                 s.add("          <li" + style + "><a id=\"" + e + "\" th:href=\"@{/model/" + e
-                        + "S.html}\" th:text=\"#{nav." + e + "S}\" class=\"" + css + "\">" + remarks + "</a></li>");
+                        + "S.html}\" th:text=\"#{nav." + e + "S}\" class=\"" + css + "\">" + name + "</a></li>");
                 if (table.isGantt()) {
                     s.add("          <li" + style + "><a id=\"" + e + "G\" th:href=\"@{/model/" + e
                             + "G.html}\" th:text=\"#{nav." + e + "G}+#{nav.Gantt}\" class=\"" + css + " ganttNav\">"
-                            + remarks + "</a></li>");
+                            + name + "</a></li>");
                 }
             }
             s.add("        </ul>");
@@ -976,7 +976,7 @@ public abstract class HtmlGenerator {
                         && StringUtil.endsWith(INPUT_READONLY_SUFFIXS, colNm)) {
                     css += " forceReadonly";
                 }
-                htmlFieldsOptions(s, fId, colNm, c.getRemarks(), css);
+                htmlFieldsOptions(s, fId, colNm, css);
             } else if (isD && StringUtil.endsWith(INPUT_READONLY_SUFFIXS, colNm)) { // 読み取り専用の場合
                 String css = "";
                 if (c.getTypeName().matches(NUM_RE) && !StringUtil.endsWith(INT_NOFORMAT_SUFFIXS, colNm)) {
@@ -1018,7 +1018,7 @@ public abstract class HtmlGenerator {
                 if (isD && c.getNullable() == 0) {
                     css += isNotBlank(c);
                 }
-                htmlFieldsTextarea(s, fId, c.getRemarks(), css);
+                htmlFieldsTextarea(s, fId, c.getName(), css);
             } else { // inputの場合
                 String type = getInputType(colNm);
                 String inputCss = addCssByRelation(isD, t, c);
@@ -1048,7 +1048,7 @@ public abstract class HtmlGenerator {
                 } else {
                     if (StringUtil.endsWith(INPUT_BIT_SUFFIXS, colNm)) {
                         String tag = "          ";
-                        tag += "<label for=\"" + fId + "F\" th:text=\"#{" + fId + "}\">" + c.getRemarks() + "</label>";
+                        tag += "<label for=\"" + fId + "F\" th:text=\"#{" + fId + "}\">" + c.getName() + "</label>";
                         tag += "<input type=\"" + type + "\" id=\"" + fId + "F\" name=\"" + fId + "F\" maxlength=\""
                                 + c.getColumnSize() + "\"" + inputCss + format + " />";
                         s.add(tag);
@@ -1277,11 +1277,10 @@ public abstract class HtmlGenerator {
 
         String entity = StringUtil.toPascalCase(table.getName());
         String colName = column.getName();
-        String remarks = column.getRemarks();
         int max = column.getColumnSize();
 
         String tag = "          ";
-        tag += "<label for=\"" + fieldId + "\" th:text=\"#{" + fieldId + "}\">" + remarks + "</label>";
+        tag += "<label for=\"" + fieldId + "\" th:text=\"#{" + fieldId + "}\">" + colName + "</label>";
 
         TableInfo refer = column.getRefer();
         String referName = StringUtil.toPascalCase(refer.getName());
@@ -1328,15 +1327,13 @@ public abstract class HtmlGenerator {
             dataFormat = " data-format=\"" + format + "\"";
         }
 
-        String remarks = column.getRemarks();
-
         int max = column.getColumnSize();
         if (column.getMaxLength() != null) {
             max = column.getMaxLength();
         }
 
         String tag = "          ";
-        tag += "<label for=\"" + id + "\" th:text=\"#{" + id + "}\">" + remarks + "</label>";
+        tag += "<label for=\"" + id + "\" th:text=\"#{" + id + "}\">" + column.getName() + "</label>";
         tag += "<input type=\"" + type + "\" id=\"" + id + "\" name=\"" + id + "\" maxlength=\"" + max + "\"" + css
                 + dataFormat + " />";
 
@@ -1353,26 +1350,25 @@ public abstract class HtmlGenerator {
      * @param id         項目ID
      * @param type       タイプ
      * @param css        スタイル
-     * @param columnInfo 列情報
+     * @param column 列情報
      * @param format     フォーマット
      * @return タグ文字列
      */
     private static String htmlFieldsRange(final String id, final String type, final String css,
-            final ColumnInfo columnInfo, final String format) {
+            final ColumnInfo column, final String format) {
 
         String dataFormat = "";
         if (!StringUtil.isNullOrWhiteSpace(format)) {
             dataFormat = " data-format=\"" + format + "\"";
         }
 
-        String remarks = columnInfo.getRemarks();
-        int max = columnInfo.getColumnSize();
-        if (columnInfo.getMaxLength() != null) {
-            max = columnInfo.getMaxLength();
+        int max = column.getColumnSize();
+        if (column.getMaxLength() != null) {
+            max = column.getMaxLength();
         }
 
         String tag = "          ";
-        tag += "<label for=\"" + id + "_1\" th:text=\"#{" + id + "}\">" + remarks + "</label>";
+        tag += "<label for=\"" + id + "_1\" th:text=\"#{" + id + "}\">" + column.getName() + "</label>";
         tag += "<input type=\"" + type + "\" id=\"" + id + "_1\" name=\"" + id + "_1\" maxlength=\"" + max + "\"" + css
                 + dataFormat + " />";
         tag += "～";
@@ -1386,10 +1382,10 @@ public abstract class HtmlGenerator {
      * テキストエリア出力
      * @param s 出力文字列のリスト
      * @param id 項目ID
-     * @param remarks コメント
+     * @param colName コメント
      * @param css css
      */
-    private static void htmlFieldsTextarea(final List<String> s, final String id, final String remarks,
+    private static void htmlFieldsTextarea(final List<String> s, final String id, final String colName,
             final String css) {
 
         String cssClass = "";
@@ -1397,7 +1393,7 @@ public abstract class HtmlGenerator {
             cssClass = " class=\"" + css + "\"";
         }
 
-        s.add("          <label for=\"" + id + "\" th:text=\"#{" + id + "}\">" + remarks + "</label>");
+        s.add("          <label for=\"" + id + "\" th:text=\"#{" + id + "}\">" + colName + "</label>");
         s.add("          <textarea id=\"" + id + "\" name=\"" + id + "\"" + cssClass + "></textarea>");
     }
 
@@ -1406,11 +1402,10 @@ public abstract class HtmlGenerator {
      * @param s 出力文字列のリスト
      * @param id 項目ID
      * @param colName カラム名
-     * @param remarks コメント
      * @param css css
      */
     private static void htmlFieldsOptions(final List<String> s, final String id, final String colName,
-            final String remarks, final String css) {
+            final String css) {
 
         String cssClass = "";
         if (!StringUtil.isNullOrWhiteSpace(css)) {
@@ -1425,7 +1420,7 @@ public abstract class HtmlGenerator {
         s.add("          <fieldset id=\"" + id + "List\" data-options=\"" + JSON + "\" data-optionParams=\"" + OPT_K
                 + ":" + colName + "\" data-optionValue=\"" + OPT_V + "\" data-optionLabel=\"" + OPT_L + "\""
                 + cssClass + forcePulldown + ">");
-        s.add("            <legend th:text=\"#{" + id + "}\">" + remarks + "</legend>");
+        s.add("            <legend th:text=\"#{" + id + "}\">" + colName + "</legend>");
         s.add("          </fieldset>");
     }
 
@@ -1443,7 +1438,7 @@ public abstract class HtmlGenerator {
         }
 
         String tag = "          ";
-        tag += "<label th:text=\"#{" + id + "}\" class=\"meta\">" + c.getRemarks() + "</label>";
+        tag += "<label th:text=\"#{" + id + "}\" class=\"meta\">" + c.getName() + "</label>";
         tag += "<span id=\"" + id + "\" class=\"meta" + css + "\"></span>";
         tag += "<input type=\"hidden\" id=\"" + id + "\" name=\"" + id + "\" class=\"meta\" />";
         s.add(tag);
@@ -1467,7 +1462,7 @@ public abstract class HtmlGenerator {
             css = " class=\"" + css + "\"";
         }
         String tag = "          ";
-        tag += "<label th:text=\"#{" + id + "}\">" + c.getRemarks() + "</label>";
+        tag += "<label th:text=\"#{" + id + "}\">" + c.getName() + "</label>";
         tag += "<span id=\"" + id + "\"" + css + "></span>";
         tag += "<input type=\"text\" id=\"" + id + "\" name=\"" + id + "\" style=\"display: none;\"" + css + " />";
         s.add(tag);

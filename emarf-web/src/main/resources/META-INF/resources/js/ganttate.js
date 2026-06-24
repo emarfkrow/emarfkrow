@@ -3,12 +3,6 @@ let Ganttate = {
 
     gantts: {},
 
-    refresh: function(ganttId, data) {
-        let gantt = Ganttate.gantts[ganttId];
-        let tasks = gantt.taskDefs.load(data);
-        gantt.refresh(tasks);
-    },
-
     options: {
 
         header_height: 50,
@@ -17,6 +11,9 @@ let Ganttate = {
         view_mode: 'Day',
         language: 'ja',
         container_height: 'auto',
+        //auto_move_label: false,
+        //infinite_padding: false,
+        readonly: true,
 
         /*
          * タスククリック
@@ -54,12 +51,66 @@ let Ganttate = {
          */
         on_progress_change: function(task, progress) {
             task.progress = progress;
-        }
-    }
+        },
 
+    },
+
+    refresh: function(ganttId, data) {
+        let gantt = Ganttate.gantts[ganttId];
+        let tasks = gantt.taskDefs.load(data);
+        gantt.refresh(tasks);
+    },
+
+    arrow: function() {
+
+        $('g.arrow path').each(function() {
+            let x;
+            let y;
+            let w;
+            let b;
+            //console.log('arrow');
+            let d = $(this).attr('d');
+            let ds = d.split(/\n/);
+            for (let i in ds) {
+                let e = ds[i].trim();
+                if (e != '') {
+                    let es = e.split(' ');
+                    let k = es[0];
+                    es.shift();
+                    if (k == 'M') {
+                        //console.log('    AbsMove:' + es);
+                        x = es[0];
+                        y = es[1];
+                    } else if (k == 'm') {
+                        //console.log('    RelMove:' + es);
+                    } else if (k == 'V') {
+                        //console.log('    AbsVert:' + es);
+                        b = es[0];
+                    } else if (k == 'a') {
+                        //console.log('    arc    :' + es);
+                    } else if (k == 'L') {
+                        //console.log('    AbsLine:' + es);
+                        w = es[0];
+                    } else if (k == 'l') {
+                        //console.log('    RelLine:' + es);
+                    } else {
+                        //console.log('    ' + k + '       :' + es);
+                    }
+                }
+            }
+            d = 'M ' + x + ' ' + y + ' L ' + (w * 1 + 15) + ' ' + y + ' a 5 5 0 0 1 5 5 V ' + (b * 1 - 15) + ' m -5 -5 l 5 5 l 5 -5'
+            $(this).attr('d', d);
+        });
+    }
 };
 
 $(function() {
+
+    //    const originalMakeArrows = Gantt.prototype.make_arrows;
+    //    Gantt.prototype.make_arrows = function() {
+    //        originalMakeArrows.apply(this, arguments);
+    //        Ganttate.arrow();
+    //    };
 
     $('svg.gantt').each(function() {
 
@@ -74,41 +125,17 @@ $(function() {
         gantt.dialogId = dialogId;
 
         Dialogate.enable(this, "  ", $(this).hasClass('refer'));
-
-        //        const $modal = $('#' + ganttId + 'Modal');
-        //
-        //        // 3. フォームの「保存」処理
-        //        $('#' + ganttId + 'ModalForm').on('submit', function(e) {
-        //
-        //            e.preventDefault();
-        //
-        //            const id = $('#id').val();
-        //
-        //            const task = tasks.find(t => t.id === id);
-        //
-        //            if (task) {
-        //                for (let k in task) {
-        //                    if (k.startsWith('_') || k == 'dependencies' || k == 'actual_duration' || k == 'ignored_duration') {
-        //                        continue; // 内部プロパティはスキップ
-        //                    }
-        //                    task[k] = $('#' + k).val();
-        //                }
-        //                gantt.refresh(tasks);
-        //            }
-        //
-        //            $modal.fadeOut(200);
-        //        });
-        //
-        //        // 4. キャンセルボタンの処理
-        //        $('#' + ganttId + 'ModalForm').find('#btnCancel').on('click', function() {
-        //            $modal.fadeOut(200);
-        //        });
-        //
-        //        // 背景クリックで閉じる処理
-        //        $modal.on('click', function(e) {
-        //            if ($(e.target).is($modal)) {
-        //                $modal.fadeOut(200);
-        //            }
-        //        });
     });
+
+    const ganttContainer = document.querySelector('.gantt-container');
+    if (ganttContainer) {
+        ganttContainer.addEventListener('wheel', function(e) {
+            // コンテナの総幅が、画面（表示領域）の幅と同じ、または小さい場合
+            // （＝画面幅いっぱいに収まっており、本来スクロールする必要がない状態）
+            if (ganttContainer.scrollWidth <= ganttContainer.clientWidth) {
+                // ホイールによる縦・横スクロールの挙動を完全に無効化する
+                e.preventDefault();
+            }
+        }, { passive: false }); // preventDefaultを動作させるために必要
+    }
 });

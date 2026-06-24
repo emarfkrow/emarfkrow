@@ -68,6 +68,9 @@ public final class DataSources {
     /** 参照列名ペア */
     private static Set<String[]> referPairs = new LinkedHashSet<String[]>();
 
+    /** 長兄 */
+    private static String nonReferRe;
+
     /** 評価対象としないテーブル名の正規表現 */
     private static String ignoreRe;
 
@@ -261,6 +264,8 @@ public final class DataSources {
             String[] kv = pair.split(":");
             referPairs.add(kv);
         }
+
+        nonReferRe = bundle.getString("relation.nonrefer.re");
 
         ignoreRe = bundle.getString("relation.ignore.re");
 
@@ -741,6 +746,11 @@ public final class DataSources {
             //                    continue;
             //                }
             //            }
+
+            // 参照先としないテーブル
+            if (saki.getName().matches(nonReferRe)) {
+                continue;
+            }
 
             // どの参照ペアにもヒットしなければスキップ
             if (!isMatchReferPairs(saki)) {

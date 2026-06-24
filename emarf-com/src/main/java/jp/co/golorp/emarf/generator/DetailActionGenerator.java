@@ -302,9 +302,12 @@ public final class DetailActionGenerator {
                         String pE = StringUtil.toPascalCase(parent.getName());
                         String pI = StringUtil.toCamelCase(parent.getName());
                         String oyaKey = StringUtil.toCamelCase(oyaPKs);
-                        s.add("        " + pkE + "." + pE + " " + pI + " = " + pkE + "." + pE + ".get(" + oyaKey
+                        s.add("        try {"); // 片親の場合もあるので親なしでもエラーにしない
+                        s.add("            " + pkE + "." + pE + " " + pI + " = " + pkE + "." + pE + ".get(" + oyaKey
                                 + ");");
-                        s.add("        map.put(\"" + pE + "\", " + pI + ");");
+                        s.add("            map.put(\"" + pE + "\", " + pI + ");");
+                        s.add("        } catch (Exception e) {");
+                        s.add("        }");
                     }
                 }
                 s.add("");
