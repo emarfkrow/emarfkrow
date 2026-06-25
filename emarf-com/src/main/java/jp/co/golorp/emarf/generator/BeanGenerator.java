@@ -210,7 +210,6 @@ public final class BeanGenerator {
         Map<String, String> paths = new LinkedHashMap<String, String>();
         for (TableInfo table : tables) {
             String e = StringUtil.toPascalCase(table.getName());
-            String r = table.getRemarks();
             List<String> s = new ArrayList<String>();
             s.add("package " + pkgE + ";");
             s.add("");
@@ -218,7 +217,7 @@ public final class BeanGenerator {
             s.add("import jp.co.golorp.emarf.util.IgnoreCaseLinkedMap;");
             s.add("");
             s.add("/**");
-            s.add(" * " + r);
+            s.add(" * " + table.getName());
             s.add(" * @author emarfkrow");
             s.add(" */");
             s.add("public class " + e + " implements IEntity {");
@@ -226,14 +225,13 @@ public final class BeanGenerator {
             int i = addSlickGridId(table, s, 0);
             for (ColumnInfo column : table.getColumns().values()) {
                 String n = column.getName(); // name
-                String m = column.getRemarks(); // mei
                 String p = StringUtil.toCamelCase(n); // property
                 String a = StringUtil.toPascalCase(n); // accessor
                 String t = column.getDataType(); // type
                 //                p = p.replaceAll("#", "_");
                 //                a = a.replaceAll("#", "_");
                 s.add("");
-                s.add("    /** " + m + " */");
+                s.add("    /** " + n + " */");
                 if (t.equals("java.time.LocalDate")) {
                     addAnnotationLocalDate(s);
                 } else if (t.equals("java.time.LocalTime")) {
@@ -261,7 +259,7 @@ public final class BeanGenerator {
                     s.add("    private " + t + " " + p + ";");
                 }
                 s.add("");
-                s.add("    /** @return " + m + " */");
+                s.add("    /** @return " + n + " */");
                 s.add("    @com.fasterxml.jackson.annotation.JsonProperty(value = \"" + n + "\", index = " + ++i + ")");
                 if (column.isPk()) {
                     s.add("    @jp.co.golorp.emarf.validation.PrimaryKeys");
@@ -277,7 +275,7 @@ public final class BeanGenerator {
                 s.add("        return this." + p + ";");
                 s.add("    }");
                 s.add("");
-                s.add("    /** @param o " + m + " */");
+                s.add("    /** @param o " + n + " */");
                 if (column.isPk()) {
                     s.add("    @jp.co.golorp.emarf.validation.PrimaryKeys");
                 } else if (column.getName().matches("(?i)^" + updateTs + "$")) {

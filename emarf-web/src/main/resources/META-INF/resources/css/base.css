@@ -64,6 +64,11 @@ textarea {
 	overflow: auto;
 }
 
+.nav .toggle {
+	float: right;
+	padding: 0px;
+}
+
 .nav dt {
 	margin-top: 1rem;
 }

@@ -83,6 +83,7 @@ $(function() {
     if (window.opener) {
         $('.header h1').hide();
         $('button#logout').hide();
+        $('.nav .toggle').hide();
         $('.nav dl').hide();
     }
 
@@ -497,8 +498,18 @@ let Base = {
         });
 
         // buttonスタイル適用
-        $('button, .nav a.table, .nav a.view, .article a').button();
+        $('button, .nav a.toggle, .nav a.table, .nav a.view, .article a').button();
         $('.article fieldset a').css('padding', 0);
+
+        $('.nav a.toggle').html('<<');
+        $('.nav a.toggle').on('click', function() {
+            if ($('.nav dl').is(':hidden')) {
+                $(this).html('<<');
+            } else {
+                $(this).html('>>');
+            }
+            $('.nav dl').toggle(500);
+        });
 
         // 画面の更新権限のチェック
         $('form[name]').each(function() {
