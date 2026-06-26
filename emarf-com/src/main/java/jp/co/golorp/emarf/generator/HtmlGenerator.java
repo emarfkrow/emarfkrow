@@ -668,7 +668,9 @@ public abstract class HtmlGenerator {
         s.add("<html xmlns:th=\"http://www.thymeleaf.org\" xmlns:layout=\"http://www.ultraq.net.nz/web/thymeleaf/layout\">");
         s.add("<body>");
         s.add("  <div class=\"nav\" layout:fragment=\"nav\" th:if=\"${#ctx.session != null && #ctx.session.get('AUTHN_KEY') != null}\">");
-        s.add("    <a href=\"javascript: void(0);\" class=\"toggle\"></a>");
+        s.add("    <div class=\"toggle\">");
+        s.add("      <a href=\"javascript: void(0);\" class=\"toggle\"></a>");
+        s.add("    </div>");
         s.add("    <dl>");
         for (Entry<String, List<TableInfo>> nav : navs.entrySet()) {
             String navKey = nav.getKey();
@@ -1049,7 +1051,8 @@ public abstract class HtmlGenerator {
                 } else {
                     if (StringUtil.endsWith(INPUT_BIT_SUFFIXS, colNm)) {
                         String tag = "          ";
-                        tag += "<label for=\"" + fId + "F\" th:text=\"#{" + fId + "}\">" + c.getName() + "</label>";
+                        tag += "<label for=\"" + fId + "F\" th:text=\"#{" + fId + "}\">" + c.getName().toUpperCase()
+                                + "</label>";
                         tag += "<input type=\"" + type + "\" id=\"" + fId + "F\" name=\"" + fId + "F\" maxlength=\""
                                 + c.getColumnSize() + "\"" + inputCss + format + " />";
                         s.add(tag);
@@ -1281,7 +1284,7 @@ public abstract class HtmlGenerator {
         int max = column.getColumnSize();
 
         String tag = "          ";
-        tag += "<label for=\"" + fieldId + "\" th:text=\"#{" + fieldId + "}\">" + colName + "</label>";
+        tag += "<label for=\"" + fieldId + "\" th:text=\"#{" + fieldId + "}\">" + colName.toUpperCase() + "</label>";
 
         TableInfo refer = column.getRefer();
         String referName = StringUtil.toPascalCase(refer.getName());
@@ -1334,7 +1337,7 @@ public abstract class HtmlGenerator {
         }
 
         String tag = "          ";
-        tag += "<label for=\"" + id + "\" th:text=\"#{" + id + "}\">" + column.getName() + "</label>";
+        tag += "<label for=\"" + id + "\" th:text=\"#{" + id + "}\">" + column.getName().toUpperCase() + "</label>";
         tag += "<input type=\"" + type + "\" id=\"" + id + "\" name=\"" + id + "\" maxlength=\"" + max + "\"" + css
                 + dataFormat + " />";
 
@@ -1369,7 +1372,7 @@ public abstract class HtmlGenerator {
         }
 
         String tag = "          ";
-        tag += "<label for=\"" + id + "_1\" th:text=\"#{" + id + "}\">" + column.getName() + "</label>";
+        tag += "<label for=\"" + id + "_1\" th:text=\"#{" + id + "}\">" + column.getName().toUpperCase() + "</label>";
         tag += "<input type=\"" + type + "\" id=\"" + id + "_1\" name=\"" + id + "_1\" maxlength=\"" + max + "\"" + css
                 + dataFormat + " />";
         tag += "～";
@@ -1394,7 +1397,7 @@ public abstract class HtmlGenerator {
             cssClass = " class=\"" + css + "\"";
         }
 
-        s.add("          <label for=\"" + id + "\" th:text=\"#{" + id + "}\">" + colName + "</label>");
+        s.add("          <label for=\"" + id + "\" th:text=\"#{" + id + "}\">" + colName.toUpperCase() + "</label>");
         s.add("          <textarea id=\"" + id + "\" name=\"" + id + "\"" + cssClass + "></textarea>");
     }
 

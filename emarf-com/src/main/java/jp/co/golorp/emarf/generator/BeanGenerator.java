@@ -231,7 +231,7 @@ public final class BeanGenerator {
                 //                p = p.replaceAll("#", "_");
                 //                a = a.replaceAll("#", "_");
                 s.add("");
-                s.add("    /** " + n + " */");
+                s.add("    /** " + n.toUpperCase() + " */");
                 if (t.equals("java.time.LocalDate")) {
                     addAnnotationLocalDate(s);
                 } else if (t.equals("java.time.LocalTime")) {
@@ -259,8 +259,9 @@ public final class BeanGenerator {
                     s.add("    private " + t + " " + p + ";");
                 }
                 s.add("");
-                s.add("    /** @return " + n + " */");
-                s.add("    @com.fasterxml.jackson.annotation.JsonProperty(value = \"" + n + "\", index = " + ++i + ")");
+                s.add("    /** @return " + n.toUpperCase() + " */");
+                s.add("    @com.fasterxml.jackson.annotation.JsonProperty(value = \"" + n.toUpperCase() + "\", index = "
+                        + ++i + ")");
                 if (column.isPk()) {
                     s.add("    @jp.co.golorp.emarf.validation.PrimaryKeys");
                 } else if (column.getName().matches("(?i)^" + updateTs + "$")) {
@@ -275,7 +276,7 @@ public final class BeanGenerator {
                 s.add("        return this." + p + ";");
                 s.add("    }");
                 s.add("");
-                s.add("    /** @param o " + n + " */");
+                s.add("    /** @param o " + n.toUpperCase() + " */");
                 if (column.isPk()) {
                     s.add("    @jp.co.golorp.emarf.validation.PrimaryKeys");
                 } else if (column.getName().matches("(?i)^" + updateTs + "$")) {

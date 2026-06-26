@@ -67,8 +67,11 @@ public final class HtmlGeneratorIndex extends HtmlGenerator {
             if (isDeriver) {
                 anewClass += " derive";
             }
-            s.add("        <a th:href=\"@{/model/" + e + ".html(anew)}\" target=\"dialog\" id=\"" + e + "\" class=\""
-                    + anewClass + "\" th:text=\"#{" + e + ".add}\" tabindex=\"-1\">" + table.getName() + "</a>");
+            if (table.getPrimaryKeys().size() > 0) {
+                s.add("        <a th:href=\"@{/model/" + e + ".html(anew)}\" target=\"dialog\" id=\"" + e
+                        + "\" class=\"" + anewClass + "\" th:text=\"#{" + e + ".add}\" tabindex=\"-1\">"
+                        + table.getName() + "</a>");
+            }
             if (table.getName().matches(ELDEST_RE)) {
                 for (TableInfo bro : table.getBrothers()) {
                     String b = StringUtil.toPascalCase(bro.getName());
@@ -95,13 +98,10 @@ public final class HtmlGeneratorIndex extends HtmlGenerator {
                 }
             }
         }
-        s.add("      </div>");
-        s.add("      <div class=\"submits\">");
-        s.add("        <button id=\"Search" + e + "\" type=\"submit\" class=\"search\" data-gridId=\"" + e
-                + "Grid\" th:text=\"#{common.search}\">search</button>");
-        s.add("      </div>");
-        s.add("    </form>\r\n    <!-- 一覧フォーム -->");
-        s.add("    <form name=\"" + es + "RegistForm\" action=\"" + es + "Regist.ajax\" class=\"regist\">");
+        s.add("      </div>\r\n      <div class=\"submits\">\r\n        <button id=\"Search" + e
+                + "\" type=\"submit\" class=\"search\" data-gridId=\"" + e
+                + "Grid\" th:text=\"#{common.search}\">search</button>\r\n      </div>\r\n    </form>\r\n    <!-- 一覧フォーム -->\r\n    <form name=\""
+                + es + "RegistForm\" action=\"" + es + "Regist.ajax\" class=\"regist\">");
         s.add("      <h3 th:text=\"#{" + e + ".h3}\">h3</h3>");
         String addRow = "";
         if (isAnew) {
@@ -132,28 +132,28 @@ public final class HtmlGeneratorIndex extends HtmlGenerator {
         }
         s.add("      <div id=\"" + e + "Grid\" data-selectionMode=\"checkbox\"" + addRow + " data-frozenColumn=\""
                 + frozenColumn + "\" " + editable + "th:data-href=\"@{/model/" + e + ".html}\"></div>");
-        s.add("      <div id=\"" + e + "Pager\"></div>");
-        s.add("      <div class=\"buttons\">");
+        s.add("      <div id=\"" + e + "Pager\"></div>\r\n      <div class=\"buttons\">");
         if (!table.isHistory() && (!table.isView() || table.isConvView()) && !table.isStatusFlow()) {
             s.add("        <button type=\"button\" class=\"reset\" id=\"Reset" + es
                     + "\" th:text=\"#{common.reset}\" onClick=\"Base.listReset('" + e + "');\">reset</button>");
         }
         s.add("        <a th:href=\"@{" + e + "Search.xlsx(baseMei=#{" + es + ".h2})}\" id=\"" + e
                 + "Search.xlsx\" th:text=\"#{common.xlsx}\" class=\"output\" tabindex=\"-1\">xlsx</a>");
-        TableInfo summary = table.getSummaryTo(); // 集約先リンク
-        if (summary != null) {
-            String summaryEntity = StringUtil.toPascalCase(summary.getName());
+        if (table.getSummaryTo() != null) { // 集約先リンク
+            String summaryEntity = StringUtil.toPascalCase(table.getSummaryTo().getName());
             s.add("        <a th:href=\"@{/model/" + summaryEntity + ".html}\" id=\"" + summaryEntity
                     + "\" target=\"dialog\" th:text=\"#{" + summaryEntity
-                    + ".sum}\" class=\"summary\" tabindex=\"-1\">" + summary.getName() + "</a>");
+                    + ".sum}\" class=\"summary\" tabindex=\"-1\">" + table.getSummaryTo().getName() + "</a>");
         }
         if ((!table.isView() && !table.isStatusFlow() && !table.isHistory()) || table.isConvView()) {
             addGridReferHiddenLinks(s, table); // 履歴モデルでないテーブルか、組み合わせビュー（検索条件で使う）なら、非表示の参照ボタンを出力
         }
         if (!table.isView() && !table.isStatusFlow() && !table.isHistory() && table.getChildren().size() == 0) { // 履歴モデルでないテーブルで、子モデルを持たない場合
             if (!table.getColumns().containsKey(DELETE_F) && !table.getColumns().containsKey(HAISHI_BI)) {
-                s.add("        <button type=\"submit\" id=\"Delete" + es + "\" data-action=\"" + es
-                        + "Delete.ajax\" class=\"delete selectRows\" th:text=\"#{common.delete}\" tabindex=\"-1\">delete</button>");
+                if (table.getPrimaryKeys().size() > 0) {
+                    s.add("        <button type=\"submit\" id=\"Delete" + es + "\" data-action=\"" + es
+                            + "Delete.ajax\" class=\"delete selectRows\" th:text=\"#{common.delete}\" tabindex=\"-1\">delete</button>");
+                }
             } // 削除フラグも有効期間終了日もないなら、物理削除ボタンを表示
             if (table.getColumns().containsKey(STATUS)) {
                 String onClick = "";
@@ -170,16 +170,17 @@ public final class HtmlGeneratorIndex extends HtmlGenerator {
                         + "Cancel.ajax\" class=\"cancel selectRows\" th:text=\"#{common.cancel}\" tabindex=\"-1\">cancel</button>");
             } //ステータス列名の指定があり、テーブルにステータス列があるなら、承認ボタン・否認ボタンを表示
         }
-        s.add("      </div>");
-        s.add("      <div class=\"submits\">");
+        s.add("      </div>\r\n      <div class=\"submits\">");
         if (!table.isHistory() && (!table.isView() || table.isConvView()) && !table.isStatusFlow()
                 && table.getChildren().size() == 0) {
             String onClick = "";
             if (table.getHistory() != null && !StringUtil.isNullOrWhiteSpace(REASON)) {
                 onClick = " onclick=\"if (!Base.rirekiTx(this)) { return false; }\"";
             }
-            s.add("        <button id=\"Regist" + es + "\" type=\"submit\"" + onClick
-                    + " class=\"regist\" th:text=\"#{common.regist}\">regist</button>");
+            if (table.getPrimaryKeys().size() > 0) {
+                s.add("        <button id=\"Regist" + es + "\" type=\"submit\"" + onClick
+                        + " class=\"regist\" th:text=\"#{common.regist}\">regist</button>");
+            }
         }
         s.add("      </div>\r\n    </form>\r\n  </div>\r\n</body>\r\n</html>");
         FileUtil.writeFile(htmlDir + File.separator + es + ".html", s);
@@ -277,10 +278,10 @@ public final class HtmlGeneratorIndex extends HtmlGenerator {
         if (!isUpdTs && BeanGenerator.isMetaTsBy(n)) {
             return null;
         }
-        String css = "";
+        String cs = "";
         if (!table.isView()) {
             if (column.isPk()) {
-                css = "primaryKey";
+                cs = "primaryKey";
                 boolean isParentKey = false;
                 if (table.getParents() != null) {
                     for (TableInfo parent : table.getParents()) {
@@ -293,25 +294,25 @@ public final class HtmlGeneratorIndex extends HtmlGenerator {
                     }
                 }
                 if ((column.isNumbering() && column.getRefer() == null) || isParentKey) {
-                    css += " numbering"; //採番キー かつ 参照キーでない か 親モデルのキー
+                    cs += " numbering"; //採番キー かつ 参照キーでない か 親モデルのキー
                 }
             } else if (column.isUnique()) {
-                css = "uniqueKey";
+                cs = "uniqueKey";
             } else if (BeanGenerator.isMetaTsBy(n)) {
-                css = "metaInfo";
+                cs = "metaInfo";
                 if (isUpdTs) {
-                    css += " optLock";
+                    cs += " optLock";
                 }
             } else if (column.getNullable() == 0) {
                 if (!column.isPk() && column.getTypeName().equals("CHAR")
                         && !StringUtil.isNullOrWhiteSpace(CHAR_NOTNULL_RE) && !n.matches(CHAR_NOTNULL_RE)) {
                     LOG.trace("skip NotBlank.");
                 } else {
-                    css = "notblank";
+                    cs = "notblank";
                 }
             }
             if (StringUtil.endsWith(INPUT_READONLY_SUFFIXS, n)) {
-                css += " readonly";
+                cs += " readonly";
             }
         }
         String format = "null";
@@ -323,7 +324,7 @@ public final class HtmlGeneratorIndex extends HtmlGenerator {
             format = "Slick.Formatters.Extends.DateTime";
         }
         boolean isMeiRefer = false; // 名称を参照先から取得するか
-        String referMei = ""; // 参照名の列名
+        String rMei = ""; // 参照名の列名
         TableInfo referInfo = column.getRefer();
         if (!table.isView() && referInfo != null) { // 参照テーブルが設定されている場合
             isMeiRefer = true;
@@ -334,7 +335,7 @@ public final class HtmlGeneratorIndex extends HtmlGenerator {
                     if (n.matches("(?i).*" + keySuffix + "$")) { // カラム名がキー接尾辞に合致する場合
                         String tempMei = n.replaceAll("(?i)" + keySuffix + "$", meiSuffix); // カラム名の末尾を名称列サフィックスに変換
                         if (table.getColumns().containsKey(tempMei)) { // 名称列がテーブルに含まれている場合は参照先から名称を取得しない
-                            referMei = tempMei;
+                            rMei = tempMei;
                             isMeiRefer = false;
                             break;
                         }
@@ -353,11 +354,11 @@ public final class HtmlGeneratorIndex extends HtmlGenerator {
                         }
                         for (ColumnInfo referColumnInfo : referInfo.getColumns().values()) {
                             if (tempMei.matches("(?i).*" + referColumnInfo.getName() + "$")) {
-                                referMei = tempMei.toUpperCase();
+                                rMei = tempMei.toUpperCase();
                                 break;
                             }
                         }
-                        if (!referMei.isBlank()) {
+                        if (!rMei.isBlank()) {
                             break;
                         }
                     }
@@ -374,49 +375,49 @@ public final class HtmlGeneratorIndex extends HtmlGenerator {
             w = 300;
         }
         String type = column.getTypeName();
+        String cId = column.getName().toUpperCase();
         if (isMeiRefer) {
             if (!type.matches(NUM_RE) || StringUtil.endsWith(INT_NOFORMAT_SUFFIXS, n)) {
-                return "Column.refer('" + fieldPrefix + n + "', " + m + ", " + w + ", '" + css + "', '" + referMei
-                        + "'),";
+                return "Column.refer('" + fieldPrefix + cId + "', " + m + ", " + w + ", '" + cs + "', '" + rMei + "'),";
             } else {
-                return getNumericRefer(column, fieldPrefix + n, m, w, css, referMei);
+                return getNumericRefer(column, fieldPrefix + cId, m, w, cs, rMei);
             }
         } else if (BeanGenerator.isMetaTsBy(n) || column.isReborn() || column.isSummary()) {
-            return "Column.cell('" + fieldPrefix + n + "', " + m + ", " + w + ", '" + css + "', " + format + "),";
+            return "Column.cell('" + fieldPrefix + cId + "', " + m + ", " + w + ", '" + cs + "', " + format + "),";
         } else if (StringUtil.endsWith(INPUT_FLAG_SUFFIXS, n)) {
-            return "Column.check('" + fieldPrefix + n + "', " + m + ", " + w + ", '" + css + "'),";
+            return "Column.check('" + fieldPrefix + cId + "', " + m + ", " + w + ", '" + cs + "'),";
         } else if (StringUtil.endsWith(INPUT_BIT_SUFFIXS, n)) {
-            return "Column.bit('" + fieldPrefix + n + "', " + m + ", " + w + ", '" + css + "'),";
+            return "Column.bit('" + fieldPrefix + cId + "', " + m + ", " + w + ", '" + cs + "'),";
         } else if (StringUtil.endsWith(INPUT_DATE_SUFFIXS, n)) {
-            return "Column.date('" + fieldPrefix + n + "', " + m + ", " + w + ", '" + css + "', " + format + "),";
+            return "Column.date('" + fieldPrefix + cId + "', " + m + ", " + w + ", '" + cs + "', " + format + "),";
         } else if (StringUtil.endsWith(INPUT_DATE8_SUFFIXS, n) && column.getColumnSize() == 8) {
-            return "Column.date8('" + fieldPrefix + n + "', " + m + ", " + w + ", '" + css + "', " + format + "),";
+            return "Column.date8('" + fieldPrefix + cId + "', " + m + ", " + w + ", '" + cs + "', " + format + "),";
         } else if (StringUtil.endsWith(TS_SUFS, n)) {
-            return "Column.cell('" + fieldPrefix + n + "', " + m + ", " + w + ", '" + css + "', " + format + "),";
+            return "Column.cell('" + fieldPrefix + cId + "', " + m + ", " + w + ", '" + cs + "', " + format + "),";
         } else if (StringUtil.endsWith(INPUT_DATETIME_SUFFIXS, n)) {
-            return "Column.dateTime('" + fieldPrefix + n + "', " + m + ", " + w + ", '" + css + "'),";
+            return "Column.dateTime('" + fieldPrefix + cId + "', " + m + ", " + w + ", '" + cs + "'),";
         } else if (StringUtil.endsWith(INPUT_YM_SUFFIXS, n)) {
-            return "Column.month('" + fieldPrefix + n + "', " + m + ", " + w + ", '" + css
+            return "Column.month('" + fieldPrefix + cId + "', " + m + ", " + w + ", '" + cs
                     + "', Slick.Formatters.Extends.Month),";
         } else if (StringUtil.endsWith(INPUT_HOUR_SUFFIXS, n)) {
-            return "Column.hour('" + fieldPrefix + n + "', " + m + ", " + w + ", '" + css + "', " + format + "),";
+            return "Column.hour('" + fieldPrefix + cId + "', " + m + ", " + w + ", '" + cs + "', " + format + "),";
         } else if (StringUtil.endsWith(INPUT_TIME_SUFFIXS, n)) {
-            return "Column.time('" + fieldPrefix + n + "', " + m + ", " + w + ", '" + css + "', " + format + "),";
+            return "Column.time('" + fieldPrefix + cId + "', " + m + ", " + w + ", '" + cs + "', " + format + "),";
         } else if (StringUtil.endsWith(FILE_SUFS, n)) {
-            return "Column.link('" + fieldPrefix + n + "', " + m + ", " + w + ", '" + css + "'),";
+            return "Column.link('" + fieldPrefix + cId + "', " + m + ", " + w + ", '" + cs + "'),";
         } else if (StringUtil.endsWith(OPTIONS_SUFFIXS, n)) {
-            return "Column.select('" + fieldPrefix + n + "', " + m + ", " + w + ", '" + css + "', { json: '" + JSON
+            return "Column.select('" + fieldPrefix + cId + "', " + m + ", " + w + ", '" + cs + "', { json: '" + JSON
                     + "', paramkey: '" + OPT_K + "', value: '" + OPT_V + "', label: '" + OPT_L + "' }),";
         } else if (StringUtil.endsWith(TEXTAREA_SUFFIXS, n)) {
-            return "Column.longText('" + fieldPrefix + n + "', " + m + ", " + w + ", '" + css + "', " + format + "),";
+            return "Column.longText('" + fieldPrefix + cId + "', " + m + ", " + w + ", '" + cs + "', " + format + "),";
         } else if (type.matches(NUM_RE)) {
             if (StringUtil.endsWith(INT_NOFORMAT_SUFFIXS, n)) {
-                return "Column.text('" + fieldPrefix + n + "', " + m + ", " + w + ", '" + css + "', " + format + "),";
+                return "Column.text('" + fieldPrefix + cId + "', " + m + ", " + w + ", '" + cs + "', " + format + "),";
             } else {
-                return getNumericColumn(column, fieldPrefix + n, m, w, css, format);
+                return getNumericColumn(column, fieldPrefix + cId, m, w, cs, format);
             }
         } else {
-            return "Column.text('" + fieldPrefix + n + "', " + m + ", " + w + ", '" + css + "', " + format + "),";
+            return "Column.text('" + fieldPrefix + cId + "', " + m + ", " + w + ", '" + cs + "', " + format + "),";
         }
     }
 
