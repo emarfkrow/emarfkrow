@@ -757,6 +757,7 @@ public final class BeanGenerator {
             if (!table.isStatusFlow()) {
                 javaEntityCRUDUpdate(table, s);
                 javaEntityCRUDDelete(table, s);
+                javaEntityCRUDTruncate(table, s);
             }
         }
     }
@@ -850,6 +851,33 @@ public final class BeanGenerator {
             s.add("        return jp.co.golorp.emarf.sql.Queries.regist(sql, toMap(null, null));");
             s.add("    }");
         }
+    }
+
+    /**
+     * @param table
+     * @param s
+     */
+    public static void javaEntityCRUDTruncate(final TableInfo table, final List<String> s) {
+        s.add("");
+        s.add("    /**");
+        s.add("     * " + table.getRemarks() + "全件削除");
+        s.add("     * @return 削除件数");
+        s.add("     */");
+        s.add("    public static int truncate() {");
+        for (TableInfo child : table.getChildren()) {
+            s.add("");
+            s.add("        // " + child.getRemarks() + "のチェック");
+            s.add("        if (jp.co.golorp.emarf.sql.Queries.select(\"SELECT COUNT (1) FROM " + child.getName()
+                    + "\", null, null).size() > 0) {");
+            s.add("            throw new jp.co.golorp.emarf.exception.OptLockError(\"error.cant.truncate\", \""
+                    + table.getName() + " by " + child.getName() + "\");");
+            s.add("        }");
+        }
+        s.add("");
+        s.add("        // " + table.getRemarks() + "の削除");
+        s.add("        String sql = \"TRUNCATE TABLE " + table.getName() + "\";");
+        s.add("        return jp.co.golorp.emarf.sql.Queries.regist(sql, null);");
+        s.add("    }");
     }
 
     /**

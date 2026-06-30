@@ -200,10 +200,12 @@ public final class Queries {
         Map<String, Object> snakes = new HashMap<String, Object>();
 
         // paramsのキーをsnake化
-        for (Entry<String, Object> e : params.entrySet()) {
-            String k = e.getKey();
-            Object v = e.getValue();
-            snakes.put(StringUtil.toSnakeCase(k), v);
+        if (params != null) {
+            for (Entry<String, Object> e : params.entrySet()) {
+                String k = e.getKey();
+                Object v = e.getValue();
+                snakes.put(StringUtil.toSnakeCase(k), v);
+            }
         }
 
         // SQL

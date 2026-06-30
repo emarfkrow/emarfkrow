@@ -1008,6 +1008,7 @@ let Base = {
                             } else {
 
                                 $(this).button('option', 'disabled', false);
+                                $registForm.find('button.reset').button('option', 'disabled', false);
                             }
                         });
 
@@ -1044,6 +1045,7 @@ let Base = {
                             } else {
 
                                 $(this).button('option', 'disabled', false);
+                                $registForm.find('button.reset').button('option', 'disabled', false);
                             }
                         });
 
