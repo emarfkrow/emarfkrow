@@ -1113,7 +1113,7 @@ public abstract class HtmlGenerator {
                     css += " summaryOf";
                 }
                 htmlFieldsSpan(s, fId, c, css);
-                if (!isP && t.getSummaryOfs().size() == 0) {
+                if (!isP && t.getSummaryOfs().size() == 0 && c.getNullable() == 1) {
                     s.add(getCorrectLink(fId, StringUtil.toPascalCase(c.getDeriveFrom().getName()), css));
                 }
             } else if (isD && c.isSummary()) { // 詳細画面の集約先外部キー
