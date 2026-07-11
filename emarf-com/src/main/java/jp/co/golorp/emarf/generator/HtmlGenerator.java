@@ -334,6 +334,31 @@ public abstract class HtmlGenerator {
                             + "S.title} + #{common.refer}\" tabindex=\"-1\" style=\"display: none;\">...</a>");
                 }
             }
+        } else if (table.getDeriveFroms() != null && table.getDeriveFroms().size() > 0) {
+            for (TableInfo derivee : table.getDeriveFroms()) {
+                for (ColumnInfo column : table.getColumns().values()) {
+                    if (BeanGenerator.isMetaBy(column.getName())) {
+                        continue;
+                    }
+                    if (!derivee.getPrimaryKeys().contains(column.getName())) {
+                        continue;
+                    }
+                    if (column.getNullable() == 0) {
+                        continue;
+                    }
+                    String p = StringUtil.toCamelCase(column.getName());
+                    String summaryE = StringUtil.toPascalCase(derivee.getName());
+                    String action = "";
+                    String css = "";
+                    if (derivee.getStintInfo() != null && table != derivee.getStintInfo()) {
+                        action = "?action=" + summaryE + "Correct.ajax";
+                        css = " correct";
+                    }
+                    s.add("        <a id=\"" + e + "Grid." + p + "\" th:href=\"@{/model/" + summaryE + "S.html" + action
+                            + "}\" target=\"dialog\" class=\"refer" + css + "\" th:text=\"#{" + summaryE
+                            + "S.title} + #{common.refer}\" tabindex=\"-1\" style=\"display: none;\">...</a>");
+                }
+            }
         } else {
             for (ColumnInfo column : table.getColumns().values()) {
                 if (column.getRefer() != null) {
@@ -1141,6 +1166,14 @@ public abstract class HtmlGenerator {
                     } else if (mergeFrom != null) {
                         s.add(htmlFieldsInput(fId, type, inputCss + " refer", c, format));
                         String rNm = StringUtil.toPascalCase(mergeFrom.getName());
+                        if (isD) {
+                            s.add(getCorrectLink(fId, rNm, "refer"));
+                        } else {
+                            s.add(getReferLink(fId, rNm, "refer"));
+                        }
+                    } else if (t.getSummaryTo() != null && t.getSummaryTo().getPrimaryKeys().contains(c.getName())) {
+                        s.add(htmlFieldsInput(fId, type, inputCss + " refer", c, format));
+                        String rNm = StringUtil.toPascalCase(t.getSummaryTo().getName());
                         if (isD) {
                             s.add(getCorrectLink(fId, rNm, "refer"));
                         } else {
