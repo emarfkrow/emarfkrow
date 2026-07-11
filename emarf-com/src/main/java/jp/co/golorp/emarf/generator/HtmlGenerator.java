@@ -1148,37 +1148,17 @@ public abstract class HtmlGenerator {
                                 + "\" />";
                         s.add(tag);
                     } else if (rebornFrom != null) {
-                        s.add(htmlFieldsInput(fId, type, inputCss + " refer", c, format));
                         String rNm = StringUtil.toPascalCase(rebornFrom.getName());
-                        if (isD) {
-                            s.add(getCorrectLink(fId, rNm, "refer"));
-                        } else {
-                            s.add(getReferLink(fId, rNm, "refer"));
-                        }
+                        s.add(getLink(isD, c, fId, type, inputCss, format, rNm));
                     } else if (c.getDeriveFrom() != null) {
-                        s.add(htmlFieldsInput(fId, type, inputCss + " refer", c, format));
                         String rNm = StringUtil.toPascalCase(c.getDeriveFrom().getName());
-                        if (isD) {
-                            s.add(getCorrectLink(fId, rNm, "refer"));
-                        } else {
-                            s.add(getReferLink(fId, rNm, "refer"));
-                        }
+                        s.add(getLink(isD, c, fId, type, inputCss, format, rNm));
                     } else if (mergeFrom != null) {
-                        s.add(htmlFieldsInput(fId, type, inputCss + " refer", c, format));
                         String rNm = StringUtil.toPascalCase(mergeFrom.getName());
-                        if (isD) {
-                            s.add(getCorrectLink(fId, rNm, "refer"));
-                        } else {
-                            s.add(getReferLink(fId, rNm, "refer"));
-                        }
+                        s.add(getLink(isD, c, fId, type, inputCss, format, rNm));
                     } else if (t.getSummaryTo() != null && t.getSummaryTo().getPrimaryKeys().contains(c.getName())) {
-                        s.add(htmlFieldsInput(fId, type, inputCss + " refer", c, format));
                         String rNm = StringUtil.toPascalCase(t.getSummaryTo().getName());
-                        if (isD) {
-                            s.add(getCorrectLink(fId, rNm, "refer"));
-                        } else {
-                            s.add(getReferLink(fId, rNm, "refer"));
-                        }
+                        s.add(getLink(isD, c, fId, type, inputCss, format, rNm));
                     } else {
                         s.add(htmlFieldsInput(fId, type, inputCss, c, format));
                     }
@@ -1186,6 +1166,30 @@ public abstract class HtmlGenerator {
             }
             s.add("        </div>");
         }
+    }
+
+    /**
+     * @param isD
+     * @param c
+     * @param fId
+     * @param type
+     * @param inputCss
+     * @param format
+     * @param rNm
+     * @return String
+     */
+    private static String getLink(final boolean isD, final ColumnInfo c, final String fId, final String type,
+            final String inputCss, final String format, final String rNm) {
+
+        String link = htmlFieldsInput(fId, type, inputCss + " refer", c, format);
+
+        if (isD) {
+            link += "\r\n" + getCorrectLink(fId, rNm, "refer");
+        } else {
+            link += "\r\n" + getReferLink(fId, rNm, "refer");
+        }
+
+        return link;
     }
 
     /**
