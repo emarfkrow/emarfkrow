@@ -47,9 +47,8 @@ public final class HtmlGeneratorGantt extends HtmlGenerator {
     public static void htmlGantt(final String htmlDir, final TableInfo table, final List<TableInfo> tables) {
         String e = StringUtil.toPascalCase(table.getName());
         String es = e + "S";
-        String remarks = table.getRemarks();
         List<String> s = new ArrayList<String>();
-        addHtmlHead(s, es, remarks);
+        addHtmlHead(s, es, table.getName());
         s.add("<script th:src=\"@{/model/" + e + ".js}\"></script>");
         s.add("<script th:src=\"@{/model/" + e + "GridColumns.js}\"></script>");
         s.add("<script th:src=\"@{/model/" + e + "GanttTasks.js}\"></script>");

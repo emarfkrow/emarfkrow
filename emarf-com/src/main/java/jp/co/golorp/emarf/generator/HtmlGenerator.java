@@ -839,7 +839,7 @@ public abstract class HtmlGenerator {
             if (e != null) {
                 if (!added.containsKey(e)) {
                     String name = StringUtil.toPascalCase(e.getName());
-                    addGridJs(s, indent, table.getRemarks(), name, "参照モデル");
+                    addGridJs(s, indent, table.getName(), name, "参照モデル");
                     added.put(e, 1);
                     htmlNestGrid(s, e, tables, added, false, indent + "  ", true);
                 }
@@ -853,7 +853,7 @@ public abstract class HtmlGenerator {
                 if (e != null) {
                     if (!added.containsKey(e)) {
                         String name = StringUtil.toPascalCase(e.getName());
-                        addGridJs(s, indent, table.getRemarks(), name, "兄弟モデルの参照モデル");
+                        addGridJs(s, indent, table.getName(), name, "兄弟モデルの参照モデル");
                         added.put(e, 1);
                         htmlNestGrid(s, e, tables, added, false, indent + "  ", true);
                     }
@@ -869,7 +869,7 @@ public abstract class HtmlGenerator {
                 }
                 if (!added.containsKey(e)) {
                     String name = StringUtil.toPascalCase(e.getName());
-                    addGridJs(s, indent, table.getRemarks(), name, "親モデル");
+                    addGridJs(s, indent, table.getName(), name, "親モデル");
                 }
                 added.put(e, 0);
                 htmlNestGrid(s, e, tables, added, true, indent + "  ", false);
@@ -881,7 +881,7 @@ public abstract class HtmlGenerator {
                 }
                 if (!added.containsKey(e)) {
                     String name = StringUtil.toPascalCase(e.getName());
-                    addGridJs(s, indent, table.getRemarks(), name, "子モデル");
+                    addGridJs(s, indent, table.getName(), name, "子モデル");
                 }
                 added.put(e, 0);
                 htmlNestGrid(s, e, tables, added, false, indent + "  ", false);
@@ -892,7 +892,7 @@ public abstract class HtmlGenerator {
                 if (added.get(e) == null || added.get(e) != 0) {
                     if (!added.containsKey(e)) {
                         String name = StringUtil.toPascalCase(e.getName());
-                        addGridJs(s, indent, table.getRemarks(), name, "転生先モデル");
+                        addGridJs(s, indent, table.getName(), name, "転生先モデル");
                     }
                     added.put(e, 0);
                     htmlNestGrid(s, e, tables, added, false, indent + "  ", false);
@@ -904,7 +904,7 @@ public abstract class HtmlGenerator {
                 if (added.get(e) == null || added.get(e) != 0) {
                     if (!added.containsKey(e)) {
                         String name = StringUtil.toPascalCase(e.getName());
-                        addGridJs(s, indent, table.getRemarks(), name, "転生元モデル");
+                        addGridJs(s, indent, table.getName(), name, "転生元モデル");
                     }
                     added.put(e, 0);
                     htmlNestGrid(s, e, tables, added, false, indent + "  ", false);
@@ -919,7 +919,7 @@ public abstract class HtmlGenerator {
                     }
                     if (!added.containsKey(e)) {
                         String name = StringUtil.toPascalCase(e.getName());
-                        addGridJs(s, indent, table.getRemarks(), name, "派生元モデル");
+                        addGridJs(s, indent, table.getName(), name, "派生元モデル");
                     }
                     added.put(e, 0);
                     htmlNestGrid(s, e, tables, added, false, indent + "  ", false);
@@ -933,7 +933,7 @@ public abstract class HtmlGenerator {
                     }
                     if (!added.containsKey(e)) {
                         String name = StringUtil.toPascalCase(e.getName());
-                        addGridJs(s, indent, table.getRemarks(), name, "派生先モデル");
+                        addGridJs(s, indent, table.getName(), name, "派生先モデル");
                     }
                     added.put(e, 0);
                     htmlNestGrid(s, e, tables, added, false, indent + "  ", false);
@@ -947,7 +947,7 @@ public abstract class HtmlGenerator {
                     }
                     if (!added.containsKey(e)) {
                         String name = StringUtil.toPascalCase(e.getName());
-                        addGridJs(s, indent, table.getRemarks(), name, "共生元モデル");
+                        addGridJs(s, indent, table.getName(), name, "共生元モデル");
                     }
                     added.put(e, 0);
                     htmlNestGrid(s, e, tables, added, false, indent + "  ", false);
@@ -961,7 +961,7 @@ public abstract class HtmlGenerator {
                     }
                     if (!added.containsKey(e)) {
                         String name = StringUtil.toPascalCase(e.getName());
-                        addGridJs(s, indent, table.getRemarks(), name, "集約元モデル");
+                        addGridJs(s, indent, table.getName(), name, "集約元モデル");
                     }
                     added.put(e, 0);
                     htmlNestGrid(s, e, tables, added, false, indent + "  ", false);
@@ -973,7 +973,7 @@ public abstract class HtmlGenerator {
                 if (added.get(e) == null || added.get(e) != 0) {
                     if (!added.containsKey(e)) {
                         String name = StringUtil.toPascalCase(e.getName());
-                        addGridJs(s, indent, table.getRemarks(), name, "集約先モデル");
+                        addGridJs(s, indent, table.getName(), name, "集約先モデル");
                     }
                     added.put(e, 0);
                     htmlNestGrid(s, e, tables, added, false, indent + "  ", false);

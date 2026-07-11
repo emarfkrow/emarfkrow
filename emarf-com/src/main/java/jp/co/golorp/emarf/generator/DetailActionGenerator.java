@@ -260,13 +260,13 @@ public final class DetailActionGenerator {
             s.add("import jp.co.golorp.emarf.exception.NoDataError;");
             s.add("");
             s.add("/**");
-            s.add(" * " + table.getRemarks() + "照会");
+            s.add(" * " + table.getName() + "照会");
             s.add(" *");
             s.add(" * @author emarfkrow");
             s.add(" */");
             s.add("public class " + ent + "GetAction extends BaseAction {");
             s.add("");
-            s.add("    /** " + table.getRemarks() + "照会処理 */");
+            s.add("    /** " + table.getName() + "照会処理 */");
             s.add("    @Override");
             s.add("    public Map<String, Object> running(final LocalDateTime now, final String execId, final Map<String, Object> postJson) {");
             s.add("");
