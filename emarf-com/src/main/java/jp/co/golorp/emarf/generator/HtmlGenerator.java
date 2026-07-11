@@ -312,6 +312,28 @@ public abstract class HtmlGenerator {
                             + "S.title} + #{common.refer}\" tabindex=\"-1\" style=\"display: none;\">...</a>");
                 }
             }
+        } else if (table.getChoices() != null && table.getChoices().size() > 0) {
+            for (TableInfo choise : table.getChoices()) {
+                for (ColumnInfo column : table.getColumns().values()) {
+                    if (BeanGenerator.isMetaBy(column.getName())) {
+                        continue;
+                    }
+                    if (!choise.getPrimaryKeys().contains(column.getName())) {
+                        continue;
+                    }
+                    String p = StringUtil.toCamelCase(column.getName());
+                    String summaryE = StringUtil.toPascalCase(choise.getName());
+                    String action = "";
+                    String css = "";
+                    if (choise.getStintInfo() != null && table != choise.getStintInfo()) {
+                        action = "?action=" + summaryE + "Correct.ajax";
+                        css = " correct";
+                    }
+                    s.add("        <a id=\"" + e + "Grid." + p + "\" th:href=\"@{/model/" + summaryE + "S.html" + action
+                            + "}\" target=\"dialog\" class=\"refer" + css + "\" th:text=\"#{" + summaryE
+                            + "S.title} + #{common.refer}\" tabindex=\"-1\" style=\"display: none;\">...</a>");
+                }
+            }
         } else {
             for (ColumnInfo column : table.getColumns().values()) {
                 if (column.getRefer() != null) {
