@@ -207,6 +207,10 @@ public final class SqlGenerator {
                     oya = column.getName();
                     break;
                 }
+                if (column.getName().matches("(?i)^.+" + pk + "$")) {
+                    oya = column.getName();
+                    break;
+                }
             }
             s.add(assist.addDependencies(table, pk, oya));
         }
@@ -217,12 +221,12 @@ public final class SqlGenerator {
             addWhere(s, column);
         }
 
-        if (!table.isView()) {
+        if (table.isGantt()) {
             s.add("ORDER BY");
-
-            if (table.isGantt()) {
-                s.add("    a.PATH DESC");
-            } else if (table.getPrimaryKeys().size() > 0) {
+            s.add("    a.PATH DESC");
+        } else if (!table.isView()) {
+            s.add("ORDER BY");
+            if (table.getPrimaryKeys().size() > 0) {
                 String orders = "";
                 if (table.getPrimaryKeys().size() == 1) {
                     for (ColumnInfo column : table.getColumns().values()) {

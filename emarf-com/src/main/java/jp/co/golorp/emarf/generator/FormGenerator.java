@@ -251,7 +251,7 @@ public final class FormGenerator {
      */
     private static void javaFormDetailRegistRelCheck(final TableInfo table, final List<String> s) {
 
-        String entity = StringUtil.toPascalCase(table.getName());
+        String e = StringUtil.toPascalCase(table.getName());
 
         s.add("");
         s.add("    /** 関連チェック */");
@@ -259,25 +259,101 @@ public final class FormGenerator {
         s.add("    public void validate(final Map<String, String> errors, final BaseProcess baseProcess) {");
         s.add("        LOG.trace(\"validate() not overridden in subclasses.\");");
 
+        // 派生元のマスタチェック
+        for (TableInfo from : table.getDeriveFroms()) {
+            String fromE = StringUtil.toPascalCase(from.getName());
+            String fromI = StringUtil.toCamelCase(from.getName());
+            s.add("");
+            s.add("        // " + from.getRemarks() + " の派生元チェック TODO できればAssertTrueにしたい");
+            s.add("        Map<String, Object> " + fromI + "Params = new java.util.HashMap<String, Object>();");
+            String lastKey = null;
+            for (String fromPrimaryKey : from.getPrimaryKeys()) {
+                lastKey = StringUtil.toCamelCase(fromPrimaryKey);
+                s.add("        " + fromI + "Params.put(\"" + lastKey + "\", this.get"
+                        + StringUtil.toPascalCase(fromPrimaryKey) + "());");
+            }
+            s.add("        baseProcess.masterCheck(errors, \"" + fromE + "Search\", \"" + lastKey + "\", " + fromI
+                    + "Params, jp.co.golorp.emarf.util.Messages.get(\"" + e + "\"));");
+        }
+
+        // 共生元のマスタチェック
+        for (TableInfo from : table.getMergeFroms()) {
+            String fromE = StringUtil.toPascalCase(from.getName());
+            String fromI = StringUtil.toCamelCase(from.getName());
+            s.add("");
+            s.add("        // " + from.getRemarks() + " の共生元チェック TODO できればAssertTrueにしたい");
+            s.add("        Map<String, Object> " + fromI + "Params = new java.util.HashMap<String, Object>();");
+            String lastKey = null;
+            for (String fromPrimaryKey : from.getPrimaryKeys()) {
+                lastKey = StringUtil.toCamelCase(fromPrimaryKey);
+                s.add("        " + fromI + "Params.put(\"" + lastKey + "\", this.get"
+                        + StringUtil.toPascalCase(fromPrimaryKey) + "());");
+            }
+            s.add("        baseProcess.masterCheck(errors, \"" + fromE + "Search\", \"" + lastKey + "\", " + fromI
+                    + "Params, jp.co.golorp.emarf.util.Messages.get(\"" + e + "\"));");
+        }
+
+        // 転生元のマスタチェック
+        if (table.getRebornFrom() != null) {
+            TableInfo from = table.getRebornFrom();
+            String fromE = StringUtil.toPascalCase(from.getName());
+            String fromI = StringUtil.toCamelCase(from.getName());
+            s.add("");
+            s.add("        // " + from.getRemarks() + " の転生元チェック TODO できればAssertTrueにしたい");
+            s.add("        Map<String, Object> " + fromI + "Params = new java.util.HashMap<String, Object>();");
+            String lastKey = null;
+            for (String fromPrimaryKey : from.getPrimaryKeys()) {
+                lastKey = StringUtil.toCamelCase(fromPrimaryKey);
+                s.add("        " + fromI + "Params.put(\"" + lastKey + "\", this.get"
+                        + StringUtil.toPascalCase(fromPrimaryKey) + "());");
+            }
+            s.add("        baseProcess.masterCheck(errors, \"" + fromE + "Search\", \"" + lastKey + "\", " + fromI
+                    + "Params, jp.co.golorp.emarf.util.Messages.get(\"" + e + "\"));");
+        }
+
+        // 集約先のマスタチェック
+        if (table.getSummaryTo() != null) {
+            TableInfo from = table.getSummaryTo();
+            String fromE = StringUtil.toPascalCase(from.getName());
+            String fromI = StringUtil.toCamelCase(from.getName());
+            s.add("");
+            s.add("        // " + from.getRemarks() + " の集約先チェック TODO できればAssertTrueにしたい");
+            s.add("        Map<String, Object> " + fromI + "Params = new java.util.HashMap<String, Object>();");
+            String lastKey = null;
+            for (String fromPrimaryKey : from.getPrimaryKeys()) {
+                lastKey = StringUtil.toCamelCase(fromPrimaryKey);
+                s.add("        " + fromI + "Params.put(\"" + lastKey + "\", this.get"
+                        + StringUtil.toPascalCase(fromPrimaryKey) + "());");
+            }
+            s.add("        baseProcess.masterCheck(errors, \"" + fromE + "Search\", \"" + lastKey + "\", " + fromI
+                    + "Params, jp.co.golorp.emarf.util.Messages.get(\"" + e + "\"));");
+        }
+
         // 列ごとに評価
         for (ColumnInfo column : table.getColumns().values()) {
-            // 参照モデルがなければスキップ
-            if (column.getRefer() == null) {
-                continue;
-            }
-            if (column.getRefer().isView() || column.getRefer().isStatusFlow()) {
-                continue;
-            }
+
             // 登録者か更新者ならスキップ
             if (BeanGenerator.isMetaBy(column.getName())) {
                 continue;
             }
 
-            TableInfo refer = column.getRefer();
-            String cls = StringUtil.toPascalCase(refer.getName());
-            String p = StringUtil.toCamelCase(column.getName());
-            String keySuf = "";
+            // 参照モデルがなければスキップ
+            if (column.getRefer() == null) {
+                continue;
+            }
 
+            // 参照モデルがビューならスキップ
+            if (column.getRefer().isView()) {
+                continue;
+            }
+
+            // 参照モデルがワークフローならスキップ
+            if (column.getRefer().isStatusFlow()) {
+                continue;
+            }
+
+            TableInfo refer = column.getRefer();
+            String p = StringUtil.toCamelCase(column.getName());
             s.add("");
             s.add("        // " + column.getRemarks() + " のマスタチェック TODO できればAssertTrueにしたい");
             s.add("        Map<String, Object> " + p + "Params = new java.util.HashMap<String, Object>();");
@@ -295,15 +371,17 @@ public final class FormGenerator {
             }
 
             for (String pk : refer.getPrimaryKeys()) {
+                String keySuf = "";
                 if (refer.getColumns().get(pk).getDataType().equals("String")) {
                     keySuf = "Full";
                 }
                 s.add("        " + p + "Params.put(\"" + StringUtil.toCamelCase(pk) + keySuf + "\", this.get"
-                        + StringUtil.toPascalCase(StringUtil.toPascalCase(keyPrefix + pk)) + "());");
+                        + StringUtil.toPascalCase(keyPrefix + pk) + "());");
             }
 
+            String cls = StringUtil.toPascalCase(refer.getName());
             s.add("        baseProcess.masterCheck(errors, \"" + cls + "Search\", \"" + p + "\", " + p
-                    + "Params, jp.co.golorp.emarf.util.Messages.get(\"" + entity + "." + p + "\"));");
+                    + "Params, jp.co.golorp.emarf.util.Messages.get(\"" + e + "." + p + "\"));");
         }
 
         s.add("    }");

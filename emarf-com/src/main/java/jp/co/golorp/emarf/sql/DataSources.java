@@ -479,7 +479,10 @@ public final class DataSources {
                             endColumn = true;
                         }
                     }
-                    table.setGantt(nameColumn && startColumn && endColumn);
+                    if (nameColumn && startColumn && endColumn) {
+                        table.setGantt(true);
+                        break;
+                    }
                 }
             }
         }
@@ -804,6 +807,12 @@ public final class DataSources {
                             continue;
                         }
 
+                        // 既に主キー数のより少ない参照モデルを設定済みならスキップ
+                        if (motoCol.getRefer() != null
+                                && motoCol.getRefer().getPrimaryKeys().size() < sakiKeys.size()) {
+                            continue;
+                        }
+
                         LOG.debug("    " + saki.getName() + " from " + moto.getName() + "." + motoCol.getName());
                         motoCol.setRefer(saki);
                         saki.setRefer(true);
@@ -821,6 +830,12 @@ public final class DataSources {
 
                         if (motoColName.matches("(?i)^" + sakiSuffix + ".+$")) {
                             // 参照先ビュー名から始まるカラム名の場合
+
+                            // 既に主キー数のより少ない参照モデルを設定済みならスキップ
+                            if (motoCol.getRefer() != null
+                                    && motoCol.getRefer().getPrimaryKeys().size() < sakiKeys.size()) {
+                                continue;
+                            }
 
                             LOG.debug("    " + saki.getName() + " from " + moto.getName() + "." + motoCol.getName());
                             motoCol.setRefer(saki);
@@ -1316,50 +1331,50 @@ public final class DataSources {
                 }
 
                 // 派生元の主キーでループして、合致する派生先の外部キーを取得
-                Set<String> sakiKeys = new HashSet<String>();
+                Set<String> sakiFKs = new HashSet<String>();
                 for (String motoKey : moto.getPrimaryKeys()) {
-                    ColumnInfo motoPK = moto.getColumns().get(motoKey);
+                    ColumnInfo motoCol = moto.getColumns().get(motoKey);
                     for (ColumnInfo sakiCol : saki.getColumns().values()) {
-                        if (!sakiCol.isPk() && isMatchColDef(motoPK, sakiCol)) {
-                            sakiKeys.add(sakiCol.getName());
+                        if (!sakiCol.isPk() && isMatchColDef(motoCol, sakiCol)) {
+                            sakiFKs.add(sakiCol.getName());
                         }
                     }
                 }
 
                 // 転生元の主キーと、転生先外部キーの数が一致しなければスキップ
-                if (moto.getPrimaryKeys().size() != sakiKeys.size()) {
+                if (moto.getPrimaryKeys().size() != sakiFKs.size()) {
                     continue;
                 }
 
-                String lastKey = moto.getPrimaryKeys().get(moto.getPrimaryKeys().size() - 1);
+                String motoLastPK = moto.getPrimaryKeys().get(moto.getPrimaryKeys().size() - 1);
 
-                LOG.debug("    " + moto.getName() + " to " + saki.getName() + " " + sakiKeys);
+                LOG.debug("    " + moto.getName() + " to " + saki.getName() + " " + sakiFKs);
                 moto.getDeriveTos().add(saki);
                 saki.getDeriveFroms().add(moto);
-                for (String sakiKey : sakiKeys) {
+                for (String sakiKey : sakiFKs) {
                     ColumnInfo sakiCol = saki.getColumns().get(sakiKey);
                     if (sakiCol.getNullable() != 1) {
                         // 必須なら上書き
                         sakiCol.setDeriveFrom(moto);
-                        for (String motoKey : moto.getPrimaryKeys()) {
-                            //参照モデルを未設定なら設定
-                            if (saki.getColumns().get(motoKey).getRefer() == null) {
-                                saki.getColumns().get(motoKey).setRefer(moto);
-                            }
-                        }
-                    } else if (sakiKey.matches("(?i)^" + lastKey + "$")) {
+                        // // 参照モデルを未設定なら、派生先列の参照先に、派生元を設定
+                        // for (String motoKey : moto.getPrimaryKeys()) {
+                        //     if (saki.getColumns().get(motoKey).getRefer() == null) {
+                        //         saki.getColumns().get(motoKey).setRefer(moto);
+                        //     }
+                        // }
+                    } else if (sakiKey.matches("(?i)^" + motoLastPK + "$")) {
                         // 必須でない場合は派生元の最終キーと一致するなら上書き
                         sakiCol.setDeriveFrom(moto);
-                        for (String motoKey : moto.getPrimaryKeys()) {
-                            //参照モデルを未設定なら設定
-                            if (saki.getColumns().get(motoKey).getRefer() == null) {
-                                saki.getColumns().get(motoKey).setRefer(moto);
-                            }
-                        }
+                        // // 参照モデルを未設定なら、派生先列の参照先に、派生元を設定
+                        // for (String motoKey : moto.getPrimaryKeys()) {
+                        //     if (saki.getColumns().get(motoKey).getRefer() == null) {
+                        //         saki.getColumns().get(motoKey).setRefer(moto);
+                        //     }
+                        // }
                     }
                 }
 
-                // 売り上げの派生元が受注と受注明細になるので、受注は派生元から外したいが、参照は可能にしたい。
+                // [売上]の派生元は、[受注]と[受注明細]となるが、親の[受注]は、派生元から外したいが参照は可能にしたい。
             }
         }
     }
@@ -1388,7 +1403,7 @@ public final class DataSources {
             }
 
             // 転生キーがある場合は転生元を取得
-            Set<TableInfo> merges = new HashSet<TableInfo>();
+            Set<TableInfo> merges = new LinkedHashSet<TableInfo>();
             for (ColumnInfo sakiCol : saki.getColumns().values()) {
                 if (sakiCol.getDeriveFrom() != null && sakiCol.getNullable() != 1) {
                     merges.add(sakiCol.getDeriveFrom());
@@ -1425,9 +1440,11 @@ public final class DataSources {
                 // 統合情報を書き込み
                 moto.setMergeTo(saki);
                 saki.getMergeFroms().add(moto);
-                for (String motoKey : moto.getPrimaryKeys()) {
-                    saki.getColumns().get(motoKey).setRefer(moto);
-                }
+
+                // 参照モデルはやめる
+                // for (String motoKey : moto.getPrimaryKeys()) {
+                //     saki.getColumns().get(motoKey).setRefer(moto);
+                // }
             }
         }
     }
@@ -1647,9 +1664,11 @@ public final class DataSources {
                 // 選抜情報を書き込み
                 moto.getChoosers().add(saki);
                 saki.getChoices().add(moto);
-                for (String motoKey : moto.getPrimaryKeys()) {
-                    saki.getColumns().get(motoKey).setRefer(moto);
-                }
+
+                // 参照モデルはやめる
+                // for (String motoKey : moto.getPrimaryKeys()) {
+                //     saki.getColumns().get(motoKey).setRefer(moto);
+                // }
             }
         }
     }

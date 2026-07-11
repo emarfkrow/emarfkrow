@@ -357,10 +357,11 @@ let Dialogate = {
                     // ダイアログdiv
                     let $dialogDiv = $(event.target);
 
+					// 転生先として表示された場合は、再転生のリンクは非表示
                     $dialogDiv.find('a.reborner').show();
                     if (isReborner) {
                         $dialogDiv.find('a.reborner').hide();
-                        $dialogDiv.find('div.submits').hide();
+                        //$dialogDiv.find('div.submits').hide(); 転生リンクを押したときに転生先の登録が出来なくなるためコメントアウト
                     }
 
                     // ダイアログ内のグリッド新規ボタンは、呼び出し元の主キーが揃っていなければ非活性

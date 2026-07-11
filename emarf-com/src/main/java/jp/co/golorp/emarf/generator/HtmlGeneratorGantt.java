@@ -136,9 +136,11 @@ public final class HtmlGeneratorGantt extends HtmlGenerator {
      * @param nameColumn
      * @param startColumn
      * @param endColumn
+     * @param sinceColumn
+     * @param untilColumn
      */
     public static void htmlGanttTasks(final String gridDir, final TableInfo table, final String nameColumn,
-            final String startColumn, final String endColumn) {
+            final String startColumn, final String endColumn, final String sinceColumn, final String untilColumn) {
 
         String entity = StringUtil.toPascalCase(table.getName());
 
@@ -162,6 +164,11 @@ public final class HtmlGeneratorGantt extends HtmlGenerator {
         s.add("            task.start = row." + startColumn + ";");
         s.add("            task.end = row." + endColumn + ";");
         s.add("            task.dependencies = row.DEPENDENCIES ? row.DEPENDENCIES + '' : '';");
+        if (sinceColumn != null && untilColumn != null) {
+            s.add("");
+            s.add("            task.since = row." + sinceColumn + ";");
+            s.add("            task.until = row." + untilColumn + ";");
+        }
         s.add("");
         for (String k : table.getColumns().keySet()) {
             ColumnInfo col = table.getColumns().get(k);

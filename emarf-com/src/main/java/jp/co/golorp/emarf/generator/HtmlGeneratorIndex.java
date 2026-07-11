@@ -282,10 +282,10 @@ public final class HtmlGeneratorIndex extends HtmlGenerator {
     /**
      * @param table
      * @param column
-     * @param fieldPrefix フィールド名のプレフィクス（兄弟モデルのカラムを出力する際に、フィールド名が重複するのを避けるために使用）
+     * @param prefix フィールド名のプレフィクス（兄弟モデルのカラムを出力する際に、フィールド名が重複するのを避けるために使用）
      * @return 列定義文字列
      */
-    private static String htmlGridColumn(final TableInfo table, final ColumnInfo column, final String fieldPrefix) {
+    private static String htmlGridColumn(final TableInfo table, final ColumnInfo column, final String prefix) {
         String e = StringUtil.toPascalCase(table.getName());
         String n = column.getName();
         String m = "Messages['" + e + "Grid." + StringUtil.toCamelCase(n) + "']";
@@ -293,7 +293,141 @@ public final class HtmlGeneratorIndex extends HtmlGenerator {
         if (!isUpdTs && BeanGenerator.isMetaTsBy(n)) {
             return null;
         }
+
+        String css = getCss(table, column, n, isUpdTs);
+
+        String format = "null";
+        if (column.getDataType().equals("java.time.LocalDate")) {
+            format = "Slick.Formatters.Extends.Date";
+        } else if (StringUtil.endsWith(TS_SUFS, n)) {
+            format = "Slick.Formatters.Extends.Timestamp";
+        } else if (column.getDataType().equals("java.time.LocalDateTime")) {
+            format = "Slick.Formatters.Extends.DateTime";
+        }
+        boolean isMeiRefer = false; // 名称を参照先から取得するか
+        String rMei = ""; // 参照名の列名
+        TableInfo refer = column.getRefer();
+        if (!table.isView() && refer != null) { // 参照テーブルが設定されている場合
+            isMeiRefer = true;
+            if (StringUtil.endsWith(REFER_PAIRS, n)) { // カラム名が組み合わせキーのいずれかに合致する場合
+                for (String[] suffix : REFER_PAIRS) { // 参照設定の組み合わせでループ
+                    String keySuffix = suffix[0];
+                    String meiSuffix = suffix[1];
+                    if (n.matches("(?i).*" + keySuffix + "$")) { // カラム名がキー接尾辞に合致する場合
+                        String tempMei = n.replaceAll("(?i)" + keySuffix + "$", meiSuffix); // カラム名の末尾を名称列サフィックスに変換
+                        if (table.getColumns().containsKey(tempMei)) { // 名称列がテーブルに含まれている場合は参照先から名称を取得しない
+                            rMei = tempMei;
+                            isMeiRefer = false;
+                            break;
+                        }
+                    }
+                }
+            }
+            if (isMeiRefer) { // 名称を参照先から取得する場合
+                for (String[] suffix : REFER_PAIRS) { // 参照設定の組み合わせで、キー接尾辞に合致するカラム名を探索
+                    String[] keySuffixs = suffix[0].split("&");
+                    String meiSuffix = suffix[1];
+                    if (StringUtil.endsWith(keySuffixs, n)) { // カラム名の末尾を名称列サフィックスに変換して、名称列が参照先テーブルに含まれている場合は、取得する名称を決定する
+                        String lastSuffix = keySuffixs[keySuffixs.length - 1];
+                        String tempMei = n.replaceAll("(?i)" + lastSuffix + "$", meiSuffix);
+                        if (n.equals(tempMei)) {
+                            continue;
+                        }
+                        for (ColumnInfo referColumnInfo : refer.getColumns().values()) {
+                            if (tempMei.matches("(?i).*" + referColumnInfo.getName() + "$")) {
+                                rMei = tempMei.toUpperCase();
+                                break;
+                            }
+                        }
+                        if (!rMei.isBlank()) {
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        int w = column.getColumnSize() * COLUMN_WIDTH_PX_MULTIPLIER;
+        if (column.getMaxLength() != null) {
+            w = column.getMaxLength() * COLUMN_WIDTH_PX_MULTIPLIER;
+        }
+        if (w < 30) {
+            w = 30;
+        } else if (w > 300) {
+            w = 300;
+        }
+        String type = column.getTypeName();
+        String cId = column.getName().toUpperCase();
+        if (isMeiRefer) {
+            if (!type.matches(NUM_RE) || StringUtil.endsWith(INT_NOFORMAT_SUFFIXS, n)) {
+                return "Column.refer('" + prefix + cId + "', " + m + ", " + w + ", '" + css + "', '" + rMei + "'),";
+            } else {
+                return getNumericRefer(column, prefix + cId, m, w, css, rMei);
+            }
+        } else if (BeanGenerator.isMetaTsBy(n) || column.isReborn()) {
+            return "Column.cell('" + prefix + cId + "', " + m + ", " + w + ", '" + css + "', " + format + "),";
+        } else if (StringUtil.endsWith(INPUT_FLAG_SUFFIXS, n)) {
+            return "Column.check('" + prefix + cId + "', " + m + ", " + w + ", '" + css + "'),";
+        } else if (StringUtil.endsWith(INPUT_BIT_SUFFIXS, n)) {
+            return "Column.bit('" + prefix + cId + "', " + m + ", " + w + ", '" + css + "'),";
+        } else if (StringUtil.endsWith(INPUT_DATE_SUFFIXS, n)) {
+            return "Column.date('" + prefix + cId + "', " + m + ", " + w + ", '" + css + "', " + format + "),";
+        } else if (StringUtil.endsWith(INPUT_DATE8_SUFFIXS, n) && column.getColumnSize() == 8) {
+            return "Column.date8('" + prefix + cId + "', " + m + ", " + w + ", '" + css + "', " + format + "),";
+        } else if (StringUtil.endsWith(TS_SUFS, n)) {
+            return "Column.cell('" + prefix + cId + "', " + m + ", " + w + ", '" + css + "', " + format + "),";
+        } else if (StringUtil.endsWith(INPUT_DATETIME_SUFFIXS, n)) {
+            return "Column.dateTime('" + prefix + cId + "', " + m + ", " + w + ", '" + css + "'),";
+        } else if (StringUtil.endsWith(INPUT_YM_SUFFIXS, n)) {
+            return "Column.month('" + prefix + cId + "', " + m + ", " + w + ", '" + css
+                    + "', Slick.Formatters.Extends.Month),";
+        } else if (StringUtil.endsWith(INPUT_HOUR_SUFFIXS, n)) {
+            return "Column.hour('" + prefix + cId + "', " + m + ", " + w + ", '" + css + "', " + format + "),";
+        } else if (StringUtil.endsWith(INPUT_TIME_SUFFIXS, n)) {
+            return "Column.time('" + prefix + cId + "', " + m + ", " + w + ", '" + css + "', " + format + "),";
+        } else if (StringUtil.endsWith(FILE_SUFS, n)) {
+            return "Column.link('" + prefix + cId + "', " + m + ", " + w + ", '" + css + "'),";
+        } else if (StringUtil.endsWith(OPTIONS_SUFFIXS, n)) {
+            return "Column.select('" + prefix + cId + "', " + m + ", " + w + ", '" + css + "', { json: '" + JSON
+                    + "', paramkey: '" + OPT_K + "', value: '" + OPT_V + "', label: '" + OPT_L + "' }),";
+        } else if (StringUtil.endsWith(TEXTAREA_SUFFIXS, n)) {
+            return "Column.longText('" + prefix + cId + "', " + m + ", " + w + ", '" + css + "', " + format + "),";
+        } else if (type.matches(NUM_RE) && !StringUtil.endsWith(INT_NOFORMAT_SUFFIXS, n)) {
+            return getNumericColumn(column, prefix + cId, m, w, css, format);
+        } else {
+            // 派生元
+            for (TableInfo from : table.getDeriveFroms()) {
+                if (from.getPrimaryKeys().contains(column.getName())) {
+                    return "Column.refer('" + prefix + cId + "', " + m + ", " + w + ", '" + css + "', '" + rMei + "'),";
+                }
+            }
+            // 共生元
+            for (TableInfo from : table.getMergeFroms()) {
+                if (from.getPrimaryKeys().contains(column.getName())) {
+                    return "Column.refer('" + prefix + cId + "', " + m + ", " + w + ", '" + css + "', '" + rMei + "'),";
+                }
+            }
+            // 集約先
+            if (table.getSummaryTo() != null) {
+                TableInfo from = table.getSummaryTo();
+                if (from.getPrimaryKeys().contains(column.getName())) {
+                    return "Column.refer('" + prefix + cId + "', " + m + ", " + w + ", '" + css + "', '" + rMei + "'),";
+                }
+            }
+            return "Column.text('" + prefix + cId + "', " + m + ", " + w + ", '" + css + "', " + format + "),";
+        }
+    }
+
+    /**
+     * @param table
+     * @param column
+     * @param n
+     * @param isUpdTs
+     * @return String
+     */
+    public static String getCss(final TableInfo table, final ColumnInfo column, final String n, final boolean isUpdTs) {
+
         String cs = "";
+
         if (!table.isView()) {
             if (column.isPk()) {
                 cs = "primaryKey";
@@ -330,110 +464,8 @@ public final class HtmlGeneratorIndex extends HtmlGenerator {
                 cs += " readonly";
             }
         }
-        String format = "null";
-        if (column.getDataType().equals("java.time.LocalDate")) {
-            format = "Slick.Formatters.Extends.Date";
-        } else if (StringUtil.endsWith(TS_SUFS, n)) {
-            format = "Slick.Formatters.Extends.Timestamp";
-        } else if (column.getDataType().equals("java.time.LocalDateTime")) {
-            format = "Slick.Formatters.Extends.DateTime";
-        }
-        boolean isMeiRefer = false; // 名称を参照先から取得するか
-        String rMei = ""; // 参照名の列名
-        TableInfo referInfo = column.getRefer();
-        if (!table.isView() && referInfo != null) { // 参照テーブルが設定されている場合
-            isMeiRefer = true;
-            if (StringUtil.endsWith(REFER_PAIRS, n)) { // カラム名が組み合わせキーのいずれかに合致する場合
-                for (String[] suffix : REFER_PAIRS) { // 参照設定の組み合わせでループ
-                    String keySuffix = suffix[0];
-                    String meiSuffix = suffix[1];
-                    if (n.matches("(?i).*" + keySuffix + "$")) { // カラム名がキー接尾辞に合致する場合
-                        String tempMei = n.replaceAll("(?i)" + keySuffix + "$", meiSuffix); // カラム名の末尾を名称列サフィックスに変換
-                        if (table.getColumns().containsKey(tempMei)) { // 名称列がテーブルに含まれている場合は参照先から名称を取得しない
-                            rMei = tempMei;
-                            isMeiRefer = false;
-                            break;
-                        }
-                    }
-                }
-            }
-            if (isMeiRefer) { // 名称を参照先から取得する場合
-                for (String[] suffix : REFER_PAIRS) { // 参照設定の組み合わせで、キー接尾辞に合致するカラム名を探索
-                    String[] keySuffixs = suffix[0].split("&");
-                    String meiSuffix = suffix[1];
-                    if (StringUtil.endsWith(keySuffixs, n)) { // カラム名の末尾を名称列サフィックスに変換して、名称列が参照先テーブルに含まれている場合は、取得する名称を決定する
-                        String lastSuffix = keySuffixs[keySuffixs.length - 1];
-                        String tempMei = n.replaceAll("(?i)" + lastSuffix + "$", meiSuffix);
-                        if (n.equals(tempMei)) {
-                            continue;
-                        }
-                        for (ColumnInfo referColumnInfo : referInfo.getColumns().values()) {
-                            if (tempMei.matches("(?i).*" + referColumnInfo.getName() + "$")) {
-                                rMei = tempMei.toUpperCase();
-                                break;
-                            }
-                        }
-                        if (!rMei.isBlank()) {
-                            break;
-                        }
-                    }
-                }
-            }
-        }
-        int w = column.getColumnSize() * COLUMN_WIDTH_PX_MULTIPLIER;
-        if (column.getMaxLength() != null) {
-            w = column.getMaxLength() * COLUMN_WIDTH_PX_MULTIPLIER;
-        }
-        if (w < 30) {
-            w = 30;
-        } else if (w > 300) {
-            w = 300;
-        }
-        String type = column.getTypeName();
-        String cId = column.getName().toUpperCase();
-        if (isMeiRefer) {
-            if (!type.matches(NUM_RE) || StringUtil.endsWith(INT_NOFORMAT_SUFFIXS, n)) {
-                return "Column.refer('" + fieldPrefix + cId + "', " + m + ", " + w + ", '" + cs + "', '" + rMei + "'),";
-            } else {
-                return getNumericRefer(column, fieldPrefix + cId, m, w, cs, rMei);
-            }
-        } else if (BeanGenerator.isMetaTsBy(n) || column.isReborn() || column.isSummary()) {
-            return "Column.cell('" + fieldPrefix + cId + "', " + m + ", " + w + ", '" + cs + "', " + format + "),";
-        } else if (StringUtil.endsWith(INPUT_FLAG_SUFFIXS, n)) {
-            return "Column.check('" + fieldPrefix + cId + "', " + m + ", " + w + ", '" + cs + "'),";
-        } else if (StringUtil.endsWith(INPUT_BIT_SUFFIXS, n)) {
-            return "Column.bit('" + fieldPrefix + cId + "', " + m + ", " + w + ", '" + cs + "'),";
-        } else if (StringUtil.endsWith(INPUT_DATE_SUFFIXS, n)) {
-            return "Column.date('" + fieldPrefix + cId + "', " + m + ", " + w + ", '" + cs + "', " + format + "),";
-        } else if (StringUtil.endsWith(INPUT_DATE8_SUFFIXS, n) && column.getColumnSize() == 8) {
-            return "Column.date8('" + fieldPrefix + cId + "', " + m + ", " + w + ", '" + cs + "', " + format + "),";
-        } else if (StringUtil.endsWith(TS_SUFS, n)) {
-            return "Column.cell('" + fieldPrefix + cId + "', " + m + ", " + w + ", '" + cs + "', " + format + "),";
-        } else if (StringUtil.endsWith(INPUT_DATETIME_SUFFIXS, n)) {
-            return "Column.dateTime('" + fieldPrefix + cId + "', " + m + ", " + w + ", '" + cs + "'),";
-        } else if (StringUtil.endsWith(INPUT_YM_SUFFIXS, n)) {
-            return "Column.month('" + fieldPrefix + cId + "', " + m + ", " + w + ", '" + cs
-                    + "', Slick.Formatters.Extends.Month),";
-        } else if (StringUtil.endsWith(INPUT_HOUR_SUFFIXS, n)) {
-            return "Column.hour('" + fieldPrefix + cId + "', " + m + ", " + w + ", '" + cs + "', " + format + "),";
-        } else if (StringUtil.endsWith(INPUT_TIME_SUFFIXS, n)) {
-            return "Column.time('" + fieldPrefix + cId + "', " + m + ", " + w + ", '" + cs + "', " + format + "),";
-        } else if (StringUtil.endsWith(FILE_SUFS, n)) {
-            return "Column.link('" + fieldPrefix + cId + "', " + m + ", " + w + ", '" + cs + "'),";
-        } else if (StringUtil.endsWith(OPTIONS_SUFFIXS, n)) {
-            return "Column.select('" + fieldPrefix + cId + "', " + m + ", " + w + ", '" + cs + "', { json: '" + JSON
-                    + "', paramkey: '" + OPT_K + "', value: '" + OPT_V + "', label: '" + OPT_L + "' }),";
-        } else if (StringUtil.endsWith(TEXTAREA_SUFFIXS, n)) {
-            return "Column.longText('" + fieldPrefix + cId + "', " + m + ", " + w + ", '" + cs + "', " + format + "),";
-        } else if (type.matches(NUM_RE)) {
-            if (StringUtil.endsWith(INT_NOFORMAT_SUFFIXS, n)) {
-                return "Column.text('" + fieldPrefix + cId + "', " + m + ", " + w + ", '" + cs + "', " + format + "),";
-            } else {
-                return getNumericColumn(column, fieldPrefix + cId, m, w, cs, format);
-            }
-        } else {
-            return "Column.text('" + fieldPrefix + cId + "', " + m + ", " + w + ", '" + cs + "', " + format + "),";
-        }
+
+        return cs;
     }
 
     /**

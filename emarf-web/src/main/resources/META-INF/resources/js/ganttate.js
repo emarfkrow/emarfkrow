@@ -71,9 +71,49 @@ let Ganttate = {
     },
 
     refresh: function(ganttId, data) {
+
         let gantt = Ganttate.gantts[ganttId];
         let tasks = gantt.taskDefs.load(data);
         gantt.refresh(tasks);
+
+        for (let i in tasks) {
+            let task = tasks[i];
+            if (task.since && task.until) {
+                console.log(task.id + ': ' +
+                    'name=' + task.name + ', ' +
+                    'start=' + task.start + ', ' +
+                    'end=' + task.end + ', ' +
+                    'x=' + $('.bar-wrapper[data-id="' + task.id + '"] .bar').attr('x') + ', ' +
+                    'y=' + $('.bar-wrapper[data-id="' + task.id + '"] .bar').attr('y') + ', ' +
+                    'width=' + $('.bar-wrapper[data-id="' + task.id + '"] .bar').attr('width') + ', ' +
+                    'height=' + $('.bar-wrapper[data-id="' + task.id + '"] .bar').attr('height') + ', ' +
+                    'since=' + task.since + ', ' +
+                    'until=' + task.until + ', ' +
+                    'sinceleft=' + $('.lower-text.date_' + task.since).css('left') + ', ' +
+                    'untilleft=' + $('.lower-text.date_' + task.until).css('left') + ', ' +
+                    'outerWidth=' + $('.lower-text.date_' + task.until).outerWidth(true)
+                );
+                let y = parseInt($('.bar-wrapper[data-id="' + task.id + '"] .bar').attr('y'));
+                let sinceLeft = parseInt($('.lower-text.date_' + task.since).css('left'));
+                let untilLeft = parseInt($('.lower-text.date_' + task.until).css('left'));
+                let outerWidth = $('.lower-text.date_' + task.until).outerWidth(true);
+                let width = untilLeft - sinceLeft + outerWidth;
+
+                const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+
+                $(rect).attr({
+                    x: sinceLeft,
+                    y: y + 27,
+                    width: width,
+                    height: 5,
+                    rx: 3,
+                    ry: 3,
+                    fill: 'lightgray'
+                });
+
+                $('svg').append(rect);
+            }
+        }
     },
 
     arrow: function() {
