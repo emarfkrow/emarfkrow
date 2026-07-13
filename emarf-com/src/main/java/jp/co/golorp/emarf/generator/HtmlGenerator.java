@@ -19,6 +19,7 @@ package jp.co.golorp.emarf.generator;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -268,6 +269,9 @@ public abstract class HtmlGenerator {
      * @param table
      */
     public static void addGridReferHiddenLinks(final List<String> s, final TableInfo table) {
+
+        Set<String> columnNames = new HashSet<String>();
+
         String e = StringUtil.toPascalCase(table.getName());
         if (table.getSummaryTo() != null) {
             TableInfo summary = table.getSummaryTo();
@@ -286,6 +290,7 @@ public abstract class HtmlGenerator {
                     action = "?action=" + summaryE + "Correct.ajax";
                     css = " correct";
                 }
+                columnNames.add(column.getName());
                 s.add("        <a id=\"" + e + "Grid." + p + "\" th:href=\"@{/model/" + summaryE + "S.html" + action
                         + "}\" target=\"dialog\" class=\"refer" + css + "\" th:text=\"#{" + summaryE
                         + "S.title} + #{common.refer}\" tabindex=\"-1\" style=\"display: none;\">...</a>");
@@ -307,6 +312,7 @@ public abstract class HtmlGenerator {
                         action = "?action=" + summaryE + "Correct.ajax";
                         css = " correct";
                     }
+                    columnNames.add(column.getName());
                     s.add("        <a id=\"" + e + "Grid." + p + "\" th:href=\"@{/model/" + summaryE + "S.html" + action
                             + "}\" target=\"dialog\" class=\"refer" + css + "\" th:text=\"#{" + summaryE
                             + "S.title} + #{common.refer}\" tabindex=\"-1\" style=\"display: none;\">...</a>");
@@ -329,14 +335,20 @@ public abstract class HtmlGenerator {
                         action = "?action=" + summaryE + "Correct.ajax";
                         css = " correct";
                     }
+                    columnNames.add(column.getName());
                     s.add("        <a id=\"" + e + "Grid." + p + "\" th:href=\"@{/model/" + summaryE + "S.html" + action
                             + "}\" target=\"dialog\" class=\"refer" + css + "\" th:text=\"#{" + summaryE
                             + "S.title} + #{common.refer}\" tabindex=\"-1\" style=\"display: none;\">...</a>");
                 }
             }
-        } else if (table.getDeriveFroms() != null && table.getDeriveFroms().size() > 0) {
+        }
+
+        if (table.getDeriveFroms() != null && table.getDeriveFroms().size() > 0) {
             for (TableInfo derivee : table.getDeriveFroms()) {
                 for (ColumnInfo column : table.getColumns().values()) {
+                    if (columnNames.contains(column.getName())) {
+                        continue;
+                    }
                     if (BeanGenerator.isMetaBy(column.getName())) {
                         continue;
                     }
@@ -354,30 +366,31 @@ public abstract class HtmlGenerator {
                         action = "?action=" + summaryE + "Correct.ajax";
                         css = " correct";
                     }
+                    columnNames.add(column.getName());
                     s.add("        <a id=\"" + e + "Grid." + p + "\" th:href=\"@{/model/" + summaryE + "S.html" + action
                             + "}\" target=\"dialog\" class=\"refer" + css + "\" th:text=\"#{" + summaryE
                             + "S.title} + #{common.refer}\" tabindex=\"-1\" style=\"display: none;\">...</a>");
                 }
             }
-        } else {
-            for (ColumnInfo column : table.getColumns().values()) {
-                if (column.getRefer() != null) {
-                    if (BeanGenerator.isMetaBy(column.getName())) {
-                        continue;
-                    }
-                    String p = StringUtil.toCamelCase(column.getName());
-                    TableInfo refer = column.getRefer();
-                    String referE = StringUtil.toPascalCase(refer.getName());
-                    String action = "";
-                    String css = "";
-                    if (refer.getStintInfo() != null && table != refer.getStintInfo()) {
-                        action = "?action=" + referE + "Correct.ajax";
-                        css = " correct";
-                    }
-                    s.add("        <a id=\"" + e + "Grid." + p + "\" th:href=\"@{/model/" + referE + "S.html" + action
-                            + "}\" target=\"dialog\" class=\"refer" + css + "\" th:text=\"#{" + referE
-                            + "S.title} + #{common.refer}\" tabindex=\"-1\" style=\"display: none;\">...</a>");
+        }
+
+        for (ColumnInfo column : table.getColumns().values()) {
+            if (column.getRefer() != null && !columnNames.contains(column.getName())) {
+                if (BeanGenerator.isMetaBy(column.getName())) {
+                    continue;
                 }
+                String p = StringUtil.toCamelCase(column.getName());
+                TableInfo refer = column.getRefer();
+                String referE = StringUtil.toPascalCase(refer.getName());
+                String action = "";
+                String css = "";
+                if (refer.getStintInfo() != null && table != refer.getStintInfo()) {
+                    action = "?action=" + referE + "Correct.ajax";
+                    css = " correct";
+                }
+                s.add("        <a id=\"" + e + "Grid." + p + "\" th:href=\"@{/model/" + referE + "S.html" + action
+                        + "}\" target=\"dialog\" class=\"refer" + css + "\" th:text=\"#{" + referE
+                        + "S.title} + #{common.refer}\" tabindex=\"-1\" style=\"display: none;\">...</a>");
             }
         }
     }
@@ -975,7 +988,7 @@ public abstract class HtmlGenerator {
                         addGridJs(s, indent, table.getName(), name, "共生元モデル");
                     }
                     added.put(e, 0);
-                    htmlNestGrid(s, e, tables, added, false, indent + "  ", false);
+                    htmlNestGrid(s, e, tables, added, false, indent + "  ", true);
                 }
             }
             // 集約元モデル
@@ -1034,40 +1047,40 @@ public abstract class HtmlGenerator {
         if (!isD && t.getStintInfo() != null) { // 検索画面の場合は制約モデルの参照キーを出力
             htmlFieldsStint(t, s);
         }
-        String entNm = StringUtil.toPascalCase(t.getName());
+        String e = StringUtil.toPascalCase(t.getName());
         for (ColumnInfo c : t.getColumns().values()) { // カラム情報でループ
-            String colNm = c.getName();
-            if ((isB && c.isPk()) || colNm.matches("(?i)^" + VIEW_DETAIL + "$")) {
+            String cNm = c.getName();
+            if ((isB && c.isPk()) || cNm.matches("(?i)^" + VIEW_DETAIL + "$")) {
                 continue; // 兄弟モデルの主キー と VIEWの「TABLE_NAME」なら出力しない
             }
-            if (t.isView() && isD && StringUtil.startsWith(VIEW_CRITERIA_PREFIXS, colNm)) {
+            if (t.isView() && isD && StringUtil.startsWith(VIEW_CRITERIA_PREFIXS, cNm)) {
                 continue; // VIEWの詳細フォームには「SEARCH_」を出力しない
             }
-            if (!isD && (StringUtil.endsWith(FILE_SUFS, colNm) || StringUtil.endsWith(TS_SUFS, colNm))) {
+            if (!isD && (StringUtil.endsWith(FILE_SUFS, cNm) || StringUtil.endsWith(TS_SUFS, cNm))) {
                 continue; // 検索条件にはファイル項目とタイムスタンプを出力しない
             }
-            String property = StringUtil.toCamelCase(colNm);
-            if (BeanGenerator.isMetaTsBy(colNm)) { // メタ情報の場合
+            String p = StringUtil.toCamelCase(cNm);
+            if (BeanGenerator.isMetaTsBy(cNm)) {
                 if (!isD) {
-                    continue; // 検索画面ならスキップ（検索条件にはしない）
+                    continue; // メタ情報の場合検索画面ならスキップ（検索条件にはしない）
                 }
                 if (isB) {
-                    if (colNm.matches("(?i)^" + UPDATE_TS + "$")) {
-                        s.add("        <input type=\"hidden\" name=\"" + entNm + "." + property + "\" />");
+                    if (cNm.matches("(?i)^" + UPDATE_TS + "$")) {
+                        s.add("        <input type=\"hidden\" name=\"" + e + "." + p + "\" />");
                     }
-                    continue; // 兄弟モデルならスキップ（更新日時のみ楽観ロック用に出力）
+                    continue; // 兄弟モデルならスキップ（更新日時だけは楽観ロック用に出力）
                 }
             }
             TableInfo rebornFrom = seekRebornFrom(t, c);
             TableInfo mergeFrom = seekMergeFrom(t, c);
             String referCss = addCssByRelation(isD, t, c);
-            String fId = entNm + "." + property;
-            s.add("        <div id=\"" + property + "\">");
-            if (BeanGenerator.isMetaTsBy(colNm)) { // メタ情報の場合は表示項目（編集画面の自モデルのみここに到達する）
+            String fId = e + "." + p;
+            s.add("        <div id=\"" + p + "\">");
+            if (BeanGenerator.isMetaTsBy(cNm)) { // メタ情報の場合は表示項目（編集画面の自モデルのみここに到達する）
                 htmlFieldsMeta(s, fId, c);
                 addMeiSpan(s, t, c, "meta");
-            } else if (StringUtil.endsWith(OPTIONS_SUFFIXS, colNm) && c.getRefer() == null) {
-                String css = ""; // 選択項目の場合（サフィックスが合致しても参照モデルなら除外）
+            } else if (StringUtil.endsWith(OPTIONS_SUFFIXS, cNm) && c.getRefer() == null) { // 参照モデルでない選択項目の場合
+                String css = "";
                 if (isD && c.isPk()) { // 詳細画面の主キー
                     css += " primaryKey";
                 }
@@ -1084,13 +1097,13 @@ public abstract class HtmlGenerator {
                     css += isNotBlank(c);
                 }
                 if (isD && t.getHistory() == null && !t.isHistory() && !c.isPk()
-                        && StringUtil.endsWith(INPUT_READONLY_SUFFIXS, colNm)) {
+                        && StringUtil.endsWith(INPUT_READONLY_SUFFIXS, cNm)) {
                     css += " forceReadonly";
                 }
-                htmlFieldsOptions(s, fId, colNm, css);
-            } else if (isD && StringUtil.endsWith(INPUT_READONLY_SUFFIXS, colNm)) { // 読み取り専用の場合
+                htmlFieldsOptions(s, fId, cNm, css);
+            } else if (isD && StringUtil.endsWith(INPUT_READONLY_SUFFIXS, cNm)) { // 読み取り専用の場合
                 String css = "";
-                if (c.getTypeName().matches(NUM_RE) && !StringUtil.endsWith(INT_NOFORMAT_SUFFIXS, colNm)) {
+                if (c.getTypeName().matches(NUM_RE) && !StringUtil.endsWith(INT_NOFORMAT_SUFFIXS, cNm)) {
                     css = getNumericCss(c);
                 }
                 htmlFieldsSpan(s, fId, c, css);
@@ -1113,29 +1126,29 @@ public abstract class HtmlGenerator {
                     css += " summaryOf";
                 }
                 htmlFieldsSpan(s, fId, c, css);
-                if (!isP && t.getSummaryOfs().size() == 0 && c.getNullable() == 1) {
+                if (!isP && t.getSummaryOfs().size() == 0 && c.getNullable() == 1) { // NOTNULLなら派生元参照リンクを出さない
                     s.add(getCorrectLink(fId, StringUtil.toPascalCase(c.getDeriveFrom().getName()), css));
                 }
             } else if (isD && c.isSummary()) { // 詳細画面の集約先外部キー
                 htmlFieldsSpan(s, fId, c, "summary");
-            } else if (StringUtil.endsWith(TS_SUFS, colNm)) { // タイムスタンプの場合
+            } else if (StringUtil.endsWith(TS_SUFS, cNm)) { // タイムスタンプの場合
                 htmlFieldsSpan(s, fId, c, "");
-            } else if (isD && StringUtil.endsWith(TEXTAREA_SUFFIXS, colNm)) { // テキストエリア項目の場合
+            } else if (isD && StringUtil.endsWith(TEXTAREA_SUFFIXS, cNm)) { // テキストエリア項目の場合
                 String css = "";
                 if (isD && c.getNullable() == 0) {
                     css += isNotBlank(c);
                 }
                 htmlFieldsTextarea(s, fId, c.getName(), css);
             } else { // inputの場合
-                String type = getInputType(colNm);
-                String inputCss = getInputCss(t, isD, c, colNm);
-                String format = getFormat(c, colNm);
-                if (!isD && StringUtil.endsWith(inputRangeSuffixs, colNm)) { // 検索画面の範囲指定項目の場合
+                String type = getInputType(cNm);
+                String inputCss = getInputCss(t, isD, c, cNm);
+                String format = getFormat(c, cNm);
+                if (!isD && StringUtil.endsWith(inputRangeSuffixs, cNm)) { // 検索画面の範囲指定項目の場合
                     s.add(htmlFieldsRange(fId, type, inputCss, c, format));
                 } else if (((!t.isView() && !t.isStatusFlow()) || !isD) && c.getRefer() != null) { // 参照モデルの場合
                     s.add(htmlFieldsRefer(fId, type, inputCss, c, format, t, referCss));
                 } else {
-                    if (StringUtil.endsWith(INPUT_BIT_SUFFIXS, colNm)) {
+                    if (StringUtil.endsWith(INPUT_BIT_SUFFIXS, cNm)) {
                         String tag = "          ";
                         tag += "<label for=\"" + fId + "F\" th:text=\"#{" + fId + "}\">" + c.getName().toUpperCase()
                                 + "</label>";
@@ -1147,20 +1160,25 @@ public abstract class HtmlGenerator {
                         tag += "<input type=\"hidden\" id=\"" + fId + "\" name=\"" + fId + "\" class=\"" + inputCss
                                 + "\" />";
                         s.add(tag);
-                    } else if (rebornFrom != null) {
-                        String rNm = StringUtil.toPascalCase(rebornFrom.getName());
-                        s.add(getLink(isD, c, fId, type, inputCss, format, rNm));
-                    } else if (c.getDeriveFrom() != null) {
-                        String rNm = StringUtil.toPascalCase(c.getDeriveFrom().getName());
-                        s.add(getLink(isD, c, fId, type, inputCss, format, rNm));
-                    } else if (mergeFrom != null) {
-                        String rNm = StringUtil.toPascalCase(mergeFrom.getName());
-                        s.add(getLink(isD, c, fId, type, inputCss, format, rNm));
-                    } else if (t.getSummaryTo() != null && t.getSummaryTo().getPrimaryKeys().contains(c.getName())) {
-                        String rNm = StringUtil.toPascalCase(t.getSummaryTo().getName());
-                        s.add(getLink(isD, c, fId, type, inputCss, format, rNm));
                     } else {
+                        if (c.getDeriveFrom() != null) {
+                            inputCss += " derivee";
+                        }
                         s.add(htmlFieldsInput(fId, type, inputCss, c, format));
+                        if (rebornFrom != null) {
+                            String rNm = StringUtil.toPascalCase(rebornFrom.getName());
+                            s.add(getLink(isD, fId, rNm));
+                        } else if (c.getDeriveFrom() != null) {
+                            String rNm = StringUtil.toPascalCase(c.getDeriveFrom().getName());
+                            s.add(getLink(isD, fId, rNm));
+                        } else if (mergeFrom != null) {
+                            String rNm = StringUtil.toPascalCase(mergeFrom.getName());
+                            s.add(getLink(isD, fId, rNm));
+                        } else if (t.getSummaryTo() != null
+                                && t.getSummaryTo().getPrimaryKeys().contains(c.getName())) {
+                            String rNm = StringUtil.toPascalCase(t.getSummaryTo().getName());
+                            s.add(getLink(isD, fId, rNm));
+                        }
                     }
                 }
             }
@@ -1170,26 +1188,16 @@ public abstract class HtmlGenerator {
 
     /**
      * @param isD
-     * @param c
      * @param fId
-     * @param type
-     * @param inputCss
-     * @param format
      * @param rNm
      * @return String
      */
-    private static String getLink(final boolean isD, final ColumnInfo c, final String fId, final String type,
-            final String inputCss, final String format, final String rNm) {
-
-        String link = htmlFieldsInput(fId, type, inputCss + " refer", c, format);
-
+    private static String getLink(final boolean isD, final String fId, final String rNm) {
         if (isD) {
-            link += "\r\n" + getCorrectLink(fId, rNm, "refer");
+            return getCorrectLink(fId, rNm, "refer");
         } else {
-            link += "\r\n" + getReferLink(fId, rNm, "refer");
+            return getReferLink(fId, rNm, "refer");
         }
-
-        return link;
     }
 
     /**

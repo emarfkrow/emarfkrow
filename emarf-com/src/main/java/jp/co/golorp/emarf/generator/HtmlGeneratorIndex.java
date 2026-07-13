@@ -357,6 +357,25 @@ public final class HtmlGeneratorIndex extends HtmlGenerator {
         }
         String type = column.getTypeName();
         String cId = column.getName().toUpperCase();
+        // 派生元
+        for (TableInfo from : table.getDeriveFroms()) {
+            if (from.getPrimaryKeys().contains(column.getName())) {
+                return "Column.refer('" + prefix + cId + "', " + m + ", " + w + ", '" + css + "', '" + rMei + "'),";
+            }
+        }
+        // 共生元
+        for (TableInfo from : table.getMergeFroms()) {
+            if (from.getPrimaryKeys().contains(column.getName())) {
+                return "Column.refer('" + prefix + cId + "', " + m + ", " + w + ", '" + css + "', '" + rMei + "'),";
+            }
+        }
+        // 集約先
+        if (table.getSummaryTo() != null) {
+            TableInfo from = table.getSummaryTo();
+            if (from.getPrimaryKeys().contains(column.getName())) {
+                return "Column.refer('" + prefix + cId + "', " + m + ", " + w + ", '" + css + "', '" + rMei + "'),";
+            }
+        }
         if (isMeiRefer) {
             if (!type.matches(NUM_RE) || StringUtil.endsWith(INT_NOFORMAT_SUFFIXS, n)) {
                 return "Column.refer('" + prefix + cId + "', " + m + ", " + w + ", '" + css + "', '" + rMei + "'),";
@@ -394,25 +413,6 @@ public final class HtmlGeneratorIndex extends HtmlGenerator {
         } else if (type.matches(NUM_RE) && !StringUtil.endsWith(INT_NOFORMAT_SUFFIXS, n)) {
             return getNumericColumn(column, prefix + cId, m, w, css, format);
         } else {
-            // 派生元
-            for (TableInfo from : table.getDeriveFroms()) {
-                if (from.getPrimaryKeys().contains(column.getName())) {
-                    return "Column.refer('" + prefix + cId + "', " + m + ", " + w + ", '" + css + "', '" + rMei + "'),";
-                }
-            }
-            // 共生元
-            for (TableInfo from : table.getMergeFroms()) {
-                if (from.getPrimaryKeys().contains(column.getName())) {
-                    return "Column.refer('" + prefix + cId + "', " + m + ", " + w + ", '" + css + "', '" + rMei + "'),";
-                }
-            }
-            // 集約先
-            if (table.getSummaryTo() != null) {
-                TableInfo from = table.getSummaryTo();
-                if (from.getPrimaryKeys().contains(column.getName())) {
-                    return "Column.refer('" + prefix + cId + "', " + m + ", " + w + ", '" + css + "', '" + rMei + "'),";
-                }
-            }
             return "Column.text('" + prefix + cId + "', " + m + ", " + w + ", '" + css + "', " + format + "),";
         }
     }

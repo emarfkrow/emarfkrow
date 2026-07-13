@@ -1331,10 +1331,10 @@ public final class DataSources {
                 }
 
                 // 派生元の主キーでループして、合致する派生先の外部キーを取得
-                Set<String> sakiFKs = new HashSet<String>();
-                for (String motoKey : moto.getPrimaryKeys()) {
-                    ColumnInfo motoCol = moto.getColumns().get(motoKey);
-                    for (ColumnInfo sakiCol : saki.getColumns().values()) {
+                Set<String> sakiFKs = new LinkedHashSet<String>();
+                for (ColumnInfo sakiCol : saki.getColumns().values()) {
+                    for (String motoKey : moto.getPrimaryKeys()) {
+                        ColumnInfo motoCol = moto.getColumns().get(motoKey);
                         if (!sakiCol.isPk() && isMatchColDef(motoCol, sakiCol)) {
                             sakiFKs.add(sakiCol.getName());
                         }
@@ -1351,7 +1351,10 @@ public final class DataSources {
                 LOG.debug("    " + moto.getName() + " to " + saki.getName() + " " + sakiFKs);
                 moto.getDeriveTos().add(saki);
                 saki.getDeriveFroms().add(moto);
+
+                String sakiLastFK = null;
                 for (String sakiKey : sakiFKs) {
+                    sakiLastFK = sakiKey;
                     ColumnInfo sakiCol = saki.getColumns().get(sakiKey);
                     if (sakiCol.getNullable() != 1) {
                         // 必須なら上書き
@@ -1373,6 +1376,10 @@ public final class DataSources {
                         // }
                     }
                 }
+
+                // 派生先の外部キーのうち、最後のキーにも派生元を設定
+                ColumnInfo sakiCol = saki.getColumns().get(sakiLastFK);
+                sakiCol.setDeriveFrom(moto);
 
                 // [売上]の派生元は、[受注]と[受注明細]となるが、親の[受注]は、派生元から外したいが参照は可能にしたい。
             }
@@ -1469,58 +1476,51 @@ public final class DataSources {
 
             // ユニークな必須の転生先情報
             TableInfo saki = null;
-            Set<String> sakiKeys = null;
+            Set<String> sakiFKs = null;
 
             // 転生先候補数
             int reborns = 0;
 
-            // 派生先が転生先を持つか
-            boolean isSakiRebornTo = false;
-
             // 派生先でループ
             for (TableInfo deriveTo : moto.getDeriveTos()) {
 
+                // ビューか決裁フローならスキップ
                 if (deriveTo.isView() || deriveTo.isStatusFlow()) {
                     continue;
                 }
 
-                // 派生先のうち一つでも、転生先を持っているか
-                if (!isSakiRebornTo) {
-                    isSakiRebornTo = deriveTo.getRebornTo() != null;
-                }
+                //                if (deriveTo.getDeriveFroms().size() > 1) {
+                //                    continue;
+                //                }
 
-                sakiKeys = new HashSet<String>();
+                sakiFKs = new HashSet<String>();
 
-                // 外部キーにNULL可が含まれるか
+                // 転生先の外部キーがNULL可なら次の転生先を評価
                 boolean isNullable = false;
-
-                // 転生元の主キーでループ
-                List<String> motoKeys = moto.getPrimaryKeys();
-                for (String motoKey : motoKeys) {
-
-                    // 転生先の外部キーがNULLなら次の転生先
-                    ColumnInfo sakiFK = deriveTo.getColumns().get(motoKey);
+                for (String motoPK : moto.getPrimaryKeys()) {
+                    ColumnInfo sakiFK = deriveTo.getColumns().get(motoPK);
                     if (sakiFK.getNullable() == 1) {
                         isNullable = true;
-                        break;
                     }
-
-                    // 転生先の外部キーを退避
-                    sakiKeys.add(motoKey);
+                    //                    if (sakiFK.getDeriveFrom() == moto) {
+                    sakiFKs.add(sakiFK.getName());
+                    //                    }
+                }
+                // 派生元が転生先になっていて、派生先が転生元になっているなら、当該派生関係も転生関係とする（２回目で機能する）
+                if (moto.getRebornFrom() != null && deriveTo.getRebornTo() != null
+                /*&& deriveTo.getDeriveFroms().size() == 1 && deriveTo.getDeriveFroms().get(0) == moto*/) {
+                    isNullable = false;
+                }
+                if (isNullable) {
+                    continue;
                 }
 
-                // この派生先が、派生元を必須なら、転生先として退避
-                if (!isNullable) {
-                    saki = deriveTo;
-                    ++reborns;
-                }
-                // 派生元が他の転生先で、派生先が他への転生元なら、当該派生関係も転生関係とする
-                if (moto.getRebornFrom() != null && isSakiRebornTo) {
-                    saki = deriveTo;
-                    ++reborns;
-                }
+                // 転生先として退避
+                saki = deriveTo;
+                ++reborns;
             }
-            // 退避した転生先が１件でない場合
+
+            // 退避した派生先が１件でない場合は次の転生元を評価
             if (reborns != 1) {
                 continue;
             }
@@ -1553,7 +1553,7 @@ public final class DataSources {
             //                }
             //            }
 
-            LOG.debug("    " + moto.getName() + " to " + saki.getName() + " " + sakiKeys);
+            LOG.debug("    " + moto.getName() + " to " + saki.getName() + " " + sakiFKs);
 
             // 派生情報を消し込み
             moto.getDeriveTos().remove(saki);
@@ -1567,7 +1567,7 @@ public final class DataSources {
             // 転生情報を書き込み
             moto.setRebornTo(saki);
             saki.setRebornFrom(moto);
-            for (String sakiKey : sakiKeys) {
+            for (String sakiKey : sakiFKs) {
                 saki.getColumns().get(sakiKey).setReborn(true);
             }
         }
