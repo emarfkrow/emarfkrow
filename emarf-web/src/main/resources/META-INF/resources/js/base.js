@@ -946,7 +946,8 @@ let Base = {
         });
 
         $registForm.find('a.output').button('option', 'disabled', true);
-        $registForm.find('a.reborner').button('option', 'disabled', true);
+		$registForm.find('a.reborner').button('option', 'disabled', true);
+		$registForm.find('a.deriveTo').button('option', 'disabled', true);
         $registForm.find('button.delete').button('option', 'disabled', true);
         $registForm.find('button.apply').button('option', 'disabled', true);
         $registForm.find('button.cancel').button('option', 'disabled', true);
@@ -1063,7 +1064,8 @@ let Base = {
                             });
 
                             // 転生可能
-                            $registForm.find('a.reborner').button('option', 'disabled', false);
+							$registForm.find('a.reborner').button('option', 'disabled', false);
+							$registForm.find('a.deriveTo').button('option', 'disabled', false);
 
                         } else if ($statusKb.val() == null) {
                             /*
@@ -1163,7 +1165,8 @@ let Base = {
                             }
 
                             // 転生可能
-                            $registForm.find('a.reborner').button('option', 'disabled', false);
+							$registForm.find('a.reborner').button('option', 'disabled', false);
+							$registForm.find('a.deriveTo').button('option', 'disabled', false);
 
                             // 否認可能
                             let isReborned = false;

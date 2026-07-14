@@ -1502,14 +1502,13 @@ public final class DataSources {
                     if (sakiFK.getNullable() == 1) {
                         isNullable = true;
                     }
-                    //                    if (sakiFK.getDeriveFrom() == moto) {
+                    // 派生元が転生先になっていて、派生先が転生元になっているなら、当該派生関係も転生関係とする（２回目で機能する）
+                    if (isNullable && moto.getRebornFrom() != null && deriveTo.getRebornTo() != null) {
+                        if (deriveTo.getDeriveFroms().size() == 1) {
+                            isNullable = false;
+                        }
+                    }
                     sakiFKs.add(sakiFK.getName());
-                    //                    }
-                }
-                // 派生元が転生先になっていて、派生先が転生元になっているなら、当該派生関係も転生関係とする（２回目で機能する）
-                if (moto.getRebornFrom() != null && deriveTo.getRebornTo() != null
-                /*&& deriveTo.getDeriveFroms().size() == 1 && deriveTo.getDeriveFroms().get(0) == moto*/) {
-                    isNullable = false;
                 }
                 if (isNullable) {
                     continue;
@@ -1552,6 +1551,16 @@ public final class DataSources {
             //                    continue;
             //                }
             //            }
+
+            TableInfo preRebornFrom = saki.getRebornFrom();
+
+            if (preRebornFrom != null) {
+                if (moto.getPrimaryKeys().size() < preRebornFrom.getPrimaryKeys().size()) {
+                    continue;
+                }
+                preRebornFrom.setRebornTo(null);
+                saki.setRebornFrom(null);
+            }
 
             LOG.debug("    " + moto.getName() + " to " + saki.getName() + " " + sakiFKs);
 

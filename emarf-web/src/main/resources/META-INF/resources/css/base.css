@@ -266,7 +266,8 @@ button.regist {
 }
 
 a.reborner,
-a.summary {
+a.summary,
+a.deriveTo {
 	background-color: steelblue;
 	color: white !important;
 	font-size: large;
