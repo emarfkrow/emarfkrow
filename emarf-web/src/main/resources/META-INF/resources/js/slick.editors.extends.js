@@ -1013,7 +1013,7 @@ limitations under the License.
 
         this.loadValue = function(item) {
             defaultValue = item[args.column.field] || "";
-            defaultValue = parseInt(defaultValue).toString(2);
+            defaultValue = (parseInt(defaultValue) || 0).toString(2);
             $input.val(defaultValue);
             $input[0].defaultValue = defaultValue;
             $input.select();

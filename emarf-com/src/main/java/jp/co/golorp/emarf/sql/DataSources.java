@@ -101,8 +101,11 @@ public final class DataSources {
     /** VIEWで変換先を指定する列名 */
     private static String viewDetailColumn;
 
-    /** ガントチャート化を判定する項目名・開始日・終了日のカラムサフィックス */
+    /** ガントチャート化を判定する項目名のカラムサフィックス */
     private static Set<String[]> ganttColumns = new LinkedHashSet<String[]>();
+
+    /** グラフ化を判定する項目名のカラムサフィックス */
+    private static Set<String[]> graphColumns = new LinkedHashSet<String[]>();
 
     /** 数値列で自動採番しないサフィックス */
     private static String noNumberingIntRe;
@@ -128,6 +131,9 @@ public final class DataSources {
     //    private static String[] inputTimeSuffixs;
     /** 適用日 */
     private static String tekiyoBi;
+
+    /** 範囲指定サフィックス */
+    private static String[] inputRangeSuffixs;
 
     /**
      * データベース名列挙子
@@ -287,10 +293,16 @@ public final class DataSources {
 
         viewDetailColumn = bundle.getString("view.detail");
 
-        String[] columns = bundle.getString("gantt.columns").split(",");
-        for (String column : columns) {
-            String[] strings = column.split(":");
-            ganttColumns.add(strings);
+        String[] ganttDefs = bundle.getString("gantt.columns").split(",");
+        for (String ganttDef : ganttDefs) {
+            String[] columns = ganttDef.split(":");
+            ganttColumns.add(columns);
+        }
+
+        String[] graphDefs = bundle.getString("graph.columns").split(",");
+        for (String graphDef : graphDefs) {
+            String[] columns = graphDef.split(":");
+            graphColumns.add(columns);
         }
 
         noNumberingIntRe = bundle.getString("column.int.nonumbering.re");
@@ -306,6 +318,8 @@ public final class DataSources {
         inputHourSuffixs = bundle.getString("input.hour.suffixs").split(",");
 
         //        inputTimeSuffixs = bundle.getString("input.time.suffixs").split(",");
+
+        inputRangeSuffixs = bundle.getString("input.range.suffixs").split(",");
 
         tekiyoBi = bundle.getString("column.start").toUpperCase();
     }
@@ -431,6 +445,7 @@ public final class DataSources {
             Connections.close();
         }
         setGantt(tables);
+        setGraph(tables);
         setRefer(tables); // 参照モデルの評価
         addBrothers(tables); // 兄弟モデルの評価
         setHistory(tables); // 履歴モデルの評価
@@ -482,6 +497,36 @@ public final class DataSources {
                     if (nameColumn && startColumn && endColumn) {
                         table.setGantt(true);
                         break;
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * @param tables
+     */
+    private static void setGraph(final List<TableInfo> tables) {
+        for (TableInfo table : tables) {
+            boolean isGraph = false;
+            for (String[] graphColumn : graphColumns) {
+                for (String columnName : graphColumn) {
+                    if (table.getColumns().containsKey(columnName)) {
+                        isGraph = true;
+                        continue;
+                    }
+                    isGraph = false;
+                    break;
+                }
+            }
+            table.setGraph(isGraph);
+            // グラフなら範囲指定カラムのみ必須にする（検索条件制御のため）
+            if (isGraph) {
+                for (ColumnInfo column : table.getColumns().values()) {
+                    if (StringUtil.endsWith(inputRangeSuffixs, column.getName())) {
+                        column.setNullable(0);
+                    } else {
+                        column.setNullable(1);
                     }
                 }
             }

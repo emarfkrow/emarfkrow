@@ -52,20 +52,21 @@ public final class HtmlGeneratorIndex extends HtmlGenerator {
      */
     public static void htmlIndex(final String htmlDir, final TableInfo table, final List<TableInfo> tables) {
         String e = StringUtil.toPascalCase(table.getName());
-        String es = e + "S";
         List<String> s = new ArrayList<String>();
-        addHtmlHead(s, es, table.getName());
+        addHtmlHead(s, e + "S", table.getName());
         s.add("<script th:src=\"@{/model/" + e + ".js}\"></script>");
         s.add("<script th:src=\"@{/model/" + e + "GridColumns.js}\"></script>");
         Map<TableInfo, Integer> added = new HashMap<TableInfo, Integer>();
         added.put(table, 1);
         htmlNestGrid(s, table, tables, added, false, "", false);
         s.add("</head>\r\n<body>\r\n  <div layout:fragment=\"article\">");
-        s.add("    <h2 th:text=\"#{" + es + ".h2}\">h2</h2>\r\n    <!-- 検索フォーム -->");
+        s.add("    <h2 th:text=\"#{" + e + "S.h2}\">h2</h2>\r\n    <!-- 検索フォーム -->");
         s.add("    <form name=\"" + e + "SearchForm\" action=\"" + e + "Search.ajax\" class=\"search\">");
-        s.add("      <input type=\"hidden\" name=\"rows\" value=\"" + GRID_ROWS + "\" />");
-        s.add("      <input type=\"hidden\" name=\"page\" value=\"0\" />");
-        s.add("      <fieldset>\r\n        <legend th:text=\"#{" + es + ".legend}\">legend</legend>");
+        if (!table.isGraph()) {
+            s.add("      <input type=\"hidden\" name=\"rows\" value=\"" + GRID_ROWS + "\" />");
+            s.add("      <input type=\"hidden\" name=\"page\" value=\"0\" />");
+        }
+        s.add("      <fieldset>\r\n        <legend th:text=\"#{" + e + "S.legend}\">legend</legend>");
         htmlFields(table, s, false, false, false);
         s.add("      </fieldset>\r\n      <div class=\"buttons\">\r\n        <button type=\"button\" id=\"Reset" + e
                 + "\" th:text=\"#{common.reset}\" class=\"reset\" onClick=\"Dialogate.reset(event);\">reset</button>");
@@ -100,105 +101,137 @@ public final class HtmlGeneratorIndex extends HtmlGenerator {
                 for (ColumnInfo col : table.getColumns().values()) {
                     if (col.getDeriveFrom() != null && !deriveFroms.contains(col.getDeriveFrom().getName())) {
                         deriveFroms.add(col.getDeriveFrom().getName());
-                        String fieldId = null;
+                        String field = null;
                         for (String pk : col.getDeriveFrom().getPrimaryKeys()) {
-                            fieldId = e + ".derivee" + StringUtil.toPascalCase(pk);
-                            s.add(htmlFieldsInput(fieldId, "text", "", col.getDeriveFrom().getColumns().get(pk), null));
+                            field = e + ".derivee" + StringUtil.toPascalCase(pk);
+                            s.add(htmlFieldsInput(field, "text", "", col.getDeriveFrom().getColumns().get(pk), null));
                         }
-                        String referName = StringUtil.toPascalCase(col.getDeriveFrom().getName());
-                        s.add("          <a id=\"" + fieldId + "\" th:href=\"@{/model/" + referName + "S.html?action="
-                                + referName + "Correct.ajax}\" target=\"dialog\" class=\"derivee\" "
-                                + "th:text=\"#{common.correct}\" tabindex=\"-1\">...</a>");
+                        String refer = StringUtil.toPascalCase(col.getDeriveFrom().getName());
+                        s.add("          <a id=\"" + field + "\" th:href=\"@{/model/" + refer + "S.html?action=" + refer
+                                + "Correct.ajax}\" target=\"dialog\" class=\"derivee\" th:text=\"#{common.correct}\" tabindex=\"-1\">...</a>");
                     }
                 }
             }
         }
-        s.add("      </div>\r\n      <div class=\"submits\">\r\n        <button id=\"Search" + e
-                + "\" type=\"submit\" class=\"search\" data-gridId=\"" + e
-                + "Grid\" th:text=\"#{common.search}\">search</button>\r\n      </div>\r\n    </form>\r\n    <!-- 一覧フォーム -->\r\n    <form name=\""
-                + es + "RegistForm\" action=\"" + es + "Regist.ajax\" class=\"regist\">");
-        s.add("      <h3 th:text=\"#{" + e + ".h3}\">h3</h3>");
-        String addRow = "";
-        if (isAnew) {
-            boolean isNotAddRow = false;
-            for (ColumnInfo column : table.getColumns().values()) {
-                if (BeanGenerator.isMetaBy(column.getName())) {
-                    continue; // メタ情報ならスキップ
-                }
-                if (StringUtil.endsWith(FILE_SUFS, column.getName())) { //ファイル列があれば新規行なし
-                    isNotAddRow = true;
-                    break;
-                }
-            }
-            if (table.getChildren().size() > 0) { //子モデルがあれば新規行なし
-                isNotAddRow = true;
-            }
-            if (!isNotAddRow) {
-                addRow = " data-addRow=\"true\"";
-            }
-        }
-        int frozenColumn = -1;
-        if (!table.isView()) {
-            frozenColumn += table.getPrimaryKeys().size();
-        }
-        String editable = "";
-        if (table.isView() || table.isStatusFlow() || table.isHistory() || table.getChildren().size() > 0) {
-            editable = "data-editable=\"false\" ";
-        }
-        s.add("      <div id=\"" + e + "Grid\" data-selectionMode=\"checkbox\"" + addRow + " data-frozenColumn=\""
-                + frozenColumn + "\" " + editable + "th:data-href=\"@{/model/" + e + ".html}\"></div>");
-        s.add("      <div id=\"" + e + "Pager\"></div>\r\n      <div class=\"buttons\">");
-        if (!table.isHistory() && (!table.isView() || table.isConvView()) && !table.isStatusFlow()) {
-            s.add("        <button type=\"button\" class=\"reset\" id=\"Reset" + es
-                    + "\" th:text=\"#{common.reset}\" onClick=\"Base.listReset('" + e + "');\">reset</button>");
-        }
-        s.add("        <a th:href=\"@{" + e + "Search.xlsx(baseMei=#{" + es + ".h2})}\" id=\"" + e
-                + "Search.xlsx\" th:text=\"#{common.xlsx}\" class=\"output\" tabindex=\"-1\">xlsx</a>");
-        if (table.getSummaryTo() != null) { // 集約先リンク
-            String summaryEntity = StringUtil.toPascalCase(table.getSummaryTo().getName());
-            s.add("        <a th:href=\"@{/model/" + summaryEntity + ".html}\" id=\"" + summaryEntity
-                    + "\" target=\"dialog\" th:text=\"#{" + summaryEntity
-                    + ".sum}\" class=\"summary\" tabindex=\"-1\">" + table.getSummaryTo().getName() + "</a>");
-        }
-        if ((!table.isView() && !table.isStatusFlow() && !table.isHistory()) || table.isConvView()) {
-            addGridReferHiddenLinks(s, table); // 履歴モデルでないテーブルか、組み合わせビュー（検索条件で使う）なら、非表示の参照ボタンを出力
-        }
-        if (!table.isView() && !table.isStatusFlow() && !table.isHistory() && table.getChildren().size() == 0) { // 履歴モデルでないテーブルで、子モデルを持たない場合
-            if (!table.getColumns().containsKey(DELETE_F) && !table.getColumns().containsKey(HAISHI_BI)) {
-                if (table.getPrimaryKeys().size() > 0) {
-                    s.add("        <button type=\"submit\" id=\"Delete" + es + "\" data-action=\"" + es
-                            + "Delete.ajax\" class=\"delete selectRows\" th:text=\"#{common.delete}\" tabindex=\"-1\">delete</button>");
-                }
-            } // 削除フラグも有効期間終了日もないなら、物理削除ボタンを表示
-            if (table.getColumns().containsKey(STATUS)) {
-                String onClick = "";
-                if (table.getStatusFlow() != null && !StringUtil.isNullOrWhiteSpace(REASON)) {
-                    onClick = " onclick=\"if (!Base.kessaiTx(this)) { return false; }\"";
-                }
-                s.add("        <button type=\"submit\"" + onClick + " id=\"Permit" + es + "\" data-action=\"" + es
-                        + "Permit.ajax\" class=\"permit selectRows\" th:text=\"#{common.permit}\" tabindex=\"-1\">permit</button>");
-                s.add("        <button type=\"submit\"" + onClick + " id=\"Forbid" + es + "\" data-action=\"" + es
-                        + "Forbid.ajax\" class=\"forbid selectRows\" th:text=\"#{common.forbid}\" tabindex=\"-1\">forbid</button>");
-                s.add("        <button type=\"submit\"" + onClick + " id=\"Apply" + es + "\" data-action=\"" + es
-                        + "Apply.ajax\" class=\"apply selectRows\" th:text=\"#{common.apply}\" tabindex=\"-1\">apply</button>");
-                s.add("        <button type=\"submit\"" + onClick + " id=\"Cancel" + es + "\" data-action=\"" + es
-                        + "Cancel.ajax\" class=\"cancel selectRows\" th:text=\"#{common.cancel}\" tabindex=\"-1\">cancel</button>");
-            } //ステータス列名の指定があり、テーブルにステータス列があるなら、承認ボタン・否認ボタンを表示
-        }
         s.add("      </div>\r\n      <div class=\"submits\">");
-        if (!table.isHistory() && (!table.isView() || table.isConvView()) && !table.isStatusFlow()
-                && table.getChildren().size() == 0) {
-            String onClick = "";
-            if (table.getHistory() != null && !StringUtil.isNullOrWhiteSpace(REASON)) {
-                onClick = " onclick=\"if (!Base.rirekiTx(this)) { return false; }\"";
+        s.add(getSearchButton(table, e));
+        s.add("      </div>\r\n    </form>\r\n    <!-- 一覧フォーム -->\r\n    <form name=\""
+                + e + "SRegistForm\" action=\"" + e + "SRegist.ajax\" class=\"regist\">");
+        s.add("      <h3 th:text=\"#{" + e + ".h3}\">h3</h3>");
+        if (table.isGraph()) {
+            s.add("      <canvas id=\"" + e + "Graph\"></canvas>");
+        } else {
+            String addRow = "";
+            if (isAnew) {
+                boolean isNotAddRow = false;
+                for (ColumnInfo column : table.getColumns().values()) {
+                    if (BeanGenerator.isMetaBy(column.getName())) {
+                        continue; // メタ情報ならスキップ
+                    }
+                    if (StringUtil.endsWith(FILE_SUFS, column.getName())) { //ファイル列があれば新規行なし
+                        isNotAddRow = true;
+                        break;
+                    }
+                }
+                if (table.getChildren().size() > 0) { //子モデルがあれば新規行なし
+                    isNotAddRow = true;
+                }
+                if (!isNotAddRow) {
+                    addRow = " data-addRow=\"true\"";
+                }
             }
-            if (table.getPrimaryKeys().size() > 0) {
-                s.add("        <button id=\"Regist" + es + "\" type=\"submit\"" + onClick
-                        + " class=\"regist\" th:text=\"#{common.regist}\">regist</button>");
+            int frozenColumn = -1;
+            if (!table.isView()) {
+                frozenColumn += table.getPrimaryKeys().size();
             }
+            String editable = "";
+            if (table.isView() || table.isStatusFlow() || table.isHistory() || table.getChildren().size() > 0) {
+                editable = "data-editable=\"false\" ";
+            }
+            s.add("      <div id=\"" + e + "Grid\" data-selectionMode=\"checkbox\"" + addRow + " data-frozenColumn=\""
+                    + frozenColumn + "\" " + editable + "th:data-href=\"@{/model/" + e + ".html}\"></div>");
+            s.add("      <div id=\"" + e + "Pager\"></div>\r\n      <div class=\"buttons\">");
+            if (!table.isHistory() && (!table.isView() || table.isConvView()) && !table.isStatusFlow()) {
+                s.add("        <button type=\"button\" class=\"reset\" id=\"Reset" + e
+                        + "S\" th:text=\"#{common.reset}\" onClick=\"Base.listReset('" + e + "');\">reset</button>");
+            }
+            s.add("        <a th:href=\"@{" + e + "Search.xlsx(baseMei=#{" + e + "S.h2})}\" id=\"" + e
+                    + "Search.xlsx\" th:text=\"#{common.xlsx}\" class=\"output\" tabindex=\"-1\">xlsx</a>");
+            if (table.getSummaryTo() != null) { // 集約先リンク
+                String summaryEntity = StringUtil.toPascalCase(table.getSummaryTo().getName());
+                s.add("        <a th:href=\"@{/model/" + summaryEntity + ".html}\" id=\"" + summaryEntity
+                        + "\" target=\"dialog\" th:text=\"#{" + summaryEntity
+                        + ".sum}\" class=\"summary\" tabindex=\"-1\">" + table.getSummaryTo().getName() + "</a>");
+            }
+            if ((!table.isView() && !table.isStatusFlow() && !table.isHistory()) || table.isConvView()) {
+                addGridReferHiddenLinks(s, table); // 履歴モデルでないテーブルか、組み合わせビュー（検索条件で使う）なら、非表示の参照ボタンを出力
+            }
+            if (!table.isView() && !table.isStatusFlow() && !table.isHistory() && table.getChildren().size() == 0) { // 履歴モデルでないテーブルで、子モデルを持たない場合
+                if (!table.getColumns().containsKey(DELETE_F) && !table.getColumns().containsKey(HAISHI_BI)) {
+                    if (table.getPrimaryKeys().size() > 0) {
+                        s.add("        <button type=\"submit\" id=\"Delete" + e + "S\" data-action=\"" + e
+                                + "SDelete.ajax\" class=\"delete selectRows\" th:text=\"#{common.delete}\" tabindex=\"-1\">delete</button>");
+                    }
+                } // 削除フラグも有効期間終了日もないなら、物理削除ボタンを表示
+                addKessaiButtons(table, e, s);
+            }
+            s.add("      </div>\r\n      <div class=\"submits\">");
+            if (!table.isHistory() && (!table.isView() || table.isConvView()) && !table.isStatusFlow()
+                    && table.getChildren().size() == 0) {
+                String onClick = "";
+                if (table.getHistory() != null && !StringUtil.isNullOrWhiteSpace(REASON)) {
+                    onClick = " onclick=\"if (!Base.rirekiTx(this)) { return false; }\"";
+                }
+                if (table.getPrimaryKeys().size() > 0) {
+                    s.add("        <button id=\"Regist" + e + "S\" type=\"submit\"" + onClick
+                            + " class=\"regist\" th:text=\"#{common.regist}\">regist</button>");
+                }
+            }
+            s.add("      </div>");
         }
-        s.add("      </div>\r\n    </form>\r\n  </div>\r\n</body>\r\n</html>");
-        FileUtil.writeFile(htmlDir + File.separator + es + ".html", s);
+        s.add("    </form>\r\n  </div>\r\n</body>\r\n</html>");
+        FileUtil.writeFile(htmlDir + File.separator + e + "S.html", s);
+    }
+
+    /**
+     * @param table
+     * @param e
+     * @param s
+     */
+    public static void addKessaiButtons(final TableInfo table, final String e, final List<String> s) {
+        //ステータス列名の指定があり、テーブルにステータス列があるなら、承認ボタン・否認ボタンを表示
+        if (table.getColumns().containsKey(STATUS)) {
+            String onClick = "";
+            if (table.getStatusFlow() != null && !StringUtil.isNullOrWhiteSpace(REASON)) {
+                onClick = " onclick=\"if (!Base.kessaiTx(this)) { return false; }\"";
+            }
+            String es = e + "S";
+            s.add("        <button type=\"submit\"" + onClick + " id=\"Permit" + es + "\" data-action=\"" + es
+                    + "Permit.ajax\" class=\"permit selectRows\" th:text=\"#{common.permit}\" tabindex=\"-1\">permit</button>");
+            s.add("        <button type=\"submit\"" + onClick + " id=\"Forbid" + es + "\" data-action=\"" + es
+                    + "Forbid.ajax\" class=\"forbid selectRows\" th:text=\"#{common.forbid}\" tabindex=\"-1\">forbid</button>");
+            s.add("        <button type=\"submit\"" + onClick + " id=\"Apply" + es + "\" data-action=\"" + es
+                    + "Apply.ajax\" class=\"apply selectRows\" th:text=\"#{common.apply}\" tabindex=\"-1\">apply</button>");
+            s.add("        <button type=\"submit\"" + onClick + " id=\"Cancel" + es + "\" data-action=\"" + es
+                    + "Cancel.ajax\" class=\"cancel selectRows\" th:text=\"#{common.cancel}\" tabindex=\"-1\">cancel</button>");
+        }
+    }
+
+    /**
+     * @param table
+     * @param e
+     * @return String
+     */
+    public static String getSearchButton(final TableInfo table, final String e) {
+        String searchButton = null;
+        if (table.isGraph()) {
+            searchButton = "        <button id=\"Search" + e + "\" type=\"submit\" class=\"search\" data-graphId=\"" + e
+                    + "Graph\" th:text=\"#{common.search}\">search</button>";
+        } else {
+            searchButton = "        <button id=\"Search" + e + "\" type=\"submit\" class=\"search\" data-gridId=\"" + e
+                    + "Grid\" th:text=\"#{common.search}\">search</button>";
+        }
+        return searchButton;
     }
 
     /**

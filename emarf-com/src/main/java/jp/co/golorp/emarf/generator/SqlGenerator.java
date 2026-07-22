@@ -130,17 +130,10 @@ public final class SqlGenerator {
      * @param table テーブル情報
      */
     private static void sqlSearch(final String sqlDir, final TableInfo table) {
-
-        //テーブル名・エンティティ名
         String entity = StringUtil.toPascalCase(table.getName());
-
-        //参照モデルの番号
-        int refs = 0;
-
+        int refs = 0; //参照モデルの番号
         List<String> s = new ArrayList<String>();
-        for (ColumnInfo column : table.getColumns().values()) {
-
-            //カラム行追加
+        for (ColumnInfo column : table.getColumns().values()) { //カラム行追加
             String prefix = "    , ";
             if (s.size() == 0) {
                 s.add("SELECT");
@@ -149,15 +142,22 @@ public final class SqlGenerator {
                     s.add("FROM");
                     s.add("    ( ");
                     s.add("        SELECT");
-                    s.add("              SYS_CONNECT_BY_PATH (a.\"" + column.getName()
-                            + "\", ',')             AS PATH,");
+                    s.add("              SYS_CONNECT_BY_PATH (a.\"" + column.getName() + "\", ',') AS PATH,");
+                } else if (table.isGraph()) {
+                    s.add("    DISTINCT");
+                    s.add("      '''' || LISTAGG (DISTINCT a.labels, ''',''') WITHIN GROUP (ORDER BY a.labels) OVER (PARTITION BY a.type) || '''' AS \"labels\" ");
+                    s.add("    , a.type ");
+                    s.add("    , a.stack ");
+                    s.add("    , a.label ");
+                    s.add("    , LISTAGG (a.DATA, ',') WITHIN GROUP (ORDER BY a.labels) OVER (PARTITION BY a.type, a.label) AS DATA ");
+                    s.add("FROM ");
+                    s.add("    ( ");
+                    s.add("SELECT ");
                 }
                 prefix = "      ";
             }
             s.add(prefix + SqlGenerator.getQuoted(column));
-
-            // 列の参照モデル情報があればカラム名の補完
-            if (column.getRefer() != null) {
+            if (column.getRefer() != null) { // 列の参照モデル情報があればカラム名の補完
                 String meiSql = getMeiSql(refs, table, column);
                 if (meiSql != null) {
                     ++refs;
@@ -165,7 +165,6 @@ public final class SqlGenerator {
                 }
             }
         }
-
         if (table.getName().matches(eldestRe)) {
             int i = 0;
             for (TableInfo bro : table.getBrothers()) {
@@ -179,14 +178,11 @@ public final class SqlGenerator {
                 }
             }
         }
-
         if (table.isGantt()) {
             s.add("    , b.DEPENDENCIES");
         }
-
         s.add("FROM");
         s.add("    " + table.getName() + " a ");
-
         if (table.getName().matches(eldestRe)) {
             int i = 0;
             for (TableInfo bro : table.getBrothers()) {
@@ -198,7 +194,6 @@ public final class SqlGenerator {
                 }
             }
         }
-
         if (table.isGantt()) {
             String pk = table.getPrimaryKeys().get(0);
             String oya = null;
@@ -214,16 +209,16 @@ public final class SqlGenerator {
             }
             s.add(assist.addDependencies(table, pk, oya));
         }
-
         s.add("WHERE");
         s.add("    1 = 1 ");
         for (ColumnInfo column : table.getColumns().values()) {
             addWhere(s, column);
         }
-
         if (table.isGantt()) {
             s.add("ORDER BY");
             s.add("    a.PATH DESC");
+        } else if (table.isGraph()) {
+            s.add("    ) a ");
         } else if (!table.isView()) {
             s.add("ORDER BY");
             if (table.getPrimaryKeys().size() > 0) {

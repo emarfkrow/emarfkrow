@@ -164,6 +164,7 @@ $(function() {
 
         let gridId = $button.attr('data-gridId');
         let ganttId = $button.attr('data-ganttId');
+        let graphId = $button.attr('data-graphId');
         if (gridId != undefined) {
             // 送信したボタンに反映先のグリッドID指定がある場合（検索ボタンの場合）
 
@@ -211,6 +212,70 @@ $(function() {
                 }
                 if (ganttId.indexOf('Dialog') < 0) {
                     Base.resizeNav();
+                }
+            };
+
+        } else if (graphId != undefined) {
+            // 送信したボタンに反映先のグラフID指定がある場合（検索ボタンの場合）
+
+            callback = function(json) {
+                for (let dataName in json) {
+                    if (Array.isArray(json[dataName])) {
+
+                        let datasets = [];
+                        let dataset = json[dataName];
+                        for (let i = 0;i < dataset.length;i++) {
+
+                            let newData = {};
+                            let data = dataset[i];
+                            for (let key in data) {
+                                if (key == 'DATA') {
+                                    newData['data'] = data[key].split(',').map(Number);
+                                } else {
+                                    newData[key.toLowerCase()] = data[key];
+                                }
+                            }
+
+                            datasets.push(newData);
+                        }
+
+                        const data = {
+                            labels: datasets[0].labels.split(','),
+                            datasets: datasets
+                        };
+
+                        const config = {
+                            data: data,
+                            options: {
+                                scales: {
+                                    x: {
+                                        stacked: true,
+                                    },
+                                    y: {
+                                        stacked: true,
+                                    },
+                                },
+                                responsive: true,
+                                plugins: {
+                                    legend: {
+                                        position: 'right',
+                                    },
+                                    title: {
+                                        display: false,
+                                        text: '表タイトル'
+                                    }
+                                }
+                            }
+                        };
+
+                        if (Chart.getChart(graphId)) {
+                            Chart.getChart(graphId).destroy();
+                        }
+                        const canvas = document.getElementById(graphId);
+                        new Chart(canvas, config);
+
+                        break;
+                    }
                 }
             };
 

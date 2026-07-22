@@ -187,10 +187,10 @@ public abstract class HtmlGenerator {
 
         youngestRe = bundle.getString("relation.youngest.re");
 
-        String[] columns = bundle.getString("gantt.columns").split(",");
-        for (String column : columns) {
-            String[] strings = column.split(":");
-            ganttColumns.add(strings);
+        String[] ganttDefs = bundle.getString("gantt.columns").split(",");
+        for (String ganttDef : ganttDefs) {
+            String[] columns = ganttDef.split(":");
+            ganttColumns.add(columns);
         }
 
         navIgnoreRe = bundle.getString("nav.ignore.re");
@@ -397,15 +397,15 @@ public abstract class HtmlGenerator {
 
     /**
      * @param s
-     * @param entity
+     * @param e
      * @param tableName
      */
-    public static void addHtmlHead(final List<String> s, final String entity, final String tableName) {
+    public static void addHtmlHead(final List<String> s, final String e, final String tableName) {
         s.add("<!DOCTYPE html>");
         s.add("<html xmlns:th=\"http://www.thymeleaf.org\" xmlns:layout=\"http://www.ultraq.net.nz/web/thymeleaf/layout\" layout:decorate=\"~{common/base}\">");
         s.add("<head>");
         s.add("<meta charset=\"UTF-8\">");
-        s.add("<title th:text=\"#{" + entity + ".title}\">" + tableName + "</title>");
+        s.add("<title th:text=\"#{" + e + ".title}\">" + tableName + "</title>");
         s.add("<style type=\"text/css\">");
         s.add("</style>");
         s.add("<script type=\"text/javascript\">");
@@ -588,20 +588,7 @@ public abstract class HtmlGenerator {
                 s.add("        <button id=\"Delete" + e + "\" type=\"submit\" class=\"delete\" data-action=\"" + e
                         + "Delete.ajax\" th:text=\"#{common.delete}\" tabindex=\"-1\">delete</button>");
             } // 削除フラグ列名の指定がないか、テーブルに削除フラグ列がないなら、物理削除ボタンを表示
-            if (table.getColumns().containsKey(STATUS)) {
-                String onClick = "";
-                if (table.getStatusFlow() != null && !StringUtil.isNullOrWhiteSpace(REASON)) {
-                    onClick = " onclick=\"if (!Base.kessaiTx(this)) { return false; }\"";
-                }
-                s.add("        <button type=\"submit\"" + onClick + " id=\"Permit" + e + "\" data-action=\"" + e
-                        + "Permit.ajax\" class=\"permit\" th:text=\"#{common.permit}\" tabindex=\"-1\">permit</button>");
-                s.add("        <button type=\"submit\"" + onClick + " id=\"Forbid" + e + "\" data-action=\"" + e
-                        + "Forbid.ajax\" class=\"forbid\" th:text=\"#{common.forbid}\" tabindex=\"-1\">forbid</button>");
-                s.add("        <button type=\"submit\"" + onClick + " id=\"Apply" + e + "\" data-action=\"" + e
-                        + "Apply.ajax\" class=\"apply\" th:text=\"#{common.apply}\" tabindex=\"-1\">apply</button>");
-                s.add("        <button type=\"submit\"" + onClick + " id=\"Cancel" + e + "\" data-action=\"" + e
-                        + "Cancel.ajax\" class=\"cancel\" th:text=\"#{common.cancel}\" tabindex=\"-1\">cancel</button>");
-            } //ステータス列名の指定があり、テーブルにステータス列があるなら、承認ボタン・否認ボタンを表示
+            addKessaiButtons(e, s, table);
             String onclick = "";
             if (table.getHistory() != null && !StringUtil.isNullOrWhiteSpace(REASON)) {
                 onclick = " onclick=\"if (!Base.rirekiTx(this)) { return false; }\"";
@@ -630,6 +617,29 @@ public abstract class HtmlGenerator {
         s.add("</body>");
         s.add("</html>");
         FileUtil.writeFile(htmlDir + File.separator + e + ".html", s);
+    }
+
+    /**
+     * @param e
+     * @param s
+     * @param table
+     */
+    public static void addKessaiButtons(final String e, final List<String> s, final TableInfo table) {
+        //ステータス列名の指定があり、テーブルにステータス列があるなら、承認ボタン・否認ボタンを表示
+        if (table.getColumns().containsKey(STATUS)) {
+            String onClick = "";
+            if (table.getStatusFlow() != null && !StringUtil.isNullOrWhiteSpace(REASON)) {
+                onClick = " onclick=\"if (!Base.kessaiTx(this)) { return false; }\"";
+            }
+            s.add("        <button type=\"submit\"" + onClick + " id=\"Permit" + e + "\" data-action=\"" + e
+                    + "Permit.ajax\" class=\"permit\" th:text=\"#{common.permit}\" tabindex=\"-1\">permit</button>");
+            s.add("        <button type=\"submit\"" + onClick + " id=\"Forbid" + e + "\" data-action=\"" + e
+                    + "Forbid.ajax\" class=\"forbid\" th:text=\"#{common.forbid}\" tabindex=\"-1\">forbid</button>");
+            s.add("        <button type=\"submit\"" + onClick + " id=\"Apply" + e + "\" data-action=\"" + e
+                    + "Apply.ajax\" class=\"apply\" th:text=\"#{common.apply}\" tabindex=\"-1\">apply</button>");
+            s.add("        <button type=\"submit\"" + onClick + " id=\"Cancel" + e + "\" data-action=\"" + e
+                    + "Cancel.ajax\" class=\"cancel\" th:text=\"#{common.cancel}\" tabindex=\"-1\">cancel</button>");
+        }
     }
 
     /**
@@ -1067,6 +1077,9 @@ public abstract class HtmlGenerator {
             if (!isD && (StringUtil.endsWith(FILE_SUFS, cNm) || StringUtil.endsWith(TS_SUFS, cNm))) {
                 continue; // 検索条件にはファイル項目とタイムスタンプを出力しない
             }
+            if (!isD && t.isGraph() && c.getNullable() == 1) {
+                continue; // グラフモデルで必須でなければ出力しない
+            }
             String p = StringUtil.toCamelCase(cNm);
             if (BeanGenerator.isMetaTsBy(cNm)) {
                 if (!isD) {
@@ -1152,6 +1165,9 @@ public abstract class HtmlGenerator {
                 String inputCss = getInputCss(t, isD, c, cNm);
                 String format = getFormat(c, cNm);
                 if (!isD && StringUtil.endsWith(inputRangeSuffixs, cNm)) { // 検索画面の範囲指定項目の場合
+                    if (t.isGraph()) {
+                        inputCss += " notblank";
+                    }
                     s.add(htmlFieldsRange(fId, type, inputCss, c, format));
                 } else if (((!t.isView() && !t.isStatusFlow()) || !isD) && c.getRefer() != null) { // 参照モデルの場合
                     s.add(htmlFieldsRefer(fId, type, inputCss, c, format, t, referCss));
@@ -1579,15 +1595,20 @@ public abstract class HtmlGenerator {
             max = column.getMaxLength();
         }
 
+        String required = "";
+        if (css.indexOf("notblank") >= 0) {
+            required = " required";
+        }
+
         String tag = "          ";
         tag += "<label for=\"" + id + "_1\" th:text=\"#{" + id + "}\">" + column.getName().toUpperCase() + "</label>";
         tag += "<input type=\"" + type + "\" id=\"" + id + "_1\" name=\"" + id + "_1\" maxlength=\"" + max
                 + "\" class=\"" + css + "\""
-                + dataFormat + " />";
+                + dataFormat + required + " />";
         tag += "～";
         tag += "<input type=\"" + type + "\" id=\"" + id + "_2\" name=\"" + id + "_2\" maxlength=\"" + max
                 + "\" class=\"" + css + "\""
-                + dataFormat + " />";
+                + dataFormat + required + " />";
 
         return tag;
     }

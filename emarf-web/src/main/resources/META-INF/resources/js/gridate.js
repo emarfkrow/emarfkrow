@@ -1068,14 +1068,14 @@ var Gridate = {
         if (grid) {
             if (!data) {
                 data = [];
-                //		} else {
-                //			for (let i in data) {
-                //				let item = data[i];
-                //				if (item['id']) {
-                //					break;
-                //				}
-                //				item['id'] = i;
-                //			}
+            }
+			// id列がなければ、子モデルのためrows指定が無かったという事なので、連番を付与
+            for (let i in data) {
+                let item = data[i];
+                if (item['id']) {
+                    break;
+                }
+                item['id'] = i;
             }
             grid['orgData'] = JSON.parse(JSON.stringify(data));
             //		if (data.length > 0 && data[0]['id']) {

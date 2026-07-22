@@ -61,8 +61,6 @@ public final class HtmlGeneratorGantt extends HtmlGenerator {
         s.add("    <h2 th:text=\"#{" + es + ".h2}\">h2</h2>");
         s.add("    <!-- 検索フォーム -->");
         s.add("    <form name=\"" + e + "SearchForm\" action=\"" + e + "Search.ajax\" class=\"search\">");
-        s.add("      <input type=\"hidden\" name=\"rows\" value=\"" + GRID_ROWS + "\" />");
-        s.add("      <input type=\"hidden\" name=\"page\" value=\"0\" />");
         s.add("      <fieldset>");
         s.add("        <legend th:text=\"#{" + es + ".legend}\">legend</legend>");
         htmlFields(table, s, false, false, false);

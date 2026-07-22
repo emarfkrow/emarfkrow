@@ -95,6 +95,23 @@ public class TableInfo {
         this.isGantt = p;
     }
 
+    /** グラフならtrue */
+    private boolean isGraph;
+
+    /**
+     * @return boolean
+     */
+    public boolean isGraph() {
+        return isGraph;
+    }
+
+    /**
+     * @param p
+     */
+    public void setGraph(final boolean p) {
+        this.isGraph = p;
+    }
+
     /**
      * @return TableInfo
      */
