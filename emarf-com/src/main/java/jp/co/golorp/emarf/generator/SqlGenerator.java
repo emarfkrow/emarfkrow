@@ -299,58 +299,73 @@ public final class SqlGenerator {
 
         //IDと名称のサフィックスペアでループ
         for (String[] e : referPairs) {
-            String keySuf = e[0];
-            String meiSuf = e[1];
+            String[] keySufs = e[0].split("&");
+            String valSuf = e[1];
 
-            // 参照元カラム名が参照キーに合致しなければスキップ
-            if (!column.getName().matches("(?i)^.*" + keySuf + "$")) {
-                continue;
-            }
+            for (String keySuf : keySufs) {
 
-            // 参照元カラム名のIDサフィックスを名称サフィックスに置換して、参照元の名称カラム名を取得
-            String srcKey = column.getName();
-            String srcType = column.getDataType();
-            String srcMei = srcKey.replaceAll("(?i)" + keySuf + "$", meiSuf).toUpperCase();
+                // 参照元カラム名が参照キーに合致しなければスキップ
+                if (!column.getName().matches("(?i)^.*" + keySuf + "$")) {
+                    continue;
+                }
 
-            // 参照先でID・名称のサフィックスに合致するカラムを取得し、両方取得できなければスキップ
-            String destKey = null;
-            String destType = null;
-            String destMei = null;
-            for (String columnName : refer.getColumns().keySet()) {
-                if (srcKey.matches("(?i)^.*" + columnName + "$")) {
-                    destKey = columnName;
-                    destType = refer.getColumns().get(destKey).getDataType();
-                }
-                if (srcMei.matches("(?i)^.*" + columnName + "$")) {
-                    destMei = columnName;
-                }
-                if (destKey != null && destMei != null) {
-                    break;
-                }
-            }
-            if (destKey == null || destMei == null) {
-                continue;
-            }
+                // 参照元カラム名のIDサフィックスを名称サフィックスに置換して、参照元の名称カラム名を取得
+                String srcKey = column.getName();
+                String srcType = column.getDataType();
+                String srcVal = srcKey.replaceAll("(?i)" + keySuf + "$", valSuf).toUpperCase();
 
-            // 生成した参照元名称カラムが、参照元に既存でない場合はselect句に追加
-            boolean isSrcMei = false;
-            for (String columnName : table.getColumns().keySet()) {
-                if (columnName.matches("(?i)^" + srcMei + "$")) {
-                    isSrcMei = true;
-                    break;
+                // 参照先でID・名称のサフィックスに合致するカラムを取得し、両方取得できなければスキップ
+                String destKey = null;
+                String destType = null;
+                String destVal = null;
+                for (String columnName : refer.getColumns().keySet()) {
+                    // キー列の検査
+                    if (srcKey.matches("(?i)^.*" + columnName + "$")) {
+                        destKey = columnName;
+                        destType = refer.getColumns().get(destKey).getDataType();
+                    }
+                    // 値列の検査
+                    if (srcVal.matches("(?i)^.*" + columnName + "$")) {
+                        destVal = columnName;
+                    }
+                    // 参照先のキーと値の列名が取れれば中断
+                    if (destKey != null && destVal != null) {
+                        break;
+                    }
                 }
-            }
-            if (!isSrcMei) {
-                String srcK = assist.quotedSQL(srcKey);
-                String srcM = assist.quotedSQL(srcMei);
-                String destK = assist.quotedSQL(destKey);
-                String destM = assist.quotedSQL(destMei);
-                destK = "r" + refs + "." + destK;
-                if (srcType.equals("String") && !destType.equals("String")) {
-                    destK = assist.int2charSQL(destK);
+                // 参照先のキーと値の列名が取れなければ中断
+                if (destKey == null || destVal == null) {
+                    continue;
                 }
-                return ", (SELECT r" + refs + "." + destM + " FROM " + refer.getName() + " r" + refs + " WHERE "
-                        + destK + " = a." + srcK + ") AS " + srcM;
+
+                // 生成した参照元名称カラムが、参照元に既存でない場合はselect句に追加
+                boolean isSrcMei = false;
+                for (String columnName : table.getColumns().keySet()) {
+                    if (columnName.matches("(?i)^" + srcVal + "$")) {
+                        isSrcMei = true;
+                        break;
+                    }
+                }
+                if (!isSrcMei) {
+                    String srcPrefix = srcKey.replaceFirst(destKey + "$", "");
+                    String destKeys = "";
+                    for (String primaryKey : refer.getPrimaryKeys()) {
+                        String destPK = assist.quotedSQL(primaryKey);
+                        destPK = "r" + refs + "." + destPK;
+                        if (srcType.equals("String") && !destType.equals("String")) {
+                            destPK = assist.int2charSQL(destPK);
+                        }
+                        if (destKeys.length() > 0) {
+                            destKeys += " AND ";
+                        }
+                        String srcFK = assist.quotedSQL(srcPrefix + primaryKey);
+                        destKeys += destPK + " = a." + srcFK;
+                    }
+                    String srcV = assist.quotedSQL(srcVal);
+                    String destV = assist.quotedSQL(destVal);
+                    return ", (SELECT r" + refs + "." + destV + " FROM " + refer.getName() + " r" + refs + " WHERE "
+                            + destKeys + ") AS " + srcV;
+                }
             }
         }
 

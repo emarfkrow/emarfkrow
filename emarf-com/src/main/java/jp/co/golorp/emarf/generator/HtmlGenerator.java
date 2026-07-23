@@ -1712,53 +1712,68 @@ public abstract class HtmlGenerator {
      */
     private static String getReferDef(final String entityName, final String columnName, final TableInfo referInfo) {
 
-        // カラム名が参照キーに合致する場合
-        if (StringUtil.endsWith(REFER_PAIRS, columnName)) {
+        //        // カラム名が参照キーに合致する場合
+        //        if (StringUtil.endsWith(REFER_PAIRS, columnName)) {
 
-            for (String[] e : REFER_PAIRS) {
-                String idSuffix = e[0];
-                String meiSuffix = e[1];
+        for (String[] e : REFER_PAIRS) {
+            String[] keySufs = e[0].split("&");
+            String valSuf = e[1];
+
+            for (String keySuf : keySufs) {
 
                 // カラム名が参照キーに合致しなければスキップ
-                if (!columnName.matches("(?i)^.*" + idSuffix + "$")) {
+                if (!columnName.matches("(?i)^.*" + keySuf + "$")) {
                     continue;
                 }
 
                 // カラム名のIDサフィックスを名称サフィックスに置換して名称カラム名を取得
-                String srcIdColumn = columnName;
-                String srcMeiColumn = srcIdColumn.replaceAll("(?i)" + idSuffix + "$", meiSuffix);
+                String srcKey = columnName;
+                String srcVal = srcKey.replaceAll("(?i)" + keySuf + "$", valSuf);
 
                 // 参照先テーブルの全カラム名を確認して、末尾が合致するカラム名を、参照先のID・名称カラム名として取得
-                String destIdColumn = null;
-                String destMeiColumn = null;
+                String destKey = null;
+                String destVal = null;
                 for (ColumnInfo column : referInfo.getColumns().values()) {
                     String destColumnName = column.getName();
-                    if (srcIdColumn.matches("(?i)^.*" + destColumnName + "$")) {
-                        destIdColumn = destColumnName;
-                    } else if (srcMeiColumn.matches("(?i)^.*" + destColumnName + "$")) {
-                        destMeiColumn = destColumnName;
+                    if (srcKey.matches("(?i)^.*" + destColumnName + "$")) {
+                        destKey = destColumnName;
+
                     }
-                    if (destIdColumn != null && destMeiColumn != null) {
+                    // 値列の検査
+                    if (srcVal.matches("(?i)^.*" + destColumnName + "$")) {
+                        destVal = destColumnName;
+                    }
+                    // 参照先のキーと値の列名が取れれば中断
+                    if (destKey != null && destVal != null) {
                         break;
                     }
                 }
-
-                if (destIdColumn == null || destMeiColumn == null) {
+                // 参照先のキーと値の列名が取れなければ中断
+                if (destKey == null || destVal == null) {
                     continue;
                 }
 
+                String srcDefs = "";
+                String srcPrefix = srcKey.replaceFirst(destKey + "$", "");
+                for (String primaryKey : referInfo.getPrimaryKeys()) {
+                    String srcIdName = entityName + "." + StringUtil.toCamelCase(srcPrefix + primaryKey);
+                    if (srcDefs.length() > 0) {
+                        srcDefs += ",";
+                    }
+                    srcDefs += primaryKey + ":" + srcIdName;
+                }
+
                 String referName = StringUtil.toPascalCase(referInfo.getName());
-                String srcIdName = entityName + "." + StringUtil.toCamelCase(srcIdColumn);
-                String srcMeiName = entityName + "." + StringUtil.toCamelCase(srcMeiColumn);
+                String srcMeiName = entityName + "." + StringUtil.toCamelCase(srcVal);
 
-                String referFor = " data-referFor=\"" + srcIdName + "\"";
+                String referFor = " data-referFor=\"" + entityName + "." + StringUtil.toCamelCase(srcKey) + "\"";
                 String dataJson = " data-json=\"" + referName + "Search.json\"";
-                String srcDef = " data-srcDef=\"" + destIdColumn + ":" + srcIdName + "\"";
-                String destDef = " data-destDef=\"" + srcMeiName + ":" + destMeiColumn + "\"";
-
+                String srcDef = " data-srcDef=\"" + srcDefs + "\"";
+                String destDef = " data-destDef=\"" + srcMeiName + ":" + destVal + "\"";
                 return referFor + dataJson + srcDef + destDef;
             }
         }
+        //        }
 
         return "";
     }
