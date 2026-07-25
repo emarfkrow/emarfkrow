@@ -21,7 +21,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import jp.co.golorp.emarf.exception.SysError;
-import jp.co.golorp.emarf.generator.TableInfo;
 import jp.co.golorp.emarf.util.MapList;
 
 /**
@@ -201,12 +200,6 @@ public final class DataSourcesAssistPostgreSQL extends DataSourcesAssist {
     @Override
     public String int2charSQL(final String a) {
         return a;
-    }
-
-    @Override
-    public String addDependencies(final TableInfo table, final String pk, final String oya) {
-        // TODO 自動生成されたメソッド・スタブ
-        return null;
     }
 
 }
