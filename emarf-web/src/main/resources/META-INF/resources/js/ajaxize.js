@@ -163,8 +163,8 @@ $(function() {
         let callback;
 
         let gridId = $button.attr('data-gridId');
-        let ganttId = $button.attr('data-ganttId');
         let graphId = $button.attr('data-graphId');
+        let ganttId = $button.attr('data-ganttId');
         if (gridId != undefined) {
             // 送信したボタンに反映先のグリッドID指定がある場合（検索ボタンの場合）
 
@@ -190,31 +190,6 @@ $(function() {
                 }
             };
 
-        } else if (ganttId != undefined) {
-            // 送信したボタンに反映先のガントID指定がある場合（検索ボタンの場合）
-
-            Ganttate.refresh(ganttId, []);
-
-            callback = function(data) {
-                for (let dataName in data) {
-                    if (Array.isArray(data[dataName])) {
-                        Ganttate.refresh(ganttId, data[dataName]);
-
-                        let $form = $button.closest('form');
-                        let $h2 = $form.prev('h2');
-                        let $h2Toggle = $h2.find('[id="h2Toggle"]');
-                        if ($h2Toggle.hasClass('ui-icon-triangle-1-s')) {
-                            $h2.click();
-                        }
-
-                        break;
-                    }
-                }
-                if (ganttId.indexOf('Dialog') < 0) {
-                    Base.resizeNav();
-                }
-            };
-
         } else if (graphId != undefined) {
             // 送信したボタンに反映先のグラフID指定がある場合（検索ボタンの場合）
 
@@ -222,22 +197,24 @@ $(function() {
                 for (let dataName in json) {
                     if (Array.isArray(json[dataName])) {
 
-                        let datasets = [];
-                        let dataset = json[dataName];
-                        for (let i = 0;i < dataset.length;i++) {
+                        //                        let datasets = [];
+                        //                        let dataset = json[dataName];
+                        //                        for (let i = 0;i < dataset.length;i++) {
+                        //
+                        //                            let newData = {};
+                        //                            let data = dataset[i];
+                        //                            for (let key in data) {
+                        //                                if (key == 'DATA') {
+                        //                                    newData['data'] = data[key].split(',').map(Number);
+                        //                                } else {
+                        //                                    newData[key.toLowerCase()] = data[key];
+                        //                                }
+                        //                            }
+                        //
+                        //                            datasets.push(newData);
+                        //                        }
 
-                            let newData = {};
-                            let data = dataset[i];
-                            for (let key in data) {
-                                if (key == 'DATA') {
-                                    newData['data'] = data[key].split(',').map(Number);
-                                } else {
-                                    newData[key.toLowerCase()] = data[key];
-                                }
-                            }
-
-                            datasets.push(newData);
-                        }
+                        let datasets = transformDataJson(json[dataName]);
 
                         const data = {
                             labels: datasets[0].labels.split(','),
@@ -276,6 +253,31 @@ $(function() {
 
                         break;
                     }
+                }
+            };
+
+        } else if (ganttId != undefined) {
+            // 送信したボタンに反映先のガントID指定がある場合（検索ボタンの場合）
+
+            Ganttate.refresh(ganttId, []);
+
+            callback = function(data) {
+                for (let dataName in data) {
+                    if (Array.isArray(data[dataName])) {
+                        Ganttate.refresh(ganttId, data[dataName]);
+
+                        let $form = $button.closest('form');
+                        let $h2 = $form.prev('h2');
+                        let $h2Toggle = $h2.find('[id="h2Toggle"]');
+                        if ($h2Toggle.hasClass('ui-icon-triangle-1-s')) {
+                            $h2.click();
+                        }
+
+                        break;
+                    }
+                }
+                if (ganttId.indexOf('Dialog') < 0) {
+                    Base.resizeNav();
                 }
             };
 
@@ -358,6 +360,56 @@ $(function() {
         Ajaxize.ajaxPost(action, formData, callback);
     });
 });
+
+function transformDataJson(items) {
+
+    // 1. ユニークな日付のリストを取得して昇順ソート
+    const labelsSet = new Set(items.map(item => item.LABELS));
+    const labels = Array.from(labelsSet).sort();
+
+    // 日付の結合文字列（例: "'20260601','20260602',..."）
+    const labelsString = labels.map(d => `${d}`).join(',');
+
+    // 2. LABELごとのデータを集約
+    const labelMap = new Map();
+
+    for (const item of items) {
+        const label = item.LABEL.trim();
+
+        if (!labelMap.has(label)) {
+            labelMap.set(label, {
+                TYPE: item.TYPE,
+                STACK: item.STACK,
+                dataByDate: new Map()
+            });
+        }
+
+        labelMap.get(label).dataByDate.set(item.LABELS, item.DATA);
+    }
+
+    // 3. 変換後のJSON構造（配列）を作成
+    const result = [];
+
+    for (const [label, info] of labelMap.entries()) {
+
+        // 各日付のDATA値を順番に連結（存在しない場合は0）
+        //const data = labels.map(d => info.dataByDate.get(d) ?? 0);
+        var data = labels.map(function(d) {
+            var val = info.dataByDate.get(d);
+            return (val !== undefined && val !== null) ? val : 0;
+        });
+
+        result.push({
+            labels: labelsString,
+            type: info.TYPE,
+            stack: info.STACK,
+            label: label,
+            data: data
+        });
+    }
+
+    return result;
+}
 
 let Ajaxize = {
 

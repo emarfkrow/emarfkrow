@@ -137,23 +137,23 @@ public final class SqlGenerator {
             String prefix = "    , ";
             if (s.size() == 0) {
                 s.add("SELECT");
-                if (table.isGantt()) {
-                    s.add("      * ");
-                    s.add("FROM");
-                    s.add("    ( ");
-                    s.add("        SELECT");
-                    s.add("              SYS_CONNECT_BY_PATH (a.\"" + column.getName() + "\", ',') AS PATH,");
-                } else if (table.isGraph()) {
-                    s.add("    DISTINCT");
-                    s.add("      '''' || LISTAGG (DISTINCT a.labels, ''',''') WITHIN GROUP (ORDER BY a.labels) OVER (PARTITION BY a.type) || '''' AS \"labels\" ");
-                    s.add("    , a.type ");
-                    s.add("    , a.stack ");
-                    s.add("    , a.label ");
-                    s.add("    , LISTAGG (a.DATA, ',') WITHIN GROUP (ORDER BY a.labels) OVER (PARTITION BY a.type, a.label) AS DATA ");
-                    s.add("FROM ");
-                    s.add("    ( ");
-                    s.add("SELECT ");
-                }
+                //                if (table.isGantt()) {
+                //                    s.add("      * ");
+                //                    s.add("FROM");
+                //                    s.add("    ( ");
+                //                    s.add("        SELECT");
+                //                    s.add("              SYS_CONNECT_BY_PATH (a.\"" + column.getName() + "\", ',') AS PATH,");
+                //                } else if (table.isGraph()) {
+                //                    s.add("    DISTINCT");
+                //                    s.add("      '''' || LISTAGG (DISTINCT a.labels, ''',''' ON OVERFLOW TRUNCATE '...' WITH COUNT) WITHIN GROUP (ORDER BY a.labels) OVER (PARTITION BY a.type) || '''' AS \"labels\" ");
+                //                    s.add("    , a.type ");
+                //                    s.add("    , a.stack ");
+                //                    s.add("    , a.label ");
+                //                    s.add("    , LISTAGG (a.DATA, ',') WITHIN GROUP (ORDER BY a.labels) OVER (PARTITION BY a.type, a.label) AS DATA ");
+                //                    s.add("FROM ");
+                //                    s.add("    ( ");
+                //                    s.add("SELECT ");
+                //                }
                 prefix = "      ";
             }
             s.add(prefix + SqlGenerator.getQuoted(column));
@@ -178,9 +178,9 @@ public final class SqlGenerator {
                 }
             }
         }
-        if (table.isGantt()) {
-            s.add("    , b.DEPENDENCIES");
-        }
+        //        if (table.isGantt()) {
+        //            s.add("    , b.DEPENDENCIES");
+        //        }
         s.add("FROM");
         s.add("    " + table.getName() + " a ");
         if (table.getName().matches(eldestRe)) {
@@ -194,32 +194,38 @@ public final class SqlGenerator {
                 }
             }
         }
-        if (table.isGantt()) {
-            String pk = table.getPrimaryKeys().get(0);
-            String oya = null;
-            for (ColumnInfo column : table.getColumns().values()) {
-                if (column.getRefer() == table) {
-                    oya = column.getName();
-                    break;
-                }
-                if (column.getName().matches("(?i)^.+" + pk + "$")) {
-                    oya = column.getName();
-                    break;
-                }
-            }
-            s.add(assist.addDependencies(table, pk, oya));
-        }
+        //        if (table.isGantt()) {
+        //            String pk = table.getPrimaryKeys().get(0);
+        //            String oya = null;
+        //            for (ColumnInfo column : table.getColumns().values()) {
+        //                if (column.getRefer() == table) {
+        //                    oya = column.getName();
+        //                    break;
+        //                }
+        //                if (column.getName().matches("(?i)^.+" + pk + "$")) {
+        //                    oya = column.getName();
+        //                    break;
+        //                }
+        //            }
+        //            s.add(assist.addDependencies(table, pk, oya));
+        //            s.add("        START WITH");
+        //            s.add("            a." + oya + " IS NULL ");
+        //            s.add("        CONNECT BY");
+        //            s.add("            PRIOR " + pk + " = a." + oya);
+        //            s.add("    ) a ");
+        //        }
         s.add("WHERE");
         s.add("    1 = 1 ");
         for (ColumnInfo column : table.getColumns().values()) {
             addWhere(s, column);
         }
-        if (table.isGantt()) {
-            s.add("ORDER BY");
-            s.add("    a.PATH DESC");
-        } else if (table.isGraph()) {
-            s.add("    ) a ");
-        } else if (!table.isView()) {
+        //        if (table.isGantt()) {
+        //            s.add("ORDER BY");
+        //            s.add("    a.PATH DESC");
+        //        } else if (table.isGraph()) {
+        //            s.add("    ) a ");
+        //        }
+        if (!table.isView()) {
             s.add("ORDER BY");
             if (table.getPrimaryKeys().size() > 0) {
                 String orders = "";

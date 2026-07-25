@@ -170,6 +170,9 @@ public final class XlsxUtil {
                 // モデル名：データ
                 Map<String, Object> addSheetData = addSheetEntry.getValue();
 
+                int r = 0;
+                int c = 0;
+
                 // タイトルとプレースホルダの出力
                 for (Entry<String, Object> addSheetItem : addSheetData.entrySet()) {
 
@@ -198,8 +201,6 @@ public final class XlsxUtil {
 
                     // 列情報を転記
                     if (dataItem != null) {
-                        int r = 0;
-                        int c = 0;
                         int childs = 0;
                         for (Entry<String, Object> e : dataItem.entrySet()) {
                             String k = e.getKey();

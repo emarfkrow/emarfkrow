@@ -480,6 +480,9 @@ public final class DataSources {
      */
     private static void setGantt(final List<TableInfo> tables) {
         for (TableInfo table : tables) {
+            if (!table.isView()) {
+                continue;
+            }
             if (table.getPrimaryKeys().size() == 1) {
                 for (String[] ganttColumn : ganttColumns) {
                     boolean nameColumn = false;
@@ -508,6 +511,9 @@ public final class DataSources {
      */
     private static void setGraph(final List<TableInfo> tables) {
         for (TableInfo table : tables) {
+            if (!table.isView()) {
+                continue;
+            }
             boolean isGraph = false;
             for (String[] graphColumn : graphColumns) {
                 for (String columnName : graphColumn) {
