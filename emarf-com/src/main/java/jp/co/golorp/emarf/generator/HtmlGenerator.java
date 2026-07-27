@@ -901,7 +901,6 @@ public abstract class HtmlGenerator {
                 }
             }
         }
-
         // 兄弟モデルの参照モデル
         for (TableInfo bro : table.getBrothers()) {
             for (ColumnInfo column : bro.getColumns().values()) {
@@ -914,6 +913,47 @@ public abstract class HtmlGenerator {
                         htmlNestGrid(s, e, tables, added, false, indent + "  ", true);
                     }
                 }
+            }
+        }
+        // 転生元モデル：転生元は転生先で参照になるためisReferの外で処理する
+        if (table.getRebornFrom() != null) {
+            TableInfo e = table.getRebornFrom();
+            if (added.get(e) == null || added.get(e) != 0) {
+                if (!added.containsKey(e)) {
+                    String name = StringUtil.toPascalCase(e.getName());
+                    addGridJs(s, indent, table.getName(), name, "転生元モデル");
+                }
+                added.put(e, 0);
+                htmlNestGrid(s, e, tables, added, false, indent + "  ", true);
+            }
+        }
+        // 派生元モデル
+        for (ColumnInfo column : table.getColumns().values()) {
+            if (column.getDeriveFrom() != null) {
+                TableInfo e = column.getDeriveFrom();
+                if (added.get(e) != null && added.get(e) == 0) {
+                    continue;
+                }
+                if (!added.containsKey(e)) {
+                    String name = StringUtil.toPascalCase(e.getName());
+                    addGridJs(s, indent, table.getName(), name, "派生元モデル");
+                }
+                added.put(e, 0);
+                htmlNestGrid(s, e, tables, added, false, indent + "  ", true);
+            }
+        }
+        // 共生元モデル
+        if (table.getMergeFroms().size() > 0) {
+            for (TableInfo e : table.getMergeFroms()) {
+                if (added.get(e) != null && added.get(e) == 0) {
+                    continue;
+                }
+                if (!added.containsKey(e)) {
+                    String name = StringUtil.toPascalCase(e.getName());
+                    addGridJs(s, indent, table.getName(), name, "共生元モデル");
+                }
+                added.put(e, 0);
+                htmlNestGrid(s, e, tables, added, false, indent + "  ", true);
             }
         }
 
@@ -942,18 +982,6 @@ public abstract class HtmlGenerator {
                 added.put(e, 0);
                 htmlNestGrid(s, e, tables, added, false, indent + "  ", false);
             }
-            // 転生元モデル
-            if (table.getRebornFrom() != null) {
-                TableInfo e = table.getRebornFrom();
-                if (added.get(e) == null || added.get(e) != 0) {
-                    if (!added.containsKey(e)) {
-                        String name = StringUtil.toPascalCase(e.getName());
-                        addGridJs(s, indent, table.getName(), name, "転生元モデル");
-                    }
-                    added.put(e, 0);
-                    htmlNestGrid(s, e, tables, added, false, indent + "  ", true);
-                }
-            }
             // 転生先モデル
             if (table.getRebornTo() != null) {
                 TableInfo e = table.getRebornTo();
@@ -961,21 +989,6 @@ public abstract class HtmlGenerator {
                     if (!added.containsKey(e)) {
                         String name = StringUtil.toPascalCase(e.getName());
                         addGridJs(s, indent, table.getName(), name, "転生先モデル");
-                    }
-                    added.put(e, 0);
-                    htmlNestGrid(s, e, tables, added, false, indent + "  ", false);
-                }
-            }
-            // 派生元モデル
-            for (ColumnInfo column : table.getColumns().values()) {
-                if (column.getDeriveFrom() != null) {
-                    TableInfo e = column.getDeriveFrom();
-                    if (added.get(e) != null && added.get(e) == 0) {
-                        continue;
-                    }
-                    if (!added.containsKey(e)) {
-                        String name = StringUtil.toPascalCase(e.getName());
-                        addGridJs(s, indent, table.getName(), name, "派生元モデル");
                     }
                     added.put(e, 0);
                     htmlNestGrid(s, e, tables, added, false, indent + "  ", false);
@@ -990,20 +1003,6 @@ public abstract class HtmlGenerator {
                     if (!added.containsKey(e)) {
                         String name = StringUtil.toPascalCase(e.getName());
                         addGridJs(s, indent, table.getName(), name, "派生先モデル");
-                    }
-                    added.put(e, 0);
-                    htmlNestGrid(s, e, tables, added, false, indent + "  ", false);
-                }
-            }
-            // 共生元モデル
-            if (table.getMergeFroms().size() > 0) {
-                for (TableInfo e : table.getMergeFroms()) {
-                    if (added.get(e) != null && added.get(e) == 0) {
-                        continue;
-                    }
-                    if (!added.containsKey(e)) {
-                        String name = StringUtil.toPascalCase(e.getName());
-                        addGridJs(s, indent, table.getName(), name, "共生元モデル");
                     }
                     added.put(e, 0);
                     htmlNestGrid(s, e, tables, added, false, indent + "  ", false);
