@@ -1008,20 +1008,20 @@ public abstract class HtmlGenerator {
                     htmlNestGrid(s, e, tables, added, false, indent + "  ", false);
                 }
             }
-            // 集約元モデル
-            if (table.getSummaryOfs().size() > 0) {
-                for (TableInfo e : table.getSummaryOfs()) {
-                    if (added.get(e) != null && added.get(e) == 0) {
-                        continue;
-                    }
-                    if (!added.containsKey(e)) {
-                        String name = StringUtil.toPascalCase(e.getName());
-                        addGridJs(s, indent, table.getName(), name, "集約元モデル");
-                    }
-                    added.put(e, 0);
-                    htmlNestGrid(s, e, tables, added, false, indent + "  ", false);
-                }
-            }
+            //            // 集約元モデル
+            //            if (table.getSummaryOfs().size() > 0) {
+            //                for (TableInfo e : table.getSummaryOfs()) {
+            //                    if (added.get(e) != null && added.get(e) == 0) {
+            //                        continue;
+            //                    }
+            //                    if (!added.containsKey(e)) {
+            //                        String name = StringUtil.toPascalCase(e.getName());
+            //                        addGridJs(s, indent, table.getName(), name, "集約元モデル");
+            //                    }
+            //                    added.put(e, 0);
+            //                    htmlNestGrid(s, e, tables, added, false, indent + "  ", false);
+            //                }
+            //            }
             // 集約先モデル
             TableInfo e = table.getSummaryTo();
             if (e != null) {
