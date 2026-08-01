@@ -763,7 +763,7 @@ let Base = {
                 gridHeight = $rootGrids.height() - (bodyScrollHeight - bodyOuterHeight);
             } else {
                 //ウィンドウにスクロールがない場合
-                gridHeight = $rootGrids.height() + ($('.nav').height() - $('.article').outerHeight() - $('.breads').outerHeight());
+                gridHeight = $rootGrids.height() + ($('.nav').height() - $('.article').outerHeight() - $('.breads').outerHeight()) - 10;
             }
 
             $rootGrids.height(gridHeight);
