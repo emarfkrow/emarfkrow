@@ -78,7 +78,17 @@ textarea {
 }
 
 .nav dt {
+	clear: both;
 	margin-top: 1rem;
+}
+
+.nav dd li {
+	clear: both;
+	float: left;
+}
+
+.nav dd li.history {
+	clear: both;
 }
 
 .breads {
@@ -144,6 +154,10 @@ form>fieldset>div {
 form.search>fieldset>div {
 	border-bottom: solid 2px lightgreen;
 	padding-top: 0.3rem;
+}
+
+form.search>fieldset>div.stint {
+	display: none;
 }
 
 form>fieldset>div>label {
@@ -223,9 +237,9 @@ input[type="datetime-local"] {
 	height: 300px;
 }
 
-[role="dialog"] form>fieldset {
+/*[role="dialog"] form>fieldset {
 	width: 1190px;
-}
+}*/
 
 [role="dialog"] [id$="Grid"] {
 	height: 190px;
@@ -371,4 +385,8 @@ a.M {
 
 a.history {
 	margin-left: 2rem;
+}
+
+a.gridRefer {
+	display: none;
 }

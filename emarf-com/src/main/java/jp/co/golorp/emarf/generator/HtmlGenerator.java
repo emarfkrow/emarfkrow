@@ -292,8 +292,8 @@ public abstract class HtmlGenerator {
                 }
                 columnNames.add(column.getName());
                 s.add("        <a id=\"" + e + "Grid." + p + "\" th:href=\"@{/model/" + summaryE + "S.html" + action
-                        + "}\" target=\"dialog\" class=\"refer" + css + "\" th:text=\"#{" + summaryE
-                        + "S.title} + #{common.refer}\" tabindex=\"-1\" style=\"display: none;\">...</a>");
+                        + "}\" target=\"dialog\" class=\"refer gridRefer" + css + "\" th:text=\"#{" + summaryE
+                        + "S.title} + #{common.refer}\" tabindex=\"-1\">...</a>");
             }
         } else if (table.getMergeFroms() != null && table.getMergeFroms().size() > 0) {
             for (TableInfo mergeFrom : table.getMergeFroms()) {
@@ -314,8 +314,8 @@ public abstract class HtmlGenerator {
                     }
                     columnNames.add(column.getName());
                     s.add("        <a id=\"" + e + "Grid." + p + "\" th:href=\"@{/model/" + summaryE + "S.html" + action
-                            + "}\" target=\"dialog\" class=\"refer" + css + "\" th:text=\"#{" + summaryE
-                            + "S.title} + #{common.refer}\" tabindex=\"-1\" style=\"display: none;\">...</a>");
+                            + "}\" target=\"dialog\" class=\"refer gridRefer" + css + "\" th:text=\"#{" + summaryE
+                            + "S.title} + #{common.refer}\" tabindex=\"-1\">...</a>");
                 }
             }
         } else if (table.getChoices() != null && table.getChoices().size() > 0) {
@@ -337,8 +337,8 @@ public abstract class HtmlGenerator {
                     }
                     columnNames.add(column.getName());
                     s.add("        <a id=\"" + e + "Grid." + p + "\" th:href=\"@{/model/" + summaryE + "S.html" + action
-                            + "}\" target=\"dialog\" class=\"refer" + css + "\" th:text=\"#{" + summaryE
-                            + "S.title} + #{common.refer}\" tabindex=\"-1\" style=\"display: none;\">...</a>");
+                            + "}\" target=\"dialog\" class=\"refer gridRefer" + css + "\" th:text=\"#{" + summaryE
+                            + "S.title} + #{common.refer}\" tabindex=\"-1\">...</a>");
                 }
             }
         }
@@ -368,8 +368,8 @@ public abstract class HtmlGenerator {
                     }
                     columnNames.add(column.getName());
                     s.add("        <a id=\"" + e + "Grid." + p + "\" th:href=\"@{/model/" + summaryE + "S.html" + action
-                            + "}\" target=\"dialog\" class=\"refer" + css + "\" th:text=\"#{" + summaryE
-                            + "S.title} + #{common.refer}\" tabindex=\"-1\" style=\"display: none;\">...</a>");
+                            + "}\" target=\"dialog\" class=\"refer gridRefer" + css + "\" th:text=\"#{" + summaryE
+                            + "S.title} + #{common.refer}\" tabindex=\"-1\">...</a>");
                 }
             }
         }
@@ -389,8 +389,8 @@ public abstract class HtmlGenerator {
                     css = " correct";
                 }
                 s.add("        <a id=\"" + e + "Grid." + p + "\" th:href=\"@{/model/" + referE + "S.html" + action
-                        + "}\" target=\"dialog\" class=\"refer" + css + "\" th:text=\"#{" + referE
-                        + "S.title} + #{common.refer}\" tabindex=\"-1\" style=\"display: none;\">...</a>");
+                        + "}\" target=\"dialog\" class=\"refer gridRefer" + css + "\" th:text=\"#{" + referE
+                        + "S.title} + #{common.refer}\" tabindex=\"-1\">...</a>");
             }
         }
     }
@@ -807,7 +807,7 @@ public abstract class HtmlGenerator {
         for (Entry<String, List<TableInfo>> nav : navs.entrySet()) {
             String navKey = nav.getKey();
             String category = navKey.replaceAll("^.*\\d*?-", "");
-            s.add("      <dt id=\"" + category + "\" style=\"clear: both;\" th:text=\"#{nav.dt." + category + "}\">"
+            s.add("      <dt id=\"" + category + "\" th:text=\"#{nav.dt." + category + "}\">"
                     + category + "</dt>");
             s.add("      <dd>");
             s.add("        <ul>");
@@ -819,10 +819,8 @@ public abstract class HtmlGenerator {
                 String name = table.getName();
                 String e = StringUtil.toPascalCase(name);
                 String css = "table";
-                String style = " style=\"clear: both; float: left;\"";
                 if (table.isHistory()) {
                     css = "history";
-                    style = " style=\"clear: both;\"";
                 } else if (table.isView()) {
                     css = "view";
                     //                    // 直前のテーブル名と前方一致するなら回り込み
@@ -838,12 +836,11 @@ public abstract class HtmlGenerator {
                 }
 
                 //                preName = name;
-                s.add("          <li" + style + "><a id=\"" + e + "\" th:href=\"@{/model/" + e
-                        + "S.html}\" th:text=\"#{nav." + e + "S}\" class=\"" + css + "\">" + name + "</a></li>");
+                s.add("          <li><a id=\"" + e + "\" th:href=\"@{/model/" + e + "S.html}\" th:text=\"#{nav." + e
+                        + "S}\" class=\"" + css + "\">" + name + "</a></li>");
                 if (table.isGantt()) {
-                    s.add("          <li" + style + "><a id=\"" + e + "G\" th:href=\"@{/model/" + e
-                            + "G.html}\" th:text=\"#{nav." + e + "G}+#{nav.Gantt}\" class=\"" + css + " ganttNav\">"
-                            + name + "</a></li>");
+                    s.add("          <li><a id=\"" + e + "G\" th:href=\"@{/model/" + e + "G.html}\" th:text=\"#{nav."
+                            + e + "G}+#{nav.Gantt}\" class=\"" + css + " ganttNav\">" + name + "</a></li>");
                 }
             }
             s.add("        </ul>");
@@ -1444,7 +1441,7 @@ public abstract class HtmlGenerator {
                     String columnName = column.getName();
                     String property = StringUtil.toCamelCase(columnName);
                     String fieldId = entity + "." + property;
-                    s.add("        <div id=\"" + property + "\" class=\"stint\" style=\"display: none;\">");
+                    s.add("        <div id=\"" + property + "\" class=\"stint\">");
                     //                    s.add(htmlFieldsRefer(fieldId, "text", "refer", column, "", table, "refer"));
                     htmlFieldsSpan(s, fieldId, column, "stint");
                     addMeiSpan(s, table, column, "");
@@ -1565,7 +1562,7 @@ public abstract class HtmlGenerator {
                 + css + "\"" + dataFormat + " />";
 
         if (type.equals("file")) {
-            tag += "<a id=\"" + id + "\" target=\"blank\" style=\"display: none;\"></a>";
+            tag += "<a id=\"" + id + "\" target=\"blank\"></a>";
             tag += "<input type=\"hidden\" id=\"" + id + "\" name=\"" + id + "\" disabled />";
         }
 
@@ -1698,7 +1695,7 @@ public abstract class HtmlGenerator {
         String tag = "          ";
         tag += "<label th:text=\"#{" + id + "}\">" + c.getName() + "</label>";
         tag += "<span id=\"" + id + "\"" + css + "></span>";
-        tag += "<input type=\"text\" id=\"" + id + "\" name=\"" + id + "\" style=\"display: none;\"" + css + " />";
+        tag += "<input type=\"hidden\" id=\"" + id + "\" name=\"" + id + "\"" + css + " />";
         s.add(tag);
     }
 

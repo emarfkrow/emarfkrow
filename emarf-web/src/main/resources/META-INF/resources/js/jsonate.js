@@ -294,6 +294,12 @@ let Jsonate = {
                         }
                     }
 
+                    // ファイルタグならリンクを一旦非表示
+                    if ($input.attr('type') == 'file') {
+                        let $link = $('a[id="' + this.id + '"]');
+                        $link.hide();
+                    }
+
                     // 値があれば反映
                     if (v != null) {
 

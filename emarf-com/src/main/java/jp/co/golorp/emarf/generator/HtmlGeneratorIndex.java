@@ -88,14 +88,14 @@ public final class HtmlGeneratorIndex extends HtmlGenerator {
                         + "\" class=\"" + anewClass + "\" th:text=\"#{" + e + ".add}\" tabindex=\"-1\">"
                         + table.getName() + "</a>");
             }
-            if (table.getName().matches(ELDEST_RE)) {
-                for (TableInfo bro : table.getBrothers()) {
-                    String b = StringUtil.toPascalCase(bro.getName());
-                    s.add("        <a th:href=\"@{/model/" + b + ".html}\" target=\"dialog\" id=\"" + b + "\" class=\""
-                            + anewClass + "\" style=\"display: none;\" th:text=\"#{" + b + ".add}\" tabindex=\"-1\">"
-                            + bro.getName() + "</a>");
-                }
-            }
+            //            if (table.getName().matches(ELDEST_RE)) {
+            //                for (TableInfo bro : table.getBrothers()) {
+            //                    String b = StringUtil.toPascalCase(bro.getName());
+            //                    s.add("        <a th:href=\"@{/model/" + b + ".html}\" target=\"dialog\" id=\"" + b + "\" class=\""
+            //                            + anewClass + "\" style=\"display: none;\" th:text=\"#{" + b + ".add}\" tabindex=\"-1\">"
+            //                            + bro.getName() + "</a>");
+            //                }
+            //            }
             if (isDeriver) {
                 HashSet<String> deriveFroms = new HashSet<String>();
                 for (ColumnInfo col : table.getColumns().values()) {

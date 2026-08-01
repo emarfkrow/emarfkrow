@@ -83,14 +83,14 @@ public final class HtmlGeneratorGantt extends HtmlGenerator {
             }
             s.add("        <a th:href=\"@{/model/" + e + ".html(anew)}\" target=\"dialog\" id=\"" + e + "\" class=\""
                     + anewClass + "\" th:text=\"#{" + e + ".add}\" tabindex=\"-1\">" + table.getName() + "</a>");
-            if (table.getName().matches(ELDEST_RE)) {
-                for (TableInfo bro : table.getBrothers()) {
-                    String b = StringUtil.toPascalCase(bro.getName());
-                    s.add("        <a th:href=\"@{/model/" + b + ".html}\" target=\"dialog\" id=\"" + b + "\" class=\""
-                            + anewClass + "\" style=\"display: none;\" th:text=\"#{" + b + ".add}\" tabindex=\"-1\">"
-                            + bro.getName() + "</a>");
-                }
-            }
+            //            if (table.getName().matches(ELDEST_RE)) {
+            //                for (TableInfo bro : table.getBrothers()) {
+            //                    String b = StringUtil.toPascalCase(bro.getName());
+            //                    s.add("        <a th:href=\"@{/model/" + b + ".html}\" target=\"dialog\" id=\"" + b + "\" class=\""
+            //                            + anewClass + "\" style=\"display: none;\" th:text=\"#{" + b + ".add}\" tabindex=\"-1\">"
+            //                            + bro.getName() + "</a>");
+            //                }
+            //            }
             if (isDeriver) {
                 HashSet<String> deriveFroms = new HashSet<String>();
                 for (ColumnInfo col : table.getColumns().values()) {
@@ -101,10 +101,9 @@ public final class HtmlGeneratorGantt extends HtmlGenerator {
                             fieldId = e + ".derivee" + StringUtil.toPascalCase(pk);
                             s.add(htmlFieldsInput(fieldId, "text", "", col.getDeriveFrom().getColumns().get(pk), null));
                         }
-                        String referName = StringUtil.toPascalCase(col.getDeriveFrom().getName());
-                        s.add("          <a id=\"" + fieldId + "\" th:href=\"@{/model/" + referName + "S.html?action="
-                                + referName + "Correct.ajax}\" target=\"dialog\" class=\"derivee\" "
-                                + "th:text=\"#{common.correct}\" tabindex=\"-1\">...</a>");
+                        String r = StringUtil.toPascalCase(col.getDeriveFrom().getName());
+                        s.add("          <a id=\"" + fieldId + "\" th:href=\"@{/model/" + r + "S.html?action=" + r
+                                + "Correct.ajax}\" target=\"dialog\" class=\"derivee\" th:text=\"#{common.correct}\" tabindex=\"-1\">...</a>");
                     }
                 }
             }
