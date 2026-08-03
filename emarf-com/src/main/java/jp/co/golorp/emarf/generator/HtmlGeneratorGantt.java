@@ -168,7 +168,7 @@ public final class HtmlGeneratorGantt extends HtmlGenerator {
         s.add("");
         for (String k : table.getColumns().keySet()) {
             ColumnInfo col = table.getColumns().get(k);
-            if (col.getName().matches("^(id|name|start|end|dependencies)$")) {
+            if (col.getName().matches("(?i)^(id|name|start|end|dependencies)$")) {
                 continue;
             }
             s.add("            task." + StringUtil.toCamelCase(col.getName()) + " = row." + col.getName() + ";");
