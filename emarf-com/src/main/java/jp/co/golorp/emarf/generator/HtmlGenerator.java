@@ -651,101 +651,109 @@ public abstract class HtmlGenerator {
     private static void htmlProperties(final String htmlDir, final TableInfo table, final List<TableInfo> tables) {
 
         List<String> s = new ArrayList<String>();
-        String entity = StringUtil.toPascalCase(table.getName());
+        String e = StringUtil.toPascalCase(table.getName());
         String remarks = table.getRemarks();
-        s.add(entity + "S.title   " + remarks + "検索");
-        s.add(entity + "S.h2      " + remarks + "検索");
-        s.add(entity + "S.legend  " + remarks + "検索");
-        s.add(entity + ".add      " + remarks + "追加");
-        s.add(entity + ".title    " + remarks);
-        s.add(entity + ".h2       " + remarks);
-        s.add(entity + ".legend   " + remarks);
-        s.add(entity + ".h3       " + remarks + "一覧");
+        s.add(e + "S.title   " + remarks + "検索");
+        s.add(e + "S.h2      " + remarks + "検索");
+        s.add(e + "S.legend  " + remarks + "検索");
+        s.add(e + ".add      " + remarks + "追加");
+        s.add(e + ".title    " + remarks);
+        s.add(e + ".h2       " + remarks);
+        s.add(e + ".legend   " + remarks);
+        s.add(e + ".h3       " + remarks + "一覧");
 
         s.add("");
         for (ColumnInfo column : table.getColumns().values()) {
             String property = StringUtil.toCamelCase(column.getName());
-            s.add(entity + "." + property + " " + column.getRemarks());
+            s.add(e + "." + property + " " + column.getRemarks());
             if (column.getDeriveFrom() != null) {
-                s.add(entity + ".derivee" + StringUtil.toPascalCase(property) + " " + column.getRemarks());
+                s.add(e + ".derivee" + StringUtil.toPascalCase(property) + " " + column.getRemarks());
             }
         }
 
         s.add("");
         for (ColumnInfo column : table.getColumns().values()) {
             String property = StringUtil.toCamelCase(column.getName());
-            s.add(entity + "Grid." + property + " " + column.getRemarks());
-
+            s.add(e + "Grid." + property + " " + column.getRemarks());
         }
         for (TableInfo brother : table.getBrothers()) {
-            String e = StringUtil.toPascalCase(brother.getName());
+            for (ColumnInfo column : brother.getColumns().values()) {
+                if (!column.isPk() && !BeanGenerator.isMetaTsBy(column.getName())) {
+                    String p = StringUtil.toCamelCase(column.getName());
+                    s.add(e + "Grid." + p + " " + column.getRemarks());
+                }
+            }
+        }
+
+        for (TableInfo brother : table.getBrothers()) {
+            String b = StringUtil.toPascalCase(brother.getName());
             s.add("");
-            s.add(e + ".legend   " + brother.getRemarks());
+            s.add(b + ".legend   " + brother.getRemarks());
             for (ColumnInfo column : brother.getColumns().values()) {
                 String property = StringUtil.toCamelCase(column.getName());
-                s.add(e + "." + property + " " + column.getRemarks());
+                s.add(b + "." + property + " " + column.getRemarks());
             }
         }
 
         for (TableInfo parent : table.getParents()) {
-            String e = StringUtil.toPascalCase(parent.getName());
+            String p = StringUtil.toPascalCase(parent.getName());
             s.add("");
-            s.add(e + ".legend   " + parent.getRemarks());
+            s.add(p + ".legend   " + parent.getRemarks());
             for (ColumnInfo column : parent.getColumns().values()) {
                 String property = StringUtil.toCamelCase(column.getName());
-                s.add(e + "." + property + " " + column.getRemarks());
+                s.add(p + "." + property + " " + column.getRemarks());
             }
         }
 
         for (TableInfo child : table.getChildren()) {
-            String e = StringUtil.toPascalCase(child.getName());
+            String c = StringUtil.toPascalCase(child.getName());
             String mei = child.getRemarks();
             s.add("");
-            s.add(e + ".h3  " + mei + "一覧");
-            s.add(e + ".add " + mei + "追加");
+            s.add(c + ".h3  " + mei + "一覧");
+            s.add(c + ".add " + mei + "追加");
             for (ColumnInfo column : child.getColumns().values()) {
                 String property = StringUtil.toCamelCase(column.getName());
-                s.add(e + "Grid." + property + " " + column.getRemarks());
+                s.add(c + "Grid." + property + " " + column.getRemarks());
             }
         }
 
         if (table.getRebornTo() != null) {
             TableInfo reborn = table.getRebornTo();
-            String e = StringUtil.toPascalCase(reborn.getName());
+            String r = StringUtil.toPascalCase(reborn.getName());
             String mei = reborn.getRemarks();
             s.add("");
-            s.add(e + ".h3  " + mei + "一覧");
-            s.add(e + ".add " + mei + "追加");
+            s.add(r + ".h3  " + mei + "一覧");
+            s.add(r + ".add " + mei + "追加");
             for (ColumnInfo column : reborn.getColumns().values()) {
                 String property = StringUtil.toCamelCase(column.getName());
-                s.add(e + "Grid." + property + " " + column.getRemarks());
+                s.add(r + "Grid." + property + " " + column.getRemarks());
             }
         }
 
         if (table.getDeriveTos().size() > 0) {
             for (TableInfo deriveTo : table.getDeriveTos()) {
-                String e = StringUtil.toPascalCase(deriveTo.getName());
+                String d = StringUtil.toPascalCase(deriveTo.getName());
                 s.add("");
-                s.add(e + ".add " + deriveTo.getRemarks() + "追加");
+                s.add(d + ".add " + deriveTo.getRemarks() + "追加");
             }
         }
 
         if (table.getSummaryOfs().size() > 0) {
-            for (TableInfo summary : table.getSummaryOfs()) {
-                String e = StringUtil.toPascalCase(summary.getName());
+            for (TableInfo summaryOf : table.getSummaryOfs()) {
+                String so = StringUtil.toPascalCase(summaryOf.getName());
                 s.add("");
-                s.add(e + ".add " + summary.getRemarks() + "追加");
+                s.add(so + ".add " + summaryOf.getRemarks() + "追加");
             }
         }
 
-        TableInfo summary = table.getSummaryTo();
-        if (summary != null) {
-            String e = StringUtil.toPascalCase(summary.getName());
+        TableInfo summaryTo = table.getSummaryTo();
+        if (summaryTo != null) {
+            String st = StringUtil.toPascalCase(summaryTo.getName());
             s.add("");
-            s.add(e + ".sum " + summary.getRemarks() + "集約");
+            s.add(st + ".sum " + summaryTo.getRemarks() + "集約");
         }
 
-        FileUtil.writeFile(htmlDir + File.separator + entity + ".properties", s);
+        FileUtil.writeFile(htmlDir + File.separator + e + ".properties", s);
     }
 
     /**
