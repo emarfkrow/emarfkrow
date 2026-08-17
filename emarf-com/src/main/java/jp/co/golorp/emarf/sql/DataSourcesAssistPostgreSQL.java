@@ -20,7 +20,6 @@ import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import jp.co.golorp.emarf.exception.SysError;
 import jp.co.golorp.emarf.util.MapList;
 
 /**
@@ -49,12 +48,47 @@ public final class DataSourcesAssistPostgreSQL extends DataSourcesAssist {
 
     @Override
     protected String getTableComment(final String tableName) {
-        throw new SysError("メソッドが実装されていません。");
+        String sql = "";
+        sql += "SELECT ";
+        sql += "      c.relname ";
+        sql += "    , d.description ";
+        sql += "FROM ";
+        sql += "    pg_class c ";
+        sql += "    INNER JOIN pg_namespace n ";
+        sql += "        ON n.oid = c.relnamespace ";
+        sql += "        AND n.nspname = 'public' ";
+        sql += "    INNER JOIN pg_description d ";
+        sql += "        ON d.objoid = c.oid ";
+        sql += "        AND d.objsubid = 0 ";
+        sql += "WHERE ";
+        sql += "    c.relname = '" + tableName + "'";
+        MapList mapList = Queries.select(sql, null, null);
+        return mapList.get(0).get("TABLE_COMMENT").toString();
     }
 
     @Override
     protected String getColumnComment(final String tableName, final String columnName) {
-        throw new SysError("メソッドが実装されていません。");
+        StringBuilder sb = new StringBuilder();
+        sb.append("SELECT ");
+        sb.append("      d.description AS column_comment ");
+        sb.append("FROM ");
+        sb.append("    pg_attribute a ");
+        sb.append("    JOIN pg_class c ");
+        sb.append("        ON c.oid = a.attrelid ");
+        sb.append("    JOIN pg_namespace n ");
+        sb.append("        ON n.oid = c.relnamespace ");
+        sb.append("    LEFT JOIN pg_description d ");
+        sb.append("        ON d.objoid = c.oid ");
+        sb.append("        AND d.objsubid = a.attnum ");
+        sb.append("WHERE ");
+        sb.append("    c.relname = '" + tableName + "' ");
+        sb.append("    AND a.attname = '" + columnName + "' ");
+        sb.append("    AND n.nspname = 'public' ");
+        MapList mapList = Queries.select(sb.toString(), null, null);
+        if (mapList == null) {
+            return null;
+        }
+        return mapList.get(0).get("COLUMN_COMMENT").toString();
     }
 
     @Override
