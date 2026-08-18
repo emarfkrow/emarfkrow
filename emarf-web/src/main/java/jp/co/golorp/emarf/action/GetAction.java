@@ -35,11 +35,11 @@ public class GetAction extends BaseAction {
      * 該当データを１件返す
      */
     @Override
-    public Map<String, Object> running(final LocalDateTime now, final String id, final Map<String, Object> postJson) {
+    public Map<String, Object> running(final LocalDateTime at, final String by, final Map<String, Object> form) {
 
         String sql = this.loadSqlFile(this.getBaseName());
 
-        MapList list = Queries.select(sql, postJson, null, null);
+        MapList list = Queries.select(sql, form, null, null);
 
         Map<String, Object> map = new HashMap<String, Object>();
 

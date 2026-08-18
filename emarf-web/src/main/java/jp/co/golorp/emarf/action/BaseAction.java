@@ -275,11 +275,11 @@ public abstract class BaseAction extends BaseProcess {
 
     /**
      * 主処理の抽象メソッド
-     * @param now システム日時
-     * @param id ユーザID
-     * @param postJson 送信値
+     * @param at システム日時
+     * @param by ユーザID
+     * @param form 送信値
      * @return 実行結果のマップ
      */
-    public abstract Map<String, Object> running(LocalDateTime now, String id, Map<String, Object> postJson);
+    public abstract Map<String, Object> running(LocalDateTime at, String by, Map<String, Object> form);
 
 }

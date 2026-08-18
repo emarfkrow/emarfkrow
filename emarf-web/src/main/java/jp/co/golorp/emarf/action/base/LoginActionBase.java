@@ -40,11 +40,11 @@ public abstract class LoginActionBase extends BaseAction {
      * ログイン処理
      */
     @Override
-    public Map<String, Object> running(final LocalDateTime now, final String id, final Map<String, Object> postJson) {
+    public Map<String, Object> running(final LocalDateTime at, final String by, final Map<String, Object> form) {
 
         //login.htmlからのpost値
-        String userId = postJson.get("userId").toString();
-        String passwd = postJson.get("passwd").toString();
+        String userId = form.get("userId").toString();
+        String passwd = form.get("passwd").toString();
 
         //ユーザマスタからログインフォームを生成
         LoginFormBase loginForm = this.getLoginForm(userId);

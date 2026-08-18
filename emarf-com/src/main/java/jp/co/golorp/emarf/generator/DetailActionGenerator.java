@@ -138,11 +138,11 @@ public final class DetailActionGenerator {
             s.add("");
             s.add("    /** " + r + "登録処理 */");
             s.add("    @Override");
-            s.add("    public Map<String, Object> running(final LocalDateTime now, final String execId, final Map<String, Object> postJson) {");
+            s.add("    public Map<String, Object> running(final LocalDateTime at, final String by, final Map<String, Object> form) {");
             s.add("");
             s.add("        Map<String, Object> map = new HashMap<String, Object>();");
             s.add("");
-            s.add("        " + entity + " e = FormValidator.toBean(" + entity + ".class.getName(), postJson);");
+            s.add("        " + entity + " e = FormValidator.toBean(" + entity + ".class.getName(), form);");
             //            if (!table.isView() && !StringUtil.isNullOrWhiteSpace(status) && table.getColumns().containsKey(status)) {
             //                s.add("");
             //                s.add("        e.set" + StringUtil.toPascalCase(status) + "(0);");
@@ -150,7 +150,7 @@ public final class DetailActionGenerator {
             s.add("");
             s.add("        if (e.isNew()) {");
             s.add("");
-            s.add("            if (e.insert(now, execId) != 1) {");
+            s.add("            if (e.insert(at, by) != 1) {");
             s.add("                throw new OptLockError(\"error.cant.insert\", \"" + r + "\");");
             s.add("            }");
             if (table.getSummaryOfs().size() > 0) {
@@ -167,7 +167,7 @@ public final class DetailActionGenerator {
                     String prop = StringUtil.toCamelCase(pk);
                     s.add("");
                     s.add("            //集約先に該当する場合は、集約元に主キーを反映");
-                    s.add("            String " + sKey + " = postJson.get(\"" + e + "." + prop + "\").toString();");
+                    s.add("            String " + sKey + " = form.get(\"" + e + "." + prop + "\").toString();");
                     s.add("            if (!jp.co.golorp.emarf.lang.StringUtil.isNullOrWhiteSpace(" + sKey + ")) {");
                     s.add("                String[] summaryKeys = " + sKey + ".trim().split(\",\");");
                     s.add("                for (String pk : summaryKeys) {");
@@ -190,7 +190,7 @@ public final class DetailActionGenerator {
                         s.add("                    }");
                         s.add("                    " + i + ".set" + acc + "(e.get" + acc + "());");
                     }
-                    s.add("                    if (" + i + ".update(now, execId) != 1) {");
+                    s.add("                    if (" + i + ".update(at, by) != 1) {");
                     s.add("                        throw new OptLockError(\"error.cant.insert\", \""
                             + summaryOf.getRemarks() + "\");");
                     s.add("                    }");
@@ -203,9 +203,9 @@ public final class DetailActionGenerator {
             s.add("");
             s.add("        } else {");
             s.add("");
-            s.add("            if (e.update(now, execId) == 1) {");
+            s.add("            if (e.update(at, by) == 1) {");
             s.add("                map.put(\"INFO\", Messages.get(\"info.update\"));");
-            s.add("            } else if (e.insert(now, execId) == 1) {");
+            s.add("            } else if (e.insert(at, by) == 1) {");
             s.add("                map.put(\"INFO\", Messages.get(\"info.insert\"));");
             s.add("            } else {");
             s.add("                throw new OptLockError(\"error.cant.update\", \"" + r + "\");");
@@ -268,7 +268,7 @@ public final class DetailActionGenerator {
             s.add("");
             s.add("    /** " + table.getName() + "照会処理 */");
             s.add("    @Override");
-            s.add("    public Map<String, Object> running(final LocalDateTime now, final String execId, final Map<String, Object> postJson) {");
+            s.add("    public Map<String, Object> running(final LocalDateTime at, final String by, final Map<String, Object> form) {");
             s.add("");
             s.add("        Map<String, Object> map = new HashMap<String, Object>();");
             String pks = "";
@@ -283,9 +283,9 @@ public final class DetailActionGenerator {
                         donePks.add(pk);
                         String property = StringUtil.toCamelCase(pk);
                         s.add("");
-                        s.add("        Object " + property + " = postJson.get(\"" + property + "\");");
+                        s.add("        Object " + property + " = form.get(\"" + property + "\");");
                         s.add("        if (" + property + " == null) {");
-                        s.add("            " + property + " = postJson.get(\"" + ent + "." + property + "\");");
+                        s.add("            " + property + " = form.get(\"" + ent + "." + property + "\");");
                         s.add("        }");
                         s.add("        if (" + property + " == null) {");
                         if (i == 0) {
@@ -362,7 +362,7 @@ public final class DetailActionGenerator {
             }
             s.add("            map.put(\"" + ent + "\", " + ins + ");");
             s.add("        } catch (NoDataError e) {");
-            s.add("            if (postJson.get(\"IsSilent\") == null || !postJson.get(\"IsSilent\").equals(\"true\")) {");
+            s.add("            if (form.get(\"IsSilent\") == null || !form.get(\"IsSilent\").equals(\"true\")) {");
             s.add("                throw e;");
             s.add("            }");
             s.add("        }");
@@ -437,16 +437,16 @@ public final class DetailActionGenerator {
             s.add("");
             s.add("    /** " + table.getRemarks() + "削除処理 */");
             s.add("    @Override");
-            s.add("    public Map<String, Object> running(final LocalDateTime now, final String execId, final Map<String, Object> postJson) {");
+            s.add("    public Map<String, Object> running(final LocalDateTime at, final String by, final Map<String, Object> form) {");
             s.add("");
             s.add("        // 主キーが不足していたらエラー");
 
             String params = "";
             for (String primaryKey : table.getPrimaryKeys()) {
                 String camel = StringUtil.toCamelCase(primaryKey);
-                s.add("        Object " + camel + " = postJson.get(\"" + camel + "\");");
+                s.add("        Object " + camel + " = form.get(\"" + camel + "\");");
                 s.add("        if (" + camel + " == null) {");
-                s.add("            " + camel + " = postJson.get(\"" + e + "." + camel + "\");");
+                s.add("            " + camel + " = form.get(\"" + e + "." + camel + "\");");
                 s.add("        }");
                 s.add("        if (" + camel + " == null) {");
                 s.add("            throw new OptLockError(\"error.cant.delete\", \"" + table.getRemarks() + "\");");
@@ -458,7 +458,7 @@ public final class DetailActionGenerator {
             }
 
             s.add("");
-            s.add("        " + e + " e = FormValidator.toBean(" + e + ".class.getName(), postJson);");
+            s.add("        " + e + " e = FormValidator.toBean(" + e + ".class.getName(), form);");
 
             BeanGenerator.getDeleteChilds(s, "e", table.getChildren(), 0);
 
@@ -531,16 +531,16 @@ public final class DetailActionGenerator {
             s.add("");
             s.add("    /** " + remarks + "申請処理 */");
             s.add("    @Override");
-            s.add("    public Map<String, Object> running(final LocalDateTime now, final String execId, final Map<String, Object> postJson) {");
+            s.add("    public Map<String, Object> running(final LocalDateTime at, final String by, final Map<String, Object> form) {");
             s.add("");
             s.add("        // 主キーが不足していたらエラー");
             String params = "";
             for (String primaryKey : table.getPrimaryKeys()) {
                 String property = StringUtil.toCamelCase(primaryKey);
                 String accessor = StringUtil.toPascalCase(primaryKey);
-                s.add("        Object " + property + " = postJson.get(\"" + property + "\");");
+                s.add("        Object " + property + " = form.get(\"" + property + "\");");
                 s.add("        if (" + property + " == null) {");
-                s.add("            " + property + " = postJson.get(\"" + entity + "." + property + "\");");
+                s.add("            " + property + " = form.get(\"" + entity + "." + property + "\");");
                 s.add("        }");
                 s.add("        if (" + property + " == null) {");
                 s.add("            throw new OptLockError(\"error.cant.apply\", \"" + remarks + "\");");
@@ -551,7 +551,7 @@ public final class DetailActionGenerator {
                 params += "e.get" + accessor + "()";
             }
             s.add("");
-            s.add("        " + entity + " e = FormValidator.toBean(" + entity + ".class.getName(), postJson);");
+            s.add("        " + entity + " e = FormValidator.toBean(" + entity + ".class.getName(), form);");
             List<TableInfo> childInfos = table.getChildren();
             BeanGenerator.getApplyChilds(s, "e", childInfos, 0);
             s.add("");
@@ -560,12 +560,13 @@ public final class DetailActionGenerator {
                 String acc = StringUtil.toPascalCase(status);
                 String fld = StringUtil.toCamelCase(status);
                 s.add("        if (e.get" + acc + "() != null && !e.get" + acc + "().equals(\"\")) {");
-                s.add("            throw new jp.co.golorp.emarf.exception.AppError(\"error.notmatch\", Messages.get(\""
-                        + entity + "." + fld + "\"), Messages.get(\"common.notapply\"));");
+                s.add("            throw new jp.co.golorp.emarf.exception.AppError(\"error.notmatch\",");
+                s.add("                    Messages.get(\"" + entity + "." + fld
+                        + "\"), Messages.get(\"common.notapply\"));");
                 s.add("        }");
                 s.add("        e.set" + acc + "(0);");
             }
-            s.add("        if (e.update(now, execId) != 1) {");
+            s.add("        if (e.update(at, by) != 1) {");
             s.add("            throw new OptLockError(\"error.cant.apply\", \"" + remarks + "\");");
             s.add("        }");
             s.add("");
@@ -634,16 +635,16 @@ public final class DetailActionGenerator {
             s.add("");
             s.add("    /** " + remarks + "取消処理 */");
             s.add("    @Override");
-            s.add("    public Map<String, Object> running(final LocalDateTime now, final String execId, final Map<String, Object> postJson) {");
+            s.add("    public Map<String, Object> running(final LocalDateTime at, final String by, final Map<String, Object> form) {");
             s.add("");
             s.add("        // 主キーが不足していたらエラー");
             String params = "";
             for (String primaryKey : table.getPrimaryKeys()) {
                 String property = StringUtil.toCamelCase(primaryKey);
                 String accessor = StringUtil.toPascalCase(primaryKey);
-                s.add("        Object " + property + " = postJson.get(\"" + property + "\");");
+                s.add("        Object " + property + " = form.get(\"" + property + "\");");
                 s.add("        if (" + property + " == null) {");
-                s.add("            " + property + " = postJson.get(\"" + entity + "." + property + "\");");
+                s.add("            " + property + " = form.get(\"" + entity + "." + property + "\");");
                 s.add("        }");
                 s.add("        if (" + property + " == null) {");
                 s.add("            throw new OptLockError(\"error.cant.cancel\", \"" + remarks + "\");");
@@ -654,7 +655,7 @@ public final class DetailActionGenerator {
                 params += "e.get" + accessor + "()";
             }
             s.add("");
-            s.add("        " + entity + " e = FormValidator.toBean(" + entity + ".class.getName(), postJson);");
+            s.add("        " + entity + " e = FormValidator.toBean(" + entity + ".class.getName(), form);");
             List<TableInfo> childInfos = table.getChildren();
             BeanGenerator.getCancelChilds(s, "e", childInfos, 0);
             s.add("");
@@ -663,12 +664,13 @@ public final class DetailActionGenerator {
                 String acc = StringUtil.toPascalCase(status);
                 String fld = StringUtil.toCamelCase(status);
                 s.add("        if (!e.get" + acc + "().equals(\"0\") && !e.get" + acc + "().equals(\"-1\")) {");
-                s.add("            throw new jp.co.golorp.emarf.exception.AppError(\"error.notmatch\", Messages.get(\""
-                        + entity + "." + fld + "\"), Messages.get(\"common.apply.forbid\"));");
+                s.add("            throw new jp.co.golorp.emarf.exception.AppError(\"error.notmatch\",");
+                s.add("                    Messages.get(\"" + entity + "." + fld
+                        + "\"), Messages.get(\"common.apply.forbid\"));");
                 s.add("        }");
                 s.add("        e.set" + acc + "(null);");
             }
-            s.add("        if (e.update(now, execId) != 1) {");
+            s.add("        if (e.update(at, by) != 1) {");
             s.add("            throw new OptLockError(\"error.cant.cancel\", \"" + remarks + "\");");
             s.add("        }");
             s.add("");
@@ -737,16 +739,16 @@ public final class DetailActionGenerator {
             s.add("");
             s.add("    /** " + remarks + "承認処理 */");
             s.add("    @Override");
-            s.add("    public Map<String, Object> running(final LocalDateTime now, final String execId, final Map<String, Object> postJson) {");
+            s.add("    public Map<String, Object> running(final LocalDateTime at, final String by, final Map<String, Object> form) {");
             s.add("");
             s.add("        // 主キーが不足していたらエラー");
             String params = "";
             for (String primaryKey : table.getPrimaryKeys()) {
                 String property = StringUtil.toCamelCase(primaryKey);
                 String accessor = StringUtil.toPascalCase(primaryKey);
-                s.add("        Object " + property + " = postJson.get(\"" + property + "\");");
+                s.add("        Object " + property + " = form.get(\"" + property + "\");");
                 s.add("        if (" + property + " == null) {");
-                s.add("            " + property + " = postJson.get(\"" + entity + "." + property + "\");");
+                s.add("            " + property + " = form.get(\"" + entity + "." + property + "\");");
                 s.add("        }");
                 s.add("        if (" + property + " == null) {");
                 s.add("            throw new OptLockError(\"error.cant.permit\", \"" + remarks + "\");");
@@ -757,7 +759,7 @@ public final class DetailActionGenerator {
                 params += "e.get" + accessor + "()";
             }
             s.add("");
-            s.add("        " + entity + " e = FormValidator.toBean(" + entity + ".class.getName(), postJson);");
+            s.add("        " + entity + " e = FormValidator.toBean(" + entity + ".class.getName(), form);");
             List<TableInfo> childInfos = table.getChildren();
             BeanGenerator.getPermitChilds(s, "e", childInfos, 0);
             s.add("");
@@ -766,12 +768,13 @@ public final class DetailActionGenerator {
                 String acc = StringUtil.toPascalCase(status);
                 String fld = StringUtil.toCamelCase(status);
                 s.add("        if (!e.get" + acc + "().equals(\"0\")) {");
-                s.add("            throw new jp.co.golorp.emarf.exception.AppError(\"error.notmatch\", Messages.get(\""
-                        + entity + "." + fld + "\"), Messages.get(\"common.applied\"));");
+                s.add("            throw new jp.co.golorp.emarf.exception.AppError(\"error.notmatch\",");
+                s.add("                    Messages.get(\"" + entity + "." + fld
+                        + "\"), Messages.get(\"common.applied\"));");
                 s.add("        }");
                 s.add("        e.set" + acc + "(1);");
             }
-            s.add("        if (e.update(now, execId) != 1) {");
+            s.add("        if (e.update(at, by) != 1) {");
             s.add("            throw new OptLockError(\"error.cant.permit\", \"" + remarks + "\");");
             s.add("        }");
             s.add("");
@@ -840,16 +843,16 @@ public final class DetailActionGenerator {
             s.add("");
             s.add("    /** " + remarks + "否認処理 */");
             s.add("    @Override");
-            s.add("    public Map<String, Object> running(final LocalDateTime now, final String execId, final Map<String, Object> postJson) {");
+            s.add("    public Map<String, Object> running(final LocalDateTime at, final String by, final Map<String, Object> form) {");
             s.add("");
             s.add("        // 主キーが不足していたらエラー");
             String params = "";
             for (String primaryKey : table.getPrimaryKeys()) {
                 String property = StringUtil.toCamelCase(primaryKey);
                 String accessor = StringUtil.toPascalCase(primaryKey);
-                s.add("        Object " + property + " = postJson.get(\"" + property + "\");");
+                s.add("        Object " + property + " = form.get(\"" + property + "\");");
                 s.add("        if (" + property + " == null) {");
-                s.add("            " + property + " = postJson.get(\"" + entity + "." + property + "\");");
+                s.add("            " + property + " = form.get(\"" + entity + "." + property + "\");");
                 s.add("        }");
                 s.add("        if (" + property + " == null) {");
                 s.add("            throw new OptLockError(\"error.cant.forbid\", \"" + remarks + "\");");
@@ -860,7 +863,7 @@ public final class DetailActionGenerator {
                 params += "e.get" + accessor + "()";
             }
             s.add("");
-            s.add("        " + entity + " e = FormValidator.toBean(" + entity + ".class.getName(), postJson);");
+            s.add("        " + entity + " e = FormValidator.toBean(" + entity + ".class.getName(), form);");
             List<TableInfo> childInfos = table.getChildren();
             BeanGenerator.getForbidChilds(s, "e", childInfos, 0);
             s.add("");
@@ -869,12 +872,13 @@ public final class DetailActionGenerator {
                 String acc = StringUtil.toPascalCase(status);
                 String fld = StringUtil.toCamelCase(status);
                 s.add("        if (!e.get" + acc + "().equals(\"0\") && !e.get" + acc + "().equals(\"1\")) {");
-                s.add("            throw new jp.co.golorp.emarf.exception.AppError(\"error.notmatch\", Messages.get(\""
-                        + entity + "." + fld + "\"), Messages.get(\"common.apply.permit\"));");
+                s.add("            throw new jp.co.golorp.emarf.exception.AppError(\"error.notmatch\",");
+                s.add("                    Messages.get(\"" + entity + "." + fld
+                        + "\"), Messages.get(\"common.apply.permit\"));");
                 s.add("        }");
                 s.add("        e.set" + acc + "(-1);");
             }
-            s.add("        if (e.update(now, execId) != 1) {");
+            s.add("        if (e.update(at, by) != 1) {");
             s.add("            throw new OptLockError(\"error.cant.forbid\", \"" + remarks + "\");");
             s.add("        }");
             s.add("");
@@ -953,9 +957,9 @@ public final class DetailActionGenerator {
             String frC = "";
             for (String fromKey : frTbl.getPrimaryKeys()) {
                 String k = StringUtil.toCamelCase(fromKey);
-                s.add("            Object " + k + froms + " = postJson.get(\"" + k + "\");");
+                s.add("            Object " + k + froms + " = form.get(\"" + k + "\");");
                 s.add("            if (" + k + froms + " == null) {");
-                s.add("                " + k + froms + " = postJson.get(\"" + toE + "." + k + "\");");
+                s.add("                " + k + froms + " = form.get(\"" + toE + "." + k + "\");");
                 s.add("            }");
                 if (!frK.equals("")) {
                     frK += ", ";

@@ -34,10 +34,10 @@ public abstract class PassresetActionBase extends BaseAction {
      * パスワードリセット処理
      */
     @Override
-    public Map<String, Object> running(final LocalDateTime now, final String id, final Map<String, Object> postJson) {
+    public Map<String, Object> running(final LocalDateTime at, final String by, final Map<String, Object> form) {
 
-        String passwd = postJson.get("passwd").toString();
-        String passwd2 = postJson.get("passwd2").toString();
+        String passwd = form.get("passwd").toString();
+        String passwd2 = form.get("passwd2").toString();
 
         //確認パスワード違い
         if (!passwd.equals(passwd2)) {
@@ -61,7 +61,7 @@ public abstract class PassresetActionBase extends BaseAction {
         //            throw new AppError("error.passreset");
         //        }
 
-        if (!resetPassword(now, "0", passwd, "0")) {
+        if (!resetPassword(at, "0", passwd, "0")) {
             throw new AppError("error.cant.update");
         }
 

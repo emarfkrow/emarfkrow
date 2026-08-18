@@ -37,9 +37,9 @@ public class SearchAction extends BaseAction {
      * 該当データを全件返す
      */
     @Override
-    public Map<String, Object> running(final LocalDateTime now, final String id, final Map<String, Object> postJson) {
+    public Map<String, Object> running(final LocalDateTime at, final String by, final Map<String, Object> form) {
 
-        Map<String, Object> postedJson = postJson;
+        Map<String, Object> postedJson = form;
 
         Integer rows = null;
         Integer page = null;
@@ -66,9 +66,9 @@ public class SearchAction extends BaseAction {
         Map<String, Object> map = new HashMap<String, Object>();
 
         if (list == null) {
-            if (postJson.get("isSilent") == null) {
+            if (form.get("isSilent") == null) {
                 map.put("INFO", Messages.get("info.nodata"));
-            } else if (!postJson.get("isSilent").equals("true")) {
+            } else if (!form.get("isSilent").equals("true")) {
                 map.put("INFO", Messages.get("info.nodata"));
             }
         } else {

@@ -680,36 +680,38 @@ public final class Queries {
         // 1. このクラスがロードされている場所（JARまたはクラスファイル）を取得
         URL location = c.getProtectionDomain().getCodeSource().getLocation();
 
-        URI uri = null;
         try {
+            URI uri = null;
             uri = location.toURI();
+
+            // 2. URIをFileに変換（パスのエンコード問題を回避）
+            String uriPath = uri.getRawPath().toString();
+            uriPath = uriPath.replace("/target/classes/", "/");
+            File jarOrClassFile = new File(uriPath);
+
+            // 3. 親ディレクトリを取得（これがJARのあるディレクトリ）
+            File jarDir = jarOrClassFile;
+            if (jarOrClassFile.toString().endsWith(".jar")) {
+                jarDir = jarOrClassFile.getParentFile();
+            }
+
+            // 4. そこから相対パスで目的のファイルにアクセス
+            Path path = jarDir.toPath().resolve(sqlPath).resolve(sqlName + ".sql");
+
+            File file = path.toFile();
+
+            if (!file.exists() && sqlPathes.size() > 0) {
+                List<String> copy = new ArrayList<>(sqlPathes);
+                copy.remove(0);
+                file = seekSqlFile(copy, sqlName);
+            }
+
+            return file;
         } catch (URISyntaxException e) {
             LOG.trace(e.getMessage());
         }
 
-        // 2. URIをFileに変換（パスのエンコード問題を回避）
-        String uriPath = uri.getRawPath().toString();
-        uriPath = uriPath.replace("/target/classes/", "/");
-        File jarOrClassFile = new File(uriPath);
-
-        // 3. 親ディレクトリを取得（これがJARのあるディレクトリ）
-        File jarDir = jarOrClassFile;
-        if (jarOrClassFile.toString().endsWith(".jar")) {
-            jarDir = jarOrClassFile.getParentFile();
-        }
-
-        // 4. そこから相対パスで目的のファイルにアクセス
-        Path path = jarDir.toPath().resolve(sqlPath).resolve(sqlName + ".sql");
-
-        File file = path.toFile();
-
-        if (!file.exists() && sqlPathes.size() > 0) {
-            List<String> copy = new ArrayList<>(sqlPathes);
-            copy.remove(0);
-            file = seekSqlFile(copy, sqlName);
-        }
-
-        return file;
+        return null;
     }
 
     /**

@@ -39,9 +39,9 @@ public class AuthzAction extends BaseAction {
      * 認可処理
      */
     @Override
-    public Map<String, Object> running(final LocalDateTime now, final String id, final Map<String, Object> postJson) {
+    public Map<String, Object> running(final LocalDateTime at, final String by, final Map<String, Object> form) {
 
-        String requestURI = postJson.get("requestURI").toString();
+        String requestURI = form.get("requestURI").toString();
         String tableName = requestURI.replaceFirst("\\?anew$", "")
                 .replaceFirst("S\\.html$", "").replaceFirst("\\.html$", "")
                 .replaceFirst("\\.xlsx$", "").replaceFirst("\\.ajax$", "")

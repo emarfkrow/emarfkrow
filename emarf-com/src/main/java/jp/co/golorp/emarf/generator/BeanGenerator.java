@@ -909,11 +909,11 @@ public final class BeanGenerator {
         s.add("");
         s.add("    /**");
         s.add("     * " + table.getRemarks() + "追加");
-        s.add("     * @param now システム日時");
-        s.add("     * @param execId 登録者");
+        s.add("     * @param at システム日時");
+        s.add("     * @param by 登録者");
         s.add("     * @return 追加件数");
         s.add("     */");
-        s.add("    public int insert(final java.time.LocalDateTime now, final String execId) {");
+        s.add("    public int insert(final java.time.LocalDateTime at, final String by) {");
         // 最後のキーを取得
         ColumnInfo lastKeyInfo = null;
         if (table.getPrimaryKeys() != null && table.getPrimaryKeys().size() > 0) {
@@ -940,8 +940,8 @@ public final class BeanGenerator {
                 String pascalKey = StringUtil.toPascalCase(primaryKey);
                 s.add("                    " + camel + ".set" + pascalKey + "(this.get" + pascalKey + "());");
             }
+            s.add("                    " + camel + ".insert(at, by);");
             s.add("                }");
-            s.add("                " + camel + ".insert(now, execId);");
             s.add("            }");
             s.add("        }");
         }
@@ -955,7 +955,7 @@ public final class BeanGenerator {
                 String pascalKey = StringUtil.toPascalCase(primaryKey);
                 s.add("            this." + camel + ".set" + pascalKey + "(this.get" + pascalKey + "());");
             }
-            s.add("            this." + camel + ".insert(now, execId);");
+            s.add("            this." + camel + ".insert(at, by);");
             s.add("        }");
         }
         if (table.getHistory() != null) { // 履歴モデル
@@ -975,13 +975,13 @@ public final class BeanGenerator {
                 String a = StringUtil.toPascalCase(reason);
                 s.add("        " + camel + ".set" + a + "(this." + p + ");");
             }
-            s.add("        " + camel + ".insert(now, execId);");
+            s.add("        " + camel + ".insert(at, by);");
         }
         s.add("");
         s.add("        // " + table.getRemarks() + "の登録");
         s.add("        String sql = \"INSERT INTO " + table.getName()
                 + "(\\r\\n      \" + names() + \"\\r\\n) VALUES (\\r\\n      \" + values() + \"\\r\\n)\";");
-        s.add("        return jp.co.golorp.emarf.sql.Queries.regist(sql, toMap(now, execId));");
+        s.add("        return jp.co.golorp.emarf.sql.Queries.regist(sql, toMap(at, by));");
         s.add("    }");
         s.add("");
         s.add("    /** @return insert用のname句 */");
@@ -1122,11 +1122,11 @@ public final class BeanGenerator {
         s.add("");
         s.add("    /**");
         s.add("     * " + table.getRemarks() + "更新");
-        s.add("     * @param now システム日時");
-        s.add("     * @param execId 更新者");
+        s.add("     * @param at システム日時");
+        s.add("     * @param by 更新者");
         s.add("     * @return 更新件数");
         s.add("     */");
-        s.add("    public int update(final java.time.LocalDateTime now, final String execId) {");
+        s.add("    public int update(final java.time.LocalDateTime at, final String by) {");
 
         // 子モデル
         for (TableInfo child : table.getChildren()) {
@@ -1145,9 +1145,9 @@ public final class BeanGenerator {
                 s.add("                " + i + ".set" + pkType + "(this." + pk + ");");
             }
             s.add("                if (" + i + ".isNew()) {");
-            s.add("                    " + i + ".insert(now, execId);");
+            s.add("                    " + i + ".insert(at, by);");
             s.add("                } else {");
-            s.add("                    " + i + ".update(now, execId);");
+            s.add("                    " + i + ".update(at, by);");
             s.add("                }");
             s.add("            }");
             s.add("        }");
@@ -1164,9 +1164,9 @@ public final class BeanGenerator {
                 s.add("            " + i + ".set" + pkType + "(this.get" + pkType + "());");
             }
             s.add("            if (" + i + ".isNew()) {");
-            s.add("                " + i + ".insert(now, execId);");
+            s.add("                " + i + ".insert(at, by);");
             s.add("            } else {");
-            s.add("                " + i + ".update(now, execId);");
+            s.add("                " + i + ".update(at, by);");
             s.add("            }");
             s.add("        }");
         }
@@ -1201,14 +1201,14 @@ public final class BeanGenerator {
                         keys += ")";
                         s.add("            " + camel + ".set" + pascalColumn + "(" + keys + ");");
                     } else if (columnName.equals(statusKessaiTs)) {
-                        s.add("            " + camel + ".set" + pascalColumn + "(now);");
+                        s.add("            " + camel + ".set" + pascalColumn + "(at);");
                     } else if (columnName.equals(statusKessaiId)) {
-                        s.add("            " + camel + ".set" + pascalColumn + "(execId);");
+                        s.add("            " + camel + ".set" + pascalColumn + "(by);");
                     } else {
                         s.add("            " + camel + ".set" + pascalColumn + "(this." + camelColumn + ");");
                     }
                 }
-                s.add("            " + camel + ".insert(now, execId);");
+                s.add("            " + camel + ".insert(at, by);");
                 s.add("        }");
             }
         }
@@ -1231,14 +1231,14 @@ public final class BeanGenerator {
                 String a = StringUtil.toPascalCase(reason);
                 s.add("        " + i + ".set" + a + "(this." + p + ");");
             }
-            s.add("        " + i + ".insert(now, execId);");
+            s.add("        " + i + ".insert(at, by);");
         }
 
         s.add("");
         s.add("        // " + table.getRemarks() + "の登録");
         s.add("        String sql = \"UPDATE " + table.getName()
                 + "\\r\\nSET\\r\\n      \" + getSet() + \"\\r\\nWHERE\\r\\n    \" + getWhere();");
-        s.add("        return jp.co.golorp.emarf.sql.Queries.regist(sql, toMap(now, execId));");
+        s.add("        return jp.co.golorp.emarf.sql.Queries.regist(sql, toMap(at, by));");
         s.add("    }");
         s.add("");
         s.add("    /** @return update用のset句 */");
@@ -1282,11 +1282,11 @@ public final class BeanGenerator {
         // toMap
         s.add("");
         s.add("    /**");
-        s.add("     * @param now システム日時");
-        s.add("     * @param execId 実行ID");
+        s.add("     * @param at システム日時");
+        s.add("     * @param by 実行ID");
         s.add("     * @return マップ化したエンティティ");
         s.add("     */");
-        s.add("    private java.util.Map<String, Object> toMap(final java.time.LocalDateTime now, final String execId) {");
+        s.add("    private java.util.Map<String, Object> toMap(final java.time.LocalDateTime at, final String by) {");
         s.add("        java.util.Map<String, Object> map = new java.util.HashMap<String, Object>();");
         for (String columnName : table.getColumns().keySet()) {
             if (isMetaTsBy(columnName)) {
@@ -1297,14 +1297,14 @@ public final class BeanGenerator {
             //            p = p.replaceAll("#", "_");
             s.add("        map.put(\"" + snake + "\", this." + p + ");");
         }
-        s.add("        map.put(\"" + StringUtil.toSnakeCase(insertTs) + "\", now);");
-        s.add("        map.put(\"" + StringUtil.toSnakeCase(insertBy) + "\", execId);");
-        String now = "now";
+        s.add("        map.put(\"" + StringUtil.toSnakeCase(insertTs) + "\", at);");
+        s.add("        map.put(\"" + StringUtil.toSnakeCase(insertBy) + "\", by);");
+        String now = "at";
         if (!StringUtil.isNullOrWhiteSpace(updateTsFormat)) {
-            now = "jp.co.golorp.emarf.time.DateTimeUtil.format(\"" + updateTsFormat + "\", now)";
+            now = "jp.co.golorp.emarf.time.DateTimeUtil.format(\"" + updateTsFormat + "\", at)";
         }
         s.add("        map.put(\"" + StringUtil.toSnakeCase(updateTs) + "\", " + now + ");");
-        s.add("        map.put(\"" + StringUtil.toSnakeCase(updateBy) + "\", execId);");
+        s.add("        map.put(\"" + StringUtil.toSnakeCase(updateBy) + "\", by);");
         s.add("        return map;");
         s.add("    }");
 
@@ -1746,7 +1746,7 @@ public final class BeanGenerator {
             if (child.getColumns().containsKey(status)) {
                 s.add(p + "                " + i + ".set" + StringUtil.toPascalCase(status) + "(0);");
             }
-            s.add(p + "                if (" + i + ".update(now, execId) != 1) {");
+            s.add(p + "                if (" + i + ".update(at, by) != 1) {");
             s.add(p + "                    throw new OptLockError(\"error.cant.apply\", \"" + r + "\");");
             s.add(p + "                }");
             s.add(p + "            }");
@@ -1796,7 +1796,7 @@ public final class BeanGenerator {
             if (child.getColumns().containsKey(status)) {
                 s.add(p + "                " + i + ".set" + StringUtil.toPascalCase(status) + "(null);");
             }
-            s.add(p + "                if (" + i + ".update(now, execId) != 1) {");
+            s.add(p + "                if (" + i + ".update(at, by) != 1) {");
             s.add(p + "                    throw new OptLockError(\"error.cant.cancel\", \"" + r + "\");");
             s.add(p + "                }");
             s.add(p + "            }");
@@ -1846,7 +1846,7 @@ public final class BeanGenerator {
             if (child.getColumns().containsKey(status)) {
                 s.add(p + "                " + i + ".set" + StringUtil.toPascalCase(status) + "(1);");
             }
-            s.add(p + "                if (" + i + ".update(now, execId) != 1) {");
+            s.add(p + "                if (" + i + ".update(at, by) != 1) {");
             s.add(p + "                    throw new OptLockError(\"error.cant.permit\", \"" + r + "\");");
             s.add(p + "                }");
             s.add(p + "            }");
@@ -1888,7 +1888,7 @@ public final class BeanGenerator {
             if (child.getColumns().containsKey(status)) {
                 s.add(p + "                " + i + ".set" + StringUtil.toPascalCase(status) + "(-1);");
             }
-            s.add(p + "                if (" + i + ".update(now, execId) != 1) {");
+            s.add(p + "                if (" + i + ".update(at, by) != 1) {");
             s.add(p + "                    throw new OptLockError(\"error.cant.forbid\", \"" + r + "\");");
             s.add(p + "                }");
             s.add(p + "            }");

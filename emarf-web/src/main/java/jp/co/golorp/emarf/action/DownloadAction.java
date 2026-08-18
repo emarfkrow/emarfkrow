@@ -36,11 +36,11 @@ public class DownloadAction extends BaseAction {
      * ファイルパスとファイル名を返す
      */
     @Override
-    public Map<String, Object> running(final LocalDateTime now, final String id, final Map<String, Object> postJson) {
+    public Map<String, Object> running(final LocalDateTime at, final String by, final Map<String, Object> form) {
 
         String sql = this.loadSqlFile(this.getBaseName());
 
-        MapList list = Queries.select(sql, postJson, null, null);
+        MapList list = Queries.select(sql, form, null, null);
 
         Map<String, Object> map = new HashMap<String, Object>();
 
@@ -48,7 +48,7 @@ public class DownloadAction extends BaseAction {
             map.put("INFO", Messages.get("info.nodata"));
         } else {
             Map<String, Object> row = list.get(0);
-            String name = postJson.get("name").toString();
+            String name = form.get("name").toString();
             //            String filePathColumnName = StringUtil.toUpperCase(name);
             //            String fileMeiColumnName = StringUtil.toUpperCase(name + App.get("context.upload.mei.suffix"));
             //            map.put("filePath", row.get(filePathColumnName));

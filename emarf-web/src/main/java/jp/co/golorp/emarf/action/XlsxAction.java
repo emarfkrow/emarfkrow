@@ -33,7 +33,7 @@ public class XlsxAction extends BaseAction {
      * レイアウトファイル名とレイアウトデータを返す
      */
     @Override
-    public Map<String, Object> running(final LocalDateTime now, final String id, final Map<String, Object> postJson) {
+    public Map<String, Object> running(final LocalDateTime at, final String by, final Map<String, Object> form) {
 
         Map<String, Object> xlsxMap = new HashMap<String, Object>();
 
@@ -43,7 +43,7 @@ public class XlsxAction extends BaseAction {
 
         // 追加シートマップを設定
         Map<String, Map<String, Object>> addSheetMap = new HashMap<String, Map<String, Object>>();
-        addSheetMap.put(this.getBaseName(), ServletUtil.toSimpleMap(postJson));
+        addSheetMap.put(this.getBaseName(), ServletUtil.toSimpleMap(form));
 
         // レイアウトマップを設定
         Map<String, Map<String, Map<String, Object>>> layoutSheetMap = new HashMap<String, Map<String, Map<String, Object>>>();

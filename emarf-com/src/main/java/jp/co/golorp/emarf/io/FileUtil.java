@@ -128,7 +128,9 @@ public final class FileUtil {
             throw new SysError(e);
         } finally {
             try {
-                w.close();
+                if (w != null) {
+                    w.close();
+                }
             } catch (IOException e) {
                 throw new SysError(e);
             }
@@ -150,7 +152,9 @@ public final class FileUtil {
             throw new SysError(e);
         } finally {
             try {
-                w.close();
+                if (w != null) {
+                    w.close();
+                }
             } catch (IOException e) {
                 throw new SysError(e);
             }
