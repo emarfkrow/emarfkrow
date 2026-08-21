@@ -353,7 +353,7 @@ public final class SqlGenerator {
                     }
                 }
                 if (!isSrcMei) {
-                    String srcPrefix = srcKey.replaceFirst(destKey + "$", "");
+                    String srcPrefix = srcKey.replaceFirst("(?i)" + destKey + "$", "");
                     String destKeys = "";
                     for (String primaryKey : refer.getPrimaryKeys()) {
                         String destPK = assist.quotedSQL(primaryKey);
