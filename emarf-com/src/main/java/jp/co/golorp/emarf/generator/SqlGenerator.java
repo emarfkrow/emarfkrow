@@ -364,8 +364,11 @@ public final class SqlGenerator {
                         if (destKeys.length() > 0) {
                             destKeys += " AND ";
                         }
-                        String srcFK = assist.quotedSQL(srcPrefix + primaryKey);
-                        destKeys += destPK + " = a." + srcFK;
+                        String srcFK = "a." + assist.quotedSQL(srcPrefix + primaryKey);
+                        if (srcType.equals("String") && !destType.equals("String")) {
+                            srcFK = assist.castInteger(srcFK);
+                        }
+                        destKeys += destPK + " = " + srcFK;
                     }
                     String srcV = assist.quotedSQL(srcVal);
                     String destV = assist.quotedSQL(destVal);
