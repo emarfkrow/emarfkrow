@@ -1191,18 +1191,18 @@ public final class BeanGenerator {
                     String columnName = column.getName();
                     String camelColumn = StringUtil.toCamelCase(columnName);
                     String pascalColumn = StringUtil.toPascalCase(columnName);
-                    if (columnName.equals(statusTableName)) {
+                    if (columnName.equalsIgnoreCase(statusTableName)) {
                         s.add("            " + camel + ".set" + pascalColumn + "(\"" + table.getName() + "\");");
-                    } else if (columnName.equals(statusPrimaryKeys)) {
+                    } else if (columnName.equalsIgnoreCase(statusPrimaryKeys)) {
                         String keys = "String.join(\",\"";
                         for (String pk : table.getPrimaryKeys()) {
                             keys += ", this.get" + StringUtil.toPascalCase(pk) + "().toString()";
                         }
                         keys += ")";
                         s.add("            " + camel + ".set" + pascalColumn + "(" + keys + ");");
-                    } else if (columnName.equals(statusKessaiTs)) {
+                    } else if (columnName.equalsIgnoreCase(statusKessaiTs)) {
                         s.add("            " + camel + ".set" + pascalColumn + "(at);");
-                    } else if (columnName.equals(statusKessaiId)) {
+                    } else if (columnName.equalsIgnoreCase(statusKessaiId)) {
                         s.add("            " + camel + ".set" + pascalColumn + "(by);");
                     } else {
                         s.add("            " + camel + ".set" + pascalColumn + "(this." + camelColumn + ");");
