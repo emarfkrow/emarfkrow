@@ -1107,7 +1107,7 @@ public final class BeanGenerator {
             }
         }
         s.add("        jp.co.golorp.emarf.util.MapList mapList = jp.co.golorp.emarf.sql.Queries.select(sql, map, null, null);");
-        s.add("        Object o = mapList.get(0).get(\"" + keyName + "\");");
+        s.add("        Object o = mapList.get(0).get(\"" + keyName.toUpperCase() + "\");");
         s.add("        this.set" + StringUtil.toPascalCase(keyName) + "(o);");
         s.add("    }");
     }

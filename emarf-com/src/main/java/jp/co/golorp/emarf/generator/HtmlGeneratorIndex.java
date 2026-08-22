@@ -469,7 +469,7 @@ public final class HtmlGeneratorIndex extends HtmlGenerator {
                     for (TableInfo parent : table.getParents()) {
                         List<String> primaryKeys = new ArrayList<String>(parent.getPrimaryKeys());
                         primaryKeys.remove(TEKIYO_BI);
-                        if (primaryKeys.contains(n)) {
+                        if (primaryKeys.contains(n.toUpperCase())) {
                             isParentKey = true;
                             break;
                         }
