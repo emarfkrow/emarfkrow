@@ -1263,7 +1263,7 @@ public final class DataSources {
                 //                    continue;
                 //                }
 
-                // 親が参照モデルなら子のテーブル名が後方一致しなければスキップ
+                // 親が参照モデルなら子のテーブル名が前方一致しなければスキップ
                 // （単独キーだとトラン系に影響する）
                 if (oya.isRefer() && !ko.getName().startsWith(oya.getName())) {
                     continue;
