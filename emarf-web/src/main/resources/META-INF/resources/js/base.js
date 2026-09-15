@@ -367,8 +367,10 @@ let Base = {
         // 拡張子を除去
         let gamenId = lastPath.replace(/\?.+/, '');
         gamenId = gamenId.replace(/S?\.html/, '');
-        // エクセルボタン用
-        gamenId = gamenId.replace(/(Search|Get)/, '').replace(/\.xlsx/, '');
+		// エクセルボタン用
+		gamenId = gamenId.replace(/(Search|Get)/, '').replace(/\.xlsx/, '');
+		// PDFボタン用
+		gamenId = gamenId.replace(/(Search|Get)/, '').replace(/\.pdf/, '');
         // 登録系ボタン用
         gamenId = gamenId.replace(/(Search|Regist)/, '').replace(/Form/, '');
 

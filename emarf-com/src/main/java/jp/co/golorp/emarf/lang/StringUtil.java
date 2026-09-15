@@ -428,6 +428,8 @@ public final class StringUtil {
         }
 
         byte[] bytes = md.digest(s.getBytes());
+        bytes = md.digest(bytes);
+        bytes = md.digest(bytes);
 
         return Hex.encodeHexString(bytes);
     }

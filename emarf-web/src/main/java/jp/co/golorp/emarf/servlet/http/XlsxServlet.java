@@ -43,7 +43,7 @@ import jp.co.golorp.emarf.servlet.LoginFilter;
  * @author golorp
  */
 @WebServlet("*.xlsx")
-public final class XlsxServlet extends HttpServlet {
+public class XlsxServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
 
@@ -66,6 +66,23 @@ public final class XlsxServlet extends HttpServlet {
     protected void doGet(final HttpServletRequest request, final HttpServletResponse response)
             throws ServletException, IOException {
 
+        String tempFilePath = getGenXlsxPath(request, response);
+
+        if (tempFilePath != null) {
+            LOG.debug("tempFilePath: " + tempFilePath);
+            ServletUtil.respondDelete(response, tempFilePath);
+        }
+    }
+
+    /**
+     * @param request
+     * @param response
+     * @return String
+     * @throws IOException
+     */
+    public String getGenXlsxPath(final HttpServletRequest request, final HttpServletResponse response)
+            throws IOException {
+
         // requestURIから検索アクションの実行結果を取得
         Map<String, Object> map = null;
         try {
@@ -81,12 +98,14 @@ public final class XlsxServlet extends HttpServlet {
             LOG.error(e.getMessage(), e);
             String referer = request.getHeader("referer").replaceAll("\\?.+$", "");
             response.sendRedirect(referer + "?FATAL=fatal");
-            return;
+            return null;
         }
+
+        // 認可エラーならリダイレクト
         if (map.get("AUTHZ") != null) {
             String referer = request.getHeader("referer").replaceAll("\\?.+$", "");
             response.sendRedirect(referer + "?ERROR=error.authz.output");
-            return;
+            return null;
         }
 
         // requestURIからエクセルアクションの実行結果を取得
@@ -130,10 +149,9 @@ public final class XlsxServlet extends HttpServlet {
 
         String baseMei = StringUtil.sanitize(request.getParameter("baseMei"));
 
-        // 一時エクセルを作成して出力・削除
+        // 一時エクセルを作成
         String tempFilePath = XlsxUtil.getGeneratedPath(pathes, layoutFileName, layoutSheetMap, baseMei);
-        LOG.debug("tempFilePath: " + tempFilePath);
-        ServletUtil.respondDelete(response, tempFilePath);
+        return tempFilePath;
     }
 
     /**

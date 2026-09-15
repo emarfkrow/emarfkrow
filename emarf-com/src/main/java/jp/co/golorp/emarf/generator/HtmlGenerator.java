@@ -406,6 +406,8 @@ public abstract class HtmlGenerator extends BeanGenerator {
         }
         s.add("        <a th:href=\"@{" + e + "Get.xlsx(baseMei=#{" + e + ".h2})}\" id=\""
                 + e + "Get.xlsx\" th:text=\"#{common.xlsx}\" class=\"output\" tabindex=\"-1\">xlsx</a>");
+        s.add("        <a th:href=\"@{" + e + "Get.pdf(baseMei=#{" + e + ".h2})}\" id=\""
+                + e + "Get.pdf\" th:text=\"#{common.pdf}\" class=\"output\" tabindex=\"-1\" target=\"blank\">pdf</a>");
         if (table.getRebornTo() != null) { // 転生先がある場合は追加ボタンを出力
             TableInfo reborn = table.getRebornTo();
             String r = StringUtil.toPascalCase(reborn.getName());

@@ -44,7 +44,7 @@ var Complement = {
                                 var rowJson = dataJson[i];
                                 var value = rowJson[valueColumn];
                                 if (labelColumn) {
-                                    var label = rowJson[labelColumn];
+                                    var label = value + ':' + rowJson[labelColumn];
                                 } else {
                                     var label = rowJson[valueColumn];
                                 }
@@ -71,8 +71,9 @@ $(function() {
     $('.refer').each(function() {
         let url = $(this).attr('data-json');
         let src = $(this).attr('data-srcDef');
+        let dest = $(this).attr('data-destDef');
         if (url && src) {
-            Complement.enable(this, './' + url, src.split(':')[0]);
+            Complement.enable(this, './' + url, src.split(':')[0], dest.split(':')[1]);
         }
     });
 });

@@ -44,7 +44,7 @@ public class AuthzAction extends BaseAction {
         String requestURI = form.get("requestURI").toString();
         String tableName = requestURI.replaceFirst("\\?anew$", "")
                 .replaceFirst("S\\.html$", "").replaceFirst("\\.html$", "")
-                .replaceFirst("\\.xlsx$", "").replaceFirst("\\.ajax$", "")
+                .replaceFirst("\\.xlsx$", "").replaceFirst("\\.pdf$", "").replaceFirst("\\.ajax$", "")
                 .replaceFirst("Get$", "").replaceFirst("Search$", "")
                 .replaceFirst("S?Regist$", "").replaceFirst("S?Delete$", "")
                 .replaceFirst("S?Permit$", "").replaceFirst("S?Forbid$", "");
@@ -58,7 +58,8 @@ public class AuthzAction extends BaseAction {
 
         String suffix = requestURI.replaceFirst("^" + tableName, "");
         String errorId = null;
-        if (requestURI.matches(".+\\.xlsx\\?.+$") && (authZ.get("output") == null || authZ.get("output") != 1)) {
+        if ((requestURI.matches(".+\\.xlsx\\?.+$") || requestURI.matches(".+\\.pdf\\?.+$"))
+                && (authZ.get("output") == null || authZ.get("output") != 1)) {
             errorId = "error.authz.output";
 
         } else if (suffix.matches("^Get.+$") || suffix.matches("^\\.html$")) {

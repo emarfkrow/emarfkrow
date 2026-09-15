@@ -159,6 +159,8 @@ public final class HtmlGeneratorIndex extends HtmlGenerator {
             }
             s.add("        <a th:href=\"@{" + e + "Search.xlsx(baseMei=#{" + e + "S.h2})}\" id=\"" + e
                     + "Search.xlsx\" th:text=\"#{common.xlsx}\" class=\"output\" tabindex=\"-1\">xlsx</a>");
+            s.add("        <a th:href=\"@{" + e + "Search.pdf(baseMei=#{" + e + "S.h2})}\" id=\"" + e
+                    + "Search.pdf\" th:text=\"#{common.pdf}\" class=\"output\" tabindex=\"-1\" target=\"blank\">pdf</a>");
             if (table.getSummaryTo() != null) { // 集約先リンク
                 String summaryEntity = StringUtil.toPascalCase(table.getSummaryTo().getName());
                 s.add("        <a th:href=\"@{/model/" + summaryEntity + ".html}\" id=\"" + summaryEntity
