@@ -245,7 +245,8 @@ public final class ServletUtil {
         HttpSession ses = request.getSession();
         a.setSession(ses);
 
-        a.setRequestURI(request.getRequestURI());
+        String requestURI = EmarfListener.valRequestURI(request);
+        a.setRequestURI(requestURI);
 
         if (ses.getAttribute(LoginFilter.AUTHN_KEY) != null) {
             a.setId(ses.getAttribute(LoginFilter.AUTHN_KEY).toString());
@@ -491,7 +492,7 @@ public final class ServletUtil {
      * @return Map
      */
     public static Map<String, Object> getPostedJson(final HttpServletRequest request) {
-        String requestURI = request.getRequestURI();
+        String requestURI = EmarfListener.valRequestURI(request);
         String ajaxRequestURI = requestURI.replaceFirst("\\.[a-z]+$", ".ajax");
         HttpSession session = request.getSession();
         Object o = session.getAttribute(ajaxRequestURI);

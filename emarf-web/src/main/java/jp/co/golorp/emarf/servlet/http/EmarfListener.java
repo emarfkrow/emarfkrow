@@ -28,6 +28,7 @@ import jakarta.servlet.ServletRequestAttributeListener;
 import jakarta.servlet.ServletRequestEvent;
 import jakarta.servlet.ServletRequestListener;
 import jakarta.servlet.annotation.WebListener;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSessionActivationListener;
 import jakarta.servlet.http.HttpSessionAttributeListener;
 import jakarta.servlet.http.HttpSessionBindingEvent;
@@ -36,8 +37,10 @@ import jakarta.servlet.http.HttpSessionEvent;
 import jakarta.servlet.http.HttpSessionIdListener;
 import jakarta.servlet.http.HttpSessionListener;
 
+import jp.co.golorp.emarf.exception.AppError;
 import jp.co.golorp.emarf.generator.BeanGenerator;
 import jp.co.golorp.emarf.io.FileUtil;
+import jp.co.golorp.emarf.lang.StringUtil;
 import jp.co.golorp.emarf.properties.App;
 
 /**
@@ -52,6 +55,26 @@ public class EmarfListener implements ServletContextListener, ServletContextAttr
 
     /** プロジェクトディレクトリ */
     private String contextRealPath;
+
+    /**
+     * @param request
+     * @return String
+     */
+    public static String valRequestURI(final ServletRequest request) {
+        return valRequestURI((HttpServletRequest) request);
+    }
+
+    /**
+     * @param request
+     * @return String
+     */
+    public static String valRequestURI(final HttpServletRequest request) {
+        String requestURI = request.getRequestURI();
+        if (!requestURI.equals(StringUtil.sanitize(requestURI).replaceAll("\"", "”"))) {
+            throw new AppError("error.request");
+        }
+        return requestURI;
+    }
 
     /**
      * Default constructor.

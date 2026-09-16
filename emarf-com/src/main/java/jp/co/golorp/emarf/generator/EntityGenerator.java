@@ -75,7 +75,8 @@ public final class EntityGenerator extends BeanGenerator {
                 String t = column.getDataType(); // type
                 // p = p.replaceAll("#", "_"); a = a.replaceAll("#", "_");
                 s.add("");
-                //                s.add("    /** " + n.toUpperCase() + ":" + column.getTypeName() + ":" + column.getColumnSize() + " */");
+                //                s.add("    /** " + n.toUpperCase() + ":" + column.getTypeName() + ":" + column.getColumnSize() + ":"
+                //                        + column.getDecimalDigits() + " */");
                 s.add("    /** " + n.toUpperCase() + " */");
                 if (StringUtil.endsWith(INPUT_TS_SUFS, n)) {
                     addAnnotationLocalTimeStamp(s);

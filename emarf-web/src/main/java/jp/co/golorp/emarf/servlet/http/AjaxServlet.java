@@ -70,7 +70,7 @@ public final class AjaxServlet extends HttpServlet {
         try {
 
             HttpSession ses = request.getSession();
-            String requestURI = request.getRequestURI();
+            String requestURI = EmarfListener.valRequestURI(request);
 
             // エクセルダウンロードの検索条件退避用
             //ses.removeAttribute(requestURL);

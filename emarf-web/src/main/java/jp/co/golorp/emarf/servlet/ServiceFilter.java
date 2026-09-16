@@ -40,6 +40,7 @@ import jp.co.golorp.emarf.action.BaseAction;
 import jp.co.golorp.emarf.exception.SysError;
 import jp.co.golorp.emarf.generator.BeanGenerator;
 import jp.co.golorp.emarf.properties.App;
+import jp.co.golorp.emarf.servlet.http.EmarfListener;
 import jp.co.golorp.emarf.servlet.http.ServletUtil;
 import jp.co.golorp.emarf.time.DateTimeUtil;
 import jp.co.golorp.emarf.util.Messages;
@@ -86,7 +87,7 @@ public class ServiceFilter implements Filter {
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse res = (HttpServletResponse) response;
 
-        String requestURI = req.getRequestURI();
+        String requestURI = EmarfListener.valRequestURI(request);
 
         if (EXCLUDE_REGEXP != null && !requestURI.matches(EXCLUDE_REGEXP)) {
 
@@ -96,8 +97,7 @@ public class ServiceFilter implements Filter {
                 authnKey = ses.getAttribute(LoginFilter.AUTHN_KEY).toString();
             }
             String remoteAddr = request.getRemoteAddr();
-            LOG.info(
-                    "RequestURI: " + req.getRequestURI() + ", RequestBY: " + authnKey + ", RequestFROM: " + remoteAddr);
+            LOG.info("RequestURI: " + requestURI + ", RequestBY: " + authnKey + ", RequestFROM: " + remoteAddr);
 
             if (requestURI.matches(WRITE_URI_RE)) {
                 for (String kikanCron : DONT_WRITES) {

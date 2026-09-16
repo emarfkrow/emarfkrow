@@ -41,6 +41,7 @@ import jp.co.golorp.emarf.exception.SysError;
 import jp.co.golorp.emarf.generator.BeanGenerator;
 import jp.co.golorp.emarf.lang.StringUtil;
 import jp.co.golorp.emarf.properties.App;
+import jp.co.golorp.emarf.servlet.http.EmarfListener;
 import jp.co.golorp.emarf.servlet.http.ServletUtil;
 import jp.co.golorp.emarf.util.Messages;
 import jp.co.golorp.emarf.util.ResourceBundles;
@@ -127,7 +128,7 @@ public class LoginFilter implements Filter {
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse res = (HttpServletResponse) response;
 
-        String requestURI = req.getRequestURI();
+        String requestURI = EmarfListener.valRequestURI(request);
 
         String contextPath = req.getContextPath() + "/";
 
