@@ -554,6 +554,7 @@ let Ajaxize = {
                     // check,radio
                     $input.closest('fieldset').find('legend').addClass('error').attr('title', errors[k]);
                 }
+
                 // select
                 $input.prev('label').addClass('error').attr('title', errors[k]);
 

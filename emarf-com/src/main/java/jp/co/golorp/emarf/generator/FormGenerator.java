@@ -212,7 +212,7 @@ public final class FormGenerator extends BeanGenerator {
                         + StringUtil.toPascalCase(fromPrimaryKey) + "());");
             }
             s.add("        baseProcess.masterCheck(errors, \"" + fromE + "Search\", \"" + lastKey + "\", " + fromI
-                    + "Params, jp.co.golorp.emarf.util.Messages.get(\"" + e + "\"));");
+                    + "Params, jp.co.golorp.emarf.util.Messages.get(\"" + e + "." + lastKey + "\"));");
         }
 
         // 共生元のマスタチェック
@@ -229,7 +229,7 @@ public final class FormGenerator extends BeanGenerator {
                         + StringUtil.toPascalCase(fromPrimaryKey) + "());");
             }
             s.add("        baseProcess.masterCheck(errors, \"" + fromE + "Search\", \"" + lastKey + "\", " + fromI
-                    + "Params, jp.co.golorp.emarf.util.Messages.get(\"" + e + "\"));");
+                    + "Params, jp.co.golorp.emarf.util.Messages.get(\"" + e + "." + lastKey + "\"));");
         }
 
         // 転生元のマスタチェック
@@ -247,7 +247,7 @@ public final class FormGenerator extends BeanGenerator {
                         + StringUtil.toPascalCase(fromPrimaryKey) + "());");
             }
             s.add("        baseProcess.masterCheck(errors, \"" + fromE + "Search\", \"" + lastKey + "\", " + fromI
-                    + "Params, jp.co.golorp.emarf.util.Messages.get(\"" + e + "\"));");
+                    + "Params, jp.co.golorp.emarf.util.Messages.get(\"" + e + "." + lastKey + "\"));");
         }
 
         // 集約先のマスタチェック
@@ -265,7 +265,7 @@ public final class FormGenerator extends BeanGenerator {
                         + StringUtil.toPascalCase(fromPrimaryKey) + "());");
             }
             s.add("        baseProcess.masterCheck(errors, \"" + fromE + "Search\", \"" + lastKey + "\", " + fromI
-                    + "Params, jp.co.golorp.emarf.util.Messages.get(\"" + e + "\"));");
+                    + "Params, jp.co.golorp.emarf.util.Messages.get(\"" + e + "." + lastKey + "\"));");
         }
 
         // 列ごとに評価

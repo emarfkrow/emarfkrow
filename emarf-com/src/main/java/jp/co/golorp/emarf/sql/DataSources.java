@@ -1653,17 +1653,17 @@ public final class DataSources {
                 continue;
             }
 
-            // 子モデルはスキップ
+            // 集約先が子モデルならスキップ
             if (saki.getParents().size() > 0) {
                 continue;
             }
 
-            // 派生先（集約元）がなければスキップ
+            // 集約先に、派生先（集約元の候補として）がなければスキップ
             if (saki.getDeriveTos().size() == 0) {
                 continue;
             }
 
-            // 派生元（集約先）が他の転生先ならスキップ
+            // 集約先に、転生元があるならスキップ
             if (saki.getRebornFrom() != null) {
                 continue;
             }
@@ -1694,7 +1694,7 @@ public final class DataSources {
                     continue;
                 }
 
-                // 集約元が選抜先に登録済みならスキップ
+                // 集約元が、集約先の選択先 に登録済みならスキップ
                 if (saki.getChoosers().contains(moto)) {
                     continue;
                 }

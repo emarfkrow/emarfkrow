@@ -299,14 +299,23 @@ public abstract class HtmlGenerator extends BeanGenerator {
         }
 
         // 必須の派生元が１つしかなければ作成不可（複数転生先の対応）
-        int derives = 0;
+        List<TableInfo> deriveFroms = new ArrayList<TableInfo>();
         for (ColumnInfo column : table.getColumns().values()) {
             if (column.getDeriveFrom() != null && column.getNullable() != 1) {
-                derives++;
+                deriveFroms.add(column.getDeriveFrom());
             }
         }
-        if (derives == 1) {
-            return false;
+        if (deriveFroms.size() == 1) {
+            boolean isOnlyDeriveFrom = true;
+            TableInfo deriveFrom = deriveFroms.get(0);
+            for (ColumnInfo column : table.getColumns().values()) {
+                if (column.getDeriveFrom() == deriveFrom && column.getNullable() == 1) {
+                    isOnlyDeriveFrom = false;
+                }
+            }
+            if (isOnlyDeriveFrom) {
+                return false;
+            }
         }
 
         // 適用日を除く主キーが、一つなら作成可
