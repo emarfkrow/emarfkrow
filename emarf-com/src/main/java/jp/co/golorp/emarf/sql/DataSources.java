@@ -210,7 +210,7 @@ public final class DataSources {
             for (Entry<String, TableInfo> entry : tableMap.entrySet()) {
                 tables.add(entry.getValue());
             }
-            LOG.info("主キー一覧取得");
+            LOG.debug("[primary keys]");
             for (TableInfo table : tables) { // テーブル毎に主キー情報を取得
                 addPrimaryKeys(metaData, table);
             }
@@ -302,7 +302,7 @@ public final class DataSources {
                         }
                     }
                 }
-                LOG.info(table.getName() + " " + table.getPrimaryKeys());
+                LOG.debug("    " + table.getName() + " " + table.getPrimaryKeys());
             }
         } catch (Exception e) {
             LOG.error(e.getMessage(), e);
@@ -417,7 +417,7 @@ public final class DataSources {
     private static void addTables(final DatabaseMetaData metaData, final String schemaPattern,
             final List<TableInfo> tables) throws SQLException {
 
-        LOG.info("テーブル一覧取得");
+        LOG.debug("[tables]");
 
         Map<String, TableInfo> tree = new TreeMap<String, TableInfo>();
 
@@ -464,7 +464,7 @@ public final class DataSources {
 
             tree.put(tableName, table);
 
-            LOG.info(tableName);
+            LOG.debug("    " + tableName);
         }
 
         rs.close();
@@ -636,7 +636,7 @@ public final class DataSources {
      */
     private static void setRefer(final List<TableInfo> tables) {
 
-        LOG.debug("【Refer】");
+        LOG.debug("[Refer]");
 
         // 参照先としてループ
         Iterator<TableInfo> sakis = tables.iterator();
@@ -736,7 +736,7 @@ public final class DataSources {
                             continue;
                         }
 
-                        LOG.debug("    " + saki.getName() + " from " + moto.getName() + "." + motoCol.getName());
+                        LOG.debug("    " + saki.getName() + "  from  " + moto.getName() + "." + motoCol.getName());
                         motoCol.setRefer(saki);
                         saki.setRefer(true);
 
@@ -760,7 +760,7 @@ public final class DataSources {
                                 continue;
                             }
 
-                            LOG.debug("    " + saki.getName() + " from " + moto.getName() + "." + motoCol.getName());
+                            LOG.debug("    " + saki.getName() + "  from  " + moto.getName() + "." + motoCol.getName());
                             motoCol.setRefer(saki);
                             saki.setRefer(true);
 
@@ -821,87 +821,13 @@ public final class DataSources {
     }
 
     /**
-     * 複合先の複合キー群から参照マスタを探す
-     *
-     * @param tables
-     */
-    private static void addCombos(final List<TableInfo> tables) {
-
-        LOG.debug("【Combo】");
-
-        for (TableInfo saki : tables) {
-
-            if (saki.isView() || saki.isStatusFlow()) {
-                continue;
-            }
-
-            if (saki.isHistory()) {
-                continue;
-            }
-
-            // 統合先の主キー内の参照モデルが１以下ならスキップ
-            Set<TableInfo> combos = new LinkedHashSet<TableInfo>();
-            for (String sakiPrimaryKey : saki.getPrimaryKeys()) {
-                ColumnInfo pkCol = saki.getColumns().get(sakiPrimaryKey);
-                if (pkCol.getRefer() != null) {
-                    TableInfo refer = pkCol.getRefer();
-                    if (!combos.contains(refer) && !refer.isView() && !refer.isStatusFlow()) {
-                        combos.add(refer);
-                    }
-                }
-            }
-            if (combos.size() <= 1) {
-                continue;
-            }
-
-            // 統合モデルに設定
-            for (TableInfo combo : combos) {
-                LOG.debug("    " + saki.getName() + " : " + combo.getName());
-                saki.getComboInfos().add(combo);
-            }
-
-            /*
-             * 適用日を除く最終キー以外を
-             * 参照ダイアログで採用する制約モデルにする
-             */
-
-            // ２モデルの組み合わせでなければスキップ（３モデル以上になると複雑すぎる）
-            if (saki.getComboInfos().size() != 2) {
-                continue;
-            }
-
-            // 適用日はスキップ
-            List<String> primaryKeys = new ArrayList<String>(saki.getPrimaryKeys());
-            if (primaryKeys.get(primaryKeys.size() - 1).toLowerCase().equals(BeanGenerator.TEKIYO_BI.toLowerCase())) {
-                primaryKeys.remove(BeanGenerator.TEKIYO_BI.toLowerCase());
-                primaryKeys.remove(BeanGenerator.TEKIYO_BI.toUpperCase());
-            }
-
-            // 主キーに参照キー以外が含まれるならスキップ
-            boolean isStint = true;
-            for (String primaryKey : primaryKeys) {
-                if (saki.getColumns().get(primaryKey).getRefer() == null) {
-                    isStint = false;
-                    break;
-                }
-            }
-
-            if (isStint) {
-                TableInfo combo = saki.getComboInfos().get(saki.getComboInfos().size() - 1);
-                LOG.debug("        " + combo.getName() + " stint by " + saki.getName());
-                combo.setStintInfo(saki);
-            }
-        }
-    }
-
-    /**
      * 各テーブル情報に弟モデルを追加
      *
      * @param tables テーブル情報のリスト
      */
     private static void addBrothers(final List<TableInfo> tables) {
 
-        LOG.debug("【Brother】");
+        LOG.debug("[Brother]");
 
         // 比較元としてループ
         Iterator<TableInfo> elds = tables.iterator();
@@ -991,7 +917,7 @@ public final class DataSources {
                 }
 
                 // 兄に弟を追加、弟に弟フラグを設定
-                LOG.debug("    " + eld.getName() + " and " + yng.getName());
+                LOG.debug("    " + eld.getName() + "  and  " + yng.getName());
                 eld.getBrothers().add(yng);
                 yng.setBrother(true);
             }
@@ -1005,7 +931,7 @@ public final class DataSources {
      */
     private static void setHistory(final List<TableInfo> tables) {
 
-        LOG.debug("【History】");
+        LOG.debug("[History]");
 
         // 履歴元としてループ
         Iterator<TableInfo> motos = tables.iterator();
@@ -1075,10 +1001,90 @@ public final class DataSources {
                     continue;
                 }
 
-                LOG.debug("    " + moto.getName() + " to " + saki.getName());
+                LOG.debug("    " + moto.getName() + "  to  " + saki.getName());
                 saki.setHistory(true);
                 moto.setHistory(saki);
             }
+        }
+    }
+
+    /**
+     * 複合先の複合キー群から参照マスタを探す
+     *
+     * @param tables
+     */
+    private static void addCombos(final List<TableInfo> tables) {
+
+        LOG.debug("[Combo]");
+
+        for (TableInfo saki : tables) {
+
+            if (saki.isView() || saki.isStatusFlow()) {
+                continue;
+            }
+
+            if (saki.isHistory()) {
+                continue;
+            }
+
+            // 統合先の主キー内の参照モデルが１以下ならスキップ
+            Set<TableInfo> combos = new LinkedHashSet<TableInfo>();
+            for (String sakiPrimaryKey : saki.getPrimaryKeys()) {
+                ColumnInfo pkCol = saki.getColumns().get(sakiPrimaryKey);
+                if (pkCol.getRefer() != null) {
+                    TableInfo refer = pkCol.getRefer();
+                    if (!combos.contains(refer) && !refer.isView() && !refer.isStatusFlow()) {
+                        combos.add(refer);
+                    }
+                }
+            }
+            if (combos.size() <= 1) {
+                continue;
+            }
+
+            // 統合モデルに設定
+            List<String> comboNames = new ArrayList<String>();
+            for (TableInfo combo : combos) {
+                comboNames.add(combo.getName());
+                saki.getComboInfos().add(combo);
+            }
+            String log = "    " + saki.getName() + "  from  " + comboNames;
+
+            /*
+             * 適用日を除く最終キー以外を
+             * 参照ダイアログで採用する制約モデルにする
+             */
+
+            // // ２モデルの組み合わせでなければスキップ（３モデル以上になると複雑すぎる）
+            // if (saki.getComboInfos().size() != 2) {
+            //     continue;
+            // }
+
+            // 適用日はスキップ
+            List<String> primaryKeys = new ArrayList<String>(saki.getPrimaryKeys());
+            if (primaryKeys.get(primaryKeys.size() - 1).toLowerCase().equals(BeanGenerator.TEKIYO_BI.toLowerCase())) {
+                primaryKeys.remove(BeanGenerator.TEKIYO_BI.toLowerCase());
+                primaryKeys.remove(BeanGenerator.TEKIYO_BI.toUpperCase());
+            }
+
+            // 主キーに参照キー以外が含まれるならスキップ
+            boolean isStint = true;
+            for (String primaryKey : primaryKeys) {
+                if (saki.getColumns().get(primaryKey).getRefer() == null) {
+                    isStint = false;
+                    break;
+                }
+            }
+
+            // 主キーが全て参照キーなら、複合先を最後の複合元の制約モデルにする
+            // 複合元のcorrect時に、複合先も存在する必要がある
+            if (isStint) {
+                TableInfo lastCombo = saki.getComboInfos().get(saki.getComboInfos().size() - 1);
+                log += "  stint at  " + lastCombo.getName();
+                lastCombo.setStintInfo(saki);
+            }
+
+            LOG.debug(log);
         }
     }
 
@@ -1089,7 +1095,7 @@ public final class DataSources {
      */
     private static void addChildren(final List<TableInfo> tables) {
 
-        LOG.debug("【Children】");
+        LOG.debug("[Children]");
 
         // 親モデルとしてループ
         Iterator<TableInfo> oyas = tables.iterator();
@@ -1116,6 +1122,8 @@ public final class DataSources {
                 isOyaTekiyoBi = oya.getPrimaryKeys().contains(BeanGenerator.TEKIYO_BI.toLowerCase())
                         || oya.getPrimaryKeys().contains(BeanGenerator.TEKIYO_BI.toUpperCase());
             }
+
+            List<String> koNames = new ArrayList<String>();
 
             // テーブル情報でループ（比較先）
             Iterator<TableInfo> kos = tables.iterator();
@@ -1211,9 +1219,9 @@ public final class DataSources {
                 //                }
 
                 // 親モデルの子リストに追加・子モデルの親リストに追加
-                LOG.debug("    " + oya.getName() + " has " + ko.getName());
                 oya.getChildren().add(ko);
                 ko.getParents().add(oya);
+                koNames.add(ko.getName());
 
                 //                // 親子設定した場合、兄弟モデルを消し込み（親が適用日なし、子が適用日ありで、兄弟モデルに誤登録されている可能性があるため）
                 //                if (oya.getBrothers().contains(ko)) {
@@ -1225,6 +1233,10 @@ public final class DataSources {
                 //                    ko.getBrothers().remove(oya);
                 //                }
             }
+
+            if (koNames.size() > 0) {
+                LOG.debug("    " + oya.getName() + "  has  " + koNames);
+            }
         }
     }
 
@@ -1235,7 +1247,7 @@ public final class DataSources {
      */
     private static void addDerives(final List<TableInfo> tables) {
 
-        LOG.debug("【Derives】");
+        LOG.debug("[Derives]");
 
         // 派生元としてループ
         Iterator<TableInfo> motos = tables.iterator();
@@ -1262,6 +1274,8 @@ public final class DataSources {
             if (isOyaRefer) {
                 continue;
             }
+
+            List<String> names = new ArrayList<String>();
 
             // 派生先として、テーブル情報をループ
             Iterator<TableInfo> sakis = tables.iterator();
@@ -1295,7 +1309,7 @@ public final class DataSources {
 
                 String motoLastPK = moto.getPrimaryKeys().get(moto.getPrimaryKeys().size() - 1);
 
-                LOG.debug("    " + moto.getName() + " to " + saki.getName() + " " + sakiFKs);
+                names.add(saki.getName() + " " + sakiFKs);
                 moto.getDeriveTos().add(saki);
                 saki.getDeriveFroms().add(moto);
 
@@ -1330,6 +1344,10 @@ public final class DataSources {
 
                 // [売上]の派生元は、[受注]と[受注明細]となるが、親の[受注]は、派生元から外したいが参照は可能にしたい。
             }
+
+            if (names.size() > 0) {
+                LOG.debug("    " + moto.getName() + "  to  " + names);
+            }
         }
     }
 
@@ -1340,7 +1358,7 @@ public final class DataSources {
      */
     private static void addMerge(final List<TableInfo> tables) {
 
-        LOG.debug("【Merge】");
+        LOG.debug("[Merge]");
 
         // 統合先としてループ
         Iterator<TableInfo> sakis = tables.iterator();
@@ -1369,6 +1387,8 @@ public final class DataSources {
                 continue;
             }
 
+            List<String> names = new ArrayList<String>();
+
             for (TableInfo moto : merges) {
 
                 if (moto.isView() || moto.isStatusFlow()) {
@@ -1380,7 +1400,7 @@ public final class DataSources {
                     continue;
                 }
 
-                LOG.debug("    " + saki.getName() + " from " + moto.getName() + " " + moto.getPrimaryKeys());
+                names.add(moto.getName() + " " + moto.getPrimaryKeys());
 
                 // 派生情報を消し込み
                 moto.getDeriveTos().remove(saki);
@@ -1390,6 +1410,7 @@ public final class DataSources {
                         sakiCol.setDeriveFrom(null);
                     }
                 }
+                LOG.debug("        (an-derive  " + moto.getName() + "  to  " + saki.getName() + ")");
 
                 // 統合情報を書き込み
                 moto.setMergeTo(saki);
@@ -1400,6 +1421,8 @@ public final class DataSources {
                 //     saki.getColumns().get(motoKey).setRefer(moto);
                 // }
             }
+
+            LOG.debug("    " + saki.getName() + "  from  " + names);
         }
     }
 
@@ -1410,7 +1433,7 @@ public final class DataSources {
      */
     private static void setReborn(final List<TableInfo> tables) {
 
-        LOG.debug("【Reborn】");
+        LOG.debug("[Reborn]");
 
         // 転生元としてループ
         Iterator<TableInfo> motos = tables.iterator();
@@ -1515,8 +1538,6 @@ public final class DataSources {
                 saki.setRebornFrom(null);
             }
 
-            LOG.debug("    " + moto.getName() + " to " + saki.getName() + " " + sakiFKs);
-
             // 派生情報を消し込み
             moto.getDeriveTos().remove(saki);
             saki.getDeriveFroms().remove(moto);
@@ -1532,6 +1553,9 @@ public final class DataSources {
             for (String sakiKey : sakiFKs) {
                 saki.getColumns().get(sakiKey).setReborn(true);
             }
+
+            LOG.debug("        (an-derive  " + moto.getName() + "  to  " + saki.getName() + ")");
+            LOG.debug("    " + moto.getName() + "  to  " + saki.getName() + " " + sakiFKs);
         }
     }
 
@@ -1572,7 +1596,7 @@ public final class DataSources {
      */
     private static void addChoices(final List<TableInfo> tables) {
 
-        LOG.debug("【Choices】");
+        LOG.debug("[Choices]");
 
         // 選抜先として、テーブル情報をループ
         Iterator<TableInfo> sakis = tables.iterator();
@@ -1605,6 +1629,8 @@ public final class DataSources {
                 continue;
             }
 
+            List<String> names = new ArrayList<String>();
+
             // 選択肢でループ
             for (TableInfo moto : choises) {
 
@@ -1612,7 +1638,7 @@ public final class DataSources {
                     continue;
                 }
 
-                LOG.debug("    " + saki.getName() + " from " + moto.getName() + " " + moto.getPrimaryKeys());
+                names.add(moto.getName() + " " + moto.getPrimaryKeys());
 
                 //                // 派生情報を消し込み
                 //                moto.getDeriveTos().remove(saki);
@@ -1632,6 +1658,10 @@ public final class DataSources {
                 //     saki.getColumns().get(motoKey).setRefer(moto);
                 // }
             }
+
+            if (names.size() > 0) {
+                LOG.debug("    " + saki.getName() + "  from  " + names);
+            }
         }
     }
 
@@ -1642,7 +1672,7 @@ public final class DataSources {
      */
     private static void addSummaryOfs(final List<TableInfo> tables) {
 
-        LOG.debug("【Summary】");
+        LOG.debug("[Summary]");
 
         // 派生元を集約先としてループ
         Iterator<TableInfo> sakis = tables.iterator();
@@ -1678,6 +1708,8 @@ public final class DataSources {
                 }
             }
 
+            List<String> names = new ArrayList<String>();
+
             for (TableInfo moto : sums) {
 
                 if (moto.isView() || moto.isStatusFlow()) {
@@ -1699,7 +1731,7 @@ public final class DataSources {
                     continue;
                 }
 
-                LOG.debug("    " + moto.getName() + " to " + saki.getName() + " " + saki.getPrimaryKeys());
+                names.add(moto.getName());
 
                 // 派生情報を消し込み
                 saki.getDeriveTos().remove(moto);
@@ -1709,6 +1741,7 @@ public final class DataSources {
                         motoCol.setDeriveFrom(null);
                     }
                 }
+                LOG.debug("        (an-derive  " + saki.getName() + "  to  " + moto.getName() + ")");
 
                 // 集約情報を書き込み
                 moto.setSummaryTo(saki);
@@ -1716,6 +1749,10 @@ public final class DataSources {
                 for (String sakiKey : saki.getPrimaryKeys()) {
                     moto.getColumns().get(sakiKey).setSummary(true);
                 }
+            }
+
+            if (names.size() > 0) {
+                LOG.debug("    " + saki.getName() + " " + saki.getPrimaryKeys() + "  from  " + names);
             }
         }
     }
@@ -1729,7 +1766,7 @@ public final class DataSources {
 
             LOG.info("");
 
-            String tablelog = "■" + table.getName();
+            String tablelog = table.getName();
             if (table.getPrimaryKeys().size() > 0) {
                 tablelog += " : " + table.getPrimaryKeys();
             }
@@ -1750,13 +1787,6 @@ public final class DataSources {
                 }
             }
 
-            if (table.getComboInfos().size() > 0) {
-                LOG.info("    Combos:");
-                for (TableInfo combo : table.getComboInfos()) {
-                    LOG.info("        " + combo.getName() + " " + combo.getPrimaryKeys());
-                }
-            }
-
             if (table.getBrothers().size() > 0) {
                 LOG.info("    Brothers:");
                 for (TableInfo brother : table.getBrothers()) {
@@ -1768,6 +1798,19 @@ public final class DataSources {
                 LOG.info("    History:");
                 TableInfo history = table.getHistory();
                 LOG.info("        " + history.getName() + " " + history.getPrimaryKeys());
+            }
+
+            if (table.getComboInfos().size() > 0) {
+                LOG.info("    Combos:");
+                for (TableInfo combo : table.getComboInfos()) {
+                    LOG.info("        " + combo.getName() + " " + combo.getPrimaryKeys());
+                }
+            }
+
+            if (table.getStintInfo() != null) {
+                LOG.info("    Stint:");
+                TableInfo stint = table.getStintInfo();
+                LOG.info("        " + stint.getName() + " " + stint.getPrimaryKeys());
             }
 
             if (table.getParents().size() > 0) {
@@ -1856,12 +1899,6 @@ public final class DataSources {
                 for (TableInfo t : table.getSummaryOfs()) {
                     LOG.info("        " + t.getName() + " " + t.getPrimaryKeys());
                 }
-            }
-
-            if (table.getStintInfo() != null) {
-                LOG.info("    Stint:");
-                TableInfo stint = table.getStintInfo();
-                LOG.info("        " + stint.getName() + " " + stint.getPrimaryKeys());
             }
         }
 

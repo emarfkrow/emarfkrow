@@ -115,7 +115,7 @@ public final class XlsxUtil {
         }
 
         Calendar begin = Calendar.getInstance();
-        LOG.debug("XLSX generate start.");
+        LOG.trace("XLSX generate start.");
 
         // 作業用ファイルをワークブックとして取得
         Workbook workbook = XlsxUtil.file2Workbook(workFile);
@@ -141,7 +141,7 @@ public final class XlsxUtil {
 
         Calendar end = Calendar.getInstance();
         long millis = end.getTimeInMillis() - begin.getTimeInMillis();
-        LOG.debug("XLSX generate end in " + millis + " millis. [" + file.getAbsolutePath() + "]");
+        LOG.trace("XLSX generate end in " + millis + " millis. [" + file.getAbsolutePath() + "]");
 
         // 保管したファイルパスを返す
         return file.getAbsolutePath();
@@ -323,10 +323,10 @@ public final class XlsxUtil {
                 // レイアウトシートの使用範囲内で、行・列ループして、各プレースホルダのアドレスを取得
                 Map<String, CellAddress> meisaiAddresses = new HashMap<String, CellAddress>();
 
-                //                LOG.debug(dataName);
+                //                LOG.trace(dataName);
                 Range range = getRange(sheet, meisaiAddresses, dataName);
-                //                LOG.debug("    b: " + range.getBoR() + ", " + range.getBoC());
-                //                LOG.debug("    e: " + range.getEoR() + ", " + range.getEoC());
+                //                LOG.trace("    b: " + range.getBoR() + ", " + range.getBoC());
+                //                LOG.trace("    e: " + range.getEoR() + ", " + range.getEoC());
 
                 if (range == null) {
                     continue;
@@ -467,7 +467,7 @@ public final class XlsxUtil {
                 }
 
                 String s = String.valueOf(o);
-                //                LOG.debug("    " + s);
+                //                LOG.trace("    " + s);
                 if (s.matches("^\\[\\[" + prefixText + ".+\\]\\]$") /*|| s.matches("^\\[\\[.+\\]\\]$")*/) {
 
                     // 明細項目の座標を退避
@@ -482,7 +482,7 @@ public final class XlsxUtil {
                 }
             }
 
-            //            LOG.debug("    last:[ r: " + sheet.getLastRowNum() + ", c: " + row.getLastCellNum() + " ]");
+            //            LOG.trace("    last:[ r: " + sheet.getLastRowNum() + ", c: " + row.getLastCellNum() + " ]");
         }
 
         if (range.getBoR() == Integer.MAX_VALUE || range.getBoC() == Integer.MAX_VALUE || range.getEoR() == 0
@@ -503,7 +503,7 @@ public final class XlsxUtil {
     private static File write(final Workbook workbook, final String fileBaseMei, final String extension) {
 
         String tmp = App.get("tempVirtualDir");
-        LOG.debug(tmp);
+        LOG.trace(tmp);
         if (tmp == null) {
             tmp = "/temp";
         }
@@ -633,9 +633,9 @@ public final class XlsxUtil {
      */
     private static void copyRange(final Sheet sheet, final Range range, final int destRowIndex) {
 
-        LOG.debug("    BoR: " + range.getBoR());
-        LOG.debug("    EoR: " + range.getEoR());
-        LOG.debug("    destRowIndex: " + destRowIndex);
+        LOG.trace("    BoR: " + range.getBoR());
+        LOG.trace("    EoR: " + range.getEoR());
+        LOG.trace("    destRowIndex: " + destRowIndex);
 
         // 今回コピーする開始行から終了行まで１行ずつループ
         for (int r = range.getBoR(); r <= range.getEoR(); r++) {

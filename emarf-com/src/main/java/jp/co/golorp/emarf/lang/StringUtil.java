@@ -338,7 +338,7 @@ public final class StringUtil {
     //
     //        String ret = new String(encoded);
     //
-    //        LOG.debug("Encrypt [" + string + "] to [" + ret + "].");
+    //        LOG.trace("Encrypt [" + string + "] to [" + ret + "].");
     //
     //        return ret;
     //    }
@@ -362,7 +362,7 @@ public final class StringUtil {
     //
     //        String ret = new String(decrypted);
     //
-    //        LOG.debug("Decrypt [" + encryped + "] to [" + ret + "].");
+    //        LOG.trace("Decrypt [" + encryped + "] to [" + ret + "].");
     //
     //        return ret;
     //    }

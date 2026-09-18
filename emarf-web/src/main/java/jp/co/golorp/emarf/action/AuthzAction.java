@@ -101,7 +101,7 @@ public class AuthzAction extends BaseAction {
 
         Map<String, Object> ret = new HashMap<String, Object>();
         if (errorId != null) {
-            LOG.debug("    Authz requestURI: " + requestURI + ", errorId: " + errorId);
+            LOG.trace("    Authz requestURI: " + requestURI + ", errorId: " + errorId);
             ret.put("AUTHZ", errorId);
         }
 

@@ -133,7 +133,7 @@ public abstract class BaseAction extends BaseProcess {
         }
         LOG.info(">>" + this.getClass().getName() + logBaseName + " run."/* + logPostJson*/);
         if (postJson != null) {
-            LOG.debug("    posted: " + postJson.toString());
+            LOG.trace("    posted: " + postJson.toString());
         }
 
         // ログイン後なら認可チェック

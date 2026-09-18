@@ -69,7 +69,7 @@ public class XlsxServlet extends HttpServlet {
         String tempFilePath = getGenXlsxPath(request, response);
 
         if (tempFilePath != null) {
-            LOG.debug("tempFilePath: " + tempFilePath);
+            LOG.trace("tempFilePath: " + tempFilePath);
             ServletUtil.respondDelete(response, tempFilePath);
         }
     }

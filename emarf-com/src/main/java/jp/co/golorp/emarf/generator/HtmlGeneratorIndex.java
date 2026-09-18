@@ -70,7 +70,7 @@ public final class HtmlGeneratorIndex extends HtmlGenerator {
         s.add("      </fieldset>\r\n      <div class=\"buttons\">\r\n        <button type=\"button\" id=\"Reset" + e
                 + "\" th:text=\"#{common.reset}\" class=\"reset\" onClick=\"Dialogate.reset(event);\">reset</button>");
         boolean isAnew = isAnew(table);
-        if (isAnew && table.getRebornFrom() == null) {
+        if (isAnew /*&& table.getRebornFrom() == null*/) {
             //            boolean isDeriver = false;
             //            for (ColumnInfo col : table.getColumns().values()) {
             //                if (col.getDeriveFrom() != null) {

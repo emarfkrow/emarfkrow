@@ -63,7 +63,7 @@ public final class PdfServlet extends XlsxServlet {
 
             String pdfPath = PdfUtil.byXlsx(tempFilePath);
 
-            LOG.debug("pdfPath: " + pdfPath);
+            LOG.trace("pdfPath: " + pdfPath);
             ServletUtil.respondDelete(response, pdfPath);
         }
     }

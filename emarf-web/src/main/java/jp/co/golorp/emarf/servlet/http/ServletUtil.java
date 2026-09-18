@@ -543,7 +543,7 @@ public final class ServletUtil {
     public static void respond(final HttpServletResponse response, final Object filePath, final Object fileMei) {
 
         Calendar begin = Calendar.getInstance();
-        LOG.debug("Binary response start.");
+        LOG.trace("Binary response start.");
 
         String path = filePath.toString();
 
@@ -573,7 +573,7 @@ public final class ServletUtil {
 
         Calendar end = Calendar.getInstance();
         long millis = end.getTimeInMillis() - begin.getTimeInMillis();
-        LOG.debug("Binary response end in " + millis + " millis. [" + filePath + "]");
+        LOG.trace("Binary response end in " + millis + " millis. [" + filePath + "]");
     }
 
     /**
