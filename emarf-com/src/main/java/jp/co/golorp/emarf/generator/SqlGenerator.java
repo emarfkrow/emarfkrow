@@ -483,7 +483,8 @@ public final class SqlGenerator extends BeanGenerator {
                     + ASSIST.sysDate());
         }
         List<String> primaryKeys = new ArrayList<String>(stint.getPrimaryKeys());
-        primaryKeys.remove(TEKIYO_BI);
+        primaryKeys.remove(TEKIYO_BI.toLowerCase());
+        primaryKeys.remove(TEKIYO_BI.toUpperCase());
         for (int i = 0; i < primaryKeys.size(); i++) {
             String primaryKey = primaryKeys.get(i);
             if (i < primaryKeys.size() - 1) {

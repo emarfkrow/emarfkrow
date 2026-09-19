@@ -136,10 +136,10 @@ public abstract class HtmlGenerator extends BeanGenerator {
                 String summaryE = StringUtil.toPascalCase(summary.getName());
                 String action = "";
                 String css = "";
-                if (summary.getStintInfo() != null && table != summary.getStintInfo()) {
-                    action = "?action=" + summaryE + "Correct.ajax";
-                    css = " correct";
-                }
+                //                if (summary.getStintInfo() != null && table != summary.getStintInfo()) {
+                action = "?action=" + summaryE + "Correct.ajax";
+                css = " correct";
+                //                }
                 columnNames.add(column.getName());
                 s.add("        <a id=\"" + e + "Grid." + p + "\" th:href=\"@{/model/" + summaryE + "S.html" + action
                         + "}\" target=\"dialog\" class=\"refer gridRefer" + css + "\" th:text=\"#{" + summaryE
@@ -158,10 +158,10 @@ public abstract class HtmlGenerator extends BeanGenerator {
                     String summaryE = StringUtil.toPascalCase(mergeFrom.getName());
                     String action = "";
                     String css = "";
-                    if (mergeFrom.getStintInfo() != null && table != mergeFrom.getStintInfo()) {
-                        action = "?action=" + summaryE + "Correct.ajax";
-                        css = " correct";
-                    }
+                    //                    if (mergeFrom.getStintInfo() != null && table != mergeFrom.getStintInfo()) {
+                    action = "?action=" + summaryE + "Correct.ajax";
+                    css = " correct";
+                    //                    }
                     columnNames.add(column.getName());
                     s.add("        <a id=\"" + e + "Grid." + p + "\" th:href=\"@{/model/" + summaryE + "S.html" + action
                             + "}\" target=\"dialog\" class=\"refer gridRefer" + css + "\" th:text=\"#{" + summaryE
@@ -181,10 +181,10 @@ public abstract class HtmlGenerator extends BeanGenerator {
                     String summaryE = StringUtil.toPascalCase(choise.getName());
                     String action = "";
                     String css = "";
-                    if (choise.getStintInfo() != null && table != choise.getStintInfo()) {
-                        action = "?action=" + summaryE + "Correct.ajax";
-                        css = " correct";
-                    }
+                    //                    if (choise.getStintInfo() != null && table != choise.getStintInfo()) {
+                    action = "?action=" + summaryE + "Correct.ajax";
+                    css = " correct";
+                    //                    }
                     columnNames.add(column.getName());
                     s.add("        <a id=\"" + e + "Grid." + p + "\" th:href=\"@{/model/" + summaryE + "S.html" + action
                             + "}\" target=\"dialog\" class=\"refer gridRefer" + css + "\" th:text=\"#{" + summaryE
@@ -212,10 +212,10 @@ public abstract class HtmlGenerator extends BeanGenerator {
                     String summaryE = StringUtil.toPascalCase(derivee.getName());
                     String action = "";
                     String css = "";
-                    if (derivee.getStintInfo() != null && table != derivee.getStintInfo()) {
-                        action = "?action=" + summaryE + "Correct.ajax";
-                        css = " correct";
-                    }
+                    //                    if (derivee.getStintInfo() != null && table != derivee.getStintInfo()) {
+                    action = "?action=" + summaryE + "Correct.ajax";
+                    css = " correct";
+                    //                    }
                     columnNames.add(column.getName());
                     s.add("        <a id=\"" + e + "Grid." + p + "\" th:href=\"@{/model/" + summaryE + "S.html" + action
                             + "}\" target=\"dialog\" class=\"refer gridRefer" + css + "\" th:text=\"#{" + summaryE
@@ -234,10 +234,10 @@ public abstract class HtmlGenerator extends BeanGenerator {
                 String referE = StringUtil.toPascalCase(refer.getName());
                 String action = "";
                 String css = "";
-                if (refer.getStintInfo() != null && table != refer.getStintInfo()) {
-                    action = "?action=" + referE + "Correct.ajax";
-                    css = " correct";
-                }
+                //                if (refer.getStintInfo() != null && table != refer.getStintInfo()) {
+                action = "?action=" + referE + "Correct.ajax";
+                css = " correct";
+                //                }
                 s.add("        <a id=\"" + e + "Grid." + p + "\" th:href=\"@{/model/" + referE + "S.html" + action
                         + "}\" target=\"dialog\" class=\"refer gridRefer" + css + "\" th:text=\"#{" + referE
                         + "S.title} + #{common.refer}\" tabindex=\"-1\">...</a>");
@@ -1013,11 +1013,7 @@ public abstract class HtmlGenerator extends BeanGenerator {
                 htmlFieldsSpan(s, fId, c, css);
                 if (c.getRefer() != null) {
                     String rNm = StringUtil.toPascalCase(c.getRefer().getName());
-                    if (referCss.contains("correct")) {
-                        s.add(getCorrectLink(fId, rNm, referCss)); //選択リンク
-                    } else {
-                        s.add(getReferLink(fId, rNm, referCss)); //参照リンク
-                    }
+                    s.add(getCorrectLink(fId, rNm, referCss)); //選択リンク
                 }
             } else if (isD && t.isHistory()) { // 履歴モデルの詳細画面
                 htmlFieldsSpan(s, fId, c, "history");
@@ -1053,6 +1049,9 @@ public abstract class HtmlGenerator extends BeanGenerator {
                     }
                     s.add(htmlFieldsRange(fId, type, inputCss, c, format));
                 } else if (((!t.isView() && !t.isStatusFlow()) || !isD) && c.getRefer() != null) { // 参照モデルの場合
+                    if (isD && !referCss.contains("correct")) {
+                        referCss += " correct";
+                    }
                     s.add(htmlFieldsRefer(fId, type, inputCss, c, format, t, referCss));
                 } else {
                     if (StringUtil.endsWith(INPUT_B_SUFS, cNm)) {

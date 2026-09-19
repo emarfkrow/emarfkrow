@@ -268,18 +268,18 @@ let Dialogate = {
             return;
         }
         // URL引数を除去
-        href = href.replace(/\?.+$/, '');
+        let htmlName = href.replace(/\?.+$/, '');
 
         // ロード済みならスキップ
-        if (Dialogate.loaded[href]) {
+        if (Dialogate.loaded[htmlName]) {
             return;
         }
 
-        console.debug(indent + 'Dialogate load [' + href + '].');
-        Dialogate.loaded[href] = 1;
+        console.debug(indent + 'Dialogate load [' + htmlName + '].');
+        Dialogate.loaded[htmlName] = 1;
 
-        // hrefからdialogIdを取得。作成済みならスキップ。
-        let entity = href.replace(/(^.+\/|\.html(\?.+)?$)/g, '');
+        // htmlNameからdialogIdを取得。作成済みならスキップ。
+        let entity = htmlName.replace(/(^.+\/|\.html(\?.+)?$)/g, '');
         let dialogId = entity + 'Dialog';
         if ($('div[id="' + dialogId + '"]').length > 0) {
             return;
@@ -297,7 +297,7 @@ let Dialogate = {
             async: false,
             cache: true,
             datatype: 'html',
-            url: href,
+            url: htmlName,
         }).fail(function(data) {
             console.error(data);
             alert(Messages['error.network']);
@@ -381,7 +381,9 @@ let Dialogate = {
                         // ダイアログ上部が検索フォームの場合
 
                         //クエリストリングに指定があれば、フォームのアクションに設定
-                        let href = $link.prop('href');
+                        // let href = $link.prop('href');
+                        let callerId = $dialogDiv.attr('data-caller');
+                        let href = $('a[id="' + callerId + '"]').attr('href');
                         let i = href.indexOf('?');
                         if (i >= 0) {
                             let querystring = href.substring(i + 1);
