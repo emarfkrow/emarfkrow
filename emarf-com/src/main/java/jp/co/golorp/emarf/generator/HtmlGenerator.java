@@ -944,7 +944,7 @@ public abstract class HtmlGenerator extends BeanGenerator {
     protected static void htmlFields(final TableInfo t, final List<String> s, final boolean isD, final boolean isB,
             final boolean isP) {
         if (!isD && t.getStintInfo() != null) { // 検索画面の場合は制約モデルの参照キーを出力
-            htmlFieldsStint(t, s);
+            htmlFieldsStint(t, s, isD);
         }
         String e = StringUtil.toPascalCase(t.getName());
         for (ColumnInfo c : t.getColumns().values()) { // カラム情報でループ
@@ -982,7 +982,7 @@ public abstract class HtmlGenerator extends BeanGenerator {
             s.add("        <div id=\"" + p + "\">");
             if (BeanGenerator.isMetaTsBy(cNm)) { // メタ情報の場合は表示項目（編集画面の自モデルのみここに到達する）
                 htmlFieldsMeta(s, fId, c);
-                addMeiSpan(s, t, c, "meta");
+                addMeiSpan(s, t, c, "meta", isD);
             } else if (StringUtil.endsWith(INPUT_OP_SUFS, cNm) && c.getRefer() == null) { // 参照モデルでない選択項目の場合
                 String css = "";
                 if (isD && c.isPk()) { // 詳細画面の主キー
@@ -1017,7 +1017,7 @@ public abstract class HtmlGenerator extends BeanGenerator {
                 }
             } else if (isD && t.isHistory()) { // 履歴モデルの詳細画面
                 htmlFieldsSpan(s, fId, c, "history");
-                addMeiSpan(s, t, c, "");
+                addMeiSpan(s, t, c, "", isD);
             } else if (isD && c.isReborn()) { // 詳細画面の転生元外部キー
                 htmlFieldsSpan(s, fId, c, "rebornee");
             } else if (isD && ((c.getDeriveFrom() != null && c.getNullable() != 1) || (c.isReborn()))) { // 詳細画面で、必須の派生元外部キーか転生キー
@@ -1315,8 +1315,9 @@ public abstract class HtmlGenerator extends BeanGenerator {
     /**
      * @param table
      * @param s
+     * @param isD
      */
-    private static void htmlFieldsStint(final TableInfo table, final List<String> s) {
+    private static void htmlFieldsStint(final TableInfo table, final List<String> s, final boolean isD) {
         TableInfo stint = table.getStintInfo();
         for (String pk : stint.getPrimaryKeys()) {
             if (!pk.equals(table.getPrimaryKeys().get(0))) {
@@ -1330,7 +1331,7 @@ public abstract class HtmlGenerator extends BeanGenerator {
                     s.add("        <div id=\"" + property + "\" class=\"stint\">");
                     //                    s.add(htmlFieldsRefer(fieldId, "text", "refer", column, "", table, "refer"));
                     htmlFieldsSpan(s, fieldId, column, "stint");
-                    addMeiSpan(s, table, column, "");
+                    addMeiSpan(s, table, column, "", isD);
                     s.add("        </div>");
                 }
             }
@@ -1342,9 +1343,10 @@ public abstract class HtmlGenerator extends BeanGenerator {
      * @param table
      * @param column
      * @param css
+     * @param isD
      */
     private static void addMeiSpan(final List<String> s, final TableInfo table, final ColumnInfo column,
-            final String css) {
+            final String css, final boolean isD) {
 
         if (column.getRefer() != null) {
             TableInfo refer = column.getRefer();
@@ -1355,7 +1357,7 @@ public abstract class HtmlGenerator extends BeanGenerator {
             if (meiColumnName != null && !table.getColumns().containsKey(meiColumnName)) {
 
                 String meiId = entity + "." + StringUtil.toCamelCase(meiColumnName);
-                String referDef = getReferDef(entity, column.getName(), refer);
+                String referDef = getReferDef(entity, column.getName(), refer, isD);
 
                 String cssClass = "";
                 if (!StringUtil.isNullOrWhiteSpace(css)) {
@@ -1394,7 +1396,7 @@ public abstract class HtmlGenerator extends BeanGenerator {
 
         TableInfo refer = column.getRefer();
         String referName = StringUtil.toPascalCase(refer.getName());
-        String referDef = getReferDef(entity, colName, refer);
+        String referDef = getReferDef(entity, colName, refer, referCss.contains("correct"));
         tag += "<input type=\"" + type + "\" id=\"" + fieldId + "\" name=\"" + fieldId + "\" maxlength=\"" + max
                 + "\" class=\"" + css + "\"" + referDef + dataFormat + " />";
 
@@ -1590,9 +1592,11 @@ public abstract class HtmlGenerator extends BeanGenerator {
      * @param entityName 参照元エンティティ名
      * @param columnName 参照元カラム名
      * @param referInfo 参照先エンティティ情報
+     * @param isD
      * @return 参照HTML文字列
      */
-    private static String getReferDef(final String entityName, final String columnName, final TableInfo referInfo) {
+    private static String getReferDef(final String entityName, final String columnName, final TableInfo referInfo,
+            final boolean isD) {
 
         //        // カラム名が参照キーに合致する場合
         //        if (StringUtil.endsWith(REFER_PAIRS, columnName)) {
@@ -1650,6 +1654,9 @@ public abstract class HtmlGenerator extends BeanGenerator {
 
                 String referFor = " data-referFor=\"" + entityName + "." + StringUtil.toCamelCase(srcKey) + "\"";
                 String dataJson = " data-json=\"" + referName + "Search.json\"";
+                if (isD) {
+                    dataJson = " data-json=\"" + referName + "Correct.json\"";
+                }
                 String srcDef = " data-srcDef=\"" + srcDefs + "\"";
                 String destDef = " data-destDef=\"" + srcMeiName + ":" + destVal.toUpperCase() + "\"";
                 return referFor + dataJson + srcDef + destDef;
