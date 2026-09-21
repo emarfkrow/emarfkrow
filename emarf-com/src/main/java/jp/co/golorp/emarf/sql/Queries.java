@@ -224,7 +224,7 @@ public final class Queries {
             }
 
             String blockRE = ".*\\/\\* *:" + parameterName + " *\\*\\/(\\r|\\n|.)+\\/\\* *:" + parameterName
-                    + " *\\*\\/[\\r\\n]+";
+                    + " *\\*\\/ *[\\r\\n]+";
             Pattern p = Pattern.compile(blockRE);
 
             if (!snakes.containsKey(parameterName)) {

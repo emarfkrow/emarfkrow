@@ -1081,6 +1081,7 @@ public final class DataSources {
             if (isStint) {
                 TableInfo lastCombo = saki.getComboInfos().get(saki.getComboInfos().size() - 1);
                 log += "  stint at  " + lastCombo.getName();
+                // MHR_USER.setStintInfo(MHR_USER_POS);
                 lastCombo.setStintInfo(saki);
             }
 
