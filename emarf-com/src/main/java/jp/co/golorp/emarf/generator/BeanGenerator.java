@@ -1043,7 +1043,7 @@ public abstract class BeanGenerator {
     }
 
     /**
-     * @param s
+     * @param s カラム名
      * @return boolean
      */
     public static boolean isMeta(final String s) {

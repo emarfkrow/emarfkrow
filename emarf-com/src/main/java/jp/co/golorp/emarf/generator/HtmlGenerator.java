@@ -138,6 +138,9 @@ public abstract class HtmlGenerator extends BeanGenerator {
                 String css = "";
                 //                if (summary.getStintInfo() != null && table != summary.getStintInfo()) {
                 action = "?action=" + summaryE + "Correct.ajax";
+                if (summary.getStintInfo() != null && table != summary.getStintInfo()) {
+                    action += "&isStint=1";
+                }
                 css = " correct";
                 //                }
                 columnNames.add(column.getName());
@@ -160,6 +163,9 @@ public abstract class HtmlGenerator extends BeanGenerator {
                     String css = "";
                     //                    if (mergeFrom.getStintInfo() != null && table != mergeFrom.getStintInfo()) {
                     action = "?action=" + summaryE + "Correct.ajax";
+                    if (mergeFrom.getStintInfo() != null && table != mergeFrom.getStintInfo()) {
+                        action += "&isStint=1";
+                    }
                     css = " correct";
                     //                    }
                     columnNames.add(column.getName());
@@ -183,6 +189,9 @@ public abstract class HtmlGenerator extends BeanGenerator {
                     String css = "";
                     //                    if (choise.getStintInfo() != null && table != choise.getStintInfo()) {
                     action = "?action=" + summaryE + "Correct.ajax";
+                    if (choise.getStintInfo() != null && table != choise.getStintInfo()) {
+                        action += "&isStint=1";
+                    }
                     css = " correct";
                     //                    }
                     columnNames.add(column.getName());
@@ -214,6 +223,9 @@ public abstract class HtmlGenerator extends BeanGenerator {
                     String css = "";
                     //                    if (derivee.getStintInfo() != null && table != derivee.getStintInfo()) {
                     action = "?action=" + summaryE + "Correct.ajax";
+                    if (derivee.getStintInfo() != null && table != derivee.getStintInfo()) {
+                        action += "&isStint=1";
+                    }
                     css = " correct";
                     //                    }
                     columnNames.add(column.getName());
@@ -236,6 +248,9 @@ public abstract class HtmlGenerator extends BeanGenerator {
                 String css = "";
                 //                if (refer.getStintInfo() != null && table != refer.getStintInfo()) {
                 action = "?action=" + referE + "Correct.ajax";
+                if (refer.getStintInfo() != null && table != refer.getStintInfo()) {
+                    action += "&isStint=1";
+                }
                 css = " correct";
                 //                }
                 s.add("        <a id=\"" + e + "Grid." + p + "\" th:href=\"@{/model/" + referE + "S.html" + action
@@ -1357,7 +1372,7 @@ public abstract class HtmlGenerator extends BeanGenerator {
             if (meiColumnName != null && !table.getColumns().containsKey(meiColumnName)) {
 
                 String meiId = entity + "." + StringUtil.toCamelCase(meiColumnName);
-                String referDef = getReferDef(entity, column.getName(), refer, isD);
+                String referDef = getReferDef(entity, column, refer, isD);
 
                 String cssClass = "";
                 if (!StringUtil.isNullOrWhiteSpace(css)) {
@@ -1396,13 +1411,16 @@ public abstract class HtmlGenerator extends BeanGenerator {
 
         TableInfo refer = column.getRefer();
         String referName = StringUtil.toPascalCase(refer.getName());
-        String referDef = getReferDef(entity, colName, refer, referCss.contains("correct"));
+        String referDef = getReferDef(entity, column, refer, referCss.contains("correct"));
         tag += "<input type=\"" + type + "\" id=\"" + fieldId + "\" name=\"" + fieldId + "\" maxlength=\"" + max
                 + "\" class=\"" + css + "\"" + referDef + dataFormat + " />";
 
         if (referCss.contains("correct")) {
             //選択リンク
             String href = "/model/" + referName + "S.html?action=" + referName + "Correct.ajax";
+            if (refer.getStintInfo() != null && table != refer.getStintInfo()) {
+                href += "&isStint=1";
+            }
             tag += "<a id=\"" + fieldId + "\" th:href=\"@{" + href + "}\" target=\"dialog\" class=\"" + referCss
                     + "\" th:text=\"#{common.correct}\" tabindex=\"-1\">...</a>";
         } else {
@@ -1590,16 +1608,18 @@ public abstract class HtmlGenerator extends BeanGenerator {
     /**
      * 参照定義の取得
      * @param entityName 参照元エンティティ名
-     * @param columnName 参照元カラム名
+     * @param column 参照元カラム
      * @param referInfo 参照先エンティティ情報
      * @param isD
      * @return 参照HTML文字列
      */
-    private static String getReferDef(final String entityName, final String columnName, final TableInfo referInfo,
+    private static String getReferDef(final String entityName, final ColumnInfo column, final TableInfo referInfo,
             final boolean isD) {
 
         //        // カラム名が参照キーに合致する場合
         //        if (StringUtil.endsWith(REFER_PAIRS, columnName)) {
+
+        String columnName = column.getName();
 
         for (String[] e : REFER_PAIRS) {
             String[] keySufs = e[0].split("&");
@@ -1619,11 +1639,10 @@ public abstract class HtmlGenerator extends BeanGenerator {
                 // 参照先テーブルの全カラム名を確認して、末尾が合致するカラム名を、参照先のID・名称カラム名として取得
                 String destKey = null;
                 String destVal = null;
-                for (ColumnInfo column : referInfo.getColumns().values()) {
-                    String destColumnName = column.getName();
+                for (ColumnInfo refCol : referInfo.getColumns().values()) {
+                    String destColumnName = refCol.getName();
                     if (srcKey.matches("(?i)^.*" + destColumnName + "$")) {
                         destKey = destColumnName;
-
                     }
                     // 値列の検査
                     if (srcVal.matches("(?i)^.*" + destColumnName + "$")) {
@@ -1656,6 +1675,10 @@ public abstract class HtmlGenerator extends BeanGenerator {
                 String dataJson = " data-json=\"" + referName + "Search.json\"";
                 if (isD) {
                     dataJson = " data-json=\"" + referName + "Correct.json\"";
+                    if (!column.isMeta() && referInfo.getStintInfo() != null
+                            && !entityName.equals(StringUtil.toPascalCase(referInfo.getStintInfo().getName()))) {
+                        dataJson = " data-json=\"" + referName + "Correct.json?isStint=1\"";
+                    }
                 }
                 String srcDef = " data-srcDef=\"" + srcDefs + "\"";
                 String destDef = " data-destDef=\"" + srcMeiName + ":" + destVal.toUpperCase() + "\"";

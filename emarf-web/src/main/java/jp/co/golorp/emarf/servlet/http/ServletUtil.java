@@ -294,34 +294,38 @@ public final class ServletUtil {
      * @return Map
      */
     public static Map<String, Object> getPostJson(final HttpServletRequest request) {
-
         Collection<Part> parts = null;
         try {
             parts = request.getParts();
         } catch (Exception e) {
             LOG.trace(e.getMessage());
         }
-
         Map<String, Object> map = new HashMap<String, Object>();
         ObjectMapper mapper = ServletUtil.getMapper();
-
         if (parts != null) {
             // 「enctype="multipart/form-data"」の場合
-
+            // multipartでループする前に、get値を退避
+            if (request.getQueryString() != null) {
+                String queryString = request.getQueryString();
+                String[] queryStrings = queryString.split("&");
+                for (String s : queryStrings) {
+                    String[] kv = s.split("=");
+                    if (kv.length == 2) {
+                        map.put(kv[0], kv[1]);
+                    } else {
+                        map.put(kv[0], "");
+                    }
+                }
+            }
             Set<String> submittedFileNames = new HashSet<String>();
-
             // multipartでループ
             for (Part part : parts) {
-
                 String partName = StringUtil.sanitize(part.getName());
-
                 if (part.getSubmittedFileName() != null) {
                     // アップロードファイルの場合
-
                     String fileName = StringUtil.sanitize(part.getSubmittedFileName());
                     if (!fileName.equals("")) {
                         // アップロードファイル名がある場合
-
                         // アップロードフォルダに保管
                         String upload = App.get("uploadFolderPath");
                         if (upload == null) {
@@ -340,7 +344,6 @@ public final class ServletUtil {
                         } catch (IOException e) {
                             throw new SysError(e);
                         }
-
                         // ファイル名と保管パスを返す
                         //                        map.put(partName + uploadMeiSuffix, fileName);
                         map.put(partName, fileName + "|" + uploadPath);

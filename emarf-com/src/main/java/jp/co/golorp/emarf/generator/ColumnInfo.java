@@ -84,6 +84,19 @@ public class ColumnInfo {
     /** 主キーならtrue */
     private boolean isPk;
 
+    /** メタ情報 */
+    private boolean isMeta;
+
+    /** @return */
+    public boolean isMeta() {
+        return isMeta;
+    }
+
+    /** @param p */
+    public void setMeta(final boolean p) {
+        this.isMeta = p;
+    }
+
     /** ユニークインデクスならtrue */
     private boolean isUnique;
 

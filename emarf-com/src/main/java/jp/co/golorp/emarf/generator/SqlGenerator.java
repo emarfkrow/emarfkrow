@@ -464,7 +464,7 @@ public final class SqlGenerator extends BeanGenerator {
         //            }
         //        }
 
-        sql.add("    /*:isStint*/ ");
+        sql.add("    /*:is_stint*/ ");
         sql.add("    AND EXISTS ( ");
         sql.add("        SELECT");
         sql.add("              * ");
@@ -496,7 +496,7 @@ public final class SqlGenerator extends BeanGenerator {
             }
         }
         sql.add("    ) ");
-        sql.add("    /*:isStint*/ ");
+        sql.add("    /*:is_stint*/ ");
     }
 
     /**

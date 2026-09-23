@@ -230,6 +230,7 @@ public final class DataSources {
                     ColumnInfo column = new ColumnInfo(); // カラム情報を追加
                     table.getColumns().put(columnName, column);
                     column.setName(columnName); // カラム物理名
+                    column.setMeta(BeanGenerator.isMeta(column.getName()));
                     String typeName = columns.getString("TYPE_NAME");
                     if (typeName.matches("(?i)^BPCHAR$")) { // DBデータ型：postgresqlのCHARはBPCHARなので変換
                         typeName = "CHAR";

@@ -388,13 +388,21 @@ let Dialogate = {
                         if (i >= 0) {
                             let querystring = href.substring(i + 1);
                             let querystrings = querystring.split('&');
+                            let action = $searchForm.prop('action');
                             for (let i in querystrings) {
                                 let getParams = querystrings[i].split('=');
                                 if (getParams[0] == 'action') {
-                                    $searchForm.prop('action', getParams[1]);
-                                    break;
+                                    action = getParams[1];
+                                } else {
+                                    if (action.indexOf('?') >= 0) {
+                                        action += '&';
+                                    } else {
+                                        action += '?';
+                                    }
+                                    action += querystrings[i];
                                 }
                             }
+                            $searchForm.prop('action', action);
                         }
 
                         // 呼び出し元がグリッドでなく、検索項目が設定されている場合は、検索結果を初期表示

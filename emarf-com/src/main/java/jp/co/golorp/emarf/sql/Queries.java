@@ -225,7 +225,7 @@ public final class Queries {
 
             String blockRE = ".*\\/\\* *:" + parameterName + " *\\*\\/(\\r|\\n|.)+\\/\\* *:" + parameterName
                     + " *\\*\\/ *[\\r\\n]+";
-            Pattern p = Pattern.compile(blockRE);
+            Pattern blockP = Pattern.compile(blockRE);
 
             if (!snakes.containsKey(parameterName)) {
                 // パラメータのキーに含まれない場合
@@ -233,8 +233,8 @@ public final class Queries {
                 // ブロック削除
                 //                rawSql = rawSql.replaceFirst(blockRE, "");
                 //                logSql = logSql.replaceFirst(blockRE, "");
-                rawSql = p.matcher(rawSql).replaceFirst("");
-                logSql = p.matcher(logSql).replaceFirst("");
+                rawSql = blockP.matcher(rawSql).replaceFirst("");
+                logSql = blockP.matcher(logSql).replaceFirst("");
 
                 // １行削除
                 rawSql = rawSql.replaceFirst(".*:" + parameterName + "[^_\r\n]*([\r\n]+|$)", "");
@@ -254,8 +254,8 @@ public final class Queries {
                 if (insertIndex < 0 && updateIndex < 0 && deleteIndex < 0) {
 
                     // ブロック削除
-                    rawSql = p.matcher(rawSql).replaceFirst("");
-                    logSql = p.matcher(logSql).replaceFirst("");
+                    rawSql = blockP.matcher(rawSql).replaceFirst("");
+                    logSql = blockP.matcher(logSql).replaceFirst("");
 
                     // １行削除
                     rawSql = rawSql.replaceFirst(".*:" + parameterName + "[^_\r\n]*([\r\n]+|$)", "");
@@ -265,7 +265,7 @@ public final class Queries {
         }
 
         // SQLコメント内の名前付きパラメータ「-- :***」を、パラメータ値で置換
-        m = Pattern.compile("(?<=--) *:[A-Za-z][0-9A-Z\\_a-z]+").matcher(rawSql);
+        m = Pattern.compile("(?<=(--|\\/\\*)) *:[A-Za-z][0-9A-Z\\_a-z]+").matcher(rawSql);
         while (m.find()) {
             String namedParameter = m.group();
             String parameterName = namedParameter.replaceAll("^ *:", "");
