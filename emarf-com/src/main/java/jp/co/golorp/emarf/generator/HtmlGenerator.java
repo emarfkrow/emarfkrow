@@ -1673,9 +1673,9 @@ public abstract class HtmlGenerator extends BeanGenerator {
 
                 String referFor = " data-referFor=\"" + entityName + "." + StringUtil.toCamelCase(srcKey) + "\"";
                 String dataJson = " data-json=\"" + referName + "Search.json\"";
-                if (isD) {
+                if (isD && !column.isMeta()) {
                     dataJson = " data-json=\"" + referName + "Correct.json\"";
-                    if (!column.isMeta() && referInfo.getStintInfo() != null
+                    if (referInfo.getStintInfo() != null
                             && !entityName.equals(StringUtil.toPascalCase(referInfo.getStintInfo().getName()))) {
                         dataJson = " data-json=\"" + referName + "Correct.json?isStint=1\"";
                     }
