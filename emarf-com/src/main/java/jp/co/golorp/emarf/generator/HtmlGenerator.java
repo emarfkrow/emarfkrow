@@ -549,6 +549,24 @@ public abstract class HtmlGenerator extends BeanGenerator {
         s.add(e + ".legend   " + remarks);
         s.add(e + ".h3       " + remarks + "一覧");
 
+        if (table.getStintInfo() != null) {
+            s.add("");
+            TableInfo stint = table.getStintInfo();
+            for (String pk : stint.getPrimaryKeys()) {
+                if (!pk.equals(table.getPrimaryKeys().get(0))) {
+                    ColumnInfo column = stint.getColumns().get(pk);
+                    if (column.getRefer() != null) {
+                        TableInfo refer = column.getRefer();
+                        String entity = StringUtil.toPascalCase(refer.getName());
+                        String columnName = column.getName();
+                        String property = StringUtil.toCamelCase(columnName);
+                        String fieldId = entity + "." + property;
+                        s.add(fieldId + " " + column.getRemarks());
+                    }
+                }
+            }
+        }
+
         s.add("");
         for (ColumnInfo column : table.getColumns().values()) {
             String property = StringUtil.toCamelCase(column.getName());
