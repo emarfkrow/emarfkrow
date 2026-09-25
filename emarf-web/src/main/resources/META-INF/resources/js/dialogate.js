@@ -457,6 +457,15 @@ let Dialogate = {
                 close: function() {
                     // 表示内容をクリア
                     Jsonate.clearForm($(this).find('form'));
+                    $(this).find('[id$="Pager"]').html('');
+
+                    // 一旦、検索条件を開いておく
+                    let $searchForm = $(this).find('[name$="SearchForm"]');
+                    let $h2 = $searchForm.prev('h2');
+                    let $h2Toggle = $h2.find('[id="h2Toggle"]');
+                    if ($h2Toggle.hasClass('ui-icon-triangle-1-e')) {
+                        $h2.click();
+                    }
                 },
             });
 

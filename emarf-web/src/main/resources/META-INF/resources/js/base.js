@@ -367,10 +367,10 @@ let Base = {
         // 拡張子を除去
         let gamenId = lastPath.replace(/\?.+/, '');
         gamenId = gamenId.replace(/S?\.html/, '');
-		// エクセルボタン用
-		gamenId = gamenId.replace(/(Search|Get)/, '').replace(/\.xlsx/, '');
-		// PDFボタン用
-		gamenId = gamenId.replace(/(Search|Get)/, '').replace(/\.pdf/, '');
+        // エクセルボタン用
+        gamenId = gamenId.replace(/(Search|Get)/, '').replace(/\.xlsx/, '');
+        // PDFボタン用
+        gamenId = gamenId.replace(/(Search|Get)/, '').replace(/\.pdf/, '');
         // 登録系ボタン用
         gamenId = gamenId.replace(/(Search|Regist)/, '').replace(/Form/, '');
 
@@ -1369,8 +1369,10 @@ let Base = {
     listReset: function(e) {
         for (let gridName in Gridate.grids) {
             if (gridName.endsWith(e + 'Grid')) {
-                if (Gridate.grids[gridName].getDataLength() > 0) {
+                if (Gridate.grids[gridName].getDataLength() > 0 && Gridate.grids[gridName].getData().getItems()[0]['ROW_NUM'] != undefined) {
                     $('[id="Search' + e + '"]').click();
+                } else {
+                    Gridate.refresh(gridName, []);
                 }
                 break;
             }
