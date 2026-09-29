@@ -729,8 +729,26 @@ let Base = {
                     $h2Toggle.addClass('ui-icon-triangle-1-s');
                     $h2Toggle.removeClass('ui-icon-triangle-1-e');
                 }
-                $h2.find('~form.search').toggle(500, function() {
+                $h2.next('form.search').toggle(500, function() {
                     Base.resizeNav();
+                });
+            });
+        });
+
+        let $legends = $('fieldset.parent>legend');
+        $legends.each(function() {
+            let $legend = $(this);
+            $legend.html('<span id="h2Toggle" class="ui-accordion-header-icon ui-icon ui-icon-triangle-1-s"></span>' + $legend.text());
+            $legend.on('click', function() {
+                let $h2Toggle = $legend.find('[id="h2Toggle"]');
+                if ($h2Toggle.hasClass('ui-icon-triangle-1-s')) {
+                    $h2Toggle.addClass('ui-icon-triangle-1-e');
+                    $h2Toggle.removeClass('ui-icon-triangle-1-s');
+                } else {
+                    $h2Toggle.addClass('ui-icon-triangle-1-s');
+                    $h2Toggle.removeClass('ui-icon-triangle-1-e');
+                }
+                $legend.nextAll('div').toggle(500, function() {
                 });
             });
         });

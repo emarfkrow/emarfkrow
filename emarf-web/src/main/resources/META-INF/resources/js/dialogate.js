@@ -448,6 +448,11 @@ let Dialogate = {
                         console.debug(e.message);
                     }
 
+                    // 親モデルはたたんで初期表示
+                    if ($dialogDiv.find('fieldset.parent>legend>span').hasClass('ui-icon-triangle-1-s')) {
+                        $dialogDiv.find('fieldset.parent>legend').click();
+                    }
+
                     Nextize.first($dialogDiv);
                 },
 

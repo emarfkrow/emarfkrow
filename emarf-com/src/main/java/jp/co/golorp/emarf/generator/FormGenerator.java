@@ -82,9 +82,9 @@ public final class FormGenerator extends BeanGenerator {
             addImports(s);
             addAuthor(s, table.getRemarks() + "登録フォーム");
             s.add("public class " + entity + "RegistForm implements IForm {");
-            s.add("");
-            s.add("    /** logger */");
-            s.add("    private static final Logger LOG = LoggerFactory.getLogger(" + entity + "RegistForm.class);");
+            //            s.add("");
+            //            s.add("    /** logger */");
+            //            s.add("    private static final Logger LOG = LoggerFactory.getLogger(" + entity + "RegistForm.class);");
             for (ColumnInfo column : table.getColumns().values()) {
                 // レコードメタデータならスキップ。updateDtは楽観ロック用に必要
                 boolean isUpdTs = column.getName().matches("(?i)^" + UPDATE_AT + "$");
@@ -196,7 +196,16 @@ public final class FormGenerator extends BeanGenerator {
         s.add("    /** 関連チェック */");
         s.add("    @Override");
         s.add("    public void validate(final Map<String, String> errors, final BaseProcess baseProcess) {");
-        s.add("        LOG.trace(\"validate() not overridden in subclasses.\");");
+
+        // 子の整合性チェック
+        for (TableInfo child : table.getChildren()) {
+            String ins = StringUtil.toCamelCase(child.getName());
+            s.add("");
+            s.add("        // " + child.getRemarks() + " の子モデル整合性チェック");
+            s.add("        for (IForm " + ins + "Form : this." + ins + "Grid) {");
+            s.add("            " + ins + "Form.validate(errors, baseProcess);");
+            s.add("        }");
+        }
 
         // 派生元のマスタチェック
         for (TableInfo from : table.getDeriveFroms()) {
@@ -345,9 +354,9 @@ public final class FormGenerator extends BeanGenerator {
     public static void addImports(final List<String> s) {
         s.add("");
         s.add("import java.util.Map;");
-        s.add("");
-        s.add("import org.slf4j.Logger;");
-        s.add("import org.slf4j.LoggerFactory;");
+        //        s.add("");
+        //        s.add("import org.slf4j.Logger;");
+        //        s.add("import org.slf4j.LoggerFactory;");
         s.add("");
         s.add("import jp.co.golorp.emarf.process.BaseProcess;");
         s.add("import jp.co.golorp.emarf.validation.IForm;");
