@@ -1081,11 +1081,13 @@ public final class DataSources {
             // 複合元のcorrect時に、複合先も存在する必要がある
             if (isStint) {
                 TableInfo lastCombo = saki.getComboInfos().get(saki.getComboInfos().size() - 1);
+                if (saki.getName().matches(BeanGenerator.NON_STINT_RE)) {
+                    continue;
+                }
                 log += "  stint at  " + lastCombo.getName();
                 // MHR_USER.setStintInfo(MHR_USER_POS);
                 lastCombo.setStintInfo(saki);
             }
-
             LOG.debug(log);
         }
     }

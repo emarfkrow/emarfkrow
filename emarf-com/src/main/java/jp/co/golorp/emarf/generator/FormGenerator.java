@@ -17,11 +17,13 @@ package jp.co.golorp.emarf.generator;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.ResourceBundle;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -66,114 +68,143 @@ public final class FormGenerator extends BeanGenerator {
 
     /**
      * 詳細画面 フォーム出力
-     * @param tableInfos テーブル情報のリスト
+     * @param ts テーブル情報のリスト
      */
-    private static void javaFormDetailRegist(final List<TableInfo> tableInfos) {
+    private static void javaFormDetailRegist(final List<TableInfo> ts) {
         String packagePath = (PKG_F + ".model.base").replace(".", File.separator);
         String packageDir = getProjectDir() + File.separator + DIR_J + File.separator + packagePath;
         Map<String, String> javaFilePaths = new LinkedHashMap<String, String>();
-        for (TableInfo table : tableInfos) {
-            if (table.isHistory() || table.isView() || table.isStatusFlow()) {
+        for (TableInfo t : ts) {
+            if (t.isHistory() || t.isView() || t.isStatusFlow()) {
                 continue;
             }
-            String entity = StringUtil.toPascalCase(table.getName());
+            String ent = StringUtil.toPascalCase(t.getName());
             List<String> s = new ArrayList<String>();
             s.add("package " + PKG_F + ".model.base;");
             addImports(s);
-            addAuthor(s, table.getRemarks() + "登録フォーム");
-            s.add("public class " + entity + "RegistForm implements IForm {");
+            addAuthor(s, t.getRemarks() + "登録フォーム");
+            s.add("public class " + ent + "RegistForm implements IForm {");
             //            s.add("");
             //            s.add("    /** logger */");
             //            s.add("    private static final Logger LOG = LoggerFactory.getLogger(" + entity + "RegistForm.class);");
-            for (ColumnInfo column : table.getColumns().values()) {
+            Set<String> stintKeys = new HashSet<String>();
+            for (ColumnInfo c : t.getColumns().values()) {
                 // レコードメタデータならスキップ。updateDtは楽観ロック用に必要
-                boolean isUpdTs = column.getName().matches("(?i)^" + UPDATE_AT + "$");
-                if (!isUpdTs && BeanGenerator.isMetaTsBy(column.getName())) {
+                boolean isUpdTs = c.getName().matches("(?i)^" + UPDATE_AT + "$");
+                if (!isUpdTs && BeanGenerator.isMetaTsBy(c.getName())) {
                     continue;
                 }
-                String prop = StringUtil.toCamelCase(column.getName());
-                String acce = StringUtil.toPascalCase(column.getName());
-                s.add("");
-                s.add("    /** " + column.getRemarks() + " */");
-                javaFormDetailRegistChecks(s, table, column);
-
-                if (column.getNullable() == 1) {
-                    if (StringUtil.endsWith(INPUT_F_SUFS, column.getName())) {
-                        s.add("    private String " + prop + " = \"0\";");
-                    } else {
-                        s.add("    private String " + prop + ";");
+                if (!c.isMeta() && c.getRefer() != null && c.getRefer().getStintInfo() != null) {
+                    for (String pk2 : c.getRefer().getStintInfo().getPrimaryKeys()) {
+                        if (pk2.matches("(?i)^" + TEKIYO_BI + "$")) {
+                            break;
+                        }
+                        boolean isContain = false;
+                        for (String colName : t.getColumns().keySet()) {
+                            if (StringUtil.endsWithIgnoreCase(pk2, colName)) {
+                                isContain = true;
+                                break;
+                            }
+                        }
+                        if (isContain) {
+                            break;
+                        }
+                        if (stintKeys.contains(pk2)) {
+                            continue;
+                        }
+                        stintKeys.add(pk2);
+                        ColumnInfo k = c.getRefer().getStintInfo().getColumns().get(pk2);
+                        s.add("");
+                        s.add("    /** 参照先制約：" + k.getRemarks() + " */");
+                        s.add("    private String " + StringUtil.toCamelCase(pk2) + ";");
+                        s.add("");
+                        s.add("    /** @param p " + k.getRemarks() + " */");
+                        s.add("    public void set" + StringUtil.toPascalCase(pk2) + "(final String p) {");
+                        s.add("        this." + StringUtil.toCamelCase(pk2) + " = p;");
+                        s.add("    }");
                     }
-                } else if (column.getDefaultValue() != null && column.getDataType().equals("String")) {
-                    s.add("    private String " + prop + " = \"" + column.getDefaultValue() + "\";");
-                } else {
-                    s.add("    private String " + prop + ";");
                 }
-
+                String p = StringUtil.toCamelCase(c.getName()); // property
+                String a = StringUtil.toPascalCase(c.getName()); // accessor
                 s.add("");
-                s.add("    /** @return " + column.getRemarks() + " */");
-                if (column.isPk()) {
+                s.add("    /** " + c.getRemarks() + " */");
+                javaFormDetailRegistChecks(s, t, c);
+                if (c.getNullable() == 1) {
+                    if (StringUtil.endsWith(INPUT_F_SUFS, c.getName())) {
+                        s.add("    private String " + p + " = \"0\";");
+                    } else {
+                        s.add("    private String " + p + ";");
+                    }
+                } else if (c.getDefaultValue() != null && c.getDataType().equals("String")) {
+                    s.add("    private String " + p + " = \"" + c.getDefaultValue() + "\";");
+                } else {
+                    s.add("    private String " + p + ";");
+                }
+                s.add("");
+                s.add("    /** @return " + c.getRemarks() + " */");
+                if (c.isPk()) {
                     s.add("    @jp.co.golorp.emarf.validation.PrimaryKeys");
-                } else if (column.getName().matches("(?i)^" + UPDATE_AT + "$")) {
+                } else if (c.getName().matches("(?i)^" + UPDATE_AT + "$")) {
                     s.add("    @jp.co.golorp.emarf.validation.OptLock");
                 }
-                s.add("    public String get" + acce + "() {");
-                s.add("        return " + prop + ";");
+                s.add("    public String get" + a + "() {");
+                s.add("        return " + p + ";");
                 s.add("    }");
                 s.add("");
-                s.add("    /** @param p " + column.getRemarks() + " */");
-                if (column.isPk()) {
+                s.add("    /** @param p " + c.getRemarks() + " */");
+                if (c.isPk()) {
                     s.add("    @jp.co.golorp.emarf.validation.PrimaryKeys");
-                } else if (column.getName().matches("(?i)^" + UPDATE_AT + "$")) {
+                } else if (c.getName().matches("(?i)^" + UPDATE_AT + "$")) {
                     s.add("    @jp.co.golorp.emarf.validation.OptLock");
                 }
-                s.add("    public void set" + acce + "(final String p) {");
-                s.add("        this." + prop + " = p;");
+                s.add("    public void set" + a + "(final String p) {");
+                s.add("        this." + p + " = p;");
                 s.add("    }");
             }
-            for (TableInfo brother : table.getBrothers()) { // 兄弟モデル
-                String camel = StringUtil.toCamelCase(brother.getName());
-                String pascal = StringUtil.toPascalCase(brother.getName());
+            for (TableInfo t2 : t.getBrothers()) { // 兄弟モデル
+                String e2 = StringUtil.toPascalCase(t2.getName());
+                String i2 = StringUtil.toCamelCase(t2.getName());
                 s.add("");
-                s.add("    /** " + brother.getRemarks() + " */");
+                s.add("    /** " + t2.getRemarks() + " */");
                 s.add("    @jakarta.validation.Valid");
-                s.add("    private " + pascal + "RegistForm " + camel + "RegistForm;");
+                s.add("    private " + e2 + "RegistForm " + i2 + "RegistForm;");
                 s.add("");
-                s.add("    /** @return " + pascal + "RegistForm */");
-                s.add("    public " + pascal + "RegistForm get" + pascal + "RegistForm() {");
-                s.add("        return " + camel + "RegistForm;");
+                s.add("    /** @return " + e2 + "RegistForm */");
+                s.add("    public " + e2 + "RegistForm get" + e2 + "RegistForm() {");
+                s.add("        return " + i2 + "RegistForm;");
                 s.add("    }");
                 s.add("");
                 s.add("    /** @param p */");
-                s.add("    public void set" + pascal + "RegistForm(final " + pascal + "RegistForm p) {");
-                s.add("        this." + camel + "RegistForm = p;");
+                s.add("    public void set" + e2 + "RegistForm(final " + e2 + "RegistForm p) {");
+                s.add("        this." + i2 + "RegistForm = p;");
                 s.add("    }");
             }
-            for (TableInfo child : table.getChildren()) { // 子モデル
-                String camel = StringUtil.toCamelCase(child.getName());
-                String pascal = StringUtil.toPascalCase(child.getName());
+            for (TableInfo t2 : t.getChildren()) { // 子モデル
+                String e2 = StringUtil.toPascalCase(t2.getName());
+                String i2 = StringUtil.toCamelCase(t2.getName());
                 s.add("");
-                s.add("    /** " + child.getRemarks() + " */");
+                s.add("    /** " + t2.getRemarks() + " */");
                 s.add("    @jakarta.validation.Valid");
-                s.add("    private java.util.List<" + pascal + "RegistForm> " + camel + "Grid;");
+                s.add("    private java.util.List<" + e2 + "RegistForm> " + i2 + "Grid;");
                 s.add("");
                 s.add("    /**");
-                s.add("     * @return " + child.getRemarks());
+                s.add("     * @return " + t2.getRemarks());
                 s.add("     */");
-                s.add("    public java.util.List<" + pascal + "RegistForm> get" + pascal + "Grid() {");
-                s.add("        return " + camel + "Grid;");
+                s.add("    public java.util.List<" + e2 + "RegistForm> get" + e2 + "Grid() {");
+                s.add("        return " + i2 + "Grid;");
                 s.add("    }");
                 s.add("");
                 s.add("    /**");
                 s.add("     * @param p");
                 s.add("     */");
-                s.add("    public void set" + pascal + "Grid(final java.util.List<" + pascal + "RegistForm> p) {");
-                s.add("        this." + camel + "Grid = p;");
+                s.add("    public void set" + e2 + "Grid(final java.util.List<" + e2 + "RegistForm> p) {");
+                s.add("        this." + i2 + "Grid = p;");
                 s.add("    }");
             }
-            javaFormDetailRegistRelCheck(table, s);
+            javaFormDetailRegistRelCheck(t, s);
             s.add("}");
-            String javaFilePath = packageDir + File.separator + entity + "RegistForm.java";
-            javaFilePaths.put(javaFilePath, PKG_F + ".model.base." + entity + "RegistForm");
+            String javaFilePath = packageDir + File.separator + ent + "RegistForm.java";
+            javaFilePaths.put(javaFilePath, PKG_F + ".model.base." + ent + "RegistForm");
             FileUtil.writeFile(javaFilePath, s);
         }
         if (IS_GENERATE_AT_STARTUP) {
@@ -185,154 +216,154 @@ public final class FormGenerator extends BeanGenerator {
 
     /**
      * 関連チェック
-     * @param table
+     * @param t
      * @param s
      */
-    private static void javaFormDetailRegistRelCheck(final TableInfo table, final List<String> s) {
-
-        String e = StringUtil.toPascalCase(table.getName());
-
+    private static void javaFormDetailRegistRelCheck(final TableInfo t, final List<String> s) {
+        String e = StringUtil.toPascalCase(t.getName());
         s.add("");
         s.add("    /** 関連チェック */");
         s.add("    @Override");
         s.add("    public void validate(final Map<String, String> errors, final BaseProcess baseProcess) {");
-
         // 子の整合性チェック
-        for (TableInfo child : table.getChildren()) {
-            String ins = StringUtil.toCamelCase(child.getName());
+        for (TableInfo t2 : t.getChildren()) {
+            String e2 = StringUtil.toPascalCase(t2.getName());
+            String i2 = StringUtil.toCamelCase(t2.getName());
             s.add("");
-            s.add("        // " + child.getRemarks() + " の子モデル整合性チェック");
-            s.add("        for (IForm " + ins + "Form : this." + ins + "Grid) {");
-            s.add("            " + ins + "Form.validate(errors, baseProcess);");
+            s.add("        // " + t2.getRemarks() + " の子モデル整合性チェック");
+            s.add("        for (int i = 0; i < this." + i2 + "Grid.size(); i++) {");
+            s.add("            " + e2 + "RegistForm " + i2 + "Form = this." + i2 + "Grid.get(i);");
+            for (ColumnInfo c2 : t2.getColumns().values()) {
+                if (!c2.isPk() && !c2.isMeta() && c2.getRefer() != null && c2.getRefer().getStintInfo() != null) {
+                    for (String k3 : c2.getRefer().getStintInfo().getPrimaryKeys()) {
+                        boolean isContain = false;
+                        for (String colName : t2.getColumns().keySet()) {
+                            if (StringUtil.endsWithIgnoreCase(k3, colName)) {
+                                isContain = true;
+                                break;
+                            }
+                        }
+                        if (isContain || k3.matches("(?i)^" + TEKIYO_BI + "$")) {
+                            break;
+                        }
+                        String a3 = StringUtil.toPascalCase(k3);
+                        String p3 = StringUtil.toCamelCase(k3);
+                        s.add("            " + i2 + "Form.set" + a3 + "(this." + p3 + ");");
+                    }
+                }
+            }
+            s.add("            Map<String, String> gridErrors = new java.util.LinkedHashMap<String, String>();");
+            s.add("            " + i2 + "Form.validate(gridErrors, baseProcess);");
+            s.add("            BaseProcess.copyGridErrors(errors, \"" + e2 + "Grid\", i, gridErrors);");
             s.add("        }");
         }
-
-        // 派生元のマスタチェック
-        for (TableInfo from : table.getDeriveFroms()) {
-            String fromE = StringUtil.toPascalCase(from.getName());
-            String fromI = StringUtil.toCamelCase(from.getName());
-            s.add("");
-            s.add("        // " + from.getRemarks() + " の派生元チェック");
-            s.add("        Map<String, Object> " + fromI + "Params = new java.util.HashMap<String, Object>();");
-            String lastKey = null;
-            for (String fromPrimaryKey : from.getPrimaryKeys()) {
-                lastKey = StringUtil.toCamelCase(fromPrimaryKey);
-                s.add("        " + fromI + "Params.put(\"" + lastKey + "\", this.get"
-                        + StringUtil.toPascalCase(fromPrimaryKey) + "());");
-            }
-            s.add("        baseProcess.masterCheck(errors, \"" + fromE + "Search\", \"" + lastKey + "\", " + fromI
-                    + "Params, jp.co.golorp.emarf.util.Messages.get(\"" + e + "." + lastKey + "\"));");
+        for (TableInfo t2 : t.getDeriveFroms()) { // 派生元のマスタチェック
+            addMasterCheck(s, e, t2, "派生元");
         }
-
-        // 共生元のマスタチェック
-        for (TableInfo from : table.getMergeFroms()) {
-            String fromE = StringUtil.toPascalCase(from.getName());
-            String fromI = StringUtil.toCamelCase(from.getName());
-            s.add("");
-            s.add("        // " + from.getRemarks() + " の共生元チェック");
-            s.add("        Map<String, Object> " + fromI + "Params = new java.util.HashMap<String, Object>();");
-            String lastKey = null;
-            for (String fromPrimaryKey : from.getPrimaryKeys()) {
-                lastKey = StringUtil.toCamelCase(fromPrimaryKey);
-                s.add("        " + fromI + "Params.put(\"" + lastKey + "\", this.get"
-                        + StringUtil.toPascalCase(fromPrimaryKey) + "());");
-            }
-            s.add("        baseProcess.masterCheck(errors, \"" + fromE + "Search\", \"" + lastKey + "\", " + fromI
-                    + "Params, jp.co.golorp.emarf.util.Messages.get(\"" + e + "." + lastKey + "\"));");
+        for (TableInfo t2 : t.getMergeFroms()) { // 共生元のマスタチェック
+            addMasterCheck(s, e, t2, "共生元");
         }
-
-        // 転生元のマスタチェック
-        if (table.getRebornFrom() != null) {
-            TableInfo from = table.getRebornFrom();
-            String fromE = StringUtil.toPascalCase(from.getName());
-            String fromI = StringUtil.toCamelCase(from.getName());
-            s.add("");
-            s.add("        // " + from.getRemarks() + " の転生元チェック");
-            s.add("        Map<String, Object> " + fromI + "Params = new java.util.HashMap<String, Object>();");
-            String lastKey = null;
-            for (String fromPrimaryKey : from.getPrimaryKeys()) {
-                lastKey = StringUtil.toCamelCase(fromPrimaryKey);
-                s.add("        " + fromI + "Params.put(\"" + lastKey + "\", this.get"
-                        + StringUtil.toPascalCase(fromPrimaryKey) + "());");
-            }
-            s.add("        baseProcess.masterCheck(errors, \"" + fromE + "Search\", \"" + lastKey + "\", " + fromI
-                    + "Params, jp.co.golorp.emarf.util.Messages.get(\"" + e + "." + lastKey + "\"));");
+        if (t.getRebornFrom() != null) { // 転生元のマスタチェック
+            addMasterCheck(s, e, t.getRebornFrom(), "転生元");
         }
-
-        // 集約先のマスタチェック
-        if (table.getSummaryTo() != null) {
-            TableInfo from = table.getSummaryTo();
-            String fromE = StringUtil.toPascalCase(from.getName());
-            String fromI = StringUtil.toCamelCase(from.getName());
-            s.add("");
-            s.add("        // " + from.getRemarks() + " の集約先チェック");
-            s.add("        Map<String, Object> " + fromI + "Params = new java.util.HashMap<String, Object>();");
-            String lastKey = null;
-            for (String fromPrimaryKey : from.getPrimaryKeys()) {
-                lastKey = StringUtil.toCamelCase(fromPrimaryKey);
-                s.add("        " + fromI + "Params.put(\"" + lastKey + "\", this.get"
-                        + StringUtil.toPascalCase(fromPrimaryKey) + "());");
-            }
-            s.add("        baseProcess.masterCheck(errors, \"" + fromE + "Search\", \"" + lastKey + "\", " + fromI
-                    + "Params, jp.co.golorp.emarf.util.Messages.get(\"" + e + "." + lastKey + "\"));");
+        if (t.getSummaryTo() != null) { // 集約先のマスタチェック
+            addMasterCheck(s, e, t.getSummaryTo(), "集約先");
         }
-
         // 列ごとに評価
-        for (ColumnInfo column : table.getColumns().values()) {
-
-            // 登録者か更新者ならスキップ
-            if (BeanGenerator.isMetaBy(column.getName())) {
+        for (ColumnInfo c : t.getColumns().values()) {
+            if (BeanGenerator.isMetaBy(c.getName())) { // 登録者か更新者ならスキップ
                 continue;
             }
-
-            // 参照モデルがなければスキップ
-            if (column.getRefer() == null) {
+            if (c.getRefer() == null) { // 参照モデルがなければスキップ
                 continue;
             }
-
-            // 参照モデルがビューならスキップ
-            if (column.getRefer().isView()) {
+            if (c.getRefer().isView()) { // 参照モデルがビューならスキップ
                 continue;
             }
-
-            // 参照モデルがワークフローならスキップ
-            if (column.getRefer().isStatusFlow()) {
+            if (c.getRefer().isStatusFlow()) { // 参照モデルがワークフローならスキップ
                 continue;
             }
-
-            TableInfo refer = column.getRefer();
-            String p = StringUtil.toCamelCase(column.getName());
+            TableInfo t2 = c.getRefer();
+            TableInfo st = t2.getStintInfo();
+            boolean isStint = st != null && st != t;
+            String e2 = StringUtil.toPascalCase(t2.getName());
+            String i2 = StringUtil.toCamelCase(c.getName());
             s.add("");
-            s.add("        // " + column.getRemarks() + " のマスタチェック");
-            s.add("        Map<String, Object> " + p + "Params = new java.util.HashMap<String, Object>();");
-
-            // 該当する主キーと比べて、カラム名の接頭辞を判定する
-            String keyPrefix = "";
-            for (String pk : refer.getPrimaryKeys()) {
-                if (column.getName().matches("(?i).+" + pk + "$")) {
-                    keyPrefix = column.getName().replaceAll("(?i)" + pk + "$", "");
+            if (isStint) {
+                s.add("        // " + c.getRemarks() + " の制約チェック");
+            } else {
+                s.add("        // " + c.getRemarks() + " のマスタチェック");
+            }
+            s.add("        Map<String, Object> " + i2 + "Params = new java.util.HashMap<String, Object>();");
+            String keyPrefix = ""; // 該当する主キーと比べて、カラム名の接頭辞を判定する
+            for (String pk : t2.getPrimaryKeys()) {
+                if (c.getName().matches("(?i).+" + pk + "$")) {
+                    keyPrefix = c.getName().replaceAll("(?i)" + pk + "$", "");
                     if (!keyPrefix.isEmpty()) {
                         keyPrefix += "_";
                     }
                     break;
                 }
             }
-
-            for (String pk : refer.getPrimaryKeys()) {
+            for (String k2 : t2.getPrimaryKeys()) {
                 String keySuf = "";
-                if (refer.getColumns().get(pk).getDataType().equals("String")) {
+                if (t2.getColumns().get(k2).getDataType().equals("String")) {
                     keySuf = "Full";
                 }
-                s.add("        " + p + "Params.put(\"" + StringUtil.toCamelCase(pk) + keySuf + "\", this.get"
-                        + StringUtil.toPascalCase(keyPrefix + pk) + "());");
+                s.add("        " + i2 + "Params.put(\"" + StringUtil.toCamelCase(k2) + keySuf + "\", this."
+                        + StringUtil.toCamelCase(keyPrefix + k2) + ");");
             }
-
-            String cls = StringUtil.toPascalCase(refer.getName());
-            s.add("        baseProcess.masterCheck(errors, \"" + cls + "Search\", \"" + p + "\", " + p
-                    + "Params, jp.co.golorp.emarf.util.Messages.get(\"" + e + "." + p + "\"));");
+            if (isStint) {
+                s.add("        " + i2 + "Params.put(\"isStint\", \"1\");");
+                List<String> stintKeys = new ArrayList<String>();
+                for (String sk : st.getPrimaryKeys()) {
+                    if (!sk.matches("(?i)^" + TEKIYO_BI + "$")) {
+                        stintKeys.add(sk);
+                    }
+                }
+                for (int i = 0; i < stintKeys.size() - 1; i++) {
+                    String k3 = stintKeys.get(i);
+                    String p3 = StringUtil.toCamelCase(k3);
+                    String contain = p3;
+                    for (String colName : t.getColumns().keySet()) {
+                        if (StringUtil.endsWithIgnoreCase(k3, colName)) {
+                            contain = StringUtil.toCamelCase(colName);
+                            break;
+                        }
+                    }
+                    s.add("        " + i2 + "Params.put(\"" + p3 + "\", this." + contain + ");");
+                }
+            }
+            if (isStint) {
+                s.add("        baseProcess.masterCheck(errors, \"" + e2 + "Correct\", \"" + i2 + "\", " + i2
+                        + "Params, jp.co.golorp.emarf.util.Messages.get(\"" + e + "." + i2 + "\"));");
+            } else {
+                s.add("        baseProcess.masterCheck(errors, \"" + e2 + "Search\", \"" + i2 + "\", " + i2
+                        + "Params, jp.co.golorp.emarf.util.Messages.get(\"" + e + "." + i2 + "\"));");
+            }
         }
-
         s.add("    }");
+    }
+
+    /**
+     * @param s
+     * @param e
+     * @param t2
+     * @param label
+     */
+    public static void addMasterCheck(final List<String> s, final String e, final TableInfo t2, final String label) {
+        String e2 = StringUtil.toPascalCase(t2.getName());
+        String i2 = StringUtil.toCamelCase(t2.getName());
+        s.add("");
+        s.add("        // " + t2.getRemarks() + " の" + label + "チェック");
+        s.add("        Map<String, Object> " + i2 + "Params = new java.util.HashMap<String, Object>();");
+        String lk = null;
+        for (String k2 : t2.getPrimaryKeys()) {
+            lk = StringUtil.toCamelCase(k2);
+            s.add("        " + i2 + "Params.put(\"" + lk + "\", this." + lk + ");");
+        }
+        s.add("        baseProcess.masterCheck(errors, \"" + e2 + "Search\", \"" + lk + "\", " + i2
+                + "Params, jp.co.golorp.emarf.util.Messages.get(\"" + e + "." + lk + "\"));");
     }
 
     /**

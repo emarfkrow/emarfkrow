@@ -29,11 +29,6 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.dataformat.csv.CsvMapper;
-import com.fasterxml.jackson.dataformat.csv.CsvSchema;
-import com.fasterxml.jackson.dataformat.csv.CsvSchema.Builder;
-
 import io.github.classgraph.ClassGraph;
 import io.github.classgraph.ClassInfo;
 import io.github.classgraph.ScanResult;
@@ -45,6 +40,10 @@ import jp.co.golorp.emarf.sql.Queries;
 import jp.co.golorp.emarf.util.MapList;
 import jp.co.golorp.emarf.util.Messages;
 import jp.co.golorp.emarf.validation.FormValidator;
+import tools.jackson.core.StreamWriteFeature;
+import tools.jackson.dataformat.csv.CsvMapper;
+import tools.jackson.dataformat.csv.CsvSchema;
+import tools.jackson.dataformat.csv.CsvSchema.Builder;
 
 /**
  * テキストファイル入出力
@@ -116,8 +115,7 @@ public final class TextUtil {
             throw new NoDataError("info.nodata");
         }
 
-        CsvMapper mapper = new CsvMapper();
-        mapper.configure(JsonGenerator.Feature.IGNORE_UNKNOWN, true);
+        CsvMapper mapper = CsvMapper.builder().enable(StreamWriteFeature.IGNORE_UNKNOWN).build();
 
         Map<String, Object> m = list.get(0);
         for (String key : m.keySet()) {
@@ -128,12 +126,12 @@ public final class TextUtil {
 
         CsvSchema schema = builder.build().withHeader();
 
-        try {
-            File file = new File(csvPath);
-            mapper.writer(schema).writeValue(file, list);
-        } catch (IOException e) {
-            throw new SysError(e);
-        }
+        //        try {
+        File file = new File(csvPath);
+        mapper.writer(schema).writeValue(file, list);
+        //        } catch (IOException e) {
+        //            throw new SysError(e);
+        //        }
     }
 
     /**

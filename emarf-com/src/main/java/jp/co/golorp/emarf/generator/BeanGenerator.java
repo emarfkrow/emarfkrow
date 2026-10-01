@@ -68,6 +68,8 @@ public abstract class BeanGenerator {
     public static final Set<String[]> REFER_PAIRS = new LinkedHashSet<String[]>();
     /** 参照モデルにしない */
     public static final String NON_REFER_RE;
+    /** 制約モデルにしない */
+    public static final String NON_STINT_RE;
 
     /** 列評価をスキップする列名 */
     public static final String COL_IGNORE_RE;
@@ -270,6 +272,12 @@ public abstract class BeanGenerator {
             NON_REFER_RE = bundle.getString("relation.nonrefer.re");
         } else {
             NON_REFER_RE = "";
+        }
+
+        if (bundle != null && bundle.containsKey("relation.nonstint.re")) {
+            NON_STINT_RE = bundle.getString("relation.nonstint.re");
+        } else {
+            NON_STINT_RE = "";
         }
 
         if (bundle != null && bundle.containsKey("column.ignore.re")) {
