@@ -97,11 +97,13 @@ $(function() {
 // ２．DOM構築後
 $(document).ready(function() {
     console.debug('base-2: $(document).ready(function() {});');
-});
+    //});
+    //
+    //// ３．DOM構築後
+    //$(document).on('ready', function() {
+    //    console.debug('base-3: $(document).on(\'ready\', function() {});');
 
-// ３．DOM構築後
-$(document).on('ready', function() {
-    console.debug('base-3: $(document).on(\'ready\', function() {});');
+    let Messages = Base.getMessages();
 
     // 画面の参照権限のチェック
     let thisHref = window.document.location.href;
@@ -267,19 +269,19 @@ $(document).on('ready', function() {
             Base.referRegistForm($registForm, isSilent);
         });
     }
-});
-
-// ４．画像ファイル読み込み後
-$(window).load(function() {
-    console.debug('base-4: $(window).load(function() {});');
-});
-
-// ５．画像ファイル読み込み後
-$(window).on('load', function() {
-    console.debug('base-5: $(window).on(\'load\', function() {});');
-
-    //    if (window.opener) {
-    let href = window.document.location.href;
+    //});
+    //
+    //// ４．画像ファイル読み込み後
+    //$(window).load(function() {
+    //    console.debug('base-4: $(window).load(function() {});');
+    //});
+    //
+    //// ５．画像ファイル読み込み後
+    //$(window).on('load', function() {
+    //    console.debug('base-5: $(window).on(\'load\', function() {});');
+    //
+    //    //    if (window.opener) {
+    //    let href = window.document.location.href;
     // 「.html」以降を除去。「～/」を除去。
     let entity = href.replace(/\.html.*/, '').replace(/.+\//, '');
     try {
@@ -323,6 +325,20 @@ let resizeTimer;
 let Base = {
 
     querystrings: {},
+
+    messages: {},
+
+    getMessages: function() {
+        $.ajax({
+            async: false,
+            url: 'messages.json',
+            dataType: 'text',
+            success: function(data) {
+                Base.messages = JSON.parse(data.substr(15));
+            }
+        });
+        return Base.messages;
+    },
 
     /**
      * Loading終了を待って実行

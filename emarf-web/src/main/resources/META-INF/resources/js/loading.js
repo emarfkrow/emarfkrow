@@ -42,9 +42,9 @@ $(function() {
 });
 
 $(window).on('load', function() {
-    //    setTimeout(function() {
-    Loading.fadeOut();
-    //    }, 400);
+    setTimeout(function() {
+        Loading.fadeOut();
+    }, 300);
 });
 
 var Loading = {
@@ -75,7 +75,7 @@ let reqPath = location.pathname.replace(/\/[^\/]+\.html.*$/, '');
 reqPath = reqPath.replace(/\/$/, '');
 pathlevel = reqPath.replace(/[^\/]/g, '').length;
 let dir = '';
-for (let i = 1; i < pathlevel; i++) {
+for (let i = 1;i < pathlevel;i++) {
     dir += '../';
 }
 

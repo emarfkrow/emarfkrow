@@ -17,8 +17,10 @@ limitations under the License.
 package jp.co.golorp.emarf.generator;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import jp.co.golorp.emarf.util.IgnoreCaseLinkedMap;
 import jp.co.golorp.emarf.util.IgnoreCaseList;
@@ -47,6 +49,9 @@ public class TableInfo {
 
     /** カラム名：カラム情報のマップ */
     private Map<String, ColumnInfo> columns = new IgnoreCaseLinkedMap<String, ColumnInfo>();
+
+    /** 制約モデルのために追加したフィールド名 */
+    private Set<String> stintKeys = new HashSet<String>();
 
     /** 親テーブルのリスト */
     private List<TableInfo> parents = new ArrayList<TableInfo>();
@@ -274,6 +279,20 @@ public class TableInfo {
      */
     public void setColumns(final Map<String, ColumnInfo> p) {
         this.columns = p;
+    }
+
+    /**
+     * @return Set
+     */
+    public Set<String> getStintKeys() {
+        return stintKeys;
+    }
+
+    /**
+     * @param p
+     */
+    public void setStintKeys(final Set<String> p) {
+        this.stintKeys = p;
     }
 
     /**

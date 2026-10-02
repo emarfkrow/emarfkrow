@@ -35,15 +35,13 @@ limitations under the License.
   <div layout:fragment="article">
     <h2 th:text="#{Login.h2}">ログイン画面</h2>
     <form method="post" name="LoginForm" action="login" class="login">
-      <!-- ブラウザ独自のパスワード補助無効化 -->
-      <input type="password" name="dummy" style="visibility: hidden;" />
       <fieldset>
         <legend th:text="#{Login.legend}">ログインフォーム</legend>
         <div>
-          <label for="userId" th:text="#{Login.userId}">ログインID</label><input type="tel" id="userId" name="userId" />
+          <label for="userId" th:text="#{Login.userId}">ログインID</label><input type="tel" id="userId" name="userId" readonly onfocus="this.removeAttribute('readonly');document.getElementsByName('passwd')[0].removeAttribute('readonly');" />
         </div>
         <div>
-          <label for="passwd" th:text="#{Login.passwd}">パスワード</label><input type="password" id="passwd" name="passwd" />
+          <label for="passwd" th:text="#{Login.passwd}">パスワード</label><input type="password" id="passwd" name="passwd" readonly onfocus="this.removeAttribute('readonly');" />
         </div>
       </fieldset>
       <input type="hidden" name="requestURI" />

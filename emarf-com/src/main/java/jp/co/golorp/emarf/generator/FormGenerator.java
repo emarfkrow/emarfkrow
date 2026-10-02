@@ -17,13 +17,11 @@ package jp.co.golorp.emarf.generator;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.ResourceBundle;
-import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -87,7 +85,6 @@ public final class FormGenerator extends BeanGenerator {
             //            s.add("");
             //            s.add("    /** logger */");
             //            s.add("    private static final Logger LOG = LoggerFactory.getLogger(" + entity + "RegistForm.class);");
-            Set<String> stintKeys = new HashSet<String>();
             for (ColumnInfo c : t.getColumns().values()) {
                 // レコードメタデータならスキップ。updateDtは楽観ロック用に必要
                 boolean isUpdTs = c.getName().matches("(?i)^" + UPDATE_AT + "$");
@@ -109,10 +106,10 @@ public final class FormGenerator extends BeanGenerator {
                         if (isContain) {
                             break;
                         }
-                        if (stintKeys.contains(pk2)) {
+                        if (t.getStintKeys().contains(pk2)) {
                             continue;
                         }
-                        stintKeys.add(pk2);
+                        t.getStintKeys().add(pk2);
                         ColumnInfo k = c.getRefer().getStintInfo().getColumns().get(pk2);
                         s.add("");
                         s.add("    /** 参照先制約：" + k.getRemarks() + " */");
@@ -225,31 +222,55 @@ public final class FormGenerator extends BeanGenerator {
         s.add("    /** 関連チェック */");
         s.add("    @Override");
         s.add("    public void validate(final Map<String, String> errors, final BaseProcess baseProcess) {");
-        // 子の整合性チェック
-        for (TableInfo t2 : t.getChildren()) {
-            String e2 = StringUtil.toPascalCase(t2.getName());
-            String i2 = StringUtil.toCamelCase(t2.getName());
+        for (TableInfo child : t.getChildren()) { // 子の整合性チェック
+            String e2 = StringUtil.toPascalCase(child.getName());
+            String i2 = StringUtil.toCamelCase(child.getName());
             s.add("");
-            s.add("        // " + t2.getRemarks() + " の子モデル整合性チェック");
+            s.add("        // " + child.getRemarks() + " の子モデル整合性チェック");
             s.add("        for (int i = 0; i < this." + i2 + "Grid.size(); i++) {");
             s.add("            " + e2 + "RegistForm " + i2 + "Form = this." + i2 + "Grid.get(i);");
-            for (ColumnInfo c2 : t2.getColumns().values()) {
-                if (!c2.isPk() && !c2.isMeta() && c2.getRefer() != null && c2.getRefer().getStintInfo() != null) {
-                    for (String k3 : c2.getRefer().getStintInfo().getPrimaryKeys()) {
-                        boolean isContain = false;
-                        for (String colName : t2.getColumns().keySet()) {
-                            if (StringUtil.endsWithIgnoreCase(k3, colName)) {
-                                isContain = true;
-                                break;
-                            }
-                        }
-                        if (isContain || k3.matches("(?i)^" + TEKIYO_BI + "$")) {
+            for (ColumnInfo childCol : child.getColumns().values()) {
+                if (childCol.isPk() || childCol.isMeta() || childCol.getRefer() == null) {
+                    continue;
+                }
+                TableInfo childColRefer = childCol.getRefer();
+                if (childColRefer.getStintInfo() == null) {
+                    continue;
+                }
+                TableInfo childColReferStint = childColRefer.getStintInfo(); // 子モデル列の参照先の制約モデル
+                for (String childColReferStintKey : childColReferStint.getPrimaryKeys()) {
+                    if (childColReferStintKey.matches("(?i)^" + TEKIYO_BI + "$")) {
+                        break; // 主キー内の適用日ならスキップ
+                    }
+                    boolean isChildContain = false;
+                    for (String childColName : child.getColumns().keySet()) {
+                        if (StringUtil.endsWithIgnoreCase(childColReferStintKey, childColName)) {
+                            isChildContain = true;
                             break;
                         }
-                        String a3 = StringUtil.toPascalCase(k3);
-                        String p3 = StringUtil.toCamelCase(k3);
-                        s.add("            " + i2 + "Form.set" + a3 + "(this." + p3 + ");");
                     }
+                    if (isChildContain) {
+                        break; // 子モデルに含まれるなら親モデルからの補完はしない
+                    }
+                    boolean isParentContain = false;
+                    for (String parentColName : t.getColumns().keySet()) {
+                        if (StringUtil.endsWithIgnoreCase(childColReferStintKey, parentColName)) {
+                            isParentContain = true;
+                            break;
+                        }
+                    }
+                    for (String parentColName : t.getStintKeys()) {
+                        if (StringUtil.endsWithIgnoreCase(childColReferStintKey, parentColName)) {
+                            isParentContain = true;
+                            break;
+                        }
+                    }
+                    if (!isParentContain) {
+                        break; // 親モデルに含まれるなら補完する
+                    }
+                    String a3 = StringUtil.toPascalCase(childColReferStintKey);
+                    String p3 = StringUtil.toCamelCase(childColReferStintKey);
+                    s.add("            " + i2 + "Form.set" + a3 + "(this." + p3 + ");");
                 }
             }
             s.add("            Map<String, String> gridErrors = new java.util.LinkedHashMap<String, String>();");
@@ -505,7 +526,7 @@ public final class FormGenerator extends BeanGenerator {
                 // DECIMALの場合（整数桁・小数桁）
                 int decimalDigits = column.getDecimalDigits();
                 int integer = columnSize - decimalDigits;
-                String re = "-?([0-9]{0," + integer + "}\\\\.?[0-9]{0," + decimalDigits + "}?)?";
+                String re = "(-?[0-9]{0," + integer + "}\\\\.?[0-9]{0," + decimalDigits + "}?)?";
                 s.add("    @jakarta.validation.constraints.Pattern(" + registGroup + ", regexp = \"" + re + "\")");
 
             } else {

@@ -36,14 +36,7 @@ $(function() {
 
     // グリッド列名取得のためここでMessagesを取得する
     console.info('    Gridate get Messages.');
-    $.ajax({
-        async: false,
-        url: 'messages.json',
-        dataType: 'text',
-        success: function(data) {
-            Messages = JSON.parse(data.substr(15));
-        }
-    });
+    Messages = Base.getMessages();
     console.debug(Messages);
 
     optionsSizeSearch = Messages['options.size.search'];

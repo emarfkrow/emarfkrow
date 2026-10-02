@@ -163,6 +163,7 @@ public final class FormValidator {
                     if (reName != null && reName.length() > 0) {
                         message = message.replace(regexpMatcher.group(), reName);
                     } else {
+                        // 「~~(***)?~~」を「***」に置換
                         message = message.replaceAll("\\~\\~\\((.+?)\\)\\?\\~\\~", "$1");
                     }
                 }

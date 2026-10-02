@@ -28,6 +28,7 @@ limitations under the License.
 		sessionStorage['breads'] = JSON.stringify(breads);
 
 		// home画面に遷移
+		let Messages = Base.getMessages();
 		let home = Messages['Index.home'];
 		if (home && home != '' && home.indexOf('Index.home') < 0) {
 			sessionStorage['breads'] = JSON.stringify({});
