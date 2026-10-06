@@ -49,13 +49,17 @@ public class LocaleFilter implements Filter {
     public void doFilter(final ServletRequest request, final ServletResponse response, final FilterChain chain)
             throws IOException, ServletException {
 
-        // messageのi18n対応
-        //        Locale locale = Locales.get();
-        //        if (!locale.getLanguage().equals(request.getLocale().getLanguage())) {
-        Locales.set(request.getLocale());
-        //        }
+        try {
+            // messageのi18n対応
+            //        Locale locale = Locales.get();
+            //        if (!locale.getLanguage().equals(request.getLocale().getLanguage())) {
+            Locales.set(request.getLocale());
+            //        }
 
-        chain.doFilter(request, response);
+            chain.doFilter(request, response);
+        } finally {
+            Locales.remove();
+        }
     }
 
     @Override

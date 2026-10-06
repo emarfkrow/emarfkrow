@@ -201,6 +201,7 @@ public class LoginFilter implements Filter {
                     throw new SysError(e);
                 }
 
+                req.changeSessionId();
                 ses.setAttribute(LoginFilter.AUTHN_KEY, map.get(LoginFilter.AUTHN_KEY));
                 ses.setAttribute(LoginFilter.AUTHN_MEI, map.get(LoginFilter.AUTHN_MEI));
                 ses.setAttribute(LoginFilter.AUTHN_INFO, map.get(LoginFilter.AUTHN_INFO));
@@ -208,7 +209,9 @@ public class LoginFilter implements Filter {
                 ses.setAttribute(LoginFilter.LOGIN_FORM, map.get(LoginFilter.LOGIN_FORM));
 
                 String orgRequestURI = StringUtil.sanitize(request.getParameter("requestURI"));
-                if (!StringUtil.isNullOrWhiteSpace(orgRequestURI)) {
+                if (!StringUtil.isNullOrWhiteSpace(orgRequestURI)
+                        && orgRequestURI.startsWith(contextPath)
+                        && !orgRequestURI.contains("://")) {
                     res.sendRedirect(orgRequestURI);
                 } else {
                     res.sendRedirect(contextPath);

@@ -95,11 +95,13 @@ public class ServiceFilter implements Filter {
             String authnKey = "anonymous";
             if (ses.getAttribute(LoginFilter.AUTHN_KEY) != null) {
                 authnKey = ses.getAttribute(LoginFilter.AUTHN_KEY).toString();
+                authnKey = authnKey.replaceAll("[\r\n]", "");
             }
             String remoteAddr = request.getRemoteAddr();
-            LOG.info("RequestURI: " + requestURI + ", RequestBY: " + authnKey + ", RequestFROM: " + remoteAddr);
+            String safeURI = requestURI.replaceAll("[\r\n]", "");
+            LOG.info("RequestURI: " + safeURI + ", RequestBY: " + authnKey + ", RequestFROM: " + remoteAddr);
 
-            if (requestURI.matches(WRITE_URI_RE)) {
+            if (WRITE_URI_RE != null && requestURI.matches(WRITE_URI_RE)) {
                 for (String kikanCron : DONT_WRITES) {
                     String[] kikanCrons = kikanCron.split("\\|");
                     if (!isService(kikanCrons[0], kikanCrons[1])) {
@@ -176,6 +178,9 @@ public class ServiceFilter implements Filter {
          */
 
         String[] teishiCrons = teishiCron.split(" +");
+        if (teishiCrons.length < 5) {
+            throw new SysError("error.invalid.cron", teishiCron);
+        }
         String teishiA = teishiCrons[4];
         String teishiM = teishiCrons[3];
         String teishiD = teishiCrons[2];
@@ -219,6 +224,9 @@ public class ServiceFilter implements Filter {
          */
 
         String[] saikaiCrons = saikaiCron.split(" +");
+        if (saikaiCrons.length < 5) {
+            throw new SysError("error.invalid.cron", saikaiCron);
+        }
         String saikaiA = saikaiCrons[4];
         String saikaiM = saikaiCrons[3];
         String saikaiD = saikaiCrons[2];
