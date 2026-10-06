@@ -227,8 +227,12 @@ public final class FormGenerator extends BeanGenerator {
             String i2 = StringUtil.toCamelCase(child.getName());
             s.add("");
             s.add("        // " + child.getRemarks() + " の子モデル整合性チェック");
-            s.add("        for (int i = 0; i < this." + i2 + "Grid.size(); i++) {");
-            s.add("            " + e2 + "RegistForm " + i2 + "Form = this." + i2 + "Grid.get(i);");
+            s.add("        if (this." + i2 + "Grid != null) {");
+            s.add("            for (int i = 0; i < this." + i2 + "Grid.size(); i++) {");
+            s.add("                " + e2 + "RegistForm " + i2 + "Form = this." + i2 + "Grid.get(i);");
+            s.add("                if (" + i2 + "Form == null) {");
+            s.add("                    continue;");
+            s.add("                }");
             for (ColumnInfo childCol : child.getColumns().values()) {
                 if (childCol.isPk() || childCol.isMeta() || childCol.getRefer() == null) {
                     continue;
@@ -270,12 +274,13 @@ public final class FormGenerator extends BeanGenerator {
                     }
                     String a3 = StringUtil.toPascalCase(childColReferStintKey);
                     String p3 = StringUtil.toCamelCase(childColReferStintKey);
-                    s.add("            " + i2 + "Form.set" + a3 + "(this." + p3 + ");");
+                    s.add("                " + i2 + "Form.set" + a3 + "(this." + p3 + ");");
                 }
             }
-            s.add("            Map<String, String> gridErrors = new java.util.LinkedHashMap<String, String>();");
-            s.add("            " + i2 + "Form.validate(gridErrors, baseProcess);");
-            s.add("            BaseProcess.copyGridErrors(errors, \"" + e2 + "Grid\", i, gridErrors);");
+            s.add("                Map<String, String> gridErrors = new java.util.LinkedHashMap<String, String>();");
+            s.add("                " + i2 + "Form.validate(gridErrors, baseProcess);");
+            s.add("                BaseProcess.copyGridErrors(errors, \"" + e2 + "Grid\", i, gridErrors);");
+            s.add("            }");
             s.add("        }");
         }
         for (TableInfo t2 : t.getDeriveFroms()) { // 派生元のマスタチェック
@@ -290,15 +295,11 @@ public final class FormGenerator extends BeanGenerator {
         if (t.getSummaryTo() != null) { // 集約先のマスタチェック
             addMasterCheck(s, e, t.getSummaryTo(), "集約先");
         }
-        // 列ごとに評価
-        for (ColumnInfo c : t.getColumns().values()) {
+        for (ColumnInfo c : t.getColumns().values()) { // 列ごとに評価
             if (BeanGenerator.isMetaBy(c.getName())) { // 登録者か更新者ならスキップ
                 continue;
             }
-            if (c.getRefer() == null) { // 参照モデルがなければスキップ
-                continue;
-            }
-            if (c.getRefer().isView()) { // 参照モデルがビューならスキップ
+            if (c.getRefer() == null || c.getRefer().isView()) { // 参照モデルがないか、参照モデルがビューならスキップ
                 continue;
             }
             if (c.getRefer().isStatusFlow()) { // 参照モデルがワークフローならスキップ

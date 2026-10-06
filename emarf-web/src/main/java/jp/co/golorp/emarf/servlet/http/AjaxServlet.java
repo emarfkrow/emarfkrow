@@ -65,6 +65,16 @@ public final class AjaxServlet extends HttpServlet {
      */
     protected void doGet(final HttpServletRequest request, final HttpServletResponse response)
             throws ServletException, IOException {
+    }
+
+    /**
+     * @param request
+     * @param response
+     * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+     *      response)
+     */
+    protected void doPost(final HttpServletRequest request, final HttpServletResponse response)
+            throws ServletException, IOException {
 
         Map<String, Object> map = null;
         try {
@@ -130,17 +140,6 @@ public final class AjaxServlet extends HttpServlet {
 
         // Actionクラスの実行結果をJSONで返却
         ServletUtil.sendJson(response, map);
-    }
-
-    /**
-     * @param request
-     * @param response
-     * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
-     *      response)
-     */
-    protected void doPost(final HttpServletRequest request, final HttpServletResponse response)
-            throws ServletException, IOException {
-        doGet(request, response);
     }
 
 }
