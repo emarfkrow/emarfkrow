@@ -517,6 +517,12 @@ let Ajaxize = {
                 console.error(e);
                 alert(e);
             }
+        }).fail(function(xhr) {
+            if (xhr.status === 403) {
+                alert('不正なリクエスト（CSRFエラー）です。画面を再読み込みしてください。');
+            } else {
+                alert('通信エラーが発生しました。');
+            }
         }).always(function() {
             if (typeof Loading != 'undefined' && noLoading != true) {
                 // Base.loaded内で Base.referMei をコール時に Loading が一瞬切れるため少し遅らせる
