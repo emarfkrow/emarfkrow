@@ -118,7 +118,7 @@ public final class AjaxServlet extends HttpServlet {
             map.put("ERROR", e.getMessage());
 
             if (e.getCause() != null) {
-                map.put("ERROR", e.getMessage() + "\r\n" + e.getCause().getMessage());
+                map.put("ERROR", e.getMessage());
             }
 
         } catch (AppError e) {
