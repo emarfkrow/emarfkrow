@@ -23,6 +23,21 @@ $(function() {
 
     console.info('Ajaxize init.');
 
+    $.ajaxSetup({
+        beforeSend: function(xhr, settings) {
+            if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) {
+                let csrfToken = $("meta[name='_csrf']").attr("content");
+                xhr.setRequestHeader("X-CSRF-TOKEN", csrfToken);
+            }
+        },
+        complete: function(xhr, textStatus) {
+            let csrfToken = xhr.getResponseHeader("X-CSRF-TOKEN");
+            if (csrfToken) {
+                $("meta[name='_csrf']").attr("content", csrfToken);
+            }
+        }
+    });
+
     /*
      * 「.ajax」のフォーム送信を横取り
      */
@@ -102,6 +117,7 @@ $(function() {
 
         // 送信先が「.ajax」でなければ終了（ブラウザが送信する）
         if (action.match(/\.ajax/g) == null) {
+            $form.append('<input type="hidden" name="_csrf" value="' + $('meta[name="_csrf"]').attr('content') + '">');
             return;
         }
 
@@ -441,7 +457,7 @@ let Ajaxize = {
             cache: false,     // キャッシュフラグ
             dataType: 'json', // 通信結果取得のデータ型
             headers: {
-                "X-CSRF-TOKEN": formJson['_csrf']
+                "X-CSRF-TOKEN": $('meta[name="_csrf"]').attr('content')
             },
             type: 'post',
             url: action,
@@ -481,12 +497,17 @@ let Ajaxize = {
             } else {
                 alert(Messages['error.network']);
             }
-        }).done(function(data) {
+        }).done(function(data, status, xhr) {
 
             console.debug('    action: ' + action);
             console.debug(logJson);
             console.debug(data);
             //console.info('--------------------------------------------------');
+
+            let csrfToken = xhr.getResponseHeader("X-CSRF-TOKEN");
+            if (csrfToken) {
+                $("meta[name='_csrf']").attr("content", csrfToken);
+            }
 
             // システムエラー
             if (data && data.FATAL) {

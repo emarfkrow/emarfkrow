@@ -43,19 +43,6 @@ $(function() {
 
     console.debug('base-1: $(function() {});');
 
-    // 1. metaタグからThymeleafが書き出したトークン値を取得
-    const token = $('meta[name="csrf-token"]').attr('content');
-
-    // 2. すべてのAjaxリクエストのデフォルトヘッダーに設定
-    $.ajaxSetup({
-        beforeSend: function(xhr, settings) {
-            // GETやHEADなど、状態を変更しない安全なメソッド以外にトークンを付与
-            if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type)) {
-                xhr.setRequestHeader('X-CSRF-TOKEN', token);
-            }
-        }
-    });
-
     $('html').prop('lang', navigator.language || navigator.userLanguage || navigator.browserLanguage || navigator.systemLanguage);
 
     // formatメソッドを定義
