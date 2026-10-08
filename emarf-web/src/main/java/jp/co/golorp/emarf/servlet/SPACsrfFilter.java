@@ -26,6 +26,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
 import jakarta.servlet.annotation.WebFilter;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -34,44 +35,46 @@ import jakarta.servlet.http.HttpSession;
  * CSRF対策フィルタ
  */
 @WebFilter("/*")
-public class CsrfFilter implements Filter {
+public class SPACsrfFilter implements Filter {
 
     /***/
-    private static final String CSRF_HEADER_NAME = "X-CSRF-TOKEN";
-    /***/
-    private static final String CSRF_PARAM_NAME = "_csrf";
-    /***/
-    private static final String CSRF_TOKEN_NAME = "csrfToken";
+    private static final String CSRF_TOKEN_NAME = "X-CSRF-TOKEN";
 
     /***/
     @Override
     public void doFilter(final ServletRequest request, final ServletResponse response, final FilterChain chain)
             throws IOException, ServletException {
 
-        HttpServletRequest httpRequest = (HttpServletRequest) request;
-        HttpServletResponse httpResponse = (HttpServletResponse) response;
-        HttpSession session = httpRequest.getSession(true);
+        HttpServletRequest req = (HttpServletRequest) request;
+        HttpServletResponse res = (HttpServletResponse) response;
+        HttpSession ses = req.getSession(true);
 
-        String method = httpRequest.getMethod();
-        if (method.matches("(?i)^(POST|PUT|DELETE)$") && !httpRequest.getRequestURI().endsWith("Authz.ajax")
-                && !httpRequest.getRequestURI().endsWith(".json")) {
-            String requestToken = httpRequest.getHeader(CSRF_HEADER_NAME);
-            if (requestToken == null) {
-                requestToken = httpRequest.getParameter(CSRF_PARAM_NAME);
-            }
-            String sessionToken = (String) session.getAttribute(CSRF_TOKEN_NAME);
-            if (sessionToken != null && !sessionToken.equals(requestToken)) {
-                httpResponse.sendError(HttpServletResponse.SC_FORBIDDEN, "CSRF token invalid or missing.");
+        String method = req.getMethod();
+        String reqUri = req.getRequestURI();
+
+        boolean posted = !method.matches("(?i)^get$")
+                && !reqUri.matches("(?i).+\\.json$")
+                && !reqUri.matches("(?i).+authz\\.ajax");
+
+        if (posted) {
+            String headerToken = req.getHeader(CSRF_TOKEN_NAME);
+            String serverToken = (String) ses.getAttribute(CSRF_TOKEN_NAME);
+            if (headerToken == null || serverToken == null || !headerToken.equals(serverToken)) {
+                res.sendError(HttpServletResponse.SC_FORBIDDEN, "CSRF token invalid or missing.");
                 return;
             }
         }
 
-        if (httpRequest.getRequestURI().endsWith(".html") || (httpRequest.getRequestURI().endsWith(".ajax")
-                && !httpRequest.getRequestURI().endsWith("Authz.ajax"))) {
-            String sessionToken = generateToken();
-            session.setAttribute(CSRF_TOKEN_NAME, sessionToken);
-            httpRequest.setAttribute(CSRF_PARAM_NAME, sessionToken);
-            httpResponse.setHeader(CSRF_HEADER_NAME, sessionToken);
+        if (posted || reqUri.matches("(?i).+\\.html$")) {
+            String csrfToken = generateToken();
+            ses.setAttribute(CSRF_TOKEN_NAME, csrfToken);
+            Cookie cookie = new Cookie(CSRF_TOKEN_NAME, csrfToken);
+            cookie.setPath("/");
+            cookie.setMaxAge(86400); // 1日
+            cookie.setHttpOnly(false); // JavaScriptからのアクセス不可
+            cookie.setSecure(true); // HTTPS通信のみ送信
+            cookie.setAttribute("SameSite", "Strict"); // CSRF対策 (Lax, Strict, None)
+            res.addCookie(cookie);
         }
 
         chain.doFilter(request, response);

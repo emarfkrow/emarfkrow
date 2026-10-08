@@ -26,16 +26,11 @@ $(function() {
     $.ajaxSetup({
         beforeSend: function(xhr, settings) {
             if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) {
-                let csrfToken = $("meta[name='_csrf']").attr("content");
+                let cookies = new URLSearchParams(document.cookie.replace(/;\s*/g, '&'));
+                let csrfToken = cookies.get('X-CSRF-TOKEN');
                 xhr.setRequestHeader("X-CSRF-TOKEN", csrfToken);
             }
         },
-        complete: function(xhr, textStatus) {
-            let csrfToken = xhr.getResponseHeader("X-CSRF-TOKEN");
-            if (csrfToken) {
-                $("meta[name='_csrf']").attr("content", csrfToken);
-            }
-        }
     });
 
     /*
@@ -457,7 +452,6 @@ let Ajaxize = {
             cache: false,     // キャッシュフラグ
             dataType: 'json', // 通信結果取得のデータ型
             headers: {
-                "X-CSRF-TOKEN": $('meta[name="_csrf"]').attr('content')
             },
             type: 'post',
             url: action,
@@ -503,11 +497,6 @@ let Ajaxize = {
             console.debug(logJson);
             console.debug(data);
             //console.info('--------------------------------------------------');
-
-            let csrfToken = xhr.getResponseHeader("X-CSRF-TOKEN");
-            if (csrfToken) {
-                $("meta[name='_csrf']").attr("content", csrfToken);
-            }
 
             // システムエラー
             if (data && data.FATAL) {
