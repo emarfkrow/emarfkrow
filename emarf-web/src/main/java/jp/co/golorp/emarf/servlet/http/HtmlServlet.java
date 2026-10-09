@@ -63,6 +63,9 @@ public final class HtmlServlet extends HttpServlet {
     /** thymeleaf.template.default */
     private String defaultTemplate = "index";
 
+    /** thymeleaf.template.default */
+    private boolean cacheable = true;
+
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -88,6 +91,9 @@ public final class HtmlServlet extends HttpServlet {
         if (App.get("thymeleaf.template.default") != null) {
             defaultTemplate = App.get("thymeleaf.template.default");
         }
+        if (App.get("thymeleaf.cacheable") != null) {
+            cacheable = App.get("thymeleaf.cacheable").equals("true");
+        }
 
         // 公開ディレクトリ基準のTemplateResolverを取得
         JakartaServletWebApplication application = JakartaServletWebApplication
@@ -96,7 +102,7 @@ public final class HtmlServlet extends HttpServlet {
         templateResolver.setPrefix(prefix);
         templateResolver.setSuffix(suffix);
         templateResolver.setTemplateMode(TemplateMode.HTML);
-        templateResolver.setCacheable(false);
+        templateResolver.setCacheable(cacheable);
 
         // TemplateEngineを設定
         templateEngine = new TemplateEngine();

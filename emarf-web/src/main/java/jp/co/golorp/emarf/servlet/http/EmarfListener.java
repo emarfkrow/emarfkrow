@@ -230,25 +230,29 @@ public class EmarfListener implements ServletContextListener, ServletContextAttr
         //起動後初回アクセス時のみという事
         //時間内にサーブレットが起動しないとエラーになるため
         if (contextRealPath == null) {
+            // 同期化して複数スレッドからの同時アクセスを防止
+            synchronized (EmarfListener.class) {
+                if (contextRealPath == null) {
+                    //プロジェクトパスを取得（「実行済み」のフラグとする）
+                    contextRealPath = sre.getServletContext().getRealPath("");
 
-            //プロジェクトパスを取得（「実行済み」のフラグとする）
-            contextRealPath = sre.getServletContext().getRealPath("");
+                    //サーブレットURLを退避
+                    ServletRequest sr = sre.getServletRequest();
+                    String schema = sr.getScheme();
+                    String serverName = sr.getServerName();
+                    int serverPort = sr.getServerPort();
+                    String contextPath = sre.getServletContext().getContextPath();
+                    ServletUtil.setServletUrl(schema + "://" + serverName + ":" + serverPort + contextPath);
 
-            //サーブレットURLを退避
-            ServletRequest sr = sre.getServletRequest();
-            String schema = sr.getScheme();
-            String serverName = sr.getServerName();
-            int serverPort = sr.getServerPort();
-            String contextPath = sre.getServletContext().getContextPath();
-            ServletUtil.setServletUrl(schema + "://" + serverName + ":" + serverPort + contextPath);
+                    //実フォルダパスを退避
+                    FileUtil.setContextDir(contextRealPath);
 
-            //実フォルダパスを退避
-            FileUtil.setContextDir(contextRealPath);
-
-            //自動生成を実行
-            String isGenerateAtStartup = App.get("generateAtStartup");
-            if (isGenerateAtStartup != null && isGenerateAtStartup.toLowerCase().equals("true")) {
-                BeanGenerator.generate(contextRealPath);
+                    //自動生成を実行
+                    String isGenerateAtStartup = App.get("generateAtStartup");
+                    if (isGenerateAtStartup != null && isGenerateAtStartup.toLowerCase().equals("true")) {
+                        BeanGenerator.generate(contextRealPath);
+                    }
+                }
             }
         }
     }
