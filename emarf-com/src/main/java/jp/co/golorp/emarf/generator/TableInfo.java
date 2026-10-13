@@ -408,6 +408,7 @@ public class TableInfo {
     }
 
     /**
+     * 変換VIEWならtrue
      * @return boolean
      */
     public boolean isConvView() {
@@ -415,7 +416,7 @@ public class TableInfo {
     }
 
     /**
-     * @param p
+     * @param p 変換VIEWならtrue
      */
     public void setConvView(final boolean p) {
         this.isConvView = p;

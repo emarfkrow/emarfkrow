@@ -71,17 +71,9 @@ public final class HtmlGeneratorIndex extends HtmlGenerator {
                 + "\" th:text=\"#{common.reset}\" class=\"reset\" onClick=\"Dialogate.reset(event);\">reset</button>");
         boolean isAnew = isAnew(table);
         if (isAnew /*&& table.getRebornFrom() == null*/) {
-            //            boolean isDeriver = false;
-            //            for (ColumnInfo col : table.getColumns().values()) {
-            //                if (col.getDeriveFrom() != null) {
-            //                    isDeriver = true;
-            //                    break;
-            //                }
-            //            }
+            // boolean isDeriver = false; for (ColumnInfo col : table.getColumns().values()) { if (col.getDeriveFrom() != null) { isDeriver = true; break; } }
             String anewClass = "anew";
-            //            if (isDeriver) {
-            //                anewClass += " derive";
-            //            }
+            // if (isDeriver) { anewClass += " derive"; }
             if (table.getPrimaryKeys().size() > 0) {
                 s.add("        <a th:href=\"@{/model/" + e + ".html(anew)}\" target=\"dialog\" id=\"" + e
                         + "\" class=\"" + anewClass + "\" th:text=\"#{" + e + ".add}\" tabindex=\"-1\">"
@@ -153,7 +145,9 @@ public final class HtmlGeneratorIndex extends HtmlGenerator {
             s.add("      <div id=\"" + e + "Grid\" data-selectionMode=\"checkbox\"" + addRow + " data-frozenColumn=\""
                     + frozenColumn + "\" " + editable + "th:data-href=\"@{/model/" + e + ".html}\"></div>");
             s.add("      <div id=\"" + e + "Pager\"></div>\r\n      <div class=\"buttons\">");
-            if (!table.isHistory() && (!table.isView() || table.isConvView()) && !table.isStatusFlow()) {
+            if (!table.isHistory()
+                    && (!table.isView() || table.isConvView())
+                    && !table.isStatusFlow()) {
                 s.add("        <button type=\"button\" class=\"reset\" id=\"Reset" + e
                         + "S\" th:text=\"#{common.reset}\" onClick=\"Base.listReset('" + e + "');\">reset</button>");
             }
@@ -180,13 +174,16 @@ public final class HtmlGeneratorIndex extends HtmlGenerator {
                 addKessaiButtons(table, e, s);
             }
             s.add("      </div>\r\n      <div class=\"submits\">");
-            if (!table.isHistory() && (!table.isView() || table.isConvView()) && !table.isStatusFlow()
-                    && table.getChildren().size() == 0) {
+            if (!table.isHistory() // 履歴モデルでない
+                    && (!table.isView() || table.isConvView()) // ビューでないか、ビューなら変換ビューのみ
+                    && !table.isStatusFlow() // 決裁フローでない
+                    && table.getChildren().size() == 0 // 子モデルが無い
+            ) {
                 String onClick = "";
                 if (table.getHistory() != null && !StringUtil.isNullOrWhiteSpace(REASON)) {
                     onClick = " onclick=\"if (!Base.rirekiTx(this)) { return false; }\"";
                 }
-                if (table.getPrimaryKeys().size() > 0) {
+                if (table.getPrimaryKeys().size() > 0 || table.isConvView()) {
                     s.add("        <button id=\"Regist" + e + "S\" type=\"submit\"" + onClick
                             + " class=\"regist\" th:text=\"#{common.regist}\">regist</button>");
                 }
@@ -269,6 +266,8 @@ public final class HtmlGeneratorIndex extends HtmlGenerator {
             }
         }
 
+        boolean hasViewDetail = false;
+
         //非主キー列の出力
         for (String columnName : table.getNonPrimaryKeys()) {
 
@@ -279,6 +278,7 @@ public final class HtmlGeneratorIndex extends HtmlGenerator {
 
             //カラム名が「TABLE_NAME」なら出力しない
             if (columnName.matches("(?i)^" + VIEW_DETAIL + "$")) {
+                hasViewDetail = true;
                 continue;
             }
 
@@ -305,6 +305,9 @@ public final class HtmlGeneratorIndex extends HtmlGenerator {
         }
 
         s.add("    ];");
+        if (hasViewDetail) {
+            s.add("    " + entity + "GridColumns.hasViewDetail = " + hasViewDetail + ";");
+        }
         s.add("});");
 
         FileUtil.writeFile(gridDir + File.separator + entity + "GridColumns.js", s);

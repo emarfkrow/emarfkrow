@@ -251,7 +251,7 @@ $(function() {
                     }
 
                     // 固定列がある（主キーが１つ以上）か、「TABLE_NAME」列がある場合
-                    if ($gridDiv.attr('data-frozenColumn') * 1 >= 0 || columns[columnDetail]) {
+                    if ($gridDiv.attr('data-frozenColumn') * 1 >= 0 || columns.hasViewDetail == true) {
 
                         // 詳細リンク列を追加
                         columns.unshift({
