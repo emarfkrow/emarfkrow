@@ -134,7 +134,8 @@ public final class ActionGeneratorDetail extends BeanGenerator {
                     if (!StringUtil.isNullOrWhiteSpace(STATUS_KB) && summaryOf.getColumns().containsKey(STATUS_KB)) {
                         String acc = StringUtil.toPascalCase(STATUS_KB);
                         s.add("                    //承認済みでなければエラー");
-                        s.add("                    if (!" + i + ".get" + acc + "().equals(\"1\")) {");
+                        s.add("                    if (" + i + ".get" + acc + "() == null || !" + i + ".get" + acc
+                                + "().equals(\"1\")) {");
                         s.add("                        throw new OptLockError(\"error.nopermit.summary\", \""
                                 + summaryOf.getRemarks() + "\");");
                         s.add("                    }");

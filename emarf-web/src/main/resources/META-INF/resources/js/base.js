@@ -38,12 +38,12 @@ String.prototype.bytes = function() {
     return length;
 };
 
+document.getElementsByTagName('html')[0].setAttribute('lang', navigator.language || navigator.userLanguage || navigator.browserLanguage || navigator.systemLanguage);
+
 // １．DOM構築後
 $(function() {
 
     console.debug('base-1: $(function() {});');
-
-    $('html').prop('lang', navigator.language || navigator.userLanguage || navigator.browserLanguage || navigator.systemLanguage);
 
     // formatメソッドを定義
     $.fn.format = function(value) {
