@@ -1621,8 +1621,8 @@ public final class DataSources {
             for (ColumnInfo sakiCol : saki.getColumns().values()) {
                 if (sakiCol.getDeriveFrom() != null && sakiCol.getNullable() == 1) {
                     TableInfo choise = sakiCol.getDeriveFrom();
-                    // 派生元に転生先も統合先もなければ取得
-                    if (choise.getRebornTo() == null && choise.getMergeTo() == null) {
+                    // 派生元に共生先がなければ取得
+                    if (/*choise.getRebornTo() == null &&*/ choise.getMergeTo() == null) {
                         choises.add(choise);
                     }
                 }
