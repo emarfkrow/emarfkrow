@@ -28,7 +28,9 @@ $(function() {
             if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) {
                 let cookies = new URLSearchParams(document.cookie.replace(/;\s*/g, '&'));
                 let csrfToken = cookies.get('X-CSRF-TOKEN');
-                xhr.setRequestHeader("X-CSRF-TOKEN", csrfToken);
+                if (csrfToken) {
+                    xhr.setRequestHeader("X-CSRF-TOKEN", csrfToken);
+                }
             }
         },
     });
@@ -430,17 +432,21 @@ function transformDataJson(items) {
 let Ajaxize = {
 
     ajaxPost: function(action, formJson, callback, noLoading, isQuiet) {
-        Ajaxize.jaxPost(action, formJson, callback, noLoading, isQuiet, true);
+        Ajaxize.jaxPost(action, formJson, callback, noLoading, isQuiet, true, 'post');
     },
 
     sjaxPost: function(action, formJson, callback, noLoading, isQuiet) {
-        Ajaxize.jaxPost(action, formJson, callback, noLoading, isQuiet, false);
+        Ajaxize.jaxPost(action, formJson, callback, noLoading, isQuiet, false, 'post');
+    },
+
+    sjaxGet: function(action, formJson, callback, noLoading, isQuiet) {
+        Ajaxize.jaxPost(action, formJson, callback, noLoading, isQuiet, false, 'get');
     },
 
     /**
      * ajax送信
      */
-    jaxPost: function(action, formJson, callback, noLoading, isQuiet, isAsync) {
+    jaxPost: function(action, formJson, callback, noLoading, isQuiet, isAsync, method) {
 
         if (typeof Loading != 'undefined' && noLoading != true) {
             Loading.fadeIn(action);
@@ -453,7 +459,7 @@ let Ajaxize = {
             dataType: 'json', // 通信結果取得のデータ型
             headers: {
             },
-            type: 'post',
+            type: method,
             url: action,
         };
 
@@ -473,8 +479,12 @@ let Ajaxize = {
         } else {
             // 送信値がjsonの場合
 
-            options['contentType'] = 'application/json; charset=UTF-8';
-            options['data'] = JSON.stringify(formJson);
+            if (method.toLowerCase() === 'get') {
+                options['data'] = formJson;
+            } else {
+                options['contentType'] = 'application/json; charset=UTF-8';
+                options['data'] = JSON.stringify(formJson);
+            }
         }
 
         $.ajax(options).fail(function(data) {

@@ -330,6 +330,7 @@ let Base = {
 
     getMessages: function() {
         $.ajax({
+            type: 'get',
             async: false,
             url: 'messages.json',
             dataType: 'text',
@@ -432,7 +433,7 @@ let Base = {
 
         if (authz == null) {
 
-            Ajaxize.sjaxPost(
+            Ajaxize.sjaxGet(
                 './Authz.ajax',
                 {
                     'requestURI': lastPath

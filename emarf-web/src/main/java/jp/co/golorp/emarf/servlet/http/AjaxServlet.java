@@ -65,6 +65,7 @@ public final class AjaxServlet extends HttpServlet {
      */
     protected void doGet(final HttpServletRequest request, final HttpServletResponse response)
             throws ServletException, IOException {
+        doPost(request, response);
     }
 
     /**

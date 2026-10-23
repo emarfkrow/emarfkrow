@@ -22,9 +22,8 @@ import java.util.Map;
 import jp.co.golorp.emarf.action.BaseAction;
 import jp.co.golorp.emarf.exception.AppError;
 import jp.co.golorp.emarf.form.base.LoginFormBase;
-import jp.co.golorp.emarf.lang.StringUtil;
-import jp.co.golorp.emarf.properties.App;
 import jp.co.golorp.emarf.servlet.LoginFilter;
+import jp.co.golorp.emarf.util.PasswordHasher;
 
 /**
  * ログイン
@@ -32,9 +31,6 @@ import jp.co.golorp.emarf.servlet.LoginFilter;
  *
  */
 public abstract class LoginActionBase extends BaseAction {
-
-    /** パスワードのハッシュアルゴリズム */
-    private static final String HASH = App.get("loginfilter.hash");
 
     /**
      * ログイン処理
@@ -54,13 +50,8 @@ public abstract class LoginActionBase extends BaseAction {
             throw new AppError("error.login");
         }
 
-        //ハッシュ値を指定済みならハッシュ
-        if (!StringUtil.isNullOrWhiteSpace(HASH)) {
-            passwd = StringUtil.hash(passwd);
-        }
-
         //パスワード不一致エラー
-        if (!passwd.equals(loginForm.getPasswd())) {
+        if (!PasswordHasher.verify(loginForm.getPasswd(), passwd)) {
             throw new AppError("error.login");
         }
 

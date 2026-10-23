@@ -49,33 +49,35 @@ public class SPACsrfFilter implements Filter {
         HttpServletResponse res = (HttpServletResponse) response;
         HttpSession ses = req.getSession(true);
 
+        // String reqUri = req.getRequestURI();
+        // if (posted || reqUri.matches("(?i).+\\.html$")) {
+        String csrfToken = (String) ses.getAttribute(CSRF_TOKEN_NAME);
+        if (csrfToken == null) {
+            csrfToken = generateToken();
+            ses.setAttribute(CSRF_TOKEN_NAME, csrfToken);
+        }
+
         String method = req.getMethod();
-        String reqUri = req.getRequestURI();
+        boolean isCheck = "POST".equalsIgnoreCase(method)
+                || "PUT".equalsIgnoreCase(method)
+                || "PATCH".equalsIgnoreCase(method)
+                || "DELETE".equalsIgnoreCase(method);
 
-        boolean posted = !method.matches("(?i)^get$")
-                && !reqUri.matches("(?i).+\\.json$")
-                && !reqUri.matches("(?i).+authz\\.ajax");
-
-        if (posted) {
+        if (isCheck) {
             String headerToken = req.getHeader(CSRF_TOKEN_NAME);
-            String serverToken = (String) ses.getAttribute(CSRF_TOKEN_NAME);
-            if (headerToken == null || serverToken == null || !headerToken.equals(serverToken)) {
+            if (headerToken == null || !csrfToken.equals(headerToken)) {
                 res.sendError(HttpServletResponse.SC_FORBIDDEN, "CSRF token invalid or missing.");
                 return;
             }
         }
 
-        if (posted || reqUri.matches("(?i).+\\.html$")) {
-            String csrfToken = generateToken();
-            ses.setAttribute(CSRF_TOKEN_NAME, csrfToken);
-            Cookie cookie = new Cookie(CSRF_TOKEN_NAME, csrfToken);
-            cookie.setPath("/");
-            cookie.setMaxAge(86400); // 1日
-            cookie.setHttpOnly(false); // JavaScriptからのアクセス不可
-            cookie.setSecure(true); // HTTPS通信のみ送信
-            cookie.setAttribute("SameSite", "Strict"); // CSRF対策 (Lax, Strict, None)
-            res.addCookie(cookie);
-        }
+        Cookie cookie = new Cookie(CSRF_TOKEN_NAME, csrfToken);
+        cookie.setPath("/");
+        cookie.setMaxAge(86400); // 1日
+        cookie.setHttpOnly(false); // JavaScriptからのアクセス許可
+        cookie.setSecure(true); // HTTPS通信のみ送信
+        cookie.setAttribute("SameSite", "Strict"); // CSRF対策 (Lax, Strict, None)
+        res.addCookie(cookie);
 
         chain.doFilter(request, response);
     }
