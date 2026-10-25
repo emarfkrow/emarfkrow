@@ -32,7 +32,7 @@ public final class Locales {
     private static final Logger LOG = LoggerFactory.getLogger(Locales.class);
 
     /** ThreadLocalの{@link Locale} */
-    private static ThreadLocalLocale threadLocalLocale = new ThreadLocalLocale();
+    private static final ThreadLocalLocale threadLocalLocale = new ThreadLocalLocale();
 
     /** プライベートコンストラクタ */
     private Locales() {
