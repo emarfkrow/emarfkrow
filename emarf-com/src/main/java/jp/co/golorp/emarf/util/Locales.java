@@ -32,7 +32,7 @@ public final class Locales {
     private static final Logger LOG = LoggerFactory.getLogger(Locales.class);
 
     /** ThreadLocalの{@link Locale} */
-    private static final ThreadLocalLocale threadLocalLocale = new ThreadLocalLocale();
+    private static final ThreadLocalLocale THREAD_LOCAL_LOCALE = new ThreadLocalLocale();
 
     /** プライベートコンストラクタ */
     private Locales() {
@@ -42,7 +42,7 @@ public final class Locales {
      * @return ThreadLocalの{@link Locale}
      */
     public static Locale get() {
-        Locale locale = threadLocalLocale.get();
+        Locale locale = THREAD_LOCAL_LOCALE.get();
         //        LOG.trace("locale get.    [" + locale + "]");
         return locale;
     }
@@ -53,16 +53,16 @@ public final class Locales {
      */
     public static void set(final Locale locale) {
         LOG.trace("locale set.    [" + locale + "]");
-        threadLocalLocale.set(locale);
+        THREAD_LOCAL_LOCALE.set(locale);
     }
 
     /**
      * ThreadLocalの{@link Locale}をクリア
      */
     public static void remove() {
-        Locale locale = threadLocalLocale.get();
+        Locale locale = THREAD_LOCAL_LOCALE.get();
         LOG.trace("locale remove. [" + locale + "]");
-        threadLocalLocale.remove();
+        THREAD_LOCAL_LOCALE.remove();
     }
 
 }

@@ -148,10 +148,10 @@ public abstract class LoginFormBase implements IForm {
     }
 
     /**
-     * @param requestUri
+     * @param tableName
      * @return String エラーID
      */
-    public abstract Map<String, Integer> getTableAuthZ(String requestUri);
+    public abstract Map<String, Integer> getTableAuthZ(String tableName);
 
     /**
      * 認可評価済みのエラーID<URI, エラーID>

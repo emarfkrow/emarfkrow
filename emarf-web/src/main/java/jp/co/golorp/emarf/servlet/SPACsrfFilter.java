@@ -49,8 +49,6 @@ public class SPACsrfFilter implements Filter {
         HttpServletResponse res = (HttpServletResponse) response;
         HttpSession ses = req.getSession(true);
 
-        // String reqUri = req.getRequestURI();
-        // if (posted || reqUri.matches("(?i).+\\.html$")) {
         String csrfToken = (String) ses.getAttribute(CSRF_TOKEN_NAME);
         if (csrfToken == null) {
             csrfToken = generateToken();

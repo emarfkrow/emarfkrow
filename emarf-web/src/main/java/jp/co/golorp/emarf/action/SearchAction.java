@@ -53,13 +53,13 @@ public class SearchAction extends BaseAction {
             }
 
             HttpSession ses = this.getSession();
-            String requestURI = this.getRequestURI();
+            String requestedURI = this.getRequestedURI();
             if (page == 0) {
                 page = 1;
-                ses.removeAttribute(requestURI);
+                ses.removeAttribute(requestedURI);
             } else {
                 @SuppressWarnings("unchecked")
-                Map<String, Object> temp = (Map<String, Object>) ses.getAttribute(requestURI);
+                Map<String, Object> temp = (Map<String, Object>) ses.getAttribute(requestedURI);
                 postedJson = temp;
             }
         }

@@ -20,7 +20,6 @@ import java.io.IOException;
 
 import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
-import jakarta.servlet.FilterConfig;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
@@ -36,34 +35,22 @@ import jp.co.golorp.emarf.util.Locales;
 @WebFilter("/*")
 public class LocaleFilter implements Filter {
 
-    @Override
-    public void init(final FilterConfig fConfig) throws ServletException {
-    }
-
     /**
      * {@link ThreadLocal}にLocaleを設定
      * @param request {@link ServletRequest}
      * @param response {@link ServletResponse}
      * @param chain {@link FilterChain}
      */
+    @Override
     public void doFilter(final ServletRequest request, final ServletResponse response, final FilterChain chain)
             throws IOException, ServletException {
 
         try {
-            // messageのi18n対応
-            //        Locale locale = Locales.get();
-            //        if (!locale.getLanguage().equals(request.getLocale().getLanguage())) {
             Locales.set(request.getLocale());
-            //        }
-
             chain.doFilter(request, response);
         } finally {
             Locales.remove();
         }
-    }
-
-    @Override
-    public void destroy() {
     }
 
 }

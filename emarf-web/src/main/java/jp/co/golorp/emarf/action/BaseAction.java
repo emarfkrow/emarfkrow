@@ -101,21 +101,21 @@ public abstract class BaseAction extends BaseProcess {
         this.session = ses;
     }
 
-    /** requestURI */
-    private String requestURI;
+    /** requestedURI */
+    private String requestedURI;
 
     /**
-     * @return requestURI
+     * @return requestedURI
      */
-    public String getRequestURI() {
-        return requestURI;
+    public String getRequestedURI() {
+        return requestedURI;
     }
 
     /**
-     * @param p セットする requestURI
+     * @param p セットする requestedURI
      */
-    public void setRequestURI(final String p) {
-        this.requestURI = p;
+    public void setRequestedURI(final String p) {
+        this.requestedURI = p;
     }
 
     /**
@@ -139,7 +139,7 @@ public abstract class BaseAction extends BaseProcess {
         // ログイン後なら認可チェック
         if (session != null) {
             LoginFormBase loginForm = (LoginFormBase) session.getAttribute(LoginFilter.LOGIN_FORM);
-            if (loginForm != null && !requestURI.endsWith("/Authz.ajax")) {
+            if (loginForm != null && !requestedURI.endsWith("/Authz.ajax")) {
 
                 String tableName = baseName.replaceFirst("(Get|Search|Regist|Delete|Permit|Forbid)$", "");
                 Map<String, Integer> authZ = loginForm.getTablesAuthZ().get(tableName);
@@ -150,7 +150,7 @@ public abstract class BaseAction extends BaseProcess {
 
                 String action = baseName.replaceFirst(tableName, "");
                 String errorId = null;
-                if (!requestURI.matches(".+\\.(ajax|json)$")) {
+                if (!requestedURI.matches(".+\\.(ajax|json)$")) {
                     if (authZ.get("output") == null || authZ.get("output") != 1) {
                         errorId = "error.authz.output";
                     }
@@ -186,7 +186,7 @@ public abstract class BaseAction extends BaseProcess {
                 }
 
                 if (errorId != null) {
-                    LOG.warn("    Base  requestURI: " + requestURI + ", errorId: " + errorId);
+                    LOG.warn("    Base  requestedURI: " + requestedURI + ", errorId: " + errorId);
                     Map<String, Object> map = new HashMap<String, Object>();
                     map.put("ERROR", Messages.get(errorId));
                     return map;

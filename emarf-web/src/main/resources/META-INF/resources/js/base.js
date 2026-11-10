@@ -436,7 +436,7 @@ let Base = {
             Ajaxize.sjaxGet(
                 './Authz.ajax',
                 {
-                    'requestURI': lastPath
+                    'AuthzURI': lastPath
                 },
                 function(data) {
                     authz = data.AUTHZ;

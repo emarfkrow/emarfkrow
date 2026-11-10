@@ -17,10 +17,12 @@ limitations under the License.
 package jp.co.golorp.emarf.servlet;
 
 import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.charset.IllegalCharsetNameException;
+import java.nio.charset.StandardCharsets;
 
 import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
-import jakarta.servlet.FilterConfig;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
@@ -37,33 +39,40 @@ import jp.co.golorp.emarf.properties.App;
 public class EncodingFilter implements Filter {
 
     /** 文字コード */
-    public static final String ENCODING = App.get("characterEncoding");
+    public static final String ENCODING;
 
-    @Override
-    public void init(final FilterConfig filterConfig) throws ServletException {
-
+    static {
+        String appEncoding = App.get("characterEncoding");
+        if (appEncoding != null && !appEncoding.trim().isEmpty()) {
+            String encoding = appEncoding.trim();
+            try {
+                if (!Charset.isSupported(encoding)) {
+                    throw new IllegalStateException("Unsupported character encoding: " + encoding);
+                }
+            } catch (IllegalCharsetNameException e) {
+                throw new IllegalStateException("Invalid character encoding: " + encoding, e);
+            }
+            ENCODING = encoding;
+        } else {
+            ENCODING = StandardCharsets.UTF_8.name(); // デフォルト値を安全に設定
+        }
     }
 
     /**
      * 送受信に文字コードを設定
+     *
      * @param request {@link ServletRequest}
      * @param response {@link ServletResponse}
      * @param chain {@link FilterChain}
      */
+    @Override
     public void doFilter(final ServletRequest request, final ServletResponse response, final FilterChain chain)
             throws IOException, ServletException {
 
-        if (ENCODING != null) {
-            request.setCharacterEncoding(ENCODING);
-            response.setCharacterEncoding(ENCODING);
-        }
+        request.setCharacterEncoding(ENCODING);
+        response.setCharacterEncoding(ENCODING);
 
         chain.doFilter(request, response);
-    }
-
-    @Override
-    public void destroy() {
-
     }
 
 }

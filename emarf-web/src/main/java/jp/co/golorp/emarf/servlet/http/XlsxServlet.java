@@ -83,7 +83,7 @@ public class XlsxServlet extends HttpServlet {
     public String getGenXlsxPath(final HttpServletRequest request, final HttpServletResponse response)
             throws IOException {
 
-        // requestURIから検索アクションの実行結果を取得
+        // リクエストURIから検索アクションの実行結果を取得
         Map<String, Object> map = null;
         try {
             Map<String, Object> postJson = ServletUtil.getPostedJson(request);
@@ -108,7 +108,7 @@ public class XlsxServlet extends HttpServlet {
             return null;
         }
 
-        // requestURIからエクセルアクションの実行結果を取得
+        // リクエストURIからエクセルアクションの実行結果を取得
         BaseAction xlsxAction = null;
         String servletPath = request.getServletPath();
         String[] servletPathes = servletPath.split("/");

@@ -81,7 +81,6 @@ public final class AjaxServlet extends HttpServlet {
         try {
 
             HttpSession ses = request.getSession();
-            String requestURI = EmarfListener.valRequestURI(request);
 
             // エクセルダウンロードの検索条件退避用
             //ses.removeAttribute(requestURL);
@@ -108,7 +107,8 @@ public final class AjaxServlet extends HttpServlet {
                 map = action.run(postJson);
             }
 
-            // エクセルダウンロードの検索条件退避用
+            // エクセルダウンロードの検索条件退避
+            String requestURI = ServletUtil.safeURI(request);
             ses.setAttribute(requestURI, postJson);
 
         } catch (OptLockError e) {

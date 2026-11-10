@@ -40,7 +40,6 @@ import jp.co.golorp.emarf.action.BaseAction;
 import jp.co.golorp.emarf.exception.SysError;
 import jp.co.golorp.emarf.generator.BeanGenerator;
 import jp.co.golorp.emarf.properties.App;
-import jp.co.golorp.emarf.servlet.http.EmarfListener;
 import jp.co.golorp.emarf.servlet.http.ServletUtil;
 import jp.co.golorp.emarf.time.DateTimeUtil;
 import jp.co.golorp.emarf.util.Messages;
@@ -87,9 +86,9 @@ public class ServiceFilter implements Filter {
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse res = (HttpServletResponse) response;
 
-        String requestURI = EmarfListener.valRequestURI(request);
+        String requestedURI = ServletUtil.safeURI(request);
 
-        if (EXCLUDE_REGEXP != null && !requestURI.matches(EXCLUDE_REGEXP)) {
+        if (EXCLUDE_REGEXP != null && !requestedURI.matches(EXCLUDE_REGEXP)) {
 
             HttpSession ses = req.getSession();
             String authnKey = "anonymous";
@@ -98,10 +97,10 @@ public class ServiceFilter implements Filter {
                 authnKey = authnKey.replaceAll("[\r\n]", "");
             }
             String remoteAddr = request.getRemoteAddr();
-            String safeURI = requestURI.replaceAll("[\r\n]", "");
+            String safeURI = requestedURI.replaceAll("[\r\n]", "");
             LOG.info("RequestURI: " + safeURI + ", RequestBY: " + authnKey + ", RequestFROM: " + remoteAddr);
 
-            if (WRITE_URI_RE != null && requestURI.matches(WRITE_URI_RE)) {
+            if (WRITE_URI_RE != null && requestedURI.matches(WRITE_URI_RE)) {
                 for (String kikanCron : DONT_WRITES) {
                     String[] kikanCrons = kikanCron.split("\\|");
                     if (!isService(kikanCrons[0], kikanCrons[1])) {

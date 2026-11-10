@@ -27,7 +27,7 @@ limitations under the License.
 		sessionStorage['authzMsgs'] = JSON.stringify({});
 
 		// 元のリクエスト画面を退避
-		$('[name="requestURI"]').val(Base.querystrings['requestURI']);
+		$('[name="redirectURI"]').val(Base.querystrings['redirectURI']);
 	});
 </script>
 </head>
@@ -44,7 +44,7 @@ limitations under the License.
           <label for="passwd" th:text="#{Login.passwd}">パスワード</label><input type="password" id="passwd" name="passwd" readonly onfocus="this.removeAttribute('readonly');" />
         </div>
       </fieldset>
-      <input type="hidden" name="requestURI" />
+      <input type="hidden" name="redirectURI" />
       <div class="buttons">
         <a th:href="@{./passmail.html}" th:text="#{Login.passmail}" tabindex="-1">パスワードリセット</a>
       </div>

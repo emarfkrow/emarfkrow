@@ -36,6 +36,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
+import jakarta.servlet.ServletRequest;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -53,6 +54,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import jp.co.golorp.emarf.action.BaseAction;
+import jp.co.golorp.emarf.exception.AppError;
 import jp.co.golorp.emarf.exception.SysError;
 import jp.co.golorp.emarf.generator.BeanGenerator;
 import jp.co.golorp.emarf.lang.StringUtil;
@@ -245,8 +247,8 @@ public final class ServletUtil {
         HttpSession ses = request.getSession();
         a.setSession(ses);
 
-        String requestURI = EmarfListener.valRequestURI(request);
-        a.setRequestURI(requestURI);
+        String requestedURI = safeURI(request);
+        a.setRequestedURI(requestedURI);
 
         if (ses.getAttribute(LoginFilter.AUTHN_KEY) != null) {
             a.setId(ses.getAttribute(LoginFilter.AUTHN_KEY).toString());
@@ -495,7 +497,7 @@ public final class ServletUtil {
      * @return Map
      */
     public static Map<String, Object> getPostedJson(final HttpServletRequest request) {
-        String requestURI = EmarfListener.valRequestURI(request);
+        String requestURI = safeURI(request);
         String ajaxRequestURI = requestURI.replaceFirst("\\.[a-z]+$", ".ajax");
         HttpSession session = request.getSession();
         Object o = session.getAttribute(ajaxRequestURI);
@@ -600,6 +602,104 @@ public final class ServletUtil {
         if (App.get("deleteRespondedXlsx").equals("1")) {
             new File(filePath).delete();
         }
+    }
+
+    /**
+     * リクエストURIを安全に取得する
+     *
+     * @param request ServletRequest
+     * @return リクエストURI
+     */
+    public static String safeURI(final ServletRequest request) {
+
+        if (!(request instanceof HttpServletRequest req)) {
+            throw new AppError("error.request");
+        }
+
+        String requestURI = req.getRequestURI();
+
+        return safeURI(request, requestURI);
+    }
+
+    /**
+     * リクエストURIを安全に取得する
+     *
+     * @param request ServletRequest
+     * @param requestURI
+     * @return リクエストURI
+     */
+    public static String safeURI(final ServletRequest request, final String requestURI) {
+
+        if (!(request instanceof HttpServletRequest req)) {
+            throw new AppError("error.request");
+        }
+
+        String contextPath = req.getContextPath();
+
+        if (requestURI == null || requestURI.isEmpty()) {
+            throw new AppError("error.request");
+        }
+
+        // コンテキストパスの確認
+        if (contextPath == null || !(requestURI.equals(contextPath) || requestURI.startsWith(contextPath + "/"))) {
+            throw new AppError("error.request");
+        }
+
+        // バックスラッシュを拒否
+        if (requestURI.contains("\\")) {
+            throw new AppError("error.request");
+        }
+
+        // 制御文字を拒否
+        for (int i = 0; i < requestURI.length(); i++) {
+            if (Character.isISOControl(requestURI.charAt(i))) {
+                throw new AppError("error.request");
+            }
+        }
+
+        // 二重スラッシュを拒否
+        if (requestURI.contains("//")) {
+            throw new AppError("error.request");
+        }
+
+        // 不正なパスセグメントを拒否
+        for (String segment : requestURI.split("/", -1)) {
+            if (".".equals(segment) || "..".equals(segment)) {
+                throw new AppError("error.request");
+            }
+        }
+
+        // 不正なパーセントエンコードを拒否
+        if (requestURI.matches(".*%(?![0-9a-fA-F]{2}).*")) {
+            throw new AppError("error.request");
+        }
+
+        // エンコードされたドットセグメントを拒否
+        if (requestURI.matches("(?i).*/(?:%2e|\\.){1,2}(?:/|$).*")) {
+            throw new AppError("error.request");
+        }
+
+        // エンコードされたスラッシュを拒否
+        if (requestURI.matches("(?i).*%2f.*")) {
+            throw new AppError("error.request");
+        }
+
+        // エンコードされたバックスラッシュを拒否
+        if (requestURI.matches("(?i).*%5c.*")) {
+            throw new AppError("error.request");
+        }
+
+        // エンコードされたNULL文字を拒否
+        if (requestURI.matches("(?i).*%00.*")) {
+            throw new AppError("error.request");
+        }
+
+        // 二重エンコードにつながる表現を拒否
+        if (requestURI.matches("(?i).*%25.*")) {
+            throw new AppError("error.request");
+        }
+
+        return requestURI;
     }
 
 }

@@ -41,7 +41,6 @@ import jp.co.golorp.emarf.exception.SysError;
 import jp.co.golorp.emarf.generator.BeanGenerator;
 import jp.co.golorp.emarf.lang.StringUtil;
 import jp.co.golorp.emarf.properties.App;
-import jp.co.golorp.emarf.servlet.http.EmarfListener;
 import jp.co.golorp.emarf.servlet.http.ServletUtil;
 import jp.co.golorp.emarf.util.Messages;
 import jp.co.golorp.emarf.util.ResourceBundles;
@@ -103,11 +102,13 @@ public class LoginFilter implements Filter {
     private static final String PASSRESET_URI = App.get("loginfilter.passreset.uri");
 
     /***/
-    private static String pkgA = "com.example.action";
+    private static final String PKG_A;
 
     static {
-        if (bundle != null) {
-            pkgA = bundle.getString("java.package.action");
+        if (bundle == null) {
+            PKG_A = "com.example.action";
+        } else {
+            PKG_A = bundle.getString("java.package.action");
         }
     }
 
@@ -128,11 +129,11 @@ public class LoginFilter implements Filter {
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse res = (HttpServletResponse) response;
 
-        String requestURI = EmarfListener.valRequestURI(request);
+        String requestedURI = ServletUtil.safeURI(request);
 
         String contextPath = req.getContextPath() + "/";
 
-        if (AUTHN == null || !AUTHN.equals("true")) {
+        if (AUTHN == null || !AUTHN.equalsIgnoreCase("true")) {
             // 認証なし
 
             LOG.trace("skip authentication.");
@@ -145,42 +146,43 @@ public class LoginFilter implements Filter {
             ses.setAttribute(LoginFilter.AUTHN_MEI, "anonymous");
             ses.setAttribute(LoginFilter.AUTHZ_INFO, authzMap);
 
-        } else if (!requestURI.matches(LoginFilter.EXCLUDE_REGEXP)
-                && !requestURI.equals(contextPath + LoginFilter.PASSMAIL_PAGE)
-                && !requestURI.equals(contextPath + LoginFilter.PASSRESET_PAGE)) {
+        } else if (!requestedURI.matches(LoginFilter.EXCLUDE_REGEXP)
+                && !requestedURI.equals(contextPath + LoginFilter.PASSMAIL_PAGE)
+                && !requestedURI.equals(contextPath + LoginFilter.PASSRESET_PAGE)) {
             // １．ログインチェック除外URLでない
             // ２．パスワードリセットメール送信画面でない
             // ３．パスワードリセット画面でない
 
             HttpSession ses = req.getSession();
 
-            if (requestURI.equals(contextPath + LoginFilter.LOGIN_PAGE)) {
+            if (requestedURI.equals(contextPath + LoginFilter.LOGIN_PAGE)) {
                 // ログイン画面の場合は、セッション破棄のみ
 
-                ses.invalidate();
+                LOG.trace("show login page.");
+                //ses.invalidate();
 
-            } else if (requestURI.equals(contextPath + LoginFilter.PASSMAIL_URI)) {
+            } else if (requestedURI.equals(contextPath + LoginFilter.PASSMAIL_URI)) {
                 // パスワードリセットメール送信処理の場合
 
                 execPassmail(req, res);
 
                 return;
 
-            } else if (requestURI.equals(contextPath + LoginFilter.PASSRESET_URI)) {
+            } else if (requestedURI.equals(contextPath + LoginFilter.PASSRESET_URI)) {
                 // パスワードリセット処理の場合
 
                 execPassreset(req, res);
 
                 return;
 
-            } else if (requestURI.equals(contextPath + LoginFilter.LOGIN_URI)) {
+            } else if (requestedURI.equals(contextPath + LoginFilter.LOGIN_URI)) {
                 // ログイン処理の場合は、ログイン処理後にリダイレクト
 
                 Map<String, Object> postJson = ServletUtil.suckParameterMap(req);
 
                 Class<?> c = null;
                 try {
-                    c = Class.forName(pkgA + ".LoginAction");
+                    c = Class.forName(PKG_A + ".LoginAction");
                 } catch (ClassNotFoundException e) {
                     throw new SysError(e);
                 }
@@ -201,6 +203,10 @@ public class LoginFilter implements Filter {
                     throw new SysError(e);
                 }
 
+                if (map == null || map.get(LoginFilter.AUTHN_KEY) == null) {
+                    throw new SysError("Invalid login result");
+                }
+
                 req.changeSessionId();
                 ses.setAttribute(LoginFilter.AUTHN_KEY, map.get(LoginFilter.AUTHN_KEY));
                 ses.setAttribute(LoginFilter.AUTHN_MEI, map.get(LoginFilter.AUTHN_MEI));
@@ -208,18 +214,16 @@ public class LoginFilter implements Filter {
                 ses.setAttribute(LoginFilter.AUTHZ_INFO, map.get(LoginFilter.AUTHZ_INFO));
                 ses.setAttribute(LoginFilter.LOGIN_FORM, map.get(LoginFilter.LOGIN_FORM));
 
-                String orgRequestURI = StringUtil.sanitize(request.getParameter("requestURI"));
-                if (!StringUtil.isNullOrWhiteSpace(orgRequestURI)
-                        && orgRequestURI.startsWith(contextPath)
-                        && !orgRequestURI.contains("://")) {
-                    res.sendRedirect(orgRequestURI);
+                String redirectURI = ServletUtil.safeURI(request, request.getParameter("redirectURI"));
+                if (!StringUtil.isNullOrWhiteSpace(redirectURI)) {
+                    res.sendRedirect(redirectURI);
                 } else {
                     res.sendRedirect(contextPath);
                 }
 
                 return;
 
-            } else if (requestURI.equals(contextPath + LoginFilter.LOGOUT_URI)) {
+            } else if (requestedURI.equals(contextPath + LoginFilter.LOGOUT_URI)) {
                 // ログアウト処理の場合は、セッション破棄後に、ログイン画面へリダイレクト
 
                 ses.invalidate();
@@ -230,7 +234,7 @@ public class LoginFilter implements Filter {
                 // 認証用オブジェクトがセッションにない場合は、セッション破棄してログイン画面へリダイレクト
 
                 ses.invalidate();
-                res.sendRedirect(contextPath + LoginFilter.LOGIN_PAGE + "?requestURI=" + requestURI);
+                res.sendRedirect(contextPath + LoginFilter.LOGIN_PAGE + "?redirectURI=" + requestedURI);
                 return;
             }
         }
@@ -268,7 +272,7 @@ public class LoginFilter implements Filter {
 
         Class<?> c = null;
         try {
-            c = Class.forName(bundle.getString("java.package.action") + "." + actionName);
+            c = Class.forName(PKG_A + "." + actionName);
         } catch (ClassNotFoundException e) {
             throw new SysError(e);
         }

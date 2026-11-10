@@ -41,8 +41,8 @@ public class AuthzAction extends BaseAction {
     @Override
     public Map<String, Object> running(final LocalDateTime at, final String by, final Map<String, Object> form) {
 
-        String requestURI = form.get("requestURI").toString();
-        String tableName = requestURI.replaceFirst("\\?anew$", "")
+        String authzURI = form.get("AuthzURI").toString();
+        String tableName = authzURI.replaceFirst("\\?anew$", "")
                 .replaceFirst("S\\.html$", "").replaceFirst("\\.html$", "")
                 .replaceFirst("\\.xlsx$", "").replaceFirst("\\.pdf$", "").replaceFirst("\\.ajax$", "")
                 .replaceFirst("Get$", "").replaceFirst("Search$", "")
@@ -56,9 +56,9 @@ public class AuthzAction extends BaseAction {
             loginForm.getTablesAuthZ().put(tableName, authZ);
         }
 
-        String suffix = requestURI.replaceFirst("^" + tableName, "");
+        String suffix = authzURI.replaceFirst("^" + tableName, "");
         String errorId = null;
-        if ((requestURI.matches(".+\\.xlsx\\?.+$") || requestURI.matches(".+\\.pdf\\?.+$"))
+        if ((authzURI.matches(".+\\.xlsx\\?.+$") || authzURI.matches(".+\\.pdf\\?.+$"))
                 && (authZ.get("output") == null || authZ.get("output") != 1)) {
             errorId = "error.authz.output";
 
@@ -101,7 +101,7 @@ public class AuthzAction extends BaseAction {
 
         Map<String, Object> ret = new HashMap<String, Object>();
         if (errorId != null) {
-            LOG.trace("    Authz requestURI: " + requestURI + ", errorId: " + errorId);
+            LOG.trace("    AuthzURI: " + authzURI + ", errorId: " + errorId);
             ret.put("AUTHZ", errorId);
         }
 
