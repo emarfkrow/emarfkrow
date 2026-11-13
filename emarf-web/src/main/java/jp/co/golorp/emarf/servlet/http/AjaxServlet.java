@@ -108,7 +108,7 @@ public final class AjaxServlet extends HttpServlet {
             }
 
             // エクセルダウンロードの検索条件退避
-            String requestURI = ServletUtil.safeURI(request);
+            String requestURI = ServletUtil.safeRequestURI(request);
             ses.setAttribute(requestURI, postJson);
 
         } catch (OptLockError e) {

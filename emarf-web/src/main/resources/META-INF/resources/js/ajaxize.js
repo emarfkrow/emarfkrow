@@ -114,7 +114,8 @@ $(function() {
 
         // 送信先が「.ajax」でなければ終了（ブラウザが送信する）
         if (action.match(/\.ajax/g) == null) {
-            $form.append('<input type="hidden" name="_csrf" value="' + $('meta[name="_csrf"]').attr('content') + '">');
+            let cookies = new URLSearchParams(document.cookie.replace(/;\s*/g, '&'));
+            $form.append('<input type="hidden" name="X-CSRF-TOKEN" value="' + cookies.get('X-CSRF-TOKEN') + '">');
             return;
         }
 

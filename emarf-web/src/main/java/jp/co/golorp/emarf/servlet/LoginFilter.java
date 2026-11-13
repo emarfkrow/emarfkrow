@@ -27,7 +27,6 @@ import jakarta.servlet.FilterConfig;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
-import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -50,7 +49,7 @@ import jp.co.golorp.emarf.util.ResourceBundles;
  *
  * @author golorp
  */
-@WebFilter("/*")
+//@WebFilter("/*")
 public class LoginFilter implements Filter {
 
     /** BeanGenerator.properties */
@@ -129,7 +128,7 @@ public class LoginFilter implements Filter {
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse res = (HttpServletResponse) response;
 
-        String requestedURI = ServletUtil.safeURI(request);
+        String requestedURI = ServletUtil.safeRequestURI(request);
 
         String contextPath = req.getContextPath() + "/";
 
@@ -178,6 +177,11 @@ public class LoginFilter implements Filter {
             } else if (requestedURI.equals(contextPath + LoginFilter.LOGIN_URI)) {
                 // ログイン処理の場合は、ログイン処理後にリダイレクト
 
+                if (!"POST".equalsIgnoreCase(req.getMethod())) {
+                    res.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
+                    return;
+                }
+
                 Map<String, Object> postJson = ServletUtil.suckParameterMap(req);
 
                 Class<?> c = null;
@@ -214,7 +218,7 @@ public class LoginFilter implements Filter {
                 ses.setAttribute(LoginFilter.AUTHZ_INFO, map.get(LoginFilter.AUTHZ_INFO));
                 ses.setAttribute(LoginFilter.LOGIN_FORM, map.get(LoginFilter.LOGIN_FORM));
 
-                String redirectURI = ServletUtil.safeURI(request, request.getParameter("redirectURI"));
+                String redirectURI = ServletUtil.safeRedirectURI(request, request.getParameter("redirectURI"));
                 if (!StringUtil.isNullOrWhiteSpace(redirectURI)) {
                     res.sendRedirect(redirectURI);
                 } else {
@@ -225,6 +229,11 @@ public class LoginFilter implements Filter {
 
             } else if (requestedURI.equals(contextPath + LoginFilter.LOGOUT_URI)) {
                 // ログアウト処理の場合は、セッション破棄後に、ログイン画面へリダイレクト
+
+                if (!"POST".equalsIgnoreCase(req.getMethod())) {
+                    res.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
+                    return;
+                }
 
                 ses.invalidate();
                 res.sendRedirect(contextPath + LoginFilter.LOGIN_PAGE + "?INFO=info.logout");

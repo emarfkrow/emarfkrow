@@ -1,0 +1,77 @@
+<web-fragment xmlns="https://jakarta.ee/xml/ns/jakartaee"
+  version="6.0">
+
+  <name>CommonFilters</name>
+
+  <!-- ================================= -->
+  <!-- Filter definitions -->
+  <!-- ================================= -->
+
+  <!-- 1. 文字コード設定 -->
+  <filter>
+    <filter-name>EncodingFilter</filter-name>
+    <filter-class>jp.co.golorp.emarf.servlet.EncodingFilter
+    </filter-class>
+  </filter>
+
+  <!-- 2. ロケール設定 -->
+  <filter>
+    <filter-name>LocaleFilter</filter-name>
+    <filter-class>jp.co.golorp.emarf.servlet.LocaleFilter</filter-class>
+  </filter>
+
+  <!-- 3. CSRF対策 -->
+  <filter>
+    <filter-name>SPACsrfFilter</filter-name>
+    <filter-class>jp.co.golorp.emarf.servlet.SPACsrfFilter
+    </filter-class>
+  </filter>
+
+  <!-- 4. ログイン・認証制御 -->
+  <filter>
+    <filter-name>LoginFilter</filter-name>
+    <filter-class>jp.co.golorp.emarf.servlet.LoginFilter</filter-class>
+  </filter>
+
+  <!-- 5. サービス処理 -->
+  <filter>
+    <filter-name>ServiceFilter</filter-name>
+    <filter-class>jp.co.golorp.emarf.servlet.ServiceFilter
+    </filter-class>
+  </filter>
+
+  <!-- ================================= -->
+  <!-- Filter mappings -->
+  <!-- ================================= -->
+
+  <!-- 1. 文字コード設定 -->
+  <filter-mapping>
+    <filter-name>EncodingFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+
+  <!-- 2. ロケール設定 -->
+  <filter-mapping>
+    <filter-name>LocaleFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+
+  <!-- 3. CSRF対策 -->
+  <filter-mapping>
+    <filter-name>SPACsrfFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+
+  <!-- 4. ログイン・認証制御 -->
+  <filter-mapping>
+    <filter-name>LoginFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+
+  <!-- 5. サービス処理 -->
+  <filter-mapping>
+    <filter-name>ServiceFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+
+</web-fragment>

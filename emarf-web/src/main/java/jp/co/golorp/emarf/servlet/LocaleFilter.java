@@ -23,7 +23,6 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
-import jakarta.servlet.annotation.WebFilter;
 
 import jp.co.golorp.emarf.util.Locales;
 
@@ -32,7 +31,7 @@ import jp.co.golorp.emarf.util.Locales;
  *
  * @author golorp
  */
-@WebFilter("/*")
+//@WebFilter("/*")
 public class LocaleFilter implements Filter {
 
     /**

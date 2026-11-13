@@ -21,6 +21,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -247,7 +249,7 @@ public final class ServletUtil {
         HttpSession ses = request.getSession();
         a.setSession(ses);
 
-        String requestedURI = safeURI(request);
+        String requestedURI = safeRequestURI(request);
         a.setRequestedURI(requestedURI);
 
         if (ses.getAttribute(LoginFilter.AUTHN_KEY) != null) {
@@ -497,7 +499,7 @@ public final class ServletUtil {
      * @return Map
      */
     public static Map<String, Object> getPostedJson(final HttpServletRequest request) {
-        String requestURI = safeURI(request);
+        String requestURI = safeRequestURI(request);
         String ajaxRequestURI = requestURI.replaceFirst("\\.[a-z]+$", ".ajax");
         HttpSession session = request.getSession();
         Object o = session.getAttribute(ajaxRequestURI);
@@ -610,96 +612,134 @@ public final class ServletUtil {
      * @param request ServletRequest
      * @return リクエストURI
      */
-    public static String safeURI(final ServletRequest request) {
+    public static String safeRequestURI(final ServletRequest request) {
 
         if (!(request instanceof HttpServletRequest req)) {
             throw new AppError("error.request");
         }
 
         String requestURI = req.getRequestURI();
+        if (requestURI == null || requestURI.isBlank()) {
+            throw new AppError("error.request");
+        }
 
-        return safeURI(request, requestURI);
+        return safeURI(requestURI);
     }
 
     /**
      * リクエストURIを安全に取得する
      *
      * @param request ServletRequest
-     * @param requestURI
+     * @param redirectURI
      * @return リクエストURI
      */
-    public static String safeURI(final ServletRequest request, final String requestURI) {
+    public static String safeRedirectURI(final ServletRequest request, final String redirectURI) {
 
         if (!(request instanceof HttpServletRequest req)) {
             throw new AppError("error.request");
         }
 
-        String contextPath = req.getContextPath();
-
-        if (requestURI == null || requestURI.isEmpty()) {
+        if (redirectURI == null || redirectURI.isBlank()) {
             throw new AppError("error.request");
         }
 
-        // コンテキストパスの確認
-        if (contextPath == null || !(requestURI.equals(contextPath) || requestURI.startsWith(contextPath + "/"))) {
+        try {
+            URI uri = new URI(redirectURI);
+
+            // 外部URL・スキーム・ホストを拒否
+            if (uri.isAbsolute() || uri.getRawAuthority() != null || uri.getRawUserInfo() != null
+                    || uri.getRawFragment() != null) {
+                throw new AppError("error.request");
+            }
+
+            String path = uri.getRawPath();
+            if (path == null || !path.startsWith("/")) {
+                throw new AppError("error.request");
+            }
+
+            String contextPath = req.getContextPath();
+
+            // コンテキストパスの確認
+            if (contextPath == null || !(path.equals(contextPath) || path.startsWith(contextPath + "/"))) {
+                throw new AppError("error.request");
+            }
+
+            safeURI(path);
+
+            return redirectURI;
+
+        } catch (URISyntaxException e) {
+            throw new AppError("error.request");
+        }
+    }
+
+    /**
+     * リクエストURIを安全に取得する
+     *
+     * @param uri
+     * @return リクエストURI
+     */
+    public static String safeURI(final String uri) {
+
+        if (uri == null || uri.isEmpty()) {
             throw new AppError("error.request");
         }
 
         // バックスラッシュを拒否
-        if (requestURI.contains("\\")) {
+        if (uri.contains("\\")) {
             throw new AppError("error.request");
         }
 
         // 制御文字を拒否
-        for (int i = 0; i < requestURI.length(); i++) {
-            if (Character.isISOControl(requestURI.charAt(i))) {
+        for (int i = 0; i < uri.length(); i++) {
+            if (Character.isISOControl(uri.charAt(i))) {
                 throw new AppError("error.request");
             }
         }
 
         // 二重スラッシュを拒否
-        if (requestURI.contains("//")) {
+        if (uri.contains("//")) {
             throw new AppError("error.request");
         }
 
         // 不正なパスセグメントを拒否
-        for (String segment : requestURI.split("/", -1)) {
+        for (String segment : uri.split("/", -1)) {
             if (".".equals(segment) || "..".equals(segment)) {
                 throw new AppError("error.request");
             }
         }
 
         // 不正なパーセントエンコードを拒否
-        if (requestURI.matches(".*%(?![0-9a-fA-F]{2}).*")) {
+        if (uri.matches(".*%(?![0-9a-fA-F]{2}).*")) {
             throw new AppError("error.request");
         }
 
         // エンコードされたドットセグメントを拒否
-        if (requestURI.matches("(?i).*/(?:%2e|\\.){1,2}(?:/|$).*")) {
+        if (uri.matches("(?i).*/(?:%2e|\\.){1,2}(?:/|$).*")) {
             throw new AppError("error.request");
         }
 
         // エンコードされたスラッシュを拒否
-        if (requestURI.matches("(?i).*%2f.*")) {
+        if (uri.matches("(?i).*%2f.*")) {
             throw new AppError("error.request");
         }
 
         // エンコードされたバックスラッシュを拒否
-        if (requestURI.matches("(?i).*%5c.*")) {
+        if (uri.matches("(?i).*%5c.*")) {
             throw new AppError("error.request");
         }
 
         // エンコードされたNULL文字を拒否
-        if (requestURI.matches("(?i).*%00.*")) {
+        if (uri.matches("(?i).*%00.*")) {
             throw new AppError("error.request");
         }
 
         // 二重エンコードにつながる表現を拒否
-        if (requestURI.matches("(?i).*%25.*")) {
+        if (uri.matches("(?i).*%25.*")) {
             throw new AppError("error.request");
         }
 
-        return requestURI;
+        return uri;
     }
 
 }

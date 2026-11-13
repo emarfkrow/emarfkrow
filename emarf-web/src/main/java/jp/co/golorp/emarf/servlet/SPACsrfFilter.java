@@ -25,7 +25,6 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
-import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -34,7 +33,7 @@ import jakarta.servlet.http.HttpSession;
 /**
  * CSRF対策フィルタ
  */
-@WebFilter("/*")
+//@WebFilter("/*")
 public class SPACsrfFilter implements Filter {
 
     /***/
@@ -64,8 +63,11 @@ public class SPACsrfFilter implements Filter {
         if (isCheck) {
             String headerToken = req.getHeader(CSRF_TOKEN_NAME);
             if (headerToken == null || !csrfToken.equals(headerToken)) {
-                res.sendError(HttpServletResponse.SC_FORBIDDEN, "CSRF token invalid or missing.");
-                return;
+                String paramToken = req.getParameter(CSRF_TOKEN_NAME);
+                if (paramToken == null || !csrfToken.equals(paramToken)) {
+                    res.sendError(HttpServletResponse.SC_FORBIDDEN, "CSRF token invalid or missing.");
+                    return;
+                }
             }
         }
 

@@ -26,7 +26,6 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
-import jakarta.servlet.annotation.WebFilter;
 
 import jp.co.golorp.emarf.properties.App;
 
@@ -35,7 +34,7 @@ import jp.co.golorp.emarf.properties.App;
  *
  * @author golorp
  */
-@WebFilter("/*")
+//@WebFilter("/*")
 public class EncodingFilter implements Filter {
 
     /** 文字コード */
@@ -52,7 +51,7 @@ public class EncodingFilter implements Filter {
             } catch (IllegalCharsetNameException e) {
                 throw new IllegalStateException("Invalid character encoding: " + encoding, e);
             }
-            ENCODING = encoding;
+            ENCODING = Charset.forName(encoding).name();
         } else {
             ENCODING = StandardCharsets.UTF_8.name(); // デフォルト値を安全に設定
         }

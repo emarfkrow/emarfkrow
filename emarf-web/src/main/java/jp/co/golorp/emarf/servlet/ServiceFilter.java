@@ -28,7 +28,6 @@ import jakarta.servlet.FilterConfig;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
-import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -49,7 +48,7 @@ import jp.co.golorp.emarf.util.Messages;
  *
  * @author golorp
  */
-@WebFilter("/*")
+//@WebFilter("/*")
 public class ServiceFilter implements Filter {
 
     /** ロガー */
@@ -86,7 +85,7 @@ public class ServiceFilter implements Filter {
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse res = (HttpServletResponse) response;
 
-        String requestedURI = ServletUtil.safeURI(request);
+        String requestedURI = ServletUtil.safeRequestURI(request);
 
         if (EXCLUDE_REGEXP != null && !requestedURI.matches(EXCLUDE_REGEXP)) {
 
