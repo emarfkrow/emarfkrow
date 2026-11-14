@@ -710,9 +710,9 @@ public final class DataSources {
                         continue;
                     }
 
-                    if (motoCol.getRefer() != null) {
-                        continue;
-                    }
+                    //                    if (motoCol.getRefer() != null) {
+                    //                        continue;
+                    //                    }
 
                     if (motoColName.matches("(?i)^.*" + sakiLastKey + "$")) {
                         // 参照元カラム名と参照先最終キーが末尾で一致する場合
@@ -731,9 +731,9 @@ public final class DataSources {
                             continue;
                         }
 
-                        // 既に主キー数のより少ない参照モデルを設定済みならスキップ
+                        // 既に主キー数のより多い参照モデルを設定済みならスキップ
                         if (motoCol.getRefer() != null
-                                && motoCol.getRefer().getPrimaryKeys().size() < sakiKeys.size()) {
+                                && motoCol.getRefer().getPrimaryKeys().size() > sakiKeys.size()) {
                             continue;
                         }
 
@@ -755,9 +755,9 @@ public final class DataSources {
                         if (motoColName.matches("(?i)^" + sakiSuffix + ".+$")) {
                             // 参照先ビュー名から始まるカラム名の場合
 
-                            // 既に主キー数のより少ない参照モデルを設定済みならスキップ
+                            // 既に主キー数のより多い参照モデルを設定済みならスキップ
                             if (motoCol.getRefer() != null
-                                    && motoCol.getRefer().getPrimaryKeys().size() < sakiKeys.size()) {
+                                    && motoCol.getRefer().getPrimaryKeys().size() > sakiKeys.size()) {
                                 continue;
                             }
 
@@ -804,12 +804,12 @@ public final class DataSources {
 
             // この参照ペアにマスタキーが全て一致した
 
-            String lastKey = mstKeys.get(mstKeys.size() - 1);
-            lastKeySuf = keySufs[keySufs.length - 1];
+            String lastKey = mstKeys.get(mstKeys.size() - 1); // UNSO_ID
+            lastKeySuf = keySufs[keySufs.length - 1]; // unso_id
             if (lastKey.matches("(?i).*" + lastKeySuf + "$")) {
 
                 // 参照値があるか
-                String referMei = lastKey.replaceAll("(?i)" + lastKeySuf + "$", referPair[1]);
+                String referMei = lastKey.replaceAll("(?i)" + lastKeySuf + "$", referPair[1]); // _lt
                 for (String colName : table.getColumns().keySet()) {
                     if (colName.matches("(?i)^" + referMei + "$")) {
                         return true;
