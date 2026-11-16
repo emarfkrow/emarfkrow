@@ -17,6 +17,8 @@ limitations under the License.
 package jp.co.golorp.emarf.servlet;
 
 import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
@@ -52,9 +54,6 @@ import jp.co.golorp.emarf.util.ResourceBundles;
 //@WebFilter("/*")
 public class LoginFilter implements Filter {
 
-    /** BeanGenerator.properties */
-    private static ResourceBundle bundle = ResourceBundles.getBundle(BeanGenerator.class);
-
     /** 認証されたキー */
     public static final String AUTHN_KEY = "AUTHN_KEY";
 
@@ -69,6 +68,9 @@ public class LoginFilter implements Filter {
 
     /** ログインフォームのキー */
     public static final String LOGIN_FORM = "LOGIN_FORM";
+
+    /** BeanGenerator.properties */
+    private static final ResourceBundle BUNDLE = ResourceBundles.getBundle(BeanGenerator.class);
 
     /** ロガー */
     private static final Logger LOG = LoggerFactory.getLogger(LoginFilter.class);
@@ -104,10 +106,10 @@ public class LoginFilter implements Filter {
     private static final String PKG_A;
 
     static {
-        if (bundle == null) {
+        if (BUNDLE == null) {
             PKG_A = "com.example.action";
         } else {
-            PKG_A = bundle.getString("java.package.action");
+            PKG_A = BUNDLE.getString("java.package.action");
         }
     }
 
@@ -145,37 +147,40 @@ public class LoginFilter implements Filter {
             ses.setAttribute(LoginFilter.AUTHN_MEI, "anonymous");
             ses.setAttribute(LoginFilter.AUTHZ_INFO, authzMap);
 
-        } else if (!requestedURI.matches(LoginFilter.EXCLUDE_REGEXP)
-                && !requestedURI.equals(contextPath + LoginFilter.PASSMAIL_PAGE)
-                && !requestedURI.equals(contextPath + LoginFilter.PASSRESET_PAGE)) {
-            // １．ログインチェック除外URLでない
-            // ２．パスワードリセットメール送信画面でない
-            // ３．パスワードリセット画面でない
+        } else if (!requestedURI.matches(LoginFilter.EXCLUDE_REGEXP) // １．ログインチェック除外URLでない
+                && !requestedURI.equals(contextPath + LoginFilter.PASSMAIL_PAGE) // ２．パスワードリセットメール送信画面でない
+                && !requestedURI.equals(contextPath + LoginFilter.PASSRESET_PAGE)) { // ３．パスワードリセット画面でない
 
-            HttpSession ses = req.getSession();
+            HttpSession ses = req.getSession(false);
 
-            if (requestedURI.equals(contextPath + LoginFilter.LOGIN_PAGE)) {
-                // ログイン画面の場合は、セッション破棄のみ
+            if (requestedURI.equals(contextPath + LoginFilter.LOGIN_PAGE)) { // ログイン画面の場合は、セッション破棄のみ
 
                 LOG.trace("show login page.");
                 //ses.invalidate();
 
-            } else if (requestedURI.equals(contextPath + LoginFilter.PASSMAIL_URI)) {
-                // パスワードリセットメール送信処理の場合
+            } else if (requestedURI.equals(contextPath + LoginFilter.PASSMAIL_URI)) { // パスワードリセットメール送信処理の場合
+
+                if (!"POST".equalsIgnoreCase(req.getMethod())) {
+                    res.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
+                    return;
+                }
 
                 execPassmail(req, res);
 
                 return;
 
-            } else if (requestedURI.equals(contextPath + LoginFilter.PASSRESET_URI)) {
-                // パスワードリセット処理の場合
+            } else if (requestedURI.equals(contextPath + LoginFilter.PASSRESET_URI)) { // パスワードリセット処理の場合
+
+                if (!"POST".equalsIgnoreCase(req.getMethod())) {
+                    res.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
+                    return;
+                }
 
                 execPassreset(req, res);
 
                 return;
 
-            } else if (requestedURI.equals(contextPath + LoginFilter.LOGIN_URI)) {
-                // ログイン処理の場合は、ログイン処理後にリダイレクト
+            } else if (requestedURI.equals(contextPath + LoginFilter.LOGIN_URI)) { // ログイン処理の場合は、ログイン処理後にリダイレクト
 
                 if (!"POST".equalsIgnoreCase(req.getMethod())) {
                     res.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
@@ -211,6 +216,10 @@ public class LoginFilter implements Filter {
                     throw new SysError("Invalid login result");
                 }
 
+                if (ses == null) {
+                    ses = req.getSession();
+                }
+
                 req.changeSessionId();
                 ses.setAttribute(LoginFilter.AUTHN_KEY, map.get(LoginFilter.AUTHN_KEY));
                 ses.setAttribute(LoginFilter.AUTHN_MEI, map.get(LoginFilter.AUTHN_MEI));
@@ -218,34 +227,48 @@ public class LoginFilter implements Filter {
                 ses.setAttribute(LoginFilter.AUTHZ_INFO, map.get(LoginFilter.AUTHZ_INFO));
                 ses.setAttribute(LoginFilter.LOGIN_FORM, map.get(LoginFilter.LOGIN_FORM));
 
-                String redirectURI = ServletUtil.safeRedirectURI(request, request.getParameter("redirectURI"));
-                if (!StringUtil.isNullOrWhiteSpace(redirectURI)) {
-                    res.sendRedirect(redirectURI);
+                String safeURI = null;
+                if (req.getParameter("redirectURI") != null) {
+                    String redirectURI = req.getParameter("redirectURI");
+                    safeURI = ServletUtil.safeRedirectURI(request, redirectURI);
+                }
+
+                if (!StringUtil.isNullOrWhiteSpace(safeURI)) {
+                    res.sendRedirect(safeURI);
                 } else {
                     res.sendRedirect(contextPath);
                 }
 
                 return;
 
-            } else if (requestedURI.equals(contextPath + LoginFilter.LOGOUT_URI)) {
-                // ログアウト処理の場合は、セッション破棄後に、ログイン画面へリダイレクト
+            } else if (requestedURI.equals(contextPath + LoginFilter.LOGOUT_URI)) { // ログアウト処理の場合は、セッション破棄後に、ログイン画面へリダイレクト
 
                 if (!"POST".equalsIgnoreCase(req.getMethod())) {
                     res.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
                     return;
                 }
 
-                ses.invalidate();
+                if (ses != null) {
+                    ses.invalidate();
+                }
+
                 res.sendRedirect(contextPath + LoginFilter.LOGIN_PAGE + "?INFO=info.logout");
                 return;
 
-            } else if (ses.getAttribute(LoginFilter.AUTHN_KEY) == null) {
-                // 認証用オブジェクトがセッションにない場合は、セッション破棄してログイン画面へリダイレクト
+            } else if (ses == null || ses.getAttribute(LoginFilter.AUTHN_KEY) == null) { // 認証用オブジェクトがセッションにない場合は、セッション破棄してログイン画面へリダイレクト
 
-                ses.invalidate();
-                res.sendRedirect(contextPath + LoginFilter.LOGIN_PAGE + "?redirectURI=" + requestedURI);
+                if (ses != null) {
+                    ses.invalidate();
+                }
+
+                String redirectURI = URLEncoder.encode(requestedURI, StandardCharsets.UTF_8);
+                res.sendRedirect(contextPath + LoginFilter.LOGIN_PAGE + "?redirectURI=" + redirectURI);
                 return;
             }
+
+            res.setHeader("Cache-Control", "no-store, no-cache, must-revalidate");
+            res.setHeader("Pragma", "no-cache");
+            res.setDateHeader("Expires", 0);
         }
 
         chain.doFilter(request, response);

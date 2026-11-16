@@ -19,6 +19,9 @@ package jp.co.golorp.emarf.report;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -96,7 +99,7 @@ public final class XlsxUtil {
             layoutsDir = "/WEB-INF/layouts";
         }
         String layoutFilePath = layoutsDir + sep + String.join(sep, pathes) + sep + layoutFileName;
-        File layoutFile = FileUtil.get(layoutFilePath);
+        File layoutFile = FileUtil.seek(layoutFilePath);
         if (!layoutFile.exists()) {
             if (pathes.size() > 0) {
                 pathes.remove(pathes.size() - 1);
@@ -508,15 +511,18 @@ public final class XlsxUtil {
             tmp = "/temp";
         }
 
-        if (!FileUtil.get(tmp).exists()) {
-            FileUtil.get(tmp).mkdirs();
+        Path basePath = Paths.get(tmp).toAbsolutePath().normalize();
+        try {
+            Files.createDirectories(basePath);
+        } catch (IOException e) {
+            throw new SysError(e);
         }
 
         // 保存ファイルパス
         String timestamp = DateTimeUtil.ymdhmsS();
         String writeFileName = fileBaseMei + "." + timestamp + "." + extension;
         String writeFilePath = tmp + sep + writeFileName;
-        File file = FileUtil.get(writeFilePath);
+        File file = Paths.get(writeFilePath).toAbsolutePath().normalize().toFile();
 
         // エクセルファイルを保管
         try (FileOutputStream fos = new FileOutputStream(file)) {

@@ -26,17 +26,23 @@ import java.net.URISyntaxException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.http.HttpServletRequest;
@@ -62,7 +68,6 @@ import jp.co.golorp.emarf.generator.BeanGenerator;
 import jp.co.golorp.emarf.lang.StringUtil;
 import jp.co.golorp.emarf.properties.App;
 import jp.co.golorp.emarf.servlet.LoginFilter;
-import jp.co.golorp.emarf.time.DateTimeUtil;
 
 /**
  * サーブレット用ユーティリティ
@@ -73,6 +78,15 @@ public final class ServletUtil {
 
     /** logger */
     private static final Logger LOG = LoggerFactory.getLogger(ServletUtil.class);
+
+    /***/
+    private static final String ALLOWED_EXTENSIONS = App.get("servletUtil.allowedExtensions");
+
+    /***/
+    private static final String ALLOWED_FILE_SIZE = App.get("servletUtil.allowedFileSize");
+
+    /***/
+    private static final int ALLOWED_FILE_SIZE_DEF = 2097152;
 
     /** servletUrl */
     private static String servletUrl;
@@ -306,10 +320,8 @@ public final class ServletUtil {
         }
         Map<String, Object> map = new HashMap<String, Object>();
         ObjectMapper mapper = ServletUtil.getMapper();
-        if (parts != null) {
-            // 「enctype="multipart/form-data"」の場合
-            // multipartでループする前に、get値を退避
-            if (request.getQueryString() != null) {
+        if (parts != null) { // 「enctype="multipart/form-data"」の場合
+            if (request.getQueryString() != null) { // multipartでループする前に、クエリストリングを退避
                 String queryString = request.getQueryString();
                 String[] queryStrings = queryString.split("&");
                 for (String s : queryStrings) {
@@ -322,44 +334,46 @@ public final class ServletUtil {
                 }
             }
             Set<String> submittedFileNames = new HashSet<String>();
-            // multipartでループ
-            for (Part part : parts) {
+            for (Part part : parts) { // multipartでループ
                 String partName = StringUtil.sanitize(part.getName());
-                if (part.getSubmittedFileName() != null) {
-                    // アップロードファイルの場合
+                if (part.getSubmittedFileName() != null) { // アップロードファイルの場合
                     String fileName = StringUtil.sanitize(part.getSubmittedFileName());
-                    if (!fileName.equals("")) {
-                        // アップロードファイル名がある場合
-                        // アップロードフォルダに保管
+                    if (!fileName.equals("")) { // アップロードファイル名がある場合はアップロードフォルダに保管
+
+                        denyFileSize(part);
+
+                        String ext = denyExtension(fileName);
+
                         String upload = App.get("uploadFolderPath");
                         if (upload == null) {
                             upload = "C:\\upload";
                         }
-                        // アップロードフォルダがなければ作成
-                        File uploadDir = new File(upload);
-                        if (!uploadDir.exists()) {
-                            uploadDir.mkdirs();
-                        }
-                        String ext = fileName.replaceFirst("^.+\\.", "");
-                        String saveName = partName + "." + DateTimeUtil.ymdhmsS() + "." + ext;
-                        String uploadPath = upload + File.separator + saveName;
+                        String saveName = UUID.randomUUID().toString() + "." + ext;
+                        Path uploadPath = Paths.get(upload).toAbsolutePath().normalize();
                         try {
-                            part.write(uploadPath);
+                            Files.createDirectories(uploadPath);
+                            if (!Files.isDirectory(uploadPath) || !Files.isWritable(uploadPath)) {
+                                throw new AppError("error.request");
+                            }
                         } catch (IOException e) {
                             throw new SysError(e);
                         }
-                        // ファイル名と保管パスを返す
-                        //                        map.put(partName + uploadMeiSuffix, fileName);
-                        map.put(partName, fileName + "|" + uploadPath);
+                        Path savePath = uploadPath.resolve(saveName).normalize();
+                        if (!savePath.startsWith(uploadPath)) {
+                            throw new AppError("error.request");
+                        }
+                        try {
+                            part.write(savePath.toString());
+                        } catch (IOException e) {
+                            throw new SysError(e);
+                        }
+                        map.put(partName, fileName + "|" + savePath); // ファイル名と保管パスを返す
                         submittedFileNames.add(partName);
                     }
-
                 } else {
-
                     if (submittedFileNames.contains(partName)) {
                         continue;
                     }
-
                     // 送信値を読み取り
                     String v = "";
                     try (BufferedReader br = new BufferedReader(new InputStreamReader(part.getInputStream()))) {
@@ -370,38 +384,26 @@ public final class ServletUtil {
                     } catch (IOException e) {
                         throw new SysError(e);
                     }
-
                     if (partName.matches("^.+Grid$")) {
-
                         try {
-                            Map<String, Object> gridValue = mapper.readValue("{\"" + partName + "\":" + v + "}",
-                                    new TypeReference<Map<String, Object>>() {
-                                    });
-                            map.putAll(gridValue);
+                            List<Object> gridValue = mapper.readValue(v, new TypeReference<List<Object>>() {
+                            });
+                            map.put(partName, gridValue);
                         } catch (Exception e) {
                             throw new SysError(e);
                         }
-
-                    } else if (map.containsKey(partName)) {
-                        // 二つ目以降の場合
-
+                    } else if (map.containsKey(partName)) { // 二つ目以降の場合
                         Object orgValue = map.get(partName);
-                        if (orgValue instanceof List) {
-                            // 三つ目以降の場合
-
+                        if (orgValue instanceof List) { // 三つ目以降の場合
                             @SuppressWarnings("unchecked")
                             List<Object> newList = (List<Object>) orgValue;
                             newList.add(v);
-
-                        } else {
-                            // 二つ目の場合
-
+                        } else { // 二つ目の場合
                             List<Object> newList = new ArrayList<Object>();
                             newList.add(orgValue);
                             newList.add(v);
                             map.put(partName, newList);
                         }
-
                     } else {
                         // 一つ目の場合
                         map.put(partName, v);
@@ -449,9 +451,46 @@ public final class ServletUtil {
     }
 
     /**
+     * @param fileName
+     * @return 拡張子
+     */
+    public static String denyExtension(final String fileName) {
+        String ext = "";
+        int dotIndex = fileName.lastIndexOf('.');
+        if (dotIndex >= 0 && dotIndex < fileName.length() - 1) {
+            ext = fileName.substring(dotIndex + 1).toLowerCase(Locale.ROOT);
+        }
+        Set<String> allowedExtensions = Arrays.stream(ALLOWED_EXTENSIONS.split(",")).map(String::trim)
+                .map(s -> s.toLowerCase(Locale.ROOT)).filter(s -> !s.isEmpty())
+                .collect(Collectors.toSet());
+        if (!allowedExtensions.contains(ext)) {
+            throw new AppError("error.request");
+        }
+        return ext;
+    }
+
+    /**
+     * @param part
+     */
+    public static void denyFileSize(final Part part) {
+        int maxFileSize = ALLOWED_FILE_SIZE_DEF;
+        if (!StringUtil.isNullOrWhiteSpace(ALLOWED_FILE_SIZE)) {
+            try {
+                maxFileSize = Integer.parseInt(ALLOWED_FILE_SIZE);
+            } catch (NumberFormatException e) {
+                throw new SysError(e);
+            }
+        }
+        if (part.getSize() <= 0 || part.getSize() > maxFileSize) {
+            throw new AppError("error.request");
+        }
+    }
+
+    /**
      * @return ObjectMapper
      */
     public static ObjectMapper getMapper() {
+
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
         mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
@@ -572,7 +611,16 @@ public final class ServletUtil {
         }
 
         try {
-            Files.copy(new File(path).toPath(), response.getOutputStream());
+            Path uploadPath = Paths.get(App.get("uploadFolderPath")).toRealPath();
+            Path tempPath = Paths.get(App.get("tempVirtualDir")).toRealPath();
+            Path targetPath = Paths.get(filePath.toString()).toRealPath();
+            if (!targetPath.startsWith(uploadPath) && !targetPath.startsWith(tempPath)) {
+                throw new AppError("error.request");
+            }
+            if (!Files.isRegularFile(targetPath) || !Files.isReadable(targetPath)) {
+                throw new AppError("error.request");
+            }
+            Files.copy(targetPath, response.getOutputStream());
             response.getOutputStream().close();
         } catch (IOException e) {
             throw new SysError(e);
@@ -602,7 +650,20 @@ public final class ServletUtil {
 
         // ファイル削除
         if (App.get("deleteRespondedXlsx").equals("1")) {
-            new File(filePath).delete();
+            try {
+                Path uploadPath = Paths.get(App.get("uploadFolderPath")).toRealPath();
+                Path tempPath = Paths.get(App.get("tempVirtualDir")).toRealPath();
+                Path targetPath = Paths.get(filePath.toString()).toRealPath();
+                if (!targetPath.startsWith(uploadPath) && !targetPath.startsWith(tempPath)) {
+                    throw new AppError("error.request");
+                }
+                if (!Files.isRegularFile(targetPath) || !Files.isReadable(targetPath)) {
+                    throw new AppError("error.request");
+                }
+                Files.delete(Paths.get(filePath));
+            } catch (IOException e) {
+                throw new SysError(e);
+            }
         }
     }
 
@@ -664,7 +725,7 @@ public final class ServletUtil {
                 throw new AppError("error.request");
             }
 
-            safeURI(path);
+            safeURI(redirectURI);
 
             return redirectURI;
 
@@ -736,6 +797,11 @@ public final class ServletUtil {
 
         // 二重エンコードにつながる表現を拒否
         if (uri.matches("(?i).*%25.*")) {
+            throw new AppError("error.request");
+        }
+
+        // エンコードされた制御文字を拒否
+        if (uri.matches("(?i).*%(?:0[0-9a-f]|1[0-9a-f]|7f).*")) {
             throw new AppError("error.request");
         }
 

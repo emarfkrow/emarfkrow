@@ -666,7 +666,7 @@ public final class Queries {
 
         String sqlPath = String.join(SEP, sqlPathes);
         String filePath = sqlDir + SEP + sqlPath + SEP + sqlName + ".sql";
-        File file = FileUtil.get(filePath);
+        File file = FileUtil.seek(filePath);
 
         if (!file.exists() && sqlPathes.size() > 0) {
             List<String> copy = new ArrayList<>(sqlPathes);

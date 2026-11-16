@@ -61,9 +61,9 @@ public final class FileUtil {
 
     /**
      * @param filePath ファイルパス
-     * @return File ファイル実体
+     * @return File コンテキスト内からファイル実体を返す
      */
-    public static File get(final String filePath) {
+    public static File seek(final String filePath) {
         String pathname = filePath;
         if (contextDir != null) {
             pathname = contextDir + File.separator + pathname;
