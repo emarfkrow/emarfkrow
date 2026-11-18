@@ -351,26 +351,29 @@ public final class DataSources {
             if (!table.isView()) {
                 continue;
             }
-            if (table.getPrimaryKeys().size() == 1) {
-                for (String[] ganttColumn : BeanGenerator.GANTT_COLS) {
-                    boolean nameColumn = false;
-                    boolean startColumn = false;
-                    boolean endColumn = false;
-                    for (String columnName : table.getColumns().keySet()) {
-                        if (StringUtil.endsWithIgnoreCase(ganttColumn[0], columnName)) {
-                            nameColumn = true;
-                        } else if (StringUtil.endsWithIgnoreCase(ganttColumn[1], columnName)) {
-                            startColumn = true;
-                        } else if (StringUtil.endsWithIgnoreCase(ganttColumn[2], columnName)) {
-                            endColumn = true;
-                        }
-                    }
-                    if (nameColumn && startColumn && endColumn) {
-                        table.setGantt(true);
-                        break;
+            // if (table.getPrimaryKeys().size() == 1) {
+            for (String[] ganttColumn : BeanGenerator.GANTT_COLS) {
+                boolean isId = false;
+                boolean isName = false;
+                boolean isStart = false;
+                boolean isUntil = false;
+                for (String columnName : table.getColumns().keySet()) {
+                    if (StringUtil.endsWithIgnoreCase(ganttColumn[0], columnName)) {
+                        isId = true;
+                    } else if (StringUtil.endsWithIgnoreCase(ganttColumn[1], columnName)) {
+                        isName = true;
+                    } else if (StringUtil.endsWithIgnoreCase(ganttColumn[2], columnName)) {
+                        isStart = true;
+                    } else if (StringUtil.endsWithIgnoreCase(ganttColumn[3], columnName)) {
+                        isUntil = true;
                     }
                 }
+                if (isId && isName && isStart && isUntil) {
+                    table.setGantt(true);
+                    break;
+                }
             }
+            // }
         }
     }
 

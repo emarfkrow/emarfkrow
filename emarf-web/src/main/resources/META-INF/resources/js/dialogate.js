@@ -462,7 +462,7 @@ let Dialogate = {
                 close: function() {
                     // 表示内容をクリア
                     Jsonate.clearForm($(this).find('form'));
-                    $(this).find('[id$="Pager"]').html('');
+                    $(this).find('[id$="Pager"]').text('');
 
                     // 一旦、検索条件を開いておく
                     let $searchForm = $(this).find('[name$="SearchForm"]');

@@ -26,6 +26,7 @@ import java.util.Set;
 
 import org.apache.commons.codec.binary.Hex;
 
+import jp.co.golorp.emarf.exception.AppError;
 import jp.co.golorp.emarf.exception.SysError;
 import jp.co.golorp.emarf.properties.App;
 
@@ -289,26 +290,30 @@ public final class StringUtil {
     }
 
     /**
+     * 入力値の検証
      * @param s 検査文字列
-     * @return 特定の記号を変換
+     * @return 検査文字列
      */
-    public static String sanitize(final String s) {
-        return s.replaceAll("'", "’").replaceAll("\\.\\.+", "”").replaceAll(";", "；")
-                .replaceAll("<", "＜").replaceAll(">", "＞").replaceAll("\\|", "｜");
+    public static String validate(final String s) {
+        // 不正な制御文字を拒否（TAB、CR、LFは許可）
+        if (s.matches("(?s).*[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F].*")) {
+            throw new AppError("error.request");
+        }
+        return s;
     }
 
     /**
      * @param s 検査文字列の配列
      * @return 特定の記号を変換
      */
-    public static String[] sanitize(final String[] s) {
-        List<String> sanitizeds = new ArrayList<String>();
+    public static String[] validate(final String[] s) {
+        List<String> valids = new ArrayList<String>();
         if (s != null && s.length > 0) {
             for (String e : s) {
-                sanitizeds.add(sanitize(e));
+                valids.add(validate(e));
             }
         }
-        return sanitizeds.toArray(new String[sanitizeds.size()]);
+        return valids.toArray(new String[valids.size()]);
     }
 
     //    /** 秘密鍵（16文字） */

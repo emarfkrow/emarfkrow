@@ -147,7 +147,7 @@ public class XlsxServlet extends HttpServlet {
         Map<String, Map<String, Map<String, Object>>> layoutSheetMap = (Map<String, Map<String, Map<String, Object>>>) xlsxMap
                 .get("layoutSheetMap");
 
-        String baseMei = StringUtil.sanitize(request.getParameter("baseMei"));
+        String baseMei = StringUtil.validate(request.getParameter("baseMei"));
 
         // 一時エクセルを作成
         String tempFilePath = XlsxUtil.getGeneratedPath(pathes, layoutFileName, layoutSheetMap, baseMei);

@@ -126,16 +126,17 @@ public final class HtmlGeneratorGantt extends HtmlGenerator {
 
     /**
      * ガント画面 タスク定義出力
-     * @param gridDir グリッド出力ディレクトリ
      * @param table テーブル情報
+     * @param idColumn
      * @param nameColumn
      * @param startColumn
-     * @param endColumn
-     * @param sinceColumn
      * @param untilColumn
+     * @param begColumn
+     * @param endColumn
+     * @return タスク定義
      */
-    public static void htmlGanttTasks(final String gridDir, final TableInfo table, final String nameColumn,
-            final String startColumn, final String endColumn, final String sinceColumn, final String untilColumn) {
+    public static List<String> htmlGanttTasks(final TableInfo table, final String idColumn, final String nameColumn,
+            final String startColumn, final String untilColumn, final String begColumn, final String endColumn) {
 
         String entity = StringUtil.toPascalCase(table.getName());
 
@@ -154,20 +155,21 @@ public final class HtmlGeneratorGantt extends HtmlGenerator {
         s.add("            let row = data[r];");
         s.add("");
         s.add("            let task = {};");
-        s.add("            task.id = row." + table.getPrimaryKeys().get(0) + ";");
+        s.add("            task.id = row." + idColumn + ";");
         s.add("            task.name = row." + nameColumn + ";");
         s.add("            task.start = row." + startColumn + ";");
-        s.add("            task.end = row." + endColumn + ";");
+        s.add("            task.end = row." + untilColumn + ";");
         s.add("            task.dependencies = row.DEPENDENCIES ? row.DEPENDENCIES + '' : '';");
-        if (sinceColumn != null && untilColumn != null) {
+        s.add("            task.description = row.DESCRIPTION ? row.DESCRIPTION + '' : '';");
+        if (begColumn != null && endColumn != null) {
             s.add("");
-            s.add("            task.since = row." + sinceColumn + ";");
-            s.add("            task.until = row." + untilColumn + ";");
+            s.add("            task.since = row." + begColumn + ";");
+            s.add("            task.until = row." + endColumn + ";");
         }
         s.add("");
         for (String k : table.getColumns().keySet()) {
             ColumnInfo col = table.getColumns().get(k);
-            if (col.getName().matches("(?i)^(id|name|start|end|dependencies)$")) {
+            if (col.getName().matches("(?i)^(id|name|start|end|dependencies|since|until)$")) {
                 continue;
             }
             s.add("            task." + StringUtil.toCamelCase(col.getName()) + " = row." + col.getName().toUpperCase()
@@ -181,7 +183,7 @@ public final class HtmlGeneratorGantt extends HtmlGenerator {
         s.add("    }");
         s.add("};");
 
-        FileUtil.writeFile(gridDir + File.separator + entity + "GanttTasks.js", s);
+        return s;
     }
 
 }

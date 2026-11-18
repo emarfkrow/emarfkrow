@@ -265,11 +265,11 @@ public class LoginFilter implements Filter {
                 res.sendRedirect(contextPath + LoginFilter.LOGIN_PAGE + "?redirectURI=" + redirectURI);
                 return;
             }
-
-            res.setHeader("Cache-Control", "no-store, no-cache, must-revalidate");
-            res.setHeader("Pragma", "no-cache");
-            res.setDateHeader("Expires", 0);
         }
+
+        res.setHeader("Cache-Control", "no-store, no-cache, must-revalidate");
+        res.setHeader("Pragma", "no-cache");
+        res.setDateHeader("Expires", 0);
 
         chain.doFilter(request, response);
     }

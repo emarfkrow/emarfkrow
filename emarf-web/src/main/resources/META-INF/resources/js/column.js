@@ -242,13 +242,15 @@ let Column = {
 
                 let dataJson = JSON.parse(sessionStorage[k]);
 
-                //			Ajaxize.sjaxPost(json, postJson, function(data) {
-                options = {};
-                //			for (let i in data) {
-                //				if (i == 'INFO') {
-                //					break;
-                //				}
-                //				let dataJson = data[i];
+                options = new Map();
+
+                //                //			Ajaxize.sjaxPost(json, postJson, function(data) {
+                //                options = {};
+                //                //			for (let i in data) {
+                //                //				if (i == 'INFO') {
+                //                //					break;
+                //                //				}
+                //                //				let dataJson = data[i];
                 for (let j in dataJson) {
                     let row = dataJson[j];
                     let v = row[value.toUpperCase()];
@@ -259,7 +261,8 @@ let Column = {
                     if (!l) {
                         l = row[label.toLowerCase()];
                     }
-                    options[v] = l;
+                    options.set(v, l);
+                    //                    options[v + ''] = l;
                     if (column.width < l.bytes() * 10) {
                         column.width = l.bytes() * 10;
                     }

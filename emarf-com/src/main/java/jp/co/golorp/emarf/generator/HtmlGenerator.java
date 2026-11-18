@@ -82,30 +82,35 @@ public abstract class HtmlGenerator extends BeanGenerator {
 
             if (table.isGantt()) {
                 for (String[] ganttColumn : GANTT_COLS) {
+                    String idColumn = null;
                     String nameColumn = null;
                     String startColumn = null;
-                    String endColumn = null;
-                    String sinceColumn = null;
                     String untilColumn = null;
+                    String begColumn = null;
+                    String endColumn = null;
                     for (String columnName : table.getColumns().keySet()) {
-                        if (StringUtil.endsWithIgnoreCase(ganttColumn[0], columnName)) {
+                        if (idColumn == null && StringUtil.endsWithIgnoreCase(ganttColumn[0], columnName)) {
+                            idColumn = columnName;
+                        } else if (nameColumn == null && StringUtil.endsWithIgnoreCase(ganttColumn[1], columnName)) {
                             nameColumn = columnName;
-                        } else if (StringUtil.endsWithIgnoreCase(ganttColumn[1], columnName)) {
+                        } else if (startColumn == null && StringUtil.endsWithIgnoreCase(ganttColumn[2], columnName)) {
                             startColumn = columnName;
-                        } else if (StringUtil.endsWithIgnoreCase(ganttColumn[2], columnName)) {
-                            endColumn = columnName;
-                        } else if (ganttColumn.length > 3) {
-                            if (StringUtil.endsWithIgnoreCase(ganttColumn[3], columnName)) {
-                                sinceColumn = columnName;
-                            } else if (StringUtil.endsWithIgnoreCase(ganttColumn[4], columnName)) {
-                                untilColumn = columnName;
+                        } else if (untilColumn == null && StringUtil.endsWithIgnoreCase(ganttColumn[3], columnName)) {
+                            untilColumn = columnName;
+                        } else if (ganttColumn.length >= 6) {
+                            if (begColumn == null && StringUtil.endsWithIgnoreCase(ganttColumn[4], columnName)) {
+                                begColumn = columnName;
+                            } else if (endColumn == null && StringUtil.endsWithIgnoreCase(ganttColumn[5], columnName)) {
+                                endColumn = columnName;
                             }
                         }
                     }
-                    if (nameColumn != null && startColumn != null && endColumn != null) {
+                    if (idColumn != null && nameColumn != null && startColumn != null && untilColumn != null) {
                         HtmlGeneratorGantt.htmlGantt(htmlDir, table, tables);
-                        HtmlGeneratorGantt.htmlGanttTasks(gridDir, table, nameColumn, startColumn, endColumn,
-                                sinceColumn, untilColumn);
+                        List<String> s = HtmlGeneratorGantt.htmlGanttTasks(table, idColumn, nameColumn, startColumn,
+                                untilColumn, begColumn, endColumn);
+                        String entity = StringUtil.toPascalCase(table.getName());
+                        FileUtil.writeFile(gridDir + File.separator + entity + "GanttTasks.js", s);
                     }
                 }
             }

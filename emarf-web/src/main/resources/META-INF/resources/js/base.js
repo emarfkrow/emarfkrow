@@ -328,6 +328,21 @@ let Base = {
 
     messages: {},
 
+    // escapeメソッドを定義
+    escape: function(value) {
+
+        if (value == null) {
+            return '';
+        }
+
+        return String(value)
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#39;");
+    },
+
     getMessages: function() {
         $.ajax({
             type: 'get',
@@ -523,12 +538,12 @@ let Base = {
         $('button, .nav a.toggle, .nav a.table, .nav a.view, .article a').button();
         $('.article fieldset a').css('padding', 0);
 
-        $('.nav a.toggle').html('<<');
+        $('.nav a.toggle').text('<<');
         $('.nav a.toggle').on('click', function() {
             if ($('.nav dl').is(':hidden')) {
-                $(this).html('<<');
+                $(this).text('<<');
             } else {
-                $(this).html('>>');
+                $(this).text('>>');
             }
             $('.nav dl').toggle(500, function() {
                 Base.resizeNav();

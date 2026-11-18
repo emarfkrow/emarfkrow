@@ -281,7 +281,8 @@ public final class Queries {
             if (o != null) {
                 parameterValue = o.toString();
                 // コメント内に「:」が残らないように「_」で置換
-                parameterValue = parameterValue.replaceAll(":", "_");
+                parameterValue = parameterValue.replaceAll(":", "_").replaceAll("\r\n", " ").replaceAll("\r", " ")
+                        .replaceAll("\n", " ");
             }
 
             rawSql = rawSql.replaceFirst(":" + parameterName, parameterValue);
@@ -303,15 +304,19 @@ public final class Queries {
 
                 @SuppressWarnings("unchecked")
                 List<String> list = (List<String>) o;
-                String ss = "";
+                String rawSs = "";
+                String logSs = "";
                 for (String s : list) {
-                    if (!ss.equals("")) {
-                        ss += ", ";
+                    if (!rawSs.equals("")) {
+                        rawSs += ", ";
+                        logSs += ", ";
                     }
-                    ss += "'" + s.replaceAll("'", "’") + "'";
+                    rawSs += "?";
+                    repackedArgs.add(s);
+                    logSs += "'" + s.replaceAll("'", "’") + "'";
                 }
-                rawSql = rawSql.replaceFirst(":" + parameterName, ss);
-                logSql = logSql.replaceFirst(":" + parameterName, ss);
+                rawSql = rawSql.replaceFirst(":" + parameterName, rawSs);
+                logSql = logSql.replaceFirst(":" + parameterName, logSs);
 
             } else {
 

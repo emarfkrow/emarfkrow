@@ -407,7 +407,7 @@ let Jsonate = {
                         let gridRow = {};
                         for (let fieldName in child) {
                             //gridRow[Casing.toUpper(fieldName)] = child[fieldName];
-                            gridRow[fieldName] = child[fieldName];
+                            gridRow[fieldName] = Base.escape(child[fieldName]);
                         }
                         gridData.push(gridRow);
                     }

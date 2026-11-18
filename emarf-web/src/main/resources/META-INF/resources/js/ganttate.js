@@ -40,16 +40,52 @@ let Ganttate = {
                 task._isDragging = false;
                 return;
             }
-            let $dialogDiv = $('div[id="' + this.dialogId + '"]');
-            for (let k in task) {
-                if (k.startsWith('_') || k == 'actual_duration' || k == 'ignored_duration') {
-                    continue; // 内部プロパティはスキップ
+            if (task.tableName) {
+                //TABLE_NAME列があった場合（VIEWの場合）
+
+                let queryString = '';
+
+                // タスク定義でループ
+                for (let k in task) {
+                    if (!k.match(/^(id|name|start|end|dependencies|description|since|until|tableName|task.+|_.+|.+_duration|progress)$/)) {
+                        console.log(k);
+                        let v = task[k];
+
+                        if (v == null) {
+                            continue;
+                        }
+
+                        // URL引数用に各列値を退避
+                        if (queryString == '') {
+                            queryString += '?';
+                        } else {
+                            queryString += '&';
+                        }
+                        queryString += k + '=' + v;
+                    }
                 }
-                $dialogDiv.find('[name$=".' + k + '"]').val(task[k]);
+
+                entityName = Casing.toPascal(task.tableName);
+
+                //別ウィンドウにするためwidth/heightを指定
+                let width = window.outerWidth / 3 * 2;
+                let height = window.outerHeight / 3 * 2;
+                let top = window.screenTop + (window.innerHeight / 2) - (height / 2);
+                let left = window.screenLeft + (window.innerWidth / 2) - (width / 2);
+                window.open('./' + entityName + '.html' + queryString, entityName + queryString, 'width=' + width + 'px,height=' + height + 'px,top=' + top + 'px,left=' + left + 'px');
+
+            } else {
+                let $dialogDiv = $('div[id="' + this.dialogId + '"]');
+                for (let k in task) {
+                    if (k.startsWith('_') || k == 'actual_duration' || k == 'ignored_duration') {
+                        continue; // 内部プロパティはスキップ
+                    }
+                    $dialogDiv.find('[name$=".' + k + '"]').val(task[k]);
+                }
+                // $modal.css('display', 'flex').hide().fadeIn(200);
+                $dialogDiv.attr('data-caller', this.$svg.id);
+                $dialogDiv.dialog('open');
             }
-            // $modal.css('display', 'flex').hide().fadeIn(200);
-            $dialogDiv.attr('data-caller', this.$svg.id);
-            $dialogDiv.dialog('open');
         },
 
         /*

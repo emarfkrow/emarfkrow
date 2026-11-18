@@ -852,9 +852,12 @@ limitations under the License.
         var scope = this;
 
         this.init = function() {
-            var option = "<OPTION value=''></OPTION>";
-            for (let v in args.column.options) {
-                let l = args.column.options[v];
+            let option = "<OPTION value=''></OPTION>";
+            //            for (let v in args.column.options) {
+            //                let l = args.column.options[v];
+            //                option += "<OPTION value='" + v + "'>" + l + "</OPTION>";
+            //            }
+            for (const [v, l] of args.column.options) {
                 option += "<OPTION value='" + v + "'>" + l + "</OPTION>";
             }
             $select = $("<SELECT tabIndex='0' class='editor-select'>" + option + "</SELECT>");

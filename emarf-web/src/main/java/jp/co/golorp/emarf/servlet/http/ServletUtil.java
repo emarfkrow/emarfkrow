@@ -335,9 +335,9 @@ public final class ServletUtil {
             }
             Set<String> submittedFileNames = new HashSet<String>();
             for (Part part : parts) { // multipartでループ
-                String partName = StringUtil.sanitize(part.getName());
+                String partName = StringUtil.validate(part.getName());
                 if (part.getSubmittedFileName() != null) { // アップロードファイルの場合
-                    String fileName = StringUtil.sanitize(part.getSubmittedFileName());
+                    String fileName = StringUtil.validate(part.getSubmittedFileName());
                     if (!fileName.equals("")) { // アップロードファイル名がある場合はアップロードフォルダに保管
 
                         denyFileSize(part);
@@ -375,15 +375,18 @@ public final class ServletUtil {
                         continue;
                     }
                     // 送信値を読み取り
-                    String v = "";
-                    try (BufferedReader br = new BufferedReader(new InputStreamReader(part.getInputStream()))) {
-                        String s;
-                        while ((s = br.readLine()) != null) {
-                            v += StringUtil.sanitize(s);
+                    StringBuilder sb = new StringBuilder();
+                    try (BufferedReader br = new BufferedReader(
+                            new InputStreamReader(part.getInputStream(), StandardCharsets.UTF_8))) {
+                        char[] buffer = new char[4096];
+                        int len;
+                        while ((len = br.read(buffer)) != -1) {
+                            sb.append(StringUtil.validate(new String(buffer, 0, len)));
                         }
                     } catch (IOException e) {
                         throw new SysError(e);
                     }
+                    String v = sb.toString();
                     if (partName.matches("^.+Grid$")) {
                         try {
                             List<Object> gridValue = mapper.readValue(v, new TypeReference<List<Object>>() {
@@ -422,7 +425,7 @@ public final class ServletUtil {
             try {
                 String line = request.getReader().readLine();
                 if (line != null) {
-                    String s = StringUtil.sanitize(line);
+                    String s = StringUtil.validate(line);
                     if (!StringUtil.isNullOrWhiteSpace(s)) {
                         Map<String, Object> ajaxValues = mapper.readValue(s, new TypeReference<Map<String, Object>>() {
                         });
@@ -514,8 +517,8 @@ public final class ServletUtil {
         Map<String, Object> map = null;
 
         for (Entry<String, String[]> e : request.getParameterMap().entrySet()) {
-            String k = StringUtil.sanitize(e.getKey());
-            String[] v = StringUtil.sanitize(e.getValue());
+            String k = StringUtil.validate(e.getKey());
+            String[] v = StringUtil.validate(e.getValue());
 
             if (map == null) {
                 map = new LinkedHashMap<String, Object>();
@@ -696,11 +699,11 @@ public final class ServletUtil {
      */
     public static String safeRedirectURI(final ServletRequest request, final String redirectURI) {
 
-        if (!(request instanceof HttpServletRequest req)) {
-            throw new AppError("error.request");
+        if (redirectURI == null || redirectURI.isBlank()) {
+            return redirectURI;
         }
 
-        if (redirectURI == null || redirectURI.isBlank()) {
+        if (!(request instanceof HttpServletRequest req)) {
             throw new AppError("error.request");
         }
 

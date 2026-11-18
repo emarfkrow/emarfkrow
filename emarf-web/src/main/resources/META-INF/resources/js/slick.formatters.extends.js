@@ -130,7 +130,7 @@ limitations under the License.
     }
 
     function SelectFormatter(row, cell, value, columnDef, dataContext) {
-        return columnDef.options[value];
+        return columnDef.options.get(value);
     }
 
     function CheckboxFormatter(row, cell, value, columnDef, dataContext) {
