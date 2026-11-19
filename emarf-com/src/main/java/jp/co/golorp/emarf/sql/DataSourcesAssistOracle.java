@@ -357,4 +357,9 @@ public class DataSourcesAssistOracle extends DataSourcesAssist {
         return "TO_CHAR (" + a + ")";
     }
 
+    @Override
+    public final String toTimeSQL(final String rightHand) {
+        return "TO_DATE (" + rightHand + ", 'HH24:MI')";
+    }
+
 }

@@ -213,4 +213,10 @@ public abstract class DataSourcesAssist {
      */
     public abstract String int2charSQL(String a);
 
+    /**
+     * @param rightHand
+     * @return String
+     */
+    public abstract String toTimeSQL(String rightHand);
+
 }

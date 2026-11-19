@@ -34,6 +34,7 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -281,8 +282,10 @@ public final class Queries {
             if (o != null) {
                 parameterValue = o.toString();
                 // コメント内に「:」が残らないように「_」で置換
-                parameterValue = parameterValue.replaceAll(":", "_").replaceAll("\r\n", " ").replaceAll("\r", " ")
-                        .replaceAll("\n", " ");
+                parameterValue = parameterValue.replaceAll(":", "_");
+                parameterValue = parameterValue.replaceAll("\r\n", " ");
+                parameterValue = parameterValue.replaceAll("\r", " ");
+                parameterValue = parameterValue.replaceAll("\n", " ");
             }
 
             rawSql = rawSql.replaceFirst(":" + parameterName, parameterValue);
@@ -329,7 +332,7 @@ public final class Queries {
                 }
 
                 // LocalDateTimeのまま渡すと日付リテラルエラーを起こす
-                if (o instanceof LocalDateTime) {
+                if (o instanceof LocalDateTime || o instanceof LocalTime) {
                     o = o.toString();
                 }
 

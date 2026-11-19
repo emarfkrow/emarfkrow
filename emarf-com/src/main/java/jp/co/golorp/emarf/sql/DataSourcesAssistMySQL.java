@@ -210,4 +210,9 @@ public final class DataSourcesAssistMySQL extends DataSourcesAssist {
         return a;
     }
 
+    @Override
+    public String toTimeSQL(final String rightHand) {
+        return rightHand;
+    }
+
 }

@@ -446,7 +446,11 @@ public final class HtmlGeneratorIndex extends HtmlGenerator {
                     + "', Slick.Formatters.Extends.Month),";
         } else if (StringUtil.endsWith(INPUT_HM_SUFS, n)) {
             return "Column.hour('" + prefix + cId + "', " + m + ", " + w + ", '" + css + "', " + format + "),";
+        } else if (StringUtil.endsWith(INPUT_HMS_SUFS, n)) {
+            return "Column.hour('" + prefix + cId + "', " + m + ", " + w + ", '" + css + "', " + format + "),";
         } else if (StringUtil.endsWith(INPUT_TM_SUFS, n)) {
+            return "Column.time('" + prefix + cId + "', " + m + ", " + w + ", '" + css + "', " + format + "),";
+        } else if (StringUtil.endsWith(INPUT_TMS_SUFS, n)) {
             return "Column.time('" + prefix + cId + "', " + m + ", " + w + ", '" + css + "', " + format + "),";
         } else if (StringUtil.endsWith(INPUT_FILE_SUFS, n)) {
             return "Column.link('" + prefix + cId + "', " + m + ", " + w + ", '" + css + "'),";

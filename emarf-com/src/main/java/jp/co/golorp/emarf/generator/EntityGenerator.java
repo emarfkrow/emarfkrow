@@ -1281,7 +1281,7 @@ public final class EntityGenerator extends BeanGenerator {
             //時間サフィックスに合致する場合、データソースがOracleならTO_CHAR
             if (StringUtil.endsWith(INPUT_BI_SUFS, column.getName())) {
                 quoteEscaped = ASSIST.date2CharSQL(quoteEscaped) + " AS " + column.getName();
-            } else if (StringUtil.endsWith(INPUT_HM_SUFS, column.getName())) {
+            } else if (StringUtil.endsWith(INPUT_HMS_SUFS, column.getName())) {
                 quoteEscaped = ASSIST.time2CharSQL(quoteEscaped) + " AS " + column.getName();
             } else if (StringUtil.endsWith(INPUT_DT_SUFS, column.getName())) {
                 quoteEscaped = ASSIST.dateTime2CharSQL(quoteEscaped) + " AS " + column.getName();

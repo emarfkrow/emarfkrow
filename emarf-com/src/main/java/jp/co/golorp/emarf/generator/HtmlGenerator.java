@@ -1193,7 +1193,7 @@ public abstract class HtmlGenerator extends BeanGenerator {
             inputCss += " datepicker";
         } else if (StringUtil.endsWith(INPUT_D8_SUFS, colNm) && c.getColumnSize() == 8) {
             inputCss += " datepicker";
-        } else if (StringUtil.endsWith(INPUT_TM_SUFS, colNm)) {
+        } else if (StringUtil.endsWith(INPUT_TM_SUFS, colNm) || StringUtil.endsWith(INPUT_TMS_SUFS, colNm)) {
             inputCss += " time";
         } else if (StringUtil.endsWith(INPUT_B_SUFS, colNm)) {
             inputCss += " bit right";
@@ -1338,7 +1338,7 @@ public abstract class HtmlGenerator extends BeanGenerator {
             // 年月項目
             return "month";
 
-        } else if (StringUtil.endsWith(INPUT_HM_SUFS, colName)) {
+        } else if (StringUtil.endsWith(INPUT_HM_SUFS, colName) || StringUtil.endsWith(INPUT_HMS_SUFS, colName)) {
             // 時刻項目
             return "time";
 

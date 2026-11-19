@@ -165,8 +165,12 @@ public abstract class BeanGenerator {
     public static final String[] INPUT_BI_SUFS;
     /** 時刻入力サフィックス */
     public static final String[] INPUT_HM_SUFS;
+    /** 時分秒入力サフィックス */
+    public static final String[] INPUT_HMS_SUFS;
     /** 時間入力サフィックス */
     protected static final String[] INPUT_TM_SUFS;
+    /** 秒時間入力サフィックス */
+    protected static final String[] INPUT_TMS_SUFS;
     /** 範囲指定サフィックス */
     public static final String[] INPUT_RG_SUFS;
     /** フラグサフィックス */
@@ -530,10 +534,22 @@ public abstract class BeanGenerator {
             INPUT_HM_SUFS = null;
         }
 
+        if (bundle != null && bundle.containsKey("input.hours.suffixs")) {
+            INPUT_HMS_SUFS = bundle.getString("input.hours.suffixs").split(",");
+        } else {
+            INPUT_HMS_SUFS = null;
+        }
+
         if (bundle != null && bundle.containsKey("input.time.suffixs")) {
             INPUT_TM_SUFS = bundle.getString("input.time.suffixs").split(",");
         } else {
             INPUT_TM_SUFS = null;
+        }
+
+        if (bundle != null && bundle.containsKey("input.times.suffixs")) {
+            INPUT_TMS_SUFS = bundle.getString("input.times.suffixs").split(",");
+        } else {
+            INPUT_TMS_SUFS = null;
         }
 
         if (bundle != null && bundle.containsKey("input.range.suffixs")) {
@@ -682,26 +698,35 @@ public abstract class BeanGenerator {
      * @return rightHand
      */
     public static String getRightHand(final String colName, final ColumnInfo column) {
+
         String rightHand = ":" + StringUtil.toSnakeCase(colName);
+
         if (column.getDataType().equals("java.time.LocalDate")) {
             rightHand = ASSIST.toDateSQL(rightHand);
+
+        } else if (column.getDataType().equals("java.time.LocalTime")) {
+            rightHand = ASSIST.toTimeSQL(rightHand);
+
         } else if (column.getDataType().equals("java.time.LocalDateTime")) {
             if (StringUtil.endsWith(INPUT_TS_SUFS, column.getName())) {
                 rightHand = ASSIST.toTimestampSQL(rightHand);
             } else {
                 rightHand = ASSIST.toDateTimeSQL(rightHand);
             }
+
         } else if (!column.isPk() && column.getTypeName().equals("CHAR")
                 && !StringUtil.isNullOrWhiteSpace(CHAR_NOTNULL_RE)
                 && !column.getName().matches(CHAR_NOTNULL_RE)) {
             //主キー以外のCHAR列で、必須CHAR指定に合致しない場合、NULLならスペースを補填する
             rightHand = "NVL (" + rightHand + ", ' ')";
+
         } else if (!column.isPk() && column.getTypeName().equals("NUMBER")
                 && !StringUtil.isNullOrWhiteSpace(NUMBER_NULLABLE_RE)
                 && column.getName().matches(NUMBER_NULLABLE_RE)) {
             //主キー以外のNUMBER列で、非必須INT指定に合致する場合、NULLなら「0」を補填する
             rightHand = "NVL (" + rightHand + ", 0)";
         }
+
         return rightHand;
     }
     //    /**

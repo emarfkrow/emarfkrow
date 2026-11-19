@@ -628,7 +628,7 @@ public final class SqlGenerator extends BeanGenerator {
 
             aQuoted = ASSIST.date2CharSQL(aQuoted) + " AS " + asQuoted;
 
-        } else if (StringUtil.endsWith(INPUT_HM_SUFS, colName)) {
+        } else if (StringUtil.endsWith(INPUT_HMS_SUFS, colName)) {
 
             aQuoted = ASSIST.time2CharSQL(aQuoted) + " AS " + asQuoted;
 

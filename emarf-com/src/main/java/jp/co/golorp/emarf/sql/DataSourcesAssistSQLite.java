@@ -173,4 +173,9 @@ public final class DataSourcesAssistSQLite extends DataSourcesAssist {
         return a;
     }
 
+    @Override
+    public String toTimeSQL(final String rightHand) {
+        return rightHand;
+    }
+
 }

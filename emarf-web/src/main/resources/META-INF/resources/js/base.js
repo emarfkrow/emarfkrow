@@ -506,6 +506,7 @@ let Base = {
         });
 
         $('.time').each(function() {
+            var thisValue = $(this).val();
             this.outerHTML = '<select id="' + this.id + '"></select>';
             let $me = $('[id="' + this.id + '"]');
             let attrs = $(this)[0].attributes
@@ -525,6 +526,7 @@ let Base = {
                 $me.attr(attr.name, attr.value);
             }
             $me.append(tmOptions.join(''));
+            $me.val([thisValue]);
         });
 
         $(document).on('change', 'input[type="text"].bit', function() {

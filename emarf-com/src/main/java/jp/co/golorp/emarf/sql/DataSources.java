@@ -242,8 +242,8 @@ public final class DataSources {
                     //                    }
                     if (StringUtil.endsWith(BeanGenerator.INPUT_BI_SUFS, columnName)) { // 桁制限
                         column.setMaxLength(10);
-                    } else if (StringUtil.endsWith(BeanGenerator.INPUT_HM_SUFS, columnName)) {
-                        column.setMaxLength(5);
+                    } else if (StringUtil.endsWith(BeanGenerator.INPUT_HMS_SUFS, columnName)) {
+                        column.setMaxLength(8);
                     } else if (StringUtil.endsWith(BeanGenerator.INPUT_DT_SUFS, columnName)) {
                         column.setMaxLength(19);
                     } else if (StringUtil.endsWith(BeanGenerator.INPUT_TS_SUFS, columnName)) {
@@ -608,7 +608,7 @@ public final class DataSources {
 
             dataType = "java.time.LocalDate";
 
-        } else if (StringUtil.endsWith(BeanGenerator.INPUT_HM_SUFS, column.getName())) {
+        } else if (StringUtil.endsWith(BeanGenerator.INPUT_HMS_SUFS, column.getName())) {
 
             dataType = "java.time.LocalTime";
 
