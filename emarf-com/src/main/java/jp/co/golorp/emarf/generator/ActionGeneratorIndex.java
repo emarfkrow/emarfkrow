@@ -42,128 +42,15 @@ public final class ActionGeneratorIndex extends BeanGenerator {
      */
     public static void generate(final List<TableInfo> tableInfos) {
 
-        ActionGeneratorIndex.deleteAction(tableInfos);
+        ActionGeneratorIndex.delete(tableInfos);
 
-        ActionGeneratorIndex.registAction(tableInfos);
+        ActionGeneratorIndex.regist(tableInfos);
 
         if (!StringUtil.isNullOrWhiteSpace(STATUS_KB)) {
-            ActionGeneratorIndex.applyAction(tableInfos);
-            ActionGeneratorIndex.cancelAction(tableInfos);
-            ActionGeneratorIndex.permitAction(tableInfos);
-            ActionGeneratorIndex.forbidAction(tableInfos);
-        }
-    }
-
-    /**
-     * 検索画面 登録処理出力
-     * @param tables テーブル情報のリスト
-     */
-    private static void deleteAction(final List<TableInfo> tables) {
-
-        // 出力フォルダを再作成
-        String pkgPath = (PKG_A + ".model.base").replace(".", File.separator);
-        String pkgDir = getProjectDir() + File.separator + DIR_J + File.separator + pkgPath;
-
-        Map<String, String> javaFilePaths = new LinkedHashMap<String, String>();
-
-        for (TableInfo table : tables) {
-
-            if (table.isHistory() || table.isView() || table.isStatusFlow()) {
-                continue;
-            }
-
-            if (table.getPrimaryKeys().size() == 0) {
-                continue;
-            }
-
-            //削除フラグがあればスキップ
-            if (!StringUtil.isNullOrWhiteSpace(DELETE_F) && table.getColumns().containsKey(DELETE_F)) {
-                continue;
-            }
-
-            String e = StringUtil.toPascalCase(table.getName());
-            String remarks = table.getRemarks();
-
-            List<String> s = new ArrayList<String>();
-            s.add("package " + PKG_A + ".model.base;");
-            s.add("");
-            s.add("import java.time.LocalDateTime;");
-            s.add("import java.util.HashMap;");
-            s.add("import java.util.List;");
-            s.add("import java.util.Map;");
-            s.add("");
-            s.add("import " + PKG_E + "." + e + ";");
-            s.add("");
-            s.add("import jp.co.golorp.emarf.action.BaseAction;");
-            s.add("import jp.co.golorp.emarf.exception.OptLockError;");
-            s.add("import jp.co.golorp.emarf.util.Messages;");
-            s.add("import jp.co.golorp.emarf.validation.FormValidator;");
-            s.add("");
-            s.add("/**");
-            s.add(" * " + remarks + "一覧削除");
-            s.add(" *");
-            s.add(" * @author emarfkrow");
-            s.add(" */");
-            s.add("public class " + e + "SDeleteAction extends BaseAction {");
-            s.add("");
-            s.add("    /** " + remarks + "一覧削除処理 */");
-            s.add("    @Override");
-            s.add("    public Map<String, Object> running(final LocalDateTime at, final String by, final Map<String, Object> form) {");
-            s.add("");
-            s.add("        Map<String, Object> map = new HashMap<String, Object>();");
-            s.add("");
-            s.add("        int count = 0;");
-            s.add("");
-            s.add("        @SuppressWarnings(\"unchecked\")");
-            s.add("        List<Map<String, Object>> data = (List<Map<String, Object>>) form.get(\"" + e + "Grid\");");
-            s.add("        if (data != null) {");
-            s.add("            for (Map<String, Object> row : data) {");
-            s.add("");
-            s.add("                if (row.isEmpty()) {");
-            s.add("                    continue;");
-            s.add("                }");
-            s.add("");
-            s.add("                // 主キーが不足していたらエラー");
-            for (String k : table.getPrimaryKeys()) {
-                s.add("                if (jp.co.golorp.emarf.lang.StringUtil.isNullOrWhiteSpace(row.get(\"" + k
-                        + "\"))) {");
-                s.add("                    throw new OptLockError(\"error.cant.delete\", \"" + remarks + "\");");
-                s.add("                }");
-            }
-            s.add("");
-            s.add("                " + e + " e = FormValidator.toBean(" + e + ".class.getName(), row);");
-
-            BeanGenerator.getCheckChilds(s, "e", table.getChildren(), 2);
-
-            s.add("");
-            s.add("                if (e.delete() != 1) {");
-            s.add("                    throw new OptLockError(\"error.cant.delete\", \"" + remarks + "\");");
-            s.add("                }");
-            s.add("                ++count;");
-            s.add("            }");
-            s.add("        }");
-            s.add("");
-            s.add("        if (count == 0) {");
-            s.add("            map.put(\"ERROR\", Messages.get(\"error.nopost\"));");
-            s.add("            return map;");
-            s.add("        }");
-            s.add("");
-            s.add("        map.put(\"INFO\", Messages.get(\"info.delete\"));");
-            s.add("        return map;");
-            s.add("    }");
-            s.add("");
-            s.add("}");
-
-            String javaFilePath = pkgDir + File.separator + e + "SDeleteAction.java";
-            javaFilePaths.put(javaFilePath, PKG_A + ".model.base." + e + "SDeleteAction");
-
-            FileUtil.writeFile(javaFilePath, s);
-        }
-
-        if (IS_GENERATE_AT_STARTUP) {
-            for (Entry<String, String> e : javaFilePaths.entrySet()) {
-                BeanGenerator.javaCompile(e.getKey(), e.getValue());
-            }
+            ActionGeneratorIndex.apply(tableInfos);
+            ActionGeneratorIndex.cancel(tableInfos);
+            ActionGeneratorIndex.permit(tableInfos);
+            ActionGeneratorIndex.forbid(tableInfos);
         }
     }
 
@@ -171,7 +58,7 @@ public final class ActionGeneratorIndex extends BeanGenerator {
      * 検索画面 登録処理出力
      * @param tableInfos テーブル情報のリスト
      */
-    private static void registAction(final List<TableInfo> tableInfos) {
+    private static void regist(final List<TableInfo> tableInfos) {
 
         // 出力フォルダを再作成
         String packagePath = (PKG_A + ".model.base").replace(".", File.separator);
@@ -287,10 +174,123 @@ public final class ActionGeneratorIndex extends BeanGenerator {
     }
 
     /**
+     * 検索画面 登録処理出力
+     * @param tables テーブル情報のリスト
+     */
+    private static void delete(final List<TableInfo> tables) {
+
+        // 出力フォルダを再作成
+        String pkgPath = (PKG_A + ".model.base").replace(".", File.separator);
+        String pkgDir = getProjectDir() + File.separator + DIR_J + File.separator + pkgPath;
+
+        Map<String, String> javaFilePaths = new LinkedHashMap<String, String>();
+
+        for (TableInfo table : tables) {
+
+            if (table.isHistory() || table.isView() || table.isStatusFlow()) {
+                continue;
+            }
+
+            if (table.getPrimaryKeys().size() == 0) {
+                continue;
+            }
+
+            //削除フラグがあればスキップ
+            if (!StringUtil.isNullOrWhiteSpace(DELETE_F) && table.getColumns().containsKey(DELETE_F)) {
+                continue;
+            }
+
+            String e = StringUtil.toPascalCase(table.getName());
+            String remarks = table.getRemarks();
+
+            List<String> s = new ArrayList<String>();
+            s.add("package " + PKG_A + ".model.base;");
+            s.add("");
+            s.add("import java.time.LocalDateTime;");
+            s.add("import java.util.HashMap;");
+            s.add("import java.util.List;");
+            s.add("import java.util.Map;");
+            s.add("");
+            s.add("import " + PKG_E + "." + e + ";");
+            s.add("");
+            s.add("import jp.co.golorp.emarf.action.BaseAction;");
+            s.add("import jp.co.golorp.emarf.exception.OptLockError;");
+            s.add("import jp.co.golorp.emarf.util.Messages;");
+            s.add("import jp.co.golorp.emarf.validation.FormValidator;");
+            s.add("");
+            s.add("/**");
+            s.add(" * " + remarks + "一覧削除");
+            s.add(" *");
+            s.add(" * @author emarfkrow");
+            s.add(" */");
+            s.add("public class " + e + "SDeleteAction extends BaseAction {");
+            s.add("");
+            s.add("    /** " + remarks + "一覧削除処理 */");
+            s.add("    @Override");
+            s.add("    public Map<String, Object> running(final LocalDateTime at, final String by, final Map<String, Object> form) {");
+            s.add("");
+            s.add("        Map<String, Object> map = new HashMap<String, Object>();");
+            s.add("");
+            s.add("        int count = 0;");
+            s.add("");
+            s.add("        @SuppressWarnings(\"unchecked\")");
+            s.add("        List<Map<String, Object>> data = (List<Map<String, Object>>) form.get(\"" + e + "Grid\");");
+            s.add("        if (data != null) {");
+            s.add("            for (Map<String, Object> row : data) {");
+            s.add("");
+            s.add("                if (row.isEmpty()) {");
+            s.add("                    continue;");
+            s.add("                }");
+            s.add("");
+            s.add("                // 主キーが不足していたらエラー");
+            for (String k : table.getPrimaryKeys()) {
+                s.add("                if (jp.co.golorp.emarf.lang.StringUtil.isNullOrWhiteSpace(row.get(\"" + k
+                        + "\"))) {");
+                s.add("                    throw new OptLockError(\"error.cant.delete\", \"" + remarks + "\");");
+                s.add("                }");
+            }
+            s.add("");
+            s.add("                " + e + " e = FormValidator.toBean(" + e + ".class.getName(), row);");
+
+            BeanGenerator.getCheckChilds(s, "e", table.getChildren(), 2);
+
+            s.add("");
+            s.add("                if (e.delete() != 1) {");
+            s.add("                    throw new OptLockError(\"error.cant.delete\", \"" + remarks + "\");");
+            s.add("                }");
+            s.add("                ++count;");
+            s.add("            }");
+            s.add("        }");
+            s.add("");
+            s.add("        if (count == 0) {");
+            s.add("            map.put(\"ERROR\", Messages.get(\"error.nopost\"));");
+            s.add("            return map;");
+            s.add("        }");
+            s.add("");
+            s.add("        map.put(\"INFO\", Messages.get(\"info.delete\"));");
+            s.add("        return map;");
+            s.add("    }");
+            s.add("");
+            s.add("}");
+
+            String javaFilePath = pkgDir + File.separator + e + "SDeleteAction.java";
+            javaFilePaths.put(javaFilePath, PKG_A + ".model.base." + e + "SDeleteAction");
+
+            FileUtil.writeFile(javaFilePath, s);
+        }
+
+        if (IS_GENERATE_AT_STARTUP) {
+            for (Entry<String, String> e : javaFilePaths.entrySet()) {
+                BeanGenerator.javaCompile(e.getKey(), e.getValue());
+            }
+        }
+    }
+
+    /**
      * 検索画面 申請処理出力
      * @param tables テーブル情報のリスト
      */
-    private static void applyAction(final List<TableInfo> tables) {
+    private static void apply(final List<TableInfo> tables) {
 
         // 出力フォルダを再作成
         String packagePath = (PKG_A + ".model.base").replace(".", File.separator);
@@ -410,7 +410,7 @@ public final class ActionGeneratorIndex extends BeanGenerator {
      * 検索画面 取消処理出力
      * @param tables テーブル情報のリスト
      */
-    private static void cancelAction(final List<TableInfo> tables) {
+    private static void cancel(final List<TableInfo> tables) {
 
         // 出力フォルダを再作成
         String packagePath = (PKG_A + ".model.base").replace(".", File.separator);
@@ -530,7 +530,7 @@ public final class ActionGeneratorIndex extends BeanGenerator {
      * 検索画面 承認処理出力
      * @param tables テーブル情報のリスト
      */
-    private static void permitAction(final List<TableInfo> tables) {
+    private static void permit(final List<TableInfo> tables) {
 
         // 出力フォルダを再作成
         String packagePath = (PKG_A + ".model.base").replace(".", File.separator);
@@ -650,7 +650,7 @@ public final class ActionGeneratorIndex extends BeanGenerator {
      * 検索画面 否認処理出力
      * @param tables テーブル情報のリスト
      */
-    private static void forbidAction(final List<TableInfo> tables) {
+    private static void forbid(final List<TableInfo> tables) {
 
         // 出力フォルダを再作成
         String packagePath = (PKG_A + ".model.base").replace(".", File.separator);

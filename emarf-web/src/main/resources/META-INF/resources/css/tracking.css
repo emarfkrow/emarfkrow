@@ -1,0 +1,82 @@
+table.tracking {
+	border-collapse: collapse;
+}
+
+table.tracking * {
+	font-size: small;
+}
+
+table.tracking [name="yyyy"] {
+	width: 2.5rem;
+}
+
+table.tracking [name="mm"],
+table.tracking [name="dd"] {
+	width: 1.5rem;
+}
+
+table.tracking thead,
+table.tracking tfoot {
+	display: block;
+}
+
+table.tracking tbody {
+	display: inline-block;
+	overflow-y: scroll;
+	max-height: 48rem;
+}
+
+table.tracking th,
+table.tracking td {
+	padding: 0px;
+}
+
+table.tracking th {
+	background-color: aliceblue;
+	border: solid 1px #ccc;
+	font-weight: normal;
+	width: 5rem;
+}
+
+table.tracking td {
+	width: 30rem;
+}
+
+table.tracking thead td {
+	background-color: aliceblue;
+	border: solid 1px #ccc;
+	text-align: center;
+}
+
+table.tracking tbody td {
+	background-color: white;
+	border: dashed 1px #ccc;
+	border-right: solid 1px #ccc;
+	height: 1rem;
+}
+
+table.tracking tfoot td {
+	background-color: white;
+	border: solid 1px #ccc;
+}
+
+table.tracking tbody td:nth-child(2n) {
+	border-right: solid 1px #ccc;
+	border-top: solid 1px #ccc;
+}
+
+table.tracking .panelWrapper {
+	position: relative;
+	width: 30rem;
+}
+
+table.tracking .panel {
+	position: absolute;
+	background-color: lightyellow;
+	width: 98%;
+	border-radius: 5px;
+	border: solid 1px #ccc;
+	margin-top: -1px;
+	opacity: 0.5;
+	font-size: small;
+}

@@ -423,8 +423,8 @@ public final class FormValidator {
 
                     try {
 
-                        // ***DeleteFormなら、***RegistFormにしてみる
-                        Class<?> c = Class.forName(className.replaceFirst("Delete", "Regist"));
+                        // ***[Adjust|Delete]Formなら、***RegistFormにしてみる
+                        Class<?> c = Class.forName(className.replaceFirst("Adjust|Delete", "Regist"));
                         formCache.put(className, c);
                         return c;
 

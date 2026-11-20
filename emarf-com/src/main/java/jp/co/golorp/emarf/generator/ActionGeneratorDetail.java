@@ -42,17 +42,19 @@ public final class ActionGeneratorDetail extends BeanGenerator {
      */
     public static void generate(final List<TableInfo> tables) {
 
-        javaActionDetailRegist(tables);
+        regist(tables);
 
-        javaActionDetailGet(tables);
+        get(tables);
 
-        javaActionDetailDelete(tables);
+        adjust(tables);
+
+        delete(tables);
 
         if (!StringUtil.isNullOrWhiteSpace(STATUS_KB)) {
-            javaActionDetailApply(tables);
-            javaActionDetailCancel(tables);
-            javaActionDetailPermit(tables);
-            javaActionDetailForbid(tables);
+            apply(tables);
+            cancel(tables);
+            permit(tables);
+            forbid(tables);
         }
     }
 
@@ -60,7 +62,7 @@ public final class ActionGeneratorDetail extends BeanGenerator {
      * 詳細画面 登録処理出力
      * @param tables テーブル情報のリスト
      */
-    private static void javaActionDetailRegist(final List<TableInfo> tables) {
+    private static void regist(final List<TableInfo> tables) {
         // 出力フォルダを再作成
         String packagePath = (PKG_A + ".model.base").replace(".", File.separator);
         String packageDir = getProjectDir() + File.separator + DIR_J + File.separator + packagePath;
@@ -194,7 +196,529 @@ public final class ActionGeneratorDetail extends BeanGenerator {
      * 詳細画面 登録処理出力
      * @param tables テーブル情報のリスト
      */
-    private static void javaActionDetailGet(final List<TableInfo> tables) {
+    private static void delete(final List<TableInfo> tables) {
+
+        // 出力フォルダを再作成
+        String packagePath = (PKG_A + ".model.base").replace(".", File.separator);
+        String packageDir = getProjectDir() + File.separator + DIR_J + File.separator + packagePath;
+
+        Map<String, String> javaFilePaths = new LinkedHashMap<String, String>();
+
+        for (TableInfo table : tables) {
+
+            if (table.isHistory() || table.isView() || table.isStatusFlow()) {
+                continue;
+            }
+
+            if (table.getPrimaryKeys().size() == 0) {
+                continue;
+            }
+
+            // 論理削除テーブルならスキップ（削除フラグ指定があり、テーブルに削除フラグがある場合）
+            if (!StringUtil.isNullOrWhiteSpace(DELETE_F) && table.getColumns().containsKey(DELETE_F)) {
+                continue;
+            }
+
+            String e = StringUtil.toPascalCase(table.getName());
+
+            List<String> s = new ArrayList<String>();
+            s.add("package " + PKG_A + ".model.base;");
+            s.add("");
+            s.add("import java.time.LocalDateTime;");
+            s.add("import java.util.HashMap;");
+            s.add("import java.util.Map;");
+            s.add("");
+            s.add("import " + PKG_E + "." + e + ";");
+            s.add("");
+            s.add("import jp.co.golorp.emarf.action.BaseAction;");
+            s.add("import jp.co.golorp.emarf.exception.OptLockError;");
+            s.add("import jp.co.golorp.emarf.util.Messages;");
+            s.add("import jp.co.golorp.emarf.validation.FormValidator;");
+            s.add("");
+            s.add("/**");
+            s.add(" * " + table.getRemarks() + "削除");
+            s.add(" *");
+            s.add(" * @author emarfkrow");
+            s.add(" */");
+            s.add("public class " + e + "DeleteAction extends BaseAction {");
+            s.add("");
+            s.add("    /** " + table.getRemarks() + "削除処理 */");
+            s.add("    @Override");
+            s.add("    public Map<String, Object> running(final LocalDateTime at, final String by, final Map<String, Object> form) {");
+            s.add("");
+            s.add("        // 主キーが不足していたらエラー");
+
+            String params = "";
+            for (String primaryKey : table.getPrimaryKeys()) {
+                String camel = StringUtil.toCamelCase(primaryKey);
+                s.add("        Object " + camel + " = form.get(\"" + camel + "\");");
+                s.add("        if (" + camel + " == null) {");
+                s.add("            " + camel + " = form.get(\"" + e + "." + camel + "\");");
+                s.add("        }");
+                s.add("        if (" + camel + " == null) {");
+                s.add("            throw new OptLockError(\"error.cant.delete\", \"" + table.getRemarks() + "\");");
+                s.add("        }");
+                if (params.length() > 0) {
+                    params += ", ";
+                }
+                params += camel;
+            }
+
+            s.add("");
+            s.add("        " + e + " e = FormValidator.toBean(" + e + ".class.getName(), form);");
+
+            BeanGenerator.getCheckChilds(s, "e", table.getChildren(), 0);
+
+            s.add("");
+            s.add("        if (e.delete() != 1) {");
+            s.add("            throw new OptLockError(\"error.cant.delete\", \"" + table.getRemarks() + "\");");
+            s.add("        }");
+            s.add("");
+            s.add("        Map<String, Object> map = new HashMap<String, Object>();");
+            s.add("        map.put(\"INFO\", Messages.get(\"info.delete\"));");
+            s.add("        return map;");
+            s.add("    }");
+            s.add("");
+            s.add("}");
+
+            String javaFilePath = packageDir + File.separator + e + "DeleteAction.java";
+            javaFilePaths.put(javaFilePath, PKG_A + ".model.base." + e + "DeleteAction");
+
+            FileUtil.writeFile(javaFilePath, s);
+        }
+
+        if (IS_GENERATE_AT_STARTUP) {
+            for (Entry<String, String> e : javaFilePaths.entrySet()) {
+                BeanGenerator.javaCompile(e.getKey(), e.getValue());
+            }
+        }
+    }
+
+    /**
+     * 詳細画面 申請処理出力
+     * @param tables テーブル情報のリスト
+     */
+    private static void apply(final List<TableInfo> tables) {
+
+        // 出力フォルダを再作成
+        String packagePath = (PKG_A + ".model.base").replace(".", File.separator);
+        String packageDir = getProjectDir() + File.separator + DIR_J + File.separator + packagePath;
+
+        Map<String, String> javaFilePaths = new LinkedHashMap<String, String>();
+
+        for (TableInfo table : tables) {
+
+            if (table.isHistory() || table.isView() || table.isStatusFlow()
+                    || !table.getColumns().containsKey(STATUS_KB)) {
+                continue;
+            }
+
+            String entity = StringUtil.toPascalCase(table.getName());
+            String remarks = table.getRemarks();
+
+            List<String> s = new ArrayList<String>();
+            s.add("package " + PKG_A + ".model.base;");
+            s.add("");
+            s.add("import java.time.LocalDateTime;");
+            s.add("import java.util.HashMap;");
+            s.add("import java.util.Map;");
+            s.add("");
+            s.add("import " + PKG_E + "." + entity + ";");
+            s.add("");
+            s.add("import jp.co.golorp.emarf.action.BaseAction;");
+            s.add("import jp.co.golorp.emarf.exception.OptLockError;");
+            s.add("import jp.co.golorp.emarf.util.Messages;");
+            s.add("import jp.co.golorp.emarf.validation.FormValidator;");
+            s.add("");
+            s.add("/**");
+            s.add(" * " + remarks + "申請");
+            s.add(" *");
+            s.add(" * @author emarfkrow");
+            s.add(" */");
+            s.add("public class " + entity + "ApplyAction extends BaseAction {");
+            s.add("");
+            s.add("    /** " + remarks + "申請処理 */");
+            s.add("    @Override");
+            s.add("    public Map<String, Object> running(final LocalDateTime at, final String by, final Map<String, Object> form) {");
+            s.add("");
+            s.add("        // 主キーが不足していたらエラー");
+            String params = "";
+            for (String primaryKey : table.getPrimaryKeys()) {
+                String property = StringUtil.toCamelCase(primaryKey);
+                String accessor = StringUtil.toPascalCase(primaryKey);
+                s.add("        Object " + property + " = form.get(\"" + property + "\");");
+                s.add("        if (" + property + " == null) {");
+                s.add("            " + property + " = form.get(\"" + entity + "." + property + "\");");
+                s.add("        }");
+                s.add("        if (" + property + " == null) {");
+                s.add("            throw new OptLockError(\"error.cant.apply\", \"" + remarks + "\");");
+                s.add("        }");
+                if (params.length() > 0) {
+                    params += ", ";
+                }
+                params += "e.get" + accessor + "()";
+            }
+            s.add("");
+            s.add("        " + entity + " e = FormValidator.toBean(" + entity + ".class.getName(), form);");
+            List<TableInfo> childInfos = table.getChildren();
+            BeanGenerator.getApplyChilds(s, "e", childInfos, 0);
+            s.add("");
+            //s.add("        " + entity + " f = " + entity + ".get(" + params + ");");
+            if (table.getColumns().containsKey(STATUS_KB)) {
+                String acc = StringUtil.toPascalCase(STATUS_KB);
+                String fld = StringUtil.toCamelCase(STATUS_KB);
+                s.add("        if (e.get" + acc + "() != null && !e.get" + acc + "().equals(\"\")) {");
+                s.add("            throw new jp.co.golorp.emarf.exception.AppError(\"error.notmatch\",");
+                s.add("                    Messages.get(\"" + entity + "." + fld
+                        + "\"), Messages.get(\"common.notapply\"));");
+                s.add("        }");
+                s.add("        e.set" + acc + "(0);");
+                s.add("");
+            }
+            s.add("        if (e.update(at, by) != 1) {");
+            s.add("            throw new OptLockError(\"error.cant.apply\", \"" + remarks + "\");");
+            s.add("        }");
+            s.add("");
+            s.add("        Map<String, Object> map = new HashMap<String, Object>();");
+            s.add("        map.put(\"INFO\", Messages.get(\"info.apply\"));");
+            s.add("        return map;");
+            s.add("    }");
+            s.add("");
+            s.add("}");
+
+            String javaFilePath = packageDir + File.separator + entity + "ApplyAction.java";
+            javaFilePaths.put(javaFilePath, PKG_A + ".model.base." + entity + "ApplyAction");
+
+            FileUtil.writeFile(javaFilePath, s);
+        }
+
+        if (IS_GENERATE_AT_STARTUP) {
+            for (Entry<String, String> e : javaFilePaths.entrySet()) {
+                BeanGenerator.javaCompile(e.getKey(), e.getValue());
+            }
+        }
+    }
+
+    /**
+     * 詳細画面 取消処理出力
+     * @param tables テーブル情報のリスト
+     */
+    private static void cancel(final List<TableInfo> tables) {
+
+        // 出力フォルダを再作成
+        String packagePath = (PKG_A + ".model.base").replace(".", File.separator);
+        String packageDir = getProjectDir() + File.separator + DIR_J + File.separator + packagePath;
+
+        Map<String, String> javaFilePaths = new LinkedHashMap<String, String>();
+
+        for (TableInfo table : tables) {
+
+            if (table.isHistory() || table.isView() || table.isStatusFlow()
+                    || !table.getColumns().containsKey(STATUS_KB)) {
+                continue;
+            }
+
+            String entity = StringUtil.toPascalCase(table.getName());
+            String remarks = table.getRemarks();
+
+            List<String> s = new ArrayList<String>();
+            s.add("package " + PKG_A + ".model.base;");
+            s.add("");
+            s.add("import java.time.LocalDateTime;");
+            s.add("import java.util.HashMap;");
+            s.add("import java.util.Map;");
+            s.add("");
+            s.add("import " + PKG_E + "." + entity + ";");
+            s.add("");
+            s.add("import jp.co.golorp.emarf.action.BaseAction;");
+            s.add("import jp.co.golorp.emarf.exception.OptLockError;");
+            s.add("import jp.co.golorp.emarf.util.Messages;");
+            s.add("import jp.co.golorp.emarf.validation.FormValidator;");
+            s.add("");
+            s.add("/**");
+            s.add(" * " + remarks + "取消");
+            s.add(" *");
+            s.add(" * @author emarfkrow");
+            s.add(" */");
+            s.add("public class " + entity + "CancelAction extends BaseAction {");
+            s.add("");
+            s.add("    /** " + remarks + "取消処理 */");
+            s.add("    @Override");
+            s.add("    public Map<String, Object> running(final LocalDateTime at, final String by, final Map<String, Object> form) {");
+            s.add("");
+            s.add("        // 主キーが不足していたらエラー");
+            String params = "";
+            for (String primaryKey : table.getPrimaryKeys()) {
+                String property = StringUtil.toCamelCase(primaryKey);
+                String accessor = StringUtil.toPascalCase(primaryKey);
+                s.add("        Object " + property + " = form.get(\"" + property + "\");");
+                s.add("        if (" + property + " == null) {");
+                s.add("            " + property + " = form.get(\"" + entity + "." + property + "\");");
+                s.add("        }");
+                s.add("        if (" + property + " == null) {");
+                s.add("            throw new OptLockError(\"error.cant.cancel\", \"" + remarks + "\");");
+                s.add("        }");
+                if (params.length() > 0) {
+                    params += ", ";
+                }
+                params += "e.get" + accessor + "()";
+            }
+            s.add("");
+            s.add("        " + entity + " e = FormValidator.toBean(" + entity + ".class.getName(), form);");
+            List<TableInfo> childInfos = table.getChildren();
+            BeanGenerator.getCancelChilds(s, "e", childInfos, 0);
+            s.add("");
+            //s.add("        " + entity + " f = " + entity + ".get(" + params + ");");
+            if (table.getColumns().containsKey(STATUS_KB)) {
+                String acc = StringUtil.toPascalCase(STATUS_KB);
+                String fld = StringUtil.toCamelCase(STATUS_KB);
+                s.add("        if (!e.get" + acc + "().equals(\"0\") && !e.get" + acc + "().equals(\"-1\")) {");
+                s.add("            throw new jp.co.golorp.emarf.exception.AppError(\"error.notmatch\",");
+                s.add("                    Messages.get(\"" + entity + "." + fld
+                        + "\"), Messages.get(\"common.apply.forbid\"));");
+                s.add("        }");
+                s.add("        e.set" + acc + "(null);");
+                s.add("");
+            }
+            s.add("        if (e.update(at, by) != 1) {");
+            s.add("            throw new OptLockError(\"error.cant.cancel\", \"" + remarks + "\");");
+            s.add("        }");
+            s.add("");
+            s.add("        Map<String, Object> map = new HashMap<String, Object>();");
+            s.add("        map.put(\"INFO\", Messages.get(\"info.cancel\"));");
+            s.add("        return map;");
+            s.add("    }");
+            s.add("");
+            s.add("}");
+
+            String javaFilePath = packageDir + File.separator + entity + "CancelAction.java";
+            javaFilePaths.put(javaFilePath, PKG_A + ".model.base." + entity + "CancelAction");
+
+            FileUtil.writeFile(javaFilePath, s);
+        }
+
+        if (IS_GENERATE_AT_STARTUP) {
+            for (Entry<String, String> e : javaFilePaths.entrySet()) {
+                BeanGenerator.javaCompile(e.getKey(), e.getValue());
+            }
+        }
+    }
+
+    /**
+     * 詳細画面 承認処理出力
+     * @param tables テーブル情報のリスト
+     */
+    private static void permit(final List<TableInfo> tables) {
+
+        // 出力フォルダを再作成
+        String packagePath = (PKG_A + ".model.base").replace(".", File.separator);
+        String packageDir = getProjectDir() + File.separator + DIR_J + File.separator + packagePath;
+
+        Map<String, String> javaFilePaths = new LinkedHashMap<String, String>();
+
+        for (TableInfo table : tables) {
+
+            if (table.isHistory() || table.isView() || table.isStatusFlow()
+                    || !table.getColumns().containsKey(STATUS_KB)) {
+                continue;
+            }
+
+            String entity = StringUtil.toPascalCase(table.getName());
+            String remarks = table.getRemarks();
+
+            List<String> s = new ArrayList<String>();
+            s.add("package " + PKG_A + ".model.base;");
+            s.add("");
+            s.add("import java.time.LocalDateTime;");
+            s.add("import java.util.HashMap;");
+            s.add("import java.util.Map;");
+            s.add("");
+            s.add("import " + PKG_E + "." + entity + ";");
+            s.add("");
+            s.add("import jp.co.golorp.emarf.action.BaseAction;");
+            s.add("import jp.co.golorp.emarf.exception.OptLockError;");
+            s.add("import jp.co.golorp.emarf.util.Messages;");
+            s.add("import jp.co.golorp.emarf.validation.FormValidator;");
+            s.add("");
+            s.add("/**");
+            s.add(" * " + remarks + "承認");
+            s.add(" *");
+            s.add(" * @author emarfkrow");
+            s.add(" */");
+            s.add("public class " + entity + "PermitAction extends BaseAction {");
+            s.add("");
+            s.add("    /** " + remarks + "承認処理 */");
+            s.add("    @Override");
+            s.add("    public Map<String, Object> running(final LocalDateTime at, final String by, final Map<String, Object> form) {");
+            s.add("");
+            s.add("        // 主キーが不足していたらエラー");
+            String params = "";
+            for (String primaryKey : table.getPrimaryKeys()) {
+                String property = StringUtil.toCamelCase(primaryKey);
+                String accessor = StringUtil.toPascalCase(primaryKey);
+                s.add("        Object " + property + " = form.get(\"" + property + "\");");
+                s.add("        if (" + property + " == null) {");
+                s.add("            " + property + " = form.get(\"" + entity + "." + property + "\");");
+                s.add("        }");
+                s.add("        if (" + property + " == null) {");
+                s.add("            throw new OptLockError(\"error.cant.permit\", \"" + remarks + "\");");
+                s.add("        }");
+                if (params.length() > 0) {
+                    params += ", ";
+                }
+                params += "e.get" + accessor + "()";
+            }
+            s.add("");
+            s.add("        " + entity + " e = FormValidator.toBean(" + entity + ".class.getName(), form);");
+            List<TableInfo> childInfos = table.getChildren();
+            BeanGenerator.getPermitChilds(s, "e", childInfos, 0);
+            s.add("");
+            //s.add("        " + entity + " f = " + entity + ".get(" + params + ");");
+            if (table.getColumns().containsKey(STATUS_KB)) {
+                String acc = StringUtil.toPascalCase(STATUS_KB);
+                String fld = StringUtil.toCamelCase(STATUS_KB);
+                s.add("        if (e.get" + acc + "() != null && !e.get" + acc + "().equals(\"0\")) {");
+                s.add("            throw new jp.co.golorp.emarf.exception.AppError(\"error.notmatch\",");
+                s.add("                    Messages.get(\"" + entity + "." + fld
+                        + "\"), Messages.get(\"common.applied\"));");
+                s.add("        }");
+                s.add("        e.set" + acc + "(1);");
+                s.add("");
+            }
+            s.add("        if (e.update(at, by) != 1) {");
+            s.add("            throw new OptLockError(\"error.cant.permit\", \"" + remarks + "\");");
+            s.add("        }");
+            s.add("");
+            s.add("        Map<String, Object> map = new HashMap<String, Object>();");
+            s.add("        map.put(\"INFO\", Messages.get(\"info.permit\"));");
+            s.add("        return map;");
+            s.add("    }");
+            s.add("");
+            s.add("}");
+
+            String javaFilePath = packageDir + File.separator + entity + "PermitAction.java";
+            javaFilePaths.put(javaFilePath, PKG_A + ".model.base." + entity + "PermitAction");
+
+            FileUtil.writeFile(javaFilePath, s);
+        }
+
+        if (IS_GENERATE_AT_STARTUP) {
+            for (Entry<String, String> e : javaFilePaths.entrySet()) {
+                BeanGenerator.javaCompile(e.getKey(), e.getValue());
+            }
+        }
+    }
+
+    /**
+     * 詳細画面 否認処理出力
+     * @param tables テーブル情報のリスト
+     */
+    private static void forbid(final List<TableInfo> tables) {
+
+        // 出力フォルダを再作成
+        String packagePath = (PKG_A + ".model.base").replace(".", File.separator);
+        String packageDir = getProjectDir() + File.separator + DIR_J + File.separator + packagePath;
+
+        Map<String, String> javaFilePaths = new LinkedHashMap<String, String>();
+
+        for (TableInfo table : tables) {
+
+            if (table.isHistory() || table.isView() || table.isStatusFlow()
+                    || !table.getColumns().containsKey(STATUS_KB)) {
+                continue;
+            }
+
+            String entity = StringUtil.toPascalCase(table.getName());
+            String remarks = table.getRemarks();
+
+            List<String> s = new ArrayList<String>();
+            s.add("package " + PKG_A + ".model.base;");
+            s.add("");
+            s.add("import java.time.LocalDateTime;");
+            s.add("import java.util.HashMap;");
+            s.add("import java.util.Map;");
+            s.add("");
+            s.add("import " + PKG_E + "." + entity + ";");
+            s.add("");
+            s.add("import jp.co.golorp.emarf.action.BaseAction;");
+            s.add("import jp.co.golorp.emarf.exception.OptLockError;");
+            s.add("import jp.co.golorp.emarf.util.Messages;");
+            s.add("import jp.co.golorp.emarf.validation.FormValidator;");
+            s.add("");
+            s.add("/**");
+            s.add(" * " + remarks + "否認");
+            s.add(" *");
+            s.add(" * @author emarfkrow");
+            s.add(" */");
+            s.add("public class " + entity + "ForbidAction extends BaseAction {");
+            s.add("");
+            s.add("    /** " + remarks + "否認処理 */");
+            s.add("    @Override");
+            s.add("    public Map<String, Object> running(final LocalDateTime at, final String by, final Map<String, Object> form) {");
+            s.add("");
+            s.add("        // 主キーが不足していたらエラー");
+            String params = "";
+            for (String primaryKey : table.getPrimaryKeys()) {
+                String property = StringUtil.toCamelCase(primaryKey);
+                String accessor = StringUtil.toPascalCase(primaryKey);
+                s.add("        Object " + property + " = form.get(\"" + property + "\");");
+                s.add("        if (" + property + " == null) {");
+                s.add("            " + property + " = form.get(\"" + entity + "." + property + "\");");
+                s.add("        }");
+                s.add("        if (" + property + " == null) {");
+                s.add("            throw new OptLockError(\"error.cant.forbid\", \"" + remarks + "\");");
+                s.add("        }");
+                if (params.length() > 0) {
+                    params += ", ";
+                }
+                params += "e.get" + accessor + "()";
+            }
+            s.add("");
+            s.add("        " + entity + " e = FormValidator.toBean(" + entity + ".class.getName(), form);");
+            List<TableInfo> childInfos = table.getChildren();
+            BeanGenerator.getForbidChilds(s, "e", childInfos, 0);
+            s.add("");
+            //s.add("        " + entity + " f = " + entity + ".get(" + params + ");");
+            if (table.getColumns().containsKey(STATUS_KB)) {
+                String acc = StringUtil.toPascalCase(STATUS_KB);
+                String fld = StringUtil.toCamelCase(STATUS_KB);
+                s.add("        if (!e.get" + acc + "().equals(\"0\") && !e.get" + acc + "().equals(\"1\")) {");
+                s.add("            throw new jp.co.golorp.emarf.exception.AppError(\"error.notmatch\",");
+                s.add("                    Messages.get(\"" + entity + "." + fld
+                        + "\"), Messages.get(\"common.apply.permit\"));");
+                s.add("        }");
+                s.add("        e.set" + acc + "(-1);");
+                s.add("");
+            }
+            s.add("        if (e.update(at, by) != 1) {");
+            s.add("            throw new OptLockError(\"error.cant.forbid\", \"" + remarks + "\");");
+            s.add("        }");
+            s.add("");
+            s.add("        Map<String, Object> map = new HashMap<String, Object>();");
+            s.add("        map.put(\"INFO\", Messages.get(\"info.forbid\"));");
+            s.add("        return map;");
+            s.add("    }");
+            s.add("");
+            s.add("}");
+
+            String javaFilePath = packageDir + File.separator + entity + "ForbidAction.java";
+            javaFilePaths.put(javaFilePath, PKG_A + ".model.base." + entity + "ForbidAction");
+
+            FileUtil.writeFile(javaFilePath, s);
+        }
+
+        if (IS_GENERATE_AT_STARTUP) {
+            for (Entry<String, String> e : javaFilePaths.entrySet()) {
+                BeanGenerator.javaCompile(e.getKey(), e.getValue());
+            }
+        }
+    }
+
+    /**
+     * 詳細画面 登録処理出力
+     * @param tables テーブル情報のリスト
+     */
+    private static void get(final List<TableInfo> tables) {
         // 出力フォルダを再作成
         String pPath = (PKG_A + ".model.base").replace(".", File.separator);
         String pDir = getProjectDir() + File.separator + DIR_J + File.separator + pPath;
@@ -346,524 +870,6 @@ public final class ActionGeneratorDetail extends BeanGenerator {
     }
 
     /**
-     * 詳細画面 登録処理出力
-     * @param tables テーブル情報のリスト
-     */
-    private static void javaActionDetailDelete(final List<TableInfo> tables) {
-
-        // 出力フォルダを再作成
-        String packagePath = (PKG_A + ".model.base").replace(".", File.separator);
-        String packageDir = getProjectDir() + File.separator + DIR_J + File.separator + packagePath;
-
-        Map<String, String> javaFilePaths = new LinkedHashMap<String, String>();
-
-        for (TableInfo table : tables) {
-
-            if (table.isHistory() || table.isView() || table.isStatusFlow()) {
-                continue;
-            }
-
-            if (table.getPrimaryKeys().size() == 0) {
-                continue;
-            }
-
-            // 論理削除テーブルならスキップ（削除フラグ指定があり、テーブルに削除フラグがある場合）
-            if (!StringUtil.isNullOrWhiteSpace(DELETE_F) && table.getColumns().containsKey(DELETE_F)) {
-                continue;
-            }
-
-            String e = StringUtil.toPascalCase(table.getName());
-
-            List<String> s = new ArrayList<String>();
-            s.add("package " + PKG_A + ".model.base;");
-            s.add("");
-            s.add("import java.time.LocalDateTime;");
-            s.add("import java.util.HashMap;");
-            s.add("import java.util.Map;");
-            s.add("");
-            s.add("import " + PKG_E + "." + e + ";");
-            s.add("");
-            s.add("import jp.co.golorp.emarf.action.BaseAction;");
-            s.add("import jp.co.golorp.emarf.exception.OptLockError;");
-            s.add("import jp.co.golorp.emarf.util.Messages;");
-            s.add("import jp.co.golorp.emarf.validation.FormValidator;");
-            s.add("");
-            s.add("/**");
-            s.add(" * " + table.getRemarks() + "削除");
-            s.add(" *");
-            s.add(" * @author emarfkrow");
-            s.add(" */");
-            s.add("public class " + e + "DeleteAction extends BaseAction {");
-            s.add("");
-            s.add("    /** " + table.getRemarks() + "削除処理 */");
-            s.add("    @Override");
-            s.add("    public Map<String, Object> running(final LocalDateTime at, final String by, final Map<String, Object> form) {");
-            s.add("");
-            s.add("        // 主キーが不足していたらエラー");
-
-            String params = "";
-            for (String primaryKey : table.getPrimaryKeys()) {
-                String camel = StringUtil.toCamelCase(primaryKey);
-                s.add("        Object " + camel + " = form.get(\"" + camel + "\");");
-                s.add("        if (" + camel + " == null) {");
-                s.add("            " + camel + " = form.get(\"" + e + "." + camel + "\");");
-                s.add("        }");
-                s.add("        if (" + camel + " == null) {");
-                s.add("            throw new OptLockError(\"error.cant.delete\", \"" + table.getRemarks() + "\");");
-                s.add("        }");
-                if (params.length() > 0) {
-                    params += ", ";
-                }
-                params += camel;
-            }
-
-            s.add("");
-            s.add("        " + e + " e = FormValidator.toBean(" + e + ".class.getName(), form);");
-
-            BeanGenerator.getCheckChilds(s, "e", table.getChildren(), 0);
-
-            s.add("");
-            s.add("        if (e.delete() != 1) {");
-            s.add("            throw new OptLockError(\"error.cant.delete\", \"" + table.getRemarks() + "\");");
-            s.add("        }");
-            s.add("");
-            s.add("        Map<String, Object> map = new HashMap<String, Object>();");
-            s.add("        map.put(\"INFO\", Messages.get(\"info.delete\"));");
-            s.add("        return map;");
-            s.add("    }");
-            s.add("");
-            s.add("}");
-
-            String javaFilePath = packageDir + File.separator + e + "DeleteAction.java";
-            javaFilePaths.put(javaFilePath, PKG_A + ".model.base." + e + "DeleteAction");
-
-            FileUtil.writeFile(javaFilePath, s);
-        }
-
-        if (IS_GENERATE_AT_STARTUP) {
-            for (Entry<String, String> e : javaFilePaths.entrySet()) {
-                BeanGenerator.javaCompile(e.getKey(), e.getValue());
-            }
-        }
-    }
-
-    /**
-     * 詳細画面 申請処理出力
-     * @param tables テーブル情報のリスト
-     */
-    private static void javaActionDetailApply(final List<TableInfo> tables) {
-
-        // 出力フォルダを再作成
-        String packagePath = (PKG_A + ".model.base").replace(".", File.separator);
-        String packageDir = getProjectDir() + File.separator + DIR_J + File.separator + packagePath;
-
-        Map<String, String> javaFilePaths = new LinkedHashMap<String, String>();
-
-        for (TableInfo table : tables) {
-
-            if (table.isHistory() || table.isView() || table.isStatusFlow()
-                    || !table.getColumns().containsKey(STATUS_KB)) {
-                continue;
-            }
-
-            String entity = StringUtil.toPascalCase(table.getName());
-            String remarks = table.getRemarks();
-
-            List<String> s = new ArrayList<String>();
-            s.add("package " + PKG_A + ".model.base;");
-            s.add("");
-            s.add("import java.time.LocalDateTime;");
-            s.add("import java.util.HashMap;");
-            s.add("import java.util.Map;");
-            s.add("");
-            s.add("import " + PKG_E + "." + entity + ";");
-            s.add("");
-            s.add("import jp.co.golorp.emarf.action.BaseAction;");
-            s.add("import jp.co.golorp.emarf.exception.OptLockError;");
-            s.add("import jp.co.golorp.emarf.util.Messages;");
-            s.add("import jp.co.golorp.emarf.validation.FormValidator;");
-            s.add("");
-            s.add("/**");
-            s.add(" * " + remarks + "申請");
-            s.add(" *");
-            s.add(" * @author emarfkrow");
-            s.add(" */");
-            s.add("public class " + entity + "ApplyAction extends BaseAction {");
-            s.add("");
-            s.add("    /** " + remarks + "申請処理 */");
-            s.add("    @Override");
-            s.add("    public Map<String, Object> running(final LocalDateTime at, final String by, final Map<String, Object> form) {");
-            s.add("");
-            s.add("        // 主キーが不足していたらエラー");
-            String params = "";
-            for (String primaryKey : table.getPrimaryKeys()) {
-                String property = StringUtil.toCamelCase(primaryKey);
-                String accessor = StringUtil.toPascalCase(primaryKey);
-                s.add("        Object " + property + " = form.get(\"" + property + "\");");
-                s.add("        if (" + property + " == null) {");
-                s.add("            " + property + " = form.get(\"" + entity + "." + property + "\");");
-                s.add("        }");
-                s.add("        if (" + property + " == null) {");
-                s.add("            throw new OptLockError(\"error.cant.apply\", \"" + remarks + "\");");
-                s.add("        }");
-                if (params.length() > 0) {
-                    params += ", ";
-                }
-                params += "e.get" + accessor + "()";
-            }
-            s.add("");
-            s.add("        " + entity + " e = FormValidator.toBean(" + entity + ".class.getName(), form);");
-            List<TableInfo> childInfos = table.getChildren();
-            BeanGenerator.getApplyChilds(s, "e", childInfos, 0);
-            s.add("");
-            //s.add("        " + entity + " f = " + entity + ".get(" + params + ");");
-            if (table.getColumns().containsKey(STATUS_KB)) {
-                String acc = StringUtil.toPascalCase(STATUS_KB);
-                String fld = StringUtil.toCamelCase(STATUS_KB);
-                s.add("        if (e.get" + acc + "() != null && !e.get" + acc + "().equals(\"\")) {");
-                s.add("            throw new jp.co.golorp.emarf.exception.AppError(\"error.notmatch\",");
-                s.add("                    Messages.get(\"" + entity + "." + fld
-                        + "\"), Messages.get(\"common.notapply\"));");
-                s.add("        }");
-                s.add("        e.set" + acc + "(0);");
-            }
-            s.add("        if (e.update(at, by) != 1) {");
-            s.add("            throw new OptLockError(\"error.cant.apply\", \"" + remarks + "\");");
-            s.add("        }");
-            s.add("");
-            s.add("        Map<String, Object> map = new HashMap<String, Object>();");
-            s.add("        map.put(\"INFO\", Messages.get(\"info.apply\"));");
-            s.add("        return map;");
-            s.add("    }");
-            s.add("");
-            s.add("}");
-
-            String javaFilePath = packageDir + File.separator + entity + "ApplyAction.java";
-            javaFilePaths.put(javaFilePath, PKG_A + ".model.base." + entity + "ApplyAction");
-
-            FileUtil.writeFile(javaFilePath, s);
-        }
-
-        if (IS_GENERATE_AT_STARTUP) {
-            for (Entry<String, String> e : javaFilePaths.entrySet()) {
-                BeanGenerator.javaCompile(e.getKey(), e.getValue());
-            }
-        }
-    }
-
-    /**
-     * 詳細画面 取消処理出力
-     * @param tables テーブル情報のリスト
-     */
-    private static void javaActionDetailCancel(final List<TableInfo> tables) {
-
-        // 出力フォルダを再作成
-        String packagePath = (PKG_A + ".model.base").replace(".", File.separator);
-        String packageDir = getProjectDir() + File.separator + DIR_J + File.separator + packagePath;
-
-        Map<String, String> javaFilePaths = new LinkedHashMap<String, String>();
-
-        for (TableInfo table : tables) {
-
-            if (table.isHistory() || table.isView() || table.isStatusFlow()
-                    || !table.getColumns().containsKey(STATUS_KB)) {
-                continue;
-            }
-
-            String entity = StringUtil.toPascalCase(table.getName());
-            String remarks = table.getRemarks();
-
-            List<String> s = new ArrayList<String>();
-            s.add("package " + PKG_A + ".model.base;");
-            s.add("");
-            s.add("import java.time.LocalDateTime;");
-            s.add("import java.util.HashMap;");
-            s.add("import java.util.Map;");
-            s.add("");
-            s.add("import " + PKG_E + "." + entity + ";");
-            s.add("");
-            s.add("import jp.co.golorp.emarf.action.BaseAction;");
-            s.add("import jp.co.golorp.emarf.exception.OptLockError;");
-            s.add("import jp.co.golorp.emarf.util.Messages;");
-            s.add("import jp.co.golorp.emarf.validation.FormValidator;");
-            s.add("");
-            s.add("/**");
-            s.add(" * " + remarks + "取消");
-            s.add(" *");
-            s.add(" * @author emarfkrow");
-            s.add(" */");
-            s.add("public class " + entity + "CancelAction extends BaseAction {");
-            s.add("");
-            s.add("    /** " + remarks + "取消処理 */");
-            s.add("    @Override");
-            s.add("    public Map<String, Object> running(final LocalDateTime at, final String by, final Map<String, Object> form) {");
-            s.add("");
-            s.add("        // 主キーが不足していたらエラー");
-            String params = "";
-            for (String primaryKey : table.getPrimaryKeys()) {
-                String property = StringUtil.toCamelCase(primaryKey);
-                String accessor = StringUtil.toPascalCase(primaryKey);
-                s.add("        Object " + property + " = form.get(\"" + property + "\");");
-                s.add("        if (" + property + " == null) {");
-                s.add("            " + property + " = form.get(\"" + entity + "." + property + "\");");
-                s.add("        }");
-                s.add("        if (" + property + " == null) {");
-                s.add("            throw new OptLockError(\"error.cant.cancel\", \"" + remarks + "\");");
-                s.add("        }");
-                if (params.length() > 0) {
-                    params += ", ";
-                }
-                params += "e.get" + accessor + "()";
-            }
-            s.add("");
-            s.add("        " + entity + " e = FormValidator.toBean(" + entity + ".class.getName(), form);");
-            List<TableInfo> childInfos = table.getChildren();
-            BeanGenerator.getCancelChilds(s, "e", childInfos, 0);
-            s.add("");
-            //s.add("        " + entity + " f = " + entity + ".get(" + params + ");");
-            if (table.getColumns().containsKey(STATUS_KB)) {
-                String acc = StringUtil.toPascalCase(STATUS_KB);
-                String fld = StringUtil.toCamelCase(STATUS_KB);
-                s.add("        if (!e.get" + acc + "().equals(\"0\") && !e.get" + acc + "().equals(\"-1\")) {");
-                s.add("            throw new jp.co.golorp.emarf.exception.AppError(\"error.notmatch\",");
-                s.add("                    Messages.get(\"" + entity + "." + fld
-                        + "\"), Messages.get(\"common.apply.forbid\"));");
-                s.add("        }");
-                s.add("        e.set" + acc + "(null);");
-            }
-            s.add("        if (e.update(at, by) != 1) {");
-            s.add("            throw new OptLockError(\"error.cant.cancel\", \"" + remarks + "\");");
-            s.add("        }");
-            s.add("");
-            s.add("        Map<String, Object> map = new HashMap<String, Object>();");
-            s.add("        map.put(\"INFO\", Messages.get(\"info.cancel\"));");
-            s.add("        return map;");
-            s.add("    }");
-            s.add("");
-            s.add("}");
-
-            String javaFilePath = packageDir + File.separator + entity + "CancelAction.java";
-            javaFilePaths.put(javaFilePath, PKG_A + ".model.base." + entity + "CancelAction");
-
-            FileUtil.writeFile(javaFilePath, s);
-        }
-
-        if (IS_GENERATE_AT_STARTUP) {
-            for (Entry<String, String> e : javaFilePaths.entrySet()) {
-                BeanGenerator.javaCompile(e.getKey(), e.getValue());
-            }
-        }
-    }
-
-    /**
-     * 詳細画面 承認処理出力
-     * @param tables テーブル情報のリスト
-     */
-    private static void javaActionDetailPermit(final List<TableInfo> tables) {
-
-        // 出力フォルダを再作成
-        String packagePath = (PKG_A + ".model.base").replace(".", File.separator);
-        String packageDir = getProjectDir() + File.separator + DIR_J + File.separator + packagePath;
-
-        Map<String, String> javaFilePaths = new LinkedHashMap<String, String>();
-
-        for (TableInfo table : tables) {
-
-            if (table.isHistory() || table.isView() || table.isStatusFlow()
-                    || !table.getColumns().containsKey(STATUS_KB)) {
-                continue;
-            }
-
-            String entity = StringUtil.toPascalCase(table.getName());
-            String remarks = table.getRemarks();
-
-            List<String> s = new ArrayList<String>();
-            s.add("package " + PKG_A + ".model.base;");
-            s.add("");
-            s.add("import java.time.LocalDateTime;");
-            s.add("import java.util.HashMap;");
-            s.add("import java.util.Map;");
-            s.add("");
-            s.add("import " + PKG_E + "." + entity + ";");
-            s.add("");
-            s.add("import jp.co.golorp.emarf.action.BaseAction;");
-            s.add("import jp.co.golorp.emarf.exception.OptLockError;");
-            s.add("import jp.co.golorp.emarf.util.Messages;");
-            s.add("import jp.co.golorp.emarf.validation.FormValidator;");
-            s.add("");
-            s.add("/**");
-            s.add(" * " + remarks + "承認");
-            s.add(" *");
-            s.add(" * @author emarfkrow");
-            s.add(" */");
-            s.add("public class " + entity + "PermitAction extends BaseAction {");
-            s.add("");
-            s.add("    /** " + remarks + "承認処理 */");
-            s.add("    @Override");
-            s.add("    public Map<String, Object> running(final LocalDateTime at, final String by, final Map<String, Object> form) {");
-            s.add("");
-            s.add("        // 主キーが不足していたらエラー");
-            String params = "";
-            for (String primaryKey : table.getPrimaryKeys()) {
-                String property = StringUtil.toCamelCase(primaryKey);
-                String accessor = StringUtil.toPascalCase(primaryKey);
-                s.add("        Object " + property + " = form.get(\"" + property + "\");");
-                s.add("        if (" + property + " == null) {");
-                s.add("            " + property + " = form.get(\"" + entity + "." + property + "\");");
-                s.add("        }");
-                s.add("        if (" + property + " == null) {");
-                s.add("            throw new OptLockError(\"error.cant.permit\", \"" + remarks + "\");");
-                s.add("        }");
-                if (params.length() > 0) {
-                    params += ", ";
-                }
-                params += "e.get" + accessor + "()";
-            }
-            s.add("");
-            s.add("        " + entity + " e = FormValidator.toBean(" + entity + ".class.getName(), form);");
-            List<TableInfo> childInfos = table.getChildren();
-            BeanGenerator.getPermitChilds(s, "e", childInfos, 0);
-            s.add("");
-            //s.add("        " + entity + " f = " + entity + ".get(" + params + ");");
-            if (table.getColumns().containsKey(STATUS_KB)) {
-                String acc = StringUtil.toPascalCase(STATUS_KB);
-                String fld = StringUtil.toCamelCase(STATUS_KB);
-                s.add("        if (e.get" + acc + "() != null && !e.get" + acc + "().equals(\"0\")) {");
-                s.add("            throw new jp.co.golorp.emarf.exception.AppError(\"error.notmatch\",");
-                s.add("                    Messages.get(\"" + entity + "." + fld
-                        + "\"), Messages.get(\"common.applied\"));");
-                s.add("        }");
-                s.add("        e.set" + acc + "(1);");
-            }
-            s.add("        if (e.update(at, by) != 1) {");
-            s.add("            throw new OptLockError(\"error.cant.permit\", \"" + remarks + "\");");
-            s.add("        }");
-            s.add("");
-            s.add("        Map<String, Object> map = new HashMap<String, Object>();");
-            s.add("        map.put(\"INFO\", Messages.get(\"info.permit\"));");
-            s.add("        return map;");
-            s.add("    }");
-            s.add("");
-            s.add("}");
-
-            String javaFilePath = packageDir + File.separator + entity + "PermitAction.java";
-            javaFilePaths.put(javaFilePath, PKG_A + ".model.base." + entity + "PermitAction");
-
-            FileUtil.writeFile(javaFilePath, s);
-        }
-
-        if (IS_GENERATE_AT_STARTUP) {
-            for (Entry<String, String> e : javaFilePaths.entrySet()) {
-                BeanGenerator.javaCompile(e.getKey(), e.getValue());
-            }
-        }
-    }
-
-    /**
-     * 詳細画面 否認処理出力
-     * @param tables テーブル情報のリスト
-     */
-    private static void javaActionDetailForbid(final List<TableInfo> tables) {
-
-        // 出力フォルダを再作成
-        String packagePath = (PKG_A + ".model.base").replace(".", File.separator);
-        String packageDir = getProjectDir() + File.separator + DIR_J + File.separator + packagePath;
-
-        Map<String, String> javaFilePaths = new LinkedHashMap<String, String>();
-
-        for (TableInfo table : tables) {
-
-            if (table.isHistory() || table.isView() || table.isStatusFlow()
-                    || !table.getColumns().containsKey(STATUS_KB)) {
-                continue;
-            }
-
-            String entity = StringUtil.toPascalCase(table.getName());
-            String remarks = table.getRemarks();
-
-            List<String> s = new ArrayList<String>();
-            s.add("package " + PKG_A + ".model.base;");
-            s.add("");
-            s.add("import java.time.LocalDateTime;");
-            s.add("import java.util.HashMap;");
-            s.add("import java.util.Map;");
-            s.add("");
-            s.add("import " + PKG_E + "." + entity + ";");
-            s.add("");
-            s.add("import jp.co.golorp.emarf.action.BaseAction;");
-            s.add("import jp.co.golorp.emarf.exception.OptLockError;");
-            s.add("import jp.co.golorp.emarf.util.Messages;");
-            s.add("import jp.co.golorp.emarf.validation.FormValidator;");
-            s.add("");
-            s.add("/**");
-            s.add(" * " + remarks + "否認");
-            s.add(" *");
-            s.add(" * @author emarfkrow");
-            s.add(" */");
-            s.add("public class " + entity + "ForbidAction extends BaseAction {");
-            s.add("");
-            s.add("    /** " + remarks + "否認処理 */");
-            s.add("    @Override");
-            s.add("    public Map<String, Object> running(final LocalDateTime at, final String by, final Map<String, Object> form) {");
-            s.add("");
-            s.add("        // 主キーが不足していたらエラー");
-            String params = "";
-            for (String primaryKey : table.getPrimaryKeys()) {
-                String property = StringUtil.toCamelCase(primaryKey);
-                String accessor = StringUtil.toPascalCase(primaryKey);
-                s.add("        Object " + property + " = form.get(\"" + property + "\");");
-                s.add("        if (" + property + " == null) {");
-                s.add("            " + property + " = form.get(\"" + entity + "." + property + "\");");
-                s.add("        }");
-                s.add("        if (" + property + " == null) {");
-                s.add("            throw new OptLockError(\"error.cant.forbid\", \"" + remarks + "\");");
-                s.add("        }");
-                if (params.length() > 0) {
-                    params += ", ";
-                }
-                params += "e.get" + accessor + "()";
-            }
-            s.add("");
-            s.add("        " + entity + " e = FormValidator.toBean(" + entity + ".class.getName(), form);");
-            List<TableInfo> childInfos = table.getChildren();
-            BeanGenerator.getForbidChilds(s, "e", childInfos, 0);
-            s.add("");
-            //s.add("        " + entity + " f = " + entity + ".get(" + params + ");");
-            if (table.getColumns().containsKey(STATUS_KB)) {
-                String acc = StringUtil.toPascalCase(STATUS_KB);
-                String fld = StringUtil.toCamelCase(STATUS_KB);
-                s.add("        if (!e.get" + acc + "().equals(\"0\") && !e.get" + acc + "().equals(\"1\")) {");
-                s.add("            throw new jp.co.golorp.emarf.exception.AppError(\"error.notmatch\",");
-                s.add("                    Messages.get(\"" + entity + "." + fld
-                        + "\"), Messages.get(\"common.apply.permit\"));");
-                s.add("        }");
-                s.add("        e.set" + acc + "(-1);");
-            }
-            s.add("        if (e.update(at, by) != 1) {");
-            s.add("            throw new OptLockError(\"error.cant.forbid\", \"" + remarks + "\");");
-            s.add("        }");
-            s.add("");
-            s.add("        Map<String, Object> map = new HashMap<String, Object>();");
-            s.add("        map.put(\"INFO\", Messages.get(\"info.forbid\"));");
-            s.add("        return map;");
-            s.add("    }");
-            s.add("");
-            s.add("}");
-
-            String javaFilePath = packageDir + File.separator + entity + "ForbidAction.java";
-            javaFilePaths.put(javaFilePath, PKG_A + ".model.base." + entity + "ForbidAction");
-
-            FileUtil.writeFile(javaFilePath, s);
-        }
-
-        if (IS_GENERATE_AT_STARTUP) {
-            for (Entry<String, String> e : javaFilePaths.entrySet()) {
-                BeanGenerator.javaCompile(e.getKey(), e.getValue());
-            }
-        }
-    }
-
-    /**
      * @param s
      * @param table
      * @param tables
@@ -1000,6 +1006,95 @@ public final class ActionGeneratorDetail extends BeanGenerator {
         if (froms > 0) {
             s.add("");
             s.add("            map.put(\"" + toE + "\", " + toI + ");");
+        }
+    }
+
+    /**
+     * 詳細画面 更新処理出力
+     * @param tables テーブル情報のリスト
+     */
+    private static void adjust(final List<TableInfo> tables) {
+
+        // 出力フォルダを再作成
+        String packagePath = (PKG_A + ".model.base").replace(".", File.separator);
+        String packageDir = getProjectDir() + File.separator + DIR_J + File.separator + packagePath;
+
+        Map<String, String> javaFilePaths = new LinkedHashMap<String, String>();
+
+        for (TableInfo table : tables) {
+
+            if (table.isHistory() || table.isView() || table.isStatusFlow()) {
+                continue;
+            }
+
+            String entity = StringUtil.toPascalCase(table.getName());
+            String remarks = table.getRemarks();
+
+            List<String> s = new ArrayList<String>();
+            s.add("package " + PKG_A + ".model.base;");
+            s.add("");
+            s.add("import java.time.LocalDateTime;");
+            s.add("import java.util.HashMap;");
+            s.add("import java.util.Map;");
+            s.add("");
+            s.add("import " + PKG_E + "." + entity + ";");
+            s.add("");
+            s.add("import jp.co.golorp.emarf.action.BaseAction;");
+            s.add("import jp.co.golorp.emarf.exception.OptLockError;");
+            s.add("import jp.co.golorp.emarf.util.Messages;");
+            s.add("import jp.co.golorp.emarf.validation.FormValidator;");
+            s.add("");
+            s.add("/**");
+            s.add(" * " + remarks + "更新");
+            s.add(" *");
+            s.add(" * @author emarfkrow");
+            s.add(" */");
+            s.add("public class " + entity + "AdjustAction extends BaseAction {");
+            s.add("");
+            s.add("    /** " + remarks + "更新処理 */");
+            s.add("    @Override");
+            s.add("    public Map<String, Object> running(final LocalDateTime at, final String by, final Map<String, Object> form) {");
+            s.add("");
+            s.add("        // 主キーが不足していたらエラー");
+            String params = "";
+            for (String primaryKey : table.getPrimaryKeys()) {
+                String property = StringUtil.toCamelCase(primaryKey);
+                String accessor = StringUtil.toPascalCase(primaryKey);
+                s.add("        Object " + property + " = form.get(\"" + property + "\");");
+                s.add("        if (" + property + " == null) {");
+                s.add("            " + property + " = form.get(\"" + entity + "." + property + "\");");
+                s.add("        }");
+                s.add("        if (" + property + " == null) {");
+                s.add("            throw new OptLockError(\"error.cant.adjust\", \"" + remarks + "\");");
+                s.add("        }");
+                if (params.length() > 0) {
+                    params += ", ";
+                }
+                params += "e.get" + accessor + "()";
+            }
+            s.add("");
+            s.add("        " + entity + " e = FormValidator.toBean(" + entity + ".class.getName(), form);");
+            s.add("        if (e.update(at, by) != 1) {");
+            s.add("            throw new OptLockError(\"error.cant.adjust\", \"" + remarks + "\");");
+            s.add("        }");
+            s.add("");
+            s.add("        Map<String, Object> map = new HashMap<String, Object>();");
+            s.add("        map.put(\"INFO\", Messages.get(\"info.adjust\"));");
+            s.add("        return map;");
+            s.add("    }");
+            s.add("");
+            s.add("}");
+
+            String javaFilePath = packageDir + File.separator + entity + "AdjustAction.java";
+            javaFilePaths.put(javaFilePath, PKG_A + ".model.base." + entity + "AdjustAction");
+
+            FileUtil.writeFile(javaFilePath, s);
+        }
+
+        if (IS_GENERATE_AT_STARTUP) {
+            for (Entry<String, String> e : javaFilePaths.entrySet()) {
+                BeanGenerator.javaCompile(e.getKey(), e.getValue());
+            }
         }
     }
 

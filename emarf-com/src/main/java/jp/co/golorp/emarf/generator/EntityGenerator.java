@@ -558,6 +558,11 @@ public final class EntityGenerator extends BeanGenerator {
             return;
         }
 
+        String now = "at";
+        if (!StringUtil.isNullOrWhiteSpace(UPDATE_TS_FORMAT)) {
+            now = "jp.co.golorp.emarf.time.DateTimeUtil.format(\"" + UPDATE_TS_FORMAT + "\", at)";
+        }
+
         // toMap
         s.add("");
         s.add("    /**");
@@ -573,15 +578,36 @@ public final class EntityGenerator extends BeanGenerator {
             }
             String snake = StringUtil.toSnakeCase(columnName);
             String p = StringUtil.toCamelCase(columnName);
-            //            p = p.replaceAll("#", "_");
             s.add("        map.put(\"" + snake + "\", this." + p + ");");
         }
         s.add("        map.put(\"" + StringUtil.toSnakeCase(INSERT_AT) + "\", at);");
         s.add("        map.put(\"" + StringUtil.toSnakeCase(INSERT_BY) + "\", by);");
-        String now = "at";
-        if (!StringUtil.isNullOrWhiteSpace(UPDATE_TS_FORMAT)) {
-            now = "jp.co.golorp.emarf.time.DateTimeUtil.format(\"" + UPDATE_TS_FORMAT + "\", at)";
+        s.add("        map.put(\"" + StringUtil.toSnakeCase(UPDATE_AT) + "\", " + now + ");");
+        s.add("        map.put(\"" + StringUtil.toSnakeCase(UPDATE_BY) + "\", by);");
+        s.add("        return map;");
+        s.add("    }");
+
+        // toMap
+        s.add("");
+        s.add("    /**");
+        s.add("     * @param at システム日時");
+        s.add("     * @param by 実行ID");
+        s.add("     * @return マップ化したエンティティ");
+        s.add("     */");
+        s.add("    private java.util.Map<String, Object> toValueMap(final java.time.LocalDateTime at, final String by) {");
+        s.add("        java.util.Map<String, Object> map = new java.util.HashMap<String, Object>();");
+        for (String columnName : table.getColumns().keySet()) {
+            if (isMetaTsBy(columnName)) {
+                continue;
+            }
+            String snake = StringUtil.toSnakeCase(columnName);
+            String p = StringUtil.toCamelCase(columnName);
+            s.add("        if (this." + p + " != null) {");
+            s.add("            map.put(\"" + snake + "\", this." + p + ");");
+            s.add("        }");
         }
+        s.add("        map.put(\"" + StringUtil.toSnakeCase(INSERT_AT) + "\", at);");
+        s.add("        map.put(\"" + StringUtil.toSnakeCase(INSERT_BY) + "\", by);");
         s.add("        map.put(\"" + StringUtil.toSnakeCase(UPDATE_AT) + "\", " + now + ");");
         s.add("        map.put(\"" + StringUtil.toSnakeCase(UPDATE_BY) + "\", by);");
         s.add("        return map;");
@@ -1042,7 +1068,7 @@ public final class EntityGenerator extends BeanGenerator {
         }
         s.add("        String sql = \"UPDATE " + table.getName()
                 + "\\r\\nSET\\r\\n      \" + getSet() + \"\\r\\nWHERE\\r\\n    \" + getWhere();");
-        s.add("        return jp.co.golorp.emarf.sql.Queries.regist(sql, toMap(at, by));");
+        s.add("        return jp.co.golorp.emarf.sql.Queries.regist(sql, toValueMap(at, by));");
         s.add("    }");
         s.add("");
         s.add("    /** @return update用のset句 */");
@@ -1162,7 +1188,7 @@ public final class EntityGenerator extends BeanGenerator {
                 }
             }
             s.add("        String sql = \"DELETE FROM " + table.getName() + " WHERE \" + getWhere();");
-            s.add("        return jp.co.golorp.emarf.sql.Queries.regist(sql, toMap(null, null));");
+            s.add("        return jp.co.golorp.emarf.sql.Queries.regist(sql, toValueMap(null, null));");
             s.add("    }");
         }
     }

@@ -434,14 +434,16 @@ public final class FormGenerator extends BeanGenerator {
         String colName = column.getName();
         String registGroup = "groups = jp.co.golorp.emarf.validation.Regist.class";
         String regDelGroups = "groups = { jp.co.golorp.emarf.validation.Regist.class, jp.co.golorp.emarf.validation.Delete.class }";
+        String adjustGroups = "groups = jp.co.golorp.emarf.validation.Delete.class";
 
         // 必須チェック
         if (column.getNullable() == 0) {
 
             if (column.isNumbering() /*&& ci.getColumnName().equals(pks.get(pks.size() - 1)) 一旦、採番キーならスキップに戻す*/) {
 
-                // 採番キーなら除外
-                LOG.trace("skip NotBlank.");
+                //                // 採番キーなら除外
+                //                LOG.trace("skip NotBlank.");
+                s.add("    @jakarta.validation.constraints.NotBlank(" + adjustGroups + ")");
 
                 // フラグでも必須チェックを掛ける
                 //            } else if (StringUtil.endsWith(inputFlagSuffixs, ci.getColumnName())) {
@@ -453,8 +455,13 @@ public final class FormGenerator extends BeanGenerator {
                     && !column.getName().matches("(?i)^" + keys.get(keys.size() - 1) + "$")
                     && !column.getName().matches("(?i)^" + koKeys.get(koKeys.size() - 1) + "$")) {
 
-                // 最終キーでなければ、親から取得するはずなので除外
-                LOG.trace("skip NotBlank.");
+                //                // 最終キーでなければ、親から取得するはずなので除外
+                //                LOG.trace("skip NotBlank.");
+                s.add("    @jakarta.validation.constraints.NotBlank(" + adjustGroups + ")");
+
+            } else if (column.getName().matches("(?i)^" + UPDATE_AT + "$")) {
+
+                s.add("    @jakarta.validation.constraints.NotBlank(" + adjustGroups + ")");
 
             } else if (!column.isPk() && column.getTypeName().equals("CHAR")
                     && !StringUtil.isNullOrWhiteSpace(CHAR_NOTNULL_RE) && !colName.matches(CHAR_NOTNULL_RE)) {

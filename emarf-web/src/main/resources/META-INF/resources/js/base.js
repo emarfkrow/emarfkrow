@@ -490,6 +490,10 @@ let Base = {
 
         console.info('Base.init() start.');
 
+        // buttonスタイル適用
+        $('button, .nav a.toggle, .nav a.table, .nav a.view, .article a').button();
+        $('.article fieldset a').css('padding', 0);
+
         $('.datepicker').each(function() {
             let format = 'yy-mm-dd';
             let dataFormat = $(this).attr('data-format');
@@ -506,7 +510,7 @@ let Base = {
         });
 
         $('.time').each(function() {
-            var thisValue = $(this).val();
+            var thisValue = $(this).val().replace(/^0+/, '');
             this.outerHTML = '<select id="' + this.id + '"></select>';
             let $me = $('[id="' + this.id + '"]');
             let attrs = $(this)[0].attributes
@@ -535,10 +539,6 @@ let Base = {
             $form.find('[name="' + bName + '"]').val(parseInt(this.value, 2));
             $form.find('[id="' + bName + '"]').text(parseInt(this.value, 2));
         });
-
-        // buttonスタイル適用
-        $('button, .nav a.toggle, .nav a.table, .nav a.view, .article a').button();
-        $('.article fieldset a').css('padding', 0);
 
         $('.nav a.toggle').text('<<');
         $('.nav a.toggle').on('click', function() {

@@ -20,19 +20,7 @@ limitations under the License.
  */
 let Tracking = {
 
-    tasks: {},
-
-    table: '',
-
-    name: '',
-
-    id: '',
-
-    ymd: '',
-
-    bohm: '',
-
-    eohm: '',
+    tracks: {},
 
     isResized: false,
 
@@ -67,59 +55,54 @@ let Tracking = {
         $track.find('input[name="yyyy"]').val(yyyy);
         $track.find('input[name="mm"]').val(mm);
         $track.find('input[name="dd"]').val(dd);
-        $track.find('input.trackingDate').val(yyyy + mm + dd);
 
         //全てのパネルを一旦削除
         $track.find('.panelWrapper').remove();
 
         let $form = $track.closest('form');
         let action = $form[0].action;
-        let jsonKey = action.replaceAll(/(^.+\/|\..+$)/g, '');
+        let dataKey = action.replaceAll(/(^.+\/|\..+$)/g, '');
 
         //作業報告を検索してパネルを表示
-        $.ajax({
-            url: action,
-            type: 'post',
-            data: JSON.parse('{ "' + Tracking.ymd + '" : ' + yyyy + mm + dd + ' }'),
-            dataType: 'json'
-        }).fail(function(data) {
-        }).done(function(data) {
-            let tasks = Tracking.tasks.load(data[jsonKey]);
-            for (var i in tasks) {
-                var task = tasks[i];
-                Tracking.addPanel(task.activityId, task.boTime, task.eoTime, task.comments, task.issueId, task.issueMei);
+        Ajaxize.ajaxPost(action, JSON.parse('{ "TrackYmd" : ' + yyyy + mm + dd + ' }'), function(data) {
+            if (data[dataKey]) {
+                let tracks = Tracking.tracks.load(data[dataKey]);
+                for (var i in tracks) {
+                    var track = tracks[i];
+                    Tracking.addPanel(track.id, track.bohm, track.eohm, track.comment, track.issueId, track.issueMei, track.opt);
+                }
+                Tracking.calcTotalTime();
             }
-            Tracking.calcTotalTime();
-        }).always(function() {
-        });
+        }, null, true);
     },
 
     /**
      * 作業パネルを追加
      */
-    addPanel: function(activityId, boTime, eoTime, comments, issueId, issueMei) {
+    addPanel: function(id, bohm, eohm, comment, issueId, issueMei, opt) {
 
         var $track = $('table.tracking');
 
         //開始・終了時刻から、始点と高さを取得
         var $tbody = $track.find('tbody');
         var tbody = $tbody[0];
-        var boTd = $tbody.find('td[id="' + boTime + '"]')[0] || $tbody.find('td[id="0' + boTime + '"]')[0];
-        var eoTd = $tbody.find('td[id="' + eoTime + '"]')[0] || $tbody.find('td[id="0' + eoTime + '"]')[0];
+        var boTd = $tbody.find('td[id="' + bohm + '"]')[0] || $tbody.find('td[id="0' + bohm + '"]')[0];
+        var eoTd = $tbody.find('td[id="' + eohm + '"]')[0] || $tbody.find('td[id="0' + eohm + '"]')[0];
         var l = boTd.offsetLeft;
         var t = boTd.offsetTop - tbody.offsetTop;
         var h = eoTd.offsetTop - boTd.offsetTop;
 
         //時刻表にパネルを追加
-        var panel = '<div class="panel" style="height: ' + h + 'px;" title="' + comments + '">';
-        panel += '<input type="hidden" name="activity_id" value="' + activityId + '" />';
-        panel += '<input type="hidden" name="bo_time" value="' + boTime + '" />';
-        panel += '<input type="hidden" name="eo_time" value="' + eoTime + '" />';
-        panel += '<input type="hidden" name="comments" value="' + comments + '" />';
-        panel += '<input type="hidden" name="issue_id" value="' + issueId + '" />';
+        var panel = '<div class="panel" style="height: ' + h + 'px;" title="' + comment + '">';
+        panel += '<input type="hidden" name="id" value="' + id + '" />';
+        panel += '<input type="hidden" name="bohm" value="' + bohm + '" />';
+        panel += '<input type="hidden" name="eohm" value="' + eohm + '" />';
+        panel += '<input type="hidden" name="comment" value="' + comment + '" />';
+        panel += '<input type="hidden" name="issueId" value="' + issueId + '" />';
         panel += '<span id="issueMei">' + issueMei + '</span>';
+        panel += '<input type="hidden" name="opt" value="' + opt + '" />';
         panel += '</div>';
-        $tbody.prepend('<div id="panel_' + activityId + '" class="panelWrapper" style="left: ' + l + 'px; top: ' + t + 'px;">' + panel + '</div>');
+        $tbody.prepend('<div id="panel_' + id + '" class="panelWrapper" style="left: ' + l + 'px; top: ' + t + 'px;">' + panel + '</div>');
 
         //パネルにリサイズプラグインを設定
         let gridSize = $tbody.find('td')[0].clientHeight + 1;
@@ -130,42 +113,28 @@ let Tracking = {
                 // ドラッグ終了時のダイアログ抑止
                 Tracking.isResized = true;
 
+                var id = $(this).find('[name="id"]').val();
+
                 // パネルのサイズから終了時刻を評価
                 var grids = Math.round(ui.size.height / gridSize, 0);
                 var gridMinutes = grids * 15;
-                var boTime = $(this).find('[name="bo_time"]').val();
-                var boTimes = boTime.split(':');
+                var bohm = $(this).find('[name="bohm"]').val();
+                var bohms = bohm.split(':');
                 var eoDate = new Date();
-                eoDate.setHours(boTimes[0]);
-                eoDate.setMinutes(boTimes[1] * 1 + gridMinutes);
+                eoDate.setHours(bohms[0]);
+                eoDate.setMinutes(bohms[1] * 1 + gridMinutes);
                 var eoMinutes = Math.round(eoDate.getMinutes() / 15) * 15;
-                var eoTime = ('0' + eoDate.getHours()).slice(-2) + ':' + ('0' + eoMinutes).slice(-2);
-                $(this).find('[name="eo_time"]').val(eoTime);
+                var eohm = ('0' + eoDate.getHours()).slice(-2) + ':' + ('0' + eoMinutes).slice(-2);
+                $(this).find('[name="eohm"]').val(eohm);
 
-                var id = $(this).find('[name="activity_id"]').val();
+                var opt = $(this).find('[name="opt"]').val();
 
-                var hoge = {
-                    kosuId: $(this).closest('.panelWrapper').attr('id').replace(/^panel\_/, ''),
-                    // 					ticketId : ticketId,
-                    // 					sagyoYmd : sagyoYmd,
-                    // 					startTm : startTm,
-                    untilTm: eoTime,
-                    // 					sagyoUserId : sagyoUserId
-                };
-
-                var json = '{ "' + Tracking.id + '": ' + id + ', "' + Tracking.ymd + '": ' + id + ' }';
+                var json = '{ "' + Tracking.tracks.idName + '": ' + id + ', "' + Tracking.tracks.eohmName + '": "' + eohm + '", "' + Tracking.tracks.optName + '": "' + opt + '" }';
 
                 //終了日時を登録
-                $.ajax({
-                    url: '../model/' + Tracking.name + 'Regist.ajax',
-                    type: 'post',
-                    data: JSON.parse(json),
-                    dataType: 'json'
-                }).fail(function(data) {
-                }).done(function(data) {
-                    Tracking.calcTotalTime();
-                }).always(function() {
-                });
+                var entityName = Casing.toPascal(Tracking.tracks.tableName);
+                let action = '../model/' + entityName + 'Adjust.ajax';
+                Ajaxize.ajaxPost(action, JSON.parse(json), function(data) { Tracking.calcTotalTime(); });
             }
         });
 
@@ -227,8 +196,15 @@ $(function() {
             Tracking.setWorkDate(date);
         });
 
-        $track.find('button#SearchToday').on('click', function() {
-            Tracking.setWorkDate(new Date());
+        /**
+         * 更新ボタン押下
+         */
+        $track.find('button#SearchTracks').on('click', function() {
+            var yyyy = $track.find('input[name="yyyy"]').val();
+            var m = $track.find('input[name="mm"]').val() * 1;
+            var d = $track.find('input[name="dd"]').val() * 1;
+            var date = new Date(yyyy, m - 1, d);
+            Tracking.setWorkDate(date);
         });
 
         // 年月日にシステム日付を設定
@@ -246,27 +222,32 @@ $(function() {
             var mm = $track.find('[name="mm"]').val();
             var dd = $track.find('[name="dd"]').val();
 
-            var boTime = this.id;
+            var bohm = this.id;
 
             var $tds = $tbody.find('td');
             var j = $tds.index(this) + 1;
             var next = $tds[j];
-            var eoTime = next.id;
+            var eohm = next.id;
 
             //時刻表にパネル追加
-            Tracking.addPanel('', boTime, eoTime, '', '', '');
+            Tracking.addPanel('', bohm, eohm, '', '', '');
+
+            var entityName = Casing.toPascal(Tracking.tracks.tableName);
+            var ymdName = Casing.toCamel(Tracking.tracks.ymdName);
+            var bohmName = Casing.toCamel(Tracking.tracks.bohmName);
+            var eohmName = Casing.toCamel(Tracking.tracks.eohmName);
 
             var qs = '?anew&' +
-                Tracking.name + '.' + Tracking.ymd + '=' + yyyy + mm + dd + '&' +
-                Tracking.name + '.' + Tracking.bohm + '=' + boTime + '&' +
-                Tracking.name + '.' + Tracking.eohm + '=' + eoTime;
+                entityName + '.' + ymdName + '=' + yyyy + mm + dd + '&' +
+                entityName + '.' + bohmName + '=' + bohm + '&' +
+                entityName + '.' + eohmName + '=' + eohm;
 
             //別ウィンドウにするためwidth/heightを指定
             let w = window.outerWidth / 3 * 2;
             let h = window.outerHeight / 3 * 2;
             let t = window.screenTop + (window.innerHeight / 2) - (h / 2);
             let l = window.screenLeft + (window.innerWidth / 2) - (w / 2);
-            window.open('../model/' + Tracking.name + '.html' + qs, Tracking.name + qs, 'width=' + w + 'px,height=' + h + 'px,top=' + t + 'px,left=' + l + 'px');
+            window.open('../model/' + entityName + '.html' + qs, entityName + qs, 'width=' + w + 'px,height=' + h + 'px,top=' + t + 'px,left=' + l + 'px');
         });
 
         /**
@@ -281,16 +262,18 @@ $(function() {
 
             //クリックしたパネルの日報ID・チケットID・開始時刻・終了時刻を取得
             var $panel = $(this);
-            var activityId = $panel.find('[name="activity_id"]').val();
+            var id = $panel.find('[name="id"]').val();
 
-            var qs = '?' + Tracking.name + '.' + Tracking.id + '=' + activityId;
+            var entityName = Casing.toPascal(Tracking.tracks.tableName);
+            var idName = Casing.toCamel(Tracking.tracks.idName);
+            var qs = '?' + entityName + '.' + idName + '=' + id;
 
             //別ウィンドウにするためwidth/heightを指定
             let w = window.outerWidth / 3 * 2;
             let h = window.outerHeight / 3 * 2;
             let t = window.screenTop + (window.innerHeight / 2) - (h / 2);
             let l = window.screenLeft + (window.innerWidth / 2) - (w / 2);
-            window.open('../model/' + Tracking.name + '.html' + qs, Tracking.name + qs, 'width=' + w + 'px,height=' + h + 'px,top=' + t + 'px,left=' + l + 'px');
+            window.open('../model/' + entityName + '.html' + qs, entityName + qs, 'width=' + w + 'px,height=' + h + 'px,top=' + t + 'px,left=' + l + 'px');
         });
     });
 

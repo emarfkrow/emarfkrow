@@ -139,9 +139,9 @@ let Ganttate = {
 
                 $(rect).attr({
                     x: sinceLeft,
-                    y: y + 27,
+                    y: y + 25,
                     width: width,
-                    height: 5,
+                    height: 8,
                     rx: 3,
                     ry: 3,
                     fill: 'lightgray'
