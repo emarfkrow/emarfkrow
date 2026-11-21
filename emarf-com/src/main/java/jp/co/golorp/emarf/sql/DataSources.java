@@ -312,6 +312,7 @@ public final class DataSources {
             Connections.close();
         }
         setGantt(tables);
+        setTrack(tables);
         setGraph(tables);
         setRefer(tables); // 参照モデルの評価
         addBrothers(tables); // 兄弟モデルの評価
@@ -374,6 +375,57 @@ public final class DataSources {
                 }
             }
             // }
+        }
+    }
+
+    /**
+     * @param tables
+     */
+    private static void setTrack(final List<TableInfo> tables) {
+        for (TableInfo table : tables) {
+            if (!table.isView()) {
+                continue;
+            }
+            for (String[] trackColumn : BeanGenerator.TRACK_COLS) {
+                boolean isId = false;
+                boolean isYmd = false;
+                boolean isUserId = false;
+                boolean isBohm = false;
+                boolean isEohm = false;
+                boolean isIssueId = false;
+                boolean isIssueMei = false;
+                boolean isComment = false;
+                for (String columnName : table.getColumns().keySet()) {
+                    if (StringUtil.endsWithIgnoreCase(trackColumn[0], columnName)) {
+                        isId = true;
+                    }
+                    if (StringUtil.endsWithIgnoreCase(trackColumn[1], columnName)) {
+                        isYmd = true;
+                    }
+                    if (StringUtil.endsWithIgnoreCase(trackColumn[2], columnName)) {
+                        isUserId = true;
+                    }
+                    if (StringUtil.endsWithIgnoreCase(trackColumn[3], columnName)) {
+                        isBohm = true;
+                    }
+                    if (StringUtil.endsWithIgnoreCase(trackColumn[4], columnName)) {
+                        isEohm = true;
+                    }
+                    if (StringUtil.endsWithIgnoreCase(trackColumn[5], columnName)) {
+                        isIssueId = true;
+                    }
+                    if (StringUtil.endsWithIgnoreCase(trackColumn[6], columnName)) {
+                        isIssueMei = true;
+                    }
+                    if (StringUtil.endsWithIgnoreCase(trackColumn[7], columnName)) {
+                        isComment = true;
+                    }
+                }
+                if (isId && isYmd && isUserId && isBohm && isEohm && isIssueId && isIssueMei && isComment) {
+                    table.setTrack(true);
+                    break;
+                }
+            }
         }
     }
 

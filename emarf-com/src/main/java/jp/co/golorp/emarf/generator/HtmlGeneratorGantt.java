@@ -186,4 +186,55 @@ public final class HtmlGeneratorGantt extends HtmlGenerator {
         return s;
     }
 
+    /**
+     * 時刻表画面 HTML出力
+     * @param htmlDir HTMLファイル出力ディレクトリ
+     * @param table テーブル情報
+     * @param tables テーブル情報
+     */
+    public static void htmlTrack(final String htmlDir, final TableInfo table, final List<TableInfo> tables) {
+        String e = StringUtil.toPascalCase(table.getName());
+        String es = e + "T";
+        List<String> s = new ArrayList<String>();
+        addHtmlHead(s, es, table.getName());
+        s.add("<script th:src=\"@{/model/" + e + ".js}\"></script>");
+        s.add("<script th:src=\"@{/model/" + e + "Tracks.js}\"></script>");
+        s.add("<script type=\"text/javascript\">");
+        s.add("    Tracking.tracks = " + e + "Tracks;");
+        s.add("</script>");
+        Map<TableInfo, Integer> added = new HashMap<TableInfo, Integer>();
+        added.put(table, 1);
+        htmlNestGrid(s, table, tables, added, false, "", false);
+        s.add("</head>");
+        s.add("<body>");
+        s.add("  <div layout:fragment=\"article\">");
+        s.add("    <h2 th:text=\"#{" + es + ".h2}\">h2</h2>");
+        s.add("    <!-- 検索フォーム -->");
+        s.add("    <form name=\"" + e + "SearchForm\" action=\"" + e + "Search.ajax\" class=\"search\">");
+        s.add("      <table class=\"tracking\">");
+        s.add("        <caption>");
+        s.add("          <a href=\"javascript:void(0);\" class=\"trackPrevDay\">&lt;&lt;</a><input type=\"text\" name=\"yyyy\" style=\"display: inline;\">年<input type=\"text\" name=\"mm\" style=\"display: inline;\">月<input type=\"text\" name=\"dd\" style=\"display: inline;\">日<a href=\"javascript:void(0);\" class=\"trackNextDay\">&gt;&gt;</a>");
+        s.add("          <button type=\"button\" id=\"SearchTracks\">更新</button>");
+        s.add("        </caption>");
+        s.add("        <thead>");
+        s.add("          <tr>");
+        s.add("            <th>&nbsp;</th>");
+        s.add("            <td>&nbsp;</td>");
+        s.add("          </tr>");
+        s.add("        </thead>");
+        s.add("        <tbody></tbody>");
+        s.add("        <tfoot>");
+        s.add("          <tr>");
+        s.add("            <th>&nbsp;</th>");
+        s.add("            <td id=\"totalTime\"></td>");
+        s.add("          </tr>");
+        s.add("        </tfoot>");
+        s.add("      </table>");
+        s.add("    </form>");
+        s.add("  </div>");
+        s.add("</body>");
+        s.add("</html>");
+        FileUtil.writeFile(htmlDir + File.separator + e + "T.html", s);
+    }
+
 }

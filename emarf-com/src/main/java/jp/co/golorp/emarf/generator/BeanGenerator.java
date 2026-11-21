@@ -112,6 +112,8 @@ public abstract class BeanGenerator {
     public static final Set<String[]> GRAPH_COLS = new LinkedHashSet<String[]>();
     /** ガントチャート化を判定する項目名・開始日・終了日のカラムサフィックス */
     public static final Set<String[]> GANTT_COLS = new LinkedHashSet<String[]>();
+    /** スケジュール化を判定するカラムサフィックス */
+    public static final Set<String[]> TRACK_COLS = new LinkedHashSet<String[]>();
 
     /** javaファイル出力ルートパス */
     protected static final String DIR_J;
@@ -393,6 +395,14 @@ public abstract class BeanGenerator {
             for (String ganttDef : ganttDefs) {
                 String[] columns = ganttDef.split(":");
                 GANTT_COLS.add(columns);
+            }
+        }
+
+        if (bundle != null && bundle.containsKey("track.columns")) {
+            String[] trackDefs = bundle.getString("track.columns").split(",");
+            for (String trackDef : trackDefs) {
+                String[] columns = trackDef.split(":");
+                TRACK_COLS.add(columns);
             }
         }
 

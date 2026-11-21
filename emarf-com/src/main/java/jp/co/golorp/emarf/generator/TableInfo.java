@@ -100,6 +100,23 @@ public class TableInfo {
         this.isGantt = p;
     }
 
+    /** 時刻表ならtrue */
+    private boolean isTrack;
+
+    /**
+     * @return boolean
+     */
+    public boolean isTrack() {
+        return isTrack;
+    }
+
+    /**
+     * @param p
+     */
+    public void setTrack(final boolean p) {
+        this.isTrack = p;
+    }
+
     /** グラフならtrue */
     private boolean isGraph;
 

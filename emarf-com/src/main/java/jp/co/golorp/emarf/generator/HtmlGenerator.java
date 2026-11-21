@@ -114,6 +114,48 @@ public abstract class HtmlGenerator extends BeanGenerator {
                     }
                 }
             }
+
+            if (table.isTrack()) {
+                for (String[] trackColumn : TRACK_COLS) {
+                    String idColumn = null;
+                    String ymdColumn = null;
+                    String userIdColumn = null;
+                    String bohmColumn = null;
+                    String eohmColumn = null;
+                    String issueIdColumn = null;
+                    String issueMeiColumn = null;
+                    String commentColumn = null;
+                    for (String columnName : table.getColumns().keySet()) {
+                        if (idColumn == null && StringUtil.endsWithIgnoreCase(trackColumn[0], columnName)) {
+                            idColumn = columnName;
+                        } else if (ymdColumn == null && StringUtil.endsWithIgnoreCase(trackColumn[1], columnName)) {
+                            ymdColumn = columnName;
+                        } else if (userIdColumn == null && StringUtil.endsWithIgnoreCase(trackColumn[2], columnName)) {
+                            userIdColumn = columnName;
+                        } else if (bohmColumn == null && StringUtil.endsWithIgnoreCase(trackColumn[3], columnName)) {
+                            bohmColumn = columnName;
+                        } else if (eohmColumn == null && StringUtil.endsWithIgnoreCase(trackColumn[4], columnName)) {
+                            eohmColumn = columnName;
+                        } else if (issueIdColumn == null && StringUtil.endsWithIgnoreCase(trackColumn[5], columnName)) {
+                            issueIdColumn = columnName;
+                        } else if (issueMeiColumn == null
+                                && StringUtil.endsWithIgnoreCase(trackColumn[6], columnName)) {
+                            issueMeiColumn = columnName;
+                        } else if (commentColumn == null && StringUtil.endsWithIgnoreCase(trackColumn[7], columnName)) {
+                            commentColumn = columnName;
+                        }
+                    }
+                    if (idColumn != null && ymdColumn != null && userIdColumn != null && bohmColumn != null
+                            && eohmColumn != null && issueIdColumn != null && issueMeiColumn != null
+                            && commentColumn != null) {
+                        HtmlGeneratorGantt.htmlTrack(htmlDir, table, tables);
+                        //                        List<String> s = HtmlGeneratorGantt.htmlGanttTasks(table, idColumn, nameColumn, startColumn,
+                        //                                untilColumn, begColumn, endColumn);
+                        //                        String entity = StringUtil.toPascalCase(table.getName());
+                        //                        FileUtil.writeFile(gridDir + File.separator + entity + "GanttTasks.js", s);
+                    }
+                }
+            }
         }
 
         HtmlGenerator.htmlNav(htmlDir, tables);
