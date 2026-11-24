@@ -123,7 +123,6 @@ public abstract class HtmlGenerator extends BeanGenerator {
                     String bohmColumn = null;
                     String eohmColumn = null;
                     String issueIdColumn = null;
-                    String issueMeiColumn = null;
                     String commentColumn = null;
                     for (String columnName : table.getColumns().keySet()) {
                         if (idColumn == null && StringUtil.endsWithIgnoreCase(trackColumn[0], columnName)) {
@@ -138,21 +137,59 @@ public abstract class HtmlGenerator extends BeanGenerator {
                             eohmColumn = columnName;
                         } else if (issueIdColumn == null && StringUtil.endsWithIgnoreCase(trackColumn[5], columnName)) {
                             issueIdColumn = columnName;
-                        } else if (issueMeiColumn == null
-                                && StringUtil.endsWithIgnoreCase(trackColumn[6], columnName)) {
-                            issueMeiColumn = columnName;
-                        } else if (commentColumn == null && StringUtil.endsWithIgnoreCase(trackColumn[7], columnName)) {
+                        } else if (commentColumn == null && StringUtil.endsWithIgnoreCase(trackColumn[6], columnName)) {
                             commentColumn = columnName;
                         }
                     }
                     if (idColumn != null && ymdColumn != null && userIdColumn != null && bohmColumn != null
-                            && eohmColumn != null && issueIdColumn != null && issueMeiColumn != null
-                            && commentColumn != null) {
-                        HtmlGeneratorGantt.htmlTrack(htmlDir, table, tables);
-                        //                        List<String> s = HtmlGeneratorGantt.htmlGanttTasks(table, idColumn, nameColumn, startColumn,
-                        //                                untilColumn, begColumn, endColumn);
-                        //                        String entity = StringUtil.toPascalCase(table.getName());
-                        //                        FileUtil.writeFile(gridDir + File.separator + entity + "GanttTasks.js", s);
+                            && eohmColumn != null && issueIdColumn != null && commentColumn != null) {
+                        HtmlGeneratorTracking.htmlTrack(htmlDir, table, tables);
+                        String entity = StringUtil.toPascalCase(table.getName());
+                        List<String> s = new ArrayList<String>();
+                        s.add("/**");
+                        s.add(" * " + table.getName() + " tracks");
+                        s.add(" */");
+                        s.add("");
+                        s.add("let " + entity + "Tracks = {");
+                        s.add("");
+                        s.add("    tableName: '" + table.getName() + "',");
+                        s.add("");
+                        s.add("    idName: '" + StringUtil.toCamelCase(idColumn) + "',");
+                        s.add("");
+                        s.add("    ymdName: '" + StringUtil.toCamelCase(ymdColumn) + "',");
+                        s.add("");
+                        s.add("    bohmName: '" + StringUtil.toCamelCase(bohmColumn) + "',");
+                        s.add("");
+                        s.add("    eohmName: '" + StringUtil.toCamelCase(eohmColumn) + "',");
+                        s.add("");
+                        s.add("    optName: '" + StringUtil.toCamelCase(BeanGenerator.UPDATE_AT) + "',");
+                        s.add("");
+                        s.add("    load: function(data) {");
+                        s.add("");
+                        s.add("        let tracks = [];");
+                        s.add("");
+                        s.add("        for (let r in data) {");
+                        s.add("            let row = data[r];");
+                        s.add("");
+                        s.add("            let track = {};");
+                        s.add("            track.id = row." + idColumn + ";");
+                        s.add("            track.ymd = row." + ymdColumn + ";");
+                        s.add("            track.user_id = row." + userIdColumn + ";");
+                        s.add("            track.bohm = row." + bohmColumn + ";");
+                        s.add("            track.eohm = row." + eohmColumn + ";");
+                        s.add("            track.issueId = row." + issueIdColumn + ";");
+                        s.add("            track.issueMei = row." + issueIdColumn.replaceFirst("_ID$", "_MEI") + ";");
+                        s.add("            track.comment = row." + commentColumn + " ?? '';");
+                        s.add("            track.opt = row." + BeanGenerator.UPDATE_AT.toUpperCase() + ";");
+                        s.add("");
+                        s.add("            tracks.push(track);");
+                        s.add("        }");
+                        s.add("");
+                        s.add("        return tracks;");
+                        s.add("    },");
+                        s.add("");
+                        s.add("};");
+                        FileUtil.writeFile(gridDir + File.separator + entity + "Tracks.js", s);
                     }
                 }
             }
@@ -801,11 +838,17 @@ public abstract class HtmlGenerator extends BeanGenerator {
                 }
 
                 //                preName = name;
-                s.add("          <li><a id=\"" + e + "\" th:href=\"@{/model/" + e + "S.html}\" th:text=\"#{nav." + e
-                        + "S}\" class=\"" + css + "\">" + name + "</a></li>");
                 if (table.isGantt()) {
                     s.add("          <li><a id=\"" + e + "G\" th:href=\"@{/model/" + e + "G.html}\" th:text=\"#{nav."
                             + e + "G}+#{nav.Gantt}\" class=\"" + css + " ganttNav\">" + name + "</a></li>");
+                } else {
+                    s.add("          <li><a id=\"" + e + "\" th:href=\"@{/model/" + e + "S.html}\" th:text=\"#{nav." + e
+                            + "S}\" class=\"" + css + "\">" + name + "</a></li>");
+                    if (table.isTrack()) {
+                        s.add("          <li><a id=\"" + e + "T\" th:href=\"@{/model/" + e
+                                + "T.html}\" th:text=\"#{nav." + e + "S}\" class=\"" + css + " trackNav\">" + name
+                                + "</a></li>");
+                    }
                 }
             }
             s.add("        </ul>");

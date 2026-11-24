@@ -383,9 +383,6 @@ public final class DataSources {
      */
     private static void setTrack(final List<TableInfo> tables) {
         for (TableInfo table : tables) {
-            if (!table.isView()) {
-                continue;
-            }
             for (String[] trackColumn : BeanGenerator.TRACK_COLS) {
                 boolean isId = false;
                 boolean isYmd = false;
@@ -393,7 +390,6 @@ public final class DataSources {
                 boolean isBohm = false;
                 boolean isEohm = false;
                 boolean isIssueId = false;
-                boolean isIssueMei = false;
                 boolean isComment = false;
                 for (String columnName : table.getColumns().keySet()) {
                     if (StringUtil.endsWithIgnoreCase(trackColumn[0], columnName)) {
@@ -415,13 +411,10 @@ public final class DataSources {
                         isIssueId = true;
                     }
                     if (StringUtil.endsWithIgnoreCase(trackColumn[6], columnName)) {
-                        isIssueMei = true;
-                    }
-                    if (StringUtil.endsWithIgnoreCase(trackColumn[7], columnName)) {
                         isComment = true;
                     }
                 }
-                if (isId && isYmd && isUserId && isBohm && isEohm && isIssueId && isIssueMei && isComment) {
+                if (isId && isYmd && isUserId && isBohm && isEohm && isIssueId && isComment) {
                     table.setTrack(true);
                     break;
                 }

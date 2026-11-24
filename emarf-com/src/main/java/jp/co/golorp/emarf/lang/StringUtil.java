@@ -446,7 +446,8 @@ public final class StringUtil {
      */
     public static String ifNull(final Object o) {
 
-        if (!StringUtil.isNullOrWhiteSpace(o)) {
+        //        if (!StringUtil.isNullOrWhiteSpace(o)) {
+        if (o != null) {
             return o.toString();
         }
 

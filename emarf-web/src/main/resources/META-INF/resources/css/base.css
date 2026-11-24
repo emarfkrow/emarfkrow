@@ -244,12 +244,12 @@ input[type="datetime-local"] {
 
 [role="dialog"] [id$="Grid"] {
 	height: 190px;
-/*	width: 100%;*/
+	/*	width: 100%;*/
 }
 
 [role="dialog"] [id$="SDialog"] [id$="Grid"] {
 	height: 320px;
-/*	width: 100%;*/
+	/*	width: 100%;*/
 }
 
 [role="dialog"] [id$="Pager"] {
@@ -373,6 +373,12 @@ a.view {
 }
 
 a.ganttNav {
+	background-color: #fff;
+	border-color: green !important;
+	color: green !important;
+}
+
+a.trackNav {
 	background-color: #fff;
 	border-color: green !important;
 	color: green !important;
