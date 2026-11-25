@@ -341,9 +341,11 @@ public final class ActionGeneratorDetail extends BeanGenerator {
             s.add("    @Override");
             s.add("    public Map<String, Object> running(final LocalDateTime at, final String by, final Map<String, Object> form) {");
             s.add("");
-            s.add("        // 主キーが不足していたらエラー");
             String params = "";
             for (String primaryKey : table.getPrimaryKeys()) {
+                if (params.length() == 0) {
+                    s.add("        // 主キーが不足していたらエラー");
+                }
                 String property = StringUtil.toCamelCase(primaryKey);
                 String accessor = StringUtil.toPascalCase(primaryKey);
                 s.add("        Object " + property + " = form.get(\"" + property + "\");");
@@ -365,6 +367,7 @@ public final class ActionGeneratorDetail extends BeanGenerator {
             s.add("");
             //s.add("        " + entity + " f = " + entity + ".get(" + params + ");");
             if (table.getColumns().containsKey(STATUS_KB)) {
+                s.add("        // ステータスを変更");
                 String acc = StringUtil.toPascalCase(STATUS_KB);
                 String fld = StringUtil.toCamelCase(STATUS_KB);
                 s.add("        if (e.get" + acc + "() != null && !e.get" + acc + "().equals(\"\")) {");
@@ -446,9 +449,11 @@ public final class ActionGeneratorDetail extends BeanGenerator {
             s.add("    @Override");
             s.add("    public Map<String, Object> running(final LocalDateTime at, final String by, final Map<String, Object> form) {");
             s.add("");
-            s.add("        // 主キーが不足していたらエラー");
             String params = "";
             for (String primaryKey : table.getPrimaryKeys()) {
+                if (params.length() == 0) {
+                    s.add("        // 主キーが不足していたらエラー");
+                }
                 String property = StringUtil.toCamelCase(primaryKey);
                 String accessor = StringUtil.toPascalCase(primaryKey);
                 s.add("        Object " + property + " = form.get(\"" + property + "\");");
@@ -470,6 +475,7 @@ public final class ActionGeneratorDetail extends BeanGenerator {
             s.add("");
             //s.add("        " + entity + " f = " + entity + ".get(" + params + ");");
             if (table.getColumns().containsKey(STATUS_KB)) {
+                s.add("        // ステータスを変更");
                 String acc = StringUtil.toPascalCase(STATUS_KB);
                 String fld = StringUtil.toCamelCase(STATUS_KB);
                 s.add("        if (!e.get" + acc + "().equals(\"0\") && !e.get" + acc + "().equals(\"-1\")) {");
@@ -551,9 +557,11 @@ public final class ActionGeneratorDetail extends BeanGenerator {
             s.add("    @Override");
             s.add("    public Map<String, Object> running(final LocalDateTime at, final String by, final Map<String, Object> form) {");
             s.add("");
-            s.add("        // 主キーが不足していたらエラー");
             String params = "";
             for (String primaryKey : table.getPrimaryKeys()) {
+                if (params.length() == 0) {
+                    s.add("        // 主キーが不足していたらエラー");
+                }
                 String property = StringUtil.toCamelCase(primaryKey);
                 String accessor = StringUtil.toPascalCase(primaryKey);
                 s.add("        Object " + property + " = form.get(\"" + property + "\");");
@@ -575,6 +583,7 @@ public final class ActionGeneratorDetail extends BeanGenerator {
             s.add("");
             //s.add("        " + entity + " f = " + entity + ".get(" + params + ");");
             if (table.getColumns().containsKey(STATUS_KB)) {
+                s.add("        // ステータスを変更");
                 String acc = StringUtil.toPascalCase(STATUS_KB);
                 String fld = StringUtil.toCamelCase(STATUS_KB);
                 s.add("        if (e.get" + acc + "() != null && !e.get" + acc + "().equals(\"0\")) {");
@@ -656,9 +665,11 @@ public final class ActionGeneratorDetail extends BeanGenerator {
             s.add("    @Override");
             s.add("    public Map<String, Object> running(final LocalDateTime at, final String by, final Map<String, Object> form) {");
             s.add("");
-            s.add("        // 主キーが不足していたらエラー");
             String params = "";
             for (String primaryKey : table.getPrimaryKeys()) {
+                if (params.length() == 0) {
+                    s.add("        // 主キーが不足していたらエラー");
+                }
                 String property = StringUtil.toCamelCase(primaryKey);
                 String accessor = StringUtil.toPascalCase(primaryKey);
                 s.add("        Object " + property + " = form.get(\"" + property + "\");");
@@ -677,9 +688,10 @@ public final class ActionGeneratorDetail extends BeanGenerator {
             s.add("        " + entity + " e = FormValidator.toBean(" + entity + ".class.getName(), form);");
             List<TableInfo> childInfos = table.getChildren();
             BeanGenerator.getForbidChilds(s, "e", childInfos, 0);
-            s.add("");
             //s.add("        " + entity + " f = " + entity + ".get(" + params + ");");
             if (table.getColumns().containsKey(STATUS_KB)) {
+                s.add("");
+                s.add("        // ステータスを変更");
                 String acc = StringUtil.toPascalCase(STATUS_KB);
                 String fld = StringUtil.toCamelCase(STATUS_KB);
                 s.add("        if (!e.get" + acc + "().equals(\"0\") && !e.get" + acc + "().equals(\"1\")) {");
@@ -688,8 +700,8 @@ public final class ActionGeneratorDetail extends BeanGenerator {
                         + "\"), Messages.get(\"common.apply.permit\"));");
                 s.add("        }");
                 s.add("        e.set" + acc + "(-1);");
-                s.add("");
             }
+            s.add("");
             s.add("        if (e.update(at, by) != 1) {");
             s.add("            throw new OptLockError(\"error.cant.forbid\", \"" + remarks + "\");");
             s.add("        }");
@@ -1024,6 +1036,10 @@ public final class ActionGeneratorDetail extends BeanGenerator {
         for (TableInfo table : tables) {
 
             if (table.isHistory() || table.isView() || table.isStatusFlow()) {
+                continue;
+            }
+
+            if (table.getPrimaryKeys().size() == 0) {
                 continue;
             }
 

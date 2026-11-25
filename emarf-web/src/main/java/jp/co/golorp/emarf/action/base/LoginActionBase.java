@@ -57,6 +57,7 @@ public abstract class LoginActionBase extends BaseAction {
 
         //権限情報取得
         Map<String, Object> ret = new HashMap<String, Object>();
+        ret.put("authz", "true");
         ret.put(LoginFilter.AUTHN_KEY, userId);
         ret.put(LoginFilter.AUTHN_MEI, loginForm.getAuthnMei());
         ret.put(LoginFilter.AUTHN_INFO, loginForm.getAuthnInfo());

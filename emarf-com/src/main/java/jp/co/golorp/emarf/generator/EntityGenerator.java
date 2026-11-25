@@ -587,7 +587,11 @@ public final class EntityGenerator extends BeanGenerator {
         s.add("        return map;");
         s.add("    }");
 
-        // toMap
+        if (table.isStatusFlow()) {
+            return;
+        }
+
+        // toValueMap
         s.add("");
         s.add("    /**");
         s.add("     * @param at システム日時");
@@ -612,10 +616,6 @@ public final class EntityGenerator extends BeanGenerator {
         s.add("        map.put(\"" + StringUtil.toSnakeCase(UPDATE_BY) + "\", by);");
         s.add("        return map;");
         s.add("    }");
-
-        if (table.isStatusFlow()) {
-            return;
-        }
 
         s.add("");
         s.add("    /** @return where句 */");

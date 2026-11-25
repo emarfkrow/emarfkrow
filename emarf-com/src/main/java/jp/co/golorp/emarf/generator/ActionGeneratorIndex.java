@@ -349,9 +349,11 @@ public final class ActionGeneratorIndex extends BeanGenerator {
             s.add("");
             s.add("                " + e + " e = FormValidator.toBean(" + e + ".class.getName(), row);");
             s.add("");
-            s.add("                // 主キーが不足していたらエラー");
             String params = "";
             for (String primaryKey : table.getPrimaryKeys()) {
+                if (params.length() == 0) {
+                    s.add("                // 主キーが不足していたらエラー");
+                }
                 String property = StringUtil.toCamelCase(primaryKey);
                 String accessor = StringUtil.toPascalCase(primaryKey);
                 s.add("                Object " + property + " = e.get" + accessor + "();");
@@ -365,9 +367,10 @@ public final class ActionGeneratorIndex extends BeanGenerator {
             }
             List<TableInfo> childInfos = table.getChildren();
             BeanGenerator.getApplyChilds(s, "e", childInfos, 2);
-            s.add("");
             //s.add("                " + e + " f = " + e + ".get(" + params + ");");
             if (table.getColumns().containsKey(STATUS_KB)) {
+                s.add("");
+                s.add("                // ステータスを変更");
                 String acc = StringUtil.toPascalCase(STATUS_KB);
                 s.add("                if (e.get" + acc + "() != null && !e.get" + acc + "().equals(\"\")) {");
                 s.add("                    throw new jp.co.golorp.emarf.exception.AppError(\"error.notmatch\",");
@@ -375,6 +378,7 @@ public final class ActionGeneratorIndex extends BeanGenerator {
                 s.add("                }");
                 s.add("                e.set" + acc + "(0);");
             }
+            s.add("");
             s.add("                if (e.update(at, by) != 1) {");
             s.add("                    throw new OptLockError(\"error.cant.apply\", \"" + remarks + "\");");
             s.add("                }");
@@ -469,9 +473,11 @@ public final class ActionGeneratorIndex extends BeanGenerator {
             s.add("");
             s.add("                " + e + " e = FormValidator.toBean(" + e + ".class.getName(), row);");
             s.add("");
-            s.add("                // 主キーが不足していたらエラー");
             String params = "";
             for (String primaryKey : table.getPrimaryKeys()) {
+                if (params.length() == 0) {
+                    s.add("                // 主キーが不足していたらエラー");
+                }
                 String property = StringUtil.toCamelCase(primaryKey);
                 String accessor = StringUtil.toPascalCase(primaryKey);
                 s.add("                Object " + property + " = e.get" + accessor + "();");
@@ -485,9 +491,10 @@ public final class ActionGeneratorIndex extends BeanGenerator {
             }
             List<TableInfo> childInfos = table.getChildren();
             BeanGenerator.getCancelChilds(s, "e", childInfos, 2);
-            s.add("");
             //s.add("                " + e + " f = " + e + ".get(" + params + ");");
             if (table.getColumns().containsKey(STATUS_KB)) {
+                s.add("");
+                s.add("                // ステータスを変更");
                 String acc = StringUtil.toPascalCase(STATUS_KB);
                 s.add("                if (!e.get" + acc + "().equals(\"0\") && !e.get" + acc + "().equals(\"-1\")) {");
                 s.add("                    throw new jp.co.golorp.emarf.exception.AppError(\"error.notmatch\",");
@@ -495,6 +502,7 @@ public final class ActionGeneratorIndex extends BeanGenerator {
                 s.add("                }");
                 s.add("                e.set" + acc + "(null);");
             }
+            s.add("");
             s.add("                if (e.update(at, by) != 1) {");
             s.add("                    throw new OptLockError(\"error.cant.cancel\", \"" + remarks + "\");");
             s.add("                }");
@@ -589,9 +597,11 @@ public final class ActionGeneratorIndex extends BeanGenerator {
             s.add("");
             s.add("                " + e + " e = FormValidator.toBean(" + e + ".class.getName(), row);");
             s.add("");
-            s.add("                // 主キーが不足していたらエラー");
             String params = "";
             for (String primaryKey : table.getPrimaryKeys()) {
+                if (params.length() == 0) {
+                    s.add("                // 主キーが不足していたらエラー");
+                }
                 String property = StringUtil.toCamelCase(primaryKey);
                 String accessor = StringUtil.toPascalCase(primaryKey);
                 s.add("                Object " + property + " = e.get" + accessor + "();");
@@ -605,9 +615,10 @@ public final class ActionGeneratorIndex extends BeanGenerator {
             }
             List<TableInfo> childInfos = table.getChildren();
             BeanGenerator.getPermitChilds(s, "e", childInfos, 2);
-            s.add("");
             //s.add("                " + e + " f = " + e + ".get(" + params + ");");
             if (table.getColumns().containsKey(STATUS_KB)) {
+                s.add("");
+                s.add("                // ステータスを変更");
                 String acc = StringUtil.toPascalCase(STATUS_KB);
                 s.add("                if (e.get" + acc + "() != null && !e.get" + acc + "().equals(\"0\")) {");
                 s.add("                    throw new jp.co.golorp.emarf.exception.AppError(\"error.notmatch\",");
@@ -615,6 +626,7 @@ public final class ActionGeneratorIndex extends BeanGenerator {
                 s.add("                }");
                 s.add("                e.set" + acc + "(1);");
             }
+            s.add("");
             s.add("                if (e.update(at, by) != 1) {");
             s.add("                    throw new OptLockError(\"error.cant.permit\", \"" + remarks + "\");");
             s.add("                }");
@@ -709,9 +721,11 @@ public final class ActionGeneratorIndex extends BeanGenerator {
             s.add("");
             s.add("                " + e + " e = FormValidator.toBean(" + e + ".class.getName(), row);");
             s.add("");
-            s.add("                // 主キーが不足していたらエラー");
             String params = "";
             for (String primaryKey : table.getPrimaryKeys()) {
+                if (params.length() == 0) {
+                    s.add("                // 主キーが不足していたらエラー");
+                }
                 String property = StringUtil.toCamelCase(primaryKey);
                 String accessor = StringUtil.toPascalCase(primaryKey);
                 s.add("                Object " + property + " = e.get" + accessor + "();");
@@ -725,9 +739,10 @@ public final class ActionGeneratorIndex extends BeanGenerator {
             }
             List<TableInfo> childInfos = table.getChildren();
             BeanGenerator.getForbidChilds(s, "e", childInfos, 2);
-            s.add("");
             //s.add("                " + e + " f = " + e + ".get(" + params + ");");
             if (table.getColumns().containsKey(STATUS_KB)) {
+                s.add("");
+                s.add("                // ステータスを変更");
                 String acc = StringUtil.toPascalCase(STATUS_KB);
                 s.add("                if (!e.get" + acc + "().equals(\"0\") && !e.get" + acc + "().equals(\"1\")) {");
                 s.add("                    throw new jp.co.golorp.emarf.exception.AppError(\"error.notmatch\",");
@@ -735,6 +750,7 @@ public final class ActionGeneratorIndex extends BeanGenerator {
                 s.add("                }");
                 s.add("                e.set" + acc + "(-1);");
             }
+            s.add("");
             s.add("                if (e.update(at, by) != 1) {");
             s.add("                    throw new OptLockError(\"error.cant.forbid\", \"" + remarks + "\");");
             s.add("                }");
