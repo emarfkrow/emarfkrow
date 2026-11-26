@@ -63,8 +63,13 @@ let Tracking = {
         let action = $form[0].action;
         let dataKey = action.replaceAll(/(^.+\/|\..+$)/g, '');
 
+        let userId = $('span[id="authNKey"]').text();
+
         //作業報告を検索してパネルを表示
-        Ajaxize.ajaxPost(action, JSON.parse('{ "TrackYmd" : ' + yyyy + mm + dd + ' }'), function(data) {
+		Tracking.calcTotalTime();
+        let formText = '{ "' + Tracking.tracks.ymdName + '" : ' + yyyy + mm + dd + ', "' + Tracking.tracks.userIdName + '" : ' + userId + ' }';
+        let formJson = JSON.parse(formText);
+        Ajaxize.ajaxPost(action, formJson, function(data) {
             if (data[dataKey]) {
                 let tracks = Tracking.tracks.load(data[dataKey]);
                 for (var i in tracks) {

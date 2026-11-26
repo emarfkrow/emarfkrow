@@ -104,9 +104,7 @@ public final class SqlGenerator extends BeanGenerator {
                 }
             }
         }
-        //        if (table.isGantt()) {
-        //            s.add("    , b.DEPENDENCIES");
-        //        }
+        //        if (table.isGantt()) { s.add("    , b.DEPENDENCIES"); }
         s.add("FROM");
         s.add("    " + table.getName() + " a ");
         if (table.getName().matches(ELDEST_RE)) {
@@ -124,14 +122,8 @@ public final class SqlGenerator extends BeanGenerator {
         //            String pk = table.getPrimaryKeys().get(0);
         //            String oya = null;
         //            for (ColumnInfo column : table.getColumns().values()) {
-        //                if (column.getRefer() == table) {
-        //                    oya = column.getName();
-        //                    break;
-        //                }
-        //                if (column.getName().matches("(?i)^.+" + pk + "$")) {
-        //                    oya = column.getName();
-        //                    break;
-        //                }
+        //                if (column.getRefer() == table) { oya = column.getName(); break; }
+        //                if (column.getName().matches("(?i)^.+" + pk + "$")) { oya = column.getName(); break; }
         //            }
         //            s.add(assist.addDependencies(table, pk, oya));
         //            s.add("        START WITH");
@@ -140,17 +132,29 @@ public final class SqlGenerator extends BeanGenerator {
         //            s.add("            PRIOR " + pk + " = a." + oya);
         //            s.add("    ) a ");
         //        }
+        if (!StringUtil.isNullOrWhiteSpace(AUTHD_TARGET) && table.getName().matches(AUTHD_TARGET)) {
+            String userIds = "";
+            for (String k : table.getColumns().keySet()) {
+                if (k.matches("(?i).+" + AUTHD_USER_ID + "$")) {
+                    if (userIds.trim().length() > 0) {
+                        userIds += ", ";
+                    }
+                    userIds += "a." + k;
+                }
+            }
+            if (userIds.trim().length() > 0) {
+                s.add("    INNER JOIN " + AUTHD_TABLE_NAME + " k ");
+                s.add("        ON k." + AUTHD_MEMBER_ID + " IN (" + userIds + ")");
+                s.add("        AND k." + AUTHD_USER_ID + " = :" + StringUtil.toSnakeCase(AUTHD_USER_ID) + " ");
+            }
+        }
         s.add("WHERE");
         s.add("    1 = 1 ");
         for (ColumnInfo column : table.getColumns().values()) {
             addWhere(s, column);
         }
-        //        if (table.isGantt()) {
-        //            s.add("ORDER BY");
-        //            s.add("    a.PATH DESC");
-        //        } else if (table.isGraph()) {
-        //            s.add("    ) a ");
-        //        }
+        //        if (table.isGantt()) { s.add("ORDER BY"); s.add("    a.PATH DESC");
+        //        } else if (table.isGraph()) { s.add("    ) a "); }
         if (!table.isView()) {
             s.add("ORDER BY");
             if (table.getPrimaryKeys().size() > 0) {
@@ -198,7 +202,6 @@ public final class SqlGenerator extends BeanGenerator {
                 }
             }
         }
-
         FileUtil.writeFile(sqlDir + File.separator + entity + "Search.sql", s);
     }
 

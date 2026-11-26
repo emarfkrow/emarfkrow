@@ -450,6 +450,10 @@ public final class ServletUtil {
             throw new SysError(e);
         }
 
+        // データ認可用のログインID
+        HttpSession ses = request.getSession();
+        map.put(StringUtil.toCamelCase(BeanGenerator.AUTHD_USER_ID), ses.getAttribute(LoginFilter.AUTHN_KEY));
+
         return map;
     }
 

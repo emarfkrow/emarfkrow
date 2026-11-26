@@ -115,6 +115,15 @@ public abstract class BeanGenerator {
     /** スケジュール化を判定するカラムサフィックス */
     public static final Set<String[]> TRACK_COLS = new LinkedHashSet<String[]>();
 
+    /** データ認可：対象 */
+    protected static final String AUTHD_TARGET;
+    /** データ認可：課員ビュー名 */
+    protected static final String AUTHD_TABLE_NAME;
+    /** データ認可：ユーザ列名 */
+    public static final String AUTHD_USER_ID;
+    /** データ認可：課員列名 */
+    protected static final String AUTHD_MEMBER_ID;
+
     /** javaファイル出力ルートパス */
     protected static final String DIR_J;
     /***/
@@ -404,6 +413,30 @@ public abstract class BeanGenerator {
                 String[] columns = trackDef.split(":");
                 TRACK_COLS.add(columns);
             }
+        }
+
+        if (bundle != null && bundle.containsKey("authd.target")) {
+            AUTHD_TARGET = bundle.getString("authd.target");
+        } else {
+            AUTHD_TARGET = null;
+        }
+
+        if (bundle != null && bundle.containsKey("authd.tableName")) {
+            AUTHD_TABLE_NAME = bundle.getString("authd.tableName");
+        } else {
+            AUTHD_TABLE_NAME = null;
+        }
+
+        if (bundle != null && bundle.containsKey("authd.userId")) {
+            AUTHD_USER_ID = bundle.getString("authd.userId");
+        } else {
+            AUTHD_USER_ID = null;
+        }
+
+        if (bundle != null && bundle.containsKey("authd.memberId")) {
+            AUTHD_MEMBER_ID = bundle.getString("authd.memberId");
+        } else {
+            AUTHD_MEMBER_ID = null;
         }
 
         if (bundle != null && bundle.containsKey("dir.java")) {

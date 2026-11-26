@@ -158,6 +158,8 @@ public abstract class HtmlGenerator extends BeanGenerator {
                         s.add("");
                         s.add("    ymdName: '" + StringUtil.toCamelCase(ymdColumn) + "',");
                         s.add("");
+                        s.add("    userIdName: '" + StringUtil.toCamelCase(userIdColumn) + "',");
+                        s.add("");
                         s.add("    bohmName: '" + StringUtil.toCamelCase(bohmColumn) + "',");
                         s.add("");
                         s.add("    eohmName: '" + StringUtil.toCamelCase(eohmColumn) + "',");
@@ -627,6 +629,15 @@ public abstract class HtmlGenerator extends BeanGenerator {
         s.add(e + "S.title   " + remarks + "検索");
         s.add(e + "S.h2      " + remarks + "検索");
         s.add(e + "S.legend  " + remarks + "検索");
+
+        if (table.isTrack()) {
+            s.add("");
+            s.add(e + "T.title   " + remarks + "日報");
+            s.add(e + "T.h2      " + remarks + "日報");
+            s.add(e + "T.legend  " + remarks + "日報");
+        }
+
+        s.add("");
         s.add(e + ".add      " + remarks + "追加");
         s.add(e + ".title    " + remarks);
         s.add(e + ".h2       " + remarks);
